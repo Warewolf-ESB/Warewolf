@@ -24,6 +24,7 @@ using Dev2.DataList.Contract;
 using Dev2.Interfaces;
 using Dev2.PathOperations;
 using Dev2.Util;
+using Microsoft.SharePoint.Client;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
 using Warewolf.Storage;

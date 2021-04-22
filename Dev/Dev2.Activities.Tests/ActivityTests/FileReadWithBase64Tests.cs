@@ -15,6 +15,7 @@ using ActivityUnitTests;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data;
+using Dev2.Data.Interfaces;
 using Dev2.Data.TO;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
@@ -229,17 +230,11 @@ namespace Dev2.Tests.Activities.ActivityTests
             act.Username = "[[val1]]";
 
             //------------Execute Test---------------------------
-            var dsfOutputStrings = act.TestTryExecuteConcreteAction(mockDataObject.Object, out _, 0);
-            var inputs = new List<IDebugItemResult>();
-            act.GetDebugInputs(env, 0).ForEach(input =>
-            {
-                input.ResultsList.ForEach(result =>
-                {
-                    inputs.Add(result);
-                });
-            });
+            ErrorResultTO to;
+            act.TestTryExecuteConcreteAction(mockDataObject.Object, out to, 0);
+            var errors = to.FetchErrors();
             
-            Assert.AreEqual("demo", inputs.FirstOrDefault(i => i.Label == "Username")?.Value);
+            Assert.IsTrue(errors.FirstOrDefault()?.Contains("Failed to authenticate with user [ demo ]") ?? false);
         }
 
         [TestMethod]

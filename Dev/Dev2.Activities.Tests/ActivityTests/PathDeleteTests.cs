@@ -47,30 +47,22 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Setup for test--------------------------
             var env = new ExecutionEnvironment();
             env.Assign("[[val1]]", "demo", false, 0);
-            env.Assign("[[val2]]", "password", false, 0);
-            
+
             var newGuid = Guid.NewGuid();
             var inputPath = string.Concat(TestContext.TestRunDirectory, "\\", newGuid + "test.txt");
+
             var act = new TestDsfPathDelete { InputPath = inputPath, Result = "CompanyName" };
             act.Username = "[[val1]]";
-            act.Password = DpapiWrapper.Encrypt("[[val2]]");
 
             var mockDataObject = new Mock<IDSFDataObject>();
             mockDataObject.Setup(o => o.Environment).Returns(env);
             mockDataObject.Setup(o => o.IsDebugMode()).Returns(true);
 
             //------------Execute Test---------------------------
-            var dsfOutputStrings = act.TestTryExecuteConcreteAction(mockDataObject.Object, out _, 0);
-            var inputs = new List<IDebugItemResult>();
-            act.GetDebugInputs(env, 0).ForEach(input =>
-            {
-                input.ResultsList.ForEach(result =>
-                {
-                    inputs.Add(result);
-                });
-            });
+            ErrorResultTO to;
+            var outputs = act.TestTryExecuteConcreteAction(mockDataObject.Object, out to, 0);
             
-            Assert.AreEqual("demo", inputs.FirstOrDefault(i => i.Label == "Username")?.Value);
+            Assert.IsTrue(outputs[1].OutPutDescription == "Username [ demo ]");
         }
         
 
