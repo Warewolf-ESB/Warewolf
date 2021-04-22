@@ -349,7 +349,7 @@ namespace Dev2.Activities.Specs.BaseTypes
         {
             var oldFTPDependency = "ftp://DEVOPSPDC.premier.local:1001/";
 			var oldFTPSDependency = "ftp://DEVOPSPDC.premier.local:1002/";
-            if (location.StartsWith(oldFTPDependency))
+            if (location.StartsWith(oldFTPDependency) || location.StartsWith("[[destPath]] = " + oldFTPDependency) || location.StartsWith("[[sourcePath]] = " + oldFTPDependency))
             {
 				if (_dependency == null)
 				{
@@ -357,7 +357,7 @@ namespace Dev2.Activities.Specs.BaseTypes
 				}
                 location = location.Replace(oldFTPDependency, "ftp://" + _dependency.Container.IP + ":" + _dependency.Container.Port + "/");
             }
-            if (location.StartsWith(oldFTPSDependency))
+            if (location.StartsWith(oldFTPSDependency) || location.StartsWith("[[destPath]] = " + oldFTPSDependency) || location.StartsWith("[[sourcePath]] = " + oldFTPSDependency))
             {
 				if (_dependency == null)
 				{
