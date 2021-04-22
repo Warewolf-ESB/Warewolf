@@ -472,6 +472,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                 _scenarioContext.Add("variableList", variableList);
             }
 			location = InjectFTPDependency(location, false);
+            pathVariable = InjectFTPDependency(pathVariable, false);
 
             variableList.Add(new Tuple<string, string>(pathVariable, location));
 
