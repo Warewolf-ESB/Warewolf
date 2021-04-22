@@ -14,6 +14,7 @@ namespace Warewolf.UnitTestAttributes
     {
         public static readonly List<string> RigOpsHosts =  new List<string>
         {
+            "localhost",
             "opswolf.com",
             "RSAKLFSVRHST1.premier.local",
             "t004124.premier.local",
