@@ -233,7 +233,7 @@ namespace ActivityUnitTests
 				{
 					_sourceDependency = new Depends(Depends.ContainerType.FTP);
 				}
-                location = location.Replace(oldFTPDependency, "ftps://" + _sourceDependency.Container.IP + ":" + _sourceDependency.Container.Port + "/");
+                location = location.Replace(oldFTPDependency, "ftp://" + _sourceDependency.Container.IP + ":" + _sourceDependency.Container.Port + "/");
             }
             if (location.StartsWith(oldFTPDependency) && !sourcePath || location.StartsWith("[[destPath]] = " + oldFTPDependency))
             {
@@ -241,7 +241,7 @@ namespace ActivityUnitTests
                 {
                     _destinationDependency = new Depends(Depends.ContainerType.FTP);
                 }
-                location = location.Replace(oldFTPDependency, "ftps://" + _destinationDependency.Container.IP + ":" + _destinationDependency.Container.Port + "/");
+                location = location.Replace(oldFTPDependency, "ftp://" + _destinationDependency.Container.IP + ":" + _destinationDependency.Container.Port + "/");
             }
             if (location.StartsWith(oldFTPSDependency) && sourcePath || location.StartsWith("[[sourcePath]] = " + oldFTPSDependency))
             {
