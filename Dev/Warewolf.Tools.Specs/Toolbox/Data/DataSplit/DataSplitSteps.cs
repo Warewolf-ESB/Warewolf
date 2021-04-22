@@ -171,7 +171,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
                 variableList = new List<Tuple<string, string>>();
                 scenarioContext.Add("variableList", variableList);
             }
-            variableList.Add(new Tuple<string, string>(variable, value.ToString(CultureInfo.InvariantCulture)));
+            variableList.Add(new Tuple<string, string>(variable, InjectFTPDependency(value.ToString(CultureInfo.InvariantCulture))));
         }
         
          [Then(@"the split recordset ""(.*)"" will be")]
