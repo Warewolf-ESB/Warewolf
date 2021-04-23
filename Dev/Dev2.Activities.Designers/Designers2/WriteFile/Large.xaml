@@ -128,7 +128,7 @@
         </ui:IntellisenseTextBox>
 
         <TextBlock Grid.Column="0" Grid.Row="3" Margin="{StaticResource ActivityBorderTop}" Text="Username" />
-        <TextBox Grid.Column="1"
+        <ui:IntellisenseTextBox Grid.Column="1"
                                 Grid.Row="3"
                                 Margin="{StaticResource ActivityBorderTop}"
                                 Text="{Binding Path=ModelItem.Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -142,7 +142,7 @@
                                      SourcePropertyValue="{Binding  ModelItem.Username, UpdateSourceTrigger=PropertyChanged}"
                                      Target="{Binding}" />
             </i:Interaction.Behaviors>
-        </TextBox>
+        </ui:IntellisenseTextBox>
 
         <TextBlock Grid.Column="0" Grid.Row="4" Margin="{StaticResource ActivityBorderTop}" Text="Password" />
         <Grid
@@ -156,14 +156,14 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             
-        <TextBox Grid.Column="0"
-                 Grid.Row="0"
-                 Visibility="{Binding ShowPassword, Converter={StaticResource BoolToVisibilityConverterPositive}}"
-                 Margin="{StaticResource ActivityBorderTop}"
-                 Text="{Binding Path=ModelItem.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                 ToolTip="{x:Static languages:Tooltips.FileActivityToolTipPassword}"
-                 attachedProperties:FocusSetter.IsFocused="{Binding IsPasswordFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Passwordtxt_AutoID}">
+        <ui:IntellisenseTextBox Grid.Column="0"
+                                Grid.Row="0"
+                                Visibility="{Binding ShowPassword, Converter={StaticResource BoolToVisibilityConverterPositive}}"
+                                Margin="{StaticResource ActivityBorderTop}"
+                                Text="{Binding Path=ModelItem.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                ToolTip="{x:Static languages:Tooltips.FileActivityToolTipPassword}"
+                                attachedProperties:FocusSetter.IsFocused="{Binding IsPasswordFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Passwordtxt_AutoID}">
             <i:Interaction.Behaviors>
                 <core1:HelpSetter Text="{x:Static languages:HelpText.FileActivityHelpPassword}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
@@ -171,7 +171,7 @@
                                      SourcePropertyValue="{Binding  ModelItem.Password, UpdateSourceTrigger=PropertyChanged}"
                                      Target="{Binding}" />
             </i:Interaction.Behaviors>
-        </TextBox>
+        </ui:IntellisenseTextBox>
         <PasswordBox Grid.Column="0"
                      Grid.Row="0"
                      Visibility="{Binding ShowPassword, Converter={StaticResource BoolToVisibilityConverterNegative}}"
