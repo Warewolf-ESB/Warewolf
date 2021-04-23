@@ -1585,6 +1585,25 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to For protected resources, specify the Password of an account with permission to perform this action. 
+        ///By default the account running Warewolf Server.exe service will be used..
+        /// </summary>
+        public static string FileActivityToolTipPassword {
+            get {
+                return ResourceManager.GetString("FileActivityToolTipPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show password text.
+        /// </summary>
+        public static string FileActivityToolTipShowPassword {
+            get {
+                return ResourceManager.GetString("FileActivityToolTipShowPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Any variable and/or data goes in here.
         ///Put  the index of the string you are looking for in here..
         /// </summary>
