@@ -386,7 +386,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     // add to datalist in variable specified
                     if (!String.IsNullOrEmpty(OnErrorVariable))
                     {
-                        //TODO: move to ErrorResultTO
                         var errorString = env.FetchErrors();
                         var errors = ErrorResultTO.MakeErrorResultFromDataListString(errorString, true);
                         var upsertVariable = DataListUtil.AddBracketsToValueIfNotExist(OnErrorVariable);
@@ -394,13 +393,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         {
                             foreach (var error in errors.FetchErrors())
                             {
-                                //TODO: might need a duplicate check on the Recordset
+                                //TODO: duplicate check on the Recordset might hide the real issue, 
+                                //of multiple execution calls passing here which seems not to be the same on F7
                                 env.Assign(upsertVariable, error, update);
                             }
                         }
                         else
                         {
-                            //TODO: might need a duplicate check on the Recordset
                             env.Assign(upsertVariable, errorString, update);
                         }
                     }
