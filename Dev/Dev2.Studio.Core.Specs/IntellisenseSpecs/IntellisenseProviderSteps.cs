@@ -1,7 +1,7 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -197,7 +197,7 @@ namespace Dev2.Studio.Core.Specs.IntellisenseSpecs
         [Given(@"the suggestion list as '(.*)'")]
         public void GivenTheSuggestionListAs(string p0)
         {
-            var provider = new Dev2TrieSugggestionProvider();
+            var provider = new Dev2TrieSuggestionProvider();
             provider.VariableList = new ObservableCollection<string>(ScenarioContext.Current["datalistOptions"] as IEnumerable<string>);
             var filterType = ScenarioContext.Current["filterType"] is enIntellisensePartType ? (enIntellisensePartType)ScenarioContext.Current["filterType"] : enIntellisensePartType.None;
             var caretpos = int.Parse(ScenarioContext.Current["cursorIndex"].ToString());

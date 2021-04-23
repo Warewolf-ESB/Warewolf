@@ -1,4 +1,13 @@
-#pragma warning disable
+/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -10,12 +19,11 @@ using static DataStorage;
 
 namespace Dev2.Studio.Core.DataList
 {
-    public class Dev2TrieSugggestionProvider : ISuggestionProvider
+    public class Dev2TrieSuggestionProvider : ISuggestionProvider
     {
-        #region Implementation of ISuggestionProvider
-
         readonly char[] _tokenisers = "!#$%^&-=_+{}|:\"?><`~<>?:'{}| [](".ToCharArray();
-        ITrie<string> PatriciaTrie { get; set; }
+        ITrie<string> PatriciaTrie { get; set; } // RecordsetsOnly, ScalarsOnly, RecordsetFields, JsonObject
+        ITrie<string> PatriciaTrieNonJsonObjects { get; set; } // RecordsetsOnly, ScalarsOnly, RecordsetFields
         ObservableCollection<string> _variableList;
 
         public ObservableCollection<string> VariableList
@@ -25,6 +33,7 @@ namespace Dev2.Studio.Core.DataList
             {
                 _variableList = value;
                 PatriciaTrie = new SuffixTrie<string>(1);
+                PatriciaTrieNonJsonObjects = new SuffixTrie<string>(1);
                 AddScalars();
                 AddRecsets();
                 AddFields();
@@ -57,6 +66,7 @@ namespace Dev2.Studio.Core.DataList
                 foreach (var permutation in PermuteCapitalizations(name))
                 {
                     PatriciaTrie.Add(permutation, name);
+                    PatriciaTrieNonJsonObjects.Add(permutation, name);
                 }
             }
             else
@@ -67,6 +77,7 @@ namespace Dev2.Studio.Core.DataList
                     foreach (var permutation in PermuteCapitalizations(key))
                     {
                         PatriciaTrie.Add(permutation, DataListUtil.AddBracketsToValueIfNotExist(scalarExpression.Item));
+                        PatriciaTrieNonJsonObjects.Add(permutation, DataListUtil.AddBracketsToValueIfNotExist(scalarExpression.Item));
                     }
                 }
             }
@@ -83,6 +94,7 @@ namespace Dev2.Studio.Core.DataList
             foreach (var permutation in PermuteCapitalizations(name))
             {
                 PatriciaTrie.Add(permutation, name);
+                PatriciaTrieNonJsonObjects.Add(permutation, name);
             }
         }
 
@@ -123,9 +135,8 @@ namespace Dev2.Studio.Core.DataList
 
         void AddRecsets()
         {
-            IEnumerable<LanguageAST.LanguageExpression> vars;
             PatriciaTrieRecsets = new SuffixTrie<string>(1);
-            vars = _variableList.Select(ParseExpression).OrderBy(a => a).Where(a => a.IsRecordSetNameExpression);
+            var vars = _variableList.Select(ParseExpression).OrderBy(a => a).Where(a => a.IsRecordSetNameExpression);
             foreach (var var in vars)
             {
                 if (var is LanguageAST.LanguageExpression.RecordSetNameExpression currentVar)
@@ -174,7 +185,6 @@ namespace Dev2.Studio.Core.DataList
         {
             if (currentVar != null)
             {
-
                 if (currentVar is LanguageAST.JsonIdentifierExpression.NameExpression namedExpression)
                 {
                     var name = namedExpression.Item.Name;
@@ -187,6 +197,7 @@ namespace Dev2.Studio.Core.DataList
                     foreach (var permutation in PermuteCapitalizations(key))
                     {
                         PatriciaTrieJsonObjects.Add(permutation, DataListUtil.AddBracketsToValueIfNotExist(objectName));
+                        PatriciaTrie.Add(permutation, DataListUtil.AddBracketsToValueIfNotExist(objectName));
                     }
                     return null;
                 }
@@ -203,6 +214,7 @@ namespace Dev2.Studio.Core.DataList
                     foreach (var permutation in PermuteCapitalizations(key))
                     {
                         PatriciaTrieJsonObjects.Add(permutation, DataListUtil.AddBracketsToValueIfNotExist(objectName));
+                        PatriciaTrie.Add(permutation, DataListUtil.AddBracketsToValueIfNotExist(objectName));
                     }
                     return AddJsonVariables(indexNestedExpression.Item.Next, objectName);
                 }
@@ -218,6 +230,7 @@ namespace Dev2.Studio.Core.DataList
                     foreach (var permutation in PermuteCapitalizations(key))
                     {
                         PatriciaTrieJsonObjects.Add(permutation, DataListUtil.AddBracketsToValueIfNotExist(objectName));
+                        PatriciaTrie.Add(permutation, DataListUtil.AddBracketsToValueIfNotExist(objectName));
                     }
                     var next = nestedNameExpression.Item.Next;
                     return AddJsonVariables(next, objectName);
@@ -232,14 +245,14 @@ namespace Dev2.Studio.Core.DataList
         SuffixTrie<string> PatriciaTrieJsonObjects { get; set; }
         public int Level { get; set; }
 
-        public Dev2TrieSugggestionProvider()
+        public Dev2TrieSuggestionProvider()
         {
             VariableList = new ObservableCollection<string>();
             PatriciaTrie = new PatriciaTrie<string>();
+            PatriciaTrieNonJsonObjects = new PatriciaTrie<string>();
         }
 
-       
-        public IEnumerable<string> GetSuggestions(string orignalText, int caretPosition, bool tokenise, enIntellisensePartType type)
+        public IEnumerable<string> GetSuggestions(string originalText, int caretPosition, bool tokenise, enIntellisensePartType type)
         {
             if (caretPosition < 0)
             {
@@ -249,58 +262,56 @@ namespace Dev2.Studio.Core.DataList
             string filter;
             if (tokenise)
             {
-                if (caretPosition > orignalText.Length)
+                if (caretPosition > originalText.Length)
                 {
-                    caretPosition = orignalText.Length;
+                    caretPosition = originalText.Length;
                 }
 
-                var texttrimmedRight = orignalText.Substring(0, caretPosition);
-                var start = texttrimmedRight.LastIndexOf(texttrimmedRight.Split(_tokenisers).Last(), StringComparison.Ordinal);
-                filter = texttrimmedRight.Substring(start);
+                var textTrimmedRight = originalText.Substring(0, caretPosition);
+                var start = textTrimmedRight.LastIndexOf(textTrimmedRight.Split(_tokenisers).Last(), StringComparison.Ordinal);
+                filter = textTrimmedRight.Substring(start);
             }
             else
             {
-                filter = orignalText;
+                filter = originalText;
             }
             var trie = PatriciaTrie;
             switch (type)
             {
+                case enIntellisensePartType.ScalarsOnly:
+                    trie = PatriciaTrieScalars;
+                    break;
+
                 case enIntellisensePartType.RecordsetsOnly:
-                    if (orignalText.Contains("(") && orignalText.IndexOf("(", StringComparison.Ordinal) < caretPosition)
-                    {
-                        trie = PatriciaTrie;
-                    }
-                    else
+                    if (!originalText.Contains("(") || originalText.IndexOf("(", StringComparison.Ordinal) >= caretPosition)
                     {
                         trie = PatriciaTrieRecsets;
                     }
-
                     break;
 
-                case enIntellisensePartType.ScalarsOnly:
-                    trie = PatriciaTrieScalars;
+                case enIntellisensePartType.RecordsetFields:
+                    if (!originalText.Contains("(") || originalText.IndexOf("(", StringComparison.Ordinal) >= caretPosition)
+                    {
+                        trie = PatriciaTrieRecsetsFields;
+                    }
                     break;
 
                 case enIntellisensePartType.JsonObject:
                     trie = PatriciaTrieJsonObjects;
                     break;
 
-                case enIntellisensePartType.RecordsetFields:
-                    if (orignalText.Contains("(") && orignalText.IndexOf("(", StringComparison.Ordinal) < caretPosition)
-                    {
-                        trie = PatriciaTrie;
-                    }
-                    else
-                    {
-                        trie = PatriciaTrieRecsetsFields;
-                    }
-
+                case enIntellisensePartType.NonJsonObjects:
+                    trie = PatriciaTrieNonJsonObjects;
                     break;
+
                 case enIntellisensePartType.None:
+                    break;
+                case enIntellisensePartType.All:
                     break;
                 default:
                     break;
             }
+
             if (filter.EndsWith("[["))
             {
                 return trie.Retrieve("[[");
@@ -318,26 +329,26 @@ namespace Dev2.Studio.Core.DataList
             return trie.Retrieve(filter);
         }
 
-        List<string> PermuteCapitalizations(string key)
+        static IEnumerable<string> PermuteCapitalizations(string key)
         {
-            var suffixes = new List<string>();
-            suffixes.Add(key);
-            suffixes.Add(key.ToLower());
-            suffixes.Add(key.ToUpper());
-            suffixes.Add(TitleCase(key));
-            suffixes.Add(ReverseCase(key));
+            var suffixes = new List<string>
+            {
+                key,
+                key.ToLower(),
+                key.ToUpper(),
+                TitleCase(key),
+                ReverseCase(key)
+            };
             return suffixes;
         }
 
-        string TitleCase(string input) => input?[0].ToString().ToUpper() + input?.Substring(1).ToLower();
+        static string TitleCase(string input) => input?[0].ToString().ToUpper() + input?.Substring(1).ToLower();
 
-        string ReverseCase(string input)
+        static string ReverseCase(string input)
         {
             var array = input?.Select(c => char.IsLetter(c) ? (char.IsUpper(c) ? char.ToLower(c) : char.ToUpper(c)) : c).ToArray();
             var reversedCase = new string(array);
             return reversedCase;
         }
-
-        #endregion Implementation of ISuggestionProvider
     }
 }
