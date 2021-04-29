@@ -337,21 +337,11 @@ namespace Dev2.Activities.Specs.BaseTypes
                 variableList = new List<Tuple<string, string>>();
                 _scenarioContext.Add("variableList", variableList);
             }
-
-            variableList.Add(new Tuple<string, string>(pathVariable, FixBrokenHostname(location)));
+			location = InjectFTPDependency(location);
+            variableList.Add(new Tuple<string, string>(pathVariable, location));
 
             _scenarioContext.Add(SourceHolder, string.IsNullOrEmpty(pathVariable) ? location : pathVariable);
             _scenarioContext.Add(ActualSourceHolder, location);
-        }
-
-        string FixBrokenHostname(string location)
-        {
-            var brokenHostname = "SVRPDC.premier.local";
-            if (location.Contains(brokenHostname) && location.IndexOf(brokenHostname) >= 6 && location.Substring(location.IndexOf(brokenHostname)-6,6) == "ftp://")
-            {
-                location = location.Replace(brokenHostname, Depends.GetIPAddress(brokenHostname));
-            }
-            return location;
         }
 
         public static string GetGuid()
@@ -481,8 +471,10 @@ namespace Dev2.Activities.Specs.BaseTypes
                 variableList = new List<Tuple<string, string>>();
                 _scenarioContext.Add("variableList", variableList);
             }
+			location = InjectFTPDependency(location, false);
+            pathVariable = InjectFTPDependency(pathVariable, false);
 
-            variableList.Add(new Tuple<string, string>(pathVariable, FixBrokenHostname(location)));
+            variableList.Add(new Tuple<string, string>(pathVariable, location));
 
             _scenarioContext.Add(DestinationHolder, string.IsNullOrEmpty(pathVariable) ? location : pathVariable);
             _scenarioContext.Add(ActualDestinationHolder, location);
@@ -925,7 +917,7 @@ namespace Dev2.Activities.Specs.BaseTypes
 
                 if (columnHeader == "Source Path" || columnHeader == "Destination Path")
                 {
-                    rowValue = FixBrokenHostname(rowValue);
+                    rowValue = InjectFTPDependency(rowValue);
                 }
 
                 if (rowValue.Contains(" ="))
