@@ -53,7 +53,7 @@ namespace Dev2.Activities
             }
         }
 
-        public override List<string> GetOutputs() => SystemInformationCollection.Select(to => to.Result).ToList();
+        public override IEnumerable<string> GetOutputs() => SystemInformationCollection.Select(to => to.Result).ToList();
 
         public DsfDotNetGatherSystemInformationActivity()
             : base("Gather System Information")

@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -47,7 +47,7 @@ namespace Dev2.Activities
 
         public DsfSwitch() { }
 
-        public override List<string> GetOutputs() => new List<string>();
+        public override IEnumerable<string> GetOutputs() => new List<string>();
 
         public override FlowNode GetFlowNode()
         {
@@ -354,7 +354,7 @@ namespace Dev2.Activities
             UniqueID = _dsfSwitch.UniqueID;
         }
 
-        public override List<string> GetOutputs() => new List<string>();
+        public override IEnumerable<string> GetOutputs() => new List<string>();
 
         public string ConditionToUse { get; set; }
 

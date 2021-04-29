@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -135,7 +135,7 @@ namespace Dev2.Utilities
             //This is to ensure nothing can be dragged onto a Activity Designer
         }
 
-        public static string GetSerializedStateValueFromCollection<T>(IList<T> collection)
+        public static string GetSerializedStateValueFromCollection<T>(IEnumerable<T> collection)
         {
             var dev2JsonSerializer = new Dev2JsonSerializer();
             return dev2JsonSerializer.Serialize(collection);

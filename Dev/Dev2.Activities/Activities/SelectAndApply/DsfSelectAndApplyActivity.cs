@@ -62,7 +62,7 @@ namespace Dev2.Activities.SelectAndApply
             return nextNodes;
         }
 
-        public override List<string> GetOutputs() => new List<string>();
+        public override IEnumerable<string> GetOutputs() => new List<string>();
 
         protected override void CacheMetadata(NativeActivityMetadata metadata)
         {

@@ -1,7 +1,7 @@
 #pragma warning disable
-﻿/*
+/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -17,6 +17,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using Warewolf.Core;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
@@ -242,8 +243,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             var activity = GetAdvancedRecordsetActivity(new Mock<IAdvancedRecordsetActivityWorker>());
             activity.Outputs = serviceOutputs;
             var outputs = activity.GetOutputs();
-            Assert.AreEqual(1, outputs.Count);
-            Assert.AreEqual("[[weather().Location]]", outputs[0]);
+            Assert.AreEqual(1, outputs.ToList().Count);
+            Assert.AreEqual("[[weather().Location]]", outputs.ToList()[0]);
         }
 
         [TestMethod, DeploymentItem(@"x86\SQLite.Interop.dll")]
@@ -254,7 +255,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var activity = GetAdvancedRecordsetActivity(new Mock<IAdvancedRecordsetActivityWorker>());
             activity.Outputs = null;
             var outputs = activity.GetOutputs();
-            Assert.AreEqual(0, outputs.Count);
+            Assert.AreEqual(0, outputs.ToList().Count);
         }
 
         [TestMethod, DeploymentItem(@"x86\SQLite.Interop.dll")]
@@ -267,7 +268,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             activity.IsObject = true;
             var outputs = activity.GetOutputs();
 
-            Assert.AreEqual(1, outputs.Count);
+            Assert.AreEqual(1, outputs.ToList().Count);
         }
 
         [TestMethod, DeploymentItem(@"x86\SQLite.Interop.dll")]

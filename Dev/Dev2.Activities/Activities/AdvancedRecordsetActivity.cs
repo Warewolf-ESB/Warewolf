@@ -109,7 +109,7 @@ namespace Dev2.Activities
             }
         }
 
-        public override List<string> GetOutputs()
+        public override IEnumerable<string> GetOutputs()
         {
             if (Outputs == null)
             {

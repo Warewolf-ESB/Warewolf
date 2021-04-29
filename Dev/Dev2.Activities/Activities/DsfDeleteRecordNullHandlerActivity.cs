@@ -53,7 +53,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             TreatNullAsZero = true;
         }
 
-        public override List<string> GetOutputs() => new List<string> { Result };
+        public override IEnumerable<string> GetOutputs() => new List<string> { Result };
 
         public bool TreatNullAsZero { get; set; }
         

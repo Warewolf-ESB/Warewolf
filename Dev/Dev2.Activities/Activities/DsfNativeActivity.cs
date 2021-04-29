@@ -1089,7 +1089,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected abstract void ExecuteTool(IDSFDataObject dataObject, int update);
 
-        public abstract List<string> GetOutputs();
+        public abstract IEnumerable<string> GetOutputs();
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public IEnumerable<IDev2Activity> NextNodes { get; set; }

@@ -118,7 +118,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
 
-        public override List<string> GetOutputs() => new List<string> { Result };
+        public override IEnumerable<string> GetOutputs() => new List<string> { Result };
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {

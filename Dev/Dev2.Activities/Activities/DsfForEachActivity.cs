@@ -300,7 +300,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update) => DebugItem.EmptyList;
 
 
-        public override List<string> GetOutputs() => new List<string>();
+        public override IEnumerable<string> GetOutputs() => new List<string>();
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {

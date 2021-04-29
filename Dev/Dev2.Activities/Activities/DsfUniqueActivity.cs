@@ -108,7 +108,7 @@ namespace Dev2.Activities
         }
 
 
-        public override List<string> GetOutputs() => Result.Split(',').ToList();
+        public override IEnumerable<string> GetOutputs() => Result.Split(',').ToList();
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {

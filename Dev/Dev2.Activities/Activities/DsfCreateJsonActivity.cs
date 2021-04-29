@@ -61,7 +61,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             DisplayName = "Create JSON";
         }
 
-        public override List<string> GetOutputs() => new List<string> { JsonString };
+        public override IEnumerable<string> GetOutputs() => new List<string> { JsonString };
 
         protected override void CacheMetadata(NativeActivityMetadata metadata)
         {

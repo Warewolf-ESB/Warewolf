@@ -161,7 +161,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #endregion Private Methods
 
-        public override List<string> GetOutputs() => new List<string> { Result };
+        public override IEnumerable<string> GetOutputs() => new List<string> { Result };
 
         #region Get Debug Inputs/Outputs
 

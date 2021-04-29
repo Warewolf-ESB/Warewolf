@@ -106,7 +106,7 @@ namespace Dev2.Activities
 
         #endregion
 
-        public override List<string> GetOutputs() => ResultsCollection?.Select(dto => dto.OutputVariable).ToList() ?? new List<string>();
+        public override IEnumerable<string> GetOutputs() => ResultsCollection?.Select(dto => dto.OutputVariable).ToList() ?? new List<string>();
 
         #region Overridden NativeActivity Methods
 

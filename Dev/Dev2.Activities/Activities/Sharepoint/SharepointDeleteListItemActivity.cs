@@ -106,7 +106,7 @@ namespace Dev2.Activities.Sharepoint
             ExecuteTool(dataObject, 0);
         }
 
-        public override List<string> GetOutputs() => new List<string> { DeleteCount };
+        public override IEnumerable<string> GetOutputs() => new List<string> { DeleteCount };
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {

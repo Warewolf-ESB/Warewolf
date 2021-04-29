@@ -74,7 +74,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             };
         }
 
-        public override List<string> GetOutputs() => new List<string> { RecordsLength };
+        public override IEnumerable<string> GetOutputs() => new List<string> { RecordsLength };
 
         protected override void CacheMetadata(NativeActivityMetadata metadata)
         {

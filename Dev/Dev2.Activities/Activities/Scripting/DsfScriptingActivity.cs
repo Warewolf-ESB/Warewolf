@@ -105,7 +105,7 @@ namespace Dev2.Activities
             };
         }
 
-        public override List<string> GetOutputs() => new List<string> { Result };
+        public override IEnumerable<string> GetOutputs() => new List<string> { Result };
         #region Overrides of DsfNativeActivity<string>
         
         protected override void OnExecute(NativeActivityContext context)

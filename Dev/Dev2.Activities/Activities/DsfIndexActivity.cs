@@ -112,7 +112,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #endregion Ctor
 
-        public override List<string> GetOutputs() => new List<string> { Result };
+        public override IEnumerable<string> GetOutputs() => new List<string> { Result };
 
         protected override void CacheMetadata(NativeActivityMetadata metadata) => base.CacheMetadata(metadata);
 

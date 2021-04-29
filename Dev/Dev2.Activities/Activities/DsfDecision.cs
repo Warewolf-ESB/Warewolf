@@ -450,7 +450,7 @@ namespace Dev2.Activities
             }
         }
 
-        public override List<string> GetOutputs() => new List<string>();
+        public override IEnumerable<string> GetOutputs() => new List<string>();
 
         public bool And { get; set; }
 
@@ -591,7 +591,7 @@ namespace Dev2.Activities
             }
         }
 
-        public override List<string> GetOutputs() => new List<string>();
+        public override IEnumerable<string> GetOutputs() => new List<string>();
 
 
         public bool Equals(TestMockDecisionStep other)

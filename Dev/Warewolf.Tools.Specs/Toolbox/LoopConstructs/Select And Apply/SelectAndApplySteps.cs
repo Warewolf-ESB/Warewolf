@@ -1,5 +1,16 @@
+/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+
 #pragma warning disable
-﻿using Dev2;
+using Dev2;
 using Dev2.Activities;
 using Dev2.Activities.SelectAndApply;
 using Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach;
@@ -263,7 +274,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.LoopConstructs.Select_And_Apply
             Called = 0;
         }
 
-        public override List<string> GetOutputs()
+        public override IEnumerable<string> GetOutputs()
         {
             return new List<string>();
         }

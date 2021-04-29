@@ -211,7 +211,7 @@ namespace Dev2.Activities
             IsHtml = false;
         }
 
-        public override List<string> GetOutputs() => new List<string> { Result };
+        public override IEnumerable<string> GetOutputs() => new List<string> { Result };
 
         bool IsDebug
         {

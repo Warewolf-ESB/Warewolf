@@ -485,7 +485,7 @@ namespace Dev2.Activities
             }
         }
 
-        public override List<string> GetOutputs() => new List<string>();
+        public override IEnumerable<string> GetOutputs() => new List<string>();
         public override IEnumerable<StateVariable> GetState()
         {
             var serializer = new Dev2JsonSerializer();

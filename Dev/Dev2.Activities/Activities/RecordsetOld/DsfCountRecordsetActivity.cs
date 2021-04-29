@@ -83,7 +83,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             ExecuteTool(dataObject, 0);
         }
 
-        public override List<string> GetOutputs() => new List<string> { CountNumber };
+        public override IEnumerable<string> GetOutputs() => new List<string> { CountNumber };
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {

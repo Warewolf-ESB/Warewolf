@@ -709,7 +709,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        public override List<string> GetOutputs() => ResultsCollection.Select(dto => dto.OutputVariable).ToList();
+        public override IEnumerable<string> GetOutputs() => ResultsCollection.Select(dto => dto.OutputVariable).ToList();
 
         public bool Equals(DsfDataSplitActivity other)
         {

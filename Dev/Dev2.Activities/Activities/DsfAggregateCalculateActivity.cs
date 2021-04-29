@@ -184,7 +184,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #endregion Get Inputs/Outputs
 
-        public override List<string> GetOutputs() => new List<string> { Result };
+        public override IEnumerable<string> GetOutputs() => new List<string> { Result };
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {

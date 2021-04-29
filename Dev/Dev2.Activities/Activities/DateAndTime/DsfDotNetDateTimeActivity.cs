@@ -105,7 +105,7 @@ namespace Dev2.Activities.DateAndTime
             ExecuteTool(dataObject, 0);
         }
 
-        public override List<string> GetOutputs() => new List<string> { Result };
+        public override IEnumerable<string> GetOutputs() => new List<string> { Result };
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {

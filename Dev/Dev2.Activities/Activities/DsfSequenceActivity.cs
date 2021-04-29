@@ -73,7 +73,7 @@ namespace Dev2.Activities
             set;
         }
 
-        public override List<string> GetOutputs() => new List<string>();
+        public override IEnumerable<string> GetOutputs() => new List<string>();
 
         #region Get Debug Inputs/Outputs
 

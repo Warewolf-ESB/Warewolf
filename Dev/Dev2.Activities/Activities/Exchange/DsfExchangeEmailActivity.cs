@@ -76,7 +76,7 @@ namespace Dev2.Activities.Exchange
         [FindMissing]
         public new string Result { get; set; }
 
-        public override List<string> GetOutputs() => new List<string> {Result};
+        public override IEnumerable<string> GetOutputs() => new List<string> {Result};
 
         public override IEnumerable<StateVariable> GetState()
         {

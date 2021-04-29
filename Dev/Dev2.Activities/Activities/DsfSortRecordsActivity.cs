@@ -88,7 +88,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             ExecuteTool(dataObject, 0);
         }
 
-        public override List<string> GetOutputs() => new List<string> { SortField };
+        public override IEnumerable<string> GetOutputs() => new List<string> { SortField };
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {

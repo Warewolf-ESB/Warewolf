@@ -139,7 +139,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             AddDebugOutputItem(new DebugEvalResult(expression, "", environment, update));
         }
 
-        public override List<string> GetOutputs() => new List<string> { Result };
+        public override IEnumerable<string> GetOutputs() => new List<string> { Result };
 
         public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
         {

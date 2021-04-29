@@ -209,7 +209,7 @@ namespace Dev2.Activities.Scripting
         #endregion
 
 
-        public override List<string> GetOutputs() => new List<string> {Result};
+        public override IEnumerable<string> GetOutputs() => new List<string> {Result};
 
         #region Get Debug Inputs/Outputs
 

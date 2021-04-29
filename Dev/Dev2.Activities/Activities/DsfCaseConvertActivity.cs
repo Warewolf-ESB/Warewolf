@@ -407,7 +407,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        public override List<string> GetOutputs() => ConvertCollection.Select(to => to.Result).ToList();
+        public override IEnumerable<string> GetOutputs() => ConvertCollection.Select(to => to.Result).ToList();
 
         public override IEnumerable<StateVariable> GetState()
         {

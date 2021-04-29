@@ -84,7 +84,7 @@ namespace Dev2.Activities
 
         public string BatchSize { get; set; }
 
-        public override List<string> GetOutputs() => new List<string> { Result };
+        public override IEnumerable<string> GetOutputs() => new List<string> { Result };
 
         internal ISqlBulkInserter SqlBulkInserter
         {

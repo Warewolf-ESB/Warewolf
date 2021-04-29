@@ -44,9 +44,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public static readonly string CalculateTextConvertSuffix = GlobalConstants.CalculateTextConvertSuffix;
         public static readonly string CalculateTextConvertFormat = GlobalConstants.CalculateTextConvertFormat;
 
-        IList<ActivityDTO> _fieldsCollection;
+        IEnumerable<ActivityDTO> _fieldsCollection;
 
-        public IList<ActivityDTO> FieldsCollection
+        public IEnumerable<ActivityDTO> FieldsCollection
 
         {
             get
@@ -71,7 +71,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             _fieldsCollection = new List<ActivityDTO>();
         }
 
-        public override List<string> GetOutputs() => FieldsCollection.Select(dto => dto.FieldName).ToList();
+        public override IEnumerable<string> GetOutputs() => FieldsCollection.Select(dto => dto.FieldName).ToList();
 
         protected override void OnExecute(NativeActivityContext context)
         {

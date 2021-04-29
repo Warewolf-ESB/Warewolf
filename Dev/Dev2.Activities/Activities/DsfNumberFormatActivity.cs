@@ -126,7 +126,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #endregion Properties
 
-        public override List<string> GetOutputs() => new List<string> { Result };
+        public override IEnumerable<string> GetOutputs() => new List<string> { Result };
 
         #region Override Methods
 

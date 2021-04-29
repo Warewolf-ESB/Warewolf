@@ -1,14 +1,14 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
- using System;
+using System;
 using System.Activities;
 using System.Activities.Presentation.Model;
 using System.Activities.Statements;
@@ -376,7 +376,7 @@ namespace Warewolf.Studio.ViewModels
             var act = Activator.CreateInstance(type) as IDev2Activity;
             if (serviceTestStep != null)
             {
-                serviceTestStep.StepOutputs = AddOutputs(act?.GetOutputs(), serviceTestStep).ToObservableCollection();
+                serviceTestStep.StepOutputs = AddOutputs(act?.GetOutputs().ToList(), serviceTestStep).ToObservableCollection();
             }
         }
 
@@ -471,13 +471,13 @@ namespace Warewolf.Studio.ViewModels
         void AddGateChildStep(IServiceTestStep parent, DebugStateTreeViewItemViewModel childItem, IDev2Activity act, IDebugState childItemContent, List<IDebugItem> outputs)
         {
             var childStep = CreateAssertChildStep(parent, childItemContent, childItemContent.ID);
-            if (outputs.Count > 0)
+            if (outputs.ToList().Count > 0)
             {
                 AddOutputs(outputs, childStep);
             }
             else
             {
-                AddOutputs(act?.GetOutputs(), childStep);
+                AddOutputs(act?.GetOutputs().ToList(), childStep);
             }
             SetStepIcon(childStep.ActivityType, childStep);
             parent.Children.Add(childStep);
@@ -513,13 +513,13 @@ namespace Warewolf.Studio.ViewModels
         void AddSuspendExecutionChildStep(IServiceTestStep parent, IDebugTreeViewItemViewModel childItem, IDev2Activity act, IDebugState childItemContent, List<IDebugItem> outputs)
         {
             var childStep = CreateAssertChildStep(parent, childItemContent, childItemContent.ID);
-            if (outputs.Count > 0)
+            if (outputs.ToList().Count > 0)
             {
                 AddOutputs(outputs, childStep);
             }
             else
             {
-                AddOutputs(act?.GetOutputs(), childStep);
+                AddOutputs(act?.GetOutputs().ToList(), childStep);
             }
             SetStepIcon(childStep.ActivityType, childStep);
             parent.Children.Add(childStep);
@@ -555,13 +555,13 @@ namespace Warewolf.Studio.ViewModels
         void AddForEachChildStep(IServiceTestStep parent, DebugStateTreeViewItemViewModel childItem, IDev2Activity act, IDebugState childItemContent, List<IDebugItem> outputs)
         {
             var childStep = CreateAssertChildStep(parent, childItemContent, childItemContent.ID);
-            if (outputs.Count > 0)
+            if (outputs.ToList().Count > 0)
             {
                 AddOutputs(outputs, childStep);
             }
             else
             {
-                AddOutputs(act?.GetOutputs(), childStep);
+                AddOutputs(act?.GetOutputs().ToList(), childStep);
             }
             SetStepIcon(childStep.ActivityType, childStep);
             parent.Children.Add(childStep);
@@ -682,7 +682,7 @@ namespace Warewolf.Studio.ViewModels
                     var type = _types?.FirstOrDefault(x => x.Name == childItem.ActivityTypeName);
                     if (type == null) return;
                     var act = Activator.CreateInstance(type) as IDev2Activity;
-                    serviceTestStep.StepOutputs = AddOutputs(act?.GetOutputs(), serviceTestStep).ToObservableCollection();
+                    serviceTestStep.StepOutputs = AddOutputs(act?.GetOutputs().ToList(), serviceTestStep).ToObservableCollection();
                 }
             }
         }
@@ -700,7 +700,7 @@ namespace Warewolf.Studio.ViewModels
                 if (type != null)
                 {
                     var act = Activator.CreateInstance(type) as IDev2Activity;
-                    childStep.StepOutputs = AddOutputs(act?.GetOutputs(), childStep).ToObservableCollection();
+                    childStep.StepOutputs = AddOutputs(act?.GetOutputs().ToList(), childStep).ToObservableCollection();
                 }
             }
             SetStepIcon(childStep.ActivityType, childStep);
@@ -1345,7 +1345,7 @@ namespace Warewolf.Studio.ViewModels
         void AddChildActivity<T>(DsfNativeActivity<T> act, IServiceTestStep testStep)
         {
             var outputs = act.GetOutputs();
-            if (outputs != null && outputs.Count > 0)
+            if (outputs != null && outputs.ToList().Count > 0)
             {
                 var serviceTestStep = CreateMockChildStep(Guid.Parse(act.UniqueID), testStep, act.GetType().Name, act.DisplayName);
                 var serviceTestOutputs = outputs.Select(output => new ServiceTestOutput(output, "", "", "")
@@ -1576,11 +1576,11 @@ namespace Warewolf.Studio.ViewModels
                     }
                     if (parentActivityUniqueId == activityUniqueId)
                     {
-                        return CheckForExists(activityUniqueId, outputs, activityDisplayName, type);
+                        return CheckForExists(activityUniqueId, outputs.ToList(), activityDisplayName, type);
                     }
                 }
 
-                if (outputs != null && outputs.Count > 0 && ServiceTestStepWithOutputs(activityUniqueId, activityDisplayName, outputs, type, item, out IServiceTestStep serviceTestStep) && ServiceTestStepWithOutputs(activityUniqueId, activityDisplayName, outputs, type, item, out IServiceTestStep testStep))
+                if (outputs != null && outputs.ToList().Count > 0 && ServiceTestStepWithOutputs(activityUniqueId, activityDisplayName, outputs.ToList(), type, item, out IServiceTestStep serviceTestStep) && ServiceTestStepWithOutputs(activityUniqueId, activityDisplayName, outputs.ToList(), type, item, out IServiceTestStep testStep))
                 {
                     return testStep;
                 }
@@ -1591,7 +1591,7 @@ namespace Warewolf.Studio.ViewModels
                 }
                 return BuildParentsFromModelItem(item);
             }
-            return CheckForExists(activityUniqueId, outputs, activityDisplayName, type);
+            return CheckForExists(activityUniqueId, outputs.ToList(), activityDisplayName, type);
         }
 
         static string GetParentFlowStepUniqueId(object computedValue, ModelItem item, ref object parentComputedValue)
@@ -1614,7 +1614,7 @@ namespace Warewolf.Studio.ViewModels
         IServiceTestStep CheckForExists(string activityUniqueId, List<string> outputs, string activityDisplayName, Type type)
         {
             var exists = FindExistingStep(activityUniqueId);
-            if (exists == null && outputs != null && outputs.Count > 0)
+            if (exists == null && outputs != null && outputs.ToList().Count > 0)
             {
                 var serviceTestStep = SelectedServiceTest.AddTestStep(activityUniqueId, activityDisplayName, type.Name, new ObservableCollection<IServiceTestOutput>());
 
@@ -1668,7 +1668,7 @@ namespace Warewolf.Studio.ViewModels
 
         static List<IServiceTestOutput> AddOutputs(List<string> outputs, IServiceTestStep step)
         {
-            if (outputs == null || outputs.Count == 0)
+            if (outputs == null || outputs.ToList().Count == 0)
             {
                 return new List<IServiceTestOutput>
                 {

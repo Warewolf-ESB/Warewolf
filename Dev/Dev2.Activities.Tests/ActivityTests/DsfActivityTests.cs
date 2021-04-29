@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -158,9 +158,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Execute Test---------------------------
             var outputs = act.GetOutputs();
             //------------Assert Results-------------------------
-            Assert.AreEqual(2, outputs.Count);
-            Assert.AreEqual("[[res1]]", outputs[0]);
-            Assert.AreEqual("[[res1]]", outputs[0]);
+            Assert.AreEqual(2, outputs.ToList().Count);
+            Assert.AreEqual("[[res1]]", outputs.ToList()[0]);
+            Assert.AreEqual("[[res1]]", outputs.ToList()[0]);
         }
 
 
@@ -408,7 +408,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var outputs = act.GetOutputs();
             //------------Assert Results-------------------------
             Assert.IsNotNull(outputs);
-            Assert.AreEqual("Obj", outputs[0]);
+            Assert.AreEqual("Obj", outputs.ToList()[0]);
         }
 
         [TestMethod]

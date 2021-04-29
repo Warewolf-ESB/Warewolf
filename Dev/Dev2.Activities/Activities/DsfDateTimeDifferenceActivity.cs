@@ -98,7 +98,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
 
 
-        public override List<string> GetOutputs() => new List<string> { Result };
+        public override IEnumerable<string> GetOutputs() => new List<string> { Result };
 
         /// <summary>
         /// The execute method that is called when the activity is executed at run time and will hold all the logic of the activity
