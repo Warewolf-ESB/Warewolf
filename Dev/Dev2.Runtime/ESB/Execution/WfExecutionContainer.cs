@@ -247,6 +247,7 @@ namespace Dev2.Runtime.ESB.Execution
             {
                 dsfDataObject.StateNotifier?.Dispose();
                 _executionManager?.CompleteExecution();
+                ServerStats.IncrementTotalExecutions();
             }
         }
 
