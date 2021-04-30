@@ -38,9 +38,9 @@ namespace Dev2.Data
         public void UsageLogger_Ctor_Start_ExpectInitialised()
         {
             //------------Setup for test--------------------------
-            using (var usageLogger = new UsageLogger(2000))
+            using (var usageLogger = new UsageLogger(10000))
             {
-                Assert.AreEqual(2000, usageLogger.Interval);
+                Assert.AreEqual(10000, usageLogger.Interval);
                 var timer = usageLogger._timer;
                 timer.Elapsed += (sender, e) =>
                 {
@@ -49,7 +49,7 @@ namespace Dev2.Data
                 Assert.AreEqual(false, timer.Enabled);
                 //------------Execute Test---------------------------
                 usageLogger.Start();
-                Thread.Sleep(6000);
+                Thread.Sleep(30000);
                 //------------Assert Results-------------------------
                 Assert.IsTrue(_elapsed);
             }
