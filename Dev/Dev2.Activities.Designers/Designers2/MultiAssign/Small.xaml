@@ -53,6 +53,7 @@
                                                     AllowUserInsertLine="False"
                                                     WrapInBrackets="True"
                                                     Margin="0,0,0,1"
+                                                    FilterType="NonJsonObjects"
                                                     Text="{Binding FieldName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     IntellisenseProvider="{StaticResource CalculateCompositeIntellisenseProvider}"
                                                     Style="{StaticResource DatagridIntellisenseTextBoxStyle}"
