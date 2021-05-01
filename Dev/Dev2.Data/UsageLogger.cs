@@ -62,11 +62,11 @@ namespace Dev2.Data
                 if (ServerStats.UsageServerRetry > 3)
                 {
                     //TODO: Licensing: switch warewolf to readonly mode. Only Warn until Licensing is implemented
-                    Dev2Logger.Warn("Could not log usage. Retries: " + ServerStats.UsageServerRetry + " has exceeded the threshold of 3. Warewolf has been reverted to ReadOnly mode. Connect to the internet to restore all functionality.","UsageTracker");
+                    Dev2Logger.Warn("Could not log usage. Retries: " + ServerStats.UsageServerRetry + " has exceeded the threshold of 3. Warewolf has been reverted to ReadOnly mode. Connect to the internet to restore all functionality.",GlobalConstants.UsageTracker);
                 }
                 else
                 {
-                    Dev2Logger.Warn("Could not log usage. Retry: " + ServerStats.UsageServerRetry + "/3. Connect to the internet to avoid Warewolf reverting to ReadOnly mode.","UsageTracker");
+                    Dev2Logger.Warn("Could not log usage. Retry: " + ServerStats.UsageServerRetry + "/3. Connect to the internet to avoid Warewolf reverting to ReadOnly mode.",GlobalConstants.UsageTracker);
                 }
             }
             else
@@ -83,7 +83,7 @@ namespace Dev2.Data
             }
             catch (Exception err)
             {
-                Dev2Logger.Warn(err.Message, "Warewolf Warn");
+                Dev2Logger.Warn(err.Message, GlobalConstants.WarewolfWarn);
             }
         }
 
