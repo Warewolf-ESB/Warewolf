@@ -54,6 +54,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities.PathOperations
             //get all the possible paths for all the string variables
             var inputItr = new WarewolfIterator(context.Environment.Eval(OutputPath, update));
             colItr.AddVariableToIterateOn(inputItr);
+            
+            var userItr = new WarewolfIterator(context.Environment.Eval(Username, update));
+            colItr.AddVariableToIterateOn(userItr);
 
             var passItr = new WarewolfIterator(context.Environment.Eval(DecryptedPassword, update));
             colItr.AddVariableToIterateOn(passItr);
@@ -88,7 +91,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities.PathOperations
                 var broker = ActivityIOFactory.CreateOperationsBroker();
                 var writeType = GetCorrectWriteType();
                 var putTo = ActivityIOFactory.CreatePutRawOperationTO(writeType, TextUtils.ReplaceWorkflowNewLinesWithEnvironmentNewLines(colItr.FetchNextValue(contentItr)), FileContentsAsBase64);
-                var opath = ActivityIOFactory.CreatePathFromString(colItr.FetchNextValue(inputItr), Username,
+                var opath = ActivityIOFactory.CreatePathFromString(colItr.FetchNextValue(inputItr), colItr.FetchNextValue(userItr),
                                                                                 colItr.FetchNextValue(passItr),
                                                                                 true, colItr.FetchNextValue(privateKeyItr));
                 var endPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(opath);

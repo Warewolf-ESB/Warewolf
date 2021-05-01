@@ -263,7 +263,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
 		protected void AddDebugInputItemUserNamePassword(IExecutionEnvironment environment, int update)
 		{
-			AddDebugInputItem(new DebugEvalResult(Username, "Username", environment, update));
+			AddDebugInputItem(Username, "Username", environment, update);
 			AddDebugInputItemPassword("Password", Password);
 		}
 
