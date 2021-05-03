@@ -83,6 +83,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.IsNotNull(data.CustomerId);
             Assert.IsNotNull(data.PlanId);
             Assert.IsNotNull(data.DaysLeft);
+            Assert.IsNotNull(data.IsValid);
         }
     }
 }

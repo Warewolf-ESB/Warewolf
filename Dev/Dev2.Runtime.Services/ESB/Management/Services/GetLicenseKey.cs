@@ -36,7 +36,8 @@ namespace Dev2.Runtime.ESB.Management.Services
                     CustomerId = "CustomerId",
                     Customer = "Customer Name",
                     PlanId = "Developer",
-                    DaysLeft = 0
+                    DaysLeft = 0,
+                    IsValid = true
                 };
                 result.Message = serializer.SerializeToBuilder(licenseData);
             }
