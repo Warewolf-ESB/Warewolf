@@ -4346,6 +4346,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Click here to register.
+        /// </summary>
+        public static string RegisterWarewolfToolTip {
+            get {
+                return ResourceManager.GetString("RegisterWarewolfToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Rename folder.
         /// </summary>
         public static string RenameFolderTooltip {

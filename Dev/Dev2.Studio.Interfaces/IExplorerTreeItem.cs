@@ -54,6 +54,7 @@ namespace Dev2.Studio.Interfaces
         bool CanViewApisJson { get; set; }
         bool CanViewExecutionLogging { get; set; }
         bool IsMergeVisible { get; set; }
+        bool IsRegistered { get; set; }
 
         ICommand ViewApisJsonCommand { get; set; }
         ICommand ViewExecutionLoggingCommand { get; set; }
@@ -64,6 +65,7 @@ namespace Dev2.Studio.Interfaces
         ICommand ShowVersionHistory { get; set; }
         ICommand RollbackCommand { get; set; }
         ICommand Expand { get; set; }
+        ICommand RegisterCommand { get; set; }
 
         IServer Server { get; set; }
         IExplorerTreeItem Parent { get; set; }

@@ -1572,6 +1572,12 @@ namespace Dev2.Studio.ViewModels
             _worksurfaceContextManager.EditResource(selectedSource, view, key);
         }
 
+        public void Register()
+        {
+            // _applicationTracker?.TrackEvent(Warewolf.Studio.Resources.Languages.TrackEventMenu.EventCategory,
+            //     Warewolf.Studio.Resources.Languages.TrackEventMenu.NewService);
+        }
+
         public void NewService(string resourcePath)
         {
             _worksurfaceContextManager.NewService(resourcePath);

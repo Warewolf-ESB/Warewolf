@@ -61,6 +61,7 @@ namespace Dev2.Studio.Interfaces
     public interface IShellViewModelNew
     {
         void NewServerSource(string resourcePath);
+        void Register();
         void NewService(string resourcePath);
         void NewSqlServerSource(string resourcePath);
         void NewMySqlSource(string resourcePath);
