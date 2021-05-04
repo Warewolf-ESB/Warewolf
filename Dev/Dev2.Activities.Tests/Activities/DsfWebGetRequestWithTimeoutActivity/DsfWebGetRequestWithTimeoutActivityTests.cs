@@ -12,6 +12,7 @@ using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using ActivityUnitTests;
 using Dev2.Activities;
@@ -403,8 +404,8 @@ namespace Dev2.Tests.Activities.DsfWebGetRequestWithTimeoutActivityTests
             //------------Execute Test---------------------------
             var outputs = act.GetOutputs();
             //------------Assert Results-------------------------
-            Assert.AreEqual(1, outputs.Count);
-            Assert.AreEqual("[[res]]", outputs[0]);
+            Assert.AreEqual(1, outputs.ToList().Count);
+            Assert.AreEqual("[[res]]", outputs.ToList()[0]);
         }
 
         [TestMethod]

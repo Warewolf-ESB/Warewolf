@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using ActivityUnitTests;
 using Dev2.Activities;
 using Dev2.Common.State;
@@ -148,8 +149,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Execute Test---------------------------
             var outputs = act.GetOutputs();
             //------------Assert Results-------------------------
-            Assert.AreEqual(1,outputs.Count);
-            Assert.AreEqual("[[Bob]]",outputs[0]);
+            Assert.AreEqual(1,outputs.ToList().Count);
+            Assert.AreEqual("[[Bob]]",outputs.ToList()[0]);
         }
     }
 

@@ -407,7 +407,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        public override IEnumerable<string> GetOutputs() => ConvertCollection.Select(to => to.Result).ToList();
+        public override IEnumerable<string> GetOutputs()
+        {
+            foreach (var item in ConvertCollection)
+            {
+                yield return item.Result;
+            }
+        }
 
         public override IEnumerable<StateVariable> GetState()
         {

@@ -78,7 +78,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #endregion Properties
 
-        public override IEnumerable<string> GetOutputs() => FieldsCollection.Select(dto => dto.FieldName).ToList();
+        public override IEnumerable<string> GetOutputs() 
+        {
+            foreach (var item in FieldsCollection)
+            {
+                yield return item.FieldName;
+            }
+        }
 
 
         #region Ctor

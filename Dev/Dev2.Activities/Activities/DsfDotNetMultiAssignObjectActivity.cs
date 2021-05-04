@@ -67,7 +67,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override bool CanInduceIdle => true;
 
-        public override IEnumerable<string> GetOutputs() => FieldsCollection.Select(dto => dto.FieldName).ToList();
+        public override IEnumerable<string> GetOutputs() 
+        {
+            foreach (var item in FieldsCollection)
+            {
+                yield return item.FieldName;
+            }
+        }
 
         public DsfDotNetMultiAssignObjectActivity()
             : base("Assign Object")

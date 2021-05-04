@@ -88,8 +88,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Execute Test---------------------------
             var outputs = act.GetOutputs();
             //------------Assert Results-------------------------
-            Assert.AreEqual(1, outputs.Count);
-            Assert.AreEqual("[[result]]", outputs[0]);
+            Assert.AreEqual(1, outputs.ToList().Count);
+            Assert.AreEqual("[[result]]", outputs.ToList()[0]);
         }
 
         [TestMethod]

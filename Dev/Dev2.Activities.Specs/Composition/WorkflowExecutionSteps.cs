@@ -2909,7 +2909,7 @@ namespace Dev2.Activities.Specs.Composition
 
                 _commonSteps.AddVariableToVariableList(variable);
 
-                assignActivity.FieldsCollection.Add(new ActivityDTO(variable, value, 1, true));
+                assignActivity.FieldsCollection.Append(new ActivityDTO(variable, value, 1, true));
             }
 
             _commonSteps.AddActivityToActivityList(parentName, activityName, assignActivity);
@@ -2930,7 +2930,7 @@ namespace Dev2.Activities.Specs.Composition
                 value = value.Replace('"', ' ').Trim();
 
                 _commonSteps.AddVariableToVariableList(variable);
-                assignActivity.FieldsCollection.Add(new ActivityDTO(variable, value, 1, true));
+                assignActivity.FieldsCollection.Append(new ActivityDTO(variable, value, 1, true));
             }
         }
 
@@ -2964,7 +2964,7 @@ namespace Dev2.Activities.Specs.Composition
 
                 _commonSteps.AddVariableToVariableList(variable);
 
-                assignActivity.FieldsCollection.Add(new ActivityDTO(variable, value, 1, true));
+                assignActivity.FieldsCollection.Append(new ActivityDTO(variable, value, 1, true));
             }
 
             _commonSteps.AddActivityToActivityList(parentName, assignName, assignActivity);
@@ -3016,7 +3016,7 @@ namespace Dev2.Activities.Specs.Composition
 
                 _commonSteps.AddVariableToVariableList(variable);
 
-                assignActivity.FieldsCollection.Add(new ActivityDTO(variable, value, 1, true));
+                assignActivity.FieldsCollection.Append(new ActivityDTO(variable, value, 1, true));
             }
 
             _commonSteps.AddActivityToActivityList(parentName, assignName, assignActivity);

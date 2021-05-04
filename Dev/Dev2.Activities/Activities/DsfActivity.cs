@@ -420,13 +420,19 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 if (IsObject)
                 {
-                    return new List<string> { ObjectName };
+                    yield return ObjectName;
                 }
                 var parser = DataListFactory.CreateOutputParser();
                 var outputs = parser.Parse(OutputMapping);
-                return outputs.Select(definition => definition.RawValue).ToList();
+                foreach (var output in outputs)
+                {
+                    yield return output.RawValue;
+                }
             }
-            return Outputs.Select(mapping => mapping.MappedTo).ToList();
+            foreach (var output in Outputs)
+            {
+                yield return output.MappedTo;
+            }
         }
 
         public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)

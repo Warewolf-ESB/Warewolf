@@ -71,7 +71,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             _fieldsCollection = new List<ActivityDTO>();
         }
 
-        public override IEnumerable<string> GetOutputs() => FieldsCollection.Select(dto => dto.FieldName).ToList();
+        public override IEnumerable<string> GetOutputs() 
+        {
+            foreach (var item in FieldsCollection)
+            {
+                yield return item.FieldName;
+            }
+        }
 
         protected override void OnExecute(NativeActivityContext context)
         {

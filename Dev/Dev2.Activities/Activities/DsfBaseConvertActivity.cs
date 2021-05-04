@@ -53,7 +53,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             ConvertCollection = new List<BaseConvertTO>();
         }
 
-        public override IEnumerable<string> GetOutputs() => ConvertCollection.Select(to => to.ToExpression).ToList();
+        public override IEnumerable<string> GetOutputs()
+        {
+            foreach (var item in ConvertCollection)
+            {
+                yield return item.ToExpression;
+            }
+        }
 
         protected override void CacheMetadata(NativeActivityMetadata metadata) => base.CacheMetadata(metadata);
 
