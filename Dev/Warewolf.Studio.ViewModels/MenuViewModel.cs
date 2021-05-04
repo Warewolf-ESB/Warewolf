@@ -412,6 +412,18 @@ namespace Warewolf.Studio.ViewModels
                 return Resources.Languages.Core.MenuDialogUnLockLabel;
             }
         }
+        public string MenuSaveToolTip
+        {
+            get
+            {
+                if (!_viewModel.UserLicenseData.IsValid)
+                {
+                    return Resources.Languages.Tooltips.UnregisteredWarewolfToolTip;
+                }
+
+                return Resources.Languages.Tooltips.MenuSaveToolTip;
+            }
+        }
 
         public object DataContext { get; set; }
     }

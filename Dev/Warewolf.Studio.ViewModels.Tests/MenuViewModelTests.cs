@@ -19,6 +19,7 @@ using Dev2.Studio.Interfaces;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Warewolf.License;
 
 namespace Warewolf.Studio.ViewModels.Tests
 {
@@ -69,6 +70,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _mainViewModelMock.SetupGet(it => it.SettingsCommand).Returns(_openSettingsCommand);
             _mainViewModelMock.SetupGet(it => it.DebugCommand).Returns(_executeServiceCommand);
             _mainViewModelMock.SetupGet(it => it.ShowStartPageCommand).Returns(_startPageCommandMock.Object);
+            _mainViewModelMock.Setup(o => o.UserLicenseData).Returns(new LicenseData {IsValid = true});
 
             _target = new MenuViewModel(_mainViewModelMock.Object);
 
@@ -848,6 +850,42 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //assert
             Assert.AreSame(expectedValue, value);
+        }
+
+        [TestMethod]
+        [Timeout(100)]
+        public void MenuSaveToolTipRegistered()
+        {
+            //arrange
+            _target.ButtonWidth = 1;
+
+            //act
+            var value = _target.MenuSaveToolTip;
+
+            //assert
+            Assert.IsFalse(string.IsNullOrEmpty(value));
+            Assert.AreEqual(Resources.Languages.Tooltips.MenuSaveToolTip, value);
+        }
+
+        [TestMethod]
+        [Timeout(100)]
+        public void MenuSaveToolTipUnRegistered()
+        {
+            var mainViewModelMock = new Mock<IShellViewModel>();
+            mainViewModelMock.Setup(o => o.UserLicenseData).Returns(new LicenseData {IsValid = false});
+
+            var menuViewModel = new MenuViewModel(mainViewModelMock.Object)
+            {
+                ButtonWidth = 1
+            };
+            //arrange
+
+            //act
+            var value = menuViewModel.MenuSaveToolTip;
+
+            //assert
+            Assert.IsFalse(string.IsNullOrEmpty(value));
+            Assert.AreEqual(Resources.Languages.Tooltips.UnregisteredWarewolfToolTip, value);
         }
 
         #endregion Test properties

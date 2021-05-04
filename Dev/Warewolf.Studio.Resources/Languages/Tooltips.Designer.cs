@@ -6713,6 +6713,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Warewolf is not registered.
+        /// </summary>
+        public static string UnregisteredWarewolfToolTip {
+            get {
+                return ResourceManager.GetString("UnregisteredWarewolfToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Specify the password needed to open the zip file here.
         ///Leaving the Archive Password blank will result in no archive password being used to open the file..
         /// </summary>

@@ -824,10 +824,23 @@ namespace Dev2.Core.Tests
         public void MainViewModel_SaveCommand_NotNull()
         {
             CreateFullExportsAndVm();
+            _shellViewModel.UserLicenseData.IsValid = true;
             //------------Execute Test---------------------------
             var authorizeCommand = _shellViewModel.SaveCommand;
             Assert.IsNotNull(authorizeCommand);
             Assert.AreEqual(_shellViewModel.ActiveItem.SaveCommand, authorizeCommand);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("MainViewModel_SaveCommand")]
+        public void MainViewModel_SaveCommand_UnRegistered()
+        {
+            CreateFullExportsAndVm();
+            //------------Execute Test---------------------------
+            var authorizeCommand = _shellViewModel.SaveCommand;
+            Assert.IsNotNull(authorizeCommand);
+            Assert.AreNotEqual(_shellViewModel.ActiveItem.SaveCommand, authorizeCommand);
         }
 
         [TestMethod]
