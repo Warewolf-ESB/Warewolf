@@ -32,35 +32,35 @@ namespace Warewolf.Studio.CustomControls
 
         public void SetText(string value = null)
         {
-            if(txtTextBoxPassword.Visibility == Visibility.Hidden)
+            if(txtVisiblePassword.Visibility == Visibility.Hidden)
             {
-                txtTextBoxPassword.Text = value ?? txtPassword.Password;
+                txtVisiblePassword.Text = value ?? txtPassword.Password;
             }
             else
             {
-                txtPassword.Password = value ?? txtTextBoxPassword.Text;
+                txtPassword.Password = value ?? txtVisiblePassword.Text;
             }
         }
 
         private void ShowPassword()
         {
             imgShowHide.Source = new BitmapImage(new Uri("Images/Hide.jpg", UriKind.Relative));
-            txtTextBoxPassword.Visibility = Visibility.Visible;
+            txtVisiblePassword.Visibility = Visibility.Visible;
             txtPassword.Visibility = Visibility.Hidden;
-            txtTextBoxPassword.Text = txtPassword.Password;
+            txtVisiblePassword.Text = txtPassword.Password;
         }
 
         private void HidePassword()
         {
             imgShowHide.Source = new BitmapImage(new Uri("Images/Show.jpg", UriKind.Relative));
-            txtTextBoxPassword.Visibility = Visibility.Hidden;
+            txtVisiblePassword.Visibility = Visibility.Hidden;
             txtPassword.Visibility = Visibility.Visible;
-            txtPassword.Password = txtTextBoxPassword.Text;
+            txtPassword.Password = txtVisiblePassword.Text;
         }
 
         private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
         {
-            if(txtTextBoxPassword.Visibility == Visibility.Hidden)
+            if(txtVisiblePassword.Visibility == Visibility.Hidden)
                 ShowPassword();
             else
                 HidePassword();
