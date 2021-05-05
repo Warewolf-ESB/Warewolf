@@ -636,4 +636,7 @@ Please note that tabs are fully supported at runtime, in variables and when read
   <data name="RevulyticsSdkError" xml:space="preserve">
     <value>Revulytics Sdk Error</value>
   </data>
+  <data name="WarewolfUnRegisteredError" xml:space="preserve">
+    <value>Warewolf is not registered. To start a trial version, please click 'Yes'.</value>
+  </data>
 </root>

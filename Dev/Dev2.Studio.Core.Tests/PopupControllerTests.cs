@@ -1,7 +1,7 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -691,6 +691,46 @@ namespace Dev2.Core.Tests
             Assert.IsFalse(popupController.IsInfo);
             Assert.IsFalse(popupController.IsDependenciesButtonVisible);
             Assert.IsTrue(popupController.IsError);
+            Assert.IsFalse(popupController.IsQuestion);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(PopupController))]
+        public void PopupController_UnRegisteredDialog_SetProperties_AllPropertiesDisplayed()
+        {
+            //------------Setup for test--------------------------
+            var popupWasCalled = false;
+            var description = string.Empty;
+            var header = string.Empty;
+            var buttons = MessageBoxButton.YesNo;
+
+            var popupController = new PopupController
+            {
+                ShowDev2MessageBox = (desc, hdr, btn, img, dntShwAgKy, isDependBtnVisible, isErr, isInf, isQuest, duplicates, isDeleteAnywayBtnVisible, applyToAll) =>
+                {
+                    description = desc;
+                    header = hdr;
+                    buttons = btn;
+                    popupWasCalled = true;
+                    return new MessageBoxViewModel(desc, hdr, btn, FontAwesomeIcon.Adn, isDependBtnVisible, isErr, isInf, isQuest, duplicates, isDeleteAnywayBtnVisible, applyToAll)
+                    {
+                        Result = MessageBoxResult.Yes
+                    };
+                }
+            };
+
+            //------------Execute Test---------------------------
+            popupController.UnRegisteredDialog();
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(popupWasCalled);
+            Assert.AreEqual(MessageBoxButton.YesNo, buttons);
+            Assert.AreEqual("Register Warewolf?", header);
+            Assert.AreEqual(Warewolf.Studio.Resources.Languages.Core.WarewolfUnRegisteredError, description);
+            Assert.IsTrue(popupController.IsInfo);
+            Assert.IsFalse(popupController.IsDependenciesButtonVisible);
+            Assert.IsFalse(popupController.IsError);
             Assert.IsFalse(popupController.IsQuestion);
         }
 

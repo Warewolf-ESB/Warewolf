@@ -123,6 +123,7 @@ namespace Dev2.Core.Tests
             _eventAggregator = new Mock<IEventAggregator>();
             EventPublishers.Aggregator = _eventAggregator.Object;
             _popupController = new Mock<IPopupController>();
+            _popupController.Setup(o => o.UnRegisteredDialog()).Returns(MessageBoxResult.Yes);
             _windowManager = new Mock<IWindowManager>();
             CustomContainer.Register(_windowManager.Object);
             _browserPopupController = new Mock<IBrowserPopupController>();

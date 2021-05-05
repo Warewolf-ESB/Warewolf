@@ -75,7 +75,6 @@ using Warewolf.Data;
 using Dev2.Data;
 using Dev2.Data.Interfaces;
 using Warewolf.Core;
-using Warewolf.License;
 
 namespace Dev2.Studio.ViewModels
 {
@@ -257,7 +256,7 @@ namespace Dev2.Studio.ViewModels
         {
             get
             {
-                if (!UserLicenseData.IsValid || ActiveItem is null)
+                if (!WarewolfStatus || ActiveItem is null)
                 {
                     return new AuthorizeCommand(AuthorizationContext.None, p => { }, param => false);
                 }
@@ -597,7 +596,7 @@ namespace Dev2.Studio.ViewModels
             IPopupController popupController, IExplorerViewModel explorer, IResourcePickerDialog currentResourcePicker)
             : base(eventPublisher)
         {
-            UserLicenseData = new LicenseData {IsValid = false};
+            WarewolfStatus = false;
 
             _file = new FileWrapper();
             _filePath = new FilePathWrapper();
@@ -1817,8 +1816,13 @@ namespace Dev2.Studio.ViewModels
 
         void SaveAll(object obj)
         {
-            if (!UserLicenseData.IsValid)
+            if (!WarewolfStatus)
             {
+                var result = PopupProvider.UnRegisteredDialog();
+                if (result == MessageBoxResult.Yes)
+                {
+                    // Take the user to the register steps.
+                }
                 return;
             }
             for (int index = Items.Count - 1; index >= 0; index--)
@@ -2254,7 +2258,7 @@ namespace Dev2.Studio.ViewModels
         IServer _activeServer;
         IExplorerViewModel _explorerViewModel;
         IWorksurfaceContextManager _worksurfaceContextManager;
-        public ILicenseData UserLicenseData { get; set; }
+        public bool WarewolfStatus { get; set; }
 
         public IWorksurfaceContextManager WorksurfaceContextManager
         {

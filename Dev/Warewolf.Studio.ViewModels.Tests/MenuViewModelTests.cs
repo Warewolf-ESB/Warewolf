@@ -1,7 +1,7 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -19,7 +19,6 @@ using Dev2.Studio.Interfaces;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Warewolf.License;
 
 namespace Warewolf.Studio.ViewModels.Tests
 {
@@ -70,7 +69,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _mainViewModelMock.SetupGet(it => it.SettingsCommand).Returns(_openSettingsCommand);
             _mainViewModelMock.SetupGet(it => it.DebugCommand).Returns(_executeServiceCommand);
             _mainViewModelMock.SetupGet(it => it.ShowStartPageCommand).Returns(_startPageCommandMock.Object);
-            _mainViewModelMock.Setup(o => o.UserLicenseData).Returns(new LicenseData {IsValid = true});
+            _mainViewModelMock.Setup(o => o.WarewolfStatus).Returns(true);
 
             _target = new MenuViewModel(_mainViewModelMock.Object);
 
@@ -872,7 +871,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void MenuSaveToolTipUnRegistered()
         {
             var mainViewModelMock = new Mock<IShellViewModel>();
-            mainViewModelMock.Setup(o => o.UserLicenseData).Returns(new LicenseData {IsValid = false});
+            mainViewModelMock.Setup(o => o.WarewolfStatus).Returns(false);
 
             var menuViewModel = new MenuViewModel(mainViewModelMock.Object)
             {

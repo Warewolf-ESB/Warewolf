@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -25,7 +25,6 @@ using Warewolf.Data;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Data;
 using Dev2.Data.Interfaces;
-using Warewolf.License;
 
 namespace Dev2.Studio.Interfaces
 {
@@ -173,6 +172,6 @@ namespace Dev2.Studio.Interfaces
         IResource GetResource(string resourceId);
         List<IServiceInputBase> GetInputsFromWorkflow(Guid resourceId);
         OptomizedObservableCollection<IDataListItem> GetOutputsFromWorkflow(Guid resourceId);
-        ILicenseData UserLicenseData { get; set; }
+        bool WarewolfStatus { get; set; }
     }
 }

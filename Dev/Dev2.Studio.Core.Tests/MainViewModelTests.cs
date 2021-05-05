@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -824,7 +824,7 @@ namespace Dev2.Core.Tests
         public void MainViewModel_SaveCommand_NotNull()
         {
             CreateFullExportsAndVm();
-            _shellViewModel.UserLicenseData.IsValid = true;
+            _shellViewModel.WarewolfStatus = true;
             //------------Execute Test---------------------------
             var authorizeCommand = _shellViewModel.SaveCommand;
             Assert.IsNotNull(authorizeCommand);
