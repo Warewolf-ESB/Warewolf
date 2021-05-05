@@ -145,7 +145,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// <summary>
         ///   Looks up a localized string similar to Only variables go in here.
         ///To assign a value to a variable, put the variable here.
-        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
+        ///You can use [[Scalar]] as well as [[Recordset().Fields]] and [[@Object.Property]].
         ///Using recordset () will add a new record and (*) will assign every record..
         /// </summary>
         public static string AssignToolTipVariable {
