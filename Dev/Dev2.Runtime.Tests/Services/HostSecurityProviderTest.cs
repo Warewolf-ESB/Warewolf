@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -19,13 +19,8 @@ using Dev2.Tests.Runtime.XML;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-
-
 namespace Dev2.Tests.Runtime.Services
 {
-    /// <summary>
-    /// Summary description for HostSecurityProviderTest
-    /// </summary>
     [TestClass]
     public class HostSecurityProviderTest
     {
@@ -33,8 +28,6 @@ namespace Dev2.Tests.Runtime.Services
         static XElement TestXmlServerSigned;
         static XElement TestXmlSystemSigned;
         static XElement TestXmlInternallySigned;
-
-        #region Class Initialize/Cleanup
 
         [ClassInitialize]
         public static void ClassInitialize(TestContext testContext)
@@ -45,16 +38,9 @@ namespace Dev2.Tests.Runtime.Services
             TestXmlInternallySigned = XmlResource.Fetch("InternallySigned");
         }
 
-        [ClassCleanup]
-        public static void ClassCleanup()
-        {
-        }
-
-        #endregion
-
-        #region Ctor
-
         [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(HostSecureConfig))]
         [ExpectedException(typeof(ArgumentNullException))]
         public void HostSecurityProvider_ConstructorWithNull_Expected_ThrowsArgumentNullException()
         {
@@ -62,6 +48,8 @@ namespace Dev2.Tests.Runtime.Services
         }
 
         [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(HostSecurityProvider))]
         public void HostSecurityProvider_ConstructorWithDefaultConfig_Expected_ReturnsDefaultValues()
         {
             var config = CreateConfig();
@@ -69,11 +57,9 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(HostSecureConfigTests.DefaultServerID, provider.ServerID);
         }
 
-        #endregion
-
-        #region SignXml
-
         [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(HostSecurityProvider))]
         [ExpectedException(typeof(ArgumentNullException))]
         public void HostSecurityProvider_SignXmlWithNull_Expected_ThrowsArgumentNullException()
         {
@@ -83,6 +69,8 @@ namespace Dev2.Tests.Runtime.Services
         }
 
         [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(HostSecurityProvider))]
         [ExpectedException(typeof(XmlException))]
         public void HostSecurityProvider_SignXmlWithInvalidXml_Expected_ThrowsXmlException()
         {
@@ -92,6 +80,8 @@ namespace Dev2.Tests.Runtime.Services
         }
 
         [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(HostSecurityProvider))]
         public void HostSecurityProvider_SignXmlWithSignedXml_Expected_OneSignatureAdded()
         {
             var config = CreateConfig();
@@ -102,10 +92,12 @@ namespace Dev2.Tests.Runtime.Services
 
             XNamespace xmlns = "http://www.w3.org/2000/09/xmldsig#";
             var signatures = xml.Elements(xmlns + "Signature");
-            Assert.AreEqual(0,signatures.Count());
+            Assert.AreEqual(0, signatures.Count());
         }
 
         [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(HostSecurityProvider))]
         public void HostSecurityProvider_SignXmlWithServerKey_Expected_SignatureAdded()
         {
             var config = CreateConfig();
@@ -123,6 +115,8 @@ namespace Dev2.Tests.Runtime.Services
         }
 
         [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(HostSecurityProvider))]
         public void HostSecurityProvider_SignXmlWithSystemKey_Expected_SignatureAdded()
         {
             var config = CreateConfig(true);
@@ -138,11 +132,12 @@ namespace Dev2.Tests.Runtime.Services
             var expected = TestXmlSystemSigned.ToString().Replace("\r\n", "");
             var resultXml = signedXml.ToString().Replace("\r\n", "");
 
-
             Assert.AreNotEqual(expected, resultXml);
         }
 
         [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(HostSecurityProvider))]
         public void HostSecurityProvider_SignXmlWithoutServerID_Expected_ServerIDAdded()
         {
             var config = CreateConfig();
@@ -158,15 +153,20 @@ namespace Dev2.Tests.Runtime.Services
         }
 
         [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(HostSecurityProvider))]
         public void HostSecurityProvider_SignXmlWithServerID_Expected_ServerIDOverwritten()
         {
             var config = CreateConfig(
                 Guid.NewGuid(),
                 HostSecureConfig.CreateKey(HostSecureConfigTests.DefaultServerKey),
-                HostSecureConfig.CreateKey(HostSecureConfigTests.DefaultSystemKeyPublic));
+                HostSecureConfig.CreateKey(HostSecureConfigTests.DefaultSystemKeyPublic),
+                HostSecureConfig.DecryptKey(HostSecureConfigTests.DefaultCustomerId),
+                HostSecureConfig.DecryptKey(HostSecureConfigTests.DefaultConfigSitename),
+                HostSecureConfig.DecryptKey(HostSecureConfigTests.DefaultConfigKey));
+
             var provider = new HostSecurityProviderImpl(config.Object);
 
-            
             var originalID = Guid.Parse(TestXml.Attribute("ServerID").Value);
             var signedXml = provider.SignXml(new StringBuilder(TestXml.ToString()));
 
@@ -176,11 +176,9 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreNotEqual(originalID, serverID.Value);
         }
 
-        #endregion
-
-        #region VerifyXml
-
         [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(HostSecurityProvider))]
         [ExpectedException(typeof(ArgumentNullException))]
         public void HostSecurityProvider_VerifyXmlWithNull_Expected_ThrowsArgumentNullException()
         {
@@ -189,8 +187,9 @@ namespace Dev2.Tests.Runtime.Services
             provider.VerifyXml(null);
         }
 
-
         [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(HostSecurityProvider))]
         public void HostSecurityProvider_VerifyXmlWithInvalidServerID_Expected_ReturnsFalse()
         {
             var config = CreateConfig();
@@ -202,9 +201,11 @@ namespace Dev2.Tests.Runtime.Services
         }
 
         [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(HostSecurityProvider))]
         public void HostSecurityProvider_VerifyXmlWithInvalidKeys_Expected_ReturnsFalse()
         {
-            var config = CreateConfig(new RSACryptoServiceProvider(), new RSACryptoServiceProvider());
+            var config = CreateConfig(new RSACryptoServiceProvider(), new RSACryptoServiceProvider(), "", "", "");
             var provider = new HostSecurityProviderImpl(config.Object);
 
             var verified = provider.VerifyXml(new StringBuilder(TestXmlServerSigned.ToString()));
@@ -212,6 +213,8 @@ namespace Dev2.Tests.Runtime.Services
         }
 
         [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(HostSecurityProvider))]
         public void HostSecurityProvider_VerifyXmlWithValidKeys_Expected_ReturnsTrue()
         {
             var config = CreateConfig();
@@ -225,6 +228,8 @@ namespace Dev2.Tests.Runtime.Services
         }
 
         [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(HostSecurityProvider))]
         public void HostSecurityProvider_VerifyXmlWhichIsInternallySignedWithValidKeys_Expected_ReturnsTrue()
         {
             var config = CreateConfig();
@@ -235,6 +240,8 @@ namespace Dev2.Tests.Runtime.Services
         }
 
         [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(HostSecureConfig))]
         public void HostSecurityProvider_VerifyXmlWithService_Expected_ReturnsTrue()
         {
             var xml = XmlResource.Fetch("Calculate_RecordSet_Subtract").ToString();
@@ -242,53 +249,51 @@ namespace Dev2.Tests.Runtime.Services
             Assert.IsTrue(verified);
         }
 
-        #endregion
-
-        #region CreateConfig
-
         static Mock<ISecureConfig> CreateConfig(bool useSystemPrivateKeyAsServerKey = false)
         {
-            if(useSystemPrivateKeyAsServerKey)
+            if (useSystemPrivateKeyAsServerKey)
             {
                 return CreateConfig(
                     HostSecureConfig.CreateKey(HostSecureConfigTests.DefaultSystemKeyPrivate),
-                    HostSecureConfig.CreateKey(HostSecureConfigTests.DefaultSystemKeyPublic));
+                    HostSecureConfig.CreateKey(HostSecureConfigTests.DefaultSystemKeyPublic),
+                    HostSecureConfig.DecryptKey(HostSecureConfigTests.DefaultCustomerId),
+                    HostSecureConfig.DecryptKey(HostSecureConfigTests.DefaultConfigSitename),
+                    HostSecureConfig.DecryptKey(HostSecureConfigTests.DefaultConfigKey));
             }
+
             return CreateConfig(
                 HostSecureConfig.CreateKey(HostSecureConfigTests.DefaultServerKey),
-                HostSecureConfig.CreateKey(HostSecureConfigTests.DefaultSystemKeyPublic));
+                HostSecureConfig.CreateKey(HostSecureConfigTests.DefaultSystemKeyPublic),
+                HostSecureConfig.DecryptKey(HostSecureConfigTests.DefaultCustomerId),
+                HostSecureConfig.DecryptKey(HostSecureConfigTests.DefaultConfigSitename),
+                HostSecureConfig.DecryptKey(HostSecureConfigTests.DefaultConfigKey));
         }
 
-        static Mock<ISecureConfig> CreateConfig(RSACryptoServiceProvider serverKey, RSACryptoServiceProvider systemKey)
+        static Mock<ISecureConfig> CreateConfig(RSACryptoServiceProvider serverKey, RSACryptoServiceProvider systemKey, string customerId, string configSitename, string configKey)
         {
-            return CreateConfig(HostSecureConfigTests.DefaultServerID, serverKey, systemKey);
+            return CreateConfig(HostSecureConfigTests.DefaultServerID, serverKey, systemKey, customerId, configSitename, configKey);
         }
 
-        static Mock<ISecureConfig> CreateConfig(Guid serverID, RSACryptoServiceProvider serverKey, RSACryptoServiceProvider systemKey)
+        static Mock<ISecureConfig> CreateConfig(Guid serverID, RSACryptoServiceProvider serverKey,
+            RSACryptoServiceProvider systemKey, string customerId, string configSitename, string configKey)
         {
             var config = new Mock<ISecureConfig>();
             config.Setup(c => c.ServerID).Returns(serverID);
             config.Setup(c => c.SystemKey).Returns(systemKey);
             config.Setup(c => c.ServerKey).Returns(serverKey);
+
+            config.Setup(c => c.CustomerId).Returns(customerId);
+            config.Setup(c => c.ConfigSitename).Returns(configSitename);
+            config.Setup(c => c.ConfigKey).Returns(configKey);
             return config;
         }
-
-
-        #endregion
-
-        #region HostSecurityProviderImpl class
 
         public class HostSecurityProviderImpl : HostSecurityProvider
         {
             public HostSecurityProviderImpl(ISecureConfig config)
                 : base(config)
             {
-
             }
-
         }
-
-        #endregion
-
     }
 }

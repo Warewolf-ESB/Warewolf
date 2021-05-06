@@ -427,11 +427,14 @@ namespace Dev2
             _writer.WriteLine("done.");
         }
 
-
         void LoadHostSecurityProvider()
         {
             _writer.Write("Loading security provider...  ");
             var instance = HostSecurityProvider.Instance;
+            //TODO: have not done coverage yet as it might change.
+            GlobalConstants.LicenseCustomerId = HostSecurityProvider.Instance.CustomerId;
+            GlobalConstants.SiteName =  HostSecurityProvider.Instance.ConfigSitename;
+            GlobalConstants.ApiKey =  HostSecurityProvider.Instance.ConfigKey;
             if (instance != null)
             {
                 _writer.WriteLine("done.");
