@@ -8,7 +8,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
 using System.Collections.Generic;
 using System.Text;
 using Dev2.Common;
@@ -17,7 +16,7 @@ using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Workspaces;
-using Warewolf.License;
+using Warewolf.Licensing;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -27,26 +26,13 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             var serializer = new Dev2JsonSerializer();
             var result = new ExecuteMessage {HasError = false};
-            try
-            {
-                Dev2Logger.Info("Get LicenseKey Service", GlobalConstants.WarewolfInfo);
-                //TODO: Will get license data from Chargebee. Hardcoding info for now.
-                var licenseData = new LicenseData
-                {
-                    CustomerId = "CustomerId",
-                    Customer = "Customer Name",
-                    PlanId = "Developer",
-                    DaysLeft = 0,
-                    IsValid = true
-                };
-                result.Message = serializer.SerializeToBuilder(licenseData);
-            }
-            catch (Exception err)
-            {
-                result.HasError = true;
-                result.Message = new StringBuilder(err.Message);
-                Dev2Logger.Error(err, GlobalConstants.WarewolfError);
-            }
+
+            Dev2Logger.Info("Get LicenseKey Service", GlobalConstants.WarewolfInfo);
+            var licenseData = new LicenseData {CustomerId = GlobalConstants.LicenseCustomerId, PlanId = GlobalConstants.LicensePlanId};
+
+            var license = new WarewolfLicense();
+            var resultData = license.Retrieve(licenseData);
+            result.Message = serializer.SerializeToBuilder(resultData);
 
             return serializer.SerializeToBuilder(result);
         }

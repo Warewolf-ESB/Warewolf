@@ -11,13 +11,14 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Communication;
 using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Warewolf.License;
+using Warewolf.Licensing;
 
 namespace Dev2.Tests.Runtime.Services
 {
@@ -66,22 +67,31 @@ namespace Dev2.Tests.Runtime.Services
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(SaveLicenseKey))]
-        public void SaveLicenseKey_Execute_NullValues_ErrorResult()
+        public void SaveLicenseKey_Execute_NullValues_HasError_IsTrue_ReturnsUnRegisteredLicenseInfo()
         {
             //------------Setup for test--------------------------
             var saveLicenseKey = new SaveLicenseKey();
             var serializer = new Dev2JsonSerializer();
+            GlobalConstants.ApiKey = "test_cuS2mLPoVv50eDQju3mquk0aC0UM3YYor";
+            GlobalConstants.SiteName = "warewolfio-test";
             //------------Execute Test---------------------------
             var jsonResult = saveLicenseKey.Execute(null, null);
             var result = serializer.Deserialize<ExecuteMessage>(jsonResult);
             //------------Assert Results-------------------------
             Assert.IsTrue(result.HasError);
+            var res = serializer.Deserialize<ILicenseData>(result.Message);
+            Assert.AreEqual("Unknown",res.CustomerId);
+            Assert.IsNotNull("UnRegistered",res.PlanId);
+            Assert.IsFalse(res.IsLicensed);
+            Assert.AreEqual(GlobalConstants.LicensePlanId,res.PlanId);
+            Assert.AreEqual(GlobalConstants.IsLicensed,res.IsLicensed);
+            Assert.AreEqual(GlobalConstants.LicenseCustomerId,res.CustomerId);
         }
 
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(SaveLicenseKey))]
-        public void SaveLicenseKey_Execute_Success()
+        public void SaveLicenseKey_Execute_Success_ReturnsLicenceInfo()
         {
             //------------Setup for test--------------------------
             var saveLicenseKey = new SaveLicenseKey();
@@ -90,7 +100,7 @@ namespace Dev2.Tests.Runtime.Services
             var data = new LicenseData
             {
                 CustomerId ="qwertyuioplkjhgfd123",
-                Customer = "Customer ABC",
+                CustomerFirstName = "Customer ABC",
                 PlanId = "Developer"
             };
             var licenseData = serializer.Serialize<ILicenseData>(data).ToStringBuilder();
@@ -99,18 +109,23 @@ namespace Dev2.Tests.Runtime.Services
             {
                 { "LicenseData", licenseData}
             };
+            GlobalConstants.ApiKey = "test_cuS2mLPoVv50eDQju3mquk0aC0UM3YYor";
+            GlobalConstants.SiteName = "warewolfio-test";
             //------------Execute Test---------------------------
             var jsonResult = saveLicenseKey.Execute(values, workspaceMock.Object);
             var result = serializer.Deserialize<ExecuteMessage>(jsonResult);
             //------------Assert Results-------------------------
             Assert.IsFalse(result.HasError);
-            Assert.AreEqual("Success",result.Message.ToString());
+            var res = serializer.Deserialize<ILicenseData>(result.Message);
+            Assert.AreEqual(data.CustomerId,res.CustomerId);
+            Assert.AreEqual(data.CustomerFirstName,res.CustomerFirstName);
+            Assert.AreEqual(data.PlanId,res.PlanId);
         }
 
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(SaveLicenseKey))]
-        public void SaveLicenseKey_Execute_HasError_MissingPlanId()
+        public void SaveLicenseKey_Execute_HasError_MissingCustomerId_ReturnsUnRegisteredLicenseInfo()
         {
             //------------Setup for test--------------------------
             var saveLicenseKey = new SaveLicenseKey();
@@ -118,35 +133,7 @@ namespace Dev2.Tests.Runtime.Services
             var workspaceMock = new Mock<IWorkspace>();
             var data = new LicenseData
             {
-                CustomerId ="qwertyuioplkjhgfd123",
-                Customer = "Customer ABC"
-            };
-            var licenseData = serializer.Serialize<ILicenseData>(data).ToStringBuilder();
-
-            var values = new Dictionary<string, StringBuilder>
-            {
-                { "LicenseData", licenseData}
-            };
-            //------------Execute Test---------------------------
-            var jsonResult = saveLicenseKey.Execute(values, workspaceMock.Object);
-            var result = serializer.Deserialize<ExecuteMessage>(jsonResult);
-            //------------Assert Results-------------------------
-            Assert.IsTrue(result.HasError);
-            Assert.AreEqual("License plan is missing", result.Message.ToString());
-        }
-
-        [TestMethod]
-        [Owner("Candice Daniel")]
-        [TestCategory(nameof(SaveLicenseKey))]
-        public void SaveLicenseKey_Execute_HasError_MissingCustomerId()
-        {
-            //------------Setup for test--------------------------
-            var saveLicenseKey = new SaveLicenseKey();
-            var serializer = new Dev2JsonSerializer();
-            var workspaceMock = new Mock<IWorkspace>();
-            var data = new LicenseData
-            {
-                Customer = "Customer ABC",
+                CustomerFirstName = "Customer ABC",
                 PlanId = "Developer"
             };
             var licenseData = serializer.Serialize<ILicenseData>(data).ToStringBuilder();
@@ -155,64 +142,21 @@ namespace Dev2.Tests.Runtime.Services
             {
                 { "LicenseData", licenseData}
             };
+            GlobalConstants.ApiKey = "test_cuS2mLPoVv50eDQju3mquk0aC0UM3YYor";
+            GlobalConstants.SiteName = "warewolfio-test";
             //------------Execute Test---------------------------
             var jsonResult = saveLicenseKey.Execute(values, workspaceMock.Object);
             var result = serializer.Deserialize<ExecuteMessage>(jsonResult);
             //------------Assert Results-------------------------
             Assert.IsTrue(result.HasError);
-            Assert.AreEqual("Customer Id is missing", result.Message.ToString());
-        }
+            var res = serializer.Deserialize<ILicenseData>(result.Message);
+            Assert.AreEqual("Unknown",res.CustomerId);
+            Assert.IsNotNull("UnRegistered",res.PlanId);
+            Assert.IsFalse(res.IsLicensed);
+            Assert.AreEqual(GlobalConstants.LicensePlanId,res.PlanId);
+            Assert.AreEqual(GlobalConstants.IsLicensed,res.IsLicensed);
+            Assert.AreEqual(GlobalConstants.LicenseCustomerId,res.CustomerId);
 
-        [TestMethod]
-        [Owner("Candice Daniel")]
-        [TestCategory(nameof(SaveLicenseKey))]
-        public void SaveLicenseKey_Execute_HasError_MissingCustomer()
-        {
-            //------------Setup for test--------------------------
-            var saveLicenseKey = new SaveLicenseKey();
-            var serializer = new Dev2JsonSerializer();
-            var workspaceMock = new Mock<IWorkspace>();
-            var data = new LicenseData
-            {
-                CustomerId = "Customer ABC",
-                PlanId = "Developer"
-            };
-            var licenseData = serializer.Serialize<ILicenseData>(data).ToStringBuilder();
-
-            var values = new Dictionary<string, StringBuilder>
-            {
-                { "LicenseData", licenseData}
-            };
-            //------------Execute Test---------------------------
-            var jsonResult = saveLicenseKey.Execute(values, workspaceMock.Object);
-            var result = serializer.Deserialize<ExecuteMessage>(jsonResult);
-            //------------Assert Results-------------------------
-            Assert.IsTrue(result.HasError);
-            Assert.AreEqual("Customer name is missing", result.Message.ToString());
-        }
-
-        [TestMethod]
-        [Owner("Candice Daniel")]
-        [TestCategory(nameof(SaveLicenseKey))]
-        public void SaveLicenseKey_Execute_HasError_LicenseDataEmpty()
-        {
-            //------------Setup for test--------------------------
-            var saveLicenseKey = new SaveLicenseKey();
-            var serializer = new Dev2JsonSerializer();
-            var workspaceMock = new Mock<IWorkspace>();
-            var data = new LicenseData();
-            var licenseData = serializer.Serialize<ILicenseData>(data).ToStringBuilder();
-
-            var values = new Dictionary<string, StringBuilder>
-            {
-                { "LicenseData", licenseData}
-            };
-            //------------Execute Test---------------------------
-            var jsonResult = saveLicenseKey.Execute(values, workspaceMock.Object);
-            var result = serializer.Deserialize<ExecuteMessage>(jsonResult);
-            //------------Assert Results-------------------------
-            Assert.IsTrue(result.HasError);
-            Assert.AreEqual("Customer name is missing", result.Message.ToString());
         }
     }
 }

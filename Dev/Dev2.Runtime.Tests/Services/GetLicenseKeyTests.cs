@@ -11,16 +11,19 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Dev2.Common;
 using Dev2.Communication;
 using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Warewolf.License;
+using Warewolf.Licensing;
 
 namespace Dev2.Tests.Runtime.Services
 {
     [TestClass]
+    [DoNotParallelize]
+    [TestCategory("CannotParallelize")]
     public class GetLicenseKeyTests
     {
         [TestMethod]
@@ -65,7 +68,7 @@ namespace Dev2.Tests.Runtime.Services
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(GetLicenseKey))]
-        public void GetLicenseKey_Execute()
+        public void GetLicenseKey_Execute_Success_Returns_LicenseData()
         {
             //------------Setup for test--------------------------
             var getLicenseKey = new GetLicenseKey();
@@ -73,17 +76,57 @@ namespace Dev2.Tests.Runtime.Services
             var workspaceMock = new Mock<IWorkspace>();
             var values = new Dictionary<string, StringBuilder>();
 
+            GlobalConstants.LicenseCustomerId = "AzZlx3SU5eKkLDer";
+            GlobalConstants.LicensePlanId = "bronze";
+            GlobalConstants.ApiKey = "test_cuS2mLPoVv50eDQju3mquk0aC0UM3YYor";
+            GlobalConstants.SiteName = "warewolfio-test";
+
+            //------------Execute Test---------------------------
+            var jsonResult = getLicenseKey.Execute(values, workspaceMock.Object);
+            var result = serializer.Deserialize<ExecuteMessage>(jsonResult);
+
+            //------------Assert Results-------------------------
+            Assert.IsFalse(result.HasError);
+            var data = serializer.Deserialize<ILicenseData>(result.Message);
+            Assert.IsNotNull(data.CustomerFirstName);
+            Assert.IsNotNull(data.CustomerLastName);
+            Assert.IsNotNull(data.CustomerEmail);
+            Assert.IsNotNull(data.CustomerId);
+            Assert.IsNotNull(data.PlanId);
+            Assert.IsNotNull(data.TrialEnd);
+            Assert.IsNotNull(data.Status);
+            Assert.IsTrue(data.IsLicensed);
+            Assert.AreEqual(GlobalConstants.LicensePlanId,data.PlanId);
+            Assert.AreEqual(GlobalConstants.IsLicensed,data.IsLicensed);
+            Assert.AreEqual(GlobalConstants.LicenseCustomerId,data.CustomerId);
+        }
+
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(GetLicenseKey))]
+        public void GetLicenseKey_Execute_LicenseCustomerId_Null_Fails()
+        {
+            //------------Setup for test--------------------------
+            var getLicenseKey = new GetLicenseKey();
+            var serializer = new Dev2JsonSerializer();
+            var workspaceMock = new Mock<IWorkspace>();
+            var values = new Dictionary<string, StringBuilder>();
+            GlobalConstants.LicenseCustomerId = null;
+            GlobalConstants.SiteName = "SiteName";
+            GlobalConstants.ApiKey = "ApiKey";
+
             //------------Execute Test---------------------------
             var jsonResult = getLicenseKey.Execute(values, workspaceMock.Object);
             var result = serializer.Deserialize<ExecuteMessage>(jsonResult);
             //------------Assert Results-------------------------
-            Assert.IsFalse(result.HasError);
             var data = serializer.Deserialize<ILicenseData>(result.Message);
-            Assert.IsNotNull(data.Customer);
-            Assert.IsNotNull(data.CustomerId);
-            Assert.IsNotNull(data.PlanId);
-            Assert.IsNotNull(data.DaysLeft);
-            Assert.IsNotNull(data.IsValid);
+            Assert.AreEqual("Unknown",data.CustomerId);
+            Assert.IsNotNull("UnRegistered",data.PlanId);
+            Assert.IsFalse(data.IsLicensed);
+            Assert.AreEqual(GlobalConstants.LicensePlanId,data.PlanId);
+            Assert.AreEqual(GlobalConstants.IsLicensed,data.IsLicensed);
+            Assert.AreEqual(GlobalConstants.LicenseCustomerId,data.CustomerId);
         }
+
     }
 }

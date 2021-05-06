@@ -496,6 +496,7 @@
       <Project>{926CF512-B3FD-410D-AA83-EBDF4C4868DE}</Project>
       <Name>Warewolf.Interfaces</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Licensing\Warewolf.Licensing.csproj" />
     <ProjectReference Include="..\Warewolf.Security\Warewolf.Security.csproj">
       <Project>{CA5E9373-46FE-41B9-AB2E-BD637F48B456}</Project>
       <Name>Warewolf.Security</Name>

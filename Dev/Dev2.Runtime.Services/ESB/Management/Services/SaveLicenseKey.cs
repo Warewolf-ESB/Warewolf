@@ -8,9 +8,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
 using System.Collections.Generic;
-using System.Runtime.Serialization;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
@@ -18,44 +16,37 @@ using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Workspaces;
-using Warewolf.License;
+using Warewolf.Licensing;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
+    //TODO: this service will be called once the user has completed registering using the UI. once that is completed it
+    //call this service to save the CustomerId to the secureconfig and set the global constants.
+    //it could also be deleted if we find it is not required.
+
     public class SaveLicenseKey : DefaultEsbManagementEndpoint
     {
         public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             var serializer = new Dev2JsonSerializer();
             var result = new ExecuteMessage {HasError = false};
-            try
+            var returnLicenseData = new LicenseData();
+            Dev2Logger.Info("Save LicenseKey Service", GlobalConstants.WarewolfInfo);
+            if (values != null)
             {
-                Dev2Logger.Info("Save LicenseKey Service", GlobalConstants.WarewolfInfo);
                 values.TryGetValue(Warewolf.Service.SaveLicenseKey.LicenseData, out StringBuilder licenseData);
-                var data = serializer.Deserialize<LicenseData>(licenseData);
-                if (data.Customer == null)
-                {
-                    throw new InvalidDataContractException("Customer name is missing");
-                }
-                if (data.CustomerId == null)
-                {
-                    throw new InvalidDataContractException("Customer Id is missing");
-                }
-                if (data.PlanId == null)
-                {
-                    throw new InvalidDataContractException("License plan is missing");
-                }
-                //TODO: Need to decide where we save it Registry/File/app.config
-
-                result.SetMessage("Success");
-                result.HasError = false;
+                returnLicenseData = serializer.Deserialize<LicenseData>(licenseData);
             }
-            catch (Exception err)
+
+            if (returnLicenseData.CustomerId == null)
             {
                 result.HasError = true;
-                result.Message = new StringBuilder(err.Message);
-                Dev2Logger.Error(err, GlobalConstants.WarewolfError);
             }
+
+            //TODO: Save new CustomerId to secure.config in server.
+            var license = new WarewolfLicense();
+            var resultData = license.Retrieve(returnLicenseData);
+            result.Message = serializer.SerializeToBuilder(resultData);
 
             return serializer.SerializeToBuilder(result);
         }
