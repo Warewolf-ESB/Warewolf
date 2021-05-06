@@ -2637,4 +2637,10 @@ To create a SFTP Key, put the full path and file or folder name here.</value>
   <data name="MappingsResponseToBase64Tooltip" xml:space="preserve">
     <value>Check this to put the web response into a Base64 [[variable]]</value>
   </data>
+  <data name="ShowPasswordToolTip" xml:space="preserve">
+    <value>Show Password</value>
+  </data>
+  <data name="HidePasswordToolTip" xml:space="preserve">
+    <value>Hide Password</value>
+  </data>
 </root>
