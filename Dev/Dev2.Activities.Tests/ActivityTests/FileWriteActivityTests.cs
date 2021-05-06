@@ -1,7 +1,7 @@
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -12,9 +12,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using ActivityUnitTests;
+using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.State;
+using Dev2.Data.TO;
+using Dev2.DataList.Contract;
+using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities.PathOperations;
+using Warewolf.Security.Encryption;
+using Warewolf.Storage;
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
@@ -31,8 +38,33 @@ namespace Dev2.Tests.Activities.ActivityTests
         ///information about and functionality for the current test run.
         ///</summary>
         private TestContext TestContext { get; set; }
-
         
+        [TestMethod]
+        [Owner("Njabulo Nxele")]
+        [TestCategory("FileWriteActivity_Credentials")]
+        public void FileWriteActivity_TryExecuteConcreteAction_Credential_Variable()
+        {
+            var env = new ExecutionEnvironment();
+            env.Assign("[[val1]]", "demo", false, 0);
+            env.Assign("[[val2]]", "password", false, 0);
+            
+            var newGuid = Guid.NewGuid();
+            var outputPath = string.Concat(TestContext.TestRunDirectory, "\\", newGuid + "test.txt");
+            var act = new TestFileWriteActivity { FileContents = "testing", OutputPath = outputPath, Result = "", PrivateKeyFile = ""};
+            act.Username = "[[val1]]";
+            act.Password = DpapiWrapper.Encrypt("[[val2]]");
+
+            var mockDataObject = new Mock<IDSFDataObject>();
+            mockDataObject.Setup(o => o.Environment).Returns(env);
+            mockDataObject.Setup(o => o.IsDebugMode()).Returns(true);
+
+            //------------Execute Test---------------------------
+            ErrorResultTO to;
+            act.TestTryExecuteConcreteAction(mockDataObject.Object, out to, 0);
+            var errors = to.FetchErrors();
+            
+            Assert.IsTrue(errors.FirstOrDefault()?.Contains("Failed to authenticate with user [ demo ]") ?? false);
+        }
 
         [TestMethod]
         [Timeout(60000)]
@@ -109,7 +141,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Assert Results-------------------------
             Assert.AreEqual(result, act.Result);
         }
-
+        
         [TestMethod]
         [Timeout(60000)]
         [Owner("Siphamandla Dube")]
@@ -266,6 +298,14 @@ namespace Dev2.Tests.Activities.ActivityTests
                 Assert.AreEqual(entry.expectValue.Type, entry.value.Type);
                 Assert.AreEqual(entry.expectValue.Value, entry.value.Value);
             }
+        }
+    }
+    
+    internal class TestFileWriteActivity : FileWriteActivity
+    {
+        public IList<OutputTO> TestTryExecuteConcreteAction(IDSFDataObject dataObject, out ErrorResultTO errorResultTO, int update)
+        {
+            return base.TryExecuteConcreteAction(dataObject, out errorResultTO, update);
         }
     }
 }
