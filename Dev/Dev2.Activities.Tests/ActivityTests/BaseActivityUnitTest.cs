@@ -1,7 +1,7 @@
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -36,6 +36,7 @@ using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
+using Warewolf.UnitTestAttributes;
 
 
 namespace ActivityUnitTests
@@ -44,6 +45,9 @@ namespace ActivityUnitTests
     [TestClass]
     public class BaseActivityUnitTest
     {
+        static Depends _sourceDependency;
+        static Depends _destinationDependency;
+        
         public BaseActivityUnitTest()
         {
             CustomContainer.Register<IActivityParser>(new ActivityParser());
@@ -217,6 +221,69 @@ namespace ActivityUnitTests
                 DataObject = dataObject;
                 return dataObject;
             }
+        }
+
+        public static string InjectFTPDependency(string location, bool sourcePath=true)
+        {
+            var oldFTPDependency = "ftp://DEVOPSPDC.premier.local:1001/";
+			var oldFTPSDependency = "ftp://DEVOPSPDC.premier.local:1002/";
+            if (location.StartsWith(oldFTPDependency) && sourcePath || location.StartsWith("[[sourcePath]] = " + oldFTPDependency))
+            {
+				if (_sourceDependency == null)
+				{
+					_sourceDependency = new Depends(Depends.ContainerType.FTP);
+				}
+                location = location.Replace(oldFTPDependency, "ftp://" + _sourceDependency.Container.IP + ":" + _sourceDependency.Container.Port + "/");
+            }
+            if (location.StartsWith(oldFTPDependency) && !sourcePath || location.StartsWith("[[destPath]] = " + oldFTPDependency))
+            {
+                if (_destinationDependency == null)
+                {
+                    _destinationDependency = new Depends(Depends.ContainerType.FTP);
+                }
+                location = location.Replace(oldFTPDependency, "ftp://" + _destinationDependency.Container.IP + ":" + _destinationDependency.Container.Port + "/");
+            }
+            if (location.StartsWith(oldFTPSDependency) && sourcePath || location.StartsWith("[[sourcePath]] = " + oldFTPSDependency))
+            {
+				if (_sourceDependency == null)
+				{
+					_sourceDependency = new Depends(Depends.ContainerType.FTPS);
+				}
+                location = location.Replace(oldFTPSDependency, "ftps://" + _sourceDependency.Container.IP + ":" + _sourceDependency.Container.Port + "/");
+            }
+            if (location.StartsWith(oldFTPSDependency) && !sourcePath || location.StartsWith("[[destPath]] = " + oldFTPSDependency))
+            {
+                if (_destinationDependency == null)
+                {
+                    _destinationDependency = new Depends(Depends.ContainerType.FTPS);
+                }
+                location = location.Replace(oldFTPSDependency, "ftps://" + _destinationDependency.Container.IP + ":" + _destinationDependency.Container.Port + "/");
+            }
+            if (location == "ftp://DEVOPSPDC.premier.local")
+            {
+                if (_destinationDependency == null)
+                {
+                    _destinationDependency = new Depends(Depends.ContainerType.FTPS);
+                }
+                location = "ftps://" + _destinationDependency.Container.IP;
+            }
+            if (location == "//DEVOPSPDC.premier.local:1002/")
+            {
+                if (_destinationDependency == null)
+                {
+                    _destinationDependency = new Depends(Depends.ContainerType.FTPS);
+                }
+                location = "//" + _destinationDependency.Container.IP + ":" +  _destinationDependency.Container.Port + "/";
+            }
+            if (location == "ftp://DEVOPSPDC.premier.local:1002")
+            {
+                if (_destinationDependency == null)
+                {
+                    _destinationDependency = new Depends(Depends.ContainerType.FTPS);
+                }
+                location = "ftps://" + _destinationDependency.Container.IP + ":" +  _destinationDependency.Container.Port;
+            }
+            return location;
         }
 
         #region ForEach Execution

@@ -2,7 +2,7 @@
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -63,11 +63,17 @@ namespace Dev2.Activities.PathOperations
             var outputItr = new WarewolfIterator(context.Environment.Eval(OutputPath, update));
             ColItr.AddVariableToIterateOn(outputItr);
             
+            var userItr = new WarewolfIterator(context.Environment.Eval(Username,update));
+            ColItr.AddVariableToIterateOn(userItr);
+            
             var passItr = new WarewolfIterator(context.Environment.Eval(DecryptedPassword,update));
             ColItr.AddVariableToIterateOn(passItr);
 
             var privateKeyItr = new WarewolfIterator(context.Environment.Eval(PrivateKeyFile, update));
             ColItr.AddVariableToIterateOn(privateKeyItr);
+            
+            var desUserItr = new WarewolfIterator(context.Environment.Eval(DestinationUsername,update));
+            ColItr.AddVariableToIterateOn(desUserItr);
             
             var despassItr = new WarewolfIterator(context.Environment.Eval(DecryptedDestinationPassword,update));
             ColItr.AddVariableToIterateOn(despassItr);
@@ -105,7 +111,7 @@ namespace Dev2.Activities.PathOperations
                 try
                 {
                     src = ActivityIOFactory.CreatePathFromString(ColItr.FetchNextValue(inputItr),
-                                                                                 Username,
+                                                                                ColItr.FetchNextValue(userItr),
                                                                                  ColItr.FetchNextValue(passItr),
                                                                                  true, ColItr.FetchNextValue(privateKeyItr));
 
@@ -118,7 +124,7 @@ namespace Dev2.Activities.PathOperations
                 try
                 {
                     dst = ActivityIOFactory.CreatePathFromString(ColItr.FetchNextValue(outputItr),
-                                                                                     DestinationUsername,
+                                                                                     ColItr.FetchNextValue(desUserItr),
                                                                                      ColItr.FetchNextValue(despassItr),
                                                                                      true, ColItr.FetchNextValue(destPrivateKeyItr));
                 }

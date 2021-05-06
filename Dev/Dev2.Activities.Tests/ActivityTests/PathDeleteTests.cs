@@ -1,7 +1,7 @@
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -12,10 +12,17 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using ActivityUnitTests;
+using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.State;
+using Dev2.Data.TO;
+using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
+using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Warewolf.Security.Encryption;
+using Warewolf.Storage;
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
@@ -32,7 +39,31 @@ namespace Dev2.Tests.Activities.ActivityTests
         ///</summary>
         public TestContext TestContext { get; set; }
 
+        [TestMethod]
+        [Owner("Njabulo Nxele")]
+        [TestCategory("DsfPathDelete_Credentials")]
+        public void DsfPathDelete_TryExecuteConcreteAction_Credential_Variable()
+        {
+            //------------Setup for test--------------------------
+            var env = new ExecutionEnvironment();
+            env.Assign("[[val1]]", "demo", false, 0);
 
+            var newGuid = Guid.NewGuid();
+            var inputPath = string.Concat(TestContext.TestRunDirectory, "\\", newGuid + "test.txt");
+
+            var act = new TestDsfPathDelete { InputPath = inputPath, Result = "CompanyName" };
+            act.Username = "[[val1]]";
+
+            var mockDataObject = new Mock<IDSFDataObject>();
+            mockDataObject.Setup(o => o.Environment).Returns(env);
+            mockDataObject.Setup(o => o.IsDebugMode()).Returns(true);
+
+            //------------Execute Test---------------------------
+            ErrorResultTO to;
+            var outputs = act.TestTryExecuteConcreteAction(mockDataObject.Object, out to, 0);
+            
+            Assert.IsTrue(outputs[1].OutPutDescription == "Username [ demo ]");
+        }
         
 
         #region GetDebugInputs/Outputs
@@ -268,6 +299,14 @@ namespace Dev2.Tests.Activities.ActivityTests
                 Assert.AreEqual(entry.expectValue.Type, entry.value.Type);
                 Assert.AreEqual(entry.expectValue.Value, entry.value.Value);
             }
+        }
+    }
+    
+    internal class TestDsfPathDelete : DsfPathDelete
+    {
+        public IList<OutputTO> TestTryExecuteConcreteAction(IDSFDataObject dataObject, out ErrorResultTO errorResultTO, int update)
+        {
+            return base.TryExecuteConcreteAction(dataObject, out errorResultTO, update);
         }
     }
 }

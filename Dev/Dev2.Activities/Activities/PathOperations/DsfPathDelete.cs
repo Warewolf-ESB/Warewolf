@@ -2,7 +2,7 @@
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -22,6 +22,7 @@ using Dev2.DataList.Contract;
 using Dev2.Interfaces;
 using Dev2.PathOperations;
 using Dev2.Util;
+using Microsoft.SharePoint.Client;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
 using Warewolf.Storage;
@@ -50,6 +51,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             var inputItr = new WarewolfIterator(context.Environment.Eval(InputPath, update));
             colItr.AddVariableToIterateOn(inputItr);
+            
+            var userItr = new WarewolfIterator(context.Environment.Eval(Username,update));
+            colItr.AddVariableToIterateOn(userItr);
 
             var passItr = new WarewolfIterator(context.Environment.Eval(DecryptedPassword,update));
             colItr.AddVariableToIterateOn(passItr);
@@ -75,7 +79,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 try
                 {
                      var dst = ActivityIOFactory.CreatePathFromString(colItr.FetchNextValue(inputItr),
-                         Username,
+                         colItr.FetchNextValue(userItr),
                          colItr.FetchNextValue(passItr),
                          true, colItr.FetchNextValue(privateKeyItr));
 
@@ -83,6 +87,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                     var result = broker.Delete(dstEndPoint);
                     outputs[0].OutputStrings.Add(result);
+                    outputs.Add(DataListFactory.CreateOutputTO($"Username [ {dstEndPoint.IOPath.Username} ]"));
                 }
                 catch(Exception e)
                 {

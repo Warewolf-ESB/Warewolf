@@ -84,7 +84,7 @@
         </ui:IntellisenseTextBox>
 
         <TextBlock Grid.Column="0" Grid.Row="1" Text="Username" Margin="{StaticResource ActivityBorderTop}"/>
-        <TextBox Grid.Column="1"
+        <ui:IntellisenseTextBox Grid.Column="1"
                                 Grid.Row="1"
                                 Margin="{StaticResource ActivityBorderTop}"
                                 Text="{Binding Path=ModelItem.Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -98,7 +98,7 @@
                                      SourcePropertyValue="{Binding  ModelItem.Username, UpdateSourceTrigger=PropertyChanged}"
                                      Target="{Binding}" />
             </i:Interaction.Behaviors>
-        </TextBox>
+        </ui:IntellisenseTextBox>
 
         <TextBlock Grid.Column="0" Grid.Row="2" Text="Password" Margin="{StaticResource ActivityBorderTop}"/>
         <PasswordBox Grid.Column="1"
