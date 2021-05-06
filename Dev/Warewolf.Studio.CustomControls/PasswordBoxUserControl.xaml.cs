@@ -1,27 +1,35 @@
-﻿using System;
+﻿/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Media.Imaging;
 
 namespace Warewolf.Studio.CustomControls
 {
-    public partial class PasswordBoxUserControl : UserControl
+    public partial class PasswordBoxUserControl
     {
         public PasswordBoxUserControl()
         {
             InitializeComponent();
-            imgShowHide.Source = new BitmapImage(new Uri("Images/Show.jpg", UriKind.Relative));
         }
 
         public static readonly DependencyProperty TextProperty =
             DependencyProperty.Register(nameof(Text), typeof(string), typeof(PasswordBoxUserControl),
                 new PropertyMetadata(string.Empty, OnTextPropertyChanged));
 
-        static void OnTextPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void OnTextPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var source = d as PasswordBoxUserControl;
-            source.Text = (string) e.NewValue;
+            if (d is PasswordBoxUserControl source)
+            {
+                source.Text = (string) e.NewValue;
+            }
         }
 
         public string Text
@@ -30,48 +38,38 @@ namespace Warewolf.Studio.CustomControls
             set => SetValue(TextProperty, value);
         }
 
-        public void SetText(string value = null)
-        {
-            if(txtVisiblePassword.Visibility == Visibility.Hidden)
-            {
-                txtVisiblePassword.Text = value ?? txtPassword.Password;
-            }
-            else
-            {
-                txtPassword.Password = value ?? txtVisiblePassword.Text;
-            }
-        }
-
         private void ShowPassword()
         {
-            imgShowHide.Source = new BitmapImage(new Uri("Images/Hide.jpg", UriKind.Relative));
-            txtVisiblePassword.Visibility = Visibility.Visible;
-            txtPassword.Visibility = Visibility.Hidden;
-            txtVisiblePassword.Text = txtPassword.Password;
+            PasswordBoxView.Visibility = Visibility.Visible;
+            TextBoxView.Visibility = Visibility.Hidden;
+
+            txtPassword.Password = txtVisiblePassword.Text;
         }
 
         private void HidePassword()
         {
-            imgShowHide.Source = new BitmapImage(new Uri("Images/Show.jpg", UriKind.Relative));
-            txtVisiblePassword.Visibility = Visibility.Hidden;
-            txtPassword.Visibility = Visibility.Visible;
-            txtPassword.Password = txtVisiblePassword.Text;
+            PasswordBoxView.Visibility = Visibility.Hidden;
+            TextBoxView.Visibility = Visibility.Visible;
+
+            txtVisiblePassword.Text = txtPassword.Password;
         }
 
-        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+        private void ShowPasswordButton_OnClick(object sender, RoutedEventArgs e)
         {
-            if(txtVisiblePassword.Visibility == Visibility.Hidden)
-                ShowPassword();
-            else
-                HidePassword();
+            ShowPassword();
+        }
+
+        private void HidePasswordButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            HidePassword();
         }
 
         private void TxtPassword_OnLostFocus(object sender, RoutedEventArgs e)
         {
-            var value = "";
-            if (sender.GetType() == typeof(PasswordBox))
+            string value;
+            if (sender is PasswordBox passwordBox)
             {
-                value = ((PasswordBox) sender).Password;
+                value = passwordBox.Password;
             }
             else
             {
