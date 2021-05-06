@@ -1817,6 +1817,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Hide Password.
+        /// </summary>
+        public static string HidePasswordToolTip {
+            get {
+                return ResourceManager.GetString("HidePasswordToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Hard coded values or variables..
         /// </summary>
         public static string InputDefaultValueToolTip {
@@ -5623,6 +5632,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string ShowHideVersionsTooltip {
             get {
                 return ResourceManager.GetString("ShowHideVersionsTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show Password.
+        /// </summary>
+        public static string ShowPasswordToolTip {
+            get {
+                return ResourceManager.GetString("ShowPasswordToolTip", resourceCulture);
             }
         }
         
