@@ -16,6 +16,7 @@ using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Newtonsoft.Json;
 using Warewolf.Usage;
+
 namespace Dev2.Data
 {
     public class UsageLogger : IStartTimer
@@ -28,7 +29,7 @@ namespace Dev2.Data
             _timer = new Timer(Interval);
             _timer.Elapsed += Timer_Elapsed;
         }
-        int GetNumberOfCores()
+        static int GetNumberOfCores()
         {
             var coreCount = 0;
             foreach (var item in new ManagementObjectSearcher("Select * from Win32_Processor").Get())
@@ -62,11 +63,15 @@ namespace Dev2.Data
                 if (ServerStats.UsageServerRetry > 3)
                 {
                     //TODO: Licensing: switch warewolf to readonly mode. Only Warn until Licensing is implemented
-                    Dev2Logger.Warn("Could not log usage. Retries: " + ServerStats.UsageServerRetry + " has exceeded the threshold of 3. Warewolf has been reverted to ReadOnly mode. Connect to the internet to restore all functionality.",GlobalConstants.UsageTracker);
+                    Dev2Logger.Warn("Could not log usage. Retries: "
+                        + ServerStats.UsageServerRetry
+                        + GlobalConstants.UsageServerRetriesMoreThan3, GlobalConstants.UsageTracker);
                 }
                 else
                 {
-                    Dev2Logger.Warn("Could not log usage. Retry: " + ServerStats.UsageServerRetry + "/3. Connect to the internet to avoid Warewolf reverting to ReadOnly mode.",GlobalConstants.UsageTracker);
+                    Dev2Logger.Warn("Could not log usage. Retry: "
+                        + ServerStats.UsageServerRetry
+                        + GlobalConstants.UsageServerRetriesLessThan3, GlobalConstants.UsageTracker);
                 }
             }
             else
