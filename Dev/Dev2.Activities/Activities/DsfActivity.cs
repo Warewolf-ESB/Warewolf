@@ -174,7 +174,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// </value>
         public Guid ServiceServer { get; set; }
 
-        //2012.10.01 : massimo.guerrera - Change for the unlimited migration
         public InArgument<string> IconPath
         {
             get
