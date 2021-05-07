@@ -29,6 +29,7 @@ namespace Warewolf.Studio.CustomControls
             if (d is PasswordBoxUserControl source)
             {
                 source.Text = (string) e.NewValue;
+                source.txtPassword.Password = (string) e.NewValue;
             }
         }
 
