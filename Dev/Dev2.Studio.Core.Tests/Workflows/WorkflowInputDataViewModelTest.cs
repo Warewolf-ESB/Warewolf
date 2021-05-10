@@ -750,6 +750,49 @@ namespace Dev2.Core.Tests.Workflows
                 Assert.AreEqual("{\r\n  \"rec\": [\r\n    {\r\n      \"a\": \"bob\"\r\n    }\r\n  ],\r\n  \"Person\": {\r\n    \"Name\": \"\",\r\n    \"Age\": \"\"\r\n  }\r\n}", workflowInputDataViewModel.JsonData);
             }
         }
+        
+                [TestMethod]
+        [Owner("Njabulo Nxele")]
+        [TestCategory(nameof(WorkflowInputDataViewModel))]
+        public void WorkflowInputDataViewModel_SetXmlData_RememberOldInput()
+        {
+            //------------Setup for test--------------------------
+            const string Shape = @"<DataList><obj Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""Input""><a Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None""></a><b Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None""></b></obj></DataList>";
+
+            var rm = new Mock<IContextualResourceModel>();
+            rm.Setup(r => r.ServerID).Returns(_serverID);
+            rm.Setup(r => r.ResourceName).Returns(ResourceName);
+            rm.Setup(r => r.WorkflowXaml).Returns(new StringBuilder(StringResourcesTest.DebugInputWindow_WorkflowXaml));
+            rm.Setup(r => r.ID).Returns(_resourceID);
+            rm.Setup(r => r.DataList).Returns(Shape);
+            
+            var mockDataListViewModel = new Mock<IDataListViewModel>();
+            var objObject = new ComplexObjectItemModel("obj", null, enDev2ColumnArgumentDirection.Input);
+            objObject.Children.Add(new ComplexObjectItemModel("a", objObject, enDev2ColumnArgumentDirection.Input));
+            objObject.Children.Add(new ComplexObjectItemModel("b", objObject, enDev2ColumnArgumentDirection.Input));
+            var complexObjectItemModels = new ObservableCollection<IComplexObjectItemModel> { objObject };
+            mockDataListViewModel.Setup(model => model.ComplexObjectCollection).Returns(complexObjectItemModels);
+            DataListSingleton.SetDataList(mockDataListViewModel.Object);
+            var serviceDebugInfoModel = new ServiceDebugInfoModel
+            {
+                DebugModeSetting = DebugMode.DebugInteractive,
+                RememberInputs = true,
+                ResourceModel = rm.Object,
+                ServiceInputData = "<DataList><obj><c>C</c></obj></DataList>"
+            };
+
+            var debugVM = CreateDebugOutputViewModel();
+
+            using (var workflowInputDataViewModel = new WorkflowInputDataViewModel(serviceDebugInfoModel, debugVM.SessionID))
+            {
+                //------------Execute Test---------------------------
+                workflowInputDataViewModel.LoadWorkflowInputs();
+                workflowInputDataViewModel.SetXmlData();
+                //------------Assert Results-------------------------
+                Assert.AreEqual("<DataList>  <obj>    <a></a>    <b></b>    <c>C</c>  </obj></DataList>", workflowInputDataViewModel.XmlData.Replace(Environment.NewLine, ""));
+            }
+                
+        }
 
         [TestMethod]
         [Owner("Travis Frisinger")]
