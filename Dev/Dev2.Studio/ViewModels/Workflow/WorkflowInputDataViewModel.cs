@@ -491,6 +491,33 @@ namespace Dev2.Studio.ViewModels.Workflow
                     }
                 }
             }
+
+            
+            //check for missing nodes that were input previously but have been removed from current model
+            var missingNodes = new List<XmlElement>();
+            foreach (var node in prevNodeList)
+            {
+                var list = nodeList.Select(n => n.Name);
+                if (!list.Contains(node.Name))
+                    missingNodes.Add(node);
+            }
+            var lastNode = nodeList.LastOrDefault();
+            if (lastNode != null)
+            {
+                foreach (var node in missingNodes)
+                {
+                    if (node.ParentNode.Name != "DataList")
+                    {
+                        var currentNodes = lastNode.ParentNode.ChildNodes.ToList<XmlElement>().Select(n => n.Name);
+                        if (!currentNodes.Contains(node.Name))
+                        {
+                            XmlElement newNode = lastNode.OwnerDocument.CreateElement(node.Name);
+                            newNode.InnerXml = node.InnerXml;
+                            lastNode.ParentNode.InsertAfter(newNode, lastNode);
+                        }
+                    }
+                }
+            }
         }
 
         void ProcessDuplicatedRecordsetElements(XmlElement el, List<XmlElement> prevNodeList)
