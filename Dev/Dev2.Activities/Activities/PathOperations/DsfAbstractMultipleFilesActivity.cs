@@ -212,7 +212,7 @@ namespace Dev2.Activities.PathOperations
         /// </summary>
         [Inputs("Destination Password"), FindMissing]
         public string DestinationPassword {
-            get { return _destPassword; }
+            get => DecryptForShowPassword(_destPassword);
             set
             {
                 if (DataListUtil.ShouldEncrypt(value))
@@ -231,6 +231,11 @@ namespace Dev2.Activities.PathOperations
                     _destPassword = value;
                 }
             }
+        }
+        private static string DecryptForShowPassword(string password)
+        {
+            var decrypt = DataListUtil.NotEncrypted(password) ? password : DpapiWrapper.Decrypt(password);
+            return decrypt;
         }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]

@@ -24,6 +24,7 @@ using Moq;
 using Warewolf.Storage;
 using Dev2.Common;
 using Dev2.Common.State;
+using Warewolf.Security.Encryption;
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
@@ -101,6 +102,35 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Assert Results-------------------------
 
             Assert.AreEqual("someString error", env.FetchErrors());
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(DsfAbstractFileActivity))]
+        public void DsfAbstractFileActivity_DecryptForShowPassword_ShouldShowTextType()
+        {
+            //------------Setup for test--------------------------
+            const string password = "123456";
+            var act = new TestActivity("TestActivity") { Password = password };
+
+            //------------Execute Test---------------------------
+            //------------Assert Results-------------------------
+            Assert.AreEqual(password, act.Password);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(DsfAbstractFileActivity))]
+        public void DsfAbstractFileActivity_DecryptForShowPassword_ShouldShowDecryptedType()
+        {
+            //------------Setup for test--------------------------
+            const string password = "123456";
+            var encrypt = DpapiWrapper.Encrypt(password);
+            var act = new TestActivity("TestActivity") { Password = encrypt };
+
+            //------------Execute Test---------------------------
+            //------------Assert Results-------------------------
+            Assert.AreEqual(password, act.Password);
         }
     }
 }
