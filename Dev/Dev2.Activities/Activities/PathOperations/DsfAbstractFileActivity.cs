@@ -165,7 +165,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 		[FindMissing]
 		public string Password
 		{
-			get => DecryptIfVariable(_password);
+			get => DecryptForShowPassword(_password);
 			set
 			{
 				if (DataListUtil.ShouldEncrypt(value))
@@ -186,15 +186,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 			}
 		}
 
-		private static string DecryptIfVariable(string password)
+		private static string DecryptForShowPassword(string password)
 		{
 			var decrypt = DataListUtil.NotEncrypted(password) ? password : DpapiWrapper.Decrypt(password);
-			if (decrypt.StartsWith("[[") && decrypt.EndsWith("]]"))
-			{
-				return decrypt;
-			}
-
-			return password;
+			return decrypt;
 		}
 
 		protected abstract bool AssignEmptyOutputsToRecordSet {get;}

@@ -44,24 +44,15 @@ namespace Warewolf.Studio.CustomControls
             PasswordBoxView.Visibility = Visibility.Visible;
             TextBoxView.Visibility = Visibility.Hidden;
 
-            if (!string.IsNullOrEmpty(txtVisiblePassword.Text))
-            {
-                txtPassword.Password = txtVisiblePassword.Text;
-            }
+            txtPassword.Password = txtVisiblePassword.Text;
         }
 
         private void HidePassword()
         {
             PasswordBoxView.Visibility = Visibility.Hidden;
             TextBoxView.Visibility = Visibility.Visible;
-            if (txtPassword.Password.StartsWith("[[") && txtPassword.Password.EndsWith("]]"))
-            {
-                txtVisiblePassword.Text = txtPassword.Password;
-            }
-            else
-            {
-                txtVisiblePassword.Text = string.Empty;
-            }
+
+            txtVisiblePassword.Text = txtPassword.Password;
         }
 
         private void ShowPasswordButton_OnClick(object sender, RoutedEventArgs e)
