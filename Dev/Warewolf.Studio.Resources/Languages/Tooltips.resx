@@ -2630,4 +2630,10 @@ To create a SFTP Key, put the full path and file or folder name here.</value>
   <data name="MappingsResponseToBase64Tooltip" xml:space="preserve">
     <value>Check this to put the web response into a Base64 [[variable]]</value>
   </data>
+  <data name="RegisterWarewolfToolTip" xml:space="preserve">
+    <value>Click here to register</value>
+  </data>
+  <data name="UnregisteredWarewolfToolTip" xml:space="preserve">
+    <value>Warewolf is not registered</value>
+  </data>
 </root>
