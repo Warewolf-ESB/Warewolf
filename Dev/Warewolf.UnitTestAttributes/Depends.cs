@@ -17,7 +17,7 @@ namespace Warewolf.UnitTestAttributes
             "localhost",
             "opswolf.com",
             "RSAKLFSVRHST1.premier.local",
-            "t004124.premier.local",
+            "t004121.premier.local",
             "rsaklfwynand.premier.local",
             "PIETER.premier.local",
             "localhost"
