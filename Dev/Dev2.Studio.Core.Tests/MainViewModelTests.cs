@@ -94,6 +94,15 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("MainViewModel_LicensePlanTitle")]
+        public void MainViewModel_LicensePlanTitle_ExpectTitle()
+        {
+            CreateFullExportsAndVm();
+            Assert.AreEqual("[ Trial ]", _shellViewModel.LicensePlanTitle);
+        }
+
+        [TestMethod]
         public void DeployCommandCanExecuteIrrespectiveOfEnvironments()
         {
             CreateFullExportsAndVm();

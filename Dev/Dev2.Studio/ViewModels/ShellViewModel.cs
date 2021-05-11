@@ -2314,6 +2314,8 @@ namespace Dev2.Studio.ViewModels
 
         public Func<IWorkspaceItemRepository> GETWorkspaceItemRepository => _getWorkspaceItemRepository;
 
+        public string LicensePlanTitle => "[ Trial ]";
+
         public void Handle(FileChooserMessage message)
         {
             var fileChooserView = new FileChooserView();
