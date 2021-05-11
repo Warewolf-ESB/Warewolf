@@ -11,7 +11,7 @@
 using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Dev2.Data
+namespace Dev2.Data.Tests
 {
     [TestClass]
     public class UsageLoggerTests

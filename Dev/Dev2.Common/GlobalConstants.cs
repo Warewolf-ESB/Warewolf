@@ -402,6 +402,9 @@ where pn.nspname = 'public';
         public static readonly string ExecuteWebRequestString = "About to execute web request [ '{0}' ] for User [ '{1}' : '{2}' : '{3}' ] with DataObject Payload [ '{4}' ]";
         public static readonly string ExecutionForServiceString = "Execution for Service Name: '{0}' Resource Id: '{1}' Mode: '{2}'";
 
+        public static readonly string UsageServerRetriesMoreThan3 = " has exceeded the threshold of 3. Warewolf has been reverted to ReadOnly mode. Connect to the internet to restore all functionality.";
+        public static readonly string UsageServerRetriesLessThan3 = "/3. Connect to the internet to avoid Warewolf reverting to ReadOnly mode.";
+
         public static readonly string WarewolfInfo = "Warewolf Info";
         public static readonly string WarewolfError = "Warewolf Error";
         public static readonly string WarewolfDebug = "Warewolf Debug";
