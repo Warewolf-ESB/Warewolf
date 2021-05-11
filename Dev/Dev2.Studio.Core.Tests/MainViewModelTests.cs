@@ -375,6 +375,7 @@ namespace Dev2.Core.Tests
                     Assert.IsTrue(msg.Resource.Equals(_firstResource.Object));
                 });
 
+            _shellViewModel.WarewolfStatus = true;
             _shellViewModel.DeactivateItem(activetx, true);
             _mockWorkspaceRepo.Verify(c => c.Remove(_firstResource.Object), Times.Once());
             Assert.IsTrue(_shellViewModel.Items.Count == 1);
@@ -476,6 +477,7 @@ namespace Dev2.Core.Tests
             var firstCtx = _shellViewModel.WorksurfaceContextManager.FindWorkSurfaceContextViewModel(_firstResource.Object);
             var secondCtx = _shellViewModel.WorksurfaceContextManager.FindWorkSurfaceContextViewModel(_secondResource.Object);
 
+            _shellViewModel.WarewolfStatus = true;
             _shellViewModel.ActivateItem(firstCtx);
             _shellViewModel.DeactivateItem(firstCtx, true);
 
@@ -507,6 +509,7 @@ namespace Dev2.Core.Tests
             _firstResource.Setup(r => r.Commit()).Verifiable();
             _firstResource.Setup(r => r.Rollback()).Verifiable();
             _firstResource.Setup(r => r.IsAuthorized(AuthorizationContext.Contribute)).Returns(true);
+            _shellViewModel.WarewolfStatus = true;
 
             _popupController.Setup(s => s.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>())).Returns(MessageBoxResult.No);
             var activetx = _shellViewModel.Items.ToList().First(i => i.WorkSurfaceViewModel.WorkSurfaceContext == WorkSurfaceContext.Workflow);
@@ -527,6 +530,7 @@ namespace Dev2.Core.Tests
             _firstResource.Setup(r => r.IsAuthorized(AuthorizationContext.Contribute)).Returns(true);
             _firstResource.Setup(r => r.Commit()).Verifiable();
             _firstResource.Setup(r => r.Rollback()).Verifiable();
+            _shellViewModel.WarewolfStatus = true;
 
             _popupController.Setup(s => s.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>())).Returns(MessageBoxResult.Yes);
             var activetx = _shellViewModel.Items.ToList().First(i => i.WorkSurfaceViewModel.WorkSurfaceContext == WorkSurfaceContext.Workflow);
