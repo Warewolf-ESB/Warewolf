@@ -401,7 +401,7 @@ namespace Warewolf.Driver.Serilog.Tests
                         }
                     }
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     return null;
                 }

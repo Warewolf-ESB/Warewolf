@@ -222,7 +222,7 @@ testRunner.Given("I create New Workflow", ((string)(null)), ((TechTalk.SpecFlow.
 #line 59
  testRunner.And("I click Generate output", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 60
- testRunner.Then("Inputs windo is open", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("Inputs window is open", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

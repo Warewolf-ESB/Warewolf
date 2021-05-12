@@ -37,7 +37,6 @@ namespace Warewolf.Studio.ViewModels.Tests
     [TestClass]
     public class ElasticsearchSourceViewModelTests
     {
-        Mock<IShellViewModel> _shellview;
         Mock<IElasticsearchSourceModel> _elasticsearchSourceModel;
         Mock<IRequestServiceNameViewModel> _requestServiceNameViewModel;
         Task<IRequestServiceNameViewModel> _requestServiceNameViewModelTask;
