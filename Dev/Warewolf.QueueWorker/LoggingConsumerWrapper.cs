@@ -78,7 +78,7 @@ namespace QueueWorker
                 
                 return Task.Run(() => ConsumerResult.Success);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 var endDate = DateTime.UtcNow;
                 var duration = endDate - startDate;
