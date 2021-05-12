@@ -1,8 +1,8 @@
 
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later.
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -33,7 +33,7 @@ namespace Dev2.Data.Tests.TO
             Assert.AreEqual("some message", resultTo.FetchErrors()[0]);
             Assert.AreEqual("<InnerError>some message</InnerError>", resultTo.MakeDataListReady());
         }
-        
+
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(ErrorResultTO))]
@@ -63,13 +63,12 @@ namespace Dev2.Data.Tests.TO
             resultTo.AddError("deferent message", false);
 
             Assert.IsTrue(resultTo.HasErrors());
-            Assert.AreEqual(3, resultTo.FetchErrors().Count);
+            Assert.AreEqual(2, resultTo.FetchErrors().Count);
             Assert.AreEqual("some message", resultTo.FetchErrors()[0]);
-            Assert.AreEqual("some message", resultTo.FetchErrors()[1]);
-            Assert.AreEqual("deferent message", resultTo.FetchErrors()[2]);
-            Assert.AreEqual("<InnerError>some message</InnerError><InnerError>some message</InnerError><InnerError>deferent message</InnerError>", resultTo.MakeDataListReady());
+            Assert.AreEqual("deferent message", resultTo.FetchErrors()[1]);
+            Assert.AreEqual("<InnerError>some message</InnerError><InnerError>deferent message</InnerError>", resultTo.MakeDataListReady());
         }
-        
+
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ErrorResultTO))]
@@ -87,13 +86,47 @@ namespace Dev2.Data.Tests.TO
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ErrorResultTO))]
-        public void ErrorResultTO_MakeErrorResultFromDataListStringWithMultipleErrorsExpectedCorrectErrorResultTO()
+        public void ErrorResultTO_MakeErrorResultFromDataListString_WithMultipleErrors_ExpectedCorrectErrorResultTO()
         {
             var makeErrorResultFromDataListString = ErrorResultTO.MakeErrorResultFromDataListString("<InnerError>First Error</InnerError><InnerError>Second Error</InnerError>");
             Assert.IsTrue(makeErrorResultFromDataListString.HasErrors());
             Assert.AreEqual(2, makeErrorResultFromDataListString.FetchErrors().Count);
             Assert.AreEqual("First Error", makeErrorResultFromDataListString.FetchErrors()[0]);
             Assert.AreEqual("Second Error", makeErrorResultFromDataListString.FetchErrors()[1]);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ErrorResultTO))]
+        public void ErrorResultTO_MakeErrorResultFromDataListString_WithMultipleDuplicateErrors_ExpectedUniqueOnlyAdded()
+        {
+            var makeErrorResultFromDataListString = ErrorResultTO.MakeErrorResultFromDataListString("<InnerError>First Error</InnerError><InnerError>First Error</InnerError><InnerError>Second Error</InnerError>", true);
+            Assert.IsTrue(makeErrorResultFromDataListString.HasErrors());
+            Assert.AreEqual(2, makeErrorResultFromDataListString.FetchErrors().Count);
+            Assert.AreEqual("First Error", makeErrorResultFromDataListString.FetchErrors()[0]);
+            Assert.AreEqual("Second Error", makeErrorResultFromDataListString.FetchErrors()[1]);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ErrorResultTO))]
+        public void ErrorResultTO_MakeErrorResultFromDataListString_WithMultipleDuplicateErrors_ExpectedNotUniqueNotAdded()
+        {
+            var makeErrorResultFromDataListString = ErrorResultTO.MakeErrorResultFromDataListString("<InnerError>First Error</InnerError><InnerError>First Error</InnerError><InnerError>Second Error</InnerError>");
+            Assert.IsTrue(makeErrorResultFromDataListString.HasErrors());
+            Assert.AreEqual(2, makeErrorResultFromDataListString.FetchErrors().Count);
+            Assert.AreEqual("First Error", makeErrorResultFromDataListString.FetchErrors()[0]);
+            Assert.AreEqual("Second Error", makeErrorResultFromDataListString.FetchErrors()[1]);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ErrorResultTO))]
+        public void ErrorResultTO_MakeErrorResultFromDataListString_WithEmptyErrors_ExpectedNotHasErrors()
+        {
+            var makeErrorResultFromDataListString = ErrorResultTO.MakeErrorResultFromDataListString(string.Empty);
+            Assert.IsFalse(makeErrorResultFromDataListString.HasErrors());
+            Assert.AreEqual(0, makeErrorResultFromDataListString.FetchErrors().Count);
         }
 
         [TestMethod]

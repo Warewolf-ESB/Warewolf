@@ -1,8 +1,8 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later.
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -24,7 +24,7 @@ namespace Dev2.Data.TO
     [Serializable]
     public sealed class ErrorResultTO : IErrorResultTO
     {
-        readonly IList<string> _errorList = new List<string>();
+        readonly HashSet<string> _errorList = new HashSet<string>();
 
         public void AddError(string msg) => AddError(msg, false);
         public void AddError(string msg, bool checkForDuplicates) => AddError(msg, checkForDuplicates, false);
@@ -84,7 +84,7 @@ namespace Dev2.Data.TO
             foreach (string e in _errorList)
             {
                 result.Append(e);
-                if (_errorList.IndexOf(e) + 1 < _errorList.Count)
+                if (_errorList.ToList().IndexOf(e) + 1 < _errorList.Count)
                 {
                     result.AppendLine();
                 }
