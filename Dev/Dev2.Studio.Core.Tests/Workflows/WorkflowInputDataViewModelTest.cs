@@ -789,7 +789,7 @@ namespace Dev2.Core.Tests.Workflows
                 workflowInputDataViewModel.LoadWorkflowInputs();
                 workflowInputDataViewModel.SetXmlData();
                 //------------Assert Results-------------------------
-                Assert.AreEqual("<DataList>  <obj>    <a></a>    <b></b>    <c>C</c>  </obj></DataList>", workflowInputDataViewModel.XmlData.Replace(Environment.NewLine, ""));
+                Assert.AreEqual("<DataList>  <obj>    <c>C</c>    <a></a>    <b></b>  </obj></DataList>", workflowInputDataViewModel.XmlData.Replace(Environment.NewLine, ""));
             }
                 
         }
