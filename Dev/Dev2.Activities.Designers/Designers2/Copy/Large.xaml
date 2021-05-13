@@ -125,26 +125,21 @@
                                 Visibility="{Binding ShowPassword, Converter={StaticResource BoolToVisibilityConverterPositive}}"
                                 Margin="{StaticResource ActivityBorderTop}"
                                 Text="{Binding Path=ModelItem.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                ToolTip="{x:Static languages:Tooltips.FileActivityToolTipPassword}"
+                                ToolTip="{x:Static languages:Tooltips.CopyToolTipPassword}"
                                 attachedProperties:FocusSetter.IsFocused="{Binding IsPasswordFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Passwordtxt_AutoID}">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:HelpText.FileActivityHelpPassword}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.CopyHelpPassword}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.Password"
                                      SourcePropertyValue="{Binding  ModelItem.Password, UpdateSourceTrigger=PropertyChanged}"
                                      Target="{Binding}" />
             </i:Interaction.Behaviors>
         </ui:IntellisenseTextBox>
-            <customControls:PasswordBoxUserControl Grid.Column="0"
-                     Grid.Row="0"
-                     Visibility="{Binding ShowPassword, Converter={StaticResource BoolToVisibilityConverterNegative}}"
-                     Margin="{StaticResource ActivityBorderTop}"
-                     ToolTip="{x:Static languages:Tooltips.FileActivityToolTipPassword}"
-                     attachedProperties:FocusSetter.IsFocused="{Binding IsPasswordFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                     attachedProperties:PasswordBoxAssistant.BindPassword="true"
-                     attachedProperties:PasswordBoxAssistant.BoundPassword="{Binding Path=ModelItem.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                     AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Passwordtxt_AutoID}">
+            <customControls:PasswordBoxUserControl Grid.Column="1"
+                                               Grid.Row="2"
+                                               Text="{Binding Path=ModelItem.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                               ToolTip="{x:Static languages:Tooltips.CopyToolTipPassword}">
                 <i:Interaction.Behaviors>
                     <core1:HelpSetter Text="{x:Static languages:HelpText.CopyHelpPassword}" DataContext="{Binding}" />
                     <errors:ErrorsSetter Source="{Binding}"
