@@ -2,7 +2,7 @@
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -146,17 +146,18 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected void DoErrorHandling(IDSFDataObject dataObject, int update)
         {
-            if (dataObject.Environment.HasErrors() && !(this is DsfFlowDecisionActivity))
+            var env = dataObject.Environment;
+            if (env.HasErrors() && !(this is DsfFlowDecisionActivity))
             {
                 var errorString = "";
-                if (dataObject.Environment.AllErrors.Count > 0)
+                if (env.AllErrors.Count > 0)
                 {
-                    errorString = string.Join(Environment.NewLine, dataObject.Environment.AllErrors.Last());
+                    errorString = string.Join(Environment.NewLine, env.AllErrors.Last());
                 }
 
-                if (dataObject.Environment.Errors.Count > 0)
+                if (env.Errors.Count > 0)
                 {
-                    errorString += string.Join(Environment.NewLine, dataObject.Environment.Errors.Last());
+                    errorString += string.Join(Environment.NewLine, env.Errors.Last());
                 }
 
                 if (!string.IsNullOrEmpty(errorString))
@@ -168,11 +169,27 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         void PerformCustomErrorHandling(IDSFDataObject dataObject, string currentError, int update)
         {
+            var env = dataObject.Environment;
             try
             {
                 if (!string.IsNullOrEmpty(OnErrorVariable))
                 {
-                    dataObject.Environment.Assign(OnErrorVariable, currentError, update);
+                    var errorString = env.FetchErrors();
+                    var errors = ErrorResultTO.MakeErrorResultFromDataListString(errorString, true);
+                    var upsertVariable = DataListUtil.AddBracketsToValueIfNotExist(OnErrorVariable);
+                    if (errors.HasErrors())
+                    {
+                        foreach (var error in errors.FetchErrors())
+                        {
+                            //TODO: duplicate check on the Recordset might hide the real issue, 
+                            //of multiple execution calls passing here which seems not to be the same on F7
+                            env.Assign(upsertVariable, error, update);
+                        }
+                    }
+                    else
+                    {
+                        env.Assign(upsertVariable, errorString, update);
+                    }
                 }
 
                 if (!string.IsNullOrEmpty(OnErrorWorkflow))
@@ -181,13 +198,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     esbChannel.ExecuteLogErrorRequest(dataObject, dataObject.WorkspaceID, OnErrorWorkflow, out ErrorResultTO tmpErrors, update);
                     if (tmpErrors != null)
                     {
-                        dataObject.Environment.AddError(tmpErrors.MakeDisplayReady());
+                        env.AddError(tmpErrors.MakeDisplayReady());
                     }
                 }
             }
             catch (Exception e)
             {
-                dataObject.Environment.AddError(e.Message);
+                env.AddError(e.Message);
             }
             finally
             {
@@ -309,12 +326,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 if (clearErrors)
                 {
-                    foreach (var error in dataObject.Environment.Errors)
+                    var env = dataObject.Environment;
+                    foreach (var error in env.Errors)
                     {
-                        dataObject.Environment.AllErrors.Add(error);
+                        env.AllErrors.Add(error);
                     }
 
-                    dataObject.Environment.Errors.Clear();
+                    env.Errors.Clear();
                 }
             }
         }

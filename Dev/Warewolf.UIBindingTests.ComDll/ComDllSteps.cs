@@ -26,6 +26,7 @@ namespace Warewolf.UIBindingTests.ComDll
     public class ComDllSteps
     {
         readonly ScenarioContext _scenarioContext;
+        HashSet<string> MockedEnvironmentErrors;
 
         public ComDllSteps(ScenarioContext scenarioContext)
         {
@@ -49,6 +50,8 @@ namespace Warewolf.UIBindingTests.ComDll
             var environment = new Mock<IExecutionEnvironment>();
             var errors = new HashSet<string>();
             environment.SetupGet(executionEnvironment => executionEnvironment.Errors).Returns(errors);
+            MockedEnvironmentErrors = new HashSet<string>();
+            environment.Setup(executionEnvironment => executionEnvironment.AddError(It.IsAny<string>())).Callback<string>(error => { MockedEnvironmentErrors.Add(error); });
             dataObject.Setup(dObj => dObj.Environment).Returns(environment.Object);
             dataObject.Setup(dObj => dObj.EsbChannel).Returns(channel.Object);
             dataObject.SetupGet(dObj => dObj.WorkspaceID).Returns(Guid.NewGuid);
@@ -261,7 +264,7 @@ namespace Warewolf.UIBindingTests.ComDll
             vm.TestProcedure();
         }
 
-        [Then(@"Inputs windo is open")]
+        [Then(@"Inputs window is open")]
         public void ThenInputsWindoIsOpen()
         {
             var vm = _scenarioContext.Get<ComDllViewModel>("ViewModel");
@@ -282,7 +285,7 @@ namespace Warewolf.UIBindingTests.ComDll
             Assert.AreEqual(0, vm.Errors.Count);
         }
         
-        [Then(@"I click fSix to Execute the tool the result is ""(.*)""")]
+        [Then(@"I click fix to Execute the tool the result is ""(.*)""")]
         public void ThenIClickFSixToExecuteTheToolTheResultIs(string result)
         {
             var dataObject = _scenarioContext.Get<IDSFDataObject>("DataObject");
@@ -293,7 +296,8 @@ namespace Warewolf.UIBindingTests.ComDll
             Assert.IsNotNull(activity);
             Assert.AreEqual(result, activity._result);
         }
-        [Then(@"I click fSix to Execute the tool")]
+
+        [Then(@"I click fix to Execute the tool")]
         public void ThenIClickFSixToExecuteTheTool()
         {
             var dataObject = _scenarioContext.Get<IDSFDataObject>("DataObject");
@@ -307,8 +311,8 @@ namespace Warewolf.UIBindingTests.ComDll
         public void ThenTheResultIsReturnedWithError(string errorMessage)
         {
             var environment = _scenarioContext.Get<IExecutionEnvironment>("Environment");
-            Assert.AreEqual(1, environment.Errors.Count);
-            Assert.AreEqual(errorMessage, environment.Errors.First());
+            Assert.AreEqual(1, MockedEnvironmentErrors.Count);
+            Assert.AreEqual(errorMessage, MockedEnvironmentErrors.First());
         }
 
 

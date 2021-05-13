@@ -35,6 +35,7 @@ using Warewolf.Resource.Errors;
 using Warewolf.Storage.Interfaces;
 using Dev2.Comparer;
 using Dev2.Common.State;
+using Warewolf.Storage;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
@@ -173,7 +174,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// </value>
         public Guid ServiceServer { get; set; }
 
-        //2012.10.01 : massimo.guerrera - Change for the unlimited migration
         public InArgument<string> IconPath
         {
             get
@@ -360,7 +360,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             catch (Exception err)
             {
-                dataObject.Environment.Errors.Add(err.Message);
+                dataObject.Environment.AddError(err.Message);
             }
             finally
             {
@@ -376,16 +376,31 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 // Handle Errors
                 if (allErrors.HasErrors())
                 {
+                    var env = dataObject.Environment;
                     foreach (var allError in allErrors.FetchErrors())
                     {
-                        dataObject.Environment.Errors.Add(allError);
+                        env.AddError(allError);
                     }
 
                     // add to datalist in variable specified
                     if (!String.IsNullOrEmpty(OnErrorVariable))
                     {
+                        var errorString = env.FetchErrors();
+                        var errors = ErrorResultTO.MakeErrorResultFromDataListString(errorString, true);
                         var upsertVariable = DataListUtil.AddBracketsToValueIfNotExist(OnErrorVariable);
-                        dataObject.Environment.Assign(upsertVariable, allErrors.MakeDataListReady(), update);
+                        if (errors.HasErrors())
+                        {
+                            foreach (var error in errors.FetchErrors())
+                            {
+                                //TODO: duplicate check on the Recordset might hide the real issue, 
+                                //of multiple execution calls passing here which seems not to be the same on F7
+                                env.Assign(upsertVariable, error, update);
+                            }
+                        }
+                        else
+                        {
+                            env.Assign(upsertVariable, errorString, update);
+                        }
                     }
                     DisplayAndWriteError(dataObject,serviceName, allErrors);
                 }

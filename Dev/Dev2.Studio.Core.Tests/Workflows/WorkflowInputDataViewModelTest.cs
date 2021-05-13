@@ -31,7 +31,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Common.Interfaces.Studio.Controller;
-using Dev2.Services.Security;
 
 namespace Dev2.Core.Tests.Workflows
 {
@@ -707,7 +706,7 @@ namespace Dev2.Core.Tests.Workflows
         }
 
         [TestMethod]
-        [Owner("Njabulo Nxele")]
+        [Owner("Siphamandla Dube")]
         [TestCategory(nameof(WorkflowInputDataViewModel))]
         public void WorkflowInputDataViewModel_SetXmlData_WithObjectAndRecordSet()
         {
@@ -746,7 +745,7 @@ namespace Dev2.Core.Tests.Workflows
                 //------------Execute Test---------------------------
                 workflowInputDataViewModel.SetXmlData();
                 //------------Assert Results-------------------------
-                Assert.AreEqual("<DataList><rec><a>bob</a></rec><Person><Name></Name><Age></Age></Person></DataList>", workflowInputDataViewModel.XmlData.Replace(Environment.NewLine, "").Replace(" ", ""));
+                Assert.AreEqual("<DataList><recjson:Array=\"true\"xmlns:json=\"http://james.newtonking.com/projects/json\"><a>bob</a></rec><Person><Name></Name><Age></Age></Person></DataList>", workflowInputDataViewModel.XmlData.Replace(Environment.NewLine, "").Replace(" ", ""), "BUG: 6783 - We should keep the JSON integrity");
                 Assert.AreEqual("{\r\n  \"rec\": [\r\n    {\r\n      \"a\": \"bob\"\r\n    }\r\n  ],\r\n  \"Person\": {\r\n    \"Name\": \"\",\r\n    \"Age\": \"\"\r\n  }\r\n}", workflowInputDataViewModel.JsonData);
             }
         }
