@@ -15,6 +15,7 @@
                                xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
                                xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
                                xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
+                               xmlns:customControls="clr-namespace:Warewolf.Studio.CustomControls;assembly=Warewolf.Studio.CustomControls"
                                MinWidth="315"
                                Width="315"
                                MaxWidth="600"
@@ -134,46 +135,34 @@
                                 Visibility="{Binding ShowPassword, Converter={StaticResource BoolToVisibilityConverterPositive}}"
                                 Margin="{StaticResource ActivityBorderTop}"
                                 Text="{Binding Path=ModelItem.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                ToolTip="{x:Static languages:Tooltips.FileActivityToolTipPassword}"
+                                ToolTip="{x:Static languages:Tooltips.CreateToolTipPassword}"
                                 attachedProperties:FocusSetter.IsFocused="{Binding IsPasswordFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Passwordtxt_AutoID}">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:HelpText.FileActivityHelpPassword}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.CreateHelpPassword}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.Password"
                                      SourcePropertyValue="{Binding  ModelItem.Password, UpdateSourceTrigger=PropertyChanged}"
                                      Target="{Binding}" />
             </i:Interaction.Behaviors>
         </ui:IntellisenseTextBox>
-        <PasswordBox Grid.Column="0"
+            <customControls:PasswordBoxUserControl Grid.Column="0"
                      Grid.Row="0"
                      Visibility="{Binding ShowPassword, Converter={StaticResource BoolToVisibilityConverterNegative}}"
                      Margin="{StaticResource ActivityBorderTop}"
-                     ToolTip="{x:Static languages:Tooltips.FileActivityToolTipPassword}"
+                     ToolTip="{x:Static languages:Tooltips.CreateToolTipPassword}"
                      attachedProperties:FocusSetter.IsFocused="{Binding IsPasswordFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      attachedProperties:PasswordBoxAssistant.BindPassword="true"
                      attachedProperties:PasswordBoxAssistant.BoundPassword="{Binding Path=ModelItem.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Passwordtxt_AutoID}">
-            <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:HelpText.FileActivityHelpPassword}" DataContext="{Binding}" />
-                <errors:ErrorsSetter Source="{Binding}"
+                <i:Interaction.Behaviors>
+                    <core1:HelpSetter Text="{x:Static languages:HelpText.CreateHelpPassword}" DataContext="{Binding}" />
+                    <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.Password"
                                      SourcePropertyValue="{Binding  ModelItem.Password, UpdateSourceTrigger=PropertyChanged}"
                                      Target="{Binding}" />
-            </i:Interaction.Behaviors>
-        </PasswordBox>
-            
-            <CheckBox Grid.Row="0"
-                      Grid.Column="1"
-                      Content=""
-                      IsChecked="{Binding ShowPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                      ToolTip="{x:Static languages:Tooltips.FileActivityToolTipShowPassword}"
-                      AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_ShowPassword_AutoID}">
-                <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static languages:HelpText.ReadFileHelpIsResultBase64}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
-            </CheckBox>
-            
+            </customControls:PasswordBoxUserControl>
         </Grid>
 
         <TextBlock Grid.Column="0" Grid.Row="4" Text="Private Key" Margin="{StaticResource ActivityBorderTop}" />
