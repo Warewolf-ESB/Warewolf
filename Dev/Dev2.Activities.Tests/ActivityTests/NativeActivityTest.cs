@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -498,7 +498,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory("DsfNativeActivity_UpdateDebugParentID")]
-        public void DsfNativeActivity_ExecuteTool_Errors_PerformsErrorHandling_ShouldThrow()
+        public void DsfNativeActivity_ExecuteTool_Errors_PerformsErrorHandling_ShouldReturnErrors()
         {
             var dataObject = new DsfDataObject("<Datalist></Datalist>", Guid.NewGuid())
             {
@@ -510,15 +510,15 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             var act = new TestNativeActivity(false, "bob");
             act.IsEndedOnError = true;
-            act.OnErrorVariable = "[[Error]]";
+            act.OnErrorVariable = "[[Error().Massage]]";
             dataObject.Environment.AddError("There is an error with special character: [[special.willNotParse)");
            
-            var result = act.Execute(dataObject, 0);
+            _ = act.Execute(dataObject, 0);
 
             var errors = dataObject.Environment.Errors;
 
             Assert.AreEqual("There is an error with special character: [[special.willNotParse)", errors.First(), "Warewolf error cannot have special characters");
-            Assert.AreEqual("parse error: { Error }", errors.Last());
+            Assert.AreEqual("parse error: { Error().Massage }", errors.Last());
 
         }
 
@@ -538,14 +538,14 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             var act = new TestNativeActivity(false, "bob");
             act.IsEndedOnError = true;
-            act.OnErrorVariable = "[[Error]]";
+            act.OnErrorVariable = "[[Error().Message]]";
             dataObject.Environment.AddError("There is an error with special character: { special will Parse }");
             
             var result = act.Execute(dataObject, 0);
 
-            var warewolfEvalResult = dataObject.Environment.Eval("[[Error]]", 0) as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
+            var warewolfEvalResult = dataObject.Environment.Eval("[[Error(*).Message]]", 0) as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
             Assert.IsNotNull(warewolfEvalResult);
-            var errorMessage = warewolfEvalResult.Item.ToString();
+            var errorMessage = warewolfEvalResult.Item[0].ToString();
             Assert.IsTrue(dataObject.StopExecution);
             Assert.AreEqual("There is an error with special character: { special will Parse }", errorMessage);
 

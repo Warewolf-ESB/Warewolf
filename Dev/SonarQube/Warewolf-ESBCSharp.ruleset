@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<RuleSet Name="Rules for The Dev2 Way" Description="This rule set was automatically generated from SonarQube.&#xD;&#xA;https://sonarcloud.io/organizations/warewolf/quality_profiles/show?language&#61;cs&#38;name&#61;Dev2+way" ToolsVersion="15.0">
+<RuleSet Name="Rules for the Dev2 way" Description="This rule set was automatically generated from SonarQube.&#xD;&#xA;https://sonarcloud.io/organizations/warewolf/quality_profiles/show?language&#61;cs&#38;name&#61;Dev2+way" ToolsVersion="15.0">
   <Rules AnalyzerId="SonarAnalyzer.CSharp" RuleNamespace="SonarAnalyzer.CSharp">
     <Rule Id="S121" Action="Warning" />
     <Rule Id="S1067" Action="Warning" />
