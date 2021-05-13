@@ -10,13 +10,21 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using ActivityUnitTests;
+using Dev2.Common;
+using Dev2.Common.Interfaces.Diagnostics.Debug;
+using Dev2.Data;
+using Dev2.Data.Interfaces;
 using Dev2.Data.TO;
 using Dev2.DataList.Contract;
+using Dev2.Diagnostics;
 using Dev2.Interfaces;
+using Microsoft.FSharp.Core;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Warewolf.Security.Encryption;
 using Warewolf.Storage;
 
 namespace Dev2.Tests.Activities.ActivityTests
@@ -202,6 +210,31 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(1, dsfOutputStrings.Count);
             Assert.AreEqual("c29tZSBzdHJpbmc=", dsfOutputStrings[0].OutputStrings[0]);
             Assert.AreEqual(4, act.GetDebugInputs(env, 0).Count);
+        }
+        
+        [TestMethod]
+        [Owner("Njabulo Nxele")]
+        [TestCategory("FileReadWithBase64_Credentials")]
+        public void FileReadWithBase64_TryExecuteConcreteAction_Credential_Variable()
+        {
+            //------------Setup for test--------------------------
+            CreateFileTest(_filePath);
+            var env = new ExecutionEnvironment();
+            env.Assign("[[val1]]", "demo", false, 0);
+
+            var mockDataObject = new Mock<IDSFDataObject>();
+            mockDataObject.Setup(o => o.Environment).Returns(env);
+            mockDataObject.Setup(o => o.IsDebugMode()).Returns(true);
+
+            var act = new TestFileReadWithBase64 { IsResultBase64 = true, InputPath = _filePath, Result = "" };
+            act.Username = "[[val1]]";
+
+            //------------Execute Test---------------------------
+            ErrorResultTO to;
+            act.TestTryExecuteConcreteAction(mockDataObject.Object, out to, 0);
+            var errors = to.FetchErrors();
+            
+            Assert.IsTrue(errors.FirstOrDefault()?.Contains("Failed to authenticate with user [ demo ]") ?? false);
         }
 
         [TestMethod]

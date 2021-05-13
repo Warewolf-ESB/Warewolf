@@ -2,7 +2,7 @@
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -40,6 +40,8 @@ using Dev2.Util;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using ServiceStack.Common.Extensions;
+using Unlimited.Framework.Converters.Graph;
+using Unlimited.Framework.Converters.Graph.String;
 using Warewolf.Studio.Resources.Languages;
 using Formatting = Newtonsoft.Json.Formatting;
 
@@ -614,7 +616,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             var dataListString = new AddToDatalistObject(this).DataListObject(includeBlank);
             JsonData = dataListString;
-            var xml = JsonConvert.DeserializeXNode(dataListString, @"DataList", false);
+            var xml = JsonConvert.DeserializeXNode(dataListString, @"DataList", true );
 
             try
             {
