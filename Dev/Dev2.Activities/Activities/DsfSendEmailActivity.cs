@@ -69,7 +69,7 @@ namespace Dev2.Activities
         [FindMissing]
         public string Password
         {
-            get => _password;
+            get => DecryptForShowPassword(_password);
             set
             {
                 if (DataListUtil.ShouldEncrypt(value))
@@ -88,6 +88,12 @@ namespace Dev2.Activities
                     _password = value;
                 }
             }
+        }
+
+        private static string DecryptForShowPassword(string password)
+        {
+            var decrypt = DataListUtil.NotEncrypted(password) ? password : DpapiWrapper.Decrypt(password);
+            return decrypt;
         }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
