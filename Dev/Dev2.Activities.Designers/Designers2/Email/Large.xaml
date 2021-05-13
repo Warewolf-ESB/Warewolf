@@ -125,9 +125,9 @@
         </ui:IntellisenseTextBox>
 
         <TextBlock Grid.Column="0" Grid.Row="2" Text="Password" Margin="{StaticResource ControlBorderTop}" />
-        
         <customControls:PasswordBoxUserControl Grid.Column="1"
                                                Grid.Row="2"
+                                               x:Name="ThePasswordBox"
                                                Margin="{StaticResource ActivityBorderTop}"
                                                Text="{Binding Path=ModelItem.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                ToolTip="{x:Static languages:Tooltips.EmailToolTipPassword}">
