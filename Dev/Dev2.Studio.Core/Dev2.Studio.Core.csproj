@@ -204,7 +204,7 @@
     <Compile Include="DataList\ComplexObjectHandler.cs" />
     <Compile Include="DataList\DataListViewModelHelper.cs" />
     <Compile Include="DataList\MissingDataList.cs" />
-    <Compile Include="DataList\Dev2TrieSugggestionProvider.cs" />
+    <Compile Include="DataList\Dev2TrieSuggestionProvider.cs" />
     <Compile Include="DataList\PartIsUsed.cs" />
     <Compile Include="DataList\RecordsetHandler.cs" />
     <Compile Include="DataList\ScalarHandler.cs" />

@@ -211,8 +211,8 @@ this.CopyFileAtLocalLocation("1", "[[sourcePath]]", "c:\\copyfile0.txt", "\"\"",
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "ftp://DEVOPSPDC.premier.local:1001/FORCOPYFILETESTING/copied0.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "\"\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "dev2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"Success\"")]
@@ -222,7 +222,7 @@ this.CopyFileAtLocalLocation("1", "[[sourcePath]]", "c:\\copyfile0.txt", "\"\"",
         public virtual void CopyFileAtLocalLocation_2()
         {
 #line 8
-this.CopyFileAtLocalLocation("2", "[[sourcePath]]", "c:\\copyfile1.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://DEVOPSPDC.premier.local:1001/FORCOPYFILETESTING/copied0.txt", "\"\"", "\"\"", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+this.CopyFileAtLocalLocation("2", "[[sourcePath]]", "c:\\copyfile1.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://DEVOPSPDC.premier.local:1001/FORCOPYFILETESTING/copied0.txt", "dev2", "Q/ulw&]", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -239,8 +239,8 @@ this.CopyFileAtLocalLocation("2", "[[sourcePath]]", "c:\\copyfile1.txt", "\"\"",
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "ftp://DEVOPSPDC.premier.local:1002/FORCOPYFILETESTING/copied0.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "Administrator")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "Dev2@dmin123")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "dev2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"Success\"")]
@@ -250,7 +250,7 @@ this.CopyFileAtLocalLocation("2", "[[sourcePath]]", "c:\\copyfile1.txt", "\"\"",
         public virtual void CopyFileAtLocalLocation_3()
         {
 #line 8
-this.CopyFileAtLocalLocation("3", "[[sourcePath]]", "c:\\copyfile2.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://DEVOPSPDC.premier.local:1002/FORCOPYFILETESTING/copied0.txt", "Administrator", "Dev2@dmin123", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+this.CopyFileAtLocalLocation("3", "[[sourcePath]]", "c:\\copyfile2.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://DEVOPSPDC.premier.local:1002/FORCOPYFILETESTING/copied0.txt", "dev2", "Q/ulw&]", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -471,8 +471,8 @@ this.CopyFileAtUNCLocation("1", "[[sourcePath]]", "\\\\DEVOPSPDC.premier.local\\
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "ftp://DEVOPSPDC.premier.local:1001/FORCOPYFILETESTING/copied1.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "\"\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "dev2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"Success\"")]
@@ -483,7 +483,7 @@ this.CopyFileAtUNCLocation("1", "[[sourcePath]]", "\\\\DEVOPSPDC.premier.local\\
         {
 #line 37
 this.CopyFileAtUNCLocation("2", "[[sourcePath]]", "\\\\DEVOPSPDC.premier.local\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\co" +
-                    "pyfile1.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://DEVOPSPDC.premier.local:1001/FORCOPYFILETESTING/copied1.txt", "\"\"", "\"\"", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+                    "pyfile1.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://DEVOPSPDC.premier.local:1001/FORCOPYFILETESTING/copied1.txt", "dev2", "Q/ulw&]", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -501,8 +501,8 @@ this.CopyFileAtUNCLocation("2", "[[sourcePath]]", "\\\\DEVOPSPDC.premier.local\\
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "ftp://DEVOPSPDC.premier.local:1002/FORCOPYFILETESTING/copied1.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "Administrator")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "Dev2@dmin123")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "dev2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"Success\"")]
@@ -513,7 +513,7 @@ this.CopyFileAtUNCLocation("2", "[[sourcePath]]", "\\\\DEVOPSPDC.premier.local\\
         {
 #line 37
 this.CopyFileAtUNCLocation("3", "[[sourcePath]]", "\\\\DEVOPSPDC.premier.local\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\co" +
-                    "pyfile2.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://DEVOPSPDC.premier.local:1002/FORCOPYFILETESTING/copied1.txt", "Administrator", "Dev2@dmin123", "True", "[[result]]", "\"Success\"", "NO", "\"C:\\Temp\\key.opk\"", "", ((string[])(null)));
+                    "pyfile2.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://DEVOPSPDC.premier.local:1002/FORCOPYFILETESTING/copied1.txt", "dev2", "Q/ulw&]", "True", "[[result]]", "\"Success\"", "NO", "\"C:\\Temp\\key.opk\"", "", ((string[])(null)));
 #line hidden
         }
         
@@ -675,8 +675,8 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://DEVOPSPDC.premier.local:1001/FORCOPYFILETESTING/copyfile0.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "C:\\copied20.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "\"\"")]
@@ -690,7 +690,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void CopyFileAtFTPLocation_1()
         {
 #line 66
-this.CopyFileAtFTPLocation("1", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local:1001/FORCOPYFILETESTING/copyfile0.txt", "\"\"", "\"\"", "[[destPath]]", "C:\\copied20.txt", "\"\"", "\"\"", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+this.CopyFileAtFTPLocation("1", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local:1001/FORCOPYFILETESTING/copyfile0.txt", "dev2", "Q/ulw&]", "[[destPath]]", "C:\\copied20.txt", "\"\"", "\"\"", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -703,8 +703,8 @@ this.CopyFileAtFTPLocation("1", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://DEVOPSPDC.premier.local:1001/FORCOPYFILETESTING/copyfile1.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "\\\\DEVOPSPDC.premier.local\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\co" +
             "pied2.txt")]
@@ -719,7 +719,7 @@ this.CopyFileAtFTPLocation("1", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local
         public virtual void CopyFileAtFTPLocation_2()
         {
 #line 66
-this.CopyFileAtFTPLocation("2", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local:1001/FORCOPYFILETESTING/copyfile1.txt", "\"\"", "\"\"", "[[destPath]]", "\\\\DEVOPSPDC.premier.local\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\co" +
+this.CopyFileAtFTPLocation("2", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local:1001/FORCOPYFILETESTING/copyfile1.txt", "dev2", "Q/ulw&]", "[[destPath]]", "\\\\DEVOPSPDC.premier.local\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\co" +
                     "pied2.txt", "\"\"", "\"\"", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
@@ -733,12 +733,12 @@ this.CopyFileAtFTPLocation("2", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://DEVOPSPDC.premier.local:1001/FORCOPYFILETESTING/copyfile2.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "ftp://DEVOPSPDC.premier.local:1002/FORCOPYFILETESTING/copied2.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "Administrator")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "Dev2@dmin123")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "dev2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"Success\"")]
@@ -748,7 +748,7 @@ this.CopyFileAtFTPLocation("2", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local
         public virtual void CopyFileAtFTPLocation_3()
         {
 #line 66
-this.CopyFileAtFTPLocation("3", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local:1001/FORCOPYFILETESTING/copyfile2.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://DEVOPSPDC.premier.local:1002/FORCOPYFILETESTING/copied2.txt", "Administrator", "Dev2@dmin123", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+this.CopyFileAtFTPLocation("3", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local:1001/FORCOPYFILETESTING/copyfile2.txt", "dev2", "Q/ulw&]", "[[destPath]]", "ftp://DEVOPSPDC.premier.local:1002/FORCOPYFILETESTING/copied2.txt", "dev2", "Q/ulw&]", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -761,8 +761,8 @@ this.CopyFileAtFTPLocation("3", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://DEVOPSPDC.premier.local:1001/FORCOPYFILETESTING/copyfile3.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "sftp://SVRDEV.premier.local/copied2.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "dev2")]
@@ -776,7 +776,7 @@ this.CopyFileAtFTPLocation("3", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local
         public virtual void CopyFileAtFTPLocation_4()
         {
 #line 66
-this.CopyFileAtFTPLocation("4", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local:1001/FORCOPYFILETESTING/copyfile3.txt", "\"\"", "\"\"", "[[destPath]]", "sftp://SVRDEV.premier.local/copied2.txt", "dev2", "Q/ulw&]", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+this.CopyFileAtFTPLocation("4", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local:1001/FORCOPYFILETESTING/copyfile3.txt", "dev2", "Q/ulw&]", "[[destPath]]", "sftp://SVRDEV.premier.local/copied2.txt", "dev2", "Q/ulw&]", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -789,12 +789,12 @@ this.CopyFileAtFTPLocation("4", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://DEVOPSPDC.premier.local:1001/FORCOPYFILETESTING/copyfile4.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "ftp://DEVOPSPDC.premier.local:1001/FORCOPYFILETESTING/copied2.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "\"\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "dev2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"Success\"")]
@@ -804,7 +804,7 @@ this.CopyFileAtFTPLocation("4", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local
         public virtual void CopyFileAtFTPLocation_5()
         {
 #line 66
-this.CopyFileAtFTPLocation("5", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local:1001/FORCOPYFILETESTING/copyfile4.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://DEVOPSPDC.premier.local:1001/FORCOPYFILETESTING/copied2.txt", "\"\"", "\"\"", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+this.CopyFileAtFTPLocation("5", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local:1001/FORCOPYFILETESTING/copyfile4.txt", "dev2", "Q/ulw&]", "[[destPath]]", "ftp://DEVOPSPDC.premier.local:1001/FORCOPYFILETESTING/copied2.txt", "dev2", "Q/ulw&]", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -904,8 +904,8 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://DEVOPSPDC.premier.local:1002/FORCOPYFILETESTING/copyfile0.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "Administrator")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Dev2@dmin123")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "C:\\copied30.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "\"\"")]
@@ -919,7 +919,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void CopyFileAtFTPSLocation_1()
         {
 #line 94
-this.CopyFileAtFTPSLocation("1", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local:1002/FORCOPYFILETESTING/copyfile0.txt", "Administrator", "Dev2@dmin123", "[[destPath]]", "C:\\copied30.txt", "\"\"", "\"\"", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+this.CopyFileAtFTPSLocation("1", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local:1002/FORCOPYFILETESTING/copyfile0.txt", "dev2", "Q/ulw&]", "[[destPath]]", "C:\\copied30.txt", "\"\"", "\"\"", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -932,8 +932,8 @@ this.CopyFileAtFTPSLocation("1", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.loca
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://DEVOPSPDC.premier.local:1002/FORCOPYFILETESTING/copyfile1.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "Administrator")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Dev2@dmin123")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "\\\\DEVOPSPDC.premier.local\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\co" +
             "pied3.txt")]
@@ -948,7 +948,7 @@ this.CopyFileAtFTPSLocation("1", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.loca
         public virtual void CopyFileAtFTPSLocation_2()
         {
 #line 94
-this.CopyFileAtFTPSLocation("2", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local:1002/FORCOPYFILETESTING/copyfile1.txt", "Administrator", "Dev2@dmin123", "[[destPath]]", "\\\\DEVOPSPDC.premier.local\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\co" +
+this.CopyFileAtFTPSLocation("2", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local:1002/FORCOPYFILETESTING/copyfile1.txt", "dev2", "Q/ulw&]", "[[destPath]]", "\\\\DEVOPSPDC.premier.local\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\co" +
                     "pied3.txt", "\"\"", "\"\"", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
@@ -962,12 +962,12 @@ this.CopyFileAtFTPSLocation("2", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.loca
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://DEVOPSPDC.premier.local:1002/FORCOPYFILETESTING/copyfile2.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "Administrator")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Dev2@dmin123")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "ftp://DEVOPSPDC.premier.local:1001/FORCOPYFILETESTING/copied3.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "\"\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "dev2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"Success\"")]
@@ -977,7 +977,7 @@ this.CopyFileAtFTPSLocation("2", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.loca
         public virtual void CopyFileAtFTPSLocation_3()
         {
 #line 94
-this.CopyFileAtFTPSLocation("3", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local:1002/FORCOPYFILETESTING/copyfile2.txt", "Administrator", "Dev2@dmin123", "[[destPath]]", "ftp://DEVOPSPDC.premier.local:1001/FORCOPYFILETESTING/copied3.txt", "\"\"", "\"\"", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+this.CopyFileAtFTPSLocation("3", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local:1002/FORCOPYFILETESTING/copyfile2.txt", "dev2", "Q/ulw&]", "[[destPath]]", "ftp://DEVOPSPDC.premier.local:1001/FORCOPYFILETESTING/copied3.txt", "dev2", "Q/ulw&]", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -990,12 +990,12 @@ this.CopyFileAtFTPSLocation("3", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.loca
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://DEVOPSPDC.premier.local:1002/FORCOPYFILETESTING/copyfile3.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "Administrator")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Dev2@dmin123")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "ftp://DEVOPSPDC.premier.local:1002/FORCOPYFILETESTING/copied3.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "Administrator")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "Dev2@dmin123")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "dev2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"Success\"")]
@@ -1005,7 +1005,7 @@ this.CopyFileAtFTPSLocation("3", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.loca
         public virtual void CopyFileAtFTPSLocation_4()
         {
 #line 94
-this.CopyFileAtFTPSLocation("4", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local:1002/FORCOPYFILETESTING/copyfile3.txt", "Administrator", "Dev2@dmin123", "[[destPath]]", "ftp://DEVOPSPDC.premier.local:1002/FORCOPYFILETESTING/copied3.txt", "Administrator", "Dev2@dmin123", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+this.CopyFileAtFTPSLocation("4", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local:1002/FORCOPYFILETESTING/copyfile3.txt", "dev2", "Q/ulw&]", "[[destPath]]", "ftp://DEVOPSPDC.premier.local:1002/FORCOPYFILETESTING/copied3.txt", "dev2", "Q/ulw&]", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -1018,8 +1018,8 @@ this.CopyFileAtFTPSLocation("4", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.loca
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://DEVOPSPDC.premier.local:1002/FORCOPYFILETESTING/copyfile4.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "Administrator")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Dev2@dmin123")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "sftp://SVRDEV.premier.local/copied3.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "dev2")]
@@ -1033,7 +1033,7 @@ this.CopyFileAtFTPSLocation("4", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.loca
         public virtual void CopyFileAtFTPSLocation_5()
         {
 #line 94
-this.CopyFileAtFTPSLocation("5", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local:1002/FORCOPYFILETESTING/copyfile4.txt", "Administrator", "Dev2@dmin123", "[[destPath]]", "sftp://SVRDEV.premier.local/copied3.txt", "dev2", "Q/ulw&]", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+this.CopyFileAtFTPSLocation("5", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local:1002/FORCOPYFILETESTING/copyfile4.txt", "dev2", "Q/ulw&]", "[[destPath]]", "sftp://SVRDEV.premier.local/copied3.txt", "dev2", "Q/ulw&]", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -1195,8 +1195,8 @@ this.CopyFileAtSFTPLocation("2", "[[sourcePath]]", "sftp://SVRDEV.premier.local/
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "ftp://DEVOPSPDC.premier.local:1001/FORCOPYFILETESTING/copied4.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "\"\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "dev2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"Success\"")]
@@ -1206,7 +1206,7 @@ this.CopyFileAtSFTPLocation("2", "[[sourcePath]]", "sftp://SVRDEV.premier.local/
         public virtual void CopyFileAtSFTPLocation_Variant2()
         {
 #line 122
-this.CopyFileAtSFTPLocation("2", "[[sourcePath]]", "sftp://SVRDEV.premier.local/copyfile2.txt", "dev2", "Q/ulw&]", "[[destPath]]", "ftp://DEVOPSPDC.premier.local:1001/FORCOPYFILETESTING/copied4.txt", "\"\"", "\"\"", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+this.CopyFileAtSFTPLocation("2", "[[sourcePath]]", "sftp://SVRDEV.premier.local/copyfile2.txt", "dev2", "Q/ulw&]", "[[destPath]]", "ftp://DEVOPSPDC.premier.local:1001/FORCOPYFILETESTING/copied4.txt", "dev2", "Q/ulw&]", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -1223,8 +1223,8 @@ this.CopyFileAtSFTPLocation("2", "[[sourcePath]]", "sftp://SVRDEV.premier.local/
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "ftp://DEVOPSPDC.premier.local:1002/FORCOPYFILETESTING/copied4.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "Administrator")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "Dev2@dmin123")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "dev2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"Success\"")]
@@ -1234,7 +1234,7 @@ this.CopyFileAtSFTPLocation("2", "[[sourcePath]]", "sftp://SVRDEV.premier.local/
         public virtual void CopyFileAtSFTPLocation_Variant3()
         {
 #line 122
-this.CopyFileAtSFTPLocation("3", "[[sourcePath]]", "sftp://SVRDEV.premier.local/copyfile3.txt", "dev2", "Q/ulw&]", "[[destPath]]", "ftp://DEVOPSPDC.premier.local:1002/FORCOPYFILETESTING/copied4.txt", "Administrator", "Dev2@dmin123", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+this.CopyFileAtSFTPLocation("3", "[[sourcePath]]", "sftp://SVRDEV.premier.local/copyfile3.txt", "dev2", "Q/ulw&]", "[[destPath]]", "ftp://DEVOPSPDC.premier.local:1002/FORCOPYFILETESTING/copied4.txt", "dev2", "Q/ulw&]", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -1450,8 +1450,8 @@ this.CopyFileAtLocalLocationWithOverwriteDisabled("1", "[[sourcePath]]", "c:\\co
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "ftp://DEVOPSPDC.premier.local:1001/FORCOPYFILETESTING/copied0.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "\"\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "dev2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "False")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"Success\"")]
@@ -1461,7 +1461,7 @@ this.CopyFileAtLocalLocationWithOverwriteDisabled("1", "[[sourcePath]]", "c:\\co
         public virtual void CopyFileAtLocalLocationWithOverwriteDisabled_2()
         {
 #line 152
-this.CopyFileAtLocalLocationWithOverwriteDisabled("2", "[[sourcePath]]", "c:\\copyfile1.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://DEVOPSPDC.premier.local:1001/FORCOPYFILETESTING/copied0.txt", "\"\"", "\"\"", "False", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+this.CopyFileAtLocalLocationWithOverwriteDisabled("2", "[[sourcePath]]", "c:\\copyfile1.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://DEVOPSPDC.premier.local:1001/FORCOPYFILETESTING/copied0.txt", "dev2", "Q/ulw&]", "False", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -1478,8 +1478,8 @@ this.CopyFileAtLocalLocationWithOverwriteDisabled("2", "[[sourcePath]]", "c:\\co
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "ftp://DEVOPSPDC.premier.local:1002/FORCOPYFILETESTING/copied0.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "Administrator")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "Dev2@dmin123")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "dev2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "False")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"Success\"")]
@@ -1489,7 +1489,7 @@ this.CopyFileAtLocalLocationWithOverwriteDisabled("2", "[[sourcePath]]", "c:\\co
         public virtual void CopyFileAtLocalLocationWithOverwriteDisabled_3()
         {
 #line 152
-this.CopyFileAtLocalLocationWithOverwriteDisabled("3", "[[sourcePath]]", "c:\\copyfile2.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://DEVOPSPDC.premier.local:1002/FORCOPYFILETESTING/copied0.txt", "Administrator", "Dev2@dmin123", "False", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+this.CopyFileAtLocalLocationWithOverwriteDisabled("3", "[[sourcePath]]", "c:\\copyfile2.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://DEVOPSPDC.premier.local:1002/FORCOPYFILETESTING/copied0.txt", "dev2", "Q/ulw&]", "False", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -1710,8 +1710,8 @@ this.CopyFileAtUNCLocationWithOverwriteDisabled("1", "[[sourcePath]]", "\\\\DEVO
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "ftp://DEVOPSPDC.premier.local:1001/FORCOPYFILETESTING/copied1.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "\"\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "dev2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "False")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"Success\"")]
@@ -1722,7 +1722,7 @@ this.CopyFileAtUNCLocationWithOverwriteDisabled("1", "[[sourcePath]]", "\\\\DEVO
         {
 #line 181
 this.CopyFileAtUNCLocationWithOverwriteDisabled("2", "[[sourcePath]]", "\\\\DEVOPSPDC.premier.local\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\co" +
-                    "pyfile1.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://DEVOPSPDC.premier.local:1001/FORCOPYFILETESTING/copied1.txt", "\"\"", "\"\"", "False", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+                    "pyfile1.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://DEVOPSPDC.premier.local:1001/FORCOPYFILETESTING/copied1.txt", "dev2", "Q/ulw&]", "False", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -1740,8 +1740,8 @@ this.CopyFileAtUNCLocationWithOverwriteDisabled("2", "[[sourcePath]]", "\\\\DEVO
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "ftp://DEVOPSPDC.premier.local:1002/FORCOPYFILETESTING/copied1.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "Administrator")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "Dev2@dmin123")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "dev2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "False")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"Success\"")]
@@ -1752,7 +1752,7 @@ this.CopyFileAtUNCLocationWithOverwriteDisabled("2", "[[sourcePath]]", "\\\\DEVO
         {
 #line 181
 this.CopyFileAtUNCLocationWithOverwriteDisabled("3", "[[sourcePath]]", "\\\\DEVOPSPDC.premier.local\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\co" +
-                    "pyfile2.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://DEVOPSPDC.premier.local:1002/FORCOPYFILETESTING/copied1.txt", "Administrator", "Dev2@dmin123", "False", "[[result]]", "\"Success\"", "NO", "\"C:\\Temp\\key.opk\"", "", ((string[])(null)));
+                    "pyfile2.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://DEVOPSPDC.premier.local:1002/FORCOPYFILETESTING/copied1.txt", "dev2", "Q/ulw&]", "False", "[[result]]", "\"Success\"", "NO", "\"C:\\Temp\\key.opk\"", "", ((string[])(null)));
 #line hidden
         }
         
@@ -1914,8 +1914,8 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://DEVOPSPDC.premier.local:1001/FORCOPYFILETESTING/copyfile0.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "C:\\copied20.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "\"\"")]
@@ -1929,7 +1929,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void CopyFileAtFTPLocationWithOverwriteDisabled_1()
         {
 #line 209
-this.CopyFileAtFTPLocationWithOverwriteDisabled("1", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local:1001/FORCOPYFILETESTING/copyfile0.txt", "\"\"", "\"\"", "[[destPath]]", "C:\\copied20.txt", "\"\"", "\"\"", "False", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+this.CopyFileAtFTPLocationWithOverwriteDisabled("1", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local:1001/FORCOPYFILETESTING/copyfile0.txt", "dev2", "Q/ulw&]", "[[destPath]]", "C:\\copied20.txt", "\"\"", "\"\"", "False", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -1942,8 +1942,8 @@ this.CopyFileAtFTPLocationWithOverwriteDisabled("1", "[[sourcePath]]", "ftp://DE
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://DEVOPSPDC.premier.local:1001/FORCOPYFILETESTING/copyfile1.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "\\\\DEVOPSPDC.premier.local\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\co" +
             "pied2.txt")]
@@ -1958,7 +1958,7 @@ this.CopyFileAtFTPLocationWithOverwriteDisabled("1", "[[sourcePath]]", "ftp://DE
         public virtual void CopyFileAtFTPLocationWithOverwriteDisabled_2()
         {
 #line 209
-this.CopyFileAtFTPLocationWithOverwriteDisabled("2", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local:1001/FORCOPYFILETESTING/copyfile1.txt", "\"\"", "\"\"", "[[destPath]]", "\\\\DEVOPSPDC.premier.local\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\co" +
+this.CopyFileAtFTPLocationWithOverwriteDisabled("2", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local:1001/FORCOPYFILETESTING/copyfile1.txt", "dev2", "Q/ulw&]", "[[destPath]]", "\\\\DEVOPSPDC.premier.local\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\co" +
                     "pied2.txt", "\"\"", "\"\"", "False", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
@@ -1972,12 +1972,12 @@ this.CopyFileAtFTPLocationWithOverwriteDisabled("2", "[[sourcePath]]", "ftp://DE
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://DEVOPSPDC.premier.local:1001/FORCOPYFILETESTING/copyfile2.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "ftp://DEVOPSPDC.premier.local:1002/FORCOPYFILETESTING/copied2.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "Administrator")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "Dev2@dmin123")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "dev2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "False")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"Success\"")]
@@ -1987,7 +1987,7 @@ this.CopyFileAtFTPLocationWithOverwriteDisabled("2", "[[sourcePath]]", "ftp://DE
         public virtual void CopyFileAtFTPLocationWithOverwriteDisabled_3()
         {
 #line 209
-this.CopyFileAtFTPLocationWithOverwriteDisabled("3", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local:1001/FORCOPYFILETESTING/copyfile2.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://DEVOPSPDC.premier.local:1002/FORCOPYFILETESTING/copied2.txt", "Administrator", "Dev2@dmin123", "False", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+this.CopyFileAtFTPLocationWithOverwriteDisabled("3", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local:1001/FORCOPYFILETESTING/copyfile2.txt", "dev2", "Q/ulw&]", "[[destPath]]", "ftp://DEVOPSPDC.premier.local:1002/FORCOPYFILETESTING/copied2.txt", "dev2", "Q/ulw&]", "False", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -2000,8 +2000,8 @@ this.CopyFileAtFTPLocationWithOverwriteDisabled("3", "[[sourcePath]]", "ftp://DE
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://DEVOPSPDC.premier.local:1001/FORCOPYFILETESTING/copyfile3.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "sftp://SVRDEV.premier.local/copied2.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "dev2")]
@@ -2015,7 +2015,7 @@ this.CopyFileAtFTPLocationWithOverwriteDisabled("3", "[[sourcePath]]", "ftp://DE
         public virtual void CopyFileAtFTPLocationWithOverwriteDisabled_4()
         {
 #line 209
-this.CopyFileAtFTPLocationWithOverwriteDisabled("4", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local:1001/FORCOPYFILETESTING/copyfile3.txt", "\"\"", "\"\"", "[[destPath]]", "sftp://SVRDEV.premier.local/copied2.txt", "dev2", "Q/ulw&]", "False", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+this.CopyFileAtFTPLocationWithOverwriteDisabled("4", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local:1001/FORCOPYFILETESTING/copyfile3.txt", "dev2", "Q/ulw&]", "[[destPath]]", "sftp://SVRDEV.premier.local/copied2.txt", "dev2", "Q/ulw&]", "False", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -2028,12 +2028,12 @@ this.CopyFileAtFTPLocationWithOverwriteDisabled("4", "[[sourcePath]]", "ftp://DE
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://DEVOPSPDC.premier.local:1001/FORCOPYFILETESTING/copyfile4.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "ftp://DEVOPSPDC.premier.local:1001/FORCOPYFILETESTING/copied2.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "\"\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "dev2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "False")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"Success\"")]
@@ -2043,7 +2043,7 @@ this.CopyFileAtFTPLocationWithOverwriteDisabled("4", "[[sourcePath]]", "ftp://DE
         public virtual void CopyFileAtFTPLocationWithOverwriteDisabled_5()
         {
 #line 209
-this.CopyFileAtFTPLocationWithOverwriteDisabled("5", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local:1001/FORCOPYFILETESTING/copyfile4.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://DEVOPSPDC.premier.local:1001/FORCOPYFILETESTING/copied2.txt", "\"\"", "\"\"", "False", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+this.CopyFileAtFTPLocationWithOverwriteDisabled("5", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local:1001/FORCOPYFILETESTING/copyfile4.txt", "dev2", "Q/ulw&]", "[[destPath]]", "ftp://DEVOPSPDC.premier.local:1001/FORCOPYFILETESTING/copied2.txt", "dev2", "Q/ulw&]", "False", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -2143,8 +2143,8 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://DEVOPSPDC.premier.local:1002/FORCOPYFILETESTING/copyfile0.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "Administrator")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Dev2@dmin123")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "C:\\copied30.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "\"\"")]
@@ -2158,7 +2158,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void CopyFileAtFTPSLocationWithOverwriteDisabled_1()
         {
 #line 237
-this.CopyFileAtFTPSLocationWithOverwriteDisabled("1", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local:1002/FORCOPYFILETESTING/copyfile0.txt", "Administrator", "Dev2@dmin123", "[[destPath]]", "C:\\copied30.txt", "\"\"", "\"\"", "False", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+this.CopyFileAtFTPSLocationWithOverwriteDisabled("1", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local:1002/FORCOPYFILETESTING/copyfile0.txt", "dev2", "Q/ulw&]", "[[destPath]]", "C:\\copied30.txt", "\"\"", "\"\"", "False", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -2171,8 +2171,8 @@ this.CopyFileAtFTPSLocationWithOverwriteDisabled("1", "[[sourcePath]]", "ftp://D
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://DEVOPSPDC.premier.local:1002/FORCOPYFILETESTING/copyfile1.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "Administrator")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Dev2@dmin123")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "\\\\DEVOPSPDC.premier.local\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\co" +
             "pied3.txt")]
@@ -2187,7 +2187,7 @@ this.CopyFileAtFTPSLocationWithOverwriteDisabled("1", "[[sourcePath]]", "ftp://D
         public virtual void CopyFileAtFTPSLocationWithOverwriteDisabled_2()
         {
 #line 237
-this.CopyFileAtFTPSLocationWithOverwriteDisabled("2", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local:1002/FORCOPYFILETESTING/copyfile1.txt", "Administrator", "Dev2@dmin123", "[[destPath]]", "\\\\DEVOPSPDC.premier.local\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\co" +
+this.CopyFileAtFTPSLocationWithOverwriteDisabled("2", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local:1002/FORCOPYFILETESTING/copyfile1.txt", "dev2", "Q/ulw&]", "[[destPath]]", "\\\\DEVOPSPDC.premier.local\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\co" +
                     "pied3.txt", "\"\"", "\"\"", "False", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
@@ -2201,12 +2201,12 @@ this.CopyFileAtFTPSLocationWithOverwriteDisabled("2", "[[sourcePath]]", "ftp://D
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://DEVOPSPDC.premier.local:1002/FORCOPYFILETESTING/copyfile2.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "Administrator")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Dev2@dmin123")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "ftp://DEVOPSPDC.premier.local:1001/FORCOPYFILETESTING/copied3.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "\"\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "dev2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "False")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"Success\"")]
@@ -2216,7 +2216,7 @@ this.CopyFileAtFTPSLocationWithOverwriteDisabled("2", "[[sourcePath]]", "ftp://D
         public virtual void CopyFileAtFTPSLocationWithOverwriteDisabled_3()
         {
 #line 237
-this.CopyFileAtFTPSLocationWithOverwriteDisabled("3", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local:1002/FORCOPYFILETESTING/copyfile2.txt", "Administrator", "Dev2@dmin123", "[[destPath]]", "ftp://DEVOPSPDC.premier.local:1001/FORCOPYFILETESTING/copied3.txt", "\"\"", "\"\"", "False", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+this.CopyFileAtFTPSLocationWithOverwriteDisabled("3", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local:1002/FORCOPYFILETESTING/copyfile2.txt", "dev2", "Q/ulw&]", "[[destPath]]", "ftp://DEVOPSPDC.premier.local:1001/FORCOPYFILETESTING/copied3.txt", "dev2", "Q/ulw&]", "False", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -2229,12 +2229,12 @@ this.CopyFileAtFTPSLocationWithOverwriteDisabled("3", "[[sourcePath]]", "ftp://D
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://DEVOPSPDC.premier.local:1002/FORCOPYFILETESTING/copyfile3.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "Administrator")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Dev2@dmin123")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "ftp://DEVOPSPDC.premier.local:1002/FORCOPYFILETESTING/copied3.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "Administrator")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "Dev2@dmin123")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "dev2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "False")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"Success\"")]
@@ -2244,7 +2244,7 @@ this.CopyFileAtFTPSLocationWithOverwriteDisabled("3", "[[sourcePath]]", "ftp://D
         public virtual void CopyFileAtFTPSLocationWithOverwriteDisabled_4()
         {
 #line 237
-this.CopyFileAtFTPSLocationWithOverwriteDisabled("4", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local:1002/FORCOPYFILETESTING/copyfile3.txt", "Administrator", "Dev2@dmin123", "[[destPath]]", "ftp://DEVOPSPDC.premier.local:1002/FORCOPYFILETESTING/copied3.txt", "Administrator", "Dev2@dmin123", "False", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+this.CopyFileAtFTPSLocationWithOverwriteDisabled("4", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local:1002/FORCOPYFILETESTING/copyfile3.txt", "dev2", "Q/ulw&]", "[[destPath]]", "ftp://DEVOPSPDC.premier.local:1002/FORCOPYFILETESTING/copied3.txt", "dev2", "Q/ulw&]", "False", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -2257,8 +2257,8 @@ this.CopyFileAtFTPSLocationWithOverwriteDisabled("4", "[[sourcePath]]", "ftp://D
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://DEVOPSPDC.premier.local:1002/FORCOPYFILETESTING/copyfile4.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "Administrator")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Dev2@dmin123")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "sftp://SVRDEV.premier.local/copied3.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "dev2")]
@@ -2272,7 +2272,7 @@ this.CopyFileAtFTPSLocationWithOverwriteDisabled("4", "[[sourcePath]]", "ftp://D
         public virtual void CopyFileAtFTPSLocationWithOverwriteDisabled_5()
         {
 #line 237
-this.CopyFileAtFTPSLocationWithOverwriteDisabled("5", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local:1002/FORCOPYFILETESTING/copyfile4.txt", "Administrator", "Dev2@dmin123", "[[destPath]]", "sftp://SVRDEV.premier.local/copied3.txt", "dev2", "Q/ulw&]", "False", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+this.CopyFileAtFTPSLocationWithOverwriteDisabled("5", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local:1002/FORCOPYFILETESTING/copyfile4.txt", "dev2", "Q/ulw&]", "[[destPath]]", "sftp://SVRDEV.premier.local/copied3.txt", "dev2", "Q/ulw&]", "False", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -2434,8 +2434,8 @@ this.CopyFileAtSFTPLocationWithOverwriteDisabled("2", "[[sourcePath]]", "sftp://
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "ftp://DEVOPSPDC.premier.local:1001/FORCOPYFILETESTING/copied4.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "\"\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "dev2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "False")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"Success\"")]
@@ -2445,7 +2445,7 @@ this.CopyFileAtSFTPLocationWithOverwriteDisabled("2", "[[sourcePath]]", "sftp://
         public virtual void CopyFileAtSFTPLocationWithOverwriteDisabled_3()
         {
 #line 265
-this.CopyFileAtSFTPLocationWithOverwriteDisabled("3", "[[sourcePath]]", "sftp://SVRDEV.premier.local/copyfile2.txt", "dev2", "Q/ulw&]", "[[destPath]]", "ftp://DEVOPSPDC.premier.local:1001/FORCOPYFILETESTING/copied4.txt", "\"\"", "\"\"", "False", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+this.CopyFileAtSFTPLocationWithOverwriteDisabled("3", "[[sourcePath]]", "sftp://SVRDEV.premier.local/copyfile2.txt", "dev2", "Q/ulw&]", "[[destPath]]", "ftp://DEVOPSPDC.premier.local:1001/FORCOPYFILETESTING/copied4.txt", "dev2", "Q/ulw&]", "False", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -2462,8 +2462,8 @@ this.CopyFileAtSFTPLocationWithOverwriteDisabled("3", "[[sourcePath]]", "sftp://
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "ftp://DEVOPSPDC.premier.local:1002/FORCOPYFILETESTING/copied4.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "Administrator")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "Dev2@dmin123")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "dev2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "False")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"Success\"")]
@@ -2473,7 +2473,7 @@ this.CopyFileAtSFTPLocationWithOverwriteDisabled("3", "[[sourcePath]]", "sftp://
         public virtual void CopyFileAtSFTPLocationWithOverwriteDisabled_4()
         {
 #line 265
-this.CopyFileAtSFTPLocationWithOverwriteDisabled("4", "[[sourcePath]]", "sftp://SVRDEV.premier.local/copyfile3.txt", "dev2", "Q/ulw&]", "[[destPath]]", "ftp://DEVOPSPDC.premier.local:1002/FORCOPYFILETESTING/copied4.txt", "Administrator", "Dev2@dmin123", "False", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+this.CopyFileAtSFTPLocationWithOverwriteDisabled("4", "[[sourcePath]]", "sftp://SVRDEV.premier.local/copyfile3.txt", "dev2", "Q/ulw&]", "[[destPath]]", "ftp://DEVOPSPDC.premier.local:1002/FORCOPYFILETESTING/copied4.txt", "dev2", "Q/ulw&]", "False", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         

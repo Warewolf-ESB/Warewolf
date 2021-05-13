@@ -2,7 +2,7 @@
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -63,7 +63,7 @@ namespace Dev2.Webs
                 selectedPath = selectedPath.Replace("\\", "\\\\");
 
                 var mainViewModel = CustomContainer.Get<IShellViewModel>();
-                var environmentViewModel = mainViewModel?.ExplorerViewModel?.Environments.FirstOrDefault(model => model.Server.EnvironmentID == resourceModel.Environment.EnvironmentID);
+                var environmentViewModel = mainViewModel?.ExplorerViewModel?.Environments?.FirstOrDefault(model => model.Server.EnvironmentID == resourceModel.Environment.EnvironmentID);
                 if (environmentViewModel == null)
                 {
                     return;
