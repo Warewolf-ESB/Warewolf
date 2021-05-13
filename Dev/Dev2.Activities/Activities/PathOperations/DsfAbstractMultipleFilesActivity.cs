@@ -240,7 +240,7 @@ namespace Dev2.Activities.PathOperations
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         
-        protected string DecryptedDestinationPassword => DataListUtil.NotEncrypted(DestinationPassword) ? DestinationPassword : DpapiWrapper.Decrypt(DestinationPassword);
+        protected string DecryptedDestinationPassword => DataListUtil.NotEncrypted(DestinationPassword) ? DestinationPassword : DpapiWrapper.DecryptIfEncrypted(DestinationPassword);
 
         #endregion Properties
 
