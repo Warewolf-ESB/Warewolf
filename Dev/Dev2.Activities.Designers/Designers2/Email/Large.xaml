@@ -130,9 +130,10 @@
                      Grid.Row="2"
                      x:Name="ThePasswordBox"
                      ToolTip="{x:Static languages:Tooltips.EmailToolTipPassword}"
-                     PasswordChanged="OnPasswordChanged"
                      Margin="{StaticResource ControlBorderTop}"
                      attachedProperties:FocusSetter.IsFocused="{Binding IsPasswordFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     attachedProperties:PasswordBoxAssistant.BindPassword="true"
+                     attachedProperties:PasswordBoxAssistant.BoundPassword="{Binding Path=ModelItem.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Password_AutoID}">
             <i:Interaction.Behaviors>
                 <core1:HelpSetter Text="{x:Static languages:HelpText.EmailHelpPassword}" DataContext="{Binding}" />
