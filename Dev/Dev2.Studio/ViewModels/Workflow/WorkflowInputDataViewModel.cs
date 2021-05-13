@@ -37,10 +37,8 @@ using Dev2.Studio.Interfaces.Enums;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Threading;
 using Dev2.Util;
-using Hangfire.Storage.Monitoring;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using ServiceStack.Common.Extensions;
 using Warewolf.Studio.Resources.Languages;
 using Formatting = Newtonsoft.Json.Formatting;
 
@@ -423,14 +421,12 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             if (!string.IsNullOrEmpty(DebugTo.XmlData) && DebugTo.XmlData.StartsWith("<DataList>"))
             {
-                var doc = new XmlDocument();
-                doc.PreserveWhitespace = false;
+                var doc = new XmlDocument {PreserveWhitespace = false};
                 doc.LoadXml(DebugTo.DataList);
                 RemoveAttributes(doc);
 
                 //find previous element values
-                var prevDoc = new XmlDocument();
-                prevDoc.PreserveWhitespace = false;
+                var prevDoc = new XmlDocument {PreserveWhitespace = false};
                 prevDoc.LoadXml(DebugTo.XmlData);
                 
                 try
@@ -448,7 +444,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        public void Compare(XmlDocument doc1, XmlDocument doc2)
+        private void Compare(XmlDocument doc1, XmlDocument doc2)
         {
             foreach (XmlNode childNode in doc2.ChildNodes)
             {
@@ -456,22 +452,17 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        public void CompareLower(XmlNode nodeName, XmlDocument doc1, XmlDocument doc2)
+        private void CompareLower(XmlNode nodeName, XmlDocument doc1, XmlDocument doc2)
         {
             foreach (XmlNode childNode in nodeName.ChildNodes)
             {
-                if (childNode.Name == "#text")
-                {
-                    continue;
-                }
-
                 string path = CreatePath(childNode);
 
-                if (doc1.SelectNodes(path).Count == 0)
+                if (doc1.SelectNodes(path)?.Count == 0)
                 {
                     XmlNode tempNode = doc1.ImportNode(childNode, true);
                     if(!tempNode.HasChildNodes) tempNode.InnerText = "";
-                    doc1.SelectSingleNode(path.Substring(0, path.LastIndexOf("/"))).AppendChild(tempNode);
+                    doc1.SelectSingleNode(path.Substring(0, path.LastIndexOf("/")))?.AppendChild(tempNode);
                 }
                 else
                 {
@@ -480,11 +471,11 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        public string CreatePath(XmlNode node)
+        private string CreatePath(XmlNode node)
         {
             string path = "/" + node.Name;
 
-            while (!(node.ParentNode.Name == "#document"))
+            while (node.ParentNode?.Name != "#document")
             {
                 path = "/" + node.ParentNode.Name + path;
                 node = node.ParentNode;
