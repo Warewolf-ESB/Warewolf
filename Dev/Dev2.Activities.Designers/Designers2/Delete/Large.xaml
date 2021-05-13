@@ -128,16 +128,12 @@
                                      SourcePropertyValue="{Binding  ModelItem.Password, UpdateSourceTrigger=PropertyChanged}"
                                      Target="{Binding}" />
             </i:Interaction.Behaviors>
-        </ui:IntellisenseTextBox>
+            </ui:IntellisenseTextBox>
             <customControls:PasswordBoxUserControl Grid.Column="0"
-                     Grid.Row="0"
-                     Visibility="{Binding ShowPassword, Converter={StaticResource BoolToVisibilityConverterNegative}}"
-                     Margin="{StaticResource ActivityBorderTop}"
-                     ToolTip="{x:Static languages:Tooltips.FileActivityToolTipPassword}"
-                     attachedProperties:FocusSetter.IsFocused="{Binding IsPasswordFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                     attachedProperties:PasswordBoxAssistant.BindPassword="true"
-                     attachedProperties:PasswordBoxAssistant.BoundPassword="{Binding Path=ModelItem.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                     AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Passwordtxt_AutoID}">
+                                               Grid.Row="0"
+                                               Margin="{StaticResource ActivityBorderTop}"
+                                               Text="{Binding Path=ModelItem.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                               ToolTip="{x:Static languages:Tooltips.DeleteToolTipPassword}">
                 <i:Interaction.Behaviors>
                     <core1:HelpSetter Text="{x:Static languages:HelpText.DeleteHelpPassword}" DataContext="{Binding}" />
                     <errors:ErrorsSetter Source="{Binding}"
