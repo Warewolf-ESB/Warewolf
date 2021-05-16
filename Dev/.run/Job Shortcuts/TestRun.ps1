@@ -1,3 +1,4 @@
+
 param(
   [Parameter(Mandatory=$true)]
   [String[]] $Projects, 
@@ -68,6 +69,18 @@ if ($Coverage.IsPresent -and !(Test-Path ".\JetBrains.dotCover.CommandLineTools\
 	if (!(Test-Path ".\JetBrains.dotCover.CommandLineTools\tools\dotCover.exe")) {
 		Write-Error "Cannot install coverage runner using nuget."
 		exit 1
+	}
+}
+if ($Coverage.IsPresent) {
+	Write-Host Removing existing DotCover Coverage Report
+	if (Test-Path "$TestResultsPath\MergedDotCover.dcvr") {
+		Remove-Item "$TestResultsPath\MergedDotCover.dcvr"
+	}
+	if (Test-Path "$TestResultsPath\DotCover-Coverage-Report.html") {
+		Remove-Item "$TestResultsPath\DotCover-Coverage-Report.html"
+	}
+	if (Test-Path "$TestResultsPath\DotCover-Coverage-Report") {
+		Remove-Item "$TestResultsPath\DotCover-Coverage-Report"
 	}
 }
 for ($LoopCounter=0; $LoopCounter -le $RetryCount; $LoopCounter++) {
@@ -261,4 +274,9 @@ Remove-Item -force -recurse
 		Write-Error "No test results found."
 		exit 1
 	}
+}
+if ($Coverage.IsPresent) {
+	$MergedSnapshotPath = "$TestResultsPath\MergedDotCover.dcvr"
+	&".\JetBrains.dotCover.CommandLineTools\tools\dotCover.exe" merge --Sources="$TestResultsPath\DotCover*.dcvr" --Output=$MergedSnapshotPath
+	&".\JetBrains.dotCover.CommandLineTools\tools\dotCover.exe" report --Source=$MergedSnapshotPath --Output="$TestResultsPath\DotCover-Coverage-Report.html" --ReportType=HTML
 }
