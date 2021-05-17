@@ -21,6 +21,7 @@ using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Warewolf.Security.Encryption;
 
 
 namespace Dev2.Tests.Activities.ActivityTests
@@ -357,7 +358,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
-        [Timeout(60000)]
+        [Timeout(120000)]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("SendEmail_Execute")]
         public void SendEmail_Execute_FromAccount_EmailSourceIsCorrect()
@@ -490,7 +491,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("BccValue", activity.Bcc);
             Assert.AreEqual("AttachmentsValue", activity.Attachments);
             Assert.AreEqual("ToValue", activity.To);
-            Assert.IsTrue(activity.Password.IsBase64());
+            Assert.AreEqual("PasswordValue", activity.Password);
         }
 
         [TestMethod]

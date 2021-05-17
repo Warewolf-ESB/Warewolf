@@ -66,6 +66,7 @@ namespace Dev2.Activities
         
         [FindMissing]
         public string FromAccount { get; set; }
+        
         [FindMissing]
         public string Password
         {
@@ -97,8 +98,18 @@ namespace Dev2.Activities
         }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        
-        protected string DecryptedPassword => DataListUtil.NotEncrypted(Password) ? Password : DpapiWrapper.Decrypt(Password);
+        protected string DecryptedPassword
+        {
+            get
+            {
+                var decryptedPassword = Password;
+                if (DataListUtil.NotEncrypted(decryptedPassword))
+                {
+                    return decryptedPassword;
+                }
+                return decryptedPassword.CanBeDecrypted() ? DpapiWrapper.DecryptIfEncrypted(decryptedPassword) : decryptedPassword;
+            }
+        }
 
         [FindMissing]
         public string To { get; set; }
