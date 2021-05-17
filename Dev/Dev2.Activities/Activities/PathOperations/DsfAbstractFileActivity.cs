@@ -152,7 +152,18 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-		protected string DecryptedPassword => DataListUtil.NotEncrypted(Password) ? Password : DpapiWrapper.DecryptIfEncrypted(Password);
+        protected string DecryptedPassword
+        {
+	        get
+	        {
+		        var decryptedPassword = Password;
+		        if (DataListUtil.NotEncrypted(decryptedPassword))
+		        {
+			        return decryptedPassword;
+		        }
+		        return decryptedPassword.CanBeDecrypted() ? DpapiWrapper.DecryptIfEncrypted(decryptedPassword) : decryptedPassword;
+	        }
+        }
 		
 		protected abstract IList<OutputTO> TryExecuteConcreteAction(IDSFDataObject context, out ErrorResultTO error, int update);
 

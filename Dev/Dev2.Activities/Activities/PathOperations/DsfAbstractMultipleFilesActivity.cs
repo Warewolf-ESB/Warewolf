@@ -239,8 +239,18 @@ namespace Dev2.Activities.PathOperations
         }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        
-        protected string DecryptedDestinationPassword => DataListUtil.NotEncrypted(DestinationPassword) ? DestinationPassword : DpapiWrapper.DecryptIfEncrypted(DestinationPassword);
+        protected string DecryptedDestinationPassword
+        {
+            get
+            {
+                var decryptedDestinationPassword = DestinationPassword;
+                if (DataListUtil.NotEncrypted(decryptedDestinationPassword))
+                {
+                    return decryptedDestinationPassword;
+                }
+                return decryptedDestinationPassword.CanBeDecrypted() ? DpapiWrapper.DecryptIfEncrypted(decryptedDestinationPassword) : decryptedDestinationPassword;
+            }
+        }
 
         #endregion Properties
 

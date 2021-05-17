@@ -20,6 +20,7 @@ using Dev2.Interfaces;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Dev2.Activities;
 using System.Linq;
+using Dev2.Activities.PathOperations;
 using Moq;
 using Warewolf.Storage;
 using Dev2.Common;
