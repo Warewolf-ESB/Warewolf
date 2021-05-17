@@ -261,9 +261,7 @@
     <Compile Include="ActivityTests\AdvancedRecordsetActivityWorkerTests.cs" />
     <Compile Include="ActivityTests\SuspendExecutionActivityTests.cs" />
     <Compile Include="ActivityTests\Web\DsfWebDeleteActivityTests.cs" />
-    <Compile Include="ActivityTests\Web\DsfWebGetActivityTests.cs" />
     <Compile Include="ActivityTests\Web\WebGetActivityTests.cs" />
-    <Compile Include="ActivityTests\Web\DsfWebPutActivityTests.cs" />
     <Compile Include="ActivityTests\Web\WebPostActivityTests.cs" />
     <Compile Include="ActivityTests\Web\WebPutActivityTests.cs" />
     <Compile Include="ActivityTests\RecordsetLengthTestNullhandler.cs" />
@@ -307,7 +305,6 @@
     <Compile Include="ActivityTests\DsfDatabaseActivityTests.cs" />
     <Compile Include="ActivityTests\SqlBulkInserterTests.cs" />
     <Compile Include="ActivityTests\SqlBulkCopyWrapperTest.cs" />
-    <Compile Include="ActivityTests\Web\DsfWebPostActivityTests.cs" />
     <Compile Include="ActivityTests\UnZipTests.cs" />
     <Compile Include="ActivityTests\BaseActivityUnitTest.cs" />
     <Compile Include="ActivityTests\Web\ResponseManagerTests.cs" />
