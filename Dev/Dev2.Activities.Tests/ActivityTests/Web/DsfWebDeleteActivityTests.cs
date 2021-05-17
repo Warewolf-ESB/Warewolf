@@ -12,13 +12,18 @@ using System;
 using System.Activities;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Dev2.Activities;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.Graph;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Communication;
+using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.TO;
+using Dev2.DataList.Contract;
 using Dev2.DynamicServices;
 using Dev2.Interfaces;
 using Dev2.Runtime.Interfaces;
@@ -592,6 +597,66 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             base.ExecutionImpl(esbChannel, dataObject, inputs, outputs, out tmpErrors, update);
         }
     }
+    
+    public class MockEsb : IEsbChannel
+    {
+        public Guid ExecuteRequest(IDSFDataObject dataObject, EsbExecuteRequest request, Guid workspaceID,
+                                   out ErrorResultTO errors)
+        {
+            errors = new ErrorResultTO();
+            return Guid.NewGuid();
+        }
+
+        public T FetchServerModel<T>(IDSFDataObject dataObject, Guid workspaceID, out ErrorResultTO errors, int update)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string FindServiceShape(Guid workspaceID, string serviceName, int update)
+        {
+            throw new NotImplementedException();
+        }
+
+        public StringBuilder FindServiceShape(Guid workspaceID, Guid resourceID)
+        {
+            return null;
+        }
+
+        public IList<KeyValuePair<enDev2ArgumentType, IList<IDev2Definition>>> ShapeForSubRequest(
+            IDSFDataObject dataObject, string inputDefs, string outputDefs, out ErrorResultTO errors)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Guid CorrectDataList(IDSFDataObject dataObject, Guid workspaceID, out ErrorResultTO errors,
+                                    IDataListCompiler compiler)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ExecuteLogErrorRequest(IDSFDataObject dataObject, Guid workspaceID, string uri,
+                                           out ErrorResultTO errors, int update)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IExecutionEnvironment UpdatePreviousEnvironmentWithSubExecutionResultUsingOutputMappings(IDSFDataObject dataObject, string outputDefs, int update, bool handleErrors, ErrorResultTO errors)
+        {
+            return null;
+        }
+
+        public void CreateNewEnvironmentFromInputMappings(IDSFDataObject dataObject, string inputDefs, int update)
+        {
+        }
+
+        public IExecutionEnvironment ExecuteSubRequest(IDSFDataObject dataObject, Guid workspaceID, string inputDefs, string outputDefs,
+                                      out ErrorResultTO errors, int update, bool b)
+        {           
+            errors = new ErrorResultTO();
+            return dataObject.Environment;
+        }
+    }
+
 }
 
 
