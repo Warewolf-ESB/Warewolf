@@ -25,7 +25,6 @@ namespace Warewolf.Auditing.Tests
     public class AuditQueryableTests
     {
         string connstring = @"C:\ProgramData\Warewolf\Audits\AuditTestDB.db";
-        string sqlMessage = "SELECT * FROM (SELECT json_extract(Properties, '$.Message') AS Message, Level, TimeStamp FROM Logs) ";
 
         [TestMethod]
         [Owner("Candice Daniel")]

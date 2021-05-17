@@ -37,7 +37,6 @@ namespace Dev2.Activities
         private IStateNotifier _stateNotifier = null;
         private readonly bool _persistenceEnabled;
         private readonly IPersistenceExecution _scheduler;
-        private ActivityFunc<string, bool> _overrideDataFunc;
 
         public ManualResumptionActivity()
             : this(Config.Persistence, new PersistenceExecution())
