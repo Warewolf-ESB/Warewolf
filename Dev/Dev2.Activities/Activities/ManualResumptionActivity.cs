@@ -11,8 +11,6 @@
 using System;
 using System.Activities;
 using System.Collections.Generic;
-using System.Linq;
-using System.Security.Principal;
 using Dev2.Activities.Debug;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Toolbox;
@@ -25,7 +23,6 @@ using Warewolf.Auditing;
 using Warewolf.Core;
 using Warewolf.Driver.Persistence;
 using Warewolf.Resource.Errors;
-using Warewolf.Security.Encryption;
 
 namespace Dev2.Activities
 {
@@ -70,6 +67,7 @@ namespace Dev2.Activities
         [FindMissing]
         public bool OverrideInputVariables { get; set; }
 
+        public IDSFDataObject ResumeDataObject { get; set; }
 
         public ActivityFunc<string, bool> OverrideDataFunc { get; set; }
 
@@ -119,37 +117,38 @@ namespace Dev2.Activities
             try
             {
                 var suspensionId = EvalSuspensionId();
-                if (string.IsNullOrWhiteSpace(suspensionId))
+                if(string.IsNullOrWhiteSpace(suspensionId))
                 {
                     throw new Exception(ErrorResource.ManualResumptionSuspensionIdBlank);
                 }
 
-                if (!_persistenceEnabled)
+                if(!_persistenceEnabled)
                 {
                     throw new Exception(ErrorResource.PersistenceSettingsNoConfigured);
                 }
 
                 const string overrideVariables = "";
-                if (OverrideInputVariables)
+                if(OverrideInputVariables)
                 {
                     var persistedValues = _scheduler.GetPersistedValues(suspensionId);
 
-                    if (string.IsNullOrEmpty(persistedValues.SuspendedEnvironment))
+                    if(string.IsNullOrEmpty(persistedValues.SuspendedEnvironment))
                     {
                         throw new Exception(ErrorResource.ManualResumptionSuspensionEnvBlank);
                     }
 
-                    if (persistedValues.SuspendedEnvironment.StartsWith("Failed:"))
+                    if(persistedValues.SuspendedEnvironment.StartsWith("Failed:"))
                     {
                         throw new Exception(persistedValues.SuspendedEnvironment);
                     }
-                    var resumeObject = _dataObject;
-                    resumeObject.StartActivityId = persistedValues.StartActivityId;
-                    resumeObject.Environment = _dataObject.Environment;
-                    resumeObject.Environment.FromJson(persistedValues.SuspendedEnvironment);
-                    resumeObject.ExecutingUser = persistedValues.ExecutingUser;
-                    InnerActivity(resumeObject, _update);
-                    Response = _scheduler.ManualResumeWithOverrideJob(resumeObject, suspensionId);
+
+                    ResumeDataObject = _dataObject;
+                    ResumeDataObject.StartActivityId = persistedValues.StartActivityId;
+                    ResumeDataObject.Environment = _dataObject.Environment;
+                    ResumeDataObject.Environment.FromJson(persistedValues.SuspendedEnvironment);
+                    ResumeDataObject.ExecutingUser = persistedValues.ExecutingUser;
+                    InnerActivity(ResumeDataObject, _update);
+                    Response = _scheduler.ManualResumeWithOverrideJob(ResumeDataObject, suspensionId);
                 }
                 else
                 {
@@ -157,7 +156,7 @@ namespace Dev2.Activities
                 }
 
                 _stateNotifier?.LogActivityExecuteState(this);
-                if (_dataObject.IsDebugMode())
+                if(_dataObject.IsDebugMode())
                 {
                     var debugItemStaticDataParams = new DebugItemStaticDataParams("SuspensionID: " + suspensionId, "", true);
                     AddDebugOutputItem(debugItemStaticDataParams);
@@ -167,11 +166,11 @@ namespace Dev2.Activities
                     AddDebugOutputItem(debugItemStaticDataParams);
                 }
             }
-            catch (System.Data.SqlClient.SqlException)
+            catch(System.Data.SqlClient.SqlException)
             {
                 LogException(new Exception(ErrorResource.BackgroundJobClientResumeFailed), allErrors);
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 LogException(ex, allErrors);
             }
@@ -180,7 +179,7 @@ namespace Dev2.Activities
                 HandleErrors(_dataObject, allErrors);
             }
 
-            return new List<string> {Response};
+            return new List<string> { Response };
         }
 
         private void LogException(Exception ex, ErrorResultTO allErrors)
@@ -194,14 +193,16 @@ namespace Dev2.Activities
         void HandleErrors(IDSFDataObject data, ErrorResultTO allErrors)
         {
             var hasErrors = allErrors.HasErrors();
-            if (!hasErrors)
+            if(!hasErrors)
             {
                 return;
             }
-            foreach (var errorString in allErrors.FetchErrors())
+
+            foreach(var errorString in allErrors.FetchErrors())
             {
                 data.Environment.AddError(errorString);
             }
+
             DisplayAndWriteError(data, DisplayName, allErrors);
         }
 
@@ -214,7 +215,7 @@ namespace Dev2.Activities
             var suspensionId = string.Empty;
 
             var debugItemResults = debugEvalResult.GetDebugItemResult();
-            if (debugItemResults.Count > 0)
+            if(debugItemResults.Count > 0)
             {
                 suspensionId = debugItemResults[0].Value;
             }
@@ -224,11 +225,11 @@ namespace Dev2.Activities
 
         private void InnerActivity(IDSFDataObject dataObject, int update)
         {
-            if (OverrideDataFunc.Handler is DsfSequenceActivity sequenceActivity)
+            if(OverrideDataFunc.Handler is DsfSequenceActivity sequenceActivity)
             {
-                foreach (var dsfActivity in sequenceActivity.Activities)
+                foreach(var dsfActivity in sequenceActivity.Activities)
                 {
-                    if (dsfActivity is IDev2Activity act)
+                    if(dsfActivity is IDev2Activity act)
                     {
                         ExecuteActivity(dataObject, update, dsfActivity, act);
                     }
@@ -243,7 +244,7 @@ namespace Dev2.Activities
 
         public void SetStateNotifier(IStateNotifier stateNotifier)
         {
-            if (_stateNotifier is null)
+            if(_stateNotifier is null)
             {
                 _stateNotifier = stateNotifier;
             }
@@ -251,12 +252,12 @@ namespace Dev2.Activities
 
         public bool Equals(ManualResumptionActivity other)
         {
-            if (other is null)
+            if(other is null)
             {
                 return false;
             }
 
-            if (ReferenceEquals(this, other))
+            if(ReferenceEquals(this, other))
             {
                 return true;
             }
@@ -272,22 +273,22 @@ namespace Dev2.Activities
 
         public override bool Equals(object obj)
         {
-            if (obj is null)
+            if(obj is null)
             {
                 return false;
             }
 
-            if (ReferenceEquals(this, obj))
+            if(ReferenceEquals(this, obj))
             {
                 return true;
             }
 
-            if (obj.GetType() != GetType())
+            if(obj.GetType() != GetType())
             {
                 return false;
             }
 
-            return Equals((ManualResumptionActivity) obj);
+            return Equals((ManualResumptionActivity)obj);
         }
 
         public override int GetHashCode()
