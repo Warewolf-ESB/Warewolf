@@ -34,6 +34,7 @@ using Dev2.ViewModels;
 using Dev2.Workspaces;
 using Infragistics.Windows.DockManager;
 using Dev2.Triggers.Scheduler;
+using Warewolf.Studio.CustomControls;
 
 namespace Dev2.Studio.Views
 {
@@ -196,6 +197,11 @@ namespace Dev2.Studio.Views
             {
                 var shellViewModel = DataContext as ShellViewModel;
                 shellViewModel?.MergeCommand.Execute(null);
+            }
+            if (e.Key == Key.L && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
+            {
+                var webBrowserView = new WebBrowserView();
+                webBrowserView.ShowDialog();
             }
             if (e.Key == Key.F1)
             {
