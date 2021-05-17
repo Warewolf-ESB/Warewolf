@@ -4,6 +4,8 @@
         <TargetFramework>net48</TargetFramework>
         <IsPackable>false</IsPackable>
         <RootNamespace>Warewolf.LicencingTests</RootNamespace>
+        <Configurations>Debug</Configurations>
+        <Platforms>AnyCPU</Platforms>
     </PropertyGroup>
 
     <ItemGroup>
