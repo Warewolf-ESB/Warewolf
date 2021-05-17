@@ -23,6 +23,7 @@ using Warewolf.Auditing;
 using Warewolf.Core;
 using Warewolf.Driver.Persistence;
 using Warewolf.Resource.Errors;
+using Warewolf.Storage.Interfaces;
 
 namespace Dev2.Activities
 {
@@ -113,6 +114,7 @@ namespace Dev2.Activities
         protected override List<string> PerformExecution(Dictionary<string, string> evaluatedValues)
         {
             var allErrors = new ErrorResultTO();
+            var currentDataObject = _dataObject;
             Response = string.Empty;
             try
             {
@@ -141,12 +143,14 @@ namespace Dev2.Activities
                     {
                         throw new Exception(persistedValues.SuspendedEnvironment);
                     }
+                    var envArray = currentDataObject.Environment.ToJson();
 
-                    ResumeDataObject = _dataObject;
+                    ResumeDataObject = currentDataObject;
                     ResumeDataObject.StartActivityId = persistedValues.StartActivityId;
-                    ResumeDataObject.Environment = _dataObject.Environment;
                     ResumeDataObject.Environment.FromJson(persistedValues.SuspendedEnvironment);
+                    ResumeDataObject.Environment.FromJson(envArray);
                     ResumeDataObject.ExecutingUser = persistedValues.ExecutingUser;
+
                     InnerActivity(ResumeDataObject, _update);
                     Response = _scheduler.ManualResumeWithOverrideJob(ResumeDataObject, suspensionId);
                 }
@@ -180,6 +184,15 @@ namespace Dev2.Activities
             }
 
             return new List<string> { Response };
+        }
+
+        private static IExecutionEnvironment MergeEnvironments(IExecutionEnvironment currentEnvironment, IExecutionEnvironment persistedEnvironment)
+        {
+            //if the current environment variable name is the same a the persisted variable name, then table the value from the current
+            // var passItr = new WarewolfIterator(context.Environment.Eval(DecryptedPassword, update));
+            // var clause = new Func<DataStorage.WarewolfAtom, DataStorage.WarewolfAtom>(atom => DataStorage.WarewolfAtom.NewDataString("before" + atom.ToString() + "after"));
+            // persistedEnvironment.ApplyUpdate("[[a]]", clause, 0);
+            return persistedEnvironment;
         }
 
         private void LogException(Exception ex, ErrorResultTO allErrors)

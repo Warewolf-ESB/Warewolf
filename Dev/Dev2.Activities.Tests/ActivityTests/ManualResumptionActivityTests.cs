@@ -823,7 +823,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var envCurrent = CreateExecutionEnvironment();
             envCurrent.Assign("[[Input]]", "ResumeInput1", 0);
             envCurrent.Assign("[[Input2]]", "ResumeInput2", 0);
-            
+
             var envPersisted = CreateExecutionEnvironment();
             envPersisted.Assign("[[Input]]", "Input1", 0);
             envPersisted.Assign("[[Input2]]", "Input2", 0);
@@ -866,7 +866,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             var resumeObject = dataObject;
             resumeObject.StartActivityId = startActivityId;
-            resumeObject.Environment = dataObject.Environment;
+            resumeObject.Environment = returnEnv;
 
             var mockPersistedValues = new Mock<IPersistedValues>();
             mockPersistedValues.Setup(o => o.SuspendedEnvironment).Returns(environment);
