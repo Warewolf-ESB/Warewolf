@@ -114,11 +114,17 @@ namespace Dev2.Tests.Activities.ActivityTests
             var encrypt = DpapiWrapper.Encrypt(password);
             var destEncrypt = DpapiWrapper.Encrypt(destPassword);
             var act = new MockAbstractMultipleFilesActivity("MockActivity") { Password = encrypt, DestinationPassword = destEncrypt};
+            
+            var privateObject = new PrivateObject(act);
+            var decryptedPassword = privateObject.GetProperty("DecryptedPassword");
+            var decryptedDestinationPassword = privateObject.GetProperty("DecryptedDestinationPassword");
 
             //------------Execute Test---------------------------
             //------------Assert Results-------------------------
             Assert.AreEqual(password, act.Password);
             Assert.AreEqual(destPassword, act.DestinationPassword);
+            Assert.AreEqual(password, decryptedPassword);
+            Assert.AreEqual(destPassword, decryptedDestinationPassword);
         }
 
         [TestMethod]
@@ -131,10 +137,16 @@ namespace Dev2.Tests.Activities.ActivityTests
             const string destPassword = "654321";
             var act = new MockAbstractMultipleFilesActivity("MockActivity") { Password = password, DestinationPassword = destPassword};
 
+            var privateObject = new PrivateObject(act);
+            var decryptedPassword = privateObject.GetProperty("DecryptedPassword");
+            var decryptedDestinationPassword = privateObject.GetProperty("DecryptedDestinationPassword");
+
             //------------Execute Test---------------------------
             //------------Assert Results-------------------------
             Assert.AreEqual(password, act.Password);
             Assert.AreEqual(destPassword, act.DestinationPassword);
+            Assert.AreEqual(password, decryptedPassword);
+            Assert.AreEqual(destPassword, decryptedDestinationPassword);
         }
 
     }
