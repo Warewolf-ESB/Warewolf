@@ -126,7 +126,8 @@ namespace Warewolf.UnitTestAttributes
                     getUrl = "https://gitlab.com/warewolf/anonymous-elasticsearch-connector-testing";
                     break;
                 case ContainerType.WebApi:
-                    getUrl = "https://gitlab.com/warewolf/Web-API-connector-testing";
+                case ContainerType.HTTPVerbsApi:
+                    getUrl = "https://gitlab.com/warewolf/http-connector-testing";
                     break;
                 case ContainerType.FTP:
                     getUrl = "https://gitlab.com/warewolf/ftp-connector-testing";
