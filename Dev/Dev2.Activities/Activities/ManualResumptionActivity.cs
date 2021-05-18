@@ -147,10 +147,7 @@ namespace Dev2.Activities
                     var resumeObject = _dataObject;
                     resumeObject.StartActivityId = persistedValues.StartActivityId;
                     resumeObject.Environment = _dataObject.Environment;
-                    var env = resumeObject.Environment;
-                    env.FromJson(persistedValues.SuspendedEnvironment);
-                    //resumeObject.Environment.FromJson(persistedValues.SuspendedEnvironment);
-                    resumeObject.Environment = env;
+                    resumeObject.Environment.FromJson(persistedValues.SuspendedEnvironment);
                     resumeObject.ExecutingUser = persistedValues.ExecutingUser;
                     InnerActivity(resumeObject, _update);
                     Response = _scheduler.ManualResumeWithOverrideJob(resumeObject, suspensionId);
