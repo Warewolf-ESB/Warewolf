@@ -7,4 +7,4 @@ image: curlimages/curl:latest
 build:
   stage: build
   script:
-    - sh #./Dev/.run/QueueCI.sh $CI_COMMIT_BRANCH
+    - sh ./Dev/.run/QueueCI.sh $CI_COMMIT_BRANCH
