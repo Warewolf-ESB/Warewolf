@@ -16,6 +16,7 @@
              xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors;assembly=Dev2.Activities.Designers"
              xmlns:attachedProperties="clr-namespace:Dev2.Activities.AttachedProperties;assembly=Dev2.Activities.Designers"
              xmlns:ui1="clr-namespace:Warewolf.UI;assembly=Warewolf.UI"
+             xmlns:customControls1="clr-namespace:Warewolf.Studio.CustomControls;assembly=Warewolf.Studio.CustomControls"
              d:DesignHeight="300"
              d:DesignWidth="300"
              mc:Ignorable="d" 
@@ -372,18 +373,18 @@
                                     </TextBox>
 
                                     <TextBlock Text="Password" Grid.Row="7" Grid.Column="0" Margin="{StaticResource ControlBorderTop}" />
-                                    <PasswordBox Margin="{StaticResource ControlBorderTop}"
-                                             AutomationProperties.AutomationId="UI_PasswordBox"
-                                             Grid.Row="7"
-                                             Grid.Column="1"
-                                             ToolTip="{x:Static languages:Tooltips.QueueSettingsToolTipPassword}"
-                                             attachedProperties:PasswordBoxAssistant.BindPassword="true"
-                                             attachedProperties:PasswordBoxAssistant.BoundPassword="{Binding Path=Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                    <customControls1:PasswordBoxUserControl Grid.Column="1"
+                                        Grid.Row="7"
+                                        AutomationProperties.AutomationId="UI_PasswordBox"
+                                        Margin="{StaticResource ActivityBorderTop}"
+                                        Text="{Binding Path=Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        ToolTip="{x:Static languages:Tooltips.QueueSettingsToolTipPassword}">
                                         <i:Interaction.Behaviors>
                                             <core:HelpSetter Text="{x:Static languages:HelpText.QueueSettingsHelpTextPassword}"
-                                                         DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                                DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                         </i:Interaction.Behaviors>
-                                    </PasswordBox>
+                                    </customControls1:PasswordBoxUserControl>
+                                    
                                 </Grid>
 
                                 <!-- Options -->
