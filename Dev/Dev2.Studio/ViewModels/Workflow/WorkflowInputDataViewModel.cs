@@ -2,7 +2,7 @@
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later.
+*  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -39,9 +39,6 @@ using Dev2.Threading;
 using Dev2.Util;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using ServiceStack.Common.Extensions;
-using Unlimited.Framework.Converters.Graph;
-using Unlimited.Framework.Converters.Graph.String;
 using Warewolf.Studio.Resources.Languages;
 using Formatting = Newtonsoft.Json.Formatting;
 
@@ -436,87 +433,58 @@ namespace Dev2.Studio.ViewModels.Workflow
 
                 try
                 {
-                    PopulateWithPreviousValues(doc.SelectNodes(".//*").ToList<XmlElement>(),
-                        prevDoc.SelectNodes(".//*").ToList<XmlElement>());
+                    Compare(prevDoc, doc);
+
+                    DebugTo.XmlData = prevDoc.InnerXml;
+                    DebugTo.BinaryDataList = new DataListModel();
+                    DebugTo.BinaryDataList.Create(DebugTo.XmlData, DebugTo.DataList);
                 }
                 catch (Exception ex)
                 {
                     Dev2Logger.Error(ex.Message, ex, "");
                 }
-
-
-                DebugTo.XmlData = doc.InnerXml;
-                DebugTo.BinaryDataList = new DataListModel();
-                DebugTo.BinaryDataList.Create(DebugTo.XmlData, DebugTo.DataList);
             }
         }
 
-        void PopulateWithPreviousValues(List<XmlElement> nodeList, List<XmlElement> prevNodeList)
+        public void Compare(XmlDocument doc1, XmlDocument doc2)
         {
-            //get all duplicated recordset elements
-            var recordSetElements =
-                prevNodeList.GroupBy(n => n.Name).Where(grp => grp.Count() > 1).Select(grp => grp.Key);
-            var recordSetElementsProcessed = new List<string>();
-
-            foreach (var el in nodeList)
+            foreach (XmlNode childNode in doc2.ChildNodes)
             {
-                if (el.Name != "DataList")
-                {
-                    foreach (var prevEl in prevNodeList)
-                    {
-                        if (prevEl.Name != "DataList")
-                        {
-                            if (el.Name == prevEl.Name)
-                            {
-                                //process duplicated recordset elements
-                                if (recordSetElements.Contains(el.Name) &&
-                                    !recordSetElementsProcessed.Contains(el.Name))
-                                {
-                                    ProcessDuplicatedRecordsetElements(el, prevNodeList);
-                                    recordSetElementsProcessed.Add(el.Name);
-                                }
-                                else if (!string.IsNullOrEmpty(el.InnerXml))
-                                {
-                                    if (el.ChildNodes.First()?.GetType() == typeof(System.Xml.XmlElement) &&
-                                        prevEl.ChildNodes.First()?.GetType() == typeof(System.Xml.XmlElement))
-                                    {
-                                        PopulateWithPreviousValues(el.ChildNodes.ToList<XmlElement>(),
-                                            prevEl.ChildNodes.ToList<XmlElement>());
-                                    }
-                                }
-                                else
-                                {
-                                    el.InnerXml = prevEl.InnerText;
-                                }
-                            }
-                        }
-                    }
-                }
+                CompareLower(childNode, doc1, doc2);
             }
         }
 
-        void ProcessDuplicatedRecordsetElements(XmlElement el, List<XmlElement> prevNodeList)
+        private void CompareLower(XmlNode nodeName, XmlDocument doc1, XmlDocument doc2)
         {
-            var parentNode = el.ParentNode;
-            parentNode.RemoveChild(el);
-            prevNodeList.Where(n => n.Name == el.Name).ForEach(node =>
+            foreach (XmlNode childNode in nodeName.ChildNodes)
             {
-                XmlElement newNode = el.OwnerDocument.CreateElement(el.Name);
+                string path = CreatePath(childNode);
 
-                newNode.InnerXml = el.InnerXml;
-                if (newNode.ChildNodes.First()?.GetType() == typeof(System.Xml.XmlElement) &&
-                    node.ChildNodes.First()?.GetType() == typeof(System.Xml.XmlElement))
+                if (doc1.SelectNodes(path).Count == 0)
                 {
-                    PopulateWithPreviousValues(newNode.ChildNodes.ToList<XmlElement>(),
-                        node.ChildNodes.ToList<XmlElement>());
+                    XmlNode tempNode = doc1.ImportNode(childNode, true);
+                    if(!tempNode.HasChildNodes) tempNode.InnerText = "";
+                    doc1.SelectSingleNode(path.Substring(0, path.LastIndexOf("/"))).AppendChild(tempNode);
                 }
                 else
                 {
-                    newNode.InnerXml = node.InnerText;
+                    CompareLower(childNode, doc1, doc2);
                 }
+            }
+        }
 
-                parentNode.InsertAfter(newNode, parentNode.LastChild);
-            });
+        private string CreatePath(XmlNode node)
+        {
+            string path = "/" + node.Name;
+
+            while (!(node.ParentNode.Name == "#document"))
+            {
+                path = "/" + node.ParentNode.Name + path;
+                node = node.ParentNode;
+            }
+
+            path = "/" + path;
+            return path;
         }
 
         void RemoveAttributes(XmlDocument doc)
@@ -616,7 +584,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             var dataListString = new AddToDatalistObject(this).DataListObject(includeBlank);
             JsonData = dataListString;
-            var xml = JsonConvert.DeserializeXNode(dataListString, @"DataList", true );
+            var xml = JsonConvert.DeserializeXNode(dataListString, @"DataList", true);
 
             try
             {
