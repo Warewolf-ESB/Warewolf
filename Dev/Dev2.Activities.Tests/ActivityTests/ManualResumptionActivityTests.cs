@@ -893,6 +893,93 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(returnEnv.ToJson(), manualResumptionActivity.ResumeDataObject.Environment.ToJson());
         }
 
+         [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(ManualResumptionActivity))]
+        public void ManualResumptionActivity_Execute_OverrideInputJson_ResumeInputVarNames_Equals_SuspendJsonInputNames()
+        {
+            //------------Setup for test--------------------------
+            var activity = CreateWorkflow();
+            var activityFunction = new ActivityFunc<string, bool>
+            {
+                DisplayName = activity.DisplayName,
+                Handler = activity,
+            };
+            var workflowName = "workflowName";
+            var url = "http://localhost:3142/secure/WorkflowResume";
+            var resourceId = Guid.NewGuid();
+            var nextNodeId = Guid.NewGuid();
+            var workflowInstanceId = Guid.NewGuid();
+
+            var envCurrent = CreateExecutionEnvironment();
+            envCurrent.Assign("[[@car]]", "{\r\n  \"one\": {\r\n    \"year\": \"5000\",\r\n    \"type\": \"\",\r\n    \"make\": \"\",\r\n    \"product\": \"\"\r\n  }\r\n}", 0);
+
+            var envPersisted = CreateExecutionEnvironment();
+            envPersisted.Assign("[[@car]]", "{\r\n  \"one\": {\r\n    \"type\": \"hatchback\",\r\n    \"make\": \"audi\",\r\n    \"year\": 2010,\r\n    \"product\": \"v1\"\r\n  },\r\n  \"two\": {\r\n    \"type\": \"sedan\",\r\n    \"make\": \"vw\",\r\n    \"year\": 2015,\r\n    \"product\": \"v2\"\r\n  },\r\n  \"three\": {\r\n    \"type\": \"bakkie\",\r\n    \"make\": \"ford\",\r\n    \"year\": 2020,\r\n    \"product\": \"v3\"\r\n  }\r\n}", 0);
+
+            var returnEnv = CreateExecutionEnvironment();
+            returnEnv.Assign("[[@car]]", "{\r\n  \"one\": {\r\n    \"type\": \"hatchback\",\r\n    \"make\": \"audi\",\r\n    \"year\": 2010,\r\n    \"product\": \"v1\"\r\n  },\r\n  \"two\": {\r\n    \"type\": \"sedan\",\r\n    \"make\": \"vw\",\r\n    \"year\": 2015,\r\n    \"product\": \"v2\"\r\n  },\r\n  \"three\": {\r\n    \"type\": \"bakkie\",\r\n    \"make\": \"ford\",\r\n    \"year\": 2020,\r\n    \"product\": \"v3\"\r\n  }\r\n}", 0);
+
+            var mockStateNotifier = new Mock<IStateNotifier>();
+            mockStateNotifier.Setup(stateNotifier => stateNotifier.LogActivityExecuteState(It.IsAny<IDev2Activity>()));
+
+            var environmentId = Guid.Empty;
+            User = new Mock<IPrincipal>().Object;
+            var dataObject = new DsfDataObject(CurrentDl, ExecutionId)
+            {
+                ServiceName = workflowName,
+                ResourceID = resourceId,
+                WorkflowInstanceId = workflowInstanceId,
+                WebUrl = url,
+                ServerID = Guid.NewGuid(),
+                ExecutingUser = User,
+                IsDebug = true,
+                EnvironmentID = environmentId,
+                Environment = envCurrent,
+                IsRemoteInvokeOverridden = false,
+                DataList = new StringBuilder(CurrentDl),
+                IsServiceTestExecution = true
+            };
+
+            var mockActivity = new Mock<IDev2Activity>();
+            mockActivity.Setup(o => o.UniqueID).Returns(nextNodeId.ToString());
+            var config = new PersistenceSettings
+            {
+                Enable = true
+            };
+            var suspensionId = "321";
+            var overrideInputVariables = true;
+            var environment = envPersisted.ToJson();
+            var startActivityId = Guid.NewGuid();
+
+            var resumeObject = dataObject;
+            resumeObject.StartActivityId = startActivityId;
+            resumeObject.Environment = returnEnv;
+
+            var mockPersistedValues = new Mock<IPersistedValues>();
+            mockPersistedValues.Setup(o => o.SuspendedEnvironment).Returns(environment);
+            mockPersistedValues.Setup(o => o.StartActivityId).Returns(startActivityId);
+
+            var mockResumeJob = new Mock<IPersistenceExecution>();
+            mockResumeJob.Setup(o => o.ResumeJob(dataObject, suspensionId, overrideInputVariables, environment)).Verifiable();
+            mockResumeJob.Setup(o => o.GetPersistedValues(suspensionId)).Returns(mockPersistedValues.Object).Verifiable();
+            mockResumeJob.Setup(o => o.ManualResumeWithOverrideJob(resumeObject, suspensionId)).Returns(startActivityId.ToString()).Verifiable();
+            var manualResumptionActivity = new ManualResumptionActivity(config, mockResumeJob.Object)
+            {
+                Response = "[[result]]",
+                OverrideInputVariables = overrideInputVariables,
+                SuspensionId = suspensionId,
+                OverrideDataFunc = activityFunction,
+            };
+
+            manualResumptionActivity.SetStateNotifier(mockStateNotifier.Object);
+            //------------Execute Test---------------------------
+            manualResumptionActivity.Execute(dataObject, 0);
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(0, dataObject.Environment.AllErrors.Count);
+            Assert.AreEqual(returnEnv.ToJson(), manualResumptionActivity.ResumeDataObject.Environment.ToJson());
+        }
         static IExecutionEnvironment CreateExecutionEnvironment()
         {
             return new ExecutionEnvironment();
