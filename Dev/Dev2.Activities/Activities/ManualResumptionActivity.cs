@@ -23,7 +23,6 @@ using Warewolf.Auditing;
 using Warewolf.Core;
 using Warewolf.Driver.Persistence;
 using Warewolf.Resource.Errors;
-using Warewolf.Storage.Interfaces;
 
 namespace Dev2.Activities
 {
@@ -143,12 +142,9 @@ namespace Dev2.Activities
                     {
                         throw new Exception(persistedValues.SuspendedEnvironment);
                     }
-                    var envArray = currentDataObject.Environment.ToJson();
-
                     ResumeDataObject = currentDataObject;
                     ResumeDataObject.StartActivityId = persistedValues.StartActivityId;
-                    ResumeDataObject.Environment.FromJson(persistedValues.SuspendedEnvironment);
-                    ResumeDataObject.Environment.FromJson(envArray);
+                    ResumeDataObject.Environment.EvalForDataMerge(persistedValues.SuspendedEnvironment, _update);
                     ResumeDataObject.ExecutingUser = persistedValues.ExecutingUser;
 
                     InnerActivity(ResumeDataObject, _update);
@@ -184,15 +180,6 @@ namespace Dev2.Activities
             }
 
             return new List<string> { Response };
-        }
-
-        private static IExecutionEnvironment MergeEnvironments(IExecutionEnvironment currentEnvironment, IExecutionEnvironment persistedEnvironment)
-        {
-            //if the current environment variable name is the same a the persisted variable name, then table the value from the current
-            // var passItr = new WarewolfIterator(context.Environment.Eval(DecryptedPassword, update));
-            // var clause = new Func<DataStorage.WarewolfAtom, DataStorage.WarewolfAtom>(atom => DataStorage.WarewolfAtom.NewDataString("before" + atom.ToString() + "after"));
-            // persistedEnvironment.ApplyUpdate("[[a]]", clause, 0);
-            return persistedEnvironment;
         }
 
         private void LogException(Exception ex, ErrorResultTO allErrors)
