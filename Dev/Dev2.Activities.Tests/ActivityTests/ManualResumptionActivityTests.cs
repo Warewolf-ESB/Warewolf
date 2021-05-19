@@ -914,12 +914,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             var envCurrent = CreateExecutionEnvironment();
             envCurrent.Assign("[[@car]]", "{\r\n  \"one\": {\r\n    \"year\": \"5000\",\r\n    \"type\": \"\",\r\n    \"make\": \"\",\r\n    \"product\": \"\"\r\n  }\r\n}", 0);
 
-            var envPersisted = CreateExecutionEnvironment();
-            envPersisted.Assign("[[@car]]", "{\r\n  \"one\": {\r\n    \"type\": \"hatchback\",\r\n    \"make\": \"audi\",\r\n    \"year\": 2010,\r\n    \"product\": \"v1\"\r\n  },\r\n  \"two\": {\r\n    \"type\": \"sedan\",\r\n    \"make\": \"vw\",\r\n    \"year\": 2015,\r\n    \"product\": \"v2\"\r\n  },\r\n  \"three\": {\r\n    \"type\": \"bakkie\",\r\n    \"make\": \"ford\",\r\n    \"year\": 2020,\r\n    \"product\": \"v3\"\r\n  }\r\n}", 0);
-
-            var returnEnv = CreateExecutionEnvironment();
-            returnEnv.Assign("[[@car]]", "{\r\n  \"one\": {\r\n    \"type\": \"hatchback\",\r\n    \"make\": \"audi\",\r\n    \"year\": 2010,\r\n    \"product\": \"v1\"\r\n  },\r\n  \"two\": {\r\n    \"type\": \"sedan\",\r\n    \"make\": \"vw\",\r\n    \"year\": 2015,\r\n    \"product\": \"v2\"\r\n  },\r\n  \"three\": {\r\n    \"type\": \"bakkie\",\r\n    \"make\": \"ford\",\r\n    \"year\": 2020,\r\n    \"product\": \"v3\"\r\n  }\r\n}", 0);
-
             var mockStateNotifier = new Mock<IStateNotifier>();
             mockStateNotifier.Setup(stateNotifier => stateNotifier.LogActivityExecuteState(It.IsAny<IDev2Activity>()));
 
@@ -949,12 +943,11 @@ namespace Dev2.Tests.Activities.ActivityTests
             };
             var suspensionId = "321";
             var overrideInputVariables = true;
+            var envPersisted = CreateExecutionEnvironment();
+            envPersisted.Assign("[[@car]]", "{\r\n  \"one\": {\r\n    \"type\": \"hatchback\",\r\n    \"make\": \"audi\",\r\n    \"year\": 2010,\r\n    \"product\": \"v1\"\r\n  },\r\n  \"two\": {\r\n    \"type\": \"sedan\",\r\n    \"make\": \"vw\",\r\n    \"year\": 2015,\r\n    \"product\": \"v2\"\r\n  },\r\n  \"three\": {\r\n    \"type\": \"bakkie\",\r\n    \"make\": \"ford\",\r\n    \"year\": 2020,\r\n    \"product\": \"v3\"\r\n  }\r\n}", 0);
+
             var environment = envPersisted.ToJson();
             var startActivityId = Guid.NewGuid();
-
-            var resumeObject = dataObject;
-            resumeObject.StartActivityId = startActivityId;
-            resumeObject.Environment = returnEnv;
 
             var mockPersistedValues = new Mock<IPersistedValues>();
             mockPersistedValues.Setup(o => o.SuspendedEnvironment).Returns(environment);
@@ -963,7 +956,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var mockResumeJob = new Mock<IPersistenceExecution>();
             mockResumeJob.Setup(o => o.ResumeJob(dataObject, suspensionId, overrideInputVariables, environment)).Verifiable();
             mockResumeJob.Setup(o => o.GetPersistedValues(suspensionId)).Returns(mockPersistedValues.Object).Verifiable();
-            mockResumeJob.Setup(o => o.ManualResumeWithOverrideJob(resumeObject, suspensionId)).Returns(startActivityId.ToString()).Verifiable();
+            mockResumeJob.Setup(o => o.ManualResumeWithOverrideJob(dataObject, suspensionId)).Returns(startActivityId.ToString()).Verifiable();
             var manualResumptionActivity = new ManualResumptionActivity(config, mockResumeJob.Object)
             {
                 Response = "[[result]]",
@@ -978,7 +971,11 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             //------------Assert Results-------------------------
             Assert.AreEqual(0, dataObject.Environment.AllErrors.Count);
-            Assert.AreEqual(returnEnv.ToJson(), manualResumptionActivity.ResumeDataObject.Environment.ToJson());
+
+            var returnEnv = CreateExecutionEnvironment();
+            returnEnv.Assign("[[@car]]", "{\r\n  \"one\": {\r\n    \"year\": \"5000\",\r\n    \"type\": \"\",\r\n    \"make\": \"\",\r\n    \"product\": \"\"\r\n  },\r\n  \"two\": {\r\n    \"type\": \"sedan\",\r\n    \"make\": \"vw\",\r\n    \"year\": 2015,\r\n    \"product\": \"v2\"\r\n  },\r\n  \"three\": {\r\n    \"type\": \"bakkie\",\r\n    \"make\": \"ford\",\r\n    \"year\": 2020,\r\n    \"product\": \"v3\"\r\n  }\r\n}", 0);
+
+           Assert.AreEqual(returnEnv.ToJson(), manualResumptionActivity.ResumeDataObject.Environment.ToJson());
         }
         static IExecutionEnvironment CreateExecutionEnvironment()
         {
