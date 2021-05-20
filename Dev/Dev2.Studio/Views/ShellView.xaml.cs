@@ -198,11 +198,7 @@ namespace Dev2.Studio.Views
                 var shellViewModel = DataContext as ShellViewModel;
                 shellViewModel?.MergeCommand.Execute(null);
             }
-            if (e.Key == Key.L && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
-            {
-                var webBrowserView = new WebBrowserView();
-                webBrowserView.ShowDialog();
-            }
+
             if (e.Key == Key.F1)
             {
                 Process.Start(Warewolf.Studio.Resources.Languages.HelpText.WarewolfHelpURL);
