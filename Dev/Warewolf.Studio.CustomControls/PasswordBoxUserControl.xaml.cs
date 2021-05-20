@@ -10,6 +10,8 @@
 
 using System.Windows;
 using System.Windows.Controls;
+using Dev2.Data.Util;
+using Warewolf.Security.Encryption;
 
 namespace Warewolf.Studio.CustomControls
 {
@@ -39,7 +41,7 @@ namespace Warewolf.Studio.CustomControls
             set => SetValue(TextProperty, value);
         }
 
-        private void ShowPassword()
+        private void HidePassword()
         {
             PasswordBoxView.Visibility = Visibility.Visible;
             TextBoxView.Visibility = Visibility.Hidden;
@@ -47,22 +49,25 @@ namespace Warewolf.Studio.CustomControls
             txtPassword.Password = txtVisiblePassword.Text;
         }
 
-        private void HidePassword()
+        private void ShowPassword()
         {
             PasswordBoxView.Visibility = Visibility.Hidden;
             TextBoxView.Visibility = Visibility.Visible;
+            
+            var password = txtPassword.Password;
+            var decryptedPassword = password.CanBeDecrypted() ? DpapiWrapper.DecryptIfEncrypted(password) : password;
 
-            txtVisiblePassword.Text = txtPassword.Password;
+            txtVisiblePassword.Text = decryptedPassword;
         }
 
         private void ShowPasswordButton_OnClick(object sender, RoutedEventArgs e)
         {
-            ShowPassword();
+            HidePassword();
         }
 
         private void HidePasswordButton_OnClick(object sender, RoutedEventArgs e)
         {
-            HidePassword();
+            ShowPassword();
         }
 
         private void TxtPassword_OnLostFocus(object sender, RoutedEventArgs e)
