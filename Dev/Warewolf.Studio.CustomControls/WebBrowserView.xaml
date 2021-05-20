@@ -11,7 +11,8 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Button x:Name="testButton" Width="Auto" Content="Test" Click="TestButton_OnClick"/>
+        <Button Grid.Row="0" x:Name="EnterpriseButton" Width="Auto" Content="Subscribe to Enterprise" Click="EnterpriseButton_OnClick"/>
+        <!-- <Button Grid.Row="2" x:Name="DeveloperButton" Width="Auto" Content="Subscribe to Developer" Click="DeveloperButton_OnClick"/> -->
         <WebBrowser x:Name="webBrowser"
                     Grid.Row="1"
                     Navigating="WebBrowser_OnNavigating"

@@ -26,11 +26,18 @@ namespace Warewolf.Studio.CustomControls
             webBrowser.ObjectForScripting = new ScriptManager(this);
         }
 
-        private void TestButton_OnClick(object sender, RoutedEventArgs e)
+        private void EnterpriseButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            var curDir = Directory.GetCurrentDirectory();
+            var url = new Uri($"file:///{curDir}/LicenseRegistration.html");
+            webBrowser.Source = url;
+            //webBrowser.Navigate("https://www.chargebee.com/tutorials/index.html");
+        }
+
+        private void DeveloperButton_OnClick(object sender, RoutedEventArgs e)
         {
             var curDir = Directory.GetCurrentDirectory();
             var url = new Uri($"file:///{curDir}/ChargeBee.html");
-
             webBrowser.Source = url;
             //webBrowser.Navigate("https://www.chargebee.com/tutorials/index.html");
         }
@@ -44,14 +51,14 @@ namespace Warewolf.Studio.CustomControls
         {
             var browser = sender as WebBrowser;
 
-            if (browser?.Document is null)
+            if(browser?.Document is null)
             {
                 return;
             }
 
             dynamic document = browser.Document;
 
-            if (document.readyState != "complete")
+            if(document.readyState != "complete")
                 return;
 
             var script = document.createElement("script");
