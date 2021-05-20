@@ -1,3 +1,16 @@
+18 May 2021
+================
+Bug Fixes
+-----------
+Service	
+- The service tool is no longer returning duplicated InnerError tagged error messages when using the On Error Recordset.
+
+Input Variables	
+- The Input Variables no longer throws non existent object: { input_variable_name } when you have a payload with only one JSON array value.
+
+Debug Input	
+- Debug Input View remembers the state of an object.
+
 16 April 2021
 ================
 Enhancements

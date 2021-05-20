@@ -1,4 +1,4 @@
-﻿/*
+/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
@@ -107,6 +107,8 @@ namespace Warewolf.OS.Tests
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(MessageToInputsMapper))]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void ProcessThreadList_GivenConfigConcurrent3_ExpectThreeWorkers()
         {
             var mockConfig = new Mock<IJobConfig>();
@@ -147,6 +149,8 @@ namespace Warewolf.OS.Tests
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(MessageToInputsMapper))]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void ProcessThreadList_GivenKillCalled_ExpectAllWorkersKilled()
         {
             var mockConfig = new Mock<IJobConfig>();
@@ -233,6 +237,8 @@ namespace Warewolf.OS.Tests
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(MessageToInputsMapper))]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void ProcessThreadList_GivenConfigConcurrentChanges_ExpectWorkerCountChanges()
         {
             var mockConfig = new Mock<IJobConfig>();
