@@ -118,7 +118,6 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             //------------Execute Test---------------------------
             //------------Assert Results-------------------------
-            Assert.AreEqual(password, act.Password);
             Assert.AreEqual(password, decryptedPassword);
         }
 
@@ -136,7 +135,6 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             //------------Execute Test---------------------------
             //------------Assert Results-------------------------
-            Assert.AreEqual(password, act.Password);
             Assert.AreEqual(password, decryptedPassword);
         }
     }
