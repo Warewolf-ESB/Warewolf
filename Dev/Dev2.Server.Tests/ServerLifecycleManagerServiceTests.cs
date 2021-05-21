@@ -296,7 +296,6 @@ namespace Dev2.Server.Tests
             mockWriter.Verify(o => o.Write("Loading test catalog...  "), Times.Once);
             mockWriter.Verify(o => o.Write("Loading triggers catalog...  "), Times.Once);
             mockWriter.Verify(o => o.WriteLine("unable to connect to logging server"), Times.Once);
-            mockWriter.Verify(o => o.WriteLine("UsageTracker: Could not log usage."), Times.AtLeastOnce);
             mockServerLifeCycleWorker.Verify();
 
             Assert.IsFalse(EnvironmentVariables.IsServerOnline, "when server fails to start expect IsServerOnline to be false");

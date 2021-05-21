@@ -54,6 +54,7 @@ namespace Dev2
         bool InteractiveMode { get; set; }
 
         Task Run(IEnumerable<IServerLifecycleWorker> initWorkers);
+
         void Stop(bool didBreak, int result, bool mute);
     }
 
@@ -129,7 +130,6 @@ namespace Dev2
         private readonly ExecutionLogger.IExecutionLoggerFactory _loggerFactory;
         private readonly IGetSystemInformation _systemInformationHelper;
 
-
         public ServerLifecycleManager(IServerEnvironmentPreparer serverEnvironmentPreparer)
             : this(StartupConfiguration.GetStartupConfiguration(serverEnvironmentPreparer))
         {
@@ -175,7 +175,7 @@ namespace Dev2
                 var loc = assembly.Location;
                 EnvironmentVariables.ApplicationPath = Path.GetDirectoryName(loc);
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 Dev2Logger.Info("ApplicationPath Error -> " + e.Message, GlobalConstants.WarewolfInfo);
                 EnvironmentVariables.ApplicationPath = Directory.GetCurrentDirectory();
@@ -199,84 +199,89 @@ namespace Dev2
             }
 
             return Task.Run(LoadPerformanceCounters)
-                .ContinueWith((t) =>
-                {
-                    // ** Perform Moq Installer Actions For Development ( DEBUG config ) **
+                .ContinueWith(
+                    (t) =>
+                    {
+                        // ** Perform Moq Installer Actions For Development ( DEBUG config ) **
 #if DEBUG
-                    try
-                    {
-                        var miq = MoqInstallerActionFactory.CreateInstallerActions();
-                        miq.ExecuteMoqInstallerActions();
-                    }
-                    catch (Exception e)
-                    {
-                        Dev2Logger.Warn("Mocking installer actions for DEBUG config failed to create Warewolf Administrators group and/or to add current user to it [ " + e.Message + " ]", GlobalConstants.WarewolfWarn);
-                    }
+                        try
+                        {
+                            var miq = MoqInstallerActionFactory.CreateInstallerActions();
+                            miq.ExecuteMoqInstallerActions();
+                        }
+                        catch(Exception e)
+                        {
+                            Dev2Logger.Warn("Mocking installer actions for DEBUG config failed to create Warewolf Administrators group and/or to add current user to it [ " + e.Message + " ]", GlobalConstants.WarewolfWarn);
+                        }
 #endif
 
-                    try
-                    {
-                        foreach (var worker in initWorkers)
+                        try
                         {
-                            worker.Execute();
-                        }
-
-                        _loggingProcessMonitor.Start();
-                        var loggingServerCheckDelay = Task.Delay(TimeSpan.FromSeconds(300));
-
-                        _loadResources = new LoadResources("Resources", _writer, _startUpDirectory, _startupResourceCatalogFactory);
-                        LoadHostSecurityProvider();
-                        _loadResources.CheckExampleResources();
-                        _loadResources.MigrateOldTests();
-                        var webServerConfig = _webServerConfiguration;
-                        webServerConfig.Execute();
-                        new LoadRuntimeConfigurations(_writer).Execute();
-                        OpenCOMStream(null);
-                        _loadResources.LoadResourceCatalog();
-                        _timer = new Timer((state) => GetComputerNames.GetComputerNamesList(), null, 1000, GlobalConstants.NetworkComputerNameQueryFreq);
-                        _loadResources.LoadServerWorkspace();
-                        _loadResources.LoadActivityCache(_assemblyLoader);
-                        LoadTestCatalog();
-                        LoadTriggersCatalog();
-
-                        _startWebServer.Execute(webServerConfig, _pauseHelper);
-                        _queueProcessMonitor.Start();
-
-                        _hangfireServerMonitor.Start();
-
-                        var checkLogServerConnectionTask = CheckLogServerConnection();
-                        var result = Task.WaitAny(new[] {checkLogServerConnectionTask, loggingServerCheckDelay});
-                        var isConnectedOkay = !checkLogServerConnectionTask.IsCanceled && !checkLogServerConnectionTask.IsFaulted && checkLogServerConnectionTask.Result == true;
-                        var logServerConnectedOkayNoTimeout = result == 0 && isConnectedOkay;
-                        if (!logServerConnectedOkayNoTimeout)
-                        {
-                            _writer.WriteLine("unable to connect to logging server");
-                            if (checkLogServerConnectionTask.IsFaulted)
+                            foreach(var worker in initWorkers)
                             {
-                                _writer.WriteLine("error: " + checkLogServerConnectionTask.Exception?.Message);
+                                worker.Execute();
                             }
 
-                            Stop(false, 0, true);
-                        }
-                        var logger = _loggerFactory.New(new JsonSerializer(), _webSocketPool);
+                            _loggingProcessMonitor.Start();
+                            var loggingServerCheckDelay = Task.Delay(TimeSpan.FromSeconds(300));
+
+                            _loadResources = new LoadResources("Resources", _writer, _startUpDirectory, _startupResourceCatalogFactory);
+                            LoadHostSecurityProvider();
+                            _loadResources.CheckExampleResources();
+                            _loadResources.MigrateOldTests();
+                            var webServerConfig = _webServerConfiguration;
+                            webServerConfig.Execute();
+                            new LoadRuntimeConfigurations(_writer).Execute();
+                            OpenCOMStream(null);
+                            _loadResources.LoadResourceCatalog();
+                            _timer = new Timer((state) => GetComputerNames.GetComputerNamesList(), null, 1000, GlobalConstants.NetworkComputerNameQueryFreq);
+                            _loadResources.LoadServerWorkspace();
+                            _loadResources.LoadActivityCache(_assemblyLoader);
+                            LoadTestCatalog();
+                            LoadTriggersCatalog();
+
+                            _startWebServer.Execute(webServerConfig, _pauseHelper);
+                            _queueProcessMonitor.Start();
+
+                            _hangfireServerMonitor.Start();
+
+                            var checkLogServerConnectionTask = CheckLogServerConnection();
+                            var result = Task.WaitAny(new[] { checkLogServerConnectionTask, loggingServerCheckDelay });
+                            var isConnectedOkay = !checkLogServerConnectionTask.IsCanceled && !checkLogServerConnectionTask.IsFaulted && checkLogServerConnectionTask.Result == true;
+                            var logServerConnectedOkayNoTimeout = result == 0 && isConnectedOkay;
+                            if(!logServerConnectedOkayNoTimeout)
+                            {
+                                _writer.WriteLine("unable to connect to logging server");
+                                if(checkLogServerConnectionTask.IsFaulted)
+                                {
+                                    _writer.WriteLine("error: " + checkLogServerConnectionTask.Exception?.Message);
+                                }
+
+                                Stop(false, 0, true);
+                            }
+                            var logger = _loggerFactory.New(new JsonSerializer(), _webSocketPool);
+
+#if ! (DEBUG)
+
                         TrackUsage(UsageType.ServerStart,logger);
-                        LogWarewolfVersion(logger);
-#if DEBUG
-                        if (EnvironmentVariables.IsServerOnline)
-                        {
-                            SetAsStarted();
-                        }
 #endif
-                    }
-                    catch (Exception e)
-                    {
+                            LogWarewolfVersion(logger);
+#if DEBUG
+                            if(EnvironmentVariables.IsServerOnline)
+                            {
+                                SetAsStarted();
+                            }
+#endif
+                        }
+                        catch(Exception e)
+                        {
 #pragma warning disable S2228 // Console logging should not be used
-                        Console.WriteLine(e);
+                            Console.WriteLine(e);
 #pragma warning restore S2228 // Console logging should not be used
-                        Dev2Logger.Error("Error Starting Server", e, GlobalConstants.WarewolfError);
-                        Stop(true, 0, false);
-                    }
-                });
+                            Dev2Logger.Error("Error Starting Server", e, GlobalConstants.WarewolfError);
+                            Stop(true, 0, false);
+                        }
+                    });
         }
 
         private void LogWarewolfVersion(IExecutionLogPublisher logger)
@@ -288,11 +293,12 @@ namespace Dev2
 
         private Task<bool> CheckLogServerConnection()
         {
-            return Task.Run(() =>
-            {
-                var webSocketWrapper = _webSocketPool.Acquire(Config.Auditing.Endpoint);
-                return webSocketWrapper.IsOpen();
-            });
+            return Task.Run(
+                () =>
+                {
+                    var webSocketWrapper = _webSocketPool.Acquire(Config.Auditing.Endpoint);
+                    return webSocketWrapper.IsOpen();
+                });
         }
 
         private void LoadTriggersCatalog()
@@ -305,7 +311,7 @@ namespace Dev2
         int GetNumberOfCores()
         {
             var coreCount = 0;
-            foreach (var item in new ManagementObjectSearcher("Select * from Win32_Processor").Get())
+            foreach(var item in new ManagementObjectSearcher("Select * from Win32_Processor").Get())
             {
                 coreCount += int.Parse(item["NumberOfCores"].ToString());
             }
@@ -315,7 +321,7 @@ namespace Dev2
 
         void TrackUsage(UsageType usageType, IExecutionLogPublisher logger)
         {
-            if (usageType == UsageType.ServerStart)
+            if(usageType == UsageType.ServerStart)
             {
                 ServerStats.SessionId = Guid.NewGuid();
             }
@@ -344,16 +350,16 @@ namespace Dev2
             //TODO: Licensing: Get customer ID from the licensing
 
             var returnResult = UsageTracker.TrackEvent(customerId, usageType, jsonData);
-            if (returnResult != UsageDataResult.ok)
+            if(returnResult != UsageDataResult.ok)
             {
                 ServerStats.IncrementUsageServerRetry();
                 _writer.WriteLine("UsageTracker: Could not log usage.");
                 var msg = "Could not log usage. Retry: " + ServerStats.UsageServerRetry + "/3. Connect to the internet to avoid Warewolf reverting to ReadOnly mode.";
                 logger.Warn(msg);
-                Dev2Logger.Warn(msg,"UsageTracker");
+                Dev2Logger.Warn(msg, "UsageTracker");
             }
 
-            if (usageType == UsageType.ServerStart)
+            if(usageType == UsageType.ServerStart)
             {
                 _usageLogger.Start();
             }
@@ -361,12 +367,12 @@ namespace Dev2
 
         public void Stop(bool didBreak, int result, bool mute)
         {
-            if (!didBreak)
+            if(!didBreak)
             {
                 Dispose();
             }
 
-            if (!mute)
+            if(!mute)
             {
                 _writer.Write($"Exiting with exitcode {result}");
             }
@@ -376,17 +382,19 @@ namespace Dev2
         {
             try
             {
+#if ! (DEBUG)
                 var logger = _loggerFactory.New(new JsonSerializer(), _webSocketPool);
-                TrackUsage(UsageType.ServerStop,logger);
+                TrackUsage(UsageType.ServerStop, logger);
+#endif
                 _queueProcessMonitor.Shutdown();
                 _hangfireServerMonitor.Shutdown();
-                if (_startWebServer != null)
+                if(_startWebServer != null)
                 {
                     _startWebServer.Dispose();
                     _startWebServer = null;
                 }
 
-                if (_ipcClient != null)
+                if(_ipcClient != null)
                 {
                     _ipcClient.Dispose();
                     _ipcClient = null;
@@ -394,7 +402,7 @@ namespace Dev2
 
                 DebugDispatcher.Instance.Shutdown();
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 Dev2Logger.Error("Dev2.ServerLifecycleManager", ex, GlobalConstants.WarewolfError);
             }
@@ -407,7 +415,7 @@ namespace Dev2
 
         public void Dispose()
         {
-            if (_isDisposed)
+            if(_isDisposed)
             {
                 return;
             }
@@ -419,33 +427,33 @@ namespace Dev2
 
         void Dispose(bool disposing)
         {
-            if (disposing)
+            if(disposing)
             {
                 CleanupServer();
             }
 
-            if (_timer != null)
+            if(_timer != null)
             {
                 _timer.Dispose();
                 _timer = null;
             }
 
-            if (_usageLogger != null)
+            if(_usageLogger != null)
             {
                 _usageLogger.Dispose();
             }
 
-            if (_pulseLogger != null)
+            if(_pulseLogger != null)
             {
                 _pulseLogger.Dispose();
             }
 
-            if (_pulseTracker != null)
+            if(_pulseTracker != null)
             {
                 _pulseTracker.Dispose();
             }
 
-            if (_serverEnvironmentPreparer != null)
+            if(_serverEnvironmentPreparer != null)
             {
                 _serverEnvironmentPreparer.Dispose();
                 _serverEnvironmentPreparer = null;
@@ -466,11 +474,10 @@ namespace Dev2
                 locater.CreateCounter(Guid.Parse("a64fc548-3045-407d-8603-2a7337d874a6"), WarewolfPerfCounterType.ConcurrentRequests, "workflow1");
                 locater.CreateCounter(Guid.Parse("a64fc548-3045-407d-8603-2a7337d874a6"), WarewolfPerfCounterType.RequestsPerSecond, "workflow1");
 
-
                 CustomContainer.Register<IWarewolfPerformanceCounterLocater>(locater);
                 CustomContainer.Register<IPerformanceCounterRepository>(locater);
             }
-            catch (Exception err)
+            catch(Exception err)
             {
                 // ignored
                 Dev2Logger.Error(err, GlobalConstants.WarewolfError);
@@ -484,12 +491,11 @@ namespace Dev2
             _writer.WriteLine("done.");
         }
 
-
         void LoadHostSecurityProvider()
         {
             _writer.Write("Loading security provider...  ");
             var instance = HostSecurityProvider.Instance;
-            if (instance != null)
+            if(instance != null)
             {
                 _writer.WriteLine("done.");
             }
@@ -501,14 +507,14 @@ namespace Dev2
         {
             try
             {
-                if (File.Exists(".\\ServerStarted"))
+                if(File.Exists(".\\ServerStarted"))
                 {
                     File.Delete(".\\ServerStarted");
                 }
 
                 File.WriteAllText(".\\ServerStarted", DateTime.Now.Ticks.ToString(CultureInfo.InvariantCulture));
             }
-            catch (Exception err)
+            catch(Exception err)
             {
                 Dev2Logger.Error(err, GlobalConstants.WarewolfError);
             }
@@ -520,7 +526,7 @@ namespace Dev2
     {
         public void WriteLine(string message)
         {
-            if (Environment.UserInteractive)
+            if(Environment.UserInteractive)
             {
                 Console.WriteLine(message);
                 Dev2Logger.Info(message, GlobalConstants.WarewolfInfo);
@@ -533,7 +539,7 @@ namespace Dev2
 
         public void Write(string message)
         {
-            if (Environment.UserInteractive)
+            if(Environment.UserInteractive)
             {
                 Console.Write(message);
                 Dev2Logger.Info(message, GlobalConstants.WarewolfInfo);
@@ -544,12 +550,11 @@ namespace Dev2
             }
         }
 
-
         public void Fail(string message, Exception e)
         {
             var ex = e;
             var errors = new StringBuilder();
-            while (ex != null)
+            while(ex != null)
             {
                 errors.AppendLine(ex.Message);
                 errors.AppendLine(ex.StackTrace);

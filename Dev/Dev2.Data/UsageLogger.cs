@@ -29,16 +29,18 @@ namespace Dev2.Data
             _timer = new Timer(Interval);
             _timer.Elapsed += Timer_Elapsed;
         }
+
         static int GetNumberOfCores()
         {
             var coreCount = 0;
-            foreach (var item in new ManagementObjectSearcher("Select * from Win32_Processor").Get())
+            foreach(var item in new ManagementObjectSearcher("Select * from Win32_Processor").Get())
             {
                 coreCount += int.Parse(item["NumberOfCores"].ToString());
             }
 
             return coreCount;
         }
+
         void TrackUsage(UsageType usageType)
         {
             var myData = new
@@ -57,21 +59,25 @@ namespace Dev2.Data
             //TODO: Licensing: Get customer ID from the licensing
             var customerId = "Unknown";
             var returnResult = UsageTracker.TrackEvent(customerId, usageType, jsonData);
-            if (returnResult != UsageDataResult.ok)
+            if(returnResult != UsageDataResult.ok)
             {
                 ServerStats.IncrementUsageServerRetry();
-                if (ServerStats.UsageServerRetry > 3)
+                if(ServerStats.UsageServerRetry > 3)
                 {
                     //TODO: Licensing: switch warewolf to readonly mode. Only Warn until Licensing is implemented
-                    Dev2Logger.Warn("Could not log usage. Retries: "
+                    Dev2Logger.Warn(
+                        "Could not log usage. Retries: "
                         + ServerStats.UsageServerRetry
-                        + GlobalConstants.UsageServerRetriesMoreThan3, GlobalConstants.UsageTracker);
+                        + GlobalConstants.UsageServerRetriesMoreThan3,
+                        GlobalConstants.UsageTracker);
                 }
                 else
                 {
-                    Dev2Logger.Warn("Could not log usage. Retry: "
+                    Dev2Logger.Warn(
+                        "Could not log usage. Retry: "
                         + ServerStats.UsageServerRetry
-                        + GlobalConstants.UsageServerRetriesLessThan3, GlobalConstants.UsageTracker);
+                        + GlobalConstants.UsageServerRetriesLessThan3,
+                        GlobalConstants.UsageTracker);
                 }
             }
             else
@@ -84,9 +90,11 @@ namespace Dev2.Data
         {
             try
             {
+#if ! (DEBUG)
                 TrackUsage(UsageType.Usage);
+#endif
             }
-            catch (Exception err)
+            catch(Exception err)
             {
                 Dev2Logger.Warn(err.Message, GlobalConstants.WarewolfWarn);
             }
@@ -99,7 +107,7 @@ namespace Dev2.Data
                 _timer.Start();
                 return this;
             }
-            catch (Exception)
+            catch(Exception)
             {
                 return null;
             }
