@@ -109,9 +109,6 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="Warewolf.Usage, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\Binaries\Warewolf.Usage.dll</HintPath>
-    </Reference>
     <Reference Include="Weave">
       <HintPath>..\Binaries\Weave.dll</HintPath>
     </Reference>
@@ -388,6 +385,7 @@
     <PackageReference Include="VtNetConnect.Renci.SshNet">
       <Version>1.0.3</Version>
     </PackageReference>
+    <PackageReference Include="Warewolf.Usage" Version="0.1.0" />
   </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
