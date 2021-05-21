@@ -11,8 +11,6 @@
 using System;
 using System.Activities;
 using System.Collections.Generic;
-using System.Linq;
-using System.Security.Principal;
 using Dev2.Activities.Debug;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Toolbox;
@@ -25,7 +23,6 @@ using Warewolf.Auditing;
 using Warewolf.Core;
 using Warewolf.Driver.Persistence;
 using Warewolf.Resource.Errors;
-using Warewolf.Security.Encryption;
 
 namespace Dev2.Activities
 {
@@ -34,7 +31,7 @@ namespace Dev2.Activities
     {
         private IDSFDataObject _dataObject;
         private int _update;
-        private IStateNotifier _stateNotifier = null;
+        private IStateNotifier _stateNotifier;
         private readonly bool _persistenceEnabled;
         private readonly IPersistenceExecution _scheduler;
 
@@ -129,7 +126,7 @@ namespace Dev2.Activities
                     throw new Exception(ErrorResource.PersistenceSettingsNoConfigured);
                 }
 
-                const string overrideVariables = "";
+                const string OverrideVariables = "";
                 if (OverrideInputVariables)
                 {
                     var persistedValues = _scheduler.GetPersistedValues(suspensionId);
@@ -143,17 +140,18 @@ namespace Dev2.Activities
                     {
                         throw new Exception(persistedValues.SuspendedEnvironment);
                     }
+                    var envArray = _dataObject.Environment.ToJson();
                     var resumeObject = _dataObject;
                     resumeObject.StartActivityId = persistedValues.StartActivityId;
-                    resumeObject.Environment = _dataObject.Environment;
                     resumeObject.Environment.FromJson(persistedValues.SuspendedEnvironment);
+                    resumeObject.Environment.FromJson(envArray);
                     resumeObject.ExecutingUser = persistedValues.ExecutingUser;
                     InnerActivity(resumeObject, _update);
                     Response = _scheduler.ManualResumeWithOverrideJob(resumeObject, suspensionId);
                 }
                 else
                 {
-                    Response = _scheduler.ResumeJob(_dataObject, suspensionId, OverrideInputVariables, overrideVariables);
+                    Response = _scheduler.ResumeJob(_dataObject, suspensionId, OverrideInputVariables, OverrideVariables);
                 }
 
                 _stateNotifier?.LogActivityExecuteState(this);
@@ -230,13 +228,13 @@ namespace Dev2.Activities
                 {
                     if (dsfActivity is IDev2Activity act)
                     {
-                        ExecuteActivity(dataObject, update, dsfActivity, act);
+                        ExecuteActivity(dataObject, update, act);
                     }
                 }
             }
         }
 
-        private static void ExecuteActivity(IDSFDataObject dataObject, int update, Activity dsfActivity, IDev2Activity act)
+        private static void ExecuteActivity(IDSFDataObject dataObject, int update, IDev2Activity act)
         {
             act.Execute(dataObject, update);
         }
