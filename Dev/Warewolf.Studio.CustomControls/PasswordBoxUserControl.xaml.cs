@@ -10,7 +10,6 @@
 
 using System.Windows;
 using System.Windows.Controls;
-using Dev2.Data.Util;
 using Warewolf.Security.Encryption;
 
 namespace Warewolf.Studio.CustomControls
