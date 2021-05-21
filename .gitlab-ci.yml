@@ -6,7 +6,5 @@ image: curlimages/curl:latest
 
 build:
   stage: build
-  variables:
-    GIT_STRATEGY: none
   script:
     - sh ./Dev/.run/QueueCI.sh $CI_COMMIT_BRANCH
