@@ -90,7 +90,7 @@ namespace Dev2.Data
         {
             try
             {
-#if ! (DEBUG)
+#if !DEBUG
                 TrackUsage(UsageType.Usage);
 #endif
             }

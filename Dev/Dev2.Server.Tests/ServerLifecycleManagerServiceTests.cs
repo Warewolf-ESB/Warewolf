@@ -210,7 +210,7 @@ namespace Dev2.Server.Tests
             mockWriter.Verify(o => o.Write("Exiting with exitcode 0"), Times.Once);
 
             mockIpcClient.Verify(o => o.GetIpcExecutor(It.IsAny<INamedPipeClientStreamWrapper>()), Times.Once);
-            mockSystemInformation.Verify(o => o.GetWareWolfVersion(), Times.Exactly(3));
+            mockSystemInformation.Verify(o => o.GetWareWolfVersion(), Times.Exactly(1));
             mockExecutionLoggerFactory.Verify(o => o.New(It.IsAny<ISerializer>(), mockWebSocketPool.Object), Times.Exactly(2));
             mockExecutionLogPublisher.Verify(o => o.Info("Warewolf Server Started Version: 1.1.1.1"), Times.Once);
 

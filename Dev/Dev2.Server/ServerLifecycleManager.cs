@@ -260,17 +260,14 @@ namespace Dev2
                                 Stop(false, 0, true);
                             }
                             var logger = _loggerFactory.New(new JsonSerializer(), _webSocketPool);
-
-#if ! (DEBUG)
-
-                        TrackUsage(UsageType.ServerStart,logger);
-#endif
                             LogWarewolfVersion(logger);
 #if DEBUG
                             if(EnvironmentVariables.IsServerOnline)
                             {
                                 SetAsStarted();
                             }
+#else
+                            TrackUsage(UsageType.ServerStart,logger);
 #endif
                         }
                         catch(Exception e)
@@ -382,7 +379,7 @@ namespace Dev2
         {
             try
             {
-#if ! (DEBUG)
+#if !DEBUG
                 var logger = _loggerFactory.New(new JsonSerializer(), _webSocketPool);
                 TrackUsage(UsageType.ServerStop, logger);
 #endif
