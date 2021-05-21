@@ -211,7 +211,7 @@ namespace Dev2.Server.Tests
 
             mockIpcClient.Verify(o => o.GetIpcExecutor(It.IsAny<INamedPipeClientStreamWrapper>()), Times.Once);
             mockSystemInformation.Verify(o => o.GetWareWolfVersion(), Times.Exactly(1));
-            mockExecutionLoggerFactory.Verify(o => o.New(It.IsAny<ISerializer>(), mockWebSocketPool.Object), Times.Exactly(2));
+            mockExecutionLoggerFactory.Verify(o => o.New(It.IsAny<ISerializer>(), mockWebSocketPool.Object), Times.Exactly(1));
             mockExecutionLogPublisher.Verify(o => o.Info("Warewolf Server Started Version: 1.1.1.1"), Times.Once);
 
             mockServerLifeCycleWorker.Verify();
