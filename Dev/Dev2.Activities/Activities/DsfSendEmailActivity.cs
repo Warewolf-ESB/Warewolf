@@ -70,7 +70,7 @@ namespace Dev2.Activities
         [FindMissing]
         public string Password
         {
-            get => DecryptForShowPassword(_password);
+            get => _password;
             set
             {
                 if (DataListUtil.ShouldEncrypt(value))
@@ -91,25 +91,8 @@ namespace Dev2.Activities
             }
         }
 
-        private static string DecryptForShowPassword(string password)
-        {
-            var decrypt = DataListUtil.NotEncrypted(password) ? password : DpapiWrapper.Decrypt(password);
-            return decrypt;
-        }
-
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        protected string DecryptedPassword
-        {
-            get
-            {
-                var decryptedPassword = Password;
-                if (DataListUtil.NotEncrypted(decryptedPassword))
-                {
-                    return decryptedPassword;
-                }
-                return decryptedPassword.CanBeDecrypted() ? DpapiWrapper.DecryptIfEncrypted(decryptedPassword) : decryptedPassword;
-            }
-        }
+        protected string DecryptedPassword => DataListUtil.NotEncrypted(Password) ? Password : DpapiWrapper.Decrypt(Password);
 
         [FindMissing]
         public string To { get; set; }
