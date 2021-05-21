@@ -58,20 +58,6 @@ namespace Dev2.Activities.Designers2.Core
             }
         }
         
-        private bool _showPassword = false;
-        public bool ShowPassword
-        {
-            get => _showPassword;
-            set { _showPassword = value; OnPropertyChanged(); }
-        }
-        
-        private bool _destinationShowPassword = false;
-        public bool DestinationShowPassword
-        {
-            get => _destinationShowPassword;
-            set { _destinationShowPassword = value; OnPropertyChanged(); }
-        }
-
         public static readonly DependencyProperty IsInputPathFocusedProperty =
             DependencyProperty.Register("IsInputPathFocused", typeof(bool), typeof(FileActivityDesignerViewModel), new PropertyMetadata(false));
 
