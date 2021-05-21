@@ -1,8 +1,7 @@
-#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later.
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -14,24 +13,13 @@ using System.Security.Cryptography;
 
 namespace Dev2.Runtime.Security
 {
-    /// <summary>
-    /// Defines the requirements for a secure config.
-    /// </summary>
     public interface ISecureConfig
     {
-        /// <summary>
-        /// Gets the server ID.
-        /// </summary>
         Guid ServerID { get; }
-
-        /// <summary>
-        /// Gets the server key.
-        /// </summary>
         RSACryptoServiceProvider ServerKey { get; }
-
-        /// <summary>
-        /// Gets the system key.
-        /// </summary>
         RSACryptoServiceProvider SystemKey { get; }
+        string CustomerId { get; }
+        string ConfigKey { get; }
+        string ConfigSitename { get; }
     }
 }

@@ -123,6 +123,7 @@
     <Compile Include="ESB\Management\Services\FindAutocompleteOptions.cs" />
     <Compile Include="ESB\Management\Services\FindOptionsBy.cs" />
     <Compile Include="ESB\Management\Services\GetAuditingSettings.cs" />
+    <Compile Include="ESB\Management\Services\GetLicenseKey.cs" />
     <Compile Include="ESB\Management\Services\GetPersistenceSettings.cs" />
     <Compile Include="ESB\Management\Services\GetResourceById.cs" />
     <Compile Include="ESB\Management\Services\FindResourcesByType.cs" />
@@ -131,6 +132,7 @@
     <Compile Include="ESB\Management\Services\FetchTriggerQueues.cs" />
     <Compile Include="ESB\Management\Services\PersistenceSettingsRead.cs" />
     <Compile Include="ESB\Management\Services\SaveAuditingSettings.cs" />
+    <Compile Include="ESB\Management\Services\SaveLicenseKey.cs" />
     <Compile Include="ESB\Management\Services\SavePersistenceSettings.cs" />
     <Compile Include="ESB\Management\Services\SaveRedisSource.cs" />
     <Compile Include="ESB\Management\Services\SaveElasticsearchSource.cs" />
@@ -494,6 +496,7 @@
       <Project>{926CF512-B3FD-410D-AA83-EBDF4C4868DE}</Project>
       <Name>Warewolf.Interfaces</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Licensing\Warewolf.Licensing.csproj" />
     <ProjectReference Include="..\Warewolf.Security\Warewolf.Security.csproj">
       <Project>{CA5E9373-46FE-41B9-AB2E-BD637F48B456}</Project>
       <Name>Warewolf.Security</Name>

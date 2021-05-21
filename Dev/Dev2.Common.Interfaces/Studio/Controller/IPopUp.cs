@@ -83,5 +83,6 @@ namespace Dev2.Common.Interfaces.Studio.Controller
         MessageBoxResult ShowSaveServerNotReachableErrorMsg();
         MessageBoxResult ShowSaveSettingsPermissionsErrorMsg();
         MessageBoxResult ShowInstallationErrorOccurred();
+        MessageBoxResult UnRegisteredDialog();
     }
 }

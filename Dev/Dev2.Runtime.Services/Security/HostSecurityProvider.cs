@@ -1,8 +1,7 @@
-#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later.
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -25,27 +24,19 @@ namespace Dev2.Runtime.Security
     {
         public static readonly Guid InternalServerID = new Guid("51A58300-7E9D-4927-A57B-E5D700B11B55");
         public static readonly string InternalPublicKey = "BgIAAACkAABSU0ExAAQAAAEAAQBlsJw+ibEmPy3P93PV7a8QjuHqS4QR+yP/+6CVUUpqvUE3hguQUzZ4Fw28hz0LwMLK8Sc1qb0s0FFiH9Ju6O+fIXruGzC3CjzN8wZRGoV2IvfmJ/nMKQ/NVESx9virJA1xTIZa9Za3PQvGbPh1ce0me5YJd3VOHKUqqJCbVeE7pg==";
+        public static readonly string InternalConfigKey = "usIz0lRmeoKQNTJp+mP6U30GahIJzrgmV+BWQmPx4lTsqOYppoazA3M2LyXtt34V";
+        public static readonly string InternalConfigSitename = "viSvQTMi3jrOUFl2Nsd3IQ==";
 
         readonly RSACryptoServiceProvider _serverKey;
         readonly RSACryptoServiceProvider _systemKey;
+
         public Guid ServerID { get; private set; }
-
-        #region Singleton Instance
-
-        //
-        // Multi-threaded implementation - see http://msdn.microsoft.com/en-us/library/ff650316.aspx
-        //
-        // This approach ensures that only one instance is created and only when the instance is needed. 
-        // Also, the variable is declared to be volatile to ensure that assignment to the instance variable
-        // completes before the instance variable can be accessed. Lastly, this approach uses a syncRoot 
-        // instance to lock on, rather than locking on the type itself, to avoid deadlocks.
-        //
+        public string ConfigKey { get; }
+        public string ConfigSitename { get; }
+        public string CustomerId { get; }
         static volatile IHostSecurityProvider _theInstance;
         static readonly object SyncRoot = new object();
 
-        /// <summary>
-        /// Gets the repository instance.
-        /// </summary>
         public static IHostSecurityProvider Instance
         {
             get
@@ -61,66 +52,53 @@ namespace Dev2.Runtime.Security
                         }
                     }
                 }
+
                 return _theInstance;
             }
         }
 
         public RSACryptoServiceProvider SystemKey => _systemKey;
-
         public RSACryptoServiceProvider ServerKey => _serverKey;
 
-        #endregion
-
-        #region Ctor
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="HostSecurityProvider" /> class.
-        /// </summary>
-        /// <param name="config">The config to be used.</param>
         protected HostSecurityProvider(ISecureConfig config)
         {
             if (config == null)
             {
-                throw new ArgumentNullException("config");
+                throw new ArgumentNullException(nameof(config));
             }
 
             ServerID = config.ServerID;
             _serverKey = config.ServerKey;
             _systemKey = config.SystemKey;
+            ConfigKey = config.ConfigKey;
+            ConfigSitename = config.ConfigSitename;
+            CustomerId = config.CustomerId;
         }
-
-        #endregion
-
-        #region VerifyXml
 
         public bool VerifyXml(StringBuilder xml)
         {
             if (xml == null || xml.Length == 0)
             {
-                throw new ArgumentNullException("xml");
+                throw new ArgumentNullException(nameof(xml));
             }
+
             return true;
         }
 
-        #endregion
-
-        #region SignXml
-
         public StringBuilder SignXml(StringBuilder xml)
         {
-           
             if (xml == null || xml.Length == 0)
             {
-                throw new ArgumentNullException("xml");
+                throw new ArgumentNullException(nameof(xml));
             }
 
             // remove the signature element here as it does not pick up correctly futher down ;(
             xml = RemoveSignature(xml);
 
-            using(var s = xml.EncodeForXmlDocument())
+            using (var s = xml.EncodeForXmlDocument())
             {
                 var doc = new XmlDocument();
-               
+
                 doc.Load(s);
 
                 SetServerID(doc);
@@ -138,18 +116,15 @@ namespace Dev2.Runtime.Security
             }
         }
 
-        #endregion
-
-        #region Remove Signature
-        StringBuilder RemoveSignature(StringBuilder sb)
+        static StringBuilder RemoveSignature(StringBuilder sb)
         {
             const string SignatureStart = "<Signature xmlns";
             const string SignatureEnd = "</Signature>";
 
-            var startIdx = sb.IndexOf(SignatureStart, 0,false);
+            var startIdx = sb.IndexOf(SignatureStart, 0, false);
             if (startIdx >= 0)
             {
-                var endIdx = sb.IndexOf(SignatureEnd, startIdx,false);
+                var endIdx = sb.IndexOf(SignatureEnd, startIdx, false);
 
                 if (endIdx >= 0)
                 {
@@ -160,18 +135,11 @@ namespace Dev2.Runtime.Security
 
             return sb;
         }
-        #endregion
-
-        #region Get/Set ServerID
 
         void SetServerID(XmlDocument doc)
         {
-            doc.DocumentElement?.SetAttribute("ServerID", ServerID.ToString());
+            doc.DocumentElement?.SetAttribute(nameof(ServerID), ServerID.ToString());
         }
-
-        #endregion
-
-        #region EnsureSSL
 
         public bool EnsureSsl(IFile fileWrapper, string certPath, IPEndPoint endPoint)
         {
@@ -197,7 +165,5 @@ namespace Dev2.Runtime.Security
 
             return result;
         }
-
-        #endregion
     }
 }

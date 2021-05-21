@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -69,6 +69,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _mainViewModelMock.SetupGet(it => it.SettingsCommand).Returns(_openSettingsCommand);
             _mainViewModelMock.SetupGet(it => it.DebugCommand).Returns(_executeServiceCommand);
             _mainViewModelMock.SetupGet(it => it.ShowStartPageCommand).Returns(_startPageCommandMock.Object);
+            _mainViewModelMock.Setup(o => o.WarewolfStatus).Returns(true);
 
             _target = new MenuViewModel(_mainViewModelMock.Object);
 
@@ -848,6 +849,42 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //assert
             Assert.AreSame(expectedValue, value);
+        }
+
+        [TestMethod]
+        [Timeout(100)]
+        public void MenuSaveToolTipRegistered()
+        {
+            //arrange
+            _target.ButtonWidth = 1;
+
+            //act
+            var value = _target.MenuSaveToolTip;
+
+            //assert
+            Assert.IsFalse(string.IsNullOrEmpty(value));
+            Assert.AreEqual(Resources.Languages.Tooltips.MenuSaveToolTip, value);
+        }
+
+        [TestMethod]
+        [Timeout(100)]
+        public void MenuSaveToolTipUnRegistered()
+        {
+            var mainViewModelMock = new Mock<IShellViewModel>();
+            mainViewModelMock.Setup(o => o.WarewolfStatus).Returns(false);
+
+            var menuViewModel = new MenuViewModel(mainViewModelMock.Object)
+            {
+                ButtonWidth = 1
+            };
+            //arrange
+
+            //act
+            var value = menuViewModel.MenuSaveToolTip;
+
+            //assert
+            Assert.IsFalse(string.IsNullOrEmpty(value));
+            Assert.AreEqual(Resources.Languages.Tooltips.UnregisteredWarewolfToolTip, value);
         }
 
         #endregion Test properties

@@ -1531,6 +1531,7 @@
         <Setter Property="Cursor" Value="Hand"/>
         <Setter Property="Background" Value="{StaticResource ButtonMenuBackgroundBrush}" />
         <Setter Property="Foreground" Value="White" />
+        <Setter Property="ToolTipService.ShowOnDisabled" Value="True" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">

@@ -47,6 +47,7 @@ namespace Warewolf.Studio.ViewModels
         bool _isServerUnavailableIconVisible;
         bool _isExpanded;
         bool _isSelected;
+        bool _isRegistered;
         bool _canCreateFolder;
         bool _canShowServerVersion;
         bool _canCreateWorkflowService;
@@ -97,6 +98,10 @@ namespace Warewolf.Studio.ViewModels
             _controller = CustomContainer.Get<IPopupController>();
             _children = new ObservableCollection<IExplorerItemViewModel>();
             ExplorerTooltips = CustomContainer.Get<IExplorerTooltips>();
+
+            IsRegistered = false;
+
+            RegisterCommand = new DelegateCommand(shellViewModel.Register);
 
             NewServiceCommand = new DelegateCommand(() =>
             {
@@ -804,6 +809,17 @@ namespace Warewolf.Studio.ViewModels
             return folderName;
         }
 
+        public bool IsRegistered
+        {
+            get => _isRegistered;
+            set
+            {
+                _isRegistered = value;
+                OnPropertyChanged(() => IsRegistered);
+            }
+        }
+
+        public ICommand RegisterCommand { get; set; }
         public ICommand NewServiceCommand { get; set; }
         public ICommand NewServerCommand { get; set; }
         public ICommand NewSqlServerSourceCommand { get; set; }

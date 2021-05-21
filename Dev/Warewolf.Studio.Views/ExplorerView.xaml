@@ -149,6 +149,20 @@
                                              StaysOpen="true"
                                              Visibility="{Binding ShowContextMenu, Converter={StaticResource BoolToVisibilityConverter}}"
                                              KeyUp="ExplorerContextMenuView_OnKeyUp">
+
+                                     <MenuItem Name="Register"
+                                               Command="{Binding RegisterCommand}"
+                                               Header="Register"
+                                               Style="{StaticResource MenuItemStyle}"
+                                               ToolTip="{x:Static languages:Tooltips.RegisterWarewolfToolTip}"
+                                               Visibility="{Binding IsRegistered, Converter={StaticResource BoolToVisibilityConverterNegative}}">
+                                         <MenuItem.Icon>
+                                             <fa:FontAwesome FontSize="14" FontWeight="Light" Foreground="{StaticResource WareWolfOrangeBrush}" Icon="Registered" />
+                                         </MenuItem.Icon>
+                                     </MenuItem>
+
+                                     <Separator Visibility="{Binding IsRegistered, Converter={StaticResource BoolToVisibilityConverterNegative}}"/>
+
                                     <MenuItem Name="NewService"
                                               Command="{Binding NewServiceCommand}"
                                               Header="New Workflow Service"

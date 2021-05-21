@@ -256,7 +256,7 @@ namespace Dev2.Studio.ViewModels
         {
             get
             {
-                if (ActiveItem == null)
+                if (!WarewolfStatus || ActiveItem is null)
                 {
                     return new AuthorizeCommand(AuthorizationContext.None, p => { }, param => false);
                 }
@@ -596,6 +596,8 @@ namespace Dev2.Studio.ViewModels
             IPopupController popupController, IExplorerViewModel explorer, IResourcePickerDialog currentResourcePicker)
             : base(eventPublisher)
         {
+            WarewolfStatus = false;
+
             _file = new FileWrapper();
             _filePath = new FilePathWrapper();
             Version = versionChecker ?? throw new ArgumentNullException(nameof(versionChecker));
@@ -1572,6 +1574,12 @@ namespace Dev2.Studio.ViewModels
             _worksurfaceContextManager.EditResource(selectedSource, view, key);
         }
 
+        public void Register()
+        {
+            // _applicationTracker?.TrackEvent(Warewolf.Studio.Resources.Languages.TrackEventMenu.EventCategory,
+            //     Warewolf.Studio.Resources.Languages.TrackEventMenu.NewService);
+        }
+
         public void NewService(string resourcePath)
         {
             _worksurfaceContextManager.NewService(resourcePath);
@@ -1808,6 +1816,15 @@ namespace Dev2.Studio.ViewModels
 
         void SaveAll(object obj)
         {
+            if (!WarewolfStatus)
+            {
+                var result = PopupProvider.UnRegisteredDialog();
+                if (result == MessageBoxResult.Yes)
+                {
+                    // Take the user to the register steps.
+                }
+                return;
+            }
             for (int index = Items.Count - 1; index >= 0; index--)
             {
                 var workSurfaceContextViewModel = Items[index];
@@ -2241,6 +2258,7 @@ namespace Dev2.Studio.ViewModels
         IServer _activeServer;
         IExplorerViewModel _explorerViewModel;
         IWorksurfaceContextManager _worksurfaceContextManager;
+        public bool WarewolfStatus { get; set; }
 
         public IWorksurfaceContextManager WorksurfaceContextManager
         {

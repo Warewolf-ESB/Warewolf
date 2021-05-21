@@ -1,7 +1,7 @@
 ﻿#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -12,14 +12,12 @@
 using System;
 using System.Diagnostics;
 using System.Windows.Input;
-using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio;
 using Dev2.Studio.Interfaces;
 using FontAwesome.WPF;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
-
 using Dev2;
 using Dev2.Instrumentation;
 
@@ -59,11 +57,8 @@ namespace Warewolf.Studio.ViewModels
             SupportCommand = new DelegateCommand(() =>
             {
                 var applicationTracker = CustomContainer.Get<IApplicationTracker>();
-                if (applicationTracker != null)
-                {
-                    applicationTracker.TrackEvent(Resources.Languages.TrackEventHelp.EventCategory,
-                                                        Resources.Languages.TrackEventHelp.Help);
-                }
+                applicationTracker?.TrackEvent(Resources.Languages.TrackEventHelp.EventCategory,
+                    Resources.Languages.TrackEventHelp.Help);
                 Process.Start(Resources.Languages.HelpText.WarewolfHelpURL);
             });
 
@@ -77,7 +72,6 @@ namespace Warewolf.Studio.ViewModels
             });
             SlideClosedCommand = new DelegateCommand(() =>
             {
-                
                 if (_viewModel.MenuPanelWidth >= 80 && !_isOverLock)
                 {
                     SlideClosed(_viewModel);
@@ -90,7 +84,6 @@ namespace Warewolf.Studio.ViewModels
             IsPanelOpen = true;
             IsPopoutViewOpen = false;
             DebugIcon = FontAwesomeIcon.Bug;
-            
         }
 
         public FontAwesomeIcon DebugIcon
@@ -410,6 +403,18 @@ namespace Warewolf.Studio.ViewModels
                 }
 
                 return Resources.Languages.Core.MenuDialogUnLockLabel;
+            }
+        }
+        public string MenuSaveToolTip
+        {
+            get
+            {
+                if (!_viewModel.WarewolfStatus)
+                {
+                    return Resources.Languages.Tooltips.UnregisteredWarewolfToolTip;
+                }
+
+                return Resources.Languages.Tooltips.MenuSaveToolTip;
             }
         }
 

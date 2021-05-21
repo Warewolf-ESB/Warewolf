@@ -1,8 +1,8 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later.
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -16,30 +16,25 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Xml.Linq;
 using Dev2.Common;
+using Dev2.Services.Security;
 using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.Security
 {
-    /// <summary>
-    /// The Secure Config
-    /// </summary>
     public class HostSecureConfig : ISecureConfig
     {
         const string SectionName = "secureSettings";
-
-        public const string FileName = "Warewolf Server.exe.secureconfig";
-
-        #region Ctor
+        private const string FileName = "Warewolf Server.exe.secureconfig";
 
         public HostSecureConfig()
         {
             try
             {
                 EnsureSecureConfigFileExists();
-                var settings = (NameValueCollection)ConfigurationManager.GetSection(SectionName);
+                var settings = (NameValueCollection) ConfigurationManager.GetSection(SectionName);
                 Initialize(settings, true);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Dev2Logger.Error(e, GlobalConstants.WarewolfError);
             }
@@ -55,57 +50,51 @@ namespace Dev2.Runtime.Security
             Initialize(settings, shouldProtectConfig);
         }
 
-        #endregion
-
-        #region Properties
-
         public Guid ServerID { get; private set; }
-
+        public string ConfigKey { get; private set; }
+        public string ConfigSitename { get; private set; }
+        public string CustomerId { get; private set; }
         public RSACryptoServiceProvider ServerKey { get; private set; }
 
         public RSACryptoServiceProvider SystemKey { get; private set; }
 
-        #endregion
-
-        #region Initialize
-
-        /// <summary>
-        /// Initializes config with the given values and optionally protects it.
-        /// <remarks>
-        /// If <paramref name="shouldProtectConfig"/> is <code>true</code>, then the config file must exist on disk.
-        /// </remarks>
-        /// </summary>
-        /// <param name="settings">The settings to be loaded.</param>
-        /// <param name="shouldProtectConfig"><code>true</code> if the configuration should be protected; <code>false</code> otherwise.</param>
-        /// <exception cref="System.ArgumentNullException">settings</exception>
         protected void Initialize(NameValueCollection settings, bool shouldProtectConfig)
         {
-            if(settings == null)
+            if (settings == null)
             {
                 throw new ArgumentNullException("settings");
             }
 
             SystemKey = CreateKey(settings["SystemKey"]);
+
             if (Guid.TryParse(settings["ServerID"], out Guid serverID) && serverID != Guid.Empty)
             {
                 ServerID = serverID;
                 ServerKey = CreateKey(settings["ServerKey"]);
+                ManageLicenseConfig(settings, shouldProtectConfig);
             }
             else
             {
                 // BUG 8395: settings is a ReadOnlyNameValueCollection so create a new collection instead 
                 var newSettings = new NameValueCollection();
-
-                #region New server installation so initialize config with new server id and key
-
                 ServerID = Guid.NewGuid();
                 ServerKey = new RSACryptoServiceProvider();
+
+                ConfigKey = HostSecurityProvider.InternalConfigKey;
+                ConfigSitename = HostSecurityProvider.InternalConfigSitename;
+                CustomerId = "";
+
+                newSettings["ConfigKey"] = ConfigKey;
+                newSettings["ConfigSitename"] = ConfigSitename;
+                newSettings["CustomerId"] = CustomerId;
+
+                ConfigSitename = DecryptKey(ConfigSitename);
+                ConfigKey = DecryptKey(ConfigKey);
+                CustomerId = DecryptKey(CustomerId);
 
                 newSettings["ServerID"] = ServerID.ToString();
                 newSettings["ServerKey"] = Convert.ToBase64String(ServerKey.ExportCspBlob(true));
                 newSettings["SystemKey"] = settings["SystemKey"];
-
-                #endregion
 
                 SaveConfig(newSettings);
 
@@ -116,55 +105,97 @@ namespace Dev2.Runtime.Security
             }
         }
 
-        #endregion
+        private void ManageLicenseConfig(NameValueCollection settings, bool shouldProtectConfig)
+        {
+            var updateSettingsFile = false;
+            //TODO: the reason we create a new NameValueCollection is because the one coming in is readonly. The only
+            //way to add the new keys is to do it this way. CustomerId might be removed from here.
+            var newSettings = new NameValueCollection();
 
-        #region EnsureSecureConfigFileExists
+            if (settings["ConfigKey"] == null)
+            {
+                newSettings.Add("ConfigKey", HostSecurityProvider.InternalConfigKey);
+                updateSettingsFile = true;
+            }
+            else
+            {
+                newSettings["ConfigKey"] = settings["ConfigKey"];
+            }
+            if (settings["ConfigSitename"] == null)
+            {
+                newSettings.Add("ConfigSitename", HostSecurityProvider.InternalConfigSitename);
+                updateSettingsFile = true;
+            }
+            else
+            {
+                newSettings["ConfigSitename"] = settings["ConfigSitename"];
+            }
+
+            if (settings["CustomerId"] == null)
+            {
+                newSettings.Add("CustomerId", "");
+                updateSettingsFile = true;
+            }
+            else
+            {
+                newSettings["CustomerId"] = settings["CustomerId"];
+            }
+            ConfigKey = newSettings["ConfigKey"];
+            ConfigSitename = newSettings["ConfigSitename"];
+            CustomerId = newSettings["CustomerId"];
+
+            ConfigSitename = DecryptKey(ConfigSitename);
+            ConfigKey = DecryptKey(ConfigKey);
+            CustomerId = DecryptKey(CustomerId);
+
+            if (updateSettingsFile)
+            {
+                newSettings["ServerID"] = ServerID.ToString();
+                newSettings["ServerKey"] = Convert.ToBase64String(ServerKey.ExportCspBlob(true));
+                newSettings["SystemKey"] = settings["SystemKey"];
+                SaveConfig(newSettings);
+                if (shouldProtectConfig)
+                {
+                    ProtectConfig();
+                }
+            }
+        }
 
         void EnsureSecureConfigFileExists()
         {
             ConfigurationManager.RefreshSection(SectionName);
-            // We need to check both the live and development paths ;)
             if (!File.Exists(FileName))
             {
                 Dev2Logger.Info(string.Format(ErrorResource.FileNotFound, FileName), GlobalConstants.WarewolfInfo);
-                var newSettings = new NameValueCollection();
-                newSettings["ServerID"] = "";
-                newSettings["ServerKey"] = "";
-                newSettings["SystemKey"] = HostSecurityProvider.InternalPublicKey;
+                var newSettings = new NameValueCollection
+                {
+
+                    ["ServerID"] = "",
+                    ["ServerKey"] = "",
+                    ["SystemKey"] = HostSecurityProvider.InternalPublicKey,
+                    ["CustomerId"] = "",
+                    ["ConfigKey"] = HostSecurityProvider.InternalConfigKey,
+                    ["ConfigSitename"] = HostSecurityProvider.InternalConfigSitename
+                };
                 SaveConfig(newSettings);
             }
         }
 
-        #endregion EnsureSecureConfigFileExists
-
-        #region SaveConfig
-
-        /// <summary>
-        /// Saves the given secure settings into XML configuration file called <see cref="FileName"/>.
-        /// </summary>
-        /// <param name="secureSettings">The settings to be saved.</param>
         protected virtual void SaveConfig(NameValueCollection secureSettings)
         {
             var config = new XElement(SectionName);
-            foreach(string key in secureSettings.Keys)
+            foreach (string key in secureSettings.Keys)
             {
                 config.Add(new XElement("add",
-                                        new XAttribute("key", key),
-                                        new XAttribute("value", secureSettings[key])
-                               ));
+                    new XAttribute("key", key),
+                    new XAttribute("value", secureSettings[key])
+                ));
             }
 
             var configDoc = new XDocument(new XDeclaration("1.0", "utf-8", ""), config);
             configDoc.Save(FileName, SaveOptions.None);
         }
 
-        #endregion
-
-        #region ProtectConfig
-
-        /// <summary>
-        /// Protects the configuration using the <see cref="RsaProtectedConfigurationProvider"/>.
-        /// </summary>
         protected virtual void ProtectConfig()
         {
             try
@@ -177,25 +208,19 @@ namespace Dev2.Runtime.Security
                     section.SectionInformation.ForceSave = true;
                     config.Save(ConfigurationSaveMode.Full);
                 }
-
-
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Dev2Logger.Error(e, GlobalConstants.WarewolfError);
                 throw;
             }
         }
 
-        #endregion
+        public static string DecryptKey(string base64String)
+        {
+            return SecurityEncryption.Decrypt(base64String);
+        }
 
-        #region CreateKey
-
-        /// <summary>
-        /// Creates the <see cref="RSACryptoServiceProvider"/> from the given base64 encoded key.
-        /// </summary>
-        /// <param name="base64String">The base64 encoded key.</param>
-        /// <returns>A  <see cref="RSACryptoServiceProvider"/>.</returns>
         public static RSACryptoServiceProvider CreateKey(string base64String)
         {
             var keyBlob = Convert.FromBase64String(base64String);
@@ -204,33 +229,26 @@ namespace Dev2.Runtime.Security
             return key;
         }
 
-
-        #endregion
-
-        #region CreateSettings
-
-        /// <summary>
-        /// Creates the a <see cref="NameValueCollection"/> configuration settings.
-        /// </summary>
-        /// <param name="serverID">The server ID.</param>
-        /// <param name="serverKey">The server key.</param>
-        /// <param name="systemKey">The system key.</param>
-        /// <returns>a <see cref="NameValueCollection"/> configuration.</returns>
-
-        public static NameValueCollection CreateSettings(string serverID, string serverKey, string systemKey) => new NameValueCollection
+        public static NameValueCollection CreateSettings(string serverID, string serverKey, string systemKey, string customerId, string configSitename, string configKey) => new NameValueCollection
+        {
             {
-                {
-                    "ServerID", serverID
-                },
-                {
-                    "ServerKey", serverKey
-                },
-                {
-                    "SystemKey", systemKey
-                }
-            };
-
-        #endregion
-
+                "ServerID", serverID
+            },
+            {
+                "ServerKey", serverKey
+            },
+            {
+                "SystemKey", systemKey
+            },
+            {
+                "CustomerId", customerId
+            },
+            {
+                "ConfigKey", configKey
+            },
+            {
+                "ConfigSitename", configSitename
+            }
+        };
     }
 }

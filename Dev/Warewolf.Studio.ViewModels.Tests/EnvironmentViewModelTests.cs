@@ -97,9 +97,17 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         [TestMethod]
         [Timeout(100)]
+        public void TestExplorer_IsRegistered()
+        {
+            Assert.IsFalse(_target.IsRegistered);
+        }
+
+        [TestMethod]
+        [Timeout(100)]
         public void TestCommands()
         {
             //arrange
+            var canRegisterCommand = _target.RegisterCommand.CanExecute(null);
             var canCreateNewServiceCommand = _target.NewServiceCommand.CanExecute(null);
             var canCreateNewServerCommand = _target.NewServerCommand.CanExecute(null);
             var canCreateNewSqlServerSourceCommand = _target.NewSqlServerSourceCommand.CanExecute(null);
@@ -125,6 +133,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //act
 
             //assert
+            Assert.IsTrue(canRegisterCommand);
             Assert.IsTrue(canCreateNewServiceCommand);
             Assert.IsTrue(canCreateNewServerCommand);
             Assert.IsTrue(canCreateNewSqlServerSourceCommand);

@@ -54,7 +54,6 @@ namespace Dev2
         bool InteractiveMode { get; set; }
 
         Task Run(IEnumerable<IServerLifecycleWorker> initWorkers);
-
         void Stop(bool didBreak, int result, bool mute);
     }
 
@@ -391,7 +390,7 @@ namespace Dev2
                     _startWebServer = null;
                 }
 
-                if(_ipcClient != null)
+                if (_ipcClient != null)
                 {
                     _ipcClient.Dispose();
                     _ipcClient = null;
@@ -399,7 +398,7 @@ namespace Dev2
 
                 DebugDispatcher.Instance.Shutdown();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Dev2Logger.Error("Dev2.ServerLifecycleManager", ex, GlobalConstants.WarewolfError);
             }
@@ -412,7 +411,7 @@ namespace Dev2
 
         public void Dispose()
         {
-            if(_isDisposed)
+            if (_isDisposed)
             {
                 return;
             }
@@ -424,12 +423,12 @@ namespace Dev2
 
         void Dispose(bool disposing)
         {
-            if(disposing)
+            if (disposing)
             {
                 CleanupServer();
             }
 
-            if(_timer != null)
+            if (_timer != null)
             {
                 _timer.Dispose();
                 _timer = null;
@@ -445,12 +444,12 @@ namespace Dev2
                 _pulseLogger.Dispose();
             }
 
-            if(_pulseTracker != null)
+            if (_pulseTracker != null)
             {
                 _pulseTracker.Dispose();
             }
 
-            if(_serverEnvironmentPreparer != null)
+            if (_serverEnvironmentPreparer != null)
             {
                 _serverEnvironmentPreparer.Dispose();
                 _serverEnvironmentPreparer = null;
@@ -471,10 +470,11 @@ namespace Dev2
                 locater.CreateCounter(Guid.Parse("a64fc548-3045-407d-8603-2a7337d874a6"), WarewolfPerfCounterType.ConcurrentRequests, "workflow1");
                 locater.CreateCounter(Guid.Parse("a64fc548-3045-407d-8603-2a7337d874a6"), WarewolfPerfCounterType.RequestsPerSecond, "workflow1");
 
+
                 CustomContainer.Register<IWarewolfPerformanceCounterLocater>(locater);
                 CustomContainer.Register<IPerformanceCounterRepository>(locater);
             }
-            catch(Exception err)
+            catch (Exception err)
             {
                 // ignored
                 Dev2Logger.Error(err, GlobalConstants.WarewolfError);
@@ -488,11 +488,16 @@ namespace Dev2
             _writer.WriteLine("done.");
         }
 
+
         void LoadHostSecurityProvider()
         {
             _writer.Write("Loading security provider...  ");
             var instance = HostSecurityProvider.Instance;
-            if(instance != null)
+            //TODO: have not done coverage yet as it might change.
+            GlobalConstants.LicenseCustomerId = HostSecurityProvider.Instance.CustomerId;
+            GlobalConstants.SiteName =  HostSecurityProvider.Instance.ConfigSitename;
+            GlobalConstants.ApiKey =  HostSecurityProvider.Instance.ConfigKey;
+            if (instance != null)
             {
                 _writer.WriteLine("done.");
             }
@@ -504,14 +509,15 @@ namespace Dev2
         {
             try
             {
-                if(File.Exists(".\\ServerStarted"))
+                if (File.Exists(".\\ServerStarted"))
                 {
                     File.Delete(".\\ServerStarted");
                 }
 
                 File.WriteAllText(".\\ServerStarted", DateTime.Now.Ticks.ToString(CultureInfo.InvariantCulture));
+
             }
-            catch(Exception err)
+            catch (Exception err)
             {
                 Dev2Logger.Error(err, GlobalConstants.WarewolfError);
             }
@@ -523,7 +529,7 @@ namespace Dev2
     {
         public void WriteLine(string message)
         {
-            if(Environment.UserInteractive)
+            if (Environment.UserInteractive)
             {
                 Console.WriteLine(message);
                 Dev2Logger.Info(message, GlobalConstants.WarewolfInfo);
@@ -536,7 +542,7 @@ namespace Dev2
 
         public void Write(string message)
         {
-            if(Environment.UserInteractive)
+            if (Environment.UserInteractive)
             {
                 Console.Write(message);
                 Dev2Logger.Info(message, GlobalConstants.WarewolfInfo);
@@ -547,11 +553,12 @@ namespace Dev2
             }
         }
 
+
         public void Fail(string message, Exception e)
         {
             var ex = e;
             var errors = new StringBuilder();
-            while(ex != null)
+            while (ex != null)
             {
                 errors.AppendLine(ex.Message);
                 errors.AppendLine(ex.StackTrace);

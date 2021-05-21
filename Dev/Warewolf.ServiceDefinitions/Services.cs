@@ -75,4 +75,12 @@ namespace Warewolf.Service
     {
         public const string Dependencies = nameof(Dependencies);
     }
+    public static class SaveLicenseKey
+    {
+        public const string LicenseData = nameof(LicenseData);
+    }
+    public static class GetLicenseKey
+    {
+        public const string LicenseData = nameof(LicenseData);
+    }
 }
