@@ -72,8 +72,8 @@ namespace Dev2.Tests.Runtime.Services
             //------------Setup for test--------------------------
             var saveLicenseKey = new SaveLicenseKey();
             var serializer = new Dev2JsonSerializer();
-            GlobalConstants.ApiKey = "test_cuS2mLPoVv50eDQju3mquk0aC0UM3YYor";
-            GlobalConstants.SiteName = "warewolfio-test";
+            GlobalConstants.ApiKey = "test_VMxitsiobdAyth62k0DiqpAUKocG6sV3";
+            GlobalConstants.SiteName = "warewolf-test";
             //------------Execute Test---------------------------
             var jsonResult = saveLicenseKey.Execute(null, null);
             var result = serializer.Deserialize<ExecuteMessage>(jsonResult);
@@ -109,8 +109,8 @@ namespace Dev2.Tests.Runtime.Services
             {
                 { "LicenseData", licenseData}
             };
-            GlobalConstants.ApiKey = "test_cuS2mLPoVv50eDQju3mquk0aC0UM3YYor";
-            GlobalConstants.SiteName = "warewolfio-test";
+            GlobalConstants.ApiKey = "test_VMxitsiobdAyth62k0DiqpAUKocG6sV3";
+            GlobalConstants.SiteName = "warewolf-test";
             //------------Execute Test---------------------------
             var jsonResult = saveLicenseKey.Execute(values, workspaceMock.Object);
             var result = serializer.Deserialize<ExecuteMessage>(jsonResult);
@@ -142,8 +142,8 @@ namespace Dev2.Tests.Runtime.Services
             {
                 { "LicenseData", licenseData}
             };
-            GlobalConstants.ApiKey = "test_cuS2mLPoVv50eDQju3mquk0aC0UM3YYor";
-            GlobalConstants.SiteName = "warewolfio-test";
+            GlobalConstants.ApiKey = "test_VMxitsiobdAyth62k0DiqpAUKocG6sV3";
+            GlobalConstants.SiteName = "warewolf-test";
             //------------Execute Test---------------------------
             var jsonResult = saveLicenseKey.Execute(values, workspaceMock.Object);
             var result = serializer.Deserialize<ExecuteMessage>(jsonResult);
