@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -16,19 +16,20 @@ using System.Linq;
 using System.Security.Principal;
 using System.Text;
 using ActivityUnitTests;
+using Dev2.Common;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.State;
 using Dev2.Communication;
 using Dev2.Diagnostics;
 using Dev2.DynamicServices;
+using Dev2.Interfaces;
 using Dev2.Services.Security;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Core;
 using Warewolf.Storage;
-using WarewolfParserInterop;
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
@@ -372,6 +373,61 @@ namespace Dev2.Tests.Activities.ActivityTests
             act.UniqueID = originalGuid.ToString();
             act.Execute(dataObject, 0);
             Assert.IsTrue(dataObject.Environment.HasErrors());
+        }
+
+        [TestMethod]
+        [Timeout(60000)]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(DsfActivity))]
+
+        public void DsfActivity_ExecuteTool_DoErrorHandling_DataObjectWithNullResourceIDExpression_ShouldError()
+        {
+            var onErrorVar = "[[Errors().Messsage]]";
+
+            var mockDataObject = new Mock<IDSFDataObject>();
+            mockDataObject.Setup(o => o.Environment)
+                .Returns(new ExecutionEnvironment());
+            mockDataObject.Setup(o => o.ServerID)
+                .Returns(Guid.NewGuid());
+            mockDataObject.Setup(o => o.IsDebug)
+                .Returns(true);
+            mockDataObject.Setup(o => o.ForEachUpdateValue)
+                .Returns(1);
+            mockDataObject.Setup(o => o.EsbChannel)
+                .Returns(new Mock<IEsbChannel>().Object);
+
+            var dataObject = mockDataObject.Object;
+            dataObject.Environment.AddError("error one");
+            dataObject.Environment.AddError("error one");
+            dataObject.Environment.AddError("error two");
+
+            dataObject.Environment.AllErrors.Add("error two"); //AllErrors - seem to be used as main errors
+            dataObject.Environment.Errors.Add(GlobalConstants.InnerErrorTag + "error two" + GlobalConstants.InnerErrorTagEnd); //Errors - seem to be used as Inner errors
+            dataObject.Environment.Errors.Add(GlobalConstants.InnerErrorTag + "error three" + GlobalConstants.InnerErrorTagEnd); //Errors - seem to be used as Inner errors
+            dataObject.Environment.Errors.Add(GlobalConstants.InnerErrorTag + "error three" + GlobalConstants.InnerErrorTagEnd); //Errors - seem to be used as Inner errors
+            var originalGuid = Guid.NewGuid();
+            var act = new DsfActivity
+            {
+                UniqueID = originalGuid.ToString(),
+                OnErrorVariable = onErrorVar,
+                ResourceID = new InArgument<Guid>
+                {
+                    Expression = null
+                }
+            };
+            act.Execute(dataObject, 0);
+
+            var env = dataObject.Environment;
+            var onErrorMessageEvaluated = env.Eval("[[Errors(*).Messsage]]", 0) as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
+
+            Assert.IsTrue(dataObject.Environment.HasErrors());
+            Assert.IsNotNull(onErrorMessageEvaluated);
+            var errorMessage1 = onErrorMessageEvaluated.Item[0].ToString();
+            var errorMessage2 = onErrorMessageEvaluated.Item[1].ToString();
+
+            Assert.AreNotEqual("error twoerror three", errorMessage1, "Not sure why we would have our error printed this way");
+            Assert.AreEqual("error two", errorMessage1);
+            Assert.AreEqual("error three", errorMessage2);
         }
 
         [TestMethod]

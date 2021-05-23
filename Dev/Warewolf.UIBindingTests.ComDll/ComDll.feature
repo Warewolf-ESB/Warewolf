@@ -29,7 +29,6 @@ Scenario: Editing existing Comdll tool
 	And I click Edit source
 	Then the Comdll Source window is opened with ComDllSource source
 
-#
 Scenario: Editing existing comdll tool then changing values
 Given I create New Workflow
 	And I drag Comdll tool onto the design surface    
@@ -58,7 +57,7 @@ Given I create New Workflow
 	And I select Action
 	And GenerateOutput is disabled
 	And I click Generate output
-	Then Inputs windo is open
+	Then Inputs window is open
 
 Scenario: Validating without selecting the source
 Given I create New Workflow
@@ -88,7 +87,6 @@ Given I create New Workflow
 	And I click Generate output
 	Then Validation is successful
 
-	
 Scenario: Generating com outputs
 Given I create New Workflow
 	And I drag Comdll tool onto the design surface 	
@@ -134,5 +132,5 @@ Given I create New Workflow
 	When I select "ComDllSource" from source list as the source
 	Then EditButton is Enabled
 	And Namespace is Enabled
-	And I click fSix to Execute the tool
+	And I click fix to Execute the tool
 	Then The result is returned with error "No Method Selected"

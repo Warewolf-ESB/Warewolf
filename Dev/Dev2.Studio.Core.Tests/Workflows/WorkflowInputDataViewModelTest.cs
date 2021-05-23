@@ -31,7 +31,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Common.Interfaces.Studio.Controller;
-using Dev2.Services.Security;
 
 namespace Dev2.Core.Tests.Workflows
 {
@@ -265,7 +264,7 @@ namespace Dev2.Core.Tests.Workflows
 
             var debugVM = CreateDebugOutputViewModel();
 
-            var itemToAdd = new DataListItem { DisplayValue = "rec(1).a", Field = "a", Recordset = "rec", CanHaveMutipleRows = true, Index = "1", RecordsetIndexType = enRecordsetIndexType.Numeric, Value = "1" };
+            var itemToAdd = new DataListItem {DisplayValue = "rec(1).a", Field = "a", Recordset = "rec", CanHaveMutipleRows = true, Index = "1", RecordsetIndexType = enRecordsetIndexType.Numeric, Value = "1"};
 
             //------------Execute Test---------------------------
             using (var workflowInputDataViewModel = new WorkflowInputDataViewModel(serviceDebugInfoModel, debugVM.SessionID))
@@ -418,7 +417,6 @@ namespace Dev2.Core.Tests.Workflows
                 Assert.IsTrue(workflowInputDataViewModel.RemoveRow(inputs[0], out indexToSelect));
 
 
-
                 //------------Assert Results-------------------------
                 inputs = workflowInputDataViewModel.WorkflowInputs;
                 Assert.AreEqual(1, inputs.Count);
@@ -473,7 +471,6 @@ namespace Dev2.Core.Tests.Workflows
 
                 inputs[0].CanHaveMutipleRows = true;
                 Assert.IsFalse(workflowInputDataViewModel.RemoveRow(inputs[0], out indexToSelect));
-
 
 
                 //------------Assert Results-------------------------
@@ -707,7 +704,7 @@ namespace Dev2.Core.Tests.Workflows
         }
 
         [TestMethod]
-        [Owner("Njabulo Nxele")]
+        [Owner("Siphamandla Dube")]
         [TestCategory(nameof(WorkflowInputDataViewModel))]
         public void WorkflowInputDataViewModel_SetXmlData_WithObjectAndRecordSet()
         {
@@ -724,7 +721,7 @@ namespace Dev2.Core.Tests.Workflows
             var personObject = new ComplexObjectItemModel("Person", null, enDev2ColumnArgumentDirection.Input);
             personObject.Children.Add(new ComplexObjectItemModel("Name", personObject, enDev2ColumnArgumentDirection.Input));
             personObject.Children.Add(new ComplexObjectItemModel("Age", personObject, enDev2ColumnArgumentDirection.Input));
-            var complexObjectItemModels = new ObservableCollection<IComplexObjectItemModel> { personObject };
+            var complexObjectItemModels = new ObservableCollection<IComplexObjectItemModel> {personObject};
             mockDataListViewModel.Setup(model => model.ComplexObjectCollection).Returns(complexObjectItemModels);
             DataListSingleton.SetDataList(mockDataListViewModel.Object);
             var serviceDebugInfoModel = new ServiceDebugInfoModel
@@ -746,8 +743,50 @@ namespace Dev2.Core.Tests.Workflows
                 //------------Execute Test---------------------------
                 workflowInputDataViewModel.SetXmlData();
                 //------------Assert Results-------------------------
-                Assert.AreEqual("<DataList><rec><a>bob</a></rec><Person><Name></Name><Age></Age></Person></DataList>", workflowInputDataViewModel.XmlData.Replace(Environment.NewLine, "").Replace(" ", ""));
+                Assert.AreEqual("<DataList><recjson:Array=\"true\"xmlns:json=\"http://james.newtonking.com/projects/json\"><a>bob</a></rec><Person><Name></Name><Age></Age></Person></DataList>", workflowInputDataViewModel.XmlData.Replace(Environment.NewLine, "").Replace(" ", ""), "BUG: 6783 - We should keep the JSON integrity");
                 Assert.AreEqual("{\r\n  \"rec\": [\r\n    {\r\n      \"a\": \"bob\"\r\n    }\r\n  ],\r\n  \"Person\": {\r\n    \"Name\": \"\",\r\n    \"Age\": \"\"\r\n  }\r\n}", workflowInputDataViewModel.JsonData);
+            }
+        }
+
+        [TestMethod]
+        [Owner("Njabulo Nxele")]
+        [TestCategory(nameof(WorkflowInputDataViewModel))]
+        public void WorkflowInputDataViewModel_SetXmlData_RememberOldInput()
+        {
+            //------------Setup for test--------------------------
+            const string Shape = @"<DataList><obj Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""Input""><a Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None""></a><b Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None""></b></obj></DataList>";
+
+            var rm = new Mock<IContextualResourceModel>();
+            rm.Setup(r => r.ServerID).Returns(_serverID);
+            rm.Setup(r => r.ResourceName).Returns(ResourceName);
+            rm.Setup(r => r.WorkflowXaml).Returns(new StringBuilder(StringResourcesTest.DebugInputWindow_WorkflowXaml));
+            rm.Setup(r => r.ID).Returns(_resourceID);
+            rm.Setup(r => r.DataList).Returns(Shape);
+
+            var mockDataListViewModel = new Mock<IDataListViewModel>();
+            var objObject = new ComplexObjectItemModel("obj", null, enDev2ColumnArgumentDirection.Input);
+            objObject.Children.Add(new ComplexObjectItemModel("a", objObject, enDev2ColumnArgumentDirection.Input));
+            objObject.Children.Add(new ComplexObjectItemModel("b", objObject, enDev2ColumnArgumentDirection.Input));
+            var complexObjectItemModels = new ObservableCollection<IComplexObjectItemModel> {objObject};
+            mockDataListViewModel.Setup(model => model.ComplexObjectCollection).Returns(complexObjectItemModels);
+            DataListSingleton.SetDataList(mockDataListViewModel.Object);
+            var serviceDebugInfoModel = new ServiceDebugInfoModel
+            {
+                DebugModeSetting = DebugMode.DebugInteractive,
+                RememberInputs = true,
+                ResourceModel = rm.Object,
+                ServiceInputData = "<DataList><obj><c>C</c></obj></DataList>"
+            };
+
+            var debugVM = CreateDebugOutputViewModel();
+
+            using (var workflowInputDataViewModel = new WorkflowInputDataViewModel(serviceDebugInfoModel, debugVM.SessionID))
+            {
+                //------------Execute Test---------------------------
+                workflowInputDataViewModel.LoadWorkflowInputs();
+                workflowInputDataViewModel.SetXmlData();
+                //------------Assert Results-------------------------
+                Assert.AreEqual("<DataList>  <obj>    <c>C</c>    <a></a>    <b></b>  </obj></DataList>", workflowInputDataViewModel.XmlData.Replace(Environment.NewLine, ""));
             }
         }
 
@@ -776,7 +815,7 @@ namespace Dev2.Core.Tests.Workflows
 
             var debugVM = CreateDebugOutputViewModel();
 
-            var itemToAdd = new DataListItem { DisplayValue = "scalar", Field = "scalar", CanHaveMutipleRows = false, Value = "1" };
+            var itemToAdd = new DataListItem {DisplayValue = "scalar", Field = "scalar", CanHaveMutipleRows = false, Value = "1"};
 
             //------------Execute Test---------------------------
             using (var workflowInputDataViewModel = new WorkflowInputDataViewModel(serviceDebugInfoModel, debugVM.SessionID))
@@ -840,7 +879,6 @@ namespace Dev2.Core.Tests.Workflows
             //------------Execute Test---------------------------
             using (var workflowInputDataViewModel = new WorkflowInputDataViewModel(serviceDebugInfoModel, debugVM.SessionID))
             {
-
                 //------------Assert Results-------------------------
                 Assert.AreEqual(rm.Object.DataList, workflowInputDataViewModel.DebugTo.DataList);
                 Assert.AreEqual(rm.Object.ResourceName, workflowInputDataViewModel.DebugTo.ServiceName);
@@ -934,7 +972,7 @@ namespace Dev2.Core.Tests.Workflows
             };
 
             var debugOutputViewModel = CreateDebugOutputViewModel();
-            using (var workflowInputDataViewModel = new WorkflowInputDataViewModelMock(serviceDebugInfoModel, debugOutputViewModel) { DebugTo = { DataList = datalist } })
+            using (var workflowInputDataViewModel = new WorkflowInputDataViewModelMock(serviceDebugInfoModel, debugOutputViewModel) {DebugTo = {DataList = datalist}})
             {
                 workflowInputDataViewModel.LoadWorkflowInputs();
                 workflowInputDataViewModel.XmlData = @"<DataList><rs><val>1</val></rs><rs><val>2</val></rs></DataList>";
@@ -979,7 +1017,7 @@ namespace Dev2.Core.Tests.Workflows
             };
 
             var debugOutputViewModel = CreateDebugOutputViewModel();
-            using (var workflowInputDataViewModel = new WorkflowInputDataViewModelMock(serviceDebugInfoModel, debugOutputViewModel) { DebugTo = { DataList = datalist } })
+            using (var workflowInputDataViewModel = new WorkflowInputDataViewModelMock(serviceDebugInfoModel, debugOutputViewModel) {DebugTo = {DataList = datalist}})
             {
                 workflowInputDataViewModel.LoadWorkflowInputs();
                 workflowInputDataViewModel.XmlData = @"<DataList><val>1</val><res>2</res></DataList>";
@@ -1023,7 +1061,7 @@ namespace Dev2.Core.Tests.Workflows
             };
 
             var debugOutputViewModel = CreateDebugOutputViewModel();
-            using (var workflowInputDataViewModel = new WorkflowInputDataViewModelMock(serviceDebugInfoModel, debugOutputViewModel) { DebugTo = { DataList = datalist } })
+            using (var workflowInputDataViewModel = new WorkflowInputDataViewModelMock(serviceDebugInfoModel, debugOutputViewModel) {DebugTo = {DataList = datalist}})
             {
                 workflowInputDataViewModel.LoadWorkflowInputs();
                 workflowInputDataViewModel.XmlData = @"<DataList><rs><val>1#</val></rs><rs><val>2+2</val></rs></DataList>";
@@ -1067,7 +1105,7 @@ namespace Dev2.Core.Tests.Workflows
             };
 
             var debugOutputViewModel = CreateDebugOutputViewModel();
-            using (var workflowInputDataViewModel = new WorkflowInputDataViewModelMock(serviceDebugInfoModel, debugOutputViewModel) { DebugTo = { DataList = datalist } })
+            using (var workflowInputDataViewModel = new WorkflowInputDataViewModelMock(serviceDebugInfoModel, debugOutputViewModel) {DebugTo = {DataList = datalist}})
             {
                 workflowInputDataViewModel.LoadWorkflowInputs();
                 workflowInputDataViewModel.XmlData = @"<DataList><val>Dev#Chotaliya</val><res>2</res></DataList>";
@@ -1111,7 +1149,7 @@ namespace Dev2.Core.Tests.Workflows
             };
 
             var debugOutputViewModel = CreateDebugOutputViewModel();
-            using (var workflowInputDataViewModel = new WorkflowInputDataViewModelMock(serviceDebugInfoModel, debugOutputViewModel) { DebugTo = { DataList = datalist } })
+            using (var workflowInputDataViewModel = new WorkflowInputDataViewModelMock(serviceDebugInfoModel, debugOutputViewModel) {DebugTo = {DataList = datalist}})
             {
                 workflowInputDataViewModel.LoadWorkflowInputs();
                 workflowInputDataViewModel.XmlData = @"<DataList><val>Dev Chotaliya</val><res>2</res></DataList>";
@@ -1159,7 +1197,7 @@ namespace Dev2.Core.Tests.Workflows
             };
 
             var debugOutputViewModel = CreateDebugOutputViewModel();
-            using (var workflowInputDataViewModel = new WorkflowInputDataViewModelMock(serviceDebugInfoModel, debugOutputViewModel) { DebugTo = { DataList = datalist } })
+            using (var workflowInputDataViewModel = new WorkflowInputDataViewModelMock(serviceDebugInfoModel, debugOutputViewModel) {DebugTo = {DataList = datalist}})
             {
                 workflowInputDataViewModel.LoadWorkflowInputs();
                 workflowInputDataViewModel.XmlData = @"<DataList><val>Lorem ipsum dolor sit amet, usu choro quaerendum at, eros adhuc appetere no eam, et expetenda salutatus theophrastus sed. Pri solum ullum lucilius id. Ei doctusLorem ipsum dolor sit amet, usu choro quaerendum at, eros adhuc appetere no eam, et expetenda salutatus theophrastus sed. Pri solum ullum lucilius id. Ei doctus copiosae deterruisset eam, qui vocent periculis ei. Nec graece philosophia in, in legere facilisi his, ex nihil principes mei. Diceret reformidans vel ea, velit voluptuLorem ipsum dolor sit amet, usu choro quaerendum at, eros adhuc appetere no eam, et expetenda salutatus theophrastus sed. Pri solum ullum lucilius id. Ei doctus copiosae deterruisset eam, qui vocent periculis ei. Nec graece philosophia in, in legere facilisi his, ex nihil principes mei. Diceret reformidans vel ea, velit voluptuLorem ipsum dolor sit amet, usu choro quaerendum at, eros adhuc appetere no eam, et expetenda salutatus theophrastus sed. Pri solum ullum lucilius id. Ei doctus copiosae deterruisset eam, qui vocent periculis ei. Nec graece philosophia in, in legere facilisi his, ex nihil principes mei. Diceret reformidans vel ea, velit voluptuLorem ipsum dolor sit amet, usu choro quaerendum at, eros adhuc appetere no eam, et expetenda salutatus theophrastus sed. Pri solum ullum lucilius id. Ei doctus copiosae deterruisset eam, qui vocent periculis ei. Nec graece philosophia in, in legere facilisi his, ex nihil principes mei. Diceret reformidans vel ea, velit voluptuLorem ipsum dolor sit amet, usu choro quaerendum at, eros adhuc appetere no eam, et expetenda salutatus theophrastus sed. Pri solum ullum lucilius id. Ei doctus copiosae deterruisset eam, qui vocent periculis ei. Nec graece philosophia in, in legere facilisi his, ex nihil principes mei. Diceret reformidans vel ea, velit voluptu copiosae deterruisset eam, qui vocent periculis ei. Nec graece philosophia in, in legere facilisi his, ex nihil principes mei. Diceret reformidans vel ea, velit voluptuLorem ipsum dolor sit amet, usu choro quaerendum at, eros adhuc appetere no eam, et expetenda salutatus theophrastus sed. Pri solum ullum lucilius id. Ei doctus copiosae deterruisset eam, qui vocent periculis ei. Nec graece philosophia in, in legere facilisi his, ex nihil principes mei. Diceret reformidans vel ea, velit voluptu</val><res>2</res></DataList>";
@@ -1180,18 +1218,15 @@ namespace Dev2.Core.Tests.Workflows
             items.AddRange(CreateTestDataListItemRecords(numberOfRecords, numberOfRecordFields));
 
             return items;
-
-
         }
 
         static IList<IDataListItem> GetDataListItemScalar()
         {
             IList<IDataListItem> scalars = new OptomizedObservableCollection<IDataListItem>
-                                                                            {  CreateScalar("scalar1", "ScalarData1")
-                                                                             , CreateScalar("scalar2", "ScalarData2")
-                                                                            };
+            {
+                CreateScalar("scalar1", "ScalarData1"), CreateScalar("scalar2", "ScalarData2")
+            };
             return scalars;
-
         }
 
         static IList<IDataListItem> CreateTestDataListItemRecords(int numberOfRecords, int recordFieldCount)
