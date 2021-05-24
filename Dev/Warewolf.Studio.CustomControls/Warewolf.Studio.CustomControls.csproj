@@ -167,7 +167,10 @@
     <Content Include="ChargeBee.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="LicenseRegistration.html" >
+    <Content Include="LicenseRegistration.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ManageRegistration.html" >
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

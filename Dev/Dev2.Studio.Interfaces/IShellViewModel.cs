@@ -62,6 +62,7 @@ namespace Dev2.Studio.Interfaces
     {
         void NewServerSource(string resourcePath);
         void Register();
+        void ManagePlan();
         void NewService(string resourcePath);
         void NewSqlServerSource(string resourcePath);
         void NewMySqlSource(string resourcePath);

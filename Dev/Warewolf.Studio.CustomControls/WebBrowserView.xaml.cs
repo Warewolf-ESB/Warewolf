@@ -20,26 +20,23 @@ namespace Warewolf.Studio.CustomControls
     [SuppressMessage("ReSharper", "CC0091")]
     public partial class WebBrowserView : Window
     {
-        public WebBrowserView()
+
+        public WebBrowserView(string licenseType)
         {
             InitializeComponent();
             webBrowser.ObjectForScripting = new ScriptManager(this);
-        }
-
-        private void EnterpriseButton_OnClick(object sender, RoutedEventArgs e)
-        {
-            var curDir = Directory.GetCurrentDirectory();
-            var url = new Uri($"file:///{curDir}/LicenseRegistration.html");
-            webBrowser.Source = url;
-            //webBrowser.Navigate("https://www.chargebee.com/tutorials/index.html");
-        }
-
-        private void DeveloperButton_OnClick(object sender, RoutedEventArgs e)
-        {
-            var curDir = Directory.GetCurrentDirectory();
-            var url = new Uri($"file:///{curDir}/ChargeBee.html");
-            webBrowser.Source = url;
-            //webBrowser.Navigate("https://www.chargebee.com/tutorials/index.html");
+            if(licenseType == "Register")
+            {
+                var curDir = Directory.GetCurrentDirectory();
+                var url = new Uri($"file:///{curDir}/LicenseRegistration.html");
+                webBrowser.Source = url;
+            }
+            if(licenseType == "Manage")
+            {
+                var curDir = Directory.GetCurrentDirectory();
+                var url = new Uri($"file:///{curDir}/ManageRegistration.html");
+                webBrowser.Source = url;
+            }
         }
 
         private void WebBrowserOnNavigated(object sender, NavigationEventArgs e)

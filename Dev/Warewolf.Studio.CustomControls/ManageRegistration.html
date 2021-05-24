@@ -1,0 +1,35 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="IE=edge">
+    <title>Warewolf</title>
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="https://js.chargebee.com/v2/chargebee.js" data-cb-site="warewolf-test"></script>
+    <script type='text/javascript'>
+        jQuery(document).ready(function () {
+            let chargebeeInstance = Chargebee.init({site: "warewolf-test"});
+            chargebeeInstance = Chargebee.getInstance();
+            let cbPortal = chargebeeInstance.createChargebeePortal();
+            cbPortal.open({
+                close() {
+                    //close callbacks
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+<div id="container" class="checkout container">
+    <div id="customer-info" class="row">
+        <div class="col-sm-7" id="checkout_info">
+            <a id="OpenPortal" name="OpenPortal" href="javascript:void(0)" data-cb-type="portal" >Manage account</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

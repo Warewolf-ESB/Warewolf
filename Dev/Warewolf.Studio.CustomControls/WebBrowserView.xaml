@@ -4,15 +4,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         mc:Ignorable="d"
-        Title="WebBrowserView" Height="450" Width="800">
-
+        Title="Warewolf" Height="450" Width="800">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Button Grid.Row="0" x:Name="EnterpriseButton" Width="Auto" Content="Subscribe to Enterprise" Click="EnterpriseButton_OnClick"/>
-        <!-- <Button Grid.Row="2" x:Name="DeveloperButton" Width="Auto" Content="Subscribe to Developer" Click="DeveloperButton_OnClick"/> -->
         <WebBrowser x:Name="webBrowser"
                     Grid.Row="1"
                     Navigating="WebBrowser_OnNavigating"
@@ -30,5 +27,4 @@
             </WebBrowser.RenderTransform>
         </WebBrowser>
     </Grid>
-
 </Window>

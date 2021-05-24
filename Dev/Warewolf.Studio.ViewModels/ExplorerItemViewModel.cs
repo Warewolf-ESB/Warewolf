@@ -982,7 +982,10 @@ namespace Warewolf.Studio.ViewModels
             }
         }
         public bool IsRegistered { get; set; }
+
         public ICommand RegisterCommand { get; set; }
+
+        public ICommand ManagePlanCommand { get; set; }
         public ICommand NewServiceCommand { get; set; }
         public ICommand NewServerCommand { get; set; }
         public ICommand NewSqlServerSourceCommand { get; set; }

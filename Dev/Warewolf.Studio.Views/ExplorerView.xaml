@@ -160,7 +160,16 @@
                                              <fa:FontAwesome FontSize="14" FontWeight="Light" Foreground="{StaticResource WareWolfOrangeBrush}" Icon="Registered" />
                                          </MenuItem.Icon>
                                      </MenuItem>
-
+                                    <MenuItem Name="ManagePlan"
+                                        Command="{Binding ManagePlanCommand}"
+                                        Header="Manage Plan"
+                                        Style="{StaticResource MenuItemStyle}"
+                                        ToolTip="{x:Static languages:Tooltips.ManagePlanWarewolfToolTip}"
+                                        Visibility="{Binding IsRegistered, Converter={StaticResource BoolToVisibilityConverterNegative}}">
+                                        <MenuItem.Icon>
+                                            <fa:FontAwesome FontSize="14" FontWeight="Light" Foreground="{StaticResource WareWolfOrangeBrush}" Icon="Registered" />
+                                        </MenuItem.Icon>
+                                    </MenuItem>
                                      <Separator Visibility="{Binding IsRegistered, Converter={StaticResource BoolToVisibilityConverterNegative}}"/>
 
                                     <MenuItem Name="NewService"

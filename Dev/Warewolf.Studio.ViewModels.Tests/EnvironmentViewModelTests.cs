@@ -108,6 +108,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //arrange
             var canRegisterCommand = _target.RegisterCommand.CanExecute(null);
+            var canManagePlanCommand = _target.ManagePlanCommand.CanExecute(null);
             var canCreateNewServiceCommand = _target.NewServiceCommand.CanExecute(null);
             var canCreateNewServerCommand = _target.NewServerCommand.CanExecute(null);
             var canCreateNewSqlServerSourceCommand = _target.NewSqlServerSourceCommand.CanExecute(null);
@@ -133,6 +134,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //act
 
             //assert
+            Assert.IsTrue(canManagePlanCommand);
             Assert.IsTrue(canRegisterCommand);
             Assert.IsTrue(canCreateNewServiceCommand);
             Assert.IsTrue(canCreateNewServerCommand);

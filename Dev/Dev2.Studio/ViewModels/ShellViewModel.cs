@@ -1577,7 +1577,12 @@ namespace Dev2.Studio.ViewModels
 
         public void Register()
         {
-            var webBrowserView = new WebBrowserView();
+            var webBrowserView = new WebBrowserView("Register");
+            webBrowserView.ShowDialog();
+        }
+        public void ManagePlan()
+        {
+            var webBrowserView =  new WebBrowserView("Manage");
             webBrowserView.ShowDialog();
         }
 

@@ -2437,6 +2437,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Click here to manage your license plan.
+        /// </summary>
+        public static string ManagePlanWarewolfToolTip {
+            get {
+                return ResourceManager.GetString("ManagePlanWarewolfToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Edits the selected plugin source connection.
         /// </summary>
         public static string ManagePluginServiceEditSourceTooltip {
