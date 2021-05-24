@@ -1,28 +1,28 @@
 ﻿<Window x:Class="Warewolf.Studio.CustomControls.WebBrowserView"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        mc:Ignorable="d"
-        Title="Warewolf" Height="450" Width="800">
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    mc:Ignorable="d"
+    WindowStartupLocation="CenterOwner"
+    Title="Warewolf"
+    Height="650"
+    MinHeight="650"
+    Width="550"
+    MinWidth="550">
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
         <WebBrowser x:Name="webBrowser"
-                    Grid.Row="1"
-                    Navigating="WebBrowser_OnNavigating"
-                    Navigated="WebBrowserOnNavigated"
-                    Margin="0,0,0,0"
-                    RenderTransformOrigin="0.5,0.5"
-                    ObjectForScripting="HtmlInteropClass">
+            Navigating="WebBrowser_OnNavigating"
+            Navigated="WebBrowserOnNavigated"
+            Margin="0,0,0,0"
+            RenderTransformOrigin="0.5,0.5"
+            ObjectForScripting="HtmlInteropClass">
             <WebBrowser.RenderTransform>
                 <TransformGroup>
-                    <ScaleTransform/>
-                    <SkewTransform/>
-                    <RotateTransform Angle="-0.018"/>
-                    <TranslateTransform/>
+                    <ScaleTransform />
+                    <SkewTransform />
+                    <RotateTransform Angle="-0.018" />
+                    <TranslateTransform />
                 </TransformGroup>
             </WebBrowser.RenderTransform>
         </WebBrowser>
