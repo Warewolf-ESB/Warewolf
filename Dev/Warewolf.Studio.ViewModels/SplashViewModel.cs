@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -13,6 +13,7 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Windows.Input;
 using System.Windows.Threading;
+using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Studio.Interfaces;
 using Microsoft.Practices.Prism.Commands;
@@ -23,23 +24,13 @@ namespace Warewolf.Studio.ViewModels
 {
     public class SplashViewModel : BindableBase, ISplashViewModel
     {
-        string _serverVersion;
-        string _studioVersion;
+        private string _serverVersion;
+        private string _studioVersion;
 
         public SplashViewModel(IServer server, IExternalProcessExecutor externalProcessExecutor)
         {
-            if (server == null)
-            {
-                throw new ArgumentNullException(nameof(server));
-            }
-
-            if (externalProcessExecutor == null)
-            {
-                throw new ArgumentNullException(nameof(externalProcessExecutor));
-            }
-
-            Server = server;
-            ExternalProcessExecutor = externalProcessExecutor;
+            Server = server ?? throw new ArgumentNullException(nameof(server));
+            ExternalProcessExecutor = externalProcessExecutor ?? throw new ArgumentNullException(nameof(externalProcessExecutor));
 
             var conUri = new Uri(Resources.Languages.Core.ContributorsUrl);
             ContributorsUrl = conUri;
@@ -50,6 +41,8 @@ namespace Warewolf.Studio.ViewModels
             var warewolfUri = new Uri(Resources.Languages.Core.WarewolfUrl);
             WarewolfUrl = warewolfUri;
             WarewolfCopyright = string.Format(Resources.Languages.Core.WarewolfCopyright, DateTime.Now.Year.ToString());
+
+            WarewolfLicense = GlobalConstants.IsLicensed ? GlobalConstants.LicensePlanId : GlobalConstants.LicenseCustomerId;
 
             ContributorsCommand = new DelegateCommand(() => externalProcessExecutor.OpenInBrowser(ContributorsUrl));
             CommunityCommand = new DelegateCommand(() => externalProcessExecutor.OpenInBrowser(CommunityUrl));
@@ -84,6 +77,7 @@ namespace Warewolf.Studio.ViewModels
         }
 
        public Uri WarewolfUrl { get; set; }
+       public string WarewolfLicense { get; set; }
         public Uri ContributorsUrl { get; set; }
         public Uri CommunityUrl { get; set; }
         public Uri ExpertHelpUrl { get; set; }
