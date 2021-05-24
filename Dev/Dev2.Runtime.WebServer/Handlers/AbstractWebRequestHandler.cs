@@ -47,6 +47,7 @@ using Dev2.Web;
 using Dev2.Workspaces;
 using Warewolf.Auditing;
 using Warewolf.Data;
+using Warewolf.Execution;
 using Warewolf.Security;
 
 namespace Dev2.Runtime.WebServer.Handlers
@@ -311,7 +312,7 @@ namespace Dev2.Runtime.WebServer.Handlers
 
                 if (isTestRun)
                 {
-                    return ExecuteAsTest(user);
+                    return ExecuteAsTest(user, new ServiceTestExecutor(serviceName, user, _workspaceGuid, _serializer, _dataObject));
                 }
 
                 if (isTestCoverage)
@@ -368,9 +369,9 @@ namespace Dev2.Runtime.WebServer.Handlers
                 return executionDataListId;
             }
 
-            private IResponseWriter ExecuteAsTest(IPrincipal userPrinciple)
+            private IResponseWriter ExecuteAsTest(IPrincipal userPrinciple, IServiceTestExecutor serviceTestExecutor)
             {
-                var formatter = ServiceTestExecutor.ExecuteTests(_dataObject, userPrinciple, _workspaceGuid, _serializer, _testCatalog, _resourceCatalog, out _executePayload, _testCoverageCatalog);
+                var formatter = serviceTestExecutor.ExecuteTests(_dataObject, userPrinciple, _workspaceGuid, _serializer, _testCatalog, _resourceCatalog, out _executePayload, _testCoverageCatalog);
                 return new StringResponseWriter(_executePayload ?? string.Empty, formatter.ContentType);
             }
 
