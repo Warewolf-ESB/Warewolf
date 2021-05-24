@@ -23,16 +23,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
-    /// <summary>
-    /// Summary description for CountRecordsTest
-    /// </summary>
     [TestClass]
     public class ExecuteCommandLineTest : BaseActivityUnitTest
     {
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
         public TestContext TestContext { get; set; }
         public const string CommandLineToolName = "ConsoleAppToTestExecuteCommandLineActivity.exe";
 
@@ -85,6 +78,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Timeout(60000)]
         [DeploymentItem(CommandLineToolName)]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void OnExecuteWhereConsoleDoesNothingExpectNothingForResult()
         {
             //------------Setup for test--------------------------
