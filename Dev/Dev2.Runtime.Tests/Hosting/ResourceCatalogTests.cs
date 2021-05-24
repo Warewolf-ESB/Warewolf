@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -1571,7 +1571,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
             Assert.IsNotNull(payload);
         }
-        
+
         [TestMethod]
         [Owner("Travis Frisinger")]
         [DoNotParallelize]
@@ -1580,7 +1580,7 @@ namespace Dev2.Tests.Runtime.Hosting
         {
             //------------Setup for test--------------------------
             var workspaceID = GlobalConstants.ServerWorkspaceID;
-            
+
             var sourcesPath = EnvironmentVariables.ResourcePath;
             Directory.CreateDirectory(sourcesPath);
             SaveResources(sourcesPath, null, false, false, new[] { "DbSource" }, new[] { Guid.NewGuid() });
@@ -2330,7 +2330,7 @@ namespace Dev2.Tests.Runtime.Hosting
                 new[] { Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid() }, saveToWSPath);
         }
 
-        static IEnumerable<IResource> SaveResources(string resourcesPath, string versionNo, bool injectID, bool signXml, IEnumerable<string> resourceNames, Guid[] resourceIDs, bool createWorDef = false)
+        static IEnumerable<IResource> SaveResources(string resourcesPath, string versionNo, bool injectID, bool signXml, IEnumerable<string> resourceNames, Guid[] resourceIDs, bool createWorDef = false, bool renameWorkflow = false)
         {
             lock (SyncRoot)
             {
@@ -2338,7 +2338,22 @@ namespace Dev2.Tests.Runtime.Hosting
                 var count = 0;
                 foreach (var resourceName in resourceNames)
                 {
-                    var xml = XmlResource.Fetch(resourceName);
+                    var xml = (XElement)null;
+                    if (renameWorkflow)
+                    {
+                        xml = XmlResource.Fetch("Bug6619Dep"); //this will be used as template most of its values will be edited
+                        
+                        xml.Attribute("ID").Value = resourceIDs[count].ToString();
+                        xml.Attribute("Name").Value = resourceName;
+                        
+                        xml.Element("DisplayName").Value = resourceName;
+                        xml.Element("Category").Value = string.Empty;
+
+                    }
+                    else
+                    {
+                       xml = XmlResource.Fetch(resourceName);
+                    }
                     if (injectID)
                     {
                         var idAttr = xml.Attribute("ID");
@@ -2362,6 +2377,10 @@ namespace Dev2.Tests.Runtime.Hosting
                         contents = HostSecurityProvider.Instance.SignXml(new StringBuilder(contents)).ToString();
                     }
                     var res = new Resource(xml);
+                    if (renameWorkflow)
+                    {
+                        res.ResourceName = resourceName;
+                    }
                     var resourceDirectory = resourcesPath + "\\";
                     res.FilePath = resourceDirectory + res.ResourceName + ".bite";
                     var f = new FileInfo(res.FilePath);
@@ -3263,7 +3282,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void ResourceCatalog_UnitTest_DuplicateFolderResourceWithValidArgs_ExpectSuccesResult()
+        public void ResourceCatalog_DuplicateFolder_ResourceWithValidArgs_And_FixReferences_False_ExpectSuccesResult()
         {
             //------------Setup for test--------------------------
             var workspaceID = GlobalConstants.ServerWorkspaceID;
@@ -3282,6 +3301,48 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.IsNotNull(oldResource);
             //------------Execute Test---------------------------
             ResourceCatalogResult resourceCatalogResult = rc.DuplicateFolder(oldResource.GetResourcePath(GlobalConstants.ServerWorkspaceID), "Destination", "NewName", false);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(ExecStatus.Success, resourceCatalogResult.Status);
+            Assert.AreEqual(@"Duplicated Successfully".Replace(Environment.NewLine, ""), resourceCatalogResult.Message.Replace(Environment.NewLine, ""));
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        public void ResourceCatalog_DuplicateFolder_ResourceWithValidArgs_And_FixReferences_True_ExpectSuccesResult()
+        {
+            //------------Setup for test--------------------------
+            var workspaceID = GlobalConstants.ServerWorkspaceID;
+
+            var sourceLocation = "Duplicate_Source";
+            var path = EnvironmentVariables.ResourcePath + "\\"+sourceLocation;
+            Directory.CreateDirectory(path);
+            const string resourceName = "wolf-Test_WF_";
+
+            var workflows = new List<string>();
+            var resourceIds = new List<Guid>();
+            var numOfTestWFs = 958; //BUG: 6800 - the reported number of Workflows at which the brake was reported = 958
+            for (int i = 0; i < numOfTestWFs; i++)
+            {
+                workflows.Add(resourceName+(i+1).ToString());
+                resourceIds.Add(Guid.NewGuid());
+            }
+
+            SaveResources(path, null, true, false, workflows, resourceIds.ToArray(), true, true);
+
+            var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
+            rc.LoadWorkspace(workspaceID);
+            var resultBeforeDuplicateF = rc.GetResources(workspaceID);
+            var oldResource1 = resultBeforeDuplicateF.FirstOrDefault(resource => resource.ResourceName == resourceName + (1+1));
+            //------------Assert Precondition-----------------
+            Assert.AreEqual(numOfTestWFs, resultBeforeDuplicateF.Count, "Number of test workflows should equal to GetResources result to prove that the WF ids are all unique - BEFORE DuplicateFolder");
+            Assert.IsNotNull(oldResource1);
+            //------------Execute Test---------------------------
+            ResourceCatalogResult resourceCatalogResult = rc.DuplicateFolder(sourceLocation, "Duplicate_Destination", string.Empty, true);
+            
+            var resultAfterDuplicateF = rc.GetResources(workspaceID);
+            var oldResource = resultAfterDuplicateF.FirstOrDefault(resource => resource.ResourceName == resourceName + (1 + 1));
+            //------------Assert Precondition-----------------
+            Assert.AreEqual(numOfTestWFs * 2, resultAfterDuplicateF.Count, "Number of test workflows should equal to 2 times the GetResources result to prove that the WF ids are all unique - AFTER DuplicateFolder");
             //------------Assert Results-------------------------
             Assert.AreEqual(ExecStatus.Success, resourceCatalogResult.Status);
             Assert.AreEqual(@"Duplicated Successfully".Replace(Environment.NewLine, ""), resourceCatalogResult.Message.Replace(Environment.NewLine, ""));
