@@ -34,8 +34,8 @@ using Dev2.Services.Security;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Warewolf.Data;
+using Warewolf.Execution;
 using Warewolf.Services;
-using static Dev2.Runtime.WebServer.DataObjectExtensions;
 
 namespace Dev2.Tests.Runtime.WebServer
 {
@@ -493,7 +493,7 @@ namespace Dev2.Tests.Runtime.WebServer
 
             var mockDSFDataObject = new Mock<IDSFDataObject>();
             mockDSFDataObject.Setup(o => o.TestsResourceIds)
-                .Returns(new Guid[] { _workflowOne, _workflowTwo });
+                .Returns(new[] { _workflowOne, _workflowTwo });
             mockDSFDataObject.Setup(o => o.Clone()).Returns(new DsfDataObject(string.Empty, Guid.NewGuid()));
 
             var mockResourceCatalog = new Mock<IResourceCatalog>();
@@ -508,9 +508,9 @@ namespace Dev2.Tests.Runtime.WebServer
                     mockResource.Object
                });
 
-            var mockServiceTestExecutorWrapper = new Mock<IServiceTestExecutorWrapper>();
-            mockServiceTestExecutorWrapper.Setup(o => o.ExecuteTestAsync(It.IsAny<string>(), It.IsAny<IPrincipal>(), It.IsAny<Guid>(), It.IsAny<Dev2JsonSerializer>(), It.IsAny<IDSFDataObject>()))
-                .Returns(System.Threading.Tasks.Task.FromResult(new ServiceTestModelTO
+            var serviceTestExecutor = new ServiceTestExecutor(_reportName, new Mock<IPrincipal>().Object, _workspaceGuid, serializer, mockDSFDataObject.Object)
+            {
+                ExecuteTestAsync = () => new ServiceTestModelTO
                 {
                     TestName = "test one re-ran",
                     TestFailing = true,
@@ -519,14 +519,11 @@ namespace Dev2.Tests.Runtime.WebServer
                     {
                         //Empty TestSteps makes the report Invalid and override the TestFailing = true
                     },
-                    Result = new TestRunResult
-                    {
-                        RunTestResult = RunResult.TestInvalid,
-                    }
-                } as IServiceTestModelTO));
+                    Result = new TestRunResult { RunTestResult = RunResult.TestInvalid, }
+                } as IServiceTestModelTO
+            };
 
-
-            var sut = DataObjectExtensions.RunMultipleTestBatchesAndReturnJSON(mockDSFDataObject.Object, new Mock<IPrincipal>().Object, _workspaceGuid, serializer, mockResourceCatalog.Object, mockTestCatalog.Object, out string executePayload, mockTestCoverageCatalog.Object, mockServiceTestExecutorWrapper.Object);
+            var sut = serviceTestExecutor.RunMultipleTestBatchesAndReturnJSON(mockResourceCatalog.Object, mockTestCatalog.Object, out string executePayload, mockTestCoverageCatalog.Object);
 
             Assert.IsNotNull(executePayload);
             Assert.AreEqual("application/json", sut.ContentType);
@@ -565,7 +562,7 @@ namespace Dev2.Tests.Runtime.WebServer
 
             var mockDSFDataObject = new Mock<IDSFDataObject>();
             mockDSFDataObject.Setup(o => o.TestsResourceIds)
-                .Returns(new Guid[] { _workflowOne, _workflowTwo });
+                .Returns(new[] { _workflowOne, _workflowTwo });
             mockDSFDataObject.Setup(o => o.Clone()).Returns(new DsfDataObject(string.Empty, Guid.NewGuid()));
 
             var mockResourceCatalog = new Mock<IResourceCatalog>();
@@ -580,24 +577,18 @@ namespace Dev2.Tests.Runtime.WebServer
                     mockResource.Object
                });
 
-            var mockServiceTestExecutorWrapper = new Mock<IServiceTestExecutorWrapper>();
-            mockServiceTestExecutorWrapper.Setup(o => o.ExecuteTestAsync(It.IsAny<string>(), It.IsAny<IPrincipal>(), It.IsAny<Guid>(), It.IsAny<Dev2JsonSerializer>(), It.IsAny<IDSFDataObject>()))
-                .Returns(System.Threading.Tasks.Task.FromResult(new ServiceTestModelTO 
+            var serviceTestExecutor = new ServiceTestExecutor(_reportName, new Mock<IPrincipal>().Object, _workspaceGuid, serializer, mockDSFDataObject.Object)
+            {
+                ExecuteTestAsync = () => new ServiceTestModelTO
                 {
                     TestName = "test one re-ran",
                     TestFailing = true,
                     FailureMessage = "test: failure mesage",
-                    TestSteps = new List<IServiceTestStep>
-                    {
-                        new ServiceTestStepTO(_testStepOne, "Activity", new ObservableCollection<IServiceTestOutput>(), StepType.Assert){ }
-                    },
-                    Result = new TestRunResult
-                    {
-                        RunTestResult = RunResult.TestFailed,
-                    }
-                } as IServiceTestModelTO));
-
-            var sut = DataObjectExtensions.RunMultipleTestBatchesAndReturnJSON(mockDSFDataObject.Object, new Mock<IPrincipal>().Object, _workspaceGuid, serializer, mockResourceCatalog.Object, mockTestCatalog.Object, out string executePayload, mockTestCoverageCatalog.Object, mockServiceTestExecutorWrapper.Object);
+                    TestSteps = new List<IServiceTestStep> { new ServiceTestStepTO(_testStepOne, "Activity", new ObservableCollection<IServiceTestOutput>(), StepType.Assert) { } },
+                    Result = new TestRunResult { RunTestResult = RunResult.TestFailed, }
+                } as IServiceTestModelTO
+            };
+            var sut = serviceTestExecutor.RunMultipleTestBatchesAndReturnJSON(mockResourceCatalog.Object, mockTestCatalog.Object, out string executePayload, mockTestCoverageCatalog.Object);
 
             Assert.IsNotNull(executePayload);
             Assert.AreEqual("application/json", sut.ContentType);
@@ -625,7 +616,7 @@ namespace Dev2.Tests.Runtime.WebServer
 
             var mockDSFDataObject = new Mock<IDSFDataObject>();
             mockDSFDataObject.Setup(o => o.TestsResourceIds)
-                .Returns(new Guid[] { _workflowOne, _workflowTwo });
+                .Returns(new[] { _workflowOne, _workflowTwo });
             mockDSFDataObject.Setup(o => o.Clone()).Returns(new DsfDataObject(string.Empty, Guid.NewGuid()));
 
             var mockResourceCatalog = new Mock<IResourceCatalog>();
@@ -640,9 +631,9 @@ namespace Dev2.Tests.Runtime.WebServer
                     mockResource.Object
                });
 
-            var mockServiceTestExecutorWrapper = new Mock<IServiceTestExecutorWrapper>();
-            mockServiceTestExecutorWrapper.Setup(o => o.ExecuteTestAsync(It.IsAny<string>(), It.IsAny<IPrincipal>(), It.IsAny<Guid>(), It.IsAny<Dev2JsonSerializer>(), It.IsAny<IDSFDataObject>()))
-                .Returns(System.Threading.Tasks.Task.FromResult(new ServiceTestModelTO
+            var serviceTestExecutor = new ServiceTestExecutor(_reportName, new Mock<IPrincipal>().Object, _workspaceGuid, serializer, mockDSFDataObject.Object)
+            {
+                ExecuteTestAsync = () => new ServiceTestModelTO
                 {
                     TestName = "test one re-ran",
                     TestPassed = true,
@@ -654,9 +645,10 @@ namespace Dev2.Tests.Runtime.WebServer
                     {
                         RunTestResult = RunResult.TestPassed,
                     }
-                } as IServiceTestModelTO));
+                } as IServiceTestModelTO
+            };
 
-            var sut = DataObjectExtensions.RunMultipleTestBatchesAndReturnJSON(mockDSFDataObject.Object, new Mock<IPrincipal>().Object, _workspaceGuid, serializer, mockResourceCatalog.Object, mockTestCatalog.Object, out string executePayload, mockTestCoverageCatalog.Object, mockServiceTestExecutorWrapper.Object);
+            var sut = serviceTestExecutor.RunMultipleTestBatchesAndReturnJSON(mockResourceCatalog.Object, mockTestCatalog.Object, out string executePayload, mockTestCoverageCatalog.Object);
 
             Assert.IsNotNull(executePayload);
             Assert.AreEqual("application/json", sut.ContentType);
@@ -669,9 +661,9 @@ namespace Dev2.Tests.Runtime.WebServer
         [TestCategory(nameof(DataObjectExtensions))]
         public void DataObjectExtensions_RunMultipleTestBatchesAndReturnTRX_NoTestRan()
         { 
-            var sut = DataObjectExtensions.RunMultipleTestBatchesAndReturnTRX(new Mock<IDSFDataObject>().Object, new Mock<IPrincipal>().Object, Guid.NewGuid(),
-                new Dev2JsonSerializer(), new Mock<IResourceCatalog>().Object, new Mock<ITestCatalog>().Object, out string executionPayload, 
-                new Mock<ITestCoverageCatalog>().Object, new Mock<IServiceTestExecutorWrapper>().Object);
+            var serviceTestExecutor = new ServiceTestExecutor(_reportName, new Mock<IPrincipal>().Object, _workspaceGuid, new Dev2JsonSerializer(), new Mock<IDSFDataObject>().Object);
+            var sut = serviceTestExecutor.RunMultipleTestBatchesAndReturnTRX(new Mock<IResourceCatalog>().Object, new Mock<ITestCatalog>().Object, out string executionPayload, 
+                new Mock<ITestCoverageCatalog>().Object);
 
             Assert.IsNotNull(executionPayload);
             Assert.AreEqual("text/xml", sut.ContentType);
@@ -701,7 +693,7 @@ namespace Dev2.Tests.Runtime.WebServer
 
             var mockDSFDataObject = new Mock<IDSFDataObject>();
             mockDSFDataObject.Setup(o => o.TestsResourceIds)
-                .Returns(new Guid[] { _workflowOne, _workflowTwo });
+                .Returns(new[] { _workflowOne, _workflowTwo });
             mockDSFDataObject.Setup(o => o.Clone()).Returns(new DsfDataObject(string.Empty, Guid.NewGuid()));
 
             var mockResourceCatalog = new Mock<IResourceCatalog>();
@@ -716,26 +708,21 @@ namespace Dev2.Tests.Runtime.WebServer
                     mockResource.Object
                });
 
-            var mockServiceTestExecutorWrapper = new Mock<IServiceTestExecutorWrapper>();
-            mockServiceTestExecutorWrapper.Setup(o => o.ExecuteTestAsync(It.IsAny<string>(), It.IsAny<IPrincipal>(), It.IsAny<Guid>(), It.IsAny<Dev2JsonSerializer>(), It.IsAny<IDSFDataObject>()))
-                .Returns(System.Threading.Tasks.Task.FromResult(new ServiceTestModelTO
+            var serviceTestExecutor = new ServiceTestExecutor(_reportName, new Mock<IPrincipal>().Object, _workspaceGuid, serializer, mockDSFDataObject.Object)
+            {
+                ExecuteTestAsync = () => new ServiceTestModelTO
                 {
-                    TestName = "test one re-ran",
-                    TestFailing = true,
+                    TestName = "test one re-ran", 
+                    TestFailing = true, 
                     TestSteps = new List<IServiceTestStep>
                     {
-                        new ServiceTestStepTO(_testStepOne, "Activity", new ObservableCollection<IServiceTestOutput>(), StepType.Assert){ }
-                    },
-                    Result = new TestRunResult
-                    {
-                        RunTestResult = RunResult.TestFailed,
-                    }
-                } as IServiceTestModelTO));
+                        new ServiceTestStepTO(_testStepOne, "Activity", new ObservableCollection<IServiceTestOutput>(), StepType.Assert)
+                    }, Result = new TestRunResult { RunTestResult = RunResult.TestFailed, }
+                } as IServiceTestModelTO
+            };
 
-            var sut = DataObjectExtensions.RunMultipleTestBatchesAndReturnTRX(mockDSFDataObject.Object, new Mock<IPrincipal>().Object, Guid.NewGuid(),
-                new Dev2JsonSerializer(), mockResourceCatalog.Object, mockTestCatalog.Object, out string executionPayload,
-                mockTestCoverageCatalog.Object, mockServiceTestExecutorWrapper.Object);
-
+            var sut = serviceTestExecutor.RunMultipleTestBatchesAndReturnTRX(mockResourceCatalog.Object, mockTestCatalog.Object, out string executionPayload,
+                mockTestCoverageCatalog.Object);
 
             Assert.IsNotNull(executionPayload);
             Assert.AreEqual("text/xml", sut.ContentType);
@@ -744,9 +731,7 @@ namespace Dev2.Tests.Runtime.WebServer
             StringAssert.Contains(executionPayload, "<Counters total=\"1\" ");
             StringAssert.Contains(executionPayload, "passed=\"0\" ");
             StringAssert.Contains(executionPayload, "failed=\"1\" ");
-
         }
-
 
         [TestMethod]
         [Owner("Siphamandla Dube")]
@@ -766,7 +751,7 @@ namespace Dev2.Tests.Runtime.WebServer
 
             var mockDSFDataObject = new Mock<IDSFDataObject>();
             mockDSFDataObject.Setup(o => o.TestsResourceIds)
-                .Returns(new Guid[] { _workflowOne, _workflowTwo });
+                .Returns(new[] { _workflowOne, _workflowTwo });
             mockDSFDataObject.Setup(o => o.Clone()).Returns(new DsfDataObject(string.Empty, Guid.NewGuid()));
 
             var mockResourceCatalog = new Mock<IResourceCatalog>();
@@ -781,33 +766,17 @@ namespace Dev2.Tests.Runtime.WebServer
                     mockResource.Object
                });
 
-            var mockServiceTestExecutorWrapper = new Mock<IServiceTestExecutorWrapper>();
-            mockServiceTestExecutorWrapper.Setup(o => o.ExecuteTestAsync(It.IsAny<string>(), It.IsAny<IPrincipal>(), It.IsAny<Guid>(), It.IsAny<Dev2JsonSerializer>(), It.IsAny<IDSFDataObject>()))
-                .Returns(System.Threading.Tasks.Task.FromResult(new ServiceTestModelTO
-                {
-                    TestName = "test one re-ran",
-                    TestInvalid = true,
-                    TestSteps = new List<IServiceTestStep>
-                    {
-                        new ServiceTestStepTO(_testStepOne, "Activity", new ObservableCollection<IServiceTestOutput>(), StepType.Assert){ }
-                    },
-                    Result = new TestRunResult
-                    {
-                        RunTestResult = RunResult.TestInvalid,
-                    }
-                } as IServiceTestModelTO));
+            var serviceTestExecutor = new ServiceTestExecutor(_reportName, new Mock<IPrincipal>().Object, _workspaceGuid, serializer, mockDSFDataObject.Object) { ExecuteTestAsync = () => new ServiceTestModelTO { TestName = "test one re-ran", TestInvalid = true, TestSteps = new List<IServiceTestStep> { new ServiceTestStepTO(_testStepOne, "Activity", new ObservableCollection<IServiceTestOutput>(), StepType.Assert) { } }, Result = new TestRunResult { RunTestResult = RunResult.TestInvalid, } } as IServiceTestModelTO };
 
-            var sut = DataObjectExtensions.RunMultipleTestBatchesAndReturnTRX(mockDSFDataObject.Object, new Mock<IPrincipal>().Object, Guid.NewGuid(),
-                new Dev2JsonSerializer(), mockResourceCatalog.Object, mockTestCatalog.Object, out string executionPayload,
-                mockTestCoverageCatalog.Object, mockServiceTestExecutorWrapper.Object);
-
+            var sut = serviceTestExecutor.RunMultipleTestBatchesAndReturnTRX(mockResourceCatalog.Object, mockTestCatalog.Object, out string executionPayload,
+                mockTestCoverageCatalog.Object);
 
             Assert.IsNotNull(executionPayload);
             Assert.AreEqual("text/xml", sut.ContentType);
             Assert.IsNotNull(sut);
             StringAssert.Contains(executionPayload, "<ResultSummary outcome=\"Completed\">");
             StringAssert.Contains(executionPayload, "<Counters total=\"1\" ");
-            StringAssert.Contains(executionPayload, "passed=\"1\" "); //TODO: add an Invalid key to ServiceTestModelTRXResultBuilder.BuildTestResultTRX 
+            StringAssert.Contains(executionPayload, "passed=\"1\" "); 
             StringAssert.Contains(executionPayload, "failed=\"0\" ");
 
         }
@@ -830,7 +799,7 @@ namespace Dev2.Tests.Runtime.WebServer
 
             var mockDSFDataObject = new Mock<IDSFDataObject>();
             mockDSFDataObject.Setup(o => o.TestsResourceIds)
-                .Returns(new Guid[] { _workflowOne, _workflowTwo });
+                .Returns(new[] { _workflowOne, _workflowTwo });
             mockDSFDataObject.Setup(o => o.Clone()).Returns(new DsfDataObject(string.Empty, Guid.NewGuid()));
 
             var mockResourceCatalog = new Mock<IResourceCatalog>();
@@ -845,25 +814,21 @@ namespace Dev2.Tests.Runtime.WebServer
                     mockResource.Object
                });
 
-            var mockServiceTestExecutorWrapper = new Mock<IServiceTestExecutorWrapper>();
-            mockServiceTestExecutorWrapper.Setup(o => o.ExecuteTestAsync(It.IsAny<string>(), It.IsAny<IPrincipal>(), It.IsAny<Guid>(), It.IsAny<Dev2JsonSerializer>(), It.IsAny<IDSFDataObject>()))
-                .Returns(System.Threading.Tasks.Task.FromResult(new ServiceTestModelTO
+            var serviceTestExecutor = new ServiceTestExecutor(_reportName, new Mock<IPrincipal>().Object, _workspaceGuid, serializer, mockDSFDataObject.Object)
+            {
+                ExecuteTestAsync = () => new ServiceTestModelTO
                 {
-                    TestName = "test one re-ran",
-                    TestPassed = true,
+                    TestName = "test one re-ran", 
+                    TestPassed = true, 
                     TestSteps = new List<IServiceTestStep>
                     {
-                        new ServiceTestStepTO(_testStepOne, "Activity", new ObservableCollection<IServiceTestOutput>(), StepType.Assert){ }
-                    },
-                    Result = new TestRunResult
-                    {
-                        RunTestResult = RunResult.TestPassed,
-                    }
-                } as IServiceTestModelTO));
+                        new ServiceTestStepTO(_testStepOne, "Activity", new ObservableCollection<IServiceTestOutput>(), StepType.Assert)
+                    }, Result = new TestRunResult { RunTestResult = RunResult.TestPassed }
+                } as IServiceTestModelTO
+            };
 
-            var sut = DataObjectExtensions.RunMultipleTestBatchesAndReturnTRX(mockDSFDataObject.Object, new Mock<IPrincipal>().Object, Guid.NewGuid(),
-                new Dev2JsonSerializer(), mockResourceCatalog.Object, mockTestCatalog.Object, out string executionPayload,
-                mockTestCoverageCatalog.Object, mockServiceTestExecutorWrapper.Object);
+            var sut = serviceTestExecutor.RunMultipleTestBatchesAndReturnTRX(mockResourceCatalog.Object, mockTestCatalog.Object, out string executionPayload,
+                mockTestCoverageCatalog.Object);
 
 
             Assert.IsNotNull(executionPayload);
@@ -1109,7 +1074,7 @@ namespace Dev2.Tests.Runtime.WebServer
                 { "Warewolf-Custom-Transaction-Id", transId }
             });
 
-            Assert.AreEqual(transId.ToString(), sut.CustomTransactionID);
+            Assert.AreEqual(transId, sut.CustomTransactionID);
             Assert.IsNotNull(sut.ExecutionID);
 
         }
@@ -1129,7 +1094,7 @@ namespace Dev2.Tests.Runtime.WebServer
                 { "Warewolf-Execution-Id", executionId.ToString() }
             });
 
-            Assert.AreEqual(transId.ToString(), sut.CustomTransactionID);
+            Assert.AreEqual(transId, sut.CustomTransactionID);
             Assert.AreNotSame(executionId, sut.ExecutionID);
 
         }
@@ -1543,7 +1508,7 @@ namespace Dev2.Tests.Runtime.WebServer
         {
             mockCoverageDataObject = new Mock<ICoverageDataObject>();
             mockCoverageDataObject.Setup(o => o.CoverageReportResourceIds)
-                .Returns(new Guid[] { _workflowOne, _workflowTwo });
+                .Returns(new[] { _workflowOne, _workflowTwo });
 
             var mockWarewolfWorkflow = new Mock<IWarewolfWorkflow>();
             mockWarewolfWorkflow.Setup(o => o.ResourceID).Returns(_workflowOne);
