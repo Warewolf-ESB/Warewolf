@@ -109,6 +109,9 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="Warewolf.Usage, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\Binaries\Warewolf.Usage.dll</HintPath>
+    </Reference>
     <Reference Include="Weave">
       <HintPath>..\Binaries\Weave.dll</HintPath>
     </Reference>
@@ -145,6 +148,7 @@
     <Compile Include="ServiceModel\RedisSource.cs" />
     <Compile Include="ServiceTestCoverageModelTo.cs" />
     <Compile Include="SingleTestNodesCovered.cs" />
+    <Compile Include="UsageLogger.cs" />
     <Compile Include="Util\OperationsHelper.cs" />
     <Compile Include="IComplexObject.cs" />
     <Compile Include="IDataListModel.cs" />

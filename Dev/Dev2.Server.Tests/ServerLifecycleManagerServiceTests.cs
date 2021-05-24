@@ -210,8 +210,8 @@ namespace Dev2.Server.Tests
             mockWriter.Verify(o => o.Write("Exiting with exitcode 0"), Times.Once);
 
             mockIpcClient.Verify(o => o.GetIpcExecutor(It.IsAny<INamedPipeClientStreamWrapper>()), Times.Once);
-            mockSystemInformation.Verify(o => o.GetWareWolfVersion(), Times.Once);
-            mockExecutionLoggerFactory.Verify(o => o.New(It.IsAny<ISerializer>(), mockWebSocketPool.Object), Times.Once);
+            mockSystemInformation.Verify(o => o.GetWareWolfVersion(), Times.Exactly(1));
+            mockExecutionLoggerFactory.Verify(o => o.New(It.IsAny<ISerializer>(), mockWebSocketPool.Object), Times.Exactly(1));
             mockExecutionLogPublisher.Verify(o => o.Info("Warewolf Server Started Version: 1.1.1.1"), Times.Once);
 
             mockServerLifeCycleWorker.Verify();
@@ -241,7 +241,12 @@ namespace Dev2.Server.Tests
             var mockHangfireServerMonitorWithRestart = new HangfireServerMonitorWithRestart(new Mock<ChildProcessTrackerWrapper>().Object, new Mock<ProcessWrapperFactory>().Object);
             var mockWebSocketPool = new Mock<IWebSocketPool>();
             var mockWebSocketWrapper = new Mock<IWebSocketWrapper>();
-
+            var mockSystemInformation = new Mock<IGetSystemInformation>();
+            mockSystemInformation.Setup(o => o.GetWareWolfVersion()).Returns("1.1.1.1");
+            mockSystemInformation.Setup(o => o.GetIPv4Adresses()).Returns("1.1.1.1");
+            mockSystemInformation.Setup(o => o.GetOperatingSystemInformation()).Returns("Microsoft Windows 10 Pro");
+            mockSystemInformation.Setup(o => o.GetComputerName()).Returns("GetComputerName");
+            mockSystemInformation.Setup(o => o.GetRegionInformation()).Returns("GetRegionInformation");
             var items = new List<IServerLifecycleWorker> {mockServerLifeCycleWorker.Object};
 
             EnvironmentVariables.IsServerOnline = true;
@@ -254,6 +259,11 @@ namespace Dev2.Server.Tests
             mockWebSocketWrapper.Setup(o => o.IsOpen()).Returns(false);
             mockWebSocketPool.Setup(o => o.Acquire(It.IsAny<string>())).Returns(mockWebSocketWrapper.Object);
 
+            var mockExecutionLogPublisher = new Mock<IExecutionLogPublisher>();
+            mockExecutionLogPublisher.Setup(o => o.Info("Warewolf Server Started Version: 1.1.1.1")).Verifiable();
+            var mockExecutionLoggerFactory = new Mock<ExecutionLogger.IExecutionLoggerFactory>();
+            mockExecutionLoggerFactory.Setup(o => o.New(It.IsAny<ISerializer>(), mockWebSocketPool.Object))
+                .Returns(mockExecutionLogPublisher.Object);
             //------------------------Act----------------------------
             var config = new StartupConfiguration
             {
@@ -269,6 +279,8 @@ namespace Dev2.Server.Tests
                 LoggingServiceMonitor = mockLoggingServiceMonitorWithRestart,
                 HangfireServerMonitor = mockHangfireServerMonitorWithRestart,
                 WebSocketPool = mockWebSocketPool.Object,
+                SystemInformationHelper = mockSystemInformation.Object,
+                LoggerFactory = mockExecutionLoggerFactory.Object
             };
             using (var serverLifeCycleManager = new ServerLifecycleManager(config))
             {

@@ -28,10 +28,10 @@ namespace Warewolf.LicencingTests
         [TestCategory(nameof(WarewolfLicenseWrapper))]
         public void WarewolfLicenseWrapper_Retrieve()
         {
-            GlobalConstants.LicenseCustomerId = "AzZlx3SU5eKkLDer";
-            GlobalConstants.LicensePlanId = "bronze";
-            GlobalConstants.ApiKey = "test_cuS2mLPoVv50eDQju3mquk0aC0UM3YYor";
-            GlobalConstants.SiteName = "warewolfio-test";
+            GlobalConstants.LicenseCustomerId = "16BjmNSXISIQjctO";
+            GlobalConstants.LicensePlanId = "developer";
+            GlobalConstants.ApiKey = "test_VMxitsiobdAyth62k0DiqpAUKocG6sV3";
+            GlobalConstants.SiteName = "warewolf-test";
 
             ApiConfig.Configure(GlobalConstants.SiteName, GlobalConstants.ApiKey);
 
