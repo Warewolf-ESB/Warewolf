@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Dev2.DynamicServices;
 using Dev2.Runtime.Hosting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -8,6 +8,8 @@ namespace Dev2.Tests.Runtime.Hosting
 {
     [TestClass]
     [TestCategory("Runtime Hosting")]
+    [TestCategory("CannotParallelize")]
+    [DoNotParallelize]
     public class ServiceActionRepoTests
     {
         [TestMethod]
@@ -29,8 +31,6 @@ namespace Dev2.Tests.Runtime.Hosting
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("ServiceActionRepo_AddToCache")]
-        [DoNotParallelize]
-        [TestCategory("CannotParallelize")]
         public void ServiceActionRepo_AddToCache_WhenIdExists_ShouldReplace()
         {
             //------------Setup for test--------------------------
@@ -50,8 +50,6 @@ namespace Dev2.Tests.Runtime.Hosting
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("ServiceActionRepo_AddToCache")]
-        [DoNotParallelize]
-        [TestCategory("CannotParallelize")]
         public void ServiceActionRepo_ReadFromCache_WhenNotExisting_ShouldReturnNull()
         {
             //------------Setup for test--------------------------
