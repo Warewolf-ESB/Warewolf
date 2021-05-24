@@ -309,14 +309,13 @@ namespace Warewolf.Studio.ViewModels.Tests
             //arrange
             //TODO:The GlobalConstants will be replaced with the WarewolfLicense object
             GlobalConstants.IsLicensed = true;
-            GlobalConstants.LicensePlanId = "licensePlanId";
-            GlobalConstants.LicenseCustomerId = "licenseCustomerId";
+            GlobalConstants.LicensePlanId = "Developer";
 
             //act
             var splashViewModel = new SplashViewModel(_serverMock.Object, _externalProcessExecutorMock.Object);
 
             //assert
-            Assert.AreEqual("licensePlanId", splashViewModel.WarewolfLicense);
+            Assert.AreEqual("Developer", splashViewModel.WarewolfLicense);
         }
 
         [TestMethod]
@@ -327,14 +326,13 @@ namespace Warewolf.Studio.ViewModels.Tests
             //arrange
             //TODO:The GlobalConstants will be replaced with the WarewolfLicense object
             GlobalConstants.IsLicensed = false;
-            GlobalConstants.LicensePlanId = "licensePlanId";
-            GlobalConstants.LicenseCustomerId = "licenseCustomerId";
+            GlobalConstants.LicensePlanId = "Developer";
 
             //act
             var splashViewModel = new SplashViewModel(_serverMock.Object, _externalProcessExecutorMock.Object);
 
             //assert
-            Assert.AreEqual("licenseCustomerId", splashViewModel.WarewolfLicense);
+            Assert.AreEqual(GlobalConstants.NotRegistered, splashViewModel.WarewolfLicense);
         }
 
     }

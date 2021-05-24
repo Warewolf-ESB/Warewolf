@@ -42,7 +42,7 @@ namespace Warewolf.Studio.ViewModels
             WarewolfUrl = warewolfUri;
             WarewolfCopyright = string.Format(Resources.Languages.Core.WarewolfCopyright, DateTime.Now.Year.ToString());
 
-            WarewolfLicense = GlobalConstants.IsLicensed ? GlobalConstants.LicensePlanId : GlobalConstants.LicenseCustomerId;
+            WarewolfLicense = GlobalConstants.IsLicensed ? GlobalConstants.LicensePlanId : GlobalConstants.NotRegistered;
 
             ContributorsCommand = new DelegateCommand(() => externalProcessExecutor.OpenInBrowser(ContributorsUrl));
             CommunityCommand = new DelegateCommand(() => externalProcessExecutor.OpenInBrowser(CommunityUrl));
