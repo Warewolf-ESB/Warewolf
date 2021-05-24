@@ -75,6 +75,7 @@ using Warewolf.Data;
 using Dev2.Data;
 using Dev2.Data.Interfaces;
 using Warewolf.Core;
+using Warewolf.Studio.CustomControls;
 
 namespace Dev2.Studio.ViewModels
 {
@@ -1576,8 +1577,8 @@ namespace Dev2.Studio.ViewModels
 
         public void Register()
         {
-            // _applicationTracker?.TrackEvent(Warewolf.Studio.Resources.Languages.TrackEventMenu.EventCategory,
-            //     Warewolf.Studio.Resources.Languages.TrackEventMenu.NewService);
+            var webBrowserView = new WebBrowserView();
+            webBrowserView.ShowDialog();
         }
 
         public void NewService(string resourcePath)
@@ -2313,6 +2314,8 @@ namespace Dev2.Studio.ViewModels
         }
 
         public Func<IWorkspaceItemRepository> GETWorkspaceItemRepository => _getWorkspaceItemRepository;
+
+        public string LicensePlanTitle => "[ Trial ]";
 
         public void Handle(FileChooserMessage message)
         {

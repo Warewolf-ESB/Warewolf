@@ -143,6 +143,16 @@
                                                     Style="{StaticResource MetroWindowButtonStyle}">
                                                 <fa:FontAwesome Icon="Lock" FontSize="15" />
                                             </Button>
+                                            <TextBlock x:Name="PART_LICENSE_PLAN"
+                                                       VerticalAlignment="Center"
+                                                       FontSize="16"
+                                                       FontWeight="Bold"
+                                                       Foreground="{StaticResource WareWolfOrangeBrush}"
+                                                       Text="{Binding LicensePlanTitle}"
+                                                       TextWrapping="NoWrap"
+                                                       DockPanel.Dock="Right">
+
+                                            </TextBlock>
                                         </DockPanel>
                                     </Border>
                                     <AdornerDecorator DockPanel.Dock="Bottom">
