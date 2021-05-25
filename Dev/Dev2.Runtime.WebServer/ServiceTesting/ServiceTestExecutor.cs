@@ -125,7 +125,7 @@ namespace Dev2.Runtime.WebServer
         public DataListFormat RunMultipleTestBatchesAndReturnJSON(IResourceCatalog catalog, ITestCatalog testCatalog,
             out string executePayload, ITestCoverageCatalog testCoverageCatalog)
         {
-            var testResults = RunListOfTests(_dataObject, _userPrinciple, _workspaceGuid, _serializer, catalog, testCatalog, testCoverageCatalog);
+            var testResults = RunListOfTests(_userPrinciple, _workspaceGuid, _serializer, catalog, testCatalog, testCoverageCatalog);
             var formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
 
             var objArray = testResults.Results
@@ -160,23 +160,23 @@ namespace Dev2.Runtime.WebServer
         public DataListFormat RunMultipleTestBatchesAndReturnTRX(IResourceCatalog catalog, ITestCatalog testCatalog,
             out string executePayload, ITestCoverageCatalog testCoverageCatalog)
         {
-            var testResults = RunListOfTests(_dataObject, _userPrinciple, _workspaceGuid, _serializer, catalog, testCatalog, testCoverageCatalog);
+            var testResults = RunListOfTests(_userPrinciple, _workspaceGuid, _serializer, catalog, testCatalog, testCoverageCatalog);
             var formatter = DataListFormat.CreateFormat("XML", EmitionTypes.XML, "text/xml");
             executePayload = ServiceTestModelTRXResultBuilder.BuildTestResultTRX(_dataObject.ServiceName, testResults.Results.SelectMany(o => o.Results).ToList());
             return formatter;
         }
 
-        TestResults RunListOfTests(IDSFDataObject dataObject, IPrincipal userPrinciple, Guid workspaceGuid, Dev2JsonSerializer serializer, IResourceCatalog catalog, ITestCatalog testCatalog, ITestCoverageCatalog testCoverageCatalog)
+        TestResults RunListOfTests(IPrincipal userPrinciple, Guid workspaceGuid, Dev2JsonSerializer serializer, IResourceCatalog catalog, ITestCatalog testCatalog, ITestCoverageCatalog testCoverageCatalog)
         {
             var result = new TestResults();
 
             var selectedResources = catalog.GetResources(workspaceGuid)
-                ?.Where(resource => dataObject.TestsResourceIds.Contains(resource.ResourceID)).ToArray();
+                ?.Where(resource => _dataObject.TestsResourceIds.Contains(resource.ResourceID)).ToArray();
 
             if (selectedResources != null)
             {
                 var workflowTaskList = new List<Task<WorkflowTestResults>>();
-                foreach (var testsResourceId in dataObject.TestsResourceIds)
+                foreach (var testsResourceId in _dataObject.TestsResourceIds)
                 {
                     var workflowTask = Task<WorkflowTestResults>.Factory.StartNew(() =>
                     {
@@ -193,7 +193,7 @@ namespace Dev2.Runtime.WebServer
 
                             var allTests = testCatalog.Fetch(testsResourceId);
                             foreach (var (test, dataObjectClone) in from test in allTests
-                                                                    let dataObjectClone = dataObject.Clone()
+                                                                    let dataObjectClone = _dataObject.Clone()
                                                                     select (test, dataObjectClone))
                             {
                                 dataObjectClone.Environment = new ExecutionEnvironment();
