@@ -63,7 +63,7 @@ namespace Warewolf.Studio.Views
                 case "User Name":
                     return UserNameTextBox.Text;
                 case "Password":
-                    return PasswordTextBox.Password;
+                    return PasswordTextBox.Text;
                 case "Enable SSL":
                     if (EnableSslYes.IsChecked.Value)
                     {
@@ -107,7 +107,7 @@ namespace Warewolf.Studio.Views
 
         public void EnterPassword(string password)
         {
-            PasswordTextBox.Password = password;
+            PasswordTextBox.Text = password;
         }
 
         public void EnterEmailTo(string emailTo)

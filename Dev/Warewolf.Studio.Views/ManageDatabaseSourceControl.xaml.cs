@@ -133,7 +133,7 @@ namespace Warewolf.Studio.Views
             {
                 viewModel.Password = password;
             }
-            PasswordTextBox.Password = password;
+            PasswordTextBox.Text = password;
         }
 
         public string GetErrorMessage() => ((DatabaseSourceViewModelBase)DataContext).TestMessage;
@@ -156,7 +156,7 @@ namespace Warewolf.Studio.Views
 
         public string GetUsername() => UserNameTextBox.Text;
 
-        public object GetPassword() => PasswordTextBox.Password;
+        public object GetPassword() => PasswordTextBox.Text;
 
         public object GetConnectionTimeout() => ConnectionTimeoutTextBox.Text;
 

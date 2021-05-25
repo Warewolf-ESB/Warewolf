@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -17,13 +17,13 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Dev2.DataList.Contract;
 using Dev2.Data.TO;
 using Dev2.Interfaces;
-using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Dev2.Activities;
 using System.Linq;
 using Moq;
 using Warewolf.Storage;
 using Dev2.Common;
 using Dev2.Common.State;
+using Warewolf.Security.Encryption;
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
@@ -101,6 +101,39 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Assert Results-------------------------
 
             Assert.AreEqual("someString error", env.FetchErrors());
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(DsfAbstractFileActivity))]
+        public void DsfAbstractFileActivity_DecryptForShowPassword_ShouldShowTextType()
+        {
+            //------------Setup for test--------------------------
+            const string password = "123456";
+            var act = new TestActivity("TestActivity") { Password = password };
+            var privateObject = new PrivateObject(act);
+            var decryptedPassword = privateObject.GetProperty("DecryptedPassword");
+
+            //------------Execute Test---------------------------
+            //------------Assert Results-------------------------
+            Assert.AreEqual(password, decryptedPassword);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(DsfAbstractFileActivity))]
+        public void DsfAbstractFileActivity_DecryptForShowPassword_ShouldShowDecryptedType()
+        {
+            //------------Setup for test--------------------------
+            const string password = "123456";
+            var encrypt = DpapiWrapper.Encrypt(password);
+            var act = new TestActivity("TestActivity") { Password = encrypt };
+            var privateObject = new PrivateObject(act);
+            var decryptedPassword = privateObject.GetProperty("DecryptedPassword");
+
+            //------------Execute Test---------------------------
+            //------------Assert Results-------------------------
+            Assert.AreEqual(password, decryptedPassword);
         }
     }
 }

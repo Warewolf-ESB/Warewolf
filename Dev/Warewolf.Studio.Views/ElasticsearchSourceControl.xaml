@@ -169,18 +169,17 @@
             </TextBox>
             <TextBlock Grid.Row="1" Grid.Column="0" Margin="{StaticResource ControlBorderTop}"
                        Text="{x:Static languages:Core.PasswordLabel}" />
-            <PasswordBox x:Name="PasswordTextBox"
-                         Grid.Column="1"
-                         Grid.Row="1"
-                         ToolTip="{x:Static languages:Tooltips.ElasticsearchPasswordTooltip}"
-                         Margin="{StaticResource ControlBorderTop}"
-                         passwordBoxAssistant:PasswordBoxAssistant.BindPassword="true"
-                         passwordBoxAssistant:PasswordBoxAssistant.BoundPassword="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+            <customControls:PasswordBoxUserControl x:Name="PasswordTextBox" Grid.Column="1"
+                Grid.Row="1"
+                AutomationProperties.AutomationId="UI_PasswordBox"
+                ToolTip="{x:Static languages:Tooltips.ElasticsearchPasswordTooltip}"
+                Margin="{StaticResource ControlBorderTop}"
+                Text="{Binding Path=Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                 <i:Interaction.Behaviors>
                     <core:HelpSetter Text="{x:Static languages:HelpText.PasswordAuthenticationHelp}"
-                                     DataContext="{Binding}" />
+                        DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
-            </PasswordBox>
+            </customControls:PasswordBoxUserControl>
         </Grid>
         <StackPanel Grid.Column="1"
                     Grid.Row="5"

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Dev2.Common.Interfaces.Enums;
@@ -95,6 +95,8 @@ namespace Dev2.Tests.Runtime.Services
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("FetchPerformanceCounters_Manager")]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void FetchPerformanceCounters_Manager_ValueIfRegistered()
         {
 
