@@ -51,7 +51,7 @@ namespace Warewolf.Studio.Views
 
         public string GetHostName() => RedisHostNameTextbox.Text;
 
-        public string GetPassword() => PasswordTextBox.Password;
+        public string GetPassword() => PasswordTextBox.Text;
 
         public string GetPort() => RedisPortTextbox.Text;
 
@@ -76,7 +76,7 @@ namespace Warewolf.Studio.Views
 
         public void EnterPassword(string password)
         {
-            PasswordTextBox.Password = password;
+            PasswordTextBox.Text = password;
         }
 
         public void EnterHostName(string hostName)

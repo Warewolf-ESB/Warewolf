@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -12,7 +12,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using ActivityUnitTests;
-using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.State;
 using Dev2.Data.TO;
 using Dev2.DataList.Contract;
@@ -42,7 +41,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         [TestMethod]
         [Owner("Njabulo Nxele")]
-        [TestCategory("DsfPathCreate_Credentials")]
+        [TestCategory(nameof(DsfPathCreate))]
         public void DsfPathCreate_TryExecuteConcreteAction_Credential_Variable()
         {
             //------------Setup for test--------------------------
@@ -72,7 +71,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Timeout(60000)]
         [Owner("Hagashen Naidu")]
-        [TestCategory("DsfPathCreate_UpdateForEachInputs")]
+        [TestCategory(nameof(DsfPathCreate))]
         public void DsfPathCreate_UpdateForEachInputs_NullUpdates_DoesNothing()
         {
             //------------Setup for test--------------------------
@@ -89,7 +88,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Timeout(60000)]
         [Owner("Hagashen Naidu")]
-        [TestCategory("DsfPathCreate_UpdateForEachInputs")]
+        [TestCategory(nameof(DsfPathCreate))]
         public void DsfPathCreate_UpdateForEachInputs_MoreThan1Updates_DoesNotUpdates()
         {
             //------------Setup for test--------------------------
@@ -109,7 +108,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Timeout(60000)]
         [Owner("Hagashen Naidu")]
-        [TestCategory("DsfPathCreate_UpdateForEachInputs")]
+        [TestCategory(nameof(DsfPathCreate))]
         public void DsfPathCreate_UpdateForEachInputs_1Update_Updates()
         {
             //------------Setup for test--------------------------
@@ -128,7 +127,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Timeout(60000)]
         [Owner("Hagashen Naidu")]
-        [TestCategory("DsfPathCreate_UpdateForEachOutputs")]
+        [TestCategory(nameof(DsfPathCreate))]
         public void DsfPathCreate_UpdateForEachOutputs_NullUpdates_DoesNothing()
         {
             //------------Setup for test--------------------------
@@ -144,7 +143,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Timeout(60000)]
         [Owner("Hagashen Naidu")]
-        [TestCategory("DsfPathCreate_UpdateForEachOutputs")]
+        [TestCategory(nameof(DsfPathCreate))]
         public void DsfPathCreate_UpdateForEachOutputs_MoreThan1Updates_DoesNothing()
         {
             //------------Setup for test--------------------------
@@ -163,7 +162,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Timeout(60000)]
         [Owner("Hagashen Naidu")]
-        [TestCategory("DsfPathCreate_UpdateForEachOutputs")]
+        [TestCategory(nameof(DsfPathCreate))]
         public void DsfPathCreate_UpdateForEachOutputs_1Updates_UpdateResult()
         {
             //------------Setup for test--------------------------
@@ -181,7 +180,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Timeout(60000)]
         [Owner("Hagashen Naidu")]
-        [TestCategory("DsfPathCreate_GetForEachInputs")]
+        [TestCategory(nameof(DsfPathCreate))]
         public void DsfPathCreate_GetForEachInputs_WhenHasExpression_ReturnsInputList()
         {
             //------------Setup for test--------------------------
@@ -200,7 +199,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Timeout(60000)]
         [Owner("Hagashen Naidu")]
-        [TestCategory("DsfPathCreate_GetForEachOutputs")]
+        [TestCategory(nameof(DsfPathCreate))]
         public void DsfPathCreate_GetForEachOutputs_WhenHasResult_ReturnsOutputList()
         {
             //------------Setup for test--------------------------
@@ -219,7 +218,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Timeout(60000)]
         [Owner("Pieter Terblanche")]
-        [TestCategory("DsfPathCreate_GetState")]
+        [TestCategory(nameof(DsfPathCreate))]
         public void DsfPathCreate_GetState_ReturnsStateVariable()
         {
             //---------------Set up test pack-------------------
