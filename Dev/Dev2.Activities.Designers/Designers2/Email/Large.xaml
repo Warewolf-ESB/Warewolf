@@ -13,6 +13,7 @@
                                xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
                                xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
                                xmlns:customcontrols="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
+                               xmlns:customControls="clr-namespace:Warewolf.Studio.CustomControls;assembly=Warewolf.Studio.CustomControls"
                                Width="350"
                                MinWidth="350"
                                MinHeight="530"
@@ -124,23 +125,20 @@
         </ui:IntellisenseTextBox>
 
         <TextBlock Grid.Column="0" Grid.Row="2" Text="Password" Margin="{StaticResource ControlBorderTop}" />
-
-        <PasswordBox Grid.Column="1"
-                     Grid.Row="2"
-                     x:Name="ThePasswordBox"
-                     ToolTip="{x:Static languages:Tooltips.EmailToolTipPassword}"
-                     PasswordChanged="OnPasswordChanged"
-                     Margin="{StaticResource ControlBorderTop}"
-                     attachedProperties:FocusSetter.IsFocused="{Binding IsPasswordFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                     AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Password_AutoID}">
+        <customControls:PasswordBoxUserControl Grid.Column="1"
+                                               Grid.Row="2"
+                                               x:Name="ThePasswordBox"
+                                               Margin="{StaticResource ActivityBorderTop}"
+                                               Text="{Binding Path=ModelItem.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                               ToolTip="{x:Static languages:Tooltips.EmailToolTipPassword}">
             <i:Interaction.Behaviors>
                 <core1:HelpSetter Text="{x:Static languages:HelpText.EmailHelpPassword}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
-                                         SourcePropertyName="ModelItem.Password"
-                                         SourcePropertyValue="{Binding ModelItem.Password, UpdateSourceTrigger=PropertyChanged}"
-                                         Target="{Binding}" />
+                                     SourcePropertyName="ModelItem.Password"
+                                     SourcePropertyValue="{Binding ModelItem.Password, UpdateSourceTrigger=PropertyChanged}"
+                                     Target="{Binding}" />
             </i:Interaction.Behaviors>
-        </PasswordBox>
+        </customControls:PasswordBoxUserControl>
 
         <TextBlock Grid.Column="0" Grid.Row="3" Text="To" Margin="{StaticResource ControlBorderTop}" />
         <ui:IntellisenseTextBox Grid.Column="1"

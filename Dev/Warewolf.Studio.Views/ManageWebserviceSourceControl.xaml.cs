@@ -103,7 +103,7 @@ namespace Warewolf.Studio.Views
 
         public void EnterPassword(string password)
         {
-            PasswordTextBox.Password = password;
+            PasswordTextBox.Text = password;
         }
 
         public string GetErrorMessage()
@@ -119,7 +119,7 @@ namespace Warewolf.Studio.Views
 
         public string GetUsername() => UserNameTextBox.Text;
 
-        public string GetPassword() => PasswordTextBox.Password;
+        public string GetPassword() => PasswordTextBox.Text;
 
         public string GetTestDefault()
         {
