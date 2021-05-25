@@ -91,17 +91,16 @@
                     </TextBox>
 
                     <TextBlock Grid.Column="0" Grid.Row="2" VerticalAlignment="Center" Text="{Binding PasswordLabel}" Margin="{StaticResource ControlBorderTop}"/>
-                    <PasswordBox x:Name="PasswordTextBox" 
+                    <doubleClick:PasswordBoxUserControl x:Name="PasswordTextBox" 
                                  Grid.Row="2" 
                                  Grid.Column="1"
                                  Margin="{StaticResource ControlBorderTop}"
                                  ToolTip="{x:Static languages:Tooltips.ManageEmailPasswordTooltip}"
-                                 customControls:PasswordBoxAssistant.BindPassword="true"
-                                 customControls:PasswordBoxAssistant.BoundPassword="{Binding Path=Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                 Text="{Binding Path=Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                         <i:Interaction.Behaviors>
                             <core:HelpSetter Text="{x:Static languages:HelpText.PasswordAuthenticationHelp}" DataContext="{Binding}" />
                         </i:Interaction.Behaviors>
-                    </PasswordBox>
+                    </doubleClick:PasswordBoxUserControl>
 
                     <TextBlock Grid.Column="0" Grid.Row="3" VerticalAlignment="Center" Text="{Binding EnableSslLabel}" x:Name="EnableSsl" />
                     <Grid Grid.Column="1" Grid.Row="3">
