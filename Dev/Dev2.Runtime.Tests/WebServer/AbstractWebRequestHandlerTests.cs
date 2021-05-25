@@ -21,6 +21,7 @@ using System.Reflection;
 using System.Runtime.Serialization.Json;
 using System.Security.Principal;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
@@ -1921,6 +1922,25 @@ namespace Dev2.Tests.Runtime.WebServer
             Assert.IsFalse(isNullOrEmpty);
             var startsWith = value.StartsWith("www.examlple.com?home=~XML~");
             Assert.IsTrue(startsWith);
+        }
+        
+        [TestMethod]
+        [Owner("Njabulo Nxele")]
+        [TestCategory(nameof(AbstractWebRequestHandler))]
+        public void AbstractWebRequestHandler_CleanupXml_GivenXml_EscapeSequence()
+        {
+            //------------Setup for test-------------------------
+            var privateObject = new PrivateType(typeof(AbstractWebRequestHandler));
+            string baseStr = "www.examlple.com?home=<Datalist><objResponse><BusinessEvent><Customer><Mandate json:Array=\"true\" xmlns:json=\"http://james.newtonking.com/projects/json\"><MandateId></MandateId></Mandate></Customer></BusinessEvent></objResponse></Datalist>";
+            string baseStrEscaped = "www.examlple.com?home=<Datalist><objResponse><BusinessEvent><Customer><Mandate json:Array=\\\"true\\\" xmlns:json=\\\"http://james.newtonking.com/projects/json\\\"><MandateId></MandateId></Mandate></Customer></BusinessEvent></objResponse></Datalist>";
+            //------------Execute Test---------------------------
+            var value = AbstractWebRequestHandler.SubmittedData.CleanupXml(baseStr);
+            var escapedValue = AbstractWebRequestHandler.SubmittedData.CleanupXml(baseStrEscaped);
+            //------------Assert Results-------------------------\
+            var expectedValue = "www.examlple.com?home=~XML~PERhdGFsaXN0PjxvYmpSZXNwb25zZT48QnVzaW5lc3NFdmVudD48Q3VzdG9tZXI+PE1hbmRhdGUganNvbjpBcnJheT0idHJ1ZSIgeG1sbnM6anNvbj0iaHR0cDovL2phbWVzLm5ld3RvbmtpbmcuY29tL3Byb2plY3RzL2pzb24iPjxNYW5kYXRlSWQ+PC9NYW5kYXRlSWQ+PC9NYW5kYXRlPjwvQ3VzdG9tZXI+PC9CdXNpbmVzc0V2ZW50Pjwvb2JqUmVzcG9uc2U+PC9EYXRhbGlzdD4=";
+            Assert.AreEqual(value, escapedValue);
+            Assert.AreEqual(value, expectedValue);
+            Assert.AreEqual(escapedValue, expectedValue);
         }
 
         [TestMethod]

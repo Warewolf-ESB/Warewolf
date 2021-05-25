@@ -17,6 +17,7 @@ using System.Net.Http;
 using System.Reflection;
 using System.Security.Principal;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Web;
 using System.Xml.Linq;
@@ -487,7 +488,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                     var results = new List<string>();
                     foreach (var arg in args.AllKeys)
                     {
-                        var txt = args[arg];
+                        var txt = Regex.Unescape(args[arg]);
                         results.Add(txt.IsXml() ? arg + "=" + string.Format(GlobalConstants.XMLPrefix + "{0}", Convert.ToBase64String(Encoding.UTF8.GetBytes(txt))) : $"{arg}={txt}");
                     }
 
