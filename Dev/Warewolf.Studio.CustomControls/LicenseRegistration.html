@@ -22,7 +22,7 @@
                 let firstName = $('#firstName').val();
                 let lastName = $('#lastName').val();
                 let email = $('#email').val();
-                let errorMsg = "There were errors while submitting.";
+                let errorMsg = "There were errors while submitting: ";
                 if (firstName === '') {
                     ShowError();
                     valid = false;
@@ -145,9 +145,9 @@
         </div>
         <div class="col-sm-12">
             <div class="messageContainer">
-		   <span class="text-danger" id="errorContainer" style="display:none">There were errors while submitting.
-                    Please try again else contact support.</span>
+                <span class="text-danger" id="errorContainer" style="display:none"></span>
             </div>
+            <br/>
             <div class="messageContainer">
             <span style="display:block" class="form-text text-center  text-muted terms">I agree to the <a target=_new
                                                                                                           href="http://warewolf.io/sla.php">Terms of Service</a> & <a
