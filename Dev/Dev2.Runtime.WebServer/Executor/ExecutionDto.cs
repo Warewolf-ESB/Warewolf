@@ -10,7 +10,6 @@
 */
 
 using System;
-using System.Linq;
 using System.Net;
 using System.Runtime;
 using System.Web;
@@ -24,7 +23,6 @@ using Dev2.Interfaces;
 using Dev2.Runtime.WebServer.Responses;
 using Dev2.Runtime.WebServer.TransferObjects;
 using Dev2.Web;
-using Newtonsoft.Json;
 using Warewolf.Data;
 
 namespace Dev2.Runtime.WebServer
