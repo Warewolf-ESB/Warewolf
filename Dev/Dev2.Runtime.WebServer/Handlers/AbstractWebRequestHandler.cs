@@ -488,7 +488,8 @@ namespace Dev2.Runtime.WebServer.Handlers
                     var results = new List<string>();
                     foreach (var arg in args.AllKeys)
                     {
-                        var txt = Regex.Unescape(args[arg]);
+                        var txt = args[arg];
+                        txt = CheckForEscapeCharacters(txt);
                         results.Add(txt.IsXml() ? arg + "=" + string.Format(GlobalConstants.XMLPrefix + "{0}", Convert.ToBase64String(Encoding.UTF8.GetBytes(txt))) : $"{arg}={txt}");
                     }
 
@@ -496,6 +497,16 @@ namespace Dev2.Runtime.WebServer.Handlers
                 }
 
                 return baseStr;
+            }
+            
+            private static string CheckForEscapeCharacters(string text)
+            {
+                var escapeCharacters = new[] { "\\\"" };
+                if(escapeCharacters.Any(text.Contains))
+                {
+                    text = Regex.Unescape(text);
+                }
+                return text;
             }
 
             internal static string ExtractKeyValuePairForGetMethod(ICommunicationContext ctx, string payload)
