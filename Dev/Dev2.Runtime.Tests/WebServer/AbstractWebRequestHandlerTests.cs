@@ -39,6 +39,7 @@ using Dev2.Runtime;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.WebServer;
+using Dev2.Runtime.WebServer.Executor;
 using Dev2.Runtime.WebServer.Handlers;
 using Dev2.Runtime.WebServer.Responses;
 using Dev2.Runtime.WebServer.TransferObjects;
@@ -1897,7 +1898,7 @@ namespace Dev2.Tests.Runtime.WebServer
         {
             var boundVariables = new NameValueCollection();
 
-            AbstractWebRequestHandler.SubmittedData.ExtractKeyValuePairs(LocalBoundVariables, boundVariables);
+            SubmittedData.ExtractKeyValuePairs(LocalBoundVariables, boundVariables);
 
             //The WID is skipped
             Assert.AreEqual(LocalBoundVariables.Count - 1, boundVariables.Count);
@@ -1912,7 +1913,7 @@ namespace Dev2.Tests.Runtime.WebServer
             var privateObject = new PrivateType(typeof(AbstractWebRequestHandler));
             const string BaseStr = "www.examlple.com?home=<Datalist>DatalistPayload</Datalist>";
             //------------Execute Test---------------------------
-            var value = AbstractWebRequestHandler.SubmittedData.CleanupXml(BaseStr);
+            var value = SubmittedData.CleanupXml(BaseStr);
             //------------Assert Results-------------------------\
             var isNullOrEmpty = string.IsNullOrEmpty(value);
             Assert.IsFalse(isNullOrEmpty);
@@ -1933,7 +1934,7 @@ namespace Dev2.Tests.Runtime.WebServer
             var context = mock.Object;
 
             //------------Execute Test---------------------------
-            AbstractWebRequestHandler.SubmittedData.ExtractKeyValuePairForGetMethod(context, "");
+            SubmittedData.ExtractKeyValuePairForGetMethod(context, "");
 
             //------------Assert Results-------------------------
             mock.VerifyGet(communicationContext => communicationContext.Request.QueryString, Times.Once);
@@ -2677,7 +2678,7 @@ namespace Dev2.Tests.Runtime.WebServer
         }
     }
 
-    class TestAbstractWebRequestDataObjectFactory : AbstractWebRequestHandler.IDataObjectFactory
+    class TestAbstractWebRequestDataObjectFactory : IDataObjectFactory
     {
         readonly IDSFDataObject _dataObject;
 
@@ -2691,7 +2692,7 @@ namespace Dev2.Tests.Runtime.WebServer
 
     class AbstractWebRequestHandlerMock : AbstractWebRequestHandler
     {
-        public AbstractWebRequestHandlerMock(AbstractWebRequestHandler.IDataObjectFactory dataObjectFactory, IAuthorizationService service, IResourceCatalog catalog, ITestCatalog testCatalog, ITestCoverageCatalog testCoverageCatalog, IServiceTestExecutor serviceTestExecutor, IWorkspaceRepository repository)
+        public AbstractWebRequestHandlerMock(IDataObjectFactory dataObjectFactory, IAuthorizationService service, IResourceCatalog catalog, ITestCatalog testCatalog, ITestCoverageCatalog testCoverageCatalog, IServiceTestExecutor serviceTestExecutor, IWorkspaceRepository repository)
             : base(catalog, testCatalog, testCoverageCatalog, serviceTestExecutor, repository, service, dataObjectFactory, new DefaultEsbChannelFactory(), new SecuritySettings())
         {
         }
