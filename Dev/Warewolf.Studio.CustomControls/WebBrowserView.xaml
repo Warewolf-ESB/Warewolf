@@ -4,7 +4,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         mc:Ignorable="d"
-        Title="Warewolf" Height="450" Width="800">
+        Title="Warewolf" Height="550" Width="500">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -14,17 +14,7 @@
                     Grid.Row="1"
                     Navigating="WebBrowser_OnNavigating"
                     Navigated="WebBrowserOnNavigated"
-                    Margin="0,0,0,0"
-                    RenderTransformOrigin="0.5,0.5"
-                    ObjectForScripting="HtmlInteropClass">
-            <WebBrowser.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform/>
-                    <SkewTransform/>
-                    <RotateTransform Angle="-0.018"/>
-                    <TranslateTransform/>
-                </TransformGroup>
-            </WebBrowser.RenderTransform>
+                    Margin="0,0,0,0">
         </WebBrowser>
     </Grid>
 </Window>

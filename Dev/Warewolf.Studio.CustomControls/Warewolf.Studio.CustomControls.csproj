@@ -73,6 +73,7 @@
     <Reference Include="System.Activities.Presentation" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Management" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -90,7 +91,6 @@
     <Compile Include="ActivityDesignerToggleButton.cs" />
     <Compile Include="DoubleClickBehavior.cs" />
     <Compile Include="DragDropExtension.cs" />
-    <Compile Include="ScriptHelper.cs" />
     <Compile Include="ScriptManager.cs" />
     <Compile Include="SearchTextBox.cs" />
     <Compile Include="VariableTextBox.cs" />
@@ -167,10 +167,16 @@
     <Content Include="ChargeBee.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="images\logo.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="LicenseRegistration.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="ManageRegistration.html" >
+    <Content Include="ManageRegistration.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="styles\warewolf.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

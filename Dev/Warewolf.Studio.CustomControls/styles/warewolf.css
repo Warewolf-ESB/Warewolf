@@ -1,0 +1,103 @@
+﻿body {
+    font-family: sans-serif !important;
+}
+
+h4 {
+    color: #F47001;
+    font-weight: 600;
+
+}
+
+h5 {
+    color: #F47001;
+    font-weight: 300;
+}
+a:hover{
+    color: #F47001;
+}
+a:focus{
+    color: #F47001;
+}
+.close-btn {
+    color: #fff;
+    background-color: #F47001;
+    border-color: #F47001;
+}
+.close-btn:focus {
+    color: #fff;
+    background-color: #F47001;
+    border-color: #F47001;
+    box-shadow: none;
+}
+
+.close-btn:active {
+    color: #fff;
+    background-color: #F47001;
+    border-color: #F47001;
+    box-shadow: none;
+}
+
+.close-btn:hover {
+    color: #fff;
+    background-color: #F47001;
+    border-color: #F47001;
+    box-shadow: none;
+}
+.btn-register {
+    color: #fff;
+    background-color: #F47001;
+    border-color: #F47001;
+}
+.btn-register:focus {
+    color: #fff;
+    background-color: #F47001;
+    border-color: #F47001;
+    box-shadow: none;
+}
+.btn-register:hover {
+    color: #fff;
+    background-color: #F47001;
+    border-color: #F47001;
+    box-shadow: none;
+}
+
+.navbar {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: .5rem;
+    padding-bottom: .5rem;
+    background-color: #000;
+}
+
+.navbar-header {
+    max-height: 340px;
+}
+
+.footer .rights {
+    font-size: 16px;
+}
+
+.text-danger {
+    padding: 10px;
+    font-size: 0.8rem;
+}
+
+.form-control:focus {
+    color: #212529;
+    background-color: #fff;
+    border-color: #F47001;
+    outline: 0;
+    box-shadow: none;
+}
+.form-group.required .control-label:after {
+    content:"*";
+    color:red;
+}
+.messageContainer{
+    min-height:50px;
+    height:50px;
+
+}

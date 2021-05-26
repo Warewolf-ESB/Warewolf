@@ -12,29 +12,33 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Navigation;
+using Dev2.Common;
 
 namespace Warewolf.Studio.CustomControls
 {
     [SuppressMessage("ReSharper", "CC0091")]
     public partial class WebBrowserView : Window
     {
-
         public WebBrowserView(string licenseType)
         {
             InitializeComponent();
-            webBrowser.ObjectForScripting = new ScriptManager(this);
+            var helper = new ScriptManager(this);
+            this.webBrowser.ObjectForScripting = helper;
+            this.webBrowser.AllowDrop = false;
             if(licenseType == "Register")
             {
                 var curDir = Directory.GetCurrentDirectory();
                 var url = new Uri($"file:///{curDir}/LicenseRegistration.html");
                 webBrowser.Source = url;
             }
+
             if(licenseType == "Manage")
             {
                 var curDir = Directory.GetCurrentDirectory();
-                var url = new Uri($"file:///{curDir}/ManageRegistration.html");
+                //TODO: remove line when we can
+                GlobalConstants.LicenseCustomerId = "16BjmNSXISIQjctO";
+                var url = new Uri($"file:///{curDir}/ManageRegistration.html?customerId=" + GlobalConstants.LicenseCustomerId);
                 webBrowser.Source = url;
             }
         }
@@ -46,7 +50,7 @@ namespace Warewolf.Studio.CustomControls
 
         private void WebBrowser_OnNavigating(object sender, NavigatingCancelEventArgs e)
         {
-            var browser = sender as WebBrowser;
+            var browser = sender as System.Windows.Controls.WebBrowser;
 
             if(browser?.Document is null)
             {

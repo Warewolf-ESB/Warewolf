@@ -9,43 +9,91 @@
 */
 
 using System;
+using System.Management;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Security.Permissions;
 using System.Windows.Controls;
+using ChargeBee.Api;
+using ChargeBee.Models;
+using Dev2.Common;
+
 // ReSharper disable CC0091
 // ReSharper disable InconsistentNaming
 
 namespace Warewolf.Studio.CustomControls
 {
+    [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
     [ComVisible(true)]
     public class ScriptManager
     {
-        // Variable to store the form of type Form1.
-        private WebBrowserView mForm;
+        WebBrowserView mForm;
 
-        // Constructor.
         public ScriptManager(WebBrowserView form)
         {
-            // Save the form so it can be referenced later.
             mForm = form;
         }
 
-        // This method can be called from JavaScript.
-        public static void idCheckout(object id)
+#pragma warning disable CC0091
+        public string CheckoutNew(string email, string name, string surname, string plan)
         {
-            // Call a method on the form.
-            //mForm.DoSomething();
+            try
+            {
+                //TODO: The calls to chargebee must be moved into the usage.dll
+                ApiConfig.Configure("warewolf-test", "test_VMxitsiobdAyth62k0DiqpAUKocG6sV3");
+                var customer = Customer.Create()
+                    .FirstName(name)
+                    .LastName(surname)
+                    .Email(email)
+                    .Request();
+                var subscription = Subscription.CreateForCustomer(customer.Customer.Id)
+                    .PlanId(plan)
+                    .PlanQuantity(GetNumberOfCores())
+                    .Request();
+
+                GlobalConstants.LicenseCustomerId = customer.Customer.Id;
+                GlobalConstants.LicensePlanId = subscription.Subscription.PlanId;
+                if(subscription.Subscription.Status.ToString() == "InTrial" && subscription.Subscription.Status.ToString() == "Active")
+                {
+                    GlobalConstants.IsLicensed = true;
+                    //TODO: Call SaveLicenseKey Service to save to the secure.config
+                    //TODO: Refresh studio to enable save button
+                }
+
+                return "success";
+            }
+            catch(Exception)
+            {
+                GlobalConstants.IsLicensed = false;
+                return "failed";
+            }
+        }
+
+        int GetNumberOfCores()
+        {
+            var coreCount = 0;
+            foreach(var item in new ManagementObjectSearcher("Select * from Win32_Processor").Get())
+            {
+                coreCount += int.Parse(item["NumberOfCores"].ToString());
+            }
+
+            return coreCount;
+        }
+
+        public void CloseBrowser()
+        {
+            mForm.Close();
         }
 
         public static void SetSilent(WebBrowser browser, bool silent)
         {
-            if (browser is null)
+            if(browser is null)
             {
                 throw new ArgumentNullException(nameof(browser));
             }
 
             // get an IWebBrowser2 from the document
-            if (browser.Document is IOleServiceProvider sp)
+            if(browser.Document is IOleServiceProvider sp)
             {
                 var iidIWebBrowserApp = new Guid("0002DF05-0000-0000-C000-000000000046");
                 var iidIWebBrowser2 = new Guid("D30C1661-CDAF-11d0-8A3E-00C04FC9E26E");
