@@ -24,8 +24,10 @@ namespace Dev2.Runtime.Security
     {
         public static readonly Guid InternalServerID = new Guid("51A58300-7E9D-4927-A57B-E5D700B11B55");
         public static readonly string InternalPublicKey = "BgIAAACkAABSU0ExAAQAAAEAAQBlsJw+ibEmPy3P93PV7a8QjuHqS4QR+yP/+6CVUUpqvUE3hguQUzZ4Fw28hz0LwMLK8Sc1qb0s0FFiH9Ju6O+fIXruGzC3CjzN8wZRGoV2IvfmJ/nMKQ/NVESx9virJA1xTIZa9Za3PQvGbPh1ce0me5YJd3VOHKUqqJCbVeE7pg==";
-        public static readonly string InternalConfigKey = "usIz0lRmeoKQNTJp+mP6U30GahIJzrgmV+BWQmPx4lTsqOYppoazA3M2LyXtt34V";
-        public static readonly string InternalConfigSitename = "viSvQTMi3jrOUFl2Nsd3IQ==";
+        public static readonly string InternalConfigKey = "wCYcjqzbAiHIneFFib+LCrn73SSkOlRzm4QxP+mkeHsH7e3surKN5liDsrv39JFR";
+        public static readonly string InternalConfigSitename = "L8NilnImZ18r8VCMD88AdQ==";
+        public static readonly string LiveConfigKey = "ml420y+ZHMiv8CoQJxF1XMsYXXxCcDgNkvFkZSJHQB+m3EdlYIeUAP8oEIl9Z29b";
+        public static readonly string LiveConfigSitename = "tWPn5xcpWET9NX3yt+uPHQ==";
 
         readonly RSACryptoServiceProvider _serverKey;
         readonly RSACryptoServiceProvider _systemKey;
@@ -34,6 +36,7 @@ namespace Dev2.Runtime.Security
         public string ConfigKey { get; }
         public string ConfigSitename { get; }
         public string CustomerId { get; }
+        public string SubscriptionId { get; }
         static volatile IHostSecurityProvider _theInstance;
         static readonly object SyncRoot = new object();
 
@@ -73,6 +76,7 @@ namespace Dev2.Runtime.Security
             ConfigKey = config.ConfigKey;
             ConfigSitename = config.ConfigSitename;
             CustomerId = config.CustomerId;
+            SubscriptionId = config.SubscriptionId;
         }
 
         public bool VerifyXml(StringBuilder xml)

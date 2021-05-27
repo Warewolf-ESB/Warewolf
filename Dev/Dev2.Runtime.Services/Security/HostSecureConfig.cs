@@ -31,10 +31,10 @@ namespace Dev2.Runtime.Security
             try
             {
                 EnsureSecureConfigFileExists();
-                var settings = (NameValueCollection) ConfigurationManager.GetSection(SectionName);
+                var settings = (NameValueCollection)ConfigurationManager.GetSection(SectionName);
                 Initialize(settings, true);
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 Dev2Logger.Error(e, GlobalConstants.WarewolfError);
             }
@@ -54,20 +54,21 @@ namespace Dev2.Runtime.Security
         public string ConfigKey { get; private set; }
         public string ConfigSitename { get; private set; }
         public string CustomerId { get; private set; }
+        public string SubscriptionId { get; private set; }
         public RSACryptoServiceProvider ServerKey { get; private set; }
 
         public RSACryptoServiceProvider SystemKey { get; private set; }
 
         protected void Initialize(NameValueCollection settings, bool shouldProtectConfig)
         {
-            if (settings == null)
+            if(settings == null)
             {
                 throw new ArgumentNullException("settings");
             }
 
             SystemKey = CreateKey(settings["SystemKey"]);
 
-            if (Guid.TryParse(settings["ServerID"], out Guid serverID) && serverID != Guid.Empty)
+            if(Guid.TryParse(settings["ServerID"], out Guid serverID) && serverID != Guid.Empty)
             {
                 ServerID = serverID;
                 ServerKey = CreateKey(settings["ServerKey"]);
@@ -80,17 +81,24 @@ namespace Dev2.Runtime.Security
                 ServerID = Guid.NewGuid();
                 ServerKey = new RSACryptoServiceProvider();
 
+#if DEBUG
                 ConfigKey = HostSecurityProvider.InternalConfigKey;
                 ConfigSitename = HostSecurityProvider.InternalConfigSitename;
+#else
+                ConfigKey = HostSecurityProvider.LiveConfigKey;
+                ConfigSitename = HostSecurityProvider.LiveConfigSitename;
+#endif
                 CustomerId = "";
-
+                SubscriptionId = "";
                 newSettings["ConfigKey"] = ConfigKey;
                 newSettings["ConfigSitename"] = ConfigSitename;
                 newSettings["CustomerId"] = CustomerId;
+                newSettings["SubscriptionId"] = SubscriptionId;
 
                 ConfigSitename = DecryptKey(ConfigSitename);
                 ConfigKey = DecryptKey(ConfigKey);
                 CustomerId = DecryptKey(CustomerId);
+                SubscriptionId = DecryptKey(SubscriptionId);
 
                 newSettings["ServerID"] = ServerID.ToString();
                 newSettings["ServerKey"] = Convert.ToBase64String(ServerKey.ExportCspBlob(true));
@@ -98,7 +106,7 @@ namespace Dev2.Runtime.Security
 
                 SaveConfig(newSettings);
 
-                if (shouldProtectConfig)
+                if(shouldProtectConfig)
                 {
                     ProtectConfig();
                 }
@@ -112,7 +120,7 @@ namespace Dev2.Runtime.Security
             //way to add the new keys is to do it this way. CustomerId might be removed from here.
             var newSettings = new NameValueCollection();
 
-            if (settings["ConfigKey"] == null)
+            if(settings["ConfigKey"] == null)
             {
                 newSettings.Add("ConfigKey", HostSecurityProvider.InternalConfigKey);
                 updateSettingsFile = true;
@@ -121,7 +129,8 @@ namespace Dev2.Runtime.Security
             {
                 newSettings["ConfigKey"] = settings["ConfigKey"];
             }
-            if (settings["ConfigSitename"] == null)
+
+            if(settings["ConfigSitename"] == null)
             {
                 newSettings.Add("ConfigSitename", HostSecurityProvider.InternalConfigSitename);
                 updateSettingsFile = true;
@@ -131,7 +140,7 @@ namespace Dev2.Runtime.Security
                 newSettings["ConfigSitename"] = settings["ConfigSitename"];
             }
 
-            if (settings["CustomerId"] == null)
+            if(settings["CustomerId"] == null)
             {
                 newSettings.Add("CustomerId", "");
                 updateSettingsFile = true;
@@ -140,21 +149,30 @@ namespace Dev2.Runtime.Security
             {
                 newSettings["CustomerId"] = settings["CustomerId"];
             }
+            if(settings["SubscriptionId"] == null)
+            {
+                newSettings.Add("SubscriptionId", "");
+                updateSettingsFile = true;
+            }
+            else
+            {
+                newSettings["SubscriptionId"] = settings["SubscriptionId"];
+            }
             ConfigKey = newSettings["ConfigKey"];
             ConfigSitename = newSettings["ConfigSitename"];
             CustomerId = newSettings["CustomerId"];
-
+            SubscriptionId = newSettings["SubscriptionId"];
             ConfigSitename = DecryptKey(ConfigSitename);
             ConfigKey = DecryptKey(ConfigKey);
             CustomerId = DecryptKey(CustomerId);
-
-            if (updateSettingsFile)
+            SubscriptionId = DecryptKey(SubscriptionId);
+            if(updateSettingsFile)
             {
                 newSettings["ServerID"] = ServerID.ToString();
                 newSettings["ServerKey"] = Convert.ToBase64String(ServerKey.ExportCspBlob(true));
                 newSettings["SystemKey"] = settings["SystemKey"];
                 SaveConfig(newSettings);
-                if (shouldProtectConfig)
+                if(shouldProtectConfig)
                 {
                     ProtectConfig();
                 }
@@ -164,16 +182,16 @@ namespace Dev2.Runtime.Security
         void EnsureSecureConfigFileExists()
         {
             ConfigurationManager.RefreshSection(SectionName);
-            if (!File.Exists(FileName))
+            if(!File.Exists(FileName))
             {
                 Dev2Logger.Info(string.Format(ErrorResource.FileNotFound, FileName), GlobalConstants.WarewolfInfo);
                 var newSettings = new NameValueCollection
                 {
-
                     ["ServerID"] = "",
                     ["ServerKey"] = "",
                     ["SystemKey"] = HostSecurityProvider.InternalPublicKey,
                     ["CustomerId"] = "",
+                    ["SubscriptionId"] = "",
                     ["ConfigKey"] = HostSecurityProvider.InternalConfigKey,
                     ["ConfigSitename"] = HostSecurityProvider.InternalConfigSitename
                 };
@@ -184,12 +202,14 @@ namespace Dev2.Runtime.Security
         protected virtual void SaveConfig(NameValueCollection secureSettings)
         {
             var config = new XElement(SectionName);
-            foreach (string key in secureSettings.Keys)
+            foreach(string key in secureSettings.Keys)
             {
-                config.Add(new XElement("add",
-                    new XAttribute("key", key),
-                    new XAttribute("value", secureSettings[key])
-                ));
+                config.Add(
+                    new XElement(
+                        "add",
+                        new XAttribute("key", key),
+                        new XAttribute("value", secureSettings[key])
+                    ));
             }
 
             var configDoc = new XDocument(new XDeclaration("1.0", "utf-8", ""), config);
@@ -202,14 +222,14 @@ namespace Dev2.Runtime.Security
             {
                 var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
                 var section = config.GetSection(SectionName);
-                if (section != null && !section.SectionInformation.IsProtected && !section.ElementInformation.IsLocked)
+                if(section != null && !section.SectionInformation.IsProtected && !section.ElementInformation.IsLocked)
                 {
                     section.SectionInformation.ProtectSection("RsaProtectedConfigurationProvider");
                     section.SectionInformation.ForceSave = true;
                     config.Save(ConfigurationSaveMode.Full);
                 }
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 Dev2Logger.Error(e, GlobalConstants.WarewolfError);
                 throw;
@@ -229,7 +249,7 @@ namespace Dev2.Runtime.Security
             return key;
         }
 
-        public static NameValueCollection CreateSettings(string serverID, string serverKey, string systemKey, string customerId, string configSitename, string configKey) => new NameValueCollection
+        public static NameValueCollection CreateSettings(string serverID, string serverKey, string systemKey, string customerId, string configSitename, string configKey,string subscriptionId) => new NameValueCollection
         {
             {
                 "ServerID", serverID
@@ -242,6 +262,9 @@ namespace Dev2.Runtime.Security
             },
             {
                 "CustomerId", customerId
+            },
+            {
+                "SubscriptionId", subscriptionId
             },
             {
                 "ConfigKey", configKey

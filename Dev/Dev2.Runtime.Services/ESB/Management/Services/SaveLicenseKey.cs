@@ -42,7 +42,10 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 result.HasError = true;
             }
-
+            if (returnLicenseData.SubscriptionId == null)
+            {
+                result.HasError = true;
+            }
             //TODO: Save new CustomerId to secure.config in server.
             var license = new WarewolfLicense();
             var resultData = license.Retrieve(returnLicenseData);

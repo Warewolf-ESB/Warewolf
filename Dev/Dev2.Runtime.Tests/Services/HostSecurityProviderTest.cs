@@ -162,12 +162,13 @@ namespace Dev2.Tests.Runtime.Services
                 HostSecureConfig.CreateKey(HostSecureConfigTests.DefaultServerKey),
                 HostSecureConfig.CreateKey(HostSecureConfigTests.DefaultSystemKeyPublic),
                 HostSecureConfig.DecryptKey(HostSecureConfigTests.DefaultCustomerId),
+                HostSecureConfig.DecryptKey(HostSecureConfigTests.DefaultSubscriptionId),
                 HostSecureConfig.DecryptKey(HostSecureConfigTests.DefaultConfigSitename),
                 HostSecureConfig.DecryptKey(HostSecureConfigTests.DefaultConfigKey));
 
             var provider = new HostSecurityProviderImpl(config.Object);
 
-            var originalID = Guid.Parse(TestXml.Attribute("ServerID").Value);
+            var originalID = Guid.Parse(TestXml.Attribute("ServerID")?.Value);
             var signedXml = provider.SignXml(new StringBuilder(TestXml.ToString()));
 
             var xml = XElement.Parse(signedXml.ToString());
@@ -205,7 +206,7 @@ namespace Dev2.Tests.Runtime.Services
         [TestCategory(nameof(HostSecurityProvider))]
         public void HostSecurityProvider_VerifyXmlWithInvalidKeys_Expected_ReturnsFalse()
         {
-            var config = CreateConfig(new RSACryptoServiceProvider(), new RSACryptoServiceProvider(), "", "", "");
+            var config = CreateConfig(new RSACryptoServiceProvider(), new RSACryptoServiceProvider(), "","", "", "");
             var provider = new HostSecurityProviderImpl(config.Object);
 
             var verified = provider.VerifyXml(new StringBuilder(TestXmlServerSigned.ToString()));
@@ -257,6 +258,7 @@ namespace Dev2.Tests.Runtime.Services
                     HostSecureConfig.CreateKey(HostSecureConfigTests.DefaultSystemKeyPrivate),
                     HostSecureConfig.CreateKey(HostSecureConfigTests.DefaultSystemKeyPublic),
                     HostSecureConfig.DecryptKey(HostSecureConfigTests.DefaultCustomerId),
+                    HostSecureConfig.DecryptKey(HostSecureConfigTests.DefaultSubscriptionId),
                     HostSecureConfig.DecryptKey(HostSecureConfigTests.DefaultConfigSitename),
                     HostSecureConfig.DecryptKey(HostSecureConfigTests.DefaultConfigKey));
             }
@@ -265,17 +267,18 @@ namespace Dev2.Tests.Runtime.Services
                 HostSecureConfig.CreateKey(HostSecureConfigTests.DefaultServerKey),
                 HostSecureConfig.CreateKey(HostSecureConfigTests.DefaultSystemKeyPublic),
                 HostSecureConfig.DecryptKey(HostSecureConfigTests.DefaultCustomerId),
+                HostSecureConfig.DecryptKey(HostSecureConfigTests.DefaultSubscriptionId),
                 HostSecureConfig.DecryptKey(HostSecureConfigTests.DefaultConfigSitename),
                 HostSecureConfig.DecryptKey(HostSecureConfigTests.DefaultConfigKey));
         }
 
-        static Mock<ISecureConfig> CreateConfig(RSACryptoServiceProvider serverKey, RSACryptoServiceProvider systemKey, string customerId, string configSitename, string configKey)
+        static Mock<ISecureConfig> CreateConfig(RSACryptoServiceProvider serverKey, RSACryptoServiceProvider systemKey, string customerId, string subscriptionId,string configSitename, string configKey)
         {
-            return CreateConfig(HostSecureConfigTests.DefaultServerID, serverKey, systemKey, customerId, configSitename, configKey);
+            return CreateConfig(HostSecureConfigTests.DefaultServerID, serverKey, systemKey, customerId,subscriptionId, configSitename, configKey);
         }
 
         static Mock<ISecureConfig> CreateConfig(Guid serverID, RSACryptoServiceProvider serverKey,
-            RSACryptoServiceProvider systemKey, string customerId, string configSitename, string configKey)
+            RSACryptoServiceProvider systemKey, string customerId,string subscriptionId, string configSitename, string configKey)
         {
             var config = new Mock<ISecureConfig>();
             config.Setup(c => c.ServerID).Returns(serverID);
@@ -283,6 +286,7 @@ namespace Dev2.Tests.Runtime.Services
             config.Setup(c => c.ServerKey).Returns(serverKey);
 
             config.Setup(c => c.CustomerId).Returns(customerId);
+            config.Setup(c => c.SubscriptionId).Returns(subscriptionId);
             config.Setup(c => c.ConfigSitename).Returns(configSitename);
             config.Setup(c => c.ConfigKey).Returns(configKey);
             return config;

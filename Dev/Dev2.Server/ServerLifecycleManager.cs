@@ -495,6 +495,7 @@ namespace Dev2
             var instance = HostSecurityProvider.Instance;
             //TODO: have not done coverage yet as it might change.
             GlobalConstants.LicenseCustomerId = HostSecurityProvider.Instance.CustomerId;
+            GlobalConstants.LicenseSubscriptionId = HostSecurityProvider.Instance.SubscriptionId;
             GlobalConstants.SiteName =  HostSecurityProvider.Instance.ConfigSitename;
             GlobalConstants.ApiKey =  HostSecurityProvider.Instance.ConfigKey;
             if (instance != null)

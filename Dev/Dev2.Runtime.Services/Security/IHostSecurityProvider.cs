@@ -21,6 +21,7 @@ namespace Dev2.Runtime.Security
         string ConfigKey { get; }
         string ConfigSitename { get; }
         string CustomerId { get; }
+        string SubscriptionId { get; }
         bool VerifyXml(StringBuilder xml);
 
         StringBuilder SignXml(StringBuilder xml);
