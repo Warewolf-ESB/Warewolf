@@ -12,6 +12,7 @@
              xmlns:converters="clr-namespace:Dev2.AppResources.Converters;assembly=Dev2.Studio.Core"
              xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
              xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
+             xmlns:customControls1="clr-namespace:Warewolf.Studio.CustomControls;assembly=Warewolf.Studio.CustomControls"
              d:DesignHeight="300"
              d:DesignWidth="300"
              mc:Ignorable="d"
@@ -366,20 +367,19 @@
                                 </TextBox>
 
                                 <TextBlock Text="Password " Margin="{StaticResource ControlBorderTop}" Grid.Row="1" Grid.Column="0"/>
-                                <PasswordBox Width="220"
-                                             Margin="{StaticResource ControlBorderTop}"
-                                             AutomationProperties.AutomationId="UI_PasswordBox"
-                                             Grid.Row="1"
-                                             Grid.Column="1"
-                                             HorizontalAlignment="Left"
-                                             ToolTip="{x:Static languages:Tooltips.SchedulerSettingsToolTipPassword}"
-                                             attachedProperties:PasswordBoxAssistant.BindPassword="true"
-                                             attachedProperties:PasswordBoxAssistant.BoundPassword="{Binding Path=Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                <customControls1:PasswordBoxUserControl Grid.Column="1"
+                                    Grid.Row="1"
+                                    Width="220"
+                                    HorizontalAlignment="Left"
+                                    AutomationProperties.AutomationId="UI_PasswordBox"
+                                    Margin="{StaticResource ControlBorderTop}"
+                                    Text="{Binding Path=Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    ToolTip="{x:Static languages:Tooltips.SchedulerSettingsToolTipPassword}">
                                     <i:Interaction.Behaviors>
                                         <core:HelpSetter Text="{x:Static languages:HelpText.SchedulerSettingsHelpTextPassword}"
-                                                         DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                            DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                     </i:Interaction.Behaviors>
-                                </PasswordBox>
+                                </customControls1:PasswordBoxUserControl>
                             </Grid>
 
                             <StackPanel Grid.Row="8" Margin="{StaticResource ControlBorderTop}">

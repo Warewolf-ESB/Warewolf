@@ -14,6 +14,8 @@
                                xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
                                xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
                                xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
+                               xmlns:activities="clr-namespace:Dev2.Activities"
+                               xmlns:customControls="clr-namespace:Warewolf.Studio.CustomControls;assembly=Warewolf.Studio.CustomControls"
                                MinWidth="315"
                                Width="315"
                                MaxWidth="600"
@@ -101,22 +103,19 @@
         </ui:IntellisenseTextBox>
 
         <TextBlock Grid.Column="0" Grid.Row="2" Text="Password" Margin="{StaticResource ActivityBorderTop}"/>
-        <PasswordBox Grid.Column="1"
-                     Grid.Row="2"
-                     Margin="{StaticResource ActivityBorderTop}"
-                     ToolTip="{x:Static languages:Tooltips.ReadFileToolTipPassword}"                                
-                     attachedProperties:FocusSetter.IsFocused="{Binding IsPasswordFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                     attachedProperties:PasswordBoxAssistant.BindPassword="true"
-                     attachedProperties:PasswordBoxAssistant.BoundPassword="{Binding Path=ModelItem.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                     AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Passwordtxt_AutoID}">
+        <customControls:PasswordBoxUserControl Grid.Column="1"
+                                               Grid.Row="2"
+                                               Margin="{StaticResource ActivityBorderTop}"
+                                               Text="{Binding Path=ModelItem.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                               ToolTip="{x:Static languages:Tooltips.FileActivityToolTipPassword}">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:HelpText.ReadFileHelpPassword}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:HelpText.FileActivityHelpPassword}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.Password"
                                      SourcePropertyValue="{Binding  ModelItem.Password, UpdateSourceTrigger=PropertyChanged}"
                                      Target="{Binding}" />
             </i:Interaction.Behaviors>
-        </PasswordBox>
+        </customControls:PasswordBoxUserControl>
 
         <TextBlock Grid.Column="0" Grid.Row="3" Text="Private Key" Margin="{StaticResource ActivityBorderTop}" />
         <ui:IntellisenseTextBox Grid.Column="1"

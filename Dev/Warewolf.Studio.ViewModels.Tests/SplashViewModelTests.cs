@@ -1,28 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
+﻿/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
 
+using System;
+using System.Collections.Generic;
+using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-
 
 namespace Warewolf.Studio.ViewModels.Tests
 {
     [TestClass]
     public class SplashViewModelTests
     {
-        #region Fields
-
         Mock<IServer> _serverMock;
         Mock<IExternalProcessExecutor> _externalProcessExecutorMock;
 
         List<string> _changedProperties;
         SplashViewModel _target;
-
-        #endregion Fields
-
-        #region Test initialize
 
         [TestInitialize]
         public void TestInitialize()
@@ -35,14 +38,11 @@ namespace Warewolf.Studio.ViewModels.Tests
             _target.PropertyChanged += (sender, args) => { _changedProperties.Add(args.PropertyName); };
         }
 
-        #endregion Test initialize
-
-        #region Test construction
-
         [TestMethod]
         [Timeout(100)]
+        [TestCategory(nameof(SplashViewModel))]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void TestSplashViewModelServerNull()
+        public void SplashViewModel_TestSplashViewModelServerNull()
         {
             //act
             new SplashViewModel(null, _externalProcessExecutorMock.Object);
@@ -50,20 +50,18 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         [TestMethod]
         [Timeout(100)]
+        [TestCategory(nameof(SplashViewModel))]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void TestSplashViewModelExternalProcessExecutorNull()
+        public void SplashViewModel_TestSplashViewModelExternalProcessExecutorNull()
         {
             //act
             new SplashViewModel(_serverMock.Object, null);
         }
 
-        #endregion Test construction
-
-        #region Test commands
-
         [TestMethod]
         [Timeout(100)]
-        public void TestContributorsCommandCanExecute()
+        [TestCategory(nameof(SplashViewModel))]
+        public void SplashViewModel_TestContributorsCommandCanExecute()
         {
             //act
             var result = _target.ContributorsCommand.CanExecute(null);
@@ -74,7 +72,8 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         [TestMethod]
         [Timeout(100)]
-        public void TestContributorsCommandExecute()
+        [TestCategory(nameof(SplashViewModel))]
+        public void SplashViewModel_TestContributorsCommandExecute()
         {
             //act
             _target.ContributorsCommand.Execute(null);
@@ -85,7 +84,8 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         [TestMethod]
         [Timeout(100)]
-        public void TestCommunityCommandCanExecute()
+        [TestCategory(nameof(SplashViewModel))]
+        public void SplashViewModel_TestCommunityCommandCanExecute()
         {
             //act
             var result = _target.CommunityCommand.CanExecute(null);
@@ -96,7 +96,8 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         [TestMethod]
         [Timeout(100)]
-        public void TestCommunityCommandExecute()
+        [TestCategory(nameof(SplashViewModel))]
+        public void SplashViewModel_TestCommunityCommandExecute()
         {
             //act
             _target.CommunityCommand.Execute(null);
@@ -107,7 +108,8 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         [TestMethod]
         [Timeout(100)]
-        public void TestExpertHelpCommandCanExecute()
+        [TestCategory(nameof(SplashViewModel))]
+        public void SplashViewModel_TestExpertHelpCommandCanExecute()
         {
             //act
             var result = _target.ExpertHelpCommand.CanExecute(null);
@@ -118,7 +120,8 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         [TestMethod]
         [Timeout(100)]
-        public void TestExpertHelpCommandExecute()
+        [TestCategory(nameof(SplashViewModel))]
+        public void SplashViewModel_TestExpertHelpCommandExecute()
         {
             //act
             _target.ExpertHelpCommand.Execute(null);
@@ -129,7 +132,8 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         [TestMethod]
         [Timeout(100)]
-        public void TestWarewolfUrlCommandCanExecute()
+        [TestCategory(nameof(SplashViewModel))]
+        public void SplashViewModel_TestWarewolfUrlCommandCanExecute()
         {
             //act
             var result = _target.WarewolfUrlCommand.CanExecute(null);
@@ -140,7 +144,8 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         [TestMethod]
         [Timeout(100)]
-        public void TestWarewolfUrlCommandExecute()
+        [TestCategory(nameof(SplashViewModel))]
+        public void SplashViewModel_TestWarewolfUrlCommandExecute()
         {
             //act
             _target.WarewolfUrlCommand.Execute(null);
@@ -149,13 +154,10 @@ namespace Warewolf.Studio.ViewModels.Tests
             _externalProcessExecutorMock.Verify(it => it.OpenInBrowser(_target.WarewolfUrl));
         }
 
-        #endregion Test commands
-
-        #region Test properties
-
         [TestMethod]
         [Timeout(100)]
-        public void TestWarewolfUrl()
+        [TestCategory(nameof(SplashViewModel))]
+        public void SplashViewModel_TestWarewolfUrl()
         {
             //arrange
             var expectedValue = new Uri("http://localhost/");
@@ -171,7 +173,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         [TestMethod]
         [Timeout(100)]
         [Owner("Hagashen Naidu")]
-        [TestCategory("SplashViewModel_Copyright")]
+        [TestCategory(nameof(SplashViewModel))]
         public void SplashViewModel_Copyright_Valid_ShouldContainCurrentYear()
         {
             //------------Setup for test--------------------------
@@ -185,7 +187,8 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         [TestMethod]
         [Timeout(100)]
-        public void TestContributorsUrl()
+        [TestCategory(nameof(SplashViewModel))]
+        public void SplashViewModel_TestContributorsUrl()
         {
             //arrange
             var expectedValue = new Uri("http://localhost/");
@@ -200,7 +203,8 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         [TestMethod]
         [Timeout(100)]
-        public void TestCommunityUrl()
+        [TestCategory(nameof(SplashViewModel))]
+        public void SplashViewModel_TestCommunityUrl()
         {
             //arrange
             var expectedValue = new Uri("http://localhost/");
@@ -215,7 +219,8 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         [TestMethod]
         [Timeout(100)]
-        public void TestExpertHelpUrl()
+        [TestCategory(nameof(SplashViewModel))]
+        public void SplashViewModel_TestExpertHelpUrl()
         {
             //arrange
             var expectedValue = new Uri("http://localhost/");
@@ -230,7 +235,8 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         [TestMethod]
         [Timeout(100)]
-        public void TestServer()
+        [TestCategory(nameof(SplashViewModel))]
+        public void SplashViewModel_TestServer()
         {
             //arrange
             var expectedValueMock = new Mock<IServer>();
@@ -245,7 +251,8 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         [TestMethod]
         [Timeout(100)]
-        public void TestExternalProcessExecutor()
+        [TestCategory(nameof(SplashViewModel))]
+        public void SplashViewModel_TestExternalProcessExecutor()
         {
             //arrange
             var expectedValueMock = new Mock<IExternalProcessExecutor>();
@@ -260,7 +267,8 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         [TestMethod]
         [Timeout(250)]
-        public void TestServerVersion()
+        [TestCategory(nameof(SplashViewModel))]
+        public void SplashViewModel_TestServerVersion()
         {
             //arrange
             var expectedValue = "someResourceName";
@@ -277,7 +285,8 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         [TestMethod]
         [Timeout(100)]
-        public void TestStudioVersion()
+        [TestCategory(nameof(SplashViewModel))]
+        public void SplashViewModel_TestStudioVersion()
         {
             //arrange
             var expectedValue = "someResourceName";
@@ -292,7 +301,39 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(_changedProperties.Contains("StudioVersion"));
         }
 
-        #endregion Test properties
+        [TestMethod]
+        [Timeout(100)]
+        [TestCategory(nameof(SplashViewModel))]
+        public void SplashViewModel_TestWarewolfLicense_IsLicensed_True()
+        {
+            //arrange
+            //TODO:The GlobalConstants will be replaced with the WarewolfLicense object
+            GlobalConstants.IsLicensed = true;
+            GlobalConstants.LicensePlanId = "Developer";
+
+            //act
+            var splashViewModel = new SplashViewModel(_serverMock.Object, _externalProcessExecutorMock.Object);
+
+            //assert
+            Assert.AreEqual("Developer", splashViewModel.WarewolfLicense);
+        }
+
+        [TestMethod]
+        [Timeout(100)]
+        [TestCategory(nameof(SplashViewModel))]
+        public void SplashViewModel_TestWarewolfLicense_IsLicensed_False()
+        {
+            //arrange
+            //TODO:The GlobalConstants will be replaced with the WarewolfLicense object
+            GlobalConstants.IsLicensed = false;
+            GlobalConstants.LicensePlanId = "Developer";
+
+            //act
+            var splashViewModel = new SplashViewModel(_serverMock.Object, _externalProcessExecutorMock.Object);
+
+            //assert
+            Assert.AreEqual(GlobalConstants.NotRegistered, splashViewModel.WarewolfLicense);
+        }
 
     }
 }

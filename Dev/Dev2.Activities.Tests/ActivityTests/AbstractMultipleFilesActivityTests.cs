@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -12,9 +12,11 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using ActivityUnitTests;
+using Dev2.Activities.PathOperations;
 using Dev2.Diagnostics;
 using Dev2.Tests.Activities.Mocks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Warewolf.Security.Encryption;
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
@@ -99,6 +101,48 @@ namespace Dev2.Tests.Activities.ActivityTests
             var outputResultList = outRes[0].FetchResultsList();
             Assert.AreEqual(1, outputResultList.Count);
             Assert.AreEqual("", outputResultList[0].Value);
+        }
+        
+        [TestMethod]
+        [Owner("Njabulo Nxele")]
+        [TestCategory(nameof(DsfAbstractMultipleFilesActivity))]
+        public void AbstractMultipleFiles_DecryptForShowPassword_ShouldShowDecryptedType()
+        {
+            //------------Setup for test--------------------------
+            const string password = "123456";
+            const string destPassword = "654321";
+            var encrypt = DpapiWrapper.Encrypt(password);
+            var destEncrypt = DpapiWrapper.Encrypt(destPassword);
+            var act = new MockAbstractMultipleFilesActivity("MockActivity") { Password = encrypt, DestinationPassword = destEncrypt};
+            
+            var privateObject = new PrivateObject(act);
+            var decryptedPassword = privateObject.GetProperty("DecryptedPassword");
+            var decryptedDestinationPassword = privateObject.GetProperty("DecryptedDestinationPassword");
+
+            //------------Execute Test---------------------------
+            //------------Assert Results-------------------------
+            Assert.AreEqual(password, decryptedPassword);
+            Assert.AreEqual(destPassword, decryptedDestinationPassword);
+        }
+
+        [TestMethod]
+        [Owner("Njabulo Nxele")]
+        [TestCategory(nameof(DsfAbstractMultipleFilesActivity))]
+        public void AbstractMultipleFiles_DecryptForShowPassword_ShouldShowTextType()
+        {
+            //------------Setup for test--------------------------
+            const string password = "123456";
+            const string destPassword = "654321";
+            var act = new MockAbstractMultipleFilesActivity("MockActivity") { Password = password, DestinationPassword = destPassword};
+
+            var privateObject = new PrivateObject(act);
+            var decryptedPassword = privateObject.GetProperty("DecryptedPassword");
+            var decryptedDestinationPassword = privateObject.GetProperty("DecryptedDestinationPassword");
+
+            //------------Execute Test---------------------------
+            //------------Assert Results-------------------------
+            Assert.AreEqual(password, decryptedPassword);
+            Assert.AreEqual(destPassword, decryptedDestinationPassword);
         }
 
     }

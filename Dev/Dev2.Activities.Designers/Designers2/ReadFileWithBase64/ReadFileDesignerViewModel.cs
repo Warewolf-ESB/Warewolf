@@ -9,6 +9,7 @@
 */
 
 using System.Activities.Presentation.Model;
+using System.ComponentModel;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Studio.Interfaces;
 
@@ -29,7 +30,7 @@ namespace Dev2.Activities.Designers2.ReadFileWithBase64
             ValidateUserNameAndPassword();
             ValidateInputPath();
         }
-
+        
         public override void UpdateHelpDescriptor(string helpText)
         {
             var mainViewModel = CustomContainer.Get<IShellViewModel>();

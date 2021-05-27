@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -12,19 +12,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using ActivityUnitTests;
-using Dev2.Common;
-using Dev2.Common.Interfaces.Diagnostics.Debug;
-using Dev2.Data;
-using Dev2.Data.Interfaces;
 using Dev2.Data.TO;
 using Dev2.DataList.Contract;
-using Dev2.Diagnostics;
 using Dev2.Interfaces;
-using Microsoft.FSharp.Core;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
-using Warewolf.Security.Encryption;
 using Warewolf.Storage;
 
 namespace Dev2.Tests.Activities.ActivityTests
@@ -214,7 +207,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         
         [TestMethod]
         [Owner("Njabulo Nxele")]
-        [TestCategory("FileReadWithBase64_Credentials")]
+        [TestCategory(nameof(FileReadWithBase64))]
         public void FileReadWithBase64_TryExecuteConcreteAction_Credential_Variable()
         {
             //------------Setup for test--------------------------
