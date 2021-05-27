@@ -97,11 +97,16 @@ namespace Dev2.Tests.Runtime.Services
             var saveLicenseKey = new SaveLicenseKey();
             var serializer = new Dev2JsonSerializer();
             var workspaceMock = new Mock<IWorkspace>();
+            GlobalConstants.LicenseCustomerId = "16BjmNSXISIQjctO";
+            GlobalConstants.LicenseSubscriptionId = "16BjmNSXISIQjctO";
+            GlobalConstants.LicensePlanId = "developer";
+            GlobalConstants.ApiKey = "test_VMxitsiobdAyth62k0DiqpAUKocG6sV3";
+            GlobalConstants.SiteName = "warewolf-test";
             var data = new LicenseData
             {
-                CustomerId ="qwertyuioplkjhgfd123",
-                CustomerFirstName = "Customer ABC",
-                PlanId = "Developer"
+                CustomerId = GlobalConstants.LicenseCustomerId ,
+                PlanId =  GlobalConstants.LicensePlanId,
+                SubscriptionId =  GlobalConstants.LicenseSubscriptionId
             };
             var licenseData = serializer.Serialize<ILicenseData>(data).ToStringBuilder();
 
@@ -118,7 +123,6 @@ namespace Dev2.Tests.Runtime.Services
             Assert.IsFalse(result.HasError);
             var res = serializer.Deserialize<ILicenseData>(result.Message);
             Assert.AreEqual(data.CustomerId,res.CustomerId);
-            Assert.AreEqual(data.CustomerFirstName,res.CustomerFirstName);
             Assert.AreEqual(data.PlanId,res.PlanId);
         }
 
