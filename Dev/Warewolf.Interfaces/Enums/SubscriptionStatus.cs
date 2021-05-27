@@ -14,6 +14,8 @@ namespace Warewolf.Enums
 {
     public enum SubscriptionStatus
     {
+        [Description("not_active")]
+        NotActive,
         [Description("future")]
         Future,
         [Description("in_trial")]

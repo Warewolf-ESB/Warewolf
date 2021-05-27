@@ -42,6 +42,7 @@ namespace Warewolf.LicencingTests
             resultLicenseData.PlanId = "developer";
             resultLicenseData.Status = SubscriptionStatus.Active;
             resultLicenseData.CustomerId = "asdsadsdsadsad";
+            resultLicenseData.SubscriptionId = "asdsadsdsadsad";
 
             var mockLicenceApiConfig = new Mock<ILicenceApiConfig>();
             mockLicenceApiConfig.Setup(o => o.SiteName).Returns("sitename");
@@ -55,6 +56,7 @@ namespace Warewolf.LicencingTests
 
             Assert.AreEqual(licenseData.PlanId, result.PlanId);
             Assert.AreEqual(result.CustomerId, result.CustomerId);
+            Assert.AreEqual(result.SubscriptionId, result.SubscriptionId);
             Assert.AreEqual(licenseData.CustomerFirstName, result.CustomerFirstName);
             Assert.AreEqual(licenseData.CustomerLastName, result.CustomerLastName);
             Assert.AreEqual(licenseData.CustomerEmail, result.CustomerEmail);
@@ -67,6 +69,7 @@ namespace Warewolf.LicencingTests
         {
             var licenseData = GetLicenseData();
             licenseData.CustomerId = "cbdemo_prepaid_card";
+            licenseData.SubscriptionId = "cbdemo_prepaid_card";
             licenseData.PlanId = "developer";
             licenseData.CardCvv = 100;
             licenseData.CardExpiryYear = 2022;
@@ -76,6 +79,7 @@ namespace Warewolf.LicencingTests
 
             var resultLicenseData = GetLicenseData();
             resultLicenseData.CustomerId = "cbdemo_prepaid_card";
+            resultLicenseData.SubscriptionId = "cbdemo_prepaid_card";
             resultLicenseData.PlanId = "developer";
             resultLicenseData.Status = SubscriptionStatus.Active;
 
@@ -89,6 +93,7 @@ namespace Warewolf.LicencingTests
             var license = new WarewolfLicense(mockLicenceApiConfig.Object, mockChargebeeApiWrapper.Object);
             var resultData = license.UpgradePlan(licenseData);
             Assert.AreEqual(licenseData.CustomerId, resultData.CustomerId);
+            Assert.AreEqual(licenseData.SubscriptionId, resultData.SubscriptionId);
             Assert.AreEqual(SubscriptionStatus.Active, resultData.Status);
             Assert.AreEqual(licenseData.PlanId, resultData.PlanId);
         }
@@ -100,6 +105,7 @@ namespace Warewolf.LicencingTests
         {
             var licenseData = GetLicenseData();
             licenseData.CustomerId = "cbdemo_prepaid_card";
+            licenseData.SubscriptionId = "cbdemo_prepaid_card";
             licenseData.PlanId = "enterprise";
             licenseData.CardCvv = 100;
             licenseData.CardExpiryYear = 2022;
@@ -109,6 +115,7 @@ namespace Warewolf.LicencingTests
 
             var resultLicenseData = GetLicenseData();
             resultLicenseData.CustomerId = "cbdemo_prepaid_card";
+            resultLicenseData.SubscriptionId = "cbdemo_prepaid_card";
             resultLicenseData.PlanId = "enterprise";
             resultLicenseData.Status = SubscriptionStatus.Active;
 
@@ -122,6 +129,7 @@ namespace Warewolf.LicencingTests
             var license = new WarewolfLicense(mockLicenceApiConfig.Object, mockChargebeeApiWrapper.Object);
             var resultData = license.UpgradePlan(licenseData);
             Assert.AreEqual(licenseData.CustomerId, resultData.CustomerId);
+            Assert.AreEqual(licenseData.SubscriptionId, resultData.SubscriptionId);
             Assert.AreEqual(SubscriptionStatus.Active, resultData.Status);
             Assert.AreEqual(licenseData.PlanId, resultData.PlanId);
         }
@@ -133,10 +141,12 @@ namespace Warewolf.LicencingTests
         {
             var licenseData = GetLicenseData();
             licenseData.CustomerId = "cbdemo_prepaid_card";
+            licenseData.SubscriptionId = "cbdemo_prepaid_card";
             licenseData.PlanId = "developer";
 
             var resultLicenseData = GetLicenseData();
             resultLicenseData.CustomerId = "cbdemo_prepaid_card";
+            resultLicenseData.SubscriptionId = "cbdemo_prepaid_card";
             resultLicenseData.PlanId = "developer";
             resultLicenseData.Status = SubscriptionStatus.Active;
 
@@ -151,6 +161,7 @@ namespace Warewolf.LicencingTests
             var resultData = license.Retrieve(licenseData);
 
             Assert.AreEqual(licenseData.CustomerId, resultData.CustomerId);
+            Assert.AreEqual(licenseData.SubscriptionId, resultData.SubscriptionId);
             Assert.AreEqual(SubscriptionStatus.Active, resultData.Status);
             Assert.AreEqual(licenseData.PlanId, resultData.PlanId);
         }
@@ -162,10 +173,12 @@ namespace Warewolf.LicencingTests
         {
             var licenseData = GetLicenseData();
             licenseData.CustomerId = "cbdemo_prepaid_card";
+            licenseData.SubscriptionId = "cbdemo_prepaid_card";
             licenseData.PlanId = "developer";
 
             var resultLicenseData = GetLicenseData();
             resultLicenseData.CustomerId = "cbdemo_prepaid_card";
+            resultLicenseData.SubscriptionId = "cbdemo_prepaid_card";
             resultLicenseData.PlanId = "developer";
             resultLicenseData.Status = SubscriptionStatus.InTrial;
 
@@ -180,6 +193,7 @@ namespace Warewolf.LicencingTests
             var resultData = license.Retrieve(licenseData);
 
             Assert.AreEqual(licenseData.CustomerId, resultData.CustomerId);
+            Assert.AreEqual(licenseData.SubscriptionId, resultData.SubscriptionId);
             Assert.AreEqual(SubscriptionStatus.InTrial, resultData.Status);
             Assert.AreEqual(licenseData.PlanId, resultData.PlanId);
             Assert.IsTrue(resultData.IsLicensed);
@@ -191,11 +205,13 @@ namespace Warewolf.LicencingTests
         public void Licencing_Subscription_RetrievePlan_Future_IsValid_False()
         {
             var licenseData = GetLicenseData();
-            licenseData.CustomerId = "cbdemo_prepaid_card";
+            licenseData.CustomerId = "16BjmNSXISIQjctO";
+            licenseData.SubscriptionId = "16BjmNSXISIQjctO";
             licenseData.PlanId = "developer";
 
             var resultLicenseData = GetLicenseData();
-            resultLicenseData.CustomerId = "cbdemo_prepaid_card";
+            resultLicenseData.CustomerId = "16BjmNSXISIQjctO";
+            resultLicenseData.SubscriptionId = "16BjmNSXISIQjctO";
             resultLicenseData.PlanId = "developer";
             resultLicenseData.Status = SubscriptionStatus.Future;
 

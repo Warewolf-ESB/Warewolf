@@ -9,6 +9,7 @@
 */
 
 using System;
+using System.Collections.Generic;
 using System.Management;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -16,7 +17,14 @@ using System.Security.Permissions;
 using System.Windows.Controls;
 using ChargeBee.Api;
 using ChargeBee.Models;
+using Dev2;
 using Dev2.Common;
+using Dev2.Common.Interfaces.Infrastructure;
+using Dev2.Communication;
+using Dev2.Controller;
+using Dev2.Runtime.ESB.Management.Services;
+using Dev2.Studio.Interfaces;
+using Warewolf.Licensing;
 
 // ReSharper disable CC0091
 // ReSharper disable InconsistentNaming
@@ -32,6 +40,39 @@ namespace Warewolf.Studio.CustomControls
         public ScriptManager(WebBrowserView form)
         {
             mForm = form;
+        }
+
+        static IServer GetEnvironment()
+        {
+            var serverRepository = CustomContainer.Get<IServerRepository>();
+            var server = serverRepository.ActiveServer;
+            if(server == null)
+            {
+                var shellViewModel = CustomContainer.Get<IShellViewModel>();
+                server = shellViewModel?.ActiveServer;
+            }
+
+            if(server != null && server.Permissions == null)
+            {
+                server.Permissions = new List<IWindowsGroupPermission>();
+                if(server.AuthorizationService?.SecurityService != null)
+                {
+                    server.Permissions.AddRange(server.AuthorizationService.SecurityService.Permissions);
+                }
+            }
+
+            return server;
+        }
+
+#pragma warning disable CC0091
+        public string RetriveSubscription()
+        {
+            var serializer = new Dev2JsonSerializer();
+            var controller = new CommunicationController { ServiceName = nameof(GetLicenseKey) };
+            var server = GetEnvironment();
+            var resultData = controller.ExecuteCommand<ExecuteMessage>(server.Connection, GlobalConstants.ServerWorkspaceID);
+            var data = serializer.Deserialize<ILicenseData>(resultData.Message);
+            return serializer.Serialize(data);
         }
 
 #pragma warning disable CC0091
@@ -51,13 +92,17 @@ namespace Warewolf.Studio.CustomControls
                     .PlanQuantity(GetNumberOfCores())
                     .Request();
 
+                //TODO: use ILicenseData
                 GlobalConstants.LicenseCustomerId = customer.Customer.Id;
                 GlobalConstants.LicensePlanId = subscription.Subscription.PlanId;
+                GlobalConstants.LicenseSubscriptionId = subscription.Subscription.Id;
                 if(subscription.Subscription.Status.ToString() == "InTrial" && subscription.Subscription.Status.ToString() == "Active")
                 {
                     GlobalConstants.IsLicensed = true;
                     //TODO: Call SaveLicenseKey Service to save to the secure.config
-                    //TODO: Refresh studio to enable save button
+                    // var controller = new CommunicationController { ServiceName = nameof(SaveLicenseKey) };
+                    // var server = GetEnvironment();
+                    //  var resultData =controller.ExecuteCommand<ILicenseData>(server.Connection, GlobalConstants.ServerWorkspaceID);
                 }
 
                 return "success";
@@ -82,6 +127,7 @@ namespace Warewolf.Studio.CustomControls
 
         public void CloseBrowser()
         {
+            //TODO: Refresh studio to enable save button
             mForm.Close();
         }
 

@@ -29,6 +29,7 @@ namespace Warewolf.LicencingTests
         public void WarewolfLicenseWrapper_Retrieve()
         {
             GlobalConstants.LicenseCustomerId = "16BjmNSXISIQjctO";
+            GlobalConstants.LicenseSubscriptionId = "16BjmNSXISIQjctO";
             GlobalConstants.LicensePlanId = "developer";
             GlobalConstants.ApiKey = "test_VMxitsiobdAyth62k0DiqpAUKocG6sV3";
             GlobalConstants.SiteName = "warewolf-test";
@@ -37,6 +38,7 @@ namespace Warewolf.LicencingTests
 
             var licenseData = GetLicenseData();
             licenseData.CustomerId = GlobalConstants.LicenseCustomerId;
+            licenseData.SubscriptionId = GlobalConstants.LicenseSubscriptionId;
             var warewolfLicense = new WarewolfLicenseWrapper();
 
             var result = warewolfLicense.Retrieve(licenseData);
@@ -44,6 +46,7 @@ namespace Warewolf.LicencingTests
             Assert.IsNotNull(result.CustomerLastName);
             Assert.IsNotNull(result.CustomerEmail);
             Assert.IsNotNull(result.CustomerId);
+            Assert.IsNotNull(result.SubscriptionId);
             Assert.IsNotNull(result.PlanId);
             Assert.IsNotNull(result.TrialEnd);
             Assert.IsNotNull(result.Status);

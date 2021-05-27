@@ -15,13 +15,14 @@ using Warewolf.Enums;
 
 namespace Warewolf.Licensing
 {
-   public class WarewolfLicenseWrapper : IWarewolfLicense
+    public class WarewolfLicenseWrapper : IWarewolfLicense
     {
         public ILicenseData Retrieve(ILicenseData licenseData)
         {
-            var result = Subscription.Retrieve(licenseData.CustomerId).Request();
+            var result = Subscription.Retrieve(licenseData.SubscriptionId).Request();
             return GenerateLicenseData(result);
         }
+
         //TODO: No coverage yet due to it probably being deleted later
         public ILicenseData CreatePlan(ILicenseData licenseData)
         {
@@ -57,8 +58,10 @@ namespace Warewolf.Licensing
             var licenseData = new LicenseData
             {
                 CustomerId = subscription.CustomerId,
+                SubscriptionId = subscription.Id,
                 PlanId = subscription.PlanId,
-                Status = (SubscriptionStatus) subscription.Status,
+                SubscriptionStatus = subscription.Status.ToString(),
+                Status = (SubscriptionStatus)subscription.Status,
                 CustomerFirstName = customer.FirstName,
                 CustomerLastName = customer.LastName,
                 CustomerEmail = customer.Email,

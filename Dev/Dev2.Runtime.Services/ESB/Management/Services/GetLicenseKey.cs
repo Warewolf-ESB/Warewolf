@@ -25,10 +25,23 @@ namespace Dev2.Runtime.ESB.Management.Services
         public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             var serializer = new Dev2JsonSerializer();
-            var result = new ExecuteMessage {HasError = false};
+            var result = new ExecuteMessage { HasError = false };
 
             Dev2Logger.Info("Get LicenseKey Service", GlobalConstants.WarewolfInfo);
-            var licenseData = new LicenseData {CustomerId = GlobalConstants.LicenseCustomerId, PlanId = GlobalConstants.LicensePlanId};
+            //TODO: For testing. Will be removed when save is working
+            //      Uncomment to test the Manage Plan Screen
+            //GlobalConstants.ApiKey = "test_VMxitsiobdAyth62k0DiqpAUKocG6sV3";
+            //GlobalConstants.SiteName = "warewolf-test";
+            //GlobalConstants.LicenseCustomerId = "16BjmNSXISIQjctO";
+            //GlobalConstants.LicenseSubscriptionId = "16BjmNSXISIQjctO";
+            //GlobalConstants.LicensePlanId = "developer";
+
+            var licenseData = new LicenseData
+            {
+                CustomerId = GlobalConstants.LicenseCustomerId,
+                PlanId = GlobalConstants.LicensePlanId,
+                SubscriptionId = GlobalConstants.LicenseSubscriptionId
+            };
 
             var license = new WarewolfLicense();
             var resultData = license.Retrieve(licenseData);
@@ -39,8 +52,8 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public override DynamicService CreateServiceEntry()
         {
-            var newDs = new DynamicService {Name = HandlesType()};
-            var sa = new ServiceAction {Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType()};
+            var newDs = new DynamicService { Name = HandlesType() };
+            var sa = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
             newDs.Actions.Add(sa);
             return newDs;
         }

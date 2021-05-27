@@ -13,7 +13,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Windows;
 using System.Windows.Navigation;
-using Dev2.Common;
 
 namespace Warewolf.Studio.CustomControls
 {
@@ -24,8 +23,8 @@ namespace Warewolf.Studio.CustomControls
         {
             InitializeComponent();
             var helper = new ScriptManager(this);
-            this.webBrowser.ObjectForScripting = helper;
-            this.webBrowser.AllowDrop = false;
+            webBrowser.ObjectForScripting = helper;
+            webBrowser.AllowDrop = false;
             if(licenseType == "Register")
             {
                 var curDir = Directory.GetCurrentDirectory();
@@ -36,9 +35,7 @@ namespace Warewolf.Studio.CustomControls
             if(licenseType == "Manage")
             {
                 var curDir = Directory.GetCurrentDirectory();
-                //TODO: remove line when we can
-                GlobalConstants.LicenseCustomerId = "16BjmNSXISIQjctO";
-                var url = new Uri($"file:///{curDir}/ManageRegistration.html?customerId=" + GlobalConstants.LicenseCustomerId);
+                var url = new Uri($"file:///{curDir}/ManageRegistration.html");
                 webBrowser.Source = url;
             }
         }

@@ -41,6 +41,7 @@ namespace Warewolf.Licensing
             }
 
             GlobalConstants.LicenseCustomerId = result.CustomerId;
+            GlobalConstants.LicenseSubscriptionId = result.SubscriptionId;
             GlobalConstants.LicensePlanId = result.PlanId;
             GlobalConstants.IsLicensed = result.IsLicensed;
             return result;
@@ -65,15 +66,13 @@ namespace Warewolf.Licensing
         {
             try
             {
-                if (licenseData.CustomerId == null || licenseData.CustomerId =="Unknown")
+                if (string.IsNullOrEmpty(licenseData.CustomerId))
                 {
-                    licenseData.CustomerId = "Unknown";
-                    licenseData.PlanId = "UnRegistered";
-                    licenseData.IsLicensed = false;
-                    GlobalConstants.LicensePlanId = licenseData.PlanId;
-                    GlobalConstants.IsLicensed = licenseData.IsLicensed;
-                    GlobalConstants.LicenseCustomerId = licenseData.CustomerId;
-                    return licenseData;
+                    return DefaultLicenseData(licenseData);
+                }
+                if (licenseData.CustomerId =="Unknown")
+                {
+                    return DefaultLicenseData(licenseData);
                 }
                 var result = _warewolfLicense.Retrieve(licenseData);
                 result.IsLicensed = true;
@@ -85,14 +84,28 @@ namespace Warewolf.Licensing
 
                 GlobalConstants.LicensePlanId = result.PlanId;
                 GlobalConstants.IsLicensed = result.IsLicensed;
+                GlobalConstants.LicenseSubscriptionId = result.SubscriptionId;
                 return result;
             }
             catch (Exception)
             {
-                licenseData.IsLicensed = false;
-                GlobalConstants.IsLicensed = licenseData.IsLicensed;
-                return licenseData;
+
+                return DefaultLicenseData(licenseData);
             }
+        }
+
+        private static ILicenseData DefaultLicenseData(ILicenseData licenseData)
+        {
+            licenseData.CustomerId = "Unknown";
+            licenseData.SubscriptionId = "None";
+            licenseData.PlanId = "NotActive";
+            licenseData.Status = SubscriptionStatus.NotActive;
+            licenseData.IsLicensed = false;
+            GlobalConstants.LicensePlanId = licenseData.PlanId;
+            GlobalConstants.IsLicensed = licenseData.IsLicensed;
+            GlobalConstants.LicenseCustomerId = licenseData.CustomerId;
+            GlobalConstants.LicenseSubscriptionId = licenseData.SubscriptionId;
+            return licenseData;
         }
     }
 }

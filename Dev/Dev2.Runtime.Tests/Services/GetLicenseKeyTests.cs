@@ -77,6 +77,7 @@ namespace Dev2.Tests.Runtime.Services
             var values = new Dictionary<string, StringBuilder>();
 
             GlobalConstants.LicenseCustomerId = "16BjmNSXISIQjctO";
+            GlobalConstants.LicenseSubscriptionId = "16BjmNSXISIQjctO";
             GlobalConstants.LicensePlanId = "developer";
             GlobalConstants.ApiKey = "test_VMxitsiobdAyth62k0DiqpAUKocG6sV3";
             GlobalConstants.SiteName = "warewolf-test";
@@ -92,6 +93,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.IsNotNull(data.CustomerLastName);
             Assert.IsNotNull(data.CustomerEmail);
             Assert.IsNotNull(data.CustomerId);
+            Assert.IsNotNull(data.SubscriptionId);
             Assert.IsNotNull(data.PlanId);
             Assert.IsNotNull(data.TrialEnd);
             Assert.IsNotNull(data.Status);
@@ -99,6 +101,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(GlobalConstants.LicensePlanId,data.PlanId);
             Assert.AreEqual(GlobalConstants.IsLicensed,data.IsLicensed);
             Assert.AreEqual(GlobalConstants.LicenseCustomerId,data.CustomerId);
+            Assert.AreEqual(GlobalConstants.LicenseSubscriptionId,data.SubscriptionId);
         }
 
         [TestMethod]
@@ -112,6 +115,8 @@ namespace Dev2.Tests.Runtime.Services
             var workspaceMock = new Mock<IWorkspace>();
             var values = new Dictionary<string, StringBuilder>();
             GlobalConstants.LicenseCustomerId = null;
+            GlobalConstants.LicenseSubscriptionId = "None";
+            GlobalConstants.LicensePlanId = "UnRegistered";
             GlobalConstants.SiteName = "SiteName";
             GlobalConstants.ApiKey = "ApiKey";
 
@@ -126,6 +131,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(GlobalConstants.LicensePlanId,data.PlanId);
             Assert.AreEqual(GlobalConstants.IsLicensed,data.IsLicensed);
             Assert.AreEqual(GlobalConstants.LicenseCustomerId,data.CustomerId);
+            Assert.AreEqual(GlobalConstants.LicenseSubscriptionId,data.SubscriptionId);
         }
 
     }

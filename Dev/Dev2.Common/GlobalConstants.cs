@@ -49,6 +49,7 @@ namespace Dev2.Common
         public static string SiteName { get; set; }
         public static string ApiKey { get; set; }
         public static string LicenseCustomerId { get; set; }
+        public static string LicenseSubscriptionId { get; set; }
         public static string LicensePlanId { get; set; }
         public static bool IsLicensed { get; set; }
 

@@ -16,6 +16,7 @@ namespace Warewolf.Licensing
     public interface ILicenseData
     {
         string CustomerId { get; set; }
+        string SubscriptionId { get; set; }
         string PlanId { get; set; }
         string CustomerFirstName { get; set; }
         string CustomerLastName { get; set; }
@@ -25,6 +26,7 @@ namespace Warewolf.Licensing
         int CardExpiryYear { get; set; }
         int CardExpiryMonth { get; set; }
         bool IsLicensed { get; set; }
+        string SubscriptionStatus { get; set; }
         SubscriptionStatus? Status { get; set; }
         DateTime? TrialEnd { get; set; }
         bool EndOfTerm { get; set; }
