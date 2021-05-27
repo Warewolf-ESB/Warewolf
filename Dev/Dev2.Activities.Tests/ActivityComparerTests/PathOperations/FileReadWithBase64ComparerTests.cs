@@ -13,6 +13,7 @@ using System.Linq;
 using Dev2.Common.State;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Warewolf.Security.Encryption;
 
 namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
 {
@@ -303,6 +304,25 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
             var fileRead = new FileReadWithBase64 { UniqueID = uniqueId, Password = "a" };
+            var fileRead1 = new FileReadWithBase64 { UniqueID = uniqueId, Password = "a" };
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(fileRead);
+            //---------------Execute Test ----------------------
+            var @equals = fileRead.Equals(fileRead1);
+            //---------------Test Result -----------------------
+            Assert.IsTrue(equals);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(FileReadWithBase64))]
+        public void FileReadWithBase64_GivenPasswordEncryted_ShouldReturnSamePassword()
+        {
+            //---------------Set up test pack-------------------
+            var uniqueId = Guid.NewGuid().ToString();
+            var password = "a";
+            var encrytedPass = DpapiWrapper.DecryptIfEncrypted(password);
+            var fileRead = new FileReadWithBase64 { UniqueID = uniqueId, Password = encrytedPass };
             var fileRead1 = new FileReadWithBase64 { UniqueID = uniqueId, Password = "a" };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(fileRead);

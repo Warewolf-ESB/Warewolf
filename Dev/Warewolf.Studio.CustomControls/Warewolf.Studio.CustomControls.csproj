@@ -90,6 +90,7 @@
     <Compile Include="ActivityDesignerToggleButton.cs" />
     <Compile Include="DoubleClickBehavior.cs" />
     <Compile Include="DragDropExtension.cs" />
+    <Compile Include="PasswordBoxUserControl.xaml.cs" />
     <Compile Include="ScriptHelper.cs" />
     <Compile Include="ScriptManager.cs" />
     <Compile Include="SearchTextBox.cs" />
@@ -159,6 +160,17 @@
     <PackageReference Include="Prism.Mvvm">
       <Version>1.1.1</Version>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="PasswordBoxUserControl.xaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Hide.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Show.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
   <ItemGroup>
     <Page Include="WebBrowserView.xaml" />
