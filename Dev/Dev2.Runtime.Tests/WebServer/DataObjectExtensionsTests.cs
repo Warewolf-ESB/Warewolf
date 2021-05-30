@@ -493,7 +493,7 @@ namespace Dev2.Tests.Runtime.WebServer
 
             var mockDSFDataObject = new Mock<IDSFDataObject>();
             mockDSFDataObject.Setup(o => o.TestsResourceIds)
-                .Returns(new Guid[] { _workflowOne, _workflowTwo });
+                .Returns(new[] { _workflowOne, _workflowTwo });
             mockDSFDataObject.Setup(o => o.Clone()).Returns(new DsfDataObject(string.Empty, Guid.NewGuid()));
 
             var mockResourceCatalog = new Mock<IResourceCatalog>();
@@ -565,7 +565,7 @@ namespace Dev2.Tests.Runtime.WebServer
 
             var mockDSFDataObject = new Mock<IDSFDataObject>();
             mockDSFDataObject.Setup(o => o.TestsResourceIds)
-                .Returns(new Guid[] { _workflowOne, _workflowTwo });
+                .Returns(new[] { _workflowOne, _workflowTwo });
             mockDSFDataObject.Setup(o => o.Clone()).Returns(new DsfDataObject(string.Empty, Guid.NewGuid()));
 
             var mockResourceCatalog = new Mock<IResourceCatalog>();
@@ -625,7 +625,7 @@ namespace Dev2.Tests.Runtime.WebServer
 
             var mockDSFDataObject = new Mock<IDSFDataObject>();
             mockDSFDataObject.Setup(o => o.TestsResourceIds)
-                .Returns(new Guid[] { _workflowOne, _workflowTwo });
+                .Returns(new[] { _workflowOne, _workflowTwo });
             mockDSFDataObject.Setup(o => o.Clone()).Returns(new DsfDataObject(string.Empty, Guid.NewGuid()));
 
             var mockResourceCatalog = new Mock<IResourceCatalog>();
@@ -701,7 +701,7 @@ namespace Dev2.Tests.Runtime.WebServer
 
             var mockDSFDataObject = new Mock<IDSFDataObject>();
             mockDSFDataObject.Setup(o => o.TestsResourceIds)
-                .Returns(new Guid[] { _workflowOne, _workflowTwo });
+                .Returns(new[] { _workflowOne, _workflowTwo });
             mockDSFDataObject.Setup(o => o.Clone()).Returns(new DsfDataObject(string.Empty, Guid.NewGuid()));
 
             var mockResourceCatalog = new Mock<IResourceCatalog>();
@@ -766,7 +766,7 @@ namespace Dev2.Tests.Runtime.WebServer
 
             var mockDSFDataObject = new Mock<IDSFDataObject>();
             mockDSFDataObject.Setup(o => o.TestsResourceIds)
-                .Returns(new Guid[] { _workflowOne, _workflowTwo });
+                .Returns(new[] { _workflowOne, _workflowTwo });
             mockDSFDataObject.Setup(o => o.Clone()).Returns(new DsfDataObject(string.Empty, Guid.NewGuid()));
 
             var mockResourceCatalog = new Mock<IResourceCatalog>();
@@ -830,7 +830,7 @@ namespace Dev2.Tests.Runtime.WebServer
 
             var mockDSFDataObject = new Mock<IDSFDataObject>();
             mockDSFDataObject.Setup(o => o.TestsResourceIds)
-                .Returns(new Guid[] { _workflowOne, _workflowTwo });
+                .Returns(new[] { _workflowOne, _workflowTwo });
             mockDSFDataObject.Setup(o => o.Clone()).Returns(new DsfDataObject(string.Empty, Guid.NewGuid()));
 
             var mockResourceCatalog = new Mock<IResourceCatalog>();
@@ -1543,7 +1543,7 @@ namespace Dev2.Tests.Runtime.WebServer
         {
             mockCoverageDataObject = new Mock<ICoverageDataObject>();
             mockCoverageDataObject.Setup(o => o.CoverageReportResourceIds)
-                .Returns(new Guid[] { _workflowOne, _workflowTwo });
+                .Returns(new[] { _workflowOne, _workflowTwo });
 
             var mockWarewolfWorkflow = new Mock<IWarewolfWorkflow>();
             mockWarewolfWorkflow.Setup(o => o.ResourceID).Returns(_workflowOne);
