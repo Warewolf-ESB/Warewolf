@@ -63,7 +63,7 @@ namespace Warewolf.Studio.ViewModels
                     _shell.NewOdbcSource(string.Empty);
                     break;
                 default:
-                    throw new ArgumentException("Unrecognized Source Type: " + type.ToString());
+                    throw new ArgumentException("Unrecognized Source Type: " + type);
             }
         }
 
@@ -87,7 +87,7 @@ namespace Warewolf.Studio.ViewModels
                     _shell.EditOdbcResource(selectedSource);
                     break;
                 default:
-                    throw new ArgumentException("Unrecognized Source Type: " + type.ToString());
+                    throw new ArgumentException("Unrecognized Source Type: " + type);
             }
         }
 

@@ -184,15 +184,16 @@ namespace Dev2.Runtime.WebServer.Handlers
 
                 var json = JsonConvert.DeserializeObject<UserGroupsResponse>(resp.Content);
                 var userGroups = json?.UserGroups.ToList();
-                bool hasInvalidOutputs = userGroups.Count == 0;
-                foreach (var o in (userGroups))
-                {
-                    if (string.IsNullOrEmpty(o.Name) || string.IsNullOrWhiteSpace(o.Name))
+                var hasInvalidOutputs = userGroups != null && userGroups.Count == 0;
+                if(userGroups != null)
+                    foreach(var o in (userGroups))
                     {
-                        hasInvalidOutputs = true;
-                        break;
+                        if(string.IsNullOrEmpty(o.Name) || string.IsNullOrWhiteSpace(o.Name))
+                        {
+                            hasInvalidOutputs = true;
+                            break;
+                        }
                     }
-                }
 
                 var webUrl = executionDto.WebRequestTO.WebServerUrl;
                 return hasInvalidOutputs
