@@ -48,7 +48,7 @@ namespace Dev2.Runtime.WebServer.Tests
         public void ServiceTestCoverageExecutor_RunCoverageAndReturnJSON_ShouldReturnBlank()
         {
             var mockCoverageDataObject = new Mock<ICoverageDataObject>();
-            mockCoverageDataObject.Setup(o => o.CoverageReportResourceIds).Returns(new Guid[] { Guid.NewGuid() });
+            mockCoverageDataObject.Setup(o => o.CoverageReportResourceIds).Returns(new[] { Guid.NewGuid() });
             mockCoverageDataObject.Setup(o => o.ReturnType).Returns(EmitionTypes.CoverJson);
 
             var sut = ServiceTestCoverageExecutor.GetTestCoverageReports(mockCoverageDataObject.Object, Guid.NewGuid(),
@@ -70,7 +70,7 @@ namespace Dev2.Runtime.WebServer.Tests
         public void ServiceTestCoverageExecutor_RunCoverageAndReturnHTML_ShouldReturnBlank()
         {
             var mockCoverageDataObject = new Mock<ICoverageDataObject>();
-            mockCoverageDataObject.Setup(o => o.CoverageReportResourceIds).Returns(new Guid[] { Guid.NewGuid() });
+            mockCoverageDataObject.Setup(o => o.CoverageReportResourceIds).Returns(new[] { Guid.NewGuid() });
             mockCoverageDataObject.Setup(o => o.ReturnType).Returns(EmitionTypes.Cover);
 
             var sut = ServiceTestCoverageExecutor.GetTestCoverageReports(mockCoverageDataObject.Object, Guid.NewGuid(),
@@ -92,7 +92,7 @@ namespace Dev2.Runtime.WebServer.Tests
         public void ServiceTestCoverageExecutor_EmitionTypesCoverJson_With_CoverageReportResourceIds_ShouldReturnBlank()
         {
             var mockCoverageDataObject = new Mock<ICoverageDataObject>();
-            mockCoverageDataObject.Setup(o => o.CoverageReportResourceIds).Returns(new Guid[] { Guid.NewGuid() });
+            mockCoverageDataObject.Setup(o => o.CoverageReportResourceIds).Returns(new[] { Guid.NewGuid() });
 
             var sut = ServiceTestCoverageExecutor.GetTestCoverageReports(mockCoverageDataObject.Object, Guid.NewGuid(),
                                                                          new Communication.Dev2JsonSerializer(),

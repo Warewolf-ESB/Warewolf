@@ -319,7 +319,7 @@ namespace Dev2.Data.Tests.Parsers
             var refParts = new List<IDev2DataLanguageIntellisensePart>();
             const bool addCompleteParts = false;
             var result = new List<IIntellisenseResult>();
-            var parts = new string[] { payload };
+            var parts = new[] { payload };
             const bool isRs = false;
             const string rawSearch = "";
             const string search = "";
