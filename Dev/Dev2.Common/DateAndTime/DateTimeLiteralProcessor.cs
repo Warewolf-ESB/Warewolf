@@ -163,8 +163,7 @@ namespace Dev2.Common.DateAndTime
                     //
                     // Check if forward lookup result is a known date time format part
                     //
-                    List<IDateTimeFormatPartOptionTO> tmp;
-                    if (dateTimeFormatPartOptions.TryGetValue(lookupResults[count], out tmp))
+                    if (dateTimeFormatPartOptions.TryGetValue(lookupResults[count], out _))
                     {
                         result = lookupResults[count];
                         count = lookupResults.Count;

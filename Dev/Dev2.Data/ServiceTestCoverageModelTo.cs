@@ -16,11 +16,6 @@ namespace Dev2.Data
 {
     public class ServiceTestCoverageModelTo : IServiceTestCoverageModelTo
     {
-        public ServiceTestCoverageModelTo()
-        {
-            // Used during json deserialization
-        }
-
         public ISingleTestNodesCovered[] AllTestNodesCovered { get; set; }
 
         public string OldReportName { get; set; }

@@ -220,7 +220,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 }
                 else
                 {
-                    Dev2Logger.Error("Invalid " + AppUsageStats.QueryStringMaxLength.ToString() + " value.",
+                    Dev2Logger.Error("Invalid " + AppUsageStats.QueryStringMaxLength + " value.",
                         GlobalConstants.WarewolfError);
                 }
 
