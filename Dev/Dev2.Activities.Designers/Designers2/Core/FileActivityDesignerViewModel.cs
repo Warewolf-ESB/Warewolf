@@ -12,6 +12,7 @@
 using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Windows;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Providers.Validation.Rules;
@@ -20,7 +21,7 @@ using Dev2.Validation;
 
 namespace Dev2.Activities.Designers2.Core
 {
-    public abstract class FileActivityDesignerViewModel : CredentialsActivityDesignerViewModel
+    public abstract class FileActivityDesignerViewModel : CredentialsActivityDesignerViewModel, INotifyPropertyChanged
     {
         public static readonly List<string> ValidUriSchemes = new List<string> { "file", "ftp", "ftps", "sftp" };
 
@@ -56,7 +57,7 @@ namespace Dev2.Activities.Designers2.Core
                 }
             }
         }
-
+        
         public static readonly DependencyProperty IsInputPathFocusedProperty =
             DependencyProperty.Register("IsInputPathFocused", typeof(bool), typeof(FileActivityDesignerViewModel), new PropertyMetadata(false));
 
@@ -218,5 +219,15 @@ namespace Dev2.Activities.Designers2.Core
             UpdateErrors(errors);
             return password;
         }
+        
+        protected void OnPropertyChanged() => OnPropertyChanged(null);
+
+        protected void OnPropertyChanged(string propertyName)
+        {
+            var handler = PropertyChanged;
+            handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+        
+        public event PropertyChangedEventHandler PropertyChanged;
     }
 }

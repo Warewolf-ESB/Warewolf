@@ -443,19 +443,18 @@
                                     </TextBox>
                                     <TextBlock Grid.Row="1" Grid.Column="0" Margin="{StaticResource ControlBorderTop}"
                                                Text="{x:Static languages:Core.PasswordLabel}" />
-                                    <PasswordBox x:Name="PasswordTextBox"
+                                    <widthConverter:PasswordBoxUserControl x:Name="PasswordTextBox"
                                                  Grid.Row="1"
                                                  Grid.Column="1"
                                                  Margin="{StaticResource ControlBorderTop}"
                                                  ToolTip="{x:Static languages:Tooltips.PasswordToolTip}"
-                                                 passwordBoxAssistant:PasswordBoxAssistant.BindPassword="true"
-                                                 passwordBoxAssistant:PasswordBoxAssistant.BoundPassword="{Binding SelectedServiceTest.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                                 Text="{Binding Path=SelectedServiceTest.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                         <i:Interaction.Behaviors>
                                             <core:HelpSetter
                                                 Text="{x:Static languages:HelpText.ServiceTestPasswordHelpText}"
                                                 DataContext="{Binding}" />
                                         </i:Interaction.Behaviors>
-                                    </PasswordBox>
+                                    </widthConverter:PasswordBoxUserControl>
                                 </Grid>
                             </Grid>
 

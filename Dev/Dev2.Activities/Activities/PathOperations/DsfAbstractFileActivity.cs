@@ -152,9 +152,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-		protected string DecryptedPassword => DataListUtil.NotEncrypted(Password) ? Password : DpapiWrapper.Decrypt(Password);
-		
-		protected abstract IList<OutputTO> TryExecuteConcreteAction(IDSFDataObject context, out ErrorResultTO error, int update);
+        protected string DecryptedPassword => DataListUtil.NotEncrypted(Password) ? Password : DpapiWrapper.Decrypt(Password);
+
+        protected abstract IList<OutputTO> TryExecuteConcreteAction(IDSFDataObject context, out ErrorResultTO error, int update);
 
 		#region Properties
 
@@ -165,7 +165,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 		[FindMissing]
 		public string Password
 		{
-			get { return _password; }
+			get => _password;
 			set
 			{
 				if (DataListUtil.ShouldEncrypt(value))
