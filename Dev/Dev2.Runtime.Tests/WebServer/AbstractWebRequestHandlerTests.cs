@@ -1,4 +1,4 @@
-﻿#pragma warning disable
+#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
@@ -1932,8 +1932,8 @@ namespace Dev2.Tests.Runtime.WebServer
             string baseStr = "www.examlple.com?home=<Datalist><objResponse><BusinessEvent><Customer><Mandate json:Array=\"true\" xmlns:json=\"http://james.newtonking.com/projects/json\"><MandateId></MandateId></Mandate></Customer></BusinessEvent></objResponse></Datalist>";
             string baseStrEscaped = "www.examlple.com?home=<Datalist><objResponse><BusinessEvent><Customer><Mandate json:Array=\\\"true\\\" xmlns:json=\\\"http://james.newtonking.com/projects/json\\\"><MandateId></MandateId></Mandate></Customer></BusinessEvent></objResponse></Datalist>";
             //------------Execute Test---------------------------
-            var value = AbstractWebRequestHandler.SubmittedData.CleanupXml(baseStr);
-            var escapedValue = AbstractWebRequestHandler.SubmittedData.CleanupXml(baseStrEscaped);
+            var value = SubmittedData.CleanupXml(baseStr);
+            var escapedValue = SubmittedData.CleanupXml(baseStrEscaped);
             //------------Assert Results-------------------------\
             var expectedValue = "www.examlple.com?home=~XML~PERhdGFsaXN0PjxvYmpSZXNwb25zZT48QnVzaW5lc3NFdmVudD48Q3VzdG9tZXI+PE1hbmRhdGUganNvbjpBcnJheT0idHJ1ZSIgeG1sbnM6anNvbj0iaHR0cDovL2phbWVzLm5ld3RvbmtpbmcuY29tL3Byb2plY3RzL2pzb24iPjxNYW5kYXRlSWQ+PC9NYW5kYXRlSWQ+PC9NYW5kYXRlPjwvQ3VzdG9tZXI+PC9CdXNpbmVzc0V2ZW50Pjwvb2JqUmVzcG9uc2U+PC9EYXRhbGlzdD4=";
             Assert.AreEqual(value, escapedValue);
