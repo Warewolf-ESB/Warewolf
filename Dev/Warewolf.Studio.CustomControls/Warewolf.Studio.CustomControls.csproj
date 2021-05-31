@@ -92,7 +92,6 @@
     <Compile Include="DoubleClickBehavior.cs" />
     <Compile Include="DragDropExtension.cs" />
     <Compile Include="PasswordBoxUserControl.xaml.cs" />
-    <Compile Include="ScriptHelper.cs" />
     <Compile Include="ScriptManager.cs" />
     <Compile Include="SearchTextBox.cs" />
     <Compile Include="VariableTextBox.cs" />
