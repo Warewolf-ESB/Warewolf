@@ -235,25 +235,27 @@ namespace WarewolfParsingTest
 
             Assert.IsNotNull(res);
 
-            var allTestData = new string[][][] {
-                new string[][] {
-                    new string [] {"a", "1" },
-                    new string [] {"b", "a" },
-                },
-                new string[][]
+            var allTestData = new[]
+            {
+                new[]
                 {
-                    new string [] {"a", "2" },
-                    new string [] {"b", "b" },
+                    new[] {"a", "1" },
+                    new[] {"b", "a" },
                 },
-                new string[][]
+                new[]
                 {
-                    new string [] {"a", "3" },
-                    new string [] {"b", "c" },
+                    new[] {"a", "2" },
+                    new[] {"b", "b" },
                 },
-                new string[][]
+                new[]
                 {
-                    new string [] {"a", "2" },
-                    new string [] {"b", "c" },
+                    new[] {"a", "3" },
+                    new[] {"b", "c" },
+                },
+                new[]
+                {
+                    new[] {"a", "2" },
+                    new[] {"b", "c" },
                 },
 
             };

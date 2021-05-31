@@ -530,7 +530,7 @@ namespace Warewolf.Data.Tests.Options
 
             while (iter.HasMoreData())
             {
-                var item = new string[] { iter.FetchNextValue(c1), iter.FetchNextValue(c2), iter.FetchNextValue(c3) };
+                var item = new[] { iter.FetchNextValue(c1), iter.FetchNextValue(c2), iter.FetchNextValue(c3) };
                 yield return item;
             }
             yield break;

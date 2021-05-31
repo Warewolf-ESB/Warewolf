@@ -91,7 +91,6 @@ namespace Dev2.Runtime.ESB.Execution
             var result = Guid.NewGuid();
             DataObject.StartTime = DateTime.Now;
             var wfappUtils = new WfApplicationUtils(_resourceCatalog);
-            ErrorResultTO invokeErrors;
             var executionId = DataObject.ExecutionID.ToString();
 
             try
@@ -100,7 +99,7 @@ namespace Dev2.Runtime.ESB.Execution
                 DataObject.ExecutionToken = exeToken;
                 if (DataObject.IsDebugMode())
                 {
-                    wfappUtils.DispatchDebugState(DataObject, StateType.Start, out invokeErrors, true, false, false);
+                    wfappUtils.DispatchDebugState(DataObject, StateType.Start, out _, true, false, false);
                 }
 
                 var resourceId = DataObject.ResourceID;
@@ -111,7 +110,7 @@ namespace Dev2.Runtime.ESB.Execution
 
                 if (DataObject.IsDebugMode())
                 {
-                    wfappUtils.DispatchDebugState(DataObject, StateType.End, out invokeErrors);
+                    wfappUtils.DispatchDebugState(DataObject, StateType.End, out _);
                 }
 
                 result = DataObject.DataListID;
@@ -124,14 +123,14 @@ namespace Dev2.Runtime.ESB.Execution
                 var start = msg.IndexOf("Flowchart ", StringComparison.Ordinal);
                 var errorMessage = start > 0 ? GlobalConstants.NoStartNodeError : iwe.Message;
                 DataObject.Environment.AddError(errorMessage);
-                wfappUtils.DispatchDebugState(DataObject, StateType.End, out invokeErrors);
+                wfappUtils.DispatchDebugState(DataObject, StateType.End, out _);
             }
             catch (Exception ex)
             {
                 Dev2Logger.Error(ex, executionId);
                 DataObject.Environment.AddError(ex.Message);
                 DataObject.ExecutionException = ex;
-                wfappUtils.DispatchDebugState(DataObject, StateType.End, out invokeErrors);
+                wfappUtils.DispatchDebugState(DataObject, StateType.End, out _);
             }
 
             return result;

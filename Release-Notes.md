@@ -1,3 +1,19 @@
+28 May 2021
+================
+Enhancements
+----------------
+General
+- Added a 'Show Password' functionality to password fields
+
+Bug Fixes
+-----------
+Manual Resumption
+- Override input variables accepts same variable name as suspended workflow input variables.
+
+Debug
+- Resolved 'internal server error' bug when debug in browser option is selected.
+
+
 18 May 2021
 ================
 Bug Fixes

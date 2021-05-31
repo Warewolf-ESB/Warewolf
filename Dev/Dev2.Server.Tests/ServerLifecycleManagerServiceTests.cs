@@ -164,8 +164,8 @@ namespace Dev2.Server.Tests
 
             mockResourceCatalogFactory.Setup(o => o.New()).Returns(mockResourceCatalog.Object);
             mockServerLifeCycleWorker.Setup(o => o.Execute()).Verifiable();
-            mockAssemblyLoader.Setup(o => o.AssemblyNames(It.IsAny<Assembly>())).Returns(new AssemblyName[] {new AssemblyName {Name = "testAssemblyName"}});
-            mockWebServerConfiguration.Setup(o => o.EndPoints).Returns(new Dev2Endpoint[] {new Dev2Endpoint(new IPEndPoint(0x40E9BB63, 8080), "Url", "path")});
+            mockAssemblyLoader.Setup(o => o.AssemblyNames(It.IsAny<Assembly>())).Returns(new[] {new AssemblyName {Name = "testAssemblyName"}});
+            mockWebServerConfiguration.Setup(o => o.EndPoints).Returns(new[] {new Dev2Endpoint(new IPEndPoint(0x40E9BB63, 8080), "Url", "path")});
 
             mockWebSocketWrapper.Setup(o => o.IsOpen()).Returns(true);
             mockWebSocketPool.Setup(o => o.Acquire(It.IsAny<string>())).Returns(mockWebSocketWrapper.Object);
@@ -248,8 +248,8 @@ namespace Dev2.Server.Tests
             Config.Persistence.Enable = true;
             mockResourceCatalogFactory.Setup(o => o.New()).Returns(mockResourceCatalog.Object);
             mockServerLifeCycleWorker.Setup(o => o.Execute()).Verifiable();
-            mockAssemblyLoader.Setup(o => o.AssemblyNames(It.IsAny<Assembly>())).Returns(new AssemblyName[] {new AssemblyName {Name = "testAssemblyName"}});
-            mockWebServerConfiguration.Setup(o => o.EndPoints).Returns(new Dev2Endpoint[] {new Dev2Endpoint(new IPEndPoint(0x40E9BB63, 8080), "Url", "path")});
+            mockAssemblyLoader.Setup(o => o.AssemblyNames(It.IsAny<Assembly>())).Returns(new[] {new AssemblyName {Name = "testAssemblyName"}});
+            mockWebServerConfiguration.Setup(o => o.EndPoints).Returns(new[] {new Dev2Endpoint(new IPEndPoint(0x40E9BB63, 8080), "Url", "path")});
 
             mockWebSocketWrapper.Setup(o => o.IsOpen()).Returns(false);
             mockWebSocketPool.Setup(o => o.Acquire(It.IsAny<string>())).Returns(mockWebSocketWrapper.Object);
@@ -324,8 +324,8 @@ namespace Dev2.Server.Tests
 
             mockResourceCatalogFactory.Setup(o => o.New()).Returns(mockResourceCatalog.Object);
             mockServerLifeCycleWorker.Setup(o => o.Execute()).Verifiable();
-            mockAssemblyLoader.Setup(o => o.AssemblyNames(It.IsAny<Assembly>())).Returns(new AssemblyName[] {new AssemblyName {Name = "testAssemblyName"}});
-            mockWebServerConfiguration.Setup(o => o.EndPoints).Returns(new Dev2Endpoint[] {new Dev2Endpoint(new IPEndPoint(0x40E9BB63, 8080), "Url", "path")});
+            mockAssemblyLoader.Setup(o => o.AssemblyNames(It.IsAny<Assembly>())).Returns(new[] {new AssemblyName {Name = "testAssemblyName"}});
+            mockWebServerConfiguration.Setup(o => o.EndPoints).Returns(new[] {new Dev2Endpoint(new IPEndPoint(0x40E9BB63, 8080), "Url", "path")});
 
             mockWebSocketWrapper.Setup(o => o.IsOpen()).Returns(true);
             mockWebSocketPool.Setup(o => o.Acquire(It.IsAny<string>())).Returns(mockWebSocketWrapper.Object);
@@ -400,8 +400,8 @@ namespace Dev2.Server.Tests
 
             mockResourceCatalogFactory.Setup(o => o.New()).Returns(mockResourceCatalog.Object);
             mockServerLifeCycleWorker.Setup(o => o.Execute()).Verifiable();
-            mockAssemblyLoader.Setup(o => o.AssemblyNames(It.IsAny<Assembly>())).Returns(new AssemblyName[] {new AssemblyName {Name = "testAssemblyName"}});
-            mockWebServerConfiguration.Setup(o => o.EndPoints).Returns(new Dev2Endpoint[] {new Dev2Endpoint(new IPEndPoint(0x40E9BB63, 8080), "Url", "path")});
+            mockAssemblyLoader.Setup(o => o.AssemblyNames(It.IsAny<Assembly>())).Returns(new[] {new AssemblyName {Name = "testAssemblyName"}});
+            mockWebServerConfiguration.Setup(o => o.EndPoints).Returns(new[] {new Dev2Endpoint(new IPEndPoint(0x40E9BB63, 8080), "Url", "path")});
 
             //------------------------Act----------------------------
             var config = new StartupConfiguration
@@ -459,8 +459,8 @@ namespace Dev2.Server.Tests
 
             mockResourceCatalogFactory.Setup(o => o.New()).Returns(mockResourceCatalog.Object);
             mockServerLifeCycleWorker.Setup(o => o.Execute()).Verifiable();
-            mockAssemblyLoader.Setup(o => o.AssemblyNames(It.IsAny<Assembly>())).Returns(new AssemblyName[] {new AssemblyName {Name = "testAssemblyName"}});
-            mockWebServerConfiguration.Setup(o => o.EndPoints).Returns(new Dev2Endpoint[] {new Dev2Endpoint(new IPEndPoint(0x40E9BB63, 8080), "Url", "path")});
+            mockAssemblyLoader.Setup(o => o.AssemblyNames(It.IsAny<Assembly>())).Returns(new[] {new AssemblyName {Name = "testAssemblyName"}});
+            mockWebServerConfiguration.Setup(o => o.EndPoints).Returns(new[] {new Dev2Endpoint(new IPEndPoint(0x40E9BB63, 8080), "Url", "path")});
 
             //------------------------Act----------------------------
             var config = new StartupConfiguration
@@ -521,8 +521,8 @@ namespace Dev2.Server.Tests
 
             mockResourceCatalogFactory.Setup(o => o.New()).Returns(mockResourceCatalog.Object);
             mockServerLifeCycleWorker.Setup(o => o.Execute()).Verifiable();
-            mockAssemblyLoader.Setup(o => o.AssemblyNames(It.IsAny<Assembly>())).Returns(new AssemblyName[] { new AssemblyName { Name = "testAssemblyName" } });
-            mockWebServerConfiguration.Setup(o => o.EndPoints).Returns(new Dev2Endpoint[] { new Dev2Endpoint(new IPEndPoint(0x40E9BB63, 8080), "Url", "path") });
+            mockAssemblyLoader.Setup(o => o.AssemblyNames(It.IsAny<Assembly>())).Returns(new[] { new AssemblyName { Name = "testAssemblyName" } });
+            mockWebServerConfiguration.Setup(o => o.EndPoints).Returns(new[] { new Dev2Endpoint(new IPEndPoint(0x40E9BB63, 8080), "Url", "path") });
 
             mockWebSocketWrapper.Setup(o => o.IsOpen()).Returns(true);
             mockWebSocketPool.Setup(o => o.Acquire(It.IsAny<string>())).Returns(mockWebSocketWrapper.Object);
@@ -611,8 +611,8 @@ namespace Dev2.Server.Tests
 
             mockResourceCatalogFactory.Setup(o => o.New()).Returns(mockResourceCatalog.Object);
             mockServerLifeCycleWorker.Setup(o => o.Execute()).Verifiable();
-            mockAssemblyLoader.Setup(o => o.AssemblyNames(It.IsAny<Assembly>())).Returns(new AssemblyName[] { new AssemblyName { Name = "testAssemblyName" } });
-            mockWebServerConfiguration.Setup(o => o.EndPoints).Returns(new Dev2Endpoint[] { new Dev2Endpoint(new IPEndPoint(0x40E9BB63, 8080), "Url", "path") });
+            mockAssemblyLoader.Setup(o => o.AssemblyNames(It.IsAny<Assembly>())).Returns(new[] { new AssemblyName { Name = "testAssemblyName" } });
+            mockWebServerConfiguration.Setup(o => o.EndPoints).Returns(new[] { new Dev2Endpoint(new IPEndPoint(0x40E9BB63, 8080), "Url", "path") });
 
             mockWebSocketWrapper.Setup(o => o.IsOpen()).Returns(true);
             mockWebSocketPool.Setup(o => o.Acquire(It.IsAny<string>())).Returns(mockWebSocketWrapper.Object);
@@ -697,8 +697,8 @@ namespace Dev2.Server.Tests
 
             mockResourceCatalogFactory.Setup(o => o.New()).Returns(mockResourceCatalog.Object);
             mockServerLifeCycleWorker.Setup(o => o.Execute()).Verifiable();
-            mockAssemblyLoader.Setup(o => o.AssemblyNames(It.IsAny<Assembly>())).Returns(new AssemblyName[] { new AssemblyName { Name = "testAssemblyName" } });
-            mockWebServerConfiguration.Setup(o => o.EndPoints).Returns(new Dev2Endpoint[] { new Dev2Endpoint(new IPEndPoint(0x40E9BB63, 8080), "Url", "path") });
+            mockAssemblyLoader.Setup(o => o.AssemblyNames(It.IsAny<Assembly>())).Returns(new[] { new AssemblyName { Name = "testAssemblyName" } });
+            mockWebServerConfiguration.Setup(o => o.EndPoints).Returns(new[] { new Dev2Endpoint(new IPEndPoint(0x40E9BB63, 8080), "Url", "path") });
 
             mockWebSocketWrapper.Setup(o => o.IsOpen()).Returns(true);
             mockWebSocketPool.Setup(o => o.Acquire(It.IsAny<string>())).Returns(mockWebSocketWrapper.Object);
@@ -784,8 +784,8 @@ namespace Dev2.Server.Tests
 
             mockResourceCatalogFactory.Setup(o => o.New()).Returns(mockResourceCatalog.Object);
             mockServerLifeCycleWorker.Setup(o => o.Execute()).Verifiable();
-            mockAssemblyLoader.Setup(o => o.AssemblyNames(It.IsAny<Assembly>())).Returns(new AssemblyName[] { new AssemblyName { Name = "testAssemblyName" } });
-            mockWebServerConfiguration.Setup(o => o.EndPoints).Returns(new Dev2Endpoint[] { new Dev2Endpoint(new IPEndPoint(0x40E9BB63, 8080), "Url", "path") });
+            mockAssemblyLoader.Setup(o => o.AssemblyNames(It.IsAny<Assembly>())).Returns(new[] { new AssemblyName { Name = "testAssemblyName" } });
+            mockWebServerConfiguration.Setup(o => o.EndPoints).Returns(new[] { new Dev2Endpoint(new IPEndPoint(0x40E9BB63, 8080), "Url", "path") });
 
             mockWebSocketWrapper.Setup(o => o.IsOpen()).Returns(true);
             mockWebSocketPool.Setup(o => o.Acquire(It.IsAny<string>())).Returns(mockWebSocketWrapper.Object);
@@ -876,8 +876,8 @@ namespace Dev2.Server.Tests
 
             mockResourceCatalogFactory.Setup(o => o.New()).Returns(mockResourceCatalog.Object);
             mockServerLifeCycleWorker.Setup(o => o.Execute()).Verifiable();
-            mockAssemblyLoader.Setup(o => o.AssemblyNames(It.IsAny<Assembly>())).Returns(new AssemblyName[] { new AssemblyName { Name = "testAssemblyName" } });
-            mockWebServerConfiguration.Setup(o => o.EndPoints).Returns(new Dev2Endpoint[] { new Dev2Endpoint(new IPEndPoint(0x40E9BB63, 8080), "Url", "path") });
+            mockAssemblyLoader.Setup(o => o.AssemblyNames(It.IsAny<Assembly>())).Returns(new[] { new AssemblyName { Name = "testAssemblyName" } });
+            mockWebServerConfiguration.Setup(o => o.EndPoints).Returns(new[] { new Dev2Endpoint(new IPEndPoint(0x40E9BB63, 8080), "Url", "path") });
 
             mockWebSocketWrapper.Setup(o => o.IsOpen()).Returns(true);
             mockWebSocketPool.Setup(o => o.Acquire(It.IsAny<string>())).Returns(mockWebSocketWrapper.Object);
