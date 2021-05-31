@@ -209,6 +209,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                 catch (Exception e)
                 {
                     Dev2Logger.Error(e.Message, e, GlobalConstants.WarewolfError);
+                    throw new Exception("Failure Duplicating Folder: " +e.Message);
                 }
             }
 
@@ -224,10 +225,11 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                     }
 
                 }
-                catch (Exception e)
+                catch (TransactionAbortedException e)
                 {
-                    Transaction.Current.Rollback();
-                    throw new Exception("Failure Fixing references", e);
+                    //TODO: remove this line as Transation Rollback is not possible here, current returns null
+                    //Transaction.Current.Rollback();  
+                    throw new TransactionAbortedException("Failure Fixing references", e);
                 }
             }
             return items;
