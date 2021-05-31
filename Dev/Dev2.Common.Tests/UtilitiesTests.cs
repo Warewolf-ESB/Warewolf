@@ -70,7 +70,7 @@ namespace Dev2.Common.Tests
         [TestCategory(nameof(Utilities))]
         public void Utilities_Flatten_GivenAnArray()
         {
-            var list = new Example[] {
+            var list = new[] {
                 new Example("e1") { Children = new List<Example> { new Example("e1e1"), new Example("e1e2") } },
                 new Example("e2") { Children = new List<Example> { new Example("e2e1"), new Example("e2e2") } },
             };

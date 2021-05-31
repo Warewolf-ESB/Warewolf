@@ -29,10 +29,6 @@ namespace Warewolf.Logger
 
     public class LogServerFactory : ILogServerFactory
     {
-        public LogServerFactory()
-        {
-        }
-
         public ILogServer New(IWebSocketServerFactory webSocketServerFactory, IWriter writer, ILoggerContext loggerContext)
         {
             return new LogServer(webSocketServerFactory, writer, loggerContext);

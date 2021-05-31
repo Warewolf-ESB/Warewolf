@@ -14,10 +14,6 @@ namespace Warewolf.Options
 {
     public class RabbitMqOptions : IStreamConfig
     {
-        public RabbitMqOptions()
-        {
-        }
-
         [HelpText(nameof(Studio.Resources.Languages.HelpText.OptionRabbitMqDurableHelpText))]
         [Tooltip(nameof(Studio.Resources.Languages.Tooltips.OptionRabbitMqDurableToolTip))]
         public bool Durable { get; set; }

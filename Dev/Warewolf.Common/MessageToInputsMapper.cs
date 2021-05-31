@@ -23,10 +23,6 @@ namespace Warewolf
 {
     public class MessageToInputsMapper
     {
-        public MessageToInputsMapper()
-        {
-        }
-
         public string Map(string message, List<(string variableName, string messageValue)> inputs, bool isJson, bool isXML,bool mapWholeMessage)
         {
             var mappedDataObject = new JObject();
