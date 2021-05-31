@@ -75,7 +75,7 @@ namespace Dev2.Tests.Runtime.Services
             GlobalConstants.ApiKey = "test_VMxitsiobdAyth62k0DiqpAUKocG6sV3";
             GlobalConstants.SiteName = "warewolf-test";
             GlobalConstants.LicenseSubscriptionId = "None";
-            GlobalConstants.LicensePlanId = "UnRegistered";
+            GlobalConstants.LicensePlanId = "NotActive";
             //------------Execute Test---------------------------
             var jsonResult = saveLicenseKey.Execute(null, null);
             var result = serializer.Deserialize<ExecuteMessage>(jsonResult);
@@ -83,7 +83,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.IsTrue(result.HasError);
             var res = serializer.Deserialize<ILicenseData>(result.Message);
             Assert.AreEqual("Unknown",res.CustomerId);
-            Assert.IsNotNull("UnRegistered",res.PlanId);
+            Assert.IsNotNull("NotActive",res.PlanId);
             Assert.IsFalse(res.IsLicensed);
             Assert.AreEqual(GlobalConstants.LicensePlanId,res.PlanId);
             Assert.AreEqual(GlobalConstants.IsLicensed,res.IsLicensed);
