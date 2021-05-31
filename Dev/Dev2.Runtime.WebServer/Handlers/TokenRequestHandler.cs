@@ -53,7 +53,7 @@ namespace Dev2.Runtime.WebServer.Handlers
         }
 
         private TokenRequestHandler(IResourceCatalog resourceCatalog, IWorkspaceRepository workspaceRepository, IAuthorizationService authorizationService, IDataObjectFactory dataObjectFactory, IEsbChannelFactory esbChannelFactory, ISecuritySettings securitySettings, IJwtManager jwtManager)
-            : base(resourceCatalog, TestCatalog.Instance, TestCoverageCatalog.Instance, workspaceRepository, authorizationService, dataObjectFactory, esbChannelFactory, securitySettings, jwtManager)
+            : base(resourceCatalog, TestCatalog.Instance, TestCoverageCatalog.Instance, null, workspaceRepository, authorizationService, dataObjectFactory, esbChannelFactory, securitySettings, jwtManager)
         {
         }
 
