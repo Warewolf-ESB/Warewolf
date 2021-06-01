@@ -59,7 +59,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public IDSFDataObject DataObject
         {
             get => null;
-            set => value = null;
+            set => _;
         }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
