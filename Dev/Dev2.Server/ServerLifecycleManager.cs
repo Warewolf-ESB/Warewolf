@@ -494,18 +494,19 @@ namespace Dev2
         {
             _writer.Write("Loading security provider...  ");
             var instance = HostSecurityProvider.Instance;
+
             //TODO: have not done coverage yet as it might change.
+            LicenseSettings.SiteName = instance.ConfigSitename;
+            LicenseSettings.ApiKey = instance.ConfigKey;
+            LicenseSettings.CustomerId = instance.CustomerId;
+            LicenseSettings.SubscriptionId = instance.SubscriptionId;
+            LicenseSettings.PlanId = instance.PlanId;
 
-            LicenseSettings.CustomerId = HostSecurityProvider.Instance.CustomerId;
-            LicenseSettings.SubscriptionId = HostSecurityProvider.Instance.SubscriptionId;
-            LicenseSettings.PlanId = HostSecurityProvider.Instance.PlanId;
-
+            //TODO: Remove when save is complete
             LicenseSettings.CustomerId = "16BjmNSXISIQjctO";
             LicenseSettings.SubscriptionId = "16BjmNSXISIQjctO";
-            LicenseSettings.PlanId  = "developer";
+            LicenseSettings.PlanId = "developer";
 
-            LicenseSettings.SiteName = HostSecurityProvider.Instance.ConfigSitename;
-            LicenseSettings.ApiKey = HostSecurityProvider.Instance.ConfigKey;
             if(instance != null)
             {
                 _writer.WriteLine("done.");

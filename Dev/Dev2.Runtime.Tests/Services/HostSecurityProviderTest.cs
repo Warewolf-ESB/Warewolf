@@ -163,6 +163,7 @@ namespace Dev2.Tests.Runtime.Services
                 HostSecureConfig.CreateKey(HostSecureConfigTests.DefaultSystemKeyPublic),
                 HostSecureConfig.DecryptKey(HostSecureConfigTests.DefaultCustomerId),
                 HostSecureConfig.DecryptKey(HostSecureConfigTests.DefaultSubscriptionId),
+                HostSecureConfig.DecryptKey(HostSecureConfigTests.DefaultPlanId),
                 HostSecureConfig.DecryptKey(HostSecureConfigTests.DefaultConfigSitename),
                 HostSecureConfig.DecryptKey(HostSecureConfigTests.DefaultConfigKey));
 
@@ -206,7 +207,7 @@ namespace Dev2.Tests.Runtime.Services
         [TestCategory(nameof(HostSecurityProvider))]
         public void HostSecurityProvider_VerifyXmlWithInvalidKeys_Expected_ReturnsFalse()
         {
-            var config = CreateConfig(new RSACryptoServiceProvider(), new RSACryptoServiceProvider(), "","", "", "");
+            var config = CreateConfig(new RSACryptoServiceProvider(), new RSACryptoServiceProvider(), "","","", "", "");
             var provider = new HostSecurityProviderImpl(config.Object);
 
             var verified = provider.VerifyXml(new StringBuilder(TestXmlServerSigned.ToString()));
@@ -259,6 +260,7 @@ namespace Dev2.Tests.Runtime.Services
                     HostSecureConfig.CreateKey(HostSecureConfigTests.DefaultSystemKeyPublic),
                     HostSecureConfig.DecryptKey(HostSecureConfigTests.DefaultCustomerId),
                     HostSecureConfig.DecryptKey(HostSecureConfigTests.DefaultSubscriptionId),
+                    HostSecureConfig.DecryptKey(HostSecureConfigTests.DefaultPlanId),
                     HostSecureConfig.DecryptKey(HostSecureConfigTests.DefaultConfigSitename),
                     HostSecureConfig.DecryptKey(HostSecureConfigTests.DefaultConfigKey));
             }
@@ -268,17 +270,18 @@ namespace Dev2.Tests.Runtime.Services
                 HostSecureConfig.CreateKey(HostSecureConfigTests.DefaultSystemKeyPublic),
                 HostSecureConfig.DecryptKey(HostSecureConfigTests.DefaultCustomerId),
                 HostSecureConfig.DecryptKey(HostSecureConfigTests.DefaultSubscriptionId),
+                HostSecureConfig.DecryptKey(HostSecureConfigTests.DefaultPlanId),
                 HostSecureConfig.DecryptKey(HostSecureConfigTests.DefaultConfigSitename),
                 HostSecureConfig.DecryptKey(HostSecureConfigTests.DefaultConfigKey));
         }
 
-        static Mock<ISecureConfig> CreateConfig(RSACryptoServiceProvider serverKey, RSACryptoServiceProvider systemKey, string customerId, string subscriptionId,string configSitename, string configKey)
+        static Mock<ISecureConfig> CreateConfig(RSACryptoServiceProvider serverKey, RSACryptoServiceProvider systemKey, string customerId, string subscriptionId,string planId, string configSitename, string configKey)
         {
-            return CreateConfig(HostSecureConfigTests.DefaultServerID, serverKey, systemKey, customerId,subscriptionId, configSitename, configKey);
+            return CreateConfig(HostSecureConfigTests.DefaultServerID, serverKey, systemKey, customerId,subscriptionId,planId, configSitename, configKey);
         }
 
         static Mock<ISecureConfig> CreateConfig(Guid serverID, RSACryptoServiceProvider serverKey,
-            RSACryptoServiceProvider systemKey, string customerId,string subscriptionId, string configSitename, string configKey)
+            RSACryptoServiceProvider systemKey, string customerId,string subscriptionId,string planId, string configSitename, string configKey)
         {
             var config = new Mock<ISecureConfig>();
             config.Setup(c => c.ServerID).Returns(serverID);
@@ -287,6 +290,7 @@ namespace Dev2.Tests.Runtime.Services
 
             config.Setup(c => c.CustomerId).Returns(customerId);
             config.Setup(c => c.SubscriptionId).Returns(subscriptionId);
+            config.Setup(c => c.PlanId).Returns(planId);
             config.Setup(c => c.ConfigSitename).Returns(configSitename);
             config.Setup(c => c.ConfigKey).Returns(configKey);
             return config;

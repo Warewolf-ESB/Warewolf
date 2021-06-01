@@ -1,8 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <secureSettings>
+  <!--Licensing Data -->
+    <add key="ConfigKey" value="wCYcjqzbAiHIneFFib+LCrn73SSkOlRzm4QxP+mkeHsH7e3surKN5liDsrv39JFR" />
+    <add key="CustomerId" value="" />
+    <add key="PlanId" value="" />
+    <add key="SubscriptionId" value="" />
+    <add key="ConfigSitename" value="L8NilnImZ18r8VCMD88AdQ==" />
   <!-- !!! DO NOT CHANGE THE SERVER ID DURING DEV SINCE WE SHARE RESOURCES AND SO NEED THE SAME SERVER ID !!! -->
-
-
   <!-- For new installation ServerID value needs to be empty -->
   <add key="ServerID" value="{51A58300-7E9D-4927-A57B-E5D700B11B55}" />
   <!-- For new installation ServerKey value needs to be empty -->

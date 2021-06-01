@@ -19,15 +19,15 @@ namespace Dev2.Tests.Runtime.Services
     [TestClass]
     public class HostSecureConfigTests
     {
-        public static Guid DefaultServerID = Guid.Parse("{D53BBCC5-4794-4DFA-B096-3AA815692E66}");
-        public const string DefaultServerKey = "BwIAAACkAABSU0EyAAQAAAEAAQBBgKRIdzPGpaPt3hJ7Kxm8iVrKpfu4wfsJJf/3gBG5qhiS0rs5j5HqkLazdO5az9oPWnSTmNnww03WvCJhz8nhaJjXHoEK6xtcWL++IY+R3E27xaHaPQJSDvGg3j1Jvm0QKUGmzZX75tGDC4s17kQSCpsVW3vEuZ5gBdMLMi3UqaVW9EO7qOcEvVO9Cym7lxViqUhvq6c0nLzp6C6zrtZGjLtFqo9KDj7PMkq10Xc0JkzE1ptRz/YytMRacIDn8tptbHbxM8AtObeeiZ7V6Tznmi82jcAm2Jugr0D97Da2MXZuqEKLL5uPagL4RUHite3kT/puSNbTtqZLdqMtV5HGqVmn2a64JU3b8TIW8rKd5rKucG4KwoXRNQihJzX1it8vcqt6tjDnJZdJkuyDjdd6BKCYHWeX9mqDwKJ3EY+TRZmsl9RILyV/XviyrpTYBdDDmdQ9YLSLt0LtdpPpcRzciwMsBEfMH5NPFOtqSF/151Sl/DBdEJxOINXDl1qdO5MtgL7rXkfiGwu66n4hokRdVlj6TTcXTCn6YrUbzOts6IZJnQ9cwK693u9yMJ3Di0hp49L6LWnoWmW334ys+iOfob0i4eM+M3XNw7wGN/jd6t2KYemVZEnTcl5Lon5BpdoFlxa7Y1n+kXbaeSAwTJIe9HM6uoXIH61VCIk0ac69oZcG2/FhSeBO/DcGIQQqdFvuFqJY0g2qbt7+hmEZDZBehr3KpoRTgB5xPW/ThVhuaoZxlpEb4hFmKoj900knnQk=";
-        public const string DefaultSystemKeyPublic = "BgIAAACkAABSU0ExAAQAAAEAAQBzb9y6JXoJj70+TVeUgRc7hPjb6tTJR7B/ZHZKFQsTLkhQLHo+93x/f30Lj/FToE2xXqnuZPk9IV94L4ekt+5jgEFcf1ReuJT/G1dVb1POiEC0upGdagwW10T3PcBK+UzfSXz5kD0SiGhXamPnT/zuHiTtVjv87W+5WuvU1vsrsQ==";
-        public const string DefaultSystemKeyPrivate = "BwIAAACkAABSU0EyAAQAAAEAAQBzb9y6JXoJj70+TVeUgRc7hPjb6tTJR7B/ZHZKFQsTLkhQLHo+93x/f30Lj/FToE2xXqnuZPk9IV94L4ekt+5jgEFcf1ReuJT/G1dVb1POiEC0upGdagwW10T3PcBK+UzfSXz5kD0SiGhXamPnT/zuHiTtVjv87W+5WuvU1vsrsRV3gXwwGB0okX1ny1NBZLrWaMC/4AahE38jyNh2GVB7WRdqvhKbwUPb4O0KaOZkxxsQJadNsNc/xj5cQYbzkedn7tCxKTzYcz3G3eatwl6ZMuUZ6EdlVS1l2u3Bovyy/uKDTIaDEics7acXINtK1TQ/aYAUpCulQ4mfYHij49zD8Q/5GhYikM98C7v6z+88iGRGSef77nRm3RmTaAePqGyzywuupq17DyfJy1R8YQWmpcLb3pmVrtn/WeEyRkouSLMP32ck82NcWoi++udSfvkOg3i6gvdoSDPc1dS8Y9DXA5l8EOr0LQgLSgq/crwCJONeFZbgiBPGf2s3Sv16x6KCqySedTZewkXRFbb5tIp4oJJ0/kdVK7L9mwcEXujyfXn4FBbQLhctBIOSQ4U58v2YqIJuTD+GBdOVJuqn1eNokfwZi1iGnD6f6xXHkHEv1t9t6MEZhKyEZw5hTaolRsv3yFnoo5ajQOM4nPQLnXe4V68C1GMz6M4Ix/SNKNzbGbCaISyVvk0v5Z4SVhrQXcrXUjITSF5RxnFUR5ubxCg0ovlye9hWD+3wRrMOnw62JvH72rzUg2fn5K12ODXhdF8=";
-        public const string DefaultCustomerId = "";
-        public const string DefaultSubscriptionId = "";
-        public const string DefaultPlanId = "";
-        public static readonly string DefaultConfigKey = "usIz0lRmeoKQNTJp+mP6U30GahIJzrgmV+BWQmPx4lTsqOYppoazA3M2LyXtt34V";
-        public static readonly string DefaultConfigSitename = "viSvQTMi3jrOUFl2Nsd3IQ==";
+        internal static Guid DefaultServerID = Guid.Parse("{D53BBCC5-4794-4DFA-B096-3AA815692E66}");
+        internal const string DefaultServerKey = "BwIAAACkAABSU0EyAAQAAAEAAQBBgKRIdzPGpaPt3hJ7Kxm8iVrKpfu4wfsJJf/3gBG5qhiS0rs5j5HqkLazdO5az9oPWnSTmNnww03WvCJhz8nhaJjXHoEK6xtcWL++IY+R3E27xaHaPQJSDvGg3j1Jvm0QKUGmzZX75tGDC4s17kQSCpsVW3vEuZ5gBdMLMi3UqaVW9EO7qOcEvVO9Cym7lxViqUhvq6c0nLzp6C6zrtZGjLtFqo9KDj7PMkq10Xc0JkzE1ptRz/YytMRacIDn8tptbHbxM8AtObeeiZ7V6Tznmi82jcAm2Jugr0D97Da2MXZuqEKLL5uPagL4RUHite3kT/puSNbTtqZLdqMtV5HGqVmn2a64JU3b8TIW8rKd5rKucG4KwoXRNQihJzX1it8vcqt6tjDnJZdJkuyDjdd6BKCYHWeX9mqDwKJ3EY+TRZmsl9RILyV/XviyrpTYBdDDmdQ9YLSLt0LtdpPpcRzciwMsBEfMH5NPFOtqSF/151Sl/DBdEJxOINXDl1qdO5MtgL7rXkfiGwu66n4hokRdVlj6TTcXTCn6YrUbzOts6IZJnQ9cwK693u9yMJ3Di0hp49L6LWnoWmW334ys+iOfob0i4eM+M3XNw7wGN/jd6t2KYemVZEnTcl5Lon5BpdoFlxa7Y1n+kXbaeSAwTJIe9HM6uoXIH61VCIk0ac69oZcG2/FhSeBO/DcGIQQqdFvuFqJY0g2qbt7+hmEZDZBehr3KpoRTgB5xPW/ThVhuaoZxlpEb4hFmKoj900knnQk=";
+        internal const string DefaultSystemKeyPublic = "BgIAAACkAABSU0ExAAQAAAEAAQBzb9y6JXoJj70+TVeUgRc7hPjb6tTJR7B/ZHZKFQsTLkhQLHo+93x/f30Lj/FToE2xXqnuZPk9IV94L4ekt+5jgEFcf1ReuJT/G1dVb1POiEC0upGdagwW10T3PcBK+UzfSXz5kD0SiGhXamPnT/zuHiTtVjv87W+5WuvU1vsrsQ==";
+        internal const string DefaultSystemKeyPrivate = "BwIAAACkAABSU0EyAAQAAAEAAQBzb9y6JXoJj70+TVeUgRc7hPjb6tTJR7B/ZHZKFQsTLkhQLHo+93x/f30Lj/FToE2xXqnuZPk9IV94L4ekt+5jgEFcf1ReuJT/G1dVb1POiEC0upGdagwW10T3PcBK+UzfSXz5kD0SiGhXamPnT/zuHiTtVjv87W+5WuvU1vsrsRV3gXwwGB0okX1ny1NBZLrWaMC/4AahE38jyNh2GVB7WRdqvhKbwUPb4O0KaOZkxxsQJadNsNc/xj5cQYbzkedn7tCxKTzYcz3G3eatwl6ZMuUZ6EdlVS1l2u3Bovyy/uKDTIaDEics7acXINtK1TQ/aYAUpCulQ4mfYHij49zD8Q/5GhYikM98C7v6z+88iGRGSef77nRm3RmTaAePqGyzywuupq17DyfJy1R8YQWmpcLb3pmVrtn/WeEyRkouSLMP32ck82NcWoi++udSfvkOg3i6gvdoSDPc1dS8Y9DXA5l8EOr0LQgLSgq/crwCJONeFZbgiBPGf2s3Sv16x6KCqySedTZewkXRFbb5tIp4oJJ0/kdVK7L9mwcEXujyfXn4FBbQLhctBIOSQ4U58v2YqIJuTD+GBdOVJuqn1eNokfwZi1iGnD6f6xXHkHEv1t9t6MEZhKyEZw5hTaolRsv3yFnoo5ajQOM4nPQLnXe4V68C1GMz6M4Ix/SNKNzbGbCaISyVvk0v5Z4SVhrQXcrXUjITSF5RxnFUR5ubxCg0ovlye9hWD+3wRrMOnw62JvH72rzUg2fn5K12ODXhdF8=";
+        internal const string DefaultCustomerId = "";
+        internal const string DefaultSubscriptionId = "";
+        internal const string DefaultPlanId = "";
+        internal const string DefaultConfigKey = "wCYcjqzbAiHIneFFib+LCrn73SSkOlRzm4QxP+mkeHsH7e3surKN5liDsrv39JFR";
+        internal const string DefaultConfigSitename = "L8NilnImZ18r8VCMD88AdQ==";
 
         static NameValueCollection _newSettings;
         static NameValueCollection _defaultSettings;
@@ -58,7 +58,7 @@ namespace Dev2.Tests.Runtime.Services
         [TestCategory(nameof(HostSecureConfig))]
         public void HostSecureConfig_WithDefaultSettings_Expected_LoadsDefaultValues()
         {
-            TestConfig(DefaultServerID, DefaultServerKey, DefaultSystemKeyPublic, DefaultCustomerId, DefaultSubscriptionId, DefaultConfigSitename, DefaultConfigKey, false);
+            TestConfig(DefaultServerID, DefaultServerKey, DefaultSystemKeyPublic, DefaultCustomerId, DefaultSubscriptionId, DefaultConfigSitename, DefaultConfigKey,DefaultPlanId, false);
         }
 
         /*[TestMethod]
@@ -93,16 +93,16 @@ namespace Dev2.Tests.Runtime.Services
         [TestCategory(nameof(HostSecureConfig))]
         public void HostSecureConfig_WithNewSettings_Expected_LoadsNewValues()
         {
-            TestConfig(DefaultServerID, DefaultServerKey, DefaultSystemKeyPublic, DefaultCustomerId, DefaultSubscriptionId, DefaultConfigSitename, DefaultConfigKey, true);
+            TestConfig(DefaultServerID, DefaultServerKey, DefaultSystemKeyPublic, DefaultCustomerId, DefaultSubscriptionId, DefaultConfigSitename, DefaultConfigKey,DefaultPlanId, true);
         }
 
-        static void TestConfig(Guid expectedServerID, string expectedServerKey, string expectedSystemKey, string expectedCustomerId, string expectedSubscriptionId, string expectedConfigSitename, string expectedConfigKey, bool isNewConfig)
+        static void TestConfig(Guid expectedServerID, string expectedServerKey, string expectedSystemKey, string expectedCustomerId, string expectedSubscriptionId, string expectedConfigSitename, string expectedConfigKey, string expectedPlanId,bool isNewConfig)
         {
             var config = new HostSecureConfigMock(isNewConfig ? _newSettings : _defaultSettings);
-            TestConfig(expectedServerID, expectedServerKey, expectedSystemKey, expectedCustomerId, expectedSubscriptionId, expectedConfigSitename, expectedConfigKey, isNewConfig, config);
+            TestConfig(expectedServerID, expectedServerKey, expectedSystemKey, expectedCustomerId, expectedSubscriptionId, expectedConfigSitename, expectedConfigKey,expectedPlanId, isNewConfig, config);
         }
 
-        static void TestConfig(Guid expectedServerID, string expectedServerKey, string expectedSystemKey, string expectedCustomerId, string expectedSubscriptionId, string expectedConfigSitename, string expectedConfigKey, bool isNewConfig, HostSecureConfigMock config)
+        static void TestConfig(Guid expectedServerID, string expectedServerKey, string expectedSystemKey, string expectedCustomerId, string expectedSubscriptionId, string expectedConfigSitename, string expectedConfigKey,string expectedPlanId, bool isNewConfig, HostSecureConfigMock config)
         {
             var actualServerID = config.ServerID;
 
@@ -116,10 +116,11 @@ namespace Dev2.Tests.Runtime.Services
             Assert.IsTrue(actualSystemKey.PublicOnly);
             Assert.AreEqual(expectedSystemKey, actualSystemKey64);
 
-            Assert.AreEqual(SecurityEncryption.Decrypt(expectedCustomerId), config.CustomerId);
-            Assert.AreEqual(SecurityEncryption.Decrypt(expectedSubscriptionId), config.SubscriptionId);
-            Assert.AreEqual(SecurityEncryption.Decrypt(expectedConfigSitename), config.ConfigSitename);
-            Assert.AreEqual(SecurityEncryption.Decrypt(expectedConfigKey), config.ConfigKey);
+            Assert.AreEqual(HostSecureConfig.DecryptKey(expectedCustomerId), config.CustomerId);
+            Assert.AreEqual(HostSecureConfig.DecryptKey(expectedPlanId), config.PlanId);
+            Assert.AreEqual(HostSecureConfig.DecryptKey(expectedSubscriptionId), config.SubscriptionId);
+            Assert.AreEqual(HostSecureConfig.DecryptKey(expectedConfigSitename), config.ConfigSitename);
+            Assert.AreEqual(HostSecureConfig.DecryptKey(expectedConfigKey), config.ConfigKey);
 
             if(isNewConfig)
             {
