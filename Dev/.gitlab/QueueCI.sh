@@ -6,7 +6,7 @@
 DefaultBranchName="develop"
 
 function QueueBuild {
-	curl -I -X POST -H "Authorization: Bearer $BambooPassword" "http://bamboo.opswolf.com/rest/api/latest/queue/WOLF-CI.json?stage&executeAllStages=true"
+	curl -I -X POST -H "Authorization: Bearer $BambooPassword" "http://bamboo.opswolf.com/rest/api/latest/queue/$1.json?stage&executeAllStages=true"
 }
 
 #Parse Arguments
