@@ -235,6 +235,8 @@ namespace Dev2.Tests.Runtime.WebServer
         [Owner("Candice Daniel")]
         [ExpectedException(typeof(HttpResponseException))]
         [TestCategory(nameof(TokenRequestHandler))]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]//CustomContainer.Get<Warewolf.Auditing.IStateNotifierFactory>()
         public void TokenRequestHandler_UserGroup_IsNullOrWhiteSpace_InternalServerError()
         {
             Dev2.Common.Utilities.ServerUser = new Mock<IPrincipal>().Object;
