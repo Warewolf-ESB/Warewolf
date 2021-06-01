@@ -127,11 +127,9 @@ namespace Dev2.PathOperations
                 var data = GetBytesFromBase64String(args);
                 return PerformPut(data, dst, true);
             }
-            else
-            {
-                var fileContent = Encoding.ASCII.GetBytes(args.FileContents);
-                return PerformPut(fileContent, dst, true);
-            }
+
+            var fileContent = Encoding.ASCII.GetBytes(args.FileContents);
+            return PerformPut(fileContent, dst, true);
         }
 
         static byte[] GetBytesFromBase64String(IDev2PutRawOperationTO args)

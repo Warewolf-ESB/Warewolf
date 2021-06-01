@@ -169,7 +169,7 @@ namespace Dev2.Data
             inputs.AddRange(inputsWithNoElements);
 
             var elementsWithElements = rootEl.Elements().Where(el => el.HasElements);
-            var enumerable = elementsWithElements as IEnumerable<XElement> ?? elementsWithElements.ToList();
+            var enumerable = elementsWithElements ?? elementsWithElements.ToList();
             inputs.AddRange(elementsWithElements.Elements().Select(element =>
             {
                 if (element.Parent != null)

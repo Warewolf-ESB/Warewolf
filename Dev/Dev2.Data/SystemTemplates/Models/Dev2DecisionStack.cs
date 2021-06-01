@@ -9,15 +9,15 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using Dev2.Common;
 using Dev2.Data.Decisions.Operations;
 using Dev2.Data.TO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Warewolf.Storage.Interfaces;
 
 namespace Dev2.Data.SystemTemplates.Models

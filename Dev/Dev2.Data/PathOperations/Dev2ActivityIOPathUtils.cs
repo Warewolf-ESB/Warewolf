@@ -10,10 +10,8 @@
 */
 
 using System;
-using System.IO;
 using System.Text;
 using Dev2.Data.Interfaces.Enums;
-
 using static System.IO.Path;
 
 namespace Dev2.PathOperations
@@ -55,7 +53,7 @@ namespace Dev2.PathOperations
             try
             {
                 var uri = new Uri(path);
-                result = Path.GetFileName(uri.LocalPath);
+                result = GetFileName(uri.LocalPath);
             }
             catch(Exception)
             {
@@ -69,7 +67,7 @@ namespace Dev2.PathOperations
         {
             var result = false;
             var uri = new Uri(path);
-            var fileName = Path.GetFileName(uri.LocalPath);
+            var fileName = GetFileName(uri.LocalPath);
             if (fileName.Contains(@"*") || fileName.Contains(@"?"))
             {
                 result = true;
