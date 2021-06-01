@@ -15,7 +15,7 @@ if [ "$1" != "" ]; then
 		branch="$1"
 		branch=${branch#*refs/heads/}
 	else
-		break
+		exit 0
 	fi
 else
 	branch=$DefaultBranchName
