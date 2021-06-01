@@ -11,8 +11,12 @@ function QueueBuild {
 
 #Parse Arguments
 if [ "$1" != "" ]; then
-	branch="$1"
-	branch=${branch#*refs/heads/}
+	if [ $(echo -n "$1" | grep -Fo "." | wc -l) != 3 ]; then
+		branch="$1"
+		branch=${branch#*refs/heads/}
+	else
+		break
+	fi
 else
 	branch=$DefaultBranchName
 fi
