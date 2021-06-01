@@ -166,6 +166,13 @@ namespace Dev2.Studio
 
             _resetSplashCreated.WaitOne();
             new Bootstrapper().Start();
+            if (_hasDotNetFramweworkError)
+            {
+                SplashView.CloseSplash(false);
+                var popupController = CustomContainer.Get<IPopupController>();
+                popupController.ShowInstallationErrorOccurred();
+                Shutdown();
+            }
             base.OnStartup(e);
             _shellViewModel = MainWindow.DataContext as ShellViewModel;
             if (_shellViewModel != null)
@@ -309,6 +316,8 @@ namespace Dev2.Studio
             CustomContainer.Register<IActivityParser>(new ActivityParser());
             CustomContainer.Register<IServiceDifferenceParser>(new ServiceDifferenceParser());
 
+            _hasDotNetFramweworkError = ValidateDotNetFramework();
+
             var splashViewModel = new SplashViewModel(server, new ExternalProcessExecutor());
 
             var splashPage = new SplashPage { DataContext = splashViewModel };
@@ -319,6 +328,37 @@ namespace Dev2.Studio
             _resetSplashCreated?.Set();
             splashViewModel.ShowServerStudioVersion();
             Dispatcher.Run();
+        }
+
+        private static bool ValidateDotNetFramework()
+        {
+            var serverLogFile = HelperUtils.GetServerLogSettingsConfigFile();
+            if (!File.Exists(serverLogFile))
+            {
+                return false;
+            }
+            try
+            {
+                var lines = File.ReadAllLines(serverLogFile).Reverse();
+
+                foreach (string line in lines)
+                {
+                    if (line.Contains(@"System.DllNotFoundException: C:\Windows\Microsoft.NET\Framework"))
+                    {
+                        return true;
+                    }
+                    if (line.Contains(@"[Header]"))
+                    {
+                        break;
+                    }
+                }
+                return false;
+            }
+            catch (Exception ex)
+            {
+                Dev2Logger.Error("Error loading server log", ex, GlobalConstants.WarewolfError);
+                return false;
+            }
         }
 
         protected override void OnExit(ExitEventArgs e)
