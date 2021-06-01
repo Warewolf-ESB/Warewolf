@@ -54,6 +54,7 @@ namespace Dev2.Runtime.Security
         public string ConfigKey { get; private set; }
         public string ConfigSitename { get; private set; }
         public string CustomerId { get; private set; }
+        public string PlanId { get; private set; }
         public string SubscriptionId { get; private set; }
         public RSACryptoServiceProvider ServerKey { get; private set; }
 
@@ -89,16 +90,21 @@ namespace Dev2.Runtime.Security
                 ConfigSitename = HostSecurityProvider.LiveConfigSitename;
 #endif
                 CustomerId = "";
+                PlanId = "";
                 SubscriptionId = "";
                 newSettings["ConfigKey"] = ConfigKey;
                 newSettings["ConfigSitename"] = ConfigSitename;
                 newSettings["CustomerId"] = CustomerId;
+                newSettings["PLanId"] = PlanId;
                 newSettings["SubscriptionId"] = SubscriptionId;
 
-                ConfigSitename = DecryptKey(ConfigSitename);
-                ConfigKey = DecryptKey(ConfigKey);
-                CustomerId = DecryptKey(CustomerId);
-                SubscriptionId = DecryptKey(SubscriptionId);
+                //The trim is because the keys are being padded in the encryption. We cannot change encryption at this time so this
+                //is temp until we do.
+                ConfigSitename = DecryptKey(ConfigSitename).TrimEnd('\0');
+                ConfigKey = DecryptKey(ConfigKey).TrimEnd('\0');
+                CustomerId = DecryptKey(CustomerId).TrimEnd('\0');
+                PlanId = DecryptKey(PlanId).TrimEnd('\0');
+                SubscriptionId = DecryptKey(SubscriptionId).TrimEnd('\0');
 
                 newSettings["ServerID"] = ServerID.ToString();
                 newSettings["ServerKey"] = Convert.ToBase64String(ServerKey.ExportCspBlob(true));
@@ -149,6 +155,7 @@ namespace Dev2.Runtime.Security
             {
                 newSettings["CustomerId"] = settings["CustomerId"];
             }
+
             if(settings["SubscriptionId"] == null)
             {
                 newSettings.Add("SubscriptionId", "");
@@ -158,14 +165,27 @@ namespace Dev2.Runtime.Security
             {
                 newSettings["SubscriptionId"] = settings["SubscriptionId"];
             }
+            if(settings["PlanId"] == null)
+            {
+                newSettings.Add("PlanId", "");
+                updateSettingsFile = true;
+            }
+            else
+            {
+                newSettings["PlanId"] = settings["PlanId"];
+            }
             ConfigKey = newSettings["ConfigKey"];
             ConfigSitename = newSettings["ConfigSitename"];
             CustomerId = newSettings["CustomerId"];
+            PlanId = newSettings["PlanId"];
             SubscriptionId = newSettings["SubscriptionId"];
-            ConfigSitename = DecryptKey(ConfigSitename);
-            ConfigKey = DecryptKey(ConfigKey);
-            CustomerId = DecryptKey(CustomerId);
-            SubscriptionId = DecryptKey(SubscriptionId);
+
+            ConfigSitename = DecryptKey(ConfigSitename).TrimEnd('\0');
+            ConfigKey = DecryptKey(ConfigKey).TrimEnd('\0');
+            CustomerId = DecryptKey(CustomerId).TrimEnd('\0');
+            SubscriptionId = DecryptKey(SubscriptionId).TrimEnd('\0');
+            PlanId = DecryptKey(PlanId).TrimEnd('\0');
+
             if(updateSettingsFile)
             {
                 newSettings["ServerID"] = ServerID.ToString();
@@ -192,6 +212,7 @@ namespace Dev2.Runtime.Security
                     ["SystemKey"] = HostSecurityProvider.InternalPublicKey,
                     ["CustomerId"] = "",
                     ["SubscriptionId"] = "",
+                    ["PlanId"] = "",
                     ["ConfigKey"] = HostSecurityProvider.InternalConfigKey,
                     ["ConfigSitename"] = HostSecurityProvider.InternalConfigSitename
                 };
@@ -249,7 +270,7 @@ namespace Dev2.Runtime.Security
             return key;
         }
 
-        public static NameValueCollection CreateSettings(string serverID, string serverKey, string systemKey, string customerId, string configSitename, string configKey,string subscriptionId) => new NameValueCollection
+        public static NameValueCollection CreateSettings(string serverID, string serverKey, string systemKey, string customerId, string planId, string configSitename, string configKey, string subscriptionId) => new NameValueCollection
         {
             {
                 "ServerID", serverID
@@ -262,6 +283,9 @@ namespace Dev2.Runtime.Security
             },
             {
                 "CustomerId", customerId
+            },
+            {
+                "PlanId", planId
             },
             {
                 "SubscriptionId", subscriptionId

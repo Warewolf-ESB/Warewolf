@@ -10,7 +10,6 @@
 
 using System;
 using ChargeBee.Api;
-using Dev2.Common;
 using Warewolf.Enums;
 
 namespace Warewolf.Licensing
@@ -40,10 +39,10 @@ namespace Warewolf.Licensing
                 result.IsLicensed = false;
             }
 
-            GlobalConstants.LicenseCustomerId = result.CustomerId;
-            GlobalConstants.LicenseSubscriptionId = result.SubscriptionId;
-            GlobalConstants.LicensePlanId = result.PlanId;
-            GlobalConstants.IsLicensed = result.IsLicensed;
+            LicenseSettings.CustomerId = result.CustomerId;
+            LicenseSettings.SubscriptionId = result.SubscriptionId;
+            LicenseSettings.PlanId = result.PlanId;
+            LicenseSettings.IsLicensed = result.IsLicensed;
             return result;
         }
 
@@ -57,8 +56,8 @@ namespace Warewolf.Licensing
                 result.IsLicensed = false;
             }
 
-            GlobalConstants.LicensePlanId = result.PlanId;
-            GlobalConstants.IsLicensed = result.IsLicensed;
+            LicenseSettings.PlanId = result.PlanId;
+            LicenseSettings.IsLicensed = result.IsLicensed;
             return result;
         }
 
@@ -82,9 +81,9 @@ namespace Warewolf.Licensing
                     result.IsLicensed = false;
                 }
 
-                GlobalConstants.LicensePlanId = result.PlanId;
-                GlobalConstants.IsLicensed = result.IsLicensed;
-                GlobalConstants.LicenseSubscriptionId = result.SubscriptionId;
+                LicenseSettings.PlanId = result.PlanId;
+                LicenseSettings.IsLicensed = result.IsLicensed;
+                LicenseSettings.SubscriptionId = result.SubscriptionId;
                 return result;
             }
             catch (Exception)
@@ -101,10 +100,10 @@ namespace Warewolf.Licensing
             licenseData.PlanId = "NotActive";
             licenseData.Status = SubscriptionStatus.NotActive;
             licenseData.IsLicensed = false;
-            GlobalConstants.LicensePlanId = licenseData.PlanId;
-            GlobalConstants.IsLicensed = licenseData.IsLicensed;
-            GlobalConstants.LicenseCustomerId = licenseData.CustomerId;
-            GlobalConstants.LicenseSubscriptionId = licenseData.SubscriptionId;
+            LicenseSettings.PlanId = licenseData.PlanId;
+            LicenseSettings.IsLicensed = licenseData.IsLicensed;
+            LicenseSettings.CustomerId = licenseData.CustomerId;
+            LicenseSettings.SubscriptionId = licenseData.SubscriptionId;
             return licenseData;
         }
     }

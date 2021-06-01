@@ -11,7 +11,6 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Dev2.Common;
 using Dev2.Communication;
 using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Workspaces;
@@ -76,11 +75,11 @@ namespace Dev2.Tests.Runtime.Services
             var workspaceMock = new Mock<IWorkspace>();
             var values = new Dictionary<string, StringBuilder>();
 
-            GlobalConstants.LicenseCustomerId = "16BjmNSXISIQjctO";
-            GlobalConstants.LicenseSubscriptionId = "16BjmNSXISIQjctO";
-            GlobalConstants.LicensePlanId = "developer";
-            GlobalConstants.ApiKey = "test_VMxitsiobdAyth62k0DiqpAUKocG6sV3";
-            GlobalConstants.SiteName = "warewolf-test";
+            LicenseSettings.CustomerId = "16BjmNSXISIQjctO";
+            LicenseSettings.SubscriptionId = "16BjmNSXISIQjctO";
+            LicenseSettings.PlanId = "developer";
+            LicenseSettings.ApiKey = "test_VMxitsiobdAyth62k0DiqpAUKocG6sV3";
+            LicenseSettings.SiteName = "warewolf-test";
 
             //------------Execute Test---------------------------
             var jsonResult = getLicenseKey.Execute(values, workspaceMock.Object);
@@ -97,11 +96,11 @@ namespace Dev2.Tests.Runtime.Services
             Assert.IsNotNull(data.PlanId);
             Assert.IsNotNull(data.TrialEnd);
             Assert.IsNotNull(data.Status);
-            Assert.IsTrue(data.IsLicensed);
-            Assert.AreEqual(GlobalConstants.LicensePlanId,data.PlanId);
-            Assert.AreEqual(GlobalConstants.IsLicensed,data.IsLicensed);
-            Assert.AreEqual(GlobalConstants.LicenseCustomerId,data.CustomerId);
-            Assert.AreEqual(GlobalConstants.LicenseSubscriptionId,data.SubscriptionId);
+            Assert.IsFalse(data.IsLicensed);
+            Assert.AreEqual(LicenseSettings.PlanId,data.PlanId);
+            Assert.AreEqual(LicenseSettings.IsLicensed,data.IsLicensed);
+            Assert.AreEqual(LicenseSettings.CustomerId,data.CustomerId);
+            Assert.AreEqual(LicenseSettings.SubscriptionId,data.SubscriptionId);
         }
 
         [TestMethod]
@@ -114,11 +113,11 @@ namespace Dev2.Tests.Runtime.Services
             var serializer = new Dev2JsonSerializer();
             var workspaceMock = new Mock<IWorkspace>();
             var values = new Dictionary<string, StringBuilder>();
-            GlobalConstants.LicenseCustomerId = null;
-            GlobalConstants.LicenseSubscriptionId = "None";
-            GlobalConstants.LicensePlanId = "UnRegistered";
-            GlobalConstants.SiteName = "SiteName";
-            GlobalConstants.ApiKey = "ApiKey";
+            LicenseSettings.CustomerId = null;
+            LicenseSettings.SubscriptionId = "None";
+            LicenseSettings.PlanId = "UnRegistered";
+            LicenseSettings.SiteName = "SiteName";
+            LicenseSettings.ApiKey = "ApiKey";
 
             //------------Execute Test---------------------------
             var jsonResult = getLicenseKey.Execute(values, workspaceMock.Object);
@@ -128,10 +127,10 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual("Unknown",data.CustomerId);
             Assert.IsNotNull("UnRegistered",data.PlanId);
             Assert.IsFalse(data.IsLicensed);
-            Assert.AreEqual(GlobalConstants.LicensePlanId,data.PlanId);
-            Assert.AreEqual(GlobalConstants.IsLicensed,data.IsLicensed);
-            Assert.AreEqual(GlobalConstants.LicenseCustomerId,data.CustomerId);
-            Assert.AreEqual(GlobalConstants.LicenseSubscriptionId,data.SubscriptionId);
+            Assert.AreEqual(LicenseSettings.PlanId,data.PlanId);
+            Assert.AreEqual(LicenseSettings.IsLicensed,data.IsLicensed);
+            Assert.AreEqual(LicenseSettings.CustomerId,data.CustomerId);
+            Assert.AreEqual(LicenseSettings.SubscriptionId,data.SubscriptionId);
         }
 
     }

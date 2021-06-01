@@ -8,16 +8,14 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using Dev2.Common;
-
 namespace Warewolf.Licensing
 {
     public class LicenceApiConfig : ILicenceApiConfig
     {
         public LicenceApiConfig()
         {
-            SiteName = GlobalConstants.SiteName;
-            ApiKey =  GlobalConstants.ApiKey;
+            SiteName = LicenseSettings.SiteName;
+            ApiKey =  LicenseSettings.ApiKey;
         }
 
         public string SiteName { get; set; }

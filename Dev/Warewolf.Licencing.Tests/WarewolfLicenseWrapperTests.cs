@@ -9,7 +9,6 @@
 */
 
 using ChargeBee.Api;
-using Dev2.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.Licensing;
 
@@ -28,17 +27,17 @@ namespace Warewolf.LicencingTests
         [TestCategory(nameof(WarewolfLicenseWrapper))]
         public void WarewolfLicenseWrapper_Retrieve()
         {
-            GlobalConstants.LicenseCustomerId = "16BjmNSXISIQjctO";
-            GlobalConstants.LicenseSubscriptionId = "16BjmNSXISIQjctO";
-            GlobalConstants.LicensePlanId = "developer";
-            GlobalConstants.ApiKey = "test_VMxitsiobdAyth62k0DiqpAUKocG6sV3";
-            GlobalConstants.SiteName = "warewolf-test";
+            LicenseSettings.CustomerId = "16BjmNSXISIQjctO";
+            LicenseSettings.SubscriptionId = "16BjmNSXISIQjctO";
+            LicenseSettings.PlanId = "developer";
+            LicenseSettings.ApiKey = "test_VMxitsiobdAyth62k0DiqpAUKocG6sV3";
+            LicenseSettings.SiteName = "warewolf-test";
 
-            ApiConfig.Configure(GlobalConstants.SiteName, GlobalConstants.ApiKey);
+            ApiConfig.Configure(LicenseSettings.SiteName, LicenseSettings.ApiKey);
 
             var licenseData = GetLicenseData();
-            licenseData.CustomerId = GlobalConstants.LicenseCustomerId;
-            licenseData.SubscriptionId = GlobalConstants.LicenseSubscriptionId;
+            licenseData.CustomerId = LicenseSettings.CustomerId;
+            licenseData.SubscriptionId = LicenseSettings.SubscriptionId;
             var warewolfLicense = new WarewolfLicenseWrapper();
 
             var result = warewolfLicense.Retrieve(licenseData);

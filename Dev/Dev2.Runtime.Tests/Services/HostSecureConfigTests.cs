@@ -25,6 +25,7 @@ namespace Dev2.Tests.Runtime.Services
         public const string DefaultSystemKeyPrivate = "BwIAAACkAABSU0EyAAQAAAEAAQBzb9y6JXoJj70+TVeUgRc7hPjb6tTJR7B/ZHZKFQsTLkhQLHo+93x/f30Lj/FToE2xXqnuZPk9IV94L4ekt+5jgEFcf1ReuJT/G1dVb1POiEC0upGdagwW10T3PcBK+UzfSXz5kD0SiGhXamPnT/zuHiTtVjv87W+5WuvU1vsrsRV3gXwwGB0okX1ny1NBZLrWaMC/4AahE38jyNh2GVB7WRdqvhKbwUPb4O0KaOZkxxsQJadNsNc/xj5cQYbzkedn7tCxKTzYcz3G3eatwl6ZMuUZ6EdlVS1l2u3Bovyy/uKDTIaDEics7acXINtK1TQ/aYAUpCulQ4mfYHij49zD8Q/5GhYikM98C7v6z+88iGRGSef77nRm3RmTaAePqGyzywuupq17DyfJy1R8YQWmpcLb3pmVrtn/WeEyRkouSLMP32ck82NcWoi++udSfvkOg3i6gvdoSDPc1dS8Y9DXA5l8EOr0LQgLSgq/crwCJONeFZbgiBPGf2s3Sv16x6KCqySedTZewkXRFbb5tIp4oJJ0/kdVK7L9mwcEXujyfXn4FBbQLhctBIOSQ4U58v2YqIJuTD+GBdOVJuqn1eNokfwZi1iGnD6f6xXHkHEv1t9t6MEZhKyEZw5hTaolRsv3yFnoo5ajQOM4nPQLnXe4V68C1GMz6M4Ix/SNKNzbGbCaISyVvk0v5Z4SVhrQXcrXUjITSF5RxnFUR5ubxCg0ovlye9hWD+3wRrMOnw62JvH72rzUg2fn5K12ODXhdF8=";
         public const string DefaultCustomerId = "";
         public const string DefaultSubscriptionId = "";
+        public const string DefaultPlanId = "";
         public static readonly string DefaultConfigKey = "usIz0lRmeoKQNTJp+mP6U30GahIJzrgmV+BWQmPx4lTsqOYppoazA3M2LyXtt34V";
         public static readonly string DefaultConfigSitename = "viSvQTMi3jrOUFl2Nsd3IQ==";
 
@@ -33,14 +34,14 @@ namespace Dev2.Tests.Runtime.Services
 
         private static NameValueCollection CreateDefaultConfig()
         {
-            return HostSecureConfig.CreateSettings(DefaultServerID.ToString(), DefaultServerKey, DefaultSystemKeyPublic, DefaultCustomerId, DefaultSubscriptionId, DefaultConfigSitename, DefaultConfigKey);
+            return HostSecureConfig.CreateSettings(DefaultServerID.ToString(), DefaultServerKey, DefaultSystemKeyPublic, DefaultCustomerId,DefaultPlanId, DefaultSubscriptionId, DefaultConfigSitename, DefaultConfigKey);
         }
 
         [ClassInitialize]
         public static void ClassInitialize(TestContext testContext)
         {
             _defaultSettings = CreateDefaultConfig();
-            _newSettings = HostSecureConfig.CreateSettings(string.Empty, string.Empty, DefaultSystemKeyPublic, DefaultCustomerId, DefaultSubscriptionId, DefaultConfigSitename, DefaultConfigKey);
+            _newSettings = HostSecureConfig.CreateSettings(string.Empty, string.Empty, DefaultSystemKeyPublic, DefaultCustomerId, DefaultPlanId,DefaultSubscriptionId, DefaultConfigSitename, DefaultConfigKey);
         }
 
         [TestMethod]
@@ -60,27 +61,32 @@ namespace Dev2.Tests.Runtime.Services
             TestConfig(DefaultServerID, DefaultServerKey, DefaultSystemKeyPublic, DefaultCustomerId, DefaultSubscriptionId, DefaultConfigSitename, DefaultConfigKey, false);
         }
 
-        // [TestMethod]
-        //   [Owner("Candice Daniel")]
-        // [TestCategory(nameof(HostSecureConfig))]
-        //  public void CreateEncryptions()
-        //   {
-        // Keep this for when we need to encrypt the live keys
-        //TEST
-        //   var value = "warewolf-test";
-        //   var encryptedBytes = SecurityEncryption.Encrypt(value);
-        //    var value2 = "test_VMxitsiobdAyth62k0DiqpAUKocG6sV3";
-        //    var encryptedBytes2 = SecurityEncryption.Encrypt(value2);
+        /*[TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(HostSecureConfig))]
+        public void CreateEncryptions()
+        {
+            // Keep this for when we need to encrypt the live keys
+            // TEST
+            var value = "warewolf-test";
+            var encryptedData = SecurityEncryption.Encrypt(value);
+            var decryptedData = SecurityEncryption.Decrypt(encryptedData);
+            Assert.AreEqual(value, decryptedData.TrimEnd('\0'));
 
-        //LIVE
-        //   var valueLive = "warewolf";
-        //   var encryptedBytesLive = SecurityEncryption.Encrypt(valueLive);
-        //   var value2Live = "live_bcdR3fp1fm1YeQYhrzaLjp0Qy5rcuwVRzo";
-        // var encryptedBytes2Live = SecurityEncryption.Encrypt(value2Live);
-        //
-        //var decryptedBytes = SecurityEncryption.Decrypt(encryptedBytes2Live);
-        // Assert.AreEqual(value, decryptedBytes);
-        // }
+
+            var value2 = "test_VMxitsiobdAyth62k0DiqpAUKocG6sV3";
+            var encryptedData2 = SecurityEncryption.Encrypt(value2);
+            var decryptedData2 = SecurityEncryption.Decrypt(encryptedData2);
+            Assert.AreEqual(value2, decryptedData2.TrimEnd('\0'));
+            //LIVE
+            //   var valueLive = "warewolf";
+            //   var encryptedBytesLive = SecurityEncryption.Encrypt(valueLive);
+            //   var value2Live = "live_bcdR3fp1fm1YeQYhrzaLjp0Qy5rcuwVRzo";
+            // var encryptedBytes2Live = SecurityEncryption.Encrypt(value2Live);
+            //
+            //var decryptedBytes = SecurityEncryption.Decrypt(encryptedBytes2Live);
+            // Assert.AreEqual(value, decryptedBytes);
+        }*/
 
         [TestMethod]
         [Owner("Candice Daniel")]

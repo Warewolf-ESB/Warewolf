@@ -28,19 +28,11 @@ namespace Dev2.Runtime.ESB.Management.Services
             var result = new ExecuteMessage { HasError = false };
 
             Dev2Logger.Info("Get LicenseKey Service", GlobalConstants.WarewolfInfo);
-            //TODO: For testing. Will be removed when save is working
-            //      Uncomment to test the Manage Plan Screen
-            //GlobalConstants.ApiKey = "test_VMxitsiobdAyth62k0DiqpAUKocG6sV3";
-            //GlobalConstants.SiteName = "warewolf-test";
-            //GlobalConstants.LicenseCustomerId = "16BjmNSXISIQjctO";
-            //GlobalConstants.LicenseSubscriptionId = "16BjmNSXISIQjctO";
-            //GlobalConstants.LicensePlanId = "developer";
-
             var licenseData = new LicenseData
             {
-                CustomerId = GlobalConstants.LicenseCustomerId,
-                PlanId = GlobalConstants.LicensePlanId,
-                SubscriptionId = GlobalConstants.LicenseSubscriptionId
+                CustomerId = LicenseSettings.CustomerId,
+                PlanId = LicenseSettings.PlanId,
+                SubscriptionId = LicenseSettings.SubscriptionId
             };
 
             var license = new WarewolfLicense();

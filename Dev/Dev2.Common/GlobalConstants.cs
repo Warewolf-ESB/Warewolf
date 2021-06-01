@@ -46,13 +46,6 @@ namespace Dev2.Common
                 CultureInfo.CurrentCulture.ClearCachedData();
             };
         }
-        public static string SiteName { get; set; }
-        public static string ApiKey { get; set; }
-        public static string LicenseCustomerId { get; set; }
-        public static string LicenseSubscriptionId { get; set; }
-        public static string NotRegistered = "Not Registered";
-        public static string LicensePlanId { get; set; }
-        public static bool IsLicensed { get; set; }
 
         public static readonly string ExecutionLoggingResultStartTag = "Execution Result [ ";
         public static readonly string ExecutionLoggingResultEndTag = " ]";

@@ -92,13 +92,12 @@ namespace Warewolf.Studio.CustomControls
                     .PlanQuantity(GetNumberOfCores())
                     .Request();
 
-                //TODO: use ILicenseData
-                GlobalConstants.LicenseCustomerId = customer.Customer.Id;
-                GlobalConstants.LicensePlanId = subscription.Subscription.PlanId;
-                GlobalConstants.LicenseSubscriptionId = subscription.Subscription.Id;
+                LicenseSettings.CustomerId = customer.Customer.Id;
+                LicenseSettings.PlanId = subscription.Subscription.PlanId;
+                LicenseSettings.SubscriptionId = subscription.Subscription.Id;
                 if(subscription.Subscription.Status.ToString() == "InTrial" && subscription.Subscription.Status.ToString() == "Active")
                 {
-                    GlobalConstants.IsLicensed = true;
+                    LicenseSettings.IsLicensed = true;
                     //TODO: Call SaveLicenseKey Service to save to the secure.config
                     // var controller = new CommunicationController { ServiceName = nameof(SaveLicenseKey) };
                     // var server = GetEnvironment();
@@ -109,7 +108,7 @@ namespace Warewolf.Studio.CustomControls
             }
             catch(Exception)
             {
-                GlobalConstants.IsLicensed = false;
+                LicenseSettings.IsLicensed = false;
                 return "failed";
             }
         }

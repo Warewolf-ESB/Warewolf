@@ -36,6 +36,7 @@ namespace Dev2.Runtime.Security
         public string ConfigKey { get; }
         public string ConfigSitename { get; }
         public string CustomerId { get; }
+        public string PlanId { get; }
         public string SubscriptionId { get; }
         static volatile IHostSecurityProvider _theInstance;
         static readonly object SyncRoot = new object();
@@ -76,6 +77,7 @@ namespace Dev2.Runtime.Security
             ConfigKey = config.ConfigKey;
             ConfigSitename = config.ConfigSitename;
             CustomerId = config.CustomerId;
+            PlanId = config.PlanId;
             SubscriptionId = config.SubscriptionId;
         }
 

@@ -19,6 +19,7 @@ namespace Dev2.Runtime.Security
         RSACryptoServiceProvider ServerKey { get; }
         RSACryptoServiceProvider SystemKey { get; }
         string CustomerId { get; }
+        string PlanId { get; }
         string SubscriptionId { get; }
         string ConfigKey { get; }
         string ConfigSitename { get; }
