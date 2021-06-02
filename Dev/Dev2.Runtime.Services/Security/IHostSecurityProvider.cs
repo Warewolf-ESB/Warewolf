@@ -23,8 +23,8 @@ namespace Dev2.Runtime.Security
         string CustomerId { get; }
         string PlanId { get; }
         string SubscriptionId { get; }
+        string Status { get; }
         bool VerifyXml(StringBuilder xml);
-
         StringBuilder SignXml(StringBuilder xml);
 
         bool EnsureSsl(IFile fileWrapper, string certPath, IPEndPoint endPoint);

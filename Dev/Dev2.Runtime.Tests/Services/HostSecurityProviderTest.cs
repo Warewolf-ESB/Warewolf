@@ -164,6 +164,7 @@ namespace Dev2.Tests.Runtime.Services
                 HostSecureConfig.DecryptKey(HostSecureConfigTests.DefaultCustomerId),
                 HostSecureConfig.DecryptKey(HostSecureConfigTests.DefaultSubscriptionId),
                 HostSecureConfig.DecryptKey(HostSecureConfigTests.DefaultPlanId),
+                HostSecureConfig.DecryptKey(HostSecureConfigTests.DefaultStatus),
                 HostSecureConfig.DecryptKey(HostSecureConfigTests.DefaultConfigSitename),
                 HostSecureConfig.DecryptKey(HostSecureConfigTests.DefaultConfigKey));
 
@@ -207,7 +208,7 @@ namespace Dev2.Tests.Runtime.Services
         [TestCategory(nameof(HostSecurityProvider))]
         public void HostSecurityProvider_VerifyXmlWithInvalidKeys_Expected_ReturnsFalse()
         {
-            var config = CreateConfig(new RSACryptoServiceProvider(), new RSACryptoServiceProvider(), "","","", "", "");
+            var config = CreateConfig(new RSACryptoServiceProvider(), new RSACryptoServiceProvider(), "", "", "", "","", "");
             var provider = new HostSecurityProviderImpl(config.Object);
 
             var verified = provider.VerifyXml(new StringBuilder(TestXmlServerSigned.ToString()));
@@ -253,7 +254,7 @@ namespace Dev2.Tests.Runtime.Services
 
         static Mock<ISecureConfig> CreateConfig(bool useSystemPrivateKeyAsServerKey = false)
         {
-            if (useSystemPrivateKeyAsServerKey)
+            if(useSystemPrivateKeyAsServerKey)
             {
                 return CreateConfig(
                     HostSecureConfig.CreateKey(HostSecureConfigTests.DefaultSystemKeyPrivate),
@@ -261,6 +262,7 @@ namespace Dev2.Tests.Runtime.Services
                     HostSecureConfig.DecryptKey(HostSecureConfigTests.DefaultCustomerId),
                     HostSecureConfig.DecryptKey(HostSecureConfigTests.DefaultSubscriptionId),
                     HostSecureConfig.DecryptKey(HostSecureConfigTests.DefaultPlanId),
+                    HostSecureConfig.DecryptKey(HostSecureConfigTests.DefaultStatus),
                     HostSecureConfig.DecryptKey(HostSecureConfigTests.DefaultConfigSitename),
                     HostSecureConfig.DecryptKey(HostSecureConfigTests.DefaultConfigKey));
             }
@@ -271,17 +273,43 @@ namespace Dev2.Tests.Runtime.Services
                 HostSecureConfig.DecryptKey(HostSecureConfigTests.DefaultCustomerId),
                 HostSecureConfig.DecryptKey(HostSecureConfigTests.DefaultSubscriptionId),
                 HostSecureConfig.DecryptKey(HostSecureConfigTests.DefaultPlanId),
+                HostSecureConfig.DecryptKey(HostSecureConfigTests.DefaultStatus),
                 HostSecureConfig.DecryptKey(HostSecureConfigTests.DefaultConfigSitename),
                 HostSecureConfig.DecryptKey(HostSecureConfigTests.DefaultConfigKey));
         }
 
-        static Mock<ISecureConfig> CreateConfig(RSACryptoServiceProvider serverKey, RSACryptoServiceProvider systemKey, string customerId, string subscriptionId,string planId, string configSitename, string configKey)
+        static Mock<ISecureConfig> CreateConfig(
+            RSACryptoServiceProvider serverKey,
+            RSACryptoServiceProvider systemKey,
+            string customerId,
+            string subscriptionId,
+            string planId,
+            string status,
+            string configSitename,
+            string configKey)
         {
-            return CreateConfig(HostSecureConfigTests.DefaultServerID, serverKey, systemKey, customerId,subscriptionId,planId, configSitename, configKey);
+            return CreateConfig(
+                HostSecureConfigTests.DefaultServerID,
+                serverKey,
+                systemKey,
+                customerId,
+                subscriptionId,
+                planId,
+                status,
+                configSitename,
+                configKey);
         }
 
-        static Mock<ISecureConfig> CreateConfig(Guid serverID, RSACryptoServiceProvider serverKey,
-            RSACryptoServiceProvider systemKey, string customerId,string subscriptionId,string planId, string configSitename, string configKey)
+        static Mock<ISecureConfig> CreateConfig(
+            Guid serverID,
+            RSACryptoServiceProvider serverKey,
+            RSACryptoServiceProvider systemKey,
+            string customerId,
+            string subscriptionId,
+            string planId,
+            string status,
+            string configSitename,
+            string configKey)
         {
             var config = new Mock<ISecureConfig>();
             config.Setup(c => c.ServerID).Returns(serverID);
@@ -293,6 +321,7 @@ namespace Dev2.Tests.Runtime.Services
             config.Setup(c => c.PlanId).Returns(planId);
             config.Setup(c => c.ConfigSitename).Returns(configSitename);
             config.Setup(c => c.ConfigKey).Returns(configKey);
+            config.Setup(c => c.Status).Returns(status);
             return config;
         }
 

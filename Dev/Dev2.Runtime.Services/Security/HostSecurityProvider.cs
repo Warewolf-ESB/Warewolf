@@ -38,6 +38,7 @@ namespace Dev2.Runtime.Security
         public string CustomerId { get; }
         public string PlanId { get; }
         public string SubscriptionId { get; }
+        public string Status { get; }
         static volatile IHostSecurityProvider _theInstance;
         static readonly object SyncRoot = new object();
 
@@ -45,11 +46,11 @@ namespace Dev2.Runtime.Security
         {
             get
             {
-                if (_theInstance == null)
+                if(_theInstance == null)
                 {
-                    lock (SyncRoot)
+                    lock(SyncRoot)
                     {
-                        if (_theInstance == null)
+                        if(_theInstance == null)
                         {
                             var config = new HostSecureConfig();
                             _theInstance = new HostSecurityProvider(config);
@@ -66,7 +67,7 @@ namespace Dev2.Runtime.Security
 
         protected HostSecurityProvider(ISecureConfig config)
         {
-            if (config == null)
+            if(config == null)
             {
                 throw new ArgumentNullException(nameof(config));
             }
@@ -79,11 +80,12 @@ namespace Dev2.Runtime.Security
             CustomerId = config.CustomerId;
             PlanId = config.PlanId;
             SubscriptionId = config.SubscriptionId;
+            Status = config.Status;
         }
 
         public bool VerifyXml(StringBuilder xml)
         {
-            if (xml == null || xml.Length == 0)
+            if(xml == null || xml.Length == 0)
             {
                 throw new ArgumentNullException(nameof(xml));
             }
@@ -93,7 +95,7 @@ namespace Dev2.Runtime.Security
 
         public StringBuilder SignXml(StringBuilder xml)
         {
-            if (xml == null || xml.Length == 0)
+            if(xml == null || xml.Length == 0)
             {
                 throw new ArgumentNullException(nameof(xml));
             }
@@ -101,7 +103,7 @@ namespace Dev2.Runtime.Security
             // remove the signature element here as it does not pick up correctly futher down ;(
             xml = RemoveSignature(xml);
 
-            using (var s = xml.EncodeForXmlDocument())
+            using(var s = xml.EncodeForXmlDocument())
             {
                 var doc = new XmlDocument();
 
@@ -110,7 +112,7 @@ namespace Dev2.Runtime.Security
                 SetServerID(doc);
 
                 var result = new StringBuilder();
-                using (var sw = new StringWriter(result))
+                using(var sw = new StringWriter(result))
                 {
                     doc.Save(sw);
                 }
@@ -128,11 +130,11 @@ namespace Dev2.Runtime.Security
             const string SignatureEnd = "</Signature>";
 
             var startIdx = sb.IndexOf(SignatureStart, 0, false);
-            if (startIdx >= 0)
+            if(startIdx >= 0)
             {
                 var endIdx = sb.IndexOf(SignatureEnd, startIdx, false);
 
-                if (endIdx >= 0)
+                if(endIdx >= 0)
                 {
                     var len = endIdx - startIdx + SignatureEnd.Length;
                     return sb.Remove(startIdx, len);
@@ -151,7 +153,7 @@ namespace Dev2.Runtime.Security
         {
             var result = false;
 
-            if (!fileWrapper.Exists(certPath))
+            if(!fileWrapper.Exists(certPath))
             {
                 try
                 {
@@ -159,7 +161,7 @@ namespace Dev2.Runtime.Security
                     certificateBuilder.EnsureSslCertificate(certPath, endPoint);
                     result = fileWrapper.Exists(certPath);
                 }
-                catch (Exception e)
+                catch(Exception e)
                 {
                     Dev2Logger.Error(e, GlobalConstants.WarewolfError);
                 }

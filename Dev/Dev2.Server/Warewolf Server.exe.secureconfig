@@ -5,6 +5,7 @@
     <add key="CustomerId" value="" />
     <add key="PlanId" value="" />
     <add key="SubscriptionId" value="" />
+     <add key="Status" value="" />
     <add key="ConfigSitename" value="L8NilnImZ18r8VCMD88AdQ==" />
   <!-- !!! DO NOT CHANGE THE SERVER ID DURING DEV SINCE WE SHARE RESOURCES AND SO NEED THE SAME SERVER ID !!! -->
   <!-- For new installation ServerID value needs to be empty -->
