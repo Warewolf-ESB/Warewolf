@@ -17,7 +17,6 @@ using Dev2.Common.Interfaces;
 using Dev2.Studio.Interfaces;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
-using Warewolf.Licensing;
 using Warewolf.Studio.AntiCorruptionLayer;
 
 namespace Warewolf.Studio.ViewModels
@@ -42,7 +41,7 @@ namespace Warewolf.Studio.ViewModels
             WarewolfUrl = warewolfUri;
             WarewolfCopyright = string.Format(Resources.Languages.Core.WarewolfCopyright, DateTime.Now.Year.ToString());
 
-            WarewolfLicense = LicenseSettings.IsLicensed ? LicenseSettings.PlanId : LicenseSettings.NotRegistered;
+            //WarewolfLicense = LicenseSettings.IsLicensed ? LicenseSettings.PlanId : LicenseSettings.NotRegistered;
 
             ContributorsCommand = new DelegateCommand(() => externalProcessExecutor.OpenInBrowser(ContributorsUrl));
             CommunityCommand = new DelegateCommand(() => externalProcessExecutor.OpenInBrowser(CommunityUrl));

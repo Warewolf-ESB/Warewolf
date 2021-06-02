@@ -1,4 +1,4 @@
-/*
+﻿/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
@@ -10,10 +10,9 @@
 
 namespace Warewolf.Licensing
 {
-    public interface IWarewolfLicense
+    public interface ISubscriptionAdmin
     {
-        ILicenseData CreatePlan(ILicenseData licenseData);
-        ILicenseData UpgradePlan(ILicenseData licenseData);
-        ILicenseData Retrieve(ILicenseData licenseData);
+        string SubscriptionSiteName { get; }
+        string SubscriptionKey { get; }
     }
 }

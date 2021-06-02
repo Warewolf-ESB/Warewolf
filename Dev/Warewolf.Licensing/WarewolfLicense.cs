@@ -16,94 +16,73 @@ namespace Warewolf.Licensing
 {
     public class WarewolfLicense
     {
-        private readonly IWarewolfLicense _warewolfLicense;
+        private readonly ISubscription _subscription;
 
         public WarewolfLicense()
-            : this(new LicenceApiConfig(), new WarewolfLicenseWrapper())
+            : this(new Subscription())
         {
         }
 
-        public WarewolfLicense(ILicenceApiConfig config, IWarewolfLicense api)
+        public WarewolfLicense(ISubscription subscription)
         {
-            ApiConfig.Configure(config.SiteName, config.ApiKey);
-            _warewolfLicense = api;
+            _subscription = subscription;
         }
 
         //TODO: These might not be used. Just created the shell in the meantime. This will be decided when we do the registerUI
-        public ILicenseData CreatePlan(ILicenseData licenseData)
+        public ISubscriptionData CreatePlan(ISubscriptionData subscriptionData)
         {
-            var result = _warewolfLicense.CreatePlan(licenseData);
+            if (!string.IsNullOrEmpty(subscriptionData.SubscriptionSiteName) || !string.IsNullOrEmpty(subscriptionData.SubscriptionKey))
+            {
+                ApiConfig.Configure(subscriptionData.SubscriptionSiteName, subscriptionData.SubscriptionKey);
+            }
+            var result = _subscription.CreatePlan(subscriptionData);
             result.IsLicensed = true;
-            if (result.Status != SubscriptionStatus.Active && result.Status != SubscriptionStatus.InTrial)
+            if(result.Status != SubscriptionStatus.Active && result.Status != SubscriptionStatus.InTrial)
             {
                 result.IsLicensed = false;
             }
-
-            LicenseSettings.CustomerId = result.CustomerId;
-            LicenseSettings.SubscriptionId = result.SubscriptionId;
-            LicenseSettings.PlanId = result.PlanId;
-            LicenseSettings.IsLicensed = result.IsLicensed;
             return result;
         }
 
-        //TODO: These might not be used. Just created the shell in the meantime. This will be decided when we do the UpgradeUI
-        public ILicenseData UpgradePlan(ILicenseData licenseData)
-        {
-            var result = _warewolfLicense.UpgradePlan(licenseData);
-            result.IsLicensed = true;
-            if (result.Status != SubscriptionStatus.Active && result.Status != SubscriptionStatus.InTrial)
-            {
-                result.IsLicensed = false;
-            }
-
-            LicenseSettings.PlanId = result.PlanId;
-            LicenseSettings.IsLicensed = result.IsLicensed;
-            return result;
-        }
-
-        public ILicenseData Retrieve(ILicenseData licenseData)
+        public ISubscriptionData Retrieve(string subscriptionId)
         {
             try
             {
-                if (string.IsNullOrEmpty(licenseData.CustomerId))
+                if(string.IsNullOrEmpty(subscriptionId))
                 {
-                    return DefaultLicenseData(licenseData);
+                    return DefaultLicenseData();
                 }
-                if (licenseData.CustomerId =="Unknown")
+
+                if(subscriptionId == "Unknown")
                 {
-                    return DefaultLicenseData(licenseData);
+                    return DefaultLicenseData();
                 }
-                var result = _warewolfLicense.Retrieve(licenseData);
+
+                var result = _subscription.Retrieve(subscriptionId);
                 result.IsLicensed = true;
 
-                if (result.Status != SubscriptionStatus.Active && result.Status != SubscriptionStatus.InTrial)
+                if(result.Status != SubscriptionStatus.Active && result.Status != SubscriptionStatus.InTrial)
                 {
                     result.IsLicensed = false;
                 }
-
-                LicenseSettings.PlanId = result.PlanId;
-                LicenseSettings.IsLicensed = result.IsLicensed;
-                LicenseSettings.SubscriptionId = result.SubscriptionId;
                 return result;
             }
-            catch (Exception)
+            catch(Exception)
             {
-
-                return DefaultLicenseData(licenseData);
+                return DefaultLicenseData();
             }
         }
 
-        private static ILicenseData DefaultLicenseData(ILicenseData licenseData)
+        private static ISubscriptionData DefaultLicenseData()
         {
-            licenseData.CustomerId = "Unknown";
-            licenseData.SubscriptionId = "None";
-            licenseData.PlanId = "NotActive";
-            licenseData.Status = SubscriptionStatus.NotActive;
-            licenseData.IsLicensed = false;
-            LicenseSettings.PlanId = licenseData.PlanId;
-            LicenseSettings.IsLicensed = licenseData.IsLicensed;
-            LicenseSettings.CustomerId = licenseData.CustomerId;
-            LicenseSettings.SubscriptionId = licenseData.SubscriptionId;
+            var licenseData = new SubscriptionData
+            {
+                CustomerId = "Unknown",
+                SubscriptionId = "None",
+                PlanId = "NotActive",
+                Status = SubscriptionStatus.NotActive,
+                IsLicensed = false
+            };
             return licenseData;
         }
     }

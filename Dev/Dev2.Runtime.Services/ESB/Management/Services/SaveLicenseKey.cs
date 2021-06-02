@@ -15,6 +15,7 @@ using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
+using Dev2.Runtime.Security;
 using Dev2.Workspaces;
 using Warewolf.Licensing;
 
@@ -29,28 +30,26 @@ namespace Dev2.Runtime.ESB.Management.Services
         public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             var serializer = new Dev2JsonSerializer();
-            var result = new ExecuteMessage {HasError = false};
-            var returnLicenseData = new LicenseData();
+            var result = new ExecuteMessage { HasError = false };
             Dev2Logger.Info("Save LicenseKey Service", GlobalConstants.WarewolfInfo);
-            if (values != null)
-            {
-                values.TryGetValue(Warewolf.Service.SaveLicenseKey.LicenseData, out StringBuilder licenseData);
-                returnLicenseData = serializer.Deserialize<LicenseData>(licenseData);
-            }
+            values.TryGetValue(Warewolf.Service.SaveLicenseKey.LicenseData, out var licenseData);
 
-            if (returnLicenseData.CustomerId == null)
+            var returnLicenseData = serializer.Deserialize<SubscriptionData>(licenseData);
+            var subscription = new WarewolfLicense();
+            var resultData = subscription.CreatePlan(returnLicenseData);
+
+            if(resultData is null)
             {
                 result.HasError = true;
             }
-            if (returnLicenseData.SubscriptionId == null)
+
+            var subscriptionData = HostSecurityProvider.Instance.UpdateSubscriptionData(resultData);
+            if(!subscriptionData.IsLicensed)
             {
                 result.HasError = true;
             }
-            //TODO: Save new CustomerId to secure.config in server.
-            var license = new WarewolfLicense();
-            var resultData = license.Retrieve(returnLicenseData);
-            result.Message = serializer.SerializeToBuilder(resultData);
 
+            result.Message = serializer.SerializeToBuilder(subscriptionData);
             return serializer.SerializeToBuilder(result);
         }
 

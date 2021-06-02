@@ -10,16 +10,10 @@
 
 namespace Warewolf.Licensing
 {
-    public class LicenceApiConfig : ILicenceApiConfig
+    public interface ISubscription
     {
-        public LicenceApiConfig()
-        {
-            SiteName = LicenseSettings.SiteName;
-            ApiKey =  LicenseSettings.ApiKey;
-        }
-
-        public string SiteName { get; set; }
-
-        public string ApiKey { get; set; }
+        ISubscriptionData CreatePlan(ISubscriptionData subscriptionData);
+        ISubscriptionData UpgradePlan(ISubscriptionData subscriptionData);
+        ISubscriptionData Retrieve(string subscriptionId);
     }
 }

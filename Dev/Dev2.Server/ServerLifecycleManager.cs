@@ -46,7 +46,6 @@ using Warewolf.Usage;
 using JsonSerializer = Warewolf.Streams.JsonSerializer;
 using System.Diagnostics;
 using Warewolf.Execution;
-using Warewolf.Licensing;
 
 namespace Dev2
 {
@@ -493,21 +492,11 @@ namespace Dev2
         void LoadHostSecurityProvider()
         {
             _writer.Write("Loading security provider...  ");
-            var instance = HostSecurityProvider.Instance;
-            //TODO: have not done coverage yet as it might change.
-
-            LicenseSettings.CustomerId = HostSecurityProvider.Instance.CustomerId;
-            LicenseSettings.SubscriptionId = HostSecurityProvider.Instance.SubscriptionId;
-            LicenseSettings.PlanId = HostSecurityProvider.Instance.PlanId;
-
-            LicenseSettings.CustomerId = "16BjmNSXISIQjctO";
-            LicenseSettings.SubscriptionId = "16BjmNSXISIQjctO";
-            LicenseSettings.PlanId  = "developer";
-
-            LicenseSettings.SiteName = HostSecurityProvider.Instance.ConfigSitename;
-            LicenseSettings.ApiKey = HostSecurityProvider.Instance.ConfigKey;
-            if(instance != null)
+            var subscriptionDataInstance = HostSecurityProvider.SubscriptionDataInstance;
+            if(subscriptionDataInstance != null)
             {
+                //TODO: get subscription data service
+
                 _writer.WriteLine("done.");
             }
         }

@@ -17,6 +17,7 @@ using System.Xml;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Wrappers;
+using Warewolf.Licensing;
 
 namespace Dev2.Runtime.Security
 {
@@ -24,8 +25,8 @@ namespace Dev2.Runtime.Security
     {
         public static readonly Guid InternalServerID = new Guid("51A58300-7E9D-4927-A57B-E5D700B11B55");
         public static readonly string InternalPublicKey = "BgIAAACkAABSU0ExAAQAAAEAAQBlsJw+ibEmPy3P93PV7a8QjuHqS4QR+yP/+6CVUUpqvUE3hguQUzZ4Fw28hz0LwMLK8Sc1qb0s0FFiH9Ju6O+fIXruGzC3CjzN8wZRGoV2IvfmJ/nMKQ/NVESx9virJA1xTIZa9Za3PQvGbPh1ce0me5YJd3VOHKUqqJCbVeE7pg==";
-        public static readonly string InternalConfigKey = "wCYcjqzbAiHIneFFib+LCrn73SSkOlRzm4QxP+mkeHsH7e3surKN5liDsrv39JFR";
-        public static readonly string InternalConfigSitename = "L8NilnImZ18r8VCMD88AdQ==";
+        public static readonly string SubscriptionTestKey = "wCYcjqzbAiHIneFFib+LCrn73SSkOlRzm4QxP+mkeHsH7e3surKN5liDsrv39JFR";
+        public static readonly string SubscriptionTestSiteName = "L8NilnImZ18r8VCMD88AdQ==";
         public static readonly string LiveConfigKey = "ml420y+ZHMiv8CoQJxF1XMsYXXxCcDgNkvFkZSJHQB+m3EdlYIeUAP8oEIl9Z29b";
         public static readonly string LiveConfigSitename = "tWPn5xcpWET9NX3yt+uPHQ==";
 
@@ -33,13 +34,15 @@ namespace Dev2.Runtime.Security
         readonly RSACryptoServiceProvider _systemKey;
 
         public Guid ServerID { get; private set; }
-        public string ConfigKey { get; }
-        public string ConfigSitename { get; }
+        public string SubscriptionKey { get; }
+        public string SubscriptionSiteName { get; }
         public string CustomerId { get; }
         public string PlanId { get; }
         public string SubscriptionId { get; }
         static volatile IHostSecurityProvider _theInstance;
         static readonly object SyncRoot = new object();
+        static readonly object SyncSubRoot = new object();
+        static volatile ISubscriptionData _subscriptionData;
 
         public static IHostSecurityProvider Instance
         {
@@ -61,6 +64,35 @@ namespace Dev2.Runtime.Security
             }
         }
 
+        public static ISubscriptionData SubscriptionDataInstance
+        {
+            get
+            {
+                if (_subscriptionData == null)
+                {
+                    lock (SyncSubRoot)
+                    {
+                        if (_subscriptionData == null)
+                        {
+                            var instance = Instance;
+                            //TODO: Add Subscription Status to the Instance
+                            _subscriptionData = new SubscriptionData
+                            {
+                                SubscriptionKey = instance.SubscriptionKey,
+                                SubscriptionSiteName = instance.SubscriptionSiteName,
+                                SubscriptionId = instance.SubscriptionId,
+                                CustomerId = instance.CustomerId,
+                                PlanId = instance.PlanId,
+                                //Status = instance.Status
+                            };
+                        }
+                    }
+                }
+
+                return _subscriptionData;
+            }
+        }
+
         public RSACryptoServiceProvider SystemKey => _systemKey;
         public RSACryptoServiceProvider ServerKey => _serverKey;
 
@@ -74,8 +106,8 @@ namespace Dev2.Runtime.Security
             ServerID = config.ServerID;
             _serverKey = config.ServerKey;
             _systemKey = config.SystemKey;
-            ConfigKey = config.ConfigKey;
-            ConfigSitename = config.ConfigSitename;
+            SubscriptionKey = config.ConfigKey;
+            SubscriptionSiteName = config.ConfigSitename;
             CustomerId = config.CustomerId;
             PlanId = config.PlanId;
             SubscriptionId = config.SubscriptionId;
@@ -170,6 +202,21 @@ namespace Dev2.Runtime.Security
             }
 
             return result;
+        }
+
+        public ISubscriptionData UpdateSubscriptionData(ISubscriptionData subscriptionData)
+        {
+            //TODO: Save new subscription data to Warewolf Server.exe.secureconfig
+            var updateSubscriptionData = new SubscriptionData
+            {
+                SubscriptionId = subscriptionData.SubscriptionId,
+                CustomerId = subscriptionData.CustomerId,
+                PlanId = subscriptionData.PlanId,
+                Status = subscriptionData.Status,
+                IsLicensed = subscriptionData.IsLicensed,
+            };
+
+            return updateSubscriptionData;
         }
     }
 }

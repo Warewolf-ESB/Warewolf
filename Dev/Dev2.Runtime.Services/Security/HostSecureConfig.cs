@@ -83,8 +83,8 @@ namespace Dev2.Runtime.Security
                 ServerKey = new RSACryptoServiceProvider();
 
 #if DEBUG
-                ConfigKey = HostSecurityProvider.InternalConfigKey;
-                ConfigSitename = HostSecurityProvider.InternalConfigSitename;
+                ConfigKey = HostSecurityProvider.SubscriptionTestKey;
+                ConfigSitename = HostSecurityProvider.SubscriptionTestSiteName;
 #else
                 ConfigKey = HostSecurityProvider.LiveConfigKey;
                 ConfigSitename = HostSecurityProvider.LiveConfigSitename;
@@ -128,7 +128,7 @@ namespace Dev2.Runtime.Security
 
             if(settings["ConfigKey"] == null)
             {
-                newSettings.Add("ConfigKey", HostSecurityProvider.InternalConfigKey);
+                newSettings.Add("ConfigKey", HostSecurityProvider.SubscriptionTestKey);
                 updateSettingsFile = true;
             }
             else
@@ -138,7 +138,7 @@ namespace Dev2.Runtime.Security
 
             if(settings["ConfigSitename"] == null)
             {
-                newSettings.Add("ConfigSitename", HostSecurityProvider.InternalConfigSitename);
+                newSettings.Add("ConfigSitename", HostSecurityProvider.SubscriptionTestSiteName);
                 updateSettingsFile = true;
             }
             else
@@ -213,8 +213,8 @@ namespace Dev2.Runtime.Security
                     ["CustomerId"] = "",
                     ["SubscriptionId"] = "",
                     ["PlanId"] = "",
-                    ["ConfigKey"] = HostSecurityProvider.InternalConfigKey,
-                    ["ConfigSitename"] = HostSecurityProvider.InternalConfigSitename
+                    ["ConfigKey"] = HostSecurityProvider.SubscriptionTestKey,
+                    ["ConfigSitename"] = HostSecurityProvider.SubscriptionTestSiteName
                 };
                 SaveConfig(newSettings);
             }

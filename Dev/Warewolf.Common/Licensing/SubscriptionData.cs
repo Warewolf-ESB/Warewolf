@@ -7,17 +7,18 @@
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
+
 using System;
 using Warewolf.Enums;
 
 namespace Warewolf.Licensing
 {
-    public class LicenseData : ILicenseData
+    public class SubscriptionData : ISubscriptionData
     {
-        public string SubscriptionStatus{get;set;}
+        public string SubscriptionStatus { get; set; }
         public string CustomerId { get; set; }
         public string PlanId { get; set; }
-        public string SubscriptionId {get;set;}
+        public string SubscriptionId { get; set; }
         public string CustomerFirstName { get; set; }
         public string CustomerLastName { get; set; }
         public string CustomerEmail { get; set; }
@@ -29,5 +30,8 @@ namespace Warewolf.Licensing
         public SubscriptionStatus? Status { get; set; }
         public DateTime? TrialEnd { get; set; }
         public bool EndOfTerm { get; set; }
+        public string SubscriptionSiteName { get; set; }
+        public string SubscriptionKey { get; set; }
+        public int NoOfCores { get; set; }
     }
 }

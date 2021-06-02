@@ -15,8 +15,6 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Security.Permissions;
 using System.Windows.Controls;
-using ChargeBee.Api;
-using ChargeBee.Models;
 using Dev2;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Infrastructure;
@@ -65,50 +63,39 @@ namespace Warewolf.Studio.CustomControls
         }
 
 #pragma warning disable CC0091
-        public string RetriveSubscription()
+        public string RetrieveSubscription()
         {
             var serializer = new Dev2JsonSerializer();
             var controller = new CommunicationController { ServiceName = nameof(GetLicenseKey) };
             var server = GetEnvironment();
             var resultData = controller.ExecuteCommand<ExecuteMessage>(server.Connection, GlobalConstants.ServerWorkspaceID);
-            var data = serializer.Deserialize<ILicenseData>(resultData.Message);
+            var data = serializer.Deserialize<ISubscriptionData>(resultData.Message);
             return serializer.Serialize(data);
         }
 
 #pragma warning disable CC0091
-        public string CheckoutNew(string email, string name, string surname, string plan)
+        public string CreateSubscription(string email, string firstName, string lastName, string planId)
         {
             try
             {
-                //TODO: The calls to chargebee must be moved into the usage.dll
-                ApiConfig.Configure("warewolf-test", "test_VMxitsiobdAyth62k0DiqpAUKocG6sV3");
-                var customer = Customer.Create()
-                    .FirstName(name)
-                    .LastName(surname)
-                    .Email(email)
-                    .Request();
-                var subscription = Subscription.CreateForCustomer(customer.Customer.Id)
-                    .PlanId(plan)
-                    .PlanQuantity(GetNumberOfCores())
-                    .Request();
-
-                LicenseSettings.CustomerId = customer.Customer.Id;
-                LicenseSettings.PlanId = subscription.Subscription.PlanId;
-                LicenseSettings.SubscriptionId = subscription.Subscription.Id;
-                if(subscription.Subscription.Status.ToString() == "InTrial" && subscription.Subscription.Status.ToString() == "Active")
+                var licenseData = new SubscriptionData
                 {
-                    LicenseSettings.IsLicensed = true;
-                    //TODO: Call SaveLicenseKey Service to save to the secure.config
-                    // var controller = new CommunicationController { ServiceName = nameof(SaveLicenseKey) };
-                    // var server = GetEnvironment();
-                    //  var resultData =controller.ExecuteCommand<ILicenseData>(server.Connection, GlobalConstants.ServerWorkspaceID);
-                }
-
-                return "success";
+                    PlanId = planId,
+                    NoOfCores = GetNumberOfCores(),
+                    CustomerFirstName = firstName,
+                    CustomerLastName = lastName,
+                    CustomerEmail = email
+                };
+                var serializer = new Dev2JsonSerializer();
+                var controller = new CommunicationController { ServiceName = nameof(SaveLicenseKey) };
+                var server = GetEnvironment();
+                controller.AddPayloadArgument(Service.SaveLicenseKey.LicenseData, serializer.SerializeToBuilder(licenseData));
+                var resultData = controller.ExecuteCommand<ExecuteMessage>(server.Connection, GlobalConstants.ServerWorkspaceID);
+                var result = serializer.Deserialize<ISubscriptionData>(resultData.Message);
+                return result.IsLicensed ? "success" : "failed";
             }
             catch(Exception)
             {
-                LicenseSettings.IsLicensed = false;
                 return "failed";
             }
         }

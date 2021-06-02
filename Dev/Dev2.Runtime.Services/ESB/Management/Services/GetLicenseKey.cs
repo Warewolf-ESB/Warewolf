@@ -15,6 +15,7 @@ using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
+using Dev2.Runtime.Security;
 using Dev2.Workspaces;
 using Warewolf.Licensing;
 
@@ -26,18 +27,23 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             var serializer = new Dev2JsonSerializer();
             var result = new ExecuteMessage { HasError = false };
-
             Dev2Logger.Info("Get LicenseKey Service", GlobalConstants.WarewolfInfo);
-            var licenseData = new LicenseData
-            {
-                CustomerId = LicenseSettings.CustomerId,
-                PlanId = LicenseSettings.PlanId,
-                SubscriptionId = LicenseSettings.SubscriptionId
-            };
+
+            var subscriptionDataInstance = HostSecurityProvider.SubscriptionDataInstance;
 
             var license = new WarewolfLicense();
-            var resultData = license.Retrieve(licenseData);
-            result.Message = serializer.SerializeToBuilder(resultData);
+            var subscriptionData = license.Retrieve(subscriptionDataInstance.SubscriptionId);
+            result.Message = serializer.SerializeToBuilder(subscriptionData);
+
+            //TODO: If anything is different(Plan changes etc.) it needs to be updated to the secure.config
+            if(subscriptionData.PlanId != subscriptionDataInstance.PlanId || subscriptionData.Status != subscriptionDataInstance.Status)
+            {
+                var updateSubscriptionData = HostSecurityProvider.Instance.UpdateSubscriptionData(subscriptionData);
+                if(!updateSubscriptionData.IsLicensed)
+                {
+                    result.HasError = true;
+                }
+            }
 
             return serializer.SerializeToBuilder(result);
         }

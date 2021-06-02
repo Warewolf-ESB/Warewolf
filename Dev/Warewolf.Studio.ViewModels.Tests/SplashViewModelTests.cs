@@ -14,7 +14,6 @@ using Dev2.Common.Interfaces;
 using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Warewolf.Licensing;
 
 namespace Warewolf.Studio.ViewModels.Tests
 {
@@ -308,8 +307,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //arrange
             //TODO:The GlobalConstants will be replaced with the WarewolfLicense object
-            LicenseSettings.IsLicensed = true;
-            LicenseSettings.PlanId = "Developer";
+            //LicenseSettings.IsLicensed = true;
+            //LicenseSettings.PlanId = "Developer";
 
             //act
             var splashViewModel = new SplashViewModel(_serverMock.Object, _externalProcessExecutorMock.Object);
@@ -325,14 +324,14 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //arrange
             //TODO:The GlobalConstants will be replaced with the WarewolfLicense object
-            LicenseSettings.IsLicensed = false;
-            LicenseSettings.PlanId = "Developer";
+            //LicenseSettings.IsLicensed = false;
+            //LicenseSettings.PlanId = "Developer";
 
             //act
             var splashViewModel = new SplashViewModel(_serverMock.Object, _externalProcessExecutorMock.Object);
 
             //assert
-            Assert.AreEqual(LicenseSettings.NotRegistered, splashViewModel.WarewolfLicense);
+            //Assert.AreEqual(LicenseSettings.NotRegistered, splashViewModel.WarewolfLicense);
         }
 
     }
