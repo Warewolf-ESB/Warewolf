@@ -13,7 +13,7 @@ using Warewolf.Enums;
 
 namespace Warewolf.Licensing
 {
-    public interface ILicenseData
+    public interface ISubscriptionData : ISubscriptionAdmin
     {
         string CustomerId { get; set; }
         string SubscriptionId { get; set; }
@@ -26,9 +26,9 @@ namespace Warewolf.Licensing
         int CardExpiryYear { get; set; }
         int CardExpiryMonth { get; set; }
         bool IsLicensed { get; set; }
-        string SubscriptionStatus { get; set; }
         SubscriptionStatus? Status { get; set; }
         DateTime? TrialEnd { get; set; }
         bool EndOfTerm { get; set; }
+        int NoOfCores {get;set;}
     }
 }

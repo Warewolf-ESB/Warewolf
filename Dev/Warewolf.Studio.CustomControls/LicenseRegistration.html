@@ -47,7 +47,7 @@
                 }
 
                 if (valid === true) {
-                    let result = window.external.CheckoutNew(email, firstName, lastName, planId);
+                    let result = window.external.CreateSubscription(email, firstName, lastName, planId);
 
                     if (result === "success") {
                         $("#errorContainer").css("display", "none");

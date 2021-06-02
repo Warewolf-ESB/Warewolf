@@ -84,11 +84,11 @@ namespace Dev2.Runtime.Security
                 ServerKey = new RSACryptoServiceProvider();
 
 #if DEBUG
-                ConfigKey = HostSecurityProvider.InternalConfigKey;
-                ConfigSitename = HostSecurityProvider.InternalConfigSitename;
+                ConfigKey = HostSecurityProvider.SubscriptionTestKey;
+                ConfigSitename = HostSecurityProvider.SubscriptionTestSiteName;
 #else
-                ConfigKey = HostSecurityProvider.LiveConfigKey;
-                ConfigSitename = HostSecurityProvider.LiveConfigSitename;
+                ConfigKey = HostSecurityProvider.SubscriptionLiveKey;
+                ConfigSitename = HostSecurityProvider.SubscriptionLiveSitename;
 #endif
                 CustomerId = "";
                 PlanId = "";
@@ -101,8 +101,6 @@ namespace Dev2.Runtime.Security
                 newSettings["SubscriptionId"] = SubscriptionId;
                 newSettings["Status"] = Status;
 
-                //The trim is because the keys are being padded in the encryption. We cannot change encryption at this time so this
-                //is temp until we do.
                 ConfigSitename = DecryptKey(ConfigSitename);
                 ConfigKey = DecryptKey(ConfigKey);
                 CustomerId = DecryptKey(CustomerId);
@@ -133,9 +131,9 @@ namespace Dev2.Runtime.Security
             if(settings["ConfigKey"] == null)
             {
 #if DEBUG
-                newSettings.Add("ConfigKey", HostSecurityProvider.InternalConfigKey);
+                newSettings.Add("ConfigKey", HostSecurityProvider.SubscriptionTestKey);
 #else
-               newSettings.Add("ConfigKey", HostSecurityProvider.LiveConfigKey);
+               newSettings.Add("ConfigKey", HostSecurityProvider.SubscriptionLiveKey);
 #endif
 
                 updateSettingsFile = true;
@@ -148,9 +146,9 @@ namespace Dev2.Runtime.Security
             if(settings["ConfigSitename"] == null)
             {
 #if DEBUG
-                newSettings.Add("ConfigSitename", HostSecurityProvider.InternalConfigSitename);
+                newSettings.Add("ConfigSitename", HostSecurityProvider.SubscriptionTestSiteName);
 #else
-               newSettings.Add("ConfigSitename", HostSecurityProvider.LiveConfigSitename);
+               newSettings.Add("ConfigSitename", HostSecurityProvider.SubscriptionLiveSiteName);
 #endif
 
                 updateSettingsFile = true;
@@ -225,11 +223,11 @@ namespace Dev2.Runtime.Security
             if(!File.Exists(FileName))
             {
                 Dev2Logger.Info(string.Format(ErrorResource.FileNotFound, FileName), GlobalConstants.WarewolfInfo);
-                var configKey = HostSecurityProvider.LiveConfigKey;
-                var configSitename = HostSecurityProvider.LiveConfigSitename;
+                var configKey = HostSecurityProvider.SubscriptionLiveKey;
+                var configSitename = HostSecurityProvider.SubscriptionLiveSiteName;
 #if DEBUG
-                configKey = HostSecurityProvider.InternalConfigKey;
-                configSitename = HostSecurityProvider.InternalConfigSitename;
+                configKey = HostSecurityProvider.SubscriptionTestKey;
+                configSitename = HostSecurityProvider.SubscriptionTestSiteName;
 #endif
                 var newSettings = new NameValueCollection
                 {

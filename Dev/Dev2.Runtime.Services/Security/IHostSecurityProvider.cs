@@ -12,14 +12,15 @@ using Dev2.Common.Interfaces.Wrappers;
 using System;
 using System.Net;
 using System.Text;
+using Warewolf.Licensing;
 
 namespace Dev2.Runtime.Security
 {
     public interface IHostSecurityProvider
     {
         Guid ServerID { get; }
-        string ConfigKey { get; }
-        string ConfigSitename { get; }
+        string SubscriptionKey { get; }
+        string SubscriptionSiteName { get; }
         string CustomerId { get; }
         string PlanId { get; }
         string SubscriptionId { get; }
@@ -28,5 +29,7 @@ namespace Dev2.Runtime.Security
         StringBuilder SignXml(StringBuilder xml);
 
         bool EnsureSsl(IFile fileWrapper, string certPath, IPEndPoint endPoint);
+
+        ISubscriptionData UpdateSubscriptionData(ISubscriptionData subscriptionData);
     }
 }

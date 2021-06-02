@@ -9,53 +9,52 @@
 */
 
 using ChargeBee.Api;
-using ChargeBee.Models;
 using ChargeBee.Models.Enums;
 using Warewolf.Enums;
 
 namespace Warewolf.Licensing
 {
-    public class WarewolfLicenseWrapper : IWarewolfLicense
+    public class Subscription : ISubscription
     {
-        public ILicenseData Retrieve(ILicenseData licenseData)
+        public ISubscriptionData Retrieve(string subscriptionId)
         {
-            var result = Subscription.Retrieve(licenseData.SubscriptionId).Request();
+            var result = ChargeBee.Models.Subscription.Retrieve(subscriptionId).Request();
             return GenerateLicenseData(result);
         }
 
         //TODO: No coverage yet due to it probably being deleted later
-        public ILicenseData CreatePlan(ILicenseData licenseData)
+        public ISubscriptionData CreatePlan(ISubscriptionData subscriptionData)
         {
-            var result = Subscription.Create()
-                .PlanId(licenseData.PlanId)
+            var result = ChargeBee.Models.Subscription.Create()
+                .PlanId(subscriptionData.PlanId)
                 .AutoCollection(AutoCollectionEnum.Off)
-                .CustomerFirstName(licenseData.CustomerFirstName)
-                .CustomerLastName(licenseData.CustomerLastName)
-                .CustomerEmail(licenseData.CustomerEmail)
+                .CustomerFirstName(subscriptionData.CustomerFirstName)
+                .CustomerLastName(subscriptionData.CustomerLastName)
+                .CustomerEmail(subscriptionData.CustomerEmail)
                 .Request();
             return GenerateLicenseData(result);
         }
 
         //TODO: No coverage yet due to it probably being deleted later
-        public ILicenseData UpgradePlan(ILicenseData licenseData)
+        public ISubscriptionData UpgradePlan(ISubscriptionData subscriptionData)
         {
-            var result = Subscription.Update(licenseData.CustomerId)
-                .PlanId(licenseData.PlanId)
-                .CardNumber(licenseData.CardNumber.ToString())
-                .CardCvv(licenseData.CardCvv.ToString())
-                .CardExpiryYear(licenseData.CardExpiryYear)
-                .CardExpiryMonth(licenseData.CardExpiryMonth)
-                .EndOfTerm(licenseData.EndOfTerm)
+            var result = ChargeBee.Models.Subscription.Update(subscriptionData.CustomerId)
+                .PlanId(subscriptionData.PlanId)
+                .CardNumber(subscriptionData.CardNumber.ToString())
+                .CardCvv(subscriptionData.CardCvv.ToString())
+                .CardExpiryYear(subscriptionData.CardExpiryYear)
+                .CardExpiryMonth(subscriptionData.CardExpiryMonth)
+                .EndOfTerm(subscriptionData.EndOfTerm)
                 .Request();
             return GenerateLicenseData(result);
         }
 
-        private static ILicenseData GenerateLicenseData(EntityResult result)
+        private static ISubscriptionData GenerateLicenseData(EntityResult result)
         {
             var subscription = result.Subscription;
             var customer = result.Customer;
 
-            var licenseData = new LicenseData
+            var licenseData = new SubscriptionData
             {
                 CustomerId = subscription.CustomerId,
                 SubscriptionId = subscription.Id,
