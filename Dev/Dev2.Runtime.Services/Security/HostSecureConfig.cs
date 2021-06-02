@@ -259,7 +259,7 @@ namespace Dev2.Runtime.Security
 
         public static string DecryptKey(string base64String)
         {
-            return SecurityEncryption.Decrypt(base64String);
+            return SecurityEncryption.Decrypt(base64String).TrimEnd('\0');
         }
 
         public static RSACryptoServiceProvider CreateKey(string base64String)
@@ -270,7 +270,7 @@ namespace Dev2.Runtime.Security
             return key;
         }
 
-        public static NameValueCollection CreateSettings(string serverID, string serverKey, string systemKey, string customerId, string planId, string configSitename, string configKey, string subscriptionId) => new NameValueCollection
+        public static NameValueCollection CreateSettings(string serverID, string serverKey, string systemKey, string customerId, string planId,string subscriptionId, string configSitename, string configKey) => new NameValueCollection
         {
             {
                 "ServerID", serverID
