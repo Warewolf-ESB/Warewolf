@@ -191,7 +191,7 @@ namespace Dev2.Runtime.WebServer.Executor
             }
         }
 
-        string GetExecutePayload(IDSFDataObject dataObject, IWarewolfResource resource, WebRequestTO webRequest, ref DataListFormat formatter)
+        static string GetExecutePayload(IDSFDataObject dataObject, IWarewolfResource resource, WebRequestTO webRequest, ref DataListFormat formatter)
         {
             var notDebug = !dataObject.IsDebug || dataObject.RemoteInvoke || dataObject.RemoteNonDebugInvoke;
             if (notDebug && resource?.DataList != null)
@@ -219,7 +219,7 @@ namespace Dev2.Runtime.WebServer.Executor
             return string.Empty;
         }
 
-        private void CleanUp(IExecutionDto dto)
+        static void CleanUp(IExecutionDto dto)
         {
             dto.DataObject = null;
             dto.ErrorResultTO.ClearErrors();
