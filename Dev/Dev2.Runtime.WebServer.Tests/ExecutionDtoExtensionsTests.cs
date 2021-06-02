@@ -47,7 +47,7 @@ namespace Dev2.Runtime.WebServer.Tests
 
             var dataListDataFormat = DataListFormat.CreateFormat("OPENAPI", EmitionTypes.OPENAPI, "application/json");
 
-                       var webRequestTO = new WebRequestTO { WebServerUrl = "http://serverName:3142/public/resourceName.api" };
+            var webRequestTO = new WebRequestTO { WebServerUrl = "http://serverName:3142/public/resourceName.api" };
 
             var executionDto = new ExecutionDto
             {

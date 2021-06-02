@@ -100,7 +100,7 @@ namespace Dev2.Runtime.WebServer.Executor
             return responseData.ToResponseWriter(stringResponseWriterFactory);
         }
 
-        public ResponseData CreateResponse()
+        internal ResponseData CreateResponse()
         {
             var dataObject = _executionDto.DataObject;
             var esbExecuteRequest = _executionDto.Request;
