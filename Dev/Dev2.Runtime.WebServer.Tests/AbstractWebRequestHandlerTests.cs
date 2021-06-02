@@ -843,9 +843,9 @@ namespace Dev2.Tests.Runtime.WebServer
             mockStreamContentWrapper.Setup(o => o.Headers)
                 .Returns(new StreamContentWrapper(new MemoryStream()) { Headers = { } }.Headers);
             mockStreamContentWrapper.Setup(o => o.ReadAsMultipartAsync(provider))
-                .Returns(Task<MultipartMemoryStreamProvider>.FromResult(provider));
+                .Returns(Task.FromResult(provider));
             mockStreamContentWrapper.Setup(o => o.ReadAsByteArrayAsync())
-                .Returns(Task<byte[]>.FromResult(dataBytes));
+                .Returns(Task.FromResult(dataBytes));
 
             var mockStreamContentFactory = new Mock<IStreamContentFactory>();
             mockStreamContentFactory.Setup(o => o.New(It.IsAny<MemoryStream>()))
@@ -956,9 +956,9 @@ namespace Dev2.Tests.Runtime.WebServer
             mockStreamContentWrapper.Setup(o => o.Headers)
                 .Returns(new StreamContentWrapper(new MemoryStream()) { Headers = { } }.Headers);
             mockStreamContentWrapper.Setup(o => o.ReadAsMultipartAsync(provider))
-                .Returns(Task<MultipartMemoryStreamProvider>.FromResult(provider));
+                .Returns(Task.FromResult(provider));
             mockStreamContentWrapper.Setup(o => o.ReadAsByteArrayAsync())
-                .Returns(Task<byte[]>.FromResult(dataBytes));
+                .Returns(Task.FromResult(dataBytes));
 
             var mockStreamContentFactory = new Mock<IStreamContentFactory>();
             mockStreamContentFactory.Setup(o => o.New(It.IsAny<MemoryStream>()))
@@ -1077,9 +1077,9 @@ namespace Dev2.Tests.Runtime.WebServer
             mockStreamContentWrapper.Setup(o => o.Headers)
                 .Returns(new StreamContentWrapper(new MemoryStream()) { Headers = { } }.Headers);
             mockStreamContentWrapper.Setup(o => o.ReadAsMultipartAsync(provider))
-                .Returns(Task<MultipartMemoryStreamProvider>.FromResult(provider));
+                .Returns(Task.FromResult(provider));
             mockStreamContentWrapper.Setup(o => o.ReadAsByteArrayAsync())
-                .Returns(Task<byte[]>.FromResult(dataBytes));
+                .Returns(Task.FromResult(dataBytes));
 
             var mockStreamContentFactory = new Mock<IStreamContentFactory>();
             mockStreamContentFactory.Setup(o => o.New(It.IsAny<MemoryStream>()))
@@ -1178,9 +1178,9 @@ namespace Dev2.Tests.Runtime.WebServer
             mockStreamContentWrapper.Setup(o => o.Headers)
                 .Returns(new StreamContentWrapper(new MemoryStream()) { Headers = { } }.Headers);
             mockStreamContentWrapper.Setup(o => o.ReadAsMultipartAsync(provider))
-                .Returns(Task<MultipartMemoryStreamProvider>.FromResult(provider));
+                .Returns(Task.FromResult(provider));
             mockStreamContentWrapper.Setup(o => o.ReadAsByteArrayAsync())
-                .Returns(Task<byte[]>.FromResult(dataBytes));
+                .Returns(Task.FromResult(dataBytes));
 
             var mockStreamContentFactory = new Mock<IStreamContentFactory>();
             mockStreamContentFactory.Setup(o => o.New(It.IsAny<MemoryStream>()))
@@ -1282,7 +1282,7 @@ namespace Dev2.Tests.Runtime.WebServer
             
             var expected = xmlData.CleanXmlSOAP();
 
-            Assert.AreEqual(expected, postDataMock.ToString(), "This xml string should not contain namespaces");
+            Assert.AreEqual(expected, postDataMock, "This xml string should not contain namespaces");
 
         }
 
@@ -1371,7 +1371,7 @@ namespace Dev2.Tests.Runtime.WebServer
             var communicationContext = new Mock<ICommunicationContext>();
             var data = this.SerializeToJsonString(new DefaultSerializationBinder());
             var myXmlNode = JsonConvert.DeserializeXmlNode(data, "DataList");
-            var xmlData = myXmlNode.InnerXml;
+            var xmlData = myXmlNode?.InnerXml;
             var uriString = $"https://warewolf.atlassian.net/secure/RapidBoard.jspa?&{xmlData}";
             communicationContext.SetupGet(context => context.Request.Uri).Returns(new Uri(uriString));
             communicationContext.Setup(context => context.Request.Method).Returns("GET");
@@ -2664,10 +2664,6 @@ namespace Dev2.Tests.Runtime.WebServer
 
     internal class HttpContentHeadersStub : HttpHeaders
     {
-        public HttpContentHeadersStub()
-        {
-        }
-
         public HttpContentHeaders Headers { get; set; }
     }
 

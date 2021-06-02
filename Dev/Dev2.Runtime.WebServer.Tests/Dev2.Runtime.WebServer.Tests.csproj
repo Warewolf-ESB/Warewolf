@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AbstractControllerTests.cs" />
+    <Compile Include="AbstractWebRequestHandlerTests.cs" />
     <Compile Include="ExecuteExceptionPayloadTests.cs" />
     <Compile Include="ExecutionDtoExtensionsTests.cs" />
     <Compile Include="ExtensionsTests.cs" />

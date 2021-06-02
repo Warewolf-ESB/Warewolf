@@ -178,7 +178,7 @@ namespace Dev2.Runtime.WebServer.Executor
             return ExtractKeyValuePairs(pairs, ctx.Request.BoundVariables);
         }
 
-        private NameValueCollection ExtractMultipartFormDataArgumentsFromDataList(ICommunicationContext ctx, StreamReader reader)
+        NameValueCollection ExtractMultipartFormDataArgumentsFromDataList(ICommunicationContext ctx, StreamReader reader)
         {
             var provider = _multipartMemoryStreamProviderFactory.New();
             var tempStream = _memoryStreamFactory.New();
@@ -225,7 +225,7 @@ namespace Dev2.Runtime.WebServer.Executor
             return valuePairs;
         }
 
-        private static NameValueCollection ExtractArgumentsFromDataListOrQueryString(ICommunicationContext ctx, string data)
+        static NameValueCollection ExtractArgumentsFromDataListOrQueryString(ICommunicationContext ctx, string data)
         {
             var pairs = new NameValueCollection(5);
             var keyValuePairs = data.Split(new[] {"&"}, StringSplitOptions.RemoveEmptyEntries).ToList();
