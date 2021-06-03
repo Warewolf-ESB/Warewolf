@@ -12,7 +12,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Transactions;
+using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
@@ -52,7 +54,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             try
             {
 
-                var items = SaveFolders(sourcePath, destinationPath, newName, fixRefences);
+                var items = DuplicateAndSaveFolders(sourcePath, destinationPath, newName, fixRefences);
                 return new ResourceCatalogDuplicateResult
                 {
                     Status = ExecStatus.Success,
@@ -133,17 +135,115 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             }
         }
 
-        IEnumerable<IExplorerItem> SaveFolders(string sourceLocation, string destination, string newName, bool fixRefences)
+        IEnumerable<IExplorerItem> DuplicateAndSaveFolders(string sourceLocation, string destination, string newName, bool fixRefences)
         {
-            var resourcesToUpdate = new List<IResource>();
-            var resourceUpdateMap = new Dictionary<Guid, Guid>();
-            var resourceList = _resourceCatalog.GetResourceList(GlobalConstants.ServerWorkspaceID);
-            var items = new List<IExplorerItem>();
-            var resourceToMove = resourceList.Where(resource =>
+            var resourcesToMove = GetResourcesToMoveFrom(sourceLocation);
+            string destFolderPath = CalculateDestinationFolderPath(destination, newName, out List<IExplorerItem> items);
+
+            try
             {
-                var upper = resource.GetResourcePath(GlobalConstants.ServerWorkspaceID).ToUpper();
-                return upper.StartsWith(sourceLocation.ToUpper());
-            }).Where(resource => !(resource is ManagementServiceResource)).ToList();
+                var (duplicatedResources, duplicatedResourcesMap) = DuplicateAndSaveResources(sourceLocation, destFolderPath, resourcesToMove, fixRefences);
+
+                DuplicateAndSaveTests(duplicatedResourcesMap);
+
+                if (fixRefences)
+                {
+                    try
+                    {
+                        using (var tx = new TransactionScope(TransactionScopeOption.RequiresNew))
+                        {
+                            FixReferences(duplicatedResources, duplicatedResourcesMap);
+                            tx.Complete();
+                        }
+
+                    }
+                    catch (TransactionAbortedException e)
+                    {
+                        //TODO: remove this line as Transation Rollback is not possible here, current returns null
+                        //Transaction.Current.Rollback();  
+                        throw new TransactionAbortedException("Failure Fixing references", e);
+                    }
+                }
+                
+            }
+            catch (TransactionAbortedException ex)
+            {
+                throw;
+            }
+           
+            return items;
+        }
+
+        private (List<IResource> DuplicatedResources, Dictionary<Guid, Guid> DuplicatedResourcesMap) DuplicateAndSaveResources(string sourceLocation, string destFolderPath, List<IResource> resourcesToMove, bool overrideExisting)
+        {
+            var duplicatedResources = new List<IResource>();
+            var duplicatedResourcesMap = new Dictionary<Guid, Guid>();
+            var resourceAndContentMap = new Dictionary<IResource, StringBuilder>();
+
+            var firstResource = resourcesToMove.First();
+            string savePath = CalculateResourceSavePath(sourceLocation, destFolderPath, firstResource.ResourceName, firstResource);
+            foreach (var oldResource in resourcesToMove)
+            {
+                try
+                {
+                    var itemToAdd = GenerateItemToAdd(savePath);
+                    ServerExplorerRepository.Instance.AddItem(itemToAdd, GlobalConstants.ServerWorkspaceID);
+
+                    var result = _resourceCatalog.GetResourceContents(GlobalConstants.ServerWorkspaceID, oldResource.ResourceID);
+                    var xElement = result.ToXElement();
+                    var newResource = DuplicateResource(xElement);
+
+                    duplicatedResources.Add(newResource);
+                    duplicatedResourcesMap.Add(oldResource.ResourceID, newResource.ResourceID);
+                    resourceAndContentMap.Add(newResource, xElement.ToStringBuilder());
+                }
+                catch (Exception e)
+                {
+                    Dev2Logger.Error(e.Message, e, GlobalConstants.WarewolfError);
+                    throw new Exception("Failure Duplicating Folder: " + e.Message);
+                }
+            }
+
+            _resourceCatalog.SaveResources(GlobalConstants.ServerWorkspaceID, resourceAndContentMap, overrideExisting, savePath);
+            return (duplicatedResources, duplicatedResourcesMap);
+        }
+
+        private void DuplicateAndSaveTests(Dictionary<Guid, Guid> duplicatedResourcesMap)
+        {
+            foreach (var mapper in duplicatedResourcesMap)
+            {
+                var oldResourceId = mapper.Key;
+                var newResourceId = mapper.Value;
+                SaveTests(oldResourceId, newResourceId); 
+            }
+        }
+
+        private static ServerExplorerItem GenerateItemToAdd(string savePath)
+        {
+            var subActualPath = savePath.TrimStart('\\');
+            var subTrimEnd = subActualPath.TrimStart('\\').TrimEnd('\\');
+            var idx = subTrimEnd.LastIndexOf("\\", StringComparison.InvariantCultureIgnoreCase);
+            var name = subTrimEnd.Substring(idx + 1);
+            var subItem = ServerExplorerRepository.Instance.Find(item => item.ResourcePath.ToLowerInvariant().TrimEnd('\\').Equals(subTrimEnd));
+            return new ServerExplorerItem(name, Guid.NewGuid(), "Folder", new List<IExplorerItem>(), Permissions.Contribute, subTrimEnd)
+            {
+                IsFolder = true,
+                Parent = subItem
+            };
+        }
+
+        private Resource DuplicateResource(XElement xElement)
+        {
+            return new Resource(xElement)
+            {
+                IsUpgraded = true,
+                ResourceID = Guid.NewGuid()
+            };
+        }
+
+        private static string CalculateDestinationFolderPath(string destination, string newName, out List<IExplorerItem> items)
+        {
+            items = new List<IExplorerItem>();
             var destPath = destination + "\\" + newName;
             var actualPath = destPath.TrimStart('\\');
             var trimEnd = destination.TrimStart('\\').TrimEnd('\\');
@@ -165,74 +265,31 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                 items.Add(itemToAdd);
             }
 
-            foreach (var resource in resourceToMove)
+            return destPath;
+        }
+
+        private List<IResource> GetResourcesToMoveFrom(string sourceLocation)
+        {
+            var resourceList = _resourceCatalog.GetResourceList(GlobalConstants.ServerWorkspaceID);
+            return resourceList.Where(resource =>
             {
-                try
-                {
-                    var result = _resourceCatalog.GetResourceContents(GlobalConstants.ServerWorkspaceID, resource.ResourceID);
-                    var xElement = result.ToXElement();
-                    var newResource = new Resource(xElement)
-                    {
-                        IsUpgraded = true
-                    };
-                    var newResourceId = Guid.NewGuid();
-                    var oldResourceId = resource.ResourceID;
-                    newResource.ResourceID = newResourceId;
-                    var fixedResource = xElement.ToStringBuilder();
+                var upper = resource.GetResourcePath(GlobalConstants.ServerWorkspaceID).ToUpper();
+                return upper.StartsWith(sourceLocation.ToUpper());
+            }).Where(resource => !(resource is ManagementServiceResource)).ToList();
+        }
 
-                    var resourcePath = resource.GetResourcePath(GlobalConstants.ServerWorkspaceID);
+        private static string CalculateResourceSavePath(string sourceLocation, string destPath, string resourceName, IResource resource)
+        {
+            var resourcePath = resource.GetResourcePath(GlobalConstants.ServerWorkspaceID);
 
-                    var savePath = resourcePath;
-                    var resourceNameIndex = resourcePath.LastIndexOf(resource.ResourceName, StringComparison.InvariantCultureIgnoreCase);
-                    if (resourceNameIndex >= 0)
-                    {
-                        savePath = resourcePath.Substring(0, resourceNameIndex);
-                    }
-                    savePath = savePath.ReplaceFirst(sourceLocation, destPath);
-                    var subActualPath = savePath.TrimStart('\\');
-                    var subTrimEnd = subActualPath.TrimStart('\\').TrimEnd('\\');
-                    var idx = subTrimEnd.LastIndexOf("\\", StringComparison.InvariantCultureIgnoreCase);
-                    var name = subTrimEnd.Substring(idx + 1);
-                    var subItem = ServerExplorerRepository.Instance.Find(item => item.ResourcePath.ToLowerInvariant().TrimEnd('\\').Equals(subTrimEnd));
-                    var itemToAdd = new ServerExplorerItem(name, Guid.NewGuid(), "Folder", new List<IExplorerItem>(), Permissions.Contribute, subTrimEnd)
-                    {
-                        IsFolder = true,
-                        Parent = subItem
-                    };
-                    ServerExplorerRepository.Instance.AddItem(itemToAdd, GlobalConstants.ServerWorkspaceID);
-                    _resourceCatalog.SaveResource(GlobalConstants.ServerWorkspaceID, newResource, fixedResource, savePath);
-                    resourcesToUpdate.Add(newResource);
-                    resourceUpdateMap.Add(oldResourceId, newResourceId);
-                    SaveTests(oldResourceId, newResourceId);
-                    ServerExplorerRepository.Instance.UpdateItem(newResource);
-                }
-                catch (Exception e)
-                {
-                    Dev2Logger.Error(e.Message, e, GlobalConstants.WarewolfError);
-                    throw new Exception("Failure Duplicating Folder: " +e.Message);
-                }
-            }
-
-            if (fixRefences)
+            var savePath = resourcePath;
+            var resourceNameIndex = resourcePath.LastIndexOf(resourceName, StringComparison.InvariantCultureIgnoreCase);
+            if (resourceNameIndex >= 0)
             {
-
-                try
-                {
-                    using (var tx = new TransactionScope())
-                    {
-                        FixReferences(resourcesToUpdate, resourceUpdateMap);
-                        tx.Complete();
-                    }
-
-                }
-                catch (TransactionAbortedException e)
-                {
-                    //TODO: remove this line as Transation Rollback is not possible here, current returns null
-                    //Transaction.Current.Rollback();  
-                    throw new TransactionAbortedException("Failure Fixing references", e);
-                }
+                savePath = resourcePath.Substring(0, resourceNameIndex);
             }
-            return items;
+            savePath = savePath.ReplaceFirst(sourceLocation, destPath);
+            return savePath;
         }
 
         void FixReferences(List<IResource> resourcesToUpdate, Dictionary<Guid, Guid> oldToNewUpdates)
@@ -256,7 +313,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                     savePath = resPath.Substring(0, resourceNameIndex);
                 }
 
-                _resourceCatalog.SaveResource(GlobalConstants.ServerWorkspaceID, updatedResource, contents, savePath);
+                //_resourceCatalog.SaveResource(GlobalConstants.ServerWorkspaceID, updatedResource, contents, savePath); //TODO: might need to remove this repeats the save call
                 updatedResource.LoadDependencies(contents.ToXElement());
             }
 

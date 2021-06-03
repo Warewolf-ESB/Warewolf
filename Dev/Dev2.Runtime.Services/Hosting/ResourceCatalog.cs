@@ -342,6 +342,9 @@ namespace Dev2.Runtime.Hosting
         }
 
         public IList<DuplicateResource> GetDuplicateResources() => DuplicateResources;
+
+        public ResourceCatalogResult SaveResources(Guid serverWorkspaceID, Dictionary<IResource, StringBuilder> resourceAndContents, bool overrideExisting, string savePath) => _catalogPluginContainer.SaveProvider.SaveResources(serverWorkspaceID, resourceAndContents, overrideExisting, savePath);
+        
         public ResourceCatalogResult SaveResource(Guid workspaceID, StringBuilder resourceXml, string savedPath) => _catalogPluginContainer.SaveProvider.SaveResource(workspaceID, resourceXml, savedPath, "", "");
         public ResourceCatalogResult SaveResource(Guid workspaceID, StringBuilder resourceXml, string savedPath, string reason) => _catalogPluginContainer.SaveProvider.SaveResource(workspaceID, resourceXml, savedPath, reason, "");
         public ResourceCatalogResult SaveResource(Guid workspaceID, StringBuilder resourceXml, string savedPath, string reason, string user) => _catalogPluginContainer.SaveProvider.SaveResource(workspaceID, resourceXml, savedPath, reason, user);
@@ -520,5 +523,6 @@ namespace Dev2.Runtime.Hosting
         {
             return _serverVersionRepository.GetLatestVersionNumber(resourceId);
         }
+
     }
 }

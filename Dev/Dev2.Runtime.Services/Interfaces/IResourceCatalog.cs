@@ -42,6 +42,7 @@ namespace Dev2.Runtime.Interfaces
         int GetLatestVersionNumberForResource(Guid resourceId);
         IContextualResourceCatalog NewContextualResourceCatalog(IAuthorizationService authService, Guid workspaceId);
         IWarewolfWorkflow GetWorkflow(Guid resourceId);
+        ResourceCatalogResult SaveResources(Guid serverWorkspaceID, Dictionary<IResource, StringBuilder> resourceAndContentMap, bool overrideExisting, string savePath);
     }
 
     public interface IResourceCatalogFactory
