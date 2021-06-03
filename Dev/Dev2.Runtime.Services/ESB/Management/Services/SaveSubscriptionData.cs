@@ -26,18 +26,20 @@ namespace Dev2.Runtime.ESB.Management.Services
     {
         private readonly ISubscriptionData _subscriptionDataInstance;
         private readonly IWarewolfLicense _warewolfLicense;
-        private IBuilderSerializer _serializer;
+        private readonly IBuilderSerializer _serializer;
+        private readonly IHostSecurityProvider _hostSecurityProvider;
 
         public SaveSubscriptionData()
-            : this(new Dev2JsonSerializer(), new WarewolfLicense(), HostSecurityProvider.SubscriptionDataInstance)
+            : this(new Dev2JsonSerializer(), new WarewolfLicense(), HostSecurityProvider.SubscriptionDataInstance, HostSecurityProvider.Instance)
         {
         }
 
-        public SaveSubscriptionData(IBuilderSerializer serializer, IWarewolfLicense warewolfLicense, ISubscriptionData subscriptionData)
+        public SaveSubscriptionData(IBuilderSerializer serializer, IWarewolfLicense warewolfLicense, ISubscriptionData subscriptionData, IHostSecurityProvider hostSecurityProvider)
         {
             _warewolfLicense = warewolfLicense;
             _subscriptionDataInstance = subscriptionData;
             _serializer = serializer;
+            _hostSecurityProvider = hostSecurityProvider;
         }
 
         public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
@@ -58,7 +60,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 result.SetMessage("An error occured.");
                 return _serializer.SerializeToBuilder(result);
             }
-            var updatedSubscriptionData = HostSecurityProvider.Instance.UpdateSubscriptionData(resultData);
+            var updatedSubscriptionData = _hostSecurityProvider.UpdateSubscriptionData(resultData);
             if(!updatedSubscriptionData.IsLicensed)
             {
                 result.HasError = true;
