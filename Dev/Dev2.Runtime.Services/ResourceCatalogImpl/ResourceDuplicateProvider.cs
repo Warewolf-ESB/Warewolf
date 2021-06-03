@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -178,14 +178,13 @@ namespace Dev2.Runtime.ResourceCatalogImpl
         {
             var duplicatedResources = new List<IResource>();
             var duplicatedResourcesMap = new Dictionary<Guid, Guid>();
-            var resourceAndContentMap = new Dictionary<IResource, StringBuilder>();
+            var resourceAndContentMap = new Dictionary<IResource, Tuple<string, StringBuilder>>();
 
-            var firstResource = resourcesToMove.First();
-            string savePath = CalculateResourceSavePath(sourceLocation, destFolderPath, firstResource.ResourceName, firstResource);
             foreach (var oldResource in resourcesToMove)
             {
                 try
                 {
+                    string savePath = CalculateResourceSavePath(sourceLocation, destFolderPath, oldResource.ResourceName, oldResource);
                     var itemToAdd = GenerateItemToAdd(savePath);
                     ServerExplorerRepository.Instance.AddItem(itemToAdd, GlobalConstants.ServerWorkspaceID);
 
@@ -195,7 +194,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
 
                     duplicatedResources.Add(newResource);
                     duplicatedResourcesMap.Add(oldResource.ResourceID, newResource.ResourceID);
-                    resourceAndContentMap.Add(newResource, xElement.ToStringBuilder());
+                    resourceAndContentMap.Add(newResource, new Tuple<string, StringBuilder>(savePath, xElement.ToStringBuilder()));
                 }
                 catch (Exception e)
                 {
@@ -204,7 +203,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                 }
             }
 
-            _resourceCatalog.SaveResources(GlobalConstants.ServerWorkspaceID, resourceAndContentMap, overrideExisting, savePath);
+            _resourceCatalog.SaveResources(GlobalConstants.ServerWorkspaceID, resourceAndContentMap, overrideExisting);
             return (duplicatedResources, duplicatedResourcesMap);
         }
 
@@ -278,7 +277,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             }).Where(resource => !(resource is ManagementServiceResource)).ToList();
         }
 
-        private static string CalculateResourceSavePath(string sourceLocation, string destPath, string resourceName, IResource resource)
+        public static string CalculateResourceSavePath(string sourceLocation, string destPath, string resourceName, IResource resource)
         {
             var resourcePath = resource.GetResourcePath(GlobalConstants.ServerWorkspaceID);
 

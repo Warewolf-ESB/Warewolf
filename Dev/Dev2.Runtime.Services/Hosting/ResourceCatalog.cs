@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -343,7 +343,7 @@ namespace Dev2.Runtime.Hosting
 
         public IList<DuplicateResource> GetDuplicateResources() => DuplicateResources;
 
-        public ResourceCatalogResult SaveResources(Guid serverWorkspaceID, Dictionary<IResource, StringBuilder> resourceAndContents, bool overrideExisting, string savePath) => _catalogPluginContainer.SaveProvider.SaveResources(serverWorkspaceID, resourceAndContents, overrideExisting, savePath);
+        public ResourceCatalogResult SaveResources(Guid serverWorkspaceID, Dictionary<IResource, Tuple<string, StringBuilder>> resourceAndContents, bool overrideExisting) => _catalogPluginContainer.SaveProvider.SaveResources(serverWorkspaceID, resourceAndContents, overrideExisting);
         
         public ResourceCatalogResult SaveResource(Guid workspaceID, StringBuilder resourceXml, string savedPath) => _catalogPluginContainer.SaveProvider.SaveResource(workspaceID, resourceXml, savedPath, "", "");
         public ResourceCatalogResult SaveResource(Guid workspaceID, StringBuilder resourceXml, string savedPath, string reason) => _catalogPluginContainer.SaveProvider.SaveResource(workspaceID, resourceXml, savedPath, reason, "");
