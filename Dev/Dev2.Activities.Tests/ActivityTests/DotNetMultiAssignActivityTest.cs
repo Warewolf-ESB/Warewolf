@@ -22,6 +22,7 @@ using System.Globalization;
 using Warewolf.Storage;
 using Moq;
 using Dev2.Common.State;
+using Dev2.DynamicServices;
 using Dev2.Utilities;
 
 namespace Dev2.Tests.Activities.ActivityTests
@@ -1071,6 +1072,33 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("asdf", value[0]);
             var outputs = ob.GetDebugOutputs(env, 0);
             Assert.AreEqual("[[list(2).name]]", outputs[0].ResultsList[1].Variable);
+        }
+        
+        [TestMethod]
+        [Timeout(60000)]
+        public void DsfDotNetMultiAssignActivity_RecordSetTypeEnsureLastErrorNoDuplicate()
+        {
+            var env = new ExecutionEnvironment();
+            env.AllErrors.Add("val1");
+            env.Assign("[[Errors().Message]]", "val1", 0);
+
+            var data = new Mock<IDSFDataObject>();
+            data.Setup(o => o.Environment).Returns(() => env);
+            data.Setup(o => o.IsDebugMode()).Returns(() => true);
+            var ob = new DsfDotNetMultiAssignActivity
+            {
+                FieldsCollection = new List<ActivityDTO>
+                {
+                    new ActivityDTO("[[test]]","testing123",0)
+                },
+                OnErrorVariable = "[[Errors().Message]]"
+            };
+            ob.Execute(data.Object, 0);
+            
+            var privateObject = new PrivateObject(env);
+            var warewolfEnvironment = privateObject.GetField("_env") as DataStorage.WarewolfEnvironment;
+
+            Assert.AreEqual(1, warewolfEnvironment?.RecordSets["Errors"].Data["Message"].Count);
         }
 
         #endregion Calculate Mode Tests
