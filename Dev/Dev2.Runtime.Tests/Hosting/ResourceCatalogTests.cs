@@ -52,8 +52,6 @@ namespace Dev2.Tests.Runtime.Hosting
 {
     [TestClass]
     [TestCategory("Runtime Hosting")]
-    [DoNotParallelize]
-    [TestCategory("CannotParallelize")]
     public class ResourceCatalogTests
     {
         // Change this if you change the number of resources saved by SaveResources()
@@ -368,6 +366,8 @@ namespace Dev2.Tests.Runtime.Hosting
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ResourceCatalog_SaveResource")]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void SaveResource_Expects_A_RollbackOnError()
         {
             //------------Setup for test--------------------------
@@ -1979,6 +1979,8 @@ namespace Dev2.Tests.Runtime.Hosting
         [TestMethod]
         [Description("Updates the Category of the resource")]
         [Owner("Huggs")]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void ResourceCatalog_RenameCategory_NoResources_ExpectErrorNoMatching()
         {
             //------------Setup for test--------------------------
@@ -2010,6 +2012,8 @@ namespace Dev2.Tests.Runtime.Hosting
         [TestMethod]
         [Description("Updates the Category of the resource")]
         [Owner("Huggs")]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void ResourceCatalog_UnitTest_UpdateResourceCategoryValidArgumentsDifferentCasing_ExpectFileContentsUpdated()
         {
             //------------Setup for test--------------------------
@@ -2065,6 +2069,8 @@ namespace Dev2.Tests.Runtime.Hosting
         [TestMethod]
         [Owner("Huggs")]
         [ExpectedException(typeof(InvalidDataContractException))]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void ResourceCatalog_DeleteResource_TypeEmptyString_ExpectException()
         {
             //------------Setup for test--------------------------
@@ -2090,6 +2096,8 @@ namespace Dev2.Tests.Runtime.Hosting
         [TestMethod]
         [Owner("Huggs")]
         [ExpectedException(typeof(InvalidDataContractException))]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void ResourceCatalog_DeleteResource_TypeNull_ExpectException()
         {
             //------------Setup for test--------------------------
@@ -2114,6 +2122,8 @@ namespace Dev2.Tests.Runtime.Hosting
 
         [TestMethod]
         [Owner("Huggs")]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void ResourceCatalog_DeleteResource_ResourceNotFound_ExpectNoMatchResult()
         {
             //------------Setup for test--------------------------
@@ -2139,6 +2149,8 @@ namespace Dev2.Tests.Runtime.Hosting
 
         [TestMethod]
         [Owner("Huggs")]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void ResourceCatalog_DeleteResource_FoundMultipleResources_ExpectDuplicateMatchResult()
         {
             //------------Setup for test--------------------------
@@ -2167,6 +2179,8 @@ namespace Dev2.Tests.Runtime.Hosting
 
         [TestMethod]
         [Owner("Huggs")]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void ResourceCatalog_DeleteResource_FoundResource_ExpectResourceDeleted()
         {
             //------------Setup for test--------------------------
@@ -2195,10 +2209,10 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.IsNull(resourceToFind);
         }
 
-
-
         [TestMethod]
         [Owner("Huggs")]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void ResourceCatalog_DeleteResource_FoundResource_ExpectResourceDeleted_VersionsNotDeleted()
         {
             //------------Setup for test--------------------------
@@ -2229,6 +2243,8 @@ namespace Dev2.Tests.Runtime.Hosting
 
         [TestMethod]
         [Owner("Huggs")]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void ResourceCatalog_GetResource_Workflow_ExpectResource()
         {
             //------------Setup for test--------------------------
@@ -2255,6 +2271,8 @@ namespace Dev2.Tests.Runtime.Hosting
 
         [TestMethod]
         [Owner("Huggs")]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void ResourceCatalog_GetResource_DbSource_ExpectResource()
         {
             //------------Setup for test--------------------------
@@ -2280,7 +2298,6 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.IsNotNull(resourceFound);
             Assert.AreEqual(oldResource.ResourceID, resourceFound.ResourceID);
         }
-
 
         #endregion
 
@@ -2422,6 +2439,8 @@ namespace Dev2.Tests.Runtime.Hosting
         #region GetDependants
 
         [TestMethod]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void GetDependantsWhereResourceIsDependedOnExpectNonEmptyList()
         {
             //------------Setup for test--------------------------
@@ -2445,6 +2464,8 @@ namespace Dev2.Tests.Runtime.Hosting
         }
 
         [TestMethod]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void UpdateResourceWhereResourceIsDependedOnExpectNonEmptyList()
         {
             //------------Setup for test--------------------------
@@ -2503,6 +2524,8 @@ namespace Dev2.Tests.Runtime.Hosting
         }
 
         [TestMethod]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void UpdateResourceWhereResourceIsDependedOnExpectNonEmptyListForResource()
         {
             //------------Setup for test--------------------------
@@ -2563,6 +2586,8 @@ namespace Dev2.Tests.Runtime.Hosting
         }
 
         [TestMethod]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void GetDependantsWhereNoResourcesExpectEmptyList()
         {
             //------------Setup for test--------------------------
@@ -2579,6 +2604,8 @@ namespace Dev2.Tests.Runtime.Hosting
         }
 
         [TestMethod]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void GetDependantsWhereResourceHasNoDependedOnExpectNonEmptyList()
         {
             //------------Setup for test--------------------------
@@ -2605,6 +2632,8 @@ namespace Dev2.Tests.Runtime.Hosting
         #region GetDependantsAsResourceForTrees
 
         [TestMethod]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void GetDependantsAsResourceForTreesWhereResourceIsDependedOnExpectNonEmptyList()
         {
             //------------Setup for test--------------------------
@@ -2628,6 +2657,8 @@ namespace Dev2.Tests.Runtime.Hosting
         }
 
         [TestMethod]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void GetDependantsAsResourceForTreesWhereNoResourcesExpectEmptyList()
         {
             //------------Setup for test--------------------------
@@ -2644,6 +2675,8 @@ namespace Dev2.Tests.Runtime.Hosting
         }
 
         [TestMethod]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void GetDependantsAsResourceForTreesWhereResourceHasNoDependedOnExpectNonEmptyList()
         {
             //------------Setup for test--------------------------
@@ -2664,6 +2697,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Results-------------------------
             Assert.AreEqual(1, dependants.Count);
         }
+
         #endregion
 
         #region VerifyPayload
@@ -2700,6 +2734,8 @@ namespace Dev2.Tests.Runtime.Hosting
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("ResourceCatalog_GetResourceList")]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void ResourceCatalog_GetResourceList_WhenUsingNameAndResourcesNotPresent_ExpectEmptyList()
         {
             //------------Setup for test--------------------------
@@ -2728,6 +2764,8 @@ namespace Dev2.Tests.Runtime.Hosting
         [Owner("Travis Frisinger")]
         [TestCategory("ResourceCatalog_GetResourceList")]
         [ExpectedException(typeof(InvalidDataContractException))]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void ResourceCatalog_GetResourceList_WhenNameAndResourceNameAndTypeNull_ExpectException()
         {
             //------------Setup for test--------------------------
@@ -2754,6 +2792,8 @@ namespace Dev2.Tests.Runtime.Hosting
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("ResourceCatalog_GetResourceList")]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void ResourceCatalog_GetResourceList_WhenUsingIdAndResourcesPresent_ExpectResourceList()
         {
             //------------Setup for test--------------------------
@@ -2791,6 +2831,8 @@ namespace Dev2.Tests.Runtime.Hosting
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("ResourceCatalog_GetResourceList")]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void ResourceCatalog_GetResourceList_WhenUsingIdAndResourcesNotPresent_ExpectEmptyList()
         {
             //------------Setup for test--------------------------
@@ -2823,6 +2865,8 @@ namespace Dev2.Tests.Runtime.Hosting
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("ResourceCatalog_GetResourceList")]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void ResourceCatalog_GetResourceList_WhenUsingIdAndTypeNull_ShouldStillReturn()
         {
             //------------Setup for test--------------------------
@@ -2853,6 +2897,8 @@ namespace Dev2.Tests.Runtime.Hosting
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("ResourceCatalog_GetResourceList")]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void ResourceCatalog_GetResourceList_WhenUsingIdAndGuidCsvNull_ExpectEmptyList()
         {
             //------------Setup for test--------------------------
@@ -2882,6 +2928,8 @@ namespace Dev2.Tests.Runtime.Hosting
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void ResourceCatalogPluginContainer_GivenVersion_ShouldCreateInstancesWithVersion()
         {
             //---------------Set up test pack-------------------
@@ -2902,6 +2950,8 @@ namespace Dev2.Tests.Runtime.Hosting
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void ResourceCatalogPluginContainer_GivenVersionAndManagementServices_ShouldCreateInstances()
         {
             //---------------Set up test pack-------------------
@@ -2923,6 +2973,8 @@ namespace Dev2.Tests.Runtime.Hosting
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void Dispose_GivenInstance_ShouldCleaup()
         {
             //---------------Set up test pack-------------------
@@ -2937,6 +2989,8 @@ namespace Dev2.Tests.Runtime.Hosting
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void ToPayload_GivenIsReservedService_ShouldAppendTypeAndName()
         {
             //---------------Set up test pack-------------------
@@ -2956,6 +3010,8 @@ namespace Dev2.Tests.Runtime.Hosting
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void MapServiceActionDependencies_GivenServiceName_ShouldNotThrowException()
         {
             //---------------Set up test pack-------------------
@@ -2985,6 +3041,8 @@ namespace Dev2.Tests.Runtime.Hosting
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void LoadResourceActivityCache_GivenServiceName_ShouldNotThrowException()
         {
             //---------------Set up test pack-------------------
@@ -3025,6 +3083,8 @@ namespace Dev2.Tests.Runtime.Hosting
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void LoadResourceActivityCache_GivenServiceName_ShouldAddActivityToParserCache()
         {
             //---------------Set up test pack-------------------
@@ -3062,6 +3122,8 @@ namespace Dev2.Tests.Runtime.Hosting
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void LoadResourceActivityCache_GivenServiceNameWithActivityInCache_ShouldReturnFromCache()
         {
             //---------------Set up test pack-------------------
@@ -3093,6 +3155,8 @@ namespace Dev2.Tests.Runtime.Hosting
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void LoadResourceActivityCache_GivenServiceName_ShouldPopulateServiceActionRepo()
         {
             //---------------Set up test pack-------------------
@@ -3126,6 +3190,8 @@ namespace Dev2.Tests.Runtime.Hosting
         }
 
         [TestMethod]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void DeleteResourceWithSingleExistingResourceName_ShouldRemoveFromCache()
         {
             //---------------Set up test pack-------------------
@@ -3161,6 +3227,8 @@ namespace Dev2.Tests.Runtime.Hosting
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void ResourceCatalog_GetResourceDuplicate_Give2SameFilesInDifferentFolders_ShouldReturnPaths()
         {
             var path = EnvironmentVariables.ResourcePath;
@@ -3202,6 +3270,8 @@ namespace Dev2.Tests.Runtime.Hosting
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void ResourceCatalog_UnitTest_DuplicateResourceResourceWithNullDestination_ExpectArgumentNullException()
         {
             //------------Setup for test--------------------------
@@ -3223,6 +3293,8 @@ namespace Dev2.Tests.Runtime.Hosting
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void ResourceCatalog_UnitTest_DuplicateResourceResourceWithValidArgs_ExpectSuccesResult()
         {
             //------------Setup for test--------------------------
@@ -3244,6 +3316,8 @@ namespace Dev2.Tests.Runtime.Hosting
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void ResourceCatalog_UnitTest_DuplicateResourceResourceWithValidArgs_ExpectNewDisplayName()
         {
             //------------Setup for test--------------------------
@@ -3283,6 +3357,8 @@ namespace Dev2.Tests.Runtime.Hosting
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void ResourceCatalog_DuplicateFolder_ResourceWithValidArgs_And_FixReferences_False_ExpectSuccesResult()
         {
             //------------Setup for test--------------------------
@@ -3410,6 +3486,8 @@ namespace Dev2.Tests.Runtime.Hosting
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void ResourceCatalog_UnitTest_DuplicateFolderResourceWithInvalidArgs_ExpectExceptions()
         {
             //------------Setup for test--------------------------
@@ -3432,6 +3510,8 @@ namespace Dev2.Tests.Runtime.Hosting
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void ResourceCatalog_UnitTest_GetResourceListGivenWorkspace_ExpectResources()
         {
             //------------Setup for test--------------------------
@@ -3455,6 +3535,8 @@ namespace Dev2.Tests.Runtime.Hosting
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void ResourceCatalog_UnitTest_GetResourceCountGivenWorkspace_ExpectCorrectResources()
         {
             //------------Setup for test--------------------------
@@ -3477,6 +3559,8 @@ namespace Dev2.Tests.Runtime.Hosting
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void ResourceCatalog_UnitTest_GetResourceOfTNotExist_ExpectNull()
         {
             //------------Setup for test--------------------------
@@ -3669,6 +3753,8 @@ namespace Dev2.Tests.Runtime.Hosting
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void ResourceCatalog_UnitTest_UpdateExtensions_Given_WW_Resource_Updates_The_Extension()
         {
             //------------Setup for test--------------------------
@@ -3689,6 +3775,8 @@ namespace Dev2.Tests.Runtime.Hosting
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("ResourceCatalog_Load")]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void ResourceCatalog_Load_WhenFileIsReadOnly_ShouldUpdateToNormal()
         {
             //------------Setup for test--------------------------
