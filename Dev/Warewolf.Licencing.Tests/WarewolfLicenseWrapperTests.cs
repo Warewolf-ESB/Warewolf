@@ -18,33 +18,21 @@ namespace Warewolf.LicencingTests
     [TestClass]
     public class WarewolfLicenseWrapperTests
     {
-        private static ISubscriptionData GetLicenseData()
-        {
-            return new SubscriptionData();
-        }
 
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(Subscription))]
         public void WarewolfLicenseWrapper_Retrieve()
         {
-            // LicenseSettings.CustomerId = "16BjmNSXISIQjctO";
-            // LicenseSettings.SubscriptionId = "16BjmNSXISIQjctO";
-            // LicenseSettings.PlanId = "developer";
-            // LicenseSettings.ApiKey = "test_VMxitsiobdAyth62k0DiqpAUKocG6sV3";
-            // LicenseSettings.SiteName = "warewolf-test";
-            var mockSubscriptionAdmin = new Mock<ISubscriptionAdmin>();
-            mockSubscriptionAdmin.Setup(o => o.SubscriptionSiteName).Returns("16BjmNSXISIQjctO");
-            mockSubscriptionAdmin.Setup(o => o.SubscriptionSiteName).Returns("test_VMxitsiobdAyth62k0DiqpAUKocG6sV3");
+            const string SubscriptionId = "16BjmNSXISIQjctO";
+            var mockSubscriptionData = new Mock<ISubscriptionData>();
+            mockSubscriptionData.Setup(o => o.SubscriptionId).Returns(SubscriptionId);
+            mockSubscriptionData.Setup(o => o.SubscriptionSiteName).Returns("warewolf-test");
+            mockSubscriptionData.Setup(o => o.SubscriptionKey).Returns("test_VMxitsiobdAyth62k0DiqpAUKocG6sV3");
+            ApiConfig.Configure(mockSubscriptionData.Object.SubscriptionSiteName, mockSubscriptionData.Object.SubscriptionKey);
 
-            ApiConfig.Configure(mockSubscriptionAdmin.Object.SubscriptionSiteName, mockSubscriptionAdmin.Object.SubscriptionKey);
-
-            var licenseData = GetLicenseData();
-            //licenseData.CustomerId = LicenseSettings.CustomerId;
-            //licenseData.SubscriptionId = LicenseSettings.SubscriptionId;
             var warewolfLicense = new Subscription();
-
-            var result = warewolfLicense.Retrieve(licenseData.SubscriptionId);
+            var result = warewolfLicense.RetrievePlan(SubscriptionId);
             Assert.IsNotNull(result.CustomerFirstName);
             Assert.IsNotNull(result.CustomerLastName);
             Assert.IsNotNull(result.CustomerEmail);

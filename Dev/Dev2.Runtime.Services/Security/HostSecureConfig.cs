@@ -51,8 +51,8 @@ namespace Dev2.Runtime.Security
         }
 
         public Guid ServerID { get; private set; }
-        public string ConfigKey { get; private set; }
-        public string ConfigSitename { get; private set; }
+        public string SubscriptionKey { get; private set; }
+        public string SubscriptionSiteName { get; private set; }
         public string CustomerId { get; private set; }
         public string PlanId { get; private set; }
         public string SubscriptionId { get; private set; }
@@ -84,25 +84,25 @@ namespace Dev2.Runtime.Security
                 ServerKey = new RSACryptoServiceProvider();
 
 #if DEBUG
-                ConfigKey = HostSecurityProvider.SubscriptionTestKey;
-                ConfigSitename = HostSecurityProvider.SubscriptionTestSiteName;
+                SubscriptionKey = HostSecurityProvider.SubscriptionTestKey;
+                SubscriptionSiteName = HostSecurityProvider.SubscriptionTestSiteName;
 #else
-                ConfigKey = HostSecurityProvider.SubscriptionLiveKey;
-                ConfigSitename = HostSecurityProvider.SubscriptionLiveSitename;
+                SubscriptionKey = HostSecurityProvider.SubscriptionLiveKey;
+                SubscriptionSiteName = HostSecurityProvider.SubscriptionLiveSitename;
 #endif
                 CustomerId = "";
                 PlanId = "";
                 SubscriptionId = "";
                 Status = "";
-                newSettings["ConfigKey"] = ConfigKey;
-                newSettings["ConfigSitename"] = ConfigSitename;
+                newSettings["SubscriptionKey"] = SubscriptionKey;
+                newSettings["SubscriptionSiteName"] = SubscriptionSiteName;
                 newSettings["CustomerId"] = CustomerId;
-                newSettings["PLanId"] = PlanId;
+                newSettings["PlanId"] = PlanId;
                 newSettings["SubscriptionId"] = SubscriptionId;
                 newSettings["Status"] = Status;
 
-                ConfigSitename = DecryptKey(ConfigSitename);
-                ConfigKey = DecryptKey(ConfigKey);
+                SubscriptionSiteName = DecryptKey(SubscriptionSiteName);
+                SubscriptionKey = DecryptKey(SubscriptionKey);
                 CustomerId = DecryptKey(CustomerId);
                 PlanId = DecryptKey(PlanId);
                 SubscriptionId = DecryptKey(SubscriptionId);
@@ -128,34 +128,34 @@ namespace Dev2.Runtime.Security
             //way to add the new keys is to do it this way. CustomerId might be removed from here.
             var newSettings = new NameValueCollection();
 
-            if(settings["ConfigKey"] == null)
+            if(settings["SubscriptionKey"] == null)
             {
 #if DEBUG
-                newSettings.Add("ConfigKey", HostSecurityProvider.SubscriptionTestKey);
+                newSettings.Add("SubscriptionKey", HostSecurityProvider.SubscriptionTestKey);
 #else
-               newSettings.Add("ConfigKey", HostSecurityProvider.SubscriptionLiveKey);
+               newSettings.Add("SubscriptionKey", HostSecurityProvider.SubscriptionLiveKey);
 #endif
 
                 updateSettingsFile = true;
             }
             else
             {
-                newSettings["ConfigKey"] = settings["ConfigKey"];
+                newSettings["SubscriptionKey"] = settings["SubscriptionKey"];
             }
 
-            if(settings["ConfigSitename"] == null)
+            if(settings["SubscriptionSiteName"] == null)
             {
 #if DEBUG
-                newSettings.Add("ConfigSitename", HostSecurityProvider.SubscriptionTestSiteName);
+                newSettings.Add("SubscriptionSiteName", HostSecurityProvider.SubscriptionTestSiteName);
 #else
-               newSettings.Add("ConfigSitename", HostSecurityProvider.SubscriptionLiveSiteName);
+               newSettings.Add("SubscriptionSiteName", HostSecurityProvider.SubscriptionLiveSiteName);
 #endif
 
                 updateSettingsFile = true;
             }
             else
             {
-                newSettings["ConfigSitename"] = settings["ConfigSitename"];
+                newSettings["SubscriptionSiteName"] = settings["SubscriptionSiteName"];
             }
 
             if(settings["CustomerId"] == null)
@@ -197,8 +197,8 @@ namespace Dev2.Runtime.Security
                 newSettings["PlanId"] = settings["PlanId"];
             }
 
-            ConfigKey = DecryptKey(newSettings["ConfigKey"]);
-            ConfigSitename = DecryptKey(newSettings["ConfigSitename"]);
+            SubscriptionKey = DecryptKey(newSettings["SubscriptionKey"]);
+            SubscriptionSiteName = DecryptKey(newSettings["SubscriptionSiteName"]);
             CustomerId = DecryptKey(newSettings["CustomerId"]);
             PlanId = DecryptKey(newSettings["PlanId"]);
             SubscriptionId = DecryptKey(newSettings["SubscriptionId"]);
@@ -223,11 +223,11 @@ namespace Dev2.Runtime.Security
             if(!File.Exists(FileName))
             {
                 Dev2Logger.Info(string.Format(ErrorResource.FileNotFound, FileName), GlobalConstants.WarewolfInfo);
-                var configKey = HostSecurityProvider.SubscriptionLiveKey;
-                var configSitename = HostSecurityProvider.SubscriptionLiveSiteName;
+                var subscriptionKey = HostSecurityProvider.SubscriptionLiveKey;
+                var subscriptionSiteName = HostSecurityProvider.SubscriptionLiveSiteName;
 #if DEBUG
-                configKey = HostSecurityProvider.SubscriptionTestKey;
-                configSitename = HostSecurityProvider.SubscriptionTestSiteName;
+                subscriptionKey = HostSecurityProvider.SubscriptionTestKey;
+                subscriptionSiteName = HostSecurityProvider.SubscriptionTestSiteName;
 #endif
                 var newSettings = new NameValueCollection
                 {
@@ -238,8 +238,8 @@ namespace Dev2.Runtime.Security
                     ["SubscriptionId"] = "",
                     ["Status"] = "",
                     ["PlanId"] = "",
-                    ["ConfigKey"] = configKey,
-                    ["ConfigSitename"] = configSitename
+                    ["SubscriptionKey"] = subscriptionKey,
+                    ["SubscriptionSiteName"] = subscriptionSiteName
                 };
                 SaveConfig(newSettings);
             }
@@ -295,7 +295,7 @@ namespace Dev2.Runtime.Security
             return key;
         }
 
-        public static NameValueCollection CreateSettings(string serverID, string serverKey, string systemKey, string customerId, string planId, string subscriptionId,string status, string configSitename, string configKey) => new NameValueCollection
+        public static NameValueCollection CreateSettings(string serverID, string serverKey, string systemKey, string customerId, string planId, string subscriptionId,string status, string subscriptionSiteName, string subscriptionKey) => new NameValueCollection
         {
             {
                 "ServerID", serverID
@@ -319,10 +319,10 @@ namespace Dev2.Runtime.Security
                 "Status", status
             },
             {
-                "ConfigKey", configKey
+                "SubscriptionKey", subscriptionKey
             },
             {
-                "ConfigSitename", configSitename
+                "SubscriptionSiteName", subscriptionSiteName
             }
         };
     }

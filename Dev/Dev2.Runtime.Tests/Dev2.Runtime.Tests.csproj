@@ -156,7 +156,7 @@
     <Compile Include="ServiceModel\RedisSourcesTests.cs" />
     <Compile Include="Services\FetchTriggersForDeployTests.cs" />
     <Compile Include="Services\GetDependanciesOnListTests.cs" />
-    <Compile Include="Services\GetLicenseKeyTests.cs" />
+    <Compile Include="Services\GetSubscriptionDataTests.cs" />
     <Compile Include="Services\GetPersistenceSettingsTests.cs" />
     <Compile Include="Services\PersistenceSettingsReadTests.cs" />
     <Compile Include="Services\SaveAuditingSettingsTests.cs" />
@@ -236,7 +236,7 @@
     <Compile Include="Services\HostSecureConfigMock.cs" />
     <Compile Include="ServiceModel\ServicesTests.cs" />
     <Compile Include="Services\HostSecurityProviderTest.cs" />
-    <Compile Include="Services\SaveLicenseKeyTests.cs" />
+    <Compile Include="Services\SaveSubscriptionDataTests.cs" />
     <Compile Include="Services\TestWebServiceTests.cs" />
     <None Include="..\Dev2.Server\app.config">
       <Link>app.config</Link>

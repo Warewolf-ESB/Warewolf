@@ -123,7 +123,7 @@
     <Compile Include="ESB\Management\Services\FindAutocompleteOptions.cs" />
     <Compile Include="ESB\Management\Services\FindOptionsBy.cs" />
     <Compile Include="ESB\Management\Services\GetAuditingSettings.cs" />
-    <Compile Include="ESB\Management\Services\GetLicenseKey.cs" />
+    <Compile Include="ESB\Management\Services\GetSubscriptionData.cs" />
     <Compile Include="ESB\Management\Services\GetPersistenceSettings.cs" />
     <Compile Include="ESB\Management\Services\GetResourceById.cs" />
     <Compile Include="ESB\Management\Services\FindResourcesByType.cs" />
@@ -132,7 +132,7 @@
     <Compile Include="ESB\Management\Services\FetchTriggerQueues.cs" />
     <Compile Include="ESB\Management\Services\PersistenceSettingsRead.cs" />
     <Compile Include="ESB\Management\Services\SaveAuditingSettings.cs" />
-    <Compile Include="ESB\Management\Services\SaveLicenseKey.cs" />
+    <Compile Include="ESB\Management\Services\SaveSubscriptionData.cs" />
     <Compile Include="ESB\Management\Services\SavePersistenceSettings.cs" />
     <Compile Include="ESB\Management\Services\SaveRedisSource.cs" />
     <Compile Include="ESB\Management\Services\SaveElasticsearchSource.cs" />

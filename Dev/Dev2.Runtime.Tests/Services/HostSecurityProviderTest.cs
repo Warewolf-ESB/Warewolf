@@ -165,8 +165,8 @@ namespace Dev2.Tests.Runtime.Services
                 HostSecureConfig.DecryptKey(HostSecureConfigTests.DefaultSubscriptionId),
                 HostSecureConfig.DecryptKey(HostSecureConfigTests.DefaultPlanId),
                 HostSecureConfig.DecryptKey(HostSecureConfigTests.DefaultStatus),
-                HostSecureConfig.DecryptKey(HostSecureConfigTests.DefaultConfigSitename),
-                HostSecureConfig.DecryptKey(HostSecureConfigTests.DefaultConfigKey));
+                HostSecureConfig.DecryptKey(HostSecureConfigTests.DefaultSubscriptionSiteName),
+                HostSecureConfig.DecryptKey(HostSecureConfigTests.DefaultSubscriptionKey));
 
             var provider = new HostSecurityProviderImpl(config.Object);
 
@@ -263,8 +263,8 @@ namespace Dev2.Tests.Runtime.Services
                     HostSecureConfig.DecryptKey(HostSecureConfigTests.DefaultSubscriptionId),
                     HostSecureConfig.DecryptKey(HostSecureConfigTests.DefaultPlanId),
                     HostSecureConfig.DecryptKey(HostSecureConfigTests.DefaultStatus),
-                    HostSecureConfig.DecryptKey(HostSecureConfigTests.DefaultConfigSitename),
-                    HostSecureConfig.DecryptKey(HostSecureConfigTests.DefaultConfigKey));
+                    HostSecureConfig.DecryptKey(HostSecureConfigTests.DefaultSubscriptionSiteName),
+                    HostSecureConfig.DecryptKey(HostSecureConfigTests.DefaultSubscriptionKey));
             }
 
             return CreateConfig(
@@ -274,8 +274,8 @@ namespace Dev2.Tests.Runtime.Services
                 HostSecureConfig.DecryptKey(HostSecureConfigTests.DefaultSubscriptionId),
                 HostSecureConfig.DecryptKey(HostSecureConfigTests.DefaultPlanId),
                 HostSecureConfig.DecryptKey(HostSecureConfigTests.DefaultStatus),
-                HostSecureConfig.DecryptKey(HostSecureConfigTests.DefaultConfigSitename),
-                HostSecureConfig.DecryptKey(HostSecureConfigTests.DefaultConfigKey));
+                HostSecureConfig.DecryptKey(HostSecureConfigTests.DefaultSubscriptionSiteName),
+                HostSecureConfig.DecryptKey(HostSecureConfigTests.DefaultSubscriptionKey));
         }
 
         static Mock<ISecureConfig> CreateConfig(
@@ -285,8 +285,8 @@ namespace Dev2.Tests.Runtime.Services
             string subscriptionId,
             string planId,
             string status,
-            string configSitename,
-            string configKey)
+            string subscriptionSiteName,
+            string subscriptionKey)
         {
             return CreateConfig(
                 HostSecureConfigTests.DefaultServerID,
@@ -296,8 +296,8 @@ namespace Dev2.Tests.Runtime.Services
                 subscriptionId,
                 planId,
                 status,
-                configSitename,
-                configKey);
+                subscriptionSiteName,
+                subscriptionKey);
         }
 
         static Mock<ISecureConfig> CreateConfig(
@@ -308,8 +308,8 @@ namespace Dev2.Tests.Runtime.Services
             string subscriptionId,
             string planId,
             string status,
-            string configSitename,
-            string configKey)
+            string subscriptionSiteName,
+            string subscriptionKey)
         {
             var config = new Mock<ISecureConfig>();
             config.Setup(c => c.ServerID).Returns(serverID);
@@ -319,8 +319,8 @@ namespace Dev2.Tests.Runtime.Services
             config.Setup(c => c.CustomerId).Returns(customerId);
             config.Setup(c => c.SubscriptionId).Returns(subscriptionId);
             config.Setup(c => c.PlanId).Returns(planId);
-            config.Setup(c => c.ConfigSitename).Returns(configSitename);
-            config.Setup(c => c.ConfigKey).Returns(configKey);
+            config.Setup(c => c.SubscriptionSiteName).Returns(subscriptionSiteName);
+            config.Setup(c => c.SubscriptionKey).Returns(subscriptionKey);
             config.Setup(c => c.Status).Returns(status);
             return config;
         }

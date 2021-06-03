@@ -14,7 +14,7 @@ using Warewolf.Enums;
 
 namespace Warewolf.Licensing
 {
-    public class WarewolfLicense
+   public class WarewolfLicense : IWarewolfLicense
     {
         private readonly ISubscription _subscription;
 
@@ -28,7 +28,6 @@ namespace Warewolf.Licensing
             _subscription = subscription;
         }
 
-        //TODO: These might not be used. Just created the shell in the meantime. This will be decided when we do the registerUI
         public ISubscriptionData CreatePlan(ISubscriptionData subscriptionData)
         {
             if (!string.IsNullOrEmpty(subscriptionData.SubscriptionSiteName) || !string.IsNullOrEmpty(subscriptionData.SubscriptionKey))
@@ -44,10 +43,15 @@ namespace Warewolf.Licensing
             return result;
         }
 
-        public ISubscriptionData Retrieve(string subscriptionId)
+        public ISubscriptionData RetrievePlan(ISubscriptionData subscriptionData)
         {
             try
             {
+                if (!string.IsNullOrEmpty(subscriptionData.SubscriptionSiteName) || !string.IsNullOrEmpty(subscriptionData.SubscriptionKey))
+                {
+                    ApiConfig.Configure(subscriptionData.SubscriptionSiteName, subscriptionData.SubscriptionKey);
+                }
+                var subscriptionId = subscriptionData.SubscriptionId;
                 if(string.IsNullOrEmpty(subscriptionId))
                 {
                     return DefaultLicenseData();
@@ -58,7 +62,7 @@ namespace Warewolf.Licensing
                     return DefaultLicenseData();
                 }
 
-                var result = _subscription.Retrieve(subscriptionId);
+                var result = _subscription.RetrievePlan(subscriptionId);
                 result.IsLicensed = true;
 
                 if(result.Status != SubscriptionStatus.Active && result.Status != SubscriptionStatus.InTrial)

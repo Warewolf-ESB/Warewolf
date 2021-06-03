@@ -21,22 +21,38 @@ using Warewolf.Licensing;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    public class GetLicenseKey : DefaultEsbManagementEndpoint
+    public class GetSubscriptionData : DefaultEsbManagementEndpoint
     {
+        private readonly ISubscriptionData _subscriptionDataInstance;
+        private readonly IWarewolfLicense _warewolfLicense;
+
+        public GetSubscriptionData()
+        {
+        }
+
+        public GetSubscriptionData(IWarewolfLicense warewolfLicense, ISubscriptionData subscriptionData)
+        {
+            _warewolfLicense = warewolfLicense;
+            _subscriptionDataInstance = subscriptionData;
+        }
+
+        private IWarewolfLicense WarewolfLicense =>
+            _warewolfLicense ??
+            new WarewolfLicense();
+        private ISubscriptionData SubscriptionDataInstance =>
+            _subscriptionDataInstance ??
+            HostSecurityProvider.SubscriptionDataInstance;
+
         public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             var serializer = new Dev2JsonSerializer();
             var result = new ExecuteMessage { HasError = false };
-            Dev2Logger.Info("Get LicenseKey Service", GlobalConstants.WarewolfInfo);
+            Dev2Logger.Info("Get Subscription Data Service", GlobalConstants.WarewolfInfo);
 
-            var subscriptionDataInstance = HostSecurityProvider.SubscriptionDataInstance;
-
-            var license = new WarewolfLicense();
-            var subscriptionData = license.Retrieve(subscriptionDataInstance.SubscriptionId);
+            var subscriptionData = WarewolfLicense.RetrievePlan(SubscriptionDataInstance);
             result.Message = serializer.SerializeToBuilder(subscriptionData);
 
-            //TODO: If anything is different(Plan changes etc.) it needs to be updated to the secure.config
-            if(subscriptionData.PlanId != subscriptionDataInstance.PlanId || subscriptionData.Status != subscriptionDataInstance.Status)
+            if(subscriptionData.PlanId != SubscriptionDataInstance.PlanId || subscriptionData.Status != SubscriptionDataInstance.Status)
             {
                 var updateSubscriptionData = HostSecurityProvider.Instance.UpdateSubscriptionData(subscriptionData);
                 if(!updateSubscriptionData.IsLicensed)
@@ -56,6 +72,6 @@ namespace Dev2.Runtime.ESB.Management.Services
             return newDs;
         }
 
-        public override string HandlesType() => nameof(Warewolf.Service.GetLicenseKey);
+        public override string HandlesType() => nameof(Warewolf.Service.GetSubscriptionData);
     }
 }

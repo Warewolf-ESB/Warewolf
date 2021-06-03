@@ -16,13 +16,12 @@ namespace Warewolf.Licensing
 {
     public class Subscription : ISubscription
     {
-        public ISubscriptionData Retrieve(string subscriptionId)
+        public ISubscriptionData RetrievePlan(string subscriptionId)
         {
             var result = ChargeBee.Models.Subscription.Retrieve(subscriptionId).Request();
             return GenerateLicenseData(result);
         }
 
-        //TODO: No coverage yet due to it probably being deleted later
         public ISubscriptionData CreatePlan(ISubscriptionData subscriptionData)
         {
             var result = ChargeBee.Models.Subscription.Create()
@@ -31,20 +30,6 @@ namespace Warewolf.Licensing
                 .CustomerFirstName(subscriptionData.CustomerFirstName)
                 .CustomerLastName(subscriptionData.CustomerLastName)
                 .CustomerEmail(subscriptionData.CustomerEmail)
-                .Request();
-            return GenerateLicenseData(result);
-        }
-
-        //TODO: No coverage yet due to it probably being deleted later
-        public ISubscriptionData UpgradePlan(ISubscriptionData subscriptionData)
-        {
-            var result = ChargeBee.Models.Subscription.Update(subscriptionData.CustomerId)
-                .PlanId(subscriptionData.PlanId)
-                .CardNumber(subscriptionData.CardNumber.ToString())
-                .CardCvv(subscriptionData.CardCvv.ToString())
-                .CardExpiryYear(subscriptionData.CardExpiryYear)
-                .CardExpiryMonth(subscriptionData.CardExpiryMonth)
-                .EndOfTerm(subscriptionData.EndOfTerm)
                 .Request();
             return GenerateLicenseData(result);
         }
@@ -59,7 +44,6 @@ namespace Warewolf.Licensing
                 CustomerId = subscription.CustomerId,
                 SubscriptionId = subscription.Id,
                 PlanId = subscription.PlanId,
-                SubscriptionStatus = subscription.Status.ToString(),
                 Status = (SubscriptionStatus)subscription.Status,
                 CustomerFirstName = customer.FirstName,
                 CustomerLastName = customer.LastName,

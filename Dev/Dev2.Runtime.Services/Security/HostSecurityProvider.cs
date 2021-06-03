@@ -17,6 +17,7 @@ using System.Xml;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Wrappers;
+using Warewolf.Enums;
 using Warewolf.Licensing;
 
 namespace Dev2.Runtime.Security
@@ -76,7 +77,7 @@ namespace Dev2.Runtime.Security
                         if (_subscriptionData == null)
                         {
                             var instance = Instance;
-                            //TODO: Add Subscription Status to the Instance
+                            Enum.TryParse(instance.Status, out SubscriptionStatus status);
                             _subscriptionData = new SubscriptionData
                             {
                                 SubscriptionKey = instance.SubscriptionKey,
@@ -84,7 +85,7 @@ namespace Dev2.Runtime.Security
                                 SubscriptionId = instance.SubscriptionId,
                                 CustomerId = instance.CustomerId,
                                 PlanId = instance.PlanId,
-                                //Status = instance.Status
+                                Status = status
                             };
                         }
                     }
@@ -107,8 +108,8 @@ namespace Dev2.Runtime.Security
             ServerID = config.ServerID;
             _serverKey = config.ServerKey;
             _systemKey = config.SystemKey;
-            SubscriptionKey = config.ConfigKey;
-            SubscriptionSiteName = config.ConfigSitename;
+            SubscriptionKey = config.SubscriptionKey;
+            SubscriptionSiteName = config.SubscriptionSiteName;
             CustomerId = config.CustomerId;
             PlanId = config.PlanId;
             SubscriptionId = config.SubscriptionId;
@@ -216,6 +217,8 @@ namespace Dev2.Runtime.Security
                 PlanId = subscriptionData.PlanId,
                 Status = subscriptionData.Status,
                 IsLicensed = subscriptionData.IsLicensed,
+                SubscriptionSiteName = subscriptionData.SubscriptionSiteName,
+                SubscriptionKey = subscriptionData.SubscriptionKey
             };
 
             return updateSubscriptionData;

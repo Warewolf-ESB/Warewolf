@@ -22,7 +22,7 @@ namespace Dev2.Runtime.Security
         string PlanId { get; }
         string SubscriptionId { get; }
         string Status { get; }
-        string ConfigKey { get; }
-        string ConfigSitename { get; }
+        string SubscriptionKey { get; }
+        string SubscriptionSiteName { get; }
     }
 }

@@ -15,7 +15,6 @@ namespace Warewolf.Licensing
 {
     public class SubscriptionData : ISubscriptionData
     {
-        public string SubscriptionStatus { get; set; }
         public string CustomerId { get; set; }
         public string PlanId { get; set; }
         public string SubscriptionId { get; set; }

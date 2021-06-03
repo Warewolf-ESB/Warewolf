@@ -16,7 +16,7 @@
             let objData = jQuery.parseJSON(result);
 
             let planId = objData.PlanId.toUpperCase();
-            let planStatus = objData.SubscriptionStatus;
+            let planStatus = objData.Status;
             let trialEnd = objData.TrialEnd;
             $("#planId").text(planId);
             var plan = planStatus

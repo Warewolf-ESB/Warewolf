@@ -25,22 +25,22 @@ namespace Dev2.Tests.Runtime.Services
         internal const string DefaultCustomerId = "";
         internal const string DefaultSubscriptionId = "";
         internal const string DefaultPlanId = "";
-        internal const string DefaultConfigKey = "wCYcjqzbAiHIneFFib+LCrn73SSkOlRzm4QxP+mkeHsH7e3surKN5liDsrv39JFR";
-        internal const string DefaultConfigSitename = "L8NilnImZ18r8VCMD88AdQ==";
+        internal const string DefaultSubscriptionKey = "wCYcjqzbAiHIneFFib+LCrn73SSkOlRzm4QxP+mkeHsH7e3surKN5liDsrv39JFR";
+        internal const string DefaultSubscriptionSiteName = "L8NilnImZ18r8VCMD88AdQ==";
         internal const string DefaultStatus = "";
         static NameValueCollection _newSettings;
         static NameValueCollection _defaultSettings;
 
         private static NameValueCollection CreateDefaultConfig()
         {
-            return HostSecureConfig.CreateSettings(DefaultServerID.ToString(), DefaultServerKey, DefaultSystemKeyPublic, DefaultCustomerId, DefaultPlanId, DefaultSubscriptionId, DefaultStatus, DefaultConfigSitename, DefaultConfigKey);
+            return HostSecureConfig.CreateSettings(DefaultServerID.ToString(), DefaultServerKey, DefaultSystemKeyPublic, DefaultCustomerId, DefaultPlanId, DefaultSubscriptionId, DefaultStatus, DefaultSubscriptionSiteName, DefaultSubscriptionKey);
         }
 
         [ClassInitialize]
         public static void ClassInitialize(TestContext testContext)
         {
             _defaultSettings = CreateDefaultConfig();
-            _newSettings = HostSecureConfig.CreateSettings(string.Empty, string.Empty, DefaultSystemKeyPublic, DefaultCustomerId, DefaultPlanId, DefaultSubscriptionId, DefaultStatus, DefaultConfigSitename, DefaultConfigKey);
+            _newSettings = HostSecureConfig.CreateSettings(string.Empty, string.Empty, DefaultSystemKeyPublic, DefaultCustomerId, DefaultPlanId, DefaultSubscriptionId, DefaultStatus, DefaultSubscriptionSiteName, DefaultSubscriptionKey);
         }
 
         [TestMethod]
@@ -57,7 +57,7 @@ namespace Dev2.Tests.Runtime.Services
         [TestCategory(nameof(HostSecureConfig))]
         public void HostSecureConfig_WithDefaultSettings_Expected_LoadsDefaultValues()
         {
-            TestConfig(DefaultServerID, DefaultServerKey, DefaultSystemKeyPublic, DefaultCustomerId, DefaultSubscriptionId,DefaultStatus, DefaultConfigSitename, DefaultConfigKey, DefaultPlanId, false);
+            TestConfig(DefaultServerID, DefaultServerKey, DefaultSystemKeyPublic, DefaultCustomerId, DefaultSubscriptionId,DefaultStatus, DefaultSubscriptionSiteName,  DefaultSubscriptionKey, DefaultPlanId, false);
         }
 
         /*[TestMethod]
@@ -92,16 +92,16 @@ namespace Dev2.Tests.Runtime.Services
         [TestCategory(nameof(HostSecureConfig))]
         public void HostSecureConfig_WithNewSettings_Expected_LoadsNewValues()
         {
-            TestConfig(DefaultServerID, DefaultServerKey, DefaultSystemKeyPublic, DefaultCustomerId, DefaultSubscriptionId,DefaultStatus, DefaultConfigSitename, DefaultConfigKey, DefaultPlanId, true);
+            TestConfig(DefaultServerID, DefaultServerKey, DefaultSystemKeyPublic, DefaultCustomerId, DefaultSubscriptionId,DefaultStatus,  DefaultSubscriptionSiteName,  DefaultSubscriptionKey, DefaultPlanId, true);
         }
 
-        static void TestConfig(Guid expectedServerID, string expectedServerKey, string expectedSystemKey, string expectedCustomerId, string expectedSubscriptionId,string expectedStatus, string expectedConfigSitename, string expectedConfigKey, string expectedPlanId, bool isNewConfig)
+        static void TestConfig(Guid expectedServerID, string expectedServerKey, string expectedSystemKey, string expectedCustomerId, string expectedSubscriptionId,string expectedStatus, string expectedSubscriptionSiteName, string expectedSubscriptionKey, string expectedPlanId, bool isNewConfig)
         {
             var config = new HostSecureConfigMock(isNewConfig ? _newSettings : _defaultSettings);
-            TestConfig(expectedServerID, expectedServerKey, expectedSystemKey, expectedCustomerId, expectedSubscriptionId,expectedStatus, expectedConfigSitename, expectedConfigKey, expectedPlanId, isNewConfig, config);
+            TestConfig(expectedServerID, expectedServerKey, expectedSystemKey, expectedCustomerId, expectedSubscriptionId,expectedStatus, expectedSubscriptionSiteName, expectedSubscriptionKey, expectedPlanId, isNewConfig, config);
         }
 
-        static void TestConfig(Guid expectedServerID, string expectedServerKey, string expectedSystemKey, string expectedCustomerId, string expectedSubscriptionId, string expectedStatus,string expectedConfigSitename, string expectedConfigKey, string expectedPlanId, bool isNewConfig, HostSecureConfigMock config)
+        static void TestConfig(Guid expectedServerID, string expectedServerKey, string expectedSystemKey, string expectedCustomerId, string expectedSubscriptionId, string expectedStatus,string expectedSubscriptionSiteName, string expectedSubscriptionKey, string expectedPlanId, bool isNewConfig, HostSecureConfigMock config)
         {
             var actualServerID = config.ServerID;
 
@@ -118,8 +118,8 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(HostSecureConfig.DecryptKey(expectedCustomerId), config.CustomerId);
             Assert.AreEqual(HostSecureConfig.DecryptKey(expectedPlanId), config.PlanId);
             Assert.AreEqual(HostSecureConfig.DecryptKey(expectedSubscriptionId), config.SubscriptionId);
-            Assert.AreEqual(HostSecureConfig.DecryptKey(expectedConfigSitename), config.ConfigSitename);
-            Assert.AreEqual(HostSecureConfig.DecryptKey(expectedConfigKey), config.ConfigKey);
+            Assert.AreEqual(HostSecureConfig.DecryptKey(expectedSubscriptionSiteName), config.SubscriptionSiteName);
+            Assert.AreEqual(HostSecureConfig.DecryptKey(expectedSubscriptionKey), config.SubscriptionKey);
             Assert.AreEqual(HostSecureConfig.DecryptKey(expectedStatus), config.Status);
 
             if(isNewConfig)

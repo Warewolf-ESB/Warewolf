@@ -66,7 +66,7 @@ namespace Warewolf.Studio.CustomControls
         public string RetrieveSubscription()
         {
             var serializer = new Dev2JsonSerializer();
-            var controller = new CommunicationController { ServiceName = nameof(GetLicenseKey) };
+            var controller = new CommunicationController { ServiceName = nameof(GetSubscriptionData) };
             var server = GetEnvironment();
             var resultData = controller.ExecuteCommand<ExecuteMessage>(server.Connection, GlobalConstants.ServerWorkspaceID);
             var data = serializer.Deserialize<ISubscriptionData>(resultData.Message);
@@ -78,7 +78,7 @@ namespace Warewolf.Studio.CustomControls
         {
             try
             {
-                var licenseData = new SubscriptionData
+                var subscriptionData = new SubscriptionData
                 {
                     PlanId = planId,
                     NoOfCores = GetNumberOfCores(),
@@ -87,9 +87,9 @@ namespace Warewolf.Studio.CustomControls
                     CustomerEmail = email
                 };
                 var serializer = new Dev2JsonSerializer();
-                var controller = new CommunicationController { ServiceName = nameof(SaveLicenseKey) };
+                var controller = new CommunicationController { ServiceName = nameof(SaveSubscriptionData) };
                 var server = GetEnvironment();
-                controller.AddPayloadArgument(Service.SaveLicenseKey.LicenseData, serializer.SerializeToBuilder(licenseData));
+                controller.AddPayloadArgument(Service.SaveSubscriptionData.SubscriptionData, serializer.SerializeToBuilder(subscriptionData));
                 var resultData = controller.ExecuteCommand<ExecuteMessage>(server.Connection, GlobalConstants.ServerWorkspaceID);
                 var result = serializer.Deserialize<ISubscriptionData>(resultData.Message);
                 return result.IsLicensed ? "success" : "failed";

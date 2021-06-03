@@ -13,7 +13,6 @@ namespace Warewolf.Licensing
     public interface ISubscription
     {
         ISubscriptionData CreatePlan(ISubscriptionData subscriptionData);
-        ISubscriptionData UpgradePlan(ISubscriptionData subscriptionData);
-        ISubscriptionData Retrieve(string subscriptionId);
+        ISubscriptionData RetrievePlan(string subscriptionId);
     }
 }
