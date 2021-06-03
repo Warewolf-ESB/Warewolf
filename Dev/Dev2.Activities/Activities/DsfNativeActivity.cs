@@ -174,7 +174,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 if (!string.IsNullOrEmpty(OnErrorVariable))
                 {
-                    var errorString = env.FetchErrors();
+                    var errorString = currentError;
                     var errors = ErrorResultTO.MakeErrorResultFromDataListString(errorString, true);
                     var upsertVariable = DataListUtil.AddBracketsToValueIfNotExist(OnErrorVariable);
                     if (errors.HasErrors())
@@ -1074,30 +1074,31 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public virtual IDev2Activity Execute(IDSFDataObject data, int update)
         {
+            var errorCount = data.Environment.AllErrors.Count;
             try
             {
                 _debugInputs = new List<DebugItem>();
                 _debugOutputs = new List<DebugItem>();
                 ExecuteTool(data, update);
-                if (!data.IsDebugMode())
+                if(!data.IsDebugMode())
                 {
                     UpdateWithAssertions(data);
                 }
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 Dev2Logger.Error("DsfNativActivity", ex, data.ExecutionID.ToString());
                 data.Environment.AddError(ex.Message);
             }
             finally
             {
-                if (!_isExecuteAsync || _isOnDemandSimulation)
+                if(errorCount < data.Environment.AllErrors.Count && (!_isExecuteAsync || _isOnDemandSimulation))
                 {
                     DoErrorHandling(data, update);
                 }
             }
 
-            if (NextNodes != null && NextNodes.Any())
+            if(NextNodes != null && NextNodes.Any())
             {
                 return NextNodes.First();
             }
