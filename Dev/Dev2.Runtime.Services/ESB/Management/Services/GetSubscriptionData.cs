@@ -27,6 +27,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         private readonly IWarewolfLicense _warewolfLicense;
 
         public GetSubscriptionData()
+            : this(new WarewolfLicense(), HostSecurityProvider.SubscriptionDataInstance)
         {
         }
 
@@ -36,23 +37,15 @@ namespace Dev2.Runtime.ESB.Management.Services
             _subscriptionDataInstance = subscriptionData;
         }
 
-        private IWarewolfLicense WarewolfLicense =>
-            _warewolfLicense ??
-            new WarewolfLicense();
-        private ISubscriptionData SubscriptionDataInstance =>
-            _subscriptionDataInstance ??
-            HostSecurityProvider.SubscriptionDataInstance;
-
         public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             var serializer = new Dev2JsonSerializer();
             var result = new ExecuteMessage { HasError = false };
             Dev2Logger.Info("Get Subscription Data Service", GlobalConstants.WarewolfInfo);
 
-            var subscriptionData = WarewolfLicense.RetrievePlan(SubscriptionDataInstance);
-            result.Message = serializer.SerializeToBuilder(subscriptionData);
+            var subscriptionData = _warewolfLicense.RetrievePlan(_subscriptionDataInstance);
 
-            if(subscriptionData.PlanId != SubscriptionDataInstance.PlanId || subscriptionData.Status != SubscriptionDataInstance.Status)
+            if(subscriptionData.PlanId != _subscriptionDataInstance.PlanId || subscriptionData.Status != _subscriptionDataInstance.Status)
             {
                 var updateSubscriptionData = HostSecurityProvider.Instance.UpdateSubscriptionData(subscriptionData);
                 if(!updateSubscriptionData.IsLicensed)
@@ -60,7 +53,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     result.HasError = true;
                 }
             }
-
+            result.Message = serializer.SerializeToBuilder(subscriptionData);
             return serializer.SerializeToBuilder(result);
         }
 
