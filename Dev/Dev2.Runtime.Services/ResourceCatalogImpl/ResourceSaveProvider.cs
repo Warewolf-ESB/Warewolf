@@ -104,7 +104,22 @@ namespace Dev2.Runtime.ResourceCatalogImpl
         public Action<IResource> ResourceSaved { get; set; }
         public Action<Guid, IList<ICompileMessageTO>> SendResourceMessages { get; set; }
 
+        public ResourceCatalogResult SaveResources(Guid serverWorkspaceID, Dictionary<IResource, StringBuilder> resourceAndContentMap, bool overrideExisting, string savePath)
+        {
+            return SaveResources(serverWorkspaceID, resourceAndContentMap, savePath, overrideExisting, string.Empty, string.Empty);
+        }
+
+        public ResourceCatalogResult SaveResources(Guid workspaceID, Dictionary<IResource, StringBuilder> resourceAndContentMap, string savedPath, bool overrideExisting , string reason, string user)
+        {
+            var resource = resourceAndContentMap.Keys.First();
+            _serverVersionRepository.StoreVersion(resource, user, reason, workspaceID, savedPath);
+            ResourceCatalogResult saveResult = null;
+            Dev2.Common.Utilities.PerformActionInsideImpersonatedContext(Dev2.Common.Utilities.ServerUser, () => { PerformSaveBulkResult(out saveResult, workspaceID, resourceAndContentMap, overrideExisting, savedPath); });
+            return saveResult;
+        }
+
         public ResourceCatalogResult SaveResource(Guid workspaceID, IResource resource, StringBuilder contents, string savedPath) => SaveResource(workspaceID, resource, contents, savedPath, "", "");
+
 
         public ResourceCatalogResult SaveResource(Guid workspaceID, IResource resource, StringBuilder contents, string savedPath, string reason, string user)
         {
@@ -321,10 +336,26 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             return updated;
         }
 
+        void PerformSaveBulkResult(out ResourceCatalogResult saveResult, Guid workspaceID, Dictionary<IResource, StringBuilder> resourceAndContentMap, bool overwriteExisting, string savedPath, string reason = "")
+        {
+            foreach (var item in resourceAndContentMap)
+            {
+                var resource = item.Key;
+                var contents = item.Value;
+                PerformSaveResult(out saveResult, workspaceID, resource, contents, overwriteExisting, savedPath, reason);
+                ServerExplorerRepository.Instance.UpdateItem(resource);
+            }
+            saveResult = new ResourceCatalogResult
+            {
+                Status = ExecStatus.NoMatch,
+                Message = "Failure no matching resources to save."
+            };
+        }
+
         void PerformSaveResult(out ResourceCatalogResult saveResult, Guid workspaceID, IResource resource, StringBuilder contents, bool overwriteExisting, string savedPath, string reason = "")
         {
             var fileManager = new TxFileManager();
-            using (TransactionScope tx = new TransactionScope())
+            using (TransactionScope tx = new TransactionScope(TransactionScopeOption.RequiresNew))
             {
                 try
                 {
@@ -409,6 +440,6 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             resource.FilePath = resourceFilePath;
             return directoryName;
         }
-        
+
     }
 }

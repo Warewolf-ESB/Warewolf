@@ -10,6 +10,7 @@ namespace Dev2.Runtime.Interfaces
 {
     public interface IResourceSaveProvider
     {
+        ResourceCatalogResult SaveResources(Guid serverWorkspaceID, Dictionary<IResource, StringBuilder> resourceAndContents, bool overrideExisting, string savePath);
         ResourceCatalogResult SaveResource(Guid workspaceID, StringBuilder resourceXml, string savedPath);
         ResourceCatalogResult SaveResource(Guid workspaceID, StringBuilder resourceXml, string savedPath, string reason);
         ResourceCatalogResult SaveResource(Guid workspaceID, StringBuilder resourceXml, string savedPath, string reason, string user);

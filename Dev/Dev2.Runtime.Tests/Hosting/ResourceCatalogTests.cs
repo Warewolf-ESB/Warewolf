@@ -340,6 +340,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Results-------------------------
             version.Verify(a => a.StoreVersion(It.IsAny<IResource>(), "bob", "reason", workspaceID, ""));
         }
+
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ResourceCatalog_SaveResource")]
@@ -3308,9 +3309,63 @@ namespace Dev2.Tests.Runtime.Hosting
 
         [TestMethod]
         [Owner("Siphamandla Dube")]
-        public void ResourceCatalog_DuplicateFolder_ResourceWithValidArgs_And_FixReferences_True_ExpectSuccesResult()
+        [Timeout(60000 * 14)]
+        [TestCategory("ResourceCatalog_LoadTests")]
+        public void ResourceCatalog_DuplicateFolder_ResourceWithValidArgs_And_FixReferences_False_ExpectSuccesResult_LoadTest()
         {
             //Note: this intergration test proves the timeout issue caused by the multiple calls to the method
+            //Note: at this point the time is reduced to a lit less then 14 minutes from the initial 25 minutes
+            //------------Setup for test--------------------------
+            var workspaceID = GlobalConstants.ServerWorkspaceID;
+
+            var sourceLocation = "Duplicate_Source";
+            var path = EnvironmentVariables.ResourcePath + "\\" + sourceLocation;
+            Directory.CreateDirectory(path);
+            const string resourceName = "wolf-Test_WF_";
+
+            var workflows = new List<string>();
+            var resourceIds = new List<Guid>();
+            var numOfTestWFs = 2000; //BUG: 6800 - the reported number of Workflows at which the brake was reported = 958
+            for (int i = 0; i < numOfTestWFs; i++)
+            {
+                workflows.Add(resourceName + (i + 1).ToString());
+                resourceIds.Add(Guid.NewGuid());
+            }
+
+            SaveResources(path, null, true, false, workflows, resourceIds.ToArray(), true, true);
+
+            var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
+            rc.LoadWorkspace(workspaceID);
+            var resultBeforeDuplicateF = rc.GetResources(workspaceID);
+            var oldResource1 = resultBeforeDuplicateF.FirstOrDefault(resource => resource.ResourceName == resourceName + (1 + 1));
+            //------------Assert Precondition-----------------
+            Assert.AreEqual(numOfTestWFs, resultBeforeDuplicateF.Count, "Number of test workflows should equal to GetResources result to prove that the WF ids are all unique - BEFORE DuplicateFolder");
+            Assert.IsNotNull(oldResource1);
+            //------------Execute Test---------------------------
+            ResourceCatalogResult resourceCatalogResult = rc.DuplicateFolder(sourceLocation, "Duplicate_Destination", string.Empty, false);
+
+            var resultAfterDuplicateF = rc.GetResources(workspaceID);
+            var oldResource = resultAfterDuplicateF.FirstOrDefault(resource => resource.ResourceName == resourceName + (1 + 1));
+            //------------Assert Precondition-----------------
+            Assert.AreEqual(numOfTestWFs * 2, resultAfterDuplicateF.Count, "Number of test workflows should equal to 2 times the GetResources result to prove that the WF ids are all unique - AFTER DuplicateFolder");
+            //------------Assert Results-------------------------
+            //TODO: These should be equal after the Refactor of DuplicateFolder method
+            Assert.AreEqual(ExecStatus.Success, resourceCatalogResult.Status);
+            Assert.AreEqual(@"Duplicated Successfully".Replace(Environment.NewLine, ""), resourceCatalogResult.Message.Replace(Environment.NewLine, ""));
+
+            //TODO: this will be changed into a unit test and this exception tested in a unit test setup
+            Assert.AreNotEqual("Duplicated UnsuccessfullyFailure Fixing references", resourceCatalogResult.Message.Replace(Environment.NewLine, ""));
+        }
+
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [Timeout(60000 * 16)]
+        [TestCategory("ResourceCatalog_LoadTests")]
+        public void ResourceCatalog_DuplicateFolder_ResourceWithValidArgs_And_FixReferences_True_ExpectSuccesResult_LoadTest()
+        {
+            //Note: this intergration test proves the timeout issue caused by the multiple calls to the method
+            //Note: at this point the time is reduced to a lit less then 16 minutes from the initial 25 minutes
             //------------Setup for test--------------------------
             var workspaceID = GlobalConstants.ServerWorkspaceID;
 
@@ -3346,11 +3401,11 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual(numOfTestWFs * 2, resultAfterDuplicateF.Count, "Number of test workflows should equal to 2 times the GetResources result to prove that the WF ids are all unique - AFTER DuplicateFolder");
             //------------Assert Results-------------------------
             //TODO: These should be equal after the Refactor of DuplicateFolder method
-            Assert.AreNotEqual(ExecStatus.Success, resourceCatalogResult.Status);
-            Assert.AreNotEqual(@"Duplicated Successfully".Replace(Environment.NewLine, ""), resourceCatalogResult.Message.Replace(Environment.NewLine, ""));
+            Assert.AreEqual(ExecStatus.Success, resourceCatalogResult.Status);
+            Assert.AreEqual(@"Duplicated Successfully".Replace(Environment.NewLine, ""), resourceCatalogResult.Message.Replace(Environment.NewLine, ""));
             
             //TODO: this will be changed into a unit test and this exception tested in a unit test setup
-            Assert.AreEqual("Duplicated UnsuccessfullyFailure Fixing references", resourceCatalogResult.Message.Replace(Environment.NewLine, ""));
+            Assert.AreNotEqual("Duplicated UnsuccessfullyFailure Fixing references", resourceCatalogResult.Message.Replace(Environment.NewLine, ""));
         }
 
         [TestMethod]
