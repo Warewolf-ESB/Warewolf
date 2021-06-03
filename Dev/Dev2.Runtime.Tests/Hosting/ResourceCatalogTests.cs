@@ -3325,7 +3325,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
             var workflows = new List<string>();
             var resourceIds = new List<Guid>();
-            var numOfTestWFs = 2000; //BUG: 6800 - the reported number of Workflows at which the brake was reported = 958
+            var numOfTestWFs = 2; //BUG: 6800 - the reported number of Workflows at which the brake was reported = 958
             for (int i = 0; i < numOfTestWFs; i++)
             {
                 workflows.Add(resourceName + (i + 1).ToString());
@@ -3376,7 +3376,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
             var workflows = new List<string>();
             var resourceIds = new List<Guid>();
-            var numOfTestWFs = 2000; //BUG: 6800 - the reported number of Workflows at which the brake was reported = 958
+            var numOfTestWFs = 2; //BUG: 6800 - the reported number of Workflows at which the brake was reported = 958
             for (int i = 0; i < numOfTestWFs; i++)
             {
                 workflows.Add(resourceName+(i+1).ToString());
@@ -3406,6 +3406,60 @@ namespace Dev2.Tests.Runtime.Hosting
             
             //TODO: this will be changed into a unit test and this exception tested in a unit test setup
             Assert.AreNotEqual("Duplicated UnsuccessfullyFailure Fixing references", resourceCatalogResult.Message.Replace(Environment.NewLine, ""));
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [Timeout(60000 * 16)]
+        [TestCategory(nameof(ResourceCatalog))]
+        public void ResourceCatalog_DuplicateFolder_GivenInnerFolder_ResourceWithValidArgs_And_FixReferences_True_ExpectSuccesResult()
+        {
+            //------------Setup for test--------------------------
+            var workspaceID = GlobalConstants.ServerWorkspaceID;
+
+            var sourceLocation = "Duplicate_Source";
+            var path = EnvironmentVariables.ResourcePath + "\\" + sourceLocation;
+            Directory.CreateDirectory(path);
+            const string resourceName = "wolf-Test_WF_";
+            const string resourceName2 = "wolf-Test_Inner_WF_";
+
+            const int numOfTestWFs = 2;
+            const int numOfTestWFs2 = 2; 
+            SaveTestResources(path, resourceName, out List<string> workflows, out List<Guid> resourceIds, numOfTestWFs);
+            
+            SaveTestResources(path + "\\Duplicate_Source_Inner", resourceName2, out List<string> workflows2, out List<Guid> resourceIds2, numOfTestWFs2);
+
+            var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
+            rc.LoadWorkspace(workspaceID);
+            var resultBeforeDuplicateF = rc.GetResources(workspaceID);
+            var oldResource1 = resultBeforeDuplicateF.FirstOrDefault(resource => resource.ResourceName == resourceName + (1 + 1));
+            //------------Assert Precondition-----------------
+            var numOfWfs = numOfTestWFs + numOfTestWFs;
+            Assert.AreEqual(numOfWfs, resultBeforeDuplicateF.Count, "Number of test workflows should equal to GetResources result to prove that the WF ids are all unique - BEFORE DuplicateFolder");
+            Assert.IsNotNull(oldResource1);
+            //------------Execute Test---------------------------
+            ResourceCatalogResult resourceCatalogResult = rc.DuplicateFolder(sourceLocation, "Duplicate_Destination", string.Empty, true);
+
+            var resultAfterDuplicateF = rc.GetResources(workspaceID);
+            var oldResource = resultAfterDuplicateF.FirstOrDefault(resource => resource.ResourceName == resourceName + (1 + 1));
+            //------------Assert Precondition-----------------
+            Assert.AreEqual(numOfWfs * 2, resultAfterDuplicateF.Count, "Number of test workflows should equal to 8 on GetResources result to prove that the WF ids are all unique - AFTER DuplicateFolder");
+            //------------Assert Results-------------------------
+            Assert.AreEqual(ExecStatus.Success, resourceCatalogResult.Status);
+            Assert.AreEqual(@"Duplicated Successfully".Replace(Environment.NewLine, ""), resourceCatalogResult.Message.Replace(Environment.NewLine, ""));
+        }
+
+        private static void SaveTestResources(string path, string resourceName, out List<string> workflows, out List<Guid> resourceIds, int numOfTestWFs)
+        {
+            workflows = new List<string>();
+            resourceIds = new List<Guid>();
+            for (int i = 0; i < numOfTestWFs; i++)
+            {
+                workflows.Add(resourceName + (i + 1).ToString());
+                resourceIds.Add(Guid.NewGuid());
+            }
+
+            SaveResources(path, null, true, false, workflows, resourceIds.ToArray(), true, true);
         }
 
         [TestMethod]

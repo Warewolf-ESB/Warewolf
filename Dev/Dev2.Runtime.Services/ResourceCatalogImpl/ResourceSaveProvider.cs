@@ -1,3 +1,14 @@
+/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+
 #pragma warning disable
 using System;
 using System.Collections.Generic;
@@ -9,6 +20,7 @@ using System.Xml.Linq;
 using ChinhDo.Transactions;
 using Dev2.Common;
 using Dev2.Common.Common;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Hosting;
@@ -104,17 +116,15 @@ namespace Dev2.Runtime.ResourceCatalogImpl
         public Action<IResource> ResourceSaved { get; set; }
         public Action<Guid, IList<ICompileMessageTO>> SendResourceMessages { get; set; }
 
-        public ResourceCatalogResult SaveResources(Guid serverWorkspaceID, Dictionary<IResource, StringBuilder> resourceAndContentMap, bool overrideExisting, string savePath)
+        public ResourceCatalogResult SaveResources(Guid serverWorkspaceID, Dictionary<IResource, Tuple<string, StringBuilder>> resourceAndContentMap, bool overrideExisting)
         {
-            return SaveResources(serverWorkspaceID, resourceAndContentMap, savePath, overrideExisting, string.Empty, string.Empty);
+            return SaveResources(serverWorkspaceID, resourceAndContentMap, overrideExisting, string.Empty, string.Empty);
         }
 
-        public ResourceCatalogResult SaveResources(Guid workspaceID, Dictionary<IResource, StringBuilder> resourceAndContentMap, string savedPath, bool overrideExisting , string reason, string user)
+        public ResourceCatalogResult SaveResources(Guid workspaceID, Dictionary<IResource, Tuple<string, StringBuilder>> resourceAndContentMap, bool overrideExisting , string reason, string user)
         {
-            var resource = resourceAndContentMap.Keys.First();
-            _serverVersionRepository.StoreVersion(resource, user, reason, workspaceID, savedPath);
             ResourceCatalogResult saveResult = null;
-            Dev2.Common.Utilities.PerformActionInsideImpersonatedContext(Dev2.Common.Utilities.ServerUser, () => { PerformSaveBulkResult(out saveResult, workspaceID, resourceAndContentMap, overrideExisting, savedPath); });
+            Dev2.Common.Utilities.PerformActionInsideImpersonatedContext(Dev2.Common.Utilities.ServerUser, () => { PerformSaveBulkResult(out saveResult, workspaceID, resourceAndContentMap, overrideExisting, user, reason); });
             return saveResult;
         }
 
@@ -336,13 +346,17 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             return updated;
         }
 
-        void PerformSaveBulkResult(out ResourceCatalogResult saveResult, Guid workspaceID, Dictionary<IResource, StringBuilder> resourceAndContentMap, bool overwriteExisting, string savedPath, string reason = "")
+        void PerformSaveBulkResult(out ResourceCatalogResult saveResult, Guid workspaceID, Dictionary<IResource, Tuple<string, StringBuilder>> resourceAndContentMap, bool overwriteExisting, string user = "", string reason = "")
         {
             foreach (var item in resourceAndContentMap)
             {
                 var resource = item.Key;
-                var contents = item.Value;
-                PerformSaveResult(out saveResult, workspaceID, resource, contents, overwriteExisting, savedPath, reason);
+                var currentRow = item.Value;
+                var destination = currentRow.Item1;
+                var content = currentRow.Item2;
+
+                _serverVersionRepository.StoreVersion(resource, user, reason, workspaceID, destination);
+                PerformSaveResult(out saveResult, workspaceID, resource, content, overwriteExisting, destination, reason);
                 ServerExplorerRepository.Instance.UpdateItem(resource);
             }
             saveResult = new ResourceCatalogResult
