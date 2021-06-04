@@ -12,8 +12,6 @@ using System;
 using System.Collections.Specialized;
 using Dev2.Runtime.Subscription;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Warewolf.Enums;
-
 namespace Dev2.Tests.Runtime.Services
 {
     [TestClass]
