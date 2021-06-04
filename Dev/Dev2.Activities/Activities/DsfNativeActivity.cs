@@ -1074,7 +1074,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public virtual IDev2Activity Execute(IDSFDataObject data, int update)
         {
-            var errorCount = data.Environment.AllErrors.Count;
+            var errorCount = data?.Environment?.AllErrors?.Count ?? 0;
             try
             {
                 _debugInputs = new List<DebugItem>();
@@ -1092,7 +1092,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             finally
             {
-                if(errorCount < data.Environment.AllErrors.Count && (!_isExecuteAsync || _isOnDemandSimulation))
+                var updatedErrorCount = data?.Environment?.AllErrors?.Count ?? 0; 
+                if(errorCount < updatedErrorCount && (!_isExecuteAsync || _isOnDemandSimulation))
                 {
                     DoErrorHandling(data, update);
                 }
