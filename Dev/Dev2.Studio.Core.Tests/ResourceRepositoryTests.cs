@@ -51,6 +51,7 @@ using Moq;
 using Newtonsoft.Json;
 using Warewolf.Configuration;
 using Warewolf.Data;
+using Warewolf.Licensing;
 using Warewolf.Options;
 using Warewolf.Service;
 using Warewolf.Studio.ViewModels;
@@ -2675,6 +2676,137 @@ namespace BusinessDesignStudio.Unit.Tests
                 ServerName = "servername"
             };
             _repo.SavePersistenceSettings(_environmentModel.Object, savePersistenceSettings);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(ResourceRepository))]
+        public void ResourceRepository_CreateSubscription_ExpectMessage()
+        {
+            //------------Setup for test--------------------------
+            var env = new Mock<IServer>();
+            var con = new Mock<IEnvironmentConnection>();
+            con.Setup(c => c.IsConnected).Returns(true);
+            env.Setup(e => e.Connection).Returns(con.Object);
+
+            var subscriptionData = new SubscriptionData
+            {
+                PlanId = "planId",
+                NoOfCores = 2,
+                CustomerFirstName = "firstName",
+                CustomerLastName = "lastName",
+                CustomerEmail = "email"
+            };
+            var jsonSerializer = new Dev2JsonSerializer();
+            var payload = jsonSerializer.Serialize(subscriptionData);
+            var message = new CompressedExecuteMessage();
+            message.SetMessage(payload);
+            var msgResult = jsonSerializer.Serialize(message);
+            con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(msgResult.ToStringBuilder);
+
+            //------------Execute Test---------------------------
+            var result = new ResourceRepository(env.Object);
+            var subscription = result.CreateSubscription(subscriptionData);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(subscription);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(ResourceRepository))]
+        [ExpectedException(typeof(NullReferenceException))]
+        public void ResourceRepository_CreateSubscription_ExpectError()
+        {
+            //------------Setup for test--------------------------
+            var env = new Mock<IServer>();
+            var con = new Mock<IEnvironmentConnection>();
+            con.Setup(c => c.IsConnected).Returns(true);
+            env.Setup(e => e.Connection).Returns(con.Object);
+
+            var subscriptionData = new SubscriptionData
+            {
+                PlanId = "planId",
+                NoOfCores = 2,
+                CustomerFirstName = "firstName",
+                CustomerLastName = "lastName",
+                CustomerEmail = "email"
+            };
+            var jsonSerializer = new Dev2JsonSerializer();
+            var payload = jsonSerializer.Serialize(subscriptionData);
+            var message = new CompressedExecuteMessage();
+            message.SetMessage(payload);
+            var msgResult = jsonSerializer.Serialize(message);
+            con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(msgResult.ToStringBuilder);
+
+            //------------Execute Test---------------------------
+            var result = new ResourceRepository(env.Object) { GetCommunicationController = null };
+            result.CreateSubscription(subscriptionData);
+            //------------Assert Results-------------------------
+            Assert.Fail("Exception should have been thrown here");
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(ResourceRepository))]
+        public void ResourceRepository_RetrieveSubscription_ExpectMessage()
+        {
+            //------------Setup for test--------------------------
+            var env = new Mock<IServer>();
+            var con = new Mock<IEnvironmentConnection>();
+            con.Setup(c => c.IsConnected).Returns(true);
+            env.Setup(e => e.Connection).Returns(con.Object);
+
+            var subscriptionData = new SubscriptionData
+            {
+                PlanId = "planId",
+                NoOfCores = 2,
+                CustomerFirstName = "firstName",
+                CustomerLastName = "lastName",
+                CustomerEmail = "email"
+            };
+            var jsonSerializer = new Dev2JsonSerializer();
+            var payload = jsonSerializer.Serialize(subscriptionData);
+            var message = new CompressedExecuteMessage();
+            message.SetMessage(payload);
+            var msgResult = jsonSerializer.Serialize(message);
+            con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(msgResult.ToStringBuilder);
+
+            var commController = new Mock<ICommunicationController>();
+            var executeMessage = new ExecuteMessage
+            {
+                HasError = false,
+                Message = new StringBuilder("data returned")
+            };
+            commController.Setup(m => m.ExecuteCommand<ExecuteMessage>(It.IsAny<IEnvironmentConnection>(), It.IsAny<Guid>()))
+                .Returns(executeMessage);
+
+            //------------Execute Test---------------------------
+            var result = new ResourceRepository(env.Object)
+            {
+                GetCommunicationController = someName => commController.Object
+            };
+            var subscription = result.RetrieveSubscription();
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(subscription);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(ResourceRepository))]
+        [ExpectedException(typeof(NullReferenceException))]
+        public void ResourceRepository_RetrieveSubscription_ExpectError()
+        {
+            //------------Setup for test--------------------------
+            var env = new Mock<IServer>();
+            var con = new Mock<IEnvironmentConnection>();
+            con.Setup(c => c.IsConnected).Returns(true);
+            env.Setup(e => e.Connection).Returns(con.Object);
+
+            //------------Execute Test---------------------------
+            var result = new ResourceRepository(env.Object) { GetCommunicationController = null };
+            result.RetrieveSubscription();
+            //------------Assert Results-------------------------
+            Assert.Fail("Exception should have been thrown here");
         }
 
         static Mock<IEnvironmentConnection> CreateEnvironmentConnection()

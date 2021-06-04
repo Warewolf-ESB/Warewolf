@@ -9,7 +9,6 @@
 */
 
 using System;
-using System.Collections.Generic;
 using System.Management;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -17,10 +16,6 @@ using System.Security.Permissions;
 using System.Windows.Controls;
 using Dev2;
 using Dev2.Common;
-using Dev2.Common.Interfaces.Infrastructure;
-using Dev2.Communication;
-using Dev2.Controller;
-using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Studio.Interfaces;
 using Warewolf.Licensing;
 
@@ -33,33 +28,13 @@ namespace Warewolf.Studio.CustomControls
     [ComVisible(true)]
     public class ScriptManager
     {
-        WebBrowserView mForm;
+        private WebBrowserView mForm;
+        private IShellViewModel _shellViewModel;
 
         public ScriptManager(WebBrowserView form)
         {
             mForm = form;
-        }
-
-        static IServer GetEnvironment()
-        {
-            var serverRepository = CustomContainer.Get<IServerRepository>();
-            var server = serverRepository.ActiveServer;
-            if(server == null)
-            {
-                var shellViewModel = CustomContainer.Get<IShellViewModel>();
-                server = shellViewModel?.ActiveServer;
-            }
-
-            if(server != null && server.Permissions == null)
-            {
-                server.Permissions = new List<IWindowsGroupPermission>();
-                if(server.AuthorizationService?.SecurityService != null)
-                {
-                    server.Permissions.AddRange(server.AuthorizationService.SecurityService.Permissions);
-                }
-            }
-
-            return server;
+            _shellViewModel = CustomContainer.Get<IShellViewModel>();
         }
 
 #pragma warning disable CC0091
@@ -67,12 +42,8 @@ namespace Warewolf.Studio.CustomControls
         {
             try
             {
-                var serializer = new Dev2JsonSerializer();
-                var controller = new CommunicationController { ServiceName = nameof(GetSubscriptionData) };
-                var server = GetEnvironment();
-                var resultData = controller.ExecuteCommand<ExecuteMessage>(server.Connection, GlobalConstants.ServerWorkspaceID);
-                var data = serializer.Deserialize<ISubscriptionData>(resultData.Message);
-                return serializer.Serialize(data);
+                var result = _shellViewModel?.ActiveServer.ResourceRepository.RetrieveSubscription();
+                return result;
             }
             catch(Exception)
             {
@@ -94,12 +65,7 @@ namespace Warewolf.Studio.CustomControls
                     CustomerLastName = lastName,
                     CustomerEmail = email
                 };
-                var serializer = new Dev2JsonSerializer();
-                var controller = new CommunicationController { ServiceName = nameof(SaveSubscriptionData) };
-                var server = GetEnvironment();
-                controller.AddPayloadArgument(Service.SaveSubscriptionData.SubscriptionData, serializer.SerializeToBuilder(subscriptionData));
-                var resultData = controller.ExecuteCommand<ExecuteMessage>(server.Connection, GlobalConstants.ServerWorkspaceID);
-                var result = resultData.Message.ToString();
+                var result = _shellViewModel?.ActiveServer.ResourceRepository.CreateSubscription(subscriptionData);
                 //TODO:Handle error message
                 return result;
             }
@@ -109,7 +75,7 @@ namespace Warewolf.Studio.CustomControls
             }
         }
 
-        int GetNumberOfCores()
+        private int GetNumberOfCores()
         {
             var coreCount = 0;
             foreach(var item in new ManagementObjectSearcher("Select * from Win32_Processor").Get())

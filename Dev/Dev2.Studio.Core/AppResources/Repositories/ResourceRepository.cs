@@ -41,6 +41,7 @@ using Dev2.Studio.Interfaces.Enums;
 using Dev2.Utils;
 using Warewolf.Configuration;
 using Warewolf.Data;
+using Warewolf.Licensing;
 using Warewolf.Options;
 using Warewolf.Resource.Errors;
 using Warewolf.Service;
@@ -1382,6 +1383,33 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             comController.AddPayloadArgument("versionNumber", versionNumber);
             comController.AddPayloadArgument("currentuserprincipal", currentUserPrincipal);
             return comController.ExecuteCommand<ExecuteMessage>(_server.Connection, GlobalConstants.ServerWorkspaceID);
+        }
+
+        public string CreateSubscription(ISubscriptionData subscriptionData)
+        {
+            if(GetCommunicationController == null)
+            {
+                throw new NullReferenceException("Cannot create a subscription. Cannot get Communication Controller.");
+            }
+            var serializer = new Dev2JsonSerializer();
+            var controller = GetCommunicationController?.Invoke(nameof(Warewolf.Service.SaveSubscriptionData));
+            controller.AddPayloadArgument(Warewolf.Service.SaveSubscriptionData.SubscriptionData, serializer.SerializeToBuilder(subscriptionData));
+            var resultData = controller.ExecuteCommand<ExecuteMessage>(_server.Connection, GlobalConstants.ServerWorkspaceID);
+
+            return resultData != null ? resultData.ToString() : string.Empty;
+        }
+
+        public string RetrieveSubscription()
+        {
+            if(GetCommunicationController == null)
+            {
+                throw new NullReferenceException("Cannot fetch a subscription. Cannot get Communication Controller.");
+            }
+            var serializer = new Dev2JsonSerializer();
+            var controller = GetCommunicationController?.Invoke(nameof(Warewolf.Service.GetSubscriptionData));
+            var resultData = controller.ExecuteCommand<ExecuteMessage>(_server.Connection, GlobalConstants.ServerWorkspaceID);
+            var data = serializer.Deserialize<ISubscriptionData>(resultData.Message);
+            return serializer.Serialize(data);
         }
     }
 }

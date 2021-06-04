@@ -27,6 +27,7 @@ using Warewolf.Options;
 using Warewolf.Triggers;
 using Warewolf.Configuration;
 using Warewolf.Data;
+using Warewolf.Licensing;
 
 namespace Dev2.Studio.Interfaces
 {
@@ -93,5 +94,8 @@ namespace Dev2.Studio.Interfaces
         Task<ExecuteMessage> DeleteResourceFromWorkspaceAsync(IContextualResourceModel resourceModel);
         List<ISearchResult> Filter(ISearch searchValue);
         ExecuteMessage DeleteQueue(ITriggerQueue triggerQueue);
+
+        string RetrieveSubscription();
+        string CreateSubscription(ISubscriptionData subscriptionData);
     }
 }
