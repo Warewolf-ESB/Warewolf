@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Text;
 using Dev2.Communication;
 using Dev2.Runtime.ESB.Management.Services;
+using Dev2.Runtime.Subscription;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -88,18 +89,30 @@ namespace Dev2.Tests.Runtime.Services
                 IsLicensed = true
             };
 
+            var mockSubscriptionProvider = new Mock<ISubscriptionProvider>();
+            mockSubscriptionProvider.Setup(o => o.SubscriptionId).Returns("16BjmNSXISIQjctO");
+            mockSubscriptionProvider.Setup(o => o.PlanId).Returns("developer");
+            mockSubscriptionProvider.Setup(o => o.CustomerId).Returns("16BjmNSXISIQjctO");
+            mockSubscriptionProvider.Setup(o => o.Status).Returns(SubscriptionStatus.Active);
+            mockSubscriptionProvider.Setup(o => o.SubscriptionSiteName).Returns("16BjmNSXISIQjctO");
+            mockSubscriptionProvider.Setup(o => o.SubscriptionKey).Returns("test_VMxitsiobdAyth62k0DiqpAUKocG6sV3");
+
             var mockSubscriptionData = new Mock<ISubscriptionData>();
-            mockSubscriptionData.Setup(o => o.SubscriptionId).Returns("16BjmNSXISIQjctO");
-            mockSubscriptionData.Setup(o => o.PlanId).Returns("developer");
-            mockSubscriptionData.Setup(o => o.Status).Returns(SubscriptionStatus.Active);
-            mockSubscriptionData.Setup(o => o.SubscriptionSiteName).Returns("16BjmNSXISIQjctO");
-            mockSubscriptionData.Setup(o => o.SubscriptionKey).Returns("test_VMxitsiobdAyth62k0DiqpAUKocG6sV3");
+            var subscriptionSiteName = "16BjmNSXISIQjctO";
+            var subscriptionId = "16BjmNSXISIQjctO";
+            var subscriptionKey = "test_VMxitsiobdAyth62k0DiqpAUKocG6sV3";
+            mockSubscriptionData.Setup(o => o.SubscriptionSiteName).Returns(subscriptionSiteName);
+
+            mockSubscriptionData.Setup(o => o.SubscriptionKey).Returns(subscriptionKey);
+
+            mockSubscriptionProvider.Setup(o => o.SubscriptionId).Returns(subscriptionId);
 
             var mockWarewolfLicense = new Mock<IWarewolfLicense>();
-            mockWarewolfLicense.Setup(o => o.RetrievePlan(mockSubscriptionData.Object)).Returns(resultSubscriptionData);
+            mockWarewolfLicense.Setup(o => o.RetrievePlan(subscriptionId, subscriptionKey, subscriptionSiteName))
+                .Returns(resultSubscriptionData);
 
             //------------Execute Test---------------------------
-            var getSubscriptionData = new GetSubscriptionData(mockWarewolfLicense.Object, mockSubscriptionData.Object);
+            var getSubscriptionData = new GetSubscriptionData(mockWarewolfLicense.Object, mockSubscriptionProvider.Object);
             var jsonResult = getSubscriptionData.Execute(values, workspaceMock.Object);
             var result = serializer.Deserialize<ExecuteMessage>(jsonResult);
 

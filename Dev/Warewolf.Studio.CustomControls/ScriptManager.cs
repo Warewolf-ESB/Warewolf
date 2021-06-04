@@ -65,12 +65,20 @@ namespace Warewolf.Studio.CustomControls
 #pragma warning disable CC0091
         public string RetrieveSubscription()
         {
-            var serializer = new Dev2JsonSerializer();
-            var controller = new CommunicationController { ServiceName = nameof(GetSubscriptionData) };
-            var server = GetEnvironment();
-            var resultData = controller.ExecuteCommand<ExecuteMessage>(server.Connection, GlobalConstants.ServerWorkspaceID);
-            var data = serializer.Deserialize<ISubscriptionData>(resultData.Message);
-            return serializer.Serialize(data);
+            try
+            {
+                var serializer = new Dev2JsonSerializer();
+                var controller = new CommunicationController { ServiceName = nameof(GetSubscriptionData) };
+                var server = GetEnvironment();
+                var resultData = controller.ExecuteCommand<ExecuteMessage>(server.Connection, GlobalConstants.ServerWorkspaceID);
+                var data = serializer.Deserialize<ISubscriptionData>(resultData.Message);
+                return serializer.Serialize(data);
+            }
+            catch(Exception)
+            {
+                //handle error
+                return GlobalConstants.Failed;
+            }
         }
 
 #pragma warning disable CC0091
@@ -91,12 +99,13 @@ namespace Warewolf.Studio.CustomControls
                 var server = GetEnvironment();
                 controller.AddPayloadArgument(Service.SaveSubscriptionData.SubscriptionData, serializer.SerializeToBuilder(subscriptionData));
                 var resultData = controller.ExecuteCommand<ExecuteMessage>(server.Connection, GlobalConstants.ServerWorkspaceID);
-                var result = serializer.Deserialize<ISubscriptionData>(resultData.Message);
-                return result.IsLicensed ? "success" : "failed";
+                var result = resultData.Message.ToString();
+                //TODO:Handle error message
+                return result;
             }
             catch(Exception)
             {
-                return "failed";
+                return GlobalConstants.Failed;
             }
         }
 

@@ -411,6 +411,10 @@
     <Compile Include="ServiceModel\RabbitMQSources.cs" />
     <Compile Include="ServiceModel\WebSources.cs" />
     <Compile Include="ServiceTestCoverageModelToFactory.cs" />
+    <Compile Include="Subscription\SubscriptionConfig.cs" />
+    <Compile Include="Subscription\SubscriptionProvider.cs" />
+    <Compile Include="Subscription\ISubscriptionProvider.cs" />
+    <Compile Include="Subscription\ISubscriptionConfig.cs" />
     <Compile Include="TestCatalog.cs" />
     <Compile Include="TestCoverageCatalog.cs" />
     <Compile Include="Utilities.cs" />

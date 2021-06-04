@@ -237,6 +237,9 @@
     <Compile Include="ServiceModel\ServicesTests.cs" />
     <Compile Include="Services\HostSecurityProviderTest.cs" />
     <Compile Include="Services\SaveSubscriptionDataTests.cs" />
+    <Compile Include="Services\SubscriptionConfigMock.cs" />
+    <Compile Include="Services\SubscriptionConfigTests.cs" />
+    <Compile Include="Services\SubscriptionProviderTest.cs" />
     <Compile Include="Services\TestWebServiceTests.cs" />
     <None Include="..\Dev2.Server\app.config">
       <Link>app.config</Link>

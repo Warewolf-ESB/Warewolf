@@ -14,7 +14,7 @@ using System.Text;
 using Dev2.Common.Interfaces.Communication;
 using Dev2.Communication;
 using Dev2.Runtime.ESB.Management.Services;
-using Dev2.Runtime.Security;
+using Dev2.Runtime.Subscription;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -116,25 +116,23 @@ namespace Dev2.Tests.Runtime.Services
             mockWarewolfLicense.Setup(o => o.CreatePlan(It.IsAny<ISubscriptionData>())).Returns(subscriptionDataPlanCreated);
 
             //------------Execute Test---------------------------
-            var mockSecurityProvider = new Mock<IHostSecurityProvider>();
-            mockSecurityProvider.Setup(o => o.UpdateSubscriptionData(subscriptionDataPlanCreated)).Returns(subscriptionDataPlanCreated);
+            var mockSecurityProvider = new Mock<ISubscriptionProvider>();
+            mockSecurityProvider.Setup(o => o.SaveSubscriptionData(subscriptionDataPlanCreated));
 
-            var message = new StringBuilder("success");
             var mockSerializer = new Mock<IBuilderSerializer>();
             mockSerializer.Setup(o => o.Deserialize<SubscriptionData>(serializedSubsciptionData)).Returns(subscriptionData);
-            mockSerializer.Setup(p => p.SerializeToBuilder(subscriptionDataPlanCreated)).Returns(message);
+
             var expectedPassedResult = new StringBuilder("Passed");
             mockSerializer.Setup(p => p.SerializeToBuilder(It.IsAny<ExecuteMessage>())).Returns(expectedPassedResult);
 
-            var saveSubscriptionData = new SaveSubscriptionData(mockSerializer.Object, mockWarewolfLicense.Object, mockSubscriptionData.Object, mockSecurityProvider.Object);
+            var saveSubscriptionData = new SaveSubscriptionData(mockSerializer.Object, mockWarewolfLicense.Object, mockSecurityProvider.Object);
             var jsonResult = saveSubscriptionData.Execute(values, workspaceMock.Object);
             //------------Assert Results-------------------------
             Assert.AreEqual(expectedPassedResult, jsonResult);
 
             mockWarewolfLicense.Verify(o => o.CreatePlan(It.IsAny<ISubscriptionData>()), Times.Once);
-            mockSecurityProvider.Verify(o => o.UpdateSubscriptionData(subscriptionDataPlanCreated), Times.Once);
+            mockSecurityProvider.Verify(o => o.SaveSubscriptionData(subscriptionDataPlanCreated), Times.Once);
             mockSerializer.Verify(o => o.Deserialize<SubscriptionData>(serializedSubsciptionData), Times.Once);
-            mockSerializer.Verify(p => p.SerializeToBuilder(subscriptionDataPlanCreated), Times.Once);
             mockSerializer.Verify(p => p.SerializeToBuilder(It.IsAny<ExecuteMessage>()), Times.Once);
         }
     }

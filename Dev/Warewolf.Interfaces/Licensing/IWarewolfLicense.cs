@@ -12,6 +12,6 @@ namespace Warewolf.Licensing
     {
         ISubscriptionData CreatePlan(ISubscriptionData subscriptionData);
 
-        ISubscriptionData RetrievePlan(ISubscriptionData subscriptionData);
+        ISubscriptionData RetrievePlan(string subscriptionId, string subscriptionKey, string subscriptionSiteName);
     }
 }

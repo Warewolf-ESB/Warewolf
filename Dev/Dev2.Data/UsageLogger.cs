@@ -43,6 +43,7 @@ namespace Dev2.Data
 
         void TrackUsage(UsageType usageType)
         {
+
             var myData = new
             {
                 ServerStats.SessionId,

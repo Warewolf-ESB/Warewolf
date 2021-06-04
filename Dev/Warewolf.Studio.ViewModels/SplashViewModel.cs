@@ -14,6 +14,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Windows.Input;
 using System.Windows.Threading;
 using Dev2.Common.Interfaces;
+using Dev2.Runtime.Subscription;
 using Dev2.Studio.Interfaces;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
@@ -41,7 +42,8 @@ namespace Warewolf.Studio.ViewModels
             WarewolfUrl = warewolfUri;
             WarewolfCopyright = string.Format(Resources.Languages.Core.WarewolfCopyright, DateTime.Now.Year.ToString());
 
-            //WarewolfLicense = LicenseSettings.IsLicensed ? LicenseSettings.PlanId : LicenseSettings.NotRegistered;
+            var subscriptionInstance = SubscriptionProvider.Instance;
+            WarewolfLicense =  subscriptionInstance.PlanId + ": " + subscriptionInstance.Status;
 
             ContributorsCommand = new DelegateCommand(() => externalProcessExecutor.OpenInBrowser(ContributorsUrl));
             CommunityCommand = new DelegateCommand(() => externalProcessExecutor.OpenInBrowser(CommunityUrl));

@@ -8,6 +8,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Dev2.Common;
@@ -16,7 +17,7 @@ using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
-using Dev2.Runtime.Security;
+using Dev2.Runtime.Subscription;
 using Dev2.Workspaces;
 using Warewolf.Licensing;
 
@@ -24,50 +25,53 @@ namespace Dev2.Runtime.ESB.Management.Services
 {
     public class SaveSubscriptionData : DefaultEsbManagementEndpoint
     {
-        private readonly ISubscriptionData _subscriptionDataInstance;
         private readonly IWarewolfLicense _warewolfLicense;
         private readonly IBuilderSerializer _serializer;
-        private readonly IHostSecurityProvider _hostSecurityProvider;
+        private readonly ISubscriptionProvider _subscriptionProvider;
 
         public SaveSubscriptionData()
-            : this(new Dev2JsonSerializer(), new WarewolfLicense(), HostSecurityProvider.SubscriptionDataInstance, HostSecurityProvider.Instance)
+            : this(new Dev2JsonSerializer(), new WarewolfLicense(), SubscriptionProvider.Instance)
         {
         }
 
-        public SaveSubscriptionData(IBuilderSerializer serializer, IWarewolfLicense warewolfLicense, ISubscriptionData subscriptionData, IHostSecurityProvider hostSecurityProvider)
+        public SaveSubscriptionData(IBuilderSerializer serializer, IWarewolfLicense warewolfLicense, ISubscriptionProvider subscriptionProvider)
         {
             _warewolfLicense = warewolfLicense;
-            _subscriptionDataInstance = subscriptionData;
             _serializer = serializer;
-            _hostSecurityProvider = hostSecurityProvider;
+            _subscriptionProvider = subscriptionProvider;
         }
 
         public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             var result = new ExecuteMessage { HasError = false };
-
-            Dev2Logger.Info("Save Subscription Data Service", GlobalConstants.WarewolfInfo);
-            values.TryGetValue(Warewolf.Service.SaveSubscriptionData.SubscriptionData, out var data);
-
-            var subscriptionData = _serializer.Deserialize<SubscriptionData>(data);
-            subscriptionData.SubscriptionKey = _subscriptionDataInstance.SubscriptionKey;
-            subscriptionData.SubscriptionSiteName = _subscriptionDataInstance.SubscriptionSiteName;
-
-            var resultData = _warewolfLicense.CreatePlan(subscriptionData);
-            if(resultData is null)
+            try
             {
-                result.HasError = true;
-                result.SetMessage("An error occured.");
+                Dev2Logger.Info("Save Subscription Data Service", GlobalConstants.WarewolfInfo);
+                values.TryGetValue(Warewolf.Service.SaveSubscriptionData.SubscriptionData, out var data);
+
+                var subscriptionData = _serializer.Deserialize<SubscriptionData>(data);
+                subscriptionData.SubscriptionKey = _subscriptionProvider.SubscriptionKey;
+                subscriptionData.SubscriptionSiteName = _subscriptionProvider.SubscriptionSiteName;
+
+                var resultData = _warewolfLicense.CreatePlan(subscriptionData);
+                if(resultData is null)
+                {
+                    result.HasError = true;
+                    result.SetMessage("An error occured.");
+                    return _serializer.SerializeToBuilder(result);
+                }
+
+                _subscriptionProvider.SaveSubscriptionData(resultData);
+
+                result.SetMessage(GlobalConstants.Success);
                 return _serializer.SerializeToBuilder(result);
             }
-            var updatedSubscriptionData = _hostSecurityProvider.UpdateSubscriptionData(resultData);
-            if(!updatedSubscriptionData.IsLicensed)
+            catch(Exception e)
             {
                 result.HasError = true;
+                result.SetMessage(e.Message);
+                return _serializer.SerializeToBuilder(result);
             }
-
-            result.Message = _serializer.SerializeToBuilder(updatedSubscriptionData);
-            return _serializer.SerializeToBuilder(result);
         }
 
         public override DynamicService CreateServiceEntry()

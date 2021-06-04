@@ -24,7 +24,6 @@ using Dev2.Diagnostics.Debug;
 using Dev2.PerformanceCounters.Management;
 using Dev2.Runtime;
 using Dev2.Runtime.Hosting;
-using Dev2.Runtime.Security;
 using Dev2.Runtime.WebServer;
 using WarewolfCOMIPC.Client;
 using Dev2.Common.Interfaces.Wrappers;
@@ -45,6 +44,7 @@ using Newtonsoft.Json;
 using Warewolf.Usage;
 using JsonSerializer = Warewolf.Streams.JsonSerializer;
 using System.Diagnostics;
+using Dev2.Runtime.Subscription;
 using Warewolf.Execution;
 
 namespace Dev2
@@ -226,7 +226,7 @@ namespace Dev2
                             var loggingServerCheckDelay = Task.Delay(TimeSpan.FromSeconds(300));
 
                             _loadResources = new LoadResources("Resources", _writer, _startUpDirectory, _startupResourceCatalogFactory);
-                            LoadHostSecurityProvider();
+                            LoadSubscriptionProvider();
                             _loadResources.CheckExampleResources();
                             _loadResources.MigrateOldTests();
                             var webServerConfig = _webServerConfiguration;
@@ -489,18 +489,16 @@ namespace Dev2
             _writer.WriteLine("done.");
         }
 
-        void LoadHostSecurityProvider()
+        void LoadSubscriptionProvider()
         {
-            _writer.Write("Loading security provider...  ");
-            var subscriptionDataInstance = HostSecurityProvider.SubscriptionDataInstance;
+            _writer.Write("Loading subscription provider...  ");
+            var subscriptionDataInstance = SubscriptionProvider.Instance;
             if(subscriptionDataInstance != null)
             {
                 //TODO: get subscription data service
-
                 _writer.WriteLine("done.");
             }
         }
-
 #if DEBUG
 
         static void SetAsStarted()

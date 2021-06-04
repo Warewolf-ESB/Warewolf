@@ -43,15 +43,15 @@ namespace Warewolf.Licensing
             return result;
         }
 
-        public ISubscriptionData RetrievePlan(ISubscriptionData subscriptionData)
+        public ISubscriptionData RetrievePlan(string subscriptionId, string subscriptionKey, string subscriptionSiteName)
         {
             try
             {
-                if (!string.IsNullOrEmpty(subscriptionData.SubscriptionSiteName) || !string.IsNullOrEmpty(subscriptionData.SubscriptionKey))
+                if (!string.IsNullOrEmpty(subscriptionSiteName) || !string.IsNullOrEmpty(subscriptionKey))
                 {
-                    ApiConfig.Configure(subscriptionData.SubscriptionSiteName, subscriptionData.SubscriptionKey);
+                    ApiConfig.Configure(subscriptionSiteName, subscriptionKey);
                 }
-                var subscriptionId = subscriptionData.SubscriptionId;
+
                 if(string.IsNullOrEmpty(subscriptionId))
                 {
                     return DefaultLicenseData();
@@ -81,9 +81,9 @@ namespace Warewolf.Licensing
         {
             var licenseData = new SubscriptionData
             {
-                CustomerId = "Unknown",
-                SubscriptionId = "None",
-                PlanId = "NotActive",
+                CustomerId = "",
+                SubscriptionId = "",
+                PlanId = "NotRegistered",
                 Status = SubscriptionStatus.NotActive,
                 IsLicensed = false
             };

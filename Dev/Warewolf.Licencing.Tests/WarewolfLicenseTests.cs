@@ -92,7 +92,9 @@ namespace Warewolf.LicencingTests
             mockSubscription.Setup(o => o.RetrievePlan(subscriptionData.SubscriptionId)).Returns(resultSubscriptionData);
 
             var license = new WarewolfLicense(mockSubscription.Object);
-            var resultData = license.RetrievePlan(mockSubscriptionData.Object);
+            var resultData = license.RetrievePlan( mockSubscriptionData.Object.SubscriptionId,
+                mockSubscriptionData.Object.SubscriptionKey,
+                mockSubscriptionData.Object.SubscriptionSiteName);
 
             Assert.AreEqual(subscriptionData.CustomerId, resultData.CustomerId);
             Assert.AreEqual(subscriptionData.SubscriptionId, resultData.SubscriptionId);
@@ -128,7 +130,9 @@ namespace Warewolf.LicencingTests
             mockSubscription.Setup(o => o.RetrievePlan(subscriptionData.SubscriptionId)).Returns(resultSubscriptionData);
 
             var license = new WarewolfLicense(mockSubscription.Object);
-            var resultData = license.RetrievePlan(mockSubscriptionData.Object);
+            var resultData = license.RetrievePlan( mockSubscriptionData.Object.SubscriptionId,
+                mockSubscriptionData.Object.SubscriptionKey,
+                mockSubscriptionData.Object.SubscriptionSiteName);
 
             Assert.AreEqual(subscriptionData.CustomerId, resultData.CustomerId);
             Assert.AreEqual(subscriptionData.SubscriptionId, resultData.SubscriptionId);
@@ -165,7 +169,9 @@ namespace Warewolf.LicencingTests
             mockSubscription.Setup(o => o.RetrievePlan(subscriptionData.SubscriptionId)).Returns(resultSubscriptionData);
 
             var license = new WarewolfLicense(mockSubscription.Object);
-            var resultData = license.RetrievePlan(mockSubscriptionData.Object);
+            var resultData = license.RetrievePlan( mockSubscriptionData.Object.SubscriptionId,
+                mockSubscriptionData.Object.SubscriptionKey,
+                mockSubscriptionData.Object.SubscriptionSiteName);
 
             Assert.AreEqual(subscriptionData.CustomerId, resultData.CustomerId);
             Assert.AreEqual(SubscriptionStatus.Future, resultData.Status);
