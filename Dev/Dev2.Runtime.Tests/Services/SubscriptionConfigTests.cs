@@ -12,6 +12,9 @@ using System;
 using System.Collections.Specialized;
 using Dev2.Runtime.Subscription;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Warewolf.Enums;
+using Warewolf.Licensing;
+
 namespace Dev2.Tests.Runtime.Services
 {
     [TestClass]
@@ -23,34 +26,16 @@ namespace Dev2.Tests.Runtime.Services
         internal const string DefaultSubscriptionKey = "wCYcjqzbAiHIneFFib+LCrn73SSkOlRzm4QxP+mkeHsH7e3surKN5liDsrv39JFR";
         internal const string DefaultSubscriptionSiteName = "L8NilnImZ18r8VCMD88AdQ==";
         internal const string DefaultStatus = "aT/AoVWEMyf6OPvaYp47Gw==";
-        static NameValueCollection _newSettings;
+
         static NameValueCollection _defaultSettings;
 
         private static NameValueCollection CreateDefaultConfig()
         {
             return SubscriptionConfig.CreateSettings(DefaultCustomerId, DefaultPlanId, DefaultSubscriptionId, DefaultStatus, DefaultSubscriptionSiteName, DefaultSubscriptionKey);
         }
-        private static NameValueCollection CreateBlankConfig()
-        {
-            return SubscriptionConfig.CreateSettings("", "", "", "", "", "");
-        }
-        [ClassInitialize]
-        public static void ClassInitialize(TestContext testContext)
-        {
-            _defaultSettings = CreateDefaultConfig();
-            _newSettings = SubscriptionConfig.CreateSettings(DefaultCustomerId, DefaultPlanId, DefaultSubscriptionId, DefaultStatus, DefaultSubscriptionSiteName, DefaultSubscriptionKey);
-        }
 
-        [TestMethod]
-        [Owner("Candice Daniel")]
-        [TestCategory(nameof(SubscriptionConfig))]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void SubscriptionConfig_WithoutConfig_Expected_ThrowsArgumentNullException()
-        {
-            new SubscriptionConfig(null);
-        }
 
-        [TestMethod]
+        /*[TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(SubscriptionConfig))]
         public void CreateEncryptions()
@@ -79,6 +64,15 @@ namespace Dev2.Tests.Runtime.Services
             //
             //var decryptedBytes = SecurityEncryption.Decrypt(encryptedBytes2Live);
             // Assert.AreEqual(value, decryptedBytes);
+        }*/
+
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(SubscriptionConfig))]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void SubscriptionConfig_WithoutConfig_Expected_ThrowsArgumentNullException()
+        {
+            new SubscriptionConfig(null);
         }
 
         [TestMethod]
@@ -86,55 +80,54 @@ namespace Dev2.Tests.Runtime.Services
         [TestCategory(nameof(SubscriptionConfig))]
         public void SubscriptionConfig_WithDefaultSettings_Expected_LoadsDefaultValues()
         {
-            TestConfig(DefaultCustomerId, DefaultSubscriptionId, DefaultStatus, DefaultSubscriptionSiteName, DefaultSubscriptionKey, DefaultPlanId, false);
-        }
+            _defaultSettings = CreateDefaultConfig();
+            var config = new SubscriptionConfigMock(_defaultSettings);
+            Assert.AreEqual(SubscriptionConfig.DecryptKey(DefaultCustomerId), config.CustomerId);
+            Assert.AreEqual(SubscriptionConfig.DecryptKey(DefaultPlanId), config.PlanId);
+            Assert.AreEqual(SubscriptionConfig.DecryptKey(DefaultSubscriptionId), config.SubscriptionId);
+            Assert.AreEqual(SubscriptionConfig.DecryptKey(DefaultSubscriptionSiteName), config.SubscriptionSiteName);
+            Assert.AreEqual(SubscriptionConfig.DecryptKey(DefaultSubscriptionKey), config.SubscriptionKey);
+            Assert.AreEqual(SubscriptionConfig.DecryptKey(DefaultStatus), config.Status);
+
+            Assert.IsNull(config.SaveConfigSettings);
+
+            Assert.AreEqual(0, config.SaveConfigHitCount);
+          }
 
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(SubscriptionConfig))]
-        public void SubscriptionConfig_WithNewSettings_Expected_LoadsNewValues()
+        public void SubscriptionConfig_UpdateSubscriptionSettings_LoadsNewValues()
         {
-            _defaultSettings = CreateBlankConfig();
-            _newSettings = SubscriptionConfig.CreateSettings("", "", "","" ,"", "");
+            _defaultSettings = CreateDefaultConfig();
+            var config = new SubscriptionConfigMock(_defaultSettings);
+            var subscriptionKey = "test_VMxitsiobdAyth62k0DiqpAUKocG6sV3";
+            var subscriptionSiteName = "warewolf-test";
+            var planId = "developer";
+            var customerId = "newCustomer";
+            var status = SubscriptionStatus.InTrial;
+            var subscriptionId = "5467897";
 
-            TestConfig("", "", "","" ,"", "", true);
-        }
-
-        static void TestConfig(string expectedCustomerId, string expectedSubscriptionId, string expectedStatus, string expectedSubscriptionSiteName, string expectedSubscriptionKey, string expectedPlanId, bool isNewConfig)
-        {
-            var config = new SubscriptionConfigMock(isNewConfig ? _newSettings : _defaultSettings);
-            TestConfig(expectedCustomerId, expectedSubscriptionId, expectedStatus, expectedSubscriptionSiteName, expectedSubscriptionKey, expectedPlanId, isNewConfig, config);
-        }
-
-        static void TestConfig(string expectedCustomerId, string expectedSubscriptionId, string expectedStatus, string expectedSubscriptionSiteName, string expectedSubscriptionKey, string expectedPlanId, bool isNewConfig, SubscriptionConfigMock config)
-        {
-            if(isNewConfig)
+            var newSubscriptionData = new SubscriptionData
             {
-                Assert.AreEqual("", config.CustomerId);
-                Assert.AreEqual("NotRegistered", config.PlanId);
-                Assert.AreEqual("", config.SubscriptionId);
-                Assert.AreEqual("warewolf-test", config.SubscriptionSiteName);
-                Assert.AreEqual("test_VMxitsiobdAyth62k0DiqpAUKocG6sV3", config.SubscriptionKey);
-                Assert.AreEqual("NotActive", config.Status);
-                Assert.IsNotNull(config.SaveConfigSettings);
-                Assert.AreNotEqual(_newSettings, config.SaveConfigSettings);
+                CustomerId = customerId,
+                SubscriptionId = subscriptionId,
+                PlanId = planId,
+                Status = status,
+                SubscriptionSiteName = subscriptionSiteName,
+                SubscriptionKey = subscriptionKey
+            };
+            SubscriptionConfig.UpdateSubscriptionSettings(newSubscriptionData);
 
-                Assert.AreEqual(1, config.SaveConfigHitCount);
-                Assert.AreEqual(1, config.ProtectConfigHitCount);
-            }
-            else
-            {
-                Assert.AreEqual(SubscriptionConfig.DecryptKey(expectedCustomerId), config.CustomerId);
-                Assert.AreEqual(SubscriptionConfig.DecryptKey(expectedPlanId), config.PlanId);
-                Assert.AreEqual(SubscriptionConfig.DecryptKey(expectedSubscriptionId), config.SubscriptionId);
-                Assert.AreEqual(SubscriptionConfig.DecryptKey(expectedSubscriptionSiteName), config.SubscriptionSiteName);
-                Assert.AreEqual(SubscriptionConfig.DecryptKey(expectedSubscriptionKey), config.SubscriptionKey);
-                Assert.AreEqual(SubscriptionConfig.DecryptKey(expectedStatus), config.Status);
-                Assert.IsNull(config.SaveConfigSettings);
+            Assert.AreEqual("", config.CustomerId);
+            Assert.AreEqual("NotRegistered", config.PlanId);
+            Assert.AreEqual("", config.SubscriptionId);
+            Assert.AreEqual("warewolf-test", config.SubscriptionSiteName);
 
-                Assert.AreEqual(0, config.SaveConfigHitCount);
-                Assert.AreEqual(0, config.ProtectConfigHitCount);
-            }
+            Assert.AreEqual(subscriptionKey, config.SubscriptionKey);
+            Assert.AreEqual("NotActive", config.Status);
+            Assert.IsNotNull(config.UpdateConfigSettings);
+            Assert.AreEqual(1, config.UpdateConfigHitCount);
         }
     }
 }

@@ -32,7 +32,7 @@ namespace Dev2.Runtime.Subscription
             {
                 EnsureSubscriptionConfigFileExists();
                 var settings = (NameValueCollection)ConfigurationManager.GetSection(SectionName);
-                Initialize(settings, true);
+                Initialize(settings);
             }
             catch(Exception e)
             {
@@ -41,13 +41,8 @@ namespace Dev2.Runtime.Subscription
         }
 
         public SubscriptionConfig(NameValueCollection settings)
-            : this(settings, true)
         {
-        }
-
-        public SubscriptionConfig(NameValueCollection settings, bool shouldProtectConfig)
-        {
-            Initialize(settings, shouldProtectConfig);
+            Initialize(settings);
         }
 
         public string SubscriptionKey { get; private set; }
@@ -57,7 +52,7 @@ namespace Dev2.Runtime.Subscription
         public string SubscriptionId { get; private set; }
         public string Status { get; private set; }
 
-        protected void Initialize(NameValueCollection settings, bool shouldProtectConfig)
+        protected void Initialize(NameValueCollection settings)
         {
             if(settings == null)
             {
@@ -90,11 +85,6 @@ namespace Dev2.Runtime.Subscription
                 newSettings["SubscriptionKey"] = subscriptionKey;
                 newSettings["SubscriptionSiteName"] = subscriptionSiteName;
                 SaveConfig(newSettings);
-
-                if(shouldProtectConfig)
-                {
-                    ProtectConfig();
-                }
             }
         }
 
@@ -133,7 +123,7 @@ namespace Dev2.Runtime.Subscription
                 newSettings["PlanId"] = SecurityEncryption.Encrypt(subscriptionData.PlanId);
                 newSettings["SubscriptionKey"] = SecurityEncryption.Encrypt(subscriptionData.SubscriptionKey);
                 newSettings["SubscriptionSiteName"] = SecurityEncryption.Encrypt(subscriptionData.SubscriptionSiteName);
-                UpdateConfig(newSettings);
+                UpdateConfigSettings(newSettings);
             }
             catch(Exception e)
             {
@@ -142,23 +132,28 @@ namespace Dev2.Runtime.Subscription
             }
         }
 
-        protected virtual void SaveConfig(NameValueCollection secureSettings)
+        protected virtual void SaveConfig(NameValueCollection subscriptionSettings)
         {
-            UpdateConfig(secureSettings);
+            UpdateConfigSettings(subscriptionSettings);
         }
 
-        private static void UpdateConfig(NameValueCollection secureSettings)
+        protected virtual void UpdateConfig(NameValueCollection subscriptionSettings)
+        {
+            UpdateConfigSettings(subscriptionSettings);
+        }
+
+        protected static void UpdateConfigSettings(NameValueCollection subscriptionSettings)
         {
             try
             {
                 var config = new XElement(SectionName);
-                foreach(string key in secureSettings.Keys)
+                foreach(string key in subscriptionSettings.Keys)
                 {
                     config.Add(
                         new XElement(
                             "add",
                             new XAttribute("key", key),
-                            new XAttribute("value", secureSettings[key])
+                            new XAttribute("value", subscriptionSettings[key])
                         ));
                 }
 
@@ -168,26 +163,6 @@ namespace Dev2.Runtime.Subscription
             catch(Exception ex)
             {
                 Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
-            }
-        }
-
-        protected virtual void ProtectConfig()
-        {
-            try
-            {
-                var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-                var section = config.GetSection(SectionName);
-                if(section != null && !section.SectionInformation.IsProtected && !section.ElementInformation.IsLocked)
-                {
-                    section.SectionInformation.ProtectSection("RsaProtectedConfigurationProvider");
-                    section.SectionInformation.ForceSave = true;
-                    config.Save(ConfigurationSaveMode.Full);
-                }
-            }
-            catch(Exception e)
-            {
-                Dev2Logger.Error(e, GlobalConstants.WarewolfError);
-                throw;
             }
         }
 
