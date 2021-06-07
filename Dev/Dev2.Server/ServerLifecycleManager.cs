@@ -235,8 +235,6 @@ namespace Dev2
                     LoadTestCatalog();
                     LoadTriggersCatalog();
 
-                    StartTrackingUsage();
-
                     _startWebServer.Execute(webServerConfig, _pauseHelper);
                     _queueProcessMonitor.Start();
 

@@ -112,9 +112,6 @@ namespace Dev2.Studio
         protected override void OnStartup(System.Windows.StartupEventArgs e)
         {
             CustomContainer.Register<IFieldAndPropertyMapper>(new FieldAndPropertyMapper());
-            CustomContainer.Register(ApplicationTrackerFactory.GetApplicationTrackerProvider());
-            var applicationTracker = CustomContainer.Get<IApplicationTracker>();
-            applicationTracker?.EnableApplicationTracker(VersionInfo.FetchVersionInfo(), VersionInfo.FetchInformationalVersion(), @"Warewolf" + $" ({ClaimsPrincipal.Current.Identity.Name})".ToUpperInvariant());
 
             ShutdownMode = System.Windows.ShutdownMode.OnMainWindowClose;
 
