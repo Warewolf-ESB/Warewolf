@@ -83,5 +83,19 @@ namespace Dev2.Runtime.Subscription
             var config = new SubscriptionConfig();
             _theInstance = new SubscriptionProvider(config);
         }
+
+        public ISubscriptionData GetSubscriptionData()
+        {
+            return new SubscriptionData
+            {
+                CustomerId = CustomerId,
+                SubscriptionId = SubscriptionId,
+                PlanId = PlanId,
+                Status = Status,
+                SubscriptionSiteName = SubscriptionSiteName,
+                SubscriptionKey = SubscriptionKey,
+                IsLicensed = IsLicensed,
+            };
+        }
     }
 }

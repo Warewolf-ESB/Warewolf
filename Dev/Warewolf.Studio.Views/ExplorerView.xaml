@@ -155,7 +155,7 @@
                                                Header="Register"
                                                Style="{StaticResource MenuItemStyle}"
                                                ToolTip="{x:Static languages:Tooltips.RegisterWarewolfToolTip}"
-                                               Visibility="{Binding IsRegistered, Converter={StaticResource BoolToVisibilityConverterNegative}}">
+                                               Visibility="{Binding IsLicensed, Converter={StaticResource BoolToVisibilityConverterNegative}}">
                                          <MenuItem.Icon>
                                              <fa:FontAwesome FontSize="14" FontWeight="Light" Foreground="{StaticResource WareWolfOrangeBrush}" Icon="Registered" />
                                          </MenuItem.Icon>
@@ -165,12 +165,12 @@
                                         Header="Manage Plan"
                                         Style="{StaticResource MenuItemStyle}"
                                         ToolTip="{x:Static languages:Tooltips.ManagePlanWarewolfToolTip}"
-                                        Visibility="{Binding IsRegistered, Converter={StaticResource BoolToVisibilityConverterNegative}}">
+                                        Visibility="{Binding IsLicensed, Converter={StaticResource BoolToVisibilityConverterNegative}}">
                                         <MenuItem.Icon>
                                             <fa:FontAwesome FontSize="14" FontWeight="Light" Foreground="{StaticResource WareWolfOrangeBrush}" Icon="Registered" />
                                         </MenuItem.Icon>
                                     </MenuItem>
-                                     <Separator Visibility="{Binding IsRegistered, Converter={StaticResource BoolToVisibilityConverterNegative}}"/>
+                                     <Separator Visibility="{Binding IsLicensed, Converter={StaticResource BoolToVisibilityConverterNegative}}"/>
 
                                     <MenuItem Name="NewService"
                                               Command="{Binding NewServiceCommand}"

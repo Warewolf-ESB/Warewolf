@@ -47,7 +47,7 @@ namespace Warewolf.Studio.ViewModels
         bool _isServerUnavailableIconVisible;
         bool _isExpanded;
         bool _isSelected;
-        bool _isRegistered;
+        bool _isLicensed;
         bool _canCreateFolder;
         bool _canShowServerVersion;
         bool _canCreateWorkflowService;
@@ -98,7 +98,8 @@ namespace Warewolf.Studio.ViewModels
             _children = new ObservableCollection<IExplorerItemViewModel>();
             ExplorerTooltips = CustomContainer.Get<IExplorerTooltips>();
 
-            IsRegistered = false;
+            var subscriptionData = Server.GetSubscriptionData();
+            IsLicensed = subscriptionData.IsLicensed;
 
             RegisterCommand = new DelegateCommand(shellViewModel.Register);
 
@@ -827,13 +828,13 @@ namespace Warewolf.Studio.ViewModels
             return folderName;
         }
 
-        public bool IsRegistered
+        public bool IsLicensed
         {
-            get => _isRegistered;
+            get => _isLicensed;
             set
             {
-                _isRegistered = value;
-                OnPropertyChanged(() => IsRegistered);
+                _isLicensed = value;
+                OnPropertyChanged(() => IsLicensed);
             }
         }
         public ICommand ManagePlanCommand { get; set; }

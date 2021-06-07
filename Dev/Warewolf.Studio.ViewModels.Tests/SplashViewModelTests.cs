@@ -14,6 +14,8 @@ using Dev2.Common.Interfaces;
 using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Warewolf.Enums;
+using Warewolf.Licensing;
 
 namespace Warewolf.Studio.ViewModels.Tests
 {
@@ -30,6 +32,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestInitialize()
         {
             _serverMock = new Mock<IServer>();
+            _serverMock.Setup(o => o.GetSubscriptionData()).Returns(new Mock<ISubscriptionData>().Object);
             _externalProcessExecutorMock = new Mock<IExternalProcessExecutor>();
 
             _changedProperties = new List<string>();
@@ -306,15 +309,19 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void SplashViewModel_TestWarewolfLicense_IsLicensed_True()
         {
             //arrange
-            //TODO:The GlobalConstants will be replaced with the WarewolfLicense object
-            //LicenseSettings.IsLicensed = true;
-            //LicenseSettings.PlanId = "Developer";
+            var subscriptionData = new SubscriptionData
+            {
+                IsLicensed = true,
+                PlanId = "Developer",
+                Status = SubscriptionStatus.InTrial,
+            };
+            _serverMock.Setup(o => o.GetSubscriptionData()).Returns(subscriptionData);
 
             //act
             var splashViewModel = new SplashViewModel(_serverMock.Object, _externalProcessExecutorMock.Object);
 
             //assert
-            Assert.AreEqual("Developer", splashViewModel.WarewolfLicense);
+            Assert.AreEqual("Developer: InTrial", splashViewModel.WarewolfLicense);
         }
 
         [TestMethod]
@@ -323,15 +330,19 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void SplashViewModel_TestWarewolfLicense_IsLicensed_False()
         {
             //arrange
-            //TODO:The GlobalConstants will be replaced with the WarewolfLicense object
-            //LicenseSettings.IsLicensed = false;
-            //LicenseSettings.PlanId = "Developer";
+            var subscriptionData = new SubscriptionData
+            {
+                IsLicensed = false,
+                PlanId = "Not Registered",
+                Status = SubscriptionStatus.NotActive,
+            };
+            _serverMock.Setup(o => o.GetSubscriptionData()).Returns(subscriptionData);
 
             //act
             var splashViewModel = new SplashViewModel(_serverMock.Object, _externalProcessExecutorMock.Object);
 
             //assert
-            //Assert.AreEqual(LicenseSettings.NotRegistered, splashViewModel.WarewolfLicense);
+            Assert.AreEqual("Not Registered: NotActive", splashViewModel.WarewolfLicense);
         }
 
     }

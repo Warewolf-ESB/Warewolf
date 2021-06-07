@@ -981,7 +981,7 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => IsExpanderVisible);
             }
         }
-        public bool IsRegistered { get; set; }
+        public bool IsLicensed { get; set; }
 
         public ICommand RegisterCommand { get; set; }
 

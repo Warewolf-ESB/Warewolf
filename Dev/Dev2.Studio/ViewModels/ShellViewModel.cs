@@ -75,6 +75,7 @@ using Warewolf.Data;
 using Dev2.Data;
 using Dev2.Data.Interfaces;
 using Warewolf.Core;
+using Warewolf.Enums;
 using Warewolf.Studio.CustomControls;
 
 namespace Dev2.Studio.ViewModels
@@ -2320,7 +2321,34 @@ namespace Dev2.Studio.ViewModels
 
         public Func<IWorkspaceItemRepository> GETWorkspaceItemRepository => _getWorkspaceItemRepository;
 
-        public string LicensePlanTitle => "[ Trial ]";
+        public string LicensePlanTitle
+        {
+            get
+            {
+                var subscriptionData = ActiveServer.GetSubscriptionData();
+
+                switch(subscriptionData.Status)
+                {
+                    case SubscriptionStatus.NotActive:
+                        return "[ Not registered ]";
+
+                    case SubscriptionStatus.InTrial:
+                    case SubscriptionStatus.Active:
+                        return "[" + subscriptionData.PlanId + " - " + subscriptionData.Status + "]";
+
+                    case SubscriptionStatus.Cancelled:
+                    case SubscriptionStatus.Future:
+                    case SubscriptionStatus.NonRenewing:
+                    case SubscriptionStatus.Paused:
+                    case null:
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+
+                return string.Empty;
+            }
+        }
 
         public void Handle(FileChooserMessage message)
         {

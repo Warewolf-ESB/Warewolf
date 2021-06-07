@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -14,7 +14,6 @@ using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Toolbox;
-using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Security;
 using Dev2.Studio.Interfaces;
 using Moq;
@@ -23,6 +22,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using Warewolf.Licensing;
 
 namespace Warewolf.Testing
 {
@@ -97,6 +97,11 @@ namespace Warewolf.Testing
         public IExplorerRepository ProxyLayer { get; }
 
         public IServer Clone()
+        {
+            return null;
+        }
+
+        public ISubscriptionData GetSubscriptionData()
         {
             return null;
         }

@@ -23,5 +23,6 @@ namespace Dev2.Runtime.Subscription
         bool IsLicensed {get;}
         SubscriptionStatus Status { get; }
         void SaveSubscriptionData(ISubscriptionData subscriptionData);
+        ISubscriptionData GetSubscriptionData();
     }
 }

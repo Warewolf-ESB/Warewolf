@@ -20,18 +20,12 @@ namespace Warewolf.Studio.ViewModels.Tests
     [TestClass]
     public class EnvironmentViewModelTests
     {
-        #region Fields
-
         EnvironmentViewModel _target;
 
         Mock<IServer> _serverMock;
         Mock<IShellViewModel> _shellViewModelMock;
         Mock<IPopupController> _popupControllerMock;
         Mock<IExplorerTooltips> _explorerTooltips;
-
-        #endregion Fields
-
-        #region Test initialize
 
         [TestInitialize]
         public void TestInitialize()
@@ -48,10 +42,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             CustomContainer.Register(_explorerTooltips.Object);
             _target = new EnvironmentViewModel(_serverMock.Object, _shellViewModelMock.Object);
         }
-
-        #endregion Test initialize
-
-        #region Test commands
 
         [TestMethod]
         [Timeout(2000)]
@@ -99,7 +89,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         [Timeout(100)]
         public void TestExplorer_IsRegistered()
         {
-            Assert.IsFalse(_target.IsRegistered);
+            Assert.IsFalse(_target.IsLicensed);
         }
 
         [TestMethod]
@@ -188,10 +178,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             //assert
             _shellViewModelMock.Verify(it => it.ShowAboutBox());
         }
-
-        #endregion Test commands
-
-        #region Test properties
 
         [TestMethod]
         [Timeout(100)]
@@ -607,10 +593,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             //assert
             Assert.IsFalse(actual);
         }
-
-        #endregion Test properties
-
-        #region Test methods
 
         [TestMethod]
         [Timeout(100)]
@@ -1240,6 +1222,18 @@ namespace Warewolf.Studio.ViewModels.Tests
             parentMock.VerifySet(it => it.Children = It.IsAny<ObservableCollection<IExplorerItemViewModel>>());
         }
 
-        #endregion Test methods
+        [TestMethod]
+        [Timeout(100)]
+        public void EnvironmentViewModel_IsRegistered()
+        {
+            //arrange
+            _target = new EnvironmentViewModel(_serverMock.Object, _shellViewModelMock.Object, true);
+
+            //act
+            _target.SetPropertiesForDialog();
+
+            //assert
+            Assert.IsFalse(_target.IsLicensed);
+        }
     }
 }

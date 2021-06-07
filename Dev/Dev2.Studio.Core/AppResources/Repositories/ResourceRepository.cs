@@ -1396,7 +1396,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             controller.AddPayloadArgument(Warewolf.Service.SaveSubscriptionData.SubscriptionData, serializer.SerializeToBuilder(subscriptionData));
             var resultData = controller.ExecuteCommand<ExecuteMessage>(_server.Connection, GlobalConstants.ServerWorkspaceID);
 
-            return resultData != null ? resultData.ToString() : string.Empty;
+            return resultData?.Message != null ? resultData.Message.ToString() : string.Empty;
         }
 
         public string RetrieveSubscription()

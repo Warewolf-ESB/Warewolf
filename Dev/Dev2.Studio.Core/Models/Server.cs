@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -26,7 +26,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Network;
 using System.Threading.Tasks;
+using Dev2.Runtime.Subscription;
 using Warewolf.Data;
+using Warewolf.Licensing;
 
 namespace Dev2.Studio.Core.Models
 {
@@ -51,8 +53,6 @@ namespace Dev2.Studio.Core.Models
             var handler = AuthorizationServiceSet;
             handler?.Invoke(this, EventArgs.Empty);
         }
-
-        #region CTOR
 
         public Server(Guid id, IEnvironmentConnection environmentConnection)
         {
@@ -95,13 +95,9 @@ namespace Dev2.Studio.Core.Models
             ItemAddedEvent?.Invoke(obj);
         }
 
-        #endregion CTOR
-
-        #region Properties
-
         public IAuthorizationService AuthorizationService
         {
-            get { return _authorizationService ?? (_authorizationService = CreateAuthorizationService(Connection)); }
+            get => _authorizationService ?? (_authorizationService = CreateAuthorizationService(Connection));
             set
             {
                 _authorizationService = value;
@@ -120,10 +116,7 @@ namespace Dev2.Studio.Core.Models
 
         public IEnvironmentConnection Connection
         {
-            get
-            {
-                return _connection;
-            }
+            get => _connection;
             set
             {
                 if (_connection != null)
@@ -140,11 +133,8 @@ namespace Dev2.Studio.Core.Models
 
         public string Name
         {
-            get { return Connection.DisplayName; }
-            set
-            {
-                Connection.DisplayName = value;
-            }
+            get => Connection.DisplayName;
+            set => Connection.DisplayName = value;
         }
 
         public bool IsConnected => Connection.IsConnected;
@@ -195,10 +185,6 @@ namespace Dev2.Studio.Core.Models
             }
         }
 
-        #endregion Properties
-
-        #region Connect
-
         public void Connect()
         {
             if (Connection.IsConnected)
@@ -233,10 +219,6 @@ namespace Dev2.Studio.Core.Models
             Connect();
         }
 
-        #endregion Connect
-
-        #region Disconnect
-
         public void Disconnect()
         {
             if (Connection.IsConnected)
@@ -245,10 +227,6 @@ namespace Dev2.Studio.Core.Models
                 OnPropertyChanged("DisplayName");
             }
         }
-
-        #endregion Disconnect
-
-        #region ForceLoadResources
 
         public void ForceLoadResources()
         {
@@ -259,10 +237,6 @@ namespace Dev2.Studio.Core.Models
             }
         }
 
-        #endregion ForceLoadResources
-
-        #region LoadResources
-
         public void LoadResources()
         {
             if (Connection.IsConnected && CanStudioExecute)
@@ -271,10 +245,6 @@ namespace Dev2.Studio.Core.Models
                 HasLoadedResources = true;
             }
         }
-
-        #endregion LoadResources
-
-        #region Event Handlers
 
         void RaiseIsConnectedChanged(bool isOnline)
         {
@@ -296,7 +266,6 @@ namespace Dev2.Studio.Core.Models
                 AuthorizationService.PermissionsChanged += OnAuthorizationServicePermissionsChanged;
                 OnAuthorizationServicePermissionsChanged(null, new EventArgs());
             }
-
         }
 
         void RaiseNetworkStateChanged(bool isOnline)
@@ -307,10 +276,6 @@ namespace Dev2.Studio.Core.Models
                 HasLoadedResources = false;
             }
         }
-
-        #endregion Event Handlers
-
-        #region IEquatable
 
         public bool Equals(IServer other)
         {
@@ -329,8 +294,6 @@ namespace Dev2.Studio.Core.Models
         public override bool Equals(object obj) => Equals(obj as IServer);
 
         public override int GetHashCode() => EnvironmentID.GetHashCode();
-
-        #endregion IEquatable
 
         protected virtual IAuthorizationService CreateAuthorizationService(IEnvironmentConnection environmentConnection)
         {
@@ -397,17 +360,12 @@ namespace Dev2.Studio.Core.Models
         public bool HasLoaded { get; private set; }
         public bool CanDeployTo => IsAuthorizedDeployTo;
         public bool CanDeployFrom => IsAuthorizedDeployFrom;
+        public ISubscriptionData GetSubscriptionData() => SubscriptionProvider.Instance.GetSubscriptionData();
 
         public IExplorerRepository ProxyLayer
         {
-            get
-            {
-                return _proxyLayer;
-            }
-            set
-            {
-                _proxyLayer = value;
-            }
+            get => _proxyLayer;
+            set => _proxyLayer = value;
         }
 
         public Permissions UserPermissions { get; set; }
