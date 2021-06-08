@@ -13,6 +13,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Transactions;
 using System.Xml.Linq;
 using Dev2.Common;
@@ -176,33 +178,47 @@ namespace Dev2.Runtime.ResourceCatalogImpl
         {
             var resourceMaps = new List<DuplicateResourceTO>();
 
+            var semaphore = new SemaphoreSlim(10);
+            
+            var tasks = new List<Task>();
             foreach (var oldResource in resourcesToMove)
             {
-                try
+                tasks.Add(Task.Run(()=> 
                 {
-                    string savePath = CalculateResourceSavePath(sourceLocation, destFolderPath, oldResource.ResourceName, oldResource);
-                    var itemToAdd = GenerateItemToAdd(savePath);
-                    ServerExplorerRepository.Instance.AddItem(itemToAdd, GlobalConstants.ServerWorkspaceID);
-
-                    var result = _resourceCatalog.GetResourceContents(GlobalConstants.ServerWorkspaceID, oldResource.ResourceID);
-                    var xElement = result.ToXElement();
-                    var newResource = DuplicateResource(xElement);
-
-                    resourceMaps.Add(new DuplicateResourceTO
+                    semaphore.Wait();
+                    try
                     {
-                        OldResourceID = oldResource.ResourceID,
-                        NewResource = newResource,
-                        DestinationPath = savePath,
-                        ResourceContents = xElement.ToStringBuilder()
-                    });
-                }
-                catch (Exception e)
-                {
-                    Dev2Logger.Error(e.Message, e, GlobalConstants.WarewolfError);
-                    throw new Exception("Failure Duplicating Folder: " + e.Message);
-                }
+                        string savePath = CalculateResourceSavePath(sourceLocation, destFolderPath, oldResource.ResourceName, oldResource);
+                        var itemToAdd = GenerateItemToAdd(savePath);
+                        ServerExplorerRepository.Instance.AddItem(itemToAdd, GlobalConstants.ServerWorkspaceID);
+
+                        var result = _resourceCatalog.GetResourceContents(GlobalConstants.ServerWorkspaceID, oldResource.ResourceID);
+                        var xElement = result.ToXElement();
+                        var newResource = DuplicateResource(xElement);
+
+                        resourceMaps.Add(new DuplicateResourceTO
+                        {
+                            OldResourceID = oldResource.ResourceID,
+                            NewResource = newResource,
+                            DestinationPath = savePath,
+                            ResourceContents = xElement.ToStringBuilder()
+                        });
+                    }
+                    catch (Exception e)
+                    {
+                        Dev2Logger.Error(e.Message, e, GlobalConstants.WarewolfError);
+                        throw new Exception("Failure Duplicating Folder: " + e.Message);
+                    }
+                    finally
+                    {
+                        semaphore.Release();
+                    }
+                    
+                }));
+
             }
 
+            Task.WaitAll(tasks.ToArray());
             _resourceCatalog.SaveResources(GlobalConstants.ServerWorkspaceID, resourceMaps, overrideExisting: true);
             return resourceMaps;
         }
