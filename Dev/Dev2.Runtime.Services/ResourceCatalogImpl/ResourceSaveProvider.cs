@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Transactions;
 using System.Xml.Linq;
 using ChinhDo.Transactions;
@@ -116,15 +117,15 @@ namespace Dev2.Runtime.ResourceCatalogImpl
         public Action<IResource> ResourceSaved { get; set; }
         public Action<Guid, IList<ICompileMessageTO>> SendResourceMessages { get; set; }
 
-        public ResourceCatalogResult SaveResources(Guid serverWorkspaceID, Dictionary<IResource, Tuple<string, StringBuilder>> resourceAndContentMap, bool overrideExisting)
+        public ResourceCatalogResult SaveResources(Guid serverWorkspaceID, List<DuplicateResourceTO> resourceMap, bool overrideExisting)
         {
-            return SaveResources(serverWorkspaceID, resourceAndContentMap, overrideExisting, string.Empty, string.Empty);
+            return SaveResources(serverWorkspaceID, resourceMap, overrideExisting, string.Empty, string.Empty);
         }
 
-        public ResourceCatalogResult SaveResources(Guid workspaceID, Dictionary<IResource, Tuple<string, StringBuilder>> resourceAndContentMap, bool overrideExisting , string reason, string user)
+        public ResourceCatalogResult SaveResources(Guid workspaceID, List<DuplicateResourceTO> resourceMap, bool overrideExisting , string reason, string user)
         {
             ResourceCatalogResult saveResult = null;
-            Dev2.Common.Utilities.PerformActionInsideImpersonatedContext(Dev2.Common.Utilities.ServerUser, () => { PerformSaveBulkResult(out saveResult, workspaceID, resourceAndContentMap, overrideExisting, user, reason); });
+            Dev2.Common.Utilities.PerformActionInsideImpersonatedContext(Dev2.Common.Utilities.ServerUser, () => { PerformSaveBulkResult(out saveResult, workspaceID, resourceMap, overrideExisting, user, reason); });
             return saveResult;
         }
 
@@ -132,7 +133,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
 
 
         public ResourceCatalogResult SaveResource(Guid workspaceID, IResource resource, StringBuilder contents, string savedPath, string reason, string user)
-        {
+        { 
             _serverVersionRepository.StoreVersion(resource, user, reason, workspaceID, savedPath);
             ResourceCatalogResult saveResult = null;
             Dev2.Common.Utilities.PerformActionInsideImpersonatedContext(Dev2.Common.Utilities.ServerUser, () => { PerformSaveResult(out saveResult, workspaceID, resource, contents, true, savedPath); });
@@ -346,14 +347,13 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             return updated;
         }
 
-        void PerformSaveBulkResult(out ResourceCatalogResult saveResult, Guid workspaceID, Dictionary<IResource, Tuple<string, StringBuilder>> resourceAndContentMap, bool overwriteExisting, string user = "", string reason = "")
+        void PerformSaveBulkResult(out ResourceCatalogResult saveResult, Guid workspaceID, List<DuplicateResourceTO> resourceMap, bool overwriteExisting, string user = "", string reason = "")
         {
-            foreach (var item in resourceAndContentMap)
+            foreach (var mapper in resourceMap)
             {
-                var resource = item.Key;
-                var currentRow = item.Value;
-                var destination = currentRow.Item1;
-                var content = currentRow.Item2;
+                var resource = mapper.NewResource;
+                var destination = mapper.DestinationPath;
+                var content = mapper.ResourceContents;
 
                 _serverVersionRepository.StoreVersion(resource, user, reason, workspaceID, destination);
                 PerformSaveResult(out saveResult, workspaceID, resource, content, overwriteExisting, destination, reason);
