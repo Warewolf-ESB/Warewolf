@@ -29,8 +29,6 @@ using Dev2.Runtime.ServiceModel.Data;
 using ServiceStack.Common;
 
 
-
-
 namespace Dev2.Runtime.ResourceCatalogImpl
 {
     class ResourceDuplicateProvider : IResourceDuplicateProvider
@@ -142,7 +140,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
 
             try
             {
-                var (duplicatedResources, duplicatedResourcesMap) = DuplicateAndSaveResources(sourceLocation, destFolderPath, resourcesToMove, fixRefences);
+                var duplicatedResourcesMap = DuplicateAndSaveResources(sourceLocation, destFolderPath, resourcesToMove);
 
                 DuplicateAndSaveTests(duplicatedResourcesMap);
 
@@ -152,7 +150,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                     {
                         using (var tx = new TransactionScope(TransactionScopeOption.RequiresNew))
                         {
-                            FixReferences(duplicatedResources, duplicatedResourcesMap);
+                            FixReferences(duplicatedResourcesMap);
                             tx.Complete();
                         }
 
@@ -174,11 +172,9 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             return items;
         }
 
-        private (List<IResource> DuplicatedResources, Dictionary<Guid, Guid> DuplicatedResourcesMap) DuplicateAndSaveResources(string sourceLocation, string destFolderPath, List<IResource> resourcesToMove, bool overrideExisting)
+        private List<DuplicateResourceTO> DuplicateAndSaveResources(string sourceLocation, string destFolderPath, List<IResource> resourcesToMove)
         {
-            var duplicatedResources = new List<IResource>();
-            var duplicatedResourcesMap = new Dictionary<Guid, Guid>();
-            var resourceAndContentMap = new Dictionary<IResource, Tuple<string, StringBuilder>>();
+            var resourceMaps = new List<DuplicateResourceTO>();
 
             foreach (var oldResource in resourcesToMove)
             {
@@ -192,9 +188,13 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                     var xElement = result.ToXElement();
                     var newResource = DuplicateResource(xElement);
 
-                    duplicatedResources.Add(newResource);
-                    duplicatedResourcesMap.Add(oldResource.ResourceID, newResource.ResourceID);
-                    resourceAndContentMap.Add(newResource, new Tuple<string, StringBuilder>(savePath, xElement.ToStringBuilder()));
+                    resourceMaps.Add(new DuplicateResourceTO
+                    {
+                        OldResourceID = oldResource.ResourceID,
+                        NewResource = newResource,
+                        DestinationPath = savePath,
+                        ResourceContents = xElement.ToStringBuilder()
+                    });
                 }
                 catch (Exception e)
                 {
@@ -203,16 +203,17 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                 }
             }
 
-            _resourceCatalog.SaveResources(GlobalConstants.ServerWorkspaceID, resourceAndContentMap, overrideExisting);
-            return (duplicatedResources, duplicatedResourcesMap);
+            _resourceCatalog.SaveResources(GlobalConstants.ServerWorkspaceID, resourceMaps, overrideExisting: true);
+            return resourceMaps;
         }
 
-        private void DuplicateAndSaveTests(Dictionary<Guid, Guid> duplicatedResourcesMap)
+        private void DuplicateAndSaveTests(List<DuplicateResourceTO> resourcesMaps)
         {
-            foreach (var mapper in duplicatedResourcesMap)
+            foreach (var mapper in resourcesMaps)
             {
-                var oldResourceId = mapper.Key;
-                var newResourceId = mapper.Value;
+                var oldResourceId = mapper.OldResourceID;
+                var newResource = mapper.NewResource;
+                var newResourceId = newResource.ResourceID;
                 SaveTests(oldResourceId, newResourceId); 
             }
         }
@@ -291,30 +292,29 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             return savePath;
         }
 
-        void FixReferences(List<IResource> resourcesToUpdate, Dictionary<Guid, Guid> oldToNewUpdates)
+        void FixReferences(List<DuplicateResourceTO> resourceMaps)
         {
-            foreach (var updatedResource in resourcesToUpdate)
+            foreach (var mapper in resourceMaps)
             {
+                var newResource = mapper.NewResource;
+                var oldResourceID = newResource.ResourceID.ToString();
+                var newResourceID = mapper.OldResourceID.ToString();
 
-                var contents = _resourceCatalog.GetResourceContents(GlobalConstants.ServerWorkspaceID, updatedResource.ResourceID);
-
-
-                foreach (var oldToNewUpdate in oldToNewUpdates)
-                {
-                    contents = contents.Replace(oldToNewUpdate.Key.ToString().ToLowerInvariant(), oldToNewUpdate.Value.ToString().ToLowerInvariant());
-                }
-                var resPath = updatedResource.GetResourcePath(GlobalConstants.ServerWorkspaceID);
+                var contents = _resourceCatalog.GetResourceContents(GlobalConstants.ServerWorkspaceID, newResource.ResourceID);
+                contents = contents.Replace(oldResourceID.ToLowerInvariant(), newResourceID.ToLowerInvariant());
+                
+                var resPath = newResource.GetResourcePath(GlobalConstants.ServerWorkspaceID);
 
                 var savePath = resPath;
-                var resourceNameIndex = resPath.LastIndexOf(updatedResource.ResourceName, StringComparison.InvariantCultureIgnoreCase);
+                var resourceNameIndex = resPath.LastIndexOf(newResource.ResourceName, StringComparison.InvariantCultureIgnoreCase);
                 if (resourceNameIndex >= 0)
                 {
                     savePath = resPath.Substring(0, resourceNameIndex);
                 }
 
-                //_resourceCatalog.SaveResource(GlobalConstants.ServerWorkspaceID, updatedResource, contents, savePath); //TODO: might need to remove this repeats the save call
-                updatedResource.LoadDependencies(contents.ToXElement());
+               newResource.LoadDependencies(contents.ToXElement());
             }
+            _resourceCatalog.SaveResources(GlobalConstants.ServerWorkspaceID, resourceMaps, overrideExisting: true);
 
         }
     }

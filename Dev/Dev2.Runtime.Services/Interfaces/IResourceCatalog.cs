@@ -14,6 +14,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Text;
+using Dev2.Common;
 using Dev2.Common.Interfaces.Data;
 using Dev2.DynamicServices;
 using Dev2.Runtime.Hosting;
@@ -53,7 +54,7 @@ namespace Dev2.Runtime.Interfaces
         int GetLatestVersionNumberForResource(Guid resourceId);
         IContextualResourceCatalog NewContextualResourceCatalog(IAuthorizationService authService, Guid workspaceId);
         IWarewolfWorkflow GetWorkflow(Guid resourceId);
-        ResourceCatalogResult SaveResources(Guid serverWorkspaceID, Dictionary<IResource, Tuple<string, StringBuilder>> resourceAndContentMap, bool overrideExisting);
+        ResourceCatalogResult SaveResources(Guid serverWorkspaceID, List<DuplicateResourceTO> resourceMaps, bool overrideExisting);
     }
 
     public interface IResourceCatalogFactory

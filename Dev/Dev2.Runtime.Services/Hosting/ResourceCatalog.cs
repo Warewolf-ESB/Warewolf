@@ -343,7 +343,7 @@ namespace Dev2.Runtime.Hosting
 
         public IList<DuplicateResource> GetDuplicateResources() => DuplicateResources;
 
-        public ResourceCatalogResult SaveResources(Guid serverWorkspaceID, Dictionary<IResource, Tuple<string, StringBuilder>> resourceAndContents, bool overrideExisting) => _catalogPluginContainer.SaveProvider.SaveResources(serverWorkspaceID, resourceAndContents, overrideExisting);
+        public ResourceCatalogResult SaveResources(Guid serverWorkspaceID, List<DuplicateResourceTO> resourceMaps, bool overrideExisting) => _catalogPluginContainer.SaveProvider.SaveResources(serverWorkspaceID, resourceMaps, overrideExisting);
         
         public ResourceCatalogResult SaveResource(Guid workspaceID, StringBuilder resourceXml, string savedPath) => _catalogPluginContainer.SaveProvider.SaveResource(workspaceID, resourceXml, savedPath, "", "");
         public ResourceCatalogResult SaveResource(Guid workspaceID, StringBuilder resourceXml, string savedPath, string reason) => _catalogPluginContainer.SaveProvider.SaveResource(workspaceID, resourceXml, savedPath, reason, "");
