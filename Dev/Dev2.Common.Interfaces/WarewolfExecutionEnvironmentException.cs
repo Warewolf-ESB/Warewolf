@@ -23,5 +23,29 @@ namespace Dev2.Common.Interfaces
             : base(message, innerException, ExceptionType.Execution, ExceptionSeverity.User)
         {
         }
+
+        /// <summary>
+        /// resource exceptions errors are considered to be inclusive of (but not limited to) code author mishandle caused errors, so they can be investigated holistically
+        /// </summary>
+        public class WarewolfResourceException : WarewolfException
+        {
+            //NOTE: resource exceptions errors are considered to be inclusive of (but not limited to) code author mishandle caused errors, so they can be investigated holistically
+            public WarewolfResourceException(string message, Exception innerException = null)
+                : base(message, innerException, ExceptionType.Execution, ExceptionSeverity.Critical)
+            {
+            }
+        }
+
+        /// <summary>
+        /// thread abort exceptions errors are considered to be code author mishandle caused errors, so they can be investigated as bugs
+        /// </summary>
+        public class WarewolfThreadAbortException : WarewolfException
+        {
+            //NOTE: thread abort exceptions  errors are considered to be code author mishandle caused errors, so they can be investigated as bugs
+            public WarewolfThreadAbortException(string message, Exception innerException = null)
+                : base(message, innerException, ExceptionType.Execution, ExceptionSeverity.Critical)
+            {
+            }
+        }
     }
 }

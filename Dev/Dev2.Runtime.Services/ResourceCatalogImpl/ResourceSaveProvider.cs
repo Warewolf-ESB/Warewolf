@@ -38,7 +38,7 @@ using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.Security;
 using Dev2.Runtime.ServiceModel.Data;
 using Warewolf.Resource.Errors;
-
+using static Dev2.Common.Interfaces.WarewolfExecutionEnvironmentException;
 
 namespace Dev2.Runtime.ResourceCatalogImpl
 {
@@ -403,9 +403,9 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                 }
                 catch (Exception e)
                 {
-                    Dev2Logger.Warn($"Error saving {resource.ResourceName}. " + e.Message, "Warewolf Warn");
+                    Dev2Logger.Warn($"Error saving {resource.ResourceName}. " + e.Message, GlobalConstants.WarewolfWarn);
                     Transaction.Current.Rollback();
-                    throw;
+                    throw new WarewolfResourceException(string.Format(ErrorResource.ErrorDuringSaveCallback, resource.ResourceName));
                 }
             }
         }
