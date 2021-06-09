@@ -174,8 +174,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 if (!string.IsNullOrEmpty(OnErrorVariable))
                 {
-                    var errorString = env.FetchErrors();
-                    var errors = ErrorResultTO.MakeErrorResultFromDataListString(errorString, true);
+                    var errorString = currentError;
+                    var errors = ErrorResultTO.MakeErrorResultFromDataListString(env.FetchErrors(), true);
                     var upsertVariable = DataListUtil.AddBracketsToValueIfNotExist(OnErrorVariable);
                     if (errors.HasErrors())
                     {
@@ -183,12 +183,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         {
                             //TODO: duplicate check on the Recordset might hide the real issue, 
                             //of multiple execution calls passing here which seems not to be the same on F7
-                            env.Assign(upsertVariable, error, update);
+                            AssignError( env, upsertVariable, update, error);
                         }
                     }
                     else
                     {
-                        env.Assign(upsertVariable, errorString, update);
+                        AssignError( env, upsertVariable, update, errorString);
                     }
                 }
 
@@ -212,6 +212,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     PerformStopWorkflow(dataObject);
                 }
+            }
+        }
+        
+        void AssignError(IExecutionEnvironment env, string upsertVariable, int update, string errorString)
+        {
+            var eval = env.Eval(upsertVariable, update).ToString();
+            //check if last assign value is the same, dont log error if it is
+            if(string.IsNullOrEmpty(eval) || !eval.Contains($"(seq [DataString \"{errorString}\"])"))
+            {
+                env.Assign(upsertVariable, errorString, update);
             }
         }
 
@@ -1079,25 +1089,25 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 _debugInputs = new List<DebugItem>();
                 _debugOutputs = new List<DebugItem>();
                 ExecuteTool(data, update);
-                if (!data.IsDebugMode())
+                if(!data.IsDebugMode())
                 {
                     UpdateWithAssertions(data);
                 }
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 Dev2Logger.Error("DsfNativActivity", ex, data.ExecutionID.ToString());
                 data.Environment.AddError(ex.Message);
             }
             finally
             {
-                if (!_isExecuteAsync || _isOnDemandSimulation)
+                if(!_isExecuteAsync || _isOnDemandSimulation)
                 {
                     DoErrorHandling(data, update);
                 }
             }
 
-            if (NextNodes != null && NextNodes.Any())
+            if(NextNodes != null && NextNodes.Any())
             {
                 return NextNodes.First();
             }
