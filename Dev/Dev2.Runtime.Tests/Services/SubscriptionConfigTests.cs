@@ -34,7 +34,6 @@ namespace Dev2.Tests.Runtime.Services
             return SubscriptionConfig.CreateSettings(DefaultCustomerId, DefaultPlanId, DefaultSubscriptionId, DefaultStatus, DefaultSubscriptionSiteName, DefaultSubscriptionKey);
         }
 
-
         /*[TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(SubscriptionConfig))]
@@ -92,7 +91,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.IsNull(config.SaveConfigSettings);
 
             Assert.AreEqual(0, config.SaveConfigHitCount);
-          }
+        }
 
         [TestMethod]
         [Owner("Candice Daniel")]
@@ -101,33 +100,26 @@ namespace Dev2.Tests.Runtime.Services
         {
             _defaultSettings = CreateDefaultConfig();
             var config = new SubscriptionConfigMock(_defaultSettings);
-            var subscriptionKey = "test_VMxitsiobdAyth62k0DiqpAUKocG6sV3";
-            var subscriptionSiteName = "warewolf-test";
-            var planId = "developer";
-            var customerId = "newCustomer";
-            var status = SubscriptionStatus.InTrial;
-            var subscriptionId = "5467897";
+            const string SubscriptionKey = "test_VMxitsiobdAyth62k0DiqpAUKocG6sV3";
+            const string SubscriptionSiteName = "warewolf-test";
+            const string PlanId = "developer";
+            const string CustomerId = "newCustomer";
+            const SubscriptionStatus Status = SubscriptionStatus.InTrial;
+            const string SubscriptionId = "5467897";
 
             var newSubscriptionData = new SubscriptionData
             {
-                CustomerId = customerId,
-                SubscriptionId = subscriptionId,
-                PlanId = planId,
-                Status = status,
-                SubscriptionSiteName = subscriptionSiteName,
-                SubscriptionKey = subscriptionKey
+                CustomerId = CustomerId,
+                SubscriptionId = SubscriptionId,
+                PlanId = PlanId,
+                Status = Status,
+                SubscriptionSiteName = SubscriptionSiteName,
+                SubscriptionKey = SubscriptionKey
             };
-            SubscriptionConfig.UpdateSubscriptionSettings(newSubscriptionData);
+            config.UpdateSubscriptionSettings(newSubscriptionData);
 
-            Assert.AreEqual("", config.CustomerId);
-            Assert.AreEqual("NotRegistered", config.PlanId);
-            Assert.AreEqual("", config.SubscriptionId);
-            Assert.AreEqual("warewolf-test", config.SubscriptionSiteName);
-
-            Assert.AreEqual(subscriptionKey, config.SubscriptionKey);
-            Assert.AreEqual("NotActive", config.Status);
-            Assert.IsNotNull(config.UpdateConfigSettings);
-            Assert.AreEqual(1, config.UpdateConfigHitCount);
+            Assert.IsNotNull(config.SaveConfigSettings);
+            Assert.AreEqual(1, config.SaveConfigHitCount);
         }
     }
 }
