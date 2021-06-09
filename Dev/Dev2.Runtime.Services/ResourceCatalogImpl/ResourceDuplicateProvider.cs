@@ -29,6 +29,8 @@ using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using ServiceStack.Common;
+using Warewolf.Resource.Errors;
+using static Dev2.Common.Interfaces.WarewolfExecutionEnvironmentException;
 
 namespace Dev2.Runtime.ResourceCatalogImpl
 {
@@ -163,15 +165,15 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                     }
                     catch(TransactionAbortedException e)
                     {
-                        //TODO: remove this line as Transation Rollback is not possible here, current returns null
-                        //Transaction.Current.Rollback();  
-                        throw new TransactionAbortedException("Failure Fixing references", e);
+                        Dev2Logger.Error("Failure Fixing references", e, GlobalConstants.WarewolfError);
+                        throw new WarewolfThreadAbortException(string.Format(ErrorResource.ErrorDuringDuplicateFolderCallback, e.Message));
                     }
                 }
             }
             catch(TransactionAbortedException ex)
             {
-                throw;
+                Dev2Logger.Error(ErrorResource.ErrorDuringDuplicateFolderCallback, ex, GlobalConstants.WarewolfError);
+                throw new WarewolfThreadAbortException(string.Format(ErrorResource.ErrorDuringDuplicateFolderCallback, ex.Message));
             }
 
             return items;
@@ -181,9 +183,6 @@ namespace Dev2.Runtime.ResourceCatalogImpl
         {
             var resourceMaps = new List<DuplicateResourceTO>();
 
-            var semaphore = new SemaphoreSlim(1);
-
-            var tasks = new List<Task>();
             foreach(var oldResource in resourcesToMove)
             {
                 try
@@ -197,18 +196,18 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                     var newResource = DuplicateResource(xElement);
 
                     resourceMaps.Add(
-                        new DuplicateResourceTO
-                        {
-                            OldResourceID = oldResource.ResourceID,
-                            NewResource = newResource,
-                            DestinationPath = savePath,
-                            ResourceContents = xElement.ToStringBuilder()
-                        });
+                    new DuplicateResourceTO
+                    {
+                        OldResourceID = oldResource.ResourceID,
+                        NewResource = newResource,
+                        DestinationPath = savePath,
+                        ResourceContents = xElement.ToStringBuilder()
+                    });
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     Dev2Logger.Error(e.Message, e, GlobalConstants.WarewolfError);
-                    throw new Exception("Failure Duplicating Folder: " + e.Message);
+                    throw new WarewolfResourceException(string.Format(ErrorResource.ErrorDuringDuplicateFolderCallback, e.Message));
                 }
             }
 
