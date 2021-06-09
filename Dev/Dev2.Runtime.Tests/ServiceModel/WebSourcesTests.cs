@@ -233,7 +233,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
                 }
             };
 
-            _= WebSources.Execute(source, WebRequestMethod.Get, "http://consoto.com", "test data", false, out ErrorResultTO error, new string[] { "b:e" });
+            _= WebSources.Execute(source, WebRequestMethod.Get, "http://consoto.com", "test data", false, out ErrorResultTO error, new[] { "b:e" });
 
             var client = source.Client;
             var agent = client.Headers["user-agent"];
@@ -772,7 +772,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
                 Client = mockWebClientWrapper.Object 
             };
 
-            var result = WebSources.Execute(source, WebRequestMethod.Post, "http://www.msn.com/", "", false, out var errors, new string[] { "Content-Type:application/json" });
+            var result = WebSources.Execute(source, WebRequestMethod.Post, "http://www.msn.com/", "", false, out var errors, new[] { "Content-Type:application/json" });
 
             Assert.IsFalse(IsBase64(result));
             Assert.AreEqual(result, responseFromWeb);

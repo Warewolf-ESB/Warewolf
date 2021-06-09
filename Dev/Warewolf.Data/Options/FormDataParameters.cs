@@ -47,11 +47,6 @@ namespace Warewolf.Data.Options
 
     public class TextParameter : IFormDataParameters
     {
-        public TextParameter()
-        {
-
-        }
-
         public string Value { get; set; }
         public string Key { get; set; }
 
@@ -89,10 +84,6 @@ namespace Warewolf.Data.Options
 
     public class FileParameter : IFormDataParameters
     {
-        public FileParameter()
-        {
-        }
-
         private byte[] GetFileByteArray()
         {
             var fileString = FileBase64;

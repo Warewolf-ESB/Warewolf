@@ -454,9 +454,9 @@ namespace Dev2.Tests.Runtime.Hosting
         {
             mockDirectory = new Mock<IDirectory>();
             mockDirectory.Setup(o => o.CreateIfNotExists(It.IsAny<string>())).Returns(_newReportPath);
-            mockDirectory.Setup(o => o.GetDirectories(_testCoveragePath)).Returns(new string[] { _reportPath });
+            mockDirectory.Setup(o => o.GetDirectories(_testCoveragePath)).Returns(new[] { _reportPath });
             mockDirectory.Setup(o => o.GetDirectoryName(_reportPath)).Returns(_workflowId.ToString());
-            mockDirectory.Setup(o => o.GetFiles(_reportPath)).Returns(new string[] { _newReportPath });
+            mockDirectory.Setup(o => o.GetFiles(_reportPath)).Returns(new[] { _newReportPath });
             mockDirectory.Setup(o => o.Exists(_reportPath)).Returns(true);
 
             mockStreamWriterFactory = new Mock<IStreamWriterFactory>();

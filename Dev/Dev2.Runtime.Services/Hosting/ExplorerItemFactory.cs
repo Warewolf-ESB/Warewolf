@@ -84,7 +84,7 @@ namespace Dev2.Runtime.Hosting
         {
 
 
-            var children = resourceList.Where(a => GetResourceParent(a.GetResourcePath(workSpaceId)) == rootNode.ResourcePath && a.ResourceType == type.ToString());
+            var children = resourceList.Where(a => GetResourceParent(a.GetResourcePath(workSpaceId)) == rootNode.ResourcePath && a.ResourceType == type);
 
             foreach (var node in rootNode.Children)
             {

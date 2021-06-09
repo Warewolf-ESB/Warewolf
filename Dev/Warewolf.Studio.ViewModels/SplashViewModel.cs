@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -28,18 +28,8 @@ namespace Warewolf.Studio.ViewModels
 
         public SplashViewModel(IServer server, IExternalProcessExecutor externalProcessExecutor)
         {
-            if (server == null)
-            {
-                throw new ArgumentNullException(nameof(server));
-            }
-
-            if (externalProcessExecutor == null)
-            {
-                throw new ArgumentNullException(nameof(externalProcessExecutor));
-            }
-
-            Server = server;
-            ExternalProcessExecutor = externalProcessExecutor;
+            Server = server ?? throw new ArgumentNullException(nameof(server));
+            ExternalProcessExecutor = externalProcessExecutor ?? throw new ArgumentNullException(nameof(externalProcessExecutor));
 
             var conUri = new Uri(Resources.Languages.Core.ContributorsUrl);
             ContributorsUrl = conUri;

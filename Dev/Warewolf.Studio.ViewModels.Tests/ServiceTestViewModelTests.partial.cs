@@ -844,7 +844,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, popupController.Object, newTestFromDebugMessage, null);
             testFrameworkViewModel.WebClient = new Mock<IWarewolfWebClient>().Object;
             testFrameworkViewModel.SelectedServiceTest.Outputs.Add(new ServiceTestOutput("Message", "", "", ""));
-            var methodInfo = typeof(ServiceTestViewModel).GetMethod("SetOutputs", BindingFlags.NonPublic | BindingFlags.Instance, null, new Type[] { typeof(IDebugState) }, null);
+            var methodInfo = typeof(ServiceTestViewModel).GetMethod("SetOutputs", BindingFlags.NonPublic | BindingFlags.Instance, null, new[] { typeof(IDebugState) }, null);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(testFrameworkViewModel);
             //---------------Execute Test ----------------------
@@ -889,7 +889,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, popupController.Object, newTestFromDebugMessage, null);
             testFrameworkViewModel.WebClient = new Mock<IWarewolfWebClient>().Object;
-            var methodInfo = typeof(ServiceTestViewModel).GetMethod("SetOutputs", BindingFlags.NonPublic | BindingFlags.Instance, null, new Type[] { typeof(IDebugState) }, null);
+            var methodInfo = typeof(ServiceTestViewModel).GetMethod("SetOutputs", BindingFlags.NonPublic | BindingFlags.Instance, null, new[] { typeof(IDebugState) }, null);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(testFrameworkViewModel);
             //---------------Execute Test ----------------------
@@ -1496,7 +1496,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             serviceTestStep.Result = new TestRunResult();
             var serviceTestOutput = serviceTestStep.StepOutputs.Single();
             serviceTestOutput.Result = new TestRunResult();
-            var methodInfo = typeof(ServiceTestViewModel).GetMethod("MarkChildrenPending", BindingFlags.NonPublic | BindingFlags.Static, null, new Type[] { typeof(IServiceTestStep) }, null);
+            var methodInfo = typeof(ServiceTestViewModel).GetMethod("MarkChildrenPending", BindingFlags.NonPublic | BindingFlags.Static, null, new[] { typeof(IServiceTestStep) }, null);
 
             //---------------Assert Precondition----------------
             Assert.IsNotNull(methodInfo);

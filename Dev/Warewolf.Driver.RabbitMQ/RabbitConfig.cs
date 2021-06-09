@@ -26,10 +26,6 @@ namespace Warewolf.Driver.RabbitMQ
         public bool AutoDelete { get; set; }
         public IDictionary<string, object> Arguments { get; set; }
 
-        public RabbitConfig()
-        {
-        }
-
         //options
         internal IModel CreateChannel(IConnection connection)
         {
