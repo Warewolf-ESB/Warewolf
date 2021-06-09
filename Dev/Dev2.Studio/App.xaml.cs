@@ -279,7 +279,7 @@ namespace Dev2.Studio
             var repository = ServerRepository.Instance;
             var server = repository.Source;
             //server.Connect();
-            server.ConnectAsync().Wait(300);
+            server.ConnectAsync().Wait(5000);
             CustomContainer.Register(server);
             CustomContainer.Register(repository);
 
