@@ -70,7 +70,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             }
             catch(Exception x)
             {
-                Dev2Logger.Info($"resource{sourcePath} ", x, GlobalConstants.WarewolfInfo);
+                Dev2Logger.Error($"resource{sourcePath} ", x, GlobalConstants.WarewolfError);
                 return new ResourceCatalogDuplicateResult
                 {
                     Status = ExecStatus.Fail,
