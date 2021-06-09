@@ -13,6 +13,7 @@ using Dev2.Runtime.Subscription;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Warewolf.Enums;
+using Warewolf.Licensing;
 
 namespace Dev2.Tests.Runtime.Services
 {
@@ -41,6 +42,50 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(SubscriptionStatus.NotActive, provider.Status);
             Assert.AreEqual("warewolf-test", provider.SubscriptionSiteName);
             Assert.AreEqual("test_VMxitsiobdAyth62k0DiqpAUKocG6sV3", provider.SubscriptionKey);
+        }
+
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(SubscriptionProvider))]
+        public void SubscriptionProvider_GetSubscriptionData_ReturnsData()
+        {
+            var config = CreateConfig();
+            var providerIml = new SubscriptionProviderImpl(config.Object);
+            var provider = providerIml.GetSubscriptionData();
+            Assert.AreEqual("", provider.CustomerId);
+            Assert.AreEqual("", provider.SubscriptionId);
+            Assert.AreEqual("NotRegistered", provider.PlanId);
+            Assert.AreEqual(SubscriptionStatus.NotActive, provider.Status);
+            Assert.AreEqual("warewolf-test", provider.SubscriptionSiteName);
+            Assert.AreEqual("test_VMxitsiobdAyth62k0DiqpAUKocG6sV3", provider.SubscriptionKey);
+        }
+
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(SubscriptionProvider))]
+        public void SubscriptionProvider_SaveSubscriptionData()
+        {
+            var mockSubscriptionData = new Mock<ISubscriptionData>();
+            mockSubscriptionData.Setup(o => o.SubscriptionSiteName).Returns("16BjmNSXISIQjctO");
+            mockSubscriptionData.Setup(o => o.SubscriptionKey).Returns("test_VMxitsiobdAyth62k0DiqpAUKocG6sV3");
+            mockSubscriptionData.Setup(o => o.PlanId).Returns("developer");
+            mockSubscriptionData.Setup(o => o.Status).Returns(SubscriptionStatus.Active);
+            mockSubscriptionData.Setup(o => o.CustomerId).Returns("VMxitsiobdAyth62k0DiqpAUKocG6sV3");
+            mockSubscriptionData.Setup(o => o.SubscriptionId).Returns("VMxitsiobdAyth62k0DiqpAUKocG6sV3");
+
+            var config = new Mock<ISubscriptionConfig>();
+            config.Setup(c => c.CustomerId).Returns(SubscriptionConfig.DecryptKey(SubscriptionConfigTests.DefaultCustomerId));
+            config.Setup(c => c.SubscriptionId).Returns(SubscriptionConfig.DecryptKey(SubscriptionConfigTests.DefaultSubscriptionId));
+            config.Setup(c => c.PlanId).Returns(SubscriptionConfig.DecryptKey(SubscriptionConfigTests.DefaultPlanId));
+            config.Setup(c => c.SubscriptionSiteName).Returns(SubscriptionConfig.DecryptKey(SubscriptionConfigTests.DefaultSubscriptionSiteName));
+            config.Setup(c => c.SubscriptionKey).Returns(SubscriptionConfig.DecryptKey(SubscriptionConfigTests.DefaultSubscriptionKey));
+            config.Setup(c => c.Status).Returns(SubscriptionConfig.DecryptKey(SubscriptionConfigTests.DefaultStatus));
+
+            var providerIml = new SubscriptionProviderImpl(config.Object);
+            config.Setup(o => o.UpdateSubscriptionSettings(It.IsAny<ISubscriptionData>())).Verifiable();
+            providerIml.SaveSubscriptionData(mockSubscriptionData.Object);
+
+            config.Verify(o => o.UpdateSubscriptionSettings(It.IsAny<ISubscriptionData>()), Times.Once);
         }
 
         static Mock<ISubscriptionConfig> CreateConfig()
@@ -72,7 +117,7 @@ namespace Dev2.Tests.Runtime.Services
             return config;
         }
 
-        public class SubscriptionProviderImpl : SubscriptionProvider
+        private class SubscriptionProviderImpl : SubscriptionProvider
         {
             public SubscriptionProviderImpl(ISubscriptionConfig config)
                 : base(config)

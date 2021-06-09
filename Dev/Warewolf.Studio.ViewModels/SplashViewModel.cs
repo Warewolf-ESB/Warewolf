@@ -41,8 +41,9 @@ namespace Warewolf.Studio.ViewModels
             WarewolfUrl = warewolfUri;
             WarewolfCopyright = string.Format(Resources.Languages.Core.WarewolfCopyright, DateTime.Now.Year.ToString());
 
-            var subscriptionData = Server.GetSubscriptionData();
-            WarewolfLicense =  subscriptionData.PlanId + ": " + subscriptionData.Status;
+            //TODO: Add back during UI, setting instance to default and not reading from config
+            //var subscriptionData = Server.GetSubscriptionData();
+            //WarewolfLicense =  subscriptionData.PlanId + ": " + subscriptionData.Status;
 
             ContributorsCommand = new DelegateCommand(() => externalProcessExecutor.OpenInBrowser(ContributorsUrl));
             CommunityCommand = new DelegateCommand(() => externalProcessExecutor.OpenInBrowser(CommunityUrl));
@@ -76,45 +77,48 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-       public Uri WarewolfUrl { get; set; }
-       public string WarewolfLicense { get; set; }
+        public Uri WarewolfUrl { get; set; }
+        public string WarewolfLicense { get; set; }
         public Uri ContributorsUrl { get; set; }
         public Uri CommunityUrl { get; set; }
         public Uri ExpertHelpUrl { get; set; }
         public string WarewolfCopyright { get; set; }
+
         public void ShowServerStudioVersion()
         {
-            Dispatcher.CurrentDispatcher.Invoke(() =>
-            {
-                var serverVersion = Server.GetServerVersion();
-                var splitServerVersion = serverVersion.Split('.');
-                if (splitServerVersion.Length > 2 && int.Parse(splitServerVersion[2]) > 6000)
+            Dispatcher.CurrentDispatcher.Invoke(
+                () =>
                 {
-                    var totalDays = Convert.ToDouble(splitServerVersion[2]);
-                    var totalSeconds = Convert.ToDouble(splitServerVersion[3])*2;
-                    var cSharpEpoc = new DateTime(2000, 1, 1);
-                    var compileTime = cSharpEpoc.AddDays(totalDays).AddSeconds(totalSeconds);
-                    ServerVersion = "Compiled " + GetInformalDate(compileTime);
-                }
-                else
-                {
-                    ServerVersion = "Version " + serverVersion;
-                }
-                var studioVersion = Utils.FetchVersionInfo();
-                var splitStudioVersion = studioVersion.Split('.');
-                if (int.Parse(splitStudioVersion[2]) > 6000)
-                {
-                    var totalDays = Convert.ToDouble(splitStudioVersion[2]);
-                    var totalSeconds = Convert.ToDouble(splitStudioVersion[3])*2;
-                    var cSharpEpoc = new DateTime(2000, 1, 1);
-                    var compileTIme = cSharpEpoc.AddDays(totalDays).AddSeconds(totalSeconds);
-                    StudioVersion = "Compiled " + GetInformalDate(compileTIme);
-                }
-                else
-                {
-                    StudioVersion = "Version " + studioVersion;
-                }
-            });
+                    var serverVersion = Server.GetServerVersion();
+                    var splitServerVersion = serverVersion.Split('.');
+                    if(splitServerVersion.Length > 2 && int.Parse(splitServerVersion[2]) > 6000)
+                    {
+                        var totalDays = Convert.ToDouble(splitServerVersion[2]);
+                        var totalSeconds = Convert.ToDouble(splitServerVersion[3]) * 2;
+                        var cSharpEpoc = new DateTime(2000, 1, 1);
+                        var compileTime = cSharpEpoc.AddDays(totalDays).AddSeconds(totalSeconds);
+                        ServerVersion = "Compiled " + GetInformalDate(compileTime);
+                    }
+                    else
+                    {
+                        ServerVersion = "Version " + serverVersion;
+                    }
+
+                    var studioVersion = Utils.FetchVersionInfo();
+                    var splitStudioVersion = studioVersion.Split('.');
+                    if(int.Parse(splitStudioVersion[2]) > 6000)
+                    {
+                        var totalDays = Convert.ToDouble(splitStudioVersion[2]);
+                        var totalSeconds = Convert.ToDouble(splitStudioVersion[3]) * 2;
+                        var cSharpEpoc = new DateTime(2000, 1, 1);
+                        var compileTIme = cSharpEpoc.AddDays(totalDays).AddSeconds(totalSeconds);
+                        StudioVersion = "Compiled " + GetInformalDate(compileTIme);
+                    }
+                    else
+                    {
+                        StudioVersion = "Version " + studioVersion;
+                    }
+                });
         }
 
 #pragma warning disable S1541 // Methods and properties should not be too complex
@@ -125,59 +129,72 @@ namespace Warewolf.Studio.ViewModels
             var totalDays = (int)sinceThen.TotalDays;
             var totalHours = (int)sinceThen.TotalHours;
             var totalMinutes = (int)sinceThen.TotalMinutes;
-            if (totalDays < 0 || totalHours < 0 || totalMinutes < 0)
+            if(totalDays < 0 || totalHours < 0 || totalMinutes < 0)
             {
                 return null;
             }
-            if (totalMinutes == 0)
+
+            if(totalMinutes == 0)
             {
                 return "just Now";
             }
-            if (totalMinutes == 1)
+
+            if(totalMinutes == 1)
             {
                 return "a minute ago";
             }
-            if (totalHours == 0)
+
+            if(totalHours == 0)
             {
                 return $"{totalMinutes} minutes ago";
             }
-            if (totalHours == 1)
+
+            if(totalHours == 1)
             {
                 return "an hour ago";
             }
-            if (totalDays == 0)
+
+            if(totalDays == 0)
             {
                 return $"{totalHours} hours ago";
             }
-            if (totalDays == 1)
+
+            if(totalDays == 1)
             {
                 return "yesterday";
             }
-            if (totalDays < 7)
+
+            if(totalDays < 7)
             {
                 return $"{totalDays} days ago";
             }
-            if (totalDays < 14)
+
+            if(totalDays < 14)
             {
                 return "a week ago";
             }
-            if (totalDays < 31)
+
+            if(totalDays < 31)
             {
-                return $"{Math.Ceiling((double) totalDays/7)} weeks ago";
+                return $"{Math.Ceiling((double)totalDays / 7)} weeks ago";
             }
-            if (totalDays < 62)
+
+            if(totalDays < 62)
             {
                 return "a month ago";
             }
-            if (totalDays < 365)
+
+            if(totalDays < 365)
             {
-                return $"{Math.Ceiling((double) totalDays/31)} months ago";
+                return $"{Math.Ceiling((double)totalDays / 31)} months ago";
             }
-            if (totalDays < 730)
+
+            if(totalDays < 730)
             {
                 return "a year ago";
             }
-            return $"{Math.Ceiling((double) totalDays/365)} years ago";
+
+            return $"{Math.Ceiling((double)totalDays / 365)} years ago";
         }
     }
 }

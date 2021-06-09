@@ -31,6 +31,7 @@ namespace Dev2.Runtime.Subscription
         public bool IsLicensed { get; }
         static volatile ISubscriptionProvider _theInstance;
         static readonly object SyncRoot = new object();
+        private static ISubscriptionConfig _config;
         public static ISubscriptionProvider Instance
         {
             get
@@ -41,12 +42,22 @@ namespace Dev2.Runtime.Subscription
                     {
                         if(_theInstance == null)
                         {
-                            var config = new SubscriptionConfig();
-                            _theInstance = new SubscriptionProvider(config);
+                            _config = new SubscriptionConfig();
+                            _theInstance = new SubscriptionProvider(_config);
                         }
                     }
                 }
 
+                return _theInstance;
+            }
+        }
+
+        private static ISubscriptionProvider RefreshInstance
+        {
+            get
+            {
+                _config = new SubscriptionConfig();
+                _theInstance = new SubscriptionProvider(_config);
                 return _theInstance;
             }
         }
@@ -58,6 +69,7 @@ namespace Dev2.Runtime.Subscription
                 throw new ArgumentNullException(nameof(config));
             }
 
+            _config = config;
             SubscriptionKey = config.SubscriptionKey;
             SubscriptionSiteName = config.SubscriptionSiteName;
             CustomerId = config.CustomerId;
@@ -70,6 +82,13 @@ namespace Dev2.Runtime.Subscription
 
         public void SaveSubscriptionData(ISubscriptionData subscriptionData)
         {
+            var newSubscriptionData = SetNewSubscriptionData(subscriptionData);
+            _config.UpdateSubscriptionSettings(newSubscriptionData);
+            _theInstance = RefreshInstance;
+        }
+
+        private ISubscriptionData SetNewSubscriptionData(ISubscriptionData subscriptionData)
+        {
             var newSubscriptionData = new SubscriptionData
             {
                 CustomerId = subscriptionData.CustomerId,
@@ -79,9 +98,7 @@ namespace Dev2.Runtime.Subscription
                 SubscriptionSiteName = SubscriptionSiteName,
                 SubscriptionKey = SubscriptionKey
             };
-            SubscriptionConfig.UpdateSubscriptionSettings(newSubscriptionData);
-            var config = new SubscriptionConfig();
-            _theInstance = new SubscriptionProvider(config);
+            return newSubscriptionData;
         }
 
         public ISubscriptionData GetSubscriptionData()

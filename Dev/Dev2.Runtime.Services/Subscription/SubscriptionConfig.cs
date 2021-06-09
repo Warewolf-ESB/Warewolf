@@ -70,8 +70,10 @@ namespace Dev2.Runtime.Subscription
             }
             else
             {
-                //New Installation
+                //Broken Installation
+                // ReSharper disable once RedundantAssignment
                 var subscriptionKey = SubscriptionProvider.SubscriptionLiveKey;
+                // ReSharper disable once RedundantAssignment
                 var subscriptionSiteName = SubscriptionProvider.SubscriptionLiveSiteName;
 #if DEBUG
                 subscriptionKey = SubscriptionProvider.SubscriptionTestKey;
@@ -95,7 +97,9 @@ namespace Dev2.Runtime.Subscription
             {
                 Dev2Logger.Info(string.Format(ErrorResource.FileNotFound, FileName), GlobalConstants.WarewolfInfo);
 
+                // ReSharper disable once RedundantAssignment
                 var subscriptionKey = SubscriptionProvider.SubscriptionLiveKey;
+                // ReSharper disable once RedundantAssignment
                 var subscriptionSiteName = SubscriptionProvider.SubscriptionLiveSiteName;
 #if DEBUG
                 subscriptionKey = SubscriptionProvider.SubscriptionTestKey;
@@ -111,8 +115,7 @@ namespace Dev2.Runtime.Subscription
                 SaveConfig(newSettings);
             }
         }
-
-        public static void UpdateSubscriptionSettings(ISubscriptionData subscriptionData)
+        public void UpdateSubscriptionSettings(ISubscriptionData subscriptionData)
         {
             try
             {
@@ -123,7 +126,7 @@ namespace Dev2.Runtime.Subscription
                 newSettings["PlanId"] = SecurityEncryption.Encrypt(subscriptionData.PlanId);
                 newSettings["SubscriptionKey"] = SecurityEncryption.Encrypt(subscriptionData.SubscriptionKey);
                 newSettings["SubscriptionSiteName"] = SecurityEncryption.Encrypt(subscriptionData.SubscriptionSiteName);
-                UpdateConfigSettings(newSettings);
+                SaveConfig(newSettings);
             }
             catch(Exception e)
             {
@@ -134,15 +137,10 @@ namespace Dev2.Runtime.Subscription
 
         protected virtual void SaveConfig(NameValueCollection subscriptionSettings)
         {
-            UpdateConfigSettings(subscriptionSettings);
+            UpdateConfig(subscriptionSettings);
         }
 
-        protected virtual void UpdateConfig(NameValueCollection subscriptionSettings)
-        {
-            UpdateConfigSettings(subscriptionSettings);
-        }
-
-        protected static void UpdateConfigSettings(NameValueCollection subscriptionSettings)
+        private static void UpdateConfig(NameValueCollection subscriptionSettings)
         {
             try
             {

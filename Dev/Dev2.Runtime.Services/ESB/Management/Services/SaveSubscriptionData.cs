@@ -27,7 +27,7 @@ namespace Dev2.Runtime.ESB.Management.Services
     {
         private readonly IWarewolfLicense _warewolfLicense;
         private readonly IBuilderSerializer _serializer;
-        private readonly ISubscriptionProvider _subscriptionProvider;
+        private ISubscriptionProvider _subscriptionProvider;
 
         public SaveSubscriptionData()
             : this(new Dev2JsonSerializer(), new WarewolfLicense(), SubscriptionProvider.Instance)
@@ -46,6 +46,10 @@ namespace Dev2.Runtime.ESB.Management.Services
             var result = new ExecuteMessage { HasError = false };
             try
             {
+                if(_subscriptionProvider == null)
+                {
+                    _subscriptionProvider = SubscriptionProvider.Instance;
+                }
                 Dev2Logger.Info("Save Subscription Data Service", GlobalConstants.WarewolfInfo);
                 values.TryGetValue(Warewolf.Service.SaveSubscriptionData.SubscriptionData, out var data);
 

@@ -17,8 +17,6 @@ namespace Dev2.Tests.Runtime.Services
     {
         public NameValueCollection SaveConfigSettings { get; private set; }
         public int SaveConfigHitCount { get; private set; }
-        public NameValueCollection UpdateConfigSettings { get; private set; }
-        public int UpdateConfigHitCount { get; private set; }
 
         public SubscriptionConfigMock(NameValueCollection settings)
             : base(settings)
@@ -31,10 +29,5 @@ namespace Dev2.Tests.Runtime.Services
             SaveConfigHitCount++;
         }
 
-        protected override void UpdateConfig(NameValueCollection subscriptionSettings)
-        {
-            UpdateConfigSettings = subscriptionSettings;
-            UpdateConfigHitCount++;
-        }
     }
 }

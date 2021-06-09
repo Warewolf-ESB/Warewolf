@@ -8,6 +8,8 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using Warewolf.Licensing;
+
 namespace Dev2.Runtime.Subscription
 {
     public interface ISubscriptionConfig
@@ -18,5 +20,7 @@ namespace Dev2.Runtime.Subscription
         string Status { get; }
         string SubscriptionKey { get; }
         string SubscriptionSiteName { get; }
+
+        void UpdateSubscriptionSettings(ISubscriptionData newSubscriptionData);
     }
 }
