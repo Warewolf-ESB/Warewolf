@@ -336,7 +336,7 @@ namespace Dev2.Activities
             var recordset = new DataTable();
             recordset.Columns.Add("records_affected", typeof(int));
             recordset.Rows.Add(_advancedRecordset.ExecuteNonQuery(_advancedRecordset.ReturnSql(complexStatement.Tokens)));
-            var outputName = _activity.Outputs.FirstOrDefault(e => e.MappedFrom == "records_affected").MappedTo;
+            var outputName = _activity.Outputs.FirstOrDefault(e => e.MappedFrom == "records_affected")?.MappedTo;
             _advancedRecordset.ApplyScalarResultToEnvironment(outputName, int.Parse(recordset.Rows[0].ItemArray[0].ToString()));
         }
 
@@ -497,7 +497,7 @@ namespace Dev2.Activities
                 var queryText = AddSqlForVariables(_activity.SqlQuery);
                 var statements = TSQLStatementReader.ParseStatements(queryText);
 
-                List<string> identifierVariables = null;
+                List<string> identifierVariables;
 
                 foreach (var statement in statements)
                 {
@@ -517,7 +517,10 @@ namespace Dev2.Activities
                 }
             }
 
-            catch { }
+            catch
+            {
+                // no identifiers
+            }
 
             return identifiers;
         }

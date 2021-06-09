@@ -317,7 +317,7 @@ namespace Dev2.Tests.Runtime.Triggers
         {
             var directory = "some path";
             var fileName = Guid.NewGuid().ToString() + ".bite";
-            var files = new string[] { fileName };
+            var files = new[] { fileName };
             var mockDirectoryWrapper = new Mock<IDirectory>();
             mockDirectoryWrapper.Setup(directoryWrapper => directoryWrapper.GetFiles("some path")).Returns(files);
             var mockFileWrapper = new Mock<IFile>();
@@ -352,7 +352,7 @@ namespace Dev2.Tests.Runtime.Triggers
         {
             var directory = "some path";
             var fileName = Guid.NewGuid().ToString() + ".bite";
-            var files = new string[] { fileName };
+            var files = new[] { fileName };
             var mockDirectoryWrapper = new Mock<IDirectory>();
             mockDirectoryWrapper.Setup(directoryWrapper => directoryWrapper.GetFiles("some path")).Returns(files);
             var mockFileWrapper = new Mock<IFile>();
@@ -387,7 +387,7 @@ namespace Dev2.Tests.Runtime.Triggers
         {
             var directory = "some path";
             var fileName = Guid.NewGuid().ToString() + ".bite";
-            var files = new string[] { fileName };
+            var files = new[] { fileName };
             var mockDirectoryWrapper = new Mock<IDirectory>();
             mockDirectoryWrapper.Setup(directoryWrapper => directoryWrapper.GetFiles("some path")).Returns(files);
             var mockFileWrapper = new Mock<IFile>();
@@ -423,7 +423,7 @@ namespace Dev2.Tests.Runtime.Triggers
             var directory = "some path";
             var fileName = Guid.NewGuid().ToString() + ".bite";
             var oldName = Guid.NewGuid().ToString() + ".bite";
-            var files = new string[] { fileName };
+            var files = new[] { fileName };
             var mockDirectoryWrapper = new Mock<IDirectory>();
             mockDirectoryWrapper.Setup(directoryWrapper => directoryWrapper.GetFiles("some path")).Returns(files);
             var mockFileWrapper = new Mock<IFile>();
@@ -459,7 +459,7 @@ namespace Dev2.Tests.Runtime.Triggers
             var directory = "some path";
             var fileName = Guid.NewGuid().ToString() + ".bite";
             var oldName = Guid.NewGuid().ToString() + ".bite";
-            var files = new string[] { fileName };
+            var files = new[] { fileName };
             var mockDirectoryWrapper = new Mock<IDirectory>();
             mockDirectoryWrapper.Setup(directoryWrapper => directoryWrapper.GetFiles("some path")).Returns(files);
             var mockFileWrapper = new Mock<IFile>();
