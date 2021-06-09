@@ -31,13 +31,6 @@ namespace Dev2.Tests.Activities.ActivityTests
     {
         public TestContext TestContext { get; set; }
 
-        #region Additional test attributes
-
-
-        #endregion
-
-        #region MultiAssign Functionality Tests
-
         [TestMethod]
         [Timeout(60000)]
         public void AssignRecordSetWithEvaluatedSingleExpression()
@@ -575,10 +568,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(expected, actual);
         }
 
-        #endregion MultiAssign Functionality Tests
-
-        #region Language Tests
-
         [TestMethod]
         [Timeout(60000)]
         public void StarToStar_Expected_AllValuesOverwrittenWithRecordSetFrom()
@@ -908,10 +897,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.IsTrue(activity1.Equals(activity2));
         }
 
-        #endregion Language Tests
-
-        #region Calculate Mode Tests
-
         [TestMethod]
         [Timeout(60000)]
         public void MutiAssign_CalculateMode_PrefixEncasing_Test()
@@ -1100,10 +1085,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(1, warewolfEnvironment?.RecordSets["Errors"].Data["Message"].Count);
         }
 
-        #endregion Calculate Mode Tests
-
-        #region ForEach Update/Get Inputs/Outputs
-
         [TestMethod]
         [Timeout(60000)]
         [Owner("Travis Frisinger")]
@@ -1278,11 +1259,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             }
         }
 
-
-        #endregion
-
-        #region Private Test Methods
-
         void SetupArguments(string currentDL, string testData, ObservableCollection<ActivityDTO> fieldCollection, string outputMapping = null)
         {
             if (outputMapping == null)
@@ -1302,9 +1278,5 @@ namespace Dev2.Tests.Activities.ActivityTests
             TestData = testData;
             CurrentDl = currentDL;
         }
-
-
-
-        #endregion
     }
 }
