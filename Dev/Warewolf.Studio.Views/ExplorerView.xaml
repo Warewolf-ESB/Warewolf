@@ -165,12 +165,12 @@
                                         Header="Manage Plan"
                                         Style="{StaticResource MenuItemStyle}"
                                         ToolTip="{x:Static languages:Tooltips.ManagePlanWarewolfToolTip}"
-                                        Visibility="{Binding IsLicensed, Converter={StaticResource BoolToVisibilityConverterNegative}}">
+                                        Visibility="{Binding IsLicensed, Converter={StaticResource BoolToVisibilityConverterPositive}}">
                                         <MenuItem.Icon>
                                             <fa:FontAwesome FontSize="14" FontWeight="Light" Foreground="{StaticResource WareWolfOrangeBrush}" Icon="Registered" />
                                         </MenuItem.Icon>
                                     </MenuItem>
-                                     <Separator Visibility="{Binding IsLicensed, Converter={StaticResource BoolToVisibilityConverterNegative}}"/>
+                                     <Separator/>
 
                                     <MenuItem Name="NewService"
                                               Command="{Binding NewServiceCommand}"
