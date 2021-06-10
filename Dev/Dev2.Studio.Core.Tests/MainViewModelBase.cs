@@ -34,6 +34,7 @@ using Moq;
 using Newtonsoft.Json;
 using Dev2.Studio.Interfaces.Enums;
 using Microsoft.Practices.Prism.Mvvm;
+using Warewolf.Enums;
 using Warewolf.Licensing;
 
 namespace Dev2.Core.Tests
@@ -67,7 +68,9 @@ namespace Dev2.Core.Tests
         #endregion Variables
 
         #region Methods used by tests
+
         protected Mock<IServerRepository> EmptyEnvRepo { get; set; }
+
         protected void CreateFullExportsAndVmWithEmptyRepo()
         {
             CreateResourceRepo();
@@ -91,14 +94,12 @@ namespace Dev2.Core.Tests
             var mockWorkspaceItemRepository = GetworkspaceItemRespository();
 
             new WorkspaceItemRepository(mockWorkspaceItemRepository.Object);
-            
+
             var vieFactory = new Mock<IViewFactory>();
             var viewMock = new Mock<IView>();
             vieFactory.Setup(factory => factory.GetViewGivenServerResourceType(It.IsAny<string>()))
                 .Returns(viewMock.Object);
-            _shellViewModel = new ShellViewModel(_eventAggregator.Object, asyncWorker.Object, environmentRepo,new Mock<IVersionChecker>().Object, vieFactory.Object, false, null, _popupController.Object);
-
-
+            _shellViewModel = new ShellViewModel(_eventAggregator.Object, asyncWorker.Object, environmentRepo, new Mock<IVersionChecker>().Object, vieFactory.Object, false, null, _popupController.Object);
         }
 
         private static Mock<IEnvironmentConnection> SetupMockConnection()
@@ -133,21 +134,41 @@ namespace Dev2.Core.Tests
             var mockWorkspaceItemRepository = GetworkspaceItemRespository();
 
             new WorkspaceItemRepository(mockWorkspaceItemRepository.Object);
-            
+
             var explorerViewModel = new Mock<IExplorerViewModel>();
             var vieFactory = new Mock<IViewFactory>();
             var viewMock = new Mock<IView>();
             vieFactory.Setup(factory => factory.GetViewGivenServerResourceType(It.IsAny<string>()))
                 .Returns(viewMock.Object);
-            _shellViewModel = new ShellViewModel(_eventAggregator.Object, asyncWorker.Object, environmentRepo, new Mock<IVersionChecker>().Object, vieFactory.Object, false, _browserPopupController.Object, _popupController.Object, explorerViewModel.Object, null);
+            _shellViewModel = new ShellViewModel(
+                _eventAggregator.Object,
+                asyncWorker.Object,
+                environmentRepo,
+                new Mock<IVersionChecker>().Object,
+                vieFactory.Object,
+                false,
+                _browserPopupController.Object,
+                _popupController.Object,
+                explorerViewModel.Object,
+                null);
             var activeEnvironment = new Mock<IServer>();
             activeEnvironment.Setup(server => server.DisplayName).Returns("localhost");
-            activeEnvironment.Setup(server => server.GetSubscriptionData()).Returns(new Mock<ISubscriptionData>().Object);
+            activeEnvironment.Setup(server => server.GetSubscriptionData()).Returns(MockSubscriptionData().Object);
+
             _activeEnvironment = activeEnvironment;
             _authorizationService = new Mock<IAuthorizationService>();
             _activeEnvironment.Setup(e => e.AuthorizationService).Returns(_authorizationService.Object);
 
             _shellViewModel.ActiveServer = _activeEnvironment.Object;
+        }
+
+        private static Mock<ISubscriptionData> MockSubscriptionData()
+        {
+            var mockSubscriptionData = new Mock<ISubscriptionData>();
+            mockSubscriptionData.Setup(o => o.IsLicensed).Returns(true);
+            mockSubscriptionData.Setup(o => o.Status).Returns(SubscriptionStatus.InTrial);
+            mockSubscriptionData.Setup(o => o.PlanId).Returns("developer");
+            return mockSubscriptionData;
         }
 
         protected Mock<IBrowserPopupController> _browserPopupController;
@@ -196,8 +217,7 @@ namespace Dev2.Core.Tests
             _resourceRepo.Setup(c => c.All()).Returns(coll);
 
             _environmentModel.Setup(m => m.ResourceRepository).Returns(_resourceRepo.Object);
-            _environmentModel.Setup(m => m.GetSubscriptionData()).Returns(new Mock<ISubscriptionData>().Object);
-
+            _environmentModel.Setup(m => m.GetSubscriptionData()).Returns(MockSubscriptionData().Object);
         }
 
         protected Mock<IEnvironmentConnection> CreateMockConnection(Random rand, params string[] sources)
@@ -216,7 +236,7 @@ namespace Dev2.Core.Tests
                 .Returns(
                     () =>
                     {
-                        if (cnt == 0)
+                        if(cnt == 0)
                         {
                             cnt++;
                             return new StringBuilder($"<XmlData>{string.Join("\n", sources)}</XmlData>");

@@ -26,8 +26,6 @@ namespace Warewolf.Studio.ViewModels.Tests
     [TestClass]
     public class MenuViewModelTests
     {
-        #region Fields
-
         Mock<IShellViewModel> _mainViewModelMock;
         AuthorizeCommand<string> _newCommand;
         Mock<ICommand> _deployCommandMock;
@@ -41,10 +39,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         List<string> _changedProperties;
 
         MenuViewModel _target;
-
-        #endregion Fields
-
-        #region Test initialize
 
         [TestInitialize]
         public void TestInitialize()
@@ -70,7 +64,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _mainViewModelMock.SetupGet(it => it.SettingsCommand).Returns(_openSettingsCommand);
             _mainViewModelMock.SetupGet(it => it.DebugCommand).Returns(_executeServiceCommand);
             _mainViewModelMock.SetupGet(it => it.ShowStartPageCommand).Returns(_startPageCommandMock.Object);
-            _mainViewModelMock.Setup(o => o.SubscriptionData).Returns(new SubscriptionData{ IsLicensed = true });
+            _mainViewModelMock.Setup(o => o.SubscriptionData).Returns(new SubscriptionData { IsLicensed = true });
 
             _target = new MenuViewModel(_mainViewModelMock.Object);
 
@@ -79,21 +73,13 @@ namespace Warewolf.Studio.ViewModels.Tests
             _target.PropertyChanged += _target_PropertyChanged;
         }
 
-        #endregion Test initialize
-
-        #region Test construction
-
         [TestMethod]
-        [Timeout(250)]
+        [Timeout(500)]
         [ExpectedException(typeof(ArgumentNullException))]
         public void TestNullMainViewModel()
-        { 
+        {
             new MenuViewModel(null);
         }
-
-        #endregion Test construction
-
-        #region Test commands
 
         [TestMethod]
         [Timeout(250)]
@@ -229,7 +215,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(_target.IsPanelOpen);
             Assert.AreEqual(3, _target.ButtonWidth);
             Assert.IsFalse(_changedProperties.Any());
-            _mainViewModelMock.VerifySet(it=>it.MenuExpanded = It.IsAny<bool>(), Times.Never);
+            _mainViewModelMock.VerifySet(it => it.MenuExpanded = It.IsAny<bool>(), Times.Never);
         }
 
         [TestMethod]
@@ -328,9 +314,9 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //assert
             VerifyUpdateProperties();
-            Assert.AreEqual(3,_target.ButtonWidth);
+            Assert.AreEqual(3, _target.ButtonWidth);
             Assert.IsFalse(_target.IsPanelOpen);
-            _mainViewModelMock.VerifySet(it=>it.MenuExpanded = It.IsAny<bool>(), Times.Never);
+            _mainViewModelMock.VerifySet(it => it.MenuExpanded = It.IsAny<bool>(), Times.Never);
         }
 
         [TestMethod]
@@ -350,7 +336,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //assert
             VerifyUpdateProperties();
-            _mainViewModelMock.VerifySet(it=>it.MenuExpanded = true);
+            _mainViewModelMock.VerifySet(it => it.MenuExpanded = true);
             Assert.AreEqual(125, _target.ButtonWidth);
             Assert.IsTrue(_target.IsPanelOpen);
         }
@@ -396,16 +382,13 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(_target.IsPanelOpen);
         }
 
-        #endregion Test commands
-
-        #region Test properties
-
         [TestMethod]
         [Timeout(100)]
         public void TestButtonWidth_Default()
         {
             Assert.AreEqual(125, _target.ButtonWidth);
         }
+
         [TestMethod]
         [Timeout(100)]
         public void TestIsPanelOpen_Default()
@@ -462,7 +445,6 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //assert
             Assert.AreEqual("Lock", value);
-
         }
 
         [TestMethod]
@@ -678,8 +660,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(string.IsNullOrEmpty(value));
         }
 
-
-
         [TestMethod, Timeout(60000)]
         public void TestQueueEventsLabelNotNullOrEmpty()
         {
@@ -733,6 +713,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //assert
             Assert.IsTrue(string.IsNullOrEmpty(value));
         }
+
         [TestMethod]
         [Timeout(100)]
         public void TestSupportLabelNotNullOrEmpty()
@@ -872,7 +853,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void MenuSaveToolTipUnRegistered()
         {
             var mainViewModelMock = new Mock<IShellViewModel>();
-            _mainViewModelMock.Setup(o => o.SubscriptionData).Returns(new SubscriptionData{ IsLicensed = false });
+            mainViewModelMock.Setup(o => o.SubscriptionData).Returns(new SubscriptionData { IsLicensed = false });
 
             var menuViewModel = new MenuViewModel(mainViewModelMock.Object)
             {
@@ -888,10 +869,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(Resources.Languages.Tooltips.UnregisteredWarewolfToolTip, value);
         }
 
-        #endregion Test properties
-
-        #region Test methods 
-
         [TestMethod]
         [Timeout(500)]
         public void TestUpdateHelpDescriptor()
@@ -905,7 +882,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _target.UpdateHelpDescriptor(helpText);
 
             //assert
-            helpViewModel.Verify(it=>it.UpdateHelpText(helpText));
+            helpViewModel.Verify(it => it.UpdateHelpText(helpText));
         }
 
         [TestMethod]
@@ -962,10 +939,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             VerifyUpdateProperties();
         }
 
-        #endregion Test methods 
-
-        #region Private helper methods
-
         void _target_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             _changedProperties.Add(e.PropertyName);
@@ -984,7 +957,5 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(_changedProperties.Contains("LockLabel"));
             Assert.IsTrue(_changedProperties.Contains("ButtonWidth"));
         }
-
-        #endregion Private helper methods
     }
 }
