@@ -118,7 +118,8 @@ namespace Dev2.Activities
                     var conditionExpression = dds.Current;
 
                     text.Append("\n");
-                    conditionExpression.RenderDescription(text);
+                    if(conditionExpression != null)
+                        conditionExpression.RenderDescription(text);
                 }
 
                 var debugItem = new DebugItem();
@@ -232,7 +233,7 @@ namespace Dev2.Activities
 
                 while (iter.HasMoreData())
                 {
-                    var item = new string[] { iter.FetchNextValue(c1), iter.FetchNextValue(c2), iter.FetchNextValue(c3) };
+                    var item = new[] { iter.FetchNextValue(c1), iter.FetchNextValue(c2), iter.FetchNextValue(c3) };
                     yield return item;
                 }
                 yield break;

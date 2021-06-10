@@ -2623,7 +2623,7 @@ namespace BusinessDesignStudio.Unit.Tests
             mockServer.Setup(o => o.Connection).Returns(mockEnvironmentConnection.Object);
             mockServer.Setup(o => o.IsConnected).Returns(true);
 
-            var executeOptions = new List<IOption>() {new OptionBool {Name = "Breakfast", Value = true}, new OptionAutocomplete {Name = "TestName", Value = "TestValue", Suggestions = new string[] {"TestSuggestion1", "TestSuggestion2"}}}.ToList();
+            var executeOptions = new List<IOption>() {new OptionBool {Name = "Breakfast", Value = true}, new OptionAutocomplete {Name = "TestName", Value = "TestValue", Suggestions = new[] {"TestSuggestion1", "TestSuggestion2"}}}.ToList();
 
             var commController = new Mock<ICommunicationController>();
             commController.Setup(o => o.ExecuteCommand<List<IOption>>(It.IsAny<IEnvironmentConnection>(), It.IsAny<Guid>())).Returns(executeOptions);

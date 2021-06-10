@@ -209,7 +209,7 @@ namespace Warewolf.UnitTestAttributes
                 case ContainerType.RabbitMQ:
                     return "5672";
                 case ContainerType.Redis:
-                    return "56438";
+                    return "6379";
                 case ContainerType.AnonymousRedis:
                     return "6380";
                 case ContainerType.AnonymousWarewolf:

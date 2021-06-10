@@ -3462,7 +3462,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var mockDirectory = new Mock<IDirectory>();
             mockDirectory.Setup(o => o.CreateIfNotExists("C:\\ProgramData\\Warewolf\\Resources\\asdf")).Verifiable();
             var existingId = Guid.NewGuid().ToString();
-            var programDataIds = new string[] {
+            var programDataIds = new[] {
                 existingId
             };
 

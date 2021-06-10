@@ -2034,13 +2034,12 @@ namespace Dev2.Studio.ViewModels.Workflow
                     return ret.Where(o => (o is GateActivity));
                 }
 
-                bool found = false;
                 var allGates = connectedList(treeNodes[0].Activity)
                     .Cast<GateActivity>()
                     .Where(gate => gate?.GateOptions != null && gate.GateOptions.GateOpts is Continue);
 
                 var selectableGates = allGates
-                    .TakeWhile(gate => !(found = (gate.UniqueID == uniqueId)));
+                    .TakeWhile(gate => !(gate.UniqueID == uniqueId));
 
                 foreach (var gate in selectableGates)
                 {
