@@ -297,16 +297,6 @@ namespace Dev2
             _writer.WriteLine("done.");
         }
 
-        void StartTrackingUsage()
-        {
-            _writer.Write("Registering usage tracker...  ");
-            CustomContainer.Register(ApplicationTrackerFactory.GetApplicationTrackerProvider());
-            var applicationTracker = CustomContainer.Get<IApplicationTracker>();
-            applicationTracker?.EnableApplicationTracker(VersionInfo.FetchVersionInfo(), VersionInfo.FetchInformationalVersion(), @"Warewolf" + $" ({ClaimsPrincipal.Current.Identity.Name})".ToUpperInvariant());
-            applicationTracker?.TrackEvent("Server Events", "Server Startup");
-            _writer.WriteLine("done.");
-        }
-
         public void Stop(bool didBreak, int result, bool mute)
         {
             if (!didBreak)

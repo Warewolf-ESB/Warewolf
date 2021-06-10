@@ -62,14 +62,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>TestCustomEvenTracking.feature</DependentUpon>
     </Compile>
-    <Compile Include="TestCustomEvenTrackingSteps.cs" />
     <Compile Include="TestEnableRevulyticsTracking.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>TestEnableRevulyticsTracking.feature</DependentUpon>
     </Compile>
-    <Compile Include="TestEnableRevulyticsTrackingSteps.cs" />
-    <Compile Include="TestRevulyticsApplicationEventTestSteps.cs" />
     <Compile Include="TestRevulyticsApplicationEvent.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

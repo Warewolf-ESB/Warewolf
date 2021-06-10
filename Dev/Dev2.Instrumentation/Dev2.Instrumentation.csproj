@@ -62,7 +62,6 @@
     </Compile>
     <Compile Include="Factory\ApplicationTrackerFactory.cs" />
     <Compile Include="IApplicationTracker.cs" />
-    <Compile Include="RevulyticsTracker.cs" />
     <AdditionalFiles Include="..\SonarQube\SonarLint.xml">
       <Visible>False</Visible>
     </AdditionalFiles>
