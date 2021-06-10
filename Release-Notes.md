@@ -1,3 +1,12 @@
+11 June 2021
+================
+
+Bug Fixes
+-----------
+- The Studio splash page no longer shows "Server Unavailable" and starts up correctly.
+- There are no longer duplicates in the Errors().Message recordset
+
+
 28 May 2021
 ================
 Enhancements
