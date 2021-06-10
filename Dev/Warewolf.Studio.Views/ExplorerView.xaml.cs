@@ -627,11 +627,7 @@ namespace Warewolf.Studio.Views
 
         private void SearchTextBox_LostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
-            var _applicationTracker = CustomContainer.Get<IApplicationTracker>();
-            if (sender is TextBox searchText)
-            {
-                _applicationTracker?.TrackCustomEvent(TrackEventExplorer.EventCategory, TrackEventExplorer.ExplorerSearch, searchText.Text);
-            }
+            
         }
     }
 }

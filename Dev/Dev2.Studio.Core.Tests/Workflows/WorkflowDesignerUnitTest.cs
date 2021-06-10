@@ -2183,8 +2183,7 @@ namespace Dev2.Core.Tests.Workflows
         [Owner("Pieter Terblanche")]
         public void WorkflowDesignerViewModel_PerformAddItems_ModelItemWithFlowStepWithServiceName_FlowStepHandled()
         {
-            CustomContainer.DeRegister<IApplicationTracker>();
-            var explorerTooltips = new Mock<IExplorerTooltips>();
+          var explorerTooltips = new Mock<IExplorerTooltips>();
             CustomContainer.Register(explorerTooltips.Object);
 
             #region Setup view model constructor parameters

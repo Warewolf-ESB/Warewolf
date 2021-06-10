@@ -49,21 +49,6 @@ namespace Warewolf.Studio.ViewModels
         {
             Dev2Logger.Info("Open resource: " + item.ResourceName + " - ResourceId: " + item.ResourceId, "Warewolf Info");
 
-            var applicationTracker = CustomContainer.Get<IApplicationTracker>();
-            if (applicationTracker != null)
-            {
-                if (item.ResourceName == "Shared Resources Server")
-                {
-                    applicationTracker.TrackEvent(Resources.Languages.TrackEventExplorer.EventCategory,
-                                                  Resources.Languages.TrackEventExplorer.SharedResourcesServer);
-                }
-                if (item.ResourceName == "Hello World")
-                {
-                    applicationTracker.TrackEvent(Resources.Languages.TrackEventWorkflowTabs.EventCategory,
-                                                       Resources.Languages.TrackEventWorkflowTabs.HelloWorld);
-                }
-            }
-
             if (item.IsFolder)
             {
                 item.IsExpanded = !item.IsExpanded;

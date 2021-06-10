@@ -71,8 +71,6 @@ namespace Dev2.Studio.ViewModels.DataList
 
         private RelayCommand _outputVariableCheckboxCommand;
 
-        private readonly IApplicationTracker _applicationTracker;
-
         public ObservableCollection<DataListHeaderItemModel> BaseCollection
         {
             get => _baseCollection;
@@ -283,8 +281,6 @@ namespace Dev2.Studio.ViewModels.DataList
             _scalarHandler = new ScalarHandler(this);
             _recordsetHandler = new RecordsetHandler(this);
             _helper = new DataListViewModelHelper(this);
-            _applicationTracker = CustomContainer.Get<IApplicationTracker>();
-
         }
 
         public IJsonObjectsView JsonObjectsView => CustomContainer.GetInstancePerRequestType<IJsonObjectsView>();
@@ -356,7 +352,7 @@ namespace Dev2.Studio.ViewModels.DataList
 
         public void LogToRevulytics(string eventCategory, string eventName)
         {
-            _applicationTracker?.TrackEvent(eventCategory, eventName);
+            
         }
 
         public void SetIsUsedDataListItems(IList<IDataListVerifyPart> parts, bool isUsed)
@@ -1041,7 +1037,7 @@ namespace Dev2.Studio.ViewModels.DataList
 
         public void LogCustomTrackerEvent(string eventCategory, string eventName, string text)
         {
-            _applicationTracker?.TrackCustomEvent(eventCategory, eventName, text);
+            
         }
 
         void UpdateDataListItemsAsUsed()
