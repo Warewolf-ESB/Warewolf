@@ -31,6 +31,7 @@ using Warewolf.Studio.ViewModels;
 using Dev2.Threading;
 using Dev2.ConnectionHelpers;
 using Dev2.Studio.Core;
+using Warewolf.Licensing;
 
 namespace Warewolf.UIBindingTests.Deploy
 {
@@ -226,6 +227,7 @@ namespace Warewolf.UIBindingTests.Deploy
                     ScenarioContext.Current.Add(name, server);
                 }
             }
+            server.Setup(a => a.GetSubscriptionData()).Returns(new SubscriptionData(){IsLicensed = true});
             return server.Object;
         }
 
