@@ -753,7 +753,7 @@ namespace Dev2.Tests.Runtime.Hosting
         }
 
         [TestMethod]
-        [ExpectedException(typeof(DirectoryNotFoundException))]
+        [ExpectedException(typeof(WarewolfExecutionEnvironmentException.WarewolfResourceException))]
         [DoNotParallelize]
         [TestCategory("CannotParallelize")]
         public void SaveResourceWithSlashesInResourceNameExpectedThrowsDirectoryNotFoundException()
