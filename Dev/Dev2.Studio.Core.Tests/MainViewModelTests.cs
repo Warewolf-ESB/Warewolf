@@ -80,7 +80,7 @@ namespace Dev2.Core.Tests
             var svr = new Mock<IServer>();
             svr.Setup(a => a.DisplayName).Returns("Localhost");
             svr.Setup(a => a.Name).Returns("Localhost");
-            svr.Setup(it => it.GetSubscriptionData()).Returns(MockSubscriptionData().Object);
+            svr.Setup(it => it.GetSubscriptionData()).Returns(MockSubscriptionData(true).Object);
             var mockEnvironmentConnection = SetupMockConnection();
             svr.SetupGet(it => it.Connection).Returns(mockEnvironmentConnection.Object);
 
@@ -101,21 +101,21 @@ namespace Dev2.Core.Tests
         [TestCategory("MainViewModel_LicensePlanTitle")]
         public void MainViewModel_LicensePlanTitle_ExpectTitle()
         {
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
             Assert.AreEqual("[developer - InTrial]", _shellViewModel.LicensePlanTitle);
         }
 
         [TestMethod]
         public void DeployCommandCanExecuteIrrespectiveOfEnvironments()
         {
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
             Assert.IsTrue(_shellViewModel.DeployCommand.CanExecute(null));
         }
 
         [TestMethod]
         public void MainViewModel_ShowPopupMessage_CallsPopupController()
         {
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
             _shellViewModel.ShowPopup(new Mock<IPopupMessage>().Object);
             _popupController.Verify(controller => controller.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), MessageBoxImage.Error, @"", false, true, false, false, false, false), Times.Once);
         }
@@ -128,7 +128,7 @@ namespace Dev2.Core.Tests
             //------------Setup for test--------------------------
             var toolboxViewModel = new Mock<IToolboxViewModel>().Object;
             CustomContainer.Register(toolboxViewModel);
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
 
             //------------Execute Test---------------------------
             var mainViewModelToolboxViewModel = _shellViewModel.ToolboxViewModel;
@@ -149,7 +149,7 @@ namespace Dev2.Core.Tests
 
         void Verify_SettingsCommand_CanExecute(bool isConnected, bool canStudioExecute, bool isAuthorized, bool expected)
         {
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
             _activeEnvironment.Setup(e => e.IsConnected).Returns(isConnected);
             _activeEnvironment.Setup(e => e.CanStudioExecute).Returns(canStudioExecute);
 
@@ -339,7 +339,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void MainViewModel_CloseWorkSurfaceContext_CloseTrueAndResourceSaved_RemoveWorkspaceItemRemoveCalledAndTabClosedMessageAndContextRemoved()
         {
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
 
             Assert.AreEqual(2, _shellViewModel.Items.Count);
 
@@ -357,7 +357,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void MainViewModel_CloseWorkSurfaceContext_CloseTrueAndResourceNotSavedPopupOk_RemoveWorkspaceItemCalledAndContextRemovedAndSaveResourceEventAggregatorMessage()
         {
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
 
             Assert.AreEqual(2, _shellViewModel.Items.Count);
             _firstResource.Setup(r => r.IsWorkflowSaved).Returns(false);
@@ -388,7 +388,7 @@ namespace Dev2.Core.Tests
         [TestCategory("MainViewModel_DeactivateItem")]
         public void MainViewModel_DeactivateItem_WorkSurfaceContextViewModelIsNull_RemoveIsNotCalledOnTheRepo()
         {
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
             Assert.AreEqual(2, _shellViewModel.Items.Count);
             _firstResource.Setup(r => r.IsWorkflowSaved).Returns(false);
             _firstResource.Setup(r => r.IsAuthorized(AuthorizationContext.Contribute)).Returns(true);
@@ -400,7 +400,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void MainViewModel_CloseWorkSurfaceContext_CloseTrueAndResourceNotSavedPopupNotOk_WorkspaceItemNotRemoved()
         {
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
             Assert.AreEqual(2, _shellViewModel.Items.Count);
             _firstResource.Setup(r => r.IsWorkflowSaved).Returns(false);
             _firstResource.Setup(r => r.IsAuthorized(AuthorizationContext.Contribute)).Returns(true);
@@ -419,7 +419,7 @@ namespace Dev2.Core.Tests
         public void MainViewModel_IsWorkFlowOpened_ResourceIsOpened_True()
         {
             //------------Setup for test--------------------------
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
             _firstResource.Setup(r => r.IsAuthorized(AuthorizationContext.Contribute)).Returns(true);
             //------------Execute Test---------------------------
             var isWorkflowOpened = _shellViewModel.IsWorkFlowOpened(_firstResource.Object);
@@ -433,7 +433,7 @@ namespace Dev2.Core.Tests
         public void MainViewModel_IsWorkFlowOpened_ResourceIsNotOpened_False()
         {
             //------------Setup for test--------------------------
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
             //------------Execute Test---------------------------
             var resource = new Mock<IContextualResourceModel>();
             var environmentModel = new Mock<IServer>();
@@ -449,7 +449,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void MainViewModel_CloseWorkSurfaceContext_CloseFalse_PreviousItemActivatedAndAllItemsPResent()
         {
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
             AddAdditionalContext();
             Assert.AreEqual(3, _shellViewModel.Items.Count);
 
@@ -469,7 +469,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void MainViewModel_CloseWorkSurfaceContext_CloseTrue_PreviousItemActivatedAndOneLessItem()
         {
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
             AddAdditionalContext();
             Assert.AreEqual(3, _shellViewModel.Items.Count);
 
@@ -490,7 +490,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void MainViewModel_CloseWorkSurfaceContext_CloseFalse_ContextNotRemoved()
         {
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
             _firstResource.Setup(r => r.IsAuthorized(AuthorizationContext.Contribute)).Returns(true);
             var activetx =
                 _shellViewModel.Items.ToList()
@@ -505,7 +505,7 @@ namespace Dev2.Core.Tests
         [Owner("Trevor Williams-Ros")]
         public void MainViewModel_CloseWorkSurfaceContext_ExistingUnsavedWorkflowNotSaved_ResourceModelRolledback()
         {
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
             Assert.IsTrue(_shellViewModel.Items.Count == 2);
             _firstResource.Setup(r => r.IsWorkflowSaved).Returns(false);
             _firstResource.Setup(r => r.Commit()).Verifiable();
@@ -526,7 +526,7 @@ namespace Dev2.Core.Tests
         [Owner("Trevor Williams-Ros")]
         public void MainViewModel_CloseWorkSurfaceContext_ExistingUnsavedWorkflowSaved_ResourceModelCommitted()
         {
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
             Assert.IsTrue(_shellViewModel.Items.Count == 2);
             _firstResource.Setup(r => r.IsWorkflowSaved).Returns(false);
             _firstResource.Setup(r => r.IsAuthorized(AuthorizationContext.Contribute)).Returns(true);
@@ -547,7 +547,7 @@ namespace Dev2.Core.Tests
         [Owner("Leon Rajindrapersadh")]
         public void MainViewModel_CloseWorkSurfaceContext_ExistingUnsavedWorkflowSaved_WhenDeletedNoPopup()
         {
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
             Assert.IsTrue(_shellViewModel.Items.Count == 2);
             _firstResource.Setup(r => r.IsWorkflowSaved).Returns(false);
             _firstResource.Setup(r => r.IsAuthorized(AuthorizationContext.Contribute)).Returns(true);
@@ -580,7 +580,7 @@ namespace Dev2.Core.Tests
         [Owner("Leon Rajindrapersadh")]
         public void MainViewModel_CloseResource()
         {
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
             Assert.IsTrue(_shellViewModel.Items.Count == 2);
             _firstResource.Setup(r => r.IsWorkflowSaved).Returns(false);
             _firstResource.Setup(r => r.IsAuthorized(AuthorizationContext.Contribute)).Returns(true);
@@ -621,7 +621,7 @@ namespace Dev2.Core.Tests
         [Owner("Pieter Terblanche")]
         public void MainViewModel_CreateTest()
         {
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
             Assert.IsTrue(_shellViewModel.Items.Count == 2);
             _firstResource.Setup(r => r.IsWorkflowSaved).Returns(false);
             _firstResource.Setup(r => r.IsAuthorized(AuthorizationContext.Contribute)).Returns(true);
@@ -646,7 +646,7 @@ namespace Dev2.Core.Tests
         [Owner("Pieter Terblanche")]
         public void MainViewModel_RunAllTests()
         {
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
             Assert.IsTrue(_shellViewModel.Items.Count == 2);
             _firstResource.Setup(r => r.IsWorkflowSaved).Returns(false);
             _firstResource.Setup(r => r.IsAuthorized(AuthorizationContext.Contribute)).Returns(true);
@@ -671,7 +671,7 @@ namespace Dev2.Core.Tests
         [Owner("Pieter Terblanche")]
         public void MainViewModel_CloseResourceTestView()
         {
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
             Assert.IsTrue(_shellViewModel.Items.Count == 2);
             _firstResource.Setup(r => r.IsWorkflowSaved).Returns(false);
             _firstResource.Setup(r => r.IsAuthorized(AuthorizationContext.Contribute)).Returns(true);
@@ -696,7 +696,7 @@ namespace Dev2.Core.Tests
         [Owner("Pieter Terblanche")]
         public void MainViewModel_CloseResourceMergeView()
         {
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
             Assert.IsTrue(_shellViewModel.Items.Count == 2);
             _firstResource.Setup(r => r.IsWorkflowSaved).Returns(false);
             _firstResource.Setup(r => r.IsAuthorized(AuthorizationContext.Contribute)).Returns(true);
@@ -721,7 +721,7 @@ namespace Dev2.Core.Tests
         public void MainViewModel_CloseWorkSurfaceContext_UnsavedWorkflowAndResourceCanSaveIsFalse_ResourceModelIsNotSaved()
         {
             //------------Setup for test--------------------------
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
             Assert.IsTrue(_shellViewModel.Items.Count == 2);
 
             _firstResource.Setup(r => r.Commit()).Verifiable();
@@ -747,7 +747,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void OnImportsSatisfiedExpectsTwoItems()
         {
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
             //One saved workspaceitem, one startpage
             Assert.AreEqual(2, _shellViewModel.Items.Count);
         }
@@ -755,7 +755,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void OnImportsSatisfiedExpectsContextsAddedForSavedWorkspaces()
         {
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
             var activetx =
                 _shellViewModel.Items.ToList()
                     .First(i => i.WorkSurfaceViewModel.WorkSurfaceContext == WorkSurfaceContext.Workflow);
@@ -769,7 +769,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void OnImportsSatisfiedExpectsDisplayNameSet()
         {
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
             const string expected = "Warewolf";
             // flipping thing never passes locally... silly chickens ;(
             StringAssert.Contains(_shellViewModel.DisplayName, expected);
@@ -780,7 +780,7 @@ namespace Dev2.Core.Tests
         [TestCategory("MainViewModel_ShowStartPageCommand")]
         public void MainViewModel_ShowStartPageCommand_ShowStartPageActive()
         {
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
             //------------Execute Test---------------------------
             _shellViewModel.ShowStartPageCommand.Execute(null);
             var langHelpCtx = _shellViewModel.ActiveItem.WorkSurfaceViewModel as HelpViewModel;
@@ -792,7 +792,7 @@ namespace Dev2.Core.Tests
         [TestCategory("MainViewModel_DebugCommand")]
         public void MainViewModel_DebugCommand_NotNull()
         {
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
             //------------Execute Test---------------------------
             var authorizeCommand = _shellViewModel.DebugCommand;
             Assert.IsNotNull(authorizeCommand);
@@ -804,7 +804,7 @@ namespace Dev2.Core.Tests
         [TestCategory("MainViewModel_DebugCommand")]
         public void MainViewModel_DebugCommandNoActiveItem_NotNull()
         {
-            CreateFullExportsAndVmWithEmptyRepo();
+            CreateFullExportsAndVmWithEmptyRepo(true);
             _shellViewModel.DeactivateItem(_shellViewModel.ActiveItem, true);
             //------------Execute Test---------------------------
             var authorizeCommand = _shellViewModel.DebugCommand;
@@ -817,7 +817,7 @@ namespace Dev2.Core.Tests
         [TestCategory("MainViewModel_QuickDebugCommand")]
         public void MainViewModel_QuickDebugCommand_NotNull()
         {
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
             //------------Execute Test---------------------------
             var authorizeCommand = _shellViewModel.QuickDebugCommand;
             Assert.IsNotNull(authorizeCommand);
@@ -829,7 +829,7 @@ namespace Dev2.Core.Tests
         [TestCategory("MainViewModel_QuickDebugCommand")]
         public void MainViewModel_QuickDebugCommandNoActiveItem_NotNull()
         {
-            CreateFullExportsAndVmWithEmptyRepo();
+            CreateFullExportsAndVmWithEmptyRepo(true);
             _shellViewModel.DeactivateItem(_shellViewModel.ActiveItem, true);
             //------------Execute Test---------------------------
             var authorizeCommand = _shellViewModel.QuickDebugCommand;
@@ -842,7 +842,7 @@ namespace Dev2.Core.Tests
         [TestCategory("MainViewModel_SaveCommand")]
         public void MainViewModel_SaveCommand_NotNull()
         {
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
             _shellViewModel.SubscriptionData.IsLicensed = true;
             //------------Execute Test---------------------------
             var authorizeCommand = _shellViewModel.SaveCommand;
@@ -855,7 +855,7 @@ namespace Dev2.Core.Tests
         [TestCategory("MainViewModel_SaveCommand")]
         public void MainViewModel_SaveCommand_UnRegistered()
         {
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(false);
             //------------Execute Test---------------------------
             var authorizeCommand = _shellViewModel.SaveCommand;
             Assert.IsNotNull(authorizeCommand);
@@ -867,7 +867,7 @@ namespace Dev2.Core.Tests
         [TestCategory("MainViewModel_SaveCommand")]
         public void MainViewModel_SaveCommandNoActiveItem_NotNull()
         {
-            CreateFullExportsAndVmWithEmptyRepo();
+            CreateFullExportsAndVmWithEmptyRepo(true);
             _shellViewModel.DeactivateItem(_shellViewModel.ActiveItem, true);
             //------------Execute Test---------------------------
             var authorizeCommand = _shellViewModel.SaveCommand;
@@ -880,7 +880,7 @@ namespace Dev2.Core.Tests
         [TestCategory("MainViewModel_QuickViewInBrowserCommand")]
         public void MainViewModel_QuickViewInBrowserCommand_NotNull()
         {
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
             //------------Execute Test---------------------------
             var authorizeCommand = _shellViewModel.QuickViewInBrowserCommand;
             Assert.IsNotNull(authorizeCommand);
@@ -892,7 +892,7 @@ namespace Dev2.Core.Tests
         [TestCategory("MainViewModel_QuickViewInBrowserCommand")]
         public void MainViewModel_QuickViewInBrowserCommandNoActiveItem_NotNull()
         {
-            CreateFullExportsAndVmWithEmptyRepo();
+            CreateFullExportsAndVmWithEmptyRepo(true);
             _shellViewModel.DeactivateItem(_shellViewModel.ActiveItem, true);
             //------------Execute Test---------------------------
             var authorizeCommand = _shellViewModel.QuickViewInBrowserCommand;
@@ -905,7 +905,7 @@ namespace Dev2.Core.Tests
         [TestCategory("MainViewModel_ViewInBrowserCommand")]
         public void MainViewModel_ViewInBrowserCommand_NotNull()
         {
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
             //------------Execute Test---------------------------
             var authorizeCommand = _shellViewModel.ViewInBrowserCommand;
             Assert.IsNotNull(authorizeCommand);
@@ -917,7 +917,7 @@ namespace Dev2.Core.Tests
         [TestCategory("MainViewModel_ViewInBrowserCommand")]
         public void MainViewModel_ViewInBrowserCommandNoActiveItem_NotNull()
         {
-            CreateFullExportsAndVmWithEmptyRepo();
+            CreateFullExportsAndVmWithEmptyRepo(true);
             _shellViewModel.DeactivateItem(_shellViewModel.ActiveItem, true);
             //------------Execute Test---------------------------
             var authorizeCommand = _shellViewModel.ViewInBrowserCommand;
@@ -930,7 +930,7 @@ namespace Dev2.Core.Tests
         [TestCategory("MainViewModel_ShowCommunityPageCommand")]
         public void MainViewModel_ShowCommunityPageCommand_ShowShowCommunityPagActive()
         {
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
             //------------Execute Test---------------------------
             _shellViewModel.ShowCommunityPageCommand.Execute(null);
             _browserPopupController.Verify(controller => controller.ShowPopup(It.IsAny<string>()));
@@ -943,7 +943,7 @@ namespace Dev2.Core.Tests
         {
             //Setup
             CustomContainer.Register(new Mock<Common.Interfaces.Studio.Controller.IPopupController>().Object);
-            CreateFullExportsAndVmWithEmptyRepo();
+            CreateFullExportsAndVmWithEmptyRepo(true);
 
             var environmentRepo = CreateMockEnvironment();
 
@@ -970,7 +970,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void DeleteResourceConfirmedExpectContextRemoved()
         {
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
             SetupForDelete();
             var msg = new DeleteResourcesMessage(new List<IContextualResourceModel> { _firstResource.Object }, "");
             _shellViewModel.Handle(msg);
@@ -980,7 +980,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void DeleteResourceConfirmedExpectContextRemoved2()
         {
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
             SetupForDelete();
             var msg = new DeleteResourcesMessage(new List<IContextualResourceModel> { _firstResource.Object, _firstResource.Object }, "somefolder");
             _shellViewModel.Handle(msg);
@@ -993,7 +993,7 @@ namespace Dev2.Core.Tests
         public void MainViewModel_HandleDeleteResourceMessage_WhenHasActionDeclined_PerformsAction()
         {
             //------------Setup for test--------------------------
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
             SetupForDelete();
             _popupController.Setup(s => s.Show()).Returns(MessageBoxResult.No);
             var _actionInvoked = false;
@@ -1010,7 +1010,7 @@ namespace Dev2.Core.Tests
         public void MainViewModel_HandleDeleteResourceMessage_WhenHasNullResource_PerformsAction()
         {
             //------------Setup for test--------------------------
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
             SetupForDelete();
             _popupController.Setup(s => s.Show()).Returns(MessageBoxResult.Yes);
             var _actionInvoked = false;
@@ -1024,7 +1024,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void DeleteResourceWithConfirmExpectsDependencyServiceCalled()
         {
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
             SetupForDelete();
             _popupController.Setup(s => s.Show()).Returns(MessageBoxResult.Yes);
             var msg = new DeleteResourcesMessage(new List<IContextualResourceModel> { _firstResource.Object }, "");
@@ -1035,7 +1035,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void DeleteResourceWithDeclineExpectsDependencyServiceCalled()
         {
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
             SetupForDelete();
             _popupController.Setup(s => s.Show()).Returns(MessageBoxResult.No);
             var msg = new DeleteResourcesMessage(new List<IContextualResourceModel> { _firstResource.Object }, "", false);
@@ -1046,7 +1046,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void DeleteResourceWithNullResourceExpectsNoPoupShown()
         {
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
             SetupForDelete();
             var msg = new DeleteResourcesMessage(null, "", false);
             _shellViewModel.Handle(msg);
@@ -1057,7 +1057,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void TestFromDebugExpectsNoPoupShown()
         {
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
             var msg = new NewTestFromDebugMessage();
             try
             {
@@ -1074,7 +1074,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void TestFromDebugAddAndActivateWorkSurface()
         {
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
             var msg = new NewTestFromDebugMessage
             {
                 ResourceModel = _firstResource.Object,
@@ -1096,7 +1096,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void TestFromDebugExistingWorkSurface()
         {
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
             var msg = new NewTestFromDebugMessage
             {
                 ResourceModel = _firstResource.Object,
@@ -1131,7 +1131,7 @@ namespace Dev2.Core.Tests
 
         {
             //Isolate delete unassigned resource as a functional unit
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
             SetupForDelete();
             var unassignedResource = new Mock<IContextualResourceModel>();
             var repo = new Mock<IResourceRepository>();
@@ -1165,7 +1165,7 @@ namespace Dev2.Core.Tests
         [TestCategory("ShowStartPage")]
         public void MainViewModelShowStartPageExpectedGetsLatestFirst()
         {
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
             var versionChecker = Mock.Get(_shellViewModel.Version);
             versionChecker.Setup(v => v.CommunityPageUri).Verifiable();
             _shellViewModel.ShowStartPageAsync();
@@ -1180,7 +1180,7 @@ namespace Dev2.Core.Tests
             var _applicationTrackerMock = new Mock<IApplicationTracker>();
             _applicationTrackerMock.Setup(controller => controller.TrackEvent(It.IsAny<string>(), It.IsAny<string>()));
             CustomContainer.Register(_applicationTrackerMock.Object);
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
             var versionChecker = Mock.Get(_shellViewModel.Version);
             versionChecker.Setup(v => v.CommunityPageUri).Verifiable();
 
@@ -1656,7 +1656,7 @@ namespace Dev2.Core.Tests
             //------------Setup for test--------------------------
 
             //------------Execute Test---------------------------
-            CreateFullExportsAndVmWithEmptyRepo();
+            CreateFullExportsAndVmWithEmptyRepo(true);
 
             //------------Assert Results-------------------------
             Assert.AreEqual(AuthorizationContext.Contribute, _shellViewModel.NewServiceCommand.AuthorizationContext);
@@ -1669,7 +1669,7 @@ namespace Dev2.Core.Tests
         public void MainViewModel_AuthorizeCommands_ActiveEnvironmentChanged_UpdateContextInvoked()
         {
             //------------Setup for test--------------------------
-            CreateFullExportsAndVmWithEmptyRepo();
+            CreateFullExportsAndVmWithEmptyRepo(true);
 
             Assert.IsNull(_shellViewModel.NewServiceCommand.AuthorizationService);
             Assert.IsNull(_shellViewModel.SettingsCommand.AuthorizationService);
@@ -1705,7 +1705,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void IsActiveEnvironmentConnectExpectFalseWithNullEnvironment()
         {
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
             _shellViewModel.ActiveItem = _shellViewModel.Items.FirstOrDefault(c => c.WorkSurfaceViewModel.GetType() == typeof(HelpViewModel));
             var actual = _shellViewModel.IsActiveServerConnected();
             Assert.IsFalse(actual);
@@ -1714,7 +1714,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void GetMenuPanelWidth()
         {
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
             Assert.IsFalse(_shellViewModel.MenuExpanded);
             Assert.AreEqual(60, _shellViewModel.MenuPanelWidth);
 
@@ -1729,7 +1729,7 @@ namespace Dev2.Core.Tests
         public void MainViewModel_SetActiveServer_Scenerio_Result()
         {
             //------------Setup for test--------------------------
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
 
             var newSelectedConnection = new Mock<IServer>();
             var newSelectedConnectionEnvironmentId = Guid.NewGuid();
@@ -1753,7 +1753,7 @@ namespace Dev2.Core.Tests
             //------------Setup for test--------------------------
             var toolboxViewModel = new Mock<IToolboxViewModel>().Object;
             CustomContainer.Register(toolboxViewModel);
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
 
             var resourceId = Guid.NewGuid();
             var mockResourceModel = new Mock<IContextualResourceModel>();
@@ -1786,7 +1786,7 @@ namespace Dev2.Core.Tests
         public void MainViewModel_ViewOpenAPI_Handle_Result()
         {
             //------------Setup for test--------------------------
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
 
             var env = SetupEnvironment();
 
@@ -1821,7 +1821,7 @@ namespace Dev2.Core.Tests
         public void MainViewModel_ViewViewApisJson_HandleFolder_Result()
         {
             //------------Setup for test--------------------------
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
 
             var env = SetupEnvironment();
 
@@ -1849,7 +1849,7 @@ namespace Dev2.Core.Tests
         public void MainViewModel_ViewViewApisJson_HandleServer_Result()
         {
             //------------Setup for test--------------------------
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
 
             var env = SetupEnvironment();
 
@@ -1875,7 +1875,7 @@ namespace Dev2.Core.Tests
         public void MainViewModel_OpenResource_HandleVersion_Result()
         {
             //------------Setup for test--------------------------
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
 
             var env = SetupEnvironment();
 
@@ -1907,7 +1907,7 @@ namespace Dev2.Core.Tests
         public void MainViewModel_OpenMergeConflictsView_HandleVersion_Result()
         {
             //------------Setup for test--------------------------
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
 
             var env = SetupEnvironment();
 
@@ -1951,7 +1951,7 @@ namespace Dev2.Core.Tests
         public void MainViewModel_OpenResource_Handle_Result()
         {
             //------------Setup for test--------------------------
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
 
             var env = SetupEnvironment();
 
@@ -1987,7 +1987,7 @@ namespace Dev2.Core.Tests
         public void MainViewModel_EditSqlServerSource_Handle_Result()
         {
             //------------Setup for test--------------------------
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
 
             var env = SetupEnvironment();
 
@@ -2018,7 +2018,7 @@ namespace Dev2.Core.Tests
         public void MainViewModel_EditMySqlSource_Handle_Result()
         {
             //------------Setup for test--------------------------
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
 
             var env = SetupEnvironment();
 
@@ -2048,7 +2048,7 @@ namespace Dev2.Core.Tests
         public void MainViewModel_EditPostgreSqlSource_Handle_Result()
         {
             //------------Setup for test--------------------------
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
 
             var env = SetupEnvironment();
 
@@ -2078,7 +2078,7 @@ namespace Dev2.Core.Tests
         public void MainViewModel_EditOracleSource_Handle_Result()
         {
             //------------Setup for test--------------------------
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
 
             var env = SetupEnvironment();
 
@@ -2108,7 +2108,7 @@ namespace Dev2.Core.Tests
         public void MainViewModel_EditOdbcSource_Handle_Result()
         {
             //------------Setup for test--------------------------
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
 
             var env = SetupEnvironment();
 
@@ -2136,7 +2136,7 @@ namespace Dev2.Core.Tests
         public void MainViewModel_EditDropboxSource_Handle_Result()
         {
             //------------Setup for test--------------------------
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
 
             var env = SetupEnvironment();
 
@@ -2163,7 +2163,7 @@ namespace Dev2.Core.Tests
         public void MainViewModel_EditEmailSource_Handle_Result()
         {
             //------------Setup for test--------------------------
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
 
             var env = SetupEnvironment();
 
@@ -2191,7 +2191,7 @@ namespace Dev2.Core.Tests
         public void MainViewModel_EditExchangeSource_Handle_Result()
         {
             //------------Setup for test--------------------------
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
 
             var env = SetupEnvironment();
 
@@ -2219,7 +2219,7 @@ namespace Dev2.Core.Tests
         public void MainViewModel_EditPluginSource_Handle_Result()
         {
             //------------Setup for test--------------------------
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
 
             var env = SetupEnvironment();
 
@@ -2252,7 +2252,7 @@ namespace Dev2.Core.Tests
         public void MainViewModel_EditComPluginSource_Handle_Result()
         {
             //------------Setup for test--------------------------
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
 
             var env = SetupEnvironment();
 
@@ -2285,7 +2285,7 @@ namespace Dev2.Core.Tests
         public void MainViewModel_EditRabbitMQSource_Handle_Result()
         {
             //------------Setup for test--------------------------
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
 
             var env = SetupEnvironment();
 
@@ -2313,7 +2313,7 @@ namespace Dev2.Core.Tests
         public void MainViewModel_EditServerSource_Handle_Result()
         {
             //------------Setup for test--------------------------
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
 
             var env = SetupEnvironment();
 
@@ -2341,7 +2341,7 @@ namespace Dev2.Core.Tests
         public void MainViewModel_EditSharepointSource_Handle_Result()
         {
             //------------Setup for test--------------------------
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
 
             var env = SetupEnvironment();
 
@@ -2368,7 +2368,7 @@ namespace Dev2.Core.Tests
         public void MainViewModel_EditWcfSource_Handle_Result()
         {
             //------------Setup for test--------------------------
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
 
             var env = SetupEnvironment();
 
@@ -2396,7 +2396,7 @@ namespace Dev2.Core.Tests
         public void MainViewModel_EditWebSource_Handle_Result()
         {
             //------------Setup for test--------------------------
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
 
             var env = SetupEnvironment();
 
@@ -2426,7 +2426,7 @@ namespace Dev2.Core.Tests
             //------------Setup for test--------------------------
             var toolboxViewModel = new Mock<IToolboxViewModel>().Object;
             CustomContainer.Register(toolboxViewModel);
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
 
             var env = SetupEnvironment();
 
@@ -2455,7 +2455,7 @@ namespace Dev2.Core.Tests
             //------------Setup for test--------------------------
             var toolboxViewModel = new Mock<IToolboxViewModel>().Object;
             CustomContainer.Register(toolboxViewModel);
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
 
             var env = SetupEnvironment();
 
@@ -2484,7 +2484,7 @@ namespace Dev2.Core.Tests
             //------------Setup for test--------------------------
             var toolboxViewModel = new Mock<IToolboxViewModel>().Object;
             CustomContainer.Register(toolboxViewModel);
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
 
             var env = SetupEnvironment();
 
@@ -2513,7 +2513,7 @@ namespace Dev2.Core.Tests
             //------------Setup for test--------------------------
             var toolboxViewModel = new Mock<IToolboxViewModel>().Object;
             CustomContainer.Register(toolboxViewModel);
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
 
             var env = SetupEnvironment();
 
@@ -2542,7 +2542,7 @@ namespace Dev2.Core.Tests
             //------------Setup for test--------------------------
             var toolboxViewModel = new Mock<IToolboxViewModel>().Object;
             CustomContainer.Register(toolboxViewModel);
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
 
             var env = SetupEnvironment();
 
@@ -2571,7 +2571,7 @@ namespace Dev2.Core.Tests
             //------------Setup for test--------------------------
             var toolboxViewModel = new Mock<IToolboxViewModel>().Object;
             CustomContainer.Register(toolboxViewModel);
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
 
             var env = SetupEnvironment();
 
@@ -2600,7 +2600,7 @@ namespace Dev2.Core.Tests
             //------------Setup for test--------------------------
             var toolboxViewModel = new Mock<IToolboxViewModel>().Object;
             CustomContainer.Register(toolboxViewModel);
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
 
             var env = SetupEnvironment();
 
@@ -2629,7 +2629,7 @@ namespace Dev2.Core.Tests
             //------------Setup for test--------------------------
             var toolboxViewModel = new Mock<IToolboxViewModel>().Object;
             CustomContainer.Register(toolboxViewModel);
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
 
             var env = SetupEnvironment();
 
@@ -2658,7 +2658,7 @@ namespace Dev2.Core.Tests
             //------------Setup for test--------------------------
             var toolboxViewModel = new Mock<IToolboxViewModel>().Object;
             CustomContainer.Register(toolboxViewModel);
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
 
             var env = SetupEnvironment();
 
@@ -2687,7 +2687,7 @@ namespace Dev2.Core.Tests
             //------------Setup for test--------------------------
             var toolboxViewModel = new Mock<IToolboxViewModel>().Object;
             CustomContainer.Register(toolboxViewModel);
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
 
             var env = SetupEnvironment();
 
@@ -2716,7 +2716,7 @@ namespace Dev2.Core.Tests
             //------------Setup for test--------------------------
             var toolboxViewModel = new Mock<IToolboxViewModel>().Object;
             CustomContainer.Register(toolboxViewModel);
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
 
             var env = SetupEnvironment();
 
@@ -2745,7 +2745,7 @@ namespace Dev2.Core.Tests
             //------------Setup for test--------------------------
             var toolboxViewModel = new Mock<IToolboxViewModel>().Object;
             CustomContainer.Register(toolboxViewModel);
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
 
             var env = SetupEnvironment();
 
@@ -2774,7 +2774,7 @@ namespace Dev2.Core.Tests
             //------------Setup for test--------------------------
             var toolboxViewModel = new Mock<IToolboxViewModel>().Object;
             CustomContainer.Register(toolboxViewModel);
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
 
             var env = SetupEnvironment();
 
@@ -2803,7 +2803,7 @@ namespace Dev2.Core.Tests
             //------------Setup for test--------------------------
             var toolboxViewModel = new Mock<IToolboxViewModel>().Object;
             CustomContainer.Register(toolboxViewModel);
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
 
             var env = SetupEnvironment();
 
@@ -2832,7 +2832,7 @@ namespace Dev2.Core.Tests
             //------------Setup for test--------------------------
             var toolboxViewModel = new Mock<IToolboxViewModel>().Object;
             CustomContainer.Register(toolboxViewModel);
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
 
             var env = SetupEnvironment();
 
@@ -2861,7 +2861,7 @@ namespace Dev2.Core.Tests
             //------------Setup for test--------------------------
             var toolboxViewModel = new Mock<IToolboxViewModel>().Object;
             CustomContainer.Register(toolboxViewModel);
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
 
             var env = SetupEnvironment();
 
@@ -2890,7 +2890,7 @@ namespace Dev2.Core.Tests
             //------------Setup for test--------------------------
             var toolboxViewModel = new Mock<IToolboxViewModel>().Object;
             CustomContainer.Register(toolboxViewModel);
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
 
             var env = SetupEnvironment();
 
@@ -2919,7 +2919,7 @@ namespace Dev2.Core.Tests
             //------------Setup for test--------------------------
             var toolboxViewModel = new Mock<IToolboxViewModel>().Object;
             CustomContainer.Register(toolboxViewModel);
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
 
             var env = SetupEnvironment();
 
@@ -3308,7 +3308,7 @@ namespace Dev2.Core.Tests
 
             var mvm = new ShellViewModel(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, vieFactory.Object, false, null, popup.Object);
 
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
             var surfaceViewModel = new Mock<IWorkSurfaceViewModel>();
             var workSurfaceKey = new WorkSurfaceKey()
             {
@@ -3389,7 +3389,7 @@ namespace Dev2.Core.Tests
                     false)).Returns(MessageBoxResult.Cancel).Verifiable();
             CustomContainer.Register(environmentRepository.Object);
             mvm = new ShellViewModel(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, vieFactory.Object, false, null, popup.Object);
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
         }
 
         [TestMethod]
@@ -3940,7 +3940,7 @@ namespace Dev2.Core.Tests
         {
             //---------------Set up test pack-------------------
 
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
             _environmentModel.Setup(model => model.ResourceRepository.LoadContextualResourceModel(It.IsAny<Guid>()));
             //---------------Assert Precondition----------------
             Assert.IsNotNull(_shellViewModel);
@@ -3956,7 +3956,7 @@ namespace Dev2.Core.Tests
         {
             //---------------Set up test pack-------------------
 
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
             _environmentModel.Setup(model => model.ResourceRepository.LoadContextualResourceModel(It.IsAny<Guid>()));
             //---------------Assert Precondition----------------
             Assert.IsNotNull(_shellViewModel);
@@ -3972,7 +3972,7 @@ namespace Dev2.Core.Tests
         {
             //---------------Set up test pack-------------------
 
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
             _environmentModel.Setup(model => model.ResourceRepository.LoadContextualResourceModel(It.IsAny<Guid>()));
             //---------------Assert Precondition----------------
             Assert.IsNotNull(_shellViewModel);
@@ -3989,7 +3989,7 @@ namespace Dev2.Core.Tests
             //---------------Set up test pack-------------------
             var explorer = new Mock<IExplorerViewModel>();
             explorer.SetupProperty(model => model.IsRefreshing);
-            CreateFullExportsAndVm(explorer.Object);
+            CreateFullExportsAndVm(explorer.Object,true);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(_shellViewModel);
             Assert.IsNotNull(_shellViewModel.ExplorerViewModel);
@@ -4005,7 +4005,7 @@ namespace Dev2.Core.Tests
         {
             //---------------Set up test pack-------------------
 
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
             var pv = new PrivateObject(_shellViewModel);
             var resourceModel = new Mock<IContextualResourceModel>();
 
@@ -4036,7 +4036,7 @@ namespace Dev2.Core.Tests
         {
             //---------------Set up test pack-------------------
 
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
             var pv = new PrivateObject(_shellViewModel);
             var resourceModel = new Mock<IContextualResourceModel>();
 
@@ -4058,7 +4058,7 @@ namespace Dev2.Core.Tests
         {
             //---------------Set up test pack-------------------
 
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
             var pv = new PrivateObject(_shellViewModel);
 
             var wcm = new Mock<IWorksurfaceContextManager>();
@@ -4079,7 +4079,7 @@ namespace Dev2.Core.Tests
         public void OpenVersion_GivenVersionInfo_ShouldOpenSurfaceWithCorrectVersion()
         {
             //---------------Set up test pack-------------------
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
             var pv = new PrivateObject(_shellViewModel);
 
             var wcm = new Mock<IWorksurfaceContextManager>();
@@ -4100,7 +4100,7 @@ namespace Dev2.Core.Tests
         public void StudioDebug_GivenId_ShouldLoadResourceModel()
         {
             //---------------Set up test pack-------------------
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
             var pv = new PrivateObject(_shellViewModel);
             var resourceModel = new Mock<IContextualResourceModel>();
 
@@ -4131,7 +4131,7 @@ namespace Dev2.Core.Tests
         {
             //---------------Set up test pack-------------------
 
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
             var pv = new PrivateObject(_shellViewModel);
             var resourceModel = new Mock<IContextualResourceModel>();
 
@@ -4156,7 +4156,7 @@ namespace Dev2.Core.Tests
         {
             //---------------Set up test pack-------------------
 
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
             var pv = new PrivateObject(_shellViewModel);
             var resourceModel = new Mock<IContextualResourceModel>();
 
@@ -4181,7 +4181,7 @@ namespace Dev2.Core.Tests
         {
             //---------------Set up test pack-------------------
 
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
             var resource = CreateResource(ResourceType.WorkflowService);
             _environmentModel
                 .Setup(server => server.ResourceRepository.LoadContextualResourceModelAsync(It.IsAny<Guid>()))
@@ -4206,7 +4206,7 @@ namespace Dev2.Core.Tests
         {
             //---------------Set up test pack-------------------
 
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
             var mock = new Mock<Common.Interfaces.Studio.Controller.IPopupController>();
             mock.Setup(controller => controller.Show(It.IsAny<string>(), Warewolf.Studio.Resources.Languages.Core.ServerDisconnectedHeader, MessageBoxButton.OK, MessageBoxImage.Error, "", false, true, false, false, false, false));
 
@@ -4230,7 +4230,7 @@ namespace Dev2.Core.Tests
         public void DuplicateResource_GivenNotConnected_ShouldPopup()
         {
             //---------------Set up test pack-------------------
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
             var mock = new Mock<Common.Interfaces.Studio.Controller.IPopupController>();
             mock.Setup(controller => controller.Show(It.IsAny<string>(), Warewolf.Studio.Resources.Languages.Core.ServerDisconnectedHeader, MessageBoxButton.OK, MessageBoxImage.Error, "", false, true, false, false, false, false));
             CustomContainer.Register(mock.Object);
@@ -4257,7 +4257,7 @@ namespace Dev2.Core.Tests
         {
             //---------------Set up test pack-------------------
 
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
             var surfaeViewModel = new Mock<IWorkSurfaceViewModel>();
             var workSurfaceKey = new WorkSurfaceKey()
             {
@@ -4756,7 +4756,7 @@ namespace Dev2.Core.Tests
         {
             //---------------Set up test pack-------------------
 
-            CreateFullExportsAndVm();
+            CreateFullExportsAndVm(true);
 
             //---------------Assert Precondition----------------
             Assert.IsNull(_shellViewModel.DeployResource);
