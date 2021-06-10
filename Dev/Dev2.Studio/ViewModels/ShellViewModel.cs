@@ -128,7 +128,6 @@ namespace Dev2.Studio.ViewModels
         IContextualResourceModel _contextualResourceModel;
         bool _canDebug = true;
         bool _menuExpanded;
-        readonly IApplicationTracker _applicationTracker;
         public IPopupController PopupProvider { get; set; }
         IServerRepository ServerRepository { get; }
         public bool CloseCurrent { get; private set; }
@@ -624,7 +623,6 @@ namespace Dev2.Studio.ViewModels
             AddWorkspaceItems(popupController);
             ShowStartPageAsync();
             DisplayName = @"Warewolf" + $" ({ClaimsPrincipal.Current.Identity.Name})".ToUpperInvariant();
-            _applicationTracker = CustomContainer.Get<IApplicationTracker>();
 
             _currentResourcePicker = currentResourcePicker;
             if (_currentResourcePicker == null)
@@ -1575,9 +1573,6 @@ namespace Dev2.Studio.ViewModels
         public void NewService(string resourcePath)
         {
             _worksurfaceContextManager.NewService(resourcePath);
-
-            _applicationTracker?.TrackEvent(Warewolf.Studio.Resources.Languages.TrackEventMenu.EventCategory,
-                Warewolf.Studio.Resources.Languages.TrackEventMenu.NewService);
         }
 
         public void NewServerSource(string resourcePath)
@@ -1642,9 +1637,6 @@ namespace Dev2.Studio.ViewModels
 
         public void AddDeploySurface(IEnumerable<IExplorerTreeItem> items)
         {
-            _applicationTracker?.TrackEvent(Warewolf.Studio.Resources.Languages.TrackEventMenu.EventCategory,
-                Warewolf.Studio.Resources.Languages.TrackEventMenu.Deploy);
-
             _worksurfaceContextManager.AddDeploySurface(items);
         }
 
@@ -1652,7 +1644,6 @@ namespace Dev2.Studio.ViewModels
 
         public async void ShowStartPageAsync()
         {
-            _applicationTracker?.TrackEvent(Warewolf.Studio.Resources.Languages.TrackEventMenu.EventCategory, Warewolf.Studio.Resources.Languages.TrackEventMenu.StartPage);
             var workSurfaceContextViewModel = Items.FirstOrDefault(c => c.WorkSurfaceViewModel.DisplayName == "Start Page" && c.WorkSurfaceViewModel.GetType() == typeof(HelpViewModel));
             if (workSurfaceContextViewModel == null)
             {

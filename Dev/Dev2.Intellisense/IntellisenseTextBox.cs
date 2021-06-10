@@ -35,11 +35,9 @@ namespace Dev2.UI
     public class IntellisenseTextBox : AutoCompleteBox, INotifyPropertyChanged
     {
         readonly List<Key> _wrapInBracketKey = new List<Key> { Key.F6, Key.F7 };
-        readonly IApplicationTracker _applicationTracker;
 
         public IntellisenseTextBox()
         {
-            _applicationTracker = CustomContainer.Get<IApplicationTracker>();
             FilterMode = AutoCompleteFilterMode.Custom;
             TextFilter = (search, item) => true;
             _toolTip = new ToolTip();
@@ -469,21 +467,7 @@ namespace Dev2.UI
         private void SetToolTip(Tuple<LanguageAST.LanguageExpression, string> error, string message) => ToolTip = error.Item2 != string.Empty ? error.Item2 : message;
         private void TrackIntellisenseEvent(string text)
         {
-            if (FilterType == enIntellisensePartType.JsonObject)
-            {
-                _applicationTracker?.TrackCustomEvent(Warewolf.Resource.Tracking.IntellisenseTrackerMenu.EventCategory,
-                    Warewolf.Resource.Tracking.IntellisenseTrackerMenu.IncorrectSyntax, "Incorrect JSON input: " + text);
-            }
-            if (!(text.Contains("(")) && FilterType != enIntellisensePartType.JsonObject)
-            {
-                _applicationTracker?.TrackCustomEvent(Warewolf.Resource.Tracking.IntellisenseTrackerMenu.EventCategory,
-                    Warewolf.Resource.Tracking.IntellisenseTrackerMenu.IncorrectSyntax, "Incorrect Scalar input: " + text);
-            }
-            if (text.Contains("(") || text.Contains(")"))
-            {
-                _applicationTracker?.TrackCustomEvent(Warewolf.Resource.Tracking.IntellisenseTrackerMenu.EventCategory,
-                    Warewolf.Resource.Tracking.IntellisenseTrackerMenu.IncorrectSyntax, "Incorrect Recordset input: " + text);
-            }
+           
         }
 
         public static readonly DependencyProperty SelectAllOnGotFocusProperty = DependencyProperty.Register("SelectAllOnGotFocus", typeof(bool), typeof(IntellisenseTextBox), new PropertyMetadata(false));

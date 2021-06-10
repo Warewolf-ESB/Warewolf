@@ -25,7 +25,6 @@ namespace Warewolf.Studio.ViewModels.ToolBox
         string _searchTerm;
         ObservableCollection<IToolDescriptorViewModel> _backedUpTools;
         bool _isVisible;
-        readonly IApplicationTracker _applicationTracker;
 
         public ToolboxViewModel(IToolboxModel localModel, IToolboxModel remoteModel)
         {
@@ -36,7 +35,6 @@ namespace Warewolf.Studio.ViewModels.ToolBox
             _remoteModel.OnserverDisconnected += _remoteModel_OnserverDisconnected;
             BuildToolsList();
             ClearFilterCommand = new DelegateCommand(() => SearchTerm = string.Empty);
-            _applicationTracker = CustomContainer.Get<IApplicationTracker>();
         }
 
         public void BuildToolsList()
@@ -147,13 +145,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox
         void FilterItems(string filterText)
         {
             var searchWords = filterText.ToLower().Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-
-
-            if (_applicationTracker != null)
-            {
-                _applicationTracker.TrackCustomEvent(Resources.Languages.TrackEventToolbox.EventCategory,
-                                                Resources.Languages.TrackEventToolbox.ToolBoxSearch, filterText);
-            }
+            
             var results = _backedUpTools.Where(i =>
                      searchWords.All(s => i.Tool.Name.ToLower().Contains(s))
                      || searchWords.All(s => i.Tool.Category.ToLower().Contains(s))
@@ -197,11 +189,6 @@ namespace Warewolf.Studio.ViewModels.ToolBox
         {
             var mainViewModel = CustomContainer.Get<IShellViewModel>();
             mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
-            if (_applicationTracker != null)
-            {
-                _applicationTracker.TrackCustomEvent(Resources.Languages.TrackEventHelp.EventCategory,
-                                                Resources.Languages.TrackEventHelp.Help, helpText);
-            }
         }
     }
 }

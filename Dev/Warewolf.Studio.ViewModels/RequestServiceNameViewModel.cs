@@ -265,9 +265,7 @@ namespace Warewolf.Studio.ViewModels
             }
             _resourceName = new ResourceName(path, Name);
             ViewResult = MessageBoxResult.OK;
-            var applicationTracker = CustomContainer.Get<IApplicationTracker>();
-            applicationTracker?.TrackCustomEvent(Resources.Languages.TrackEventWorkflowTabs.EventCategory, Resources.Languages.TrackEventWorkflowTabs.TabsOpened, "Path:" + path + " Name: " + Name);
-
+            
             _view.RequestClose();
         }
 
