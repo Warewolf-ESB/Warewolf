@@ -65,7 +65,6 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Factory\ApplicationTrackerFactoryTests.cs" />
-    <Compile Include="RevulyticsTrackerTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dev2.Instrumentation\Dev2.Instrumentation.csproj">

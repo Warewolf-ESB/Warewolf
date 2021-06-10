@@ -1,5 +1,5 @@
 #pragma warning disable
-﻿/*
+ /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
@@ -21,15 +21,12 @@ namespace Dev2.Instrumentation.Factory
         public static IApplicationTracker  GetApplicationTrackerProvider()
         {
             ApplicationTracker = null;
-#if DEBUG
+
             ApplicationTracker = new DummyApplicationTracker();
-#else
-            ApplicationTracker = RevulyticsTracker.GetTrackerInstance();
-#endif
+
             return ApplicationTracker;
         }
-
-#if DEBUG
+        
 	    class DummyApplicationTracker : IApplicationTracker
         {
             public RUIResult EnableApplicationResultStatus { get; set; }
@@ -50,6 +47,5 @@ namespace Dev2.Instrumentation.Factory
             {
             }
         }
-#endif
     }
 }
