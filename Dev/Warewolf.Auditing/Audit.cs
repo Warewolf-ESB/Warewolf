@@ -199,38 +199,42 @@ namespace Warewolf.Auditing
 
             var dsfDataObject = dataObject as IDSFDataObject;
             var dev2Serializer = new Dev2JsonSerializer();
-            WorkflowID = dsfDataObject.ResourceID.ToString();
-            ExecutionID = dsfDataObject.ExecutionID.ToString();
-            CustomTransactionID = dsfDataObject.CustomTransactionID;
-            ExecutionOrigin = Convert.ToInt64(dsfDataObject.ExecutionOrigin);
-            IsSubExecution = Convert.ToBoolean(dsfDataObject.IsSubExecution);
-            IsRemoteWorkflow = Convert.ToBoolean(dsfDataObject.IsRemoteWorkflow());
-            WorkflowName = dsfDataObject.ServiceName;
-            ServerID = dsfDataObject.ServerID.ToString();
-            ParentID = dsfDataObject.ParentID.ToString();
-            ExecutingUser = dsfDataObject.ExecutingUser?.Identity?.Name;
-            User = dsfDataObject.ExecutingUser?.Identity?.Name;
-            ExecutionOriginDescription = dsfDataObject.ExecutionOriginDescription;
-            ExecutionToken = dev2Serializer.Serialize(ExecutionToken);
+            if(dsfDataObject != null)
+            {
+                WorkflowID = dsfDataObject.ResourceID.ToString();
+                ExecutionID = dsfDataObject.ExecutionID.ToString();
+                CustomTransactionID = dsfDataObject.CustomTransactionID;
+                ExecutionOrigin = Convert.ToInt64(dsfDataObject.ExecutionOrigin);
+                IsSubExecution = Convert.ToBoolean(dsfDataObject.IsSubExecution);
+                IsRemoteWorkflow = Convert.ToBoolean(dsfDataObject.IsRemoteWorkflow());
+                WorkflowName = dsfDataObject.ServiceName;
+                ServerID = dsfDataObject.ServerID.ToString();
+                ParentID = dsfDataObject.ParentID.ToString();
+                ExecutingUser = dsfDataObject.ExecutingUser?.Identity?.Name;
+                User = dsfDataObject.ExecutingUser?.Identity?.Name;
+                ExecutionOriginDescription = dsfDataObject.ExecutionOriginDescription;
+                ExecutionToken = dev2Serializer.Serialize(ExecutionToken);
+                VersionNumber = dsfDataObject.VersionNumber.ToString();
+                Url = dsfDataObject.WebUrl;
+                if(dsfDataObject.IsDebug)
+                {
+                    LogLevel = LogLevel.Debug;
+                }
+
+                if(dsfDataObject.Environment.HasErrors() || exception != null)
+                {
+                    LogLevel = LogLevel.Error;
+                }
+            }
             Environment = string.Empty;
-            VersionNumber = dsfDataObject.VersionNumber.ToString();
             AuditDate = DateTime.Now;
             StartDateTime = DateTime.Now;
             CompletedDateTime = DateTime.Now;
-            Url = dsfDataObject.WebUrl;
             AuditType = auditType;
             AdditionalDetail = detail;
             Exception = exception;
 
             LogLevel = LogLevel.Info;
-            if (dsfDataObject.IsDebug)
-            {
-                LogLevel = LogLevel.Debug;
-            }
-            if (dsfDataObject.Environment.HasErrors() || exception != null)
-            {
-                LogLevel = LogLevel.Error;
-            }
 
             if (previousActivity is IDev2Activity act1)
             {

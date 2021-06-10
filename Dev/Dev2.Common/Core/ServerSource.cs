@@ -1,5 +1,5 @@
 #pragma warning disable
-﻿using Dev2.Common.Interfaces;
+ using Dev2.Common.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using System;
 using System.Windows.Input;
@@ -8,10 +8,6 @@ namespace Dev2.Common
 {
     public class ServerSource : IServerSource, IEquatable<ServerSource>
     {
-        public ServerSource()
-        {
-        }
-
         public string ServerName { get; set; }
         public string Address { get; set; }
         public AuthenticationType AuthenticationType { get; set; }

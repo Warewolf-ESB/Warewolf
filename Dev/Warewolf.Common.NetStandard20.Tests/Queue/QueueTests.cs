@@ -78,10 +78,6 @@ namespace Warewolf.Trigger.Queue.Tests
 
         public class TestConsumer : IConsumer
         {
-            public TestConsumer()
-            {
-            }
-
             public bool IsDataReceived { get; internal set; }
 
             public Task<ConsumerResult> Consume(byte[] body, object parameters)

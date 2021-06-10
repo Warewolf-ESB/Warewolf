@@ -17,6 +17,7 @@ using System.Net.Http;
 using System.Reflection;
 using System.Security.Principal;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Web;
 using System.Xml.Linq;
@@ -47,6 +48,7 @@ using Dev2.Web;
 using Dev2.Workspaces;
 using Warewolf.Auditing;
 using Warewolf.Data;
+using Warewolf.Execution;
 using Warewolf.Security;
 
 namespace Dev2.Runtime.WebServer.Handlers
@@ -57,10 +59,11 @@ namespace Dev2.Runtime.WebServer.Handlers
         string _location;
         protected readonly IResourceCatalog _resourceCatalog;
         protected readonly ITestCatalog _testCatalog;
+        protected readonly ITestCoverageCatalog _testCoverageCatalog;
+        protected readonly IServiceTestExecutor _serviceTestExecutor;
         protected readonly ISecuritySettings _securitySettings;
         protected readonly IAuthorizationService _authorizationService;
         protected readonly IWorkspaceRepository _workspaceRepository;
-        protected readonly ITestCoverageCatalog _testCoverageCatalog;
         protected readonly IDataObjectFactory _dataObjectFactory;
         protected readonly IEsbChannelFactory _esbChannelFactory;
         protected readonly IJwtManager _jwtManager;
@@ -69,19 +72,20 @@ namespace Dev2.Runtime.WebServer.Handlers
         public abstract void ProcessRequest(ICommunicationContext ctx);
 
         protected AbstractWebRequestHandler(IResourceCatalog resourceCatalog, ITestCatalog testCatalog, ITestCoverageCatalog testCoverageCatalog, IEsbChannelFactory esbChannelFactory, ISecuritySettings securitySettings)
-            : this(resourceCatalog, testCatalog, testCoverageCatalog, WorkspaceRepository.Instance, ServerAuthorizationService.Instance, new DataObjectFactory(), esbChannelFactory, securitySettings, new JwtManager(securitySettings))
+            : this(resourceCatalog, testCatalog, testCoverageCatalog, null, WorkspaceRepository.Instance, ServerAuthorizationService.Instance, new DataObjectFactory(), esbChannelFactory, securitySettings, new JwtManager(securitySettings))
         {
         }
-        protected AbstractWebRequestHandler(IResourceCatalog resourceCatalog, ITestCatalog testCatalog, ITestCoverageCatalog testCoverageCatalog, IWorkspaceRepository workspaceRepository, IAuthorizationService authorizationService, IDataObjectFactory dataObjectFactory, IEsbChannelFactory esbChannelFactory, ISecuritySettings securitySettings)
-            : this(resourceCatalog, testCatalog, testCoverageCatalog, workspaceRepository, authorizationService, dataObjectFactory, esbChannelFactory, securitySettings, new JwtManager(securitySettings))
+        protected AbstractWebRequestHandler(IResourceCatalog resourceCatalog, ITestCatalog testCatalog, ITestCoverageCatalog testCoverageCatalog, IServiceTestExecutor serviceTestExecutor, IWorkspaceRepository workspaceRepository, IAuthorizationService authorizationService, IDataObjectFactory dataObjectFactory, IEsbChannelFactory esbChannelFactory, ISecuritySettings securitySettings)
+            : this(resourceCatalog, testCatalog, testCoverageCatalog, serviceTestExecutor, workspaceRepository, authorizationService, dataObjectFactory, esbChannelFactory, securitySettings, new JwtManager(securitySettings))
         {
         }
 
-        protected AbstractWebRequestHandler(IResourceCatalog resourceCatalog, ITestCatalog testCatalog, ITestCoverageCatalog testCoverageCatalog, IWorkspaceRepository workspaceRepository, IAuthorizationService authorizationService, IDataObjectFactory dataObjectFactory, IEsbChannelFactory esbChannelFactory, ISecuritySettings securitySettings, IJwtManager jwtManager)
+        protected AbstractWebRequestHandler(IResourceCatalog resourceCatalog, ITestCatalog testCatalog, ITestCoverageCatalog testCoverageCatalog, IServiceTestExecutor serviceTestExecutor, IWorkspaceRepository workspaceRepository, IAuthorizationService authorizationService, IDataObjectFactory dataObjectFactory, IEsbChannelFactory esbChannelFactory, ISecuritySettings securitySettings, IJwtManager jwtManager)
         {
             _resourceCatalog = resourceCatalog;
             _testCatalog = testCatalog;
             _testCoverageCatalog = testCoverageCatalog;
+            _serviceTestExecutor = serviceTestExecutor;
             _workspaceRepository = workspaceRepository;
             _authorizationService = authorizationService;
             _dataObjectFactory = dataObjectFactory;
@@ -97,15 +101,15 @@ namespace Dev2.Runtime.WebServer.Handlers
 
         protected IResponseWriter CreateForm(WebRequestTO webRequest, string serviceName, string workspaceId, NameValueCollection headers, IPrincipal user)
         {
-            var a = new Executor(_workspaceRepository, _resourceCatalog, _testCatalog, _testCoverageCatalog, _authorizationService, _dataObjectFactory, _esbChannelFactory, _jwtManager);
+            var a = new Executor(_workspaceRepository, _resourceCatalog, _testCatalog, _testCoverageCatalog, _serviceTestExecutor, _authorizationService, _dataObjectFactory, _esbChannelFactory, _jwtManager);
             var response = a.TryExecute(webRequest, serviceName, workspaceId, headers, user);
             return response ?? a.BuildResponse(webRequest, serviceName);
         }
 
         class Executor : ExecutorBase
         {
-            public Executor(IWorkspaceRepository workspaceRepository, IResourceCatalog resourceCatalog, ITestCatalog testCatalog, ITestCoverageCatalog testCoverageCatalog, IAuthorizationService authorizationService, IDataObjectFactory dataObjectFactory, IEsbChannelFactory esbChannelFactory, IJwtManager jwtManager)
-                : base(workspaceRepository, resourceCatalog, testCatalog, testCoverageCatalog, authorizationService, dataObjectFactory, esbChannelFactory, jwtManager)
+            public Executor(IWorkspaceRepository workspaceRepository, IResourceCatalog resourceCatalog, ITestCatalog testCatalog, ITestCoverageCatalog testCoverageCatalog, IServiceTestExecutor serviceTestExecutor, IAuthorizationService authorizationService, IDataObjectFactory dataObjectFactory, IEsbChannelFactory esbChannelFactory, IJwtManager jwtManager)
+                : base(workspaceRepository, resourceCatalog, testCatalog, testCoverageCatalog, serviceTestExecutor, authorizationService, dataObjectFactory, esbChannelFactory, jwtManager)
             {
             }
 
@@ -230,15 +234,16 @@ namespace Dev2.Runtime.WebServer.Handlers
             readonly IWorkspaceRepository _repository;
             readonly ITestCatalog _testCatalog;
             readonly ITestCoverageCatalog _testCoverageCatalog;
+            IServiceTestExecutor _serviceTestExecutor;
             readonly IEsbChannelFactory _esbChannelFactory;
             protected readonly IJwtManager _jwtManager;
 
             protected ExecutorBase(IWorkspaceRepository workspaceRepository, IResourceCatalog resourceCatalog, IAuthorizationService authorizationService, IDataObjectFactory dataObjectFactory, IEsbChannelFactory esbChannelFactory, IJwtManager jwtManager)
-                : this(workspaceRepository, resourceCatalog, TestCatalog.Instance, TestCoverageCatalog.Instance, authorizationService, dataObjectFactory, esbChannelFactory, jwtManager)
+                : this(workspaceRepository, resourceCatalog, TestCatalog.Instance, TestCoverageCatalog.Instance, null, authorizationService, dataObjectFactory, esbChannelFactory, jwtManager)
             {
             }
 
-            protected ExecutorBase(IWorkspaceRepository workspaceRepository, IResourceCatalog resourceCatalog, ITestCatalog testCatalog, ITestCoverageCatalog testCoverageCatalog, IAuthorizationService authorizationService, IDataObjectFactory dataObjectFactory, IEsbChannelFactory esbChannelFactory, IJwtManager jwtManager)
+            protected ExecutorBase(IWorkspaceRepository workspaceRepository, IResourceCatalog resourceCatalog, ITestCatalog testCatalog, ITestCoverageCatalog testCoverageCatalog, IServiceTestExecutor serviceTestExecutor, IAuthorizationService authorizationService, IDataObjectFactory dataObjectFactory, IEsbChannelFactory esbChannelFactory, IJwtManager jwtManager)
             {
                 _repository = workspaceRepository;
                 _resourceCatalog = resourceCatalog;
@@ -248,6 +253,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                 _dataObjectFactory = dataObjectFactory;
                 _esbChannelFactory = esbChannelFactory;
                 _jwtManager = jwtManager;
+                _serviceTestExecutor = serviceTestExecutor;
             }
 
             Guid EnsureWorkspaceIdValid(string workspaceId)
@@ -311,6 +317,10 @@ namespace Dev2.Runtime.WebServer.Handlers
 
                 if (isTestRun)
                 {
+                    if (_serviceTestExecutor == null)
+                    {
+                        _serviceTestExecutor = new ServiceTestExecutor(serviceName, user, _workspaceGuid, _serializer, _dataObject);
+                    }
                     return ExecuteAsTest(user);
                 }
 
@@ -368,9 +378,9 @@ namespace Dev2.Runtime.WebServer.Handlers
                 return executionDataListId;
             }
 
-            private IResponseWriter ExecuteAsTest(IPrincipal userPrinciple)
+            IResponseWriter ExecuteAsTest(IPrincipal userPrinciple)
             {
-                var formatter = ServiceTestExecutor.ExecuteTests(_dataObject, userPrinciple, _workspaceGuid, _serializer, _testCatalog, _resourceCatalog, out _executePayload, _testCoverageCatalog);
+                var formatter = _serviceTestExecutor.ExecuteTests(_dataObject, userPrinciple, _workspaceGuid, _serializer, _testCatalog, _resourceCatalog, out _executePayload, _testCoverageCatalog);
                 return new StringResponseWriter(_executePayload ?? string.Empty, formatter.ContentType);
             }
 
@@ -488,6 +498,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                     foreach (var arg in args.AllKeys)
                     {
                         var txt = args[arg];
+                        txt = CheckForEscapeCharacters(txt);
                         results.Add(txt.IsXml() ? arg + "=" + string.Format(GlobalConstants.XMLPrefix + "{0}", Convert.ToBase64String(Encoding.UTF8.GetBytes(txt))) : $"{arg}={txt}");
                     }
 
@@ -495,6 +506,16 @@ namespace Dev2.Runtime.WebServer.Handlers
                 }
 
                 return baseStr;
+            }
+            
+            private static string CheckForEscapeCharacters(string text)
+            {
+                var escapeCharacters = new[] { "\\\"" };
+                if(escapeCharacters.Any(text.Contains))
+                {
+                    text = Regex.Unescape(text);
+                }
+                return text;
             }
 
             internal static string ExtractKeyValuePairForGetMethod(ICommunicationContext ctx, string payload)

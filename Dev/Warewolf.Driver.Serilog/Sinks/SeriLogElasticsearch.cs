@@ -94,11 +94,6 @@ namespace Warewolf.Driver.Serilog
         private AuthenticationType _authenticationType;
         private string _searchIndex { get; set; }
 
-        public SerilogElasticsearchSource()
-        {
-
-        }
-
         public Guid ResourceID
         {
             get => _resourceId;

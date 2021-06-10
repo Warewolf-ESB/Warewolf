@@ -86,7 +86,7 @@ namespace Dev2.Server.Tests
             mockWebServerConfiguration.Setup(o => o.IsWebServerEnabled).Returns(true);
             mockWebServerConfiguration.Setup(o => o.IsWebServerSslEnabled).Returns(true);
 
-            mockWebServerConfiguration.Setup(o => o.EndPoints).Returns(new Dev2Endpoint[] { new Dev2Endpoint(new IPEndPoint(0x40E9BB63, 8080), "Url", "path") });
+            mockWebServerConfiguration.Setup(o => o.EndPoints).Returns(new[] { new Dev2Endpoint(new IPEndPoint(0x40E9BB63, 8080), "Url", "path") });
 
             mockWriter.Setup(o => o.Fail(It.IsAny<string>(), It.IsAny<Exception>()));
             //-------------------Act-------------------------
@@ -121,7 +121,7 @@ namespace Dev2.Server.Tests
             mockWebServerConfiguration.Setup(o => o.IsWebServerEnabled).Returns(true);
             mockWebServerConfiguration.Setup(o => o.IsWebServerSslEnabled).Returns(true);
             
-            mockWebServerConfiguration.Setup(o => o.EndPoints).Returns(new Dev2Endpoint[] { new Dev2Endpoint(new IPEndPoint(0x40E9BB63, 8080),"Url", "path") });
+            mockWebServerConfiguration.Setup(o => o.EndPoints).Returns(new[] { new Dev2Endpoint(new IPEndPoint(0x40E9BB63, 8080),"Url", "path") });
 
             mockWriter.Setup(o => o.Fail(It.IsAny<string>(), It.IsAny<Exception>()));
             //-------------------Act-------------------------
