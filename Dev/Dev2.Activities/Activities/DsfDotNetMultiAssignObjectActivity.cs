@@ -37,7 +37,10 @@ using Dev2.Utilities;
 using Warewolf.Data;
 using Warewolf.Exceptions;
 
+// ReSharper disable CheckNamespace
+// Disabled to maintain compatibility with resources already serialized with this namespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
+// ReSharper restore CheckNamespace
 {
     [ToolDescriptorInfo("AssignObject", "Assign Object", ToolType.Native, "1CBF58F0-199D-4439-B904-20259B7A87EE", "Dev2.Activities", "1.0.0.0", "Legacy", "Data", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Data_Assign_Object")]
     public class DsfDotNetMultiAssignObjectActivity : DsfActivityAbstract<string>
@@ -46,21 +49,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public static readonly string CalculateTextConvertSuffix = GlobalConstants.CalculateTextConvertSuffix;
         public static readonly string CalculateTextConvertFormat = GlobalConstants.CalculateTextConvertFormat;
 
-        IList<AssignObjectDTO> _fieldsCollection;
-
-        public IList<AssignObjectDTO> FieldsCollection
-        
-        {
-            get
-            {
-                return _fieldsCollection;
-            }
-            set
-            {
-                _fieldsCollection = value;
-            }
-        }
-
+        public IList<AssignObjectDTO> FieldsCollection { get; set; }
         public bool UpdateAllOccurrences { get; set; }
         public bool CreateBookmark { get; set; }
         public string ServiceHost { get; set; }
@@ -72,7 +61,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public DsfDotNetMultiAssignObjectActivity()
             : base("Assign Object")
         {
-            _fieldsCollection = new List<AssignObjectDTO>();
+            FieldsCollection = new List<AssignObjectDTO>();
         }
 
         protected override void OnExecute(NativeActivityContext context)
