@@ -32,7 +32,7 @@ namespace Dev2.Studio.Core
         /// if the server is older than that version.</returns>
         public string GetServerVersion()
         {
-            var controller = CommunicationControllerFactory.CreateController("GetServerVersion");
+            var controller = CommunicationControllerFactory.CreateController(nameof(GetServerVersion));
             var version = controller.ExecuteCommand<string>(Connection, Guid.Empty);
             return string.IsNullOrEmpty(version) ? Warewolf.Studio.Resources.Languages.Core.ServerVersionUnavailable : version;
         }
@@ -46,7 +46,7 @@ namespace Dev2.Studio.Core
 
         public Dictionary<string, string> GetServerInformation()
         {
-            var controller = CommunicationControllerFactory.CreateController("GetServerInformation");
+            var controller = CommunicationControllerFactory.CreateController(nameof(GetServerInformation));
             var information = controller.ExecuteCommand<Dictionary<string, string>>(Connection, Guid.Empty);
             return information;
         }
@@ -54,7 +54,7 @@ namespace Dev2.Studio.Core
         public ISubscriptionData GetSubscriptionData()
         {
             var serializer = new Dev2JsonSerializer();
-            var controller = CommunicationControllerFactory.CreateController("GetSubscriptionData");
+            var controller = CommunicationControllerFactory.CreateController(nameof(GetSubscriptionData));
             var resultData = controller.ExecuteCommand<ExecuteMessage>(Connection, Guid.Empty);
             return serializer.Deserialize<ISubscriptionData>(resultData.Message);
         }
