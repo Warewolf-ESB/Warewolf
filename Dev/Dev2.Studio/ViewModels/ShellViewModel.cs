@@ -76,6 +76,7 @@ using Dev2.Data;
 using Dev2.Data.Interfaces;
 using Warewolf.Core;
 using Warewolf.Enums;
+using Warewolf.Licensing;
 using Warewolf.Studio.CustomControls;
 
 namespace Dev2.Studio.ViewModels
@@ -258,7 +259,7 @@ namespace Dev2.Studio.ViewModels
         {
             get
             {
-                if (!WarewolfStatus || ActiveItem is null)
+                if (!SubscriptionData.IsLicensed || ActiveItem is null)
                 {
                     return new AuthorizeCommand(AuthorizationContext.None, p => { }, param => false);
                 }
@@ -598,8 +599,6 @@ namespace Dev2.Studio.ViewModels
             IPopupController popupController, IExplorerViewModel explorer, IResourcePickerDialog currentResourcePicker)
             : base(eventPublisher)
         {
-            WarewolfStatus = false;
-
             _file = new FileWrapper();
             _filePath = new FilePathWrapper();
             Version = versionChecker ?? throw new ArgumentNullException(nameof(versionChecker));
@@ -1823,7 +1822,7 @@ namespace Dev2.Studio.ViewModels
 
         void SaveAll(object obj)
         {
-            if (!WarewolfStatus)
+            if (!SubscriptionData.IsLicensed)
             {
                 var result = PopupProvider.UnRegisteredDialog();
                 if (result == MessageBoxResult.Yes)
@@ -2265,12 +2264,12 @@ namespace Dev2.Studio.ViewModels
         IServer _activeServer;
         IExplorerViewModel _explorerViewModel;
         IWorksurfaceContextManager _worksurfaceContextManager;
-        public bool WarewolfStatus { get; set; }
+        public  ISubscriptionData SubscriptionData => ActiveServer.GetSubscriptionData();
 
         public IWorksurfaceContextManager WorksurfaceContextManager
         {
             get => _worksurfaceContextManager;
-            set { _worksurfaceContextManager = value; }
+            set => _worksurfaceContextManager = value;
         }
 
         public IWorkflowDesignerViewModel GetWorkflowDesigner()
@@ -2325,16 +2324,14 @@ namespace Dev2.Studio.ViewModels
         {
             get
             {
-                var subscriptionData = ActiveServer.GetSubscriptionData();
-
-                switch(subscriptionData.Status)
+                switch(SubscriptionData.Status)
                 {
                     case SubscriptionStatus.NotActive:
                         return "[ Not registered ]";
 
                     case SubscriptionStatus.InTrial:
                     case SubscriptionStatus.Active:
-                        return "[" + subscriptionData.PlanId + " - " + subscriptionData.Status + "]";
+                        return "[" + SubscriptionData.PlanId + " - " + SubscriptionData.Status + "]";
 
                     case SubscriptionStatus.Cancelled:
                     case SubscriptionStatus.Future:
@@ -2348,6 +2345,11 @@ namespace Dev2.Studio.ViewModels
 
                 return string.Empty;
             }
+        }
+
+        public void UpdateStudioLicense()
+        {
+            SaveCommand.UpdateContext(ActiveServer);
         }
 
         public void Handle(FileChooserMessage message)

@@ -835,7 +835,7 @@ namespace Dev2.Studio.ViewModels
 
         private bool ShowRemovePopup(IWorkflowDesignerViewModel workflowVm)
         {
-            if (!_shellViewModel.WarewolfStatus)
+            if (!_shellViewModel.SubscriptionData.IsLicensed)
             {
                 var unRegisteredDialog = _shellViewModel.PopupProvider.UnRegisteredDialog();
                 if (unRegisteredDialog == MessageBoxResult.Yes)

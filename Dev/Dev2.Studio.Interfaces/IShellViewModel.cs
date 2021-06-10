@@ -25,6 +25,7 @@ using Warewolf.Data;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Data;
 using Dev2.Data.Interfaces;
+using Warewolf.Licensing;
 
 namespace Dev2.Studio.Interfaces
 {
@@ -173,6 +174,8 @@ namespace Dev2.Studio.Interfaces
         IResource GetResource(string resourceId);
         List<IServiceInputBase> GetInputsFromWorkflow(Guid resourceId);
         OptomizedObservableCollection<IDataListItem> GetOutputsFromWorkflow(Guid resourceId);
-        bool WarewolfStatus { get; set; }
+
+        ISubscriptionData SubscriptionData { get; }
+        void UpdateStudioLicense();
     }
 }

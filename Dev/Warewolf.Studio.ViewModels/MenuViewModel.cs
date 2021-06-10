@@ -409,7 +409,7 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                if (!_viewModel.WarewolfStatus)
+                if (!_viewModel.SubscriptionData.IsLicensed)
                 {
                     return Resources.Languages.Tooltips.UnregisteredWarewolfToolTip;
                 }

@@ -34,6 +34,7 @@ using Moq;
 using Newtonsoft.Json;
 using Dev2.Studio.Interfaces.Enums;
 using Microsoft.Practices.Prism.Mvvm;
+using Warewolf.Licensing;
 
 namespace Dev2.Core.Tests
 {
@@ -78,6 +79,7 @@ namespace Dev2.Core.Tests
             var mockEnvironmentConnection = SetupMockConnection();
             mockEnvironmentModel.SetupGet(it => it.Connection).Returns(mockEnvironmentConnection.Object);
             mockEnvironmentModel.Setup(model => model.AuthorizationService).Returns(new Mock<IAuthorizationService>().Object);
+            mockEnvironmentModel.Setup(model => model.GetSubscriptionData()).Returns(new Mock<ISubscriptionData>().Object);
             mockEnv.Setup(repository => repository.Source).Returns(mockEnvironmentModel.Object);
 
             var environmentRepo = mockEnv.Object;
@@ -140,6 +142,7 @@ namespace Dev2.Core.Tests
             _shellViewModel = new ShellViewModel(_eventAggregator.Object, asyncWorker.Object, environmentRepo, new Mock<IVersionChecker>().Object, vieFactory.Object, false, _browserPopupController.Object, _popupController.Object, explorerViewModel.Object, null);
             var activeEnvironment = new Mock<IServer>();
             activeEnvironment.Setup(server => server.DisplayName).Returns("localhost");
+            activeEnvironment.Setup(server => server.GetSubscriptionData()).Returns(new Mock<ISubscriptionData>().Object);
             _activeEnvironment = activeEnvironment;
             _authorizationService = new Mock<IAuthorizationService>();
             _activeEnvironment.Setup(e => e.AuthorizationService).Returns(_authorizationService.Object);
@@ -193,6 +196,7 @@ namespace Dev2.Core.Tests
             _resourceRepo.Setup(c => c.All()).Returns(coll);
 
             _environmentModel.Setup(m => m.ResourceRepository).Returns(_resourceRepo.Object);
+            _environmentModel.Setup(m => m.GetSubscriptionData()).Returns(new Mock<ISubscriptionData>().Object);
 
         }
 
@@ -234,6 +238,7 @@ namespace Dev2.Core.Tests
             env.Setup(e => e.IsConnected).Returns(true);
             env.Setup(e => e.EnvironmentID).Returns(_serverId);
             env.Setup(e => e.Name).Returns($"Server_{rand.Next(1, 100)}");
+            env.Setup(e => e.GetSubscriptionData()).Returns(new Mock<ISubscriptionData>().Object);
 
             return env;
         }

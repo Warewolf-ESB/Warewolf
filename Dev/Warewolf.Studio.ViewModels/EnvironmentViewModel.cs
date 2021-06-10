@@ -98,8 +98,7 @@ namespace Warewolf.Studio.ViewModels
             _children = new ObservableCollection<IExplorerItemViewModel>();
             ExplorerTooltips = CustomContainer.Get<IExplorerTooltips>();
 
-            var subscriptionData = Server.GetSubscriptionData();
-            IsLicensed = subscriptionData.IsLicensed;
+            IsLicensed = _shellViewModel.SubscriptionData.IsLicensed;
 
             RegisterCommand = new DelegateCommand(shellViewModel.Register);
 

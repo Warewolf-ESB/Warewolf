@@ -19,6 +19,7 @@ using Dev2.Studio.Interfaces;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Warewolf.Licensing;
 
 namespace Warewolf.Studio.ViewModels.Tests
 {
@@ -69,7 +70,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _mainViewModelMock.SetupGet(it => it.SettingsCommand).Returns(_openSettingsCommand);
             _mainViewModelMock.SetupGet(it => it.DebugCommand).Returns(_executeServiceCommand);
             _mainViewModelMock.SetupGet(it => it.ShowStartPageCommand).Returns(_startPageCommandMock.Object);
-            _mainViewModelMock.Setup(o => o.WarewolfStatus).Returns(true);
+            _mainViewModelMock.Setup(o => o.SubscriptionData).Returns(new SubscriptionData{ IsLicensed = true });
 
             _target = new MenuViewModel(_mainViewModelMock.Object);
 
@@ -871,7 +872,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void MenuSaveToolTipUnRegistered()
         {
             var mainViewModelMock = new Mock<IShellViewModel>();
-            mainViewModelMock.Setup(o => o.WarewolfStatus).Returns(false);
+            _mainViewModelMock.Setup(o => o.SubscriptionData).Returns(new SubscriptionData{ IsLicensed = false });
 
             var menuViewModel = new MenuViewModel(mainViewModelMock.Object)
             {
