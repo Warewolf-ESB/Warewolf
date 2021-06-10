@@ -27,7 +27,7 @@ namespace Dev2.Utils.Tests
             //--------------------------Arrange---------------------------
             var mockJsonPathValueSystem = new Mock<IJsonPathValueSystem>();
 
-            var output = new JsonPathResultAccumulator((o,sa) => sa = new string[] { "string_Test" });
+            var output = new JsonPathResultAccumulator((o,sa) => sa = new[] { "string_Test" });
             var eval = new JsonPathScriptEvaluator((s, o, ss) => ss = "test_test");
 
             var interpreter = new Interpreter(output, mockJsonPathValueSystem.Object,  eval);
@@ -46,7 +46,7 @@ namespace Dev2.Utils.Tests
             //--------------------------Arrange---------------------------
             var mockJsonPathValueSystem = new Mock<IJsonPathValueSystem>();
 
-            var output = new JsonPathResultAccumulator((o, sa) => sa = new string[] { "string_Test" });
+            var output = new JsonPathResultAccumulator((o, sa) => sa = new[] { "string_Test" });
             var eval = new JsonPathScriptEvaluator((s, o, ss) => ss = "test_test");
             var obj = new object();
             
@@ -68,7 +68,7 @@ namespace Dev2.Utils.Tests
             //--------------------------Arrange---------------------------
             var mockJsonPathValueSystem = new Mock<IJsonPathValueSystem>();
 
-            var output = new JsonPathResultAccumulator((o, sa) => sa = new string[] { "string_Test" });
+            var output = new JsonPathResultAccumulator((o, sa) => sa = new[] { "string_Test" });
             var eval = new JsonPathScriptEvaluator((s, o, ss) => ss = "test_test");
             var obj = new object();
 
@@ -89,7 +89,7 @@ namespace Dev2.Utils.Tests
             //--------------------------Arrange---------------------------
             var mockJsonPathValueSystem = new Mock<IJsonPathValueSystem>();
 
-            var output = new JsonPathResultAccumulator((o, sa) => sa = new string[] { "string_Test" });
+            var output = new JsonPathResultAccumulator((o, sa) => sa = new[] { "string_Test" });
             var eval = new JsonPathScriptEvaluator((s, o, ss) => ss = "test_test");
             var obj = new object();
             obj = new List<string> { "string1", "string2" }.ToArray();
@@ -111,7 +111,7 @@ namespace Dev2.Utils.Tests
             //--------------------------Arrange---------------------------
             var mockJsonPathValueSystem = new Mock<IJsonPathValueSystem>();
 
-            var output = new JsonPathResultAccumulator((o, sa) => sa = new string[] { "string_Test" });
+            var output = new JsonPathResultAccumulator((o, sa) => sa = new[] { "string_Test" });
             var eval = new JsonPathScriptEvaluator((s, o, ss) => ss = "test_test");
 
             var obj = new object();
@@ -134,7 +134,7 @@ namespace Dev2.Utils.Tests
             //--------------------------Arrange---------------------------
             var mockJsonPathValueSystem = new Mock<IJsonPathValueSystem>();
 
-            var output = new JsonPathResultAccumulator((o, sa) => sa = new string[] { "string_Test" });
+            var output = new JsonPathResultAccumulator((o, sa) => sa = new[] { "string_Test" });
             var eval = new JsonPathScriptEvaluator((s, o, ss) => ss = "test_test");
 
             var obj = new object();
@@ -157,7 +157,7 @@ namespace Dev2.Utils.Tests
             //--------------------------Arrange---------------------------
             var mockJsonPathValueSystem = new Mock<IJsonPathValueSystem>();
 
-            var output = new JsonPathResultAccumulator((o, sa) => sa = new string[] { "string_Test" });
+            var output = new JsonPathResultAccumulator((o, sa) => sa = new[] { "string_Test" });
             var eval = new JsonPathScriptEvaluator((s, o, ss) => ss = "test_test, testsss");
 
             var obj = new object();
@@ -180,7 +180,7 @@ namespace Dev2.Utils.Tests
             //--------------------------Arrange---------------------------
             var mockJsonPathValueSystem = new Mock<IJsonPathValueSystem>();
 
-            var output = new JsonPathResultAccumulator((o, sa) => sa = new string[] { "string_Test" });
+            var output = new JsonPathResultAccumulator((o, sa) => sa = new[] { "string_Test" });
             var eval = new JsonPathScriptEvaluator((s, o, ss) => ss = "?(test_test, testsss)");
 
             var obj = new object();
@@ -204,7 +204,7 @@ namespace Dev2.Utils.Tests
             //--------------------------Arrange---------------------------
             var mockJsonPathValueSystem = new Mock<IJsonPathValueSystem>();
 
-            var output = new JsonPathResultAccumulator((o, sa) => sa = new string[] { "string_Test" });
+            var output = new JsonPathResultAccumulator((o, sa) => sa = new[] { "string_Test" });
             var eval = new JsonPathScriptEvaluator((s, o, ss) => ss = "?(test_test, testsss)");
                 
             var obj = new object();
@@ -228,7 +228,7 @@ namespace Dev2.Utils.Tests
             //--------------------------Arrange---------------------------
             var mockJsonPathValueSystem = new Mock<IJsonPathValueSystem>();
 
-            var output = new JsonPathResultAccumulator((o, sa) => sa = new string[] { "string_Test" });
+            var output = new JsonPathResultAccumulator((o, sa) => sa = new[] { "string_Test" });
             var eval = new JsonPathScriptEvaluator((s, o, ss) => ss = "?(test_test, testsss)");
 
             var obj = new object();
@@ -252,7 +252,7 @@ namespace Dev2.Utils.Tests
             //--------------------------Arrange---------------------------
             var mockJsonPathValueSystem = new Mock<IJsonPathValueSystem>();
 
-            var output = new JsonPathResultAccumulator((o, sa) => sa = new string[] { "string_Test" });
+            var output = new JsonPathResultAccumulator((o, sa) => sa = new[] { "string_Test" });
             var eval = new JsonPathScriptEvaluator((s, o, ss) => ss = "?(test_test, testsss)");
 
             var obj = new object();
@@ -276,7 +276,7 @@ namespace Dev2.Utils.Tests
             //--------------------------Arrange---------------------------
             var mockJsonPathValueSystem = new Mock<IJsonPathValueSystem>();
 
-            var output = new JsonPathResultAccumulator((o, sa) => sa = new string[] { "string_Test" });
+            var output = new JsonPathResultAccumulator((o, sa) => sa = new[] { "string_Test" });
             var eval = new JsonPathScriptEvaluator((s, o, ss) => ss = "?(test_test, testsss)");
 
             var obj = new object();
@@ -300,7 +300,7 @@ namespace Dev2.Utils.Tests
             //--------------------------Arrange---------------------------
             var mockJsonPathValueSystem = new Mock<IJsonPathValueSystem>();
 
-            var output = new JsonPathResultAccumulator((o, sa) => sa = new string[] { "string_Test" });
+            var output = new JsonPathResultAccumulator((o, sa) => sa = new[] { "string_Test" });
             var eval = new JsonPathScriptEvaluator((s, o, ss) => o = true);
 
             var objList = new List<string> { "string1", "string2" };

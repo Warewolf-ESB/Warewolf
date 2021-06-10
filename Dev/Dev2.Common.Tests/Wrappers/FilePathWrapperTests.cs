@@ -35,7 +35,7 @@ namespace Dev2.Common.Tests.Wrappers
         public void FilePathWrapper_Combine_AreEqual_ToArrayOfString_ExpectTrue()
         {
             //------------------------Arrange------------------------
-            var paths = new string[] { @"O:\TestPath1", "TestPath2", "testFileName.txt" };
+            var paths = new[] { @"O:\TestPath1", "TestPath2", "testFileName.txt" };
 
             var filePathWrapper = new FilePathWrapper();
             //------------------------Act----------------------------

@@ -116,12 +116,12 @@ namespace Dev2.Intellisense.Helper
 
         private static IntPtr EnumerateSharesNT(string server, ShareCollection shares, ref int level, ref int hResume)
         {
-            var nRet = NetShareEnum(server, level, out IntPtr pBuffer, -1, out int entriesRead, out int totalEntries, ref hResume);
+            var nRet = NetShareEnum(server, level, out IntPtr pBuffer, -1, out int entriesRead, out _, ref hResume);
 
             if (ErrorAccessDenied == nRet)
             {
                 level = 1;
-                nRet = NetShareEnum(server, level, out pBuffer, -1, out entriesRead, out totalEntries, ref hResume);
+                nRet = NetShareEnum(server, level, out pBuffer, -1, out entriesRead, out _, ref hResume);
             }
 
             if (NoError == nRet && entriesRead > 0)

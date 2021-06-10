@@ -31,11 +31,6 @@ namespace Dev2.Runtime.ESB.Management.Services
         ISecurityWrapper _securityWrapper;
         IResourceCatalog _catalog;
 
-        public DeleteScheduledResource()
-        {
-            
-        }
-
         public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs) => Guid.Empty;
 
         public AuthorizationContext GetAuthorizationContextForService() => AuthorizationContext.Administrator;

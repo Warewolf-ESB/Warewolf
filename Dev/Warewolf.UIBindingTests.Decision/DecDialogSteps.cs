@@ -102,7 +102,7 @@ namespace Warewolf.UIBindingTests.Decision
         {
             var vm = (DecisionDesignerViewModel)FeatureContext.Current["viewModel"];
             var to = ((DecisionTO)vm.Tos[0]);
-            var vis = p0.Split(new char[] { ',' });
+            var vis = p0.Split(new[] { ',' });
             switch (vis.Length)
             {
                 case 2:

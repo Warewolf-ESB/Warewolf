@@ -181,7 +181,7 @@ namespace Dev2.Activities.RedisCache
                     _errorsTo.AddError($"Activity drop box cannot be null");
                 }
 
-                if (_innerActivity.GetOutputs().Count() <= 0)
+                if (_innerActivity != null && !_innerActivity.GetOutputs().Any())
                 {
                     _errorsTo.AddError($"{_innerActivity.GetDisplayName()} activity must have at least one output variable.");
                 }

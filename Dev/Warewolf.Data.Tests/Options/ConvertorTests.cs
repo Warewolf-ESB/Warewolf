@@ -125,7 +125,7 @@ namespace Warewolf.Data.Tests
 
             public class OptionsForS : IOptionDataList
             {
-                public string[] Options => new string[] { "sopt1", "sopt2", "sopt3", "sopt4" };
+                public string[] Options => new[] { "sopt1", "sopt2", "sopt3", "sopt4" };
             }
         }
 
