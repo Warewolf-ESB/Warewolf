@@ -2349,6 +2349,7 @@ namespace Dev2.Studio.ViewModels
 
         public void UpdateStudioLicense()
         {
+            //TODO: Refresh studio to explorer to manage plan
             SaveCommand.UpdateContext(ActiveServer);
         }
 

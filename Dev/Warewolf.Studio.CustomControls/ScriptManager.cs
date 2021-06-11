@@ -88,7 +88,6 @@ namespace Warewolf.Studio.CustomControls
 
         public void CloseBrowser()
         {
-            //TODO: Refresh studio to enable save button
             _shellViewModel.UpdateStudioLicense();
             mForm.Close();
         }

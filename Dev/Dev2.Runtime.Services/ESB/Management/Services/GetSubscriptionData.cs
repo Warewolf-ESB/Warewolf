@@ -50,14 +50,27 @@ namespace Dev2.Runtime.ESB.Management.Services
                     _subscriptionProvider = SubscriptionProvider.Instance;
                 }
 
-                var subscriptionData = _warewolfLicense.RetrievePlan(_subscriptionProvider.SubscriptionId, _subscriptionProvider.SubscriptionKey, _subscriptionProvider.SubscriptionSiteName);
-                if(subscriptionData.PlanId != _subscriptionProvider.PlanId || subscriptionData.Status != _subscriptionProvider.Status)
+                if(!string.IsNullOrEmpty(_subscriptionProvider.SubscriptionId))
                 {
-                    _subscriptionProvider.SaveSubscriptionData(subscriptionData);
-
+                    var subscriptionData = _warewolfLicense.RetrievePlan(_subscriptionProvider.SubscriptionId, _subscriptionProvider.SubscriptionKey, _subscriptionProvider.SubscriptionSiteName);
+                    if(subscriptionData.PlanId != _subscriptionProvider.PlanId || subscriptionData.Status != _subscriptionProvider.Status)
+                    {
+                        _subscriptionProvider.SaveSubscriptionData(subscriptionData);
+                    }
+                    result.Message = serializer.SerializeToBuilder(subscriptionData);
                 }
-
-                result.Message = serializer.SerializeToBuilder(subscriptionData);
+                else
+                {
+                    var subscriptionData = new SubscriptionData
+                    {
+                        SubscriptionSiteName = _subscriptionProvider.SubscriptionSiteName,
+                        SubscriptionKey = _subscriptionProvider.SubscriptionKey,
+                        PlanId = _subscriptionProvider.PlanId,
+                        Status = _subscriptionProvider.Status,
+                        IsLicensed = _subscriptionProvider.IsLicensed
+                    };
+                    result.Message = serializer.SerializeToBuilder(subscriptionData);
+                }
                 return serializer.SerializeToBuilder(result);
             }
             catch(Exception e)
