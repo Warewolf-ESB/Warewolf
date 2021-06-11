@@ -29,7 +29,6 @@ using Dev2.Common.Interfaces.Threading;
 using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
 using Dev2.Data.ServiceModel;
 using Dev2.Factory;
-using Dev2.Instrumentation;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Events;
 using Dev2.Settings;

@@ -32,8 +32,7 @@ using Microsoft.Practices.Prism.Mvvm;
 using Warewolf.Resource.Errors;
 using Dev2.ConnectionHelpers;
 using System.Text;
-using Dev2.Instrumentation;
- using Dev2.Runtime.Hosting;
+using Dev2.Runtime.Hosting;
 
 namespace Warewolf.Studio.ViewModels
 {

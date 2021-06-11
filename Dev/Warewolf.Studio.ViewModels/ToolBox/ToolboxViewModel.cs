@@ -11,7 +11,6 @@ using Dev2.Studio.Interfaces;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
 using Warewolf.Studio.Core;
-using Dev2.Instrumentation;
 
 namespace Warewolf.Studio.ViewModels.ToolBox
 {

@@ -24,7 +24,6 @@ using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Warewolf.Resource.Errors;
-using Dev2.Instrumentation;
 
 namespace Warewolf.Studio.ViewModels
 {

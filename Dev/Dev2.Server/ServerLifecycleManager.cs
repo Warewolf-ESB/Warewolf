@@ -30,7 +30,6 @@ using WarewolfCOMIPC.Client;
 using Dev2.Common.Interfaces.Wrappers;
 using System.Collections.Generic;
 using Dev2.Runtime.Interfaces;
-using Dev2.Instrumentation;
 using Dev2.Studio.Utils;
 using System.Security.Claims;
 using System.Reflection;

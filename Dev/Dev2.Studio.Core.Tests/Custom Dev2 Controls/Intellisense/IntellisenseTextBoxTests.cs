@@ -25,7 +25,6 @@ using Moq;
 using Dev2.Common.Interfaces;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.DataList;
-using Dev2.Instrumentation;
 
 namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
 {

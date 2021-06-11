@@ -29,7 +29,6 @@ using Dev2.Diagnostics;
 using Dev2.Dialogs;
 using Dev2.Factories;
 using Dev2.Factory;
-using Dev2.Instrumentation;
 using Dev2.Messages;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Services.Events;
