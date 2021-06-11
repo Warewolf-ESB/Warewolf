@@ -37,6 +37,7 @@ using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Warewolf.Data;
+using Warewolf.Licensing;
 using Warewolf.Studio.Core.Popup;
 
 
@@ -94,6 +95,7 @@ namespace Dev2.Core.Tests.Settings
             _environmentModel.Setup(a => a.DisplayName).Returns("Localhost");
             mockShellViewModel.Setup(x => x.LocalhostServer).Returns(_environmentModel.Object);
             mockShellViewModel.Setup(x => x.ActiveServer).Returns(new Mock<IServer>().Object);
+            mockShellViewModel.Setup(x => x.SubscriptionData).Returns(new Mock<ISubscriptionData>().Object);
             var connectControlSingleton = new Mock<IConnectControlSingleton>();
             var explorerTooltips = new Mock<IExplorerTooltips>();
 
@@ -1901,6 +1903,7 @@ namespace Dev2.Core.Tests.Settings
         {
             var mockShellViewModel = new Mock<IShellViewModel>();
             mockShellViewModel.Setup(o => o.ActiveServer).Returns(new Mock<IServer>().Object);
+            mockShellViewModel.Setup(o => o.SubscriptionData).Returns(new Mock<ISubscriptionData>().Object);
             CustomContainer.Register(mockShellViewModel.Object);
 
             var mockWin32Window = new Mock<IWin32Window>();

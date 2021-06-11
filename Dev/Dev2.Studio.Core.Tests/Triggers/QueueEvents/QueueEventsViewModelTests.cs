@@ -29,6 +29,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Windows;
 using Warewolf.Data;
+using Warewolf.Licensing;
 using Warewolf.Options;
 using Warewolf.Trigger.Queue;
 using Warewolf.Triggers;
@@ -52,6 +53,7 @@ namespace Dev2.Core.Tests.Triggers.QueueEvents
             lcl.Setup(a => a.DisplayName).Returns("Localhost");
             mockShellViewModel.Setup(x => x.LocalhostServer).Returns(lcl.Object);
             mockShellViewModel.Setup(x => x.ActiveServer).Returns(new Mock<IServer>().Object);
+            mockShellViewModel.Setup(x => x.SubscriptionData).Returns(new Mock<ISubscriptionData>().Object);
             var connectControlSingleton = new Mock<IConnectControlSingleton>();
             var explorerTooltips = new Mock<IExplorerTooltips>();
 
@@ -151,6 +153,7 @@ namespace Dev2.Core.Tests.Triggers.QueueEvents
             mockResourceRepository.Setup(resourceRepository => resourceRepository.LoadContextualResourceModel(_workflowResourceId)).Returns(mockResourceModel.Object);
 
             mockServer.Setup(server => server.ResourceRepository).Returns(mockResourceRepository.Object);
+            mockServer.Setup(server => server.GetSubscriptionData()).Returns(new Mock<ISubscriptionData>().Object);
             return mockServer;
         }
 

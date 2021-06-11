@@ -153,11 +153,11 @@ namespace Dev2.Core.Tests
                 null);
             var activeEnvironment = new Mock<IServer>();
             activeEnvironment.Setup(server => server.DisplayName).Returns("localhost");
-            activeEnvironment.Setup(server => server.GetSubscriptionData()).Returns(MockSubscriptionData(isLicensed).Object);
 
             _activeEnvironment = activeEnvironment;
             _authorizationService = new Mock<IAuthorizationService>();
             _activeEnvironment.Setup(e => e.AuthorizationService).Returns(_authorizationService.Object);
+            _activeEnvironment.Setup(e => e.GetSubscriptionData()).Returns(MockSubscriptionData(isLicensed).Object);
 
             _shellViewModel.ActiveServer = _activeEnvironment.Object;
         }

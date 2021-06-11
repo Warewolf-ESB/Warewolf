@@ -41,6 +41,7 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
+using Warewolf.Licensing;
 
 namespace Dev2.Core.Tests.Triggers.Scheduler
 {
@@ -57,6 +58,9 @@ namespace Dev2.Core.Tests.Triggers.Scheduler
             lcl.Setup(a => a.DisplayName).Returns("Localhost");
             shell.Setup(x => x.LocalhostServer).Returns(lcl.Object);
             shell.Setup(x => x.ActiveServer).Returns(new Mock<IServer>().Object);
+            shell.Setup(x => x.SubscriptionData).Returns(new Mock<ISubscriptionData>().Object);
+            var serverRepository = new Mock<IServerRepository>();
+            CustomContainer.Register(serverRepository.Object);
             CustomContainer.Register(shell.Object);
             CustomContainer.Register(new Mock<Microsoft.Practices.Prism.PubSubEvents.IEventAggregator>().Object);
         }

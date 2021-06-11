@@ -21,6 +21,7 @@ using Moq;
 using Dev2.Triggers;
 using Warewolf.Trigger.Queue;
 using System.Collections.Generic;
+using Warewolf.Licensing;
 using Warewolf.Triggers;
 
 namespace Dev2.Core.Tests.Triggers
@@ -38,6 +39,7 @@ namespace Dev2.Core.Tests.Triggers
             var mockResourceRepository = new Mock<IResourceRepository>();
             mockServer.Setup(a => a.DisplayName).Returns("Localhost");
             mockShellViewModel.Setup(x => x.LocalhostServer).Returns(mockServer.Object);
+            mockShellViewModel.Setup(x => x.SubscriptionData).Returns(new Mock<ISubscriptionData>().Object);
             mockServerRepository.Setup(sr => sr.All()).Returns(new List<IServer>());
             mockServer.Setup(s => s.ResourceRepository).Returns(mockResourceRepository.Object);
             CustomContainer.Register(mockServerRepository.Object);

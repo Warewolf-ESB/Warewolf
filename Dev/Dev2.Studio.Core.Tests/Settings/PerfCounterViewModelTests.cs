@@ -21,6 +21,7 @@ using Dev2.Studio.Interfaces;
 using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Warewolf.Licensing;
 using Warewolf.Studio.ViewModels;
 
 namespace Dev2.Core.Tests.Settings
@@ -43,7 +44,9 @@ namespace Dev2.Core.Tests.Settings
             _mockConnection.Setup(connection => connection.ServerID).Returns(Guid.Empty);
             _mockEnvironment.Setup(model => model.Connection).Returns(_mockConnection.Object);
             ServerRepository.Instance.ActiveServer = _mockEnvironment.Object;
-            CustomContainer.Register(new Mock<IShellViewModel>().Object);
+            var mockShellViewModel = new Mock<IShellViewModel>();
+            mockShellViewModel.Setup(o => o.SubscriptionData).Returns(new Mock<ISubscriptionData>().Object);
+            CustomContainer.Register(mockShellViewModel.Object);
         }
 
         [TestMethod]
