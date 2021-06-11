@@ -176,6 +176,6 @@ namespace Dev2.Studio.Interfaces
         OptomizedObservableCollection<IDataListItem> GetOutputsFromWorkflow(Guid resourceId);
 
         ISubscriptionData SubscriptionData { get; }
-        void UpdateStudioLicense();
+        void UpdateStudioLicense(bool isLicensed);
     }
 }

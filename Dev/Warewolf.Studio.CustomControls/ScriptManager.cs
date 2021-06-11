@@ -30,6 +30,7 @@ namespace Warewolf.Studio.CustomControls
     {
         private WebBrowserView mForm;
         private IShellViewModel _shellViewModel;
+        private bool _isLicensed;
 
         public ScriptManager(WebBrowserView form)
         {
@@ -43,6 +44,7 @@ namespace Warewolf.Studio.CustomControls
             try
             {
                 var result = _shellViewModel?.ActiveServer.ResourceRepository.RetrieveSubscription();
+                _isLicensed = true;
                 return result;
             }
             catch(Exception)
@@ -66,6 +68,7 @@ namespace Warewolf.Studio.CustomControls
                     CustomerEmail = email
                 };
                 var result = _shellViewModel?.ActiveServer.ResourceRepository.CreateSubscription(subscriptionData);
+                _isLicensed = true;
                 //TODO:Handle error message
                 return result;
             }
@@ -88,7 +91,7 @@ namespace Warewolf.Studio.CustomControls
 
         public void CloseBrowser()
         {
-            _shellViewModel.UpdateStudioLicense();
+            _shellViewModel.UpdateStudioLicense(_isLicensed);
             mForm.Close();
         }
 
