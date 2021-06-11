@@ -14,6 +14,7 @@ using Moq;
 using Warewolf.Studio.Core;
 using Caliburn.Micro;
 using Dev2.ConnectionHelpers;
+using Warewolf.Licensing;
 
 namespace Warewolf.Studio.ViewModels.Tests
 {
@@ -31,7 +32,9 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestInitialize()
         {
             _serverMock = new Mock<IServer>();
+            _serverMock.Setup(o => o.GetSubscriptionData()).Returns(new Mock<ISubscriptionData>().Object);
             _shellViewModelMock = new Mock<IShellViewModel>();
+            _shellViewModelMock.Setup(o => o.SubscriptionData).Returns(new Mock<ISubscriptionData>().Object);
             _popupControllerMock = new Mock<IPopupController>();
             CustomContainer.Register(_popupControllerMock.Object);
             var serverRepo = new Mock<IServerRepository>();
