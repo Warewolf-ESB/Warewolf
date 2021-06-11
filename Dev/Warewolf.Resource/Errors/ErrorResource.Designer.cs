@@ -3882,5 +3882,13 @@ namespace Warewolf.Resource.Errors {
                 return ResourceManager.GetString("AuthorizationDeniedForThisToken", resourceCulture);
             }
         }
+
+        public static string ErrorDuringDuplicateFolderCallback 
+        {
+            get
+            {
+                return ResourceManager.GetString("ErrorDuringDuplicateFolderCallback", resourceCulture);
+            }
+        }
     }
 }

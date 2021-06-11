@@ -5,7 +5,7 @@ Bug Fixes
 -----------
 - The Studio splash page no longer shows "Server Unavailable" and starts up correctly.
 - There are no longer duplicates in the Errors().Message recordset
-
+- Improved Performance and Logging on Duplicate Folder functionality.
 
 28 May 2021
 ================
