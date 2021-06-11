@@ -81,7 +81,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _target.ContributorsCommand.Execute(null);
 
             //assert
-            _externalProcessExecutorMock.Verify(it=>it.OpenInBrowser(_target.ContributorsUrl));
+            _externalProcessExecutorMock.Verify(it => it.OpenInBrowser(_target.ContributorsUrl));
         }
 
         [TestMethod]
@@ -184,7 +184,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Execute Test---------------------------
             var copyRightText = _target.WarewolfCopyright;
             //------------Assert Results-------------------------
-            StringAssert.Contains(copyRightText,currentYear);
+            StringAssert.Contains(copyRightText, currentYear);
         }
 
         [TestMethod]
@@ -344,6 +344,5 @@ namespace Warewolf.Studio.ViewModels.Tests
             //assert
             Assert.AreEqual("Not Registered: NotActive", splashViewModel.WarewolfLicense);
         }
-
     }
 }
