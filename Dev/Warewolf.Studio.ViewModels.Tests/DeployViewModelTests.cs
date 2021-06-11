@@ -24,6 +24,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Warewolf.Studio.Core;
 using Dev2.ConnectionHelpers;
+using Warewolf.Licensing;
 
 namespace Warewolf.Studio.ViewModels.Tests
 {
@@ -108,11 +109,13 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Setup for test--------------------------
             var server = new Mock<IServer>();
             server.Setup(a => a.DisplayName).Returns("LocalHost");
+            server.Setup(a => a.GetSubscriptionData()).Returns(new Mock<ISubscriptionData>().Object);
             var mockEnvironmentConnection = SetupMockConnection();
             server.SetupGet(it => it.Connection).Returns(mockEnvironmentConnection.Object);
             var shell = new Mock<IShellViewModel>();
             shell.Setup(model => model.ExplorerViewModel).Returns(new Mock<IExplorerViewModel>().Object);
             shell.Setup(model => model.ExplorerViewModel.ConnectControlViewModel).Returns(new Mock<IConnectControlViewModel>().Object);
+            shell.Setup(o => o.SubscriptionData).Returns(new Mock<ISubscriptionData>().Object);
             CustomContainer.Register(shell.Object);
             var tsk = new Task<IExplorerItem>(() => new ServerExplorerItem());
             server.Setup(a => a.LoadExplorer(false)).Returns(tsk);
@@ -150,11 +153,13 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Setup for test--------------------------
             var server = new Mock<IServer>();
             server.Setup(a => a.DisplayName).Returns("LocalHost");
+            server.Setup(o => o.GetSubscriptionData()).Returns(new Mock<ISubscriptionData>().Object);
             var mockEnvironmentConnection = SetupMockConnection();
             server.SetupGet(it => it.Connection).Returns(mockEnvironmentConnection.Object);
             var shell = new Mock<IShellViewModel>();
             shell.Setup(model => model.ExplorerViewModel).Returns(new Mock<IExplorerViewModel>().Object);
             shell.Setup(model => model.ExplorerViewModel.ConnectControlViewModel).Returns(new Mock<IConnectControlViewModel>().Object);
+            shell.Setup(o => o.SubscriptionData).Returns(new Mock<ISubscriptionData>().Object);
             CustomContainer.Register<IShellViewModel>(shell.Object);
             var tsk = new Task<IExplorerItem>(() => new ServerExplorerItem());
             server.Setup(a => a.LoadExplorer(false)).Returns(tsk);
@@ -197,6 +202,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var shellViewModel = new Mock<IShellViewModel>();
             shellViewModel.Setup(model => model.ExplorerViewModel).Returns(new Mock<IExplorerViewModel>().Object);
             shellViewModel.Setup(model => model.ExplorerViewModel.ConnectControlViewModel).Returns(new Mock<IConnectControlViewModel>().Object);
+            shellViewModel.Setup(o => o.SubscriptionData).Returns(new Mock<ISubscriptionData>().Object);
             var envMock = new Mock<IEnvironmentViewModel>();
             shellViewModel.SetupGet(model => model.ExplorerViewModel.Environments).Returns(new Caliburn.Micro.BindableCollection<IEnvironmentViewModel>()
             {
@@ -208,6 +214,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             localhost.Setup(a => a.DisplayName).Returns("Localhost");
             localhost.SetupGet(server => server.CanDeployTo).Returns(true);
             localhost.SetupGet(server => server.CanDeployFrom).Returns(true);
+            localhost.SetupGet(server => server.GetSubscriptionData()).Returns(new Mock<ISubscriptionData>().Object);
             var mockEnvironmentConnection = SetupMockConnection();
             localhost.SetupGet(it => it.Connection).Returns(mockEnvironmentConnection.Object);
             shellViewModel.Setup(x => x.LocalhostServer).Returns(localhost.Object);
