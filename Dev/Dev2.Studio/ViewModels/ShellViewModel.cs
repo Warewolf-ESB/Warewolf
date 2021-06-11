@@ -67,7 +67,6 @@ using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Common.Common;
-using Dev2.Instrumentation;
 using Dev2.Triggers;
 using Dev2.Dialogs;
 using Dev2.Studio.Enums;

@@ -38,7 +38,6 @@ using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Common.Wrappers;
 using Dev2.CustomControls.Progress;
 using Dev2.Diagnostics.Debug;
-using Dev2.Instrumentation;
 using Dev2.Studio.ActivityDesigners;
 using Dev2.Studio.Controller;
 using Dev2.Studio.Core.Views;

@@ -39,7 +39,6 @@ using Dev2.Studio.Interfaces.Enums;
 using Warewolf.Studio.ViewModels;
 using Dev2.ViewModels;
 using Dev2.Common.Interfaces;
-using Dev2.Instrumentation;
 using Warewolf.Studio.Resources.Languages;
 
 namespace Dev2.Studio.ViewModels.WorkSurface

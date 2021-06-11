@@ -19,7 +19,6 @@ using Dev2.Common.Interfaces.Help;
 using Dev2.Data;
 using Dev2.Data.Interfaces;
 using Dev2.Data.Interfaces.Enums;
-using Dev2.Instrumentation;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.DataList;
 using Dev2.Studio.Core.Factories;

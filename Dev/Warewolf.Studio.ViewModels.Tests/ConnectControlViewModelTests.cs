@@ -17,7 +17,6 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Core.Tests.Environments;
-using Dev2.Instrumentation;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Models;
 using Dev2.Studio.Interfaces;

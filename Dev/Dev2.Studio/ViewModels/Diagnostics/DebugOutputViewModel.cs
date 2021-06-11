@@ -37,7 +37,6 @@ using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Interfaces;
 using DelegateCommand = Dev2.Runtime.Configuration.ViewModels.Base.DelegateCommand;
-using Dev2.Instrumentation;
 
 namespace Dev2.Studio.ViewModels.Diagnostics
 {

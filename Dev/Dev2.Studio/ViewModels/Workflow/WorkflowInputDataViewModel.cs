@@ -24,7 +24,6 @@ using Dev2.Data;
 using Dev2.Data.Interfaces;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.DataList.Contract.Binary_Objects;
-using Dev2.Instrumentation;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Services.Security;
 using Dev2.Session;
