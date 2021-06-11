@@ -16,6 +16,7 @@ using System.Security.Permissions;
 using System.Windows.Controls;
 using Dev2;
 using Dev2.Common;
+using Dev2.Communication;
 using Dev2.Studio.Interfaces;
 using Warewolf.Licensing;
 
@@ -43,8 +44,10 @@ namespace Warewolf.Studio.CustomControls
         {
             try
             {
+                var serializer = new Dev2JsonSerializer();
                 var result = _shellViewModel?.ActiveServer.ResourceRepository.RetrieveSubscription();
-                _isLicensed = true;
+                var subscriptionData = serializer.Deserialize<ISubscriptionData>(result);
+                _isLicensed = subscriptionData.IsLicensed;
                 return result;
             }
             catch(Exception)
@@ -68,7 +71,8 @@ namespace Warewolf.Studio.CustomControls
                     CustomerEmail = email
                 };
                 var result = _shellViewModel?.ActiveServer.ResourceRepository.CreateSubscription(subscriptionData);
-                _isLicensed = true;
+                _isLicensed = result == GlobalConstants.Success;
+
                 //TODO:Handle error message
                 return result;
             }
