@@ -45,7 +45,7 @@ namespace Dev2.Core.Tests
             var workFlow = XML.XmlResource.Fetch("ResourceWithErrors");
             svr.Setup(server => server.ProxyLayer.GetVersion(It.IsAny<IVersionInfo>(), It.IsAny<Guid>()))
             .Returns(new StringBuilder(workFlow.ToString(SaveOptions.DisableFormatting)));
-            svr.Setup(server => server.GetSubscriptionData()).Returns(MockSubscriptionData(true).Object);
+            svr.Setup(server => server.GetSubscriptionData()).Returns(MockSubscriptionData(false).Object);
             _verifyAction = () =>
             {
                 svr.Verify(server => server.ProxyLayer.GetVersion(It.IsAny<IVersionInfo>(), It.IsAny<Guid>()));
