@@ -54,9 +54,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public bool UpdateAllOccurrences { get; set; }
         public bool CreateBookmark { get; set; }
         // ReSharper disable MemberCanBePrivate.Global
-        // Disabled to maintain compatibility with resources already serialized with this namespace
         // ReSharper disable UnusedAutoPropertyAccessor.Global
         // ReSharper disable UnusedMember.Global
+        // Disabled to avoid "Workflow has no start node" error.
         public string ServiceHost { get; set; }
         // ReSharper restore UnusedMember.Global
         // ReSharper restore UnusedAutoPropertyAccessor.Global
@@ -341,8 +341,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         private void AddScalarValueResult(IExecutionEnvironment environment, IAssignValue assignValue, int update, DebugItem debugItem, CommonFunctions.WarewolfEvalResult oldValueResult, CommonFunctions.WarewolfEvalResult newValueResult)
         {
-            var scalarResult = oldValueResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
-            if (newValueResult is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult valueResult && scalarResult != null)
+            if (newValueResult is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult valueResult && oldValueResult is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult scalarResult)
             {
                 AddDebugItem(new DebugItemWarewolfAtomResult(ExecutionEnvironment.WarewolfAtomToString(scalarResult.Item), ExecutionEnvironment.WarewolfAtomToString(valueResult.Item), assignValue.Name, environment.EvalToExpression(assignValue.Value, update), _variableLabelText, _newFieldLabelText, "="), debugItem);
             }
