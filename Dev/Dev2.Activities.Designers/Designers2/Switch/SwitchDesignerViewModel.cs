@@ -68,10 +68,7 @@ namespace Dev2.Activities.Designers2.Switch
         public string SwitchExpression { get; set; }
         public string SwitchVariable
         {
-            get
-            {
-                return _switchVariable;
-            }
+            get => _switchVariable;
             set
             {
                 _switchVariable = value;
@@ -95,7 +92,7 @@ namespace Dev2.Activities.Designers2.Switch
 
         public string DisplayText
         {
-            get { return (string)GetValue(DisplayTextProperty); }
+            get => (string)GetValue(DisplayTextProperty);
             set
             {
                 if(string.IsNullOrEmpty(value))
@@ -120,7 +117,7 @@ namespace Dev2.Activities.Designers2.Switch
             }
         }
 
-        public bool ValidExpression { get; set; }
+        public bool ValidExpression { get; private set; }
 
         public override void Validate()
         {
