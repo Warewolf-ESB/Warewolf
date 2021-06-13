@@ -23,8 +23,8 @@ using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Validation;
 using Dev2.Common.Interfaces.Interfaces;
 using Dev2.Communication;
+using Dev2.Data;
 using Dev2.Data.Decisions.Operations;
-using Dev2.Data.SystemTemplates;
 using Dev2.Data.SystemTemplates.Models;
 using Dev2.Data.Util;
 using Dev2.DataList;
@@ -213,7 +213,7 @@ namespace Dev2.Activities.Designers2.Decision
         {
             var val = new Dev2DecisionStack { TheStack = new List<Dev2Decision>() };
             var value = valuecoll.Select(a => a as DecisionTO);
-            foreach (var decisionTo in value.Where(a => { return a != null && !a.IsEmpty(); }))
+            foreach (var decisionTo in value.Where(a => a != null && !a.IsEmpty()))
             {
                 var dev2Decision = new Dev2Decision { Col1 = decisionTo.MatchValue };
                 if (!string.IsNullOrEmpty(decisionTo.SearchCriteria))

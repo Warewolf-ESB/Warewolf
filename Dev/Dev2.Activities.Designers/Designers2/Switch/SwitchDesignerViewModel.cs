@@ -3,7 +3,7 @@ using System.Linq;
 using System.Windows;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Common;
-using Dev2.Data.SystemTemplates;
+using Dev2.Data;
 using Dev2.Data.SystemTemplates.Models;
 using Dev2.Studio.Interfaces;
 using Dev2.Utilities;
@@ -120,7 +120,7 @@ namespace Dev2.Activities.Designers2.Switch
             }
         }
 
-        public bool ValidExpression { get => validExpression; set => validExpression = value; }
+        public bool ValidExpression { get; set; }
 
         public override void Validate()
         {
@@ -156,21 +156,20 @@ namespace Dev2.Activities.Designers2.Switch
 
         void ValidateParentProperties()
         {
-            foreach (var value in ModelItem.Parent.Source.Collection)
-            {
-                if (value?.Properties.Any(property => property.Name == "Key") ?? false)
+            if(ModelItem.Parent.Source.Collection != null)
+                foreach(var value in ModelItem.Parent.Source.Collection)
                 {
-                    var modelItem = value.Properties["Key"]?.ComputedValue;
-                    if (modelItem?.ToString() == SwitchExpression)
+                    if(value?.Properties.Any(property => property.Name == "Key") ?? false)
                     {
-                        ValidExpression = false;
-                        break;
+                        var modelItem = value.Properties["Key"]?.ComputedValue;
+                        if(modelItem?.ToString() == SwitchExpression)
+                        {
+                            ValidExpression = false;
+                            break;
+                        }
                     }
                 }
-            }
         }
-
-        bool validExpression;
 
         public override void UpdateHelpDescriptor(string helpText)
         {

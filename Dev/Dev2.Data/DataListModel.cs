@@ -165,11 +165,7 @@ namespace Dev2.Data
             {
                 var children = xDoc.DocumentElement.ChildNodes;
 
-                var columnDirection = enDev2ColumnArgumentDirection.None;
-                foreach (XmlNode c in children)
-                {
-                    columnDirection = AddNonSystemTags(columnDirection, c);
-                }
+                children.Cast<XmlNode>().Aggregate(enDev2ColumnArgumentDirection.None, AddNonSystemTags);
             }
         }
 
@@ -210,14 +206,13 @@ namespace Dev2.Data
 
         private enDev2ColumnArgumentDirection AddScalarsShape(XmlNode c, ref XmlAttribute descAttribute, ref XmlAttribute columnIoDirection)
         {
-            enDev2ColumnArgumentDirection columnDirection;
             if (c.Attributes != null)
             {
                 descAttribute = c.Attributes["Description"];
                 columnIoDirection = c.Attributes["ColumnIODirection"];
             }
             var descriptionValue = "";
-            columnDirection = enDev2ColumnArgumentDirection.None;
+            var columnDirection = enDev2ColumnArgumentDirection.None;
             if (descAttribute != null)
             {
                 descriptionValue = descAttribute.Value;

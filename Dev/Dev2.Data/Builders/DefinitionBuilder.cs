@@ -14,28 +14,24 @@ using System.Xml;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Data.Interfaces.Enums;
 
-namespace Dev2.DataList.Contract
+namespace Dev2.Data.Builders
 {
     public class DefinitionBuilder
     {
-        const string _nameAttribute = "Name";
-        const string _mapsToAttribute = "MapsTo";
-        const string _valueAttribute = "Value";
-        const string _recordsetAttribute = "Recordset";
-        const string _defaultValueAttribute = "DefaultValue";
-        const string _validateTag = "Validator";
-        const string _typeAttribute = "Type";
-        const string _requiredValue = "Required";
-        const string _sourceAttribute = "Source";
+        const string NameAttribute = "Name";
+        const string MapsToAttribute = "MapsTo";
+        const string ValueAttribute = "Value";
+        const string RecordsetAttribute = "Recordset";
+        const string DefaultValueAttribute = "DefaultValue";
+        const string ValidateTag = "Validator";
+        const string TypeAttribute = "Type";
+        const string RequiredValue = "Required";
+        const string SourceAttribute = "Source";
 
         public enDev2ArgumentType ArgumentType { get; set; }
 
         public IList<IDev2Definition> Definitions { get; set; }
 
-        /// <summary>
-        /// Generates this instance.
-        /// </summary>
-        /// <returns></returns>
         public string Generate()
         {
             var result = new StringBuilder();
@@ -47,31 +43,31 @@ namespace Dev2.DataList.Contract
             foreach (IDev2Definition def in Definitions)
             {
                 var tmp = xDoc.CreateElement(ArgumentType.ToString());
-                tmp.SetAttribute(_nameAttribute, def.Name);
+                tmp.SetAttribute(NameAttribute, def.Name);
 
-                tmp.SetAttribute(ArgumentType != enDev2ArgumentType.Input ? _mapsToAttribute : _sourceAttribute, def.MapsTo);
+                tmp.SetAttribute(ArgumentType != enDev2ArgumentType.Input ? MapsToAttribute : SourceAttribute, def.MapsTo);
 
                 if(ArgumentType != enDev2ArgumentType.Input)
                 {
-                    tmp.SetAttribute(_valueAttribute, def.Value);
+                    tmp.SetAttribute(ValueAttribute, def.Value);
                 }
 
                 tmp.SetAttribute("IsObject", def.IsObject.ToString());
 
                 if(def.RecordSetName.Length > 0)
                 {
-                    tmp.SetAttribute(_recordsetAttribute, def.RecordSetName);
+                    tmp.SetAttribute(RecordsetAttribute, def.RecordSetName);
                 }
 
                 if(def.DefaultValue.Length > 0 && ArgumentType == enDev2ArgumentType.Input)
                 {
-                    tmp.SetAttribute(_defaultValueAttribute, def.DefaultValue);
+                    tmp.SetAttribute(DefaultValueAttribute, def.DefaultValue);
                 }
 
                 if(def.IsRequired && ArgumentType == enDev2ArgumentType.Input)
                 {
-                    var requiredElm = xDoc.CreateElement(_validateTag);
-                    requiredElm.SetAttribute(_typeAttribute, _requiredValue);
+                    var requiredElm = xDoc.CreateElement(ValidateTag);
+                    requiredElm.SetAttribute(TypeAttribute, RequiredValue);
                     tmp.AppendChild(requiredElm);
                 }
                 rootNode.AppendChild(tmp);

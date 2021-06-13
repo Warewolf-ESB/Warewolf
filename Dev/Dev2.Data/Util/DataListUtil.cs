@@ -21,6 +21,7 @@ using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Enums.Enums;
 using Dev2.Common.Interfaces.Search;
 using Dev2.Common.Interfaces.StringTokenizer.Interfaces;
+using Dev2.Data.Builders;
 using Dev2.Data.Interfaces;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.TO;
@@ -514,11 +515,15 @@ namespace Dev2.Data.Util
 
         internal static enDev2ColumnArgumentDirection GetDev2ColumnArgumentDirection(XmlNode tmpNode)
         {
-            var ioDirectionAttribute = tmpNode.Attributes[GlobalConstants.DataListIoColDirection];
+            if(tmpNode.Attributes != null)
+            {
+                var ioDirectionAttribute = tmpNode.Attributes[GlobalConstants.DataListIoColDirection];
 
-            enDev2ColumnArgumentDirection ioDirection;
-            ioDirection = ioDirectionAttribute != null ? (enDev2ColumnArgumentDirection)(Dev2EnumConverter.GetEnumFromStringDiscription(ioDirectionAttribute.Value, typeof(enDev2ColumnArgumentDirection)) ?? enDev2ColumnArgumentDirection.Both) : enDev2ColumnArgumentDirection.Both;
-            return ioDirection;
+                var ioDirection = ioDirectionAttribute != null ? (enDev2ColumnArgumentDirection)(Dev2EnumConverter.GetEnumFromStringDiscription(ioDirectionAttribute.Value, typeof(enDev2ColumnArgumentDirection)) ?? enDev2ColumnArgumentDirection.Both) : enDev2ColumnArgumentDirection.Both;
+                return ioDirection;
+            }
+
+            return enDev2ColumnArgumentDirection.None;
         }
        
         public static IList<IDev2Definition> GenerateDefsFromDataListForDebug(string dataList, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection) => Common.GenerateDefsFromDataListForDebug(dataList, dev2ColumnArgumentDirection);

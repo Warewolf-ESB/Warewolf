@@ -12,7 +12,7 @@ using System.Collections.Generic;
 using Dev2.Data.Decisions.Operations;
 using Dev2.Data.SystemTemplates.Models;
 
-namespace Dev2.Data.SystemTemplates
+namespace Dev2.Data
 {
     public static class DataListConstants
     {
