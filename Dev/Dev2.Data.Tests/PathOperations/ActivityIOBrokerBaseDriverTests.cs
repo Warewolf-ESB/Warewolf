@@ -15,6 +15,7 @@ using Dev2.PathOperations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Dev2.Common.Interfaces.Wrappers;
+using Dev2.Data.PathOperations;
 
 namespace Dev2.Data.Tests.PathOperations
 {

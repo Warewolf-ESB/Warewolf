@@ -19,6 +19,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Ionic.Zip;
 using Dev2.Common.Wrappers;
+using Dev2.Data.PathOperations;
 
 namespace Dev2.Data.Tests.PathOperations
 {

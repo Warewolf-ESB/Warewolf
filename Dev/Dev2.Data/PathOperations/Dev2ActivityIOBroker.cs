@@ -21,9 +21,10 @@ using Dev2.Data.Interfaces;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.PathOperations.Extension;
 using Dev2.Data.Util;
+using Dev2.PathOperations;
 using Warewolf.Resource.Errors;
 
-namespace Dev2.PathOperations
+namespace Dev2.Data.PathOperations
 {
     class Dev2ActivityIOBroker : IActivityOperationsBroker
     {
@@ -63,20 +64,20 @@ namespace Dev2.PathOperations
         }
 
         public string Get(IActivityIOOperationsEndPoint path) => Get(path, false);
-        public byte[] GetBytes(IActivityIOOperationsEndPoint path) => GetBytes(path, false);
 
         public string Get(IActivityIOOperationsEndPoint path, bool deferredRead)
         {
             try
             {
-                return Encoding.UTF8.GetString(GetBytes(path, deferredRead));
+                return Encoding.UTF8.GetString(GetBytes(path));
             }
             finally
             {
                 RemoveAllTmpFiles();
             }
         }
-        public byte[] GetBytes(IActivityIOOperationsEndPoint path, bool deferredRead)
+
+        public byte[] GetBytes(IActivityIOOperationsEndPoint path)
         {
             try
             {
@@ -187,7 +188,7 @@ namespace Dev2.PathOperations
 
         public string Rename(IActivityIOOperationsEndPoint src, IActivityIOOperationsEndPoint dst, IDev2CRUDOperationTO args)
         {
-            string performRename()
+            string PerformRename()
             {
                 if (src.PathIs(src.IOPath) != dst.PathIs(dst.IOPath))
                 {
@@ -207,7 +208,7 @@ namespace Dev2.PathOperations
 
             try
             {
-                return performRename();
+                return PerformRename();
             }
             finally
             {
@@ -350,9 +351,7 @@ namespace Dev2.PathOperations
             {
                 status = _validator.ValidateZipSourceDestinationFileOperation(src, dst, args, () =>
                 {
-                    string tempFileName;
-
-                    tempFileName = src.PathIs(src.IOPath) == enPathType.Directory || Dev2ActivityIOPathUtils.IsStarWildCard(src.IOPath.Path) ? _implementation.ZipDirectoryToALocalTempFile(src, args) : _implementation.ZipFileToALocalTempFile(src, args);
+                    var tempFileName = src.PathIs(src.IOPath) == enPathType.Directory || Dev2ActivityIOPathUtils.IsStarWildCard(src.IOPath.Path) ? _implementation.ZipDirectoryToALocalTempFile(src, args) : _implementation.ZipFileToALocalTempFile(src, args);
 
                     return _implementation.TransferTempZipFileToDestination(src, dst, args, tempFileName);
                 });

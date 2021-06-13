@@ -20,32 +20,31 @@ using Dev2.Common.Wrappers;
 using Dev2.Data.Interfaces;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.Util;
+using Dev2.PathOperations;
 
-namespace Dev2.PathOperations
+namespace Dev2.Data.PathOperations
 {
     public interface IActivityIOBrokerDriver
     {
         void RemoveAllTmpFiles();
-
-        bool CreateDirectory(IActivityIOOperationsEndPoint dst, IDev2CRUDOperationTO args);
         IList<IActivityIOPath> ListDirectory(IActivityIOOperationsEndPoint src, ReadTypes readTypes);
         string CreateEndPoint(IActivityIOOperationsEndPoint dst, IDev2CRUDOperationTO args, bool createToFile);
         string CreateTmpFile();
         string GetFileNameFromEndPoint(IActivityIOOperationsEndPoint endPoint);
-        string GetFileNameFromEndPoint(IActivityIOOperationsEndPoint endPoint, IActivityIOPath path);
         void RemoveTmpFile(string path);
     }
+    
     internal class ActivityIOBrokerBaseDriver : IActivityIOBrokerDriver
     {
         public const string ResultOk = @"Success";
         public const string ResultBad = @"Failure";
 
-        protected readonly IFile _fileWrapper;
-        protected readonly ICommon _common;
-        protected readonly List<string> _filesToDelete = new List<string>();
+        protected readonly IFile FileWrapper;
+        protected readonly ICommon Common;
+        protected readonly List<string> FilesToDelete = new List<string>();
         public void RemoveAllTmpFiles()
         {
-            _filesToDelete.ForEach(RemoveTmpFile);
+            FilesToDelete.ForEach(RemoveTmpFile);
         }
 
         internal ActivityIOBrokerBaseDriver()
@@ -55,8 +54,8 @@ namespace Dev2.PathOperations
 
         internal ActivityIOBrokerBaseDriver(IFile file, ICommon common)
         {
-            _fileWrapper = file;
-            _common = common;
+            FileWrapper = file;
+            Common = common;
         }
 
         public IList<IActivityIOPath> ListDirectory(IActivityIOOperationsEndPoint src, ReadTypes readTypes)
@@ -188,11 +187,11 @@ namespace Dev2.PathOperations
         {
             // TODO: why create a tmp file here, surely we can just use an empty array as input to the memory stream?
             var tmp = CreateTmpFile();
-            using (Stream s = new MemoryStream(_fileWrapper.ReadAllBytes(tmp)))
+            using (Stream s = new MemoryStream(FileWrapper.ReadAllBytes(tmp)))
             {
                 try
                 {
-                    if (dst.Put(s, dst.IOPath, args, null, _filesToDelete) >= 0)
+                    if (dst.Put(s, dst.IOPath, args, null, FilesToDelete) >= 0)
                     {
                         return true;
                     }
@@ -216,7 +215,7 @@ namespace Dev2.PathOperations
             try
             {
                 var tmpFile = Path.GetTempFileName();
-                _filesToDelete.Add(tmpFile);
+                FilesToDelete.Add(tmpFile);
                 return tmpFile;
             }
             catch (Exception e)
@@ -241,7 +240,7 @@ namespace Dev2.PathOperations
         {
             try
             {
-                _fileWrapper.Delete(path);
+                FileWrapper.Delete(path);
             }
             catch (Exception e)
             {

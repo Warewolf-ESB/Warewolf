@@ -16,9 +16,10 @@ using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Data.Interfaces;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.PathOperations.Extension;
+using Dev2.PathOperations;
 using Warewolf.Resource.Errors;
 
-namespace Dev2.PathOperations
+namespace Dev2.Data.PathOperations
 {
     public interface IActivityIOBrokerValidatorDriver
     {
@@ -53,7 +54,7 @@ namespace Dev2.PathOperations
                                                                   Func<string> performAfterValidation)
         {
             var result = ResultOk;
-            _common.ValidateSourceAndDestinationPaths(src, dst);
+            Common.ValidateSourceAndDestinationPaths(src, dst);
             var opStatus = CreateEndPoint(dst, args, dst.PathIs(dst.IOPath) == enPathType.Directory);
             if (!opStatus.Equals("Success"))
             {
@@ -91,7 +92,7 @@ namespace Dev2.PathOperations
                                                                    IDev2UnZipOperationTO args,
                                                                    Func<string> performAfterValidation)
         {
-            _common.ValidateSourceAndDestinationPaths(src, dst);
+            Common.ValidateSourceAndDestinationPaths(src, dst);
 
             if (dst.PathIs(dst.IOPath) != enPathType.Directory)
             {
@@ -116,7 +117,7 @@ namespace Dev2.PathOperations
                                                                  IDev2ZipOperationTO args,
                                                                  Func<string> performAfterValidation)
         {
-            _common.AddMissingFileDirectoryParts(src, dst);
+            Common.AddMissingFileDirectoryParts(src, dst);
 
 
             if (dst.PathIs(dst.IOPath) == enPathType.Directory)

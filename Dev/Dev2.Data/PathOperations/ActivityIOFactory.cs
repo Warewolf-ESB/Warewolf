@@ -17,6 +17,7 @@ using System.Reflection;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Data.Interfaces;
 using Dev2.Data.Interfaces.Enums;
+using Dev2.Data.PathOperations;
 using Warewolf.Resource.Errors;
 
 namespace Dev2.PathOperations
