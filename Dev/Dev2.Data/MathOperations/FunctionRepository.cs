@@ -14,16 +14,13 @@ using System.Linq;
 using System.Linq.Expressions;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
-using Dev2.Data.MathOperations;
+using Dev2.MathOperations;
 using Infragistics.Calculations.CalcManager;
 using Infragistics.Calculations.Engine;
 using Warewolf.Resource.Errors;
 
-namespace Dev2.MathOperations
+namespace Dev2.Data.MathOperations
 {
-    // PBI: 1214
-    //This repository will contain a collection of all the functions available to the Function Manager 
-    // to perform evaluations on
     public class FunctionRepository : IFrameworkRepository<IFunction>
     {
         readonly List<IFunction> _functions;
@@ -179,12 +176,6 @@ namespace Dev2.MathOperations
         }
 
         public event EventHandler ItemAdded;
-
-    
-        protected void OnItemAdded()
-        {
-            ItemAdded?.Invoke(this, new EventArgs());
-        }
 
         #region Implementation of IDisposable
 
