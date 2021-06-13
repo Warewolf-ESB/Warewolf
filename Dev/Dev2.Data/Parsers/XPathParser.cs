@@ -112,7 +112,6 @@ namespace Dev2.Data.Parsers
                         stringList.Add(realElm.StringValue);
                     }
                     else if (realElm.NodeKind == XmlNodeType.Element)
-
                     {
                         var xElement = XElement.Parse(current.ToString());
                         stringList.Add(xElement.ToString());
