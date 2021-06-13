@@ -89,7 +89,7 @@ namespace Dev2.Activities.Designers2.Decision
             }
         }
 
-        public void DeleteRow(DecisionTO row)
+        void DeleteRow(DecisionTO row)
         {
             if (!row.Equals(Collection.Last()))
             {
@@ -100,7 +100,6 @@ namespace Dev2.Activities.Designers2.Decision
         public ICommand DeleteCommand
         {
             get;
-            set;
         }
         void ConfigureDecisionExpression(ModelItem mi)
         {
@@ -158,14 +157,14 @@ namespace Dev2.Activities.Designers2.Decision
 
         public override string CollectionName => "ResultsCollection";
 
-        public ICommand SearchTypeUpdatedCommand { get; private set; }
+        public ICommand SearchTypeUpdatedCommand { get; }
 
-        public ObservableCollection<string> WhereOptions { get; private set; }
+        public ObservableCollection<string> WhereOptions { get; }
 
         public string DisplayText
         {
-            get { return (string)GetValue(DisplayTextProperty); }
-            set { SetValue(DisplayTextProperty, value); }
+            get => (string)GetValue(DisplayTextProperty);
+            set => SetValue(DisplayTextProperty, value);
         }
         public string TrueArmText { get; set; }
         public string FalseArmText { get; set; }
@@ -176,11 +175,8 @@ namespace Dev2.Activities.Designers2.Decision
         }
         public ObservableCollection<IDev2TOFn> Tos
         {
-            get
-            {
-                return Collection;
-            }
-            set
+            get => Collection;
+            private set
             {
                 Collection.CollectionChanged -= CollectionCollectionChanged;
                 Collection = value;

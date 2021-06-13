@@ -35,6 +35,9 @@ using Warewolf.Options;
 using Warewolf.Resource.Messages;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
+// Disabled to maintain compatibility with resources already serialized with this API
 
 namespace Dev2.Activities
 {
@@ -357,10 +360,6 @@ namespace Dev2.Activities
                                 stop = true;
                             }
                             break;
-                        default:
-                            msg = "unknown gate failure option";
-                            allErrors.AddError(msg);
-                            throw new Exception(msg);
                     }
                 }
 
@@ -628,7 +627,7 @@ namespace Dev2.Activities
             return new List<DsfForEachItem>();
         }
 
-        public ActivityFunc<string, bool> DataFunc { get; private set; }
+        public ActivityFunc<string, bool> DataFunc { get; set; }
         public IList<ConditionExpression> Conditions { get; set; }
 
         public Guid RetryEntryPointId { get; set; }
