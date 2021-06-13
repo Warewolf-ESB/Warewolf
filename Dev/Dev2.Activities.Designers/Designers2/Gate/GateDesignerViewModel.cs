@@ -73,7 +73,7 @@ namespace Dev2.Activities.Designers2.Gate
 
         private void PopulateFields()
         {
-            var id = _modelItem.Properties["RetryEntryPointId"].ComputedValue;
+            var id = _modelItem.Properties["RetryEntryPointId"]?.ComputedValue;
             if (id != null && id.ToString() != Guid.Empty.ToString() && Gates.Count > 1)
             {
                 var nameValue = Gates.First(o => o.Value == id.ToString());
@@ -102,13 +102,13 @@ namespace Dev2.Activities.Designers2.Gate
 
             if (designerView != null && designerView.DataContext is IWorkflowDesignerViewModel workflowDesignerViewModel)
             {
-                Gates = workflowDesignerViewModel.GetSelectableGates(_modelItem.Properties["UniqueID"].ComputedValue.ToString());
+                Gates = workflowDesignerViewModel.GetSelectableGates(_modelItem.Properties["UniqueID"]?.ComputedValue.ToString());
             }
         }
 
         private void LoadConditionExpressionOptions()
         {
-            var conditionExpressionList = _modelItem.Properties["Conditions"].ComputedValue as IList<ConditionExpression>;
+            var conditionExpressionList = _modelItem.Properties["Conditions"]?.ComputedValue as IList<ConditionExpression>;
             if (conditionExpressionList is null)
             {
                 conditionExpressionList = new List<ConditionExpression>();
@@ -120,11 +120,11 @@ namespace Dev2.Activities.Designers2.Gate
 
         private void LoadOptions()
         {
-            var gateOptions = _modelItem.Properties["GateOptions"].ComputedValue as GateOptions;
+            var gateOptions = _modelItem.Properties["GateOptions"]?.ComputedValue as GateOptions;
             if (gateOptions is null)
             {
                 gateOptions = new GateOptions();
-                _modelItem.Properties["GateOptions"].SetValue(gateOptions);
+                _modelItem.Properties["GateOptions"]?.SetValue(gateOptions);
             }
 
             gateOptions.OnChange += UpdateOptionsModelItem;
@@ -192,24 +192,24 @@ namespace Dev2.Activities.Designers2.Gate
 
         private void SetExpressionText()
         {
-            var conditionExpressionList = _modelItem.Properties["Conditions"].ComputedValue as IList<ConditionExpression>;
+            var conditionExpressionList = _modelItem.Properties["Conditions"]?.ComputedValue as IList<ConditionExpression>;
 
             var text = new StringBuilder();
-            var dds = conditionExpressionList.GetEnumerator();
-            if (dds.MoveNext() && dds.Current.Cond.MatchType != enDecisionType.Choose)
+            var dds = conditionExpressionList?.GetEnumerator();
+            if (dds != null && dds.MoveNext() && dds.Current != null && dds.Current.Cond.MatchType != EnDecisionType.Choose)
             {
                 dds.Current.RenderDescription(text);
             }
-            while (dds.MoveNext())
+            while (dds != null && dds.MoveNext())
             {
                 var conditionExpression = dds.Current;
-                if (conditionExpression.Cond.MatchType == enDecisionType.Choose)
+                if (conditionExpression != null && conditionExpression.Cond.MatchType == EnDecisionType.Choose)
                 {
                     continue;
                 }
 
                 text.Append("\n AND \n");
-                conditionExpression.RenderDescription(text);
+                conditionExpression?.RenderDescription(text);
             }
             ConditionExpressionText = text.ToString();
         }

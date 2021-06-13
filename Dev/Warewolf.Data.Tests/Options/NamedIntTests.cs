@@ -21,7 +21,7 @@ namespace Warewolf.Data.Tests
         [Test]
         public void NamedInt_()
         {
-            var opts = NamedInt.GetAll(typeof(enDecisionType));
+            var opts = NamedInt.GetAll(typeof(EnDecisionType));
 
             Assert.AreEqual(39, opts.Count());
 

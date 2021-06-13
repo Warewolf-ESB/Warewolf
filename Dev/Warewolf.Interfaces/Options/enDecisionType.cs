@@ -10,8 +10,6 @@
 */
 
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Text;
 
@@ -24,7 +22,7 @@ namespace Warewolf.Options
             DisplayValue = displayValue;
         }
 
-        public string DisplayValue { get; set; }
+        public string DisplayValue { get; private set; }
         public string Get()
         {
             return DisplayValue;
@@ -32,7 +30,7 @@ namespace Warewolf.Options
     }
     public class IndexAttribute : Attribute
     {
-        private int _index;
+        private readonly int _index;
 
         public IndexAttribute(int index)
         {
@@ -53,7 +51,7 @@ namespace Warewolf.Options
         }
     }
 
-    public enum enDecisionType
+    public enum EnDecisionType
     {
         [Index(20)] [DecisionTypeDisplayValue("Not a Valid Decision Type")] Choose,
         [Index(21)] [DecisionTypeDisplayValue("There is An Error")] IsError,
@@ -66,8 +64,8 @@ namespace Warewolf.Options
         [Index(28)] [DecisionTypeDisplayValue("Not Text")] IsNotText,
         [Index(29)] [DecisionTypeDisplayValue("Is Alphanumeric")] IsAlphanumeric,
         [Index(30)] [DecisionTypeDisplayValue("Not Alphanumeric")] IsNotAlphanumeric,
-        [Index(31)] [DecisionTypeDisplayValue("Is XML")] IsXML,
-        [Index(32)] [DecisionTypeDisplayValue("Not XML")] IsNotXML,
+        [Index(31)] [DecisionTypeDisplayValue("Is XML")] IsXml,
+        [Index(32)] [DecisionTypeDisplayValue("Not XML")] IsNotXml,
         [Index(33)] [DecisionTypeDisplayValue("Is Date")] IsDate,
         [Index(34)] [DecisionTypeDisplayValue("Not Date")] IsNotDate,
         [Index(35)] [DecisionTypeDisplayValue("Is Email")] IsEmail,
@@ -96,51 +94,51 @@ namespace Warewolf.Options
         [Index(19)] [DecisionTypeDisplayValue("Not Base64")] IsNotBase64
     }
 
-    public static class enDecisionTypeExtensionMethods
+    public static class EnDecisionTypeExtensionMethods
     {
-        public static bool IsTripleOperand(this enDecisionType decisionType)
+        public static bool IsTripleOperand(this EnDecisionType decisionType)
         {
             return
-                decisionType == enDecisionType.IsBetween ||
-                decisionType == enDecisionType.NotBetween;
+                decisionType == EnDecisionType.IsBetween ||
+                decisionType == EnDecisionType.NotBetween;
         }
-        public static bool IsSingleOperand(this enDecisionType decisionType)
+        public static bool IsSingleOperand(this EnDecisionType decisionType)
         {
             return
-                decisionType == enDecisionType.Choose ||
-                decisionType == enDecisionType.IsError ||
-                decisionType == enDecisionType.IsNotError ||
-                decisionType == enDecisionType.IsNull ||
-                decisionType == enDecisionType.IsNotNull ||
-                decisionType == enDecisionType.IsNumeric ||
-                decisionType == enDecisionType.IsNotNumeric ||
-                decisionType == enDecisionType.IsText ||
-                decisionType == enDecisionType.IsNotText ||
-                decisionType == enDecisionType.IsAlphanumeric ||
-                decisionType == enDecisionType.IsNotAlphanumeric ||
-                decisionType == enDecisionType.IsXML ||
-                decisionType == enDecisionType.IsNotXML ||
-                decisionType == enDecisionType.IsDate ||
-                decisionType == enDecisionType.IsNotDate ||
-                decisionType == enDecisionType.IsEmail ||
-                decisionType == enDecisionType.IsNotEmail ||
-                decisionType == enDecisionType.IsRegEx ||
-                decisionType == enDecisionType.NotRegEx ||
-                decisionType == enDecisionType.IsBinary ||
-                decisionType == enDecisionType.IsNotBinary ||
-                decisionType == enDecisionType.IsHex ||
-                decisionType == enDecisionType.IsNotHex ||
-                decisionType == enDecisionType.IsBase64 ||
-                decisionType == enDecisionType.IsNotBase64
+                decisionType == EnDecisionType.Choose ||
+                decisionType == EnDecisionType.IsError ||
+                decisionType == EnDecisionType.IsNotError ||
+                decisionType == EnDecisionType.IsNull ||
+                decisionType == EnDecisionType.IsNotNull ||
+                decisionType == EnDecisionType.IsNumeric ||
+                decisionType == EnDecisionType.IsNotNumeric ||
+                decisionType == EnDecisionType.IsText ||
+                decisionType == EnDecisionType.IsNotText ||
+                decisionType == EnDecisionType.IsAlphanumeric ||
+                decisionType == EnDecisionType.IsNotAlphanumeric ||
+                decisionType == EnDecisionType.IsXml ||
+                decisionType == EnDecisionType.IsNotXml ||
+                decisionType == EnDecisionType.IsDate ||
+                decisionType == EnDecisionType.IsNotDate ||
+                decisionType == EnDecisionType.IsEmail ||
+                decisionType == EnDecisionType.IsNotEmail ||
+                decisionType == EnDecisionType.IsRegEx ||
+                decisionType == EnDecisionType.NotRegEx ||
+                decisionType == EnDecisionType.IsBinary ||
+                decisionType == EnDecisionType.IsNotBinary ||
+                decisionType == EnDecisionType.IsHex ||
+                decisionType == EnDecisionType.IsNotHex ||
+                decisionType == EnDecisionType.IsBase64 ||
+                decisionType == EnDecisionType.IsNotBase64
             ;
         }
 
-        public static void RenderDescription(this enDecisionType decisionType, StringBuilder sb)
+        public static void RenderDescription(this EnDecisionType decisionType, StringBuilder sb)
         {
-            var name = Enum.GetName(typeof(enDecisionType), decisionType);
-            var memberInfo = typeof(enDecisionType).GetMember(name).First();
+            var name = Enum.GetName(typeof(EnDecisionType), decisionType);
+            var memberInfo = typeof(EnDecisionType).GetMember(name ?? string.Empty).First();
             var attribute = memberInfo.GetCustomAttributes(typeof(DecisionTypeDisplayValue), false).First() as DecisionTypeDisplayValue;
-            sb.Append(attribute.DisplayValue);
+            sb.Append(attribute?.DisplayValue);
         }
     }
 }

@@ -42,7 +42,7 @@ namespace Dev2.Activities
     [ToolDescriptorInfo("ControlFlow-Gate", nameof(Gate), ToolType.Native, "8999E58B-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Activities", "1.0.0.0", "Legacy", "Control Flow", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Flow_Gate")]
     public class GateActivity : DsfActivityAbstract<string>, IEquatable<GateActivity>, IStateNotifierRequired
     {
-        private IStateNotifier _stateNotifier = null;
+        private IStateNotifier _stateNotifier;
 
         public GateActivity()
             : base(nameof(Gate))
@@ -66,7 +66,7 @@ namespace Dev2.Activities
         /// Returns false if any variable does not exist
         /// Returns false if there is an exception of any kind
         /// </summary>
-        private bool Passing(int update)
+        private bool Passing()
         {
             if (!Conditions.Any())
             {
@@ -150,7 +150,7 @@ namespace Dev2.Activities
                     return ExecuteNormal(data, update, allErrors);
                 }
 
-                return ExecuteRetry(data, update, allErrors, retryState.Item2);
+                return ExecuteRetry(data, allErrors, retryState.Item2);
             }
             catch (Exception e)
             {
@@ -253,9 +253,10 @@ namespace Dev2.Activities
         /// executed again.
         /// </summary>
         /// <param name="data"></param>
-        /// <param name="update"></param>
+        /// <param name="allErrors">Errors so far</param>
+        /// <param name="algo">todo: describe algo parameter on ExecuteRetry</param>
         /// <returns></returns>
-        private IDev2Activity ExecuteRetry(IDSFDataObject data, int update, IErrorResultTO allErrors, IEnumerator<bool> _algo)
+        private IDev2Activity ExecuteRetry(IDSFDataObject data, IErrorResultTO allErrors, IEnumerator<bool> algo)
         {
             if (GateOptions.GateOpts is Continue)
             {
@@ -276,14 +277,13 @@ namespace Dev2.Activities
             // if allowed to retry and its time for a retry return NextNode
             // otherwise schedule this environment and current activity to 
             // be executed at the calculated latter time
-            var retryAllowed = _algo.MoveNext() && _algo.Current;
+            var retryAllowed = algo.MoveNext() && algo.Current;
             if (retryAllowed)
             {
                 return NextNodes.First();
-            } else
-            {
-                allErrors.AddError("retry count exceeded");
             }
+
+            allErrors.AddError("retry count exceeded");
 
             // Gate has reached maximum retries.
             return null;
@@ -294,6 +294,7 @@ namespace Dev2.Activities
         /// </summary>
         /// <param name="data"></param>
         /// <param name="update"></param>
+        /// <param name="allErrors">todo: describe allErrors parameter on ExecuteNormal</param>
         /// <returns></returns>
         private IDev2Activity ExecuteNormal(IDSFDataObject data, int update, IErrorResultTO allErrors)
         {
@@ -310,7 +311,7 @@ namespace Dev2.Activities
                 }
 
                 //----------ExecuteTool--------------
-                var passing = Passing(update);
+                var passing = Passing();
                 if (passing)
                 {
                     if (_dataObject.IsDebugMode())
@@ -345,7 +346,7 @@ namespace Dev2.Activities
                             if (canRetry)
                             {
                                 var goBackToActivity = GetRetryEntryPoint().As<GateActivity>();
-                                goBackToActivity.UpdateRetryState(this, _dataObject.Gates[goBackToActivity].Item1);
+                                goBackToActivity.UpdateRetryState(_dataObject.Gates[goBackToActivity].Item1);
                                 next = goBackToActivity;
                             }
                             else
@@ -367,9 +368,9 @@ namespace Dev2.Activities
                 {
                     UpdateWithAssertions(data);
                 }
-                var serviceTestStep = _dataObject.ServiceTest?.TestSteps?.Flatten(step => step.Children)?.FirstOrDefault(step => step.ActivityID == _originalUniqueId);
+                var serviceTestStep = _dataObject?.ServiceTest?.TestSteps?.Flatten(step => step.Children)?.FirstOrDefault(step => step.ActivityID == _originalUniqueId);
 
-                if (_dataObject.IsServiceTestExecution && serviceTestStep != null)
+                if (_dataObject != null && _dataObject.IsServiceTestExecution && serviceTestStep != null)
                 {
                     var testRunResult = new TestRunResult();
                     GetFinalTestRunResult(serviceTestStep, testRunResult);
@@ -424,11 +425,11 @@ namespace Dev2.Activities
             throw new Exception("this should not be reached");
         }
 
-        private void UpdateRetryState(GateActivity gateActivity, RetryState _retryState)
+        private void UpdateRetryState(RetryState retryState)
         {
             if (GateOptions.GateOpts is Continue)
             {
-                _retryState.NumberOfRetries++;
+                retryState.NumberOfRetries++;
             }
             else
             {
@@ -501,7 +502,7 @@ namespace Dev2.Activities
                 {
                     Type = StateVariable.StateType.Input,
                     Name = nameof(Passing),
-                    Value = Passing(0) ? "true" : "false",
+                    Value = Passing() ? "true" : "false",
                 },
                 new StateVariable
                 {
@@ -533,11 +534,11 @@ namespace Dev2.Activities
         {
             throw new NotImplementedException();
         }
-        private IEnumerable<string[]> GetArgumentsFunc(string col1s, string col2s, string col3s)
+        private IEnumerable<string[]> GetArgumentsFunc(string col1S, string col2S, string col3S)
         {
-            var col1 = _dataObject.Environment.EvalAsList(col1s, 0, false);
-            var col2 = _dataObject.Environment.EvalAsList(col2s ?? "", 0, false);
-            var col3 = _dataObject.Environment.EvalAsList(col3s ?? "", 0, false);
+            var col1 = _dataObject.Environment.EvalAsList(col1S, 0, false);
+            var col2 = _dataObject.Environment.EvalAsList(col2S ?? "", 0, false);
+            var col3 = _dataObject.Environment.EvalAsList(col3S ?? "", 0, false);
 
             var iter = new WarewolfListIterator();
             var c1 = new WarewolfAtomIterator(col1);
@@ -552,7 +553,6 @@ namespace Dev2.Activities
                 var item = new[] { iter.FetchNextValue(c1), iter.FetchNextValue(c2), iter.FetchNextValue(c3) };
                 yield return item;
             }
-            yield break;
         }
         /// <summary>
         /// Where should we send execution if this gate fails and not set to StopOnFailure
@@ -573,34 +573,27 @@ namespace Dev2.Activities
 
             try
             {
-                var dds = Conditions.GetEnumerator();
+                var dds = Conditions?.GetEnumerator();
                 var text = new StringBuilder();
-                if (dds.MoveNext() && dds.Current.Cond.MatchType != enDecisionType.Choose)
+                if (dds != null && dds.MoveNext() && dds.Current != null && dds.Current.Cond.MatchType != EnDecisionType.Choose)
                 {
                     dds.Current.RenderDescription(text);
                 }
-                while (dds.MoveNext())
+                while (dds != null && dds.MoveNext())
                 {
                     var conditionExpression = dds.Current;
-                    if (conditionExpression.Cond.MatchType == enDecisionType.Choose)
+                    if (conditionExpression != null && conditionExpression.Cond.MatchType == EnDecisionType.Choose)
                     {
                         continue;
                     }
 
                     text.Append("\n AND \n");
-                    conditionExpression.RenderDescription(text);
+                    conditionExpression?.RenderDescription(text);
                 }
 
                 var itemToAdd = new DebugItem();
                 var s = text.ToString();
-                if (string.IsNullOrWhiteSpace(s))
-                {
-                    AddDebugItem(new DebugItemStaticDataParams(s, "Always Allow"), itemToAdd);
-                }
-                else
-                {
-                    AddDebugItem(new DebugItemStaticDataParams(s, "Allow If"), itemToAdd);
-                }
+                AddDebugItem(string.IsNullOrWhiteSpace(s) ? new DebugItemStaticDataParams(s, "Always Allow") : new DebugItemStaticDataParams(s, "Allow If"), itemToAdd);
                 result.Add(itemToAdd);
             }
             catch (JsonSerializationException e)
@@ -635,7 +628,7 @@ namespace Dev2.Activities
             return new List<DsfForEachItem>();
         }
 
-        public ActivityFunc<string, bool> DataFunc { get; set; }
+        public ActivityFunc<string, bool> DataFunc { get; private set; }
         public IList<ConditionExpression> Conditions { get; set; }
 
         public Guid RetryEntryPointId { get; set; }

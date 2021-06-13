@@ -18,6 +18,6 @@ namespace Warewolf.Data.Decisions.Operations
     {
         public bool Invoke(string[] cols) => Regex.IsMatch(cols[0], cols[1]);
 
-        public Enum HandlesType() => enDecisionType.IsRegEx;
+        public Enum HandlesType() => EnDecisionType.IsRegEx;
     }
 }

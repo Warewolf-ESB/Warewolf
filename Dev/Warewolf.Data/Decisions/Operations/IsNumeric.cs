@@ -20,6 +20,6 @@ namespace Warewolf.Data.Decisions.Operations
     {
         public bool Invoke(string[] cols) => cols[0].IsNumeric();
 
-        public Enum HandlesType() => enDecisionType.IsNumeric;
+        public Enum HandlesType() => EnDecisionType.IsNumeric;
     }
 }

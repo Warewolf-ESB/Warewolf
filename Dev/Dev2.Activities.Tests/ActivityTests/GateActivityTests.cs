@@ -151,8 +151,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             {
                 Conditions = new List<ConditionExpression>
                 {
-                    new ConditionExpression { Left = "[[a]]", Cond = new ConditionMatch { MatchType = enDecisionType.IsNull } },
-                    new ConditionExpression { Left = "[[a]]", Cond = new ConditionBetween { MatchType = enDecisionType.IsBetween, From = "1", To = "10"} },
+                    new ConditionExpression { Left = "[[a]]", Cond = new ConditionMatch { MatchType = EnDecisionType.IsNull } },
+                    new ConditionExpression { Left = "[[a]]", Cond = new ConditionBetween { MatchType = EnDecisionType.IsBetween, From = "1", To = "10"} },
                 },
             };
 
@@ -199,7 +199,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var condition = new ConditionExpression
             {
                 Left = "[[a]]",
-                Cond = new ConditionMatch { MatchType = enDecisionType.IsEqual, Right = "bob" }
+                Cond = new ConditionMatch { MatchType = EnDecisionType.IsEqual, Right = "bob" }
             };
             var conditions = new List<ConditionExpression>();
             conditions.Add(condition);
@@ -235,7 +235,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var condition = new ConditionExpression
             {
                 Left = "[[a]]",
-                Cond = new ConditionMatch { MatchType = enDecisionType.IsEqual, Right = "bob" }
+                Cond = new ConditionMatch { MatchType = EnDecisionType.IsEqual, Right = "bob" }
             };
             var conditions = new List<ConditionExpression>();
             conditions.Add(condition);
@@ -276,7 +276,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var condition = new ConditionExpression
             {
                 Left = "[[a]]",
-                Cond = new ConditionMatch { MatchType = enDecisionType.IsEqual, Right = "bob" }
+                Cond = new ConditionMatch { MatchType = EnDecisionType.IsEqual, Right = "bob" }
             };
             var conditions = new List<ConditionExpression>();
             conditions.Add(condition);
@@ -319,7 +319,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var condition = new ConditionExpression
             {
                 Left = "[[a]]",
-                Cond = new ConditionMatch { MatchType = enDecisionType.IsEqual, Right = "bob" }
+                Cond = new ConditionMatch { MatchType = EnDecisionType.IsEqual, Right = "bob" }
             };
             var conditions = new List<ConditionExpression>();
             conditions.Add(condition);
@@ -355,7 +355,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var condition = new ConditionExpression
             {
                 Left = "[[a]]",
-                Cond = new ConditionMatch { MatchType = enDecisionType.IsEqual, Right = "bob" }
+                Cond = new ConditionMatch { MatchType = EnDecisionType.IsEqual, Right = "bob" }
             };
             var conditions = new List<ConditionExpression>();
             conditions.Add(condition);
@@ -396,7 +396,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var condition = new ConditionExpression
             {
                 Left = "[[a]]",
-                Cond = new ConditionMatch { MatchType = enDecisionType.IsEqual, Right = "bob" }
+                Cond = new ConditionMatch { MatchType = EnDecisionType.IsEqual, Right = "bob" }
             };
             var conditions = new List<ConditionExpression>();
             conditions.Add(condition);
@@ -433,7 +433,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var failingCondition = new ConditionExpression
             {
                 Left = "[[somebob]]",
-                Cond = new ConditionMatch { MatchType = enDecisionType.IsEqual, Right = "another bob" }
+                Cond = new ConditionMatch { MatchType = EnDecisionType.IsEqual, Right = "another bob" }
             };
             var failingConditions = new List<ConditionExpression>();
             failingConditions.Add(failingCondition);
@@ -451,7 +451,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var passingCondition = new ConditionExpression
             {
                 Left = "[[a]]",
-                Cond = new ConditionMatch { MatchType = enDecisionType.IsEqual, Right = "bob" }
+                Cond = new ConditionMatch { MatchType = EnDecisionType.IsEqual, Right = "bob" }
             };
             var passingConditions = new List<ConditionExpression>();
             passingConditions.Add(passingCondition);
@@ -489,7 +489,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var failingCondition = new ConditionExpression
             {
                 Left = "[[somebob]]",
-                Cond = new ConditionMatch { MatchType = enDecisionType.IsEqual, Right = "notbob" }
+                Cond = new ConditionMatch { MatchType = EnDecisionType.IsEqual, Right = "notbob" }
             };
             var failingConditions = new List<ConditionExpression>();
             failingConditions.Add(failingCondition);
@@ -507,7 +507,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var passingCondition = new ConditionExpression
             {
                 Left = "[[a]]",
-                Cond = new ConditionMatch { MatchType = enDecisionType.IsEqual, Right = "bob" }
+                Cond = new ConditionMatch { MatchType = EnDecisionType.IsEqual, Right = "bob" }
             };
             var passingConditions = new List<ConditionExpression>();
             passingConditions.Add(passingCondition);

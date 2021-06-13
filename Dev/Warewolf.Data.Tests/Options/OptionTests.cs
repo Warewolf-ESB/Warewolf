@@ -492,7 +492,7 @@ namespace Warewolf.Data.Tests
             Assert.IsNull(optionConditionExpression.Name);
             Assert.IsNull(optionConditionExpression.Left);
             Assert.IsNull(optionConditionExpression.SelectedMatchType);
-            Assert.AreEqual(enDecisionType.Choose, optionConditionExpression.MatchType);
+            Assert.AreEqual(EnDecisionType.Choose, optionConditionExpression.MatchType);
             Assert.IsNull(optionConditionExpression.Right);
             Assert.IsNull(optionConditionExpression.From);
             Assert.IsNull(optionConditionExpression.To);
@@ -515,7 +515,7 @@ namespace Warewolf.Data.Tests
             optionConditionExpression.SelectedMatchType = new NamedInt { Name = "=", Value = 19 };
             Assert.AreEqual("=", optionConditionExpression.SelectedMatchType.Name);
             Assert.AreEqual(19, optionConditionExpression.SelectedMatchType.Value);
-            Assert.AreEqual(enDecisionType.IsEqual, optionConditionExpression.MatchType);
+            Assert.AreEqual(EnDecisionType.IsEqual, optionConditionExpression.MatchType);
 
             Assert.IsFalse(optionConditionExpression.IsBetween);
             Assert.IsFalse(optionConditionExpression.IsSingleOperand);
@@ -525,7 +525,7 @@ namespace Warewolf.Data.Tests
             optionConditionExpression.SelectedMatchType = new NamedInt { Name = "Is NULL", Value = 3 };
             Assert.AreEqual("Is NULL", optionConditionExpression.SelectedMatchType.Name);
             Assert.AreEqual(3, optionConditionExpression.SelectedMatchType.Value);
-            Assert.AreEqual(enDecisionType.IsNull, optionConditionExpression.MatchType);
+            Assert.AreEqual(EnDecisionType.IsNull, optionConditionExpression.MatchType);
 
             Assert.IsFalse(optionConditionExpression.IsBetween);
             Assert.IsTrue(optionConditionExpression.IsSingleOperand);
@@ -533,7 +533,7 @@ namespace Warewolf.Data.Tests
             optionConditionExpression.SelectedMatchType = new NamedInt { Name = "Is Between", Value = 31 };
             Assert.AreEqual("Is Between", optionConditionExpression.SelectedMatchType.Name);
             Assert.AreEqual(31, optionConditionExpression.SelectedMatchType.Value);
-            Assert.AreEqual(enDecisionType.IsBetween, optionConditionExpression.MatchType);
+            Assert.AreEqual(EnDecisionType.IsBetween, optionConditionExpression.MatchType);
 
             Assert.IsTrue(optionConditionExpression.IsBetween);
             Assert.IsFalse(optionConditionExpression.IsSingleOperand);
@@ -564,7 +564,7 @@ namespace Warewolf.Data.Tests
             optionConditionExpression.SelectedMatchType = new NamedInt { Name = "Is NULL", Value = 3 };
             Assert.AreEqual("Is NULL", optionConditionExpression.SelectedMatchType.Name);
             Assert.AreEqual(3, optionConditionExpression.SelectedMatchType.Value);
-            Assert.AreEqual(enDecisionType.IsNull, optionConditionExpression.MatchType);
+            Assert.AreEqual(EnDecisionType.IsNull, optionConditionExpression.MatchType);
 
             Assert.IsFalse(optionConditionExpression.IsBetween);
             Assert.IsTrue(optionConditionExpression.IsSingleOperand);
@@ -587,7 +587,7 @@ namespace Warewolf.Data.Tests
             optionConditionExpression.SelectedMatchType = new NamedInt { Name = "Is Between", Value = 31 };
             Assert.AreEqual("Is Between", optionConditionExpression.SelectedMatchType.Name);
             Assert.AreEqual(31, optionConditionExpression.SelectedMatchType.Value);
-            Assert.AreEqual(enDecisionType.IsBetween, optionConditionExpression.MatchType);
+            Assert.AreEqual(EnDecisionType.IsBetween, optionConditionExpression.MatchType);
 
             Assert.IsTrue(optionConditionExpression.IsBetween);
             Assert.IsFalse(optionConditionExpression.IsSingleOperand);

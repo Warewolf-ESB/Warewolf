@@ -15,7 +15,7 @@ namespace Warewolf.Data.Decisions.Operations
 {
     public class IsNotEqual : IDecisionOperation
     {
-        public Enum HandlesType() => enDecisionType.IsNotEqual;
+        public Enum HandlesType() => EnDecisionType.IsNotEqual;
 
         public bool Invoke(string[] cols) => !cols[0].Equals(cols[1], StringComparison.InvariantCulture);
     }
