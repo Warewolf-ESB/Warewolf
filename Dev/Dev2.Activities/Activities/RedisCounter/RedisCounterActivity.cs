@@ -14,22 +14,24 @@ using System.Linq;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
-using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Common.State;
 using Dev2.Data.ServiceModel;
 using Dev2.Diagnostics;
 using Dev2.Runtime.Interfaces;
 using Dev2.Util;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
-using Warewolf.Core;
 using Warewolf.Driver.Redis;
 using Warewolf.Interfaces;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage.Interfaces;
+// ReSharper disable UnusedAutoPropertyAccessor.Global
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable InconsistentNaming
+// ReSharper disable UnusedMember.Global
+// Disabled to maintain compatibility with resources already serialized with this API
 
 namespace Dev2.Activities.RedisCounter
 {
-    //[ToolDescriptorInfo(nameof(RedisCounter), "Redis Counter", ToolType.Native, "3446a1fa-ea47-477f-8ee7-6eb72b0d41d9", "Dev2.Activities", "1.0.0.0", "Legacy", "Database", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Database_RedisCounter")]
     public class RedisCounterActivity : DsfBaseActivity, IEquatable<RedisCounterActivity>
     {
         long _result;
@@ -38,7 +40,7 @@ namespace Dev2.Activities.RedisCounter
         internal readonly List<string> _messages = new List<string>();
 
         public RedisCounterActivity()
-             : this(Dev2.Runtime.Hosting.ResourceCatalog.Instance, new ResponseManager(), null)
+             : this(Runtime.Hosting.ResourceCatalog.Instance, new ResponseManager(), null)
         {
 
         }
@@ -118,7 +120,10 @@ namespace Dev2.Activities.RedisCounter
             };
         }
 
+        // ReSharper disable MemberCanBePrivate.Global
+        // Disabled to maintain compatibility with resources already serialized with this API
         public RedisSource RedisSource { get; set; }
+        // ReSharper restore MemberCanBePrivate.Global
         protected override List<string> PerformExecution(Dictionary<string, string> evaluatedValues)
         {
             try

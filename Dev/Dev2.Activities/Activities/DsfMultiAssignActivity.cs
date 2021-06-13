@@ -35,7 +35,10 @@ using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 using WarewolfParserInterop;
 
+// ReSharper disable CheckNamespace
+// Disabled to maintain compatibility with resources already serialized with this namespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
+// ReSharper restore CheckNamespace
 {
     public class DsfMultiAssignActivity : DsfActivityAbstract<string>
     {
@@ -44,20 +47,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public static readonly string CalculateTextConvertSuffix = GlobalConstants.CalculateTextConvertSuffix;
         public static readonly string CalculateTextConvertFormat = GlobalConstants.CalculateTextConvertFormat;
 
-        IList<ActivityDTO> _fieldsCollection;
-
-        public IList<ActivityDTO> FieldsCollection
-
-        {
-            get
-            {
-                return _fieldsCollection;
-            }
-            set
-            {
-                _fieldsCollection = value;
-            }
-        }
+        public IList<ActivityDTO> FieldsCollection { get; set; }
 
         public bool UpdateAllOccurrences { get; set; }
         public bool CreateBookmark { get; set; }
@@ -68,7 +58,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public DsfMultiAssignActivity()
             : base("Assign")
         {
-            _fieldsCollection = new List<ActivityDTO>();
+            FieldsCollection = new List<ActivityDTO>();
         }
 
         public override List<string> GetOutputs() => FieldsCollection.Select(dto => dto.FieldName).ToList();
@@ -93,10 +83,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 if (!errors.HasErrors())
                 {
                     var innerCount = 1;
-                    foreach (ActivityDTO t in FieldsCollection)
-                    {
-                        allErrors = TryExecuteField(dataObject, update, innerCount++, t, allErrors);
-                    }
+                    allErrors = FieldsCollection.Aggregate(allErrors, (current, t) => TryExecuteField(dataObject, update, innerCount++, t, current));
                     dataObject.Environment.CommitAssign();
                     allErrors.MergeErrors(errors);
                 }
@@ -216,12 +203,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             var calcExpression = ExecutionEnvironment.WarewolfAtomToString(warewolfAtom);
             DataListUtil.IsCalcEvaluation(calcExpression, out string exp);
-            var res = functionEvaluator.TryEvaluateFunction(exp, out string eval, out string error);
+            var res = functionEvaluator.TryEvaluateFunction(exp, out string eval, out _);
             if (eval == exp.Replace("\"", "") && exp.Contains("\""))
             {
                 try
                 {
-                    var b = functionEvaluator.TryEvaluateFunction(exp.Replace("\"", ""), out string eval2, out error);
+                    var b = functionEvaluator.TryEvaluateFunction(exp.Replace("\"", ""), out string eval2, out _);
                     if (b)
                     {
                         eval = eval2;
@@ -256,7 +243,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     AddDebugItem(new DebugItemWarewolfAtomResult("", assignValue.Value, environment.EvalToExpression(assignValue.Name, update), "", VariableLabelText, NewFieldLabelText, "="), debugItem);
                     return debugItem;
                 }
-                if (!ExecutionEnvironment.IsValidVariableExpression(assignValue.Name, out string errorMessage, update))
+                if (!ExecutionEnvironment.IsValidVariableExpression(assignValue.Name, out _, update))
                 {
                     return null;
                 }
@@ -265,7 +252,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return debugItem;
         }
 
-        private void AddErrorDebugItem(IExecutionEnvironment environment, int innerCount, IAssignValue assignValue, int update, DebugItem debugItem, string VariableLabelText, string NewFieldLabelText)
+        private void AddErrorDebugItem(IExecutionEnvironment environment, int innerCount, IAssignValue assignValue, int update, DebugItem debugItem, string variableLabelText, string newFieldLabelText)
         {
             AddDebugItem(new DebugItemStaticDataParams("", innerCount.ToString(CultureInfo.InvariantCulture)), debugItem);
             if (DataListUtil.IsEvaluated(assignValue.Value))
@@ -276,24 +263,24 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     if (newValueResult is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult valueResult)
                     {
-                        AddDebugItem(new DebugItemWarewolfAtomResult("", ExecutionEnvironment.WarewolfAtomToString(valueResult.Item), environment.EvalToExpression(assignValue.Name, update), assignValue.Value, VariableLabelText, NewFieldLabelText, "="), debugItem);
+                        AddDebugItem(new DebugItemWarewolfAtomResult("", ExecutionEnvironment.WarewolfAtomToString(valueResult.Item), environment.EvalToExpression(assignValue.Name, update), assignValue.Value, variableLabelText, newFieldLabelText, "="), debugItem);
                     }
                 }
                 else
                 {
                     if (newValueResult.IsWarewolfAtomListresult)
                     {
-                        AddDebugItem(new DebugItemWarewolfAtomListResult(null, newValueResult, environment.EvalToExpression(assignValue.Value, update), assignValue.Name, VariableLabelText, NewFieldLabelText, "="), debugItem);
+                        AddDebugItem(new DebugItemWarewolfAtomListResult(null, newValueResult, environment.EvalToExpression(assignValue.Value, update), assignValue.Name, variableLabelText, newFieldLabelText, "="), debugItem);
                     }
                 }
             }
             else
             {
-                AddDebugItem(new DebugItemWarewolfAtomResult("", assignValue.Value, environment.EvalToExpression(assignValue.Name, update), "", VariableLabelText, NewFieldLabelText, "="), debugItem);
+                AddDebugItem(new DebugItemWarewolfAtomResult("", assignValue.Value, environment.EvalToExpression(assignValue.Name, update), "", variableLabelText, newFieldLabelText, "="), debugItem);
             }
         }
 
-        void CreateDebugInput(IExecutionEnvironment environment, int innerCount, IAssignValue assignValue, int update, DebugItem debugItem, string VariableLabelText, string NewFieldLabelText)
+        void CreateDebugInput(IExecutionEnvironment environment, int innerCount, IAssignValue assignValue, int update, DebugItem debugItem, string variableLabelText, string newFieldLabelText)
         {
             if (!DataListUtil.IsEvaluated(assignValue.Value))
             {
@@ -303,24 +290,24 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     if (evalResult is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult scalarResult)
                     {
-                        AddDebugItem(new DebugItemWarewolfAtomResult(ExecutionEnvironment.WarewolfAtomToString(scalarResult.Item), assignValue.Value, environment.EvalToExpression(assignValue.Name, update), "", VariableLabelText, NewFieldLabelText, "="), debugItem);
+                        AddDebugItem(new DebugItemWarewolfAtomResult(ExecutionEnvironment.WarewolfAtomToString(scalarResult.Item), assignValue.Value, environment.EvalToExpression(assignValue.Name, update), "", variableLabelText, newFieldLabelText, "="), debugItem);
                     }
                 }
                 else
                 {
-                    AddWarewolfAtomListDebugResult(environment, assignValue, update, debugItem, VariableLabelText, NewFieldLabelText, evalResult);
+                    AddWarewolfAtomListDebugResult(environment, assignValue, update, debugItem, variableLabelText, newFieldLabelText, evalResult);
                 }
             }
             else
             {
                 if (DataListUtil.IsEvaluated(assignValue.Value))
                 {
-                    AddEvaluatedDebugItem(environment, innerCount, assignValue, update, debugItem, VariableLabelText, NewFieldLabelText);
+                    AddEvaluatedDebugItem(environment, innerCount, assignValue, update, debugItem, variableLabelText, newFieldLabelText);
                 }
             }
         }
 
-        void AddEvaluatedDebugItem(IExecutionEnvironment environment, int innerCount, IAssignValue assignValue, int update, DebugItem debugItem, string VariableLabelText, string NewFieldLabelText)
+        void AddEvaluatedDebugItem(IExecutionEnvironment environment, int innerCount, IAssignValue assignValue, int update, DebugItem debugItem, string variableLabelText, string newFieldLabelText)
         {
             var oldValueResult = environment.Eval(assignValue.Name, update);
             var newValueResult = environment.Eval(assignValue.Value, update);
@@ -331,40 +318,40 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 var scalarResult = oldValueResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
                 if (valueResult != null && scalarResult != null)
                 {
-                    AddDebugItem(new DebugItemWarewolfAtomResult(ExecutionEnvironment.WarewolfAtomToString(scalarResult.Item), ExecutionEnvironment.WarewolfAtomToString(valueResult.Item), assignValue.Name, environment.EvalToExpression(assignValue.Value, update), VariableLabelText, NewFieldLabelText, "="), debugItem);
+                    AddDebugItem(new DebugItemWarewolfAtomResult(ExecutionEnvironment.WarewolfAtomToString(scalarResult.Item), ExecutionEnvironment.WarewolfAtomToString(valueResult.Item), assignValue.Name, environment.EvalToExpression(assignValue.Value, update), variableLabelText, newFieldLabelText, "="), debugItem);
                 }
             }
             else if (newValueResult.IsWarewolfAtomResult && oldValueResult.IsWarewolfAtomListresult)
             {
-                AddDebugItem(new DebugItemWarewolfAtomListResult(null, newValueResult, environment.EvalToExpression(assignValue.Value, update), environment.EvalToExpression(assignValue.Name, update), VariableLabelText, NewFieldLabelText, "="), debugItem);
+                AddDebugItem(new DebugItemWarewolfAtomListResult(null, newValueResult, environment.EvalToExpression(assignValue.Value, update), environment.EvalToExpression(assignValue.Name, update), variableLabelText, newFieldLabelText, "="), debugItem);
             }
             else if (oldValueResult.IsWarewolfAtomResult && newValueResult.IsWarewolfAtomListresult)
             {
-                AddDebugItem(new DebugItemWarewolfAtomListResult(null, newValueResult, environment.EvalToExpression(assignValue.Value, update), environment.EvalToExpression(assignValue.Name, update), VariableLabelText, NewFieldLabelText, "="), debugItem);
+                AddDebugItem(new DebugItemWarewolfAtomListResult(null, newValueResult, environment.EvalToExpression(assignValue.Value, update), environment.EvalToExpression(assignValue.Name, update), variableLabelText, newFieldLabelText, "="), debugItem);
             }
             else
             {
                 if (oldValueResult.IsWarewolfAtomListresult && newValueResult.IsWarewolfAtomListresult)
                 {
                     var recSetResult = oldValueResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
-                    AddDebugItem(new DebugItemWarewolfAtomListResult(recSetResult, newValueResult, environment.EvalToExpression(assignValue.Value, update), environment.EvalToExpression(assignValue.Name, update), VariableLabelText, NewFieldLabelText, "="), debugItem);
+                    AddDebugItem(new DebugItemWarewolfAtomListResult(recSetResult, newValueResult, environment.EvalToExpression(assignValue.Value, update), environment.EvalToExpression(assignValue.Name, update), variableLabelText, newFieldLabelText, "="), debugItem);
                 }
             }
         }
 
-        void AddWarewolfAtomListDebugResult(IExecutionEnvironment environment, IAssignValue assignValue, int update, DebugItem debugItem, string VariableLabelText, string NewFieldLabelText, CommonFunctions.WarewolfEvalResult evalResult)
+        void AddWarewolfAtomListDebugResult(IExecutionEnvironment environment, IAssignValue assignValue, int update, DebugItem debugItem, string variableLabelText, string newFieldLabelText, CommonFunctions.WarewolfEvalResult evalResult)
         {
             if (evalResult.IsWarewolfAtomListresult)
             {
                 if (DataListUtil.GetRecordsetIndexType(assignValue.Name) == enRecordsetIndexType.Blank)
                 {
-                    AddDebugItem(new DebugItemWarewolfAtomListResult(null, assignValue.Value, "", environment.EvalToExpression(assignValue.Name, update), VariableLabelText, NewFieldLabelText, "="), debugItem);
+                    AddDebugItem(new DebugItemWarewolfAtomListResult(null, assignValue.Value, "", environment.EvalToExpression(assignValue.Name, update), variableLabelText, newFieldLabelText, "="), debugItem);
                 }
                 else
                 {
                     if (evalResult is CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult recSetResult)
                     {
-                        AddDebugItem(new DebugItemWarewolfAtomListResult(recSetResult, assignValue.Value, "", environment.EvalToExpression(assignValue.Name, update), VariableLabelText, NewFieldLabelText, "="), debugItem);
+                        AddDebugItem(new DebugItemWarewolfAtomListResult(recSetResult, assignValue.Value, "", environment.EvalToExpression(assignValue.Name, update), variableLabelText, newFieldLabelText, "="), debugItem);
                     }
                 }
             }
@@ -394,7 +381,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             _debugOutputs.Add(debugItem);
         }
 
-        private void AddEvaluatedDebugItem(IExecutionEnvironment environment, int innerCount, IAssignValue assignValue, int update, string VariableLabelText, string NewFieldLabelText, DebugItem debugItem)
+        private void AddEvaluatedDebugItem(IExecutionEnvironment environment, int innerCount, IAssignValue assignValue, int update, string variableLabelText, string newFieldLabelText, DebugItem debugItem)
         {
             if (DataListUtil.IsEvaluated(assignValue.Value))
             {
@@ -402,19 +389,19 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 AddDebugItem(new DebugItemStaticDataParams("", innerCount.ToString(CultureInfo.InvariantCulture)), debugItem);
                 if (evalResult.IsWarewolfAtomResult && evalResult is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult scalarResult)
                 {
-                    AddDebugItem(new DebugItemWarewolfAtomResult(ExecutionEnvironment.WarewolfAtomToString(scalarResult.Item), "", environment.EvalToExpression(assignValue.Name, update), "", VariableLabelText, NewFieldLabelText, "="), debugItem);
+                    AddDebugItem(new DebugItemWarewolfAtomResult(ExecutionEnvironment.WarewolfAtomToString(scalarResult.Item), "", environment.EvalToExpression(assignValue.Name, update), "", variableLabelText, newFieldLabelText, "="), debugItem);
                 }
 
                 var evalResult2 = environment.Eval(assignValue.Value, update);
                 if (evalResult.IsWarewolfAtomListresult && evalResult is CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult recSetResult)
                 {
 
-                    AddDebugItem(DataListUtil.GetRecordsetIndexType(assignValue.Name) == enRecordsetIndexType.Blank ? new DebugItemWarewolfAtomListResult(recSetResult, evalResult2, "", assignValue.Name, VariableLabelText, NewFieldLabelText, "=") : new DebugItemWarewolfAtomListResult(recSetResult, environment.EvalToExpression(assignValue.Value, update), "", environment.EvalToExpression(assignValue.Name, update), VariableLabelText, NewFieldLabelText, "="), debugItem);
+                    AddDebugItem(DataListUtil.GetRecordsetIndexType(assignValue.Name) == enRecordsetIndexType.Blank ? new DebugItemWarewolfAtomListResult(recSetResult, evalResult2, "", assignValue.Name, variableLabelText, newFieldLabelText, "=") : new DebugItemWarewolfAtomListResult(recSetResult, environment.EvalToExpression(assignValue.Value, update), "", environment.EvalToExpression(assignValue.Name, update), variableLabelText, newFieldLabelText, "="), debugItem);
                 }
             }
         }
 
-        void AddDebugItem(IExecutionEnvironment environment, int innerCount, IAssignValue assignValue, int update, string VariableLabelText, string NewFieldLabelText, DebugItem debugItem)
+        void AddDebugItem(IExecutionEnvironment environment, int innerCount, IAssignValue assignValue, int update, string variableLabelText, string newFieldLabelText, DebugItem debugItem)
         {
             var evalResult = environment.Eval(assignValue.Name, update);
             AddDebugItem(new DebugItemStaticDataParams("", innerCount.ToString(CultureInfo.InvariantCulture)), debugItem);
@@ -422,14 +409,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 if (evalResult is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult scalarResult)
                 {
-                    AddDebugItem(new DebugItemWarewolfAtomResult(ExecutionEnvironment.WarewolfAtomToString(scalarResult.Item), assignValue.Value, environment.EvalToExpression(assignValue.Name, update), "", VariableLabelText, NewFieldLabelText, "="), debugItem);
+                    AddDebugItem(new DebugItemWarewolfAtomResult(ExecutionEnvironment.WarewolfAtomToString(scalarResult.Item), assignValue.Value, environment.EvalToExpression(assignValue.Name, update), "", variableLabelText, newFieldLabelText, "="), debugItem);
                 }
             }
             else
             {
                 if (evalResult.IsWarewolfAtomListresult && evalResult is CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult recSetResult)
                 {
-                    AddDebugItem(new DebugItemWarewolfAtomListResult(recSetResult, "", "", environment.EvalToExpression(assignValue.Name, update), VariableLabelText, NewFieldLabelText, "="), debugItem);
+                    AddDebugItem(new DebugItemWarewolfAtomListResult(recSetResult, "", "", environment.EvalToExpression(assignValue.Name, update), variableLabelText, newFieldLabelText, "="), debugItem);
                 }
 
             }

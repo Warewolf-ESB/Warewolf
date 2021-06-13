@@ -302,9 +302,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             AddDebugItem(new DebugItemStaticDataParams("", innerCount.ToString(CultureInfo.InvariantCulture)), debugItem);
             if (oldValueResult.IsWarewolfAtomResult && newValueResult.IsWarewolfAtomResult)
             {
-                var valueResult = newValueResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
-                var scalarResult = oldValueResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
-                if (valueResult != null && scalarResult != null)
+                if (newValueResult is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult valueResult && oldValueResult is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult scalarResult)
                 {
                     AddDebugItem(new DebugItemWarewolfAtomResult(ExecutionEnvironment.WarewolfAtomToString(scalarResult.Item), ExecutionEnvironment.WarewolfAtomToString(valueResult.Item), assignValue.Name, environment.EvalToExpression(assignValue.Value, update), variableLabelText, newFieldLabelText, "="), debugItem);
                 }
