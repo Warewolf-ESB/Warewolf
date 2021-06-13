@@ -12,11 +12,12 @@ using System;
 using System.Globalization;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
+using Dev2.MathOperations;
 using Infragistics.Calculations.CalcManager;
 using Infragistics.Calculations.Engine;
 using Warewolf.Resource.Errors;
 
-namespace Dev2.MathOperations
+namespace Dev2.Data.MathOperations
 {
     public class FunctionEvaluator : IFunctionEvaluator
     {

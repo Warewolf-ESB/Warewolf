@@ -15,6 +15,7 @@ using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
+using Dev2.Data.MathOperations;
 using Dev2.Data.Util;
 using Dev2.MathOperations;
 using Warewolf.Resource.Errors;
