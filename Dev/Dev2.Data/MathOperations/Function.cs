@@ -11,11 +11,12 @@
 using System;
 using System.Collections.Generic;
 using Dev2.Common;
+using Dev2.MathOperations;
 using Infragistics.Calculations;
 using Infragistics.Calculations.CalcManager;
 using Warewolf.Resource.Errors;
 
-namespace Dev2.MathOperations
+namespace Dev2.Data.MathOperations
 {
     public class Function : IFunction
     {
@@ -60,7 +61,7 @@ namespace Dev2.MathOperations
 
         #region Public Methods
 
-        public void CreateCustomFunction(string functionName, List<string> arguments, List<string> argumentDescriptions, string description, Func<double[], double> function, IDev2CalculationManager calcManager)
+        public void CreateCustomFunction(string functionName, List<string> functionArguments, List<string> argumentDescriptions, string description, Func<double[], double> function, IDev2CalculationManager calcManager)
         {
             if (CreateCustomFunction(functionName, function, out CustomCalculationFunction calcFunction))
             {
@@ -68,7 +69,7 @@ namespace Dev2.MathOperations
                 {
                     calcManager.RegisterUserDefinedFunction(calcFunction);
                     SetFunctionName(functionName);
-                    SetArguments(arguments);
+                    SetArguments(functionArguments);
                     SetArgumentDescriptions(argumentDescriptions);
                     SetDescription(description);
                 }
@@ -117,8 +118,7 @@ namespace Dev2.MathOperations
             }
             else
             {
-
-                throw new ArgumentNullException("Cannot set Function Name to an empty string");
+                throw new ArgumentNullException("functionName");
             }
         }
 
