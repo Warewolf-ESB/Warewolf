@@ -13,6 +13,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
 using Dev2.Common;
@@ -91,16 +92,10 @@ namespace Dev2.Data.Parsers
 
         static List<KeyValuePair<string, string>> AddAttributesAsNamespaces(XmlDocument document, List<KeyValuePair<string, string>> namespaces)
         {
-            var xmlAttributeCollection = document.DocumentElement.Attributes;
-            foreach (XmlAttribute attrib in xmlAttributeCollection)
-            {
-                if (attrib?.NodeType == XmlNodeType.Attribute && attrib.Name.Contains("xmlns:"))
-                {
-                    var nsAttrib = attrib.Name.Split(':');
-                    var ns = nsAttrib[1];
-                    namespaces.Add(new KeyValuePair<string, string>(ns, attrib.Value));
-                }
-            }
+            var xmlAttributeCollection = document.DocumentElement?.Attributes;
+            if(xmlAttributeCollection != null)
+                namespaces.AddRange(from XmlAttribute attrib in xmlAttributeCollection where attrib?.NodeType == XmlNodeType.Attribute && attrib.Name.Contains("xmlns:") let nsAttrib = attrib.Name.Split(':') let ns = nsAttrib[1] select new KeyValuePair<string, string>(ns, attrib.Value));
+
             return namespaces;
         }
 
@@ -129,7 +124,7 @@ namespace Dev2.Data.Parsers
                 }
                 else
                 {
-                    stringList.Add(current.ToString());
+                    stringList.Add(current?.ToString());
                 }
             }
             return stringList;
