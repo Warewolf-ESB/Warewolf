@@ -156,6 +156,7 @@ namespace Dev2.Data.MathOperations
                 
             }
         }
+
         /// <summary>
         /// Save a collection of new user-defined functions to the function library
         /// </summary>
@@ -174,8 +175,6 @@ namespace Dev2.Data.MathOperations
             }
             return "Saved";
         }
-
-        public event EventHandler ItemAdded;
 
         #region Implementation of IDisposable
 
