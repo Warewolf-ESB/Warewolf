@@ -159,10 +159,7 @@ namespace Dev2.Data.Operations
                 }
                 else
                 {
-                    if (difference < 0)
-                    {
-                        paddedString = value.Substring(0, indexToUse);
-                    }
+                    paddedString = value.Substring(0, indexToUse);
                 }
 
                 MergeData.Append(paddedString);
