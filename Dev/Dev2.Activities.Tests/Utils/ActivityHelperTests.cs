@@ -51,7 +51,7 @@ namespace Dev2.Tests.Activities.Utils
             };
             dev2DecisionStack.TheStack = new List<Dev2Decision>();
             var decisionExpressionMessage = new ConfigureDecisionExpressionMessage();
-            viewModel.Handle(decisionExpressionMessage);
+            viewModel.Handle();
 
             //------------Setup for test--------------------------
 
@@ -130,7 +130,7 @@ namespace Dev2.Tests.Activities.Utils
                     TheStack = new List<Dev2Decision>()
                 };
                 var decisionExpressionMessage = new ConfigureDecisionExpressionMessage();
-                viewModel.Handle(decisionExpressionMessage);
+                viewModel.Handle();
 
                 //------------Setup for test--------------------------
 
@@ -158,7 +158,7 @@ namespace Dev2.Tests.Activities.Utils
                     TheStack = new List<Dev2Decision>()
                 };
                 var decisionExpressionMessage = new ConfigureDecisionExpressionMessage();
-                viewModel.Handle(decisionExpressionMessage);
+                viewModel.Handle();
 
                 //------------Setup for test--------------------------
 
@@ -218,7 +218,7 @@ namespace Dev2.Tests.Activities.Utils
             };
             dev2DecisionStack.TheStack = new List<Dev2Decision>();
             var decisionExpressionMessage = new ConfigureDecisionExpressionMessage();
-            viewModel.Handle(decisionExpressionMessage);
+            viewModel.Handle();
 
             var mySwitch = new Dev2Switch();
             //------------Setup for test--------------------------
@@ -294,7 +294,7 @@ namespace Dev2.Tests.Activities.Utils
             };
             dev2DecisionStack.TheStack = new List<Dev2Decision>();
             var decisionExpressionMessage = new ConfigureDecisionExpressionMessage();
-            viewModel.Handle(decisionExpressionMessage);
+            viewModel.Handle();
 
             var mySwitch = new Dev2Switch();
             mySwitch = null;
@@ -322,7 +322,7 @@ namespace Dev2.Tests.Activities.Utils
 
             dev2DecisionStack.TheStack = new List<Dev2Decision>();
             var decisionExpressionMessage = new ConfigureDecisionExpressionMessage();
-            viewModel.Handle(decisionExpressionMessage);
+            viewModel.Handle();
 
             dev2DecisionStack = null;
             var expressionText1 = string.Join("", GlobalConstants.InjectedSwitchDataFetch,
@@ -383,7 +383,7 @@ namespace Dev2.Tests.Activities.Utils
             };
             dev2DecisionStack.TheStack = new List<Dev2Decision>();
             var decisionExpressionMessage = new ConfigureDecisionExpressionMessage();
-            viewModel.Handle(decisionExpressionMessage);
+            viewModel.Handle();
 
             var mySwitch = new Dev2Switch();
 

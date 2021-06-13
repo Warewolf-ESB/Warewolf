@@ -31,7 +31,6 @@ using Dev2.DataList;
 using Dev2.DataList.Contract;
 using Dev2.Providers.Validation.Rules;
 using Dev2.Runtime.Configuration.ViewModels.Base;
-using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Interfaces;
 using Dev2.TO;
 
@@ -344,7 +343,7 @@ namespace Dev2.Activities.Designers2.Decision
         #region Implementation of IHandle<ConfigureDecisionExpressionMessage>
 
 
-        public void Handle(ConfigureDecisionExpressionMessage message)
+        public void Handle()
         {
             ShowLarge = true;
         }
