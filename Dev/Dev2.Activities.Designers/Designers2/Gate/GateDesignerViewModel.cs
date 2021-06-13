@@ -21,13 +21,8 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Windows;
-using System.Windows.Input;
-using Warewolf;
-using Warewolf.Data;
 using Warewolf.Data.Options;
-using Warewolf.Data.Options.Enums;
 using Warewolf.Options;
-using Warewolf.Service;
 using Warewolf.UI;
 
 namespace Dev2.Activities.Designers2.Gate
@@ -63,11 +58,6 @@ namespace Dev2.Activities.Designers2.Gate
             ThumbVisibility = Visibility.Visible;
             IsExpanded = false;
             Enabled = true;
-
-            DeleteConditionCommand = new DelegateCommand(o =>
-            {
-
-            });
             HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Flow_Gate;
         }
 
@@ -100,7 +90,7 @@ namespace Dev2.Activities.Designers2.Gate
         {
             var designerView = FindDependencyParent.FindParent<System.Activities.Presentation.View.DesignerView>(_modelItem.View);
 
-            if (designerView != null && designerView.DataContext is IWorkflowDesignerViewModel workflowDesignerViewModel)
+            if (designerView?.DataContext is IWorkflowDesignerViewModel workflowDesignerViewModel)
             {
                 Gates = workflowDesignerViewModel.GetSelectableGates(_modelItem.Properties["UniqueID"]?.ComputedValue.ToString());
             }
@@ -108,11 +98,7 @@ namespace Dev2.Activities.Designers2.Gate
 
         private void LoadConditionExpressionOptions()
         {
-            var conditionExpressionList = _modelItem.Properties["Conditions"]?.ComputedValue as IList<ConditionExpression>;
-            if (conditionExpressionList is null)
-            {
-                conditionExpressionList = new List<ConditionExpression>();
-            }
+            var conditionExpressionList = _modelItem.Properties["Conditions"]?.ComputedValue as IList<ConditionExpression> ?? new List<ConditionExpression>();
             var result = OptionConvertor.ConvertFromListOfT(conditionExpressionList);
             ConditionExpressionOptions = new OptionsWithNotifier { Options = result };
             UpdateConditionExpressionOptionsModelItem();
@@ -128,16 +114,14 @@ namespace Dev2.Activities.Designers2.Gate
             }
 
             gateOptions.OnChange += UpdateOptionsModelItem;
-            _gateOptionsInst = gateOptions;
+            GateOptionsInst = gateOptions;
             var result = new List<IOption>();
             var failureOptions = OptionConvertor.Convert(gateOptions);
             result.AddRange(failureOptions);
             Options = new OptionsWithNotifier { Options = result };
         }
 
-        private GateOptions _gateOptionsInst { get; set; }
-
-        public ICommand DeleteConditionCommand { get; set; }
+        private GateOptions GateOptionsInst { get; set; }
 
         public List<NameValue> Gates
         {
@@ -158,14 +142,7 @@ namespace Dev2.Activities.Designers2.Gate
                 OnPropertyChanged(nameof(SelectedGate));
 
                 var retryEntryPointId = value?.Value;
-                if (retryEntryPointId is null)
-                {
-                    _modelItem.Properties["RetryEntryPointId"]?.SetValue(Guid.Empty);
-                }
-                else
-                {
-                    _modelItem.Properties["RetryEntryPointId"]?.SetValue(Guid.Parse(retryEntryPointId));
-                }
+                _modelItem.Properties["RetryEntryPointId"]?.SetValue(retryEntryPointId is null ? Guid.Empty : Guid.Parse(retryEntryPointId));
             }
         }
 
@@ -220,8 +197,8 @@ namespace Dev2.Activities.Designers2.Gate
             {
                 _modelItem.Properties["GateOptions"]?.ClearValue();
                 // Call Convert to ensure the model is _fully_ updated
-                OptionConvertor.Convert(typeof(GateOptions), Options.Options, _gateOptionsInst);
-                _modelItem.Properties["GateOptions"]?.SetValue(_gateOptionsInst);
+                OptionConvertor.Convert(typeof(GateOptions), Options.Options, GateOptionsInst);
+                _modelItem.Properties["GateOptions"]?.SetValue(GateOptionsInst);
             }
         }
 
@@ -261,11 +238,11 @@ namespace Dev2.Activities.Designers2.Gate
             }
         }
 
-        private void RemoveConditionExpression(OptionConditionExpression conditionExpression)
+        void RemoveConditionExpression(OptionConditionExpression conditionExpression)
         {
             var count = ConditionExpressionOptions.Options.Count(o => o is OptionConditionExpression optionCondition && optionCondition.IsEmptyRow);
             var empty = conditionExpression.IsEmptyRow;
-            var allow = !empty || (empty && count > 1);
+            var allow = !empty || count > 1;
 
             if (_conditionExpressionOptions.Options.Count > 1 && allow)
             {
@@ -299,7 +276,7 @@ namespace Dev2.Activities.Designers2.Gate
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             var handler = PropertyChanged;
             handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
