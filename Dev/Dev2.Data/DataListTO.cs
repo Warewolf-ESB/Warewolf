@@ -174,8 +174,8 @@ namespace Dev2.Data
             }));
         }
 
-        public List<string> Outputs { get; private set; }
+        public List<string> Outputs { get; }
 
-        public List<string> Inputs { get; private set; }
+        public List<string> Inputs { get; }
     }
 }

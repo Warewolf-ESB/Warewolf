@@ -22,7 +22,7 @@ namespace Warewolf.Options
             DisplayValue = displayValue;
         }
 
-        public string DisplayValue { get; private set; }
+        public string DisplayValue { get; }
         public string Get()
         {
             return DisplayValue;
