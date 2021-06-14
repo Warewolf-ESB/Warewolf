@@ -11,7 +11,21 @@
     <script src="https://js.chargebee.com/v2/chargebee.js" data-cb-site="warewolf-test"></script>
     <link rel="stylesheet" href="styles/warewolf.css">
     <script type='text/javascript'>
+        let subscriptionStatus = {
+            NotActive: 0,
+            Future: 1,
+            InTrial: 2,
+            Active: 3,
+            NonRenewing: 4,
+            Paused: 5,
+            Cancelled: 6
+        };
+        const monthNames = ["January", "February", "March", "April", "May", "June",
+            "July", "August", "September", "October", "November", "December"
+        ];
+
         jQuery(document).ready(function () {
+
             let result = window.external.RetrieveSubscription();
             let objData = jQuery.parseJSON(result);
 
@@ -19,24 +33,37 @@
             let planStatus = objData.Status;
             let trialEnd = objData.TrialEnd;
             $("#planId").text(planId);
-            var plan = planStatus
-            if(planStatus === "InTrial")
-            {
-                var formattedDate = new Date(trialEnd);
-                var d = formattedDate.getDate();
-                var m =  formattedDate.getMonth();
-                m += 1;  // JavaScript months are 0-11
-                var y = formattedDate.getFullYear();
-
-                var endDate = d + "." + m + "." + y;
-                plan += " (Expires " + endDate + ")";
-            }
-            $("#planStatus").text(plan);
-
+            $("#planStatus").text(getStatus(planStatus));
             $(".close-btn").click(function (e) {
                 e.preventDefault();
                 window.external.CloseBrowser();
             });
+
+            function getStatus(key) {
+                switch (key) {
+                    case 0:
+                        return "Not Active";
+                    case 1:
+                        return "Future";
+                    case 2:
+                        let formattedDate = new Date(trialEnd);
+                        let d = formattedDate.getDate();
+                        let m = formattedDate.getMonth();
+                        m += 1;  // JavaScript months are 0-11
+                        let y = formattedDate.getFullYear();
+                        let endDate = d + " " + monthNames[m] + " " + y;
+                        return  "In Trial (Expires " + endDate + ")";
+                    case 3:
+                        return "Active";
+                    case 4:
+                        return "Non Renewing";
+                    case 5:
+                        return "Paused";
+                    case 6:
+                        return "Cancelled";
+                }
+                return subscriptionStatus[key];
+            }
         });
     </script>
 </head>
@@ -81,7 +108,7 @@
                                 update your details and make changes to your Subscription.</p>
                             <a href="javascript:void(0)" data-cb-type="portal" id="OpenPortal" name="OpenPortal"
                                class="text-center submit-btn btn btn-register btn-md">Open Subscription Portal</a>
-                            <a href="javascript:CloseBrowser()"  id="CloseBrowser" name="CloseBrowser"
+                            <a href="javascript:CloseBrowser()" id="CloseBrowser" name="CloseBrowser"
                                class="text-center submit-btn btn close-btn btn-md">Close</a>
                         </div>
                     </div>
