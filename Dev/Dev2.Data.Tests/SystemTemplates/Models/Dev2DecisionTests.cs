@@ -99,7 +99,7 @@ namespace Dev2.Data.Tests.SystemTemplates.Models
         {
             var dev2Decision = new Dev2Decision
             {
-                EvaluationFn = enDecisionType.IsEqual
+                EvaluationFn = EnDecisionType.IsEqual
             };
 
             var mockExecutionEnvironment = new Mock<IExecutionEnvironment>();
@@ -118,7 +118,7 @@ namespace Dev2.Data.Tests.SystemTemplates.Models
             var dev2Decision = new Dev2Decision
             {
                 Col1 = "[[field]]",
-                EvaluationFn = enDecisionType.IsBetween
+                EvaluationFn = EnDecisionType.IsBetween
             };
 
             var mockExecutionEnvironment = new Mock<IExecutionEnvironment>();
@@ -137,7 +137,7 @@ namespace Dev2.Data.Tests.SystemTemplates.Models
             var dev2Decision = new Dev2Decision
             {
                 Col1 = "[[recset(*).field]]",
-                EvaluationFn = enDecisionType.IsBetween
+                EvaluationFn = EnDecisionType.IsBetween
             };
 
             var mockExecutionEnvironment = new Mock<IExecutionEnvironment>();
@@ -156,7 +156,7 @@ namespace Dev2.Data.Tests.SystemTemplates.Models
             var dev2Decision = new Dev2Decision
             {
                 Col1 = "[[recset(*).field]]",
-                EvaluationFn = enDecisionType.IsBetween
+                EvaluationFn = EnDecisionType.IsBetween
             };
 
             var result = dev2Decision.GenerateToolLabel(null, Dev2DecisionMode.AND, out var error);
@@ -174,7 +174,7 @@ namespace Dev2.Data.Tests.SystemTemplates.Models
             var dev2Decision = new Dev2Decision
             {
                 Col1 = "[[recset(*).field]]",
-                EvaluationFn = enDecisionType.IsBetween
+                EvaluationFn = EnDecisionType.IsBetween
             };
 
             var mockExecutionEnvironment = new Mock<IExecutionEnvironment>();
@@ -194,7 +194,7 @@ namespace Dev2.Data.Tests.SystemTemplates.Models
             {
                 Col1 = "[[field]]",
                 Col2 = "[[recset(*).field]]",
-                EvaluationFn = enDecisionType.IsBetween
+                EvaluationFn = EnDecisionType.IsBetween
             };
 
             var result = dev2Decision.GenerateToolLabel(null, Dev2DecisionMode.AND, out var error);
@@ -213,7 +213,7 @@ namespace Dev2.Data.Tests.SystemTemplates.Models
             {
                 Col1 = "[[field]]",
                 Col2 = "[[recset(*).field]]",
-                EvaluationFn = enDecisionType.IsBetween
+                EvaluationFn = EnDecisionType.IsBetween
             };
 
             var mockExecutionEnvironment = new Mock<IExecutionEnvironment>();
@@ -233,7 +233,7 @@ namespace Dev2.Data.Tests.SystemTemplates.Models
             {
                 Col1 = "[[recset(*).field]]",
                 Col2 = "[[field]]",
-                EvaluationFn = enDecisionType.IsBetween
+                EvaluationFn = EnDecisionType.IsBetween
             };
 
             var result = dev2Decision.GenerateToolLabel(null, Dev2DecisionMode.AND, out var error);
@@ -252,7 +252,7 @@ namespace Dev2.Data.Tests.SystemTemplates.Models
             {
                 Col1 = "[[recset(*).field]]",
                 Col2 = "[[field]]",
-                EvaluationFn = enDecisionType.IsBetween
+                EvaluationFn = EnDecisionType.IsBetween
             };
 
             var mockExecutionEnvironment = new Mock<IExecutionEnvironment>();
@@ -272,7 +272,7 @@ namespace Dev2.Data.Tests.SystemTemplates.Models
             {
                 Col1 = "[[recset(*).field]]",
                 Col2 = "[[recset(*).field1]]",
-                EvaluationFn = enDecisionType.IsBetween
+                EvaluationFn = EnDecisionType.IsBetween
             };
 
             var result = dev2Decision.GenerateToolLabel(null, Dev2DecisionMode.AND, out var error);
@@ -291,7 +291,7 @@ namespace Dev2.Data.Tests.SystemTemplates.Models
             {
                 Col1 = "[[recset(*).field]]",
                 Col2 = "[[recset(*).field1]]",
-                EvaluationFn = enDecisionType.IsBetween
+                EvaluationFn = EnDecisionType.IsBetween
             };
 
             var mockExecutionEnvironment = new Mock<IExecutionEnvironment>();
@@ -311,7 +311,7 @@ namespace Dev2.Data.Tests.SystemTemplates.Models
             {
                 Col1 = "[[field]]",
                 Col2 = "[[field1]]",
-                EvaluationFn = enDecisionType.IsBetween
+                EvaluationFn = EnDecisionType.IsBetween
             };
 
             var result = dev2Decision.GenerateToolLabel(null, Dev2DecisionMode.AND, out var error);
@@ -330,7 +330,7 @@ namespace Dev2.Data.Tests.SystemTemplates.Models
             {
                 Col1 = "[[field]]",
                 Col2 = "[[field1]]",
-                EvaluationFn = enDecisionType.IsBetween
+                EvaluationFn = EnDecisionType.IsBetween
             };
 
             var mockExecutionEnvironment = new Mock<IExecutionEnvironment>();
@@ -350,7 +350,7 @@ namespace Dev2.Data.Tests.SystemTemplates.Models
             {
                 Col1 = "[[recset(*).field]]",
                 Col2 = "[[recset(*).field1]]",
-                EvaluationFn = enDecisionType.IsBetween
+                EvaluationFn = EnDecisionType.IsBetween
             };
 
             var mockExecutionEnvironment = new Mock<IExecutionEnvironment>();

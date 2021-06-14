@@ -69,7 +69,7 @@ namespace Dev2.Data.Tests.DecisionsTests.Operations
         [TestCategory(nameof(IsNotBinary))]
         public void IsNotBinary_HandlesType_ReturnsIsEndsWithType()
         {
-            var expected = enDecisionType.IsNotBinary;
+            var expected = EnDecisionType.IsNotBinary;
             //------------Setup for test--------------------------
             var isEndsWith = new IsNotBinary();
             //------------Execute Test---------------------------

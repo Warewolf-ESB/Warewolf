@@ -28,6 +28,6 @@ namespace Dev2.Data.Decisions.Operations
             return false;
         }
 
-        public Enum HandlesType() => enDecisionType.IsNotBase64;
+        public Enum HandlesType() => EnDecisionType.IsNotBase64;
     }
 }

@@ -23,78 +23,78 @@ namespace Dev2.Data.Decisions.Operations
             DisplayValue = displayValue;
         }
 
-        public string DisplayValue { get; set; }
+        public string DisplayValue { get; }
     }    
     
     public static class DecisionDisplayHelper
     {
-        public static string GetDisplayValue(enDecisionType typeOf)
+        public static string GetDisplayValue(EnDecisionType typeOf)
         {
 
-            MemberInfo mi = typeof(enDecisionType).GetField(Enum.GetName(typeof(enDecisionType), typeOf));
+            MemberInfo mi = typeof(EnDecisionType).GetField(Enum.GetName(typeof(EnDecisionType), typeOf));
 
             var attr = (DecisionTypeDisplayValue)Attribute.GetCustomAttribute(mi, typeof(DecisionTypeDisplayValue));
 
             return attr.DisplayValue;
         }
         
-        public static enDecisionType GetValue(string displayValue)
+        public static EnDecisionType GetValue(string displayValue)
         {
-            var values = Enum.GetValues(typeof(enDecisionType));
-            return (from object value in values let mi = typeof(enDecisionType).GetField(Enum.GetName(typeof(enDecisionType), value)) let attr = (DecisionTypeDisplayValue)Attribute.GetCustomAttribute(mi, typeof(DecisionTypeDisplayValue)) where attr.DisplayValue.Equals(displayValue) select value as enDecisionType? ?? enDecisionType.Choose).FirstOrDefault();
+            var values = Enum.GetValues(typeof(EnDecisionType));
+            return (from object value in values let mi = typeof(EnDecisionType).GetField(Enum.GetName(typeof(EnDecisionType), value)) let attr = (DecisionTypeDisplayValue)Attribute.GetCustomAttribute(mi, typeof(DecisionTypeDisplayValue)) where attr.DisplayValue.Equals(displayValue) select value as EnDecisionType? ?? EnDecisionType.Choose).FirstOrDefault();
         }
 
 #pragma warning disable S1541 // Methods and properties should not be too complex
-        public static string GetFailureMessage(enDecisionType decisionType)
+        public static string GetFailureMessage(EnDecisionType decisionType)
 #pragma warning restore S1541 // Methods and properties should not be too complex
         {
             switch (decisionType)
             {
-                case enDecisionType.Choose: return Messages.Test_FailureMessage_Choose;
-                case enDecisionType.IsError: return Messages.Test_FailureMessage_IsError;
-                case enDecisionType.IsNotError: return Messages.Test_FailureMessage_IsNotError;
-                case enDecisionType.IsNull: return Messages.Test_FailureMessage_IsNull;
-                case enDecisionType.IsNotNull: return Messages.Test_FailureMessage_IsNotNull;
-                case enDecisionType.IsNumeric: return Messages.Test_FailureMessage_IsNumeric;
-                case enDecisionType.IsNotNumeric: return Messages.Test_FailureMessage_IsNotNumeric;
-                case enDecisionType.IsText: return Messages.Test_FailureMessage_IsText;
-                case enDecisionType.IsNotText: return Messages.Test_FailureMessage_IsNotText;
-                case enDecisionType.IsAlphanumeric: return Messages.Test_FailureMessage_IsAlphanumeric;
-                case enDecisionType.IsNotAlphanumeric: return Messages.Test_FailureMessage_IsNotAlphanumeric;
-                case enDecisionType.IsXML: return Messages.Test_FailureMessage_IsXML;
-                case enDecisionType.IsNotXML: return Messages.Test_FailureMessage_IsNotXML;
-                case enDecisionType.IsDate: return Messages.Test_FailureMessage_IsDate;
-                case enDecisionType.IsNotDate: return Messages.Test_FailureMessage_IsNotDate;
-                case enDecisionType.IsEmail: return Messages.Test_FailureMessage_IsEmail;
-                case enDecisionType.IsNotEmail: return Messages.Test_FailureMessage_IsNotEmail;
-                case enDecisionType.IsRegEx: return Messages.Test_FailureMessage_IsRegEx;
-                case enDecisionType.NotRegEx: return Messages.Test_FailureMessage_NotRegEx;
-                case enDecisionType.IsEqual: return Messages.Test_FailureMessage_Equals;
-                case enDecisionType.IsNotEqual: return Messages.Test_FailureMessage_IsNotEqual;
-                case enDecisionType.IsLessThan: return Messages.Test_FailureMessage_IsLessThan;
-                case enDecisionType.IsLessThanOrEqual: return Messages.Test_FailureMessage_IsLessThanOrEqual;
-                case enDecisionType.IsGreaterThan: return Messages.Test_FailureMessage_IsGreaterThan;
-                case enDecisionType.IsGreaterThanOrEqual: return Messages.Test_FailureMessage_IsGreaterThanOrEqual;
-                case enDecisionType.IsContains: return Messages.Test_FailureMessage_IsContains;
-                case enDecisionType.NotContain: return Messages.Test_FailureMessage_NotContain;
-                case enDecisionType.IsEndsWith: return Messages.Test_FailureMessage_IsEndsWith;
-                case enDecisionType.NotEndsWith: return Messages.Test_FailureMessage_NotEndsWith;
-                case enDecisionType.IsStartsWith: return Messages.Test_FailureMessage_IsStartsWith;
-                case enDecisionType.NotStartsWith: return Messages.Test_FailureMessage_NotStartsWith;
-                case enDecisionType.IsBetween: return Messages.Test_FailureMessage_IsBetween;
-                case enDecisionType.NotBetween: return Messages.Test_FailureMessage_NotBetween;
-                case enDecisionType.IsBinary: return Messages.Test_FailureMessage_IsBinary;
-                case enDecisionType.IsNotBinary: return Messages.Test_FailureMessage_IsNotBinary;
-                case enDecisionType.IsHex: return Messages.Test_FailureMessage_IsHex;
-                case enDecisionType.IsNotHex: return Messages.Test_FailureMessage_IsNotHex;
-                case enDecisionType.IsBase64: return Messages.Test_FailureMessage_IsBase64;
-                case enDecisionType.IsNotBase64: return Messages.Test_FailureMessage_IsNotBase64;
+                case EnDecisionType.Choose: return Messages.Test_FailureMessage_Choose;
+                case EnDecisionType.IsError: return Messages.Test_FailureMessage_IsError;
+                case EnDecisionType.IsNotError: return Messages.Test_FailureMessage_IsNotError;
+                case EnDecisionType.IsNull: return Messages.Test_FailureMessage_IsNull;
+                case EnDecisionType.IsNotNull: return Messages.Test_FailureMessage_IsNotNull;
+                case EnDecisionType.IsNumeric: return Messages.Test_FailureMessage_IsNumeric;
+                case EnDecisionType.IsNotNumeric: return Messages.Test_FailureMessage_IsNotNumeric;
+                case EnDecisionType.IsText: return Messages.Test_FailureMessage_IsText;
+                case EnDecisionType.IsNotText: return Messages.Test_FailureMessage_IsNotText;
+                case EnDecisionType.IsAlphanumeric: return Messages.Test_FailureMessage_IsAlphanumeric;
+                case EnDecisionType.IsNotAlphanumeric: return Messages.Test_FailureMessage_IsNotAlphanumeric;
+                case EnDecisionType.IsXml: return Messages.Test_FailureMessage_IsXML;
+                case EnDecisionType.IsNotXml: return Messages.Test_FailureMessage_IsNotXML;
+                case EnDecisionType.IsDate: return Messages.Test_FailureMessage_IsDate;
+                case EnDecisionType.IsNotDate: return Messages.Test_FailureMessage_IsNotDate;
+                case EnDecisionType.IsEmail: return Messages.Test_FailureMessage_IsEmail;
+                case EnDecisionType.IsNotEmail: return Messages.Test_FailureMessage_IsNotEmail;
+                case EnDecisionType.IsRegEx: return Messages.Test_FailureMessage_IsRegEx;
+                case EnDecisionType.NotRegEx: return Messages.Test_FailureMessage_NotRegEx;
+                case EnDecisionType.IsEqual: return Messages.Test_FailureMessage_Equals;
+                case EnDecisionType.IsNotEqual: return Messages.Test_FailureMessage_IsNotEqual;
+                case EnDecisionType.IsLessThan: return Messages.Test_FailureMessage_IsLessThan;
+                case EnDecisionType.IsLessThanOrEqual: return Messages.Test_FailureMessage_IsLessThanOrEqual;
+                case EnDecisionType.IsGreaterThan: return Messages.Test_FailureMessage_IsGreaterThan;
+                case EnDecisionType.IsGreaterThanOrEqual: return Messages.Test_FailureMessage_IsGreaterThanOrEqual;
+                case EnDecisionType.IsContains: return Messages.Test_FailureMessage_IsContains;
+                case EnDecisionType.NotContain: return Messages.Test_FailureMessage_NotContain;
+                case EnDecisionType.IsEndsWith: return Messages.Test_FailureMessage_IsEndsWith;
+                case EnDecisionType.NotEndsWith: return Messages.Test_FailureMessage_NotEndsWith;
+                case EnDecisionType.IsStartsWith: return Messages.Test_FailureMessage_IsStartsWith;
+                case EnDecisionType.NotStartsWith: return Messages.Test_FailureMessage_NotStartsWith;
+                case EnDecisionType.IsBetween: return Messages.Test_FailureMessage_IsBetween;
+                case EnDecisionType.NotBetween: return Messages.Test_FailureMessage_NotBetween;
+                case EnDecisionType.IsBinary: return Messages.Test_FailureMessage_IsBinary;
+                case EnDecisionType.IsNotBinary: return Messages.Test_FailureMessage_IsNotBinary;
+                case EnDecisionType.IsHex: return Messages.Test_FailureMessage_IsHex;
+                case EnDecisionType.IsNotHex: return Messages.Test_FailureMessage_IsNotHex;
+                case EnDecisionType.IsBase64: return Messages.Test_FailureMessage_IsBase64;
+                case EnDecisionType.IsNotBase64: return Messages.Test_FailureMessage_IsNotBase64;
                 default: return string.Empty;
             }
         }
     }
     
-    public enum enDecisionType
+    public enum EnDecisionType
     {
         [DecisionTypeDisplayValue("Not a Valid Decision Type")] Choose,
         [DecisionTypeDisplayValue("There is An Error")] IsError,
@@ -107,8 +107,8 @@ namespace Dev2.Data.Decisions.Operations
         [DecisionTypeDisplayValue("Not Text")] IsNotText,
         [DecisionTypeDisplayValue("Is Alphanumeric")] IsAlphanumeric,
         [DecisionTypeDisplayValue("Not Alphanumeric")] IsNotAlphanumeric,
-        [DecisionTypeDisplayValue("Is XML")] IsXML,
-        [DecisionTypeDisplayValue("Not XML")] IsNotXML,
+        [DecisionTypeDisplayValue("Is XML")] IsXml,
+        [DecisionTypeDisplayValue("Not XML")] IsNotXml,
         [DecisionTypeDisplayValue("Is Date")] IsDate,
         [DecisionTypeDisplayValue("Not Date")] IsNotDate,
         [DecisionTypeDisplayValue("Is Email")] IsEmail,

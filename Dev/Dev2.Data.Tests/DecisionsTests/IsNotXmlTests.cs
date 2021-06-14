@@ -55,7 +55,7 @@ Procedure:
         [TestCategory("IsNotXml_HandlesType")]
         public void IsNotXml_HandlesType_ReturnsIsNotXmlType()
         {
-            var decisionType = enDecisionType.IsNotXML;
+            var decisionType = EnDecisionType.IsNotXml;
             //------------Setup for test--------------------------
             var isNotXml = new IsNotXml();
             //------------Execute Test---------------------------

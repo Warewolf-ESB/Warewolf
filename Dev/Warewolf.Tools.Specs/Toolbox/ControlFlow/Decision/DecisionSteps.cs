@@ -53,7 +53,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Decision
             scenarioContext.TryGetValue("mode", out Dev2DecisionMode mode);
 
             var decisionModels =
-                scenarioContext.Get<List<Tuple<string, enDecisionType, string, string>>>("decisionModels");
+                scenarioContext.Get<List<Tuple<string, EnDecisionType, string, string>>>("decisionModels");
             var dds = new Dev2DecisionStack { TheStack = new List<Dev2Decision>(), Mode = mode, TrueArmText = "YES", FalseArmText = "NO" };
 
             foreach(var dm in decisionModels)
@@ -137,68 +137,68 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Decision
         [Given(@"is ""(.*)"" ""(.*)"" ""(.*)""")]
         public void GivenIs(string variable1, string decision, string variable2)
         {
-            scenarioContext.TryGetValue("decisionModels", out List<Tuple<string, enDecisionType, string, string>> decisionModels);
+            scenarioContext.TryGetValue("decisionModels", out List<Tuple<string, EnDecisionType, string, string>> decisionModels);
 
             if (decisionModels == null)
             {
-                decisionModels = new List<Tuple<string, enDecisionType, string, string>>();
+                decisionModels = new List<Tuple<string, EnDecisionType, string, string>>();
                 scenarioContext.Add("decisionModels", decisionModels);
             }
 
             decisionModels.Add(
-                new Tuple<string, enDecisionType, string, string>(
-                    variable1, (enDecisionType)Enum.Parse(typeof(enDecisionType), decision), variable2, null
+                new Tuple<string, EnDecisionType, string, string>(
+                    variable1, (EnDecisionType)Enum.Parse(typeof(EnDecisionType), decision), variable2, null
                     ));
         }
 
         [Given(@"I want to check ""(.*)""")]
         public void GivenIWantToCheck(string decision)
         {
-            scenarioContext.TryGetValue("decisionModels", out List<Tuple<string, enDecisionType, string, string>> decisionModels);
+            scenarioContext.TryGetValue("decisionModels", out List<Tuple<string, EnDecisionType, string, string>> decisionModels);
 
             if (decisionModels == null)
             {
-                decisionModels = new List<Tuple<string, enDecisionType, string, string>>();
+                decisionModels = new List<Tuple<string, EnDecisionType, string, string>>();
                 scenarioContext.Add("decisionModels", decisionModels);
             }
 
             decisionModels.Add(
-                new Tuple<string, enDecisionType, string, string>(
-                    null, (enDecisionType)Enum.Parse(typeof(enDecisionType), decision), null, null
+                new Tuple<string, EnDecisionType, string, string>(
+                    null, (EnDecisionType)Enum.Parse(typeof(EnDecisionType), decision), null, null
                     ));
         }
 
         [Given(@"decide if ""(.*)"" ""(.*)""")]
         public void GivenDecideIf(string variable1, string decision)
         {
-            scenarioContext.TryGetValue("decisionModels", out List<Tuple<string, enDecisionType, string, string>> decisionModels);
+            scenarioContext.TryGetValue("decisionModels", out List<Tuple<string, EnDecisionType, string, string>> decisionModels);
 
             if (decisionModels == null)
             {
-                decisionModels = new List<Tuple<string, enDecisionType, string, string>>();
+                decisionModels = new List<Tuple<string, EnDecisionType, string, string>>();
                 scenarioContext.Add("decisionModels", decisionModels);
             }
 
             decisionModels.Add(
-                new Tuple<string, enDecisionType, string, string>(
-                    variable1, (enDecisionType)Enum.Parse(typeof(enDecisionType), decision), null, null
+                new Tuple<string, EnDecisionType, string, string>(
+                    variable1, (EnDecisionType)Enum.Parse(typeof(EnDecisionType), decision), null, null
                     ));
         }
 
         [Given(@"check if ""(.*)"" ""(.*)"" ""(.*)"" and ""(.*)""")]
         public void GivenCheckIfAnd(string variable1, string decision, string variable2, string variable3)
         {
-            scenarioContext.TryGetValue("decisionModels", out List<Tuple<string, enDecisionType, string, string>> decisionModels);
+            scenarioContext.TryGetValue("decisionModels", out List<Tuple<string, EnDecisionType, string, string>> decisionModels);
 
             if (decisionModels == null)
             {
-                decisionModels = new List<Tuple<string, enDecisionType, string, string>>();
+                decisionModels = new List<Tuple<string, EnDecisionType, string, string>>();
                 scenarioContext.Add("decisionModels", decisionModels);
             }
 
             decisionModels.Add(
-                new Tuple<string, enDecisionType, string, string>(
-                    variable1, (enDecisionType)Enum.Parse(typeof(enDecisionType), decision), variable2, variable3
+                new Tuple<string, EnDecisionType, string, string>(
+                    variable1, (EnDecisionType)Enum.Parse(typeof(EnDecisionType), decision), variable2, variable3
                     ));
         }
 
@@ -251,7 +251,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Decision
                                 var typeOf = dd.EvaluationFn;
 
                                 // Treat Errors special
-                                if (typeOf == enDecisionType.IsError || typeOf == enDecisionType.IsNotError)
+                                if (typeOf == EnDecisionType.IsError || typeOf == EnDecisionType.IsNotError)
                                 {
                                     dd.Col1 = env.FetchErrors();
                                 }

@@ -51,7 +51,7 @@ namespace Dev2.Data.Tests.DecisionsTests
         [TestCategory("IsNumeric_HandlesType")]
         public void IsNumeric_HandlesType_ReturnsIsNumericType()
         {
-            var decisionType = enDecisionType.IsNumeric;
+            var decisionType = EnDecisionType.IsNumeric;
             //------------Setup for test--------------------------
             var isNumeric = new IsNumeric();
             //------------Execute Test---------------------------

@@ -52,7 +52,7 @@ namespace Dev2.Data.Tests.Operations
         [Owner("Sanele Mthmembu")]        
         public void IsLessThan_HandleType_ShouldReturnIsLessThan()
         {
-            var decisionType = enDecisionType.IsLessThan;
+            var decisionType = EnDecisionType.IsLessThan;
             //------------Setup for test--------------------------
             var isLessThan = new IsLessThan();
             //------------Execute Test---------------------------
@@ -151,7 +151,7 @@ namespace Dev2.Data.Tests.Operations
         [Owner("Sanele Mthmembu")]
         public void IsGreaterThan_HandleType_ShouldReturnIsGreaterThan()
         {
-            var decisionType = enDecisionType.IsGreaterThan;
+            var decisionType = EnDecisionType.IsGreaterThan;
             //------------Setup for test--------------------------
             var greaterThan = new IsGreaterThan();
             //------------Execute Test---------------------------
@@ -231,7 +231,7 @@ namespace Dev2.Data.Tests.Operations
         [Owner("Sanele Mthmembu")]
         public void IsGreaterThanOrEqual_HandleType_ShouldReturbIsGreaterThanOrEqual()
         {
-            var decisionType = enDecisionType.IsGreaterThanOrEqual;
+            var decisionType = EnDecisionType.IsGreaterThanOrEqual;
             //------------Setup for test--------------------------
             var isGreaterThanOrEqual = new IsGreaterThanOrEqual();
             //------------Execute Test---------------------------
@@ -293,7 +293,7 @@ namespace Dev2.Data.Tests.Operations
         [Owner("Sanele Mthmembu")]
         public void IsLessThanOrEqual_ShouldReturnedIsLessThanOrEqualDecisionType()
         {
-            var decisionType = enDecisionType.IsLessThanOrEqual;
+            var decisionType = EnDecisionType.IsLessThanOrEqual;
             //------------Setup for test--------------------------
             var isLessThanOrEqual = new IsLessThanOrEqual();
             //------------Execute Test---------------------------
@@ -375,7 +375,7 @@ namespace Dev2.Data.Tests.Operations
         [Owner("Sanele Mthmembu")]
         public void IsEqual_IsEqualUnitTest_HandleType_ShouldReturnIsEqual()
         {
-            var decisionType = enDecisionType.IsEqual;
+            var decisionType = EnDecisionType.IsEqual;
             //------------Setup for test--------------------------
             var isEqual = new IsEqual();
             //------------Execute Test---------------------------
@@ -415,7 +415,7 @@ namespace Dev2.Data.Tests.Operations
         [Owner("Sanele Mthmembu")]
         public void IsNotEqual_IsNotEqualUnitTest_HandleType_ShouldReturnIsNotEqual()
         {
-            var decisionType = enDecisionType.IsNotEqual;
+            var decisionType = EnDecisionType.IsNotEqual;
             //------------Setup for test--------------------------
             var isNotEqual = new IsNotEqual();
             //------------Execute Test---------------------------

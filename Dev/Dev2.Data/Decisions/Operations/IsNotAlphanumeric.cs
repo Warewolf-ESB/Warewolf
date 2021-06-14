@@ -25,6 +25,6 @@ namespace Dev2.Data.Decisions.Operations
             return true;
         }
 
-        public Enum HandlesType() => enDecisionType.IsNotAlphanumeric;
+        public Enum HandlesType() => EnDecisionType.IsNotAlphanumeric;
     }
 }

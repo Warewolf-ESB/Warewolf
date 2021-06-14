@@ -42,7 +42,7 @@ namespace Dev2.Data.Tests.DecisionsTests
         [TestCategory("IsNotError_HandlesType")]
         public void IsNotError_HandlesType_ReturnsIsNotErrorType()
         {
-            var decisionType = enDecisionType.IsNotError;
+            var decisionType = EnDecisionType.IsNotError;
             //------------Setup for test--------------------------
             var isNotError = new IsNotError();
             //------------Execute Test---------------------------

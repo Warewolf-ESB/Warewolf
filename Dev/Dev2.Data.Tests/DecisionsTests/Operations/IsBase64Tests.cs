@@ -66,7 +66,7 @@ namespace Dev2.Data.Tests.DecisionsTests.Operations
         [TestCategory(nameof(IsBase64))]
         public void IsBase64_HandlesType_ReturnsIsBase64Type()
         {
-            var expected = enDecisionType.IsBase64;
+            var expected = EnDecisionType.IsBase64;
             //------------Setup for test--------------------------
             var isBase64 = new IsBase64();
             //------------Execute Test---------------------------

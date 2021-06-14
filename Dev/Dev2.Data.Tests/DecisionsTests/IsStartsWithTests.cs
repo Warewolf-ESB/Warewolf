@@ -44,7 +44,7 @@ namespace Dev2.Data.Tests.DecisionsTests
         [TestCategory("IsStartsWith_HandlesType")]
         public void IsStartsWith_HandlesType_ReturnsNotStartWithType()
         {
-            var startsWith = enDecisionType.IsStartsWith;
+            var startsWith = EnDecisionType.IsStartsWith;
             //------------Setup for test--------------------------
             var isStartsWith = new IsStartsWith();
             //------------Execute Test---------------------------

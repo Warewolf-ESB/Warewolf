@@ -855,16 +855,16 @@ namespace Dev2.Activities.Specs.TestFramework
         [Given(@"decide if ""(.*)"" ""(.*)""")]
         public void GivenDecideIf(string variable1, string decision)
         {
-            MyContext.TryGetValue("decisionModels", out List<Tuple<string, enDecisionType, string, string>> decisionModels);
+            MyContext.TryGetValue("decisionModels", out List<Tuple<string, EnDecisionType, string, string>> decisionModels);
 
             if (decisionModels == null)
             {
-                decisionModels = new List<Tuple<string, enDecisionType, string, string>>();
+                decisionModels = new List<Tuple<string, EnDecisionType, string, string>>();
                 MyContext.Add("decisionModels", decisionModels);
             }
 
-            decisionModels.Add(new Tuple<string, enDecisionType, string, string>(
-                    variable1, (enDecisionType)Enum.Parse(typeof(enDecisionType), decision), null, null));
+            decisionModels.Add(new Tuple<string, EnDecisionType, string, string>(
+                    variable1, (EnDecisionType)Enum.Parse(typeof(EnDecisionType), decision), null, null));
         }
 
         [Given(@"I need to switch on variable ""(.*)"" with the value ""(.*)""")]

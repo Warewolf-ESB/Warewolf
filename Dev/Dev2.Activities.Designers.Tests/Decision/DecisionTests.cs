@@ -256,7 +256,7 @@ namespace Dev2.Activities.Designers.Tests.Decision
             var dev2Decision = new Dev2Decision
             {
                 Col1 = "[[val]]",
-                EvaluationFn = enDecisionType.IsEqual,
+                EvaluationFn = EnDecisionType.IsEqual,
                 Col2 = "5"
             };
             var item = new DecisionTO(dev2Decision, 1);
@@ -513,7 +513,7 @@ namespace Dev2.Activities.Designers.Tests.Decision
             var dev2Decision = new Dev2Decision
             {
                 Col1 = "[[val]]",
-                EvaluationFn = enDecisionType.IsEqual,
+                EvaluationFn = EnDecisionType.IsEqual,
                 Col2 = "5"
             };
             viewModel.Collection.Add(new DecisionTO(dev2Decision,1));
@@ -539,7 +539,7 @@ namespace Dev2.Activities.Designers.Tests.Decision
             var dev2Decision = new Dev2Decision
             {
                 Col1 = "[[val]]",
-                EvaluationFn = enDecisionType.IsEqual,
+                EvaluationFn = EnDecisionType.IsEqual,
                 Col2 = "5"
             };
             var item = new DecisionTO(dev2Decision,1);
@@ -568,7 +568,7 @@ namespace Dev2.Activities.Designers.Tests.Decision
                 var dev2Decision = new Dev2Decision
                 {
                     Col1 = "[[recset(*).field]]",
-                    EvaluationFn = enDecisionType.IsBetween,
+                    EvaluationFn = EnDecisionType.IsBetween,
                     Col2 = "[[recset(*).field]]",
                     Col3 = "[[recset(*).field]]"
                 };
@@ -581,7 +581,7 @@ namespace Dev2.Activities.Designers.Tests.Decision
                 dev2Decision = new Dev2Decision
                 {
                     Col1 = "[[recset(*).field]]",
-                    EvaluationFn = enDecisionType.IsBetween,
+                    EvaluationFn = EnDecisionType.IsBetween,
                     Col2 = "[[recset(*).field]]",
                     Col3 = "[[val]]"
                 };
@@ -593,7 +593,7 @@ namespace Dev2.Activities.Designers.Tests.Decision
                 dev2Decision = new Dev2Decision
                 {
                     Col1 = "[[recset(*).field]]",
-                    EvaluationFn = enDecisionType.IsBetween,
+                    EvaluationFn = EnDecisionType.IsBetween,
                     Col2 = "[[val]]",
                     Col3 = "[[recset(*).field]]"
                 };
@@ -605,7 +605,7 @@ namespace Dev2.Activities.Designers.Tests.Decision
                 var dev2Decision4 = new Dev2Decision
                 {
                     Col1 = "[[val]]",
-                    EvaluationFn = enDecisionType.IsBetween,
+                    EvaluationFn = EnDecisionType.IsBetween,
                     Col2 = "[[recset(*).field]]",
                     Col3 = "[[recset(*).field]]"
                 };
@@ -616,7 +616,7 @@ namespace Dev2.Activities.Designers.Tests.Decision
                 dev2Decision = new Dev2Decision
                 {
                     Col1 = "[[val]]",
-                    EvaluationFn = enDecisionType.IsBetween,
+                    EvaluationFn = EnDecisionType.IsBetween,
                     Col2 = "[[val]]",
                     Col3 = "[[recset(*).field]]"
                 };
@@ -628,7 +628,7 @@ namespace Dev2.Activities.Designers.Tests.Decision
                 dev2Decision = new Dev2Decision
                 {
                     Col1 = "[[val]]",
-                    EvaluationFn = enDecisionType.IsBetween,
+                    EvaluationFn = EnDecisionType.IsBetween,
                     Col2 = "[[recset(*).field]]",
                     Col3 = "[[val]]"
                 };
@@ -640,7 +640,7 @@ namespace Dev2.Activities.Designers.Tests.Decision
                 dev2Decision = new Dev2Decision
                 {
                     Col1 = "[[recset(*).field]]",
-                    EvaluationFn = enDecisionType.IsBetween,
+                    EvaluationFn = EnDecisionType.IsBetween,
                     Col2 = "[[val]]",
                     Col3 = "[[val]]"
                 };
@@ -652,7 +652,7 @@ namespace Dev2.Activities.Designers.Tests.Decision
                 dev2Decision = new Dev2Decision
                 {
                     Col1 = "[[recset(*).field]]",
-                    EvaluationFn = enDecisionType.IsEqual,
+                    EvaluationFn = EnDecisionType.IsEqual,
                     Col2 = "[[recset(*).field]]"
                 };
                 mockedEnvironment.Setup(env => env.EvalAsListOfStrings(It.IsAny<string>(), It.IsAny<int>())).Returns(new List<string> { "Some Value" });
@@ -677,12 +677,12 @@ namespace Dev2.Activities.Designers.Tests.Decision
 
         class Entry
         {
-            public enDecisionType _decisionType;
+            public EnDecisionType _decisionType;
             public bool _found;
         }
         [TestMethod]
         [Owner("Rory McGuire")]
-        [TestCategory(nameof(enDecisionType))]
+        [TestCategory(nameof(EnDecisionType))]
         public void enDecisionType_Handled()
         {
             var type = typeof(IDecisionOperation);
@@ -690,8 +690,8 @@ namespace Dev2.Activities.Designers.Tests.Decision
                 .SelectMany(s => s.GetTypes())
                 .Where(p => type.IsAssignableFrom(p) && !p.IsInterface && !p.IsAbstract);
 
-            var names = Enum.GetValues(typeof(enDecisionType))
-                .Cast<enDecisionType>()
+            var names = Enum.GetValues(typeof(EnDecisionType))
+                .Cast<EnDecisionType>()
                 .Select(o => new Entry { _decisionType = o, _found = false })
                 .ToArray();
 
@@ -700,7 +700,7 @@ namespace Dev2.Activities.Designers.Tests.Decision
                 if (types.Any(t =>
                 {
                     var v = Activator.CreateInstance(t) as IDecisionOperation;
-                    var handlesType = (enDecisionType)v.HandlesType();
+                    var handlesType = (EnDecisionType)v.HandlesType();
                     return handlesType == item._decisionType;
                 }))
                 {
@@ -711,7 +711,7 @@ namespace Dev2.Activities.Designers.Tests.Decision
             var unhandledDecisionTypes = names.Where(o => !o._found).ToArray();
 
             Assert.AreEqual(1, unhandledDecisionTypes.Length);
-            Assert.AreEqual(enDecisionType.Choose, unhandledDecisionTypes[0]._decisionType);
+            Assert.AreEqual(EnDecisionType.Choose, unhandledDecisionTypes[0]._decisionType);
         }
     }
 }

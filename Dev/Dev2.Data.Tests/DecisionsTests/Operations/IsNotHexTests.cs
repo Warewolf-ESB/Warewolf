@@ -99,7 +99,7 @@ namespace Dev2.Data.Tests.DecisionsTests.Operations
         [TestCategory(nameof(IsNotHex))]
         public void IsNotHex_HandlesType_ReturnsIsEndsWithType()
         {
-            var expected = enDecisionType.IsNotHex;
+            var expected = EnDecisionType.IsNotHex;
             //------------Setup for test--------------------------
             var isEndsWith = new IsNotHex();
             //------------Execute Test---------------------------

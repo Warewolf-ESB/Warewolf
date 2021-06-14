@@ -16,6 +16,6 @@ namespace Dev2.Data.Decisions.Operations
     {
         public bool Invoke(string[] cols) => cols[0].Length == 0;
 
-        public Enum HandlesType() => enDecisionType.IsNotError;
+        public Enum HandlesType() => EnDecisionType.IsNotError;
     }
 }

@@ -43,7 +43,7 @@ namespace Dev2.Data.Tests.DecisionsTests
         [TestCategory("IsAlphanumeric_HandlesType")]
         public void IsAlphanumeric_HandlesType_ReturnsIsAlphanumericType()
         {
-            var expected = enDecisionType.IsAlphanumeric;
+            var expected = EnDecisionType.IsAlphanumeric;
             //------------Setup for test--------------------------
             var isAlphanumeric = new IsAlphanumeric();
             //------------Execute Test---------------------------

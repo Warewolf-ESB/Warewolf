@@ -43,7 +43,7 @@ namespace Dev2.Data.Tests.DecisionsTests
         [TestCategory("NotRegEx_HandlesType")]
         public void NotRegEx_HandlesType_ReturnsNotRegExType()
         {
-            var decisionType = enDecisionType.NotRegEx;
+            var decisionType = EnDecisionType.NotRegEx;
             //------------Setup for test--------------------------
             var notRegEx = new NotRegEx();
             //------------Execute Test---------------------------

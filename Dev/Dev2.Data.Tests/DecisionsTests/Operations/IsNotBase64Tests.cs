@@ -69,7 +69,7 @@ namespace Dev2.Data.Tests.DecisionsTests.Operations
         [TestCategory(nameof(IsNotBase64))]
         public void IsNotBase64_HandlesType_ReturnsIsEndsWithType()
         {
-            var expected = enDecisionType.IsNotBase64;
+            var expected = EnDecisionType.IsNotBase64;
             //------------Setup for test--------------------------
             var isEndsWith = new IsNotBase64();
             //------------Execute Test---------------------------

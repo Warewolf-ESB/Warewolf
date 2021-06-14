@@ -15,7 +15,7 @@ namespace Dev2.Data.Decisions.Operations
 {
    public class IsEmail : IDecisionOperation
     {
-        public Enum HandlesType() => enDecisionType.IsEmail;
+        public Enum HandlesType() => EnDecisionType.IsEmail;
 
         public bool Invoke(string[] cols) => cols[0].IsEmail();
     }

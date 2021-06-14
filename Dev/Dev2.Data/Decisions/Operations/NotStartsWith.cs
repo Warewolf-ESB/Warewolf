@@ -14,7 +14,7 @@ namespace Dev2.Data.Decisions.Operations
 {
     public class NotStartsWith : IDecisionOperation
     {
-        public Enum HandlesType() => enDecisionType.NotStartsWith;
+        public Enum HandlesType() => EnDecisionType.NotStartsWith;
 
         public bool Invoke(string[] cols) => !cols[0].StartsWith(cols[1]);
     }

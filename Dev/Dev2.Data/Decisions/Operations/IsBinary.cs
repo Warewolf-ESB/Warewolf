@@ -28,6 +28,6 @@ namespace Dev2.Data.Decisions.Operations
             return false;
         }
 
-        public Enum HandlesType() => enDecisionType.IsBinary;
+        public Enum HandlesType() => EnDecisionType.IsBinary;
     }
 }

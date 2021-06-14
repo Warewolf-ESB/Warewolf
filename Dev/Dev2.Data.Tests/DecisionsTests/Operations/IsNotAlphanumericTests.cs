@@ -66,7 +66,7 @@ namespace Dev2.Data.Tests.DecisionsTests.Operations
         [TestCategory(nameof(IsNotAlphanumeric))]
         public void IsNotAlphanumeric_HandlesType_ReturnsIsNotAlphanumericType()
         {
-            var expected = enDecisionType.IsNotAlphanumeric;
+            var expected = EnDecisionType.IsNotAlphanumeric;
             //------------Setup for test--------------------------
             var IsNotAlphanumeric = new IsNotAlphanumeric();
             //------------Execute Test---------------------------

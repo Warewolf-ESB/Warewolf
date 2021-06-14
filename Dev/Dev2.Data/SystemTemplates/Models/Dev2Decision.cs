@@ -65,7 +65,7 @@ namespace Dev2.Data.SystemTemplates.Models
         }
 
         [JsonConverter(typeof(StringEnumConverter))]
-        public enDecisionType EvaluationFn { get; set; }
+        public EnDecisionType EvaluationFn { get; set; }
 
         public string GenerateToolLabel(IExecutionEnvironment env, Dev2DecisionMode mode, out ErrorResultTO errors)
         {
@@ -161,7 +161,7 @@ namespace Dev2.Data.SystemTemplates.Models
 
         class ToolLabelGenerator
         {
-            readonly enDecisionType _evaluationFn;
+            readonly EnDecisionType _evaluationFn;
             readonly int _populatedColumnCount;
             readonly string _col1;
             readonly string _col2;
@@ -169,7 +169,7 @@ namespace Dev2.Data.SystemTemplates.Models
             readonly IExecutionEnvironment _env;
             readonly Dev2DecisionMode _mode;
 
-            public ToolLabelGenerator(enDecisionType evaluationFn, int populatedColumnCount, string col1, string col2, string col3, IExecutionEnvironment env, Dev2DecisionMode mode)
+            public ToolLabelGenerator(EnDecisionType evaluationFn, int populatedColumnCount, string col1, string col2, string col3, IExecutionEnvironment env, Dev2DecisionMode mode)
             {
                 _evaluationFn = evaluationFn;
                 _populatedColumnCount = populatedColumnCount;

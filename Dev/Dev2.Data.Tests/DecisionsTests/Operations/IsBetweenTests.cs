@@ -173,7 +173,7 @@ namespace Dev2.Data.Tests.DecisionsTests.Operations
             var isBetween = new IsBetween();
             //------------Execute Test---------------------------
             //------------Assert Results-------------------------
-            Assert.AreEqual(enDecisionType.IsBetween, isBetween.HandlesType());
+            Assert.AreEqual(EnDecisionType.IsBetween, isBetween.HandlesType());
         }
     }
 }

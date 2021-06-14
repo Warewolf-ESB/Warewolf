@@ -175,18 +175,18 @@ namespace Dev2.Activities
                 DispatchDebugState(dataObject, StateType.Before, 0);
             }
 
-            var errorIfNull = !Conditions.TheStack.Any(decision => decision.EvaluationFn == enDecisionType.IsNull || decision.EvaluationFn == enDecisionType.IsNotNull);
+            var errorIfNull = !Conditions.TheStack.Any(decision => decision.EvaluationFn == EnDecisionType.IsNull || decision.EvaluationFn == EnDecisionType.IsNotNull);
 
             var stack = Conditions.TheStack.Select(a => ParseDecision(dataObject.Environment, a, errorIfNull));
 
             var factory = Dev2DecisionFactory.Instance();
             var res = stack.SelectMany(a =>
             {
-                if (a.EvaluationFn == enDecisionType.IsError)
+                if (a.EvaluationFn == EnDecisionType.IsError)
                 {
                     return new[] { dataObject.Environment.AllErrors.Count > 0 };
                 }
-                if (a.EvaluationFn == enDecisionType.IsNotError)
+                if (a.EvaluationFn == EnDecisionType.IsNotError)
                 {
                     return new[] { dataObject.Environment.AllErrors.Count == 0 };
                 }

@@ -54,7 +54,7 @@ namespace Dev2.Data.Tests.DecisionsTests
         [TestCategory("IsEqual_HandlesType")]
         public void IsEndsWith_HandlesType_ReturnsIsEndsWithType()
         {
-            var expected = enDecisionType.IsEqual;
+            var expected = EnDecisionType.IsEqual;
             //------------Setup for test--------------------------
             var isEndsWith = new IsEqual();
             //------------Execute Test---------------------------
