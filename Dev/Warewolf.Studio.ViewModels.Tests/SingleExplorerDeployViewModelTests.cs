@@ -25,6 +25,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Dev2.Threading;
 using Dev2;
+using Warewolf.Licensing;
 
 namespace Warewolf.Studio.ViewModels.Tests
 {
@@ -63,6 +64,12 @@ namespace Warewolf.Studio.ViewModels.Tests
             _sourceView.Setup(model => model.SelectedItems).Returns(new List<IExplorerTreeItem>());
             _explorerTooltips = new Mock<IExplorerTooltips>();
             CustomContainer.Register(_explorerTooltips.Object);
+
+            var mockServerRepository = new Mock<IServerRepository>();
+            var environments = new List<IServer>();
+            mockServerRepository.Setup(e => e.All()).Returns(environments);
+
+            CustomContainer.Register(mockServerRepository.Object);
         }
 
         private static Mock<IEnvironmentConnection> SetupMockConnection()
@@ -187,6 +194,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _shellVm.Setup(model => model.ExplorerViewModel).Returns(new Mock<IExplorerViewModel>().Object);
             _shellVm.Setup(model => model.ExplorerViewModel.ConnectControlViewModel).Returns(new Mock<IConnectControlViewModel>().Object);
             _shellVm.Setup(model => model.LocalhostServer).Returns(_serverMock.Object);
+            _shellVm.Setup(model => model.SubscriptionData).Returns(new Mock<ISubscriptionData>().Object);
             var envMock = new Mock<IEnvironmentViewModel>();
             _shellVm.SetupGet(model => model.ExplorerViewModel.Environments).Returns(new Caliburn.Micro.BindableCollection<IEnvironmentViewModel>()
             {
@@ -579,6 +587,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _shellVm.Setup(model => model.LocalhostServer).Returns(_serverMock.Object);
             _shellVm.Setup(model => model.ExplorerViewModel).Returns(new Mock<IExplorerViewModel>().Object);
             _shellVm.Setup(model => model.ExplorerViewModel.ConnectControlViewModel).Returns(new Mock<IConnectControlViewModel>().Object);
+            _shellVm.Setup(model => model.SubscriptionData).Returns(new Mock<ISubscriptionData>().Object);
             var envMock = new Mock<IEnvironmentViewModel>();
             _shellVm.SetupGet(model => model.ExplorerViewModel.Environments).Returns(new Caliburn.Micro.BindableCollection<IEnvironmentViewModel>()
             {
@@ -617,7 +626,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             _serverEnvironmentId = Guid.NewGuid();
             _serverMock.SetupGet(it => it.EnvironmentID).Returns(_serverEnvironmentId);
             _serverMock.Setup(server => server.IsConnected).Returns(true);
+            _serverMock.Setup(server => server.GetSubscriptionData()).Returns(new Mock<ISubscriptionData>().Object);
             _shellVm.Setup(model => model.LocalhostServer).Returns(_serverMock.Object);
+            _shellVm.Setup(model => model.SubscriptionData).Returns(new Mock<ISubscriptionData>().Object);
             _shellVm.Setup(model => model.ExplorerViewModel).Returns(new Mock<IExplorerViewModel>().Object);
             _shellVm.Setup(model => model.ExplorerViewModel.ConnectControlViewModel).Returns(new Mock<IConnectControlViewModel>().Object);
             var envMock = new Mock<IEnvironmentViewModel>();
@@ -634,6 +645,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var mockEnvironmentConnection = SetupMockConnection();
             mockEnvironmentConnection.Setup(connection => connection.IsConnected).Returns(true);
             _differentServerMock.Setup(server => server.Connection).Returns(mockEnvironmentConnection.Object);
+            _differentServerMock.Setup(server => server.GetSubscriptionData()).Returns(new Mock<ISubscriptionData>().Object);
             differentConnectControl.Setup(model => model.SelectedConnection).Returns(_differentServerMock.Object);
             _destView.Setup(model => model.ConnectControlViewModel).Returns(differentConnectControl.Object);
             _destView.Setup(model => model.SelectedEnvironment).Returns(It.IsAny<IEnvironmentViewModel>());
@@ -1125,7 +1137,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             _serverMock.SetupGet(it => it.DisplayName).Returns("some text");
             _serverEnvironmentId = Guid.NewGuid();
             _serverMock.SetupGet(it => it.EnvironmentID).Returns(_serverEnvironmentId);
+            _serverMock.Setup(server => server.GetSubscriptionData()).Returns(new Mock<ISubscriptionData>().Object);
             _shellVm.Setup(model => model.LocalhostServer).Returns(_serverMock.Object);
+            _shellVm.Setup(server => server.SubscriptionData).Returns(new Mock<ISubscriptionData>().Object);
             _shellVm.Setup(model => model.ExplorerViewModel).Returns(new Mock<IExplorerViewModel>().Object);
             _shellVm.Setup(model => model.ExplorerViewModel.ConnectControlViewModel).Returns(new Mock<IConnectControlViewModel>().Object);
             var popupController = new Mock<IPopupController>();
@@ -1148,7 +1162,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         [Owner("Sanele Mthembu")]
         public void NewItems_GivenCalculateAction_AreEqualTo_StatViewNew()
         {
-            //---------------Set up test pack-------------------            
+            //---------------Set up test pack-------------------
             _updateRepositoryMock.SetupProperty(manager => manager.ServerSaved);
             _serverMock.SetupGet(it => it.UpdateRepository).Returns(_updateRepositoryMock.Object);
             _serverMock.SetupGet(it => it.DisplayName).Returns("some text");
@@ -1176,7 +1190,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         [Owner("Sanele Mthembu")]
         public void SourcesCount_GivenCalculateAction_AreEqualTo_StatViewSources()
         {
-            //---------------Set up test pack-------------------            
+            //---------------Set up test pack-------------------
             _updateRepositoryMock.SetupProperty(manager => manager.ServerSaved);
             _serverMock.SetupGet(it => it.UpdateRepository).Returns(_updateRepositoryMock.Object);
             _serverMock.SetupGet(it => it.DisplayName).Returns("some text");
@@ -1259,7 +1273,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         [Owner("Sanele Mthembu")]
         public void ConflictItems_GivenCalculateAction_AreEqualToStatViewConflictItems()
         {
-            //---------------Set up test pack-------------------            
+            //---------------Set up test pack-------------------
             _updateRepositoryMock.SetupProperty(manager => manager.ServerSaved);
             _serverMock.SetupGet(it => it.UpdateRepository).Returns(_updateRepositoryMock.Object);
             _serverMock.SetupGet(it => it.DisplayName).Returns("some text");
@@ -1288,7 +1302,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         [Owner("Sanele Mthembu")]
         public void UpdateServerCompareChanged_ShouldRecalculate_Items()
         {
-            //---------------Set up test pack-------------------            
+            //---------------Set up test pack-------------------
             _updateRepositoryMock.SetupProperty(manager => manager.ServerSaved);
             _serverMock.SetupGet(it => it.UpdateRepository).Returns(_updateRepositoryMock.Object);
             _serverMock.SetupGet(it => it.DisplayName).Returns("some text");
@@ -1342,7 +1356,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         [Owner("Sanele Mthembu")]
         public void SelectDependencies_GivenSourceWithDependencies_ShouldHaveItemsSelected()
         {
-            //---------------Set up test pack-------------------            
+            //---------------Set up test pack-------------------
             _updateRepositoryMock.SetupProperty(manager => manager.ServerSaved);
             _serverMock.SetupGet(it => it.UpdateRepository).Returns(_updateRepositoryMock.Object);
             _serverMock.SetupGet(it => it.DisplayName).Returns("some text");
@@ -1396,7 +1410,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         [Owner("Sanele Mthembu")]
         public void DestinationConnectControlViewModel_GivenDestinationConnectControlViewModelIsSetToSameValue_ShouldReturn()
         {
-            //---------------Set up test pack-------------------            
+            //---------------Set up test pack-------------------
             _updateRepositoryMock.SetupProperty(manager => manager.ServerSaved);
             _serverMock.SetupGet(it => it.UpdateRepository).Returns(_updateRepositoryMock.Object);
             _serverMock.SetupGet(it => it.DisplayName).Returns("some text");
@@ -1440,7 +1454,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         [Owner("Sanele Mthembu")]
         public void CheckResourceNameConflict_GivenSourceWith1ItemAndDestinationWith1Item_ShouldSetIsDeployingToFalse()
         {
-            //---------------Set up test pack-------------------            
+            //---------------Set up test pack-------------------
             _updateRepositoryMock.SetupProperty(manager => manager.ServerSaved);
             _serverMock.SetupGet(it => it.UpdateRepository).Returns(_updateRepositoryMock.Object);
             _serverMock.SetupGet(it => it.DisplayName).Returns("some text");
