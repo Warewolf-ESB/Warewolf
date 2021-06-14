@@ -40,10 +40,9 @@ namespace Warewolf.Studio.ViewModels
             var warewolfUri = new Uri(Resources.Languages.Core.WarewolfUrl);
             WarewolfUrl = warewolfUri;
             WarewolfCopyright = string.Format(Resources.Languages.Core.WarewolfCopyright, DateTime.Now.Year.ToString());
-
-            //TODO: Add back during UI, setting instance to default and not reading from config
-            //var subscriptionData = Server.GetSubscriptionData();
-            //WarewolfLicense =  subscriptionData.PlanId + ": " + subscriptionData.Status;
+            
+            var subscriptionData = Server.GetSubscriptionData();
+            WarewolfLicense =  subscriptionData.PlanId + ": " + subscriptionData.Status;
 
             ContributorsCommand = new DelegateCommand(() => externalProcessExecutor.OpenInBrowser(ContributorsUrl));
             CommunityCommand = new DelegateCommand(() => externalProcessExecutor.OpenInBrowser(CommunityUrl));

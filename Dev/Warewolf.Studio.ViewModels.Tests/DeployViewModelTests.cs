@@ -14,9 +14,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Dev2;
 using Dev2.Common.Interfaces.Explorer;
-using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Explorer;
-using Dev2.Services.Security;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.Deploy;
 using Microsoft.Practices.Prism.PubSubEvents;
@@ -24,6 +22,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Warewolf.Studio.Core;
 using Dev2.ConnectionHelpers;
+using Warewolf.Enums;
 using Warewolf.Licensing;
 
 namespace Warewolf.Studio.ViewModels.Tests
@@ -190,9 +189,16 @@ namespace Warewolf.Studio.ViewModels.Tests
             deployViewModel.Object.DeployCommand.Execute(null);
             deployViewModel.Verify(model => model.DeployCommand.Execute(null), Times.AtLeast(1));
         }
-
+        private static Mock<ISubscriptionData> MockSubscriptionData()
+        {
+            var mockSubscriptionData = new Mock<ISubscriptionData>();
+            mockSubscriptionData.Setup(o => o.IsLicensed).Returns(true);
+            mockSubscriptionData.Setup(o => o.Status).Returns(SubscriptionStatus.InTrial);
+            mockSubscriptionData.Setup(o => o.PlanId).Returns("developer");
+            return mockSubscriptionData;
+        }
         [TestMethod]
-        [Timeout(250)]
+       // [Timeout(250)]
         [Owner("Sanele Mthembu")]
         public void Given_TheSameServer_CheckDestinationPersmisions_ShouldBeTrue()
         {
@@ -202,27 +208,28 @@ namespace Warewolf.Studio.ViewModels.Tests
             var shellViewModel = new Mock<IShellViewModel>();
             shellViewModel.Setup(model => model.ExplorerViewModel).Returns(new Mock<IExplorerViewModel>().Object);
             shellViewModel.Setup(model => model.ExplorerViewModel.ConnectControlViewModel).Returns(new Mock<IConnectControlViewModel>().Object);
-            shellViewModel.Setup(o => o.SubscriptionData).Returns(new Mock<ISubscriptionData>().Object);
-            var envMock = new Mock<IEnvironmentViewModel>();
-            shellViewModel.SetupGet(model => model.ExplorerViewModel.Environments).Returns(new Caliburn.Micro.BindableCollection<IEnvironmentViewModel>()
-            {
-                envMock.Object
-            });
-            var eventAggregator = new Mock<IEventAggregator>();
+            shellViewModel.SetupGet(o => o.SubscriptionData.IsLicensed).Returns(true);
 
             var localhost = new Mock<IServer>();
             localhost.Setup(a => a.DisplayName).Returns("Localhost");
             localhost.SetupGet(server => server.CanDeployTo).Returns(true);
             localhost.SetupGet(server => server.CanDeployFrom).Returns(true);
-            localhost.SetupGet(server => server.GetSubscriptionData()).Returns(new Mock<ISubscriptionData>().Object);
+            localhost.Setup(it => it.GetSubscriptionData()).Returns(MockSubscriptionData().Object);
+
             var mockEnvironmentConnection = SetupMockConnection();
             localhost.SetupGet(it => it.Connection).Returns(mockEnvironmentConnection.Object);
+
+            var envMock = new Mock<IEnvironmentViewModel>();
+            envMock.SetupGet(it => it.Server).Returns(localhost.Object);
+            shellViewModel.SetupGet(model => model.ExplorerViewModel.Environments).Returns(new Caliburn.Micro.BindableCollection<IEnvironmentViewModel>()
+            {
+                envMock.Object
+            });
             shellViewModel.Setup(x => x.LocalhostServer).Returns(localhost.Object);
-
+            shellViewModel.Setup(it => it.ActiveServer).Returns(localhost.Object);
+            var eventAggregator = new Mock<IEventAggregator>();
             var deployDestinationViewModel = new DeployDestinationViewModel(shellViewModel.Object, eventAggregator.Object);
-
             var sourceItemViewModel = new ExplorerItemViewModel(localhost.Object, null, null, shellViewModel.Object, null);
-
             var sourceViewModel = new AsyncObservableCollection<IExplorerItemViewModel>();
             var sourceExplorerItemViewModel = new ExplorerItemNodeViewModel(localhost.Object, sourceItemViewModel, null);
             sourceViewModel.Add(sourceExplorerItemViewModel);
