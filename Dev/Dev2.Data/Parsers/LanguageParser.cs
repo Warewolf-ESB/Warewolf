@@ -11,6 +11,7 @@
 using System.Collections.Generic;
 using System.Xml;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Data.Factories;
 
 namespace Dev2.DataList.Contract
 {

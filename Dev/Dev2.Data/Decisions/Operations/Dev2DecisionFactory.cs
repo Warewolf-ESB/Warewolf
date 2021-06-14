@@ -19,12 +19,7 @@ namespace Dev2.Data.Decisions.Operations
 
         public static Dev2DecisionFactory Instance()
         {
-            if (_inst == null)
-            {
-                _inst = new Dev2DecisionFactory(); 
-            }
-
-            return _inst;
+            return _inst ?? (_inst = new Dev2DecisionFactory());
         }
 
         public IDecisionOperation FetchDecisionFunction(EnDecisionType typeOf) => FindMatch(typeOf);

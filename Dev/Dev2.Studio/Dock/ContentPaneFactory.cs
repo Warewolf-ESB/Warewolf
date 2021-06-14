@@ -23,6 +23,7 @@ using Dev2.Studio.Interfaces;
 using Dev2.Studio.ViewModels;
 using Dev2.Studio.ViewModels.Workflow;
 using Dev2.Studio.ViewModels.WorkSurface;
+using Dev2.ViewModels.Workflow;
 using Dev2.Workspaces;
 using Infragistics;
 using Infragistics.Windows.DockManager;

@@ -11,11 +11,12 @@
              xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
              xmlns:fa="http://schemas.fontawesome.io/icons/"
              xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
+             xmlns:workflow1="clr-namespace:Dev2.ViewModels.Workflow"
              AllowDrop="True"
              AutomationProperties.AutomationId="UI_WorkflowDesigner_AutoID"
              mc:Ignorable="d"
              x:Name="WorkflowDesigner"
-             d:DataContext="{d:DesignInstance Type=workflow:WorkflowDesignerViewModel, IsDesignTimeCreatable=False}">
+             d:DataContext="{d:DesignInstance Type=workflow1:WorkflowDesignerViewModel, IsDesignTimeCreatable=False}">
 
     <UserControl.Resources>
         <ResourceDictionary>

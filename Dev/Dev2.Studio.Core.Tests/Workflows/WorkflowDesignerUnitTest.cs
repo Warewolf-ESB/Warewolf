@@ -54,6 +54,7 @@ using Dev2.Data.Interfaces;
 using Dev2.Studio.Interfaces.Enums;
 using Dev2.Instrumentation;
 using Dev2.Activities;
+using Dev2.ViewModels.Workflow;
 
 namespace Dev2.Core.Tests.Workflows
 {

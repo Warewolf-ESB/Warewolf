@@ -31,6 +31,7 @@ using Dev2.Studio.Interfaces;
 using Dev2.Studio.ViewModels.Workflow;
 using Dev2.Threading;
 using Dev2.Utilities;
+using Dev2.ViewModels.Workflow;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Moq.Protected;

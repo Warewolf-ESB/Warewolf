@@ -46,6 +46,7 @@ using Dev2.Studio.Interfaces.DataList;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.Core.Tests.Workflows;
 using Dev2.Core.Tests;
+using Dev2.ViewModels.Workflow;
 
 namespace Warewolf.UIBindingTests.WorkflowDesigner
 {

@@ -35,6 +35,7 @@ using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 using System.Diagnostics.CodeAnalysis;
 using Dev2.Common.State;
+using Dev2.Data.Factories;
 
 namespace Dev2.Activities.Sharepoint
 {

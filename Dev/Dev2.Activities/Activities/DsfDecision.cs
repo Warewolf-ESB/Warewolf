@@ -70,10 +70,7 @@ namespace Dev2.Activities
             var armConnectors = new List<(string Description, string Key, string SourceUniqueId, string DestinationUniqueId)>();
             if (TrueArm != null)
             {
-                foreach (var next in TrueArm)
-                {
-                    armConnectors.Add(($"{GetDisplayName()}: TRUE -> {next.GetDisplayName()}", "True", UniqueID, next.UniqueID));
-                }
+                armConnectors.AddRange(TrueArm.Select(next => ($"{GetDisplayName()}: TRUE -> {next.GetDisplayName()}", "True", UniqueID, next.UniqueID)));
             }
             else
             {
@@ -81,10 +78,7 @@ namespace Dev2.Activities
             }
             if (FalseArm != null)
             {
-                foreach (var next in FalseArm)
-                {
-                    armConnectors.Add(($"{GetDisplayName()}: FALSE -> {next.GetDisplayName()}", "False", UniqueID, next.UniqueID));
-                }
+                armConnectors.AddRange(FalseArm.Select(next => ($"{GetDisplayName()}: FALSE -> {next.GetDisplayName()}", "False", UniqueID, next.UniqueID)));
             }
             else
             {
@@ -513,7 +507,10 @@ namespace Dev2.Activities
     {
         readonly DsfDecision _dsfDecision;
 
+        // ReSharper disable UnusedMember.Global
+        // Disabled because this may be used dynamically by reflection or other in-memory access.
         public TestMockDecisionStep() : base("Mock Decision")
+        // ReSharper restore UnusedMember.Global
         {
         }
 
@@ -594,7 +591,10 @@ namespace Dev2.Activities
         public override List<string> GetOutputs() => new List<string>();
 
 
-        public bool Equals(TestMockDecisionStep other)
+        // ReSharper disable MemberCanBePrivate.Global
+        // Disabled to maintain compatibility with resources already serialized with this API
+        public bool Equals(TestMockDecisionStep other) 
+        // ReSharper restore MemberCanBePrivate.Global
         {
             return ReferenceEquals(this, other);
         }

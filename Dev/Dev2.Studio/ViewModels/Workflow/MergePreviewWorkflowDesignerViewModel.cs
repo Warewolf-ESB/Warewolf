@@ -24,6 +24,7 @@ using Dev2.Common.Interfaces.Threading;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Interfaces;
 using Dev2.Utilities;
+using Dev2.ViewModels.Workflow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Studio.ViewModels.Workflow

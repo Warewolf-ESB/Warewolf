@@ -74,6 +74,8 @@ using Dev2.Studio.Enums;
 using Warewolf.Data;
 using Dev2.Data;
 using Dev2.Data.Interfaces;
+using Dev2.ViewModels.Workflow;
+using Dev2.Views;
 using Warewolf.Core;
 
 namespace Dev2.Studio.ViewModels

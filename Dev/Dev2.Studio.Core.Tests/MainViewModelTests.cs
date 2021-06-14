@@ -63,6 +63,7 @@ using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Instrumentation;
 using Dev2.Triggers;
 using Dev2.Dialogs;
+using Dev2.ViewModels.Workflow;
 using Warewolf.Data;
 using Warewolf.Options;
 

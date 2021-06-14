@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Data.Factories;
 using Dev2.Data.Interfaces;
 using Dev2.Data.TO;
 using Dev2.DataList.Contract;
@@ -56,7 +57,7 @@ namespace Dev2.Data.Tests
             var dlf = new DataListFactoryImplementation();
             var parser = dlf.CreateOutputParser();
             var outputs = parser.Parse("<Outputs><Output Name =\"scalar1\" MapsTo=\"[[scalar1]]\" Value=\"[[scalar1]]\" DefaultValue=\"1234\" /></Outputs>");
-            var scalars = dlf.CreateScalarList(outputs, a).ToArray();
+            var scalars = dlf.CreateScalarList(outputs).ToArray();
 
             Assert.AreEqual(1, scalars.Length);
             Assert.AreEqual("1234", scalars[0].DefaultValue);
@@ -76,7 +77,7 @@ namespace Dev2.Data.Tests
             var dlf = new DataListFactoryImplementation();
             var parser = dlf.CreateOutputParser();
             var outputs = parser.Parse("<Outputs><Output Name=\"name\" MapsTo=\"[[name]]\" Value=\"[[person(*).name]]\" Recordset=\"person\" DefaultValue=\"bob1\" /></Outputs>");
-            var scalars = dlf.CreateScalarList(outputs, true).ToArray();
+            var scalars = dlf.CreateScalarList(outputs).ToArray();
 
             Assert.AreEqual(0, scalars.Length);
         }

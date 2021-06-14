@@ -61,6 +61,7 @@ using Dev2.Views.Merge;
 using Dev2.ViewModels.Search;
 using Dev2.Views.Search;
 using Dev2.Triggers;
+using Dev2.ViewModels.Workflow;
 using Warewolf.Data;
 
 namespace Dev2.Studio.ViewModels

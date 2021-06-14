@@ -22,6 +22,7 @@ using Dev2.Common.Interfaces.Enums.Enums;
 using Dev2.Common.Interfaces.Search;
 using Dev2.Common.Interfaces.StringTokenizer.Interfaces;
 using Dev2.Data.Builders;
+using Dev2.Data.Factories;
 using Dev2.Data.Interfaces;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.TO;
@@ -188,7 +189,7 @@ namespace Dev2.Data.Util
             {
                 var inputs = DataListFactory.CreateInputParser().Parse(inputDefs);
                 var inputRecSets = DataListFactory.Instance.CreateRecordSetCollection(inputs, false);
-                var inputScalarList = DataListFactory.Instance.CreateScalarList(inputs, false);
+                var inputScalarList = DataListFactory.Instance.CreateScalarList(inputs);
                 var inputObjectList = DataListFactory.Instance.CreateObjectList(inputs);
                 Common.CreateRecordSetsInputs(outerEnvironment, inputRecSets, inputs, env, update);
                 Common.CreateScalarInputs(outerEnvironment, inputScalarList, env, update);

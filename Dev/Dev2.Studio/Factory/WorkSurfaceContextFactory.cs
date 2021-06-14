@@ -24,6 +24,7 @@ using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Threading;
 using Dev2.Triggers;
 using Dev2.Utilities;
+using Dev2.ViewModels.Workflow;
 
 namespace Dev2.Studio.Factory
 {

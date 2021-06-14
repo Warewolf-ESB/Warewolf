@@ -15,7 +15,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using Dev2.Studio.ViewModels.Workflow;
-
+using Dev2.ViewModels.Workflow;
 
 namespace Dev2.Studio.Views.Workflow
 {

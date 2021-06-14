@@ -22,6 +22,7 @@ using Dev2.Studio.ViewModels.Workflow;
 using Dev2.Threading;
 using Dev2.Utilities;
 using Dev2.Utils;
+using Dev2.ViewModels.Workflow;
 using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 

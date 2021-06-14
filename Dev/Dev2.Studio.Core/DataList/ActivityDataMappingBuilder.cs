@@ -16,6 +16,7 @@ using System.Xml;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Data;
+using Dev2.Data.Factories;
 using Dev2.Data.Interfaces;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.Util;

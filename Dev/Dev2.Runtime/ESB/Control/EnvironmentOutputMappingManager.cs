@@ -12,6 +12,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Data.Factories;
 using Dev2.Data.Interfaces;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.TO;
@@ -97,7 +98,7 @@ namespace Dev2.Runtime.ESB.Control
             {
                 var outputs = _dataListFactory.CreateOutputParser().Parse(outputDefs);
                 var outputRecSets = _dataListFactory.CreateRecordSetCollection(outputs, true);
-                var outputScalarList = _dataListFactory.CreateScalarList(outputs, true);
+                var outputScalarList = _dataListFactory.CreateScalarList(outputs);
                 var outputComplexObjectList = _dataListFactory.CreateObjectList(outputs);
                 TryEvalAssignRecordSets(innerEnvironment, environment, update, outputRecSets, outputs);
                 TryEvalAssignScalars(innerEnvironment, environment, update, outputScalarList);

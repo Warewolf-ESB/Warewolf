@@ -12,21 +12,20 @@
 using System.Collections.Generic;
 using System.Linq;
 using Dev2.Common.Interfaces.Data;
-using Dev2.Data;
 using Dev2.Data.Builders;
 using Dev2.Data.Interfaces;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.Parsers;
 using Dev2.Data.TO;
-using Dev2.DataList.Contract.Binary_Objects;
+using Dev2.DataList.Contract;
 
-namespace Dev2.DataList.Contract
+namespace Dev2.Data.Factories
 {
     public interface IDataListFactory
     {
         IDev2LanguageParser CreateOutputParser();
         IRecordSetCollection CreateRecordSetCollection(IList<IDev2Definition> parsedOutput, bool isOutput);
-        IEnumerable<IDev2Definition> CreateScalarList(IEnumerable<IDev2Definition> parsedOutput, bool isOutput);
+        IEnumerable<IDev2Definition> CreateScalarList(IEnumerable<IDev2Definition> parsedOutput);
         IEnumerable<IDev2Definition> CreateObjectList(IEnumerable<IDev2Definition> parsedOutput);
     }
     public class DataListFactoryImplementation : IDataListFactory
@@ -47,34 +46,22 @@ namespace Dev2.DataList.Contract
             return result;
         }
 
-        public IEnumerable<IDev2Definition> CreateScalarList(IEnumerable<IDev2Definition> parsedOutput, bool isOutput)
-        {
-            IList<IDev2Definition> result = new List<IDev2Definition>();
+        public IEnumerable<IDev2Definition> CreateScalarList(IEnumerable<IDev2Definition> parsedOutput) => parsedOutput.Where(def => !def.IsRecordSet && !def.IsObject).ToList();
 
-            foreach (IDev2Definition def in parsedOutput)
-            {
-                if (!def.IsRecordSet && !def.IsObject)
-                {
-                    result.Add(def);
-                }
-            }
-
-            return result;
-        }
         public IEnumerable<IDev2Definition> CreateObjectList(IEnumerable<IDev2Definition> parsedOutput) => parsedOutput.Where(def => def.IsObject).ToList();
     }
 
     public static class DataListFactory
     {
         static IDataListFactory _instance;
-        static readonly object _lock = new object();
+        static readonly object Lock = new object();
         public static IDataListFactory Instance
         {
             get
             {
                 if (_instance is null)
                 {
-                    lock (_lock)
+                    lock (Lock)
                     {
                         if (_instance is null)
                         {

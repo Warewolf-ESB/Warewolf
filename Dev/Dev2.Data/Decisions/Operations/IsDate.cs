@@ -16,6 +16,6 @@ namespace Dev2.Data.Decisions.Operations
     {
         public Enum HandlesType() => EnDecisionType.IsDate;
 
-        public bool Invoke(string[] cols) => DateTime.TryParse(cols[0], out DateTime date);
+        public bool Invoke(string[] cols) => DateTime.TryParse(cols[0], out _);
     }
 }
