@@ -52,7 +52,7 @@ namespace Warewolf.Studio.CustomControls
             }
             catch(Exception)
             {
-                //handle error
+                //handle error with dev2 Logger
                 return GlobalConstants.Failed;
             }
         }
@@ -73,11 +73,12 @@ namespace Warewolf.Studio.CustomControls
                 var result = _shellViewModel?.ActiveServer.ResourceRepository.CreateSubscription(subscriptionData);
                 _isLicensed = result == GlobalConstants.Success;
 
-                //TODO:Handle error message
+
                 return result;
             }
             catch(Exception)
             {
+                //TODO:Handle error message to dev2 logger
                 return GlobalConstants.Failed;
             }
         }

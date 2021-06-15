@@ -11,54 +11,67 @@
     <link rel="stylesheet" href="styles/warewolf.css">
     <script type='text/javascript'>
         jQuery(document).ready(function () {
+            $("#btn-developer").css("display", "none");
+            $("#btn-enterprise").css("display", "none");
+
             $(".close-btn").click(function (e) {
                 e.preventDefault();
                 window.external.CloseBrowser();
             });
             $(".submit-btn").click(function (e) {
                 e.preventDefault();
+
                 let valid = true;
                 let planId = $(this).attr("plan-id");
-                let firstName = $('#firstName').val();
-                let lastName = $('#lastName').val();
-                let email = $('#email').val();
-                let errorMsg = "There were errors while submitting: ";
-                if (firstName === '') {
-                    ShowError();
-                    valid = false;
-                    errorMsg += " [First Name] "
-                }
+                let $this = $(this);
+                BtnLoading($this);
+                try {
 
-                if (lastName === '') {
-                    ShowError();
-                    valid = false;
-                    errorMsg += " [Last Name] "
-                }
-                if (email === '') {
-                    ShowError();
-                    valid = false;
-                    errorMsg += " [Email Address] "
-                }
+                    let firstName = $('#firstName').val();
+                    let lastName = $('#lastName').val();
+                    let email = $('#email').val();
+                    let errorMsg = "There were errors while submitting: ";
+                    if (firstName === '') {
+                        ShowError();
+                        valid = false;
+                        errorMsg += " [First Name] "
+                    }
+                    if (lastName === '') {
+                        ShowError();
+                        valid = false;
+                        errorMsg += " [Last Name] "
+                    }
+                    if (email === '') {
+                        ShowError();
+                        valid = false;
+                        errorMsg += " [Email Address] "
+                    }
+                    if (!isEmail(email)) {
 
-                if (!isEmail(email)) {
+                        valid = false;
+                        errorMsg += " [Invalid Email Address Format] "
+                    }
 
-                    valid = false;
-                    errorMsg += " [Invalid Email Address Format] "
-                }
+                    if (valid === true) {
+                        let result = window.external.CreateSubscription(email, firstName, lastName, planId);
 
-                if (valid === true) {
-                    let result = window.external.CreateSubscription(email, firstName, lastName, planId);
-
-                    if (result === "Success") {
-                        $("#errorContainer").css("display", "none");
-                        $("#register-result").css("display", "block");
-                        $("#customer-info").css("display", "none");
-                        $("#terms").css("display", "none");
+                        if (result === "Success") {
+                            $("#errorContainer").css("display", "none");
+                            $("#register-result").css("display", "block");
+                            $("#customer-info").css("display", "none");
+                            $("#terms").css("display", "none");
+                        } else {
+                            ShowError(errorMsg);
+                        }
                     } else {
                         ShowError(errorMsg);
                     }
-                } else {
-                    ShowError(errorMsg);
+
+                   BtnReset($this);
+
+                } catch (err) {
+                    BtnReset($this);
+                    ShowError("There were errors while submitting. Please confirm the server is connected.");
                 }
             });
 
@@ -72,6 +85,17 @@
                 $("#errorContainer").css("display", "block");
                 $("#customer-info").css("display", "block");
                 $("#register-result").css("display", "none");
+            }
+
+            function BtnLoading(elem) {
+                $(elem).attr("data-original-text", $(elem).html());
+                $(elem).prop("disabled", true);
+                $(elem).html('<i class="spinner-border spinner-border-sm"></i> Processing...');
+            }
+
+            function BtnReset(elem) {
+                $(elem).prop("disabled", false);
+                $(elem).html($(elem).attr("data-original-text"));
             }
         });
     </script>
@@ -128,19 +152,19 @@
                     <div class="col-sm-6 text-center">
                         <h5>Enterprise</h5>
                         <p>$220 <small><em>per core per month</em></small></p>
-                        <input type="submit"
-                               class="submit-btn btn btn-register btn-md" plan-id="enterprise" value="Try for Free">
+                        <button type="button" id="enterprise"
+                                class="submit-btn btn btn-register btn-md" plan-id="enterprise">Try For Free
+                        </button>
                     </div>
                     <div class="col-sm-6 text-center">
                         <h5>Developer</h5>
                         <p>$80 <small><em>per core per month</em></small></p>
-                        <input type="submit" class="submit-btn btn btn-register btn-md" plan-id="developer"
-                               value="Try for Free">
+                        <button type="button" id="developer"
+                                class="submit-btn btn btn-register btn-md" plan-id="developer">Try For Free
+                        </button>
                     </div>
                 </div>
                 <br/>
-
-
             </form>
         </div>
         <div class="col-sm-12">
