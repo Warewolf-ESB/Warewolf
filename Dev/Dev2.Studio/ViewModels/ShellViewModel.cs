@@ -2349,13 +2349,13 @@ namespace Dev2.Studio.ViewModels
 
         public void UpdateStudioLicense(bool isLicensed)
         {
-            //TODO: Refresh studio to explorer to manage plan
             SaveCommand.UpdateContext(ActiveServer);
             var environmentViewModel = ExplorerViewModel.Environments.FirstOrDefault(o => o.ResourceId == ActiveServer.EnvironmentID);
             if(environmentViewModel != null)
             {
                 environmentViewModel.IsLicensed = isLicensed;
             }
+            NotifyOfPropertyChange(() => LicensePlanTitle);
         }
 
         public void Handle(FileChooserMessage message)

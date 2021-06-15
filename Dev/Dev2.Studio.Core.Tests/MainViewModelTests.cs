@@ -102,7 +102,7 @@ namespace Dev2.Core.Tests
         public void MainViewModel_LicensePlanTitle_ExpectTitle()
         {
             CreateFullExportsAndVm(true);
-            Assert.AreEqual("[developer - InTrial]", _shellViewModel.LicensePlanTitle);
+            Assert.AreEqual("[developer - Active]", _shellViewModel.LicensePlanTitle);
         }
 
         [TestMethod]
@@ -4792,6 +4792,26 @@ namespace Dev2.Core.Tests
             vm.DisplayDialogForNewVersion();
 
             popupController.Verify(p => p.ShowPopup(Warewolf.Studio.Resources.Languages.Core.WarewolfLatestDownloadUrl));
+        }
+
+        [TestMethod]
+        public void ShellViewModel_UpdateStudioLicense_True()
+        {
+            //---------------Set up test pack-------------------
+            CreateFullExportsAndVm(false);
+            var mockEnvironmentViewModel = new Mock<IEnvironmentViewModel>();
+            var mockExplorerViewModel = new Mock<IExplorerViewModel>();
+            mockExplorerViewModel.Setup(o => o.Environments).Returns(new BindableCollection<IEnvironmentViewModel>
+            {
+                mockEnvironmentViewModel.Object
+            });
+            _shellViewModel.ExplorerViewModel = mockExplorerViewModel.Object;
+            //---------------Assert Precondition----------------
+
+            //---------------Execute Test ----------------------
+            _shellViewModel.UpdateStudioLicense(true);
+            //---------------Test Result -----------------------
+            Assert.AreEqual("[developer - InTrial]", _shellViewModel.LicensePlanTitle);
         }
 
         public class IEnvironmentRepository

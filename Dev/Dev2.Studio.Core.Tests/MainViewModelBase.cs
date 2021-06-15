@@ -166,7 +166,14 @@ namespace Dev2.Core.Tests
         {
             var mockSubscriptionData = new Mock<ISubscriptionData>();
             mockSubscriptionData.Setup(o => o.IsLicensed).Returns(isLicensed);
-            mockSubscriptionData.Setup(o => o.Status).Returns(SubscriptionStatus.InTrial);
+            if (isLicensed)
+            {
+                mockSubscriptionData.Setup(o => o.Status).Returns(SubscriptionStatus.Active);
+            }
+            else
+            {
+                mockSubscriptionData.Setup(o => o.Status).Returns(SubscriptionStatus.InTrial);
+            }
             mockSubscriptionData.Setup(o => o.PlanId).Returns("developer");
             return mockSubscriptionData;
         }
