@@ -53,7 +53,7 @@ namespace Dev2.Data.Tests.DecisionsTests
         [TestCategory("IsContains_HandlesType")]
         public void IsContains_HandlesType_ReturnsIsContainsType()
         {
-            var decisionType = EnDecisionType.IsContains;
+            var decisionType = enDecisionType.IsContains;
             //------------Setup for test--------------------------
             var isContains = new IsContains();
             //------------Execute Test---------------------------

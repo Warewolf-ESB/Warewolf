@@ -62,7 +62,7 @@ namespace Dev2.Data.Tests.DecisionsTests
         [TestCategory("NotEndsWith_HandlesType")]
         public void NotEndsWith_HandlesType_ReturnsNotEndsWithType()
         {
-            var expected = EnDecisionType.NotEndsWith;
+            var expected = enDecisionType.NotEndsWith;
             //------------Setup for test--------------------------
             var notEndsWith = new NotEndsWith();
             //------------Execute Test---------------------------

@@ -14,7 +14,7 @@ namespace Dev2.Data.Decisions.Operations
 {
     public class IsStartsWith : IDecisionOperation
     {
-        public Enum HandlesType() => EnDecisionType.IsStartsWith;
+        public Enum HandlesType() => enDecisionType.IsStartsWith;
 
         public bool Invoke(string[] cols) => cols[0].StartsWith(cols[1]);
     }

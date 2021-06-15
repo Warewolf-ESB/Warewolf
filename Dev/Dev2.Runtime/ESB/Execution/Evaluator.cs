@@ -227,7 +227,7 @@ namespace Dev2.Runtime.ESB.Execution
             var opt = FindRecsetOptions.FindMatch(expressionType);
             var decisionType = DecisionDisplayHelper.GetValue(expressionType);
 
-            if (decisionType == EnDecisionType.IsError)
+            if (decisionType == enDecisionType.IsError)
             {
                 var testResult = new TestRunResult();
                 if (dataObject.Environment.AllErrors.Any())
@@ -241,7 +241,7 @@ namespace Dev2.Runtime.ESB.Execution
                 }
                 return new[] { testResult };
             }
-            if (decisionType == EnDecisionType.IsNotError)
+            if (decisionType == enDecisionType.IsNotError)
             {
                 var testResult = new TestRunResult();
                 var actMsg = dataObject.Environment.FetchErrors();

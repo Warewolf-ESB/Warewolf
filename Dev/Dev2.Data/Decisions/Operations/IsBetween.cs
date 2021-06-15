@@ -20,7 +20,7 @@ namespace Dev2.Data.Decisions.Operations
     /// </summary>
     public class IsBetween : IDecisionOperation
     {
-        public Enum HandlesType() => EnDecisionType.IsBetween;
+        public Enum HandlesType() => enDecisionType.IsBetween;
 
         public bool Invoke(string[] cols)
         {

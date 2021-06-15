@@ -16,6 +16,6 @@ namespace Dev2.Data.Decisions.Operations
             return cols[0] == null;
         }
 
-        public Enum HandlesType() => EnDecisionType.IsNull;
+        public Enum HandlesType() => enDecisionType.IsNull;
     }
 }

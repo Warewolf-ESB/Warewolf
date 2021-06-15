@@ -133,7 +133,7 @@ namespace Dev2.Data.SystemTemplates.Models
 
                 if (dds.TheStack != null)
                 {
-                    IList<Dev2Decision> toKeep = dds.TheStack.Where(item => item.EvaluationFn != EnDecisionType.Choose).ToList();
+                    IList<Dev2Decision> toKeep = dds.TheStack.Where(item => item.EvaluationFn != enDecisionType.Choose).ToList();
 
                     dds.TheStack = toKeep;
                 }

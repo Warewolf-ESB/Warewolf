@@ -14,7 +14,7 @@ namespace Dev2.Data.Decisions.Operations
 {
     public class NotEndsWith : IDecisionOperation
     {
-        public Enum HandlesType() => EnDecisionType.NotEndsWith;
+        public Enum HandlesType() => enDecisionType.NotEndsWith;
 
         public bool Invoke(string[] cols) => !cols[0].EndsWith(cols[1]);
     }

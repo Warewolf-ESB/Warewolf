@@ -51,7 +51,7 @@ namespace Dev2.Data.Tests.DecisionsTests
         [TestCategory("IsError_HandlesType")]
         public void IsError_HandlesType_ReturnsIsErrorType()
         {
-            var decisionType = EnDecisionType.IsError;
+            var decisionType = enDecisionType.IsError;
             //------------Setup for test--------------------------
             var isError = new IsError();
             //------------Execute Test---------------------------

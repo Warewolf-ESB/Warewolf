@@ -81,7 +81,7 @@ namespace Dev2.Data.Tests.DecisionsTests.Operations
         [TestCategory(nameof(IsHex))]
         public void IsHex_HandlesType_ReturnsIsIsHexType()
         {
-            var expected = EnDecisionType.IsHex;
+            var expected = enDecisionType.IsHex;
             //------------Setup for test--------------------------
             var isisHex = new IsHex();
             //------------Execute Test---------------------------

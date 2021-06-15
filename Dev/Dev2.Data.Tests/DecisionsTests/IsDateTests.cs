@@ -51,7 +51,7 @@ namespace Dev2.Data.Tests.DecisionsTests
         [TestCategory("IsDate_HandlesType")]
         public void IsDate_HandlesType_ReturnsIsDateType()
         {
-            var decisionType = EnDecisionType.IsDate;
+            var decisionType = enDecisionType.IsDate;
             //------------Setup for test--------------------------
             var isDate = new IsDate();
             //------------Execute Test---------------------------

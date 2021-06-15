@@ -38,7 +38,7 @@ namespace Dev2.Data.Tests
                 Col1 = "[[a]]",
                 Col2 = "=",
                 Col3 = "bob",
-                EvaluationFn = Decisions.Operations.EnDecisionType.IsEqual
+                EvaluationFn = Decisions.Operations.enDecisionType.IsEqual
             };
 
             var dev2DecisionComparer = new Dev2DecisionComparer();
@@ -58,7 +58,7 @@ namespace Dev2.Data.Tests
                 Col1 = "[[a]]",
                 Col2 = "=",
                 Col3 = "bob",
-                EvaluationFn = Decisions.Operations.EnDecisionType.IsEqual
+                EvaluationFn = Decisions.Operations.enDecisionType.IsEqual
             };
 
             var dev2DecisionComparer = new Dev2DecisionComparer();
@@ -78,7 +78,7 @@ namespace Dev2.Data.Tests
                 Col1 = "[[a]]",
                 Col2 = "=",
                 Col3 = "bob",
-                EvaluationFn = Decisions.Operations.EnDecisionType.IsEqual
+                EvaluationFn = Decisions.Operations.enDecisionType.IsEqual
             };
 
             var dev2DecisionB = new Dev2Decision
@@ -86,7 +86,7 @@ namespace Dev2.Data.Tests
                 Col1 = "[[a]]",
                 Col2 = "=",
                 Col3 = "bob",
-                EvaluationFn = Decisions.Operations.EnDecisionType.IsEqual
+                EvaluationFn = Decisions.Operations.enDecisionType.IsEqual
             };
 
             var dev2DecisionComparer = new Dev2DecisionComparer();
@@ -106,7 +106,7 @@ namespace Dev2.Data.Tests
                 Col1 = "[[a]]",
                 Col2 = "=",
                 Col3 = "bob",
-                EvaluationFn = Decisions.Operations.EnDecisionType.Choose
+                EvaluationFn = Decisions.Operations.enDecisionType.Choose
             };
 
             var dev2DecisionB = new Dev2Decision
@@ -114,7 +114,7 @@ namespace Dev2.Data.Tests
                 Col1 = "[[a]]",
                 Col2 = "=",
                 Col3 = "bob",
-                EvaluationFn = Decisions.Operations.EnDecisionType.IsEqual
+                EvaluationFn = Decisions.Operations.enDecisionType.IsEqual
             };
 
             var dev2DecisionComparer = new Dev2DecisionComparer();
@@ -134,7 +134,7 @@ namespace Dev2.Data.Tests
                 Col1 = "[[a]]",
                 Col2 = "=",
                 Col3 = "bob",
-                EvaluationFn = Decisions.Operations.EnDecisionType.IsEqual
+                EvaluationFn = Decisions.Operations.enDecisionType.IsEqual
             };
 
             var dev2DecisionComparer = new Dev2DecisionComparer();

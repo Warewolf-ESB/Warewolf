@@ -44,7 +44,7 @@ namespace Dev2.Data.Tests.DecisionsTests
         [TestCategory("IsBinary_HandlesType")]
         public void IsBinary_HandlesType_ReturnsIsBinaryType()
         {
-            var expected = EnDecisionType.IsBinary;
+            var expected = enDecisionType.IsBinary;
             //------------Setup for test--------------------------
             var isBinary = new IsBinary();
             //------------Execute Test---------------------------

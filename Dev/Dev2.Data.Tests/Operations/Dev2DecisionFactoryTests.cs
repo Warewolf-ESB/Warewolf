@@ -10,7 +10,7 @@ namespace Dev2.Data.Tests.Operations
         [Owner("Sanele Mthmembu")]        
         public void GivenIsLessThanDev2DecisionFactory_HandleType_ShouldReturnIsLessThan()
         {
-            var decisionType = EnDecisionType.IsLessThan;
+            var decisionType = enDecisionType.IsLessThan;
             //------------Setup for test--------------------------
             var decisionFactory = new Dev2DecisionFactory();
             //------------Execute Test---------------------------

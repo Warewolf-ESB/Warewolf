@@ -26,6 +26,6 @@ namespace Dev2.Data.Decisions.Operations
             return false;
         }
 
-        public Enum HandlesType() => EnDecisionType.IsAlphanumeric;
+        public Enum HandlesType() => enDecisionType.IsAlphanumeric;
     }
 }

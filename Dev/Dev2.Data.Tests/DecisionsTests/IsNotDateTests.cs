@@ -60,7 +60,7 @@ namespace Dev2.Data.Tests.DecisionsTests
         [TestCategory("IsNotDate_HandlesType")]
         public void IsNotDate_HandlesType_ReturnsIsNotDateType()
         {
-            var decisionType = EnDecisionType.IsNotDate;
+            var decisionType = enDecisionType.IsNotDate;
             //------------Setup for test--------------------------
             var isNotDate = new IsNotDate();
             //------------Execute Test---------------------------

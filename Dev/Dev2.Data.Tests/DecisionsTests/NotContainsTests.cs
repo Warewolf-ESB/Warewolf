@@ -62,7 +62,7 @@ namespace Dev2.Data.Tests.DecisionsTests
         [TestCategory("NotContains_HandlesType")]
         public void NotContains_HandlesType_ReturnsNotContainsType()
         {
-            var decisionType = EnDecisionType.NotContain;
+            var decisionType = enDecisionType.NotContain;
             //------------Setup for test--------------------------
             var notContains = new NotContains();
             //------------Execute Test---------------------------

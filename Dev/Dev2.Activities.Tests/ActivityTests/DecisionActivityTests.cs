@@ -63,7 +63,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             conditions.AddModelItem(new Dev2Decision
             {
                 Col1 = "[[a]]",
-                EvaluationFn = Data.Decisions.Operations.EnDecisionType.IsEqual,
+                EvaluationFn = Data.Decisions.Operations.enDecisionType.IsEqual,
                 Col2 = "bob"
             });
             var serializer = new Dev2JsonSerializer();

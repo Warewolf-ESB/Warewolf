@@ -53,7 +53,7 @@ namespace Dev2.Data.Tests.DecisionsTests
         [TestCategory("IsRegEx_HandlesType")]
         public void IsRegEx_HandlesType_ReturnsIsRegExType()
         {
-            var decisionType = EnDecisionType.IsRegEx;
+            var decisionType = enDecisionType.IsRegEx;
             //------------Setup for test--------------------------
             var isRegEx = new IsRegEx();
             //------------Execute Test---------------------------

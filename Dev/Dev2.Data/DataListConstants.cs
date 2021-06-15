@@ -16,7 +16,7 @@ namespace Dev2.Data
 {
     public static class DataListConstants
     {
-        public static readonly Dev2Decision DefaultDecision = new Dev2Decision { Col1 = string.Empty, Col2 = string.Empty, Col3 = string.Empty, EvaluationFn = EnDecisionType.IsNotError };
+        public static readonly Dev2Decision DefaultDecision = new Dev2Decision { Col1 = string.Empty, Col2 = string.Empty, Col3 = string.Empty, EvaluationFn = enDecisionType.IsNotError };
         public static readonly Dev2DecisionStack DefaultStack = new Dev2DecisionStack { TheStack = new List<Dev2Decision>(), Mode = Dev2DecisionMode.AND, TrueArmText = "True", FalseArmText = "False", DisplayText = "Is True?" };
 
         public static readonly Dev2Switch DefaultSwitch = new Dev2Switch { SwitchVariable = "", DisplayText = null };

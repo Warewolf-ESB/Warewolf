@@ -17,6 +17,6 @@ namespace Dev2.Data.Decisions.Operations
     {
         public bool Invoke(string[] cols) => Regex.IsMatch(cols[0], cols[1]);
 
-        public Enum HandlesType() => EnDecisionType.IsRegEx;
+        public Enum HandlesType() => enDecisionType.IsRegEx;
     }
 }

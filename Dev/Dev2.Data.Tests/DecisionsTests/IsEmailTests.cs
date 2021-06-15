@@ -41,7 +41,7 @@ namespace Dev2.Data.Tests.DecisionsTests
         [TestCategory("IsEmail_HandlesType")]
         public void IsEmail_HandlesType_ReturnsIsEmailType()
         {
-            var decisionType = EnDecisionType.IsEmail;
+            var decisionType = enDecisionType.IsEmail;
             //------------Setup for test--------------------------
             var isEmail = new IsEmail();
             //------------Execute Test---------------------------

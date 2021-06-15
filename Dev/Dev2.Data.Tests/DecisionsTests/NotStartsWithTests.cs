@@ -61,7 +61,7 @@ namespace Dev2.Data.Tests.DecisionsTests
         [TestCategory("NotStartsWith_HandlesType")]
         public void NotStartsWith_HandlesType_ReturnsNotStartWithType()
         {
-            var startsWith = EnDecisionType.NotStartsWith;
+            var startsWith = enDecisionType.NotStartsWith;
             //------------Setup for test--------------------------
             var notStartsWith = new NotStartsWith();
             //------------Execute Test---------------------------

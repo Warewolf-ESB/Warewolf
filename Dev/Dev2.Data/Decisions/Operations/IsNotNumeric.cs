@@ -18,6 +18,6 @@ namespace Dev2.Data.Decisions.Operations
 
         public bool Invoke(string[] cols) => !cols[0].IsNumeric();
 
-        public Enum HandlesType() => EnDecisionType.IsNotNumeric;
+        public Enum HandlesType() => enDecisionType.IsNotNumeric;
     }
 }

@@ -46,7 +46,7 @@ namespace Dev2.Data.Tests.DecisionsTests
         [TestCategory("IsNotText_HandlesType")]
         public void IsNotText_HandlesType_ReturnsIsNotTextType()
         {
-            var decisionType = EnDecisionType.IsNotText;
+            var decisionType = enDecisionType.IsNotText;
             //------------Setup for test--------------------------
             var isNotText = new IsNotText();
             //------------Execute Test---------------------------

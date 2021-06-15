@@ -55,7 +55,7 @@ Procedure:
         [TestCategory("IsXml_HandlesType")]
         public void IsXml_HandlesType_ReturnsIsXmlType()
         {
-            var decisionType = EnDecisionType.IsXml;
+            var decisionType = enDecisionType.IsXML;
             //------------Setup for test--------------------------
             var isXml = new IsXml();
             //------------Execute Test---------------------------

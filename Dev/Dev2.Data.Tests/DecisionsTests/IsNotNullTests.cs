@@ -45,7 +45,7 @@ namespace Dev2.Data.Tests.DecisionsTests
         [TestCategory("IsNotNull_HandlesType")]
         public void IsNotNull_HandlesType_ReturnsIsNotNullType()
         {
-            var decisionType = EnDecisionType.IsNotNull;
+            var decisionType = enDecisionType.IsNotNull;
             //------------Setup for test--------------------------
             var isNotNull = new IsNotNull();
             //------------Execute Test---------------------------

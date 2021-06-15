@@ -22,6 +22,6 @@ namespace Dev2.Data.Decisions.Operations
             return _inst ?? (_inst = new Dev2DecisionFactory());
         }
 
-        public IDecisionOperation FetchDecisionFunction(EnDecisionType typeOf) => FindMatch(typeOf);
+        public IDecisionOperation FetchDecisionFunction(enDecisionType typeOf) => FindMatch(typeOf);
     }
 }

@@ -151,7 +151,7 @@ namespace Dev2.Data.Tests.Operations
             var notBetween = new NotBetween();
             //------------Execute Test---------------------------
             //------------Assert Results-------------------------
-            Assert.AreEqual(EnDecisionType.NotBetween, notBetween.HandlesType());
+            Assert.AreEqual(enDecisionType.NotBetween, notBetween.HandlesType());
         }
     }
 }
