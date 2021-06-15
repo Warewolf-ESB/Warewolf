@@ -9,18 +9,25 @@
 */
 
 using System;
+using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using System.Windows.Controls;
 using System.Windows.Navigation;
+using Warewolf.Studio.Core;
 
 namespace Warewolf.Studio.CustomControls
 {
     [SuppressMessage("ReSharper", "CC0091")]
     public partial class WebBrowserView
     {
+        readonly Grid _blackoutGrid = new Grid();
+
         public WebBrowserView(string licenseType)
         {
             InitializeComponent();
+            PopupViewManageEffects.AddBlackOutEffect(_blackoutGrid);
+
             var helper = new ScriptManager(this);
             webBrowser.ObjectForScripting = helper;
             webBrowser.AllowDrop = false;
@@ -66,6 +73,11 @@ namespace Warewolf.Studio.CustomControls
             script.type = @"text/javascript";
             script.text = @"window.onerror = function(msg,url,line){return true;}";
             document.head.appendChild(script);
+        }
+
+        private void WebBrowserView_OnClosing(object sender, CancelEventArgs e)
+        {
+            PopupViewManageEffects.RemoveBlackOutEffect(_blackoutGrid);
         }
     }
 }

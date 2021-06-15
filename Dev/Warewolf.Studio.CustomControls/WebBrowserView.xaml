@@ -4,12 +4,13 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     mc:Ignorable="d"
-    WindowStartupLocation="CenterOwner"
+    WindowStartupLocation="CenterScreen"
     Title="Warewolf"
     Height="550"
     MinHeight="550"
     Width="550"
-    MinWidth="550">
+    MinWidth="550"
+    Closing="WebBrowserView_OnClosing">
     <Grid>
         <WebBrowser x:Name="webBrowser"
             Navigating="WebBrowser_OnNavigating"

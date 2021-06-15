@@ -178,6 +178,11 @@ namespace Dev2.Studio
                 _appExceptionHandler = new AppExceptionHandler(this, _shellViewModel);
                 CustomContainer.Register<IApplicationAdaptor>(new ApplicationAdaptor(Current));
                 CustomContainer.Register<IShellViewModel>(_shellViewModel);
+
+                if (!_shellViewModel.SubscriptionData.IsLicensed)
+                {
+                    _shellViewModel.Register();
+                }
             }
             var toolboxPane = Current?.MainWindow?.FindName("Toolbox") as ContentPane;
             toolboxPane?.Activate();
