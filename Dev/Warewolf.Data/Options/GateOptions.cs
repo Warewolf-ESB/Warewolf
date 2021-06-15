@@ -248,7 +248,7 @@ namespace Warewolf.Data.Options
 
     public abstract class Condition
     {
-        public EnDecisionType MatchType { get; set; }
+        public enDecisionType MatchType { get; set; }
 
         internal abstract bool Eval(string left, Func<string, string, string, IEnumerable<string[]>> getArgumentsFunc, bool hasError);
         public abstract void SetOptions(OptionConditionExpression option);
@@ -279,11 +279,11 @@ namespace Warewolf.Data.Options
         {
             var factory = Dev2DecisionFactory.Instance();
 
-            if (MatchType == EnDecisionType.IsError)
+            if (MatchType == enDecisionType.IsError)
             {
                 return hasError;
             }
-            if (MatchType == EnDecisionType.IsNotError)
+            if (MatchType == enDecisionType.IsNotError)
             {
                 return !hasError;
             }
@@ -344,11 +344,11 @@ namespace Warewolf.Data.Options
         {
             var factory = Dev2DecisionFactory.Instance();
 
-            if (MatchType == EnDecisionType.IsError)
+            if (MatchType == enDecisionType.IsError)
             {
                 return hasError;
             }
-            if (MatchType == EnDecisionType.IsNotError)
+            if (MatchType == enDecisionType.IsNotError)
             {
                 return !hasError;
             }
@@ -371,14 +371,14 @@ namespace Warewolf.Data.Options
         
         public override void RenderDescription(StringBuilder sb)
         {
-            if (MatchType == EnDecisionType.IsBetween)
+            if (MatchType == enDecisionType.IsBetween)
             {
                 sb.Append(" is greater than ");
                 sb.Append(From);
                 sb.Append(" and less than ");
                 sb.Append(To);
             }
-            else if (MatchType == EnDecisionType.NotBetween)
+            else if (MatchType == enDecisionType.NotBetween)
             {
                 sb.Append(" is less than ");
                 sb.Append(From);

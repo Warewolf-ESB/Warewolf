@@ -17,6 +17,6 @@ namespace Warewolf.Data.Decisions.Operations
     {
         public bool Invoke(string[] cols) => cols[0].IsAlpha();
 
-        public Enum HandlesType() => EnDecisionType.IsText;
+        public Enum HandlesType() => enDecisionType.IsText;
     }
 }

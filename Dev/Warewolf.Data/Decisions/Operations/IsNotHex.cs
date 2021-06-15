@@ -28,6 +28,6 @@ namespace Warewolf.Data.Decisions.Operations
             return false;
         }
 
-        public Enum HandlesType() => EnDecisionType.IsNotHex;
+        public Enum HandlesType() => enDecisionType.IsNotHex;
     }
 }

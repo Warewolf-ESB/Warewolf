@@ -14,7 +14,7 @@ namespace Warewolf.Data.Options.Tests
                 Left = "[[a]]",
                 Cond = new ConditionMatch
                 {
-                    MatchType = EnDecisionType.IsEqual,
+                    MatchType = enDecisionType.IsEqual,
                     Right = "bob"
                 }
             };
@@ -31,7 +31,7 @@ namespace Warewolf.Data.Options.Tests
                 Left = "[[a]]",
                 Cond = new ConditionBetween()
                 {
-                    MatchType = EnDecisionType.IsBetween,
+                    MatchType = enDecisionType.IsBetween,
                     From = "2",
                     To = "10",
                 }
@@ -49,7 +49,7 @@ namespace Warewolf.Data.Options.Tests
                 Left = "[[a]]",
                 Cond = new ConditionBetween()
                 {
-                    MatchType = EnDecisionType.NotBetween,
+                    MatchType = enDecisionType.NotBetween,
                     From = "2",
                     To = "10",
                 }
@@ -67,7 +67,7 @@ namespace Warewolf.Data.Options.Tests
                 Left = "[[a]]",
                 Cond = new ConditionMatch()
                 {
-                    MatchType = EnDecisionType.IsNull,
+                    MatchType = enDecisionType.IsNull,
                     Right = "2",
                 }
             };
@@ -84,7 +84,7 @@ namespace Warewolf.Data.Options.Tests
                 Left = "[[a]]",
                 Cond = new ConditionBetween()
                 {
-                    MatchType = EnDecisionType.NotBetween,
+                    MatchType = enDecisionType.NotBetween,
                     From = "2",
                     To = "10",
                 }
@@ -97,7 +97,7 @@ namespace Warewolf.Data.Options.Tests
 
             Assert.IsNotNull(optionConditionExpression);
             Assert.AreEqual("[[a]]", optionConditionExpression.Left);
-            Assert.AreEqual(EnDecisionType.NotBetween, optionConditionExpression.MatchType);
+            Assert.AreEqual(enDecisionType.NotBetween, optionConditionExpression.MatchType);
             Assert.AreEqual("Not Between", optionConditionExpression.SelectedMatchType.Name);
             Assert.AreEqual(32, optionConditionExpression.SelectedMatchType.Value);
             Assert.AreEqual("2", optionConditionExpression.From);

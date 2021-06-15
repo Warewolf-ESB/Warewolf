@@ -653,7 +653,7 @@ namespace Warewolf.Options
                 SetProperty(ref _left, value);
             }
         }
-        public static INamedInt[] MatchTypes { get; } = NamedInt.GetAll(typeof(EnDecisionType)).ToArray();
+        public static INamedInt[] MatchTypes { get; } = NamedInt.GetAll(typeof(enDecisionType)).ToArray();
 
         private INamedInt _selectedMatchType;
         public INamedInt SelectedMatchType
@@ -663,13 +663,13 @@ namespace Warewolf.Options
             {
                 if (value != null && SetProperty(ref _selectedMatchType, value))
                 {
-                    MatchType = (EnDecisionType)value.Value;
+                    MatchType = (enDecisionType)value.Value;
                     RaisePropertyChanged(nameof(IsBetween));
                     RaisePropertyChanged(nameof(IsSingleOperand));
                 }
             }
         }
-        public EnDecisionType MatchType { get; set; }
+        public enDecisionType MatchType { get; set; }
 
         private string _right;
         public string Right

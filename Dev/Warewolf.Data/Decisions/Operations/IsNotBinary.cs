@@ -29,6 +29,6 @@ namespace Warewolf.Data.Decisions.Operations
             return false;
         }
 
-        public Enum HandlesType() => EnDecisionType.IsNotBinary;
+        public Enum HandlesType() => enDecisionType.IsNotBinary;
     }
 }

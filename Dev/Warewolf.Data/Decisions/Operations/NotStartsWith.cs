@@ -15,7 +15,7 @@ namespace Warewolf.Data.Decisions.Operations
 {
     public class NotStartsWith : IDecisionOperation
     {
-        public Enum HandlesType() => EnDecisionType.NotStartsWith;
+        public Enum HandlesType() => enDecisionType.NotStartsWith;
 
         public bool Invoke(string[] cols) => !cols[0].StartsWith(cols[1]);
     }

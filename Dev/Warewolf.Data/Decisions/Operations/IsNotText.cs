@@ -25,6 +25,6 @@ namespace Warewolf.Data.Decisions.Operations
             return true; // blank is not Text
         }
 
-        public Enum HandlesType() => EnDecisionType.IsNotText;
+        public Enum HandlesType() => enDecisionType.IsNotText;
     }
 }

@@ -21,7 +21,12 @@ namespace Dev2.Data
 {
     public class DataListTO
     {
-        public DataListTO(string dataList, bool ignoreColumnDirection = false)
+        public DataListTO(string dataList)
+            : this(dataList, false)
+        {
+        }
+
+        public DataListTO(string dataList, bool ignoreColumnDirection)
         {
             var fixedDataList = dataList.Replace(GlobalConstants.SerializableResourceQuote, "\"")
                                         .Replace(GlobalConstants.SerializableResourceSingleQuote, "\'");
@@ -69,7 +74,7 @@ namespace Dev2.Data
             SetOutputAttributesContainingColumnIoDirection(enumerable);
         }
 
-        private void SetOutputAttributesContainingColumnIoDirection(IEnumerable<XElement> enumerable)
+        private void SetOutputAttributesContainingColumnIoDirection(IList<XElement> enumerable)
         {
             var outputs = enumerable.Elements()
                 .Select(element =>
@@ -88,7 +93,7 @@ namespace Dev2.Data
             Outputs.AddRange(outputs);
         }
 
-        private void SetInputAttributesContainingColumnIoDirection(IEnumerable<XElement> enumerable)
+        private void SetInputAttributesContainingColumnIoDirection(IList<XElement> enumerable)
         {
             Inputs.AddRange(enumerable.Elements()
                 .Select(element =>
@@ -113,7 +118,7 @@ namespace Dev2.Data
                                 .Where(el =>
                                 {
                                     var firstOrDefault = el.Attributes("ColumnIODirection").FirstOrDefault();
-                                    var isJson = el.Attribute("IsJson")?.Value.ToLower() == "true";
+                                    var isJson = el.Attribute("IsJson")?.Value.ToLower() == "true" ? true : false;
 
                                     var removeCondition = firstOrDefault != null &&
                                                             (firstOrDefault.Value == enDev2ColumnArgumentDirection.Output.ToString() ||

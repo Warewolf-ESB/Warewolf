@@ -17,6 +17,6 @@ namespace Warewolf.Data.Decisions.Operations
     {
         public bool Invoke(string[] cols) => cols[0].Length == 0;
 
-        public Enum HandlesType() => EnDecisionType.IsNotError;
+        public Enum HandlesType() => enDecisionType.IsNotError;
     }
 }

@@ -15,7 +15,7 @@ namespace Warewolf.Data.Decisions.Operations
 {
     public class IsXml : IDecisionOperation
     {
-        public Enum HandlesType() => EnDecisionType.IsXml;
+        public Enum HandlesType() => enDecisionType.IsXML;
 
         public bool Invoke(string[] cols)
         {

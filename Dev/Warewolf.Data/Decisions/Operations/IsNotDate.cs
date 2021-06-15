@@ -15,7 +15,7 @@ namespace Warewolf.Data.Decisions.Operations
 {
     public class IsNotDate : IDecisionOperation
     {
-        public Enum HandlesType() => EnDecisionType.IsNotDate;
+        public Enum HandlesType() => enDecisionType.IsNotDate;
 
         public bool Invoke(string[] cols) => !DateTime.TryParse(cols[0], out DateTime date);
     }

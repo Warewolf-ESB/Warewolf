@@ -10,6 +10,6 @@ namespace Warewolf.Data.Decisions.Operations
     {
         public bool Invoke(string[] cols) => cols?[0] != null;
 
-        public Enum HandlesType() => EnDecisionType.IsNotNull;
+        public Enum HandlesType() => enDecisionType.IsNotNull;
     }
 }

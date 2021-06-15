@@ -19,9 +19,14 @@ namespace Warewolf.Data.Decisions.Operations
 
         public static Dev2DecisionFactory Instance()
         {
-            return _inst ?? (_inst = new Dev2DecisionFactory());
+            if (_inst == null)
+            {
+                _inst = new Dev2DecisionFactory(); 
+            }
+
+            return _inst;
         }
 
-        public IDecisionOperation FetchDecisionFunction(EnDecisionType typeOf) => FindMatch(typeOf);
+        public IDecisionOperation FetchDecisionFunction(enDecisionType typeOf) => FindMatch(typeOf);
     }
 }

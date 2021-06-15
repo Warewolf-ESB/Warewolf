@@ -25,6 +25,6 @@ namespace Warewolf.Data.Decisions.Operations
             return true;
         }
 
-        public Enum HandlesType() => EnDecisionType.IsNotAlphanumeric;
+        public Enum HandlesType() => enDecisionType.IsNotAlphanumeric;
     }
 }
