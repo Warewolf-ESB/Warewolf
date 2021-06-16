@@ -22,19 +22,20 @@ using System.Windows.Input;
 using System.Windows.Media.Animation;
 using System.Xml;
 using Dev2.Common;
-using Dev2.Studio.Core;
-using Dev2.Studio.ViewModels;
-using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Triggers.Scheduler;
-using Dev2.ViewModels;
-using Dev2.ViewModels.Workflow;
-using Dev2.Workspaces;
+using Dev2.Studio.ViewModels;
 using FontAwesome.WPF;
-using Infragistics.Windows.DockManager;
 using Infragistics.Windows.DockManager.Events;
 using WinInterop = System.Windows.Interop;
+using Dev2.Studio.Core;
+using Dev2.ViewModels.Workflow;
+using Dev2.Studio.ViewModels.WorkSurface;
+using Dev2.ViewModels;
+using Dev2.Workspaces;
+using Infragistics.Windows.DockManager;
+using Dev2.Triggers.Scheduler;
 
-namespace Dev2.Views
+namespace Dev2.Studio.Views
 {
     public partial class ShellView : IWin32Window
     {
@@ -152,17 +153,18 @@ namespace Dev2.Views
         }
 
         [StructLayout(LayoutKind.Sequential)]
-        struct Minmaxinfo
+
+        public struct Minmaxinfo
         {
-            readonly Point ptReserved;
+            public Point ptReserved;
             public Point ptMaxSize;
             public Point ptMaxPosition;
-            readonly Point ptMinTrackSize;
-            readonly Point ptMaxTrackSize;
+            public Point ptMinTrackSize;
+            public Point ptMaxTrackSize;
         };
 
         [StructLayout(LayoutKind.Sequential)]
-        struct Point
+        public struct Point
         {
             /// <summary>
             /// x coordinate of point.
@@ -173,6 +175,15 @@ namespace Dev2.Views
             /// y coordinate of point.
             /// </summary>
             public int y;
+
+            /// <summary>
+            /// Construct a point of coordinates (x,y).
+            /// </summary>
+            public Point(int x, int y)
+            {
+                this.x = x;
+                this.y = y;
+            }
         }
 
         void Shell_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
@@ -236,7 +247,7 @@ namespace Dev2.Views
             }
         }
 
-        static void DisconnectAllServers(Studio.Interfaces.IServer localhostServer, Studio.Interfaces.IExplorerViewModel explorerViewModel)
+        static void DisconnectAllServers(Interfaces.IServer localhostServer, Interfaces.IExplorerViewModel explorerViewModel)
         {
             explorerViewModel.SearchText = string.Empty;
 
@@ -253,7 +264,7 @@ namespace Dev2.Views
             }
         }
 
-        static void DisconnectServers(Studio.Interfaces.IServer localhostServer, Studio.Interfaces.IExplorerViewModel explorerViewModel)
+        static void DisconnectServers(Interfaces.IServer localhostServer, Interfaces.IExplorerViewModel explorerViewModel)
         {
             if (explorerViewModel.ConnectControlViewModel != null)
             {
@@ -297,7 +308,7 @@ namespace Dev2.Views
         static void ClearWindowCollection(ShellViewModel mainViewModel, Window window1)
         {
             var contentPane = window1.Content as PaneToolWindow;
-            if(contentPane?.Pane != null)
+            if(contentPane?.Pane?.Panes != null)
                 foreach(var item in contentPane.Pane?.Panes)
                 {
                     var pane = item as ContentPane;
@@ -548,7 +559,7 @@ namespace Dev2.Views
             }
         }
 
-        PaneToolWindow PaneToolWindow { get; set; }
+        public PaneToolWindow PaneToolWindow { get; set; }
 
         void WindowOnPreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -669,8 +680,8 @@ namespace Dev2.Views
             }
         }
 
-        bool _restoreIfMove;
-        bool _allowMaximizeState;
+        bool restoreIfMove;
+        bool allowMaximizeState;
 
         void PART_TITLEBAR_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
@@ -683,7 +694,7 @@ namespace Dev2.Views
             {
                 if (WindowState == WindowState.Maximized)
                 {
-                    _restoreIfMove = true;
+                    restoreIfMove = true;
                 }
                 DragMove();
             }
@@ -762,8 +773,8 @@ namespace Dev2.Views
 
         void PART_TITLEBAR_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            _restoreIfMove = false;
-            _allowMaximizeState = true;
+            restoreIfMove = false;
+            allowMaximizeState = true;
         }
 
         [DllImport("user32.dll")]
@@ -773,9 +784,9 @@ namespace Dev2.Views
         {
             try
             {
-                if (_restoreIfMove)
+                if (restoreIfMove)
                 {
-                    _restoreIfMove = false;
+                    restoreIfMove = false;
 
                     var percentHorizontal = e.GetPosition(this).X / ActualWidth;
                     var targetHorizontal = RestoreBounds.Width * percentHorizontal;
@@ -792,9 +803,9 @@ namespace Dev2.Views
                     Top = lMousePosition.y - targetVertical;
 
                     DragMove();
-                    _allowMaximizeState = true;
+                    allowMaximizeState = true;
                 }
-                if (_allowMaximizeState)
+                if (allowMaximizeState)
                 {
                     GetCursorPos(out Point lMousePosition);
 
@@ -821,6 +832,14 @@ namespace Dev2.Views
                     paneToolWindow.Title = Title;
                 }
 
+            }
+        }
+
+        void MainViewWindow_Closed(object sender, EventArgs e)
+        {
+            foreach (Process proc in Process.GetProcessesByName("Warewolf Studio"))
+            {
+                Dev2Logger.Warn(proc.ProcessName + " still running in the background.", "Warewolf Warn");
             }
         }
     }
