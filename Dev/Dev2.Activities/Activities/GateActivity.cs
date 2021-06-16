@@ -574,14 +574,14 @@ namespace Dev2.Activities
             {
                 var dds = Conditions.GetEnumerator();
                 var text = new StringBuilder();
-                if (dds.MoveNext() && dds.Current.Cond.MatchType != enDecisionType.Choose)
+                if (dds.MoveNext() && dds.Current.Cond.MatchType != EnDecisionType.Choose)
                 {
                     dds.Current.RenderDescription(text);
                 }
                 while (dds.MoveNext())
                 {
                     var conditionExpression = dds.Current;
-                    if (conditionExpression.Cond.MatchType == enDecisionType.Choose)
+                    if (conditionExpression.Cond.MatchType == EnDecisionType.Choose)
                     {
                         continue;
                     }

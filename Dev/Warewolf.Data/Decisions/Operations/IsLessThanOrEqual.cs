@@ -15,7 +15,7 @@ namespace Warewolf.Data.Decisions.Operations
 {
     public class IsLessThanOrEqual : IDecisionOperation
     {
-        public Enum HandlesType() => enDecisionType.IsLessThanOrEqual;
+        public Enum HandlesType() => EnDecisionType.IsLessThanOrEqual;
 
         public bool Invoke(string[] cols)
         {

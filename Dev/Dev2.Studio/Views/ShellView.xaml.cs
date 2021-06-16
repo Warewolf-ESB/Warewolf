@@ -33,9 +33,11 @@ using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.ViewModels;
 using Dev2.Workspaces;
 using Infragistics.Windows.DockManager;
-using Dev2.Triggers.Scheduler;
 
-namespace Dev2.Studio.Views
+// ReSharper disable CheckNamespace
+// Disabled because the Studio doesn't start with error "Cannot find view ShellView"
+namespace Dev2.Studio.Views 
+// ReSharper restore CheckNamespace
 {
     public partial class ShellView : IWin32Window
     {

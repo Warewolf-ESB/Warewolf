@@ -28,6 +28,6 @@ namespace Warewolf.Data.Decisions.Operations
             return false;
         }
 
-        public Enum HandlesType() => enDecisionType.IsBase64;
+        public Enum HandlesType() => EnDecisionType.IsBase64;
     }
 }

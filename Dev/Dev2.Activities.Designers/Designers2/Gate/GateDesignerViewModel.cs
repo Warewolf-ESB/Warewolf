@@ -173,14 +173,14 @@ namespace Dev2.Activities.Designers2.Gate
 
             var text = new StringBuilder();
             var dds = conditionExpressionList.GetEnumerator();
-            if (dds.MoveNext() && dds.Current.Cond.MatchType != enDecisionType.Choose)
+            if (dds.MoveNext() && dds.Current.Cond.MatchType != EnDecisionType.Choose)
             {
                 dds.Current.RenderDescription(text);
             }
             while (dds.MoveNext())
             {
                 var conditionExpression = dds.Current;
-                if (conditionExpression.Cond.MatchType == enDecisionType.Choose)
+                if (conditionExpression.Cond.MatchType == EnDecisionType.Choose)
                 {
                     continue;
                 }

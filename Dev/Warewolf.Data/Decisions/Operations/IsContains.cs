@@ -15,7 +15,7 @@ namespace Warewolf.Data.Decisions.Operations
 {
     public class IsContains : IDecisionOperation
     {
-        public Enum HandlesType() => enDecisionType.IsContains;
+        public Enum HandlesType() => EnDecisionType.IsContains;
 
         public bool Invoke(string[] cols) => cols[0].Contains(cols[1]);
     }

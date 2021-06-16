@@ -15,7 +15,7 @@ namespace Warewolf.Data.Decisions.Operations
 {
     public class IsEndsWith : IDecisionOperation
     {
-        public Enum HandlesType() => enDecisionType.IsEndsWith;
+        public Enum HandlesType() => EnDecisionType.IsEndsWith;
 
         public bool Invoke(string[] cols) => cols[0].EndsWith(cols[1]);
     }

@@ -15,7 +15,7 @@ namespace Warewolf.Data.Decisions.Operations
 {
     public class NotEndsWith : IDecisionOperation
     {
-        public Enum HandlesType() => enDecisionType.NotEndsWith;
+        public Enum HandlesType() => EnDecisionType.NotEndsWith;
 
         public bool Invoke(string[] cols) => !cols[0].EndsWith(cols[1]);
     }

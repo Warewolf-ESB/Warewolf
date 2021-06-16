@@ -15,7 +15,7 @@ namespace Warewolf.Data.Decisions.Operations
 {
     public class IsStartsWith : IDecisionOperation
     {
-        public Enum HandlesType() => enDecisionType.IsStartsWith;
+        public Enum HandlesType() => EnDecisionType.IsStartsWith;
 
         public bool Invoke(string[] cols) => cols[0].StartsWith(cols[1]);
     }

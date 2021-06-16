@@ -255,7 +255,7 @@ namespace Dev2.Activities.Designers.Tests.Gate
             };
             conditionExpression.Cond = new ConditionMatch
             {
-                MatchType = enDecisionType.IsEqual,
+                MatchType = EnDecisionType.IsEqual,
                 Right = "10"
             };
             var conditionExpressionList = new List<ConditionExpression>
@@ -284,12 +284,12 @@ namespace Dev2.Activities.Designers.Tests.Gate
 
             var condition = conditions[0] as OptionConditionExpression;
             Assert.AreEqual("[[a]]", condition.Left);
-            Assert.AreEqual(enDecisionType.IsEqual, condition.MatchType);
+            Assert.AreEqual(EnDecisionType.IsEqual, condition.MatchType);
             Assert.AreEqual("10", condition.Right);
 
             var emptyCondition = conditions[1] as OptionConditionExpression;
             Assert.IsNull(emptyCondition.Left);
-            Assert.AreEqual(enDecisionType.Choose, emptyCondition.MatchType);
+            Assert.AreEqual(EnDecisionType.Choose, emptyCondition.MatchType);
 
         }
 
@@ -305,7 +305,7 @@ namespace Dev2.Activities.Designers.Tests.Gate
             };
             conditionExpression.Cond = new ConditionMatch
             {
-                MatchType = enDecisionType.IsEqual,
+                MatchType = EnDecisionType.IsEqual,
                 Right = "10"
             };
             var conditionExpressionList = new List<ConditionExpression>
@@ -342,7 +342,7 @@ namespace Dev2.Activities.Designers.Tests.Gate
 
             var emptyCondition = conditions[0] as OptionConditionExpression;
             Assert.IsNull(emptyCondition.Left);
-            Assert.AreEqual(enDecisionType.Choose, emptyCondition.MatchType);
+            Assert.AreEqual(EnDecisionType.Choose, emptyCondition.MatchType);
 
         }
     }
