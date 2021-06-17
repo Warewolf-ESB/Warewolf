@@ -1324,6 +1324,20 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
 
             return ResponseFromWeb;
         }
+        
+        protected override string PerformUrlEncodedWebPostRequest(IWebSource source, WebRequestMethod method, string query, IEnumerable<INameValue> head, IEnumerable<IFormDataParameters> formDataParameters)
+        {
+            Head = head;
+            QueryRes = query;
+            FormDataParametersValue = formDataParameters;
+            if(!string.IsNullOrWhiteSpace(HasErrorMessage))
+            {
+                base._errorsTo = new ErrorResultTO();
+                base._errorsTo.AddError(ResponseFromWeb);
+            }
+
+            return ResponseFromWeb;
+        }
 
         public string PostValue { get; private set; }
         public IEnumerable<IFormDataParameters> FormDataParametersValue { get; private set; }
