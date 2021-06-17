@@ -228,7 +228,7 @@ namespace Warewolf.UnitTestAttributes
                 case ContainerType.AnonymousElasticsearch:
                     return new[] {"9200", "9201"};
                 case ContainerType.Elasticsearch:
-                    return new[] {"9400"};
+                    return new[] {"9400", "9401"};
                 case ContainerType.WebApi:
                     return new[] {"8080"};
                 case ContainerType.HTTPVerbsApi:
