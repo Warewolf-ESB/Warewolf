@@ -1,4 +1,5 @@
-﻿@ComPluginSource
+@CannotParallelize
+@ComPluginSource
 Feature: ComPluginSource
 	In order to create plugins
 	As a Warewolf User
