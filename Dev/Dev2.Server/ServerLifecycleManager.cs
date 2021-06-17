@@ -129,6 +129,7 @@ namespace Dev2
         private readonly IProcessMonitor _hangfireServerMonitor;
         private readonly ExecutionLogger.IExecutionLoggerFactory _loggerFactory;
         private readonly IGetSystemInformation _systemInformationHelper;
+        private ISubscriptionProvider _subscriptionDataInstance;
 
         public ServerLifecycleManager(IServerEnvironmentPreparer serverEnvironmentPreparer)
             : this(StartupConfiguration.GetStartupConfiguration(serverEnvironmentPreparer))
@@ -323,29 +324,25 @@ namespace Dev2
             {
                 ServerStats.SessionId = Guid.NewGuid();
             }
-
-            bool isDebugMode = false;
-#if DEBUG
-            isDebugMode = true;
-#endif
             var myData = new
             {
                 ServerStats.SessionId,
+                _subscriptionDataInstance.SubscriptionId,
+                _subscriptionDataInstance.PlanId,
+                _subscriptionDataInstance.Status,
                 VersionNo = _systemInformationHelper.GetWareWolfVersion(),
                 IPAddress = _systemInformationHelper.GetIPv4Adresses(),
                 Environment.ProcessorCount,
                 NumberOfCores = GetNumberOfCores(),
                 OSType = _systemInformationHelper.GetOperatingSystemInformation(),
                 MachineName = _systemInformationHelper.GetComputerName(),
-                IsDebugMode = isDebugMode.ToString(),
                 Region = _systemInformationHelper.GetRegionInformation(),
                 Executions = ServerStats.TotalExecutions,
                 Uptime = DateTime.Now - Process.GetCurrentProcess().StartTime
             };
             //TODO: Add whether running in container
             var jsonData = JsonConvert.SerializeObject(myData);
-            var customerId = "Unknown";
-            //TODO: Licensing: Get customer ID from the licensing
+            var customerId = _subscriptionDataInstance.CustomerId;
 
             var returnResult = UsageTracker.TrackEvent(customerId, usageType, jsonData);
             if(returnResult != UsageDataResult.ok)
@@ -492,8 +489,8 @@ namespace Dev2
         void LoadSubscriptionProvider()
         {
             _writer.Write("Loading subscription provider...  ");
-            var subscriptionDataInstance = SubscriptionProvider.Instance;
-            if(subscriptionDataInstance != null)
+            _subscriptionDataInstance = SubscriptionProvider.Instance;
+            if(_subscriptionDataInstance != null)
             {
                 //TODO: get subscription data service
                 _writer.WriteLine("done.");
