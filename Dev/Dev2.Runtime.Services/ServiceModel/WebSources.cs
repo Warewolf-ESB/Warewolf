@@ -151,7 +151,7 @@ namespace Dev2.Runtime.ServiceModel
             return Execute(source, method, headers, relativeUri, webExecuteStringArgs.IsManualChecked, webExecuteStringArgs.IsFormDataChecked, data, throwError, out errors, webExecuteStringArgs?.FormDataParameters, webExecuteStringArgs.WebRequestFactory);
         }
         
-        public static string Execute(IWebSource source, WebRequestMethod method, IEnumerable<string> headers, string relativeUrl, bool isNoneChecked, bool isFormDataChecked, string data, bool throwError, out ErrorResultTO errors, IEnumerable<IFormDataParameters> formDataParameters = null, IWebRequestFactory webRequestFactory = null)
+        public static string Execute(IWebSource source, WebRequestMethod method, IEnumerable<string> headers, string relativeUrl, bool isNoneChecked, bool isFormDataChecked, string data, bool throwError, out ErrorResultTO errors, IEnumerable<IFormDataParameters> formDataParameters = null, IWebRequestFactory webRequestFactory = null, bool isUrlEncodedChecked = false)
         {
             IWebClientWrapper client = null;
 
@@ -168,14 +168,14 @@ namespace Dev2.Runtime.ServiceModel
                 var address = GetAddress(source, relativeUrl);
                 var contentType = client.Headers[HttpRequestHeader.ContentType];
 
-                if (isFormDataChecked)
+                if (isFormDataChecked || isUrlEncodedChecked)
                 {
                     VerifyArgument.IsNotNullOrWhitespace("Content-Type", contentType);
                     var formDataBoundary = contentType.Split('=').Last();
                     var bytesData = GetMultipartFormData(formDataParameters, formDataBoundary);
                     return PerformMultipartWebRequest(webRequestFactory, client, address, bytesData);
                 }
-                if (isNoneChecked && (contentType != null && contentType.ToLowerInvariant().Contains("multipart")))
+                if (isNoneChecked && (contentType != null && (contentType.ToLowerInvariant().Contains("multipart") || contentType.ToLowerInvariant().Contains("x-www"))))
                 {
                     var bytesData = ConvertToHttpNewLine(ref data);
                     return PerformMultipartWebRequest(webRequestFactory, client, address, bytesData);

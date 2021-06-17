@@ -8,7 +8,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using Dev2.Common.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -20,6 +19,7 @@ namespace Dev2.Common
     {
         const string CONTENTTYPE = "Content-Type";
         const string MUTIPARTFORMDATA = "multipart/form-data";
+        const string FORMURLENCODED = "application/x-www-form-urlencoded";
 
         private readonly IList<INameValue> _notEvaluated;
         private List<INameValue> _evaluatedHeaders;
@@ -29,8 +29,32 @@ namespace Dev2.Common
             _notEvaluated = notEvaluatedHeaders;
             _evaluatedHeaders = evaluatedHeaders.ToList();
         }
+        
+        public INameValue FormUrlEncodedContentType
+        {
+            get
+            {
+                return _evaluatedHeaders.FirstOrDefault(o => o.Name == CONTENTTYPE && o.Value.Contains("application/x-www-form-urlencoded"));
+            }
+        }
 
-        public INameValue ContentType
+        public bool IsFormUrlEncodedContentTypeExist
+        {
+            get
+            {
+                return FormUrlEncodedContentType != null;
+            }
+        }
+
+        public bool IsFormUrlEncodedContentTypeIncomplete
+        {
+            get
+            {
+                return IsFormUrlEncodedContentTypeExist && !FormUrlEncodedContentType.Value.Contains("boundary=");
+            }
+        }
+
+        public INameValue FormDataContentType
         {
             get
             {
@@ -42,7 +66,7 @@ namespace Dev2.Common
         {
             get
             {
-                return ContentType != null;
+                return FormDataContentType != null;
             }
         }
 
@@ -50,7 +74,7 @@ namespace Dev2.Common
         {
             get
             {
-                return IsFormDataContentTypeExist && !ContentType.Value.Contains("boundary=");
+                return IsFormDataContentTypeExist && !FormDataContentType.Value.Contains("boundary=");
             }
         }
 
@@ -61,14 +85,26 @@ namespace Dev2.Common
             _notEvaluated.Add(addItem);
         }
 
+        internal void AddFormUrlEncodedContentType()
+        {
+            var addItem = new NameValue(CONTENTTYPE, GenerateFormUrlEncodedContentType());
+            _evaluatedHeaders.Add(addItem);
+            _notEvaluated.Add(addItem);
+        }
+
         private static string GenerateFormDataContentType()
         {
             return MUTIPARTFORMDATA + "; boundary=" + string.Format("----------{0:N}", Guid.NewGuid());
         }
 
+        private static string GenerateFormUrlEncodedContentType()
+        {
+            return FORMURLENCODED + "; boundary=" + string.Format("----------{0:N}", Guid.NewGuid());
+        }
+
         private void AppendBoundaryToFormDataContentType()
         {
-            var formDataContentType = ContentType;
+            var formDataContentType = FormDataContentType;
             _notEvaluated.Remove(new NameValue(formDataContentType.Name, formDataContentType.Value));
             _evaluatedHeaders.Remove(new NameValue(formDataContentType.Name, formDataContentType.Value));
 
@@ -77,13 +113,31 @@ namespace Dev2.Common
             _notEvaluated.Add(addItem);
         }
 
+        private void AppendBoundaryToFormUrlEncodedContentType()
+        {
+            var formDataContentType = FormUrlEncodedContentType;
+            _notEvaluated.Remove(new NameValue(formDataContentType.Name, formDataContentType.Value));
+            _evaluatedHeaders.Remove(new NameValue(formDataContentType.Name, formDataContentType.Value));
+
+            var addItem = new NameValue(CONTENTTYPE, GenerateFormUrlEncodedContentType());
+            _evaluatedHeaders.Add(addItem);
+            _notEvaluated.Add(addItem);
+        }
+
         public IEnumerable<INameValue> CalculateFormDataContentType()
         {
-            if (IsFormDataContentTypeExist)
+            if(IsFormDataContentTypeExist)
             {
-                if (IsFormDataContentTypeIncomplete)
+                if(IsFormDataContentTypeIncomplete)
                 {
                     AppendBoundaryToFormDataContentType();
+                }
+            }
+            else if(IsFormUrlEncodedContentTypeExist)
+            {
+                if(IsFormUrlEncodedContentTypeIncomplete)
+                {
+                    AppendBoundaryToFormUrlEncodedContentType();
                 }
             }
             else

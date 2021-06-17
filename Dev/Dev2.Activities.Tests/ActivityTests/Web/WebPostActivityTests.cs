@@ -42,6 +42,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
     {
         const string _userAgent = "user-agent";
         const string _contentType = "Content-Type";
+
         [TestMethod]
         [Timeout(60000)]
         [Owner("Pieter Terblanche")]
@@ -112,22 +113,21 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             {
                 ResourceID = InArgument<Guid>.FromValue(Guid.Empty),
                 ResourceCatalog = new Mock<IResourceCatalog>().Object,
-                Inputs = new List<IServiceInput> 
-                { 
-                    new ServiceInput("CityName", "[[City]]"), 
-                    new ServiceInput("Country", "[[CountryName]]") 
-                },
-                Outputs = new List<IServiceOutputMapping> 
+                Inputs = new List<IServiceInput>
                 {
-                    new ServiceOutputMapping("Location", "[[weather().Location]]", "weather"), 
+                    new ServiceInput("CityName", "[[City]]"),
+                    new ServiceInput("Country", "[[CountryName]]")
+                },
+                Outputs = new List<IServiceOutputMapping>
+                {
+                    new ServiceOutputMapping("Location", "[[weather().Location]]", "weather"),
                     new ServiceOutputMapping("Time", "[[weather().Time]]", "weather"),
-                    new ServiceOutputMapping("Wind", "[[weather().Wind]]", "weather"), 
-                    new ServiceOutputMapping("Visibility", "[[Visibility]]", "") 
+                    new ServiceOutputMapping("Wind", "[[weather().Wind]]", "weather"),
+                    new ServiceOutputMapping("Visibility", "[[Visibility]]", "")
                 },
                 ResponseFromWeb = response,
-
             };
-            
+
             //------------Execute Test---------------------------
             webPostActivity.Execute(dataObjectMock.Object, 0);
             //------------Assert Results-------------------------
@@ -158,28 +158,27 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             dataObjectMock.Setup(o => o.Environment).Returns(environment);
             dataObjectMock.Setup(o => o.EsbChannel).Returns(new Mock<IEsbChannel>().Object);
 
-            using (var service = new WebService(XmlResource.Fetch("WebService")) { RequestResponse = response })
+            using(var service = new WebService(XmlResource.Fetch("WebService")) { RequestResponse = response })
             {
                 var webPostActivity = new TestWebPostActivity
                 {
                     ResourceID = InArgument<Guid>.FromValue(Guid.Empty),
                     ResourceCatalog = new Mock<IResourceCatalog>().Object,
                     IsManualChecked = true,
-                    Inputs = new List<IServiceInput> 
-                    { 
-                        new ServiceInput("CityName", "[[City]]"), 
-                        new ServiceInput("Country", "[[CountryName]]") 
+                    Inputs = new List<IServiceInput>
+                    {
+                        new ServiceInput("CityName", "[[City]]"),
+                        new ServiceInput("Country", "[[CountryName]]")
                     },
-                    Outputs = new List<IServiceOutputMapping> 
-                    { 
-                        new ServiceOutputMapping("Location", "[[weather().Location]]", "weather"), 
-                        new ServiceOutputMapping("Time", "[[weather().Time]]", "weather"), 
-                        new ServiceOutputMapping("Wind", "[[weather().Wind]]", "weather"), 
-                        new ServiceOutputMapping("Visibility", "[[Visibility]]", "") 
+                    Outputs = new List<IServiceOutputMapping>
+                    {
+                        new ServiceOutputMapping("Location", "[[weather().Location]]", "weather"),
+                        new ServiceOutputMapping("Time", "[[weather().Time]]", "weather"),
+                        new ServiceOutputMapping("Wind", "[[weather().Wind]]", "weather"),
+                        new ServiceOutputMapping("Visibility", "[[Visibility]]", "")
                     },
                     OutputDescription = service.GetOutputDescription(),
                     ResponseFromWeb = response,
-
                 };
 
                 //------------Execute Test---------------------------
@@ -191,7 +190,6 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
                 Assert.AreEqual("May 29, 2013 - 09:00 AM EDT / 2013.05.29 1300 UTC", ExecutionEnvironment.WarewolfEvalResultToString(environment.Eval("[[weather().Time]]", 0)));
                 Assert.AreEqual("from the NW (320 degrees) at 10 MPH (9 KT) (direction variable):0", ExecutionEnvironment.WarewolfEvalResultToString(environment.Eval("[[weather().Wind]]", 0)));
             }
-
         }
 
         [TestMethod]
@@ -225,8 +223,8 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
                 IsManualChecked = true,
                 ResponseFromWeb = response,
                 Outputs = new List<IServiceOutputMapping>
-                { 
-                    new ServiceOutputMapping("Response", "[[Response]]", "") 
+                {
+                    new ServiceOutputMapping("Response", "[[Response]]", "")
                 },
                 OutputDescription = new OutputDescription
                 {
@@ -246,7 +244,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
                     }
                 }
             };
-         
+
             //------------Execute Test---------------------------
             webPostActivity.Execute(dataObjectMock.Object, 0);
             //------------Assert Results-------------------------
@@ -271,14 +269,14 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
                                     "\"Status\": \"Success\"" +
                                     "}";
             const string invalidResponse = "{\"Location\" \"Paris\",\"Time\": \"May 29, 2013 - 09:00 AM EDT / 2013.05.29 1300 UTC\"," +
-                                    "\"Wind\": \"from the NW (320 degrees) at 10 MPH (9 KT) (direction variable):0\"," +
-                                    "\"Visibility\": \"greater than 7 mile(s):0\"," +
-                                    "\"Temperature\": \"59 F (15 C)\"," +
-                                    "\"DewPoint\": \"41 F (5 C)\"," +
-                                    "\"RelativeHumidity\": \"51%\"," +
-                                    "\"Pressure\": \"29.65 in. Hg (1004 hPa)\"," +
-                                    "\"Status\": \"Success\"" +
-                                    "";
+                                           "\"Wind\": \"from the NW (320 degrees) at 10 MPH (9 KT) (direction variable):0\"," +
+                                           "\"Visibility\": \"greater than 7 mile(s):0\"," +
+                                           "\"Temperature\": \"59 F (15 C)\"," +
+                                           "\"DewPoint\": \"41 F (5 C)\"," +
+                                           "\"RelativeHumidity\": \"51%\"," +
+                                           "\"Pressure\": \"29.65 in. Hg (1004 hPa)\"," +
+                                           "\"Status\": \"Success\"" +
+                                           "";
             var environment = new ExecutionEnvironment();
             environment.Assign("[[City]]", "PMB", 0);
             environment.Assign("[[CountryName]]", "South Africa", 0);
@@ -287,7 +285,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             dataObjectMock.Setup(o => o.Environment).Returns(environment);
             dataObjectMock.Setup(o => o.EsbChannel).Returns(new Mock<IEsbChannel>().Object);
 
-            using (var service = new WebService(XmlResource.Fetch("WebService")) { RequestResponse = response })
+            using(var service = new WebService(XmlResource.Fetch("WebService")) { RequestResponse = response })
             {
                 var webPostActivity = new TestWebPostActivity
                 {
@@ -298,17 +296,17 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
                     PostData = "",
                     QueryString = "",
                     ResponseFromWeb = invalidResponse,
-                    Inputs = new List<IServiceInput> 
-                    { 
+                    Inputs = new List<IServiceInput>
+                    {
                         new ServiceInput("CityName", "[[City]]"),
-                        new ServiceInput("Country", "[[CountryName]]") 
+                        new ServiceInput("Country", "[[CountryName]]")
                     },
-                    Outputs = new List<IServiceOutputMapping> 
-                    { 
-                        new ServiceOutputMapping("Location", "[[weather().Location]]", "weather"), 
-                        new ServiceOutputMapping("Time", "[[weather().Time]]", "weather"), 
-                        new ServiceOutputMapping("Wind", "[[weather().Wind]]", "weather"), 
-                        new ServiceOutputMapping("Visibility", "[[Visibility]]", "") 
+                    Outputs = new List<IServiceOutputMapping>
+                    {
+                        new ServiceOutputMapping("Location", "[[weather().Location]]", "weather"),
+                        new ServiceOutputMapping("Time", "[[weather().Time]]", "weather"),
+                        new ServiceOutputMapping("Wind", "[[weather().Wind]]", "weather"),
+                        new ServiceOutputMapping("Visibility", "[[Visibility]]", "")
                     },
                 };
 
@@ -328,17 +326,17 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         public void WebPostActivity_Execute_WithValidXmlEscaped_ShouldSetVariables()
         {
             //------------Setup for test--------------------------
-            const string response ="<CurrentWeather>" +
-                                   "<Location>&lt;Paris&gt;</Location>" +
-                                   "<Time>May 29, 2013 - 09:00 AM EDT / 2013.05.29 1300 UTC</Time>" +
-                                   "<Wind>from the NW (320 degrees) at 10 MPH (9 KT) (direction variable):0</Wind>" +
-                                   "<Visibility>&lt;greater than 7 mile(s):0&gt;</Visibility>" +
-                                   "<Temperature> 59 F (15 C)</Temperature>" +
-                                   "<DewPoint> 41 F (5 C)</DewPoint>" +
-                                   "<RelativeHumidity> 51%</RelativeHumidity>" +
-                                   "<Pressure> 29.65 in. Hg (1004 hPa)</Pressure>" +
-                                   "<Status>Success</Status>" +
-                                   "</CurrentWeather>";
+            const string response = "<CurrentWeather>" +
+                                    "<Location>&lt;Paris&gt;</Location>" +
+                                    "<Time>May 29, 2013 - 09:00 AM EDT / 2013.05.29 1300 UTC</Time>" +
+                                    "<Wind>from the NW (320 degrees) at 10 MPH (9 KT) (direction variable):0</Wind>" +
+                                    "<Visibility>&lt;greater than 7 mile(s):0&gt;</Visibility>" +
+                                    "<Temperature> 59 F (15 C)</Temperature>" +
+                                    "<DewPoint> 41 F (5 C)</DewPoint>" +
+                                    "<RelativeHumidity> 51%</RelativeHumidity>" +
+                                    "<Pressure> 29.65 in. Hg (1004 hPa)</Pressure>" +
+                                    "<Status>Success</Status>" +
+                                    "</CurrentWeather>";
             var environment = new ExecutionEnvironment();
             environment.Assign("[[City]]", "PMB", 0);
             environment.Assign("[[CountryName]]", "South Africa", 0);
@@ -347,7 +345,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             dataObjectMock.Setup(o => o.Environment).Returns(environment);
             dataObjectMock.Setup(o => o.EsbChannel).Returns(new Mock<IEsbChannel>().Object);
 
-            using (var service = new WebService(XmlResource.Fetch("WebService")) { RequestResponse = response })
+            using(var service = new WebService(XmlResource.Fetch("WebService")) { RequestResponse = response })
             {
                 var webPostActivity = new TestWebPostActivity
                 {
@@ -357,17 +355,17 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
                     PostData = "",
                     OutputDescription = service.GetOutputDescription(),
                     ResponseFromWeb = response,
-                    Inputs = new List<IServiceInput> 
+                    Inputs = new List<IServiceInput>
                     {
-                        new ServiceInput("CityName", "[[City]]"), 
-                        new ServiceInput("Country", "[[CountryName]]") 
+                        new ServiceInput("CityName", "[[City]]"),
+                        new ServiceInput("Country", "[[CountryName]]")
                     },
-                    Outputs = new List<IServiceOutputMapping> 
-                    { 
+                    Outputs = new List<IServiceOutputMapping>
+                    {
                         new ServiceOutputMapping("Location", "[[weather().Location]]", "weather"),
-                        new ServiceOutputMapping("Time", "[[weather().Time]]", "weather"), 
-                        new ServiceOutputMapping("Wind", "[[weather().Wind]]", "weather"), 
-                        new ServiceOutputMapping("Visibility", "[[Visibility]]", "") 
+                        new ServiceOutputMapping("Time", "[[weather().Time]]", "weather"),
+                        new ServiceOutputMapping("Wind", "[[weather().Wind]]", "weather"),
+                        new ServiceOutputMapping("Visibility", "[[Visibility]]", "")
                     },
                 };
 
@@ -407,25 +405,24 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             dataObjectMock.Setup(o => o.Environment).Returns(environment);
             dataObjectMock.Setup(o => o.EsbChannel).Returns(new Mock<IEsbChannel>().Object);
 
-            using (var service = new WebService(XmlResource.Fetch("WebService")) { RequestResponse = response })
+            using(var service = new WebService(XmlResource.Fetch("WebService")) { RequestResponse = response })
             {
                 var webPostActivity = new TestWebPostActivity
                 {
                     ResourceID = InArgument<Guid>.FromValue(Guid.Empty),
-                    Headers = new List<INameValue> {new NameValue("Header 1", "[[City]]")},
+                    Headers = new List<INameValue> { new NameValue("Header 1", "[[City]]") },
                     QueryString = "http://www.testing.com/[[CountryName]]",
                     IsManualChecked = true,
                     PostData = "This is post:[[Post]]",
                     OutputDescription = service.GetOutputDescription(),
-                    Outputs = new List<IServiceOutputMapping> 
-                    { 
-                        new ServiceOutputMapping("Location", "[[weather().Location]]", "weather"), 
-                        new ServiceOutputMapping("Time", "[[weather().Time]]", "weather"), 
-                        new ServiceOutputMapping("Wind", "[[weather().Wind]]", "weather"), 
-                        new ServiceOutputMapping("Visibility", "[[Visibility]]", "") 
+                    Outputs = new List<IServiceOutputMapping>
+                    {
+                        new ServiceOutputMapping("Location", "[[weather().Location]]", "weather"),
+                        new ServiceOutputMapping("Time", "[[weather().Time]]", "weather"),
+                        new ServiceOutputMapping("Wind", "[[weather().Wind]]", "weather"),
+                        new ServiceOutputMapping("Visibility", "[[Visibility]]", "")
                     },
                     ResponseFromWeb = response,
-
                 };
 
                 //------------Assert Preconditions-------------------
@@ -441,7 +438,6 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
                 Assert.AreEqual("http://www.testing.com/South Africa", webPostActivity.QueryRes);
                 Assert.AreEqual("This is post:Some data", webPostActivity.PostValue);
             }
-           
         }
 
         [TestMethod]
@@ -507,7 +503,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             mockResourceCatalog.Setup(a => a.GetResource<WebSource>(It.IsAny<Guid>(), It.IsAny<Guid>()))
                 .Returns(new WebSource { Address = "www.example.com" });
 
-            using (var service = new WebService(XmlResource.Fetch("WebService")) { RequestResponse = string.Empty })
+            using(var service = new WebService(XmlResource.Fetch("WebService")) { RequestResponse = string.Empty })
             {
                 var webPostActivity = new TestWebPostActivity
                 {
@@ -525,14 +521,13 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
                 var debugInputs = webPostActivity.GetDebugInputs(environment, 0);
                 //---------------Test Result -----------------------
                 Assert.IsNotNull(debugInputs);
-                Assert.AreEqual(4,debugInputs.Count);
-                
+                Assert.AreEqual(4, debugInputs.Count);
+
                 var item4 = debugInputs.Last().FetchResultsList();
                 Assert.IsTrue(item4.Count == 2);
                 Assert.AreEqual("Post Data", item4.First().Label);
                 Assert.AreEqual("This is post:Some data", item4.Last().Value);
             }
-           
         }
 
         [TestMethod]
@@ -553,12 +548,13 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
 
             var mockResourceCatalog = new Mock<IResourceCatalog>();
             mockResourceCatalog.Setup(a => a.GetResource<WebSource>(It.IsAny<Guid>(), It.IsAny<Guid>()))
-                .Returns(new WebSource
-                {
-                    Address = "www.example.com"
-                });
+                .Returns(
+                    new WebSource
+                    {
+                        Address = "www.example.com"
+                    });
 
-            using (var service = new WebService(XmlResource.Fetch("WebService")) { RequestResponse = string.Empty })
+            using(var service = new WebService(XmlResource.Fetch("WebService")) { RequestResponse = string.Empty })
             {
                 var webPostActivity = new TestWebPostActivity
                 {
@@ -571,11 +567,11 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
                     {
                         new FormDataConditionExpression
                         {
-                           Key = testTextKey,
-                           Cond = new FormDataConditionText
-                           {
-                               Value = testTextValue
-                           }
+                            Key = testTextKey,
+                            Cond = new FormDataConditionText
+                            {
+                                Value = testTextValue
+                            }
                         },
                         new FormDataConditionExpression
                         {
@@ -603,71 +599,46 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
                 Assert.AreEqual(1, item4.Count);
                 Assert.AreEqual("Parameters", item4First.Label);
                 Assert.AreEqual("\nKey: testTextKey Text: testTextValue\nKey: testFileKey File Content: this can be any file type conve", item4First.Value);
-
-            } 
-            
+            }
         }
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Siphamandla Dube")]
+        [Owner("Njabulo Nxele")]
         [TestCategory(nameof(WebPostActivity))]
-        public void WebPostActivity_GetDebugInputs_IsFormDataChecked_GivenWithEnvironmentVariablesToEval_ShouldAddDebugInputItems()
+        public void WebPostActivity_GetDebugInputs_IsUrlEncodedChecked_GivenNoEnvironmentVariablesToEval_ShouldAddDebugInputItems()
         {
             //---------------Set up test pack-------------------
             var testTextKey = "testTextKey";
             var testTextValue = "testTextValue";
 
-            var testFileKey = "testFileKey";
-            var testFileContent = "this can be any file type converted to base64 string";
-            var testFileName = "testFileName.ext";
-
             var environment = new ExecutionEnvironment();
-            environment.Assign("[[testTextKeyVName]]", testTextKey, 0);
-            environment.Assign("[[testTextValueVName]]", testTextValue, 0);
-
-
-            environment.Assign("[[testFileKeyVName]]", testFileKey, 0);
-            environment.Assign("[[testFileContentVName]]", testFileContent, 0);
-            environment.Assign("[[testFileNameVName]]", testFileName, 0);
-
-            var mockDataObject = new Mock<IDSFDataObject>();
-            mockDataObject.Setup(o => o.Environment).Returns(environment);
-            mockDataObject.Setup(o => o.EsbChannel).Returns(new Mock<IEsbChannel>().Object);
 
             var mockResourceCatalog = new Mock<IResourceCatalog>();
             mockResourceCatalog.Setup(a => a.GetResource<WebSource>(It.IsAny<Guid>(), It.IsAny<Guid>()))
-                .Returns(new WebSource
-                {
-                    Address = "www.example.com"
-                });
+                .Returns(
+                    new WebSource
+                    {
+                        Address = "www.example.com"
+                    });
 
-            using (var service = new WebService(XmlResource.Fetch("WebService")) { RequestResponse = string.Empty })
+            using(var service = new WebService(XmlResource.Fetch("WebService")) { RequestResponse = string.Empty })
             {
                 var webPostActivity = new TestWebPostActivity
                 {
                     ResourceID = InArgument<Guid>.FromValue(Guid.Empty),
                     Headers = new List<INameValue> { new NameValue("Header 1", "[[City]]") },
                     QueryString = "http://www.testing.com/[[CountryName]]",
-                    IsFormDataChecked = true,
+                    IsUrlEncodedChecked = true,
                     ResourceCatalog = mockResourceCatalog.Object,
                     Conditions = new List<FormDataConditionExpression>
                     {
                         new FormDataConditionExpression
                         {
-                           Key = "[[testTextKeyVName]]",
-                           Cond = new FormDataConditionText
-                           {
-                               Value = "[[testTextValueVName]]"
-                           }
-                        },
-                        new FormDataConditionExpression
-                        {
-                            Key = "[[testFileKeyVName]]",
-                            Cond = new FormDataConditionFile
+                            Key = testTextKey,
+                            Cond = new FormDataConditionText
                             {
-                                FileBase64 = "[[testFileContentVName]]",
-                                FileName = "[[testFileNameVName]]"
+                                Value = testTextValue
                             }
                         }
                     }
@@ -686,10 +657,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
                 var item4First = item4.First();
                 Assert.AreEqual(1, item4.Count);
                 Assert.AreEqual("Parameters", item4First.Label);
-                Assert.AreEqual("\nKey: testTextKey Text: testTextValue\nKey: testFileKey File Content: this can be any file type converted to base64 string File Name: testFileName.ext", item4First.Value);
-
             }
-
         }
 
         [TestMethod]
@@ -710,12 +678,13 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
 
             var mockResourceCatalog = new Mock<IResourceCatalog>();
             mockResourceCatalog.Setup(a => a.GetResource<WebSource>(It.IsAny<Guid>(), It.IsAny<Guid>()))
-                .Returns(new WebSource
-                {
-                    Address = "www.example.com"
-                });
+                .Returns(
+                    new WebSource
+                    {
+                        Address = "www.example.com"
+                    });
 
-            using (var service = new WebService(XmlResource.Fetch("WebService")) { RequestResponse = string.Empty })
+            using(var service = new WebService(XmlResource.Fetch("WebService")) { RequestResponse = string.Empty })
             {
                 var webPostActivity = new TestWebPostActivity
                 {
@@ -741,9 +710,60 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
                 Assert.AreEqual(2, item2.Count);
                 Assert.AreEqual("Headers", item4First.Label);
                 StringAssert.Contains(item2[1].Value, "Content-Type : multipart/form-data; boundary=----------");
-                
             }
+        }
+        
+        [TestMethod]
+        [Timeout(60000)]
+        [Owner("Njabulo Nxele")]
+        [TestCategory(nameof(WebPostActivity))]
+        public void WebPostActivity_GetDebugInputs_IsUrlEncodedChecked_Given_MultipartHeader_WithEnvironmentVariablesToEval_ShouldAddDebugInputItems()
+        {
+            //---------------Set up test pack-------------------
+            var urlEncodedVar = "application/x-www-form-urlencoded";
 
+            var environment = new ExecutionEnvironment();
+            environment.Assign("[[urlEncodedVar]]", urlEncodedVar, 0);
+
+            var mockDataObject = new Mock<IDSFDataObject>();
+            mockDataObject.Setup(o => o.Environment).Returns(environment);
+            mockDataObject.Setup(o => o.EsbChannel).Returns(new Mock<IEsbChannel>().Object);
+
+            var mockResourceCatalog = new Mock<IResourceCatalog>();
+            mockResourceCatalog.Setup(a => a.GetResource<WebSource>(It.IsAny<Guid>(), It.IsAny<Guid>()))
+                .Returns(
+                    new WebSource
+                    {
+                        Address = "www.example.com"
+                    });
+
+            using(var service = new WebService(XmlResource.Fetch("WebService")) { RequestResponse = string.Empty })
+            {
+                var webPostActivity = new TestWebPostActivity
+                {
+                    ResourceID = InArgument<Guid>.FromValue(Guid.Empty),
+                    Headers = new List<INameValue> { new NameValue("Content-Type", "[[urlEncodedVar]]") },
+                    QueryString = "http://www.testing.com/[[CountryName]]",
+                    IsFormDataChecked = true,
+                    ResourceCatalog = mockResourceCatalog.Object,
+                    Conditions = new List<FormDataConditionExpression> { }
+                };
+
+                //---------------Assert Precondition----------------
+                Assert.IsNotNull(environment);
+                Assert.IsNotNull(webPostActivity);
+                //---------------Execute Test ----------------------
+                var debugInputs = webPostActivity.GetDebugInputs(environment, 0);
+                //---------------Test Result -----------------------
+                Assert.IsNotNull(debugInputs);
+                Assert.AreEqual(4, debugInputs.Count);
+
+                var item2 = debugInputs[2].FetchResultsList();
+                var item4First = item2.First();
+                Assert.AreEqual(2, item2.Count);
+                Assert.AreEqual("Headers", item4First.Label);
+                StringAssert.Contains(item2[1].Value, "Content-Type : application/x-www-form-urlencoded");
+            }
         }
 
         [TestMethod]
@@ -762,12 +782,13 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
 
             var mockResourceCatalog = new Mock<IResourceCatalog>();
             mockResourceCatalog.Setup(a => a.GetResource<WebSource>(It.IsAny<Guid>(), It.IsAny<Guid>()))
-                .Returns(new WebSource
-                {
-                    Address = "www.example.com"
-                });
+                .Returns(
+                    new WebSource
+                    {
+                        Address = "www.example.com"
+                    });
 
-            using (var service = new WebService(XmlResource.Fetch("WebService")) { RequestResponse = string.Empty })
+            using(var service = new WebService(XmlResource.Fetch("WebService")) { RequestResponse = string.Empty })
             {
                 var webPostActivity = new TestWebPostActivity
                 {
@@ -794,7 +815,57 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
                 Assert.AreEqual("Headers", item4First.Label);
                 StringAssert.Contains(item2[1].Value, "Content-Type : multipart/form-data; boundary=----------");
             }
+        }
+        
+        [TestMethod]
+        [Timeout(60000)]
+        [Owner("Njabulo Nxele")]
+        [TestCategory(nameof(WebPostActivity))]
+        public void WebPostActivity_GetDebugInputs_IsUrlEncodedChecked_Given_MultipartHeader_WithNoEnvironmentVariablesToEval_ShouldAddDebugInputItems()
+        {
+            //---------------Set up test pack-------------------
 
+            var environment = new ExecutionEnvironment();
+
+            var mockDataObject = new Mock<IDSFDataObject>();
+            mockDataObject.Setup(o => o.Environment).Returns(environment);
+            mockDataObject.Setup(o => o.EsbChannel).Returns(new Mock<IEsbChannel>().Object);
+
+            var mockResourceCatalog = new Mock<IResourceCatalog>();
+            mockResourceCatalog.Setup(a => a.GetResource<WebSource>(It.IsAny<Guid>(), It.IsAny<Guid>()))
+                .Returns(
+                    new WebSource
+                    {
+                        Address = "www.example.com"
+                    });
+
+            using(var service = new WebService(XmlResource.Fetch("WebService")) { RequestResponse = string.Empty })
+            {
+                var webPostActivity = new TestWebPostActivity
+                {
+                    ResourceID = InArgument<Guid>.FromValue(Guid.Empty),
+                    Headers = new List<INameValue> { new NameValue("Content-Type", "application/x-www-form-urlencoded") },
+                    QueryString = "http://www.testing.com/[[CountryName]]",
+                    IsFormDataChecked = true,
+                    ResourceCatalog = mockResourceCatalog.Object,
+                    Conditions = new List<FormDataConditionExpression> { }
+                };
+
+                //---------------Assert Precondition----------------
+                Assert.IsNotNull(environment);
+                Assert.IsNotNull(webPostActivity);
+                //---------------Execute Test ----------------------
+                var debugInputs = webPostActivity.GetDebugInputs(environment, 0);
+                //---------------Test Result -----------------------
+                Assert.IsNotNull(debugInputs);
+                Assert.AreEqual(4, debugInputs.Count);
+
+                var item2 = debugInputs[2].FetchResultsList();
+                var item4First = item2.First();
+                Assert.AreEqual(2, item2.Count);
+                Assert.AreEqual("Headers", item4First.Label);
+                StringAssert.Contains(item2[1].Value, "Content-Type : application/x-www-form-urlencoded");
+            }
         }
 
         [TestMethod]
@@ -853,7 +924,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         public void WebPostActivity_CreateClient_GivenWebSourceAuthenticationTypeIsUser_ShouldSetWebClientPasswordAndUserName()
         {
             //---------------Set up test pack-------------------
-            var webSource = new WebSource { AuthenticationType = AuthenticationType.User, UserName = "John1", Password = "Password1"};
+            var webSource = new WebSource { AuthenticationType = AuthenticationType.User, UserName = "John1", Password = "Password1" };
 
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
@@ -890,10 +961,10 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         public void WebPostActivity_CreateClient_GivenHeaders_ShouldHaveHeadersAdded()
         {
             //---------------Set up test pack-------------------
-            
+
             var headers = new List<INameValue>
             {
-                new NameValue("Content","text/json")
+                new NameValue("Content", "text/json")
             };
             //---------------Execute Test ----------------------
             var webClient = WebPostActivity.CreateClient(headers, string.Empty, new WebSource());
@@ -909,7 +980,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         [TestCategory(nameof(WebPostActivity))]
         public void WebPostActivity_Execute_ErrorResponse_ShouldSetVariables()
         {
-            using (var dependency = new Depends(Depends.ContainerType.HTTPVerbsApi))
+            using(var dependency = new Depends(Depends.ContainerType.HTTPVerbsApi))
             {
                 //------------Setup for test--------------------------
                 const string response = "{\"Message\":\"Error\"}";
@@ -917,17 +988,18 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
 
                 var mockResourceCatalog = new Mock<IResourceCatalog>();
                 mockResourceCatalog.Setup(resCat => resCat.GetResource<WebSource>(It.IsAny<Guid>(), It.IsAny<Guid>()))
-                    .Returns(new WebSource
-                    {
-                        Address = $"http://{dependency.Container.IP}:{dependency.Container.Port}/api/",
-                        AuthenticationType = AuthenticationType.Anonymous
-                    });
+                    .Returns(
+                        new WebSource
+                        {
+                            Address = $"http://{dependency.Container.IP}:{dependency.Container.Port}/api/",
+                            AuthenticationType = AuthenticationType.Anonymous
+                        });
 
                 var dataObjectMock = new Mock<IDSFDataObject>();
                 dataObjectMock.Setup(o => o.Environment).Returns(environment);
                 dataObjectMock.Setup(o => o.EsbChannel).Returns(new Mock<IEsbChannel>().Object);
 
-                using (var service = new WebService(XmlResource.Fetch("WebService")) { RequestResponse = response })
+                using(var service = new WebService(XmlResource.Fetch("WebService")) { RequestResponse = response })
                 {
                     var webPostActivity = new TestWebPostActivity
                     {
@@ -935,26 +1007,26 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
                         ResourceCatalog = mockResourceCatalog.Object,
                         IsManualChecked = true,
                         Outputs = new List<IServiceOutputMapping>
-                    {
-                        new ServiceOutputMapping("Message", "[[Message]]", "")
-                    },
+                        {
+                            new ServiceOutputMapping("Message", "[[Message]]", "")
+                        },
 
                         OutputDescription = new OutputDescription
                         {
                             DataSourceShapes = new List<IDataSourceShape>
-                        {
-                            new DataSourceShape
                             {
-                                Paths = new List<IPath>
+                                new DataSourceShape
                                 {
-                                    new StringPath
+                                    Paths = new List<IPath>
                                     {
-                                        ActualPath = "[[Response]]",
-                                        OutputExpression = "[[Response]]"
+                                        new StringPath
+                                        {
+                                            ActualPath = "[[Response]]",
+                                            OutputExpression = "[[Response]]"
+                                        }
                                     }
                                 }
                             }
-                        }
                         },
                         ResponseFromWeb = response,
                         QueryString = "Error",
@@ -967,9 +1039,9 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
                     //------------Assert Results-------------------------
                     Assert.AreEqual(response, ExecutionEnvironment.WarewolfEvalResultToString(environment.Eval("[[Message]]", 0)));
                 }
-
             }
         }
+
         [TestMethod]
         [Timeout(60000)]
         [Owner("Siphamandla Dube")]
@@ -986,14 +1058,14 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
 
             var errorResultTO = new ErrorResultTO();
 
-            using (var service = new WebService(XmlResource.Fetch("WebService")) { RequestResponse = response })
+            using(var service = new WebService(XmlResource.Fetch("WebService")) { RequestResponse = response })
             {
                 mockDSFDataObject.Setup(o => o.Environment).Returns(environment);
                 mockDSFDataObject.Setup(o => o.EsbChannel).Returns(new Mock<IEsbChannel>().Object);
 
                 var dsfWebGetActivity = new TestWebPostActivity
-                { 
-                    ResourceCatalog = new Mock<IResourceCatalog>().Object,               
+                {
+                    ResourceCatalog = new Mock<IResourceCatalog>().Object,
                     OutputDescription = service.GetOutputDescription(),
                     ResourceID = InArgument<Guid>.FromValue(Guid.Empty),
                     IsManualChecked = true,
@@ -1032,14 +1104,14 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
 
             var errorResultTO = new ErrorResultTO();
 
-            using (var service = new WebService(XmlResource.Fetch("WebService")) { RequestResponse = response })
+            using(var service = new WebService(XmlResource.Fetch("WebService")) { RequestResponse = response })
             {
                 mockDSFDataObject.Setup(o => o.Environment).Returns(environment);
                 mockDSFDataObject.Setup(o => o.EsbChannel).Returns(new Mock<IEsbChannel>().Object);
 
                 var dsfWebGetActivity = new TestWebPostActivity
-                { 
-                    ResourceCatalog = new Mock<IResourceCatalog>().Object,                
+                {
+                    ResourceCatalog = new Mock<IResourceCatalog>().Object,
                     OutputDescription = service.GetOutputDescription(),
                     ResourceID = InArgument<Guid>.FromValue(Guid.Empty),
                     QueryString = "test Query",
@@ -1097,7 +1169,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
 
             var errorResultTO = new ErrorResultTO();
 
-            using (var service = new WebService(XmlResource.Fetch("WebService")))
+            using(var service = new WebService(XmlResource.Fetch("WebService")))
             {
                 mockDSFDataObject.Setup(o => o.Environment).Returns(environment);
                 mockDSFDataObject.Setup(o => o.EsbChannel).Returns(new Mock<IEsbChannel>().Object);
@@ -1137,7 +1209,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
 
             var errorResultTO = new ErrorResultTO();
 
-            using (var service = new WebService(XmlResource.Fetch("WebService")) { RequestResponse = string.Empty })
+            using(var service = new WebService(XmlResource.Fetch("WebService")) { RequestResponse = string.Empty })
             {
                 mockDSFDataObject.Setup(o => o.Environment).Returns(environment);
                 mockDSFDataObject.Setup(o => o.EsbChannel).Returns(new Mock<IEsbChannel>().Object);
@@ -1155,7 +1227,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
                 //-----------------------Act-----------------------------
                 //-----------------------Assert--------------------------
                 webGetActivity.TestExecutionImpl(mockEsbChannel.Object, mockDSFDataObject.Object, "Test Inputs", "Test Outputs", out errorResultTO, 0);
-                
+
                 //assert first DataSourceShapes
                 var resourceManager = webGetActivity.ResponseManager;
                 var outputDescription = resourceManager.OutputDescription;
@@ -1169,6 +1241,54 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             }
         }
 
+        [TestMethod]
+        [Timeout(60000)]
+        [Owner("Njabulo Nxele")]
+        [TestCategory(nameof(WebPostActivity))]
+        public void WebPostActivity_ExecutionImpl_PerformUrlEncodedWebPostRequest_ExpectSuccess()
+        {
+            //-----------------------Arrange-------------------------
+            var testWebResponse = "this can be the web response";
+            var environment = new ExecutionEnvironment();
+
+            var mockEsbChannel = new Mock<IEsbChannel>();
+            var mockDSFDataObject = new Mock<IDSFDataObject>();
+            var mockExecutionEnvironment = new Mock<IExecutionEnvironment>();
+            var mockResourceCatalog = new Mock<IResourceCatalog>();
+
+            var errorResultTO = new ErrorResultTO();
+
+            using(var service = new WebService(XmlResource.Fetch("WebService")) { RequestResponse = string.Empty })
+            {
+                mockDSFDataObject.Setup(o => o.Environment).Returns(environment);
+                mockDSFDataObject.Setup(o => o.EsbChannel).Returns(new Mock<IEsbChannel>().Object);
+
+                var webGetActivity = new TestWebPostActivity
+                {
+                    ResourceCatalog = mockResourceCatalog.Object,
+                    OutputDescription = service.GetOutputDescription(),
+                    ResourceID = InArgument<Guid>.FromValue(Guid.Empty),
+                    QueryString = "test Query",
+                    Headers = new List<INameValue>(),
+                    IsUrlEncodedChecked = true,
+                    ResponseFromWeb = testWebResponse
+                };
+                //-----------------------Act-----------------------------
+                //-----------------------Assert--------------------------
+                webGetActivity.TestExecutionImpl(mockEsbChannel.Object, mockDSFDataObject.Object, "Test Inputs", "Test Outputs", out errorResultTO, 0);
+
+                //assert first DataSourceShapes
+                var resourceManager = webGetActivity.ResponseManager;
+                var outputDescription = resourceManager.OutputDescription;
+                var dataShapes = outputDescription.DataSourceShapes;
+                var paths = dataShapes.First().Paths;
+                Assert.IsNotNull(outputDescription);
+                Assert.AreEqual("Response", paths.First().ActualPath);
+                Assert.AreEqual("Response", paths.First().DisplayPath);
+                Assert.AreEqual(string.Empty, paths.First().OutputExpression);
+                Assert.AreEqual(string.Empty, paths.First().SampleData);
+            }
+        }
     }
 
     public class TestWebPostActivity : WebPostActivity
@@ -1176,17 +1296,18 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         public string HasErrorMessage { get; set; }
 
         public string ResponseFromWeb { private get; set; }
-        
+
         protected override string PerformManualWebPostRequest(IEnumerable<INameValue> head, string query, IWebSource source, string postData)
         {
             Head = head;
             QueryRes = query;
             PostValue = postData;
-            if (!string.IsNullOrWhiteSpace(HasErrorMessage))
+            if(!string.IsNullOrWhiteSpace(HasErrorMessage))
             {
                 base._errorsTo = new ErrorResultTO();
                 base._errorsTo.AddError(ResponseFromWeb);
             }
+
             return ResponseFromWeb;
         }
 
@@ -1195,11 +1316,12 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             Head = head;
             QueryRes = query;
             FormDataParametersValue = formDataParameters;
-            if (!string.IsNullOrWhiteSpace(HasErrorMessage))
+            if(!string.IsNullOrWhiteSpace(HasErrorMessage))
             {
                 base._errorsTo = new ErrorResultTO();
                 base._errorsTo.AddError(ResponseFromWeb);
             }
+
             return ResponseFromWeb;
         }
 
