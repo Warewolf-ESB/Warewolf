@@ -3555,10 +3555,13 @@ namespace Dev2.Tests.Runtime.Hosting
                 ResourceID = Guid.Empty 
             };
 
-            var sut = ResourceCatalog.Instance;
+            var sut = new ResourceCatalog
+            {
+                ResourceActivityCache = new Mock<IResourceActivityCache>().Object
+            };
             //------------Assert Precondition-----------------
             //------------Execute Test---------------------------
-            var result = sut.Parse(GlobalConstants.ServerWorkspaceID, Guid.Empty, string.Empty, resource);
+            var result = sut.Parse(GlobalConstants.ServerWorkspaceID, resource);
             //------------Assert Precondition-----------------
             //------------Assert Results-------------------------
             Assert.IsNull(result);
@@ -3571,7 +3574,7 @@ namespace Dev2.Tests.Runtime.Hosting
         [TestCategory(nameof(ResourceCatalog))]
         public void ResourceCatalog_Parse_GivenHasActivityInCache_ShouldReturnExistingActivityCacheEntry()
         {
-            //Note: there seems to be a raise condition with: ResourceCatalog_Parse_GivenHasActivityInCache_And_GetActivityFails_ShouldReturnNull
+            //Note: there seems to be a race condition with: ResourceCatalog_Parse_GivenHasActivityInCache_And_GetActivityFails_ShouldReturnNull
             //------------Setup for test--------------------------
             var resource = new Resource
             {
@@ -3588,15 +3591,13 @@ namespace Dev2.Tests.Runtime.Hosting
             mockResourceActivityCache.Setup(o => o.GetActivity(resource.ResourceID))
                 .Returns(mockDev2Activity.Object);
 
-            CustomContainer.Register(mockActivityParser.Object);
-
             var sut = new ResourceCatalog
             {
-                Parser = mockResourceActivityCache.Object
+                ResourceActivityCache = mockResourceActivityCache.Object
             };
             //------------Assert Precondition-----------------
             //------------Execute Test---------------------------
-            var result = sut.Parse(GlobalConstants.ServerWorkspaceID, Guid.Empty);
+            var result = sut.Parse(GlobalConstants.ServerWorkspaceID, resource.ResourceID);
             //------------Assert Precondition-----------------
             //------------Assert Results-------------------------
             Assert.IsNotNull(result);
@@ -3610,7 +3611,7 @@ namespace Dev2.Tests.Runtime.Hosting
         [TestCategory(nameof(ResourceCatalog))]
         public void ResourceCatalog_Parse_GivenHasActivityInCache_And_GetActivityFails_ShouldReturnNull()
         {
-            //Note: there seems to be a raise condition with: ResourceCatalog_Parse_GivenHasActivityInCache_ShouldReturnExistingActivityCacheEntry
+            //Note: there seems to be a race condition with: ResourceCatalog_Parse_GivenHasActivityInCache_ShouldReturnExistingActivityCacheEntry
             //------------Setup for test--------------------------
             var resource = new Resource
             {
@@ -3626,17 +3627,16 @@ namespace Dev2.Tests.Runtime.Hosting
                 .Returns(true);
             mockResourceActivityCache.Setup(o => o.GetActivity(resource.ResourceID));
 
-            CustomContainer.Register(mockActivityParser.Object);
-
             var sut = new ResourceCatalog
             {
-                Parser = mockResourceActivityCache.Object
+                ResourceActivityCache = mockResourceActivityCache.Object
             };
             //------------Assert Precondition-----------------
             //------------Execute Test---------------------------
-            Assert.ThrowsException<NullReferenceException>(()=> sut.Parse(GlobalConstants.ServerWorkspaceID, Guid.Empty, string.Empty), "this failure to load or GetResource can be also caused by Threads locking, this can be handled better");
+            var result = sut.Parse(GlobalConstants.ServerWorkspaceID, Guid.Empty);
             //------------Assert Precondition-----------------
             //------------Assert Results-------------------------
+            Assert.IsNull(result);
         }
 
         [TestMethod]
@@ -3661,15 +3661,13 @@ namespace Dev2.Tests.Runtime.Hosting
                 .Returns(true);
             mockResourceActivityCache.Setup(o => o.GetActivity(resource.ResourceID));
 
-            CustomContainer.Register(mockActivityParser.Object);
-
             var sut = new ResourceCatalog
             {
-                Parser = mockResourceActivityCache.Object
+                ResourceActivityCache = mockResourceActivityCache.Object
             };
             //------------Assert Precondition-----------------
             //------------Execute Test---------------------------
-            var result = sut.Parse(GlobalConstants.ServerWorkspaceID, Guid.Empty, string.Empty, resource);
+            var result = sut.Parse(GlobalConstants.ServerWorkspaceID, resource);
             //------------Assert Precondition-----------------
             //------------Assert Results-------------------------
             Assert.IsNull(result);
