@@ -50,7 +50,7 @@ using Dev2.Core.Tests;
 namespace Warewolf.UIBindingTests.WorkflowDesigner
 {
     [TestClass]
-    [CannotParallelize]
+    [TestCategory("CannotParallelize")]
     public class Workflow_Designer
     {
         Mock<IShellViewModel> _shellViewModelMock;

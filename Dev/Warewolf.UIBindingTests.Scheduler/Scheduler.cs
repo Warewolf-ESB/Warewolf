@@ -27,7 +27,7 @@ using System.Collections.Generic;
 namespace Warewolf.UIBindingTests.Scheduler
 {
     [TestClass]
-    [CannotParallelize]
+	[TestCategory("CannotParallelize")]
     public class Scheduler
     {
         [TestMethod]
