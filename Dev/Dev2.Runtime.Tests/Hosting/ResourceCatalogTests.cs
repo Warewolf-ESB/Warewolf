@@ -3541,6 +3541,140 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual(@"Duplicated Successfully".Replace(Environment.NewLine, ""), resourceCatalogResult.Message.Replace(Environment.NewLine, ""));
         }
 
+        [TestMethod]
+        [DoNotParallelize]
+        [Timeout(60000)]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ResourceCatalog))]
+        public void ResourceCatalog_Parse_GivenNonExistantResource_ShouldReturnNull()
+        {
+            //------------Setup for test--------------------------
+            var resource = new Resource 
+            { 
+                ResourceName = "test_resource", 
+                ResourceID = Guid.Empty 
+            };
+
+            var sut = ResourceCatalog.Instance;
+            //------------Assert Precondition-----------------
+            //------------Execute Test---------------------------
+            var result = sut.Parse(GlobalConstants.ServerWorkspaceID, Guid.Empty, string.Empty, resource);
+            //------------Assert Precondition-----------------
+            //------------Assert Results-------------------------
+            Assert.IsNull(result);
+        }
+
+        [TestMethod]
+        [DoNotParallelize]
+        [Timeout(60000)]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ResourceCatalog))]
+        public void ResourceCatalog_Parse_GivenHasActivityInCache_ShouldReturnExistingActivityCacheEntry()
+        {
+            //Note: there seems to be a raise condition with: ResourceCatalog_Parse_GivenHasActivityInCache_And_GetActivityFails_ShouldReturnNull
+            //------------Setup for test--------------------------
+            var resource = new Resource
+            {
+                ResourceName = "test_resource",
+                ResourceID = Guid.Empty
+            };
+
+            var mockResourceCatalog = new Mock<IResourceCatalog>();
+            var mockActivityParser = new Mock<IActivityParser>();
+            var mockResourceActivityCache = new Mock<IResourceActivityCache>();
+            var mockDev2Activity = new Mock<IDev2Activity>();
+            mockResourceActivityCache.Setup(o => o.HasActivityInCache(resource.ResourceID))
+                .Returns(true);
+            mockResourceActivityCache.Setup(o => o.GetActivity(resource.ResourceID))
+                .Returns(mockDev2Activity.Object);
+
+            CustomContainer.Register(mockActivityParser.Object);
+
+            var sut = new ResourceCatalog
+            {
+                Parser = mockResourceActivityCache.Object
+            };
+            //------------Assert Precondition-----------------
+            //------------Execute Test---------------------------
+            var result = sut.Parse(GlobalConstants.ServerWorkspaceID, Guid.Empty);
+            //------------Assert Precondition-----------------
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(result);
+            Assert.AreEqual(mockDev2Activity.Object, result);
+        }
+
+        [TestMethod]
+        [DoNotParallelize]
+        [Timeout(60000)]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ResourceCatalog))]
+        public void ResourceCatalog_Parse_GivenHasActivityInCache_And_GetActivityFails_ShouldReturnNull()
+        {
+            //Note: there seems to be a raise condition with: ResourceCatalog_Parse_GivenHasActivityInCache_ShouldReturnExistingActivityCacheEntry
+            //------------Setup for test--------------------------
+            var resource = new Resource
+            {
+                ResourceName = "test_resource",
+                ResourceID = Guid.Empty
+            };
+
+            var mockResourceCatalog = new Mock<IResourceCatalog>();
+            var mockActivityParser = new Mock<IActivityParser>();
+            var mockResourceActivityCache = new Mock<IResourceActivityCache>();
+            var mockDev2Activity = new Mock<IDev2Activity>();
+            mockResourceActivityCache.Setup(o => o.HasActivityInCache(resource.ResourceID))
+                .Returns(true);
+            mockResourceActivityCache.Setup(o => o.GetActivity(resource.ResourceID));
+
+            CustomContainer.Register(mockActivityParser.Object);
+
+            var sut = new ResourceCatalog
+            {
+                Parser = mockResourceActivityCache.Object
+            };
+            //------------Assert Precondition-----------------
+            //------------Execute Test---------------------------
+            Assert.ThrowsException<NullReferenceException>(()=> sut.Parse(GlobalConstants.ServerWorkspaceID, Guid.Empty, string.Empty), "this failure to load or GetResource can be also caused by Threads locking, this can be handled better");
+            //------------Assert Precondition-----------------
+            //------------Assert Results-------------------------
+        }
+
+        [TestMethod]
+        [DoNotParallelize]
+        [Timeout(60000)]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ResourceCatalog))]
+        public void ResourceCatalog_Parse_GivenHasActivityInCache_And_GetServiceFails_ShouldReturnNull()
+        {
+            //------------Setup for test--------------------------
+            var resource = new Resource
+            {
+                ResourceName = "test_resource",
+                ResourceID = Guid.Empty
+            };
+
+            var mockResourceCatalog = new Mock<IResourceCatalog>();
+            var mockActivityParser = new Mock<IActivityParser>();
+            var mockResourceActivityCache = new Mock<IResourceActivityCache>();
+            var mockDev2Activity = new Mock<IDev2Activity>();
+            mockResourceActivityCache.Setup(o => o.HasActivityInCache(resource.ResourceID))
+                .Returns(true);
+            mockResourceActivityCache.Setup(o => o.GetActivity(resource.ResourceID));
+
+            CustomContainer.Register(mockActivityParser.Object);
+
+            var sut = new ResourceCatalog
+            {
+                Parser = mockResourceActivityCache.Object
+            };
+            //------------Assert Precondition-----------------
+            //------------Execute Test---------------------------
+            var result = sut.Parse(GlobalConstants.ServerWorkspaceID, Guid.Empty, string.Empty, resource);
+            //------------Assert Precondition-----------------
+            //------------Assert Results-------------------------
+            Assert.IsNull(result);
+        }
+
         private static void SaveTestResources(string path, string resourceName, out List<string> workflows, out List<Guid> resourceIds, int numOfTestWFs)
         {
             workflows = new List<string>();

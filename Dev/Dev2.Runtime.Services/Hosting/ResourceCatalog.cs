@@ -46,6 +46,9 @@ namespace Dev2.Runtime.Hosting
         static readonly object _lazyLock = new object();
         ResourceCatalogBuilder Builder { get; set; }
 
+        //Note: this has been added for tests
+        public IResourceActivityCache Parser { get; set; }
+
         readonly ResourceCatalogPluginContainer _catalogPluginContainer;
         static readonly Lazy<IResourceCatalog> _instance = new Lazy<IResourceCatalog>(() =>
         {
@@ -453,6 +456,7 @@ namespace Dev2.Runtime.Hosting
         {
             return Parse(workspaceID, resourceID, executionId, null);
         }
+        
         public IDev2Activity Parse(Guid workspaceID, Guid resourceID, string executionId, IResource resourceOverride)
         {
 
@@ -461,7 +465,7 @@ namespace Dev2.Runtime.Hosting
             // get workspace cache entries
             if (_parsers != null && !_parsers.TryGetValue(workspaceID, out parser))
             {
-                parser = new ResourceActivityCache(CustomContainer.Get<IActivityParser>(), new ConcurrentDictionary<Guid, IDev2Activity>());
+                parser = Parser ?? new ResourceActivityCache(CustomContainer.Get<IActivityParser>(), new ConcurrentDictionary<Guid, IDev2Activity>());
                 _parsers.AddOrUpdate(workspaceID, parser, (key, cache) =>
                 {
                     if (_parsers.TryGetValue(key, out IResourceActivityCache existingCache))
