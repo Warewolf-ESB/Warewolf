@@ -64,10 +64,6 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
-    <Compile Include="Factory\ApplicationTrackerFactoryTests.cs" />
-    <Compile Include="RevulyticsTrackerTests.cs" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Dev2.Instrumentation\Dev2.Instrumentation.csproj">
       <Project>{52F26184-CB50-4D82-B8A2-83F73D2B5011}</Project>
       <Name>Dev2.Instrumentation</Name>
@@ -101,6 +97,7 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Factory" />
     <Folder Include="Properties\" />
   </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -30,8 +30,6 @@ using WarewolfCOMIPC.Client;
 using Dev2.Common.Interfaces.Wrappers;
 using System.Collections.Generic;
 using Dev2.Runtime.Interfaces;
-using Dev2.Instrumentation.Factory;
-using Dev2.Instrumentation;
 using Dev2.Studio.Utils;
 using System.Security.Claims;
 using System.Reflection;
@@ -235,8 +233,6 @@ namespace Dev2
                     LoadTestCatalog();
                     LoadTriggersCatalog();
 
-                    StartTrackingUsage();
-
                     _startWebServer.Execute(webServerConfig, _pauseHelper);
                     _queueProcessMonitor.Start();
 
@@ -296,16 +292,6 @@ namespace Dev2
         {
             _writer.Write("Loading triggers catalog...  ");
             _assemblyLoader.LoadAndReturn(typeof(TriggerQueue).Assembly.GetName());
-            _writer.WriteLine("done.");
-        }
-
-        void StartTrackingUsage()
-        {
-            _writer.Write("Registering usage tracker...  ");
-            CustomContainer.Register(ApplicationTrackerFactory.GetApplicationTrackerProvider());
-            var applicationTracker = CustomContainer.Get<IApplicationTracker>();
-            applicationTracker?.EnableApplicationTracker(VersionInfo.FetchVersionInfo(), VersionInfo.FetchInformationalVersion(), @"Warewolf" + $" ({ClaimsPrincipal.Current.Identity.Name})".ToUpperInvariant());
-            applicationTracker?.TrackEvent("Server Events", "Server Startup");
             _writer.WriteLine("done.");
         }
 

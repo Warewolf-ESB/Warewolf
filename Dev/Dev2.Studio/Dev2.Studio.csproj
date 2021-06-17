@@ -160,9 +160,6 @@
     <Reference Include="RibbonControlsLibrary, Version=4.0.0.11019, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\Binaries\RibbonControlsLibrary.dll</HintPath>
     </Reference>
-    <Reference Include="ruiSDKDotNet_5.3.1">
-      <HintPath>..\Binaries\ruiSDKDotNet_5.3.1.dll</HintPath>
-    </Reference>
     <Reference Include="ServiceStack.Common, Version=3.9.37.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\ServiceStack.Common.dll</HintPath>
@@ -690,10 +687,6 @@
       <Project>{615EAE6D-040C-4364-B708-63DC8755CD4F}</Project>
       <Name>Dev2.Infrastructure</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Dev2.Instrumentation\Dev2.Instrumentation.csproj">
-      <Project>{52F26184-CB50-4D82-B8A2-83F73D2B5011}</Project>
-      <Name>Dev2.Instrumentation</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Dev2.Intellisense\Dev2.Intellisense.csproj">
       <Project>{db2fbc8d-3271-4d1d-a6bc-f4dfc530918b}</Project>
       <Name>Dev2.Intellisense</Name>
@@ -816,12 +809,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Help\PageNotAvailable.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="RUISDK_5_3_1.x64.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="RUISDK_5_3_1.x86.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

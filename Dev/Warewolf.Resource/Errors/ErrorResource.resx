@@ -1406,4 +1406,7 @@ Please contact your Windows System Administrator.</value>
   <data name="AuthorizationDeniedForThisToken" xml:space="preserve">
     <value>Authorization has been denied for this token.</value>
   </data>
+  <data name="ErrorDuringDuplicateFolderCallback" xml:space="preserve">
+    <value>The following error occurred while executing the duplicate folder callback '{0}'.</value>
+  </data>
 </root>
