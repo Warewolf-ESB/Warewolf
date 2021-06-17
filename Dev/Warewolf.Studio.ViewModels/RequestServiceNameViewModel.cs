@@ -32,8 +32,7 @@ using Microsoft.Practices.Prism.Mvvm;
 using Warewolf.Resource.Errors;
 using Dev2.ConnectionHelpers;
 using System.Text;
-using Dev2.Instrumentation;
- using Dev2.Runtime.Hosting;
+using Dev2.Runtime.Hosting;
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -265,9 +264,7 @@ namespace Warewolf.Studio.ViewModels
             }
             _resourceName = new ResourceName(path, Name);
             ViewResult = MessageBoxResult.OK;
-            var applicationTracker = CustomContainer.Get<IApplicationTracker>();
-            applicationTracker?.TrackCustomEvent(Resources.Languages.TrackEventWorkflowTabs.EventCategory, Resources.Languages.TrackEventWorkflowTabs.TabsOpened, "Path:" + path + " Name: " + Name);
-
+            
             _view.RequestClose();
         }
 

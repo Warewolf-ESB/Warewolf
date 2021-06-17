@@ -6,7 +6,6 @@ using System.Windows.Shapes;
 using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;
-using Dev2.Instrumentation;
 using Infragistics.Windows.DockManager;
 using Warewolf.Studio.ViewModels.ToolBox;
 
@@ -95,8 +94,6 @@ namespace Warewolf.Studio.Views
                 }
                 else
                 {
-                    var _applicationTracker = CustomContainer.Get<IApplicationTracker>();
-                    _applicationTracker?.TrackEvent(Studio.Resources.Languages.TrackEventToolbox.EventCategory, Studio.Resources.Languages.TrackEventToolbox.DoubleClick);
                     var popupController = CustomContainer.Get<IPopupController>();
                     popupController?.Show(Studio.Resources.Languages.Core.ToolboxPopupDescription, Studio.Resources.Languages.Core.ToolboxPopupHeader, MessageBoxButton.OK, MessageBoxImage.Information, "", false, false, true, false, false, false);
                 }
