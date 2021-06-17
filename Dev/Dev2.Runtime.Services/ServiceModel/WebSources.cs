@@ -172,9 +172,11 @@ namespace Dev2.Runtime.ServiceModel
                 {
                     VerifyArgument.IsNotNullOrWhitespace("Content-Type", contentType);
                     var formDataBoundary = contentType.Split('=').Last();
-                    var bytesData = GetMultipartFormData(formDataParameters, formDataBoundary);
+                    var bytesData = isFormDataChecked ? GetMultipartFormData(formDataParameters, formDataBoundary) : GetFormUrlEncodedData(formDataParameters, formDataBoundary);
+                    
                     return PerformMultipartWebRequest(webRequestFactory, client, address, bytesData);
                 }
+
                 if (isNoneChecked && (contentType != null && (contentType.ToLowerInvariant().Contains("multipart") || contentType.ToLowerInvariant().Contains("x-www"))))
                 {
                     var bytesData = ConvertToHttpNewLine(ref data);
@@ -253,6 +255,45 @@ namespace Dev2.Runtime.ServiceModel
                 {
 
                     var postData = string.Format("--{0}\r\nContent-Disposition: form-data; name=\"{1}\"\r\n\r\n{2}",
+                        boundary,
+                        textToUpload.Key,
+                        textToUpload.Value);
+                    formDataStream.Write(encoding.GetBytes(postData), 0, encoding.GetByteCount(postData));
+                }
+            }
+
+            var footer = "\r\n--" + boundary + "--\r\n";
+            formDataStream.Write(encoding.GetBytes(footer), 0, encoding.GetByteCount(footer));
+
+            formDataStream.Position = 0;
+            var formData = new byte[formDataStream.Length];
+            formDataStream.Read(formData, 0, formData.Length);
+            formDataStream.Close();
+
+            return formData;
+        }
+        
+        private static byte[] GetFormUrlEncodedData(IEnumerable<IFormDataParameters> postParameters, string boundary)
+        {
+            var encoding = Encoding.UTF8;
+            Stream formDataStream = new MemoryStream();
+            bool needsCLRF = false;
+
+            var dds = postParameters.GetEnumerator();
+            while (dds.MoveNext())
+            {
+                var conditionExpression = dds.Current;
+                var formValueType = conditionExpression;
+
+                if (needsCLRF)
+                    formDataStream.Write(encoding.GetBytes("\r\n"), 0, encoding.GetByteCount("\r\n"));
+
+                needsCLRF = true;
+                
+                if (formValueType is TextParameter textToUpload)
+                {
+
+                    var postData = string.Format("--{0}\r\nContent-Disposition: application/x-www-form-urlencoded; name=\"{1}\"\r\n\r\n{2}",
                         boundary,
                         textToUpload.Key,
                         textToUpload.Value);
