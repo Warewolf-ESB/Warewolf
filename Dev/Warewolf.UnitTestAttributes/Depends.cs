@@ -151,7 +151,8 @@ namespace Warewolf.UnitTestAttributes
             do
             {
                 SelectedHost = RigOpsHosts.ElementAt(retryCount);
-                foreach(var possiblePort in Container.PossiblePorts) {
+                foreach(var possiblePort in Container.PossiblePorts) 
+                {
                     using (var client = new TcpClient())
                     {
                         try
@@ -162,7 +163,10 @@ namespace Warewolf.UnitTestAttributes
                         }
                         catch (SocketException)
                         {
-                            retryCount++;
+                            if (possiblePort == Container.PossiblePorts.Last()) 
+                            {
+                                retryCount++;
+                            }
                         }
                     }
                 }
@@ -214,9 +218,9 @@ namespace Warewolf.UnitTestAttributes
                 case ContainerType.RabbitMQ:
                     return new[] {"5672"};
                 case ContainerType.Redis:
-                    return new[] {"6379", "6380", "6381"};
+                    return new[] {"6379", "56438"};
                 case ContainerType.AnonymousRedis:
-                    return new[] {"6380"};
+                    return new[] {"6380", "6381"};
                 case ContainerType.AnonymousWarewolf:
                     return new[] {"3148"};
                 case ContainerType.Warewolf:
