@@ -109,7 +109,7 @@ namespace Dev2.Runtime.ServiceModel
             {
                 return new ValidationResult
                 {
-                    Result = Execute(source, WebRequestMethod.Get, source.DefaultQuery, (string)null, true, out ErrorResultTO errors)
+                    Result = Execute(source, WebRequestMethod.Get, source.DefaultQuery, null, true, out var errors)
                 };
             }
             catch (WebException wex)
@@ -148,7 +148,7 @@ namespace Dev2.Runtime.ServiceModel
                     WebRequestFactory = new WebRequestFactory()
                 };
             }
-            return Execute(source, method, headers, relativeUri, webExecuteStringArgs.IsManualChecked, webExecuteStringArgs.IsFormDataChecked, data, throwError, out errors, webExecuteStringArgs?.FormDataParameters, webExecuteStringArgs.WebRequestFactory);
+            return Execute(source, method, headers, relativeUri, webExecuteStringArgs.IsManualChecked, webExecuteStringArgs.IsFormDataChecked, data, throwError, out errors, webExecuteStringArgs.FormDataParameters, webExecuteStringArgs.WebRequestFactory);
         }
         
         public static string Execute(IWebSource source, WebRequestMethod method, IEnumerable<string> headers, string relativeUrl, bool isNoneChecked, bool isFormDataChecked, string data, bool throwError, out ErrorResultTO errors, IEnumerable<IFormDataParameters> formDataParameters = null, IWebRequestFactory webRequestFactory = null, bool isUrlEncodedChecked = false)
@@ -177,7 +177,7 @@ namespace Dev2.Runtime.ServiceModel
                     return PerformMultipartWebRequest(webRequestFactory, client, address, bytesData);
                 }
 
-                if (isNoneChecked && (contentType != null && (contentType.ToLowerInvariant().Contains("multipart") || contentType.ToLowerInvariant().Contains("x-www"))))
+                if (isNoneChecked && contentType != null && (contentType.ToLowerInvariant().Contains("multipart") || contentType.ToLowerInvariant().Contains("x-www")))
                 {
                     var bytesData = ConvertToHttpNewLine(ref data);
                     return PerformMultipartWebRequest(webRequestFactory, client, address, bytesData);
@@ -222,28 +222,24 @@ namespace Dev2.Runtime.ServiceModel
         {
             var encoding = Encoding.UTF8;
             Stream formDataStream = new MemoryStream();
-            bool needsCLRF = false;
+            var needsClrf = false;
 
             var dds = postParameters.GetEnumerator();
             while (dds.MoveNext())
             {
                 var conditionExpression = dds.Current;
-                var formValueType = conditionExpression;
 
-                if (needsCLRF)
-                    formDataStream.Write(encoding.GetBytes("\r\n"), 0, encoding.GetByteCount("\r\n"));
-
-                needsCLRF = true;
-
-                if (formValueType is FileParameter fileToUpload)
+                if (needsClrf)
                 {
+                    formDataStream.Write(encoding.GetBytes("\r\n"), 0, encoding.GetByteCount("\r\n"));
+                }
 
+                needsClrf = true;
+
+                if (conditionExpression is FileParameter fileToUpload)
+                {
                     var fileKey = fileToUpload.Key;
-                    var header = string.Format("--{0}\r\nContent-Disposition: form-data; name=\"{1}\"; filename=\"{2}\"\r\nContent-Type: {3}\r\n\r\n",
-                        boundary,
-                        fileKey,
-                        fileToUpload.FileName ?? fileKey,
-                        fileToUpload.ContentType ?? "application/octet-stream");
+                    var header = $"--{boundary}\r\nContent-Disposition: form-data; name=\"{fileKey}\"; filename=\"{fileToUpload.FileName ?? fileKey}\"\r\nContent-Type: {fileToUpload.ContentType ?? "application/octet-stream"}\r\n\r\n";
 
                     var fileBytes = fileToUpload.FileBytes;
 
@@ -251,13 +247,9 @@ namespace Dev2.Runtime.ServiceModel
                     
                     formDataStream.Write(fileBytes, 0, fileBytes.Length);
                 }
-                else if (formValueType is TextParameter textToUpload)
+                else if (conditionExpression is TextParameter textToUpload)
                 {
-
-                    var postData = string.Format("--{0}\r\nContent-Disposition: form-data; name=\"{1}\"\r\n\r\n{2}",
-                        boundary,
-                        textToUpload.Key,
-                        textToUpload.Value);
+                    var postData = $"--{boundary}\r\nContent-Disposition: form-data; name=\"{textToUpload.Key}\"\r\n\r\n{textToUpload.Value}";
                     formDataStream.Write(encoding.GetBytes(postData), 0, encoding.GetByteCount(postData));
                 }
             }
@@ -277,7 +269,7 @@ namespace Dev2.Runtime.ServiceModel
         {
             var encoding = Encoding.UTF8;
             Stream formDataStream = new MemoryStream();
-            bool needsCLRF = false;
+            var needsClrf = false;
 
             var dds = postParameters.GetEnumerator();
             while (dds.MoveNext())
@@ -285,18 +277,16 @@ namespace Dev2.Runtime.ServiceModel
                 var conditionExpression = dds.Current;
                 var formValueType = conditionExpression;
 
-                if (needsCLRF)
+                if (needsClrf)
+                {
                     formDataStream.Write(encoding.GetBytes("\r\n"), 0, encoding.GetByteCount("\r\n"));
+                }
 
-                needsCLRF = true;
+                needsClrf = true;
                 
                 if (formValueType is TextParameter textToUpload)
                 {
-
-                    var postData = string.Format("--{0}\r\nContent-Disposition: application/x-www-form-urlencoded; name=\"{1}\"\r\n\r\n{2}",
-                        boundary,
-                        textToUpload.Key,
-                        textToUpload.Value);
+                    var postData = $"--{boundary}\r\nContent-Disposition: application/x-www-form-urlencoded; name=\"{textToUpload.Key}\"\r\n\r\n{textToUpload.Value}";
                     formDataStream.Write(encoding.GetBytes(postData), 0, encoding.GetByteCount(postData));
                 }
             }
@@ -312,7 +302,6 @@ namespace Dev2.Runtime.ServiceModel
             return formData;
         }
 
-
         private static void ValidateSource(IWebSource source)
         {
             if (string.IsNullOrEmpty(source?.Address))
@@ -320,7 +309,8 @@ namespace Dev2.Runtime.ServiceModel
                 throw new Exception(Constants.ErrorMessages.WebAddressError);
             }
         }
-        static string GetAddress(IWebSource source, string relativeUri)
+
+        private static string GetAddress(IWebSource source, string relativeUri)
         {
             if (source == null)
             {
@@ -368,7 +358,7 @@ namespace Dev2.Runtime.ServiceModel
 
             using (var wresp = wr.GetResponse() as HttpWebResponse)
             {
-                if (wresp.StatusCode == HttpStatusCode.OK)
+                if (wresp != null && wresp.StatusCode == HttpStatusCode.OK)
                 {
                     using (var responseStream = wresp.GetResponseStream())
                     {
@@ -383,7 +373,8 @@ namespace Dev2.Runtime.ServiceModel
                     }
                 }
 
-                throw new ApplicationException("Error while upload files. Server status code: " + wresp.StatusCode);
+                var wrespStatusCode = wresp?.StatusCode ?? HttpStatusCode.Ambiguous;
+                throw new ApplicationException("Error while upload files. Server status code: " + wrespStatusCode);
             }
         }
 
