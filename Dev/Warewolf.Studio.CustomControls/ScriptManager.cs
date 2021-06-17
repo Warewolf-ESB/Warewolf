@@ -50,9 +50,9 @@ namespace Warewolf.Studio.CustomControls
                 _isLicensed = subscriptionData.IsLicensed;
                 return result;
             }
-            catch(Exception)
+            catch(Exception ex)
             {
-                //handle error with dev2 Logger
+                Dev2Logger.Error(nameof(ScriptManager), ex, GlobalConstants.WarewolfError);
                 return GlobalConstants.Failed;
             }
         }
@@ -73,12 +73,19 @@ namespace Warewolf.Studio.CustomControls
                 var result = _shellViewModel?.ActiveServer.ResourceRepository.CreateSubscription(subscriptionData);
                 _isLicensed = result == GlobalConstants.Success;
 
-
+                Dev2Logger.Info(
+                    String.Format(
+                        @"
+                CreateSubscription: {0}                    
+                IsLicensed: {1}",
+                        planId,
+                        _isLicensed),
+                    GlobalConstants.WarewolfInfo);
                 return result;
             }
-            catch(Exception)
+            catch(Exception ex)
             {
-                //TODO:Handle error message to dev2 logger
+                Dev2Logger.Error(nameof(ScriptManager), ex, GlobalConstants.WarewolfError);
                 return GlobalConstants.Failed;
             }
         }
@@ -86,7 +93,7 @@ namespace Warewolf.Studio.CustomControls
         private int GetNumberOfCores()
         {
             var coreCount = 0;
-            foreach(var item in new ManagementObjectSearcher("Select * from Win32_Processor").Get())
+            foreach(var item in new ManagementObjectSearcher("Select * from Win32_Processor  ").Get())
             {
                 coreCount += int.Parse(item["NumberOfCores"].ToString());
             }

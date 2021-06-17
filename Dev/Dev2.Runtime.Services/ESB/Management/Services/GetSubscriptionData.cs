@@ -77,6 +77,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 result.HasError = true;
                 result.SetMessage(e.Message);
+                Dev2Logger.Error(nameof(GetSubscriptionData), e, GlobalConstants.WarewolfError);
                 return serializer.SerializeToBuilder(result);
             }
         }

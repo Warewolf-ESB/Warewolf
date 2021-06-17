@@ -46,13 +46,12 @@ namespace Dev2.Runtime.ESB.Management.Services
             var result = new ExecuteMessage { HasError = false };
             try
             {
+                Dev2Logger.Info("Save Subscription Data Service", GlobalConstants.WarewolfInfo);
                 if(_subscriptionProvider == null)
                 {
                     _subscriptionProvider = SubscriptionProvider.Instance;
                 }
-                Dev2Logger.Info("Save Subscription Data Service", GlobalConstants.WarewolfInfo);
                 values.TryGetValue(Warewolf.Service.SaveSubscriptionData.SubscriptionData, out var data);
-
                 var subscriptionData = _serializer.Deserialize<SubscriptionData>(data);
                 subscriptionData.SubscriptionKey = _subscriptionProvider.SubscriptionKey;
                 subscriptionData.SubscriptionSiteName = _subscriptionProvider.SubscriptionSiteName;
@@ -62,6 +61,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     result.HasError = true;
                     result.SetMessage("An error occured.");
+                    Dev2Logger.Error(nameof(SaveSubscriptionData), new Exception("An error occured."), GlobalConstants.WarewolfError);
                     return _serializer.SerializeToBuilder(result);
                 }
 
@@ -74,6 +74,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 result.HasError = true;
                 result.SetMessage(e.Message);
+                Dev2Logger.Error(nameof(SaveSubscriptionData), e, GlobalConstants.WarewolfError);
                 return _serializer.SerializeToBuilder(result);
             }
         }
