@@ -81,6 +81,7 @@
     <Reference Include="System.DirectoryServices" />
     <Reference Include="System.DirectoryServices.AccountManagement" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Management" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Reactive.Core, Version=2.1.30214.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -105,6 +106,9 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="Warewolf.Usage, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\Binaries\Warewolf.Usage.dll</HintPath>
+    </Reference>
     <Reference Include="Weave, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\Weave.dll</HintPath>
@@ -417,6 +421,7 @@
     <Compile Include="Subscription\ISubscriptionConfig.cs" />
     <Compile Include="TestCatalog.cs" />
     <Compile Include="TestCoverageCatalog.cs" />
+    <Compile Include="UsageLogger.cs" />
     <Compile Include="Utilities.cs" />
     <Compile Include="Workspaces\Workspace.cs" />
     <Compile Include="Workspaces\WorkspaceItem.cs" />

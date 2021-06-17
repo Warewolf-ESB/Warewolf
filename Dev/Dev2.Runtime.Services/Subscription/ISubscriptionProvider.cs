@@ -24,5 +24,6 @@ namespace Dev2.Runtime.Subscription
         SubscriptionStatus Status { get; }
         void SaveSubscriptionData(ISubscriptionData subscriptionData);
         ISubscriptionData GetSubscriptionData();
+        ISubscriptionData DefaultSubscription();
     }
 }

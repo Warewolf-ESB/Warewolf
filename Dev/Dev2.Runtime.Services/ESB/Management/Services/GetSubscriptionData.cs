@@ -52,6 +52,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                 if(!string.IsNullOrEmpty(_subscriptionProvider.SubscriptionId))
                 {
+                    //TODO: How do we want to handle any exceptions if no data is returned from Chargebee?
                     var subscriptionData = _warewolfLicense.RetrievePlan(_subscriptionProvider.SubscriptionId, _subscriptionProvider.SubscriptionKey, _subscriptionProvider.SubscriptionSiteName);
                     if(subscriptionData.PlanId != _subscriptionProvider.PlanId || subscriptionData.Status != _subscriptionProvider.Status)
                     {
@@ -61,14 +62,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 }
                 else
                 {
-                    var subscriptionData = new SubscriptionData
-                    {
-                        SubscriptionSiteName = _subscriptionProvider.SubscriptionSiteName,
-                        SubscriptionKey = _subscriptionProvider.SubscriptionKey,
-                        PlanId = _subscriptionProvider.PlanId,
-                        Status = _subscriptionProvider.Status,
-                        IsLicensed = _subscriptionProvider.IsLicensed
-                    };
+                    var subscriptionData = _subscriptionProvider.DefaultSubscription();
                     result.Message = serializer.SerializeToBuilder(subscriptionData);
                 }
                 return serializer.SerializeToBuilder(result);

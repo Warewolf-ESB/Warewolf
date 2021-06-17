@@ -96,7 +96,8 @@ namespace Dev2.Runtime.Subscription
                 PlanId = subscriptionData.PlanId,
                 Status = subscriptionData.Status,
                 SubscriptionSiteName = SubscriptionSiteName,
-                SubscriptionKey = SubscriptionKey
+                SubscriptionKey = SubscriptionKey,
+                IsLicensed = subscriptionData.IsLicensed
             };
             return newSubscriptionData;
         }
@@ -112,6 +113,18 @@ namespace Dev2.Runtime.Subscription
                 SubscriptionSiteName = SubscriptionSiteName,
                 SubscriptionKey = SubscriptionKey,
                 IsLicensed = IsLicensed,
+            };
+        }
+
+        public ISubscriptionData DefaultSubscription()
+        {
+            return new SubscriptionData
+            {
+                SubscriptionSiteName = SubscriptionSiteName,
+                SubscriptionKey = SubscriptionKey,
+                PlanId = PlanId,
+                Status = Status,
+                IsLicensed = IsLicensed
             };
         }
     }

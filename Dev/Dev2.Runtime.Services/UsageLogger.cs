@@ -1,4 +1,4 @@
-/*
+﻿/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
@@ -14,10 +14,11 @@ using System.Management;
 using System.Timers;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
+using Dev2.Runtime.Subscription;
 using Newtonsoft.Json;
 using Warewolf.Usage;
 
-namespace Dev2.Data
+namespace Dev2.Runtime
 {
     public class UsageLogger : IStartTimer
     {
@@ -43,7 +44,7 @@ namespace Dev2.Data
 
         void TrackUsage(UsageType usageType)
         {
-
+            var subscriptionProvider = SubscriptionProvider.Instance;
             var myData = new
             {
                 ServerStats.SessionId,
@@ -57,8 +58,7 @@ namespace Dev2.Data
             };
             var jsonData = JsonConvert.SerializeObject(myData);
             //TODO: Add whether running in container
-            //TODO: Licensing: Get customer ID from the licensing
-            var customerId = "Unknown";
+            var customerId = subscriptionProvider.CustomerId;
             var returnResult = UsageTracker.TrackEvent(customerId, usageType, jsonData);
             if(returnResult != UsageDataResult.ok)
             {
