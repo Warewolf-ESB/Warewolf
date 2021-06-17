@@ -1,3 +1,4 @@
+@CannotParallelize
 @WebSource
 Feature: Web Source
 	In order to create a web source for web services
