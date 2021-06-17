@@ -145,7 +145,7 @@ namespace Dev2
             _startupResourceCatalogFactory = startupConfiguration.ResourceCatalogFactory;
             _ipcClient = startupConfiguration.IpcClient;
             _assemblyLoader = startupConfiguration.AssemblyLoader;
-            _usageLogger = new UsageLogger(TimeSpan.FromHours(1).TotalMilliseconds);
+            _usageLogger = new UsageLogger(TimeSpan.FromHours(2).TotalMilliseconds);
             _pulseLogger = new PulseLogger(60000).Start();
             _pulseTracker = new PulseTracker(TimeSpan.FromDays(1).TotalMilliseconds).Start();
             _serverEnvironmentPreparer.PrepareEnvironment();
@@ -324,6 +324,7 @@ namespace Dev2
             {
                 ServerStats.SessionId = Guid.NewGuid();
             }
+
             var myData = new
             {
                 ServerStats.SessionId,

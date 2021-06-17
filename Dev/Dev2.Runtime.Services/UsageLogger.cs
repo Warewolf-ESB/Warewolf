@@ -42,12 +42,15 @@ namespace Dev2.Runtime
             return coreCount;
         }
 
-        void TrackUsage(UsageType usageType)
+        static void TrackUsage(UsageType usageType)
         {
             var subscriptionProvider = SubscriptionProvider.Instance;
             var myData = new
             {
                 ServerStats.SessionId,
+                subscriptionProvider.SubscriptionId,
+                subscriptionProvider.PlanId,
+                subscriptionProvider.Status,
                 VersionNo = Studio.Utils.VersionInfo.FetchVersionInfo(),
                 Environment.MachineName,
                 Environment.ProcessorCount,
@@ -87,7 +90,7 @@ namespace Dev2.Runtime
             }
         }
 
-        void Timer_Elapsed(object sender, ElapsedEventArgs e)
+        static void Timer_Elapsed(object sender, ElapsedEventArgs e)
         {
             try
             {

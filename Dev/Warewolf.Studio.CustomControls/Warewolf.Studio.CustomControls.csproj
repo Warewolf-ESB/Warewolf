@@ -176,9 +176,6 @@
     <Page Include="WebBrowserView.xaml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="ChargeBee.html">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="images\logo.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
