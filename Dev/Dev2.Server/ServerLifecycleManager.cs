@@ -30,6 +30,8 @@ using Dev2.Common.Interfaces.Wrappers;
 using System.Collections.Generic;
 using System.Management;
 using Dev2.Runtime.Interfaces;
+using Dev2.Studio.Utils;
+using System.Security.Claims;
 using System.Reflection;
 using System.Threading.Tasks;
 using Dev2.Activities;
@@ -260,15 +262,12 @@ namespace Dev2
                                 Stop(false, 0, true);
                             }
 
-                            var logger = _loggerFactory.New(new JsonSerializer(), _webSocketPool);
-                            LogWarewolfVersion(logger);
+                            LogWarewolfVersion();
 #if DEBUG
                             if(EnvironmentVariables.IsServerOnline)
                             {
                                 SetAsStarted();
                             }
-#else
-                            TrackUsage(UsageType.ServerStart,logger);
 #endif
                         }
                         catch(Exception e)
@@ -282,10 +281,9 @@ namespace Dev2
                     });
         }
 
-        private void LogWarewolfVersion(IExecutionLogPublisher logger)
+        private void LogWarewolfVersion()
         {
             var wareWolfVersion = _systemInformationHelper.GetWareWolfVersion();
-            logger.Info("Warewolf Server Started Version: " + wareWolfVersion);
             Dev2Logger.Info(wareWolfVersion, "Warewolf Server Version");
         }
 
@@ -380,10 +378,6 @@ namespace Dev2
         {
             try
             {
-#if !DEBUG
-                var logger = _loggerFactory.New(new JsonSerializer(), _webSocketPool);
-                TrackUsage(UsageType.ServerStop, logger);
-#endif
                 _queueProcessMonitor.Shutdown();
                 _hangfireServerMonitor.Shutdown();
                 if(_startWebServer != null)
@@ -434,11 +428,6 @@ namespace Dev2
             {
                 _timer.Dispose();
                 _timer = null;
-            }
-
-            if(_usageLogger != null)
-            {
-                _usageLogger.Dispose();
             }
 
             if(_pulseLogger != null)
@@ -499,6 +488,7 @@ namespace Dev2
                 _writer.WriteLine("done.");
             }
         }
+
 #if DEBUG
 
         static void SetAsStarted()

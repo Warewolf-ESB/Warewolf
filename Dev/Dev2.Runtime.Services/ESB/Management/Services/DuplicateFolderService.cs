@@ -57,7 +57,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                     var resourceCatalog = _catalog ?? ResourceCatalog.Instance;
                     var resourceCatalogResult = resourceCatalog.DuplicateFolder(sourcePath.ToString(), destinationPath.ToString(), newResourceName.ToString(), bool.Parse(fixRefs?.ToString() ?? false.ToString()));
-                    Dev2Logger.Error(resourceCatalogResult.Message, GlobalConstants.WarewolfError);                    
+                    Dev2Logger.Info(resourceCatalogResult.Message, GlobalConstants.WarewolfInfo);                    
                     return serializer.SerializeToBuilder(resourceCatalogResult);
 
                 }
