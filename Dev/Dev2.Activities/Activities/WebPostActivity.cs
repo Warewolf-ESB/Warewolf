@@ -42,6 +42,7 @@ namespace Dev2.Activities
         public IList<INameValue> Headers { get; set; }
         public bool IsFormDataChecked { get; set; }
         public bool IsManualChecked { get; set; }
+        public bool IsUrlEncodedChecked { get; set; }
         public IList<FormDataConditionExpression> Conditions { get; set; }
         public string QueryString { get; set; }
         public IOutputDescription OutputDescription { get; set; }
@@ -96,7 +97,7 @@ namespace Dev2.Activities
                 _debugInputs.Add(debugItem);
             }
 
-            if (IsFormDataChecked)
+            if (IsFormDataChecked || IsUrlEncodedChecked)
             {
                 AddDebugFormDataInputs(conditions);
             }
@@ -164,6 +165,10 @@ namespace Dev2.Activities
                 else if (IsManualChecked)
                 {
                     webRequestResult = PerformManualWebPostRequest(head, query, source, postData);
+                }
+                else if(IsUrlEncodedChecked)
+                {
+                    webRequestResult = PerformUrlEncodedWebPostRequest(source, WebRequestMethod.Post, query, head, conditions);
                 }
             }
             catch (Exception ex)
@@ -250,6 +255,11 @@ namespace Dev2.Activities
         protected virtual string PerformFormDataWebPostRequest(IWebSource source, WebRequestMethod method, string query, IEnumerable<INameValue> head, IEnumerable<IFormDataParameters> parameters)
         {
             return WebSources.Execute(source, method, head.Select(h => h.Name + ":" + h.Value).ToArray(), query, isNoneChecked: false, isFormDataChecked: true, data: string.Empty, throwError: true, out _errorsTo, parameters);
+        }
+        
+        protected virtual string PerformUrlEncodedWebPostRequest(IWebSource source, WebRequestMethod method, string query, IEnumerable<INameValue> head, IEnumerable<IFormDataParameters> parameters)
+        {
+            return WebSources.Execute(source, method, head.Select(h => h.Name + ":" + h.Value).ToArray(), query, isNoneChecked: false, isFormDataChecked: false, data: string.Empty, throwError: true, out _errorsTo, parameters, isUrlEncodedChecked: true);
         }
 
         public static WebClient CreateClient(IEnumerable<INameValue> head, string query, WebSource source)
