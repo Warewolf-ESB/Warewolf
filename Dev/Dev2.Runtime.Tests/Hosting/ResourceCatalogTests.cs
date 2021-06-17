@@ -3608,6 +3608,40 @@ namespace Dev2.Tests.Runtime.Hosting
         [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Siphamandla Dube")]
+        [TestCategory("ResourceCatalog_Intergation")]
+        public void ResourceCatalog_Parse_GivenHasActivityInCache_ShouldReturnExistingActivityCacheEntry_Intergation()
+        {
+            //------------Setup for test--------------------------
+            var workspaceID = GlobalConstants.ServerWorkspaceID;
+
+            var sourceLocation = "ResourceCatalogParseMethodTests";
+            var path = EnvironmentVariables.ResourcePath + "\\" + sourceLocation;
+            Directory.CreateDirectory(path);
+            const string resourceName = "wolf-Test_WF_";
+
+            const int numOfTestWFs = 2;
+            SaveTestResources(path, resourceName, out List<string> workflows, out List<Guid> resourceIds, numOfTestWFs);
+
+            var resource = new Resource
+            {
+                ResourceName = resourceName,
+                ResourceID = resourceIds.First()
+            };
+
+            var sut = ResourceCatalog.Instance;
+            //------------Assert Precondition-----------------
+            //------------Execute Test---------------------------
+            var result = sut.Parse(workspaceID, resource.ResourceID);
+            //------------Assert Precondition-----------------
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(result);
+            Assert.AreEqual("Bugs\\Bug6619Dep2", result.GetDisplayName());
+        }
+
+        [TestMethod]
+        [DoNotParallelize]
+        [Timeout(60000)]
+        [Owner("Siphamandla Dube")]
         [TestCategory(nameof(ResourceCatalog))]
         public void ResourceCatalog_Parse_GivenHasActivityInCache_And_GetActivityFails_ShouldReturnNull()
         {
