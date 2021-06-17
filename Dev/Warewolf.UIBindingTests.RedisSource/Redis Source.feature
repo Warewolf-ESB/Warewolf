@@ -1,4 +1,5 @@
-﻿@WebSource
+@CannotParallelize
+@WebSource
 @RedisSource
 Feature: Redis Source
 	In order to create a Redis source for accessing a Redis Cache Server
