@@ -9,9 +9,10 @@
 */
 
 using System.Threading;
+using Dev2.Runtime;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Dev2.Data.Tests
+namespace Dev2.Tests.Runtime
 {
     [TestClass]
     public class UsageLoggerTests

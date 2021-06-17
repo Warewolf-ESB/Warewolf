@@ -152,7 +152,6 @@
     <Compile Include="PathOperations\DoPutActionTests.cs" />
     <Compile Include="PathOperations\PerformListOfIOPathOperationTests.cs" />
     <Compile Include="PathOperations\ValidateAuthorizationTests.cs" />
-    <Compile Include="UsageLoggerTests.cs" />
     <Compile Include="ServiceModel\ElasticsearchSourceTests.cs" />
     <Compile Include="ServiceModel\SharePointSourceTests.cs" />
     <Compile Include="ServiceModel\RabbitMQSourceTests.cs" />
