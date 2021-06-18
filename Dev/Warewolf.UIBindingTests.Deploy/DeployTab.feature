@@ -1,4 +1,5 @@
-﻿@MSTest:DeploymentItem:InfragisticsWPF4.DataPresenter.v15.1.dll
+@CannotParallelize
+@MSTest:DeploymentItem:InfragisticsWPF4.DataPresenter.v15.1.dll
 @MSTest:DeploymentItem:InfragisticsWPF4.Controls.Grids.XamGrid.v15.1.dll
 @MSTest:DeploymentItem:InfragisticsWPF4.Controls.Menus.XamDataTree.v15.1.dll
 @MSTest:DeploymentItem:InfragisticsWPF4.Controls.Editors.XamComboEditor.v15.1.dll

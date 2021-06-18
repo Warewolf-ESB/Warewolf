@@ -1,4 +1,4 @@
-﻿
+@CannotParallelize
 @DbSource
 Feature: New MySql Database Source
 	In order to avoid silly mistakes

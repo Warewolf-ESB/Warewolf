@@ -1,4 +1,5 @@
-﻿@WcfSource
+@CannotParallelize
+@WcfSource
 Feature: Wcf Source
 	In order to share settings
 	I want to save my Wcf source Settings
