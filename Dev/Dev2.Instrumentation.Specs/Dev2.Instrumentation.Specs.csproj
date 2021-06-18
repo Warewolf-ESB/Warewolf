@@ -62,14 +62,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>TestCustomEvenTracking.feature</DependentUpon>
     </Compile>
-    <Compile Include="TestCustomEvenTrackingSteps.cs" />
     <Compile Include="TestEnableRevulyticsTracking.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>TestEnableRevulyticsTracking.feature</DependentUpon>
     </Compile>
-    <Compile Include="TestEnableRevulyticsTrackingSteps.cs" />
-    <Compile Include="TestRevulyticsApplicationEventTestSteps.cs" />
     <Compile Include="TestRevulyticsApplicationEvent.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -102,14 +99,6 @@
       <Project>{52f26184-cb50-4d82-b8a2-83f73d2b5011}</Project>
       <Name>Dev2.Instrumentation</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="RUISDK_5_3_1.x64.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="RUISDK_5_3_1.x86.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.TestPlatform.ObjectModel">

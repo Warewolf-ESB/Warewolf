@@ -29,7 +29,6 @@ using Dev2.Diagnostics;
 using Dev2.Dialogs;
 using Dev2.Factories;
 using Dev2.Factory;
-using Dev2.Instrumentation;
 using Dev2.Messages;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Services.Events;
@@ -128,8 +127,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         MethodInfo _virtualizedContainerServicePopulateAllMethod;
 
         readonly StudioSubscriptionService<DebugSelectionChangedEventArgs> _debugSelectionChangedService = new StudioSubscriptionService<DebugSelectionChangedEventArgs>();
-
-        readonly IApplicationTracker _applicationTracker;
+        
         public bool IsStartNodeErrorMessageSet { get; set; }
 
         protected IWorkflowDesignerWrapper _workflowDesignerHelper;
@@ -196,7 +194,6 @@ namespace Dev2.Studio.ViewModels.Workflow
             DebugOutputViewModel = new DebugOutputViewModel(_resourceModel.Environment.Connection.ServerEvents, CustomContainer.Get<IServerRepository>(), new DebugOutputFilterStrategy(), ResourceModel);
             _firstWorkflowChange = true;
             _workflowDesignerHelper = new WorkflowDesignerWrapper();
-            _applicationTracker = CustomContainer.Get<IApplicationTracker>();
             _shellViewModel = GetShellViewModel();
         }
 
@@ -769,11 +766,6 @@ namespace Dev2.Studio.ViewModels.Workflow
                 {
                     if (!string.IsNullOrEmpty(_workflowLink))
                     {
-                        if (_applicationTracker != null)
-                        {
-                            _applicationTracker.TrackEvent(Warewolf.Studio.Resources.Languages.TrackEventMenu.EventCategory,
-                                                                Warewolf.Studio.Resources.Languages.TrackEventMenu.LinkUrl);
-                        }
                         SaveToWorkspace();
                         if (_workflowInputDataViewModel.WorkflowInputCount == 0)
                         {
@@ -1019,11 +1011,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             //Track added items when dragged on design surface
             if (computedValue != null && computedValue.GetType() != typeof(DsfActivity))
             {
-                if (_applicationTracker != null)
-                {
-                    _applicationTracker.TrackCustomEvent(Warewolf.Studio.Resources.Languages.TrackEventWorkflowTabs.EventCategory,
-                                                    Warewolf.Studio.Resources.Languages.TrackEventWorkflowTabs.ItemDragged, computedValue.ToString());
-                }
+
             }
             if (computedValue == null && (mi.ItemType == typeof(DsfFlowDecisionActivity) ||
                                           mi.ItemType == typeof(DsfFlowSwitchActivity)))
@@ -1050,11 +1038,6 @@ namespace Dev2.Studio.ViewModels.Workflow
             else if (mi.ItemType == typeof(FlowDecision))
             {
                 InitializeFlowDecision(mi);
-                if (_applicationTracker != null)
-                {
-                    _applicationTracker.TrackCustomEvent(Warewolf.Studio.Resources.Languages.TrackEventWorkflowTabs.EventCategory,
-                                                    Warewolf.Studio.Resources.Languages.TrackEventWorkflowTabs.ItemDragged, mi.ItemType.Name);
-                }
             }
             else if (mi.ItemType == typeof(FlowStep))
             {
@@ -1154,27 +1137,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         void TrackAction(IContextualResourceModel theResource)
         {
-            if (_applicationTracker != null)
-            {
-                if (theResource.DisplayName == "Hello World")
-                {
-                    //track hello world dragged
-                    _applicationTracker.TrackCustomEvent(Warewolf.Studio.Resources.Languages.TrackEventWorkflowTabs.EventCategory,
-                                       Warewolf.Studio.Resources.Languages.TrackEventWorkflowTabs.HelloWorld, theResource.DisplayName);
-                }
-                else if (theResource.Category != null && theResource.Category.StartsWith("Examples"))
-                {
-                    //track examples actitvity dragged
-                    _applicationTracker.TrackCustomEvent(Warewolf.Studio.Resources.Languages.TrackEventWorkflowTabs.EventCategory,
-                                        Warewolf.Studio.Resources.Languages.TrackEventWorkflowTabs.Examples, theResource.DisplayName);
-                }
-                else
-                {
-                    // other than above
-                    _applicationTracker.TrackCustomEvent(Warewolf.Studio.Resources.Languages.TrackEventWorkflowTabs.EventCategory,
-                                        Warewolf.Studio.Resources.Languages.TrackEventWorkflowTabs.ItemDragged, theResource.DisplayName);
-                }
-            }
+
         }
 
         public ResourceType ResourceType
@@ -1201,10 +1164,6 @@ namespace Dev2.Studio.ViewModels.Workflow
             droppedActivity = DsfActivityFactory.CreateDsfActivity(resource, droppedActivity, false, serverRepository, _resourceModel.Environment.IsLocalHostCheck());
             WorkflowDesignerUtils.CheckIfRemoteWorkflowAndSetProperties(droppedActivity, resource, serverRepository.ActiveServer);
             modelProperty1.SetValue(droppedActivity);
-            if (_applicationTracker != null)
-            {
-                _applicationTracker.TrackCustomEvent(Warewolf.Studio.Resources.Languages.TrackEventWorkflowTabs.EventCategory, Warewolf.Studio.Resources.Languages.TrackEventWorkflowTabs.ItemDragged, displayName);
-            }
         }
 
         void InitializeFlowSwitch(ModelItem mi)

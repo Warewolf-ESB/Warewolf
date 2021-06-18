@@ -52,7 +52,6 @@ using Dev2.Studio.Interfaces.DataList;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.Interfaces;
 using Dev2.Studio.Interfaces.Enums;
-using Dev2.Instrumentation;
 using Dev2.Activities;
 
 namespace Dev2.Core.Tests.Workflows
@@ -2183,8 +2182,7 @@ namespace Dev2.Core.Tests.Workflows
         [Owner("Pieter Terblanche")]
         public void WorkflowDesignerViewModel_PerformAddItems_ModelItemWithFlowStepWithServiceName_FlowStepHandled()
         {
-            CustomContainer.DeRegister<IApplicationTracker>();
-            var explorerTooltips = new Mock<IExplorerTooltips>();
+          var explorerTooltips = new Mock<IExplorerTooltips>();
             CustomContainer.Register(explorerTooltips.Object);
 
             #region Setup view model constructor parameters
