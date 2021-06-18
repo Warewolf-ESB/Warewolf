@@ -19,7 +19,6 @@ using Dev2.Common.Interfaces.Help;
 using Dev2.Data;
 using Dev2.Data.Interfaces;
 using Dev2.Data.Interfaces.Enums;
-using Dev2.Instrumentation;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.DataList;
 using Dev2.Studio.Core.Factories;
@@ -1476,97 +1475,6 @@ namespace Dev2.Core.Tests
             Assert.IsFalse(_dataListViewModel.ScalarCollection[0].HasError);
         }
 
-        [TestMethod]
-        [Owner("Candice Daniel")]
-        [TestCategory("DataListViewModel_TrackEvent_InputVariableCheckboxCommand")]
-        public void TrackEvent_InputVariableCheckboxCommand()
-        {
-            var _applicationTrackerMock = new Mock<IApplicationTracker>();
-            _applicationTrackerMock.Setup(controller => controller.TrackEvent(It.IsAny<string>(), It.IsAny<string>()));
-            CustomContainer.Register(_applicationTrackerMock.Object);
-            //------------Setup for test--------------------------
-            var (item, _dataListViewModel) = SetupForValidateNamesDuplicateScalarTests();
-            _dataListViewModel.InputVariableCheckboxCommand.Execute(null);
-            //------------Execute Test---------------------------
-
-            //------------Assert Results-------------------------
-            _applicationTrackerMock.Verify(controller => controller.TrackEvent(It.IsAny<string>(), It.IsAny<string>()), Times.AtLeastOnce());
-        }
-
-        [TestMethod]
-        [Owner("Candice Daniel")]
-        [TestCategory("DataListViewModel_TrackEvent_OutputVariableCheckboxCommand")]
-        public void TrackEvent_OutputVariableCheckboxCommand()
-        {
-            var _applicationTrackerMock = new Mock<IApplicationTracker>();
-            _applicationTrackerMock.Setup(controller => controller.TrackEvent(It.IsAny<string>(), It.IsAny<string>()));
-            CustomContainer.Register(_applicationTrackerMock.Object);
-            //------------Setup for test--------------------------
-            var (item, _dataListViewModel) = SetupForValidateNamesDuplicateScalarTests();
-            _dataListViewModel.OutputVariableCheckboxCommand.Execute(null);
-            //------------Execute Test---------------------------
-
-            //------------Assert Results-------------------------
-            _applicationTrackerMock.Verify(controller => controller.TrackEvent(It.IsAny<string>(), It.IsAny<string>()), Times.AtLeastOnce());
-        }
-
-        [TestMethod]
-        [Owner("Candice Daniel")]
-        [TestCategory("DataListViewModel_UpdateDataListItems_TrackCustomEvent")]
-        public void DataListViewModel_UpdateDataListItems_MissingScalarWorkflowItems_TrackCustomEvent()
-        {
-            var _applicationTrackerMock = new Mock<IApplicationTracker>();
-            _applicationTrackerMock.Setup(controller => controller.TrackCustomEvent(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
-            CustomContainer.Register(_applicationTrackerMock.Object);
-            //------------Setup for test--------------------------
-            var resourceModel = new Mock<IResourceModel>().Object;
-            var dataListViewModel = new DataListViewModel(new Mock<IEventAggregator>().Object);
-            dataListViewModel.InitializeDataListViewModel(resourceModel);
-            const string complexObject = "testing";
-            const string complexObjectChild1 = "item(1)";
-            const string complexObjectChild2 = "new";
-            var complexObjectDataModel = CreateComplexObjectDataListModel(complexObject);
-            complexObjectDataModel.Children.Add(CreateComplexObjectDataListModel(complexObjectChild1, complexObjectDataModel));
-            complexObjectDataModel.Children.Add(CreateComplexObjectDataListModel(complexObjectChild2, complexObjectDataModel));
-            dataListViewModel.Add(complexObjectDataModel);
-            var parts = new List<IDataListVerifyPart>
-            {
-                CreateComplexObjectPart(complexObject).Object,
-                CreateComplexObjectPart(complexObjectChild1).Object,
-                CreateComplexObjectPart(complexObjectChild2).Object
-            };
-            //------------Execute Test---------------------------
-            dataListViewModel.UpdateDataListItems(resourceModel, parts);
-            //------------Assert Results-------------------------
-            Assert.IsTrue(dataListViewModel.ComplexObjectCollection[0].IsUsed);
-            Assert.IsTrue(dataListViewModel.ComplexObjectCollection[0].Children[0].IsUsed);
-            Assert.IsTrue(dataListViewModel.ComplexObjectCollection[0].Children[1].IsUsed);
-            //------------Execute Test---------------------------
-
-            //------------Assert Results-------------------------
-            _applicationTrackerMock.Verify(controller => controller.TrackCustomEvent(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.AtLeastOnce());
-        }
-        [TestMethod]
-        [Owner("Candice Daniel")]
-        [TestCategory("DataListViewModel_UpdateDataListItems_TrackCustomEvent")]
-        public void DataListViewModel_UpdateDataListItems_NoMissingScalarWorkflowItems_TrackCustomEvent()
-        {
-            var _applicationTrackerMock = new Mock<IApplicationTracker>();
-            _applicationTrackerMock.Setup(controller => controller.TrackCustomEvent(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
-            CustomContainer.Register(_applicationTrackerMock.Object);
-            //------------Setup for test--------------------------
-            var resourceModel = new Mock<IResourceModel>().Object;
-            var dataListViewModel = new DataListViewModel(new Mock<IEventAggregator>().Object);
-            dataListViewModel.InitializeDataListViewModel(resourceModel);
-            const string scalarName = "scalar";
-            var scalarItem = new ScalarItemModel(scalarName) { IsUsed = false };
-            dataListViewModel.Add(scalarItem);
-            var parts = new List<IDataListVerifyPart> { CreateScalarPart(scalarName).Object };
-            //------------Execute Test---------------------------
-            dataListViewModel.UpdateDataListItems(resourceModel, parts);
-            //------------Assert Results-------------------------
-            _applicationTrackerMock.Verify(controller => controller.TrackCustomEvent(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.AtLeastOnce());
-        }
         #endregion AddMode Tests
 
 

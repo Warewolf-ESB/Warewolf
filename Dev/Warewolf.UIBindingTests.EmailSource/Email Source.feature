@@ -1,4 +1,5 @@
-﻿@EmailSource
+@CannotParallelize
+@EmailSource
 Feature: Email Source
 	In order to share settings
 	I want to save my Email source Settings

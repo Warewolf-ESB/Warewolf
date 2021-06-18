@@ -1,4 +1,5 @@
-﻿@ExchangeSource
+@CannotParallelize
+@ExchangeSource
 Feature: Exchange Source
 	In order to avoid silly mistakes
 	As a math idiot
