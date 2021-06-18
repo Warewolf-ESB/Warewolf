@@ -261,13 +261,15 @@ namespace Dev2
 
                                 Stop(false, 0, true);
                             }
-
-                            LogWarewolfVersion();
+                            var logger = _loggerFactory.New(new JsonSerializer(), _webSocketPool);
+                            LogWarewolfVersion(logger);
 #if DEBUG
                             if(EnvironmentVariables.IsServerOnline)
                             {
                                 SetAsStarted();
                             }
+#else
+                            TrackUsage(UsageType.ServerStart,logger);
 #endif
                         }
                         catch(Exception e)
@@ -281,9 +283,10 @@ namespace Dev2
                     });
         }
 
-        private void LogWarewolfVersion()
+        private void LogWarewolfVersion(IExecutionLogPublisher logger)
         {
             var wareWolfVersion = _systemInformationHelper.GetWareWolfVersion();
+            logger.Info("Warewolf Server Started Version: " + wareWolfVersion);
             Dev2Logger.Info(wareWolfVersion, "Warewolf Server Version");
         }
 
@@ -378,6 +381,10 @@ namespace Dev2
         {
             try
             {
+#if !DEBUG
+                var logger = _loggerFactory.New(new JsonSerializer(), _webSocketPool);
+                TrackUsage(UsageType.ServerStop, logger);
+#endif
                 _queueProcessMonitor.Shutdown();
                 _hangfireServerMonitor.Shutdown();
                 if(_startWebServer != null)
@@ -439,7 +446,10 @@ namespace Dev2
             {
                 _pulseTracker.Dispose();
             }
-
+            if(_usageLogger != null)
+            {
+                _usageLogger.Dispose();
+            }
             if(_serverEnvironmentPreparer != null)
             {
                 _serverEnvironmentPreparer.Dispose();
@@ -477,6 +487,7 @@ namespace Dev2
             TestCatalog.Instance.Load();
             _writer.WriteLine("done.");
         }
+
 
         void LoadSubscriptionProvider()
         {
