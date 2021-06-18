@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 using Warewolf.Data;
+using WarewolfParserInterop;
 
 namespace Warewolf.Storage.Interfaces
 {
@@ -99,6 +100,7 @@ namespace Warewolf.Storage.Interfaces
         void AssignJson(IEnumerable<IAssignValue> values, int update);
 
         void AssignJson(IAssignValue value, int update);
+        void AssignXmlToJson(IAssignValue assignValue, int update);
 
         JContainer EvalJContainer(string exp);
 
