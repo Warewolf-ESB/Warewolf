@@ -212,7 +212,7 @@ namespace Warewolf.UnitTestAttributes
                 case ContainerType.CIRemote:
                     return new[] {"3144"};
                 case ContainerType.MySQL:
-                    return new[] {"3306"};
+                    return new[] {"3306", "3307"};
                 case ContainerType.PostGreSQL:
                     return new[] {"5433"};
                 case ContainerType.RabbitMQ:
