@@ -70,8 +70,6 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         readonly Action<IContextualResourceModel, bool, System.Action> _saveDialogAction;
         IResourceChangeHandlerFactory _resourceChangeHandlerFactory;
 
-        private readonly IApplicationTracker _applicationTracker;
-
         #endregion private fields
 
         #region public properties
@@ -152,8 +150,6 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             WorkSurfaceViewModel = workSurfaceViewModel ?? throw new ArgumentNullException(nameof(workSurfaceViewModel));
 
             _windowManager = CustomContainer.Get<IWindowManager>();
-
-            _applicationTracker = CustomContainer.Get<IApplicationTracker>();
 
             if (WorkSurfaceViewModel is IWorkflowDesignerViewModel model)
             {
@@ -325,10 +321,6 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
         public void Debug(IContextualResourceModel resourceModel, bool isDebug)
         {
-            if (_applicationTracker != null)
-            {
-                _applicationTracker.TrackEvent(TrackEventDebugOutput.EventCategory, TrackEventDebugOutput.Debug);
-            }
             if (resourceModel?.Environment == null || !resourceModel.Environment.IsConnected)
             {
                 return;
@@ -398,10 +390,6 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
         public void QuickViewInBrowser()
         {
-            if (_applicationTracker != null)
-            {
-                _applicationTracker.TrackEvent(TrackEventDebugOutput.EventCategory,TrackEventDebugOutput.F7Browser);
-            }
             if (!ContextualResourceModel.IsWorkflowSaved)
             {
                 var successfuleSave = Save(ContextualResourceModel, true);
@@ -431,10 +419,6 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
         public void QuickDebug()
         {
-            if (_applicationTracker != null)
-            {
-                _applicationTracker.TrackEvent(TrackEventDebugOutput.EventCategory,TrackEventDebugOutput.F6Debug);
-            }
             if (DebugOutputViewModel.IsProcessing)
             {
                 StopExecution();

@@ -42,9 +42,6 @@
     <CodeAnalysisRuleSet>Dev2.Instrumentation.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ruiSDKDotNet_5.3.1">
-      <HintPath>..\Binaries\ruiSDKDotNet_5.3.1.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -60,9 +57,6 @@
     <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
-    <Compile Include="Factory\ApplicationTrackerFactory.cs" />
-    <Compile Include="IApplicationTracker.cs" />
-    <Compile Include="RevulyticsTracker.cs" />
     <AdditionalFiles Include="..\SonarQube\SonarLint.xml">
       <Visible>False</Visible>
     </AdditionalFiles>
@@ -89,14 +83,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="RUISDK_5_3_1.x64.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="RUISDK_5_3_1.x86.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="codecracker.CSharp">
       <Version>1.1.0</Version>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -105,6 +91,9 @@
     <PackageReference Include="Newtonsoft.Json">
       <Version>12.0.3</Version>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Factory" />
   </ItemGroup>
   <PropertyGroup>
     <PostBuildEvent>

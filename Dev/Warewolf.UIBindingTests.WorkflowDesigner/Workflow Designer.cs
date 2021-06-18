@@ -1,4 +1,4 @@
-﻿/*
+/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
@@ -51,6 +51,7 @@ using Dev2.ViewModels.Workflow;
 namespace Warewolf.UIBindingTests.WorkflowDesigner
 {
     [TestClass]
+    [TestCategory("CannotParallelize")]
     public class Workflow_Designer
     {
         Mock<IShellViewModel> _shellViewModelMock;

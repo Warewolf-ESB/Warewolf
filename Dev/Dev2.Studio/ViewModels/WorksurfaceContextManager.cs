@@ -29,7 +29,6 @@ using Dev2.Common.Interfaces.Threading;
 using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
 using Dev2.Data.ServiceModel;
 using Dev2.Factory;
-using Dev2.Instrumentation;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Events;
 using Dev2.Settings;
@@ -185,13 +184,11 @@ namespace Dev2.Studio.ViewModels
         private readonly ShellViewModel _shellViewModel;
         private readonly bool _createDesigners;
         private readonly Func<IContextualResourceModel, bool, IPopupController, IAsyncWorker, IWorkSurfaceContextViewModel> _getWorkSurfaceContextViewModel = WorkSurfaceContextFactory.CreateResourceViewModel;
-        private readonly IApplicationTracker _applicationTracker;
 
         public WorksurfaceContextManager(bool createDesigners, ShellViewModel shellViewModel)
         {
             _createDesigners = createDesigners;
             _shellViewModel = shellViewModel;
-            _applicationTracker = CustomContainer.Get<IApplicationTracker>();
             SetUpEditHandlers();
         }
 
@@ -1285,23 +1282,11 @@ namespace Dev2.Studio.ViewModels
 
         public void AddSettingsWorkSurface()
         {
-            if (_applicationTracker != null)
-            {
-                _applicationTracker.TrackEvent(Warewolf.Studio.Resources.Languages.TrackEventMenu.EventCategory,
-                    Warewolf.Studio.Resources.Languages.TrackEventMenu.Settings);
-            }
-
             ActivateOrCreateUniqueWorkSurface<SettingsViewModel>(WorkSurfaceContext.Settings);
         }
 
         public void AddSchedulerWorkSurface()
         {
-            if (_applicationTracker != null)
-            {
-                _applicationTracker.TrackEvent(Warewolf.Studio.Resources.Languages.TrackEventMenu.EventCategory,
-                    Warewolf.Studio.Resources.Languages.TrackEventMenu.Task);
-            }
-
             ActivateOrCreateUniqueWorkSurface<SchedulerViewModel>(WorkSurfaceContext.Scheduler);
         }
 
@@ -1313,12 +1298,6 @@ namespace Dev2.Studio.ViewModels
 
         public TriggersViewModel AddTriggersWorkSurface()
         {
-            if (_applicationTracker != null)
-            {
-                _applicationTracker.TrackEvent(Warewolf.Studio.Resources.Languages.TrackEventMenu.EventCategory,
-                    Warewolf.Studio.Resources.Languages.TrackEventMenu.Task);
-            }
-
             return ActivateOrCreateUniqueWorkSurface<TriggersViewModel>(WorkSurfaceContext.Triggers);
         }
 

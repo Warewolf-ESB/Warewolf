@@ -187,10 +187,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.COMIPC", "Warewolf
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.COMIPC.Client", "Warewolf.COMIPC.Client\Warewolf.COMIPC.Client.csproj", "{BCA6F2B3-C102-45B5-8F64-F0CCE2533F1F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dev2.Instrumentation.Tests", "Dev2.InstrumentationTests\Dev2.Instrumentation.Tests.csproj", "{BA95754E-19B2-42BC-9589-2ECC34338F2D}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dev2.Instrumentation.Specs", "Dev2.Instrumentation.Specs\Dev2.Instrumentation.Specs.csproj", "{6EBD904D-C168-40CE-828D-9B987F3CF591}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.MergeParser.Tests", "Warewolf.MergeParser.Tests\Warewolf.MergeParser.Tests.csproj", "{240C477A-DD4C-4604-A6E9-43024257104E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Exchange.Email.Wrapper", "Warewolf.Exchange.Email.Wrapper\Warewolf.Exchange.Email.Wrapper.csproj", "{B02E76F0-9B4B-41F6-8D3A-00E4564142B3}"
@@ -247,8 +243,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dev2.CustomControls", "Dev2.CustomControls\Dev2.CustomControls.csproj", "{F5162BDB-D3DB-480E-92E4-FD732904A247}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dev2.Diagnostics", "Dev2.Diagnostics\Dev2.Diagnostics.csproj", "{A7D9DA27-F023-4588-AA64-AC2DE44C0B82}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dev2.Instrumentation", "Dev2.Instrumentation\Dev2.Instrumentation.csproj", "{52F26184-CB50-4D82-B8A2-83F73D2B5011}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dev2.Runtime.Configuration", "Dev2.Runtime.Configuration\Dev2.Runtime.Configuration.csproj", "{9C43D5A2-FEFD-4632-9BF2-EE0E4C05BEBC}"
 EndProject

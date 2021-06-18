@@ -1,4 +1,4 @@
-﻿
+@CannotParallelize
 @DbSource
 Feature: New PostgreSql Source
 	In order to avoid silly mistakes

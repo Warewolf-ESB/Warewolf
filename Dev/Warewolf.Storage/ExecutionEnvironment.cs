@@ -10,6 +10,7 @@
 */
 
 using Dev2.Common;
+using Dev2.Common.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data.TO;
@@ -21,6 +22,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Xml;
 using System.Xml.Linq;
 using Warewolf.Data;
 using Warewolf.Exceptions;
@@ -706,6 +708,12 @@ namespace Warewolf.Storage
 
         public static bool IsValidRecordSetIndex(string exp) => PublicFunctions.IsValidRecsetExpression(exp);
 
+        public void AssignXmlToJson(IAssignValue assignValue, int update)
+        {
+            var jsonObj = EnvironmentToJsonHelper.FromXml(assignValue.Value);
+            AssignJson(new AssignValue(assignValue.Name, jsonObj), update);
+        }
+
         public void AssignJson(IEnumerable<IAssignValue> values, int update)
         {
             foreach (var value in values)
@@ -900,6 +908,19 @@ namespace Warewolf.Storage
             {
                 ((IDisposable) _jsonWriter).Dispose();
                 _stream.Dispose();
+            }
+
+            public static string FromXml(string xmlInput)
+            {
+                var json = string.Empty;
+                if (!string.IsNullOrEmpty(xmlInput) && xmlInput.IsValidXml())
+                {
+                    var doc = new XmlDocument();
+                    doc.LoadXml(xmlInput);
+                    json = JsonConvert.SerializeXmlNode(doc);
+                }
+
+                return json;
             }
 
             internal static void FromJson(string serializedEnv, ExecutionEnvironment environment)

@@ -20,6 +20,7 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Data.TO;
+using Dev2.Data.Util;
 using Dev2.Diagnostics;
 using Dev2.Interfaces;
 using Dev2.Runtime.ServiceModel;
@@ -184,6 +185,7 @@ namespace Dev2.Activities
                     IsObject = IsObject,
                     ObjectName = ObjectName
                 };
+                response = Scrubber.Scrub(response);
                 ResponseManager.PushResponseIntoEnvironment(response, update, dataObject);
             }
         }
