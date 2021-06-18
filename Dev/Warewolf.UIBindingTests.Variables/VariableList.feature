@@ -1,4 +1,5 @@
-﻿@VariableList
+@CannotParallelize
+@VariableList
 Feature: VariableList
 	In order to manage my variables
 	As a Warewolf user
