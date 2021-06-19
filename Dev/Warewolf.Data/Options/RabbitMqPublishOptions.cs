@@ -15,10 +15,6 @@ namespace Warewolf.Data.Options
 {
     public class RabbitMqPublishOptions : IOptionConvertParameter
     {
-        public RabbitMqPublishOptions()
-        {
-        }
-
         [DataValue("Correlation")]
         [MultiDataProvider(typeof(ExecutionID), typeof(CustomTransactionID), typeof(Manual))]
         [OptionUX(nameof(OptionCombobox))]

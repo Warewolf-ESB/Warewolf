@@ -32,6 +32,23 @@ if ("$PSScriptRoot" -eq "" -or $PSScriptRoot -eq $null) {
 }
 
 if (!($InContainer.IsPresent)) {
+	#Find Local NuGet
+	if ("$NuGet" -eq "" -or !(Test-Path "$NuGet" -ErrorAction SilentlyContinue)) {
+		$NuGetCommand = Get-Command NuGet -ErrorAction SilentlyContinue
+		if ($NuGetCommand) {
+			$NuGet = $NuGetCommand.Path
+		}
+	}
+	if (("$NuGet" -eq "" -or !(Test-Path "$NuGet" -ErrorAction SilentlyContinue)) -and (Test-Path "$env:windir")) {
+		wget "https://dist.nuget.org/win-x86-commandline/latest/nuget.exe" -OutFile "$env:windir\nuget.exe"
+		$NuGet = "$env:windir\nuget.exe"
+	}
+	if ("$NuGet" -eq "" -or !(Test-Path "$NuGet" -ErrorAction SilentlyContinue)) {
+		Write-Host NuGet not found. Download from: https://dist.nuget.org/win-x86-commandline/latest/nuget.exe to: c:\windows\nuget.exe. If you do not have permission to create c:\windows\nuget.exe use the -NuGet switch.
+		sleep 10
+		exit 1
+	}
+	
 	#Find Local Compiler
 	if (!(Test-Path "$MSBuildPath" -ErrorAction SilentlyContinue)) {
 		$GetMSBuildCommand = Get-Command MSBuild -ErrorAction SilentlyContinue
@@ -47,8 +64,8 @@ if (!($InContainer.IsPresent)) {
 			if (Test-Path "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe") {
 				$VswherePath = "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe"
 			} else {
-				wget "https://github.com/Microsoft/vswhere/releases/download/2.5.2/vswhere.exe" -OutFile "$env:windir\vswhere.exe"
-				$VswherePath = "$env:windir\vswhere.exe"
+				&"$NuGet" install vswhere -ExcludeVersion -NonInteractive -OutputDirectory "$env:windir"
+				$VswherePath = "$env:windir\vswhere\tools\vswhere.exe"
 			}
 		}
 		[xml]$GetMSBuildPath = &$VswherePath -latest -requires Microsoft.Component.MSBuild -version 15.0 -format xml    
@@ -80,23 +97,6 @@ if (!($InContainer.IsPresent)) {
 			sleep 10
 			exit 1
 		}
-	}
-
-	#Find Local NuGet
-	if ("$NuGet" -eq "" -or !(Test-Path "$NuGet" -ErrorAction SilentlyContinue)) {
-		$NuGetCommand = Get-Command NuGet -ErrorAction SilentlyContinue
-		if ($NuGetCommand) {
-			$NuGet = $NuGetCommand.Path
-		}
-	}
-	if (("$NuGet" -eq "" -or !(Test-Path "$NuGet" -ErrorAction SilentlyContinue)) -and (Test-Path "$env:windir")) {
-		wget "https://dist.nuget.org/win-x86-commandline/latest/nuget.exe" -OutFile "$env:windir\nuget.exe"
-		$NuGet = "$env:windir\nuget.exe"
-	}
-	if ("$NuGet" -eq "" -or !(Test-Path "$NuGet" -ErrorAction SilentlyContinue)) {
-		Write-Host NuGet not found. Download from: https://dist.nuget.org/win-x86-commandline/latest/nuget.exe to: c:\windows\nuget.exe. If you do not have permission to create c:\windows\nuget.exe use the -NuGet switch.
-		sleep 10
-		exit 1
 	}
 }
 
@@ -216,6 +216,7 @@ using System.Runtime.CompilerServices;
 "@ + $GitCommitTime + " " + $GitCommitID + " " + $GitBranchName + @"
 ")]
 [assembly: InternalsVisibleTo("Dev2.Runtime.Tests")]
+[assembly: InternalsVisibleTo("Dev2.Runtime.WebServer.Tests")]
 [assembly: InternalsVisibleTo("Dev2.Studio.Core.Tests")]
 [assembly: InternalsVisibleTo("Dev2.TaskScheduler.Wrappers")]
 [assembly: InternalsVisibleTo("Dev2.Infrastructure.Tests")]
@@ -300,9 +301,6 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
         if ($SolutionParameterIsPresent -or $NoSolutionParametersPresent) {
             if ($OutputFolderName -eq "Webs") {
                 npm install --add-python-to-path='true' --global --production windows-build-tools
-            }
-            if ($OutputFolderName -eq "AcceptanceTesting" -and !($ProjectSpecificOutputs.IsPresent)) {
-                nuget install Microsoft.TestPlatform -ExcludeVersion -NonInteractive -OutputDirectory "$PSScriptRoot\Bin\$OutputFolderName"
             }
             if ($OutputFolderName -eq "AcceptanceTesting" -and !($ProjectSpecificOutputs.IsPresent)) {
                 &"$NuGet" install Microsoft.TestPlatform -ExcludeVersion -NonInteractive -OutputDirectory "$PSScriptRoot\Bin\$OutputFolderName"

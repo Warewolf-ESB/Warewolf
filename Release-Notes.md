@@ -1,3 +1,35 @@
+18 June 2021
+================
+Enhancements
+----------------
+Post
+- XML web response can now be converted into JSON object.
+
+11 June 2021
+================
+
+Bug Fixes
+-----------
+- The Studio splash page no longer shows "Server Unavailable" and starts up correctly.
+- There are no longer duplicates in the Errors().Message recordset
+- Improved Performance and Logging on Duplicate Folder functionality.
+
+28 May 2021
+================
+Enhancements
+----------------
+General
+- Added a 'Show Password' functionality to password fields
+
+Bug Fixes
+-----------
+Manual Resumption
+- Override input variables accepts same variable name as suspended workflow input variables.
+
+Debug
+- Resolved 'internal server error' bug when debug in browser option is selected.
+
+
 18 May 2021
 ================
 Bug Fixes

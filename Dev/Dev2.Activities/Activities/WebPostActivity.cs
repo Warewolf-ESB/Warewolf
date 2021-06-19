@@ -20,6 +20,7 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Data.TO;
+using Dev2.Data.Util;
 using Dev2.Diagnostics;
 using Dev2.Interfaces;
 using Dev2.Runtime.ServiceModel;
@@ -118,7 +119,8 @@ namespace Dev2.Activities
                     var conditionExpression = dds.Current;
 
                     text.Append("\n");
-                    conditionExpression.RenderDescription(text);
+                    if(conditionExpression != null)
+                        conditionExpression.RenderDescription(text);
                 }
 
                 var debugItem = new DebugItem();
@@ -183,6 +185,7 @@ namespace Dev2.Activities
                     IsObject = IsObject,
                     ObjectName = ObjectName
                 };
+                response = Scrubber.Scrub(response);
                 ResponseManager.PushResponseIntoEnvironment(response, update, dataObject);
             }
         }
@@ -232,7 +235,7 @@ namespace Dev2.Activities
 
                 while (iter.HasMoreData())
                 {
-                    var item = new string[] { iter.FetchNextValue(c1), iter.FetchNextValue(c2), iter.FetchNextValue(c3) };
+                    var item = new[] { iter.FetchNextValue(c1), iter.FetchNextValue(c2), iter.FetchNextValue(c3) };
                     yield return item;
                 }
                 yield break;

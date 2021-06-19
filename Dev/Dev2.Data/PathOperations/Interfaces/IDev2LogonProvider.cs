@@ -9,6 +9,7 @@
 */
 
 using Dev2.PathOperations;
+
 namespace Dev2.Data.Interfaces
 {
     public interface IDev2LogonProvider

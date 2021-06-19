@@ -215,7 +215,7 @@ namespace Dev2.Server.Tests
             mockWriter.Setup(o => o.Write("Preloading assemblies...  ")).Verifiable();
 
 
-            mockAssemblyLoader.Setup(o => o.AssemblyNames(It.IsAny<Assembly>())).Returns(new AssemblyName[] { new AssemblyName() { Name= "testAssemblyName" } });
+            mockAssemblyLoader.Setup(o => o.AssemblyNames(It.IsAny<Assembly>())).Returns(new[] { new AssemblyName() { Name= "testAssemblyName" } });
             //------------------Act-------------------
             var loadResources = new LoadResources(resourceDirectory, mockWriter.Object, mockDirectory.Object, mockResourceCatalogFactory.Object);
             loadResources.LoadActivityCache(mockAssemblyLoader.Object);

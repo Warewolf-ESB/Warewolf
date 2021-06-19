@@ -114,6 +114,7 @@ namespace Dev2.Studio.Core.Helpers
             try
             {
                 var version = await _webClient.DownloadStringAsync(InstallerResources.WarewolfVersion);
+                _webClient.Dispose();
                 return new Version(version);
             }
             catch (Exception ex)
@@ -128,6 +129,7 @@ namespace Dev2.Studio.Core.Helpers
             try
             {
                 var version = _webClient.DownloadString(InstallerResources.WarewolfVersion);
+                _webClient.Dispose();
                 return new Version(version);
             }
             catch (Exception ex)

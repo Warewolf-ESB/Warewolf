@@ -46,6 +46,7 @@ namespace Warewolf.UIBindingTests.ExchangeSource
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner(null, 0);
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Exchange Source", "\tIn order to avoid silly mistakes\r\n\tAs a math idiot\r\n\tI want to be told the sum o" +
                     "f two numbers", ProgrammingLanguage.CSharp, new string[] {
+                        "CannotParallelize",
                         "ExchangeSource"});
             testRunner.OnFeatureStart(featureInfo);
         }
@@ -87,6 +88,7 @@ namespace Warewolf.UIBindingTests.ExchangeSource
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Creating new exchange source")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Exchange Source")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("CannotParallelize")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ExchangeSource")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ExchangeSource")]
         public virtual void CreatingNewExchangeSource()
@@ -99,23 +101,23 @@ namespace Warewolf.UIBindingTests.ExchangeSource
                         "MSTest:DeploymentItem:Newtonsoft.Json.dll",
                         "MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll",
                         "MSTest:DeploymentItem:System.Windows.Interactivity.dll"});
-#line 13
-this.ScenarioSetup(scenarioInfo);
 #line 14
- testRunner.Given("I open a new exchange source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 15
- testRunner.Then("\"New Exchange Source\" tab is Opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Given("I open a new exchange source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 16
- testRunner.And("Title is \"New Exchange Source\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("\"New Exchange Source\" tab is Opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 17
- testRunner.When("I Type Auto Discover as \"https://outlook.office365.com/EWS/Exchange.asmx\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("Title is \"New Exchange Source\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 18
- testRunner.When("I Type User Name as \"TestUser\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I Type Auto Discover as \"https://outlook.office365.com/EWS/Exchange.asmx\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 19
- testRunner.When("I Type Password as \"TestUser\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I Type User Name as \"TestUser\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 20
- testRunner.When("I Type TimeOut as \"1000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I Type Password as \"TestUser\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 21
+ testRunner.When("I Type TimeOut as \"1000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 22
  testRunner.When("I Type To Email as \"test@gmsil.com\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             this.ScenarioCleanup();
@@ -124,6 +126,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Testing new exchange source")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Exchange Source")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("CannotParallelize")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ExchangeSource")]
         public virtual void TestingNewExchangeSource()
         {
@@ -134,25 +137,25 @@ this.ScenarioSetup(scenarioInfo);
                         "MSTest:DeploymentItem:Newtonsoft.Json.dll",
                         "MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll",
                         "MSTest:DeploymentItem:System.Windows.Interactivity.dll"});
-#line 28
-this.ScenarioSetup(scenarioInfo);
 #line 29
-testRunner.Given("I open a new exchange source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 30
- testRunner.Then("\"New Exchange Source\" tab is Opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+testRunner.Given("I open a new exchange source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 31
- testRunner.And("Title is \"New Exchange Source\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("\"New Exchange Source\" tab is Opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 32
- testRunner.When("I Type Auto Discover as \"https://outlook.office365.com/EWS/Exchange.asmx\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("Title is \"New Exchange Source\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 33
- testRunner.When("I Type User Name as \"TestUser\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I Type Auto Discover as \"https://outlook.office365.com/EWS/Exchange.asmx\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 34
- testRunner.When("I Type Password as \"TestUser\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I Type User Name as \"TestUser\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 35
- testRunner.When("I Type TimeOut as \"1000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I Type Password as \"TestUser\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 36
- testRunner.When("I Type To Email as \"test@gmsil.com\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I Type TimeOut as \"1000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 37
+ testRunner.When("I Type To Email as \"test@gmsil.com\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 38
  testRunner.Then("I click on the Test Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -161,6 +164,7 @@ testRunner.Given("I open a new exchange source", ((string)(null)), ((TechTalk.Sp
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Fail Exchange Email Send Shows correct error message")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Exchange Source")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("CannotParallelize")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ExchangeSource")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ExchangeSource")]
         public virtual void FailExchangeEmailSendShowsCorrectErrorMessage()
@@ -173,30 +177,30 @@ testRunner.Given("I open a new exchange source", ((string)(null)), ((TechTalk.Sp
                         "MSTest:DeploymentItem:Newtonsoft.Json.dll",
                         "MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll",
                         "MSTest:DeploymentItem:System.Windows.Interactivity.dll"});
-#line 45
-this.ScenarioSetup(scenarioInfo);
 #line 46
- testRunner.Given("I open a new exchange source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 47
- testRunner.Then("\"New Exchange Source\" tab is Opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Given("I open a new exchange source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 48
- testRunner.And("Title is \"New Exchange Source\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("\"New Exchange Source\" tab is Opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 49
- testRunner.When("I Type Auto Discover as \"https://outlook.office365.com/EWS/Exchange.asmx\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("Title is \"New Exchange Source\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 50
- testRunner.When("I Type User Name as \"TestUser\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I Type Auto Discover as \"https://outlook.office365.com/EWS/Exchange.asmx\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 51
- testRunner.When("I Type Password as \"TestUser\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I Type User Name as \"TestUser\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 52
- testRunner.When("I Type TimeOut as \"1000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I Type Password as \"TestUser\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 53
- testRunner.When("I Type To Email as \"test@gmsil.com\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I Type TimeOut as \"1000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 54
- testRunner.And("Send is \"Unsuccessful\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("I Type To Email as \"test@gmsil.com\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 55
+ testRunner.And("Send is \"Unsuccessful\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 56
  testRunner.Then("Send is \"The request failed. The remote server returned an error: (401) Unauthori" +
                     "zed.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 56
+#line 57
  testRunner.And("\"Save\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();

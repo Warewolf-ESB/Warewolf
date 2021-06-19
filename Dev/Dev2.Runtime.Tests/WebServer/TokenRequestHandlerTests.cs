@@ -16,10 +16,8 @@ using System.Net.Http;
 using System.Security.Cryptography;
 using System.Security.Principal;
 using System.Text;
-using System.Web;
 using System.Web.Http;
 using System.Xml.Linq;
-using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Enums;
@@ -32,6 +30,7 @@ using Dev2.Interfaces;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Runtime.WebServer;
+using Dev2.Runtime.WebServer.Executor;
 using Dev2.Runtime.WebServer.Handlers;
 using Dev2.Runtime.WebServer.Responses;
 using Dev2.Runtime.WebServer.TransferObjects;
@@ -235,6 +234,8 @@ namespace Dev2.Tests.Runtime.WebServer
         [Owner("Candice Daniel")]
         [ExpectedException(typeof(HttpResponseException))]
         [TestCategory(nameof(TokenRequestHandler))]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]//CustomContainer.Get<Warewolf.Auditing.IStateNotifierFactory>()
         public void TokenRequestHandler_UserGroup_IsNullOrWhiteSpace_InternalServerError()
         {
             Dev2.Common.Utilities.ServerUser = new Mock<IPrincipal>().Object;
@@ -580,7 +581,7 @@ namespace Dev2.Tests.Runtime.WebServer
         }
     }
 
-    class TestTokenRequestDataObjectFactory : TokenRequestHandler.IDataObjectFactory
+    class TestTokenRequestDataObjectFactory : IDataObjectFactory
     {
         readonly IDSFDataObject _dataObject;
 

@@ -46,6 +46,7 @@ namespace Warewolf.UIBindingTests.Decision
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner(null, 0);
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "DecDialog", "\tIn order to create a decision\r\n\tAs a Warewolf User\r\n\tI want to be shown the deci" +
                     "sion window setup", ProgrammingLanguage.CSharp, new string[] {
+                        "CannotParallelize",
                         "DecDialog"});
             testRunner.OnFeatureStart(featureInfo);
         }
@@ -102,21 +103,21 @@ namespace Warewolf.UIBindingTests.Decision
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Ensure Inputs are enabled on decision window load", @__tags);
-#line 15
-this.ScenarioSetup(scenarioInfo);
 #line 16
- testRunner.Given("I have a workflow New Workflow", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 17
- testRunner.And("drop a Decision tool onto the design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I have a workflow New Workflow", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 18
- testRunner.Then("the Decision window is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.And("drop a Decision tool onto the design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 19
- testRunner.And(string.Format("\"{0}\" fields are \"Enabled\"", inputs), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("the Decision window is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 20
- testRunner.And(string.Format("the decision match variables \"{0}\"and match \"{1}\" and to match\"{2}\"", variable, variable2, variable3), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("\"{0}\" fields are \"Enabled\"", inputs), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 21
- testRunner.And(string.Format("MatchType  is \"{0}\"", matchType), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("the decision match variables \"{0}\"and match \"{1}\" and to match\"{2}\"", variable, variable2, variable3), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 22
+ testRunner.And(string.Format("MatchType  is \"{0}\"", matchType), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 23
  testRunner.Then(string.Format("the inputs are \"{0}\"", inputs), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -125,6 +126,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Ensure Inputs are enabled on decision window load: 1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DecDialog")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("CannotParallelize")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DecDialog")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DecDialog")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "1")]
@@ -138,7 +140,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:MatchType", "<")]
         public virtual void EnsureInputsAreEnabledOnDecisionWindowLoad_1()
         {
-#line 15
+#line 16
 this.EnsureInputsAreEnabledOnDecisionWindowLoad("1", "Visible, Visible, Visible", "[[a]]", "[[b]]", "12", "", "", "<", ((string[])(null)));
 #line hidden
         }
@@ -146,6 +148,7 @@ this.EnsureInputsAreEnabledOnDecisionWindowLoad("1", "Visible, Visible, Visible"
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Ensure Inputs are enabled on decision window load: 2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DecDialog")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("CannotParallelize")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DecDialog")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DecDialog")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "2")]
@@ -159,7 +162,7 @@ this.EnsureInputsAreEnabledOnDecisionWindowLoad("1", "Visible, Visible, Visible"
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:MatchType", "is Alphanumeric")]
         public virtual void EnsureInputsAreEnabledOnDecisionWindowLoad_2()
         {
-#line 15
+#line 16
 this.EnsureInputsAreEnabledOnDecisionWindowLoad("2", "Visible, Visible", "[[a]]", "", "", "", "", "is Alphanumeric", ((string[])(null)));
 #line hidden
         }
@@ -167,6 +170,7 @@ this.EnsureInputsAreEnabledOnDecisionWindowLoad("2", "Visible, Visible", "[[a]]"
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Ensure Inputs are enabled on decision window load: 3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DecDialog")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("CannotParallelize")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DecDialog")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DecDialog")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "3")]
@@ -180,7 +184,7 @@ this.EnsureInputsAreEnabledOnDecisionWindowLoad("2", "Visible, Visible", "[[a]]"
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:MatchType", "Is Between")]
         public virtual void EnsureInputsAreEnabledOnDecisionWindowLoad_3()
         {
-#line 15
+#line 16
 this.EnsureInputsAreEnabledOnDecisionWindowLoad("3", "Visible, Visible, Visible, Visible", "[[a]]", "[[b]]", "5", "[[c]]", "15", "Is Between", ((string[])(null)));
 #line hidden
         }

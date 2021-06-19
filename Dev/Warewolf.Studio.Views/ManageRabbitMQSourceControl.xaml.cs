@@ -47,7 +47,7 @@ namespace Warewolf.Studio.Views
                 case "User Name":
                     return UserNameTextBox.Text;
                 case "Password":
-                    return PasswordTextBox.Password;
+                    return PasswordTextBox.Text;
                 case "Virtual Host":
                     return VirtualHostTextBox.Text;
                 default:
@@ -83,7 +83,7 @@ namespace Warewolf.Studio.Views
 
         public void EnterPassword(string password)
         {
-            PasswordTextBox.Password = password;
+            PasswordTextBox.Text = password;
         }
 
         public void TestPublish()

@@ -53,23 +53,12 @@ namespace WarewolfCOMIPC.Client
     [Serializable]
     public class MethodInfoTO
     {
-        
-        public MethodInfoTO()
-        {
-            
-        }
         public string Name { get; set; }
         public List<ParameterInfoTO> Parameters {get;set;}
     }
     [Serializable]
     public class ParameterInfoTO
     {
-
-        
-        public ParameterInfoTO()
-        {
-            
-        }
         public object DefaultValue { get; set; }        
         public bool IsRequired { get; set; }
         public string Name { get; set; }

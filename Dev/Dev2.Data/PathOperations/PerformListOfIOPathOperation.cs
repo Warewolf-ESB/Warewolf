@@ -8,12 +8,13 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
+using System.Collections.Generic;
+using System.IO;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Data.Interfaces;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.PathOperations;
-using System.Collections.Generic;
-using System.IO;
 
 namespace Dev2.Data.PathOperations
 {
@@ -48,7 +49,7 @@ namespace Dev2.Data.PathOperations
         public static string AppendBackSlashes(IActivityIOPath path, IFile fileWrapper, IDirectory dirWrapper)
         {
             var newPath = path.Path;
-            if (!path.Path.EndsWith("\\", System.StringComparison.Ordinal) && PathIs(path, fileWrapper, dirWrapper) == enPathType.Directory)
+            if (!path.Path.EndsWith("\\", StringComparison.Ordinal) && PathIs(path, fileWrapper, dirWrapper) == enPathType.Directory)
             {
                 newPath = path.Path + "\\";
             }

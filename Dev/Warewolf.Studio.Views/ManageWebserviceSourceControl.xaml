@@ -130,17 +130,16 @@
                        Grid.Column="0" 
                        Margin="{StaticResource ControlBorderTop}"
                        Text="{x:Static languages:Core.PasswordLabel}"/>
-            <PasswordBox x:Name="PasswordTextBox" 
+            <customControls:PasswordBoxUserControl x:Name="PasswordTextBox" 
                          Grid.Column="1"
                          Grid.Row="1" 
                          ToolTip="{x:Static languages:Tooltips.ManageWebSourcePasswordTooltip}"
                          Margin="{StaticResource ControlBorderTop}"
-                         passwordBoxAssistant:PasswordBoxAssistant.BindPassword="true" 
-                         passwordBoxAssistant:PasswordBoxAssistant.BoundPassword="{Binding Path=Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                         Text="{Binding Path=Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                 <i:Interaction.Behaviors>
                     <core:HelpSetter Text="{x:Static languages:HelpText.PasswordAuthenticationHelp}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
-            </PasswordBox>
+            </customControls:PasswordBoxUserControl>
         </Grid>
         <Grid Grid.Row="3" Margin="0,-3,0,0" >
             <Grid.ColumnDefinitions>
