@@ -11,7 +11,6 @@
 using System;
 using Dev2.Common;
 using Dev2.Common.Common;
-using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
 using Dev2.Data.Interfaces;
 

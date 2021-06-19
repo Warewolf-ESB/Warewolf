@@ -1,3 +1,10 @@
+18 June 2021
+================
+Enhancements
+----------------
+Post
+- XML web response can now be converted into JSON object.
+
 11 June 2021
 ================
 
