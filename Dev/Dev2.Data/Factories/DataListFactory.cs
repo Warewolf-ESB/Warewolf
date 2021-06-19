@@ -19,8 +19,6 @@ using Dev2.Data.Parsers;
 using Dev2.Data.TO;
 using Dev2.DataList.Contract.Binary_Objects;
 
-
-
 namespace Dev2.DataList.Contract
 {
     public interface IDataListFactory

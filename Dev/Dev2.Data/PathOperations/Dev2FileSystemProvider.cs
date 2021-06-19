@@ -16,17 +16,10 @@ using System.Runtime.ConstrainedExecution;
 using System.Runtime.InteropServices;
 using System.Security;
 using System.Security.Permissions;
-using System.Security.Principal;
-using System.Threading;
-using Dev2.Common;
-using Dev2.Common.Common;
-using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Data.Interfaces;
 using Dev2.Data.Interfaces.Enums;
-using Dev2.Data.PathOperations;
-using Microsoft.Win32.SafeHandles;
-using Warewolf.Resource.Errors;
 using Dev2.Data.PathOperations.Operations;
+using Microsoft.Win32.SafeHandles;
 
 namespace Dev2.PathOperations
 {

@@ -81,7 +81,7 @@ namespace Dev2.Data.Util
 
         public static string TempFile(string extension)
         {
-            var path = System.IO.Path.GetTempPath();
+            var path = Path.GetTempPath();
             var guid = Guid.NewGuid().ToString();
             return $"{path}/{guid}.{extension}";
         }
@@ -426,10 +426,10 @@ namespace Dev2.Data.Util
 
             protected GenerateDefsFromXmlCommon(string dataList, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection, bool includeNoneDirection, ISearch searchParameters)
             {
-                this._dataList = dataList;
-                this._dev2ColumnArgumentDirection = dev2ColumnArgumentDirection;
-                this._includeNoneDirection = includeNoneDirection;
-                this._searchParameters = searchParameters;
+                _dataList = dataList;
+                _dev2ColumnArgumentDirection = dev2ColumnArgumentDirection;
+                _includeNoneDirection = includeNoneDirection;
+                _searchParameters = searchParameters;
             }
 
             internal IList<IDev2Definition> Execute()

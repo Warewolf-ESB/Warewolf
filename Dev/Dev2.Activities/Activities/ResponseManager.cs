@@ -1,3 +1,14 @@
+/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+
 #pragma warning disable
 using System;
 using System.Collections.Generic;
@@ -12,8 +23,10 @@ using Dev2.Common.Interfaces.DB;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.Interfaces;
+using Newtonsoft.Json;
 using Unlimited.Framework.Converters.Graph;
 using Unlimited.Framework.Converters.Graph.String.Json;
+using Unlimited.Framework.Converters.Graph.String.Xml;
 using WarewolfParserInterop;
 
 
@@ -50,6 +63,11 @@ namespace Dev2.Activities
                     }
                     return;
                 }
+                if (IsObject && OutputDescription != null && OutputDescription.DataSourceShapes.Count == 1 && OutputDescription.DataSourceShapes[0].Paths.All(a => a is XmlPath))
+                {
+                    AssignXmlToJsonObject(input, update, dataObj);
+                    return;
+                }
                 if (IsObject)
                 {
                     AssignObject(input, update, dataObj);
@@ -63,6 +81,18 @@ namespace Dev2.Activities
             {
                 dataObj.Environment.AddError(e.Message);
                 Dev2Logger.Error(e.Message, e, GlobalConstants.WarewolfError);
+            }
+        }
+
+        private void AssignXmlToJsonObject(string xmlInput, int update, IDSFDataObject dataObj)
+        {
+            try
+            {
+                dataObj.Environment.AssignXmlToJson(new AssignValue(ObjectName, xmlInput), update);
+            }
+            catch (Exception ex1)
+            {
+                Dev2Logger.Error(ex1, GlobalConstants.WarewolfError);
             }
         }
 

@@ -23,6 +23,7 @@ using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ResourceCatalogImpl;
 using Dev2.Runtime.Security;
+using Dev2.Runtime.WebServer.Executor;
 using Dev2.Runtime.WebServer.Responses;
 using Dev2.Runtime.WebServer.TransferObjects;
 using Dev2.Services.Security;
@@ -184,7 +185,7 @@ namespace Dev2.Runtime.WebServer.Handlers
 
                 var json = JsonConvert.DeserializeObject<UserGroupsResponse>(resp.Content);
                 var userGroups = json?.UserGroups.ToList();
-                var hasInvalidOutputs = userGroups != null && userGroups.Count == 0;
+                var hasInvalidOutputs = userGroups?.Count == 0;
                 if(userGroups != null)
                     foreach(var o in (userGroups))
                     {
@@ -210,12 +211,22 @@ namespace Dev2.Runtime.WebServer.Handlers
 
             public class UserGroup
             {
-                public string Name { get; set; }
+                public UserGroup(string name)
+                {
+                    Name = name;
+                }
+
+                public string Name { get; private set; }
             }
 
             public class UserGroupsResponse
             {
-                public UserGroup[] UserGroups { get; set; }
+                public UserGroupsResponse(UserGroup[] userGroups)
+                {
+                    UserGroups = userGroups;
+                }
+
+                public UserGroup[] UserGroups { get; private set; }
             }
 
             private IResponseWriter CreateEncryptedResponse(EmitionTypes emitionTypes, string payload)
