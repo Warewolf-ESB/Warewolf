@@ -1,4 +1,5 @@
-﻿@ServerSource
+@CannotParallelize
+@ServerSource
 Feature: NewServerSource
 	In order to connect to other Warewolf servers
 	As a Warewolf user

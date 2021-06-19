@@ -100,10 +100,10 @@ namespace Dev2.Core.Tests.Triggers.QueueEvents
                 Concurrency = 1000,
                 UserName = "Bob",
                 Password = "123456",
-                Options = new IOption[] { mockOption.Object },
+                Options = new[] { mockOption.Object },
                 QueueSinkId = _queueResourceId,
                 DeadLetterQueue = "TestDeadLetterQueue",
-                DeadLetterOptions = new IOption[] { mockOption.Object },
+                DeadLetterOptions = new[] { mockOption.Object },
                 Inputs = mockInputs.Object
             };
 

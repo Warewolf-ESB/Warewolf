@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -212,7 +212,7 @@ namespace Dev2.Activities.PathOperations
         /// </summary>
         [Inputs("Destination Password"), FindMissing]
         public string DestinationPassword {
-            get { return _destPassword; }
+            get => _destPassword;
             set
             {
                 if (DataListUtil.ShouldEncrypt(value))
@@ -234,7 +234,6 @@ namespace Dev2.Activities.PathOperations
         }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        
         protected string DecryptedDestinationPassword => DataListUtil.NotEncrypted(DestinationPassword) ? DestinationPassword : DpapiWrapper.Decrypt(DestinationPassword);
 
         #endregion Properties

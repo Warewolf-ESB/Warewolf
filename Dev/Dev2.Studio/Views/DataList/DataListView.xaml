@@ -46,7 +46,6 @@
                                           x:Name="SearchTextBox" 
                                           Style="{StaticResource SearchTextboxStyle}"
                                           ClearSearchCommand="{Binding Path=ClearSearchTextCommand}"
-										  LostKeyboardFocus="SearchTextBox_LostKeyboardFocus"
                                           ClearSearchToolTip="{x:Static languages:Tooltips.ClearVariableListFilterTooltip}"
                                           LabelText="Search for Variables"
                                           HorizontalAlignment="Stretch" 

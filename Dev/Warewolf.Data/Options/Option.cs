@@ -222,7 +222,7 @@ namespace Warewolf.Options
                 var optionNames = new List<string>();
                 foreach (var opt in Values)
                 {
-                    optionNames.Add(opt.Key.ToString());
+                    optionNames.Add(opt.Key);
                 }
                 return optionNames;
             }

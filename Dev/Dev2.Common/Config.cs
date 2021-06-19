@@ -354,19 +354,19 @@ namespace Dev2.Common
             return false;
         }
 
-        private void TryDeleteOldLogFile(IFileBase _fileWrapper, string source)
+        private void TryDeleteOldLogFile(IFileBase _wrapper, string source)
         {
             new Thread(() =>
             {
                 int tries = 0;
-                while (_fileWrapper.Exists(source))
+                while (_wrapper.Exists(source))
                 {
                     try
                     {
                         SQLiteConnection.ClearAllPools();
                         GC.Collect();
 
-                        _fileWrapper.Delete(source);
+                        _wrapper.Delete(source);
                         break;
                     }
                     catch (Exception)

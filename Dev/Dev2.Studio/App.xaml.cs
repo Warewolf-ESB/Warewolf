@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -29,7 +29,6 @@ using System.Windows;
 using System.Windows.Threading;
 using System.Xaml;
 using Dev2.Common;
-using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.Studio.Controller;
@@ -38,7 +37,6 @@ using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Common.Wrappers;
 using Dev2.CustomControls.Progress;
 using Dev2.Diagnostics.Debug;
-using Dev2.Instrumentation;
 using Dev2.Studio.ActivityDesigners;
 using Dev2.Studio.Controller;
 using Dev2.Studio.Core.Views;
@@ -51,8 +49,6 @@ using Warewolf.Studio.Models.Help;
 using Warewolf.Studio.Models.Toolbox;
 using Warewolf.Studio.ViewModels.Help;
 using Warewolf.Studio.ViewModels.ToolBox;
-using Dev2.Utils;
-using log4net.Config;
 using Warewolf.Studio.ViewModels;
 using Warewolf.Studio.Views;
 using Dev2.Studio.Diagnostics;
@@ -60,7 +56,6 @@ using Dev2.Studio.ViewModels;
 using Dev2.Util;
 using Warewolf.MergeParser;
 
-using Dev2.Instrumentation.Factory;
 using Dev2.Studio.Utils;
 using System.Security.Claims;
 using Dev2.Studio.Interfaces;
@@ -69,15 +64,12 @@ using Microsoft.VisualBasic.ApplicationServices;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core;
 using Dev2.Factory;
-using System.Text;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Reflection;
-using Dev2.Common.Interfaces.Scheduler.Interfaces;
 
 namespace Dev2.Studio
 {
-    public partial class App : Application, IApp, IDisposable
+    public partial class App : IApp, IDisposable
     {
         ShellViewModel _shellViewModel;
 
@@ -112,9 +104,6 @@ namespace Dev2.Studio
         protected override void OnStartup(System.Windows.StartupEventArgs e)
         {
             CustomContainer.Register<IFieldAndPropertyMapper>(new FieldAndPropertyMapper());
-            CustomContainer.Register(ApplicationTrackerFactory.GetApplicationTrackerProvider());
-            var applicationTracker = CustomContainer.Get<IApplicationTracker>();
-            applicationTracker?.EnableApplicationTracker(VersionInfo.FetchVersionInfo(), VersionInfo.FetchInformationalVersion(), @"Warewolf" + $" ({ClaimsPrincipal.Current.Identity.Name})".ToUpperInvariant());
 
             ShutdownMode = System.Windows.ShutdownMode.OnMainWindowClose;
 
@@ -166,15 +155,8 @@ namespace Dev2.Studio
 
             _resetSplashCreated.WaitOne();
             new Bootstrapper().Start();
-            if (_hasDotNetFramweworkError)
-            {
-                SplashView.CloseSplash(false);
-                var popupController = CustomContainer.Get<IPopupController>();
-                popupController.ShowInstallationErrorOccurred();
-                Shutdown();
-            }
             base.OnStartup(e);
-            _shellViewModel = MainWindow.DataContext as ShellViewModel;
+            _shellViewModel = MainWindow?.DataContext as ShellViewModel;
             if (_shellViewModel != null)
             {
                 CreateDummyWorkflowDesignerForCaching();
@@ -193,7 +175,7 @@ namespace Dev2.Studio
                 CustomContainer.Register<IApplicationAdaptor>(new ApplicationAdaptor(Current));
                 CustomContainer.Register<IShellViewModel>(_shellViewModel);
             }
-            var toolboxPane = Current.MainWindow.FindName("Toolbox") as ContentPane;
+            var toolboxPane = Current?.MainWindow?.FindName("Toolbox") as ContentPane;
             toolboxPane?.Activate();
 #if DEBUG
             SetAsStarted();
@@ -292,31 +274,32 @@ namespace Dev2.Studio
             // Create the window 
             var repository = ServerRepository.Instance;
             var server = repository.Source;
-            server.Connect();
+            server.ConnectAsync().Wait(5000);
             CustomContainer.Register(server);
             CustomContainer.Register(repository);
-            var toolBoxViewModel = new ToolboxViewModel(new ToolboxModel(server, server, null), new ToolboxModel(server, server, null));
-            CustomContainer.Register<IToolboxViewModel>(toolBoxViewModel);
 
             var textToDisplay = Warewolf.Studio.Resources.Languages.Core.StandardStyling.Replace("\r\n", "") +
                                 Warewolf.Studio.Resources.Languages.HelpText.WarewolfDefaultHelpDescription +
                                 Warewolf.Studio.Resources.Languages.Core.StandardBodyParagraphClosing;
 
-            var helpViewModel = new HelpWindowViewModel(new HelpDescriptorViewModel(new HelpDescriptor("", textToDisplay, null)), new HelpModel(new EventAggregator()));
-            CustomContainer.Register<IHelpWindowViewModel>(helpViewModel);
             CustomContainer.Register<IEventAggregator>(new EventAggregator());
             CustomContainer.Register<IPopupController>(new PopupController());
             CustomContainer.Register<IAsyncWorker>(new AsyncWorker());
             CustomContainer.Register<IExplorerTooltips>(new ExplorerTooltips());
             CustomContainer.Register<IWarewolfWebClient>(new WarewolfWebClient(new WebClient { Credentials = CredentialCache.DefaultCredentials }));
+            CustomContainer.Register<IActivityParser>(new ActivityParser());
+            CustomContainer.Register<IServiceDifferenceParser>(new ServiceDifferenceParser());
+
+            var toolBoxViewModel = new ToolboxViewModel(new ToolboxModel(server, server, null), new ToolboxModel(server, server, null));
+            CustomContainer.Register<IToolboxViewModel>(toolBoxViewModel);
+
+            var helpViewModel = new HelpWindowViewModel(new HelpDescriptorViewModel(new HelpDescriptor("", textToDisplay, null)), new HelpModel(new EventAggregator()));
+            CustomContainer.Register<IHelpWindowViewModel>(helpViewModel);
+
             CustomContainer.RegisterInstancePerRequestType<IRequestServiceNameView>(() => new RequestServiceNameView());
             CustomContainer.RegisterInstancePerRequestType<IJsonObjectsView>(() => new JsonObjectsView());
             CustomContainer.RegisterInstancePerRequestType<IChooseDLLView>(() => new ChooseDLLView());
             CustomContainer.RegisterInstancePerRequestType<IFileChooserView>(() => new FileChooserView());
-            CustomContainer.Register<IActivityParser>(new ActivityParser());
-            CustomContainer.Register<IServiceDifferenceParser>(new ServiceDifferenceParser());
-
-            _hasDotNetFramweworkError = ValidateDotNetFramework();
 
             var splashViewModel = new SplashViewModel(server, new ExternalProcessExecutor());
 
@@ -330,44 +313,8 @@ namespace Dev2.Studio
             Dispatcher.Run();
         }
 
-        private static bool ValidateDotNetFramework()
-        {
-            var serverLogFile = HelperUtils.GetServerLogSettingsConfigFile();
-            if (!File.Exists(serverLogFile))
-            {
-                return false;
-            }
-            try
-            {
-                var lines = File.ReadAllLines(serverLogFile).Reverse();
-
-                foreach (string line in lines)
-                {
-                    if (line.Contains(@"System.DllNotFoundException: C:\Windows\Microsoft.NET\Framework"))
-                    {
-                        return true;
-                    }
-                    if (line.Contains(@"[Header]"))
-                    {
-                        break;
-                    }
-                }
-                return false;
-            }
-            catch (Exception ex)
-            {
-                Dev2Logger.Error("Error loading server log", ex, GlobalConstants.WarewolfError);
-                return false;
-            }
-        }
-
         protected override void OnExit(ExitEventArgs e)
         {
-            var applicationTracker = CustomContainer.Get<IApplicationTracker>();
-
-            //Stop the action tracking
-            applicationTracker?.DisableApplicationTracker();
-
             SplashView.CloseSplash(true);
 
             // this is already handled ;)
@@ -379,9 +326,7 @@ namespace Dev2.Studio
             {
                 base.OnExit(e);
             }
-
             catch
-
             {
                 // Best effort ;)
             }
@@ -418,14 +363,8 @@ namespace Dev2.Studio
 
         public bool HasShutdownStarted
         {
-            get
-            {
-                return Dispatcher.CurrentDispatcher.HasShutdownStarted || Dispatcher.CurrentDispatcher.HasShutdownFinished || _hasShutdownStarted;
-            }
-            set
-            {
-                _hasShutdownStarted = value;
-            }
+            get => Dispatcher.CurrentDispatcher.HasShutdownStarted || Dispatcher.CurrentDispatcher.HasShutdownFinished || _hasShutdownStarted;
+            set => _hasShutdownStarted = value;
         }
 
         public static ISplashView SplashView { get => _splashView; set => _splashView = value; }
@@ -438,8 +377,6 @@ namespace Dev2.Studio
                 try
                 {
                     Dev2Logger.Error("Unhandled Exception", e.Exception, GlobalConstants.WarewolfError);
-                    var applicationTracker = CustomContainer.Get<IApplicationTracker>();
-                    applicationTracker?.TrackCustomEvent(Warewolf.Studio.Resources.Languages.TrackEventExceptions.EventCategory, Warewolf.Studio.Resources.Languages.TrackEventExceptions.UnhandledException, "Method: OnApplicationDispatcherUnhandledException Exception: " + e.Exception);
                     if (_appExceptionHandler != null)
                     {
                         e.Handled = HasShutdownStarted || _appExceptionHandler.Handle(e.Exception);

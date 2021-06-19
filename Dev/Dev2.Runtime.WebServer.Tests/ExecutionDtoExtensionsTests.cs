@@ -14,6 +14,7 @@ using Dev2.Data.TO;
 using Dev2.DataList.Contract;
 using Dev2.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
+using Dev2.Runtime.WebServer.Executor;
 using Dev2.Runtime.WebServer.Responses;
 using Dev2.Runtime.WebServer.TransferObjects;
 using Dev2.Web;
@@ -46,7 +47,7 @@ namespace Dev2.Runtime.WebServer.Tests
 
             var dataListDataFormat = DataListFormat.CreateFormat("OPENAPI", EmitionTypes.OPENAPI, "application/json");
 
-                       var webRequestTO = new WebRequestTO { WebServerUrl = "http://serverName:3142/public/resourceName.api" };
+            var webRequestTO = new WebRequestTO { WebServerUrl = "http://serverName:3142/public/resourceName.api" };
 
             var executionDto = new ExecutionDto
             {

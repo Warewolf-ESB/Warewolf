@@ -10,6 +10,7 @@
 */
 
 using Dev2.Common;
+using Dev2.Common.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data.TO;
@@ -21,6 +22,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Xml;
 using System.Xml.Linq;
 using Warewolf.Data;
 using Warewolf.Exceptions;
@@ -611,10 +613,11 @@ namespace Warewolf.Storage
                 else if (errorsString.IsJToken(out JToken outputJObject))
                 {
                     var jsonInnerErrors = outputJObject.ToObject(typeof(List<string>)) as List<string>;
-                    foreach (var error in jsonInnerErrors)
-                    {
-                        Errors.AddItem(error);
-                    }
+                    if(jsonInnerErrors != null)
+                        foreach(var error in jsonInnerErrors)
+                        {
+                            Errors.AddItem(error);
+                        }
                 }
             }
             else
@@ -704,6 +707,12 @@ namespace Warewolf.Storage
         }
 
         public static bool IsValidRecordSetIndex(string exp) => PublicFunctions.IsValidRecsetExpression(exp);
+
+        public void AssignXmlToJson(IAssignValue assignValue, int update)
+        {
+            var jsonObj = EnvironmentToJsonHelper.FromXml(assignValue.Value);
+            AssignJson(new AssignValue(assignValue.Name, jsonObj), update);
+        }
 
         public void AssignJson(IEnumerable<IAssignValue> values, int update)
         {
@@ -823,12 +832,17 @@ namespace Warewolf.Storage
         public IExecutionEnvironment Snapshot()
         {
             var clonedExecutionEnvironment = MemberwiseClone() as ExecutionEnvironment;
-            clonedExecutionEnvironment.Id = Guid.NewGuid();
-            clonedExecutionEnvironment.ParentId = Id;
-            clonedExecutionEnvironment._env = PublicFunctions.CreateEnv(@"");
-            var executionEnvironmentToJson = ToJson();
-            clonedExecutionEnvironment.FromJson(executionEnvironmentToJson);
-            return clonedExecutionEnvironment;
+            if(clonedExecutionEnvironment != null)
+            {
+                clonedExecutionEnvironment.Id = Guid.NewGuid();
+                clonedExecutionEnvironment.ParentId = Id;
+                clonedExecutionEnvironment._env = PublicFunctions.CreateEnv(@"");
+                var executionEnvironmentToJson = ToJson();
+                clonedExecutionEnvironment.FromJson(executionEnvironmentToJson);
+                return clonedExecutionEnvironment;
+            }
+
+            return null;
         }
 
         private class EnvironmentToJsonHelper : IDisposable
@@ -894,6 +908,19 @@ namespace Warewolf.Storage
             {
                 ((IDisposable) _jsonWriter).Dispose();
                 _stream.Dispose();
+            }
+
+            public static string FromXml(string xmlInput)
+            {
+                var json = string.Empty;
+                if (!string.IsNullOrEmpty(xmlInput) && xmlInput.IsValidXml())
+                {
+                    var doc = new XmlDocument();
+                    doc.LoadXml(xmlInput);
+                    json = JsonConvert.SerializeXmlNode(doc);
+                }
+
+                return json;
             }
 
             internal static void FromJson(string serializedEnv, ExecutionEnvironment environment)
@@ -993,7 +1020,7 @@ namespace Warewolf.Storage
 
                 if (recSetObj != null && recSetObj.Value is JObject recSetDataObj)
                 {
-                    var positionItems = (recSetDataObj.Property("WarewolfPositionColumn").Value as JArray).ToList();
+                    var positionItems = (recSetDataObj.Property("WarewolfPositionColumn")?.Value as JArray).ToList();
                     foreach (var recSetData in recSetDataObj.Properties())
                     {
                         AssignRecSetDataItem(positionItems, recSetData);

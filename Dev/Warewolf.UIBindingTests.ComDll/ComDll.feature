@@ -1,4 +1,5 @@
-﻿Feature: ComDll	
+@CannotParallelize
+Feature: ComDll	
 	In order to execute functions from a dll
 	As a Warewolf user
 	I want a tool that performs this action

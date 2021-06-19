@@ -1,14 +1,27 @@
+/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+
 #pragma warning disable
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Transactions;
 using System.Xml.Linq;
 using ChinhDo.Transactions;
 using Dev2.Common;
 using Dev2.Common.Common;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Hosting;
@@ -25,7 +38,7 @@ using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.Security;
 using Dev2.Runtime.ServiceModel.Data;
 using Warewolf.Resource.Errors;
-
+using static Dev2.Common.Interfaces.WarewolfExecutionEnvironmentException;
 
 namespace Dev2.Runtime.ResourceCatalogImpl
 {
@@ -104,10 +117,23 @@ namespace Dev2.Runtime.ResourceCatalogImpl
         public Action<IResource> ResourceSaved { get; set; }
         public Action<Guid, IList<ICompileMessageTO>> SendResourceMessages { get; set; }
 
+        public ResourceCatalogResult SaveResources(Guid serverWorkspaceID, List<DuplicateResourceTO> resourceMap, bool overrideExisting)
+        {
+            return SaveResources(serverWorkspaceID, resourceMap, overrideExisting, string.Empty, string.Empty);
+        }
+
+        public ResourceCatalogResult SaveResources(Guid workspaceID, List<DuplicateResourceTO> resourceMap, bool overrideExisting , string reason, string user)
+        {
+            ResourceCatalogResult saveResult = null;
+            Dev2.Common.Utilities.PerformActionInsideImpersonatedContext(Dev2.Common.Utilities.ServerUser, () => { PerformSaveBulkResult(out saveResult, workspaceID, resourceMap, overrideExisting, user, reason); });
+            return saveResult;
+        }
+
         public ResourceCatalogResult SaveResource(Guid workspaceID, IResource resource, StringBuilder contents, string savedPath) => SaveResource(workspaceID, resource, contents, savedPath, "", "");
 
+
         public ResourceCatalogResult SaveResource(Guid workspaceID, IResource resource, StringBuilder contents, string savedPath, string reason, string user)
-        {
+        { 
             _serverVersionRepository.StoreVersion(resource, user, reason, workspaceID, savedPath);
             ResourceCatalogResult saveResult = null;
             Dev2.Common.Utilities.PerformActionInsideImpersonatedContext(Dev2.Common.Utilities.ServerUser, () => { PerformSaveResult(out saveResult, workspaceID, resource, contents, true, savedPath); });
@@ -321,10 +347,29 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             return updated;
         }
 
+        void PerformSaveBulkResult(out ResourceCatalogResult saveResult, Guid workspaceID, List<DuplicateResourceTO> resourceMap, bool overwriteExisting, string user = "", string reason = "")
+        {
+            foreach (var mapper in resourceMap)
+            {
+                var resource = mapper.NewResource;
+                var destination = mapper.DestinationPath;
+                var content = mapper.ResourceContents;
+
+                _serverVersionRepository.StoreVersion(resource, user, reason, workspaceID, destination);
+                PerformSaveResult(out saveResult, workspaceID, resource, content, overwriteExisting, destination, reason);
+                ServerExplorerRepository.Instance.UpdateItem(resource);
+            }
+            saveResult = new ResourceCatalogResult
+            {
+                Status = ExecStatus.NoMatch,
+                Message = "Failure no matching resources to save."
+            };
+        }
+
         void PerformSaveResult(out ResourceCatalogResult saveResult, Guid workspaceID, IResource resource, StringBuilder contents, bool overwriteExisting, string savedPath, string reason = "")
         {
             var fileManager = new TxFileManager();
-            using (TransactionScope tx = new TransactionScope())
+            using (TransactionScope tx = new TransactionScope(TransactionScopeOption.RequiresNew))
             {
                 try
                 {
@@ -358,9 +403,9 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                 }
                 catch (Exception e)
                 {
-                    Dev2Logger.Warn($"Error saving {resource.ResourceName}. " + e.Message, "Warewolf Warn");
+                    Dev2Logger.Warn($"Error saving {resource.ResourceName}. " + e.Message, GlobalConstants.WarewolfWarn);
                     Transaction.Current.Rollback();
-                    throw;
+                    throw new WarewolfResourceException(string.Format(ErrorResource.ErrorDuringSaveCallback, resource.ResourceName));
                 }
             }
         }
@@ -409,6 +454,6 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             resource.FilePath = resourceFilePath;
             return directoryName;
         }
-        
+
     }
 }

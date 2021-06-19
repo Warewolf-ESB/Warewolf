@@ -28,7 +28,7 @@ namespace Dev2.Tests.InterfaceImplementorsTests
         {
             var sut = new CoverageDataContext(Guid.Empty, Web.EmitionTypes.Cover, "http://127.0.0.0.1:3142")
             {
-                CoverageReportResourceIds = new Guid[] { _resourceId },
+                CoverageReportResourceIds = new[] { _resourceId },
             };
 
             Assert.AreEqual(Guid.Empty, sut.ResourceID);

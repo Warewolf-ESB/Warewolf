@@ -12,6 +12,8 @@ using Dev2.Activities.PathOperations;
 using Dev2.Common.State;
 using Dev2.Data.Interfaces;
 using System.Collections.Generic;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Warewolf.Security.Encryption;
 
 namespace Dev2.Tests.Activities.Mocks
 {

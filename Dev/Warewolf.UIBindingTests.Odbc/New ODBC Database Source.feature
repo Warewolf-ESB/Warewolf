@@ -1,4 +1,4 @@
-﻿
+@CannotParallelize
 @DbSource
 Feature: New ODBC Source
 	In order to avoid silly mistakes

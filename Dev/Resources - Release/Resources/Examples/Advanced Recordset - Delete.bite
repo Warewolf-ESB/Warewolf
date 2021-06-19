@@ -1,4 +1,3 @@
-
 <Service ID="fa4b4786-67d9-414f-8c2e-17673fdcef48" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Advanced Recordset - Delete" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.0.6872.19180">
   <DisplayName>Advanced Recordset - Delete</DisplayName>
   <Category>Examples\Advanced Recordset - Delete</Category>
