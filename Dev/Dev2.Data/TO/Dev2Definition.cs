@@ -11,10 +11,6 @@
 
 using Dev2.Common.Interfaces.Data;
 
-
-
-
-
 namespace Dev2.DataList.Contract
 {
     public class Dev2Definition : IDev2Definition

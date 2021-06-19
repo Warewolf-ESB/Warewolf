@@ -1,4 +1,4 @@
-﻿#pragma warning disable
+#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
@@ -40,6 +40,7 @@ using Dev2.Runtime;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.WebServer;
+using Dev2.Runtime.WebServer.Executor;
 using Dev2.Runtime.WebServer.Handlers;
 using Dev2.Runtime.WebServer.Responses;
 using Dev2.Runtime.WebServer.TransferObjects;
@@ -842,9 +843,9 @@ namespace Dev2.Tests.Runtime.WebServer
             mockStreamContentWrapper.Setup(o => o.Headers)
                 .Returns(new StreamContentWrapper(new MemoryStream()) { Headers = { } }.Headers);
             mockStreamContentWrapper.Setup(o => o.ReadAsMultipartAsync(provider))
-                .Returns(Task<MultipartMemoryStreamProvider>.FromResult(provider));
+                .Returns(Task.FromResult(provider));
             mockStreamContentWrapper.Setup(o => o.ReadAsByteArrayAsync())
-                .Returns(Task<byte[]>.FromResult(dataBytes));
+                .Returns(Task.FromResult(dataBytes));
 
             var mockStreamContentFactory = new Mock<IStreamContentFactory>();
             mockStreamContentFactory.Setup(o => o.New(It.IsAny<MemoryStream>()))
@@ -955,9 +956,9 @@ namespace Dev2.Tests.Runtime.WebServer
             mockStreamContentWrapper.Setup(o => o.Headers)
                 .Returns(new StreamContentWrapper(new MemoryStream()) { Headers = { } }.Headers);
             mockStreamContentWrapper.Setup(o => o.ReadAsMultipartAsync(provider))
-                .Returns(Task<MultipartMemoryStreamProvider>.FromResult(provider));
+                .Returns(Task.FromResult(provider));
             mockStreamContentWrapper.Setup(o => o.ReadAsByteArrayAsync())
-                .Returns(Task<byte[]>.FromResult(dataBytes));
+                .Returns(Task.FromResult(dataBytes));
 
             var mockStreamContentFactory = new Mock<IStreamContentFactory>();
             mockStreamContentFactory.Setup(o => o.New(It.IsAny<MemoryStream>()))
@@ -1076,9 +1077,9 @@ namespace Dev2.Tests.Runtime.WebServer
             mockStreamContentWrapper.Setup(o => o.Headers)
                 .Returns(new StreamContentWrapper(new MemoryStream()) { Headers = { } }.Headers);
             mockStreamContentWrapper.Setup(o => o.ReadAsMultipartAsync(provider))
-                .Returns(Task<MultipartMemoryStreamProvider>.FromResult(provider));
+                .Returns(Task.FromResult(provider));
             mockStreamContentWrapper.Setup(o => o.ReadAsByteArrayAsync())
-                .Returns(Task<byte[]>.FromResult(dataBytes));
+                .Returns(Task.FromResult(dataBytes));
 
             var mockStreamContentFactory = new Mock<IStreamContentFactory>();
             mockStreamContentFactory.Setup(o => o.New(It.IsAny<MemoryStream>()))
@@ -1177,9 +1178,9 @@ namespace Dev2.Tests.Runtime.WebServer
             mockStreamContentWrapper.Setup(o => o.Headers)
                 .Returns(new StreamContentWrapper(new MemoryStream()) { Headers = { } }.Headers);
             mockStreamContentWrapper.Setup(o => o.ReadAsMultipartAsync(provider))
-                .Returns(Task<MultipartMemoryStreamProvider>.FromResult(provider));
+                .Returns(Task.FromResult(provider));
             mockStreamContentWrapper.Setup(o => o.ReadAsByteArrayAsync())
-                .Returns(Task<byte[]>.FromResult(dataBytes));
+                .Returns(Task.FromResult(dataBytes));
 
             var mockStreamContentFactory = new Mock<IStreamContentFactory>();
             mockStreamContentFactory.Setup(o => o.New(It.IsAny<MemoryStream>()))
@@ -1281,7 +1282,7 @@ namespace Dev2.Tests.Runtime.WebServer
             
             var expected = xmlData.CleanXmlSOAP();
 
-            Assert.AreEqual(expected, postDataMock.ToString(), "This xml string should not contain namespaces");
+            Assert.AreEqual(expected, postDataMock, "This xml string should not contain namespaces");
 
         }
 
@@ -1370,7 +1371,7 @@ namespace Dev2.Tests.Runtime.WebServer
             var communicationContext = new Mock<ICommunicationContext>();
             var data = this.SerializeToJsonString(new DefaultSerializationBinder());
             var myXmlNode = JsonConvert.DeserializeXmlNode(data, "DataList");
-            var xmlData = myXmlNode.InnerXml;
+            var xmlData = myXmlNode?.InnerXml;
             var uriString = $"https://warewolf.atlassian.net/secure/RapidBoard.jspa?&{xmlData}";
             communicationContext.SetupGet(context => context.Request.Uri).Returns(new Uri(uriString));
             communicationContext.Setup(context => context.Request.Method).Returns("GET");
@@ -1898,7 +1899,7 @@ namespace Dev2.Tests.Runtime.WebServer
         {
             var boundVariables = new NameValueCollection();
 
-            AbstractWebRequestHandler.SubmittedData.ExtractKeyValuePairs(LocalBoundVariables, boundVariables);
+            SubmittedData.ExtractKeyValuePairs(LocalBoundVariables, boundVariables);
 
             //The WID is skipped
             Assert.AreEqual(LocalBoundVariables.Count - 1, boundVariables.Count);
@@ -1913,7 +1914,7 @@ namespace Dev2.Tests.Runtime.WebServer
             var privateObject = new PrivateType(typeof(AbstractWebRequestHandler));
             const string BaseStr = "www.examlple.com?home=<Datalist>DatalistPayload</Datalist>";
             //------------Execute Test---------------------------
-            var value = AbstractWebRequestHandler.SubmittedData.CleanupXml(BaseStr);
+            var value = SubmittedData.CleanupXml(BaseStr);
             //------------Assert Results-------------------------\
             var isNullOrEmpty = string.IsNullOrEmpty(value);
             Assert.IsFalse(isNullOrEmpty);
@@ -1931,8 +1932,8 @@ namespace Dev2.Tests.Runtime.WebServer
             string baseStr = "www.examlple.com?home=<Datalist><objResponse><BusinessEvent><Customer><Mandate json:Array=\"true\" xmlns:json=\"http://james.newtonking.com/projects/json\"><MandateId></MandateId></Mandate></Customer></BusinessEvent></objResponse></Datalist>";
             string baseStrEscaped = "www.examlple.com?home=<Datalist><objResponse><BusinessEvent><Customer><Mandate json:Array=\\\"true\\\" xmlns:json=\\\"http://james.newtonking.com/projects/json\\\"><MandateId></MandateId></Mandate></Customer></BusinessEvent></objResponse></Datalist>";
             //------------Execute Test---------------------------
-            var value = AbstractWebRequestHandler.SubmittedData.CleanupXml(baseStr);
-            var escapedValue = AbstractWebRequestHandler.SubmittedData.CleanupXml(baseStrEscaped);
+            var value = SubmittedData.CleanupXml(baseStr);
+            var escapedValue = SubmittedData.CleanupXml(baseStrEscaped);
             //------------Assert Results-------------------------\
             var expectedValue = "www.examlple.com?home=~XML~PERhdGFsaXN0PjxvYmpSZXNwb25zZT48QnVzaW5lc3NFdmVudD48Q3VzdG9tZXI+PE1hbmRhdGUganNvbjpBcnJheT0idHJ1ZSIgeG1sbnM6anNvbj0iaHR0cDovL2phbWVzLm5ld3RvbmtpbmcuY29tL3Byb2plY3RzL2pzb24iPjxNYW5kYXRlSWQ+PC9NYW5kYXRlSWQ+PC9NYW5kYXRlPjwvQ3VzdG9tZXI+PC9CdXNpbmVzc0V2ZW50Pjwvb2JqUmVzcG9uc2U+PC9EYXRhbGlzdD4=";
             Assert.AreEqual(value, escapedValue);
@@ -1953,7 +1954,7 @@ namespace Dev2.Tests.Runtime.WebServer
             var context = mock.Object;
 
             //------------Execute Test---------------------------
-            AbstractWebRequestHandler.SubmittedData.ExtractKeyValuePairForGetMethod(context, "");
+            SubmittedData.ExtractKeyValuePairForGetMethod(context, "");
 
             //------------Assert Results-------------------------
             mock.VerifyGet(communicationContext => communicationContext.Request.QueryString, Times.Once);
@@ -2663,10 +2664,6 @@ namespace Dev2.Tests.Runtime.WebServer
 
     internal class HttpContentHeadersStub : HttpHeaders
     {
-        public HttpContentHeadersStub()
-        {
-        }
-
         public HttpContentHeaders Headers { get; set; }
     }
 
@@ -2697,7 +2694,7 @@ namespace Dev2.Tests.Runtime.WebServer
         }
     }
 
-    class TestAbstractWebRequestDataObjectFactory : AbstractWebRequestHandler.IDataObjectFactory
+    class TestAbstractWebRequestDataObjectFactory : IDataObjectFactory
     {
         readonly IDSFDataObject _dataObject;
 
@@ -2711,7 +2708,7 @@ namespace Dev2.Tests.Runtime.WebServer
 
     class AbstractWebRequestHandlerMock : AbstractWebRequestHandler
     {
-        public AbstractWebRequestHandlerMock(AbstractWebRequestHandler.IDataObjectFactory dataObjectFactory, IAuthorizationService service, IResourceCatalog catalog, ITestCatalog testCatalog, ITestCoverageCatalog testCoverageCatalog, IServiceTestExecutor serviceTestExecutor, IWorkspaceRepository repository)
+        public AbstractWebRequestHandlerMock(IDataObjectFactory dataObjectFactory, IAuthorizationService service, IResourceCatalog catalog, ITestCatalog testCatalog, ITestCoverageCatalog testCoverageCatalog, IServiceTestExecutor serviceTestExecutor, IWorkspaceRepository repository)
             : base(catalog, testCatalog, testCoverageCatalog, serviceTestExecutor, repository, service, dataObjectFactory, new DefaultEsbChannelFactory(), new SecuritySettings())
         {
         }

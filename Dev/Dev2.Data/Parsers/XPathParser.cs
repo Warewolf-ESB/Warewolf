@@ -21,7 +21,6 @@ using org.xml.sax;
 using Saxon.Api;
 using Warewolf.Resource.Errors;
 
-
 namespace Dev2.Data.Parsers
 {
     public class XPathParser

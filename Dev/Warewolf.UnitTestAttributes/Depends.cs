@@ -147,24 +147,36 @@ namespace Warewolf.UnitTestAttributes
             _containerType = type;
             Container = new Container(_containerType);
             var retryCount = 0;
+            string foundPort;
             do
             {
                 SelectedHost = RigOpsHosts.ElementAt(retryCount);
-                using (var client = new TcpClient())
+                var portRetryCount = 0;
+                do
                 {
-                    try
+                    foundPort = Container.PossiblePorts.ElementAt(portRetryCount);
+                    using (var client = new TcpClient())
                     {
-                        client.Connect(SelectedHost, int.Parse(Container.Port));
-                        retryCount = RigOpsHosts.Count;
+                        try
+                        {
+                            client.Connect(SelectedHost, int.Parse(foundPort));
+                            retryCount = RigOpsHosts.Count;
+                            portRetryCount = Container.PossiblePorts.Length;
+                        }
+                        catch (SocketException)
+                        {
+                            if (foundPort == Container.PossiblePorts.Last()) 
+                            {
+                                retryCount++;
+                            }
+                            portRetryCount++;
+                        }
                     }
-                    catch (SocketException)
-                    {
-                        retryCount++;
-                    }
-                }
+                } while(portRetryCount < Container.PossiblePorts.Length);
             } while (retryCount < RigOpsHosts.Count);
 
             Container.IP = SelectedHost;
+            Container.Port = foundPort;
 
             if (!performSourceInjection) return;
             switch (_containerType)
@@ -194,40 +206,40 @@ namespace Warewolf.UnitTestAttributes
             }
         }
 
-        public static string GetBackupPort(ContainerType type)
+        public static string[] GetPossiblePorts(ContainerType type)
         {
             switch (type)
             {
                 case ContainerType.MSSQL:
-                    return "1433";
+                    return new[] {"1433"};
                 case ContainerType.CIRemote:
-                    return "3144";
+                    return new[] {"3144"};
                 case ContainerType.MySQL:
-                    return "3306";
+                    return new[] {"3306", "3307"};
                 case ContainerType.PostGreSQL:
-                    return "5433";
+                    return new[] {"5433"};
                 case ContainerType.RabbitMQ:
-                    return "5672";
+                    return new[] {"5672"};
                 case ContainerType.Redis:
-                    return "6379";
+                    return new[] {"6379", "56438"};
                 case ContainerType.AnonymousRedis:
-                    return "6380";
+                    return new[] {"6380", "6381"};
                 case ContainerType.AnonymousWarewolf:
-                    return "3148";
+                    return new[] {"3148"};
                 case ContainerType.Warewolf:
-                    return "3146";
+                    return new[] {"3146"};
                 case ContainerType.AnonymousElasticsearch:
-                    return "9200";
+                    return new[] {"9200", "9201"};
                 case ContainerType.Elasticsearch:
-                    return "9400";
+                    return new[] {"9400", "9401"};
                 case ContainerType.WebApi:
-                    return "8080";
+                    return new[] {"8080"};
                 case ContainerType.HTTPVerbsApi:
-                    return "9810";
+                    return new[] {"9810"};
                 case ContainerType.FTP:
-                    return "21";
+                    return new[] {"21"};
                 case ContainerType.FTPS:
-                    return "1002";
+                    return new[] {"1002"};
             }
             throw new ArgumentOutOfRangeException();
         }
@@ -414,7 +426,7 @@ namespace Warewolf.UnitTestAttributes
             {
                 pinger = new Ping();
                 PingReply reply = pinger.Send(nameOrAddress);
-                ipAddress = reply.Address.ToString();
+                ipAddress = reply?.Address.ToString();
             }
             catch (PingException)
             {
@@ -504,10 +516,11 @@ namespace Warewolf.UnitTestAttributes
     {
         public Container(Depends.ContainerType containerType)
         {
-            Port = Depends.GetBackupPort(containerType);
+            PossiblePorts = Depends.GetPossiblePorts(containerType);
         }
         public string ID { get; set; }
         public string IP { get; set; }
+        public string[] PossiblePorts { get; set; }
         public string Port { get; set; }
     }
 
@@ -521,8 +534,12 @@ namespace Warewolf.UnitTestAttributes
         protected override WebRequest GetWebRequest(Uri uri)
         {
             WebRequest w = base.GetWebRequest(uri);
-            w.Timeout = 10 * 60 * 1000;
-            return w;
+            if(w != null)
+            {
+                w.Timeout = 10 * 60 * 1000;
+                return w;
+            }
+            return null;
         }
     }
 }

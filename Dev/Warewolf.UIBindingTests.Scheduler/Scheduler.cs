@@ -1,4 +1,4 @@
-﻿/*
+/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
@@ -27,6 +27,7 @@ using System.Collections.Generic;
 namespace Warewolf.UIBindingTests.Scheduler
 {
     [TestClass]
+	[TestCategory("CannotParallelize")]
     public class Scheduler
     {
         [TestMethod]
