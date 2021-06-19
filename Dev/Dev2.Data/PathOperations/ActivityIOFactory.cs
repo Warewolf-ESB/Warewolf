@@ -19,7 +19,6 @@ using Dev2.Data.Interfaces;
 using Dev2.Data.Interfaces.Enums;
 using Warewolf.Resource.Errors;
 
-
 namespace Dev2.PathOperations
 
 {

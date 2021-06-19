@@ -500,10 +500,10 @@ where pn.nspname = 'public';
         {
             if (Resultscache.ContainsKey(resourceId))
             {
-                var removed = Resultscache.TryRemove(resourceId, out TextExpressionCompilerResults val);
+                var removed = Resultscache.TryRemove(resourceId, out _);
                 if (!removed)
                 {
-                    Resultscache.TryRemove(resourceId, out val);
+                    Resultscache.TryRemove(resourceId, out _);
                 }
             }
         }

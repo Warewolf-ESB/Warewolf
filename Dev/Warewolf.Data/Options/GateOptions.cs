@@ -22,10 +22,6 @@ namespace Warewolf.Data.Options
 {
     public class GateOptions : IOptionConvertParameter
     {
-        public GateOptions()
-        { }
-
-
         [DataValue(nameof(OnResumeBase.Resume))]
         [MultiDataProvider(typeof(Continue), typeof(EndWorkflow))]
         [OptionUX(nameof(OptionRadioButtons))]

@@ -12,8 +12,7 @@ namespace Dev2.Common.DateAndTime
         /// </summary>
         public static bool IsTextNumeric(string data, bool treatAsTime)
         {
-            int numericData;
-            return int.TryParse(data, NumberStyles.None, null, out numericData);
+            return int.TryParse(data, NumberStyles.None, null, out _);
         }
 
         /// <summary>
@@ -32,8 +31,7 @@ namespace Dev2.Common.DateAndTime
         public static bool IsTextTimeZone(string data, bool treatAsTime)
         {
             var lowerData = data.ToLower();
-            ITimeZoneTO timeZoneTo;
-            return DateTimeParser.TimeZones.TryGetValue(lowerData, out timeZoneTo);
+            return DateTimeParser.TimeZones.TryGetValue(lowerData, out _);
         }
 
         /// <summary>

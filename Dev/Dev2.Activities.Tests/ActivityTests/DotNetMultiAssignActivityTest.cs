@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -30,13 +30,6 @@ namespace Dev2.Tests.Activities.ActivityTests
     public class DotNetMultiAssignActivityTest : BaseActivityUnitTest
     {
         public TestContext TestContext { get; set; }
-
-        #region Additional test attributes
-
-
-        #endregion
-
-        #region MultiAssign Functionality Tests
 
         [TestMethod]
         [Timeout(60000)]
@@ -575,10 +568,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(expected, actual);
         }
 
-        #endregion MultiAssign Functionality Tests
-
-        #region Language Tests
-
         [TestMethod]
         [Timeout(60000)]
         public void StarToStar_Expected_AllValuesOverwrittenWithRecordSetFrom()
@@ -908,10 +897,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.IsTrue(activity1.Equals(activity2));
         }
 
-        #endregion Language Tests
-
-        #region Calculate Mode Tests
-
         [TestMethod]
         [Timeout(60000)]
         public void MutiAssign_CalculateMode_PrefixEncasing_Test()
@@ -1072,10 +1057,33 @@ namespace Dev2.Tests.Activities.ActivityTests
             var outputs = ob.GetDebugOutputs(env, 0);
             Assert.AreEqual("[[list(2).name]]", outputs[0].ResultsList[1].Variable);
         }
+        
+        [TestMethod]
+        [Timeout(60000)]
+        public void DsfDotNetMultiAssignActivity_RecordSetTypeEnsureLastErrorNoDuplicate()
+        {
+            var env = new ExecutionEnvironment();
+            env.AllErrors.Add("val1");
+            env.Assign("[[Errors().Message]]", "val1", 0);
 
-        #endregion Calculate Mode Tests
+            var data = new Mock<IDSFDataObject>();
+            data.Setup(o => o.Environment).Returns(() => env);
+            data.Setup(o => o.IsDebugMode()).Returns(() => true);
+            var ob = new DsfDotNetMultiAssignActivity
+            {
+                FieldsCollection = new List<ActivityDTO>
+                {
+                    new ActivityDTO("[[test]]","testing123",0)
+                },
+                OnErrorVariable = "[[Errors().Message]]"
+            };
+            ob.Execute(data.Object, 0);
+            
+            var privateObject = new PrivateObject(env);
+            var warewolfEnvironment = privateObject.GetField("_env") as DataStorage.WarewolfEnvironment;
 
-        #region ForEach Update/Get Inputs/Outputs
+            Assert.AreEqual(1, warewolfEnvironment?.RecordSets["Errors"].Data["Message"].Count);
+        }
 
         [TestMethod]
         [Timeout(60000)]
@@ -1251,11 +1259,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             }
         }
 
-
-        #endregion
-
-        #region Private Test Methods
-
         void SetupArguments(string currentDL, string testData, ObservableCollection<ActivityDTO> fieldCollection, string outputMapping = null)
         {
             if (outputMapping == null)
@@ -1275,9 +1278,5 @@ namespace Dev2.Tests.Activities.ActivityTests
             TestData = testData;
             CurrentDl = currentDL;
         }
-
-
-
-        #endregion
     }
 }

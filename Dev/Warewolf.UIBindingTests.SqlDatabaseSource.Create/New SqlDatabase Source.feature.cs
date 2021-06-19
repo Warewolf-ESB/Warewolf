@@ -46,6 +46,7 @@ namespace Warewolf.UIBindingTests.SqlDatabaseSource.Create
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner(null, 0);
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "New SqlDatabase Source", "\tIn order to avoid silly mistakes\r\n\tAs a math idiot\r\n\tI want to be told the sum o" +
                     "f two numbers\t", ProgrammingLanguage.CSharp, new string[] {
+                        "CannotParallelize",
                         "DbSource"});
             testRunner.OnFeatureStart(featureInfo);
         }
@@ -87,6 +88,7 @@ namespace Warewolf.UIBindingTests.SqlDatabaseSource.Create
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Creating New SQL Server DB Source as Windows Auth")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "New SqlDatabase Source")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("CannotParallelize")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DbSource")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("SQLDbSource")]
         public virtual void CreatingNewSQLServerDBSourceAsWindowsAuth()

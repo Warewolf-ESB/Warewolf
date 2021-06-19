@@ -24,7 +24,7 @@ namespace Dev2.Activities.Designers2.Email
 
         protected override IInputElement GetInitialFocusElement() => this;
 
-        public string ThePassword { get => ThePasswordBox.Password; set => ThePasswordBox.Password = value; }
+        public string ThePassword { get => ThePasswordBox.Text; set => ThePasswordBox.Text = value; }
 
         void OnLoaded(object sender, RoutedEventArgs routedEventArgs) => OnPasswordChanged(sender, routedEventArgs);
 

@@ -138,7 +138,7 @@ namespace Dev2.Tests
             //------------Setup for test--------------------------
             var tmpPath = Path.GetTempPath() + Guid.NewGuid();
 
-            mockDir.Setup(o => o.GetFileSystemEntries(It.IsAny<string>(), It.IsAny<string>(), SearchOption.TopDirectoryOnly)).Returns(new string[] {
+            mockDir.Setup(o => o.GetFileSystemEntries(It.IsAny<string>(), It.IsAny<string>(), SearchOption.TopDirectoryOnly)).Returns(new[] {
                 @"c:\somedir\some.txt",
                 @"c:\somedir\somedir",
                 @"c:\somedir\some1.txt",

@@ -27,11 +27,6 @@ namespace Dev2.Services.Security
     }
     public class SecuritySettings : ISecuritySettings
     {
-        public SecuritySettings()
-        {
-
-        }
-
         private readonly TimeSpan CacheTimeout = new TimeSpan(1, 0, 0);
 
         public static List<WindowsGroupPermission> DefaultPermissions => new List<WindowsGroupPermission>

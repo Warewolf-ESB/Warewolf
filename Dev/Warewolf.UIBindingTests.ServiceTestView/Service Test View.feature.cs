@@ -45,6 +45,7 @@ namespace Warewolf.UIBindingTests.ServiceTestViewModel
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner(null, 0);
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "ServiceTestView", "\tIn order to test workflows\r\n\tI want to test that the designer is readonly", ProgrammingLanguage.CSharp, new string[] {
+                        "CannotParallelize",
                         "ServiceTestView"});
             testRunner.OnFeatureStart(featureInfo);
         }
@@ -86,13 +87,14 @@ namespace Warewolf.UIBindingTests.ServiceTestViewModel
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("OpenNewservicetestview")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "ServiceTestView")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("CannotParallelize")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ServiceTestView")]
         public virtual void OpenNewservicetestview()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("OpenNewservicetestview", ((string[])(null)));
-#line 7
-this.ScenarioSetup(scenarioInfo);
 #line 8
+this.ScenarioSetup(scenarioInfo);
+#line 9
 testRunner.Given("I Open serviceTestview Then DesignSurface allow drop is false", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             this.ScenarioCleanup();
