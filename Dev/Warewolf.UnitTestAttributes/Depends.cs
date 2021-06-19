@@ -147,11 +147,11 @@ namespace Warewolf.UnitTestAttributes
             _containerType = type;
             Container = new Container(_containerType);
             var retryCount = 0;
-            var portRetryCount = 0;
             string foundPort;
             do
             {
                 SelectedHost = RigOpsHosts.ElementAt(retryCount);
+                var portRetryCount = 0;
                 do
                 {
                     foundPort = Container.PossiblePorts.ElementAt(portRetryCount);
@@ -168,12 +168,8 @@ namespace Warewolf.UnitTestAttributes
                             if (foundPort == Container.PossiblePorts.Last()) 
                             {
                                 retryCount++;
-                                portRetryCount = 0;
                             }
-                            else
-                            {
-                                portRetryCount++;
-                            }
+                            portRetryCount++;
                         }
                     }
                 } while(portRetryCount < Container.PossiblePorts.Length);
