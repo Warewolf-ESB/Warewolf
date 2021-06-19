@@ -37,7 +37,6 @@ using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Common.Wrappers;
 using Dev2.CustomControls.Progress;
 using Dev2.Diagnostics.Debug;
-using Dev2.Instrumentation;
 using Dev2.Studio.ActivityDesigners;
 using Dev2.Studio.Controller;
 using Dev2.Studio.Core.Views;
@@ -56,7 +55,7 @@ using Dev2.Studio.Diagnostics;
 using Dev2.Studio.ViewModels;
 using Dev2.Util;
 using Warewolf.MergeParser;
-using Dev2.Instrumentation.Factory;
+
 using Dev2.Studio.Utils;
 using System.Security.Claims;
 using Dev2.Studio.Interfaces;
@@ -105,9 +104,6 @@ namespace Dev2.Studio
         protected override void OnStartup(System.Windows.StartupEventArgs e)
         {
             CustomContainer.Register<IFieldAndPropertyMapper>(new FieldAndPropertyMapper());
-            CustomContainer.Register(ApplicationTrackerFactory.GetApplicationTrackerProvider());
-            var applicationTracker = CustomContainer.Get<IApplicationTracker>();
-            applicationTracker?.EnableApplicationTracker(VersionInfo.FetchVersionInfo(), VersionInfo.FetchInformationalVersion(), @"Warewolf" + $" ({ClaimsPrincipal.Current.Identity.Name})".ToUpperInvariant());
 
             ShutdownMode = System.Windows.ShutdownMode.OnMainWindowClose;
 
@@ -319,11 +315,6 @@ namespace Dev2.Studio
 
         protected override void OnExit(ExitEventArgs e)
         {
-            var applicationTracker = CustomContainer.Get<IApplicationTracker>();
-
-            //Stop the action tracking
-            applicationTracker?.DisableApplicationTracker();
-
             SplashView.CloseSplash(true);
 
             // this is already handled ;)
@@ -386,8 +377,6 @@ namespace Dev2.Studio
                 try
                 {
                     Dev2Logger.Error("Unhandled Exception", e.Exception, GlobalConstants.WarewolfError);
-                    var applicationTracker = CustomContainer.Get<IApplicationTracker>();
-                    applicationTracker?.TrackCustomEvent(Warewolf.Studio.Resources.Languages.TrackEventExceptions.EventCategory, Warewolf.Studio.Resources.Languages.TrackEventExceptions.UnhandledException, "Method: OnApplicationDispatcherUnhandledException Exception: " + e.Exception);
                     if (_appExceptionHandler != null)
                     {
                         e.Handled = HasShutdownStarted || _appExceptionHandler.Handle(e.Exception);

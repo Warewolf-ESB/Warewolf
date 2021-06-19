@@ -37,7 +37,6 @@ using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Interfaces;
 using DelegateCommand = Dev2.Runtime.Configuration.ViewModels.Base.DelegateCommand;
-using Dev2.Instrumentation;
 
 namespace Dev2.Studio.ViewModels.Diagnostics
 {
@@ -121,13 +120,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
         void AddNewTest(IEventAggregator eventPublisher)
         {
-            var applicationTracker = CustomContainer.Get<IApplicationTracker>();
-            if (applicationTracker != null)
-            {
-                applicationTracker.TrackEvent(Warewolf.Studio.Resources.Languages.TrackEventMenu.EventCategory,
-                                                Warewolf.Studio.Resources.Languages.TrackEventMenu.CreateNewTest);
-            }
-                var newTestFromDebugMessage = new NewTestFromDebugMessage
+            var newTestFromDebugMessage = new NewTestFromDebugMessage
             {
                 ResourceID = ResourceID,
                 ResourceModel = _contextualResourceModel,

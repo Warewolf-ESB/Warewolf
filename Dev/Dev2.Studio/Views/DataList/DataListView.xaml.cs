@@ -78,11 +78,6 @@ namespace Dev2.Studio.Views.DataList
                 var itemThatChanged = txtbox.DataContext as IDataListItemModel;
                 vm.RemoveBlankRows(itemThatChanged);
                 vm.ValidateVariableNamesForUI(itemThatChanged);
-
-                if (vm.HasErrors && vm.DataListErrorMessage.Length != 0)
-                {
-                    vm.LogCustomTrackerEvent(TrackEventVariables.EventCategory, TrackEventVariables.IncorrectSyntax, "Variable Textbox input - " + vm.DataListErrorMessage);
-                }
             }
         }
 
@@ -133,13 +128,5 @@ namespace Dev2.Studio.Views.DataList
 
         #endregion
 
-        private void SearchTextBox_LostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
-        {
-            if (sender is TextBox textBoxSearch)
-            {
-                var vm = DataContext as IDataListViewModel;
-                vm.LogCustomTrackerEvent(TrackEventVariables.EventCategory, TrackEventVariables.VariablesSearch, textBoxSearch.Text);
-            }
-        }
     }
 }

@@ -20,6 +20,7 @@ using Dev2.Common.Wrappers;
 using Dev2.Data.Interfaces;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.PathOperations.Extension;
+using Dev2.Data.Util;
 using Warewolf.Resource.Errors;
 
 namespace Dev2.PathOperations
@@ -41,7 +42,7 @@ namespace Dev2.PathOperations
         readonly IIonicZipFileWrapperFactory _zipFileFactory;
 
         public Dev2ActivityIOBroker()
-            : this(new FileWrapper(), new Data.Util.CommonDataUtils())
+            : this(new FileWrapper(), new CommonDataUtils())
         {
         }
 
@@ -225,22 +226,20 @@ namespace Dev2.PathOperations
                     {
                         return CopyRequiresLocalTmpStorage(src, dst, args);
                     }
-                    else
+
+                    var sourceFile = _fileWrapper.Info(src.IOPath.Path);
+                    if (dst.PathIs(dst.IOPath) == enPathType.Directory)
                     {
-                        var sourceFile = _fileWrapper.Info(src.IOPath.Path);
-                        if (dst.PathIs(dst.IOPath) == enPathType.Directory)
-                        {
-                            dst.IOPath.Path = dst.Combine(sourceFile.Name);
-                        }
+                        dst.IOPath.Path = dst.Combine(sourceFile.Name);
+                    }
 
-                        using (var s = src.Get(src.IOPath, _filesToDelete))
+                    using (var s = src.Get(src.IOPath, _filesToDelete))
+                    {
+                        if (sourceFile.Directory != null)
                         {
-                            if (sourceFile.Directory != null)
-                            {
-                                var result = dst.Put(s, dst.IOPath, args, sourceFile.Directory.ToString(), _filesToDelete);
+                            var result = dst.Put(s, dst.IOPath, args, sourceFile.Directory.ToString(), _filesToDelete);
 
-                                return result == -1 ? ActivityIOBrokerBaseDriver.ResultBad : ActivityIOBrokerBaseDriver.ResultOk;
-                            }
+                            return result == -1 ? ActivityIOBrokerBaseDriver.ResultBad : ActivityIOBrokerBaseDriver.ResultOk;
                         }
                     }
                     return ActivityIOBrokerBaseDriver.ResultBad;

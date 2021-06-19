@@ -9,15 +9,15 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
+using System.Linq;
+using System.Xml.Linq;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Runtime.ServiceModel.Data;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using System;
-using System.Linq;
-using System.Xml.Linq;
 using Warewolf.Security.Encryption;
 
 namespace Dev2.Data.ServiceModel
@@ -79,8 +79,6 @@ namespace Dev2.Data.ServiceModel
                         break;
                     case "password":
                         Password = p[1];
-                        break;
-                    default:
                         break;
                 }
             }
@@ -146,7 +144,7 @@ namespace Dev2.Data.ServiceModel
         {
             if (obj is Connection connection)
             {
-                return this.Equals(connection);
+                return Equals(connection);
 
             }
             return false;
