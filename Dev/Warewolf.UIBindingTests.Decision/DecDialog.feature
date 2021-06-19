@@ -1,4 +1,5 @@
-﻿@DecDialog
+@CannotParallelize
+@DecDialog
 Feature: DecDialog
 	In order to create a decision
 	As a Warewolf User

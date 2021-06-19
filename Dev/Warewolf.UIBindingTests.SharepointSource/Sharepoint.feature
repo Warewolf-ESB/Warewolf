@@ -1,4 +1,5 @@
-﻿@SharepointSource
+@CannotParallelize
+@SharepointSource
 Feature: Sharepoint
 	In order to connect with Sharepoint Online
 	As a Warewolf User

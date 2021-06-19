@@ -60,7 +60,6 @@ using Moq;
 using Dev2.ViewModels;
 using Warewolf.Studio.ViewModels;
 using Dev2.Common.Interfaces.Studio.Controller;
-using Dev2.Instrumentation;
 using Dev2.Triggers;
 using Dev2.Dialogs;
 using Warewolf.Data;
@@ -1186,7 +1185,6 @@ namespace Dev2.Core.Tests
 
             _shellViewModel.ShowStartPageAsync();
             versionChecker.Verify(v => v.CommunityPageUri);
-            _applicationTrackerMock.Verify(controller => controller.TrackEvent(It.IsAny<string>(), It.IsAny<string>()), Times.AtLeastOnce());
         }
 
         [TestMethod]

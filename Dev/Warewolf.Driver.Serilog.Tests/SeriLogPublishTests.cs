@@ -212,11 +212,11 @@ namespace Warewolf.Driver.Serilog.Tests
             var hostName = "http://" + dependency.Container.IP;
             var loggerSource = new SerilogElasticsearchSource
             {
-                Port = DefaultPort,
+                Port = dependency.Container.Port,
                 HostName = hostName,
                 SearchIndex =  "warewolftestlogs"
             };
-            var uri = new Uri(hostName + ":" + DefaultPort);
+            var uri = new Uri(hostName + ":" + dependency.Container.Port);
             var logger = new LoggerConfiguration()
                 .MinimumLevel.Verbose()
                 .WriteTo.Sink(new ElasticsearchSink(new ElasticsearchSinkOptions(uri)

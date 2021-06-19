@@ -10,12 +10,10 @@
 
 
 using Dev2.Common;
-using Dev2.Data.Util;
 using Dev2.Interfaces;
 using Dev2.Web;
-using Newtonsoft.Json;
 using System.Net;
-using Warewolf.Data.Serializers;
+using Dev2.Runtime.WebServer.Executor;
 using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.WebServer
@@ -104,24 +102,6 @@ namespace Dev2.Runtime.WebServer
                         Message = message
                     }.ToJSON();
             }
-        }
-    }
-
-    public class Error
-    {
-        public int Status { get; set; }
-        public string Title { get; set; }
-        public string Message { get; set; }
-
-        public string ToJSON(Formatting indent = Formatting.Indented)
-        {
-            return JsonConvert.SerializeObject(new { Error = this }, indent);
-        }
-
-        public string ToXML(bool scrub = true)
-        {
-            var xml = this.SerializeToXml();
-            return scrub ? Scrubber.Scrub(xml, ScrubType.Xml) : xml;
         }
     }
 }

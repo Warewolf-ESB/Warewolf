@@ -19,7 +19,6 @@ using Dev2;
 using Dev2.Studio.Interfaces;
 using Warewolf.Studio.ViewModels;
 using Dev2.Common.Interfaces.Studio.Controller;
-using Dev2.Instrumentation;
 using Warewolf.Studio.Resources.Languages;
 
 namespace Warewolf.Studio.Views
@@ -623,15 +622,6 @@ namespace Warewolf.Studio.Views
             var popupController = CustomContainer.Get<IPopupController>();
             popupController?.ShowDeployNoResourcesToDeploy(header, description);
             e.Handled = true;
-        }
-
-        private void SearchTextBox_LostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
-        {
-            var _applicationTracker = CustomContainer.Get<IApplicationTracker>();
-            if (sender is TextBox searchText)
-            {
-                _applicationTracker?.TrackCustomEvent(TrackEventExplorer.EventCategory, TrackEventExplorer.ExplorerSearch, searchText.Text);
-            }
         }
     }
 }

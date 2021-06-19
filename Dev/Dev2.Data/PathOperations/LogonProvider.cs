@@ -8,13 +8,13 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using Dev2.Common;
-using Dev2.Data.Interfaces;
-using Dev2.PathOperations;
 using System;
 using System.Runtime.InteropServices;
-using Warewolf.Resource.Errors;
+using Dev2.Common;
+using Dev2.Data.Interfaces;
 using Dev2.Data.Util;
+using Dev2.PathOperations;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Data.PathOperations
 {

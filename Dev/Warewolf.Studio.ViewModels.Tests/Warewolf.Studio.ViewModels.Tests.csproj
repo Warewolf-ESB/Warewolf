@@ -199,10 +199,6 @@
       <Project>{615EAE6D-040C-4364-B708-63DC8755CD4F}</Project>
       <Name>Dev2.Infrastructure</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Dev2.Instrumentation\Dev2.Instrumentation.csproj">
-      <Project>{52F26184-CB50-4D82-B8A2-83F73D2B5011}</Project>
-      <Name>Dev2.Instrumentation</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Dev2.Runtime.Services\Dev2.Runtime.Services.csproj">
       <Project>{b48ffdf5-6b1b-4279-a93f-2913b9d3be83}</Project>
       <Name>Dev2.Runtime.Services</Name>

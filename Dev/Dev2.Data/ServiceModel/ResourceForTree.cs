@@ -12,7 +12,6 @@
 using System;
 using Dev2.Common.Interfaces.Data;
 
-
 namespace Dev2.Runtime.ServiceModel.Data
 {
     public class ResourceForTree : IComparable<ResourceForTree>, IResourceForTree

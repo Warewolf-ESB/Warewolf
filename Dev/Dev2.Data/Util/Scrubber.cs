@@ -10,13 +10,11 @@
 */
 
 using System;
-using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Common.Common;
-using Dev2.Common.ExtMethods;
 
 namespace Dev2.Data.Util
 {
@@ -57,8 +55,6 @@ namespace Dev2.Data.Util
                     return ScrubXml(text);
                 case ScrubType.JSon:
                     return ScrubJson(text);
-                default:
-                    break;
             }
             return text;
         }

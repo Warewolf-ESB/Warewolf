@@ -17,7 +17,6 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Core.Tests.Environments;
-using Dev2.Instrumentation;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Models;
 using Dev2.Studio.Interfaces;
@@ -46,8 +45,6 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         ConnectControlViewModel _target;
 
-        private Mock<IApplicationTracker> _applicationTrackerMock;
-
         [TestInitialize]
         public void TestInitialize()
         {
@@ -74,10 +71,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             });
             serverRepo.Setup(repository => repository.Get(It.IsAny<Guid>())).Returns(_serverMock.Object);
             CustomContainer.Register(serverRepo.Object);
-
-            _applicationTrackerMock = new Mock<IApplicationTracker>();
-            _applicationTrackerMock.Setup(controller => controller.TrackEvent(It.IsAny<string>(), It.IsAny<string>()));
-            CustomContainer.Register(_applicationTrackerMock.Object);
 
             _target = new ConnectControlViewModel(_serverMock.Object, _eventAggregatorMock.Object) { ShouldUpdateActiveEnvironment = true };
             _target.ShouldUpdateActiveEnvironment = true;
@@ -136,52 +129,6 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //act
             _target.EditConnectionCommand.Execute(null);
-        }
-
-        [TestMethod]
-        [Timeout(100)]
-        public void TestShouldTrackSelectedConnectionWarewolfStore()
-        {
-            var uri = new Uri("https://store.warewolf.io:3143/dsf");
-            var mockEnvironmentConnection = new Mock<IEnvironmentConnection>();
-
-            mockEnvironmentConnection.Setup(a => a.AppServerUri).Returns(uri);
-            mockEnvironmentConnection.Setup(a => a.AuthenticationType).Returns(Dev2.Runtime.ServiceModel.Data.AuthenticationType.Public);
-            mockEnvironmentConnection.Setup(a => a.WebServerUri).Returns(uri);
-            mockEnvironmentConnection.Setup(a => a.ID).Returns(Guid.Empty);
-
-            var newSelectedConnection = new Mock<IServer>();
-            var newSelectedConnectionEnvironmentId = Guid.NewGuid();
-            newSelectedConnection.SetupGet(it => it.DisplayName).Returns("Warewolf Store");
-            newSelectedConnection.SetupGet(it => it.EnvironmentID).Returns(newSelectedConnectionEnvironmentId);
-            newSelectedConnection.SetupGet(it => it.HasLoaded).Returns(true);
-            newSelectedConnection.SetupGet(it => it.IsConnected).Returns(true);
-            newSelectedConnection.SetupGet(it => it.Connection).Returns(mockEnvironmentConnection.Object);
-            //arrange
-            _target.SelectedConnection = newSelectedConnection.Object;
-
-            //act
-            _applicationTrackerMock.Verify(controller => controller.TrackEvent(It.IsAny<string>(), It.IsAny<string>()), Times.AtLeastOnce());
-        }
-
-        [TestMethod]
-        [Timeout(100)]
-        public void TestShouldNotTrackSelectedConnectionWarewolfStore()
-        {
-            var mockEnvironmentConnection = SetupMockConnection();
-
-            var newSelectedConnection = new Mock<IServer>();
-            var newSelectedConnectionEnvironmentId = Guid.NewGuid();
-            newSelectedConnection.SetupGet(it => it.DisplayName).Returns("Other Server");
-            newSelectedConnection.SetupGet(it => it.EnvironmentID).Returns(newSelectedConnectionEnvironmentId);
-            newSelectedConnection.SetupGet(it => it.HasLoaded).Returns(true);
-            newSelectedConnection.SetupGet(it => it.IsConnected).Returns(true);
-            newSelectedConnection.SetupGet(it => it.Connection).Returns(mockEnvironmentConnection.Object);
-            //arrange
-            _target.SelectedConnection = newSelectedConnection.Object;
-
-            //act
-            _applicationTrackerMock.Verify(controller => controller.TrackEvent(It.IsAny<string>(), It.IsAny<string>()), Times.Never);
         }
 
         [TestMethod]
