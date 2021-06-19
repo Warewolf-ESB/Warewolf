@@ -9,7 +9,6 @@
 */
 
 using System;
-using System.Security.Claims;
 using System.Security.Principal;
 using Dev2.Data.Interfaces;
 using Dev2.PathOperations;

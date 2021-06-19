@@ -41,8 +41,6 @@ namespace Dev2.Data.Operations
                 case "All Occurrences":
                     occurrence = enIndexFinderOccurrence.AllOccurrences;
                     break;
-                default:
-                    break;
             }
 
             switch (direction)
@@ -53,8 +51,6 @@ namespace Dev2.Data.Operations
 
                 case "Right to Left":
                     dir = enIndexFinderDirection.RightToLeft;
-                    break;
-                default:
                     break;
             }
 

@@ -17,7 +17,6 @@ using Dev2.Common.Interfaces;
 using Dev2.Data.Interfaces;
 using Dev2.Data.TO;
 
-
 namespace Dev2.DataList.Contract
 {
     class DataListIntellisenseBuilder
