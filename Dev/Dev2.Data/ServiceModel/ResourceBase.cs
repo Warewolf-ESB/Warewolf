@@ -24,13 +24,10 @@ using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
 using Dev2.Common.Interfaces.Security;
-using Dev2.Common.Interfaces.Versioning;
 using Dev2.Providers.Errors;
 using Newtonsoft.Json;
 using Warewolf.Data;
 using Warewolf.Resource.Errors;
-
-
 
 namespace Dev2.Runtime.ServiceModel.Data
 {
@@ -457,8 +454,6 @@ namespace Dev2.Runtime.ServiceModel.Data
                         return "PluginService";
                     case enActionType.Workflow:
                         return "WorkflowService";
-                    default:
-                        break;
                 }
             }
             return "Unknown";

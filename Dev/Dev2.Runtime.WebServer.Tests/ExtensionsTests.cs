@@ -16,6 +16,7 @@ using System.Net;
 using System.Net.Http;
 using System.Security.Principal;
 using System.Web.Http.Controllers;
+using Dev2.Runtime.WebServer.Executor;
 
 namespace Dev2.Runtime.WebServer.Tests
 {

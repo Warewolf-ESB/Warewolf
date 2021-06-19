@@ -87,7 +87,7 @@ namespace Dev2.Activities.RedisCounter
                 new StateVariable
                 {
                     Name = nameof(StepSize),
-                    Value = StepSize.ToString(),
+                    Value = StepSize,
                     Type = StateVariable.StateType.Input
                 },
                  new StateVariable

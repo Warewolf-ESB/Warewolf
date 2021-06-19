@@ -1,4 +1,4 @@
-﻿/*
+/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
@@ -133,24 +133,10 @@ namespace Dev2.Tests.Runtime.Services
             };
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            try
-            {
-                var jsonResult = testRedisSource.Execute(values, null);
-                var result = serializer.Deserialize<ExecuteMessage>(jsonResult);
-                //---------------Test Result -----------------------
-                Assert.IsFalse(result.HasError, result.Message.ToString());
-            }
-            catch (Exception e)
-            {
-                if (e.Message.Contains("could not connect to redis Instance"))
-                {
-                    Assert.Inconclusive(e.Message);
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            var jsonResult = testRedisSource.Execute(values, null);
+            var result = serializer.Deserialize<ExecuteMessage>(jsonResult);
+            //---------------Test Result -----------------------
+            Assert.IsFalse(result.HasError, result.Message.ToString());
         }
     }
 }
