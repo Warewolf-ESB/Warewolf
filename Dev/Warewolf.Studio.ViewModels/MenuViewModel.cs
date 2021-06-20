@@ -1,4 +1,4 @@
-﻿#pragma warning disable
+#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
@@ -19,7 +19,6 @@ using FontAwesome.WPF;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
 using Dev2;
-using Dev2.Instrumentation;
 
 namespace Warewolf.Studio.ViewModels
 {
