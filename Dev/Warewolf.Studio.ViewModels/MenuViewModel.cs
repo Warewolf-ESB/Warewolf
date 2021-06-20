@@ -55,9 +55,6 @@ namespace Warewolf.Studio.ViewModels
             CheckForNewVersionCommand = new DelegateCommand(_viewModel.DisplayDialogForNewVersion);
             SupportCommand = new DelegateCommand(() =>
             {
-                var applicationTracker = CustomContainer.Get<IApplicationTracker>();
-                applicationTracker?.TrackEvent(Resources.Languages.TrackEventHelp.EventCategory,
-                    Resources.Languages.TrackEventHelp.Help);
                 Process.Start(Resources.Languages.HelpText.WarewolfHelpURL);
             });
 
