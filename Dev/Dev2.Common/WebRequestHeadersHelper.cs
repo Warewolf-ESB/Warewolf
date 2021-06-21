@@ -40,7 +40,7 @@ namespace Dev2.Common
 
         public bool IsFormUrlEncodedContentTypeExist => FormUrlEncodedContentType != null;
 
-        public bool IsFormUrlEncodedContentTypeIncomplete => IsFormUrlEncodedContentTypeExist && !FormUrlEncodedContentType.Value.Contains("boundary=");
+        public bool IsFormUrlEncodedContentTypeIncomplete => IsFormUrlEncodedContentTypeExist;
 
         public INameValue FormDataContentType
         {
@@ -75,7 +75,7 @@ namespace Dev2.Common
 
         private static string GenerateFormUrlEncodedContentType()
         {
-            return FORMURLENCODED + "; boundary=" + $"----------{Guid.NewGuid():N}";
+            return FORMURLENCODED;
         }
 
         private void AppendBoundaryToFormDataContentType()
