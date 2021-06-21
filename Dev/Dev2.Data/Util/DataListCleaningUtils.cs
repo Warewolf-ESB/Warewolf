@@ -15,7 +15,6 @@ using Dev2.Data.Interfaces;
 using Dev2.Data.Parsers;
 using Dev2.Data.Util;
 
-
 namespace Dev2.DataList.Contract
 {
     public static class DataListCleaningUtils

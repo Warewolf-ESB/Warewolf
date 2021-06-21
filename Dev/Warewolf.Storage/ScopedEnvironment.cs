@@ -205,6 +205,11 @@ namespace Warewolf.Storage
             _inner.AssignJson(value, update);
         }
 
+        public void AssignXmlToJson(IAssignValue assignValue, int update)
+        {
+            _inner.AssignXmlToJson(assignValue, update);
+        }
+
         public JContainer EvalJContainer(string exp) => _inner.EvalJContainer(exp);
 
         public List<string> GetIndexes(string exp) => _inner.GetIndexes(exp);

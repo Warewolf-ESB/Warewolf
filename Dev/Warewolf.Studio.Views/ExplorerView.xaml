@@ -69,7 +69,6 @@
                 <customControls:SearchTextBox x:Name="SearchTextBox"
                                               Grid.Row="0"
                                               Grid.Column="0"
-											  LostKeyboardFocus="SearchTextBox_LostKeyboardFocus"
                                               Margin="{StaticResource ControlBorderTopRight}"
                                               HorizontalAlignment="Stretch"
                                               ClearSearchCommand="{Binding ClearSearchTextCommand}"

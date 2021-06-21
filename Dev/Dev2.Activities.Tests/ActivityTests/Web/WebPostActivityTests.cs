@@ -1086,6 +1086,68 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(WebPostActivity))]
+        public void WebPostActivity_ExecutionImpl_ResponseManager_PushResponseIntoEnvironment_GivenXmlResponse_MappedToJsonObject_ShouldSucess()
+        {
+            //-----------------------Arrange-------------------------
+            const string xml = "<Messanger><Message>xml response from the request</Message></Messanger>";
+            var response = Convert.ToBase64String(xml.ToBytesArray());
+            const string objName = "[[@objName]]";
+
+            var environment = new ExecutionEnvironment();
+
+            var mockEsbChannel = new Mock<IEsbChannel>();
+            var mockDSFDataObject = new Mock<IDSFDataObject>();
+            var mockExecutionEnvironment = new Mock<IExecutionEnvironment>();
+
+            var errorResultTO = new ErrorResultTO();
+
+            using (var service = new WebService(XmlResource.Fetch("WebService")) { RequestResponse = response })
+            {
+                mockDSFDataObject.Setup(o => o.Environment).Returns(environment);
+                mockDSFDataObject.Setup(o => o.EsbChannel).Returns(new Mock<IEsbChannel>().Object);
+
+                var dsfWebGetActivity = new TestWebPostActivity
+                {
+                    ResourceCatalog = new Mock<IResourceCatalog>().Object,
+                    OutputDescription = service.GetOutputDescription(),
+                    ResourceID = InArgument<Guid>.FromValue(Guid.Empty),
+                    QueryString = "test Query",
+                    Headers = new List<INameValue>(),
+                    ResponseFromWeb = response,
+                    IsObject = true,
+                    ObjectName = objName,
+                    Outputs = new List<IServiceOutputMapping>
+                    {
+                    }
+                };
+                //-----------------------Act-----------------------------
+                dsfWebGetActivity.TestExecutionImpl(mockEsbChannel.Object, mockDSFDataObject.Object, "Test Inputs", "Test Outputs", out errorResultTO, 0);
+                //-----------------------Assert--------------------------
+                Assert.IsFalse(errorResultTO.HasErrors());
+
+                //assert first DataSourceShapes
+                var resourceManager = dsfWebGetActivity.ResponseManager;
+                var outputDescription = resourceManager.OutputDescription;
+                var dataShapes = outputDescription.DataSourceShapes;
+                var paths = dataShapes.First().Paths;
+                Assert.IsNotNull(outputDescription);
+                Assert.AreEqual("Messanger.Message", paths.First().ActualPath);
+                Assert.AreEqual("Messanger.Message", paths.First().DisplayPath);
+                Assert.AreEqual(string.Empty, paths.First().OutputExpression);
+                Assert.AreEqual("xml response from the request", paths.First().SampleData);
+
+                //assert execution environment
+                var envirVariable = environment.Eval(objName, 0);
+                var ress = envirVariable as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
+                Assert.IsNotNull(envirVariable);
+                Assert.IsTrue(ress.Item.IsNothing, "Item should Not contain the recset mapped to the messanger key");
+            }
+        }
+
+        [TestMethod]
+        [Timeout(60000)]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(WebPostActivity))]
         public void WebPostActivity_ExecutionImpl_Given_PostData_With_EnvironmentVariable_NotExist_And_ShouldThrow_True_ShouldThrow()
         {
             //-----------------------Arrange-------------------------

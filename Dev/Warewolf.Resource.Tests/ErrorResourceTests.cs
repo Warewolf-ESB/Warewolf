@@ -131,6 +131,7 @@ namespace Warewolf.Resource.Tests
             Assert.AreEqual("Error connecting to SFTP location {0}.", ErrorResource.ErrorConnectingToSFTP);
             Assert.AreEqual("The following error occurred while executing the cancel callback '{0}'.", ErrorResource.ErrorDuringCancelCallback);
             Assert.AreEqual("The following error occurred while executing the save callback '{0}'.", ErrorResource.ErrorDuringSaveCallback);
+            Assert.AreEqual("The following error occurred while executing the duplicate folder callback '{0}'.", ErrorResource.ErrorDuringDuplicateFolderCallback);
             Assert.AreEqual("Error enumerating directory.", ErrorResource.ErrorEnumeratingDirectory);
             Assert.AreEqual("Error getting resource definition for: {0}", ErrorResource.ErrorGettingResourceDefinition);
             Assert.AreEqual("Error getting resources", ErrorResource.ErrorGettingResources);

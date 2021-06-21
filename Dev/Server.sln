@@ -57,8 +57,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dev2.Services.Sql", "Dev2.S
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dev2.Services.Execution", "Dev2.Services.Execution\Dev2.Services.Execution.csproj", "{019A92B9-9209-4930-BC96-381CB8B1C0EA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dev2.Instrumentation", "Dev2.Instrumentation\Dev2.Instrumentation.csproj", "{52F26184-CB50-4D82-B8A2-83F73D2B5011}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dev2.ScheduleExecutor", "Dev2.ScheduleExecutor\Dev2.ScheduleExecutor.csproj", "{6858EA8E-1F83-423C-8F03-260D836C6EDE}"
 	ProjectSection(ProjectDependencies) = postProject
 		{87AEFD04-29F3-45B6-A7C6-4161F9190876} = {87AEFD04-29F3-45B6-A7C6-4161F9190876}
@@ -170,8 +168,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dev2.Activities.Tests", "Dev2.Activities.Tests\Dev2.Activities.Tests.csproj", "{2A8088A6-8F8D-42FD-B877-D809C494C561}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dev2.Activities.Specs", "Dev2.Activities.Specs\Dev2.Activities.Specs.csproj", "{A03004BE-79B5-47AF-88EF-112197619A5F}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dev2.Instrumentation.Specs", "Dev2.Instrumentation.Specs\Dev2.Instrumentation.Specs.csproj", "{6EBD904D-C168-40CE-828D-9B987F3CF591}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Security.Specs", "Warewolf.Security.Specs\Warewolf.Security.Specs.csproj", "{0854EEF7-0DC3-45D7-9C81-DF5B44FCE9C1}"
 EndProject

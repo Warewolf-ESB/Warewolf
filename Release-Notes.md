@@ -1,3 +1,10 @@
+18 June 2021
+================
+Enhancements
+----------------
+Post
+- XML web response can now be converted into JSON object.
+
 11 June 2021
 ================
 
@@ -5,7 +12,7 @@ Bug Fixes
 -----------
 - The Studio splash page no longer shows "Server Unavailable" and starts up correctly.
 - There are no longer duplicates in the Errors().Message recordset
-
+- Improved Performance and Logging on Duplicate Folder functionality.
 
 28 May 2021
 ================

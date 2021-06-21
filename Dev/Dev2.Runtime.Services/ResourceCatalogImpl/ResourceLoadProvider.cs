@@ -635,21 +635,16 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             {
                 return contents;
             }
-
-            // Open the file with the file share option of read. This will ensure that if the file is opened for write while this read operation
-            // is happening the wite will fail.
-            using (FileStream fs = new FileStream(resource.FilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+            
+            using (StreamReader sr = new StreamReader(resource.FilePath))
             {
-                using (StreamReader sr = new StreamReader(fs))
+                while (!sr.EndOfStream)
                 {
-                    while (!sr.EndOfStream)
+                    var readLine = sr.ReadLine();
+                    if (!string.IsNullOrEmpty(readLine))
                     {
-                        var readLine = sr.ReadLine();
-                        if (!string.IsNullOrEmpty(readLine))
-                        {
-                            contents.Append(readLine);
-                            contents.Append(Environment.NewLine);
-                        }
+                        contents.Append(readLine);
+                        contents.Append(Environment.NewLine);
                     }
                 }
             }
