@@ -203,6 +203,10 @@ namespace Dev2.Activities
                 {
                     var headersHelper = new WebRequestHeadersHelper(notEvaluatedHeaders: Headers, evaluatedHeaders: head);
                     head = headersHelper.CalculateFormDataContentType();
+                }else if(IsUrlEncodedChecked)
+                {
+                    var headersHelper = new WebRequestHeadersHelper(notEvaluatedHeaders: Headers, evaluatedHeaders: head);
+                    head = headersHelper.CalculateUrlEncodedContentType();
                 }
             }
             var query = string.Empty;

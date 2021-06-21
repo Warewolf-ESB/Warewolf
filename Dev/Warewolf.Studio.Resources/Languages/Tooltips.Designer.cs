@@ -2807,6 +2807,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Check this to use application/x-www-form-urlencoded as your request payload..
+        /// </summary>
+        public static string ManageWebServiceRequestUrlEncodedTooltip {
+            get {
+                return ResourceManager.GetString("ManageWebServiceRequestUrlEncodedTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select the webservice host you want to use.
         /// </summary>
         public static string ManageWebServiceSourcesTooltip {
