@@ -384,6 +384,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Licensing", "Warew
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Licencing.Tests", "Warewolf.Licencing.Tests\Warewolf.Licencing.Tests.csproj", "{89949C08-1F67-40CE-80DE-23F9526AC6F3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Studio.CustomControls.Tests", "Warewolf.Studio.CustomControls.Tests\Warewolf.Studio.CustomControls.Tests.csproj", "{EEDC7A07-34BB-49B8-AB14-AD43613EC956}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -1459,6 +1461,14 @@ Global
 		{89949C08-1F67-40CE-80DE-23F9526AC6F3}.Debug|x86.Build.0 = Debug|Any CPU
 		{89949C08-1F67-40CE-80DE-23F9526AC6F3}.Release|Any CPU.ActiveCfg = Debug|Any CPU
 		{89949C08-1F67-40CE-80DE-23F9526AC6F3}.Release|x86.ActiveCfg = Debug|Any CPU
+		{EEDC7A07-34BB-49B8-AB14-AD43613EC956}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EEDC7A07-34BB-49B8-AB14-AD43613EC956}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EEDC7A07-34BB-49B8-AB14-AD43613EC956}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{EEDC7A07-34BB-49B8-AB14-AD43613EC956}.Debug|x86.Build.0 = Debug|Any CPU
+		{EEDC7A07-34BB-49B8-AB14-AD43613EC956}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EEDC7A07-34BB-49B8-AB14-AD43613EC956}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EEDC7A07-34BB-49B8-AB14-AD43613EC956}.Release|x86.ActiveCfg = Release|Any CPU
+		{EEDC7A07-34BB-49B8-AB14-AD43613EC956}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
