@@ -1159,7 +1159,6 @@ namespace Dev2.Core.Tests
             return mockSubscriptionData;
         }
 
-        // PBI 9512 - 2013.06.07 - TWR: added
         [TestMethod]
         [TestCategory("ShowStartPage")]
         public void MainViewModelShowStartPageExpectedGetsLatestFirst()
