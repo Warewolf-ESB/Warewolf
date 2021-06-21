@@ -9,6 +9,8 @@
 */
 
 using System;
+using System.Diagnostics.CodeAnalysis;
+using System.IO;
 using System.Management;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -18,6 +20,7 @@ using Dev2;
 using Dev2.Common;
 using Dev2.Communication;
 using Dev2.Studio.Interfaces;
+using Microsoft.Practices.Prism.Mvvm;
 using Warewolf.Licensing;
 
 // ReSharper disable CC0091
@@ -29,14 +32,33 @@ namespace Warewolf.Studio.CustomControls
     [ComVisible(true)]
     public class ScriptManager
     {
-        private WebBrowserView mForm;
+        private IView mForm;
         private IShellViewModel _shellViewModel;
         private bool _isLicensed;
 
-        public ScriptManager(WebBrowserView form)
+        public ScriptManager(IView form)
         {
             mForm = form;
             _shellViewModel = CustomContainer.Get<IShellViewModel>();
+        }
+
+        public static Uri GetSourceUri(string licenseType)
+        {
+            Uri url;
+            var curDir = Directory.GetCurrentDirectory();
+
+            switch (licenseType)
+            {
+                case "Register":
+                    url = new Uri($"file:///{curDir}/LicenseRegistration.html");
+                    break;
+                case "Manage":
+                    url = new Uri($"file:///{curDir}/ManageRegistration.html");
+                    break;
+                default:
+                    return null;
+            }
+            return url;
         }
 
 #pragma warning disable CC0091
@@ -45,7 +67,7 @@ namespace Warewolf.Studio.CustomControls
             try
             {
                 var serializer = new Dev2JsonSerializer();
-                var result = _shellViewModel?.ActiveServer.ResourceRepository.RetrieveSubscription();
+                var result = _shellViewModel.ActiveServer.ResourceRepository.RetrieveSubscription();
                 var subscriptionData = serializer.Deserialize<ISubscriptionData>(result);
                 _isLicensed = subscriptionData.IsLicensed;
                 return result;
@@ -70,16 +92,10 @@ namespace Warewolf.Studio.CustomControls
                     CustomerLastName = lastName,
                     CustomerEmail = email
                 };
-                var result = _shellViewModel?.ActiveServer.ResourceRepository.CreateSubscription(subscriptionData);
+                var result = _shellViewModel.ActiveServer.ResourceRepository.CreateSubscription(subscriptionData);
                 _isLicensed = result == GlobalConstants.Success;
 
-                Dev2Logger.Info(
-                    String.Format(
-                        @"
-                CreateSubscription: {0}                    
-                IsLicensed: {1}",
-                        planId,
-                        _isLicensed),
+                Dev2Logger.Info($@"CreateSubscription: {planId} IsLicensed: {_isLicensed}",
                     GlobalConstants.WarewolfInfo);
                 return result;
             }
@@ -104,9 +120,9 @@ namespace Warewolf.Studio.CustomControls
         public void CloseBrowser()
         {
             _shellViewModel.UpdateStudioLicense(_isLicensed);
-            mForm.Close();
         }
 
+        [ExcludeFromCodeCoverage]
         public static void SetSilent(WebBrowser browser, bool silent)
         {
             if(browser is null)

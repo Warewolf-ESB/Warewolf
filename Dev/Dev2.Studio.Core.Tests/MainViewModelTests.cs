@@ -1171,6 +1171,19 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory("ShowStartPage")]
+        public void MainViewModelShowStartPageExpectedTracking()
+        {
+            CreateFullExportsAndVm(true);
+            var versionChecker = Mock.Get(_shellViewModel.Version);
+            versionChecker.Setup(v => v.CommunityPageUri).Verifiable();
+
+            _shellViewModel.ShowStartPageAsync();
+            versionChecker.Verify(v => v.CommunityPageUri);
+        }
+
+        [TestMethod]
         public void MainViewModelDeactivateItemWithPreviousItemNotOpenExpectedNoActiveItem()
         {
             var wsiRepo = new Mock<IWorkspaceItemRepository>();

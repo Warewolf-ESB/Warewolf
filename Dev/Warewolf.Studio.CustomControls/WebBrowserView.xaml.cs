@@ -14,12 +14,13 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Windows.Controls;
 using System.Windows.Navigation;
+using Microsoft.Practices.Prism.Mvvm;
 using Warewolf.Studio.Core;
 
 namespace Warewolf.Studio.CustomControls
 {
     [SuppressMessage("ReSharper", "CC0091")]
-    public partial class WebBrowserView
+    public partial class WebBrowserView : IView
     {
         readonly Grid _blackoutGrid = new Grid();
 
@@ -31,23 +32,7 @@ namespace Warewolf.Studio.CustomControls
             var helper = new ScriptManager(this);
             webBrowser.ObjectForScripting = helper;
             webBrowser.AllowDrop = false;
-
-            var curDir = Directory.GetCurrentDirectory();
-            Uri url;
-
-            switch (licenseType)
-            {
-                case "Register":
-                    url = new Uri($"file:///{curDir}/LicenseRegistration.html");
-                    break;
-                case "Manage":
-                    url = new Uri($"file:///{curDir}/ManageRegistration.html");
-                    break;
-                default:
-                    return;
-            }
-
-            webBrowser.Source = url;
+            webBrowser.Source = ScriptManager.GetSourceUri(licenseType);
         }
 
         private void WebBrowserOnNavigated(object sender, NavigationEventArgs e)
