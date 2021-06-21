@@ -1159,7 +1159,6 @@ namespace Dev2.Core.Tests
             return mockSubscriptionData;
         }
 
-        // PBI 9512 - 2013.06.07 - TWR: added
         [TestMethod]
         [TestCategory("ShowStartPage")]
         public void MainViewModelShowStartPageExpectedGetsLatestFirst()
@@ -1167,22 +1166,6 @@ namespace Dev2.Core.Tests
             CreateFullExportsAndVm(true);
             var versionChecker = Mock.Get(_shellViewModel.Version);
             versionChecker.Setup(v => v.CommunityPageUri).Verifiable();
-            _shellViewModel.ShowStartPageAsync();
-            versionChecker.Verify(v => v.CommunityPageUri);
-        }
-
-        [TestMethod]
-        [Owner("Candice Daniel")]
-        [TestCategory("ShowStartPage")]
-        public void MainViewModelShowStartPageExpectedTracking()
-        {
-            var _applicationTrackerMock = new Mock<IApplicationTracker>();
-            _applicationTrackerMock.Setup(controller => controller.TrackEvent(It.IsAny<string>(), It.IsAny<string>()));
-            CustomContainer.Register(_applicationTrackerMock.Object);
-            CreateFullExportsAndVm(true);
-            var versionChecker = Mock.Get(_shellViewModel.Version);
-            versionChecker.Setup(v => v.CommunityPageUri).Verifiable();
-
             _shellViewModel.ShowStartPageAsync();
             versionChecker.Verify(v => v.CommunityPageUri);
         }
