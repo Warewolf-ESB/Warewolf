@@ -2589,4 +2589,7 @@ The conflicts on the left will show your current workflow changes and the confli
   <data name="ManageWebServiceRequestManualHelpText" xml:space="preserve">
     <value>Manually add your own request body.&lt;br/&gt;&lt;br/&gt;Allowed:&lt;br/&gt;	Data &lt;ol&gt;&lt;li&gt;Plain Text&lt;/li&gt;&lt;li&gt;[[Scalar]]&lt;/li&gt;&lt;/ol&gt;</value>
   </data>
+  <data name="ManageWebServiceRequestUrlEncodedHelpText" xml:space="preserve">
+    <value>Add source server relevant application/x-www-form-urlencoded fields to be sent with your request payload.&lt;br/&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;Data   &lt;ol&gt;&lt;li&gt;[[Scalar]]&lt;/li&gt;&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;&lt;/ol&gt;</value>
+  </data>
 </root>

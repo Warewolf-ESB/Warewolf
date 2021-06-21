@@ -147,5 +147,29 @@ namespace Dev2.Common
 
             return _evaluatedHeaders;
         }
+        
+        public IEnumerable<INameValue> CalculateUrlEncodedContentType()
+        {
+            if(IsFormDataContentTypeExist)
+            {
+                if(IsFormDataContentTypeIncomplete)
+                {
+                    AppendBoundaryToFormDataContentType();
+                }
+            }
+            else if(IsFormUrlEncodedContentTypeExist)
+            {
+                if(IsFormUrlEncodedContentTypeIncomplete)
+                {
+                    AppendBoundaryToFormUrlEncodedContentType();
+                }
+            }
+            else
+            {
+                AddFormUrlEncodedContentType();
+            }
+
+            return _evaluatedHeaders;
+        }
     }
 }

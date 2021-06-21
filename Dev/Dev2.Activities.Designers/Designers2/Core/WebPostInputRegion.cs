@@ -37,6 +37,7 @@ namespace Dev2.Activities.Designers2.Core
         private string _postData;
         private bool _isManualChecked;
         private bool _isFormDataChecked;
+        private bool _isUrlEncodedChecked;
 
         public WebPostInputRegion()
         {
@@ -89,6 +90,7 @@ namespace Dev2.Activities.Designers2.Core
                 IsEnabled = true;
                 IsFormDataChecked = modelItem.GetProperty<bool>("IsFormDataChecked");
                 IsManualChecked = modelItem.GetProperty<bool>("IsManualChecked");
+                IsUrlEncodedChecked = modelItem.GetProperty<bool>("IsUrlEncodedChecked");
             }
         }
 
@@ -161,6 +163,17 @@ namespace Dev2.Activities.Designers2.Core
                 OnPropertyChanged();
             }
         }
+        
+                public bool IsUrlEncodedChecked
+                {
+                    get => _modelItem.GetProperty<bool>("IsUrlEncodedChecked");
+                    set
+                    {
+                        _isUrlEncodedChecked = value;
+                        _modelItem.SetProperty("IsUrlEncodedChecked", value);
+                        OnPropertyChanged();
+                    }
+                }
 
         public string PostData
         {
@@ -204,7 +217,8 @@ namespace Dev2.Activities.Designers2.Core
                 RequestUrl = RequestUrl,
                 IsEnabled = IsEnabled,
                 IsManualChecked = IsManualChecked,
-                IsFormDataChecked = IsFormDataChecked
+                IsFormDataChecked = IsFormDataChecked,
+                IsUrlEncodedChecked = IsUrlEncodedChecked
             };
         }
 
@@ -215,6 +229,7 @@ namespace Dev2.Activities.Designers2.Core
                 IsEnabled = region.IsEnabled;
                 IsManualChecked = region.IsManualChecked;
                 IsFormDataChecked = region.IsFormDataChecked;
+                IsUrlEncodedChecked = region.IsUrlEncodedChecked;
                 PostData = region.PostData;
                 QueryString = region.QueryString;
                 RequestUrl = region.RequestUrl;

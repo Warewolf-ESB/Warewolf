@@ -18,6 +18,7 @@ namespace Dev2.Common.Interfaces.ToolBase
         string RequestUrl { get; set; }
         bool IsManualChecked { get; set; }
         bool IsFormDataChecked { get; set; }
+        bool IsUrlEncodedChecked { get; set; }
         string ParameterGroup { get; }
     }
 }

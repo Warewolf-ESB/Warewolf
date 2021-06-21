@@ -2119,6 +2119,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add source server relevant application/x-www-form-urlencoded fields to be sent with your request payload.&lt;br/&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;Data   &lt;ol&gt;&lt;li&gt;[[Scalar]]&lt;/li&gt;&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;&lt;/ol&gt;.
+        /// </summary>
+        public static string ManageWebServiceRequestUrlEncodedHelpText {
+            get {
+                return ResourceManager.GetString("ManageWebServiceRequestUrlEncodedHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to If selected, it allows for the input variables to be altered. Any changes will replace the current stored values.&lt;br/&gt;&lt;br/&gt;By default the Sequence Tool will be displayed.&lt;br/&gt;&lt;br/&gt;Using the Sequence Tool, a set of Activities can be executed in sequence so that input values can be assigned and overidden before being assigned to the Suspended Workflow to be resumed..
         /// </summary>
         public static string ManualResumptionOverrideVariablesHelpText {
