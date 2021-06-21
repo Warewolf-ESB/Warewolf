@@ -1176,9 +1176,6 @@ namespace Dev2.Core.Tests
         [TestCategory("ShowStartPage")]
         public void MainViewModelShowStartPageExpectedTracking()
         {
-            var _applicationTrackerMock = new Mock<IApplicationTracker>();
-            _applicationTrackerMock.Setup(controller => controller.TrackEvent(It.IsAny<string>(), It.IsAny<string>()));
-            CustomContainer.Register(_applicationTrackerMock.Object);
             CreateFullExportsAndVm(true);
             var versionChecker = Mock.Get(_shellViewModel.Version);
             versionChecker.Setup(v => v.CommunityPageUri).Verifiable();
