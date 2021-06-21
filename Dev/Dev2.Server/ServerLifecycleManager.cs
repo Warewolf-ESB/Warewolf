@@ -262,7 +262,6 @@ namespace Dev2
 
                                 Stop(false, 0, true);
                             }
-
                             var logger = _loggerFactory.New(new JsonSerializer(), _webSocketPool);
                             LogWarewolfVersion(logger);
 #if DEBUG
@@ -436,11 +435,6 @@ namespace Dev2
                 _timer = null;
             }
 
-            if(_usageLogger != null)
-            {
-                _usageLogger.Dispose();
-            }
-
             if(_pulseLogger != null)
             {
                 _pulseLogger.Dispose();
@@ -450,7 +444,10 @@ namespace Dev2
             {
                 _pulseTracker.Dispose();
             }
-
+            if(_usageLogger != null)
+            {
+                _usageLogger.Dispose();
+            }
             if(_serverEnvironmentPreparer != null)
             {
                 _serverEnvironmentPreparer.Dispose();
@@ -489,6 +486,7 @@ namespace Dev2
             _writer.WriteLine("done.");
         }
 
+
         void LoadSubscriptionProvider()
         {
             _writer.Write("Loading subscription provider...  ");
@@ -499,6 +497,7 @@ namespace Dev2
                 _writer.WriteLine("done.");
             }
         }
+
 #if DEBUG
 
         static void SetAsStarted()

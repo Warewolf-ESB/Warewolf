@@ -18,7 +18,6 @@ using Dev2.Studio.Interfaces;
 using FontAwesome.WPF;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
-using Dev2;
 
 namespace Warewolf.Studio.ViewModels
 {
