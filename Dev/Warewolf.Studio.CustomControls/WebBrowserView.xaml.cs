@@ -8,10 +8,8 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
-using System.IO;
 using System.Windows.Controls;
 using System.Windows.Navigation;
 using Microsoft.Practices.Prism.Mvvm;
@@ -22,7 +20,7 @@ namespace Warewolf.Studio.CustomControls
     [SuppressMessage("ReSharper", "CC0091")]
     public partial class WebBrowserView : IView
     {
-        readonly Grid _blackoutGrid = new Grid();
+        private readonly Grid _blackoutGrid = new Grid();
 
         public WebBrowserView(string licenseType)
         {
@@ -42,7 +40,7 @@ namespace Warewolf.Studio.CustomControls
 
         private void WebBrowser_OnNavigating(object sender, NavigatingCancelEventArgs e)
         {
-            var browser = sender as System.Windows.Controls.WebBrowser;
+            var browser = sender as WebBrowser;
 
             if(browser?.Document is null)
             {

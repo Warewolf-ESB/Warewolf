@@ -120,6 +120,10 @@ namespace Warewolf.Studio.CustomControls
         public void CloseBrowser()
         {
             _shellViewModel.UpdateStudioLicense(_isLicensed);
+            if (mForm is WebBrowserView browser)
+            {
+                browser.Close();
+            }
         }
 
         [ExcludeFromCodeCoverage]

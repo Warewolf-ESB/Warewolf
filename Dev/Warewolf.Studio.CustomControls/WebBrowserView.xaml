@@ -6,10 +6,10 @@
     mc:Ignorable="d"
     WindowStartupLocation="CenterScreen"
     Title="Warewolf"
-    Height="550"
-    MinHeight="550"
-    Width="550"
-    MinWidth="550"
+    Height="600"
+    MinHeight="600"
+    Width="600"
+    MinWidth="600"
     Closing="WebBrowserView_OnClosing">
     <Grid>
         <WebBrowser x:Name="webBrowser"
