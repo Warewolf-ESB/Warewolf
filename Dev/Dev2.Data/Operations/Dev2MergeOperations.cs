@@ -98,8 +98,6 @@ namespace Dev2.Data.Operations
                         case "Right":
                             mergeAlignment = enMergeAlignment.Right;
                             break;
-                        default:
-                            break;
                     }
                     mergingType = enMergeType.Index;
                     break;

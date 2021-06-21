@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
@@ -134,7 +135,7 @@ namespace Dev2.PathOperations
             string[] tmp;
 
             IList<string> result = new List<string>();
-            var builderPath = new System.Text.StringBuilder();
+            var builderPath = new StringBuilder();
 
             var splitOn = splitter.ToCharArray();
 

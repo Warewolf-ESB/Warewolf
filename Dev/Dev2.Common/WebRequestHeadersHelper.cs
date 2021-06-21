@@ -22,7 +22,7 @@ namespace Dev2.Common
         const string FORMURLENCODED = "application/x-www-form-urlencoded";
 
         private readonly IList<INameValue> _notEvaluated;
-        private List<INameValue> _evaluatedHeaders;
+        private readonly List<INameValue> _evaluatedHeaders;
 
         public WebRequestHeadersHelper(IList<INameValue> notEvaluatedHeaders, IEnumerable<INameValue> evaluatedHeaders)
         {
@@ -34,49 +34,25 @@ namespace Dev2.Common
         {
             get
             {
-                return _evaluatedHeaders.FirstOrDefault(o => o.Name == CONTENTTYPE && o.Value.Contains("application/x-www-form-urlencoded"));
+                return _evaluatedHeaders.FirstOrDefault(o => o.Name == CONTENTTYPE && o.Value.Contains(FORMURLENCODED));
             }
         }
 
-        public bool IsFormUrlEncodedContentTypeExist
-        {
-            get
-            {
-                return FormUrlEncodedContentType != null;
-            }
-        }
+        public bool IsFormUrlEncodedContentTypeExist => FormUrlEncodedContentType != null;
 
-        public bool IsFormUrlEncodedContentTypeIncomplete
-        {
-            get
-            {
-                return IsFormUrlEncodedContentTypeExist && !FormUrlEncodedContentType.Value.Contains("boundary=");
-            }
-        }
+        public bool IsFormUrlEncodedContentTypeIncomplete => IsFormUrlEncodedContentTypeExist && !FormUrlEncodedContentType.Value.Contains("boundary=");
 
         public INameValue FormDataContentType
         {
             get
             {
-                return _evaluatedHeaders.FirstOrDefault(o => o.Name == CONTENTTYPE && o.Value.Contains("multipart/form-data"));
+                return _evaluatedHeaders.FirstOrDefault(o => o.Name == CONTENTTYPE && o.Value.Contains(MUTIPARTFORMDATA));
             }
         }
 
-        public bool IsFormDataContentTypeExist
-        {
-            get
-            {
-                return FormDataContentType != null;
-            }
-        }
+        public bool IsFormDataContentTypeExist => FormDataContentType != null;
 
-        public bool IsFormDataContentTypeIncomplete
-        {
-            get
-            {
-                return IsFormDataContentTypeExist && !FormDataContentType.Value.Contains("boundary=");
-            }
-        }
+        public bool IsFormDataContentTypeIncomplete => IsFormDataContentTypeExist && !FormDataContentType.Value.Contains("boundary=");
 
         internal void AddFormDataContentType()
         {
@@ -94,12 +70,12 @@ namespace Dev2.Common
 
         private static string GenerateFormDataContentType()
         {
-            return MUTIPARTFORMDATA + "; boundary=" + string.Format("----------{0:N}", Guid.NewGuid());
+            return MUTIPARTFORMDATA + "; boundary=" + $"----------{Guid.NewGuid():N}";
         }
 
         private static string GenerateFormUrlEncodedContentType()
         {
-            return FORMURLENCODED + "; boundary=" + string.Format("----------{0:N}", Guid.NewGuid());
+            return FORMURLENCODED + "; boundary=" + $"----------{Guid.NewGuid():N}";
         }
 
         private void AppendBoundaryToFormDataContentType()

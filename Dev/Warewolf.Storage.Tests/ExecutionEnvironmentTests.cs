@@ -2382,6 +2382,35 @@ namespace Warewolf.Storage.Tests
         }
 
         [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ExecutionEnvironment))]
+        public void ExecutionEnvironment_FromXml_GivenXml_EmptyString_ShouldReturnNothing()
+        {
+            var _environment = new ExecutionEnvironment();
+            var xmlInput = "";
+            var objName = "[[@ObjName]]";
+            _environment.AssignXmlToJson(new AssignValue(objName, xmlInput), 0);
+
+            Assert.IsTrue(WarewolfDataEvaluationCommon.isNothing(_environment.Eval(objName, 0)));
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ExecutionEnvironment))]
+        public void ExecutionEnvironment_FromXml_GivenXml_String_ShouldReturnNothing()
+        {
+            var _environment = new ExecutionEnvironment();
+            var xmlInput = "<person><name>test_name</name></person>";
+            var objName = "[[@ObjName]]";
+            _environment.AssignXmlToJson(new AssignValue(objName, xmlInput), 0);
+
+            var actual = _environment.ToJson();
+            var expected = "{\"Environment\":{\"scalars\":{},\"record_sets\":{},\"json_objects\":{\"ObjName\":{\"person\":{\"name\":\"test_name\"}}}},\"Errors\":[],\"AllErrors\":[]}";
+            
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ExecutionEnvironment))]
         public void ExecutionEnvironment_GivenJsonSerializedEnv_FromJson_NullString_ShouldNotUpdateEnvironment()

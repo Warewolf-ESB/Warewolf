@@ -32,6 +32,7 @@ using System.Runtime.CompilerServices;
 // by using the '*' as shown below:
 [assembly: AssemblyVersion("0.0.0.0")]
 [assembly: InternalsVisibleTo("Dev2.Runtime.Tests")]
+[assembly: InternalsVisibleTo("Dev2.Runtime.WebServer.Tests")]
 [assembly: InternalsVisibleTo("Dev2.Studio.Core.Tests")]
 [assembly: InternalsVisibleTo("Dev2.TaskScheduler.Wrappers")]
 [assembly: InternalsVisibleTo("Dev2.Infrastructure.Tests")]
