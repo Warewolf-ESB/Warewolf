@@ -222,7 +222,7 @@ namespace Dev2.Activities
                 postData = ExecutionEnvironment.WarewolfEvalResultToString(environment.Eval(PostData, update, true));
             }
             var conditions = new List<IFormDataParameters>();
-            if ((Conditions ?? (Conditions = new List<FormDataConditionExpression>())).Any() && IsFormDataChecked)
+            if ((Conditions ?? (Conditions = new List<FormDataConditionExpression>())).Any() && (IsFormDataChecked || IsUrlEncodedChecked))
             {
                 _errorsTo = new ErrorResultTO();
                 conditions = Conditions.SelectMany(o => o.Eval(GetArgumentsFunc, _errorsTo.HasErrors())).ToList();

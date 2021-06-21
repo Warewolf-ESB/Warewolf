@@ -269,7 +269,6 @@ namespace Dev2.Runtime.ServiceModel
         {
             var encoding = Encoding.UTF8;
             Stream formDataStream = new MemoryStream();
-            var needsClrf = false;
 
             var dds = postParameters.GetEnumerator();
             while (dds.MoveNext())
@@ -277,23 +276,11 @@ namespace Dev2.Runtime.ServiceModel
                 var conditionExpression = dds.Current;
                 var formValueType = conditionExpression;
 
-                if (needsClrf)
-                {
-                    formDataStream.Write(encoding.GetBytes("\r\n"), 0, encoding.GetByteCount("\r\n"));
-                }
-
-                needsClrf = true;
-                
-                if (formValueType is TextParameter textToUpload)
-                {
-                    var postData = $"--{boundary}\r\nContent-Disposition: application/x-www-form-urlencoded; name=\"{textToUpload.Key}\"\r\n\r\n{textToUpload.Value}";
-                    formDataStream.Write(encoding.GetBytes(postData), 0, encoding.GetByteCount(postData));
-                }
+                var textToUpload = formValueType as TextParameter;
+                var postData = $"{textToUpload.Key}={textToUpload.Value}&";
+                formDataStream.Write(encoding.GetBytes(postData), 0, encoding.GetByteCount(postData));
             }
-
-            var footer = "\r\n--" + boundary + "--\r\n";
-            formDataStream.Write(encoding.GetBytes(footer), 0, encoding.GetByteCount(footer));
-
+            
             formDataStream.Position = 0;
             var formData = new byte[formDataStream.Length];
             formDataStream.Read(formData, 0, formData.Length);
