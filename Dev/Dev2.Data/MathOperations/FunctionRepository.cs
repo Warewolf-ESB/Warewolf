@@ -19,7 +19,6 @@ using Infragistics.Calculations.CalcManager;
 using Infragistics.Calculations.Engine;
 using Warewolf.Resource.Errors;
 
-
 namespace Dev2.MathOperations
 {
     // PBI: 1214

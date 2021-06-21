@@ -14,7 +14,6 @@ using System.Linq;
 using System.Reflection;
 using Warewolf.Resource.Messages;
 
-
 namespace Dev2.Data.Decisions.Operations
 {
     public class DecisionTypeDisplayValue : Attribute

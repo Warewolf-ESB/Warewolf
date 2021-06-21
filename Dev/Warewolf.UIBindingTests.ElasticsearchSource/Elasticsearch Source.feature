@@ -1,4 +1,5 @@
-﻿@WebSource
+@CannotParallelize
+@WebSource
 @ElasticsearchSource
 Feature: Elasticsearch Source
 	In order to share settings

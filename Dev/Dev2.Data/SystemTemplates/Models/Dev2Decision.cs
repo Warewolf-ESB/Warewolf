@@ -8,6 +8,9 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
+using System.Collections.Generic;
+using System.Text;
 using Dev2.Common;
 using Dev2.Data.Decisions.Operations;
 using Dev2.Data.Interfaces.Enums;
@@ -15,9 +18,6 @@ using Dev2.Data.TO;
 using Dev2.Data.Util;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage.Interfaces;
 
@@ -136,7 +136,7 @@ namespace Dev2.Data.SystemTemplates.Models
                 return true;
             }
 
-            if (obj.GetType() != this.GetType())
+            if (obj.GetType() != GetType())
             {
                 return false;
             }
@@ -171,13 +171,13 @@ namespace Dev2.Data.SystemTemplates.Models
 
             public ToolLabelGenerator(enDecisionType evaluationFn, int populatedColumnCount, string col1, string col2, string col3, IExecutionEnvironment env, Dev2DecisionMode mode)
             {
-                this._evaluationFn = evaluationFn;
-                this._populatedColumnCount = populatedColumnCount;
-                this._col1 = col1;
-                this._col2 = col2;
-                this._col3 = col3;
-                this._env = env;
-                this._mode = mode;
+                _evaluationFn = evaluationFn;
+                _populatedColumnCount = populatedColumnCount;
+                _col1 = col1;
+                _col2 = col2;
+                _col3 = col3;
+                _env = env;
+                _mode = mode;
             }
 
 #pragma warning disable S3776, S1541 // Complexity of methods should not be too high
