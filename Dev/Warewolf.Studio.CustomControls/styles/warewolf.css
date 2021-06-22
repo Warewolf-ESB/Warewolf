@@ -43,17 +43,20 @@ a:focus{
     border-color: #F47001;
     box-shadow: none;
 }
+.btn-existingRegistration,
 .btn-register {
     color: #fff;
     background-color: #F47001;
     border-color: #F47001;
 }
+.btn-existingRegistration:focus,
 .btn-register:focus {
     color: #fff;
     background-color: #F47001;
     border-color: #F47001;
     box-shadow: none;
 }
+.btn-existingRegistration:hover ,
 .btn-register:hover {
     color: #fff;
     background-color: #F47001;

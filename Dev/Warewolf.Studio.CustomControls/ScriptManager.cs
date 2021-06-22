@@ -47,7 +47,7 @@ namespace Warewolf.Studio.CustomControls
             Uri url;
             var curDir = Directory.GetCurrentDirectory();
 
-            switch (licenseType)
+            switch(licenseType)
             {
                 case "Register":
                     url = new Uri($"file:///{curDir}/LicenseRegistration.html");
@@ -58,6 +58,7 @@ namespace Warewolf.Studio.CustomControls
                 default:
                     return null;
             }
+
             return url;
         }
 
@@ -80,6 +81,37 @@ namespace Warewolf.Studio.CustomControls
         }
 
 #pragma warning disable CC0091
+        public string CreateSubscriptionWithId(string email, string subscriptionId)
+        {
+            try
+            {
+                var subscriptionData = new SubscriptionData
+                {
+                    SubscriptionId = subscriptionId,
+                    CustomerEmail = email
+                };
+                var result = _shellViewModel.ActiveServer.ResourceRepository.CreateSubscription(subscriptionData);
+                _isLicensed = result == GlobalConstants.Success;
+                if(_isLicensed)
+                {
+                    Dev2Logger.Info(
+                        $@"CreateSubscription: {subscriptionId} IsLicensed: {_isLicensed}",
+                        GlobalConstants.WarewolfInfo);
+                }
+                else
+                {
+                    Dev2Logger.Error(nameof(ScriptManager), new Exception(result), GlobalConstants.WarewolfError);
+                }
+
+                return result;
+            }
+            catch(Exception ex)
+            {
+                Dev2Logger.Error(nameof(ScriptManager), ex, GlobalConstants.WarewolfError);
+                return GlobalConstants.Failed;
+            }
+        }
+#pragma warning disable CC0091
         public string CreateSubscription(string email, string firstName, string lastName, string planId)
         {
             try
@@ -94,9 +126,17 @@ namespace Warewolf.Studio.CustomControls
                 };
                 var result = _shellViewModel.ActiveServer.ResourceRepository.CreateSubscription(subscriptionData);
                 _isLicensed = result == GlobalConstants.Success;
+                if(_isLicensed)
+                {
+                    Dev2Logger.Info(
+                        $@"CreateSubscription: {planId} IsLicensed: {_isLicensed}",
+                        GlobalConstants.WarewolfInfo);
+                }
+                else
+                {
+                    Dev2Logger.Error(nameof(ScriptManager), new Exception(result), GlobalConstants.WarewolfError);
+                }
 
-                Dev2Logger.Info($@"CreateSubscription: {planId} IsLicensed: {_isLicensed}",
-                    GlobalConstants.WarewolfInfo);
                 return result;
             }
             catch(Exception ex)

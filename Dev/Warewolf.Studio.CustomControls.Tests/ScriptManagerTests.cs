@@ -199,5 +199,51 @@ namespace Warewolf.Studio.CustomControls.Tests
 
             CustomContainer.DeRegister<IShellViewModel>();
         }
+
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(ScriptManager))]
+        public void ScriptManager_CreateSubscriptionWithId()
+        {
+            const string Email = "email";
+            const string SubscriptionId = "firstName";
+
+
+            var mockResourceRepository = new Mock<IResourceRepository>();
+            mockResourceRepository.Setup(o => o.CreateSubscription(It.IsAny<ISubscriptionData>())).Returns(GlobalConstants.Success);
+
+            var mockServer = new Mock<IServer>();
+            mockServer.Setup(o => o.ResourceRepository).Returns(mockResourceRepository.Object);
+
+            var mockShellViewModel = new Mock<IShellViewModel>();
+            mockShellViewModel.Setup(o => o.ActiveServer).Returns(mockServer.Object);
+
+            CustomContainer.Register(mockShellViewModel.Object);
+
+            var scriptManager = new ScriptManager(new Mock<IView>().Object);
+            var subscription = scriptManager.CreateSubscriptionWithId(Email, SubscriptionId);
+
+            Assert.AreEqual(GlobalConstants.Success, subscription);
+
+            mockResourceRepository.Verify(o => o.CreateSubscription(It.IsAny<ISubscriptionData>()), Times.Once);
+
+            CustomContainer.DeRegister<IShellViewModel>();
+        }
+
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(ScriptManager))]
+        public void ScriptManager_CreateSubscriptionWithId_Expect_Failure()
+        {
+            const string Email = "email";
+            const string SubscriptionId = "subscriptionId";
+
+            CustomContainer.Register<IShellViewModel>(null);
+
+            var scriptManager = new ScriptManager(new Mock<IView>().Object);
+            var subscription = scriptManager.CreateSubscriptionWithId(Email, SubscriptionId);
+
+            Assert.AreEqual(GlobalConstants.Failed, subscription);
+        }
     }
 }

@@ -185,6 +185,9 @@
     <Content Include="ManageRegistration.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="RegistrationWithSubscriptionId.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="styles\warewolf.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

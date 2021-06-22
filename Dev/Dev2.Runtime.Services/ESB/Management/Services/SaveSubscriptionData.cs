@@ -51,12 +51,18 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     _subscriptionProvider = SubscriptionProvider.Instance;
                 }
+
                 values.TryGetValue(Warewolf.Service.SaveSubscriptionData.SubscriptionData, out var data);
                 var subscriptionData = _serializer.Deserialize<SubscriptionData>(data);
                 subscriptionData.SubscriptionKey = _subscriptionProvider.SubscriptionKey;
                 subscriptionData.SubscriptionSiteName = _subscriptionProvider.SubscriptionSiteName;
 
-                var resultData = _warewolfLicense.CreatePlan(subscriptionData);
+                var resultData = string.IsNullOrEmpty(subscriptionData.SubscriptionId)
+                    ? _warewolfLicense.CreatePlan(subscriptionData)
+                    : _warewolfLicense.RetrievePlan(
+                        subscriptionData.SubscriptionId,
+                        subscriptionData.SubscriptionKey,
+                        subscriptionData.SubscriptionSiteName);
                 if(resultData is null)
                 {
                     result.HasError = true;
@@ -65,8 +71,18 @@ namespace Dev2.Runtime.ESB.Management.Services
                     return _serializer.SerializeToBuilder(result);
                 }
 
-                _subscriptionProvider.SaveSubscriptionData(resultData);
+                if(resultData.CustomerEmail != subscriptionData.CustomerEmail)
+                {
+                    result.HasError = true;
+                    const string Message = "Email Address does not match email address used when this Subscription was created.";
+                    result.SetMessage(Message);
+                    Dev2Logger.Error(nameof(SaveSubscriptionData), new Exception(Message), GlobalConstants.WarewolfError);
+                    return _serializer.SerializeToBuilder(result);
+                }
 
+                //TODO: Check if machine Name matches registration
+
+                _subscriptionProvider.SaveSubscriptionData(resultData);
                 result.SetMessage(GlobalConstants.Success);
                 return _serializer.SerializeToBuilder(result);
             }
