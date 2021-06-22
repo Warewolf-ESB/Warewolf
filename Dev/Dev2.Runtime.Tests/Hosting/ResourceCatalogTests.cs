@@ -77,6 +77,7 @@ namespace Dev2.Tests.Runtime.Hosting
                 catch(IOException)
                 { //Best effort
                 }
+            }
             if (!Directory.Exists(EnvironmentVariables.ResourcePath))
             {
                 Directory.CreateDirectory(EnvironmentVariables.ResourcePath);
