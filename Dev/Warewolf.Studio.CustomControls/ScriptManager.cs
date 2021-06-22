@@ -94,9 +94,7 @@ namespace Warewolf.Studio.CustomControls
                 _isLicensed = result == GlobalConstants.Success;
                 if(_isLicensed)
                 {
-                    Dev2Logger.Info(
-                        $@"CreateSubscription: {subscriptionId} IsLicensed: {_isLicensed}",
-                        GlobalConstants.WarewolfInfo);
+                    Dev2Logger.Info("CreateSubscription: IsLicensed {" + _isLicensed + "}", GlobalConstants.WarewolfInfo);
                 }
                 else
                 {
@@ -128,9 +126,7 @@ namespace Warewolf.Studio.CustomControls
                 _isLicensed = result == GlobalConstants.Success;
                 if(_isLicensed)
                 {
-                    Dev2Logger.Info(
-                        $@"CreateSubscription: {planId} IsLicensed: {_isLicensed}",
-                        GlobalConstants.WarewolfInfo);
+                    Dev2Logger.Info($@"CreateSubscription: {planId} IsLicensed: {_isLicensed.ToString()}", GlobalConstants.WarewolfInfo);
                 }
                 else
                 {
@@ -160,7 +156,7 @@ namespace Warewolf.Studio.CustomControls
         public void CloseBrowser()
         {
             _shellViewModel.UpdateStudioLicense(_isLicensed);
-            if (mForm is WebBrowserView browser)
+            if(mForm is WebBrowserView browser)
             {
                 browser.Close();
             }
