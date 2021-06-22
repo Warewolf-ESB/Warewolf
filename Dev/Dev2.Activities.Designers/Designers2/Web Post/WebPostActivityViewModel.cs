@@ -331,6 +331,7 @@ namespace Dev2.Activities.Designers2.Web_Post
                 var service = ToModel();
                 ManageServiceInputViewModel.InputArea.Inputs = service.Inputs;
                 ManageServiceInputViewModel.IsFormDataChecked = service.IsFormDataChecked;
+                ManageServiceInputViewModel.IsUrlEncodedChecked = service.IsUrlEncodedChecked;
                 ManageServiceInputViewModel.Model = service;
                 ManageServiceInputViewModel.LoadConditionExpressionOptions(ConditionExpressionOptions.Options);
 

@@ -70,6 +70,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     RequestBody = src.PostData,
                     IsManualChecked = src.IsManualChecked,
                     IsFormDataChecked = src.IsFormDataChecked,
+                    IsUrlEncodedChecked = src.IsUrlEncodedChecked,
                     FormDataParameters = src.FormDataParameters?.Where(o => !o.IsEmptyRow).ToList(),
                     RequestHeaders = requestHeader,
                     RequestMethod = src.Method,

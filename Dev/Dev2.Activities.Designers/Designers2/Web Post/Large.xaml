@@ -211,17 +211,17 @@
                                 <core1:HelpSetter Text="{x:Static languages:HelpText.ManageWebServiceRequestFormDataHelpText}" DataContext="{Binding}" />
                             </i:Interaction.Behaviors>
                         </RadioButton>
-                                                <RadioButton x:Name="urlencoded"
-                                                             Grid.Row="1"
-                                                             GroupName="{Binding InputArea.ParameterGroup, Mode=OneTime}"
-                                                             Grid.Column="2"
-                                                             HorizontalAlignment="Left"
-                                                             IsChecked="{Binding InputArea.IsUrlEncodedChecked, UpdateSourceTrigger=PropertyChanged}"
-                                                             ToolTip="{x:Static languages:Tooltips.ManageWebServiceRequestUrlEncodedTooltip}">application/x-www-form-urlencoded
-                                                    <i:Interaction.Behaviors>
-                                                        <core1:HelpSetter Text="{x:Static languages:HelpText.ManageWebServiceRequestUrlEncodedHelpText}" DataContext="{Binding}" />
-                                                    </i:Interaction.Behaviors>
-                                                </RadioButton>
+                        <RadioButton x:Name="urlencoded"
+                                     Grid.Row="1"
+                                     GroupName="{Binding InputArea.ParameterGroup, Mode=OneTime}"
+                                     Grid.Column="2"
+                                     HorizontalAlignment="Left"
+                                     IsChecked="{Binding InputArea.IsUrlEncodedChecked, UpdateSourceTrigger=PropertyChanged}"
+                                     ToolTip="{x:Static languages:Tooltips.ManageWebServiceRequestUrlEncodedTooltip}">application/x-www-form-urlencoded
+                            <i:Interaction.Behaviors>
+                                <core1:HelpSetter Text="{x:Static languages:HelpText.ManageWebServiceRequestUrlEncodedHelpText}" DataContext="{Binding}" />
+                            </i:Interaction.Behaviors>
+                        </RadioButton>
                     </Grid>
 
                     <Grid Grid.Row="2" x:Name="body" Visibility="{Binding IsChecked, ElementName=none, Converter={StaticResource BooleanToVisibilityConverter}}" Margin="{StaticResource ControlBorderTop}" >
@@ -332,7 +332,7 @@
                                  ItemsSource="{Binding ConditionExpressionOptions, Converter={StaticResource OptionViewConverter}}"
                                  ItemTemplateSelector="{StaticResource OptionViewDataTemplateSelector}"
                                  ItemContainerStyle="{StaticResource ListBoxItemNoBorderStyle}"
-                                 ToolTip="{x:Static languages:Tooltips.WebPostFromDataParametersToolTip}"
+                                 ToolTip="{x:Static languages:Tooltips.WebPostUrlEncodedParametersToolTip}"
                                  Padding="1,0,1,1">
                             </ListBox>
                         </Grid>

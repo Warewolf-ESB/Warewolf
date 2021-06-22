@@ -6904,6 +6904,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to To supply application/x-www-form-urlencoded parameters with your request, use these fields. Fields can be scalars and/or different recordsets..
+        /// </summary>
+        public static string WebPostUrlEncodedParametersToolTip {
+            get {
+                return ResourceManager.GetString("WebPostUrlEncodedParametersToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Check this to read a base64 formatted body data..
         /// </summary>
         public static string WebReadsBase64BodyTooltip {
