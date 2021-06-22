@@ -761,18 +761,6 @@ namespace Dev2.Tests.Runtime.Hosting
         [TestMethod]
         [DoNotParallelize]
         [TestCategory("CannotParallelize")]
-        public void SaveResourceWithSlashesInResourceNameExpectedThrowsDirectoryNotFoundException()
-        {
-            var workspaceID = Guid.NewGuid();
-            var catalog = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
-
-            var expected = new DbSource { ResourceID = Guid.NewGuid(), ResourceName = "Test\\Source", DatabaseName = "TestNewDb", Server = "TestNewServer", ServerType = enSourceType.MySqlDatabase };
-            catalog.SaveResource(workspaceID, expected, "");
-        }
-
-        [TestMethod]
-        [DoNotParallelize]
-        [TestCategory("CannotParallelize")]
         public void SaveResourceWithNewResourceXmlExpectedResourceWritten()
         {
             var workspaceID = Guid.NewGuid();
