@@ -36,11 +36,11 @@ namespace Dev2.Runtime.Subscription
         {
             get
             {
-                if(_theInstance == null)
+                if(string.IsNullOrEmpty(_theInstance?.SubscriptionKey))
                 {
                     lock(SyncRoot)
                     {
-                        if(_theInstance == null)
+                        if(string.IsNullOrEmpty(_theInstance?.SubscriptionKey))
                         {
                             _config = new SubscriptionConfig();
                             _theInstance = new SubscriptionProvider(_config);
