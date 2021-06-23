@@ -186,7 +186,7 @@ namespace Dev2.Tests.Runtime.Services
             var message = executeMessage.Message.ToString();
             Assert.IsTrue(message.Contains("\"Headers\":[{\"$id\":\"2\",\"$type\":\"Dev2.Common.Interfaces.NameValue, Dev2.Common.Interfaces\",\"Name\":\"Content-Type\",\"Value\":\"multipart/form-data\"}]"));
             Assert.IsTrue(message.Contains("\"FileName\":\"testFileName\",\"ContentType\":null,\"FileBase64\":\"dGhpcyBjYW4gYmUgYW55IGZpbGUgdHlwZSBwYXJzZWQgaW50byBiYXNlNjQgc3RyaW5n\",\"Key\":\"testFileKey\""));
-            Assert.IsTrue(message.Contains("\"IsFormDataChecked\":true,\"IsManualChecked\":false,"));
+            Assert.IsTrue(message.Contains("\"IsFormDataChecked\":true,\"IsUrlEncodedChecked\":false,\"IsManualChecked\":false,"));
             mockWebServices.Verify(o => o.TestWebService(It.IsAny<WebService>()), Times.Once);
             mockWebSource.Verify(o => o.Client, Times.Never);
         }
