@@ -657,6 +657,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
                 var item4First = item4.First();
                 Assert.AreEqual(1, item4.Count);
                 Assert.AreEqual("Parameters", item4First.Label);
+                Assert.IsTrue(debugInputs[2].ResultsList[1].Value.Contains("application/x-www-form-urlencoded"));
             }
         }
 
