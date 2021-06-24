@@ -839,7 +839,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestCategory("DsfDataSplitActivity_GetState")]
         public void DsfDataSplitActivity_EmptyLines_ShouldExist()
         {
-            var sourceStringLines = new string[] {
+            var sourceStringLines = new[] {
                 "",
                 "two",
                 "three",
@@ -881,7 +881,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestCategory("DsfDataSplitActivity_GetState")]
         public void DsfDataSplitActivity_EmptyLinesUnix_ShouldExist()
         {
-            var sourceStringLines = new string[] {
+            var sourceStringLines = new[] {
                 "",
                 "two",
                 "three",

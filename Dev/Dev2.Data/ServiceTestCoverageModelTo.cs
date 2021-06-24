@@ -8,19 +8,13 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
-using Dev2.Common.Interfaces;
 using System;
+using Dev2.Common.Interfaces;
 
 namespace Dev2.Data
 {
     public class ServiceTestCoverageModelTo : IServiceTestCoverageModelTo
     {
-        public ServiceTestCoverageModelTo()
-        {
-            // Used during json deserialization
-        }
-
         public ISingleTestNodesCovered[] AllTestNodesCovered { get; set; }
 
         public string OldReportName { get; set; }

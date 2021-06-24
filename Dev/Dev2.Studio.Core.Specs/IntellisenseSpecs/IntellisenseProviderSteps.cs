@@ -75,7 +75,7 @@ namespace Dev2.Studio.Core.Specs.IntellisenseSpecs
         [Given(@"I have the following intellisense options '(.*)'")]
         public void GivenIHaveTheFollowingIntellisenseOptions(string p0)
         {
-            ScenarioContext.Current["datalistOptions"] = p0.Split( new char[]{','});
+            ScenarioContext.Current["datalistOptions"] = p0.Split( new[]{','});
         }
 
         [Given(@"the filter type is '(.*)'")]
@@ -202,7 +202,7 @@ namespace Dev2.Studio.Core.Specs.IntellisenseSpecs
             var filterType = ScenarioContext.Current["filterType"] is enIntellisensePartType ? (enIntellisensePartType)ScenarioContext.Current["filterType"] : enIntellisensePartType.None;
             var caretpos = int.Parse(ScenarioContext.Current["cursorIndex"].ToString());
             var options = provider.GetSuggestions(ScenarioContext.Current["inputText"].ToString(), caretpos, true,filterType);
-            var selected = p0.Split(new char[] { ',' });
+            var selected = p0.Split(new[] { ',' });
              if(p0=="" && !options.Any())
             {
                 return;

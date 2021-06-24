@@ -271,7 +271,7 @@ namespace Dev2.Activities.Designers2.AdvancedRecordset
                             break;
                         default:
                             var atomExpression = i as WarewolfAtomExpression;
-                            sqlString.Append(atomExpression.Item.ToString());
+                            sqlString.Append(atomExpression?.Item);
                             break;
                     }
                 }

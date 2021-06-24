@@ -26,12 +26,6 @@ namespace Unlimited.Framework.Converters.Graph.String.Xml
     {
         #region Constructors
 
-        
-        public XmlMapper()
-            
-        {
-        }
-
         #endregion Constructors
 
         #region Methods

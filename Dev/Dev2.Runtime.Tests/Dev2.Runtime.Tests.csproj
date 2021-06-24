@@ -124,6 +124,7 @@
     <Compile Include="ESB\Plugin\PluginServiceExecutionFactoryTest.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Hosting\ExplorerItemFactoryTests.cs" />
+    <Compile Include="Hosting\ResourceSaveProviderTests.cs" />
     <Compile Include="Hosting\ResourceUpgraderTests.cs" />
     <Compile Include="Hosting\ResourceUpgradeTest.cs" />
     <Compile Include="Hosting\ServerExplorerRepositoryTests.cs" />
@@ -284,7 +285,6 @@
     <Compile Include="Util\ScrubberTestsXml.cs" />
     <Compile Include="Util\RemoteDebugItemParserTest.cs" />
     <Compile Include="Util\ExecutionManagerTests.cs" />
-    <Compile Include="WebServer\AbstractWebRequestHandlerTests.cs" />
     <Compile Include="WebServer\Controllers\TestWebServerController.cs" />
     <Compile Include="WebServer\Controllers\TestUserWebServerController.cs" />
     <Compile Include="WebServer\DataObjectExtensionsTests.cs" />

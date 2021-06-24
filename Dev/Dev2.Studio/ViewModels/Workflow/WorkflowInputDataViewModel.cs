@@ -24,7 +24,6 @@ using Dev2.Data;
 using Dev2.Data.Interfaces;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.DataList.Contract.Binary_Objects;
-using Dev2.Instrumentation;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Services.Security;
 using Dev2.Session;
@@ -58,7 +57,6 @@ namespace Dev2.Studio.ViewModels.Workflow
         int queryStringMaxLength;
         readonly IPopupController _popupController;
         RelayCommand _cancelCommand;
-        readonly IApplicationTracker _applicationTracker;
 
         public event Action DebugExecutionStart;
         public event Action DebugExecutionFinished;
@@ -72,14 +70,12 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         void OnDebugExecutionStart()
         {
-            _applicationTracker?.TrackEvent(TrackEventDebugOutput.EventCategory, TrackEventDebugOutput.F6Debug);
             var handler = DebugExecutionStart;
             handler?.Invoke();
         }
 
         public WorkflowInputDataViewModel(IServiceDebugInfoModel input, Guid sessionId)
         {
-            _applicationTracker = CustomContainer.Get<IApplicationTracker>();
             VerifyArgument.IsNotNull(@"input", input);
             CanDebug = true;
             CanViewInBrowser = true;
@@ -220,7 +216,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 }
                 else
                 {
-                    Dev2Logger.Error("Invalid " + AppUsageStats.QueryStringMaxLength.ToString() + " value.",
+                    Dev2Logger.Error("Invalid " + AppUsageStats.QueryStringMaxLength + " value.",
                         GlobalConstants.WarewolfError);
                 }
 
@@ -695,8 +691,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             if (isEventTracking)
             {
-                _applicationTracker?.TrackEvent(TrackEventDebugOutput.EventCategory,
-                    TrackEventDebugOutput.ViewInBrowser);
+                
             }
         }
 

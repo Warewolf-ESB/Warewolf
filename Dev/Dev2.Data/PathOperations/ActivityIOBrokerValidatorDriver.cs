@@ -1,5 +1,5 @@
 #pragma warning disable
-﻿/*
+ /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
@@ -12,7 +12,6 @@
 using System;
 using System.IO;
 using System.Linq;
-using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Data.Interfaces;
 using Dev2.Data.Interfaces.Enums;
@@ -53,7 +52,7 @@ namespace Dev2.PathOperations
                                                                   IDev2CRUDOperationTO args,
                                                                   Func<string> performAfterValidation)
         {
-            var result = ActivityIOBrokerBaseDriver.ResultOk;
+            var result = ResultOk;
             _common.ValidateSourceAndDestinationPaths(src, dst);
             var opStatus = CreateEndPoint(dst, args, dst.PathIs(dst.IOPath) == enPathType.Directory);
             if (!opStatus.Equals("Success"))
@@ -64,7 +63,7 @@ namespace Dev2.PathOperations
             {
                 if (!TransferDirectoryContents(src, dst, args))
                 {
-                    result = ActivityIOBrokerBaseDriver.ResultBad;
+                    result = ResultBad;
                 }
             }
             else
@@ -80,7 +79,7 @@ namespace Dev2.PathOperations
                 }
                 if (!TransferDirectoryContents(src, dst, args))
                 {
-                    result = ActivityIOBrokerBaseDriver.ResultBad;
+                    result = ResultBad;
                 }
             }
 
@@ -149,7 +148,7 @@ namespace Dev2.PathOperations
             }
             var opStatus = CreateEndPoint(dst, new Dev2CRUDOperationTO(args.Overwrite),
                                              dst.PathIs(dst.IOPath) == enPathType.Directory);
-            if (!opStatus.Equals(ActivityIOBrokerBaseDriver.ResultOk))
+            if (!opStatus.Equals(ResultOk))
             {
                 throw new Exception(string.Format(ErrorResource.RecursiveDirectoryCreateFailed, dst.IOPath.Path));
             }

@@ -15,7 +15,6 @@ using Infragistics.Calculations;
 using Infragistics.Calculations.CalcManager;
 using Warewolf.Resource.Errors;
 
-
 namespace Dev2.MathOperations
 {
     public class Function : IFunction

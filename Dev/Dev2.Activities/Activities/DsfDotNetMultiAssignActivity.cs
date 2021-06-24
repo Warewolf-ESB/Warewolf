@@ -224,12 +224,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             var calcExpression = ExecutionEnvironment.WarewolfAtomToString(warewolfAtom);
             DataListUtil.IsCalcEvaluation(calcExpression, out string exp);
-            var res = functionEvaluator.TryEvaluateFunction(exp, out string eval, out string error);
+            var res = functionEvaluator.TryEvaluateFunction(exp, out string eval, out _);
             if (eval == exp.Replace("\"", "") && exp.Contains("\""))
             {
                 try
                 {
-                    var b = functionEvaluator.TryEvaluateFunction(exp.Replace("\"", ""), out string eval2, out error);
+                    var b = functionEvaluator.TryEvaluateFunction(exp.Replace("\"", ""), out string eval2, out _);
                     if (b)
                     {
                         eval = eval2;

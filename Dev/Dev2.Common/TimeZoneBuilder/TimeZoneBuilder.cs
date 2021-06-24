@@ -49,19 +49,19 @@ namespace Dev2.Common.TimeZoneBuilder
         {
             foreach (TimeZoneInfo timeZoneInfo in TimeZoneInfo.GetSystemTimeZones())
             {
-                if (!TimeZones.TryGetValue(timeZoneInfo.DisplayName.ToLower(), out ITimeZoneTO timeZoneTo))
+                if (!TimeZones.TryGetValue(timeZoneInfo.DisplayName.ToLower(), out _))
                 {
                     TimeZones.Add(timeZoneInfo.DisplayName.ToLower(),
                         new TimeZoneTO(timeZoneInfo.StandardName, timeZoneInfo.StandardName, timeZoneInfo.DisplayName));
                 }
 
-                if (!TimeZones.TryGetValue(timeZoneInfo.DaylightName.ToLower(), out timeZoneTo))
+                if (!TimeZones.TryGetValue(timeZoneInfo.DaylightName.ToLower(), out _))
                 {
                     TimeZones.Add(timeZoneInfo.DaylightName.ToLower(),
                         new TimeZoneTO(timeZoneInfo.DaylightName, timeZoneInfo.DaylightName, timeZoneInfo.DisplayName));
                 }
 
-                if (!TimeZones.TryGetValue(timeZoneInfo.StandardName.ToLower(), out timeZoneTo))
+                if (!TimeZones.TryGetValue(timeZoneInfo.StandardName.ToLower(), out _))
                 {
                     TimeZones.Add(timeZoneInfo.StandardName.ToLower(),
                         new TimeZoneTO(timeZoneInfo.StandardName, timeZoneInfo.StandardName, timeZoneInfo.DisplayName));

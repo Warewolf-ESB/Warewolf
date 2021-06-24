@@ -63,10 +63,10 @@ namespace Warewolf.Trigger.Queue.Tests
                 Concurrency = 100,
                 UserName = "Bob",
                 Password = "123456",
-                Options = new IOption[] { mockOption.Object },
+                Options = new[] { mockOption.Object },
                 QueueSinkId = resourceId,
                 DeadLetterQueue = "DeadLetterQueue",
-                DeadLetterOptions = new IOption[] { mockOption.Object },
+                DeadLetterOptions = new[] { mockOption.Object },
                 MapEntireMessage = true,
                 Inputs = mockInputs.Object,
                 ResourceId = resourceId

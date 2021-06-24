@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -45,6 +45,9 @@ namespace Dev2.Runtime.Hosting
         readonly object _loadLock = new object();
         static readonly object _lazyLock = new object();
         ResourceCatalogBuilder Builder { get; set; }
+
+        //Note: this has been added for tests
+        public IResourceActivityCache ResourceActivityCache { get; set; }
 
         readonly ResourceCatalogPluginContainer _catalogPluginContainer;
         static readonly Lazy<IResourceCatalog> _instance = new Lazy<IResourceCatalog>(() =>
@@ -342,6 +345,9 @@ namespace Dev2.Runtime.Hosting
         }
 
         public IList<DuplicateResource> GetDuplicateResources() => DuplicateResources;
+
+        public ResourceCatalogResult SaveResources(Guid serverWorkspaceID, List<DuplicateResourceTO> resourceMaps, bool overrideExisting) => _catalogPluginContainer.SaveProvider.SaveResources(serverWorkspaceID, resourceMaps, overrideExisting);
+        
         public ResourceCatalogResult SaveResource(Guid workspaceID, StringBuilder resourceXml, string savedPath) => _catalogPluginContainer.SaveProvider.SaveResource(workspaceID, resourceXml, savedPath, "", "");
         public ResourceCatalogResult SaveResource(Guid workspaceID, StringBuilder resourceXml, string savedPath, string reason) => _catalogPluginContainer.SaveProvider.SaveResource(workspaceID, resourceXml, savedPath, reason, "");
         public ResourceCatalogResult SaveResource(Guid workspaceID, StringBuilder resourceXml, string savedPath, string reason, string user) => _catalogPluginContainer.SaveProvider.SaveResource(workspaceID, resourceXml, savedPath, reason, user);
@@ -444,12 +450,11 @@ namespace Dev2.Runtime.Hosting
         static ConcurrentDictionary<Guid, IResourceActivityCache> _parsers = new ConcurrentDictionary<Guid, IResourceActivityCache>();
         bool _loading;
 
-        public IDev2Activity Parse(Guid workspaceID, Guid resourceID) => Parse(workspaceID, resourceID, "");
 
-        public IDev2Activity Parse(Guid workspaceID, Guid resourceID, string executionId)
-        {
-            return Parse(workspaceID, resourceID, executionId, null);
-        }
+        public IDev2Activity Parse(Guid workspaceID, Guid resourceID) => Parse(workspaceID, resourceID, "");
+        public IDev2Activity Parse(Guid workspaceID, Guid resourceID, string executionId) => Parse(workspaceID, resourceID, executionId, null);
+        public IDev2Activity Parse(Guid workspaceID, IResource resource) => Parse(workspaceID, resource.ResourceID, string.Empty, resource);
+        
         public IDev2Activity Parse(Guid workspaceID, Guid resourceID, string executionId, IResource resourceOverride)
         {
 
@@ -458,7 +463,7 @@ namespace Dev2.Runtime.Hosting
             // get workspace cache entries
             if (_parsers != null && !_parsers.TryGetValue(workspaceID, out parser))
             {
-                parser = new ResourceActivityCache(CustomContainer.Get<IActivityParser>(), new ConcurrentDictionary<Guid, IDev2Activity>());
+                parser = ResourceActivityCache ?? new ResourceActivityCache(CustomContainer.Get<IActivityParser>(), new ConcurrentDictionary<Guid, IDev2Activity>());
                 _parsers.AddOrUpdate(workspaceID, parser, (key, cache) =>
                 {
                     if (_parsers.TryGetValue(key, out IResourceActivityCache existingCache))
@@ -485,7 +490,11 @@ namespace Dev2.Runtime.Hosting
                 resource = GetResource(workspaceID, resourceID);
             }
             // get first activity for resource and initialize it
-            var service = GetService(workspaceID, resourceID, resource.ResourceName);
+            var service = (DynamicService)null;
+            if (resource != null)
+            {
+                service = GetService(workspaceID, resourceID, resource.ResourceName);
+            }
             if (service != null)
             {
                 var sa = service.Actions.FirstOrDefault();
@@ -520,5 +529,6 @@ namespace Dev2.Runtime.Hosting
         {
             return _serverVersionRepository.GetLatestVersionNumber(resourceId);
         }
+
     }
 }

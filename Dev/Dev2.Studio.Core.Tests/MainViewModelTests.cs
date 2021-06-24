@@ -60,7 +60,6 @@ using Moq;
 using Dev2.ViewModels;
 using Warewolf.Studio.ViewModels;
 using Dev2.Common.Interfaces.Studio.Controller;
-using Dev2.Instrumentation;
 using Dev2.Triggers;
 using Dev2.Dialogs;
 using Warewolf.Data;
@@ -1183,9 +1182,6 @@ namespace Dev2.Core.Tests
         [TestCategory("ShowStartPage")]
         public void MainViewModelShowStartPageExpectedTracking()
         {
-            var _applicationTrackerMock = new Mock<IApplicationTracker>();
-            _applicationTrackerMock.Setup(controller => controller.TrackEvent(It.IsAny<string>(), It.IsAny<string>()));
-            CustomContainer.Register(_applicationTrackerMock.Object);
             CreateFullExportsAndVm();
             var versionChecker = Mock.Get(_shellViewModel.Version);
             versionChecker.Setup(v => v.CommunityPageUri).Verifiable();
@@ -1193,7 +1189,6 @@ namespace Dev2.Core.Tests
 
             _shellViewModel.ShowStartPageAsync();
             versionChecker.Verify(v => v.CommunityPageUri);
-            _applicationTrackerMock.Verify(controller => controller.TrackEvent(It.IsAny<string>(), It.IsAny<string>()), Times.AtLeastOnce());
         }
         #endregion
 

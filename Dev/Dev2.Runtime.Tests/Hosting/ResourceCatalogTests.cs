@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -52,13 +52,17 @@ namespace Dev2.Tests.Runtime.Hosting
 {
     [TestClass]
     [TestCategory("Runtime Hosting")]
-    [DoNotParallelize]
-    [TestCategory("CannotParallelize")]
     public class ResourceCatalogTests
     {
         // Change this if you change the number of resources saved by SaveResources()
         const int SaveResourceCount = 6;
         static readonly object SyncRoot = new object();
+        
+        const int _numOfTestWFs = 2000;
+        const string _resourceName = "wolf-Test_WF_";
+
+        static List<string> _testSourceWFs = new List<string>();
+        static List<Guid> _resourceIds = new List<Guid>();
 
         [TestInitialize]
         public void Initialise()
@@ -66,7 +70,13 @@ namespace Dev2.Tests.Runtime.Hosting
             var workspacePath = EnvironmentVariables.ResourcePath;
             if (Directory.Exists(workspacePath))
             {
-                Directory.Delete(workspacePath, true);
+                try
+                {
+                    Directory.Delete(workspacePath, true);
+                }
+                catch(IOException)
+                { //Best effort
+                }
             }
             if (!Directory.Exists(EnvironmentVariables.ResourcePath))
             {
@@ -88,7 +98,34 @@ namespace Dev2.Tests.Runtime.Hosting
                 var loc = assembly.Location;
                 EnvironmentVariables.ApplicationPath = Path.GetDirectoryName(loc);
             }
+
+            try
+            {
+                var (testSourceWFs, resourceIds) = CalculateTestWFs(_resourceName, _numOfTestWFs);
+                _testSourceWFs = testSourceWFs;
+                _resourceIds = resourceIds;
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("TEST: ResourceCatalogTests failed to Calculate Test Wolrkflows: " + ex.Message);
+            }
+
+            (List<string> testWFs, List<Guid> ResourceIds) CalculateTestWFs(string resourceName, int numOfTestWFs)
+            {
+                var resourceIds = new List<Guid>();
+                var workflows = new List<string>();
+                for (int i = 0; i < numOfTestWFs; i++)
+                {
+                    workflows.Add((resourceName + (i + 1)).ToString());
+                    resourceIds.Add(Guid.NewGuid());
+                }
+                return (workflows, resourceIds);
+            }
+
         }
+
+
 
         #region Instance
 
@@ -340,6 +377,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Results-------------------------
             version.Verify(a => a.StoreVersion(It.IsAny<IResource>(), "bob", "reason", workspaceID, ""));
         }
+
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ResourceCatalog_SaveResource")]
@@ -367,6 +405,8 @@ namespace Dev2.Tests.Runtime.Hosting
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ResourceCatalog_SaveResource")]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void SaveResource_Expects_A_RollbackOnError()
         {
             //------------Setup for test--------------------------
@@ -716,19 +756,6 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual(expected.DatabaseName, actual.DatabaseName);
             Assert.AreEqual(expected.Server, actual.Server);
             Assert.AreEqual(expected.ServerType, actual.ServerType);
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(DirectoryNotFoundException))]
-        [DoNotParallelize]
-        [TestCategory("CannotParallelize")]
-        public void SaveResourceWithSlashesInResourceNameExpectedThrowsDirectoryNotFoundException()
-        {
-            var workspaceID = Guid.NewGuid();
-            var catalog = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
-
-            var expected = new DbSource { ResourceID = Guid.NewGuid(), ResourceName = "Test\\Source", DatabaseName = "TestNewDb", Server = "TestNewServer", ServerType = enSourceType.MySqlDatabase };
-            catalog.SaveResource(workspaceID, expected, "");
         }
 
         [TestMethod]
@@ -1571,7 +1598,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
             Assert.IsNotNull(payload);
         }
-        
+
         [TestMethod]
         [Owner("Travis Frisinger")]
         [DoNotParallelize]
@@ -1580,7 +1607,7 @@ namespace Dev2.Tests.Runtime.Hosting
         {
             //------------Setup for test--------------------------
             var workspaceID = GlobalConstants.ServerWorkspaceID;
-            
+
             var sourcesPath = EnvironmentVariables.ResourcePath;
             Directory.CreateDirectory(sourcesPath);
             SaveResources(sourcesPath, null, false, false, new[] { "DbSource" }, new[] { Guid.NewGuid() });
@@ -1978,6 +2005,8 @@ namespace Dev2.Tests.Runtime.Hosting
         [TestMethod]
         [Description("Updates the Category of the resource")]
         [Owner("Huggs")]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void ResourceCatalog_RenameCategory_NoResources_ExpectErrorNoMatching()
         {
             //------------Setup for test--------------------------
@@ -2009,6 +2038,8 @@ namespace Dev2.Tests.Runtime.Hosting
         [TestMethod]
         [Description("Updates the Category of the resource")]
         [Owner("Huggs")]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void ResourceCatalog_UnitTest_UpdateResourceCategoryValidArgumentsDifferentCasing_ExpectFileContentsUpdated()
         {
             //------------Setup for test--------------------------
@@ -2064,6 +2095,8 @@ namespace Dev2.Tests.Runtime.Hosting
         [TestMethod]
         [Owner("Huggs")]
         [ExpectedException(typeof(InvalidDataContractException))]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void ResourceCatalog_DeleteResource_TypeEmptyString_ExpectException()
         {
             //------------Setup for test--------------------------
@@ -2089,6 +2122,8 @@ namespace Dev2.Tests.Runtime.Hosting
         [TestMethod]
         [Owner("Huggs")]
         [ExpectedException(typeof(InvalidDataContractException))]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void ResourceCatalog_DeleteResource_TypeNull_ExpectException()
         {
             //------------Setup for test--------------------------
@@ -2113,6 +2148,8 @@ namespace Dev2.Tests.Runtime.Hosting
 
         [TestMethod]
         [Owner("Huggs")]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void ResourceCatalog_DeleteResource_ResourceNotFound_ExpectNoMatchResult()
         {
             //------------Setup for test--------------------------
@@ -2138,6 +2175,8 @@ namespace Dev2.Tests.Runtime.Hosting
 
         [TestMethod]
         [Owner("Huggs")]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void ResourceCatalog_DeleteResource_FoundMultipleResources_ExpectDuplicateMatchResult()
         {
             //------------Setup for test--------------------------
@@ -2166,6 +2205,8 @@ namespace Dev2.Tests.Runtime.Hosting
 
         [TestMethod]
         [Owner("Huggs")]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void ResourceCatalog_DeleteResource_FoundResource_ExpectResourceDeleted()
         {
             //------------Setup for test--------------------------
@@ -2194,10 +2235,10 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.IsNull(resourceToFind);
         }
 
-
-
         [TestMethod]
         [Owner("Huggs")]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void ResourceCatalog_DeleteResource_FoundResource_ExpectResourceDeleted_VersionsNotDeleted()
         {
             //------------Setup for test--------------------------
@@ -2228,6 +2269,8 @@ namespace Dev2.Tests.Runtime.Hosting
 
         [TestMethod]
         [Owner("Huggs")]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void ResourceCatalog_GetResource_Workflow_ExpectResource()
         {
             //------------Setup for test--------------------------
@@ -2254,6 +2297,8 @@ namespace Dev2.Tests.Runtime.Hosting
 
         [TestMethod]
         [Owner("Huggs")]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void ResourceCatalog_GetResource_DbSource_ExpectResource()
         {
             //------------Setup for test--------------------------
@@ -2279,7 +2324,6 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.IsNotNull(resourceFound);
             Assert.AreEqual(oldResource.ResourceID, resourceFound.ResourceID);
         }
-
 
         #endregion
 
@@ -2330,7 +2374,7 @@ namespace Dev2.Tests.Runtime.Hosting
                 new[] { Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid() }, saveToWSPath);
         }
 
-        static IEnumerable<IResource> SaveResources(string resourcesPath, string versionNo, bool injectID, bool signXml, IEnumerable<string> resourceNames, Guid[] resourceIDs, bool createWorDef = false)
+        static IEnumerable<IResource> SaveResources(string resourcesPath, string versionNo, bool injectID, bool signXml, IEnumerable<string> resourceNames, Guid[] resourceIDs, bool createWorDef = false, bool renameWorkflow = false)
         {
             lock (SyncRoot)
             {
@@ -2338,7 +2382,22 @@ namespace Dev2.Tests.Runtime.Hosting
                 var count = 0;
                 foreach (var resourceName in resourceNames)
                 {
-                    var xml = XmlResource.Fetch(resourceName);
+                    var xml = (XElement)null;
+                    if (renameWorkflow)
+                    {
+                        xml = XmlResource.Fetch("Bug6619Dep"); //this will be used as template most of its values will be edited
+                        
+                        xml.Attribute("ID").Value = resourceIDs[count].ToString();
+                        xml.Attribute("Name").Value = resourceName;
+                        
+                        xml.Element("DisplayName").Value = resourceName;
+                        xml.Element("Category").Value = string.Empty;
+
+                    }
+                    else
+                    {
+                       xml = XmlResource.Fetch(resourceName);
+                    }
                     if (injectID)
                     {
                         var idAttr = xml.Attribute("ID");
@@ -2362,6 +2421,10 @@ namespace Dev2.Tests.Runtime.Hosting
                         contents = HostSecurityProvider.Instance.SignXml(new StringBuilder(contents)).ToString();
                     }
                     var res = new Resource(xml);
+                    if (renameWorkflow)
+                    {
+                        res.ResourceName = resourceName;
+                    }
                     var resourceDirectory = resourcesPath + "\\";
                     res.FilePath = resourceDirectory + res.ResourceName + ".bite";
                     var f = new FileInfo(res.FilePath);
@@ -2402,6 +2465,8 @@ namespace Dev2.Tests.Runtime.Hosting
         #region GetDependants
 
         [TestMethod]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void GetDependantsWhereResourceIsDependedOnExpectNonEmptyList()
         {
             //------------Setup for test--------------------------
@@ -2425,6 +2490,8 @@ namespace Dev2.Tests.Runtime.Hosting
         }
 
         [TestMethod]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void UpdateResourceWhereResourceIsDependedOnExpectNonEmptyList()
         {
             //------------Setup for test--------------------------
@@ -2483,6 +2550,8 @@ namespace Dev2.Tests.Runtime.Hosting
         }
 
         [TestMethod]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void UpdateResourceWhereResourceIsDependedOnExpectNonEmptyListForResource()
         {
             //------------Setup for test--------------------------
@@ -2543,6 +2612,8 @@ namespace Dev2.Tests.Runtime.Hosting
         }
 
         [TestMethod]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void GetDependantsWhereNoResourcesExpectEmptyList()
         {
             //------------Setup for test--------------------------
@@ -2559,6 +2630,8 @@ namespace Dev2.Tests.Runtime.Hosting
         }
 
         [TestMethod]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void GetDependantsWhereResourceHasNoDependedOnExpectNonEmptyList()
         {
             //------------Setup for test--------------------------
@@ -2585,6 +2658,8 @@ namespace Dev2.Tests.Runtime.Hosting
         #region GetDependantsAsResourceForTrees
 
         [TestMethod]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void GetDependantsAsResourceForTreesWhereResourceIsDependedOnExpectNonEmptyList()
         {
             //------------Setup for test--------------------------
@@ -2608,6 +2683,8 @@ namespace Dev2.Tests.Runtime.Hosting
         }
 
         [TestMethod]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void GetDependantsAsResourceForTreesWhereNoResourcesExpectEmptyList()
         {
             //------------Setup for test--------------------------
@@ -2624,6 +2701,8 @@ namespace Dev2.Tests.Runtime.Hosting
         }
 
         [TestMethod]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void GetDependantsAsResourceForTreesWhereResourceHasNoDependedOnExpectNonEmptyList()
         {
             //------------Setup for test--------------------------
@@ -2644,6 +2723,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Results-------------------------
             Assert.AreEqual(1, dependants.Count);
         }
+
         #endregion
 
         #region VerifyPayload
@@ -2680,6 +2760,8 @@ namespace Dev2.Tests.Runtime.Hosting
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("ResourceCatalog_GetResourceList")]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void ResourceCatalog_GetResourceList_WhenUsingNameAndResourcesNotPresent_ExpectEmptyList()
         {
             //------------Setup for test--------------------------
@@ -2708,6 +2790,8 @@ namespace Dev2.Tests.Runtime.Hosting
         [Owner("Travis Frisinger")]
         [TestCategory("ResourceCatalog_GetResourceList")]
         [ExpectedException(typeof(InvalidDataContractException))]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void ResourceCatalog_GetResourceList_WhenNameAndResourceNameAndTypeNull_ExpectException()
         {
             //------------Setup for test--------------------------
@@ -2734,6 +2818,8 @@ namespace Dev2.Tests.Runtime.Hosting
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("ResourceCatalog_GetResourceList")]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void ResourceCatalog_GetResourceList_WhenUsingIdAndResourcesPresent_ExpectResourceList()
         {
             //------------Setup for test--------------------------
@@ -2771,6 +2857,8 @@ namespace Dev2.Tests.Runtime.Hosting
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("ResourceCatalog_GetResourceList")]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void ResourceCatalog_GetResourceList_WhenUsingIdAndResourcesNotPresent_ExpectEmptyList()
         {
             //------------Setup for test--------------------------
@@ -2803,6 +2891,8 @@ namespace Dev2.Tests.Runtime.Hosting
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("ResourceCatalog_GetResourceList")]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void ResourceCatalog_GetResourceList_WhenUsingIdAndTypeNull_ShouldStillReturn()
         {
             //------------Setup for test--------------------------
@@ -2833,6 +2923,8 @@ namespace Dev2.Tests.Runtime.Hosting
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("ResourceCatalog_GetResourceList")]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void ResourceCatalog_GetResourceList_WhenUsingIdAndGuidCsvNull_ExpectEmptyList()
         {
             //------------Setup for test--------------------------
@@ -2862,6 +2954,8 @@ namespace Dev2.Tests.Runtime.Hosting
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void ResourceCatalogPluginContainer_GivenVersion_ShouldCreateInstancesWithVersion()
         {
             //---------------Set up test pack-------------------
@@ -2882,6 +2976,8 @@ namespace Dev2.Tests.Runtime.Hosting
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void ResourceCatalogPluginContainer_GivenVersionAndManagementServices_ShouldCreateInstances()
         {
             //---------------Set up test pack-------------------
@@ -2903,6 +2999,8 @@ namespace Dev2.Tests.Runtime.Hosting
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void Dispose_GivenInstance_ShouldCleaup()
         {
             //---------------Set up test pack-------------------
@@ -2917,6 +3015,8 @@ namespace Dev2.Tests.Runtime.Hosting
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void ToPayload_GivenIsReservedService_ShouldAppendTypeAndName()
         {
             //---------------Set up test pack-------------------
@@ -2936,6 +3036,8 @@ namespace Dev2.Tests.Runtime.Hosting
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void MapServiceActionDependencies_GivenServiceName_ShouldNotThrowException()
         {
             //---------------Set up test pack-------------------
@@ -2965,6 +3067,8 @@ namespace Dev2.Tests.Runtime.Hosting
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void LoadResourceActivityCache_GivenServiceName_ShouldNotThrowException()
         {
             //---------------Set up test pack-------------------
@@ -3005,6 +3109,8 @@ namespace Dev2.Tests.Runtime.Hosting
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void LoadResourceActivityCache_GivenServiceName_ShouldAddActivityToParserCache()
         {
             //---------------Set up test pack-------------------
@@ -3042,6 +3148,8 @@ namespace Dev2.Tests.Runtime.Hosting
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void LoadResourceActivityCache_GivenServiceNameWithActivityInCache_ShouldReturnFromCache()
         {
             //---------------Set up test pack-------------------
@@ -3073,6 +3181,8 @@ namespace Dev2.Tests.Runtime.Hosting
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void LoadResourceActivityCache_GivenServiceName_ShouldPopulateServiceActionRepo()
         {
             //---------------Set up test pack-------------------
@@ -3106,6 +3216,8 @@ namespace Dev2.Tests.Runtime.Hosting
         }
 
         [TestMethod]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void DeleteResourceWithSingleExistingResourceName_ShouldRemoveFromCache()
         {
             //---------------Set up test pack-------------------
@@ -3141,6 +3253,8 @@ namespace Dev2.Tests.Runtime.Hosting
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void ResourceCatalog_GetResourceDuplicate_Give2SameFilesInDifferentFolders_ShouldReturnPaths()
         {
             var path = EnvironmentVariables.ResourcePath;
@@ -3182,6 +3296,8 @@ namespace Dev2.Tests.Runtime.Hosting
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void ResourceCatalog_UnitTest_DuplicateResourceResourceWithNullDestination_ExpectArgumentNullException()
         {
             //------------Setup for test--------------------------
@@ -3203,6 +3319,8 @@ namespace Dev2.Tests.Runtime.Hosting
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void ResourceCatalog_UnitTest_DuplicateResourceResourceWithValidArgs_ExpectSuccesResult()
         {
             //------------Setup for test--------------------------
@@ -3224,6 +3342,8 @@ namespace Dev2.Tests.Runtime.Hosting
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void ResourceCatalog_UnitTest_DuplicateResourceResourceWithValidArgs_ExpectNewDisplayName()
         {
             //------------Setup for test--------------------------
@@ -3263,7 +3383,10 @@ namespace Dev2.Tests.Runtime.Hosting
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void ResourceCatalog_UnitTest_DuplicateFolderResourceWithValidArgs_ExpectSuccesResult()
+        [Timeout(60000)]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
+        public void ResourceCatalog_DuplicateFolder_ResourceWithValidArgs_And_FixReferences_False_ExpectSuccesResult()
         {
             //------------Setup for test--------------------------
             var workspaceID = GlobalConstants.ServerWorkspaceID;
@@ -3288,7 +3411,312 @@ namespace Dev2.Tests.Runtime.Hosting
         }
 
         [TestMethod]
+        [DoNotParallelize]
+        [Timeout(60000 * 14)]
+        [Owner("Siphamandla Dube")]
+        [TestCategory("ResourceCatalog_LoadTests")]
+        public void ResourceCatalog_DuplicateFolder_ResourceWithValidArgs_And_FixReferences_False_ExpectSuccesResult_LoadTest()
+        {
+            //Note: this intergration test proves the timeout issue caused by the multiple calls to the method
+            //Note: at this point the time is reduced to a little less then 14 minutes from the initial 25 minutes
+            //------------Setup for test--------------------------
+            var workspaceID = GlobalConstants.ServerWorkspaceID;
+
+            var sourceLocation = "Duplicate_Source";
+            var path = EnvironmentVariables.ResourcePath + "\\" + sourceLocation;
+            Directory.CreateDirectory(path);
+            
+            SaveResources(path, null, true, false, _testSourceWFs, _resourceIds.ToArray(), true, true);
+
+            var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
+            rc.LoadWorkspace(workspaceID);
+            var resultBeforeDuplicateF = rc.GetResources(workspaceID);
+            var oldResource1 = resultBeforeDuplicateF.FirstOrDefault(resource => resource.ResourceName == _resourceName + (1 + 1));
+            //------------Assert Precondition-----------------
+            Assert.AreEqual(_numOfTestWFs, resultBeforeDuplicateF.Count, "Number of test workflows should equal to GetResources result to prove that the WF ids are all unique - BEFORE DuplicateFolder");
+            Assert.IsNotNull(oldResource1);
+            //------------Execute Test---------------------------
+            ResourceCatalogResult resourceCatalogResult = rc.DuplicateFolder(sourceLocation, "Duplicate_Destination", string.Empty, false);
+
+            var resultAfterDuplicateF = rc.GetResources(workspaceID);
+            var oldResource = resultAfterDuplicateF.FirstOrDefault(resource => resource.ResourceName == _resourceName + (1 + 1));
+            //------------Assert Precondition-----------------
+            Assert.AreEqual(_numOfTestWFs * 2, resultAfterDuplicateF.Count, "Number of test workflows should equal to 2 times the GetResources result to prove that the WF ids are all unique - AFTER DuplicateFolder");
+            //------------Assert Results-------------------------
+            //TODO: These should be equal after the Refactor of DuplicateFolder method
+            Assert.AreEqual(ExecStatus.Success, resourceCatalogResult.Status);
+            Assert.AreEqual(@"Duplicated Successfully".Replace(Environment.NewLine, ""), resourceCatalogResult.Message.Replace(Environment.NewLine, ""));
+
+            //TODO: this will be changed into a unit test and this exception tested in a unit test setup
+            Assert.AreNotEqual("Duplicated UnsuccessfullyFailure Fixing references", resourceCatalogResult.Message.Replace(Environment.NewLine, ""));
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [Timeout(60000 * 16)]
+        [DoNotParallelize]
+        [TestCategory("ResourceCatalog_LoadTests")]
+        public void ResourceCatalog_DuplicateFolder_ResourceWithValidArgs_And_FixReferences_True_ExpectSuccesResult_LoadTest()
+        {
+            //Note: this intergration test proves the timeout issue caused by the multiple calls to the method
+            //Note: at this point the time is reduced to a little less then 16 minutes from the initial 25 minutes
+            //------------Setup for test--------------------------
+            var workspaceID = GlobalConstants.ServerWorkspaceID;
+
+            var sourceLocation = "Duplicate_Source";
+            var path = EnvironmentVariables.ResourcePath + "\\"+sourceLocation;
+            Directory.CreateDirectory(path);
+
+            SaveResources(path, null, true, false, _testSourceWFs, _resourceIds.ToArray(), true, true);
+
+            var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
+            rc.LoadWorkspace(workspaceID);
+            var resultBeforeDuplicateF = rc.GetResources(workspaceID);
+            var oldResource1 = resultBeforeDuplicateF.FirstOrDefault(resource => resource.ResourceName == _resourceName + (1+1));
+            //------------Assert Precondition-----------------
+            Assert.AreEqual(_numOfTestWFs, resultBeforeDuplicateF.Count, "Number of test workflows should equal to GetResources result to prove that the WF ids are all unique - BEFORE DuplicateFolder");
+            Assert.IsNotNull(oldResource1);
+            //------------Execute Test---------------------------
+            ResourceCatalogResult resourceCatalogResult = rc.DuplicateFolder(sourceLocation, "Duplicate_Destination", string.Empty, true);
+            
+            var resultAfterDuplicateF = rc.GetResources(workspaceID);
+            var oldResource = resultAfterDuplicateF.FirstOrDefault(resource => resource.ResourceName == _resourceName + (1 + 1));
+            //------------Assert Precondition-----------------
+            Assert.AreEqual(_numOfTestWFs * 2, resultAfterDuplicateF.Count, "Number of test workflows should equal to 2 times the GetResources result to prove that the WF ids are all unique - AFTER DuplicateFolder");
+            //------------Assert Results-------------------------
+            //TODO: These should be equal after the Refactor of DuplicateFolder method
+            Assert.AreEqual(ExecStatus.Success, resourceCatalogResult.Status);
+            Assert.AreEqual(@"Duplicated Successfully".Replace(Environment.NewLine, ""), resourceCatalogResult.Message.Replace(Environment.NewLine, ""));
+            
+            //TODO: this will be changed into a unit test and this exception tested in a unit test setup
+            Assert.AreNotEqual("Duplicated UnsuccessfullyFailure Fixing references", resourceCatalogResult.Message.Replace(Environment.NewLine, ""));
+        }
+
+        [TestMethod]
+        [DoNotParallelize]
+        [Timeout(60000)]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ResourceCatalog))]
+        public void ResourceCatalog_DuplicateFolder_GivenInnerFolder_ResourceWithValidArgs_And_FixReferences_True_ExpectSuccesResult()
+        {
+            //------------Setup for test--------------------------
+            var workspaceID = GlobalConstants.ServerWorkspaceID;
+
+            var sourceLocation = "Duplicate_Source";
+            var path = EnvironmentVariables.ResourcePath + "\\" + sourceLocation;
+            Directory.CreateDirectory(path);
+            const string resourceName = "wolf-Test_WF_";
+            const string resourceName2 = "wolf-Test_Inner_WF_";
+
+            const int numOfTestWFs = 2;
+            const int numOfTestWFs2 = 2; 
+            SaveTestResources(path, resourceName, out List<string> workflows, out List<Guid> resourceIds, numOfTestWFs);
+            
+            SaveTestResources(path + "\\Duplicate_Source_Inner", resourceName2, out List<string> workflows2, out List<Guid> resourceIds2, numOfTestWFs2);
+
+            var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
+            rc.LoadWorkspace(workspaceID);
+            var resultBeforeDuplicateF = rc.GetResources(workspaceID);
+            var oldResource1 = resultBeforeDuplicateF.FirstOrDefault(resource => resource.ResourceName == resourceName + (1 + 1));
+            //------------Assert Precondition-----------------
+            var numOfWfs = numOfTestWFs + numOfTestWFs;
+            Assert.AreEqual(numOfWfs, resultBeforeDuplicateF.Count, "Number of test workflows should equal to GetResources result to prove that the WF ids are all unique - BEFORE DuplicateFolder");
+            Assert.IsNotNull(oldResource1);
+            //------------Execute Test---------------------------
+            ResourceCatalogResult resourceCatalogResult = rc.DuplicateFolder(sourceLocation, "Duplicate_Destination", string.Empty, true);
+
+            var resultAfterDuplicateF = rc.GetResources(workspaceID);
+            var oldResource = resultAfterDuplicateF.FirstOrDefault(resource => resource.ResourceName == resourceName + (1 + 1));
+            //------------Assert Precondition-----------------
+            Assert.AreEqual(numOfWfs * 2, resultAfterDuplicateF.Count, "Number of test workflows should equal to 8 on GetResources result to prove that the WF ids are all unique - AFTER DuplicateFolder");
+            //------------Assert Results-------------------------
+            Assert.AreEqual(ExecStatus.Success, resourceCatalogResult.Status);
+            Assert.AreEqual(@"Duplicated Successfully".Replace(Environment.NewLine, ""), resourceCatalogResult.Message.Replace(Environment.NewLine, ""));
+        }
+
+        [TestMethod]
+        [DoNotParallelize]
+        [Timeout(60000)]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ResourceCatalog))]
+        public void ResourceCatalog_Parse_GivenNonExistantResource_ShouldReturnNull()
+        {
+            //------------Setup for test--------------------------
+            var resource = new Resource 
+            { 
+                ResourceName = "test_resource", 
+                ResourceID = Guid.Empty 
+            };
+
+            var sut = new ResourceCatalog
+            {
+                ResourceActivityCache = new Mock<IResourceActivityCache>().Object
+            };
+            //------------Assert Precondition-----------------
+            //------------Execute Test---------------------------
+            var result = sut.Parse(GlobalConstants.ServerWorkspaceID, resource);
+            //------------Assert Precondition-----------------
+            //------------Assert Results-------------------------
+            Assert.IsNull(result);
+        }
+
+        [TestMethod]
+        [DoNotParallelize]
+        [Timeout(60000)]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ResourceCatalog))]
+        public void ResourceCatalog_Parse_GivenHasActivityInCache_ShouldReturnExistingActivityCacheEntry()
+        {
+            //Note: there seems to be a race condition with: ResourceCatalog_Parse_GivenHasActivityInCache_And_GetActivityFails_ShouldReturnNull
+            //------------Setup for test--------------------------
+            var resource = new Resource
+            {
+                ResourceName = "test_resource",
+                ResourceID = Guid.Empty
+            };
+
+            var mockResourceCatalog = new Mock<IResourceCatalog>();
+            var mockActivityParser = new Mock<IActivityParser>();
+            var mockResourceActivityCache = new Mock<IResourceActivityCache>();
+            var mockDev2Activity = new Mock<IDev2Activity>();
+            mockResourceActivityCache.Setup(o => o.HasActivityInCache(resource.ResourceID))
+                .Returns(true);
+            mockResourceActivityCache.Setup(o => o.GetActivity(resource.ResourceID))
+                .Returns(mockDev2Activity.Object);
+
+            var sut = new ResourceCatalog
+            {
+                ResourceActivityCache = mockResourceActivityCache.Object
+            };
+            //------------Assert Precondition-----------------
+            //------------Execute Test---------------------------
+            var result = sut.Parse(GlobalConstants.ServerWorkspaceID, resource.ResourceID);
+            //------------Assert Precondition-----------------
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(result);
+            Assert.AreEqual(mockDev2Activity.Object, result);
+        }
+
+        [TestMethod]
+        [DoNotParallelize]
+        [Timeout(60000)]
+        [Owner("Siphamandla Dube")]
+        [TestCategory("ResourceCatalog_Intergation")]
+        public void ResourceCatalog_Parse_GivenHasActivityInCache_ShouldReturnExistingActivityCacheEntry_Intergation()
+        {
+            //------------Setup for test--------------------------
+            var workspaceID = GlobalConstants.ServerWorkspaceID;
+
+            var sourceLocation = "ResourceCatalogParseMethodTests";
+            var path = EnvironmentVariables.ResourcePath + "\\" + sourceLocation;
+            Directory.CreateDirectory(path);
+            const string resourceName = "wolf-Test_WF_";
+
+            const int numOfTestWFs = 2;
+            SaveTestResources(path, resourceName, out List<string> workflows, out List<Guid> resourceIds, numOfTestWFs);
+
+            var resource = new Resource
+            {
+                ResourceName = resourceName,
+                ResourceID = resourceIds.First()
+            };
+
+            var sut = ResourceCatalog.Instance;
+            //------------Assert Precondition-----------------
+            //------------Execute Test---------------------------
+            var result = sut.Parse(workspaceID, resource.ResourceID);
+            //------------Assert Precondition-----------------
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(result);
+            Assert.AreEqual("Bugs\\Bug6619Dep2", result.GetDisplayName());
+        }
+
+        [TestMethod]
+        [DoNotParallelize]
+        [Timeout(60000)]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ResourceCatalog))]
+        public void ResourceCatalog_Parse_GivenHasActivityInCache_And_GetActivityFails_ShouldReturnNull()
+        {
+            //Note: there seems to be a race condition with: ResourceCatalog_Parse_GivenHasActivityInCache_ShouldReturnExistingActivityCacheEntry
+            //------------Setup for test--------------------------
+            var resource = new Resource
+            {
+                ResourceName = "test_resource",
+                ResourceID = Guid.Empty
+            };
+
+            var mockResourceCatalog = new Mock<IResourceCatalog>();
+            var mockActivityParser = new Mock<IActivityParser>();
+            var mockResourceActivityCache = new Mock<IResourceActivityCache>();
+            var mockDev2Activity = new Mock<IDev2Activity>();
+            mockResourceActivityCache.Setup(o => o.HasActivityInCache(resource.ResourceID))
+                .Returns(true);
+            mockResourceActivityCache.Setup(o => o.GetActivity(resource.ResourceID));
+
+            var sut = new ResourceCatalog
+            {
+                ResourceActivityCache = mockResourceActivityCache.Object
+            };
+            //------------Assert Precondition-----------------
+            //------------Execute Test---------------------------
+            var result = sut.Parse(GlobalConstants.ServerWorkspaceID, Guid.Empty);
+            //------------Assert Precondition-----------------
+            //------------Assert Results-------------------------
+            Assert.IsNull(result);
+        }
+
+        [TestMethod]
+        [DoNotParallelize]
+        [Timeout(60000)]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ResourceCatalog))]
+        public void ResourceCatalog_Parse_GivenHasActivityInCache_And_GetServiceFails_ShouldReturnNull()
+        {
+            //------------Setup for test--------------------------
+            var resource = new Resource
+            {
+                ResourceName = "test_resource",
+                ResourceID = Guid.Empty
+            };
+
+            var mockResourceCatalog = new Mock<IResourceCatalog>();
+            var mockActivityParser = new Mock<IActivityParser>();
+            var mockResourceActivityCache = new Mock<IResourceActivityCache>();
+            var mockDev2Activity = new Mock<IDev2Activity>();
+            mockResourceActivityCache.Setup(o => o.HasActivityInCache(resource.ResourceID))
+                .Returns(true);
+            mockResourceActivityCache.Setup(o => o.GetActivity(resource.ResourceID));
+
+            var sut = new ResourceCatalog
+            {
+                ResourceActivityCache = mockResourceActivityCache.Object
+            };
+            //------------Assert Precondition-----------------
+            //------------Execute Test---------------------------
+            var result = sut.Parse(GlobalConstants.ServerWorkspaceID, resource);
+            //------------Assert Precondition-----------------
+            //------------Assert Results-------------------------
+            Assert.IsNull(result);
+        }
+
+        private static void SaveTestResources(string path, string resourceName, out List<string> workflows, out List<Guid> resourceIds, int numOfTestWFs)
+        {
+            workflows = new List<string>();
+            resourceIds = new List<Guid>();
+            for (int i = 0; i < numOfTestWFs; i++)
+            {
+                workflows.Add(resourceName + (i + 1).ToString());
+                resourceIds.Add(Guid.NewGuid());
+            }
+
+            SaveResources(path, null, true, false, workflows, resourceIds.ToArray(), true, true);
+        }
+
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void ResourceCatalog_UnitTest_DuplicateFolderResourceWithInvalidArgs_ExpectExceptions()
         {
             //------------Setup for test--------------------------
@@ -3311,6 +3739,8 @@ namespace Dev2.Tests.Runtime.Hosting
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void ResourceCatalog_UnitTest_GetResourceListGivenWorkspace_ExpectResources()
         {
             //------------Setup for test--------------------------
@@ -3334,6 +3764,8 @@ namespace Dev2.Tests.Runtime.Hosting
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void ResourceCatalog_UnitTest_GetResourceCountGivenWorkspace_ExpectCorrectResources()
         {
             //------------Setup for test--------------------------
@@ -3356,6 +3788,8 @@ namespace Dev2.Tests.Runtime.Hosting
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void ResourceCatalog_UnitTest_GetResourceOfTNotExist_ExpectNull()
         {
             //------------Setup for test--------------------------
@@ -3462,7 +3896,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var mockDirectory = new Mock<IDirectory>();
             mockDirectory.Setup(o => o.CreateIfNotExists("C:\\ProgramData\\Warewolf\\Resources\\asdf")).Verifiable();
             var existingId = Guid.NewGuid().ToString();
-            var programDataIds = new string[] {
+            var programDataIds = new[] {
                 existingId
             };
 
@@ -3548,6 +3982,8 @@ namespace Dev2.Tests.Runtime.Hosting
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void ResourceCatalog_UnitTest_UpdateExtensions_Given_WW_Resource_Updates_The_Extension()
         {
             //------------Setup for test--------------------------
@@ -3568,6 +4004,8 @@ namespace Dev2.Tests.Runtime.Hosting
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("ResourceCatalog_Load")]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void ResourceCatalog_Load_WhenFileIsReadOnly_ShouldUpdateToNormal()
         {
             //------------Setup for test--------------------------

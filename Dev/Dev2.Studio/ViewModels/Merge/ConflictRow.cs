@@ -24,10 +24,6 @@ namespace Dev2.ViewModels.Merge
         public abstract IConflictItem Different { get; }
         public abstract bool ContainsStart { get; set; }
 
-        protected ConflictRow()
-        {
-        }
-
         public bool IsCurrentChecked
         {
             get => Current.IsChecked;
