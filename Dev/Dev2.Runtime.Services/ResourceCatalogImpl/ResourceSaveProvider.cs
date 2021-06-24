@@ -349,6 +349,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
 
         void PerformSaveBulkResult(out ResourceCatalogResult saveResult, Guid workspaceID, List<DuplicateResourceTO> resourceMap, bool overwriteExisting, string user = "", string reason = "")
         {
+            var resourceResults = new List<ResourceCatalogResult>();
             foreach (var mapper in resourceMap)
             {
                 var resource = mapper.NewResource;
@@ -358,12 +359,10 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                 _serverVersionRepository.StoreVersion(resource, user, reason, workspaceID, destination);
                 PerformSaveResult(out saveResult, workspaceID, resource, content, overwriteExisting, destination, reason);
                 ServerExplorerRepository.Instance.UpdateItem(resource);
+                resourceResults.Add(saveResult);
             }
-            saveResult = new ResourceCatalogResult
-            {
-                Status = ExecStatus.NoMatch,
-                Message = "Failure no matching resources to save."
-            };
+            //TODO: all these results should be returned with this method
+            saveResult = resourceResults.Last();
         }
 
         void PerformSaveResult(out ResourceCatalogResult saveResult, Guid workspaceID, IResource resource, StringBuilder contents, bool overwriteExisting, string savedPath, string reason = "")
@@ -396,7 +395,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                     _resourceCatalog.RemoveFromResourceActivityCache(workspaceID, resource);
                     Dev2Logger.Debug($"Removed Execution Plan for {resource.ResourceID} for workspace {workspaceID}", GlobalConstants.WarewolfDebug);
                     Dev2Logger.Debug($"Adding Execution Plan for {resource.ResourceID} for workspace {workspaceID}", GlobalConstants.WarewolfDebug);
-                    _resourceCatalog.Parse(workspaceID, resource.ResourceID);
+                    _resourceCatalog.Parse(workspaceID, resource);
                     Dev2Logger.Debug($"Added Execution Plan for {resource.ResourceID} for workspace {workspaceID}", GlobalConstants.WarewolfDebug);
                     tx.Complete();
                     saveResult = ResourceCatalogResultBuilder.CreateSuccessResult($"{(updated ? "Updated" : "Added")} {resource.ResourceType} '{resource.ResourceName}'");
@@ -405,7 +404,8 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                 {
                     Dev2Logger.Warn($"Error saving {resource.ResourceName}. " + e.Message, GlobalConstants.WarewolfWarn);
                     Transaction.Current.Rollback();
-                    throw new WarewolfResourceException(string.Format(ErrorResource.ErrorDuringSaveCallback, resource.ResourceName));
+                    //the process should not be terminated because of just one failure 
+                    saveResult = ResourceCatalogResultBuilder.CreateFailResult(string.Format(ErrorResource.ErrorDuringSaveCallback, resource.ResourceID) +"' message "+e.Message);
                 }
             }
         }
