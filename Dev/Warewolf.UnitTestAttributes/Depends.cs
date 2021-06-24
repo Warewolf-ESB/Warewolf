@@ -147,29 +147,32 @@ namespace Warewolf.UnitTestAttributes
             _containerType = type;
             Container = new Container(_containerType);
             var retryCount = 0;
-            var foundPort = "";
+            string foundPort;
             do
             {
                 SelectedHost = RigOpsHosts.ElementAt(retryCount);
-                foreach(var possiblePort in Container.PossiblePorts) 
+                var portRetryCount = 0;
+                do
                 {
+                    foundPort = Container.PossiblePorts.ElementAt(portRetryCount);
                     using (var client = new TcpClient())
                     {
                         try
                         {
-                            client.Connect(SelectedHost, int.Parse(possiblePort));
-                            foundPort = possiblePort;
+                            client.Connect(SelectedHost, int.Parse(foundPort));
                             retryCount = RigOpsHosts.Count;
+                            portRetryCount = Container.PossiblePorts.Length;
                         }
                         catch (SocketException)
                         {
-                            if (possiblePort == Container.PossiblePorts.Last()) 
+                            if (foundPort == Container.PossiblePorts.Last()) 
                             {
                                 retryCount++;
                             }
+                            portRetryCount++;
                         }
                     }
-                }
+                } while(portRetryCount < Container.PossiblePorts.Length);
             } while (retryCount < RigOpsHosts.Count);
 
             Container.IP = SelectedHost;

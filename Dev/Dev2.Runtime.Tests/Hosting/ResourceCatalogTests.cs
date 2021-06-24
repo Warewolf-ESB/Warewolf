@@ -70,7 +70,13 @@ namespace Dev2.Tests.Runtime.Hosting
             var workspacePath = EnvironmentVariables.ResourcePath;
             if (Directory.Exists(workspacePath))
             {
-                Directory.Delete(workspacePath, true);
+                try
+                {
+                    Directory.Delete(workspacePath, true);
+                }
+                catch(IOException)
+                { //Best effort
+                }
             }
             if (!Directory.Exists(EnvironmentVariables.ResourcePath))
             {
@@ -750,19 +756,6 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual(expected.DatabaseName, actual.DatabaseName);
             Assert.AreEqual(expected.Server, actual.Server);
             Assert.AreEqual(expected.ServerType, actual.ServerType);
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(WarewolfExecutionEnvironmentException.WarewolfResourceException))]
-        [DoNotParallelize]
-        [TestCategory("CannotParallelize")]
-        public void SaveResourceWithSlashesInResourceNameExpectedThrowsDirectoryNotFoundException()
-        {
-            var workspaceID = Guid.NewGuid();
-            var catalog = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
-
-            var expected = new DbSource { ResourceID = Guid.NewGuid(), ResourceName = "Test\\Source", DatabaseName = "TestNewDb", Server = "TestNewServer", ServerType = enSourceType.MySqlDatabase };
-            catalog.SaveResource(workspaceID, expected, "");
         }
 
         [TestMethod]
@@ -3539,6 +3532,172 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Results-------------------------
             Assert.AreEqual(ExecStatus.Success, resourceCatalogResult.Status);
             Assert.AreEqual(@"Duplicated Successfully".Replace(Environment.NewLine, ""), resourceCatalogResult.Message.Replace(Environment.NewLine, ""));
+        }
+
+        [TestMethod]
+        [DoNotParallelize]
+        [Timeout(60000)]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ResourceCatalog))]
+        public void ResourceCatalog_Parse_GivenNonExistantResource_ShouldReturnNull()
+        {
+            //------------Setup for test--------------------------
+            var resource = new Resource 
+            { 
+                ResourceName = "test_resource", 
+                ResourceID = Guid.Empty 
+            };
+
+            var sut = new ResourceCatalog
+            {
+                ResourceActivityCache = new Mock<IResourceActivityCache>().Object
+            };
+            //------------Assert Precondition-----------------
+            //------------Execute Test---------------------------
+            var result = sut.Parse(GlobalConstants.ServerWorkspaceID, resource);
+            //------------Assert Precondition-----------------
+            //------------Assert Results-------------------------
+            Assert.IsNull(result);
+        }
+
+        [TestMethod]
+        [DoNotParallelize]
+        [Timeout(60000)]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ResourceCatalog))]
+        public void ResourceCatalog_Parse_GivenHasActivityInCache_ShouldReturnExistingActivityCacheEntry()
+        {
+            //Note: there seems to be a race condition with: ResourceCatalog_Parse_GivenHasActivityInCache_And_GetActivityFails_ShouldReturnNull
+            //------------Setup for test--------------------------
+            var resource = new Resource
+            {
+                ResourceName = "test_resource",
+                ResourceID = Guid.Empty
+            };
+
+            var mockResourceCatalog = new Mock<IResourceCatalog>();
+            var mockActivityParser = new Mock<IActivityParser>();
+            var mockResourceActivityCache = new Mock<IResourceActivityCache>();
+            var mockDev2Activity = new Mock<IDev2Activity>();
+            mockResourceActivityCache.Setup(o => o.HasActivityInCache(resource.ResourceID))
+                .Returns(true);
+            mockResourceActivityCache.Setup(o => o.GetActivity(resource.ResourceID))
+                .Returns(mockDev2Activity.Object);
+
+            var sut = new ResourceCatalog
+            {
+                ResourceActivityCache = mockResourceActivityCache.Object
+            };
+            //------------Assert Precondition-----------------
+            //------------Execute Test---------------------------
+            var result = sut.Parse(GlobalConstants.ServerWorkspaceID, resource.ResourceID);
+            //------------Assert Precondition-----------------
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(result);
+            Assert.AreEqual(mockDev2Activity.Object, result);
+        }
+
+        [TestMethod]
+        [DoNotParallelize]
+        [Timeout(60000)]
+        [Owner("Siphamandla Dube")]
+        [TestCategory("ResourceCatalog_Intergation")]
+        public void ResourceCatalog_Parse_GivenHasActivityInCache_ShouldReturnExistingActivityCacheEntry_Intergation()
+        {
+            //------------Setup for test--------------------------
+            var workspaceID = GlobalConstants.ServerWorkspaceID;
+
+            var sourceLocation = "ResourceCatalogParseMethodTests";
+            var path = EnvironmentVariables.ResourcePath + "\\" + sourceLocation;
+            Directory.CreateDirectory(path);
+            const string resourceName = "wolf-Test_WF_";
+
+            const int numOfTestWFs = 2;
+            SaveTestResources(path, resourceName, out List<string> workflows, out List<Guid> resourceIds, numOfTestWFs);
+
+            var resource = new Resource
+            {
+                ResourceName = resourceName,
+                ResourceID = resourceIds.First()
+            };
+
+            var sut = ResourceCatalog.Instance;
+            //------------Assert Precondition-----------------
+            //------------Execute Test---------------------------
+            var result = sut.Parse(workspaceID, resource.ResourceID);
+            //------------Assert Precondition-----------------
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(result);
+            Assert.AreEqual("Bugs\\Bug6619Dep2", result.GetDisplayName());
+        }
+
+        [TestMethod]
+        [DoNotParallelize]
+        [Timeout(60000)]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ResourceCatalog))]
+        public void ResourceCatalog_Parse_GivenHasActivityInCache_And_GetActivityFails_ShouldReturnNull()
+        {
+            //Note: there seems to be a race condition with: ResourceCatalog_Parse_GivenHasActivityInCache_ShouldReturnExistingActivityCacheEntry
+            //------------Setup for test--------------------------
+            var resource = new Resource
+            {
+                ResourceName = "test_resource",
+                ResourceID = Guid.Empty
+            };
+
+            var mockResourceCatalog = new Mock<IResourceCatalog>();
+            var mockActivityParser = new Mock<IActivityParser>();
+            var mockResourceActivityCache = new Mock<IResourceActivityCache>();
+            var mockDev2Activity = new Mock<IDev2Activity>();
+            mockResourceActivityCache.Setup(o => o.HasActivityInCache(resource.ResourceID))
+                .Returns(true);
+            mockResourceActivityCache.Setup(o => o.GetActivity(resource.ResourceID));
+
+            var sut = new ResourceCatalog
+            {
+                ResourceActivityCache = mockResourceActivityCache.Object
+            };
+            //------------Assert Precondition-----------------
+            //------------Execute Test---------------------------
+            var result = sut.Parse(GlobalConstants.ServerWorkspaceID, Guid.Empty);
+            //------------Assert Precondition-----------------
+            //------------Assert Results-------------------------
+            Assert.IsNull(result);
+        }
+
+        [TestMethod]
+        [DoNotParallelize]
+        [Timeout(60000)]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ResourceCatalog))]
+        public void ResourceCatalog_Parse_GivenHasActivityInCache_And_GetServiceFails_ShouldReturnNull()
+        {
+            //------------Setup for test--------------------------
+            var resource = new Resource
+            {
+                ResourceName = "test_resource",
+                ResourceID = Guid.Empty
+            };
+
+            var mockResourceCatalog = new Mock<IResourceCatalog>();
+            var mockActivityParser = new Mock<IActivityParser>();
+            var mockResourceActivityCache = new Mock<IResourceActivityCache>();
+            var mockDev2Activity = new Mock<IDev2Activity>();
+            mockResourceActivityCache.Setup(o => o.HasActivityInCache(resource.ResourceID))
+                .Returns(true);
+            mockResourceActivityCache.Setup(o => o.GetActivity(resource.ResourceID));
+
+            var sut = new ResourceCatalog
+            {
+                ResourceActivityCache = mockResourceActivityCache.Object
+            };
+            //------------Assert Precondition-----------------
+            //------------Execute Test---------------------------
+            var result = sut.Parse(GlobalConstants.ServerWorkspaceID, resource);
+            //------------Assert Precondition-----------------
+            //------------Assert Results-------------------------
+            Assert.IsNull(result);
         }
 
         private static void SaveTestResources(string path, string resourceName, out List<string> workflows, out List<Guid> resourceIds, int numOfTestWFs)
