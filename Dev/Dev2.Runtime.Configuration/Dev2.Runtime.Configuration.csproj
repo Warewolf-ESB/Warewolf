@@ -146,10 +146,6 @@
       <Project>{13C0C6E9-7DC3-4DC3-8535-031C263CEE0B}</Project>
       <Name>Dev2.Common.Interfaces</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Dev2.CustomControls\Dev2.CustomControls.csproj">
-      <Project>{f5162bdb-d3db-480e-92e4-fd732904a247}</Project>
-      <Name>Dev2.CustomControls</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Dev2.Util\Dev2.Util.csproj">
       <Project>{1990550d-ea6f-4dac-9b5e-8571e86923ed}</Project>
       <Name>Dev2.Util</Name>
