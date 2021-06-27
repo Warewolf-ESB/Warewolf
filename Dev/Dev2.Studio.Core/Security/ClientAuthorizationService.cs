@@ -19,7 +19,6 @@ using Dev2.Services.Security;
 using Dev2.Studio.Interfaces;
 using Warewolf.Data;
 
-
 namespace Dev2.Security
 {
     public class ClientAuthorizationService : AuthorizationServiceBase

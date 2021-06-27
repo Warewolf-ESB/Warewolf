@@ -26,8 +26,7 @@ using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Security;
 using Dev2.SignalR.Wrappers;
 using Dev2.Studio.Interfaces;
-
-
+using Dev2.Network;
 
 namespace Dev2.Network
 {
@@ -64,7 +63,7 @@ namespace Dev2.Network
         
         public ServerProxy(string serverUri, ICredentials credentials, IAsyncWorker worker)
         {
-            _wrappedConnection = new ServerProxyPersistentConnection(serverUri,credentials,worker);
+            _wrappedConnection = new Dev2.Network.ServerProxyPersistentConnection(serverUri,credentials,worker);
             SetupPassthroughEvents();
         }
         

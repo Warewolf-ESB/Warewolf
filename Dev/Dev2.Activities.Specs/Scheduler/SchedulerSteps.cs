@@ -23,6 +23,7 @@ using Dev2.Services.Events;
 using Dev2.Services.Security;
 using Dev2.Triggers.Scheduler;
 using Dev2.Studio.Core;
+using Dev2.Studio.Interfaces;
 using Dev2.TaskScheduler.Wrappers;
 using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -32,7 +33,6 @@ using TechTalk.SpecFlow;
 using Dev2.Activities.Specs.BaseTypes;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Studio.Controller;
-using Dev2.Studio.Interfaces;
 using System.IO;
 using Dev2.Infrastructure.Tests;
 

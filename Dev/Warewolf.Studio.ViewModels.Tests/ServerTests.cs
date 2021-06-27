@@ -22,9 +22,6 @@ using Dev2.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-
-
-
 namespace Warewolf.Studio.ViewModels.Tests
 {
     [TestClass]

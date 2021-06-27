@@ -12,7 +12,7 @@
     <RootNamespace>Dev2.Studio.Interfaces</RootNamespace>
     <AssemblyName>Dev2.Studio.Interfaces</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <RuntimeIdentifier>win</RuntimeIdentifier>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -45,6 +45,7 @@
     <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
+    <Compile Include="IEnvironmentConnection.cs" />
     <Compile Include="IStudioTestWorkSurfaceViewModel.cs" />
     <Compile Include="IWorksurfaceKey.cs" />
     <Compile Include="Search\ISearchViewModel.cs" />
@@ -99,7 +100,6 @@
     <Compile Include="IDeployDTO.cs" />
     <Compile Include="IDeployService.cs" />
     <Compile Include="IDesignerManagementService.cs" />
-    <Compile Include="IEnvironmentConnection.cs" />
     <Compile Include="IEnvironmentEditedArgs.cs" />
     <Compile Include="IMergeServiceViewModel.cs" />
     <Compile Include="IMergeWorkflowViewModel.cs" />

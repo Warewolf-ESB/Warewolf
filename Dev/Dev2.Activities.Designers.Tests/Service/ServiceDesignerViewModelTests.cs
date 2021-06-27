@@ -46,7 +46,6 @@ using Moq;
 using Moq.Protected;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
-
 namespace Dev2.Activities.Designers.Tests.Service
 {
     [TestClass]

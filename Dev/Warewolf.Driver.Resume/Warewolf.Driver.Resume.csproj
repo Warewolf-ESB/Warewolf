@@ -3,6 +3,7 @@
     <PropertyGroup>
         <TargetFramework>net48</TargetFramework>
         <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+        <LangVersion>latest</LangVersion>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
@@ -10,7 +11,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Dev2.Studio.Interfaces\Dev2.Studio.Interfaces.csproj" />
+      <ProjectReference Include="..\Dev2.Studio.Core\Dev2.Studio.Core.csproj" />
       <ProjectReference Include="..\Warewolf.Common.Framework48\Warewolf.Common.Framework48.csproj" />
     </ItemGroup>
 
@@ -19,6 +20,12 @@
       <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
         <Link>Properties\AssemblyCommonInfo.cs</Link>
       </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="Weave, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+        <HintPath>..\Binaries\Weave.dll</HintPath>
+      </Reference>
     </ItemGroup>
 
 </Project>

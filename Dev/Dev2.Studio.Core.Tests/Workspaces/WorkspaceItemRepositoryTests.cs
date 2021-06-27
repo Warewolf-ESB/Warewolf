@@ -19,7 +19,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json;
 
-
 namespace Dev2.Core.Tests.Workspaces
 {
     [TestClass]

@@ -1,5 +1,5 @@
 ﻿#pragma warning disable
-﻿/*
+/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
@@ -578,7 +578,11 @@ namespace Dev2.Network
         }
     }
 
-    class ServerProxyPersistentConnection : ServerProxyWithoutChunking
+    public class FallbackException : Exception
+    {
+    }
+
+    public class ServerProxyPersistentConnection : ServerProxyWithoutChunking
     {
         public ServerProxyPersistentConnection(Uri serverUri)
             : base(serverUri)
@@ -594,7 +598,7 @@ namespace Dev2.Network
             StartHubConnectionWatchdogThread();
         }
 
-        public ServerProxyPersistentConnection(string serverUri, ICredentials credentials, IAsyncWorker worker) 
+        public ServerProxyPersistentConnection(string serverUri, ICredentials credentials, IAsyncWorker worker)
             : base(serverUri, credentials, worker)
         {
             HubConnection.Start();
@@ -636,9 +640,5 @@ namespace Dev2.Network
             t.IsBackground = true;
             t.Start();
         }
-    }
-
-    public class FallbackException : Exception
-    {
     }
 }

@@ -32,7 +32,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Dev2.Studio.Interfaces.Enums;
 
-
 namespace Dev2.Core.Tests.Environments
 {
 

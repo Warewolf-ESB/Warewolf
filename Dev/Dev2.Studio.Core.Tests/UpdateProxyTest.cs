@@ -17,11 +17,11 @@ using Dev2.Controller;
 using Dev2.Studio.Core;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Dev2.Studio.Interfaces;
 using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using System.Collections.Generic;
 using Dev2.Common.Interfaces.Deploy;
+using Dev2.Studio.Interfaces;
 
 namespace Dev2.Core.Tests
 {

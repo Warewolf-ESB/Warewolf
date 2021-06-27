@@ -31,7 +31,6 @@ using Dev2.Common.Interfaces;
 using Dev2.Communication;
 using Dev2.Data;
 using Dev2.Runtime.Interfaces;
-using Dev2.Studio.Interfaces;
 using Warewolf.Trigger.Queue;
 using Warewolf.Triggers;
 using Warewolf.UnitTestAttributes;

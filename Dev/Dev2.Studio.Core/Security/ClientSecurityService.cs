@@ -18,6 +18,7 @@ using Dev2.Controller;
 using Dev2.Services.Security;
 using Dev2.Studio.Interfaces;
 using Warewolf;
+
 namespace Dev2.Security
 {
     public class ClientSecurityService : SecurityServiceBase

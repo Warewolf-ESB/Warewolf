@@ -13,8 +13,6 @@ using CommandLine;
 using Fleck;
 using System.Collections.Generic;
 using System.Threading;
-using Dev2.Network;
-using Warewolf.Common;
 using Warewolf.Interfaces.Auditing;
 using Warewolf.Logging;
 

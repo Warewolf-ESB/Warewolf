@@ -48,7 +48,6 @@ using Dev2.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-
 namespace Dev2.Core.Tests
 {
     [TestClass]

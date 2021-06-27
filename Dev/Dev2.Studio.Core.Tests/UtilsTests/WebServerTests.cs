@@ -16,7 +16,6 @@ using Dev2.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-
 namespace Dev2.Core.Tests.UtilsTests
 {
     [TestClass]

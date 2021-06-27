@@ -12,7 +12,6 @@ using Dev2.Controller;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Models.DataList;
-using Dev2.Studio.Interfaces;
 using Dev2.Studio.ViewModels.DataList;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -22,6 +21,7 @@ using Dev2.Common.Interfaces.Explorer;
 using System.Threading;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
+using Dev2.Studio.Interfaces;
 
 namespace Dev2.Core.Tests
 {

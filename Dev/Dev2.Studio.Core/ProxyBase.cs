@@ -1,5 +1,5 @@
 #pragma warning disable
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Dev2.Controller;
 using Dev2.Studio.Interfaces;
 

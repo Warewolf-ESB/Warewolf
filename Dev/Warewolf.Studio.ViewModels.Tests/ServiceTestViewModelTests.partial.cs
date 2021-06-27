@@ -28,9 +28,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
-
-
-
 namespace Warewolf.Studio.ViewModels.Tests
 {
     partial class ServiceTestViewModelTests
