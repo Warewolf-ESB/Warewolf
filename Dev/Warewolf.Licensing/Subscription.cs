@@ -26,6 +26,7 @@ namespace Warewolf.Licensing
         {
             var result = ChargeBee.Models.Subscription.Create()
                 .PlanId(subscriptionData.PlanId)
+                .Param("customer[cf_machinename]", subscriptionData.MachineName)
                 .AutoCollection(AutoCollectionEnum.Off)
                 .CustomerFirstName(subscriptionData.CustomerFirstName)
                 .CustomerLastName(subscriptionData.CustomerLastName)
@@ -38,6 +39,7 @@ namespace Warewolf.Licensing
         {
             var subscription = result.Subscription;
             var customer = result.Customer;
+            var machineName = customer.GetValue<string> ("cf_machinename", false);
 
             var licenseData = new SubscriptionData
             {
@@ -48,6 +50,7 @@ namespace Warewolf.Licensing
                 CustomerFirstName = customer.FirstName,
                 CustomerLastName = customer.LastName,
                 CustomerEmail = customer.Email,
+                MachineName = machineName,
                 TrialEnd = subscription.TrialEnd
             };
             return licenseData;

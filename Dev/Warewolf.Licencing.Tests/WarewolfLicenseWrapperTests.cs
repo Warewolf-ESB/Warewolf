@@ -34,6 +34,7 @@ namespace Warewolf.LicencingTests
             var warewolfLicense = new Subscription();
             var result = warewolfLicense.RetrievePlan(SubscriptionId);
             Assert.IsNotNull(result.CustomerFirstName);
+            Assert.IsNotNull(result.MachineName);
             Assert.IsNotNull(result.CustomerLastName);
             Assert.IsNotNull(result.CustomerEmail);
             Assert.IsNotNull(result.CustomerId);
