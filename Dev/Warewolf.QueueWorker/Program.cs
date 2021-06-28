@@ -24,7 +24,6 @@ using Warewolf.Common.NetStandard20;
 using Warewolf.Execution;
 using Warewolf.Streams;
 using Warewolf.Triggers;
-using static Warewolf.Common.NetStandard20.ExecutionLogger;
 
 [assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]
 namespace QueueWorker
@@ -35,7 +34,7 @@ namespace QueueWorker
         {
             var implConfig = new Implementation.Config
             {
-                ExecutionLoggerFactory = new ExecutionLoggerFactory(),
+                ExecutionLoggerFactory = new ExecutionLogger.ExecutionLoggerFactory(),
                 Writer = new Writer(),
                 ServerProxyFactory = new ServerProxyFactory(),
                 ResourceCatalogProxyFactory = new ResourceCatalogProxyFactory(),
@@ -183,7 +182,7 @@ namespace QueueWorker
                 public IWriter Writer { get; set; }
                 public IEnvironmentWrapper EnvironmentWrapper { get; set; }
 
-                public IExecutionLoggerFactory ExecutionLoggerFactory { get; set; }
+                public ExecutionLogger.IExecutionLoggerFactory ExecutionLoggerFactory { get; set; }
                 public IServerProxyFactory ServerProxyFactory { get; set; }
                 public IResourceCatalogProxyFactory ResourceCatalogProxyFactory { get; set; }
                 public IWorkerContextFactory WorkerContextFactory { get; set; }
