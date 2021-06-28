@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -98,7 +98,7 @@ namespace Warewolf.Studio.ViewModels
         private readonly IEnvironmentConnection _lazyCon = CustomContainer.Get<IServerRepository>()?.ActiveServer?.Connection ?? ServerRepository.Instance.ActiveServer?.Connection;
         private ICommunicationController _communicationController = new CommunicationController { ServiceName = "DuplicateResourceService" };
 
-        private void CallDuplicateService()
+        private async void CallDuplicateService()
         {
             if (ExplorerItemViewModelRename() != null)
             {
@@ -108,9 +108,9 @@ namespace Warewolf.Studio.ViewModels
             try
             {
                 IsDuplicating = true;
-                SetupLazyCommunicationController();
+                SetupLazyCommunicationController(); 
 
-                var executeCommand = _communicationController.ExecuteCommand<ResourceCatalogDuplicateResult>(_lazyCon ?? _serverRepository.ActiveServer?.Connection, GlobalConstants.ServerWorkspaceID);
+                var executeCommand = await _communicationController.ExecuteCommandAsync<ResourceCatalogDuplicateResult>(_lazyCon ?? _serverRepository.ActiveServer?.Connection, GlobalConstants.ServerWorkspaceID);
                 var environmentViewModel = SingleEnvironmentExplorerViewModel.Environments.FirstOrDefault();
                 if (executeCommand == null)
                 {
@@ -142,6 +142,7 @@ namespace Warewolf.Studio.ViewModels
             }
             finally
             {
+                //TODO: Inverstigate what might be going wrong here. This process take around 2 minutes
                 ReloadServerEvents(childItems);
                 IsDuplicating = false;
             }
@@ -149,7 +150,8 @@ namespace Warewolf.Studio.ViewModels
 
         private void ReloadServerEvents(ObservableCollection<IExplorerItemViewModel> childItems)
         {
-            ConnectControlSingleton.Instance.ReloadServer();
+            //Do we really need this refresh?
+            ConnectControlSingleton.Instance.ReloadServer(); 
             if (childItems != null)
             {
                 foreach (var childItem in childItems.Where(model => model.ResourceType == "Dev2Server"))
@@ -177,6 +179,9 @@ namespace Warewolf.Studio.ViewModels
             _communicationController.AddPayloadArgument("destinationPath", Path);
         }
 
+        //If this can be fired by the service: DuplicateFolderService this have a potential to save us more time?
+        //Can this even be possible using the serverId or ServerWorkspaceID and changes on the server side to Update the UI, perhaps not a good idea
+        //Can this be done any faster? Suggestion: find out if thre is a way to bulk this handler.Invoke() method
         private void FireServerSaved(Guid savedServerId, bool isDeleted = false)
         {
             if (_environmentViewModel.Server.UpdateRepository.ServerSaved != null)
