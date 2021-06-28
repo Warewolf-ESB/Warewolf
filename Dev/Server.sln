@@ -77,8 +77,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Core", "Warewolf.C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Sharepoint", "Warewolf.Sharepoint\Warewolf.Sharepoint.csproj", "{D7A04A3F-DDBD-497C-A311-EFD2016830DF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dev2.SignalR.Wrappers.Interfaces", "Dev2.SignalR.Wrappers\Dev2.SignalR.Wrappers.Interfaces.csproj", "{95E8977A-0C2F-4D90-BD27-A5E8E33D1DF9}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Security", "Warewolf.Security\Warewolf.Security.csproj", "{CA5E9373-46FE-41B9-AB2E-BD637F48B456}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dev2.Diagnostics.Tests", "Dev2.Diagnostics.Tests\Dev2.Diagnostics.Tests.csproj", "{BF41B889-B0EE-436C-9511-5943C77582E1}"
@@ -183,6 +181,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Driver.Resume.Tests", "Warewolf.Driver.Resume.Tests\Warewolf.Driver.Resume.Tests.csproj", "{FD747E9C-D440-48F6-8FFF-ED8DE333464A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.COMIPC.Tests", "Warewolf.COMIPC.Tests\Warewolf.COMIPC.Tests.csproj", "{9BED6B93-8BFF-4331-9DD7-98ED81ABFABA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.SignalR.Wrappers.Interfaces", "Dev2.SignalR.Wrappers\Dev2.SignalR.Wrappers.Interfaces.csproj", "{95E8977A-0C2F-4D90-BD27-A5E8E33D1DF9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -781,6 +781,14 @@ Global
 		{9BED6B93-8BFF-4331-9DD7-98ED81ABFABA}.Release|Any CPU.Build.0 = Debug|Any CPU
 		{9BED6B93-8BFF-4331-9DD7-98ED81ABFABA}.Release|x86.ActiveCfg = Debug|Any CPU
 		{9BED6B93-8BFF-4331-9DD7-98ED81ABFABA}.Release|x86.Build.0 = Debug|Any CPU
+		{95E8977A-0C2F-4D90-BD27-A5E8E33D1DF9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{95E8977A-0C2F-4D90-BD27-A5E8E33D1DF9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{95E8977A-0C2F-4D90-BD27-A5E8E33D1DF9}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{95E8977A-0C2F-4D90-BD27-A5E8E33D1DF9}.Debug|x86.Build.0 = Debug|Any CPU
+		{95E8977A-0C2F-4D90-BD27-A5E8E33D1DF9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{95E8977A-0C2F-4D90-BD27-A5E8E33D1DF9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{95E8977A-0C2F-4D90-BD27-A5E8E33D1DF9}.Release|x86.ActiveCfg = Release|Any CPU
+		{95E8977A-0C2F-4D90-BD27-A5E8E33D1DF9}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

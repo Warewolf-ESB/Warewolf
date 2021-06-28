@@ -7,6 +7,7 @@
   <PropertyGroup>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <RootNamespace>Warewolf</RootNamespace>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
@@ -26,11 +27,16 @@
     <ProjectReference Include="..\Dev2.Diagnostics\Dev2.Diagnostics.csproj" />
     <ProjectReference Include="..\Dev2.Infrastructure\Dev2.Infrastructure.csproj" />
     <ProjectReference Include="..\Dev2.Runtime.Services\Dev2.Runtime.Services.csproj" />
-    <ProjectReference Include="..\Dev2.Studio.Core\Dev2.Studio.Core.csproj" />
-    <ProjectReference Include="..\Dev2.Studio.Interfaces\Dev2.Studio.Interfaces.csproj" />
     <ProjectReference Include="..\Warewolf.Common\Warewolf.Common.csproj" />
     <ProjectReference Include="..\Warewolf.Interfaces\Warewolf.Interfaces.csproj" />
     <ProjectReference Include="..\Warewolf.ServiceDefinitions\Warewolf.ServiceDefinitions.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="PresentationFramework" />
+    <Reference Include="Weave, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\Binaries\Weave.dll</HintPath>
+    </Reference>
   </ItemGroup>
   
 </Project>
