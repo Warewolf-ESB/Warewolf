@@ -8,12 +8,14 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using Dev2.Common.Interfaces.Diagnostics.Debug;
 
-namespace Dev2.Messages
+namespace Dev2.SignalR.Wrappers
 {
-    public class DebugWriterWriteMessage
+    public enum ConnectionStateWrapped
     {
-        public IDebugState DebugState { get; set; }
+        Connecting,
+        Connected,
+        Reconnecting,
+        Disconnected
     }
 }

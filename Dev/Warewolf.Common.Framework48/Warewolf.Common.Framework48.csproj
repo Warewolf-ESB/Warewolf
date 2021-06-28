@@ -27,22 +27,16 @@
     <ProjectReference Include="..\Dev2.Diagnostics\Dev2.Diagnostics.csproj" />
     <ProjectReference Include="..\Dev2.Infrastructure\Dev2.Infrastructure.csproj" />
     <ProjectReference Include="..\Dev2.Runtime.Services\Dev2.Runtime.Services.csproj" />
-    <ProjectReference Include="..\Dev2.SignalR.Wrappers.New\Dev2.SignalR.Wrappers.New.csproj" />
     <ProjectReference Include="..\Warewolf.Common\Warewolf.Common.csproj" />
     <ProjectReference Include="..\Warewolf.Interfaces\Warewolf.Interfaces.csproj" />
     <ProjectReference Include="..\Warewolf.ServiceDefinitions\Warewolf.ServiceDefinitions.csproj" />
-    <ProjectReference Include="..\Dev2.SignalR.Wrappers\Dev2.SignalR.Wrappers.Interfaces.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Reference Include="PresentationFramework" />
-    <Reference Include="ServiceStack.Common, Version=3.9.37.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\Binaries\ServiceStack.Common.dll</HintPath>
-    </Reference>
     <Reference Include="Weave, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\Binaries\Weave.dll</HintPath>
     </Reference>
-    <Reference Include="WindowsBase" />
   </ItemGroup>
   
 </Project>
