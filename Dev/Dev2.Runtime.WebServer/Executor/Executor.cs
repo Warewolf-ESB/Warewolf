@@ -1,13 +1,12 @@
-﻿// 
-// /*
-// *  Warewolf - Once bitten, there's no going back
-// *  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
-// *  Licensed under GNU Affero General Public License 3.0 or later.
-// *  Some rights reserved.
-// *  Visit our website for more information <http://warewolf.io/>
-// *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
-// *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
-// */
+﻿/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
 
 using System.Linq;
 using Dev2.Common;
@@ -25,13 +24,14 @@ using Dev2.Runtime.WebServer.TransferObjects;
 using Dev2.Services.Security;
 using Dev2.Web;
 using Dev2.Workspaces;
+using Warewolf.Execution;
 using Warewolf.Security;
 
-namespace Dev2.Runtime.WebServer.Handlers
+namespace Dev2.Runtime.WebServer.Executor
 {
-        class Executor : ExecutorBase
-        {
-            public Executor(IWorkspaceRepository workspaceRepository, IResourceCatalog resourceCatalog, ITestCatalog testCatalog, ITestCoverageCatalog testCoverageCatalog, IAuthorizationService authorizationService, IDataObjectFactory dataObjectFactory, IEsbChannelFactory esbChannelFactory, IJwtManager jwtManager)
+    public class Executor : ExecutorBase
+    {
+        public Executor(IWorkspaceRepository workspaceRepository, IResourceCatalog resourceCatalog, ITestCatalog testCatalog, ITestCoverageCatalog testCoverageCatalog, IAuthorizationService authorizationService, IDataObjectFactory dataObjectFactory, IEsbChannelFactory esbChannelFactory, IJwtManager jwtManager)
                 : base(workspaceRepository, resourceCatalog, testCatalog, testCoverageCatalog, authorizationService, dataObjectFactory, esbChannelFactory, jwtManager)
             {
             }
@@ -126,5 +126,5 @@ namespace Dev2.Runtime.WebServer.Handlers
                 var serialize = serializer.Serialize(debugStates);
                 return serialize;
             }
-        }
+    }
 }
