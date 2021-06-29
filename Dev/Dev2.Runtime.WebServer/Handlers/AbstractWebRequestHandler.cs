@@ -22,6 +22,7 @@ using Dev2.Runtime.WebServer.Responses;
 using Dev2.Runtime.WebServer.TransferObjects;
 using Dev2.Services.Security;
 using Dev2.Workspaces;
+using Warewolf.Execution;
 using Warewolf.Security;
 
 namespace Dev2.Runtime.WebServer.Handlers
@@ -32,6 +33,7 @@ namespace Dev2.Runtime.WebServer.Handlers
         protected readonly IResourceCatalog _resourceCatalog;
         protected readonly ITestCatalog _testCatalog;
         protected readonly ITestCoverageCatalog _testCoverageCatalog;
+        protected readonly IServiceTestExecutor _serviceTestExecutor;
         protected readonly ISecuritySettings _securitySettings;
         protected readonly IAuthorizationService _authorizationService;
         protected readonly IWorkspaceRepository _workspaceRepository;
@@ -71,7 +73,7 @@ namespace Dev2.Runtime.WebServer.Handlers
 
         protected IResponseWriter CreateForm(WebRequestTO webRequest, string serviceName, string workspaceId, NameValueCollection headers, IPrincipal user)
         {
-            var a = new Executor.Executor(_workspaceRepository, _resourceCatalog, _testCatalog, _testCoverageCatalog, _authorizationService, _dataObjectFactory, _esbChannelFactory, _jwtManager);
+            var a = new Executor.Executor(_workspaceRepository, _resourceCatalog, _testCatalog, _testCoverageCatalog, _serviceTestExecutor, _authorizationService, _dataObjectFactory, _esbChannelFactory, _jwtManager);
             var response = a.TryExecute(webRequest, serviceName, workspaceId, headers, user);
             return response ?? a.BuildResponse(webRequest, serviceName);
         }

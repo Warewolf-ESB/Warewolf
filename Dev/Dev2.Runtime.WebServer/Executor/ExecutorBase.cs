@@ -51,15 +51,16 @@ namespace Dev2.Runtime.WebServer.Executor
             readonly IWorkspaceRepository _repository;
             readonly ITestCatalog _testCatalog;
             readonly ITestCoverageCatalog _testCoverageCatalog;
+            IServiceTestExecutor _serviceTestExecutor;
             readonly IEsbChannelFactory _esbChannelFactory;
             protected readonly IJwtManager _jwtManager;
 
             protected ExecutorBase(IWorkspaceRepository workspaceRepository, IResourceCatalog resourceCatalog, IAuthorizationService authorizationService, IDataObjectFactory dataObjectFactory, IEsbChannelFactory esbChannelFactory, IJwtManager jwtManager)
-                : this(workspaceRepository, resourceCatalog, TestCatalog.Instance, TestCoverageCatalog.Instance, authorizationService, dataObjectFactory, esbChannelFactory, jwtManager)
+                : this(workspaceRepository, resourceCatalog, TestCatalog.Instance, TestCoverageCatalog.Instance, null, authorizationService, dataObjectFactory, esbChannelFactory, jwtManager)
             {
             }
 
-            protected ExecutorBase(IWorkspaceRepository workspaceRepository, IResourceCatalog resourceCatalog, ITestCatalog testCatalog, ITestCoverageCatalog testCoverageCatalog, IAuthorizationService authorizationService, IDataObjectFactory dataObjectFactory, IEsbChannelFactory esbChannelFactory, IJwtManager jwtManager)
+            protected ExecutorBase(IWorkspaceRepository workspaceRepository, IResourceCatalog resourceCatalog, ITestCatalog testCatalog, ITestCoverageCatalog testCoverageCatalog, IServiceTestExecutor serviceTestExecutor, IAuthorizationService authorizationService, IDataObjectFactory dataObjectFactory, IEsbChannelFactory esbChannelFactory, IJwtManager jwtManager)
             {
                 _repository = workspaceRepository;
                 _resourceCatalog = resourceCatalog;
@@ -69,6 +70,7 @@ namespace Dev2.Runtime.WebServer.Executor
                 _dataObjectFactory = dataObjectFactory;
                 _esbChannelFactory = esbChannelFactory;
                 _jwtManager = jwtManager;
+                _serviceTestExecutor = serviceTestExecutor;
             }
 
             Guid EnsureWorkspaceIdValid(string workspaceId)
