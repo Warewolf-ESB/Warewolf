@@ -1,16 +1,15 @@
-﻿#pragma warning disable
-/*
-*  Warewolf - Once bitten, there's no going back
-*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later.
-*  Some rights reserved.
-*  Visit our website for more information <http://warewolf.io/>
-*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
-*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
-*/
+﻿// 
+// /*
+// *  Warewolf - Once bitten, there's no going back
+// *  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
+// *  Licensed under GNU Affero General Public License 3.0 or later.
+// *  Some rights reserved.
+// *  Visit our website for more information <http://warewolf.io/>
+// *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+// *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+// */
 
 using System;
-using System.Linq;
 using System.Net;
 using System.Runtime;
 using System.Web;
@@ -24,41 +23,10 @@ using Dev2.Interfaces;
 using Dev2.Runtime.WebServer.Responses;
 using Dev2.Runtime.WebServer.TransferObjects;
 using Dev2.Web;
-using Newtonsoft.Json;
 using Warewolf.Data;
 
 namespace Dev2.Runtime.WebServer
 {
-    public interface IExecutionDto
-    {
-        DataListFormat DataListFormat { get; set; }
-        Guid DataListIdGuid { get; set; }
-        IDSFDataObject DataObject { get; set; }
-        ErrorResultTO ErrorResultTO { get; set; }
-        string PayLoad { get; set; }
-        EsbExecuteRequest Request { get; set; }
-        IWarewolfResource Resource { get; set; }
-        Dev2JsonSerializer Serializer { get; set; }
-        string ServiceName { get; set; }
-        WebRequestTO WebRequestTO { get; set; }
-        Guid WorkspaceID { get; set; }
-    }
-
-    public class ExecutionDto : IExecutionDto
-    {
-        public WebRequestTO WebRequestTO { get; set; }
-        public string ServiceName { get; set; }
-        public string PayLoad { get; set; }
-        public IDSFDataObject DataObject { get; set; }
-        public EsbExecuteRequest Request { get; set; }
-        public Guid DataListIdGuid { get; set; }
-        public Guid WorkspaceID { get; set; }
-        public IWarewolfResource Resource { get; set; }
-        public DataListFormat DataListFormat { get; set; }
-        public Dev2JsonSerializer Serializer { get; set; }
-        public ErrorResultTO ErrorResultTO { get; set; }
-    }
-
     public class ExecutionDtoExtensions
     {
         readonly IExecutionDto _executionDto;
@@ -224,7 +192,7 @@ namespace Dev2.Runtime.WebServer
             }
         }
 
-        string GetExecutePayload(IDSFDataObject dataObject, IWarewolfResource resource, WebRequestTO webRequest, ref DataListFormat formatter)
+        static string GetExecutePayload(IDSFDataObject dataObject, IWarewolfResource resource, WebRequestTO webRequest, ref DataListFormat formatter)
         {
             var notDebug = !dataObject.IsDebug || dataObject.RemoteInvoke || dataObject.RemoteNonDebugInvoke;
             if (notDebug && resource?.DataList != null)
@@ -252,7 +220,7 @@ namespace Dev2.Runtime.WebServer
             return string.Empty;
         }
 
-        private void CleanUp(IExecutionDto dto)
+        static void CleanUp(IExecutionDto dto)
         {
             dto.DataObject = null;
             dto.ErrorResultTO.ClearErrors();
