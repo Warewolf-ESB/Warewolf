@@ -512,7 +512,7 @@ namespace Dev2.Tests.Runtime.WebServer
             mockServiceTestExecutorWrapper.Setup(o => o.ExecuteTestAsync(It.IsAny<string>(), It.IsAny<IPrincipal>(), It.IsAny<Guid>(), It.IsAny<Dev2JsonSerializer>(), It.IsAny<IDSFDataObject>()))
                 .Returns(System.Threading.Tasks.Task.FromResult(new ServiceTestModelTO
                 {
-                    TestName = "test one re-ran",
+                    TestName = "test one saved",
                     TestFailing = true,
                     FailureMessage = "test: failure mesage",
                     TestSteps = new List<IServiceTestStep>
@@ -529,7 +529,7 @@ namespace Dev2.Tests.Runtime.WebServer
 
             Assert.IsNotNull(executePayload);
             Assert.AreEqual("application/json", sut.ContentType);
-            StringAssert.Contains(executePayload, " \"Test Name\": \"test one re-ran\",\r\n");
+            StringAssert.Contains(executePayload, " \"Test Name\": \"test one saved\",\r\n");
             StringAssert.Contains(executePayload, "\"Result\": \"Invalid\",\r\n");
             StringAssert.Contains(executePayload, "\"Message\": \"Test has no selected nodes\"\r\n");
         }
