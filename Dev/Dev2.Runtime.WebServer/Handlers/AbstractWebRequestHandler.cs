@@ -45,19 +45,20 @@ namespace Dev2.Runtime.WebServer.Handlers
         public abstract void ProcessRequest(ICommunicationContext ctx);
 
         protected AbstractWebRequestHandler(IResourceCatalog resourceCatalog, ITestCatalog testCatalog, ITestCoverageCatalog testCoverageCatalog, IEsbChannelFactory esbChannelFactory, ISecuritySettings securitySettings)
-            : this(resourceCatalog, testCatalog, testCoverageCatalog, WorkspaceRepository.Instance, ServerAuthorizationService.Instance, new DataObjectFactory(), esbChannelFactory, securitySettings, new JwtManager(securitySettings))
+            : this(resourceCatalog, testCatalog, testCoverageCatalog, null, WorkspaceRepository.Instance, ServerAuthorizationService.Instance, new DataObjectFactory(), esbChannelFactory, securitySettings, new JwtManager(securitySettings))
         {
         }
-        protected AbstractWebRequestHandler(IResourceCatalog resourceCatalog, ITestCatalog testCatalog, ITestCoverageCatalog testCoverageCatalog, IWorkspaceRepository workspaceRepository, IAuthorizationService authorizationService, IDataObjectFactory dataObjectFactory, IEsbChannelFactory esbChannelFactory, ISecuritySettings securitySettings)
-            : this(resourceCatalog, testCatalog, testCoverageCatalog, workspaceRepository, authorizationService, dataObjectFactory, esbChannelFactory, securitySettings, new JwtManager(securitySettings))
+        protected AbstractWebRequestHandler(IResourceCatalog resourceCatalog, ITestCatalog testCatalog, ITestCoverageCatalog testCoverageCatalog, IServiceTestExecutor serviceTestExecutor, IWorkspaceRepository workspaceRepository, IAuthorizationService authorizationService, IDataObjectFactory dataObjectFactory, IEsbChannelFactory esbChannelFactory, ISecuritySettings securitySettings)
+            : this(resourceCatalog, testCatalog, testCoverageCatalog, serviceTestExecutor, workspaceRepository, authorizationService, dataObjectFactory, esbChannelFactory, securitySettings, new JwtManager(securitySettings))
         {
         }
 
-        protected AbstractWebRequestHandler(IResourceCatalog resourceCatalog, ITestCatalog testCatalog, ITestCoverageCatalog testCoverageCatalog, IWorkspaceRepository workspaceRepository, IAuthorizationService authorizationService, IDataObjectFactory dataObjectFactory, IEsbChannelFactory esbChannelFactory, ISecuritySettings securitySettings, IJwtManager jwtManager)
+        protected AbstractWebRequestHandler(IResourceCatalog resourceCatalog, ITestCatalog testCatalog, ITestCoverageCatalog testCoverageCatalog, IServiceTestExecutor serviceTestExecutor, IWorkspaceRepository workspaceRepository, IAuthorizationService authorizationService, IDataObjectFactory dataObjectFactory, IEsbChannelFactory esbChannelFactory, ISecuritySettings securitySettings, IJwtManager jwtManager)
         {
             _resourceCatalog = resourceCatalog;
             _testCatalog = testCatalog;
             _testCoverageCatalog = testCoverageCatalog;
+            _serviceTestExecutor = serviceTestExecutor;
             _workspaceRepository = workspaceRepository;
             _authorizationService = authorizationService;
             _dataObjectFactory = dataObjectFactory;
