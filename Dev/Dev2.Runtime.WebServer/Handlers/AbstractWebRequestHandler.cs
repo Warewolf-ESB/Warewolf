@@ -17,6 +17,7 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Runtime.Services;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.Security;
+using Dev2.Runtime.WebServer.Executor;
 using Dev2.Runtime.WebServer.Responses;
 using Dev2.Runtime.WebServer.TransferObjects;
 using Dev2.Services.Security;
@@ -70,7 +71,7 @@ namespace Dev2.Runtime.WebServer.Handlers
 
         protected IResponseWriter CreateForm(WebRequestTO webRequest, string serviceName, string workspaceId, NameValueCollection headers, IPrincipal user)
         {
-            var a = new Executor(_workspaceRepository, _resourceCatalog, _testCatalog, _testCoverageCatalog, _authorizationService, _dataObjectFactory, _esbChannelFactory, _jwtManager);
+            var a = new Executor.Executor(_workspaceRepository, _resourceCatalog, _testCatalog, _testCoverageCatalog, _authorizationService, _dataObjectFactory, _esbChannelFactory, _jwtManager);
             var response = a.TryExecute(webRequest, serviceName, workspaceId, headers, user);
             return response ?? a.BuildResponse(webRequest, serviceName);
         }

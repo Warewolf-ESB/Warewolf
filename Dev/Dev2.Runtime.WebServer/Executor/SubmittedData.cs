@@ -1,13 +1,12 @@
-﻿// 
-// /*
-// *  Warewolf - Once bitten, there's no going back
-// *  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
-// *  Licensed under GNU Affero General Public License 3.0 or later.
-// *  Some rights reserved.
-// *  Visit our website for more information <http://warewolf.io/>
-// *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
-// *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
-// */
+﻿/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
 
 using System;
 using System.Collections.Generic;
@@ -16,6 +15,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Xml.Linq;
 using Dev2.Common;
@@ -23,11 +23,12 @@ using Dev2.Common.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.Runtime.Services;
 using Dev2.Data.Util;
+using Dev2.Runtime.WebServer.Handlers;
 using Warewolf.Data;
 
-namespace Dev2.Runtime.WebServer.Handlers
+namespace Dev2.Runtime.WebServer.Executor
 {
-    internal class SubmittedData
+    public class SubmittedData
     {
         private readonly IStreamWriterFactory _streamWriterFactory;
         private readonly IStreamContentFactory _streamContentFactory;
@@ -56,8 +57,8 @@ namespace Dev2.Runtime.WebServer.Handlers
             baseStr = HttpUtility.UrlDecode(CleanupXml(baseStr));
             string payload = null;
             if (baseStr != null)
-            {
-                var startIdx = baseStr.IndexOf("?", StringComparison.Ordinal);
+                {
+                    var startIdx = baseStr.IndexOf("?", StringComparison.Ordinal);
                 if (startIdx > 0)
                 {
                     payload = baseStr.Substring(startIdx + 1);
@@ -108,6 +109,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                 foreach (var arg in args.AllKeys)
                 {
                     var txt = args[arg];
+                    txt = CheckForEscapeCharacters(txt);
                     results.Add(txt.IsXml() ? arg + "=" + string.Format(GlobalConstants.XMLPrefix + "{0}", Convert.ToBase64String(Encoding.UTF8.GetBytes(txt))) : $"{arg}={txt}");
                 }
 
@@ -116,6 +118,17 @@ namespace Dev2.Runtime.WebServer.Handlers
 
             return baseStr;
         }
+
+        static string CheckForEscapeCharacters(string text)
+        {
+            var escapeCharacters = new[] { "\\\"" };
+            if (escapeCharacters.Any(text.Contains))
+            {
+                text = Regex.Unescape(text);
+            }
+            return text;
+        }
+
 
         internal static string ExtractKeyValuePairForGetMethod(ICommunicationContext ctx, string payload)
         {
@@ -165,7 +178,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             return ExtractKeyValuePairs(pairs, ctx.Request.BoundVariables);
         }
 
-        private NameValueCollection ExtractMultipartFormDataArgumentsFromDataList(ICommunicationContext ctx, StreamReader reader)
+        NameValueCollection ExtractMultipartFormDataArgumentsFromDataList(ICommunicationContext ctx, StreamReader reader)
         {
             var provider = _multipartMemoryStreamProviderFactory.New();
             var tempStream = _memoryStreamFactory.New();
@@ -176,7 +189,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             var byteArray = reader.BaseStream.ToByteArray();
             var stream = _memoryStreamFactory.New(byteArray);
             stream.CopyTo(tempStream);
-                
+            
             tempStream.Seek(0, SeekOrigin.End);
             var writer = _streamWriterFactory.New(tempStream);
             writer.WriteLine();
@@ -212,7 +225,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             return valuePairs;
         }
 
-        private static NameValueCollection ExtractArgumentsFromDataListOrQueryString(ICommunicationContext ctx, string data)
+        static NameValueCollection ExtractArgumentsFromDataListOrQueryString(ICommunicationContext ctx, string data)
         {
             var pairs = new NameValueCollection(5);
             var keyValuePairs = data.Split(new[] {"&"}, StringSplitOptions.RemoveEmptyEntries).ToList();
