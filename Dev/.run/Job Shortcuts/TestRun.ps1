@@ -85,13 +85,13 @@ if ($Coverage.IsPresent) {
 }
 for ($LoopCounter=0; $LoopCounter -le $RetryCount; $LoopCounter++) {
     if ($RetryRebuild.IsPresent) {
-		if (!(Test-Path "$PWD\*tests.dll") -or $LoopCounter -gt 0) {
-			Get-ChildItem -Path  "$PWD" -Recurse |
-Select -ExpandProperty FullName |
-Where {$_ -notlike "$PWD\TestResults*" -and $_ -notlike "$PWD\Microsoft.TestPlatform*" -and $_ -notlike "$PWD\JetBrains.dotCover.CommandLineTools*"} |
-sort length -Descending |
-Remove-Item -force -recurse
-			&..\..\Compile.ps1 "-AcceptanceTesting -NuGet `"$NuGet`" -MSBuildPath `"$MSBuildPath`""
+		if (Test-Path "$PWD\..\..\Compile.ps1") {
+			&"$PWD\..\..\Compile.ps1" "-AcceptanceTesting -NuGet `"$NuGet`" -MSBuildPath `"$MSBuildPath`""
+		} else {
+			if (Test-Path "$PWD\Compile.ps1") {
+				&"$PWD\Compile.ps1" "-AcceptanceTesting -NuGet `"$NuGet`" -MSBuildPath `"$MSBuildPath`""
+				Set-Location "$PWD\bin\AcceptanceTesting"
+			}
 		}
 	} else {
 		if (!(Test-Path "$PWD\*tests.dll")) {
