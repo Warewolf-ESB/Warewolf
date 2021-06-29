@@ -23,13 +23,14 @@ using Dev2.Runtime.ESB.Control;
 using Dev2.Runtime.Interfaces;
 using Dev2.Web;
 using Newtonsoft.Json.Linq;
+using Warewolf.Execution;
 using static Dev2.Runtime.WebServer.DataObjectExtensions;
 
 namespace Dev2.Runtime.WebServer
 {
-    internal static class ServiceTestExecutor
+    internal class ServiceTestExecutor : IServiceTestExecutor
     {
-        public static Task<IServiceTestModelTO> ExecuteTestAsync(string serviceName, IPrincipal userPrinciple, Guid workspaceGuid, Dev2JsonSerializer serializer, IDSFDataObject dataObjectClone)
+        public Task<IServiceTestModelTO> ExecuteTestAsyncTask(string serviceName, IPrincipal userPrinciple, Guid workspaceGuid, Dev2JsonSerializer serializer, IDSFDataObject dataObjectClone)
         {
             var lastTask = Task<IServiceTestModelTO>.Factory.StartNew(() =>
             {
@@ -73,7 +74,7 @@ namespace Dev2.Runtime.WebServer
             return executePayload;
         }
 
-        public static DataListFormat ExecuteTests(IDSFDataObject dataObject, IPrincipal userPrinciple, Guid workspaceGuid, Dev2JsonSerializer serializer, ITestCatalog testCatalog, IResourceCatalog resourceCatalog, out string executePayload, ITestCoverageCatalog testCoverageCatalog)
+        public DataListFormat ExecuteTests(IDSFDataObject dataObject, IPrincipal userPrinciple, Guid workspaceGuid, Dev2JsonSerializer serializer, ITestCatalog testCatalog, IResourceCatalog resourceCatalog, out string executePayload, ITestCoverageCatalog testCoverageCatalog)
         {
             executePayload = null;
 

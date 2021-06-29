@@ -134,6 +134,10 @@ namespace Dev2.Runtime.WebServer.Executor
 
                 if (isTestRun)
                 {
+                    if (_serviceTestExecutor == null)
+                    {
+                        _serviceTestExecutor = new ServiceTestExecutor();
+                    }
                     return ExecuteAsTest(user);
                 }
 
@@ -193,7 +197,7 @@ namespace Dev2.Runtime.WebServer.Executor
 
             IResponseWriter ExecuteAsTest(IPrincipal userPrinciple)
             {
-                var formatter = ServiceTestExecutor.ExecuteTests(_dataObject, userPrinciple, _workspaceGuid, _serializer, _testCatalog, _resourceCatalog, out _executePayload, _testCoverageCatalog);
+                var formatter = _serviceTestExecutor.ExecuteTests(_dataObject, userPrinciple, _workspaceGuid, _serializer, _testCatalog, _resourceCatalog, out _executePayload, _testCoverageCatalog);
                 return new StringResponseWriter(_executePayload ?? string.Empty, formatter.ContentType);
             }
 
