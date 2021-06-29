@@ -11,7 +11,7 @@ namespace Warewolf.Licensing
     public interface IWarewolfLicense
     {
         ISubscriptionData CreatePlan(ISubscriptionData subscriptionData);
-
         ISubscriptionData RetrievePlan(string subscriptionId, string subscriptionKey, string subscriptionSiteName);
+        bool SubscriptionExists(ISubscriptionData subscriptionData);
     }
 }

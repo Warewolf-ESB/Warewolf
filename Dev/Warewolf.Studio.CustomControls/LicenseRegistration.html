@@ -56,14 +56,13 @@
 
                     if (valid === true) {
                         let result = window.external.CreateSubscription(email, firstName, lastName, planId);
-
                         if (result === "Success") {
                             $("#errorContainer").css("display", "none");
                             $("#register-result").css("display", "block");
                             $("#customer-info").css("display", "none");
                             $("#terms").css("display", "none");
                         } else {
-                            ShowError(errorMsg);
+                            ShowError(result);
                         }
                     } else {
                         ShowError(errorMsg);

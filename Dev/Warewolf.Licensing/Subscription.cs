@@ -16,6 +16,32 @@ namespace Warewolf.Licensing
 {
     public class Subscription : ISubscription
     {
+        public bool SubscriptionExists(ISubscriptionData subscriptionData)
+        {
+            var subscriptionList = ChargeBee.Models.Customer.List()
+                .FirstName().Is(subscriptionData.CustomerFirstName)
+                .LastName().Is(subscriptionData.CustomerLastName)
+                .Email().Is(subscriptionData.CustomerEmail)
+                .Request();
+            foreach(var item in subscriptionList.List)
+            {
+                var customer = item.Customer;
+                var machineName = customer.GetValue<string>("cf_machinename", false);
+
+                if(machineName == null)
+                {
+                    return false;
+                }
+
+                if(subscriptionData.MachineName == machineName)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         public ISubscriptionData RetrievePlan(string subscriptionId)
         {
             var result = ChargeBee.Models.Subscription.Retrieve(subscriptionId).Request();
@@ -39,7 +65,7 @@ namespace Warewolf.Licensing
         {
             var subscription = result.Subscription;
             var customer = result.Customer;
-            var machineName = customer.GetValue<string> ("cf_machinename", false);
+            var machineName = customer.GetValue<string>("cf_machinename", false);
 
             var licenseData = new SubscriptionData
             {

@@ -14,6 +14,7 @@ using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Communication;
 using Dev2.Common.Interfaces.Core.DynamicServices;
+using Dev2.Common.Interfaces.Infrastructure.Communication;
 using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
@@ -70,7 +71,14 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     _machineName = Environment.MachineName.ToLowerInvariant();
                 }
+
                 subscriptionData.MachineName = _machineName;
+                if(string.IsNullOrEmpty(subscriptionData.SubscriptionId) && _warewolfLicense.SubscriptionExists(subscriptionData))
+                {
+                    result.SetMessage("A Subscription already exists for this Customer on the current machine. For help please contact support@warewolf.io");
+                    return ReturnError(result);
+                }
+
                 var resultData = string.IsNullOrEmpty(subscriptionData.SubscriptionId)
                     ? _warewolfLicense.CreatePlan(subscriptionData)
                     : _warewolfLicense.RetrievePlan(
@@ -80,28 +88,20 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                 if(resultData is null)
                 {
-                    result.HasError = true;
-                    result.SetMessage("An error occured.");
-                    Dev2Logger.Error(nameof(SaveSubscriptionData), new Exception("An error occured."), GlobalConstants.WarewolfError);
-                    return _serializer.SerializeToBuilder(result);
+                    result.SetMessage("An error occured. For help please contact support@warewolf.io");
+                    return ReturnError(result);
                 }
 
                 if(resultData.MachineName != _machineName)
                 {
-                    result.HasError = true;
-                    const string Message = "This subscription is configured for a different machine. For help please contact support@warewolf.io";
-                    result.SetMessage(Message);
-                    Dev2Logger.Error(nameof(GetSubscriptionData), new Exception(Message), GlobalConstants.WarewolfError);
-                    return _serializer.SerializeToBuilder(result);
+                    result.SetMessage("This subscription is configured for a different machine. For help please contact support@warewolf.io");
+                    return ReturnError(result);
                 }
 
                 if(resultData.CustomerEmail != subscriptionData.CustomerEmail)
                 {
-                    result.HasError = true;
-                    const string Message = "Email Address does not match email address used when this Subscription was created.";
-                    result.SetMessage(Message);
-                    Dev2Logger.Error(nameof(SaveSubscriptionData), new Exception(Message), GlobalConstants.WarewolfError);
-                    return _serializer.SerializeToBuilder(result);
+                    result.SetMessage("Email Address does not match email address used when this Subscription was created. For help please contact support@warewolf.io");
+                    return ReturnError(result);
                 }
 
                 _subscriptionProvider.SaveSubscriptionData(resultData);
@@ -110,11 +110,16 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch(Exception e)
             {
-                result.HasError = true;
                 result.SetMessage(e.Message);
-                Dev2Logger.Error(nameof(SaveSubscriptionData), e, GlobalConstants.WarewolfError);
-                return _serializer.SerializeToBuilder(result);
+                return ReturnError(result);
             }
+        }
+
+        private StringBuilder ReturnError(IExecuteMessage result)
+        {
+            result.HasError = true;
+            Dev2Logger.Error(nameof(SaveSubscriptionData), new Exception(result.Message.ToString()), GlobalConstants.WarewolfError);
+            return _serializer.SerializeToBuilder(result);
         }
 
         public override DynamicService CreateServiceEntry()
