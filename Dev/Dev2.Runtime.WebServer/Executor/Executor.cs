@@ -31,8 +31,8 @@ namespace Dev2.Runtime.WebServer.Executor
 {
     public class Executor : ExecutorBase
     {
-        public Executor(IWorkspaceRepository workspaceRepository, IResourceCatalog resourceCatalog, ITestCatalog testCatalog, ITestCoverageCatalog testCoverageCatalog, IAuthorizationService authorizationService, IDataObjectFactory dataObjectFactory, IEsbChannelFactory esbChannelFactory, IJwtManager jwtManager)
-                : base(workspaceRepository, resourceCatalog, testCatalog, testCoverageCatalog, authorizationService, dataObjectFactory, esbChannelFactory, jwtManager)
+        public Executor(IWorkspaceRepository workspaceRepository, IResourceCatalog resourceCatalog, ITestCatalog testCatalog, ITestCoverageCatalog testCoverageCatalog, IServiceTestExecutor serviceTestExecutor, IAuthorizationService authorizationService, IDataObjectFactory dataObjectFactory, IEsbChannelFactory esbChannelFactory, IJwtManager jwtManager)
+                : base(workspaceRepository, resourceCatalog, testCatalog, testCoverageCatalog, serviceTestExecutor, authorizationService, dataObjectFactory, esbChannelFactory, jwtManager)
             {
             }
 
