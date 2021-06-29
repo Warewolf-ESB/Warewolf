@@ -16,13 +16,10 @@ using Dev2.Runtime.WebServer.TransferObjects;
 
 namespace Dev2.Runtime.WebServer.Handlers
 {
-    public abstract partial class AbstractWebRequestHandler
+    public interface IDataObjectFactory
     {
-        public interface IDataObjectFactory
-        {
 #pragma warning disable CC0044
-            IDSFDataObject New(Guid workspaceGuid, IPrincipal user, string serviceName, WebRequestTO webRequest);
+        IDSFDataObject New(Guid workspaceGuid, IPrincipal user, string serviceName, WebRequestTO webRequest);
 #pragma warning restore CC0044
-        }
     }
 }

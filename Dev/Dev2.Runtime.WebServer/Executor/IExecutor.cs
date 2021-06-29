@@ -14,11 +14,8 @@ using Dev2.Runtime.WebServer.TransferObjects;
 
 namespace Dev2.Runtime.WebServer.Handlers
 {
-    public abstract partial class AbstractWebRequestHandler
+    public interface IExecutor
     {
-        public interface IExecutor
-        {
-            IResponseWriter BuildResponse(WebRequestTO webRequest, string serviceName);
-        }
+        IResponseWriter BuildResponse(WebRequestTO webRequest, string serviceName);
     }
 }

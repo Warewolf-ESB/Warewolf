@@ -13,14 +13,11 @@ using Dev2.Runtime.ESB.Control;
 
 namespace Dev2.Runtime.WebServer.Handlers
 {
-    public abstract partial class AbstractWebRequestHandler
+    class DefaultEsbChannelFactory : IEsbChannelFactory
     {
-        protected class DefaultEsbChannelFactory : IEsbChannelFactory
+        public IEsbChannel New()
         {
-            public IEsbChannel New()
-            {
-                return new EsbServicesEndpoint();
-            }
+            return new EsbServicesEndpoint();
         }
     }
 }
