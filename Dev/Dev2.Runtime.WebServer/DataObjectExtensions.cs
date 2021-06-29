@@ -633,7 +633,7 @@ namespace Dev2.Runtime.WebServer
         {
             public Task<IServiceTestModelTO> ExecuteTestAsync(string resourcePath, IPrincipal userPrinciple, Guid workspaceGuid, Dev2JsonSerializer serializer, IDSFDataObject dataObjectClone)
             {
-                return ServiceTestExecutor.ExecuteTestAsync(resourcePath, userPrinciple, workspaceGuid, serializer, dataObjectClone);
+                return new ServiceTestExecutor().ExecuteTestAsyncTask(resourcePath, userPrinciple, workspaceGuid, serializer, dataObjectClone);
             }
         }
     }
