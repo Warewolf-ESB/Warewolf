@@ -1,4 +1,4 @@
-﻿/*
+﻿﻿/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
@@ -10,10 +10,12 @@
 
 
 using Dev2.Common;
+using Dev2.Data.Util;
 using Dev2.Interfaces;
 using Dev2.Web;
+using Newtonsoft.Json;
 using System.Net;
-using Dev2.Runtime.WebServer.Executor;
+using Warewolf.Data.Serializers;
 using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.WebServer
@@ -102,6 +104,24 @@ namespace Dev2.Runtime.WebServer
                         Message = message
                     }.ToJSON();
             }
+        }
+    }
+
+    public class Error
+    {
+        public int Status { get; set; }
+        public string Title { get; set; }
+        public string Message { get; set; }
+
+        public string ToJSON(Formatting indent = Formatting.Indented)
+        {
+            return JsonConvert.SerializeObject(new { Error = this }, indent);
+        }
+
+        public string ToXML(bool scrub = true)
+        {
+            var xml = this.SerializeToXml();
+            return scrub ? Scrubber.Scrub(xml, ScrubType.Xml) : xml;
         }
     }
 }
