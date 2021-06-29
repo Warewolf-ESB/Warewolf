@@ -18,20 +18,17 @@ using Dev2.Runtime.WebServer.TransferObjects;
 
 namespace Dev2.Runtime.WebServer.Handlers
 {
-    public abstract partial class AbstractWebRequestHandler
+    class DataObjectFactory : IDataObjectFactory
     {
-        protected class DataObjectFactory : IDataObjectFactory
-        {
 #pragma warning disable CC0044
-            public IDSFDataObject New(Guid workspaceGuid, IPrincipal user, string serviceName, WebRequestTO webRequest) =>
+        public IDSFDataObject New(Guid workspaceGuid, IPrincipal user, string serviceName, WebRequestTO webRequest) =>
 #pragma warning restore CC0044
-                new DsfDataObject(webRequest.RawRequestPayload, GlobalConstants.NullDataListID, webRequest.RawRequestPayload)
-                {
-                    IsFromWebServer = true,
-                    ExecutingUser = user,
-                    ServiceName = serviceName,
-                    WorkspaceID = workspaceGuid
-                };
-        }
+        new DsfDataObject(webRequest.RawRequestPayload, GlobalConstants.NullDataListID, webRequest.RawRequestPayload)
+        {
+            IsFromWebServer = true,
+            ExecutingUser = user,
+            ServiceName = serviceName,
+            WorkspaceID = workspaceGuid
+        };
     }
 }
