@@ -15,7 +15,6 @@ using System.Management;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Security.Permissions;
-using System.Windows.Controls;
 using Dev2;
 using Dev2.Common;
 using Dev2.Communication;
@@ -45,15 +44,15 @@ namespace Warewolf.Studio.CustomControls
         public static Uri GetSourceUri(string licenseType)
         {
             Uri url;
-            var curDir = Directory.GetCurrentDirectory();
+            var appDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().GetName().CodeBase);
 
-            switch(licenseType)
+            switch (licenseType)
             {
                 case "Register":
-                    url = new Uri($"file:///{curDir}/LicenseRegistration.html");
+                    url = new Uri(Path.Combine(appDir, @"LicenseRegistration.html"));
                     break;
                 case "Manage":
-                    url = new Uri($"file:///{curDir}/ManageRegistration.html");
+                    url = new Uri(Path.Combine(appDir, @"ManageRegistration.html"));
                     break;
                 default:
                     return null;
@@ -163,7 +162,7 @@ namespace Warewolf.Studio.CustomControls
         }
 
         [ExcludeFromCodeCoverage]
-        public static void SetSilent(WebBrowser browser, bool silent)
+        public static void SetSilent(System.Windows.Controls.WebBrowser browser, bool silent)
         {
             if(browser is null)
             {
