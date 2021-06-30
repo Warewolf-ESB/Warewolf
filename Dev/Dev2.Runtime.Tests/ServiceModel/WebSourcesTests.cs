@@ -681,7 +681,9 @@ namespace Dev2.Tests.Runtime.ServiceModel
                 Client = mockWebClientWrapper.Object
             };
 
-            _ = WebSources.Execute(source, WebRequestMethod.Post, headers: new string[] { }, string.Empty, isNoneChecked: true, isFormDataChecked: false, data, true, out var errors, new List<IFormDataParameters>(), mockWebRequestFactory.Object);
+            var settings = new List<INameValue>();
+            settings.Add(new NameValue("IsManualChecked", "true"));
+            _ = WebSources.Execute(source, WebRequestMethod.Post, headers: new string[] { }, string.Empty, data, true, out var errors, new List<IFormDataParameters>(), mockWebRequestFactory.Object, settings: settings);
 
             var bytes = requestStream.GetBuffer();
             using (var memoryStream = new MemoryStream(bytes))
@@ -828,8 +830,10 @@ namespace Dev2.Tests.Runtime.ServiceModel
                 AuthenticationType = AuthenticationType.Anonymous,
                 Client = mockWebClientWrapper.Object
             };
-
-            var result = WebSources.Execute(source, WebRequestMethod.Post, headers: new string[] { }, "http://www.msn.com/", isNoneChecked: false, isFormDataChecked: true, "", throwError: false, out var errors, new List<FormDataParameters> { });
+            
+            var settings = new List<INameValue>();
+            settings.Add(new NameValue("IsFormDataChecked", "true"));
+            var result = WebSources.Execute(source, WebRequestMethod.Post, headers: new string[] { }, "http://www.msn.com/", "", throwError: false, out var errors, new List<FormDataParameters> { }, settings: settings);
 
             Assert.IsTrue(errors.HasErrors(), "This error should now happen, the handling of the Content-Type for form-data request should no longer be done on the backend, the user should be able to edd his own");
             Assert.AreEqual("The argument must not be null or empty and must contain non-whitespace characters must\r\nParameter name: Content-Type", errors.MakeDisplayReady());
@@ -893,7 +897,9 @@ namespace Dev2.Tests.Runtime.ServiceModel
                 Client = mockWebClientWrapper.Object
             };
 
-            var result = WebSources.Execute(source, WebRequestMethod.Post, headers: new string[] { }, "http://www.msn.com/", isNoneChecked: false, isFormDataChecked: true, "", throwError: false, out var errors, new List<FormDataParameters> { }, mockWebRequestFactory.Object);
+            var settings = new List<INameValue>();
+            settings.Add(new NameValue("IsFormDataChecked", "true"));
+            var result = WebSources.Execute(source, WebRequestMethod.Post, headers: new string[] { }, "http://www.msn.com/", "", throwError: false, out var errors, new List<FormDataParameters> { }, mockWebRequestFactory.Object, settings: settings);
 
             Assert.IsFalse(errors.HasErrors(), "This error should not happen, the Content-Type for form-data request is overriden if there are any misspells");
             
@@ -927,7 +933,9 @@ namespace Dev2.Tests.Runtime.ServiceModel
                 Client = mockWebClientWrapper.Object
             };
 
-            Assert.ThrowsException<ArgumentNullException>(()=> WebSources.Execute(source, WebRequestMethod.Post, headers: new string[] { }, "http://www.msn.com/", isNoneChecked: false, isFormDataChecked: true, "", throwError: true, out var errors, new List<FormDataParameters> { }));
+            var settings = new List<INameValue>();
+            settings.Add(new NameValue("IsFormDataChecked", "true"));
+            Assert.ThrowsException<ArgumentNullException>(()=> WebSources.Execute(source, WebRequestMethod.Post, headers: new string[] { }, "http://www.msn.com/", "", throwError: true, out var errors, new List<FormDataParameters> { }, settings: settings));
 
             mockWebClientWrapper.Verify(o => o.UploadData(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<byte[]>()), Times.Never);
         }
@@ -995,7 +1003,9 @@ namespace Dev2.Tests.Runtime.ServiceModel
                 }.ToFormDataParameter()
             };
 
-            Assert.ThrowsException<ApplicationException>(() => WebSources.Execute(source, WebRequestMethod.Post, headers: new string[] { }, relativeUri,isNoneChecked: false, isFormDataChecked: true, string.Empty, true, out var errors, formDataParameters, mockWebRequestFactory.Object), "Error while upload files. Server status code: BadRequest");
+            var settings = new List<INameValue>();
+            settings.Add(new NameValue("IsFormDataChecked", "true"));
+            Assert.ThrowsException<ApplicationException>(() => WebSources.Execute(source, WebRequestMethod.Post, headers: new string[] { }, relativeUri, string.Empty, true, out var errors, formDataParameters, mockWebRequestFactory.Object, settings: settings), "Error while upload files. Server status code: BadRequest");
         }
 
         [TestMethod]
@@ -1060,7 +1070,9 @@ namespace Dev2.Tests.Runtime.ServiceModel
                 }.ToFormDataParameter()
             };
 
-            var result = WebSources.Execute(source, WebRequestMethod.Post, headers: new string[] { }, relativeUri, isNoneChecked: false, isFormDataChecked: true, string.Empty, true, out var errors, formDataParameters, mockWebRequestFactory.Object);
+            var settings = new List<INameValue>();
+            settings.Add(new NameValue("IsFormDataChecked", "true"));
+            var result = WebSources.Execute(source, WebRequestMethod.Post, headers: new string[] { }, relativeUri, string.Empty, true, out var errors, formDataParameters, mockWebRequestFactory.Object, settings: settings);
             
             Assert.AreEqual("response from web request", result);
 
@@ -1129,7 +1141,9 @@ namespace Dev2.Tests.Runtime.ServiceModel
                 }.ToFormDataParameter()
             };
 
-            var result = WebSources.Execute(source, WebRequestMethod.Post, headers: new string[] { }, relativeUri, isNoneChecked: false, isFormDataChecked: true, string.Empty, true, out var errors, formDataParameters, mockWebRequestFactory.Object);
+            var settings = new List<INameValue>();
+            settings.Add(new NameValue("IsFormDataChecked", "true"));
+            var result = WebSources.Execute(source, WebRequestMethod.Post, headers: new string[] { }, relativeUri, string.Empty, true, out var errors, formDataParameters, mockWebRequestFactory.Object, settings: settings);
 
             Assert.IsFalse(IsBase64(result));
 
@@ -1204,7 +1218,9 @@ namespace Dev2.Tests.Runtime.ServiceModel
                 }.ToFormDataParameter()
             };
 
-            var result = WebSources.Execute(source, WebRequestMethod.Post, headers: new string[] { }, relativeUri, isNoneChecked: false, isFormDataChecked: true, string.Empty, true, out var errors, formDataParameters, mockWebRequestFactory.Object);
+            var settings = new List<INameValue>();
+            settings.Add(new NameValue("IsFormDataChecked", "true"));
+            var result = WebSources.Execute(source, WebRequestMethod.Post, headers: new string[] { }, relativeUri, string.Empty, true, out var errors, formDataParameters, mockWebRequestFactory.Object, settings: settings);
 
             //make sure the data sent is as expected
             var bytes = requestStream.GetBuffer();

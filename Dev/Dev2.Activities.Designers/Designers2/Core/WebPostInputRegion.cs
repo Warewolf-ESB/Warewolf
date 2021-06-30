@@ -17,11 +17,15 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using Dev2.Activities.Designers2.Web_Post;
 using Dev2.Activities.Utils;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Studio.Core.Activities.Utils;
+using Microsoft.Practices.ObjectBuilder2;
+using Warewolf.Data.Options;
+using Warewolf.Options;
 
 namespace Dev2.Activities.Designers2.Core
 {
@@ -33,11 +37,9 @@ namespace Dev2.Activities.Designers2.Core
         private string _requestUrl;
         private ObservableCollection<INameValue> _headers;
         private ObservableCollection<INameValue> _parameters;
+        private ObservableCollection<INameValue> _settings;
         private bool _isEnabled;
         private string _postData;
-        private bool _isManualChecked;
-        private bool _isFormDataChecked;
-        private bool _isUrlEncodedChecked;
 
         public WebPostInputRegion()
         {
@@ -88,9 +90,6 @@ namespace Dev2.Activities.Designers2.Core
             {
                 RequestUrl = source.SelectedSource.HostName;
                 IsEnabled = true;
-                IsFormDataChecked = modelItem.GetProperty<bool>("IsFormDataChecked");
-                IsManualChecked = modelItem.GetProperty<bool>("IsManualChecked");
-                IsUrlEncodedChecked = modelItem.GetProperty<bool>("IsUrlEncodedChecked");
             }
         }
 
@@ -112,6 +111,8 @@ namespace Dev2.Activities.Designers2.Core
             OnPropertyChanged(nameof(IsEnabled));
         }
 
+        public IWebServiceBaseViewModel ViewModel { get; set; }
+        
         public string QueryString
         {
             get => _modelItem.GetProperty<string>("QueryString") ?? string.Empty;
@@ -141,39 +142,72 @@ namespace Dev2.Activities.Designers2.Core
                 OnPropertyChanged();
             }
         }
+        
+        public ObservableCollection<INameValue> Settings
+        {
+            get => _settings;
+            set
+            {
+                _settings = value;
+                _modelItem.SetProperty("Settings", value.ToList());
+                OnPropertyChanged();
+            }
+        }
 
         public bool IsManualChecked
         {
-            get => _modelItem.GetProperty<bool> ("IsManualChecked");
+            get
+            {
+               var settings = _modelItem.GetProperty<IList<INameValue>>("Settings");
+               return Convert.ToBoolean(settings.FirstOrDefault(s => s.Name == "IsManualChecked")?.Value);
+            }
             set
             {
-                _isManualChecked = value;
-                _modelItem.SetProperty("IsManualChecked", value);
-                OnPropertyChanged();
+                UpdateSettings("IsManualChecked");
             }
         }
 
         public bool IsFormDataChecked
         {
-            get => _modelItem.GetProperty<bool>("IsFormDataChecked");
+            get
+            {
+                var settings = _modelItem.GetProperty<IList<INameValue>>("Settings");
+                return Convert.ToBoolean(settings.FirstOrDefault(s => s.Name == "IsFormDataChecked")?.Value);
+            }
             set
             {
-                _isFormDataChecked = value;
-                _modelItem.SetProperty("IsFormDataChecked", value);
-                OnPropertyChanged();
+                UpdateSettings("IsFormDataChecked");
             }
         }
         
-                public bool IsUrlEncodedChecked
-                {
-                    get => _modelItem.GetProperty<bool>("IsUrlEncodedChecked");
-                    set
-                    {
-                        _isUrlEncodedChecked = value;
-                        _modelItem.SetProperty("IsUrlEncodedChecked", value);
-                        OnPropertyChanged();
-                    }
-                }
+        public bool IsUrlEncodedChecked
+        {
+            get
+            {
+                var settings = _modelItem.GetProperty<IList<INameValue>>("Settings");
+                return Convert.ToBoolean(settings.FirstOrDefault(s => s.Name == "IsUrlEncodedChecked")?.Value);
+            }
+            set
+            {
+                UpdateSettings("IsUrlEncodedChecked");
+            }
+        }
+        
+        private void UpdateSettings(string trueName)
+        {
+            var newSettings = new ObservableCollection<INameValue>();
+            newSettings.Add(new NameValue("IsManualChecked",  (trueName == "IsManualChecked").ToString()));
+            newSettings.Add(new NameValue("IsFormDataChecked", (trueName == "IsFormDataChecked").ToString()));
+            newSettings.Add(new NameValue("IsUrlEncodedChecked", (trueName == "IsUrlEncodedChecked").ToString()));
+            Settings = newSettings;
+            
+            OnPropertyChanged("IsManualChecked");
+            OnPropertyChanged("IsFormDataChecked");
+            OnPropertyChanged("IsUrlEncodedChecked");
+                
+            var list = new List<IOption>(((WebPostActivityViewModel)ViewModel).ConditionExpressionOptions.Options);
+            list.ForEach(c => ((FormDataOptionConditionExpression)c).IsMultiPart = !IsUrlEncodedChecked );
+        }
 
         public string PostData
         {

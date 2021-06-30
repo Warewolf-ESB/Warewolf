@@ -41,6 +41,8 @@ namespace Dev2.Activities
         private IDSFDataObject _dataObject;
 
         public IList<INameValue> Headers { get; set; }
+        
+        public IList<INameValue> Settings { get; set; }
         public bool IsFormDataChecked { get; set; }
         public bool IsManualChecked { get; set; }
         public bool IsUrlEncodedChecked { get; set; }
@@ -158,19 +160,24 @@ namespace Dev2.Activities
                 var (head, query, postData, conditions) = GetEnvironmentInputVariables(_dataObject.Environment, update);
 
                 var source = ResourceCatalog.GetResource<WebSource>(Guid.Empty, SourceId);
-
-                if (IsFormDataChecked)
+                var isManualChecked = Convert.ToBoolean(Settings?.FirstOrDefault(s => s.Name == nameof(IsManualChecked))?.Value);
+                var isFormDataChecked = Convert.ToBoolean(Settings?.FirstOrDefault(s => s.Name == nameof(IsFormDataChecked))?.Value);
+                var isUrlEncodedChecked = Convert.ToBoolean(Settings?.FirstOrDefault(s => s.Name == nameof(IsUrlEncodedChecked))?.Value);
+                
+                var webPostOptions = new WebPostOptions
                 {
-                    webRequestResult = PerformFormDataWebPostRequest(source, WebRequestMethod.Post, query, head, conditions);
-                }
-                else if (IsManualChecked)
-                {
-                    webRequestResult = PerformManualWebPostRequest(head, query, source, postData);
-                }
-                else if(IsUrlEncodedChecked)
-                {
-                    webRequestResult = PerformUrlEncodedWebPostRequest(source, WebRequestMethod.Post, query, head, conditions);
-                }
+                    Headers = head.Select(h => h.Name + ":" + h.Value).ToArray(),
+                    Method = WebRequestMethod.Post,
+                    Parameters = conditions,
+                    Query = query,
+                    Source = source,
+                    PostData = postData,
+                    Settings = Settings,
+                    IsManualChecked = isManualChecked,
+                    IsFormDataChecked = isFormDataChecked,
+                    IsUrlEncodedChecked = isUrlEncodedChecked,
+                };
+                WebSources.Execute(webPostOptions);
             }
             catch (Exception ex)
             {
@@ -251,21 +258,6 @@ namespace Dev2.Activities
             }
 
             return (head, query, postData, conditions);
-        }
-
-        protected virtual string PerformManualWebPostRequest(IEnumerable<INameValue> head, string query, IWebSource source, string postData)
-        {
-            return WebSources.Execute(source, WebRequestMethod.Post, query, postData, throwError: true, out _errorsTo, head.Select(h => h.Name + ":" + h.Value).ToArray());
-        }
-
-        protected virtual string PerformFormDataWebPostRequest(IWebSource source, WebRequestMethod method, string query, IEnumerable<INameValue> head, IEnumerable<IFormDataParameters> parameters)
-        {
-            return WebSources.Execute(source, method, head.Select(h => h.Name + ":" + h.Value).ToArray(), query, isNoneChecked: false, isFormDataChecked: true, data: string.Empty, throwError: true, out _errorsTo, parameters);
-        }
-        
-        protected virtual string PerformUrlEncodedWebPostRequest(IWebSource source, WebRequestMethod method, string query, IEnumerable<INameValue> head, IEnumerable<IFormDataParameters> parameters)
-        {
-            return WebSources.Execute(source, method, head.Select(h => h.Name + ":" + h.Value).ToArray(), query, isNoneChecked: false, isFormDataChecked: false, data: string.Empty, throwError: true, out _errorsTo, parameters, isUrlEncodedChecked: true);
         }
 
         public static WebClient CreateClient(IEnumerable<INameValue> head, string query, WebSource source)
