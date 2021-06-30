@@ -142,7 +142,6 @@ namespace Warewolf.Studio.ViewModels
             }
             finally
             {
-                //TODO: Inverstigate what might be going wrong here. This process take around 2 minutes
                 ReloadServerEvents(childItems);
                 IsDuplicating = false;
             }
@@ -150,7 +149,6 @@ namespace Warewolf.Studio.ViewModels
 
         private void ReloadServerEvents(ObservableCollection<IExplorerItemViewModel> childItems)
         {
-            //Do we really need this refresh?
             ConnectControlSingleton.Instance.ReloadServer(); 
             if (childItems != null)
             {
@@ -179,9 +177,6 @@ namespace Warewolf.Studio.ViewModels
             _communicationController.AddPayloadArgument("destinationPath", Path);
         }
 
-        //If this can be fired by the service: DuplicateFolderService this have a potential to save us more time?
-        //Can this even be possible using the serverId or ServerWorkspaceID and changes on the server side to Update the UI, perhaps not a good idea
-        //Can this be done any faster? Suggestion: find out if thre is a way to bulk this handler.Invoke() method
         private void FireServerSaved(Guid savedServerId, bool isDeleted = false)
         {
             if (_environmentViewModel.Server.UpdateRepository.ServerSaved != null)
