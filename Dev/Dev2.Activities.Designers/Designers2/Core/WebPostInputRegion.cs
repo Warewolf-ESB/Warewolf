@@ -159,7 +159,7 @@ namespace Dev2.Activities.Designers2.Core
             get
             {
                var settings = _modelItem.GetProperty<IList<INameValue>>("Settings");
-               return Convert.ToBoolean(settings.FirstOrDefault(s => s.Name == "IsManualChecked")?.Value);
+               return Convert.ToBoolean(settings?.FirstOrDefault(s => s.Name == "IsManualChecked")?.Value);
             }
             set
             {
@@ -172,7 +172,7 @@ namespace Dev2.Activities.Designers2.Core
             get
             {
                 var settings = _modelItem.GetProperty<IList<INameValue>>("Settings");
-                return Convert.ToBoolean(settings.FirstOrDefault(s => s.Name == "IsFormDataChecked")?.Value);
+                return Convert.ToBoolean(settings?.FirstOrDefault(s => s.Name == "IsFormDataChecked")?.Value);
             }
             set
             {
@@ -185,7 +185,7 @@ namespace Dev2.Activities.Designers2.Core
             get
             {
                 var settings = _modelItem.GetProperty<IList<INameValue>>("Settings");
-                return Convert.ToBoolean(settings.FirstOrDefault(s => s.Name == "IsUrlEncodedChecked")?.Value);
+                return Convert.ToBoolean(settings?.FirstOrDefault(s => s.Name == "IsUrlEncodedChecked")?.Value);
             }
             set
             {
@@ -204,9 +204,12 @@ namespace Dev2.Activities.Designers2.Core
             OnPropertyChanged("IsManualChecked");
             OnPropertyChanged("IsFormDataChecked");
             OnPropertyChanged("IsUrlEncodedChecked");
-                
-            var list = new List<IOption>(((WebPostActivityViewModel)ViewModel).ConditionExpressionOptions.Options);
-            list.ForEach(c => ((FormDataOptionConditionExpression)c).IsMultiPart = !IsUrlEncodedChecked );
+            
+            if(ViewModel != null)
+            {
+                var list = new List<IOption>(((WebPostActivityViewModel)ViewModel).ConditionExpressionOptions.Options);
+                list.ForEach(c => ((FormDataOptionConditionExpression)c).IsMultiPart = !IsUrlEncodedChecked );
+            }
         }
 
         public string PostData
