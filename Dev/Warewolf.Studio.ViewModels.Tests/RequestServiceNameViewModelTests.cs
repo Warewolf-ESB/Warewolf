@@ -594,7 +594,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Test Result -----------------------
             controller.Verify(communicationController => communicationController.AddPayloadArgument("ResourceID", It.IsAny<string>()));
             controller.Verify(communicationController => communicationController.AddPayloadArgument("NewResourceName", It.IsAny<string>()));
-            controller.Verify(communicationController => communicationController.ExecuteCommand<ResourceCatalogDuplicateResult>(It.IsAny<IEnvironmentConnection>(), It.IsAny<Guid>()));
+            controller.Verify(communicationController => communicationController.ExecuteCommandAsync<ResourceCatalogDuplicateResult>(It.IsAny<IEnvironmentConnection>(), It.IsAny<Guid>()));
         }
 
         [TestMethod, Timeout(60000)]
