@@ -43,9 +43,9 @@ namespace Dev2.Activities
         public IList<INameValue> Headers { get; set; }
         
         public IList<INameValue> Settings { get; set; }
-        public bool IsFormDataChecked { get; set; }
-        public bool IsManualChecked { get; set; }
-        public bool IsUrlEncodedChecked { get; set; }
+        public bool IsFormDataChecked => Convert.ToBoolean(this.Settings?.FirstOrDefault(s => s.Name == nameof(IsFormDataChecked))?.Value);
+        public bool IsManualChecked => Convert.ToBoolean(this.Settings?.FirstOrDefault(s => s.Name == nameof(IsManualChecked))?.Value);
+        public bool IsUrlEncodedChecked => Convert.ToBoolean(this.Settings?.FirstOrDefault(s => s.Name == nameof(IsUrlEncodedChecked))?.Value);
         public IList<FormDataConditionExpression> Conditions { get; set; }
         public string QueryString { get; set; }
         public IOutputDescription OutputDescription { get; set; }
