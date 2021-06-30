@@ -23,6 +23,8 @@ using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using Newtonsoft.Json.Linq;
+using TestBase;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Data;
 
@@ -155,7 +157,30 @@ namespace Dev2.Integration.Tests.TestCoverage
             //Assert
             Assert.IsTrue(sut.TestCoverageReports.Count > 0);
         }
-
+        
+        [TestMethod]
+        public void ExecutionWithTest_ExpectedValidJson()
+        {
+            var result = TestHelper.PostDataToWebserver("http://localhost:3142/secure/.tests");
+            var json = Newtonsoft.Json.JsonConvert.DeserializeObject<JObject>(result);
+            Assert.IsNotNull(json);
+        }
+        
+        [TestMethod]
+        public void ExecutionWithTest_ExpectedValidXml()
+        {
+            var result = TestHelper.PostDataToWebserver("http://localhost:3142/secure/.trx");
+            Assert.IsNotNull(result);
+        }
+        
+        [TestMethod]
+        public void ExecutionWithCoverage_ExpectedValidHtml()
+        {
+            const string ExpectedHtmlStarter = "<div class=\"nav-bar-row\" style=\"padding:10px 10px 20px 10px;margin:5px;font-family:Roboto sans-serif;font-size:28px;font-weight:500;\">\r\n\t";
+            TestHelper.PostDataToWebserver("http://localhost:3142/secure/.tests");
+            var result = TestHelper.PostDataToWebserver("http://localhost:3142/secure/.coverage");
+            Assert.IsTrue(result.StartsWith(ExpectedHtmlStarter + "Coverage Summary"), "Invalid html returned from coverage:\n" + result);
+        }
 
         public Mock<IResourceCatalog> GetMockResourceCatalog(IWarewolfWorkflow warewolfWorkflow)
         {
