@@ -31,6 +31,7 @@ namespace Dev2.Activities.Designers2.Core.Web.Delete
         string _queryString;
         string _requestUrl;
         ObservableCollection<INameValue> _headers;
+        private ObservableCollection<INameValue> _settings;
         bool _isEnabled;
 
         public WebDeleteInputRegion()
@@ -123,6 +124,17 @@ namespace Dev2.Activities.Designers2.Core.Web.Delete
             {
                 _headers = value;
                 _modelItem.SetProperty("Headers", value.ToList());
+                OnPropertyChanged();
+            }
+        }
+        
+        public ObservableCollection<INameValue> Settings
+        {
+            get => _settings;
+            set
+            {
+                _settings = value;
+                _modelItem.SetProperty("Settings", value.ToList());
                 OnPropertyChanged();
             }
         }

@@ -1360,7 +1360,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
 
         public string ResponseFromWeb { private get; set; }
 
-        protected override string PerformManualWebPostRequest(IEnumerable<INameValue> head, string query, IWebSource source, string postData)
+        protected string PerformManualWebPostRequest(IEnumerable<INameValue> head, string query, IWebSource source, string postData)
         {
             Head = head;
             QueryRes = query;
@@ -1374,7 +1374,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             return ResponseFromWeb;
         }
 
-        protected override string PerformFormDataWebPostRequest(IWebSource source, WebRequestMethod method, string query, IEnumerable<INameValue> head, IEnumerable<IFormDataParameters> formDataParameters)
+        protected string PerformFormDataWebPostRequest(IWebSource source, WebRequestMethod method, string query, IEnumerable<INameValue> head, IEnumerable<IFormDataParameters> formDataParameters)
         {
             Head = head;
             QueryRes = query;
@@ -1388,7 +1388,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             return ResponseFromWeb;
         }
         
-        protected override string PerformUrlEncodedWebPostRequest(IWebSource source, WebRequestMethod method, string query, IEnumerable<INameValue> head, IEnumerable<IFormDataParameters> formDataParameters)
+        protected string PerformUrlEncodedWebPostRequest(IWebSource source, WebRequestMethod method, string query, IEnumerable<INameValue> head, IEnumerable<IFormDataParameters> formDataParameters)
         {
             Head = head;
             QueryRes = query;

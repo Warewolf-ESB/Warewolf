@@ -27,6 +27,7 @@ using Dev2.Common.Interfaces.WebServices;
 using Dev2.Communication;
 using Dev2.Providers.Errors;
 using Dev2.Studio.Interfaces;
+using Microsoft.Practices.ObjectBuilder2;
 using Microsoft.Practices.Prism.Commands;
 using Warewolf.Core;
 using Warewolf.Data.Options;
@@ -292,7 +293,7 @@ namespace Dev2.Activities.Designers2.Web_Post
 
             if (!emptyRows.Any())
             {
-                var conditionExpression = new FormDataOptionConditionExpression();
+                var conditionExpression = new FormDataOptionConditionExpression(){ IsMultiPart = !InputArea.IsUrlEncodedChecked };
                 var list = new List<IOption>(_conditionExpressionOptions.Options)
                 {
                     conditionExpression
@@ -310,6 +311,7 @@ namespace Dev2.Activities.Designers2.Web_Post
                 conditionExpressionList = new List<FormDataConditionExpression>();
             }
             var result = OptionConvertor.ConvertFromListOfT(conditionExpressionList);
+            result.ForEach(r => ((FormDataOptionConditionExpression)r).IsMultiPart = !InputArea.IsUrlEncodedChecked);
             ConditionExpressionOptions = new OptionsWithNotifier { Options = result };
             UpdateConditionExpressionOptionsModelItem();
         }
@@ -420,6 +422,7 @@ namespace Dev2.Activities.Designers2.Web_Post
                 SourceRegion = new WebSourceRegion(Model, ModelItem) { SourceChangedAction = () => { OutputsRegion.IsEnabled = false; } };
                 regions.Add(SourceRegion);
                 InputArea = new WebPostInputRegion(ModelItem, SourceRegion);
+                InputArea.ViewModel = this;
                 InputArea.PropertyChanged += (sender, args) =>
                 {
                     if (args.PropertyName == "PostData" && InputArea.Headers.All(value => string.IsNullOrEmpty(value.Name)))
@@ -504,6 +507,7 @@ namespace Dev2.Activities.Designers2.Web_Post
                 IsManualChecked = InputArea.IsManualChecked,
                 IsFormDataChecked = InputArea.IsFormDataChecked,
                 Headers = InputArea.Headers.Select(value => new NameValue { Name = value.Name, Value = value.Value } as INameValue).ToList(),
+                Settings = InputArea.Settings.Select(value => new NameValue { Name = value.Name, Value = value.Value } as INameValue).ToList(),
                 FormDataParameters = BuildFormDataParameters(),
                 QueryString = InputArea.QueryString,
                 RequestUrl = SourceRegion.SelectedSource.HostName,

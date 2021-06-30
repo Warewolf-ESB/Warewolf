@@ -20,5 +20,6 @@ namespace Dev2.Common.Interfaces.ToolBase
         bool IsFormDataChecked { get; set; }
         bool IsUrlEncodedChecked { get; set; }
         string ParameterGroup { get; }
+        IWebServiceBaseViewModel ViewModel { get; set; }
     }
 }

@@ -29,6 +29,7 @@ using Warewolf.Common.Interfaces.NetStandard20;
 using Warewolf.Common.NetStandard20;
 using Warewolf.Data.Options;
 using System.Linq;
+using Dev2.Data.Settings;
 
 namespace Dev2.Runtime.ServiceModel
 {
@@ -148,10 +149,20 @@ namespace Dev2.Runtime.ServiceModel
                     WebRequestFactory = new WebRequestFactory()
                 };
             }
-            return Execute(source, method, headers, relativeUri, webExecuteStringArgs.IsManualChecked, webExecuteStringArgs.IsFormDataChecked, data, throwError, out errors, webExecuteStringArgs.FormDataParameters, webExecuteStringArgs.WebRequestFactory);
+            var settings = new List<INameValue>();
+            settings.Add(new NameValue("IsManualChecked", "true"));
+            return Execute(source, method, headers, relativeUri, data, throwError, out errors, webExecuteStringArgs.FormDataParameters, webExecuteStringArgs.WebRequestFactory, settings: settings);
         }
         
-        public static string Execute(IWebSource source, WebRequestMethod method, IEnumerable<string> headers, string relativeUrl, bool isNoneChecked, bool isFormDataChecked, string data, bool throwError, out ErrorResultTO errors, IEnumerable<IFormDataParameters> formDataParameters = null, IWebRequestFactory webRequestFactory = null, bool isUrlEncodedChecked = false)
+        public static string Execute(IWebPostOptions options)
+        {
+            return Execute(source: options.Source, method: options.Method, headers: options.Headers, relativeUrl: options.Query,
+                data: options.PostData, throwError: true, errors: out ErrorResultTO errors, formDataParameters: options.Parameters, settings: options.Settings);
+        }
+        
+        public static string Execute(IWebSource source, WebRequestMethod method, IEnumerable<string> headers, string relativeUrl,
+            string data, bool throwError, out ErrorResultTO errors,
+            IEnumerable<IFormDataParameters> formDataParameters = null, IWebRequestFactory webRequestFactory = null, IEnumerable<INameValue> settings = null)
         {
             IWebClientWrapper client = null;
 
@@ -167,7 +178,11 @@ namespace Dev2.Runtime.ServiceModel
                 client = CreateWebClient(source.AuthenticationType, source.UserName, source.Password, source.Client, headers);
                 var address = GetAddress(source, relativeUrl);
                 var contentType = client.Headers[HttpRequestHeader.ContentType];
-
+                
+                var isNoneChecked = Convert.ToBoolean(settings?.FirstOrDefault(s => s.Name == "IsNoneChecked")?.Value);
+                var isFormDataChecked = Convert.ToBoolean(settings?.FirstOrDefault(s => s.Name == "IsFormDataChecked")?.Value);
+                var isUrlEncodedChecked = Convert.ToBoolean(settings?.FirstOrDefault(s => s.Name == "IsUrlEncodedChecked")?.Value);
+                
                 if (isFormDataChecked || isUrlEncodedChecked)
                 {
                     VerifyArgument.IsNotNullOrWhitespace("Content-Type", contentType);
