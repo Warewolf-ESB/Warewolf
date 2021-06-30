@@ -8,3 +8,5 @@ build:
   stage: build
   script:
     - sh ./Dev/.gitlab/QueueCI.sh $CI_COMMIT_BRANCH
+  except:
+    - tags
