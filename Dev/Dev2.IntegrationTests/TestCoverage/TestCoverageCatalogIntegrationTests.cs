@@ -171,7 +171,7 @@ namespace Dev2.Integration.Tests.TestCoverage
         [TestCategory(nameof(TestCoverageCatalog))]
         public void ExecutionWithTest_ExpectedValidXml()
         {
-            const string ExpectedXmlStarter = "<TestRun xmlns=\"http://microsoft.com/schemas/VisualStudio/TeamTest/2010\"";
+            const string ExpectedXmlStarter = "<?xml version=\"1.0\" encoding=\"utf-8\"?><TestRun";
             var result = TestHelper.PostDataToWebserver("http://localhost:3142/secure/.tests.trx");
             Assert.IsTrue(result.StartsWith(ExpectedXmlStarter), "Unexpected xml returned from tests:\n" + result);
         }
