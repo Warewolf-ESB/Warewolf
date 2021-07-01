@@ -424,8 +424,6 @@ namespace Dev2
             }
         }
 
-#if DEBUG
-
         static void SetAsStarted()
         {
             try
@@ -443,7 +441,6 @@ namespace Dev2
                 Dev2Logger.Error(err, GlobalConstants.WarewolfError);
             }
         }
-#endif
     }
 
     class Writer : IWriter
