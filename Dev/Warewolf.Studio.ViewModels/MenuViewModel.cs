@@ -92,6 +92,12 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
+        public void NotifyProperty(bool canExecute)
+        {
+            SaveCommand.CanExecute(canExecute);
+            OnPropertyChanged(() => SaveCommand);
+        }
+
         public ICommand SupportCommand { get; set; }
         public ICommand DeployCommand { get; set; }
         public ICommand NewServiceCommand { get; set; }

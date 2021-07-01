@@ -838,7 +838,7 @@ namespace Dev2.Studio.ViewModels
                 if (unRegisteredDialog == MessageBoxResult.Yes)
                 {
                     // Take the user to the register steps.
-                    //TODO: How do we handle the UI Yes and No
+                    _shellViewModel.Register();
                 }
 
                 return true;

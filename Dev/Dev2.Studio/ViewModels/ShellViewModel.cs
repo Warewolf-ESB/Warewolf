@@ -1819,6 +1819,7 @@ namespace Dev2.Studio.ViewModels
                 if (result == MessageBoxResult.Yes)
                 {
                     // Take the user to the register steps.
+                    Register();
                 }
                 return;
             }
@@ -2347,6 +2348,7 @@ namespace Dev2.Studio.ViewModels
                 environmentViewModel.IsLicensed = isLicensed;
             }
             NotifyOfPropertyChange(() => LicensePlanTitle);
+            MenuViewModel.NotifyProperty(isLicensed);
         }
 
         public void Handle(FileChooserMessage message)
