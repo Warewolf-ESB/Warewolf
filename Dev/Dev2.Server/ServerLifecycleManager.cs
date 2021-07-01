@@ -253,12 +253,10 @@ namespace Dev2
                     }
 
                     LogWarewolfVersion();
-#if DEBUG
                     if (EnvironmentVariables.IsServerOnline)
                     {
                         SetAsStarted();
                     }
-#endif
                 }
                 catch (Exception e)
                 {
