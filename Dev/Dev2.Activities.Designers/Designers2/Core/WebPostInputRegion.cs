@@ -149,7 +149,7 @@ namespace Dev2.Activities.Designers2.Core
             set
             {
                 _settings = value;
-                _modelItem.SetProperty("Settings", value.ToList());
+                _modelItem.SetProperty("Settings", value?.ToList() ?? new List<INameValue>());
                 OnPropertyChanged();
             }
         }
@@ -253,9 +253,7 @@ namespace Dev2.Activities.Designers2.Core
                 QueryString = QueryString,
                 RequestUrl = RequestUrl,
                 IsEnabled = IsEnabled,
-                IsManualChecked = IsManualChecked,
-                IsFormDataChecked = IsFormDataChecked,
-                IsUrlEncodedChecked = IsUrlEncodedChecked
+                Settings = Settings
             };
         }
 
