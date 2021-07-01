@@ -276,8 +276,10 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var webPostActivity = new WebPostActivity {UniqueID = uniqueId,  IsFormDataChecked = true};
-            var webPostActivity1 = new WebPostActivity {UniqueID = uniqueId, IsFormDataChecked = true};
+            var settings = new List<INameValue>();
+            settings.Add(new NameValue("IsFormDataChecked", "true"));
+            var webPostActivity = new WebPostActivity {UniqueID = uniqueId,  Settings = settings};
+            var webPostActivity1 = new WebPostActivity {UniqueID = uniqueId, Settings = settings};
             //---------------Assert Precondition----------------
             Assert.IsNotNull(webPostActivity);
             //---------------Execute Test ----------------------
@@ -294,8 +296,12 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var webPostActivity = new WebPostActivity {UniqueID = uniqueId, IsFormDataChecked = false};
-            var webPostActivity1 = new WebPostActivity {UniqueID = uniqueId, IsFormDataChecked = true};
+            var settingsTrue = new List<INameValue>();
+            settingsTrue.Add(new NameValue("IsFormDataChecked", "true"));
+            var settingsFalse = new List<INameValue>();
+            settingsFalse.Add(new NameValue("IsFormDataChecked", "false"));
+            var webPostActivity = new WebPostActivity {UniqueID = uniqueId, Settings = settingsFalse};
+            var webPostActivity1 = new WebPostActivity {UniqueID = uniqueId, Settings = settingsTrue};
             //---------------Assert Precondition----------------
             Assert.IsNotNull(webPostActivity);
             //---------------Execute Test ----------------------
@@ -312,7 +318,9 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var webPostActivity = new WebPostActivity {UniqueID = uniqueId, IsFormDataChecked = false};
+            var settings = new List<INameValue>();
+            settings.Add(new NameValue("IsFormDataChecked", "false"));
+            var webPostActivity = new WebPostActivity {UniqueID = uniqueId, Settings = settings};
             WebPostActivity webPostActivity1 = null;
             //---------------Assert Precondition----------------
             Assert.IsNotNull(webPostActivity);
@@ -330,7 +338,9 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var webPostActivity = new WebPostActivity {UniqueID = uniqueId, IsFormDataChecked = false};
+            var settings = new List<INameValue>();
+            settings.Add(new NameValue("IsFormDataChecked", "false"));
+            var webPostActivity = new WebPostActivity {UniqueID = uniqueId, Settings = settings};
             object webPostActivity1 = null;
             //---------------Assert Precondition----------------
             Assert.IsNotNull(webPostActivity);
@@ -348,7 +358,9 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var webPostActivity = new WebPostActivity {UniqueID = uniqueId, IsFormDataChecked = false};
+            var settings = new List<INameValue>();
+            settings.Add(new NameValue("IsFormDataChecked", "false"));
+            var webPostActivity = new WebPostActivity {UniqueID = uniqueId, Settings = settings};
             object webPostActivity1 = webPostActivity;
             //---------------Assert Precondition----------------
             Assert.IsNotNull(webPostActivity);
@@ -366,7 +378,9 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var webPostActivity = new WebPostActivity {UniqueID = uniqueId, IsFormDataChecked = false};
+            var settings = new List<INameValue>();
+            settings.Add(new NameValue("IsFormDataChecked", "false"));
+            var webPostActivity = new WebPostActivity {UniqueID = uniqueId, Settings = settings};
             object webGetActivity = new WebGetActivity {UniqueID = uniqueId};
             //---------------Assert Precondition----------------
             Assert.IsNotNull(webPostActivity);
@@ -384,8 +398,12 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var webPostActivity = new WebPostActivity {UniqueID = uniqueId, IsFormDataChecked = false};
-            object webPostActivity1 = new WebPostActivity {UniqueID = uniqueId, IsFormDataChecked = true};
+            var settingsTrue = new List<INameValue>();
+            settingsTrue.Add(new NameValue("IsFormDataChecked", "true"));
+            var settingsFalse = new List<INameValue>();
+            settingsFalse.Add(new NameValue("IsFormDataChecked", "false"));
+            var webPostActivity = new WebPostActivity {UniqueID = uniqueId, Settings = settingsFalse};
+            object webPostActivity1 = new WebPostActivity {UniqueID = uniqueId, Settings = settingsTrue};
             //---------------Assert Precondition----------------
             Assert.IsNotNull(webPostActivity);
             //---------------Execute Test ----------------------
@@ -402,7 +420,9 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var webPostActivity = new WebPostActivity {UniqueID = uniqueId, IsFormDataChecked = false};
+            var settings = new List<INameValue>();
+            settings.Add(new NameValue("IsFormDataChecked", "true"));
+            var webPostActivity = new WebPostActivity {UniqueID = uniqueId, Settings = settings};
             //---------------Execute Test ----------------------
             var hashCode = webPostActivity.GetHashCode();
             //---------------Test Result -----------------------
