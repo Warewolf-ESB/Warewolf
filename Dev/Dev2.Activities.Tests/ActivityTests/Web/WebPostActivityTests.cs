@@ -19,6 +19,7 @@ using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.DB;
+using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Data.TO;
 using Dev2.Interfaces;
 using Dev2.Runtime.Interfaces;
@@ -1442,10 +1443,31 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         public string QueryRes { get; private set; }
 
         public IEnumerable<INameValue> Head { get; private set; }
+        public IEnumerable<string> HeadString { get; private set; }
 
         public void TestExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO tmpErrors, int update)
         {
             base.ExecutionImpl(esbChannel, dataObject, inputs, outputs, out tmpErrors, update);
+        }
+
+        public override IList<IActionableErrorInfo> PerformValidation()
+        {
+            return base.PerformValidation();
+
+        }
+
+        protected override string PerformWebPostRequest(IWebPostOptions webPostOptions)
+        {
+            HeadString = webPostOptions.Headers;
+            QueryRes = webPostOptions.Query;
+            FormDataParametersValue = webPostOptions.Parameters;
+            if (!string.IsNullOrWhiteSpace(HasErrorMessage))
+            {
+                base._errorsTo = new ErrorResultTO();
+                base._errorsTo.AddError(ResponseFromWeb);
+            }
+
+            return ResponseFromWeb;
         }
     }
 }
