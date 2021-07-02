@@ -29,7 +29,6 @@ using Warewolf.Common.Interfaces.NetStandard20;
 using Warewolf.Common.NetStandard20;
 using Warewolf.Data.Options;
 using System.Linq;
-using Dev2.Data.Settings;
 
 namespace Dev2.Runtime.ServiceModel
 {
@@ -179,7 +178,7 @@ namespace Dev2.Runtime.ServiceModel
                 var address = GetAddress(source, relativeUrl);
                 var contentType = client.Headers[HttpRequestHeader.ContentType];
                 
-                var isNoneChecked = Convert.ToBoolean(settings?.FirstOrDefault(s => s.Name == "IsNoneChecked")?.Value);
+                var isManualChecked = Convert.ToBoolean(settings?.FirstOrDefault(s => s.Name == "IsManualChecked")?.Value);
                 var isFormDataChecked = Convert.ToBoolean(settings?.FirstOrDefault(s => s.Name == "IsFormDataChecked")?.Value);
                 var isUrlEncodedChecked = Convert.ToBoolean(settings?.FirstOrDefault(s => s.Name == "IsUrlEncodedChecked")?.Value);
                 
@@ -192,7 +191,7 @@ namespace Dev2.Runtime.ServiceModel
                     return PerformMultipartWebRequest(webRequestFactory, client, address, bytesData);
                 }
 
-                if (isNoneChecked && contentType != null && (contentType.ToLowerInvariant().Contains("multipart") || contentType.ToLowerInvariant().Contains("x-www")))
+                if (isManualChecked && contentType != null && (contentType.ToLowerInvariant().Contains("multipart") || contentType.ToLowerInvariant().Contains("x-www")))
                 {
                     var bytesData = ConvertToHttpNewLine(ref data);
                     return PerformMultipartWebRequest(webRequestFactory, client, address, bytesData);
@@ -388,6 +387,7 @@ namespace Dev2.Runtime.ServiceModel
             return byteData;
         }
 
+        //PBI: Can there (WebSource.CreateWebClient() and WebPostActivity.CreateClient()) methods be merged?
         private static IWebClientWrapper CreateWebClient(AuthenticationType authenticationType, string userName, string password, IWebClientWrapper webClient, IEnumerable<string> headers)
         {
             if (webClient is null)
@@ -401,6 +401,7 @@ namespace Dev2.Runtime.ServiceModel
             }
             webClient.Headers.Add("user-agent", GlobalConstants.UserAgentString);
             AddHeaders(webClient, headers);
+            //PBI: is this delegate not the same as WebPostActivity.CreateClient() method?
             ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Ssl3;
 
