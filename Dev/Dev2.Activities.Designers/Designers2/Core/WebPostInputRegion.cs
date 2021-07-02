@@ -163,7 +163,7 @@ namespace Dev2.Activities.Designers2.Core
             }
             set
             {
-                UpdateSettings("IsManualChecked");
+                UpdateSettings("IsManualChecked", value);
             }
         }
 
@@ -176,7 +176,7 @@ namespace Dev2.Activities.Designers2.Core
             }
             set
             {
-                UpdateSettings("IsFormDataChecked");
+                UpdateSettings("IsFormDataChecked", value);
             }
         }
         
@@ -189,16 +189,37 @@ namespace Dev2.Activities.Designers2.Core
             }
             set
             {
-                UpdateSettings("IsUrlEncodedChecked");
+                UpdateSettings("IsUrlEncodedChecked", value);
             }
         }
         
-        private void UpdateSettings(string trueName)
+        private void UpdateSettings(string variableName, bool value)
         {
+            var oldSettings = new INameValue[Settings?.Count ?? 0];
+            Settings?.CopyTo(oldSettings, 0);
+            
             var newSettings = new ObservableCollection<INameValue>();
-            newSettings.Add(new NameValue("IsManualChecked",  (trueName == "IsManualChecked").ToString()));
-            newSettings.Add(new NameValue("IsFormDataChecked", (trueName == "IsFormDataChecked").ToString()));
-            newSettings.Add(new NameValue("IsUrlEncodedChecked", (trueName == "IsUrlEncodedChecked").ToString()));
+            var currentSetting = oldSettings.ToList().FirstOrDefault(o => o.Name == variableName) ?? new NameValue(variableName, value.ToString());
+            currentSetting.Value = value.ToString();
+            newSettings.Add(currentSetting);
+
+            foreach(var setting in oldSettings)
+            {
+                if(newSettings.FirstOrDefault(n => n.Name == setting.Name) == null)
+                {
+                    var newValue = value ? "false" : setting.Value;
+                    newSettings.Add(new NameValue(setting.Name, newValue));
+                }
+            }
+
+            var variables = new[] {  "IsManualChecked", "IsFormDataChecked", "IsUrlEncodedChecked"};
+            foreach(var variable in variables)
+            {
+                if(newSettings.FirstOrDefault(n => n.Name == variable) == null)
+                {
+                    newSettings.Add(new NameValue(variable, "false"));
+                }
+            }
             Settings = newSettings;
             
             OnPropertyChanged("IsManualChecked");
