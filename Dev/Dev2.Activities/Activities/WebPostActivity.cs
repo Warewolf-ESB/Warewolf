@@ -177,7 +177,8 @@ namespace Dev2.Activities
                     IsFormDataChecked = isFormDataChecked,
                     IsUrlEncodedChecked = isUrlEncodedChecked,
                 };
-                WebSources.Execute(webPostOptions);
+
+                webRequestResult = PerformWebPostRequest(webPostOptions);
             }
             catch (Exception ex)
             {
@@ -200,6 +201,11 @@ namespace Dev2.Activities
                 response = Scrubber.Scrub(response);
                 ResponseManager.PushResponseIntoEnvironment(response, update, dataObject);
             }
+        }
+
+        protected virtual string PerformWebPostRequest(IWebPostOptions webPostOptions)
+        {
+            return WebSources.Execute(webPostOptions);
         }
 
         private (IEnumerable<INameValue> head, string query, string data, IEnumerable<IFormDataParameters> conditions) GetEnvironmentInputVariables(IExecutionEnvironment environment, int update)
@@ -260,8 +266,10 @@ namespace Dev2.Activities
             return (head, query, postData, conditions);
         }
 
+        //PBI: Can there (WebSource.CreateWebClient() and WebPostActivity.CreateClient()) methods be merged?
         public static WebClient CreateClient(IEnumerable<INameValue> head, string query, WebSource source)
         {
+            //PBI: do we need to declate this delegate here and again in WebSources.CreateWebClient() method?
             ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => true;
             var webclient = new WebClient();
             if (head != null)
