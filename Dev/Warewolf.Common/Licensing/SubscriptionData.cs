@@ -32,5 +32,6 @@ namespace Warewolf.Licensing
         public string SubscriptionSiteName { get; set; }
         public string SubscriptionKey { get; set; }
         public int NoOfCores { get; set; }
+        public string MachineName { get; set; }
     }
 }

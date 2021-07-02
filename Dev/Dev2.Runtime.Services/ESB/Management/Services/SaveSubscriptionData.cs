@@ -14,6 +14,7 @@ using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Communication;
 using Dev2.Common.Interfaces.Core.DynamicServices;
+using Dev2.Common.Interfaces.Infrastructure.Communication;
 using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
@@ -28,17 +29,27 @@ namespace Dev2.Runtime.ESB.Management.Services
         private readonly IWarewolfLicense _warewolfLicense;
         private readonly IBuilderSerializer _serializer;
         private ISubscriptionProvider _subscriptionProvider;
+        private string _machineName;
 
         public SaveSubscriptionData()
-            : this(new Dev2JsonSerializer(), new WarewolfLicense(), SubscriptionProvider.Instance)
+            : this(
+                new Dev2JsonSerializer(),
+                new WarewolfLicense(),
+                SubscriptionProvider.Instance,
+                Environment.MachineName.ToLowerInvariant())
         {
         }
 
-        public SaveSubscriptionData(IBuilderSerializer serializer, IWarewolfLicense warewolfLicense, ISubscriptionProvider subscriptionProvider)
+        public SaveSubscriptionData(
+            IBuilderSerializer serializer,
+            IWarewolfLicense warewolfLicense,
+            ISubscriptionProvider subscriptionProvider,
+            string machineName)
         {
             _warewolfLicense = warewolfLicense;
             _serializer = serializer;
             _subscriptionProvider = subscriptionProvider;
+            _machineName = machineName;
         }
 
         public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
@@ -56,6 +67,17 @@ namespace Dev2.Runtime.ESB.Management.Services
                 var subscriptionData = _serializer.Deserialize<SubscriptionData>(data);
                 subscriptionData.SubscriptionKey = _subscriptionProvider.SubscriptionKey;
                 subscriptionData.SubscriptionSiteName = _subscriptionProvider.SubscriptionSiteName;
+                if(string.IsNullOrEmpty(_machineName))
+                {
+                    _machineName = Environment.MachineName.ToLowerInvariant();
+                }
+
+                subscriptionData.MachineName = _machineName;
+                if(string.IsNullOrEmpty(subscriptionData.SubscriptionId) && _warewolfLicense.SubscriptionExists(subscriptionData))
+                {
+                    result.SetMessage("A Subscription already exists for this Customer on the current machine. For help please contact support@warewolf.io");
+                    return ReturnError(result);
+                }
 
                 var resultData = string.IsNullOrEmpty(subscriptionData.SubscriptionId)
                     ? _warewolfLicense.CreatePlan(subscriptionData)
@@ -63,24 +85,24 @@ namespace Dev2.Runtime.ESB.Management.Services
                         subscriptionData.SubscriptionId,
                         subscriptionData.SubscriptionKey,
                         subscriptionData.SubscriptionSiteName);
+
                 if(resultData is null)
                 {
-                    result.HasError = true;
-                    result.SetMessage("An error occured.");
-                    Dev2Logger.Error(nameof(SaveSubscriptionData), new Exception("An error occured."), GlobalConstants.WarewolfError);
-                    return _serializer.SerializeToBuilder(result);
+                    result.SetMessage("An error occured. For help please contact support@warewolf.io");
+                    return ReturnError(result);
+                }
+
+                if(resultData.MachineName != _machineName)
+                {
+                    result.SetMessage("This subscription is configured for a different machine. For help please contact support@warewolf.io");
+                    return ReturnError(result);
                 }
 
                 if(resultData.CustomerEmail != subscriptionData.CustomerEmail)
                 {
-                    result.HasError = true;
-                    const string Message = "Email Address does not match email address used when this Subscription was created.";
-                    result.SetMessage(Message);
-                    Dev2Logger.Error(nameof(SaveSubscriptionData), new Exception(Message), GlobalConstants.WarewolfError);
-                    return _serializer.SerializeToBuilder(result);
+                    result.SetMessage("Email Address does not match email address used when this Subscription was created. For help please contact support@warewolf.io");
+                    return ReturnError(result);
                 }
-
-                //TODO: Check if machine Name matches registration
 
                 _subscriptionProvider.SaveSubscriptionData(resultData);
                 result.SetMessage(GlobalConstants.Success);
@@ -88,11 +110,16 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch(Exception e)
             {
-                result.HasError = true;
                 result.SetMessage(e.Message);
-                Dev2Logger.Error(nameof(SaveSubscriptionData), e, GlobalConstants.WarewolfError);
-                return _serializer.SerializeToBuilder(result);
+                return ReturnError(result);
             }
+        }
+
+        private StringBuilder ReturnError(IExecuteMessage result)
+        {
+            result.HasError = true;
+            Dev2Logger.Error(nameof(SaveSubscriptionData), new Exception(result.Message.ToString()), GlobalConstants.WarewolfError);
+            return _serializer.SerializeToBuilder(result);
         }
 
         public override DynamicService CreateServiceEntry()

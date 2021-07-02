@@ -26,16 +26,18 @@ namespace Dev2.Runtime.ESB.Management.Services
     {
         private ISubscriptionProvider _subscriptionProvider;
         private readonly IWarewolfLicense _warewolfLicense;
+        private string _machineName;
 
         public GetSubscriptionData()
-            : this(new WarewolfLicense(), null)
+            : this(new WarewolfLicense(), null, "")
         {
         }
 
-        public GetSubscriptionData(IWarewolfLicense warewolfLicense, ISubscriptionProvider subscriptionData)
+        public GetSubscriptionData(IWarewolfLicense warewolfLicense, ISubscriptionProvider subscriptionData, string machineName)
         {
             _warewolfLicense = warewolfLicense;
             _subscriptionProvider = subscriptionData;
+            _machineName = machineName;
         }
 
         public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
@@ -54,10 +56,25 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     //TODO: How do we want to handle any exceptions if no data is returned from Chargebee?
                     var subscriptionData = _warewolfLicense.RetrievePlan(_subscriptionProvider.SubscriptionId, _subscriptionProvider.SubscriptionKey, _subscriptionProvider.SubscriptionSiteName);
+                    if(string.IsNullOrEmpty(_machineName))
+                    {
+                        _machineName = Environment.MachineName.ToLowerInvariant();
+                    }
+
+                    if(subscriptionData.MachineName != _machineName)
+                    {
+                        result.HasError = true;
+                        const string Message = "This subscription is configured for a different machine. For help please contact support@warewolf.io";
+                        result.SetMessage(Message);
+                        Dev2Logger.Error(nameof(GetSubscriptionData), new Exception(Message), GlobalConstants.WarewolfError);
+                        return serializer.SerializeToBuilder(result);
+                    }
+
                     if(subscriptionData.PlanId != _subscriptionProvider.PlanId || subscriptionData.Status != _subscriptionProvider.Status)
                     {
                         _subscriptionProvider.SaveSubscriptionData(subscriptionData);
                     }
+
                     result.Message = serializer.SerializeToBuilder(subscriptionData);
                 }
                 else
@@ -65,6 +82,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     var subscriptionData = _subscriptionProvider.DefaultSubscription();
                     result.Message = serializer.SerializeToBuilder(subscriptionData);
                 }
+
                 return serializer.SerializeToBuilder(result);
             }
             catch(Exception e)

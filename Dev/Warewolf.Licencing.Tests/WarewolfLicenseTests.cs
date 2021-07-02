@@ -32,6 +32,7 @@ namespace Warewolf.LicencingTests
             var subscriptionData = GetSubscriptionData();
             subscriptionData.CustomerLastName = "Dom";
             subscriptionData.CustomerFirstName = "john";
+            subscriptionData.MachineName = "MachineName";
             subscriptionData.CustomerEmail = "john2@user.com";
             subscriptionData.PlanId = "developer";
             subscriptionData.NoOfCores = 1;
@@ -41,6 +42,7 @@ namespace Warewolf.LicencingTests
             resultSubscriptionData.CustomerFirstName = "john";
             resultSubscriptionData.CustomerEmail = "john2@user.com";
             resultSubscriptionData.PlanId = "developer";
+            resultSubscriptionData.MachineName = "MachineName";
             resultSubscriptionData.Status = SubscriptionStatus.Active;
             resultSubscriptionData.CustomerId = "asdsadsdsadsad";
             resultSubscriptionData.SubscriptionId = "asdsadsdsadsad";
@@ -60,6 +62,7 @@ namespace Warewolf.LicencingTests
             Assert.AreEqual(result.CustomerId, result.CustomerId);
             Assert.AreEqual(result.SubscriptionId, result.SubscriptionId);
             Assert.AreEqual(subscriptionData.CustomerFirstName, result.CustomerFirstName);
+            Assert.AreEqual(subscriptionData.MachineName, result.MachineName);
             Assert.AreEqual(subscriptionData.CustomerLastName, result.CustomerLastName);
             Assert.AreEqual(subscriptionData.CustomerEmail, result.CustomerEmail);
             Assert.AreEqual(subscriptionData.NoOfCores, result.NoOfCores);
@@ -75,6 +78,7 @@ namespace Warewolf.LicencingTests
             subscriptionData.SubscriptionId = "16BjmNSXISIQjctO";
             subscriptionData.PlanId = "developer";
             subscriptionData.NoOfCores = 1;
+            subscriptionData.MachineName = "MachineName";
 
             var resultSubscriptionData = GetSubscriptionData();
             resultSubscriptionData.CustomerId = "16BjmNSXISIQjctO";
@@ -82,6 +86,7 @@ namespace Warewolf.LicencingTests
             resultSubscriptionData.PlanId = "developer";
             resultSubscriptionData.Status = SubscriptionStatus.Active;
             resultSubscriptionData.NoOfCores = 1;
+            resultSubscriptionData.MachineName = "MachineName";
 
             var mockSubscriptionData = new Mock<ISubscriptionData>();
             mockSubscriptionData.Setup(o => o.SubscriptionId).Returns("16BjmNSXISIQjctO");
@@ -92,7 +97,8 @@ namespace Warewolf.LicencingTests
             mockSubscription.Setup(o => o.RetrievePlan(subscriptionData.SubscriptionId)).Returns(resultSubscriptionData);
 
             var license = new WarewolfLicense(mockSubscription.Object);
-            var resultData = license.RetrievePlan( mockSubscriptionData.Object.SubscriptionId,
+            var resultData = license.RetrievePlan(
+                mockSubscriptionData.Object.SubscriptionId,
                 mockSubscriptionData.Object.SubscriptionKey,
                 mockSubscriptionData.Object.SubscriptionSiteName);
 
@@ -100,6 +106,7 @@ namespace Warewolf.LicencingTests
             Assert.AreEqual(subscriptionData.SubscriptionId, resultData.SubscriptionId);
             Assert.AreEqual(SubscriptionStatus.Active, resultData.Status);
             Assert.AreEqual(subscriptionData.PlanId, resultData.PlanId);
+            Assert.AreEqual(subscriptionData.MachineName, resultData.MachineName);
             Assert.AreEqual(subscriptionData.NoOfCores, resultData.NoOfCores);
         }
 
@@ -113,6 +120,7 @@ namespace Warewolf.LicencingTests
             subscriptionData.SubscriptionId = "16BjmNSXISIQjctO";
             subscriptionData.PlanId = "developer";
             subscriptionData.NoOfCores = 1;
+            subscriptionData.MachineName = "MachineName";
 
             var resultSubscriptionData = GetSubscriptionData();
             resultSubscriptionData.CustomerId = "16BjmNSXISIQjctO";
@@ -120,6 +128,7 @@ namespace Warewolf.LicencingTests
             resultSubscriptionData.PlanId = "developer";
             resultSubscriptionData.Status = SubscriptionStatus.InTrial;
             resultSubscriptionData.NoOfCores = 1;
+            resultSubscriptionData.MachineName = "MachineName";
 
             var mockSubscriptionData = new Mock<ISubscriptionData>();
             mockSubscriptionData.Setup(o => o.SubscriptionId).Returns("16BjmNSXISIQjctO");
@@ -130,7 +139,8 @@ namespace Warewolf.LicencingTests
             mockSubscription.Setup(o => o.RetrievePlan(subscriptionData.SubscriptionId)).Returns(resultSubscriptionData);
 
             var license = new WarewolfLicense(mockSubscription.Object);
-            var resultData = license.RetrievePlan( mockSubscriptionData.Object.SubscriptionId,
+            var resultData = license.RetrievePlan(
+                mockSubscriptionData.Object.SubscriptionId,
                 mockSubscriptionData.Object.SubscriptionKey,
                 mockSubscriptionData.Object.SubscriptionSiteName);
 
@@ -139,6 +149,7 @@ namespace Warewolf.LicencingTests
             Assert.AreEqual(SubscriptionStatus.InTrial, resultData.Status);
             Assert.AreEqual(subscriptionData.PlanId, resultData.PlanId);
             Assert.AreEqual(subscriptionData.NoOfCores, resultData.NoOfCores);
+            Assert.AreEqual(subscriptionData.MachineName, resultData.MachineName);
             Assert.IsTrue(resultData.IsLicensed);
         }
 
@@ -152,6 +163,7 @@ namespace Warewolf.LicencingTests
             subscriptionData.SubscriptionId = "16BjmNSXISIQjctO";
             subscriptionData.PlanId = "developer";
             subscriptionData.NoOfCores = 1;
+            subscriptionData.MachineName = "MachineName";
 
             var resultSubscriptionData = GetSubscriptionData();
             resultSubscriptionData.CustomerId = "16BjmNSXISIQjctO";
@@ -159,17 +171,20 @@ namespace Warewolf.LicencingTests
             resultSubscriptionData.PlanId = "developer";
             resultSubscriptionData.Status = SubscriptionStatus.Future;
             resultSubscriptionData.NoOfCores = 1;
+            resultSubscriptionData.MachineName = "MachineName";
 
             var mockSubscriptionData = new Mock<ISubscriptionData>();
             mockSubscriptionData.Setup(o => o.SubscriptionId).Returns("16BjmNSXISIQjctO");
             mockSubscriptionData.Setup(o => o.SubscriptionSiteName).Returns("16BjmNSXISIQjctO");
             mockSubscriptionData.Setup(o => o.SubscriptionKey).Returns("test_VMxitsiobdAyth62k0DiqpAUKocG6sV3");
 
+
             var mockSubscription = new Mock<ISubscription>();
             mockSubscription.Setup(o => o.RetrievePlan(subscriptionData.SubscriptionId)).Returns(resultSubscriptionData);
 
             var license = new WarewolfLicense(mockSubscription.Object);
-            var resultData = license.RetrievePlan( mockSubscriptionData.Object.SubscriptionId,
+            var resultData = license.RetrievePlan(
+                mockSubscriptionData.Object.SubscriptionId,
                 mockSubscriptionData.Object.SubscriptionKey,
                 mockSubscriptionData.Object.SubscriptionSiteName);
 
@@ -177,7 +192,36 @@ namespace Warewolf.LicencingTests
             Assert.AreEqual(SubscriptionStatus.Future, resultData.Status);
             Assert.AreEqual(subscriptionData.PlanId, resultData.PlanId);
             Assert.AreEqual(subscriptionData.NoOfCores, resultData.NoOfCores);
+            Assert.AreEqual(subscriptionData.MachineName, resultData.MachineName);
             Assert.IsFalse(resultData.IsLicensed);
+        }
+
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(WarewolfLicense))]
+        public void WarewolfLicense_Subscription_SubscriptionExists_ReturnsTrue()
+        {
+            var subscriptionData = GetSubscriptionData();
+            subscriptionData.CustomerEmail = "candice.daniel@dev2.co.za";
+            subscriptionData.CustomerFirstName = "candice";
+            subscriptionData.CustomerLastName = "daniel";
+            subscriptionData.MachineName = "321654";
+
+            var mockSubscriptionData = new Mock<ISubscriptionData>();
+            mockSubscriptionData.Setup(o => o.MachineName).Returns("321654");
+            mockSubscriptionData.Setup(o => o.CustomerFirstName).Returns("Candice");
+            mockSubscriptionData.Setup(o => o.CustomerLastName).Returns("Daniel");
+            mockSubscriptionData.Setup(o => o.CustomerEmail).Returns("candice.daniel@dev2.co.za");
+            mockSubscriptionData.Setup(o => o.SubscriptionId).Returns("16BjmNSXISIQjctO");
+            mockSubscriptionData.Setup(o => o.SubscriptionSiteName).Returns("16BjmNSXISIQjctO");
+            mockSubscriptionData.Setup(o => o.SubscriptionKey).Returns("test_VMxitsiobdAyth62k0DiqpAUKocG6sV3");
+
+            var mockSubscription = new Mock<ISubscription>();
+            mockSubscription.Setup(o => o.SubscriptionExists(subscriptionData)).Returns(true);
+
+            var license = new WarewolfLicense(mockSubscription.Object);
+            var resultData = license.SubscriptionExists(subscriptionData);
+            Assert.IsTrue(resultData);
         }
     }
 }

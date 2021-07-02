@@ -2695,7 +2695,8 @@ namespace BusinessDesignStudio.Unit.Tests
                 NoOfCores = 2,
                 CustomerFirstName = "firstName",
                 CustomerLastName = "lastName",
-                CustomerEmail = "email"
+                CustomerEmail = "email",
+                MachineName = "machineName"
             };
             var jsonSerializer = new Dev2JsonSerializer();
             var payload = jsonSerializer.Serialize(subscriptionData);
@@ -2729,7 +2730,8 @@ namespace BusinessDesignStudio.Unit.Tests
                 NoOfCores = 2,
                 CustomerFirstName = "firstName",
                 CustomerLastName = "lastName",
-                CustomerEmail = "email"
+                CustomerEmail = "email",
+                MachineName = "machineName"
             };
             var jsonSerializer = new Dev2JsonSerializer();
             var payload = jsonSerializer.Serialize(subscriptionData);
@@ -2762,7 +2764,8 @@ namespace BusinessDesignStudio.Unit.Tests
                 NoOfCores = 2,
                 CustomerFirstName = "firstName",
                 CustomerLastName = "lastName",
-                CustomerEmail = "email"
+                CustomerEmail = "email",
+                MachineName = "machineName"
             };
             var jsonSerializer = new Dev2JsonSerializer();
             var payload = jsonSerializer.Serialize(subscriptionData);

@@ -86,6 +86,7 @@ namespace Dev2.Tests.Runtime.Services
                 CustomerId = "asdsadsdsadsad",
                 SubscriptionId = "asdsadsdsadsad",
                 NoOfCores = 1,
+                MachineName = "MachineName",
                 IsLicensed = true
             };
 
@@ -102,9 +103,7 @@ namespace Dev2.Tests.Runtime.Services
             var subscriptionId = "16BjmNSXISIQjctO";
             var subscriptionKey = "test_VMxitsiobdAyth62k0DiqpAUKocG6sV3";
             mockSubscriptionData.Setup(o => o.SubscriptionSiteName).Returns(subscriptionSiteName);
-
             mockSubscriptionData.Setup(o => o.SubscriptionKey).Returns(subscriptionKey);
-
             mockSubscriptionProvider.Setup(o => o.SubscriptionId).Returns(subscriptionId);
 
             var mockWarewolfLicense = new Mock<IWarewolfLicense>();
@@ -112,13 +111,14 @@ namespace Dev2.Tests.Runtime.Services
                 .Returns(resultSubscriptionData);
 
             //------------Execute Test---------------------------
-            var getSubscriptionData = new GetSubscriptionData(mockWarewolfLicense.Object, mockSubscriptionProvider.Object);
+            var getSubscriptionData = new GetSubscriptionData(mockWarewolfLicense.Object, mockSubscriptionProvider.Object,"MachineName");
             var jsonResult = getSubscriptionData.Execute(values, workspaceMock.Object);
             var result = serializer.Deserialize<ExecuteMessage>(jsonResult);
 
             //------------Assert Results-------------------------
             var data = serializer.Deserialize<ISubscriptionData>(result.Message);
             Assert.IsNotNull(data.CustomerFirstName);
+            Assert.IsNotNull(data.MachineName);
             Assert.IsNotNull(data.CustomerLastName);
             Assert.IsNotNull(data.CustomerEmail);
             Assert.IsNotNull(data.CustomerId);

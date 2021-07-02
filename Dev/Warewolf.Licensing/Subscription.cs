@@ -16,6 +16,32 @@ namespace Warewolf.Licensing
 {
     public class Subscription : ISubscription
     {
+        public bool SubscriptionExists(ISubscriptionData subscriptionData)
+        {
+            var subscriptionList = ChargeBee.Models.Customer.List()
+                .FirstName().Is(subscriptionData.CustomerFirstName)
+                .LastName().Is(subscriptionData.CustomerLastName)
+                .Email().Is(subscriptionData.CustomerEmail)
+                .Request();
+            foreach(var item in subscriptionList.List)
+            {
+                var customer = item.Customer;
+                var machineName = customer.GetValue<string>("cf_machinename", false);
+
+                if(machineName == null)
+                {
+                    return false;
+                }
+
+                if(subscriptionData.MachineName == machineName)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         public ISubscriptionData RetrievePlan(string subscriptionId)
         {
             var result = ChargeBee.Models.Subscription.Retrieve(subscriptionId).Request();
@@ -26,6 +52,7 @@ namespace Warewolf.Licensing
         {
             var result = ChargeBee.Models.Subscription.Create()
                 .PlanId(subscriptionData.PlanId)
+                .Param("customer[cf_machinename]", subscriptionData.MachineName)
                 .AutoCollection(AutoCollectionEnum.Off)
                 .CustomerFirstName(subscriptionData.CustomerFirstName)
                 .CustomerLastName(subscriptionData.CustomerLastName)
@@ -38,6 +65,7 @@ namespace Warewolf.Licensing
         {
             var subscription = result.Subscription;
             var customer = result.Customer;
+            var machineName = customer.GetValue<string>("cf_machinename", false);
 
             var licenseData = new SubscriptionData
             {
@@ -48,6 +76,7 @@ namespace Warewolf.Licensing
                 CustomerFirstName = customer.FirstName,
                 CustomerLastName = customer.LastName,
                 CustomerEmail = customer.Email,
+                MachineName = machineName,
                 TrialEnd = subscription.TrialEnd
             };
             return licenseData;
