@@ -109,7 +109,7 @@ namespace Warewolf.Driver.Resume
             try
             {
                 var connectTask = environmentConnection.ConnectAsync(Guid.Empty);
-                connectTask.Wait(600);
+                connectTask.Wait(5000);
                 return connectTask;
             }
             catch (Exception ex)
