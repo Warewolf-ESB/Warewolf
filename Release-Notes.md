@@ -1,9 +1,12 @@
-18 June 2021
+29 June 2021
 ================
+
 Enhancements
 ----------------
 Post
 - XML web response can now be converted into JSON object.
+Duplicate Folder
+- Now enables a continuous execution on resource duplication failure.
 
 11 June 2021
 ================
