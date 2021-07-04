@@ -25,6 +25,7 @@ namespace Dev2.Runtime.ServiceModel.Data
     {
         WebSource Source { get; set; }
         WebRequestMethod Method { get; set; }
+        IEnumerable<INameValue> Head { get; set; }
         IEnumerable<string> Headers { get; set; }
         IEnumerable<INameValue> Settings { get; set; }
         IEnumerable<IFormDataParameters> Parameters { get; set; }
@@ -39,6 +40,7 @@ namespace Dev2.Runtime.ServiceModel.Data
     {
         public WebSource Source { get; set; }
         public WebRequestMethod Method { get; set; }
+        public IEnumerable<INameValue> Head { get; set; }
         public IEnumerable<string> Headers { get; set; }
         public IEnumerable<IFormDataParameters> Parameters { get; set; }
         public IEnumerable<INameValue> Settings { get; set; }
