@@ -25,6 +25,7 @@ using Dev2.Interfaces;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Tests.Activities.XML;
+using FluentAssertions.Events;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -1453,14 +1454,16 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         public override IList<IActionableErrorInfo> PerformValidation()
         {
             return base.PerformValidation();
-
         }
 
         protected override string PerformWebPostRequest(IWebPostOptions webPostOptions)
         {
+            Head = webPostOptions.Head;
             HeadString = webPostOptions.Headers;
             QueryRes = webPostOptions.Query;
             FormDataParametersValue = webPostOptions.Parameters;
+            PostValue = webPostOptions.PostData;
+            
             if (!string.IsNullOrWhiteSpace(HasErrorMessage))
             {
                 base._errorsTo = new ErrorResultTO();
