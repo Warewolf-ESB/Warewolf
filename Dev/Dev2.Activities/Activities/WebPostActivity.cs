@@ -164,23 +164,25 @@ namespace Dev2.Activities
                 var isFormDataChecked = Convert.ToBoolean(Settings?.FirstOrDefault(s => s.Name == nameof(IsFormDataChecked))?.Value);
                 var isUrlEncodedChecked = Convert.ToBoolean(Settings?.FirstOrDefault(s => s.Name == nameof(IsUrlEncodedChecked))?.Value);
                 
-                var webPostOptions = new WebPostOptions
+                if(isManualChecked || isFormDataChecked || isUrlEncodedChecked)
                 {
-                    Head = head,
-                    Headers = head?.Select(h => h.Name + ":" + h.Value)?.ToArray() ?? new string[0],
-                    Method = WebRequestMethod.Post,
-                    Parameters = conditions,
-                    Query = query,
-                    Source = source,
-                    PostData = postData,
-                    Settings = Settings,
-                    IsManualChecked = isManualChecked,
-                    IsFormDataChecked = isFormDataChecked,
-                    IsUrlEncodedChecked = isUrlEncodedChecked,
+                    var webPostOptions = new WebPostOptions
+                                 {
+                                     Head = head,
+                                     Headers = head?.Select(h => h.Name + ":" + h.Value)?.ToArray() ?? new string[0],
+                                     Method = WebRequestMethod.Post,
+                                     Parameters = conditions,
+                                     Query = query,
+                                     Source = source,
+                                     PostData = postData,
+                                     Settings = Settings,
+                                     IsManualChecked = isManualChecked,
+                                     IsFormDataChecked = isFormDataChecked,
+                                     IsUrlEncodedChecked = isUrlEncodedChecked
+                                 };
                     
-                };
-
-                webRequestResult = PerformWebPostRequest(webPostOptions);
+                    webRequestResult = PerformWebPostRequest(webPostOptions);
+                }
             }
             catch (Exception ex)
             {
