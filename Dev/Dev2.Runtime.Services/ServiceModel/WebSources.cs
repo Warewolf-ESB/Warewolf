@@ -387,7 +387,6 @@ namespace Dev2.Runtime.ServiceModel
             return byteData;
         }
 
-        //PBI: Can there (WebSource.CreateWebClient() and WebPostActivity.CreateClient()) methods be merged?
         private static IWebClientWrapper CreateWebClient(AuthenticationType authenticationType, string userName, string password, IWebClientWrapper webClient, IEnumerable<string> headers)
         {
             if (webClient is null)
@@ -401,7 +400,6 @@ namespace Dev2.Runtime.ServiceModel
             }
             webClient.Headers.Add("user-agent", GlobalConstants.UserAgentString);
             AddHeaders(webClient, headers);
-            //PBI: is this delegate not the same as WebPostActivity.CreateClient() method?
             ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Ssl3;
 
