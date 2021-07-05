@@ -553,13 +553,13 @@ namespace Dev2.Activities.Designers2.Web_Post
                 {
                     if (!string.IsNullOrEmpty(parameter.Key))
                     {
-                        if (parameter is FileParameter fileParam)
+                        if (parameter is FileParameter fileParam && !fileParam.IsIncompleteRow)
                         {
                             _builder.GetValue(fileParam.Key, dt);
                             _builder.GetValue(fileParam.FileName, dt);
                             _builder.GetValue(fileParam.FileBase64, dt);
                         }
-                        else if (parameter is TextParameter textParam)
+                        else if (parameter is TextParameter textParam && !textParam.IsIncompleteRow)
                         {
                             _builder.GetValue(textParam.Key, dt);
                             _builder.GetValue(textParam.Value, dt);
