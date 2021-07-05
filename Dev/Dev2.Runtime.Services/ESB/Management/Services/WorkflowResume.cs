@@ -40,68 +40,70 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         protected override ExecuteMessage ExecuteImpl(Dev2JsonSerializer serializer, Guid resourceId, Dictionary<string, StringBuilder> values)
         {
-            var versionNumber = IsValid(values, out var environmentString, out var startActivityId, out var currentUserPrincipal);
-            var executingUser = BuildClaimsPrincipal(DpapiWrapper.DecryptIfEncrypted(currentUserPrincipal.ToString()));
-            var environment = DpapiWrapper.DecryptIfEncrypted(environmentString.ToString());
-
-            var decodedEnv = HttpUtility.UrlDecode(environment);
-            var executionEnv = new ExecutionEnvironment();
-            executionEnv.FromJson(decodedEnv);
-
-            Int32.TryParse(versionNumber.ToString(), out int parsedVersionNumber);
-
-            var dataObject = new DsfDataObject("", Guid.NewGuid())
+            try
             {
-                ResourceID = resourceId,
-                Environment = executionEnv,
-                VersionNumber = parsedVersionNumber,
-                ExecutingUser = executingUser,
-                IsDebug = true
-            };
+                var versionNumber = IsValid(values, out var environmentString, out var startActivityId, out var currentUserPrincipal);
+                var executingUser = BuildClaimsPrincipal(DpapiWrapper.DecryptIfEncrypted(currentUserPrincipal.ToString()));
+                var environment = DpapiWrapper.DecryptIfEncrypted(environmentString.ToString());
 
-            if (!CanExecute(dataObject))
-            {
-                var errorMessage = string.Format(ErrorResource.AuthenticationError, executingUser.Identity.Name);
-                Dev2Logger.Error(errorMessage, GlobalConstants.WarewolfError);
-                return new ExecuteMessage {HasError = true, Message = new StringBuilder(errorMessage)};
+                var decodedEnv = HttpUtility.UrlDecode(environment);
+                var executionEnv = new ExecutionEnvironment();
+                executionEnv.FromJson(decodedEnv);
+
+                Int32.TryParse(versionNumber.ToString(), out int parsedVersionNumber);
+
+                var dataObject = new DsfDataObject("", Guid.NewGuid())
+                {
+                    ResourceID = resourceId,
+                    Environment = executionEnv,
+                    VersionNumber = parsedVersionNumber,
+                    ExecutingUser = executingUser,
+                    IsDebug = true
+                };
+
+                if(!CanExecute(dataObject))
+                {
+                    var errorMessage = string.Format(ErrorResource.AuthenticationError, executingUser.Identity.Name);
+                    Dev2Logger.Error(errorMessage, GlobalConstants.WarewolfError);
+                    return new ExecuteMessage { HasError = true, Message = new StringBuilder(errorMessage) };
+                }
+
+                var dynamicService = ResourceCatalogInstance.GetService(GlobalConstants.ServerWorkspaceID, resourceId, "");
+                if(dynamicService is null)
+                {
+                    return new ExecuteMessage { HasError = true, Message = new StringBuilder($"Error resuming. ServiceAction is null for Resource ID:{resourceId}") };
+                }
+
+                var sa = dynamicService.Actions.FirstOrDefault();
+                if(sa is null)
+                {
+                    return new ExecuteMessage { HasError = true, Message = new StringBuilder($"Error resuming. ServiceAction is null for Resource ID:{resourceId}") };
+                }
+                Dev2Logger.Info($"ServiceName: {sa.ServiceName}", GlobalConstants.WarewolfInfo);
+
+                var errorResultTO = new ErrorResultTO();
+                var container = CustomContainer.Get<IResumableExecutionContainerFactory>().New(startActivityId, sa, dataObject);
+                Dev2Logger.Info($"Container.Execute", GlobalConstants.WarewolfInfo);
+                container.Execute(out ErrorResultTO errors, 0);
+                errorResultTO = errors;
+
+                if(errorResultTO.HasErrors())
+                {
+                    return new ExecuteMessage { HasError = true, Message = new StringBuilder(errorResultTO.MakeDisplayReady()) };
+                }
+
+                return new ExecuteMessage { HasError = false, Message = new StringBuilder("Execution Completed.") };
             }
-
-            var dynamicService = ResourceCatalogInstance.GetService(GlobalConstants.ServerWorkspaceID, resourceId, "");
-            if (dynamicService is null)
+            catch(Exception err)
             {
-                return new ExecuteMessage {HasError = true, Message = new StringBuilder($"Error resuming. ServiceAction is null for Resource ID:{resourceId}")};
+                Dev2Logger.Error(err, GlobalConstants.WarewolfError);
+                return new ExecuteMessage { HasError = true, Message = new StringBuilder("Workflow Resume Failed." + err.Message) };
             }
-
-            var sa = dynamicService.Actions.FirstOrDefault();
-            if (sa is null)
-            {
-                return new ExecuteMessage {HasError = true, Message = new StringBuilder($"Error resuming. ServiceAction is null for Resource ID:{resourceId}")};
-            }
-
-            var errorResultTO = new ErrorResultTO();
-            var container = CustomContainer.Get<IResumableExecutionContainerFactory>().New(startActivityId, sa, dataObject);
-            container.Execute(out ErrorResultTO errors, 0);
-            errorResultTO = errors;
-
-            if (errorResultTO.HasErrors())
-            {
-                return new ExecuteMessage {HasError = true, Message = new StringBuilder(errorResultTO.MakeDisplayReady())};
-            }
-
-            return new ExecuteMessage {HasError = false, Message = new StringBuilder("Execution Completed.")};
         }
 
-        public IResourceCatalog ResourceCatalogInstance
-        {
-            get => _resourceCatalog ?? ResourceCatalog.Instance;
-            set => _resourceCatalog = value;
-        }
+        public IResourceCatalog ResourceCatalogInstance { get => _resourceCatalog ?? ResourceCatalog.Instance; set => _resourceCatalog = value; }
 
-        public IAuthorizationService AuthorizationService
-        {
-            get => _authorizationService ?? ServerAuthorizationService.Instance;
-            set => _authorizationService = value;
-        }
+        public IAuthorizationService AuthorizationService { get => _authorizationService ?? ServerAuthorizationService.Instance; set => _authorizationService = value; }
 
         private bool CanExecute(DsfDataObject dataObject)
         {
@@ -112,7 +114,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         static string GetUnqualifiedName(string userName)
         {
-            if (userName.Contains("\\"))
+            if(userName.Contains("\\"))
             {
                 return userName.Split('\\').Last().Trim();
             }
@@ -127,34 +129,33 @@ namespace Dev2.Runtime.ESB.Management.Services
             return new GenericPrincipal(genericIdentity, new string [0]);
         }
 
-
         private static StringBuilder IsValid(Dictionary<string, StringBuilder> values, out StringBuilder environmentString, out Guid startActivityId, out StringBuilder currentuserprincipal)
         {
             values.TryGetValue("versionNumber", out StringBuilder versionNumber);
-            if (versionNumber == null)
+            if(versionNumber == null)
             {
                 throw new InvalidDataContractException("no version Number passed");
             }
 
             values.TryGetValue("environment", out environmentString);
-            if (environmentString == null)
+            if(environmentString == null)
             {
                 throw new InvalidDataContractException("no environment passed");
             }
 
             values.TryGetValue("startActivityId", out StringBuilder startActivityIdString);
-            if (startActivityIdString == null)
+            if(startActivityIdString == null)
             {
                 throw new InvalidDataContractException("no startActivityId passed.");
             }
 
-            if (!Guid.TryParse(startActivityIdString.ToString(), out startActivityId))
+            if(!Guid.TryParse(startActivityIdString.ToString(), out startActivityId))
             {
                 throw new InvalidDataContractException("startActivityId is not a valid GUID.");
             }
 
             values.TryGetValue("currentuserprincipal", out currentuserprincipal);
-            if (currentuserprincipal == null)
+            if(currentuserprincipal == null)
             {
                 throw new InvalidDataContractException("no executing user principal passed");
             }

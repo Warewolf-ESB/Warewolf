@@ -62,7 +62,7 @@ namespace Dev2.Runtime.ESB.Execution
 
             var user = DataObject.ExecutingUser ?? Thread.CurrentPrincipal;
             var dataObjectExecutionId = DataObject.ExecutionID.ToString();
-            if (!DataObject.IsSubExecution)
+            if(!DataObject.IsSubExecution)
             {
                 var userIdentity = user?.Identity;
                 Dev2Logger.Debug(string.Format(GlobalConstants.ExecuteWebRequestString, DataObject.ServiceName, userIdentity?.Name, userIdentity?.AuthenticationType, userIdentity?.IsAuthenticated, DataObject.RawPayload), dataObjectExecutionId);
@@ -95,27 +95,27 @@ namespace Dev2.Runtime.ESB.Execution
 
             try
             {
-                IExecutionToken exeToken = new ExecutionToken {IsUserCanceled = false};
+                IExecutionToken exeToken = new ExecutionToken { IsUserCanceled = false };
                 DataObject.ExecutionToken = exeToken;
-                if (DataObject.IsDebugMode())
+                if(DataObject.IsDebugMode())
                 {
                     wfappUtils.DispatchDebugState(DataObject, StateType.Start, out _, true, false, false);
                 }
 
                 var resourceId = DataObject.ResourceID;
-                if (CanExecute(resourceId, DataObject, AuthorizationContext.Execute))
+                if(CanExecute(resourceId, DataObject, AuthorizationContext.Execute))
                 {
                     Eval(resourceId, DataObject);
                 }
 
-                if (DataObject.IsDebugMode())
+                if(DataObject.IsDebugMode())
                 {
                     wfappUtils.DispatchDebugState(DataObject, StateType.End, out _);
                 }
 
                 result = DataObject.DataListID;
             }
-            catch (InvalidWorkflowException iwe)
+            catch(InvalidWorkflowException iwe)
             {
                 Dev2Logger.Error(iwe, executionId);
                 var msg = iwe.Message;
@@ -125,7 +125,7 @@ namespace Dev2.Runtime.ESB.Execution
                 DataObject.Environment.AddError(errorMessage);
                 wfappUtils.DispatchDebugState(DataObject, StateType.End, out _);
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 Dev2Logger.Error(ex, executionId);
                 DataObject.Environment.AddError(ex.Message);
@@ -140,7 +140,7 @@ namespace Dev2.Runtime.ESB.Execution
         {
             var key = (dataObject.ExecutingUser, AuthorizationContext.Execute, resourceId.ToString());
             var isAuthorized = dataObject.AuthCache.GetOrAdd(key, (requestedKey) => ServerAuthorizationService.Instance.IsAuthorized(dataObject.ExecutingUser, AuthorizationContext.Execute, dataObject.Resource));
-            if (!isAuthorized)
+            if(!isAuthorized)
             {
                 dataObject.Environment.AddError(string.Format(ErrorResource.UserNotAuthorizedToExecuteException, dataObject.ExecutingUser?.Identity.Name, dataObject.ServiceName));
             }
@@ -155,6 +155,7 @@ namespace Dev2.Runtime.ESB.Execution
         }
 
         protected abstract void Eval(Guid resourceID, IDSFDataObject dataObject);
+
         public override IDSFDataObject Execute(IDSFDataObject inputs, IDev2Activity activity) => null;
 
         protected abstract void EvalInner(IDSFDataObject dsfDataObject, IDev2Activity resource, int update);
@@ -162,12 +163,12 @@ namespace Dev2.Runtime.ESB.Execution
         void SetDataObjectProperties()
         {
             DataObject.ExecutionID = DataObject.ExecutionID ?? Guid.NewGuid();
-            if (string.IsNullOrEmpty(DataObject.WebUrl))
+            if(string.IsNullOrEmpty(DataObject.WebUrl))
             {
                 DataObject.WebUrl = $"{EnvironmentVariables.WebServerUri}secure/{DataObject.ServiceName}.{DataObject.ReturnType}?" + DataObject.QueryString;
             }
 
-            if (DataObject.ServerID == Guid.Empty)
+            if(DataObject.ServerID == Guid.Empty)
             {
                 DataObject.ServerID = HostSecurityProvider.Instance.ServerID;
             }
@@ -176,12 +177,12 @@ namespace Dev2.Runtime.ESB.Execution
         ErrorResultTO AddErrors()
         {
             var errors = new ErrorResultTO();
-            foreach (var err in DataObject.Environment.Errors)
+            foreach(var err in DataObject.Environment.Errors)
             {
                 errors.AddError(err, true);
             }
 
-            foreach (var err in DataObject.Environment.AllErrors)
+            foreach(var err in DataObject.Environment.AllErrors)
             {
                 errors.AddError(err, true);
             }
@@ -191,12 +192,12 @@ namespace Dev2.Runtime.ESB.Execution
 
         void SetExecutionOrigin()
         {
-            if (!string.IsNullOrWhiteSpace(DataObject.ParentServiceName))
+            if(!string.IsNullOrWhiteSpace(DataObject.ParentServiceName))
             {
                 DataObject.ExecutionOrigin = ExecutionOrigin.Workflow;
                 DataObject.ExecutionOriginDescription = DataObject.ParentServiceName;
             }
-            else if (DataObject.IsDebug)
+            else if(DataObject.IsDebug)
             {
                 DataObject.ExecutionOrigin = ExecutionOrigin.Debug;
             }
@@ -226,6 +227,7 @@ namespace Dev2.Runtime.ESB.Execution
         {
             try
             {
+                Dev2Logger.Debug("Got Execution Manager 1", dsfDataObject.ExecutionID?.ToString());
                 AddExecutionToExecutionManager(dsfDataObject, resource);
 
                 WorkflowExecutionWatcher.HasAWorkflowBeenExecuted = true;
@@ -236,11 +238,15 @@ namespace Dev2.Runtime.ESB.Execution
 
                 ExecuteNode(dsfDataObject, update, ref resource, ref lastActivity);
 
-                if (!dsfDataObject.StopExecution)
+                if(!dsfDataObject.StopExecution)
                 {
                     dsfDataObject.StateNotifier?.LogExecuteCompleteState(lastActivity);
                     dsfDataObject.ExecutionException = null;
                 }
+            }
+            catch(Exception err)
+            {
+                Dev2Logger.Error(err, GlobalConstants.WarewolfError);
             }
             finally
             {
@@ -251,7 +257,7 @@ namespace Dev2.Runtime.ESB.Execution
 
         private static IDev2Activity ExecuteTool(IDSFDataObject dsfDataObject, IDev2Activity activity, int update)
         {
-            if (activity is IStateNotifierRequired stateNotifierRequired)
+            if(activity is IStateNotifierRequired stateNotifierRequired)
             {
                 stateNotifierRequired.SetStateNotifier(dsfDataObject.StateNotifier);
             }
@@ -261,10 +267,10 @@ namespace Dev2.Runtime.ESB.Execution
 
         void AddExecutionToExecutionManager(IDSFDataObject dsfDataObject, IDev2Activity resource)
         {
-            Dev2Logger.Debug("Got Execution Manager", dsfDataObject.ExecutionID?.ToString());
-            if (_executionManager != null)
+            Dev2Logger.Debug("Got Execution Manager 2", dsfDataObject.ExecutionID?.ToString());
+            if(_executionManager != null)
             {
-                if (!_executionManager.IsRefreshing || dsfDataObject.IsSubExecution)
+                if(!_executionManager.IsRefreshing || dsfDataObject.IsSubExecution)
                 {
                     Dev2Logger.Debug("Adding Execution to Execution Manager", dsfDataObject.ExecutionID?.ToString());
                     _executionManager.AddExecution();
@@ -278,7 +284,7 @@ namespace Dev2.Runtime.ESB.Execution
                 }
             }
 
-            if (resource == null)
+            if(resource == null)
             {
                 throw new InvalidOperationException(GlobalConstants.NoStartNodeError);
             }
@@ -290,25 +296,26 @@ namespace Dev2.Runtime.ESB.Execution
             try
             {
                 Dev2Logger.Debug("Executing first node", dsfDataObject.ExecutionID?.ToString());
-                while (next != null)
+                while(next != null)
                 {
                     var current = next;
                     lastActivity = current;
                     next = ExecuteTool(dsfDataObject, current, update);
                     environment.AllErrors.UnionWith(environment.Errors);
 
-                    if (dsfDataObject.StopExecution)
+                    if(dsfDataObject.StopExecution)
                     {
-                        if (dsfDataObject.Environment.FetchErrors().Length > 1)
+                        if(dsfDataObject.Environment.FetchErrors().Length > 1)
                         {
                             dsfDataObject.ExecutionException = new Exception(dsfDataObject.Environment.FetchErrors());
                         }
+
                         dsfDataObject.StateNotifier?.LogStopExecutionState(lastActivity);
                         break;
                     }
                 }
             }
-            catch (Exception exception)
+            catch(Exception exception)
             {
                 Dev2Logger.Error(exception.Message, dsfDataObject.ExecutionID?.ToString());
                 dsfDataObject.ExecutionException = new Exception(dsfDataObject.Environment.FetchErrors());
@@ -324,16 +331,16 @@ namespace Dev2.Runtime.ESB.Execution
             Dev2Logger.Debug("Getting Resource to Execute", executionId);
 
             var hasVersionOverride = false;
-            if (versionNumber != 0)
+            if(versionNumber != 0)
             {
                 hasVersionOverride = true;
             }
 
             IDev2Activity startActivity;
-            if (hasVersionOverride)
+            if(hasVersionOverride)
             {
                 var resumeVersionNumber = versionNumber;
-                if (resumeVersionNumber == 0)
+                if(resumeVersionNumber == 0)
                 {
                     resumeVersionNumber = _resourceCatalog.GetLatestVersionNumberForResource(resourceId: resourceID);
                 }
@@ -347,10 +354,11 @@ namespace Dev2.Runtime.ESB.Execution
             }
 
             Dev2Logger.Debug("Got Resource to Execute", executionId);
+            Dev2Logger.Debug("startActivity", startActivity.GetDisplayName());
+            Dev2Logger.Debug("ForEachUpdateValue",dataObject.ForEachUpdateValue.ToString());
             EvalInner(dataObject, startActivity, dataObject.ForEachUpdateValue);
         }
     }
-
 
     public class ResumableExecutionContainerFactory : IResumableExecutionContainerFactory
     {
