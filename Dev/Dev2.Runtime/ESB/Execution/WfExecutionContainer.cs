@@ -383,11 +383,18 @@ namespace Dev2.Runtime.ESB.Execution
 
         protected override void EvalInner(IDSFDataObject dsfDataObject, IDev2Activity resource, int update)
         {
-            Dev2Logger.Debug("Resume EvalInner", _resumeActivityId.ToString());
-            var startAtActivity = FindActivity(resource) ?? throw new InvalidWorkflowException($"Resume Node not found. UniqueID:{_resumeActivityId}");
-            dsfDataObject.Environment = _resumeEnvironment;
-            Dev2Logger.Debug("Resume Environment", _resumeEnvironment.ToString());
-            base.EvalInner(dsfDataObject, startAtActivity, update);
+            try
+            {
+                Dev2Logger.Debug("Resume EvalInner", _resumeActivityId.ToString());
+                var startAtActivity = FindActivity(resource) ?? throw new InvalidWorkflowException($"Resume Node not found. UniqueID:{_resumeActivityId}");
+                dsfDataObject.Environment = _resumeEnvironment;
+                Dev2Logger.Debug("Resume Environment", _resumeEnvironment.ToString());
+                base.EvalInner(dsfDataObject, startAtActivity, update);
+            }
+            catch(Exception ex)
+            {
+                Dev2Logger.Error("Resume Environment EvalInner", ex.Message);
+            }
         }
 
         private IDev2Activity FindActivity(IDev2Activity resource)
