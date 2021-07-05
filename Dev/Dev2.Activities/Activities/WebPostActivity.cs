@@ -11,7 +11,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Text;
 using Dev2.Activities.Debug;
 using Dev2.Common;
@@ -107,7 +106,6 @@ namespace Dev2.Activities
 
             return _debugInputs;
         }
-
 
         private void AddDebugFormDataInputs(IEnumerable<IFormDataParameters> conditions)
         {
@@ -270,37 +268,6 @@ namespace Dev2.Activities
             return (head, query, postData, conditions);
         }
 
-        //PBI: Can there (WebSource.CreateWebClient() and WebPostActivity.CreateClient()) methods be merged?
-        public static WebClient CreateClient(IEnumerable<INameValue> head, string query, WebSource source)
-        {
-            //PBI: do we need to declate this delegate here and again in WebSources.CreateWebClient() method?
-            ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => true;
-            var webclient = new WebClient();
-            if (head != null)
-            {
-                foreach (var nameValue in head)
-                {
-                    if (!string.IsNullOrEmpty(nameValue.Name) && !String.IsNullOrEmpty(nameValue.Value))
-                    {
-                        webclient.Headers.Add(nameValue.Name, nameValue.Value);
-                    }
-                }
-            }
-
-            if (source.AuthenticationType == AuthenticationType.User)
-            {
-                webclient.Credentials = new NetworkCredential(source.UserName, source.Password);
-            }
-
-            webclient.Headers.Add("user-agent", GlobalConstants.UserAgentString);
-            var address = source.Address;
-            if (query != null)
-            {
-                address += query;
-            }
-            webclient.BaseAddress = address;
-            return webclient;
-        }
 
         public bool Equals(WebPostActivity other)
         {
