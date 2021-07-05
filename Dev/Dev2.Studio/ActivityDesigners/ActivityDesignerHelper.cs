@@ -112,6 +112,7 @@ using Dev2.Activities.Designers2.Web_Put;
 using Dev2.Activities.Designers2.SuspendExecution;
 using Dev2.Activities.Designers2.ManualResumption;
 using Dev2.Activities.Designers2.Web_Post;
+using Dev2.Activities.Designers2.Web_Post_New;
 
 namespace Dev2.Studio.ActivityDesigners
 {
@@ -194,6 +195,7 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfComDllActivity), typeof(ComDllDesigner) },
                 { typeof(WebGetActivity), typeof(WebGetActivityDesigner) },
                 { typeof(WebPostActivity), typeof(WebPostActivityDesigner) },
+                { typeof(WebPostActivityNew), typeof(WebPostActivityDesignerNew) },
                 { typeof(DsfWebDeleteActivity), typeof(WebServiceDeleteDesigner) },
                 { typeof(WebPutActivity), typeof(WebPutActivityDesigner) },
                 { typeof(DsfDropBoxUploadActivity), typeof(DropBoxUploadDesigner) },

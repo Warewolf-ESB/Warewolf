@@ -1,4 +1,4 @@
-﻿<core:ActivityDesignerTemplate x:Class="Dev2.Activities.Designers2.Web_Post.Large"
+﻿<core:ActivityDesignerTemplate x:Class="Dev2.Activities.Designers2.Web_Post_New.Large"
                                xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -11,19 +11,19 @@
                                xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
                                xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
                                xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-                               xmlns:webPost="clr-namespace:Dev2.Activities.Designers2.Web_Post"
+                               xmlns:webPost="clr-namespace:Dev2.Activities.Designers2.Web_Post_New"
                                xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
                                xmlns:controls="clr-namespace:Dev2.Activities.Designers2.Core.Controls"
                                xmlns:ui1="clr-namespace:Warewolf.UI;assembly=Warewolf.UI"
-                               MinWidth="350"
-                               Width="350"
+                               MinWidth="430"
+                               Width="430"
                                MinHeight="553"
                                Height="533"
                                MaxWidth="Infinity"
                                mc:Ignorable="d"
                                d:DesignHeight="300"
                                d:DesignWidth="350"
-                               d:DataContext="{d:DesignInstance webPost:WebPostActivityViewModel}">
+                               d:DataContext="{d:DesignInstance webPost:WebPostActivityViewModelNew}">
 
     <core:ActivityDesignerTemplate.Resources>
         <ResourceDictionary>
@@ -31,7 +31,7 @@
                 <luna:SharedResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
                 <ResourceDictionary Source="../Core/CustomToolDesignerRegions.xaml"/>
             </ResourceDictionary.MergedDictionaries>
-            <ui1:OptionViewDataTemplateSelector x:Key="OptionViewDataTemplateSelector"/>
+            <ui1:OptionViewDataTemplateSelector x:Key="OptionViewDataTemplateSelector" />
         </ResourceDictionary>
     </core:ActivityDesignerTemplate.Resources>
 
@@ -183,6 +183,7 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*"/>
@@ -194,14 +195,33 @@
                                      GroupName="{Binding InputArea.ParameterGroup, Mode=OneTime}"
                                      HorizontalAlignment="Left"
                                      IsChecked="{Binding InputArea.IsManualChecked, UpdateSourceTrigger=PropertyChanged}"
-                                     ToolTip="{x:Static languages:Tooltips.ManageWebServiceRequestManualTooltip}">Manual</RadioButton>
+                                     ToolTip="{x:Static languages:Tooltips.ManageWebServiceRequestManualTooltip}">Manual
+                            <i:Interaction.Behaviors>
+                                <core1:HelpSetter Text="{x:Static languages:HelpText.ManageWebServiceRequestManualHelpText}" DataContext="{Binding}" />
+                            </i:Interaction.Behaviors>
+                        </RadioButton>
                         <RadioButton x:Name="formdata"
                                      Grid.Row="1"
                                      GroupName="{Binding InputArea.ParameterGroup, Mode=OneTime}"
                                      Grid.Column="1"
                                      HorizontalAlignment="Left"
                                      IsChecked="{Binding InputArea.IsFormDataChecked, UpdateSourceTrigger=PropertyChanged}"
-                                     ToolTip="{x:Static languages:Tooltips.ManageWebServiceRequestFormDataTooltip}">multipart/form-data</RadioButton>
+                                     ToolTip="{x:Static languages:Tooltips.ManageWebServiceRequestFormDataTooltip}">multipart/form-data
+                            <i:Interaction.Behaviors>
+                                <core1:HelpSetter Text="{x:Static languages:HelpText.ManageWebServiceRequestFormDataHelpText}" DataContext="{Binding}" />
+                            </i:Interaction.Behaviors>
+                        </RadioButton>
+                        <RadioButton x:Name="urlencoded"
+                                     Grid.Row="1"
+                                     GroupName="{Binding InputArea.ParameterGroup, Mode=OneTime}"
+                                     Grid.Column="2"
+                                     HorizontalAlignment="Left"
+                                     IsChecked="{Binding InputArea.IsUrlEncodedChecked, UpdateSourceTrigger=PropertyChanged}"
+                                     ToolTip="{x:Static languages:Tooltips.ManageWebServiceRequestUrlEncodedTooltip}">application/x-www-form-urlencoded
+                            <i:Interaction.Behaviors>
+                                <core1:HelpSetter Text="{x:Static languages:HelpText.ManageWebServiceRequestUrlEncodedHelpText}" DataContext="{Binding}" />
+                            </i:Interaction.Behaviors>
+                        </RadioButton>
                     </Grid>
 
                     <Grid Grid.Row="2" x:Name="body" Visibility="{Binding IsChecked, ElementName=none, Converter={StaticResource BooleanToVisibilityConverter}}" Margin="{StaticResource ControlBorderTop}" >
@@ -273,6 +293,46 @@
                                  ItemTemplateSelector="{StaticResource OptionViewDataTemplateSelector}"
                                  ItemContainerStyle="{StaticResource ListBoxItemNoBorderStyle}"
                                  ToolTip="{x:Static languages:Tooltips.WebPostFromDataParametersToolTip}"
+                                 Padding="1,0,1,1">
+                            </ListBox>
+                        </Grid>
+                    </Grid>
+                    <Grid Grid.Row="2" Visibility="{Binding InputArea.IsUrlEncodedChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock x:Name="UrlEncodedLabel" Text="Parameters" Grid.Column="0" Grid.Row="0" />
+
+
+                        <Grid Grid.Row="1" IsEnabled="{Binding InputArea.IsEnabled}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <Grid Grid.Row="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="25" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+
+                                <Border Grid.Column="0" BorderThickness="1,1,1,0" BorderBrush="{StaticResource ListBoxBorderBrush}">
+                                    <TextBlock Text="#" HorizontalAlignment="Center" />
+                                </Border>
+                                <Border Grid.Column="1" BorderThickness="0,1,1,0" BorderBrush="{StaticResource ListBoxBorderBrush}">
+                                    <TextBlock Text="Key" HorizontalAlignment="Center" />
+                                </Border>
+                                <Border Grid.Column="2" BorderThickness="0,1,1,0" BorderBrush="{StaticResource ListBoxBorderBrush}">
+                                    <TextBlock Text="Value" HorizontalAlignment="Center" />
+                                </Border>
+                            </Grid>
+                            <ListBox x:Name="UrlEncodedConditionsListBox"
+                                 Grid.Row="1"
+                                 ItemsSource="{Binding ConditionExpressionOptions, Converter={StaticResource OptionViewConverter}}"
+                                 ItemTemplateSelector="{StaticResource OptionViewDataTemplateSelector}"
+                                 ItemContainerStyle="{StaticResource ListBoxItemNoBorderStyle}"
+                                 ToolTip="{x:Static languages:Tooltips.WebPostUrlEncodedParametersToolTip}"
                                  Padding="1,0,1,1">
                             </ListBox>
                         </Grid>

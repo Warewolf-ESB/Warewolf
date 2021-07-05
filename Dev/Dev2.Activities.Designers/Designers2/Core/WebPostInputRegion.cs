@@ -18,6 +18,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using Dev2.Activities.Designers2.Web_Post;
+using Dev2.Activities.Designers2.Web_Post_New;
 using Dev2.Activities.Utils;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.ServerProxyLayer;
@@ -50,9 +51,9 @@ namespace Dev2.Activities.Designers2.Core
         {
             var existing = modelItem.GetProperty<IList<INameValue>>("Headers");
             var headers = new ObservableCollection<INameValue>();
-            if (existing != null)
+            if(existing != null)
             {
-                foreach (var header in existing)
+                foreach(var header in existing)
                 {
                     var nameValue = new NameValue(header.Name, header.Value);
                     nameValue.PropertyChanged += HeaderValueOnPropertyChanged;
@@ -65,6 +66,7 @@ namespace Dev2.Activities.Designers2.Core
                 nameValue.PropertyChanged += HeaderValueOnPropertyChanged;
                 headers.Add(nameValue);
             }
+
             headers.CollectionChanged += HeaderCollectionOnCollectionChanged;
             Headers = headers;
 
@@ -76,7 +78,6 @@ namespace Dev2.Activities.Designers2.Core
             SetHeaders();
         }
 
-
         public WebPostInputRegion(ModelItem modelItem, ISourceToolRegion<IWebServiceSource> source)
         {
             ToolRegionName = "PostInputRegion";
@@ -86,7 +87,7 @@ namespace Dev2.Activities.Designers2.Core
             IsEnabled = false;
             ParameterGroup = $"ParameterGroup{Guid.NewGuid()}";
             SetupHeaders(modelItem);
-            if (source?.SelectedSource != null)
+            if(source?.SelectedSource != null)
             {
                 RequestUrl = source.SelectedSource.HostName;
                 IsEnabled = true;
@@ -97,7 +98,7 @@ namespace Dev2.Activities.Designers2.Core
 
         void SourceOnSomethingChanged(object sender, IToolRegion args)
         {
-            if (_source?.SelectedSource != null)
+            if(_source?.SelectedSource != null)
             {
                 RequestUrl = _source.SelectedSource.HostName;
                 QueryString = _source.SelectedSource.DefaultQuery;
@@ -112,7 +113,7 @@ namespace Dev2.Activities.Designers2.Core
         }
 
         public IWebServiceBaseViewModel ViewModel { get; set; }
-        
+
         public string QueryString
         {
             get => _modelItem.GetProperty<string>("QueryString") ?? string.Empty;
@@ -142,7 +143,7 @@ namespace Dev2.Activities.Designers2.Core
                 OnPropertyChanged();
             }
         }
-        
+
         public ObservableCollection<INameValue> Settings
         {
             get => _settings;
@@ -158,12 +159,29 @@ namespace Dev2.Activities.Designers2.Core
         {
             get
             {
-               var settings = _modelItem.GetProperty<IList<INameValue>>("Settings");
-               return Convert.ToBoolean(settings?.FirstOrDefault(s => s.Name == "IsManualChecked")?.Value);
+                if(ViewModel != null && ViewModel.GetType() == typeof(WebPostActivityViewModelNew))
+                {
+                    var settings = _modelItem.GetProperty<IList<INameValue>>("Settings");
+                    return Convert.ToBoolean(settings?.FirstOrDefault(s => s.Name == "IsManualChecked")?.Value);
+                }
+                else if(_modelItem.GetProperty<bool?>("IsManualChecked") != null)
+                {
+                    return _modelItem.GetProperty<bool>("IsManualChecked");
+                }
+
+                return false;
             }
             set
             {
-                UpdateSettings("IsManualChecked", value);
+                if(ViewModel != null && ViewModel.GetType() == typeof(WebPostActivityViewModelNew))
+                {
+                    UpdateSettings("IsManualChecked", value);
+                }
+                else
+                {
+                    _modelItem.SetProperty("IsManualChecked", value);
+                    OnPropertyChanged();
+                }
             }
         }
 
@@ -171,15 +189,32 @@ namespace Dev2.Activities.Designers2.Core
         {
             get
             {
-                var settings = _modelItem.GetProperty<IList<INameValue>>("Settings");
-                return Convert.ToBoolean(settings?.FirstOrDefault(s => s.Name == "IsFormDataChecked")?.Value);
+                if(ViewModel != null && ViewModel.GetType() == typeof(WebPostActivityViewModelNew))
+                {
+                    var settings = _modelItem.GetProperty<IList<INameValue>>("Settings");
+                    return Convert.ToBoolean(settings?.FirstOrDefault(s => s.Name == "IsFormDataChecked")?.Value);
+                }
+                else if(_modelItem.GetProperty<bool?>("IsFormDataChecked") != null)
+                {
+                    return _modelItem.GetProperty<bool>("IsFormDataChecked");
+                }
+
+                return false;
             }
             set
             {
-                UpdateSettings("IsFormDataChecked", value);
+                if(ViewModel != null && ViewModel.GetType() == typeof(WebPostActivityViewModelNew))
+                {
+                    UpdateSettings("IsFormDataChecked", value);
+                }
+                else
+                {
+                    _modelItem.SetProperty("IsFormDataChecked", value);
+                    OnPropertyChanged();
+                }
             }
         }
-        
+
         public bool IsUrlEncodedChecked
         {
             get
@@ -192,12 +227,12 @@ namespace Dev2.Activities.Designers2.Core
                 UpdateSettings("IsUrlEncodedChecked", value);
             }
         }
-        
+
         private void UpdateSettings(string variableName, bool value)
         {
             var oldSettings = new INameValue[Settings?.Count ?? 0];
             Settings?.CopyTo(oldSettings, 0);
-            
+
             var newSettings = new ObservableCollection<INameValue>();
             var currentSetting = oldSettings.ToList().FirstOrDefault(o => o.Name == variableName) ?? new NameValue(variableName, value.ToString());
             currentSetting.Value = value.ToString();
@@ -212,7 +247,7 @@ namespace Dev2.Activities.Designers2.Core
                 }
             }
 
-            var variables = new[] {  "IsManualChecked", "IsFormDataChecked", "IsUrlEncodedChecked"};
+            var variables = new[] { "IsManualChecked", "IsFormDataChecked", "IsUrlEncodedChecked" };
             foreach(var variable in variables)
             {
                 if(newSettings.FirstOrDefault(n => n.Name == variable) == null)
@@ -220,16 +255,17 @@ namespace Dev2.Activities.Designers2.Core
                     newSettings.Add(new NameValue(variable, "false"));
                 }
             }
+
             Settings = newSettings;
-            
+
             OnPropertyChanged("IsManualChecked");
             OnPropertyChanged("IsFormDataChecked");
             OnPropertyChanged("IsUrlEncodedChecked");
-            
-            if(ViewModel != null)
+
+            if(ViewModel != null && ViewModel.GetType() == typeof(WebPostActivityViewModelNew))
             {
-                var list = new List<IOption>(((WebPostActivityViewModel)ViewModel).ConditionExpressionOptions.Options);
-                list.ForEach(c => ((FormDataOptionConditionExpression)c).IsMultiPart = !IsUrlEncodedChecked );
+                var list = new List<IOption>(((WebPostActivityViewModelNew)ViewModel).ConditionExpressionOptions.Options);
+                list.ForEach(c => ((FormDataOptionConditionExpression)c).IsMultiPart = !IsUrlEncodedChecked);
             }
         }
 
@@ -245,7 +281,7 @@ namespace Dev2.Activities.Designers2.Core
         }
 
         public string ToolRegionName { get; set; }
-        
+
         public bool IsEnabled
         {
             get => _isEnabled;
@@ -261,12 +297,13 @@ namespace Dev2.Activities.Designers2.Core
         public IToolRegion CloneRegion()
         {
             var headers2 = new ObservableCollection<INameValue>();
-            foreach (var nameValue in Headers)
+            foreach(var nameValue in Headers)
             {
-                var value = new NameValue(nameValue.Name,nameValue.Value);
+                var value = new NameValue(nameValue.Name, nameValue.Value);
                 value.PropertyChanged += HeaderValueOnPropertyChanged;
                 headers2.Add(value);
             }
+
             return new WebPostInputRegion(_modelItem, _source)
             {
                 Headers = headers2,
@@ -280,7 +317,7 @@ namespace Dev2.Activities.Designers2.Core
 
         public void RestoreRegion(IToolRegion toRestore)
         {
-            if (toRestore is WebPostInputRegion region)
+            if(toRestore is WebPostInputRegion region)
             {
                 IsEnabled = region.IsEnabled;
                 IsManualChecked = region.IsManualChecked;
@@ -291,13 +328,15 @@ namespace Dev2.Activities.Designers2.Core
                 RequestUrl = region.RequestUrl;
                 Headers.Clear();
                 AddHeaders();
-                if (region.Headers != null)
+                if(region.Headers != null)
                 {
-                    foreach (var nameValue in region.Headers)
+                    foreach(var nameValue in region.Headers)
                     {
-                        Headers.Add(new ObservableAwareNameValue(Headers, s => { SetHeaders(); })
-                        { Name = nameValue.Name, Value = nameValue.Value });
+                        Headers.Add(
+                            new ObservableAwareNameValue(Headers, s => { SetHeaders(); })
+                                { Name = nameValue.Name, Value = nameValue.Value });
                     }
+
                     Headers.Remove(Headers.First());
                 }
             }
@@ -305,13 +344,14 @@ namespace Dev2.Activities.Designers2.Core
 
         private void AddHeaders()
         {
-            if (Headers.Count == 0)
+            if(Headers.Count == 0)
             {
                 Headers.Add(new ObservableAwareNameValue(Headers, s => { SetHeaders(); }));
                 return;
             }
+
             var nameValue = Headers.Last();
-            if (!string.IsNullOrWhiteSpace(nameValue.Name) || !string.IsNullOrWhiteSpace(nameValue.Value))
+            if(!string.IsNullOrWhiteSpace(nameValue.Name) || !string.IsNullOrWhiteSpace(nameValue.Value))
             {
                 Headers.Add(new ObservableAwareNameValue(Headers, s => { SetHeaders(); }));
             }
@@ -319,13 +359,15 @@ namespace Dev2.Activities.Designers2.Core
 
         private void SetHeaders()
         {
-            _modelItem.SetProperty("Headers",
-                _headers.Select(a =>
-                {
-                    var nameValue = new NameValue(a.Name, a.Value);
-                    nameValue.PropertyChanged += HeaderValueOnPropertyChanged;
-                    return (INameValue) nameValue;
-                }).ToList());
+            _modelItem.SetProperty(
+                "Headers",
+                _headers.Select(
+                    a =>
+                    {
+                        var nameValue = new NameValue(a.Name, a.Value);
+                        nameValue.PropertyChanged += HeaderValueOnPropertyChanged;
+                        return (INameValue)nameValue;
+                    }).ToList());
         }
 
         private void HeaderValueOnPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -334,11 +376,7 @@ namespace Dev2.Activities.Designers2.Core
             AddHeaders();
         }
 
-        public EventHandler<List<string>> ErrorsHandler
-        {
-            get;
-            set;
-        }
+        public EventHandler<List<string>> ErrorsHandler { get; set; }
 
         public IList<string> Errors
         {

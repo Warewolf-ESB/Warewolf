@@ -230,6 +230,10 @@
     <Compile Include="Designers2\Sequence\SmallErrorView.xaml.cs">
       <DependentUpon>SmallErrorView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Designers2\Web Post New\Large.xaml.cs" />
+    <Compile Include="Designers2\Web Post New\Small.xaml.cs" />
+    <Compile Include="Designers2\Web Post New\WebPostActivityDesignerNew.xaml.cs" />
+    <Compile Include="Designers2\Web Post New\WebPostActivityViewModelNew.cs" />
     <Compile Include="Designers2\Web Post\Large.xaml.cs" />
     <Compile Include="Designers2\Web Post\Small.xaml.cs" />
     <Compile Include="Designers2\Web Post\WebPostActivityDesigner.xaml.cs" />
@@ -2410,6 +2414,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Designers2\Web Post New\Large.xaml" />
+    <Page Include="Designers2\Web Post New\Small.xaml" />
+    <Page Include="Designers2\Web Post New\WebPostActivityDesignerNew.xaml" />
     <Page Include="Designers2\Web Post\Large.xaml" />
     <Page Include="Designers2\Web Post\Small.xaml" />
     <Page Include="Designers2\Web Post\WebPostActivityDesigner.xaml" />
