@@ -98,7 +98,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             catch(Exception err)
             {
                 Dev2Logger.Error(err, GlobalConstants.WarewolfError);
-                return new ExecuteMessage { HasError = true, Message = new StringBuilder("Workflow Resume Failed." + err.Message) };
+                return new ExecuteMessage { HasError = true, Message = new StringBuilder(err.Message) };
             }
         }
 
