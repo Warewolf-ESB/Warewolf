@@ -354,7 +354,7 @@ namespace Dev2.Runtime.ESB.Execution
             }
 
             Dev2Logger.Debug("Got Resource to Execute", executionId);
-            Dev2Logger.Debug("startActivity", startActivity.GetDisplayName());
+            Dev2Logger.Debug("StartActivity", startActivity.GetDisplayName());
             Dev2Logger.Debug("ForEachUpdateValue",dataObject.ForEachUpdateValue.ToString());
             EvalInner(dataObject, startActivity, dataObject.ForEachUpdateValue);
         }

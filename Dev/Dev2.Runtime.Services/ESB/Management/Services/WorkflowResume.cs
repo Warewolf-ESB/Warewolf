@@ -81,6 +81,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 }
                 Dev2Logger.Info($"ServiceName: {sa.ServiceName}", GlobalConstants.WarewolfInfo);
 
+                // ReSharper disable once RedundantAssignment
                 var errorResultTO = new ErrorResultTO();
                 var container = CustomContainer.Get<IResumableExecutionContainerFactory>().New(startActivityId, sa, dataObject);
                 Dev2Logger.Info($"Container.Execute", GlobalConstants.WarewolfInfo);
