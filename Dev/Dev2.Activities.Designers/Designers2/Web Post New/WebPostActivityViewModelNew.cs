@@ -27,15 +27,16 @@ using Dev2.Common.Interfaces.WebServices;
 using Dev2.Communication;
 using Dev2.Providers.Errors;
 using Dev2.Studio.Interfaces;
+using Microsoft.Practices.ObjectBuilder2;
 using Microsoft.Practices.Prism.Commands;
 using Warewolf.Core;
 using Warewolf.Data.Options;
 using Warewolf.Options;
 using Warewolf.UI;
 
-namespace Dev2.Activities.Designers2.Web_Post
+namespace Dev2.Activities.Designers2.Web_Post_New
 {
-    public class WebPostActivityViewModel : CustomToolWithRegionBase, IWebServiceBaseViewModel
+    public class WebPostActivityViewModelNew : CustomToolWithRegionBase, IWebServiceBaseViewModel
     {
         private IOutputsToolRegion _outputsRegion;
         private IWebPostInputArea _inputArea;
@@ -51,7 +52,7 @@ namespace Dev2.Activities.Designers2.Web_Post
 
         private readonly string _sourceNotFoundMessage = Warewolf.Studio.Resources.Languages.Core.DatabaseServiceSourceNotFound;
 
-        public WebPostActivityViewModel(ModelItem modelItem)
+        public WebPostActivityViewModelNew(ModelItem modelItem)
             : base(modelItem)
         {
             _modelItem = modelItem;
@@ -65,7 +66,7 @@ namespace Dev2.Activities.Designers2.Web_Post
             HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_WebMethod_Post;
         }
 
-        public WebPostActivityViewModel(ModelItem modelItem, IWebServiceModel model)
+        public WebPostActivityViewModelNew(ModelItem modelItem, IWebServiceModel model)
             : base(modelItem)
         {
             Model = model;
@@ -292,7 +293,7 @@ namespace Dev2.Activities.Designers2.Web_Post
 
             if (!emptyRows.Any())
             {
-                var conditionExpression = new FormDataOptionConditionExpression();
+                var conditionExpression = new FormDataOptionConditionExpression(){ IsMultiPart = !InputArea.IsUrlEncodedChecked };
                 var list = new List<IOption>(_conditionExpressionOptions.Options)
                 {
                     conditionExpression
@@ -310,6 +311,7 @@ namespace Dev2.Activities.Designers2.Web_Post
                 conditionExpressionList = new List<FormDataConditionExpression>();
             }
             var result = OptionConvertor.ConvertFromListOfT(conditionExpressionList);
+            result.ForEach(r => ((FormDataOptionConditionExpression)r).IsMultiPart = !InputArea.IsUrlEncodedChecked);
             ConditionExpressionOptions = new OptionsWithNotifier { Options = result };
             UpdateConditionExpressionOptionsModelItem();
         }
@@ -331,6 +333,7 @@ namespace Dev2.Activities.Designers2.Web_Post
                 var service = ToModel();
                 ManageServiceInputViewModel.InputArea.Inputs = service.Inputs;
                 ManageServiceInputViewModel.IsFormDataChecked = service.IsFormDataChecked;
+                ManageServiceInputViewModel.IsUrlEncodedChecked = service.IsUrlEncodedChecked;
                 ManageServiceInputViewModel.Model = service;
                 ManageServiceInputViewModel.LoadConditionExpressionOptions(ConditionExpressionOptions.Options);
 
@@ -354,7 +357,7 @@ namespace Dev2.Activities.Designers2.Web_Post
             }
         }
         public static readonly DependencyProperty IsWorstErrorReadOnlyProperty =
-            DependencyProperty.Register("IsWorstErrorReadOnly", typeof(bool), typeof(WebPostActivityViewModel), new PropertyMetadata(false));
+            DependencyProperty.Register("IsWorstErrorReadOnly", typeof(bool), typeof(WebPostActivityViewModelNew), new PropertyMetadata(false));
 
         public ErrorType WorstError
         {
@@ -362,7 +365,7 @@ namespace Dev2.Activities.Designers2.Web_Post
             private set => SetValue(WorstErrorProperty, value);
         }
         public static readonly DependencyProperty WorstErrorProperty =
-        DependencyProperty.Register("WorstError", typeof(ErrorType), typeof(WebPostActivityViewModel), new PropertyMetadata(ErrorType.None));
+        DependencyProperty.Register("WorstError", typeof(ErrorType), typeof(WebPostActivityViewModelNew), new PropertyMetadata(ErrorType.None));
 
         bool _generateOutputsVisible;
         private OptionsWithNotifier _conditionExpressionOptions;
@@ -419,6 +422,7 @@ namespace Dev2.Activities.Designers2.Web_Post
                 SourceRegion = new WebSourceRegion(Model, ModelItem) { SourceChangedAction = () => { OutputsRegion.IsEnabled = false; } };
                 regions.Add(SourceRegion);
                 InputArea = new WebPostInputRegion(ModelItem, SourceRegion);
+                InputArea.ViewModel = this;
                 InputArea.PropertyChanged += (sender, args) =>
                 {
                     if (args.PropertyName == "PostData" && InputArea.Headers.All(value => string.IsNullOrEmpty(value.Name)))
@@ -503,6 +507,7 @@ namespace Dev2.Activities.Designers2.Web_Post
                 IsManualChecked = InputArea.IsManualChecked,
                 IsFormDataChecked = InputArea.IsFormDataChecked,
                 Headers = InputArea.Headers.Select(value => new NameValue { Name = value.Name, Value = value.Value } as INameValue).ToList(),
+                Settings = InputArea.Settings.Select(value => new NameValue { Name = value.Name, Value = value.Value } as INameValue).ToList(),
                 FormDataParameters = BuildFormDataParameters(),
                 QueryString = InputArea.QueryString,
                 RequestUrl = SourceRegion.SelectedSource.HostName,
@@ -553,17 +558,17 @@ namespace Dev2.Activities.Designers2.Web_Post
                 {
                     if (!string.IsNullOrEmpty(parameter.Key))
                     {
-                        if (parameter is FileParameter fileParam)
+                        if (parameter is FileParameter fileParam && !fileParam.IsIncompleteRow)
                         {
+                             
                             _builder.GetValue(fileParam.Key, dt);
                             _builder.GetValue(fileParam.FileName, dt);
                             _builder.GetValue(fileParam.FileBase64, dt);
                         }
-                        else if (parameter is TextParameter textParam)
+                        else if (parameter is TextParameter textParam && !textParam.IsIncompleteRow)
                         {
                             _builder.GetValue(textParam.Key, dt);
                             _builder.GetValue(textParam.Value, dt);
-
                         }
                     }
                 }

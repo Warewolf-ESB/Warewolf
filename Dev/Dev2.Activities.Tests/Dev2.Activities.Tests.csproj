@@ -99,6 +99,7 @@
     <Compile Include="ActivityComparerTests\WebTools\WebGetActivityComparerTests.cs" />
     <Compile Include="ActivityComparerTests\WebTools\DsfWebPutActivityComparerTests.cs" />
     <Compile Include="ActivityComparerTests\WebTools\WebPostActivityComparerTests.cs" />
+    <Compile Include="ActivityComparerTests\WebTools\WebPostActivityNewComparerTests .cs" />
     <Compile Include="ActivityTests\AdvancedRecordsetActivityTests.cs" />
     <Compile Include="ActivityTests\DsfRecordsetNullhandlerLengthActivityTest.cs" />
     <AdditionalFiles Include="..\SonarQube\SonarLint.xml">
@@ -262,6 +263,7 @@
     <Compile Include="ActivityTests\SuspendExecutionActivityTests.cs" />
     <Compile Include="ActivityTests\Web\DsfWebDeleteActivityTests.cs" />
     <Compile Include="ActivityTests\Web\WebGetActivityTests.cs" />
+    <Compile Include="ActivityTests\Web\WebPostActivityNewTests.cs" />
     <Compile Include="ActivityTests\Web\WebPostActivityTests.cs" />
     <Compile Include="ActivityTests\Web\WebPutActivityTests.cs" />
     <Compile Include="ActivityTests\RecordsetLengthTestNullhandler.cs" />

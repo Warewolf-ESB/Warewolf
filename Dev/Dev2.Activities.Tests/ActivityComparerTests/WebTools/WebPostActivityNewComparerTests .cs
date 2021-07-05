@@ -19,18 +19,18 @@ using Unlimited.Framework.Converters.Graph.Ouput;
 namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
 {
     [TestClass]
-    public class WebPostActivityComparerTests
+    public class WebPostActivityNewComparerTests
     {
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(WebPostActivity))]
+        [Owner("Njabulo Nxele")]
+        [TestCategory(nameof(WebPostActivityNew))]
         public void WebPostActivity_Equals_Given_SameUniqueID_EmptyWebPostTools_AreEqual()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var webPostActivity = new WebPostActivity {UniqueID = uniqueId};
-            var webPostActivity1 = new WebPostActivity {UniqueID = uniqueId};
+            var webPostActivity = new WebPostActivityNew {UniqueID = uniqueId};
+            var webPostActivity1 = new WebPostActivityNew {UniqueID = uniqueId};
             //---------------Assert Precondition----------------
             Assert.IsNotNull(webPostActivity);
             //---------------Execute Test ----------------------
@@ -41,15 +41,15 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(WebPostActivity))]
+        [Owner("Njabulo Nxele")]
+        [TestCategory(nameof(WebPostActivityNew))]
         public void WebPostActivity_Equals_Given_DifferentWebPostToolIds_AreNotEqual()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
             var uniqueId2 = Guid.NewGuid().ToString();
-            var webPostActivity = new WebPostActivity {UniqueID = uniqueId};
-            var webPostActivity1 = new WebPostActivity {UniqueID = uniqueId2};
+            var webPostActivity = new WebPostActivityNew {UniqueID = uniqueId};
+            var webPostActivity1 = new WebPostActivityNew {UniqueID = uniqueId2};
             //---------------Assert Precondition----------------
             Assert.IsNotNull(webPostActivity);
             //---------------Execute Test ----------------------
@@ -60,12 +60,12 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(WebPostActivity))]
+        [Owner("Njabulo Nxele")]
+        [TestCategory(nameof(WebPostActivityNew))]
         public void WebPostActivity_Equals_Given_SameWebPostTool_IsEqual()
         {
             //---------------Set up test pack-------------------
-            var webPostActivity = new WebPostActivity();
+            var webPostActivity = new WebPostActivityNew();
             var webPostActivity1 = webPostActivity;
             //---------------Assert Precondition----------------
             Assert.IsNotNull(webPostActivity);
@@ -77,14 +77,14 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(WebPostActivity))]
+        [Owner("Njabulo Nxele")]
+        [TestCategory(nameof(WebPostActivityNew))]
         public void WebPostActivity_Equals_Given_Same_DisplayName_Value_IsEqual()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var webPostActivity = new WebPostActivity {UniqueID = uniqueId, DisplayName = ""};
-            var webPostActivity1 = new WebPostActivity {UniqueID = uniqueId, DisplayName = ""};
+            var webPostActivity = new WebPostActivityNew {UniqueID = uniqueId, DisplayName = ""};
+            var webPostActivity1 = new WebPostActivityNew {UniqueID = uniqueId, DisplayName = ""};
             //---------------Assert Precondition----------------
             Assert.IsNotNull(webPostActivity);
             //---------------Execute Test ----------------------
@@ -95,14 +95,14 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(WebPostActivity))]
+        [Owner("Njabulo Nxele")]
+        [TestCategory(nameof(WebPostActivityNew))]
         public void WebPostActivity_Equals_Given_Different_DisplayName_Value_IsNOT_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var webPostActivity = new WebPostActivity {UniqueID = uniqueId, DisplayName = "A"};
-            var webPostActivity1 = new WebPostActivity {UniqueID = uniqueId, DisplayName = ""};
+            var webPostActivity = new WebPostActivityNew {UniqueID = uniqueId, DisplayName = "A"};
+            var webPostActivity1 = new WebPostActivityNew {UniqueID = uniqueId, DisplayName = ""};
             //---------------Assert Precondition----------------
             Assert.IsNotNull(webPostActivity);
             //---------------Execute Test ----------------------
@@ -113,14 +113,14 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(WebPostActivity))]
+        [Owner("Njabulo Nxele")]
+        [TestCategory(nameof(WebPostActivityNew))]
         public void WebPostActivity_Equals_Given_Same_DisplayName_Value_Different_Casing_IsNotEqual()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var webPostActivity = new WebPostActivity {UniqueID = uniqueId, DisplayName = "A"};
-            var webPostActivity1 = new WebPostActivity {UniqueID = uniqueId, DisplayName = "a"};
+            var webPostActivity = new WebPostActivityNew {UniqueID = uniqueId, DisplayName = "A"};
+            var webPostActivity1 = new WebPostActivityNew {UniqueID = uniqueId, DisplayName = "a"};
             //---------------Assert Precondition----------------
             Assert.IsNotNull(webPostActivity);
             //---------------Execute Test ----------------------
@@ -131,14 +131,14 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(WebPostActivity))]
+        [Owner("Njabulo Nxele")]
+        [TestCategory(nameof(WebPostActivityNew))]
         public void WebPostActivity_Equals_Given_Same_QueryString_IsEqual()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var webPostActivity = new WebPostActivity {UniqueID = uniqueId, QueryString = "A"};
-            var webPostActivity1 = new WebPostActivity {UniqueID = uniqueId, QueryString = "A"};
+            var webPostActivity = new WebPostActivityNew {UniqueID = uniqueId, QueryString = "A"};
+            var webPostActivity1 = new WebPostActivityNew {UniqueID = uniqueId, QueryString = "A"};
             //---------------Assert Precondition----------------
             Assert.IsNotNull(webPostActivity);
             //---------------Execute Test ----------------------
@@ -149,14 +149,14 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(WebPostActivity))]
+        [Owner("Njabulo Nxele")]
+        [TestCategory(nameof(WebPostActivityNew))]
         public void WebPostActivity_Equals_Given_Different_QueryString_IsNOTEqual()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var webPostActivity = new WebPostActivity {UniqueID = uniqueId, QueryString = "A"};
-            var webPostActivity1 = new WebPostActivity {UniqueID = uniqueId, QueryString = "B"};
+            var webPostActivity = new WebPostActivityNew {UniqueID = uniqueId, QueryString = "A"};
+            var webPostActivity1 = new WebPostActivityNew {UniqueID = uniqueId, QueryString = "B"};
             //---------------Assert Precondition----------------
             Assert.IsNotNull(webPostActivity);
             //---------------Execute Test ----------------------
@@ -167,15 +167,15 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(WebPostActivity))]
+        [Owner("Njabulo Nxele")]
+        [TestCategory(nameof(WebPostActivityNew))]
         public void WebPostActivity_Equals_Given_Same_OutputDescription_IsEqual()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
             var outDesc = new OutputDescription();
-            var webPostActivity = new WebPostActivity {UniqueID = uniqueId, OutputDescription = outDesc};
-            var webPostActivity1 = new WebPostActivity {UniqueID = uniqueId, OutputDescription = outDesc};
+            var webPostActivity = new WebPostActivityNew {UniqueID = uniqueId, OutputDescription = outDesc};
+            var webPostActivity1 = new WebPostActivityNew {UniqueID = uniqueId, OutputDescription = outDesc};
             //---------------Assert Precondition----------------
             Assert.IsNotNull(webPostActivity);
             //---------------Execute Test ----------------------
@@ -186,8 +186,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(WebPostActivity))]
+        [Owner("Njabulo Nxele")]
+        [TestCategory(nameof(WebPostActivityNew))]
         public void WebPostActivity_Equals_Given_Different_OutputDescription_IsNOTEqual()
         {
             //---------------Set up test pack-------------------
@@ -200,8 +200,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
             {
                 Format = OutputFormats.ShapedXML
             };
-            var webPostActivity = new WebPostActivity {UniqueID = uniqueId, OutputDescription = outDesc};
-            var webPostActivity1 = new WebPostActivity {UniqueID = uniqueId, OutputDescription = outDesc2};
+            var webPostActivity = new WebPostActivityNew {UniqueID = uniqueId, OutputDescription = outDesc};
+            var webPostActivity1 = new WebPostActivityNew {UniqueID = uniqueId, OutputDescription = outDesc2};
             //---------------Assert Precondition----------------
             Assert.IsNotNull(webPostActivity);
             //---------------Execute Test ----------------------
@@ -212,16 +212,16 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(WebPostActivity))]
+        [Owner("Njabulo Nxele")]
+        [TestCategory(nameof(WebPostActivityNew))]
         public void WebPostActivity_Equals_Given_Different_Headers_IsNOTEqual()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
             var headers = new List<INameValue>();
             var headers2 = new List<INameValue> {new NameValue("a", "x")};
-            var webPostActivity = new WebPostActivity {UniqueID = uniqueId, Headers = headers};
-            var webPostActivity1 = new WebPostActivity {UniqueID = uniqueId, Headers = headers2};
+            var webPostActivity = new WebPostActivityNew {UniqueID = uniqueId, Headers = headers};
+            var webPostActivity1 = new WebPostActivityNew {UniqueID = uniqueId, Headers = headers2};
             //---------------Assert Precondition----------------
             Assert.IsNotNull(webPostActivity);
             //---------------Execute Test ----------------------
@@ -232,15 +232,15 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(WebPostActivity))]
+        [Owner("Njabulo Nxele")]
+        [TestCategory(nameof(WebPostActivityNew))]
         public void WebPostActivity_Equals_Given_Same_Headers_DifferentIndexes_IsNotEqual()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
             var headers = new List<INameValue> {new NameValue("b", "y"), new NameValue("a", "x")};
-            var webPostActivity = new WebPostActivity {UniqueID = uniqueId, Headers = headers};
-            var webPostActivity1 = new WebPostActivity {UniqueID = uniqueId, Headers = headers};
+            var webPostActivity = new WebPostActivityNew {UniqueID = uniqueId, Headers = headers};
+            var webPostActivity1 = new WebPostActivityNew {UniqueID = uniqueId, Headers = headers};
             //---------------Assert Precondition----------------
             Assert.IsNotNull(webPostActivity);
             //---------------Execute Test ----------------------
@@ -251,15 +251,15 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(WebPostActivity))]
+        [Owner("Njabulo Nxele")]
+        [TestCategory(nameof(WebPostActivityNew))]
         public void WebPostActivity_Equals_Given_Same_Headers_IsEqual()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
             var headers = new List<INameValue> {new NameValue("a", "x")};
-            var webPostActivity = new WebPostActivity {UniqueID = uniqueId, Headers = headers};
-            var webPostActivity1 = new WebPostActivity {UniqueID = uniqueId, Headers = headers};
+            var webPostActivity = new WebPostActivityNew {UniqueID = uniqueId, Headers = headers};
+            var webPostActivity1 = new WebPostActivityNew {UniqueID = uniqueId, Headers = headers};
             //---------------Assert Precondition----------------
             Assert.IsNotNull(webPostActivity);
             //---------------Execute Test ----------------------
@@ -271,13 +271,15 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
         [TestMethod]
         [Timeout(60000)]
         [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(WebPostActivity))]
+        [TestCategory(nameof(WebPostActivityNew))]
         public void WebPostActivity_Equals_Given_Same_IsFormDataChecked_IsEqual()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var webPostActivity = new WebPostActivity {UniqueID = uniqueId,  IsFormDataChecked = true};
-            var webPostActivity1 = new WebPostActivity {UniqueID = uniqueId, IsFormDataChecked = true};
+            var settings = new List<INameValue>();
+            settings.Add(new NameValue("IsFormDataChecked", "true"));
+            var webPostActivity = new WebPostActivityNew {UniqueID = uniqueId,  Settings = settings};
+            var webPostActivity1 = new WebPostActivityNew {UniqueID = uniqueId, Settings = settings};
             //---------------Assert Precondition----------------
             Assert.IsNotNull(webPostActivity);
             //---------------Execute Test ----------------------
@@ -288,14 +290,18 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(WebPostActivity))]
+        [Owner("Njabulo Nxele")]
+        [TestCategory(nameof(WebPostActivityNew))]
         public void WebPostActivity_Equals_Given_Same_IsFormDataChecked_IsNotEqual()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var webPostActivity = new WebPostActivity {UniqueID = uniqueId, IsFormDataChecked = false};
-            var webPostActivity1 = new WebPostActivity {UniqueID = uniqueId, IsFormDataChecked = true};
+            var settingsTrue = new List<INameValue>();
+            settingsTrue.Add(new NameValue("IsFormDataChecked", "true"));
+            var settingsFalse = new List<INameValue>();
+            settingsFalse.Add(new NameValue("IsFormDataChecked", "false"));
+            var webPostActivity = new WebPostActivityNew {UniqueID = uniqueId, Settings = settingsFalse};
+            var webPostActivity1 = new WebPostActivityNew {UniqueID = uniqueId, Settings = settingsTrue};
             //---------------Assert Precondition----------------
             Assert.IsNotNull(webPostActivity);
             //---------------Execute Test ----------------------
@@ -306,13 +312,15 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(WebPostActivity))]
+        [Owner("Njabulo Nxele")]
+        [TestCategory(nameof(WebPostActivityNew))]
         public void WebPostActivity_ReferenceEquals_Null_IsNotEqual()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var webPostActivity = new WebPostActivity {UniqueID = uniqueId, IsFormDataChecked = false};
+            var settings = new List<INameValue>();
+            settings.Add(new NameValue("IsFormDataChecked", "false"));
+            var webPostActivity = new WebPostActivityNew {UniqueID = uniqueId, Settings = settings};
             WebPostActivity webPostActivity1 = null;
             //---------------Assert Precondition----------------
             Assert.IsNotNull(webPostActivity);
@@ -324,13 +332,15 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(WebPostActivity))]
+        [Owner("Njabulo Nxele")]
+        [TestCategory(nameof(WebPostActivityNew))]
         public void WebPostActivity_ReferenceEquals_Null_Object_IsNotEqual()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var webPostActivity = new WebPostActivity {UniqueID = uniqueId, IsFormDataChecked = false};
+            var settings = new List<INameValue>();
+            settings.Add(new NameValue("IsFormDataChecked", "false"));
+            var webPostActivity = new WebPostActivityNew {UniqueID = uniqueId, Settings = settings};
             object webPostActivity1 = null;
             //---------------Assert Precondition----------------
             Assert.IsNotNull(webPostActivity);
@@ -342,13 +352,15 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(WebPostActivity))]
+        [Owner("Njabulo Nxele")]
+        [TestCategory(nameof(WebPostActivityNew))]
         public void WebPostActivity_ReferenceEquals_Given_Same_Object_IsEqual()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var webPostActivity = new WebPostActivity {UniqueID = uniqueId, IsFormDataChecked = false};
+            var settings = new List<INameValue>();
+            settings.Add(new NameValue("IsFormDataChecked", "false"));
+            var webPostActivity = new WebPostActivityNew {UniqueID = uniqueId, Settings = settings};
             object webPostActivity1 = webPostActivity;
             //---------------Assert Precondition----------------
             Assert.IsNotNull(webPostActivity);
@@ -360,13 +372,15 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(WebPostActivity))]
+        [Owner("Njabulo Nxele")]
+        [TestCategory(nameof(WebPostActivityNew))]
         public void WebPostActivity_ReferenceEquals_Different_Type_IsNotEqual()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var webPostActivity = new WebPostActivity {UniqueID = uniqueId, IsFormDataChecked = false};
+            var settings = new List<INameValue>();
+            settings.Add(new NameValue("IsFormDataChecked", "false"));
+            var webPostActivity = new WebPostActivityNew {UniqueID = uniqueId, Settings = settings};
             object webGetActivity = new WebGetActivity {UniqueID = uniqueId};
             //---------------Assert Precondition----------------
             Assert.IsNotNull(webPostActivity);
@@ -378,14 +392,18 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(WebPostActivity))]
+        [Owner("Njabulo Nxele")]
+        [TestCategory(nameof(WebPostActivityNew))]
         public void WebPostActivity_ReferenceEquals_Given_Same_Object_IsNotEqual()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var webPostActivity = new WebPostActivity {UniqueID = uniqueId, IsFormDataChecked = false};
-            object webPostActivity1 = new WebPostActivity {UniqueID = uniqueId, IsFormDataChecked = true};
+            var settingsTrue = new List<INameValue>();
+            settingsTrue.Add(new NameValue("IsFormDataChecked", "true"));
+            var settingsFalse = new List<INameValue>();
+            settingsFalse.Add(new NameValue("IsFormDataChecked", "false"));
+            var webPostActivity = new WebPostActivityNew {UniqueID = uniqueId, Settings = settingsFalse};
+            object webPostActivity1 = new WebPostActivityNew {UniqueID = uniqueId, Settings = settingsTrue};
             //---------------Assert Precondition----------------
             Assert.IsNotNull(webPostActivity);
             //---------------Execute Test ----------------------
@@ -396,13 +414,15 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(WebPostActivity))]
+        [Owner("Njabulo Nxele")]
+        [TestCategory(nameof(WebPostActivityNew))]
         public void WebPostActivity_GetHashCode_IsNotNull_Expect_True()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var webPostActivity = new WebPostActivity {UniqueID = uniqueId, IsFormDataChecked = false};
+            var settings = new List<INameValue>();
+            settings.Add(new NameValue("IsFormDataChecked", "true"));
+            var webPostActivity = new WebPostActivityNew {UniqueID = uniqueId, Settings = settings};
             //---------------Execute Test ----------------------
             var hashCode = webPostActivity.GetHashCode();
             //---------------Test Result -----------------------

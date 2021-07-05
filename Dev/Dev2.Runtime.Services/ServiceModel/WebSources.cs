@@ -160,6 +160,18 @@ namespace Dev2.Runtime.ServiceModel
         }
         
         public static string Execute(IWebSource source, WebRequestMethod method, IEnumerable<string> headers, string relativeUrl,
+            bool isNoneChecked, bool isFormDataChecked, string data, bool throwError, out ErrorResultTO errors,
+            IEnumerable<IFormDataParameters> formDataParameters = null, IWebRequestFactory webRequestFactory = null)
+        {
+            var settings = new List<INameValue>();
+            settings.Add(new NameValue("IsManualChecked", isNoneChecked.ToString()));
+            settings.Add(new NameValue("IsFormDataChecked", isFormDataChecked.ToString()));
+            
+            return Execute(source: source, method: method, headers: headers, relativeUrl: relativeUrl,
+                data: data, throwError: true, errors: out errors, formDataParameters: formDataParameters, settings: settings);
+        }
+        
+        public static string Execute(IWebSource source, WebRequestMethod method, IEnumerable<string> headers, string relativeUrl,
             string data, bool throwError, out ErrorResultTO errors,
             IEnumerable<IFormDataParameters> formDataParameters = null, IWebRequestFactory webRequestFactory = null, IEnumerable<INameValue> settings = null)
         {
