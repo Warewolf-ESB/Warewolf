@@ -244,10 +244,6 @@ namespace Dev2.Runtime.ESB.Execution
                     dsfDataObject.ExecutionException = null;
                 }
             }
-            catch(Exception err)
-            {
-                Dev2Logger.Error(err, GlobalConstants.WarewolfError);
-            }
             finally
             {
                 dsfDataObject.StateNotifier?.Dispose();
@@ -354,7 +350,7 @@ namespace Dev2.Runtime.ESB.Execution
             }
 
             Dev2Logger.Debug("Got Resource to Execute", executionId);
-            Dev2Logger.Debug("StartActivity", startActivity.GetDisplayName());
+            Dev2Logger.Debug("StartActivity", startActivity?.GetDisplayName());
             Dev2Logger.Debug("ForEachUpdateValue",dataObject.ForEachUpdateValue.ToString());
             EvalInner(dataObject, startActivity, dataObject.ForEachUpdateValue);
         }
