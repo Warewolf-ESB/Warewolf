@@ -351,7 +351,7 @@ namespace Dev2.Runtime.ESB.Execution
 
             Dev2Logger.Debug("Got Resource to Execute", executionId);
             Dev2Logger.Debug("StartActivity", startActivity?.GetDisplayName());
-            Dev2Logger.Debug("ForEachUpdateValue",dataObject.ForEachUpdateValue.ToString());
+            Dev2Logger.Debug("ForEachUpdateValue", dataObject.ForEachUpdateValue.ToString());
             EvalInner(dataObject, startActivity, dataObject.ForEachUpdateValue);
         }
     }
@@ -383,14 +383,18 @@ namespace Dev2.Runtime.ESB.Execution
 
         protected override void EvalInner(IDSFDataObject dsfDataObject, IDev2Activity resource, int update)
         {
+            Dev2Logger.Debug("Resume EvalInner", _resumeActivityId.ToString());
             var startAtActivity = FindActivity(resource) ?? throw new InvalidWorkflowException($"Resume Node not found. UniqueID:{_resumeActivityId}");
             dsfDataObject.Environment = _resumeEnvironment;
+            Dev2Logger.Debug("Resume Environment", _resumeEnvironment.ToString());
             base.EvalInner(dsfDataObject, startAtActivity, update);
         }
 
         private IDev2Activity FindActivity(IDev2Activity resource)
         {
+            Dev2Logger.Debug("Resume FindActivity GetDisplayName", resource?.GetDisplayName());
             var allNodes = new ActivityParser().ParseToLinkedFlatList(resource);
+            Dev2Logger.Debug("Resume FindActivity allNodes", allNodes?.Count().ToString());
             return allNodes.FirstOrDefault(p => p.UniqueID == _resumeActivityId.ToString());
         }
     }
