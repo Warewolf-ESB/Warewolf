@@ -75,8 +75,8 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.InternalServices
                 result = errorContent.ReadToEnd();
             }
 
-            Assert.IsTrue(result.Contains("The workflow must have at least one service or activity connected to the Start Node."));
-            Assert.IsTrue(result.Contains(GlobalConstants.NoStartNodeError));
+            Assert.IsTrue(result.Contains("The workflow must have at least one service or activity connected to the Start Node."), result + " does not contain: \"" + "The workflow must have at least one service or activity connected to the Start Node." + "\"");
+            Assert.IsTrue(result.Contains(GlobalConstants.NoStartNodeError), result + " does not contain: \"" + GlobalConstants.NoStartNodeError + "\"");
         }
 
         [TestMethod]
