@@ -105,7 +105,6 @@ namespace Dev2.Activities
             return _debugInputs;
         }
 
-
         private void AddDebugFormDataInputs(IEnumerable<IFormDataParameters> conditions)
         {
             var allErrors = new ErrorResultTO();
