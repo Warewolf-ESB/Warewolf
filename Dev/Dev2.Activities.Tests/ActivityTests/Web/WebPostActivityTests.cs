@@ -80,8 +80,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             //------------Assert Results-------------------------
             Assert.AreEqual(1, attributes.Length);
             var toolDescriptor = attributes[0] as ToolDescriptorInfo;
-            Assert.IsNotNull(toolDescriptor);
-            Assert.AreEqual("POST", toolDescriptor.Name);
+            Assert.IsNull(toolDescriptor, "Should now be null as the tool has been deplicated");
         }
 
         [TestMethod]
