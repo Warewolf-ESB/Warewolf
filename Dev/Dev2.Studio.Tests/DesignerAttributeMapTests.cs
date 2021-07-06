@@ -122,6 +122,7 @@ using Dev2.Activities.Designers2.SuspendExecution;
 using Dev2.Activities.Designers2.Web_Post;
 using Dev2.Activities.Designers2.WebGet;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Dev2.Activities.Designers2.Web_Post_New;
 
 namespace Dev2.Studio.Tests.AppResources.Converters
 {
@@ -138,7 +139,7 @@ namespace Dev2.Studio.Tests.AppResources.Converters
             //-------------------Act-------------------------
             //-------------------Assert----------------------
             Assert.AreEqual(_expectedDeprecated.Count, deprecatedDesignerAttributes.Count);
-            Assert.AreEqual(4, deprecatedDesignerAttributes.Count);
+            Assert.AreEqual(5, deprecatedDesignerAttributes.Count);
 
             foreach (var attribute in deprecatedDesignerAttributes)
             {
@@ -176,6 +177,7 @@ namespace Dev2.Studio.Tests.AppResources.Converters
             {typeof(DsfWebGetActivity), typeof(WebServiceGetViewModel)},
             {typeof(DsfWebPutActivity), typeof(WebServicePutViewModel)},
             {typeof(DsfWebPostActivity), typeof(WebServicePostViewModel)},
+            {typeof(WebPostActivity), typeof(WebPostActivityViewModel)},
         };
 
         private readonly Dictionary<Type, Type> _expectedExisting = new Dictionary<Type, Type>
@@ -247,7 +249,7 @@ namespace Dev2.Studio.Tests.AppResources.Converters
             {typeof(DsfEnhancedDotNetDllActivity), typeof(DotNetDllEnhancedViewModel)},
             {typeof(DsfComDllActivity), typeof(ComDllViewModel)},
             {typeof(WebGetActivity), typeof(WebGetActivityViewModel)},
-            {typeof(WebPostActivity), typeof(WebPostActivityViewModel)},
+            {typeof(WebPostActivityNew), typeof(WebPostActivityViewModelNew)},
             {typeof(DsfWebDeleteActivity), typeof(WebServiceDeleteViewModel)},
             {typeof(WebPutActivity), typeof(WebPutActivityViewModel)},
             {typeof(DsfDropBoxUploadActivity), typeof(DropBoxUploadViewModel)},
