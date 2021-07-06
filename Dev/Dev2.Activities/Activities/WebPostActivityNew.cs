@@ -11,7 +11,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Text;
 using Dev2.Activities.Debug;
 using Dev2.Common;
@@ -43,9 +42,9 @@ namespace Dev2.Activities
         public IList<INameValue> Headers { get; set; }
         
         public IList<INameValue> Settings { get; set; }
-        public bool IsFormDataChecked => Convert.ToBoolean(this.Settings?.FirstOrDefault(s => s.Name == nameof(IsFormDataChecked))?.Value);
-        public bool IsManualChecked => Convert.ToBoolean(this.Settings?.FirstOrDefault(s => s.Name == nameof(IsManualChecked))?.Value);
-        public bool IsUrlEncodedChecked => Convert.ToBoolean(this.Settings?.FirstOrDefault(s => s.Name == nameof(IsUrlEncodedChecked))?.Value);
+        public bool IsFormDataChecked => Convert.ToBoolean(Settings?.FirstOrDefault(s => s.Name == nameof(IsFormDataChecked))?.Value);
+        public bool IsManualChecked => Convert.ToBoolean(Settings?.FirstOrDefault(s => s.Name == nameof(IsManualChecked))?.Value);
+        public bool IsUrlEncodedChecked => Convert.ToBoolean(Settings?.FirstOrDefault(s => s.Name == nameof(IsUrlEncodedChecked))?.Value);
         public IList<FormDataConditionExpression> Conditions { get; set; }
         public string QueryString { get; set; }
         public IOutputDescription OutputDescription { get; set; }
@@ -167,19 +166,19 @@ namespace Dev2.Activities
                 if(isManualChecked || isFormDataChecked || isUrlEncodedChecked)
                 {
                     var webPostOptions = new WebPostOptions
-                                 {
-                                     Head = head,
-                                     Headers = head?.Select(h => h.Name + ":" + h.Value)?.ToArray() ?? new string[0],
-                                     Method = WebRequestMethod.Post,
-                                     Parameters = conditions,
-                                     Query = query,
-                                     Source = source,
-                                     PostData = postData,
-                                     Settings = Settings,
-                                     IsManualChecked = isManualChecked,
-                                     IsFormDataChecked = isFormDataChecked,
-                                     IsUrlEncodedChecked = isUrlEncodedChecked
-                                 };
+                    {
+                        Head = head,
+                        Headers = head?.Select(h => h.Name + ":" + h.Value)?.ToArray() ?? new string[0],
+                        Method = WebRequestMethod.Post,
+                        Parameters = conditions,
+                        Query = query,
+                        Source = source,
+                        PostData = postData,
+                        Settings = Settings,
+                        IsManualChecked = isManualChecked,
+                        IsFormDataChecked = isFormDataChecked,
+                        IsUrlEncodedChecked = isUrlEncodedChecked
+                    };
                     
                     webRequestResult = PerformWebPostRequest(webPostOptions);
                 }
@@ -222,7 +221,8 @@ namespace Dev2.Activities
                 {
                     var headersHelper = new WebRequestHeadersHelper(notEvaluatedHeaders: Headers, evaluatedHeaders: head);
                     head = headersHelper.CalculateFormDataContentType();
-                }else if(IsUrlEncodedChecked)
+                }
+                else if(IsUrlEncodedChecked)
                 {
                     var headersHelper = new WebRequestHeadersHelper(notEvaluatedHeaders: Headers, evaluatedHeaders: head);
                     head = headersHelper.CalculateUrlEncodedContentType();
@@ -268,38 +268,6 @@ namespace Dev2.Activities
             }
 
             return (head, query, postData, conditions);
-        }
-
-        //PBI: Can there (WebSource.CreateWebClient() and WebPostActivity.CreateClient()) methods be merged?
-        public static WebClient CreateClient(IEnumerable<INameValue> head, string query, WebSource source)
-        {
-            //PBI: do we need to declate this delegate here and again in WebSources.CreateWebClient() method?
-            ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => true;
-            var webclient = new WebClient();
-            if (head != null)
-            {
-                foreach (var nameValue in head)
-                {
-                    if (!string.IsNullOrEmpty(nameValue.Name) && !String.IsNullOrEmpty(nameValue.Value))
-                    {
-                        webclient.Headers.Add(nameValue.Name, nameValue.Value);
-                    }
-                }
-            }
-
-            if (source.AuthenticationType == AuthenticationType.User)
-            {
-                webclient.Credentials = new NetworkCredential(source.UserName, source.Password);
-            }
-
-            webclient.Headers.Add("user-agent", GlobalConstants.UserAgentString);
-            var address = source.Address;
-            if (query != null)
-            {
-                address += query;
-            }
-            webclient.BaseAddress = address;
-            return webclient;
         }
 
         public bool Equals(WebPostActivityNew other)
