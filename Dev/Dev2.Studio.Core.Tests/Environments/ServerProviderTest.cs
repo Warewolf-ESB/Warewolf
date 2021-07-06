@@ -29,7 +29,7 @@ namespace Dev2.Core.Tests.Environments
         [ClassInitialize]
         public static void MyClassInitialize(TestContext testContext)
         {
-            EnviromentRepositoryTest.MyClassInitialize(testContext);
+            EnvironmentRepositoryTest.MyClassInitialize(testContext);
         }
 
         [TestInitialize]
@@ -79,31 +79,7 @@ namespace Dev2.Core.Tests.Environments
 
         static void TestLoad(bool useParameterless)
         {
-            var targetEnv = EnviromentRepositoryTest.CreateMockEnvironment(EnviromentRepositoryTest.Server1Source);
-            var repository = new Mock<IServerRepository>();
-            repository.Setup(r => r.All()).Returns(new[] { targetEnv.Object });
-            CustomContainer.DeRegister<IServerRepository>();
-            CustomContainer.Register(repository.Object);
-            if (useParameterless)
-            {
-                
-                ServerRepository.Instance.IsLoaded = true;  // so that we don't connect to a server!
-                ServerRepository.Instance.Clear();
-                ServerRepository.Instance.Save(targetEnv.Object);
-            }
-
-            var provider = new TestServerProvider();
-            var servers = useParameterless ? provider.Load() : provider.Load(repository.Object);
-
-            Assert.AreEqual(1, servers.Count);
-
-            Assert.AreSame(servers[0], targetEnv.Object);
-            Assert.AreEqual(servers[0].EnvironmentID, targetEnv.Object.EnvironmentID);
-            Assert.AreEqual(servers[0].Name, targetEnv.Object.Name);
-            // remove the last two properties from mock ;)
-        }
-
-        #endregion
+            var targetEnv = EnvironmentRepositoryTest.CreateMockEnvironment(EnvironmentRepositoryTest
 
     }
 }
