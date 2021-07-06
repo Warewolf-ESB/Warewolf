@@ -40,7 +40,7 @@ namespace Dev2.Core.Tests.Environments
     /// Summary description for EnvironmentRepositoryTest
     /// </summary>
     [TestClass]
-    public class EnviromentRepositoryTest
+    public class EnvironmentRepositoryTest
     {
         static readonly object TestLock = new object();
 
