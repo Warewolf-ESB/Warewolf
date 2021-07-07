@@ -544,6 +544,7 @@ namespace Dev2.Network
             }
             catch (Exception e)
             {
+                Dev2Logger.Debug("************Special Debug message***********", "Warewolf Debug");
                 Dev2Logger.Error(e, "Warewolf Error");
             }
             return result;
