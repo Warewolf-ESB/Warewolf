@@ -1430,10 +1430,7 @@ Global
 		{EEDC7A07-34BB-49B8-AB14-AD43613EC956}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EEDC7A07-34BB-49B8-AB14-AD43613EC956}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{EEDC7A07-34BB-49B8-AB14-AD43613EC956}.Debug|x86.Build.0 = Debug|Any CPU
-		{EEDC7A07-34BB-49B8-AB14-AD43613EC956}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EEDC7A07-34BB-49B8-AB14-AD43613EC956}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EEDC7A07-34BB-49B8-AB14-AD43613EC956}.Release|x86.ActiveCfg = Release|Any CPU
-		{EEDC7A07-34BB-49B8-AB14-AD43613EC956}.Release|x86.Build.0 = Release|Any CPU
+		{EEDC7A07-34BB-49B8-AB14-AD43613EC956}.Release|Any CPU.ActiveCfg = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
