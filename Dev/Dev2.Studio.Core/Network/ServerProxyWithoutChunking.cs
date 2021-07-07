@@ -80,7 +80,7 @@ namespace Dev2.Network
             Principal = ClaimsPrincipal.Current;
             AppServerUri = new Uri(uriString);
             WebServerUri = new Uri(uriString.Replace("/dsf", ""));
-            Dev2Logger.Debug("***** Attempting Server Hub : " + uriString + " -> " + CredentialCache.DefaultNetworkCredentials.Domain + @"\" + Principal.Identity.Name, "Warewolf Debug");
+            Dev2Logger.Debug("***** Attempting Server Hub : " + uriString + " with credentials of type : " + credentials, "Warewolf Debug");
             HubConnection = new HubConnectionWrapper(uriString) { Credentials = credentials };
             HubConnection.Error += OnHubConnectionError;
             HubConnection.Closed += HubConnectionOnClosed;
