@@ -86,8 +86,8 @@ namespace Dev2.Network
             HubConnection.Error += OnHubConnectionError;
             HubConnection.Closed += HubConnectionOnClosed;
             HubConnection.StateChanged += HubConnectionStateChanged;
-            HubConnection.Start();
             InitializeEsbProxy();
+            HubConnection.Start();
             AsyncWorker = worker;
         }
 
