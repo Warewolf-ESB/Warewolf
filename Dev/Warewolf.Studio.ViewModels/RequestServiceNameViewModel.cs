@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -98,7 +98,7 @@ namespace Warewolf.Studio.ViewModels
         private readonly IEnvironmentConnection _lazyCon = CustomContainer.Get<IServerRepository>()?.ActiveServer?.Connection ?? ServerRepository.Instance.ActiveServer?.Connection;
         private ICommunicationController _communicationController = new CommunicationController { ServiceName = "DuplicateResourceService" };
 
-        private void CallDuplicateService()
+        private async void CallDuplicateService()
         {
             if (ExplorerItemViewModelRename() != null)
             {
@@ -108,9 +108,9 @@ namespace Warewolf.Studio.ViewModels
             try
             {
                 IsDuplicating = true;
-                SetupLazyCommunicationController();
+                SetupLazyCommunicationController(); 
 
-                var executeCommand = _communicationController.ExecuteCommand<ResourceCatalogDuplicateResult>(_lazyCon ?? _serverRepository.ActiveServer?.Connection, GlobalConstants.ServerWorkspaceID);
+                var executeCommand = await _communicationController.ExecuteCommandAsync<ResourceCatalogDuplicateResult>(_lazyCon ?? _serverRepository.ActiveServer?.Connection, GlobalConstants.ServerWorkspaceID);
                 var environmentViewModel = SingleEnvironmentExplorerViewModel.Environments.FirstOrDefault();
                 if (executeCommand == null)
                 {
@@ -149,7 +149,7 @@ namespace Warewolf.Studio.ViewModels
 
         private void ReloadServerEvents(ObservableCollection<IExplorerItemViewModel> childItems)
         {
-            ConnectControlSingleton.Instance.ReloadServer();
+            ConnectControlSingleton.Instance.ReloadServer(); 
             if (childItems != null)
             {
                 foreach (var childItem in childItems.Where(model => model.ResourceType == "Dev2Server"))
