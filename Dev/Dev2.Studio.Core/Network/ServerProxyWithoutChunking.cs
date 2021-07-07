@@ -618,21 +618,20 @@ namespace Dev2.Network
                         stopped = true;
                     }
                 };
-                do
+                while (true)
                 {
+                    Thread.Sleep(delay);
                     if (stopped)
                     {
+                        stopped = false;
                         delay *= multiplier;
                         if (delay > maxDelay)
                         {
                             delay = initialDelay;
                         }
                         HubConnection.Start();
-                        stopped = false;
                     }
-                    Thread.Sleep(delay);
                 }
-                while (true);
             });
             t.IsBackground = true;
             t.Start();
