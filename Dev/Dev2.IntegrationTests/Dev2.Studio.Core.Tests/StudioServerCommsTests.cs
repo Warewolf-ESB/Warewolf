@@ -48,12 +48,13 @@ namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests
 
 
         [TestMethod]
-        public void EnvironmentConnectionReconnectToServerExpecetedClientConnectionSuccessful()
+        public void EnvironmentConnectionReconnectToServerExpectedClientConnectionSuccessful()
         {
             var conn = CreateConnection();
 
             conn.ConnectAsync(Guid.Empty).Wait(60000);
             conn.Disconnect();
+            conn.HubConnection.Start();
             Thread.Sleep(100);
             conn.ConnectAsync(Guid.Empty).Wait(60000);
             Thread.Sleep(500);
