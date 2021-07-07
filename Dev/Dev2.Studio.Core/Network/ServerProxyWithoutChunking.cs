@@ -86,7 +86,6 @@ namespace Dev2.Network
             HubConnection.Error += OnHubConnectionError;
             HubConnection.Closed += HubConnectionOnClosed;
             HubConnection.StateChanged += HubConnectionStateChanged;
-            HubConnection.Start();
             InitializeEsbProxy();
             AsyncWorker = worker;
         }
@@ -177,7 +176,7 @@ namespace Dev2.Network
             {
                 return;
             }
-            HubConnection.Start();
+
             if (HubConnection.State != ConnectionStateWrapped.Disconnected)
             {
                 OnNetworkStateChanged(new NetworkStateEventArgs(NetworkState.Online, NetworkState.Offline));
@@ -206,7 +205,6 @@ namespace Dev2.Network
             switch (stateChange.NewState)
             {
                 case ConnectionStateWrapped.Connected:
-                    Dev2Logger.Debug("*********** Hub connection restored", "Warewolf Debug");
                     IsConnected = true;
                     IsConnecting = false;
                     UpdateIsAuthorized(true);
@@ -215,7 +213,6 @@ namespace Dev2.Network
 
                 case ConnectionStateWrapped.Connecting:
                 case ConnectionStateWrapped.Reconnecting:
-                    Dev2Logger.Debug("*********** Hub connection restoring", "Warewolf Debug");
                     IsConnected = false;
                     IsConnecting = true;
                     UpdateIsAuthorized(false);
@@ -578,6 +575,66 @@ namespace Dev2.Network
         public void Dispose()
         {
             Dispose(true);
+        }
+    }
+
+    class ServerProxyPersistentConnection : ServerProxyWithoutChunking
+    {
+        public ServerProxyPersistentConnection(Uri serverUri)
+            : base(serverUri)
+        {
+            HubConnection.Start();
+            StartHubConnectionWatchdogThread();
+        }
+
+        public ServerProxyPersistentConnection(string webAddress, string userName, string password)
+            : base(webAddress, userName, password)
+        {
+            HubConnection.Start();
+            StartHubConnectionWatchdogThread();
+        }
+
+        public ServerProxyPersistentConnection(string serverUri, ICredentials credentials, IAsyncWorker worker) 
+            : base(serverUri, credentials, worker)
+        {
+            HubConnection.Start();
+            StartHubConnectionWatchdogThread();
+        }
+
+        private void StartHubConnectionWatchdogThread()
+        {
+            var t = new Thread(() =>
+            {
+                const int initialDelay = 1;
+                const int multiplier = 2;
+                const int maxDelay = 60;
+                var delay = initialDelay;
+                bool stopped = false;
+
+                HubConnection.StateChanged += (stateChange) =>
+                {
+                    if (stateChange.NewState == ConnectionStateWrapped.Disconnected)
+                    {
+                        stopped = true;
+                    }
+                };
+                while (true)
+                {
+                    Thread.Sleep(delay);
+                    if (stopped)
+                    {
+                        stopped = false;
+                        delay *= multiplier;
+                        if (delay > maxDelay)
+                        {
+                            delay = initialDelay;
+                        }
+                        HubConnection.Start();
+                    }
+                }
+            });
+            t.IsBackground = true;
+            t.Start();
         }
     }
 
