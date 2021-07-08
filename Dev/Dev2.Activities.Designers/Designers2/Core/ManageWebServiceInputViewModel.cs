@@ -328,7 +328,7 @@ namespace Dev2.Activities.Designers2.Core
 
             if (!emptyRows.Any())
             {
-                var conditionExpression = new FormDataOptionConditionExpression();
+                var conditionExpression = new FormDataOptionConditionExpression(){ IsMultiPart = !IsUrlEncodedChecked};
                 var list = new List<IOption>(_conditionExpressionOptions.Options)
                 {
                     conditionExpression

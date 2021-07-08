@@ -194,7 +194,7 @@ namespace Dev2.Runtime.ServiceModel
             }
 
             var formDataParameters = new List<IFormDataParameters>();
-            if (service.IsFormDataChecked && service.FormDataParameters != null)
+            if ((service.IsFormDataChecked || service.IsUrlEncodedChecked) && service.FormDataParameters != null)
             {
 
                 var headersHelper = new WebRequestHeadersHelper(service.Headers, evaluatedHeaders);
