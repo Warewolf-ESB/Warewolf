@@ -1528,6 +1528,37 @@
                          Padding="1,0,1,1">
                     </ListBox>
                 </Grid>
+                
+                <Grid Grid.Row="2" HorizontalAlignment="Stretch" Margin="{StaticResource ControlBorderTop}" Visibility="{Binding IsUrlEncodedChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="25" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <Border Grid.Column="0" BorderThickness="1,1,1,0" BorderBrush="{StaticResource ListBoxBorderBrush}">
+                            <TextBlock Text="#" HorizontalAlignment="Center" />
+                        </Border>
+                        <Border Grid.Column="1" BorderThickness="0,1,1,0" BorderBrush="{StaticResource ListBoxBorderBrush}">
+                            <TextBlock Text="Key" HorizontalAlignment="Center" />
+                        </Border>
+                        <Border Grid.Column="2" BorderThickness="0,1,1,0" BorderBrush="{StaticResource ListBoxBorderBrush}">
+                            <TextBlock Text="Value" HorizontalAlignment="Center" />
+                        </Border>
+                    </Grid>
+                    <ListBox x:Name="UrlEncodedConditionsListBox"
+                         Grid.Row="1"
+                         ItemsSource="{Binding ConditionExpressionOptions, Converter={StaticResource OptionViewConverter}}"
+                         ItemTemplateSelector="{StaticResource OptionViewDataTemplateSelector}"
+                         ItemContainerStyle="{StaticResource ListBoxItemNoBorderStyle}"
+                         Padding="1,0,1,1">
+                    </ListBox>
+                </Grid>
 
                 <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="{StaticResource ControlBorderTop}">
                     <fa:ImageAwesome Width="14" 

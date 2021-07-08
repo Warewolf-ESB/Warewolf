@@ -17,12 +17,14 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using Caliburn.Micro;
 using Dev2.Activities.Designers2.Web_Post;
 using Dev2.Activities.Designers2.Web_Post_New;
 using Dev2.Activities.Utils;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.ToolBase;
+using Dev2.Network;
 using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.Practices.ObjectBuilder2;
 using Warewolf.Data.Options;
@@ -219,12 +221,19 @@ namespace Dev2.Activities.Designers2.Core
         {
             get
             {
-                var settings = _modelItem.GetProperty<IList<INameValue>>("Settings");
-                return Convert.ToBoolean(settings?.FirstOrDefault(s => s.Name == "IsUrlEncodedChecked")?.Value);
+                if(ViewModel != null && ViewModel.GetType() == typeof(WebPostActivityViewModelNew))
+                {
+                    var settings = _modelItem.GetProperty<IList<INameValue>>("Settings");
+                    return Convert.ToBoolean(settings?.FirstOrDefault(s => s.Name == "IsUrlEncodedChecked")?.Value);
+                }
+                return false;
             }
             set
             {
-                UpdateSettings("IsUrlEncodedChecked", value);
+                if(ViewModel != null && ViewModel.GetType() == typeof(WebPostActivityViewModelNew))
+                {
+                    UpdateSettings("IsUrlEncodedChecked", value);
+                }
             }
         }
 

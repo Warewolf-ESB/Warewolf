@@ -506,14 +506,14 @@ namespace Dev2.Activities.Designers2.Web_Post_New
                 PostData = InputArea.PostData,
                 IsManualChecked = InputArea.IsManualChecked,
                 IsFormDataChecked = InputArea.IsFormDataChecked,
+                IsUrlEncodedChecked =  InputArea.IsUrlEncodedChecked,
                 Headers = InputArea.Headers.Select(value => new NameValue { Name = value.Name, Value = value.Value } as INameValue).ToList(),
-                Settings = InputArea.Settings.Select(value => new NameValue { Name = value.Name, Value = value.Value } as INameValue).ToList(),
+                Settings = InputArea.Settings?.Select(value => new NameValue { Name = value.Name, Value = value.Value } as INameValue).ToList(),
                 FormDataParameters = BuildFormDataParameters(),
                 QueryString = InputArea.QueryString,
                 RequestUrl = SourceRegion.SelectedSource.HostName,
                 Response = "",
                 Method = WebRequestMethod.Post
-
             };
             return webServiceDefinition;
         }
