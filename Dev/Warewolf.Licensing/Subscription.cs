@@ -57,6 +57,7 @@ namespace Warewolf.Licensing
                 .CustomerFirstName(subscriptionData.CustomerFirstName)
                 .CustomerLastName(subscriptionData.CustomerLastName)
                 .CustomerEmail(subscriptionData.CustomerEmail)
+                .PlanQuantity(subscriptionData.NoOfCores)
                 .Request();
             return GenerateLicenseData(result);
         }
@@ -72,6 +73,7 @@ namespace Warewolf.Licensing
                 CustomerId = subscription.CustomerId,
                 SubscriptionId = subscription.Id,
                 PlanId = subscription.PlanId,
+                NoOfCores = subscription.PlanQuantity,
                 Status = (SubscriptionStatus)subscription.Status,
                 CustomerFirstName = customer.FirstName,
                 CustomerLastName = customer.LastName,
