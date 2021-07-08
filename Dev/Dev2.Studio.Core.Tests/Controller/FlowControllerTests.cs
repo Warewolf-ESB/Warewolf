@@ -36,7 +36,7 @@ namespace Dev2.Core.Tests
             var popupController = new Mock<IPopupController>();
             CustomContainer.Register(popupController.Object);
 
-            var env = EnviromentRepositoryTest.CreateMockEnvironment();
+            var env = EnvironmentRepositoryTest.CreateMockEnvironment();
 
             var properties = new Dictionary<string, Mock<ModelProperty>>();
             var propertyCollection = new Mock<ModelPropertyCollection>();
@@ -103,7 +103,7 @@ namespace Dev2.Core.Tests
             var popupController = new Mock<IPopupController>();
             CustomContainer.Register(popupController.Object);
 
-            var env = EnviromentRepositoryTest.CreateMockEnvironment();
+            var env = EnvironmentRepositoryTest.CreateMockEnvironment();
 
             var properties = new Dictionary<string, Mock<ModelProperty>>();
             var propertyCollection = new Mock<ModelPropertyCollection>();
@@ -169,7 +169,7 @@ namespace Dev2.Core.Tests
             var popupController = new Mock<IPopupController>();
             CustomContainer.Register(popupController.Object);
 
-            var env = EnviromentRepositoryTest.CreateMockEnvironment();
+            var env = EnvironmentRepositoryTest.CreateMockEnvironment();
 
             var properties = new Dictionary<string, Mock<ModelProperty>>();
             var propertyCollection = new Mock<ModelPropertyCollection>();
