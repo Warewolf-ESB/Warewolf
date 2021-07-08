@@ -136,7 +136,7 @@ namespace Dev2.Runtime.WebServer.Executor
                 {
                     if (_serviceTestExecutor == null)
                     {
-                        _serviceTestExecutor = new ServiceTestExecutor(serviceName, user, _workspaceGuid, _serializer, _dataObject);
+                        _serviceTestExecutor = new ServiceTestExecutor();
                     }
                     return ExecuteAsTest(user);
                 }
