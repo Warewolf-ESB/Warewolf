@@ -66,7 +66,7 @@ namespace Warewolf.Trigger.Queue.Tests
             CustomContainer.Register(connectControlSingleton.Object);
             CustomContainer.Register(explorerTooltips.Object);
 
-            var targetEnv = EnviromentRepositoryTest.CreateMockEnvironment(EnviromentRepositoryTest.Server1Source);
+            var targetEnv = EnvironmentRepositoryTest.CreateMockEnvironment(EnvironmentRepositoryTest.Server1Source);
             var serverRepo = new Mock<IServerRepository>();
             serverRepo.Setup(r => r.All()).Returns(new[] { targetEnv.Object });
             CustomContainer.Register(serverRepo.Object);

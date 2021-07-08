@@ -916,7 +916,7 @@ namespace BusinessDesignStudio.Unit.Tests
         [TestMethod]
         public void NonExistantWorkFlowService_OnDelete_Expected_Failure()
         {
-            var env = EnviromentRepositoryTest.CreateMockEnvironment(EnviromentRepositoryTest.Server1Source);
+            var env = EnvironmentRepositoryTest.CreateMockEnvironment(EnvironmentRepositoryTest.Server1Source);
             var myRepo = new ResourceRepository(env.Object);
             var myItem = new ResourceModel(env.Object);
 
@@ -927,7 +927,7 @@ namespace BusinessDesignStudio.Unit.Tests
         [TestMethod]
         public void NonExistantWorkFlowService_DeleteFromWorkspace_Expected_Failure()
         {
-            var env = EnviromentRepositoryTest.CreateMockEnvironment(EnviromentRepositoryTest.Server1Source);
+            var env = EnvironmentRepositoryTest.CreateMockEnvironment(EnvironmentRepositoryTest.Server1Source);
             var myRepo = new ResourceRepository(env.Object);
             var myItem = new ResourceModel(env.Object);
 
@@ -939,7 +939,7 @@ namespace BusinessDesignStudio.Unit.Tests
         [TestMethod]
         public void NullResource_DeleteFromWorkspace_Expected_Failure()
         {
-            var env = EnviromentRepositoryTest.CreateMockEnvironment(EnviromentRepositoryTest.Server1Source);
+            var env = EnvironmentRepositoryTest.CreateMockEnvironment(EnvironmentRepositoryTest.Server1Source);
             var myRepo = new ResourceRepository(env.Object);
 
             var actual = myRepo.DeleteResourceFromWorkspace(null);
@@ -1366,14 +1366,14 @@ namespace BusinessDesignStudio.Unit.Tests
         [TestMethod]
         public void FindResourcesByID_With_NonNullParameters_Expected_ReturnsNonEmptyList()
         {
-            var servers = new List<string> {EnviromentRepositoryTest.Server1ID};
+            var servers = new List<string> {EnvironmentRepositoryTest.Server1ID};
             var resourceRepository = GetResourceRepository();
 
-            var res = new SerializableResource {ResourceID = EnviromentRepositoryTest.Server2ID, ResourceName = "Resource"};
+            var res = new SerializableResource {ResourceID = EnvironmentRepositoryTest.Server2ID, ResourceName = "Resource"};
             var resList = new List<SerializableResource> {res};
             var src = JsonConvert.SerializeObject(resList);
 
-            var env = EnviromentRepositoryTest.CreateMockEnvironment(true, src);
+            var env = EnvironmentRepositoryTest.CreateMockEnvironment(true, src);
 
             var result = resourceRepository.FindResourcesByID(env.Object, servers, ResourceType.Source);
 
@@ -1836,7 +1836,7 @@ namespace BusinessDesignStudio.Unit.Tests
             var resList = new List<EmailSource> {res};
             var src = JsonConvert.SerializeObject(resList);
 
-            var env = EnviromentRepositoryTest.CreateMockEnvironment(true, src);
+            var env = EnvironmentRepositoryTest.CreateMockEnvironment(true, src);
             var resourceRepository = GetResourceRepository();
             var result = resourceRepository.FindSourcesByType<EmailSource>(env.Object, enSourceType.EmailSource);
 
@@ -1851,7 +1851,7 @@ namespace BusinessDesignStudio.Unit.Tests
             var res = new DropBoxSource() {ResourceID = Guid.NewGuid()};
             var resList = new List<DropBoxSource> {res};
             var src = JsonConvert.SerializeObject(resList);
-            var env = EnviromentRepositoryTest.CreateMockEnvironment(true, src);
+            var env = EnvironmentRepositoryTest.CreateMockEnvironment(true, src);
             var resourceRepository = GetResourceRepository();
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
