@@ -253,12 +253,10 @@ namespace Dev2
                     }
 
                     LogWarewolfVersion();
-#if DEBUG
                     if (EnvironmentVariables.IsServerOnline)
                     {
                         SetAsStarted();
                     }
-#endif
                 }
                 catch (Exception e)
                 {
@@ -424,8 +422,6 @@ namespace Dev2
             }
         }
 
-#if DEBUG
-
         static void SetAsStarted()
         {
             try
@@ -443,7 +439,6 @@ namespace Dev2
                 Dev2Logger.Error(err, GlobalConstants.WarewolfError);
             }
         }
-#endif
     }
 
     class Writer : IWriter

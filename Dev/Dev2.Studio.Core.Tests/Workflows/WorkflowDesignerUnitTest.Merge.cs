@@ -33,7 +33,7 @@ namespace Dev2.Core.Tests.Workflows
             CustomContainer.Register(serverRepo.Object);
             var repo = new Mock<IResourceRepository>();
             repo.Setup(repository => repository.SaveToServer(It.IsAny<IResourceModel>(), It.IsAny<string>())).Verifiable();
-            var env = EnviromentRepositoryTest.CreateMockEnvironment();
+            var env = EnvironmentRepositoryTest.CreateMockEnvironment();
             env.Setup(e => e.ResourceRepository).Returns(repo.Object);
 
             var crm = new Mock<IContextualResourceModel>();
