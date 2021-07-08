@@ -11,23 +11,20 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Text;
 using Dev2.Activities.Debug;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.Graph;
-using Dev2.Common.Interfaces.Toolbox;
-using Dev2.Data.Settings;
 using Dev2.Data.TO;
+using Dev2.Data.Util;
 using Dev2.Diagnostics;
 using Dev2.Interfaces;
 using Dev2.Runtime.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
 using Newtonsoft.Json;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
-using Warewolf.Core;
 using Warewolf.Data.Options;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
@@ -184,6 +181,7 @@ namespace Dev2.Activities
                     IsObject = IsObject,
                     ObjectName = ObjectName
                 };
+                response = Scrubber.Scrub(response);
                 ResponseManager.PushResponseIntoEnvironment(response, update, dataObject);
             }
         }
@@ -250,36 +248,6 @@ namespace Dev2.Activities
         protected virtual string PerformFormDataWebPostRequest(IWebSource source, WebRequestMethod method, string query, IEnumerable<INameValue> head, IEnumerable<IFormDataParameters> parameters)
         {
             return WebSources.Execute(source, method, head.Select(h => h.Name + ":" + h.Value).ToArray(), query, isNoneChecked: false, isFormDataChecked: true, data: string.Empty, throwError: true, out _errorsTo, parameters);
-        }
-
-        public static WebClient CreateClient(IEnumerable<INameValue> head, string query, WebSource source)
-        {
-            ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => true;
-            var webclient = new WebClient();
-            if (head != null)
-            {
-                foreach (var nameValue in head)
-                {
-                    if (!string.IsNullOrEmpty(nameValue.Name) && !String.IsNullOrEmpty(nameValue.Value))
-                    {
-                        webclient.Headers.Add(nameValue.Name, nameValue.Value);
-                    }
-                }
-            }
-
-            if (source.AuthenticationType == AuthenticationType.User)
-            {
-                webclient.Credentials = new NetworkCredential(source.UserName, source.Password);
-            }
-
-            webclient.Headers.Add("user-agent", GlobalConstants.UserAgentString);
-            var address = source.Address;
-            if (query != null)
-            {
-                address += query;
-            }
-            webclient.BaseAddress = address;
-            return webclient;
         }
 
         public bool Equals(WebPostActivity other)
