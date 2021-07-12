@@ -26,7 +26,7 @@ namespace Warewolf.Licensing
                 if(subscriptionData.MachineName != machineName)
                     continue;
                 var subscription = RetrievePlan(customer.Id);
-                if(subscription.Status.ToString() == "Active")
+                if(subscription.Status == SubscriptionStatus.Active || subscription.Status == SubscriptionStatus.InTrial)
                 {
                     return true;
                 }
