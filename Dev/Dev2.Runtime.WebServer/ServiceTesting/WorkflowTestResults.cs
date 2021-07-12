@@ -37,16 +37,31 @@ namespace Dev2.Runtime.WebServer
             {
                 OldTestName = result.OldTestName,
                 TestName = result.TestName,
-                TestPassed = result.TestPassed,
-                TestFailing = result.TestFailing,
-                TestInvalid = result.TestInvalid,
+                TestInvalid = IsTestInValid(result),
+                TestPassed = IsTestPassed(result),
+                TestFailing = IsTestFailing(result),
                 Result = new TestRunResult
                 {
                     TestName = result.TestName,
-                    Message = string.IsNullOrWhiteSpace(result.FailureMessage) ? result.ErrorContainsText : result.FailureMessage,
-                    RunTestResult = result.TestFailing ? RunResult.TestFailed : RunResult.TestPassed,
+                    Message = result.TestInvalid ? "Test has no selected nodes" : result.FailureMessage,
+                    RunTestResult = result.TestInvalid ? RunResult.TestInvalid : result.TestFailing ? RunResult.TestFailed : RunResult.TestPassed,
                 }
             });
+        }
+
+        private static bool IsTestFailing(IServiceTestModelTO test)
+        {
+            return test.TestFailing = test.TestInvalid is false && test.TestPassed is false;
+        }
+
+        private static bool IsTestPassed(IServiceTestModelTO test)
+        {
+            return test.TestPassed = test.TestInvalid is false && test.TestFailing is false;
+        }
+
+        private static bool IsTestInValid(IServiceTestModelTO test)
+        {
+            return test.TestInvalid = test.TestSteps is null || test.TestSteps.Count is 0;
         }
     }
 }
