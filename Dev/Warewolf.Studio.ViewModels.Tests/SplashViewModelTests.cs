@@ -302,7 +302,22 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(expectedValue, value);
             Assert.IsTrue(_changedProperties.Contains("StudioVersion"));
         }
+        [TestMethod]
+        [TestCategory(nameof(SplashViewModel))]
+        public void SplashViewModel_TestWarewolfLicense()
+        {
+            //arrange
+            var expectedValue = "someResourceName";
+            _changedProperties.Clear();
 
+            //act
+            _target.WarewolfLicense = expectedValue;
+            var value = _target.WarewolfLicense;
+
+            //assert
+            Assert.AreEqual(expectedValue, value);
+            Assert.IsTrue(_changedProperties.Contains("WarewolfLicense"));
+        }
         [TestMethod]
         [Timeout(100)]
         [TestCategory(nameof(SplashViewModel))]

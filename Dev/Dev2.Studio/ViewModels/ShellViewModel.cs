@@ -727,7 +727,7 @@ namespace Dev2.Studio.ViewModels
             var splashViewModel = new SplashViewModel(ActiveServer, new ExternalProcessExecutor());
             var splashPage = new SplashPage {DataContext = splashViewModel};
             ISplashView splashView = splashPage;
-            splashViewModel.ShowServerStudioVersion();
+            splashViewModel.ShowSplashScreenInformation();
             splashView.Show(true);
         }
 
