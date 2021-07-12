@@ -85,7 +85,14 @@ namespace Warewolf.Licensing
             }
             return _subscription.SubscriptionExists(subscriptionData);
         }
-
+        public bool SubscriptionExistsForMachine(ISubscriptionData subscriptionData)
+        {
+            if (!string.IsNullOrEmpty(subscriptionData.SubscriptionSiteName) || !string.IsNullOrEmpty(subscriptionData.SubscriptionKey))
+            {
+                ApiConfig.Configure(subscriptionData.SubscriptionSiteName, subscriptionData.SubscriptionKey);
+            }
+            return _subscription.SubscriptionExistsForMachine(subscriptionData);
+        }
         private static ISubscriptionData DefaultLicenseData()
         {
             var licenseData = new SubscriptionData

@@ -223,5 +223,32 @@ namespace Warewolf.LicencingTests
             var resultData = license.SubscriptionExists(subscriptionData);
             Assert.IsTrue(resultData);
         }
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(WarewolfLicense))]
+        public void WarewolfLicense_Subscription_SubscriptionExistsForMachine_ReturnsTrue()
+        {
+            var subscriptionData = GetSubscriptionData();
+            subscriptionData.CustomerEmail = "test.test@dev2.co.za";
+            subscriptionData.CustomerFirstName = "test";
+            subscriptionData.CustomerLastName = "test";
+            subscriptionData.MachineName = "321654";
+
+            var mockSubscriptionData = new Mock<ISubscriptionData>();
+            mockSubscriptionData.Setup(o => o.MachineName).Returns("321654");
+            mockSubscriptionData.Setup(o => o.CustomerFirstName).Returns("test");
+            mockSubscriptionData.Setup(o => o.CustomerLastName).Returns("test");
+            mockSubscriptionData.Setup(o => o.CustomerEmail).Returns("test.test@dev2.co.za");
+            mockSubscriptionData.Setup(o => o.SubscriptionId).Returns("16BjmNSXISIQjctO");
+            mockSubscriptionData.Setup(o => o.SubscriptionSiteName).Returns("16BjmNSXISIQjctO");
+            mockSubscriptionData.Setup(o => o.SubscriptionKey).Returns("test_VMxitsiobdAyth62k0DiqpAUKocG6sV3");
+
+            var mockSubscription = new Mock<ISubscription>();
+            mockSubscription.Setup(o => o.SubscriptionExistsForMachine(subscriptionData)).Returns(true);
+
+            var license = new WarewolfLicense(mockSubscription.Object);
+            var resultData = license.SubscriptionExistsForMachine(subscriptionData);
+            Assert.IsTrue(resultData);
+        }
     }
 }

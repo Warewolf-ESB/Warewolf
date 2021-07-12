@@ -486,5 +486,83 @@ namespace Dev2.Tests.Runtime.Services
             mockSerializer.Verify(o => o.Deserialize<SubscriptionData>(serializedSubsciptionData), Times.Once);
             mockSerializer.Verify(p => p.SerializeToBuilder(It.IsAny<ExecuteMessage>()), Times.Once);
         }
+
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(SaveSubscriptionData))]
+        public void SaveSubscriptionData_Execute_SubscriptionExistsForMachine_Fails()
+        {
+            //------------Setup for test--------------------------
+
+            var serializer = new Dev2JsonSerializer();
+            var workspaceMock = new Mock<IWorkspace>();
+            var machineName = "machineName";
+            var mockSubscriptionData = new Mock<ISubscriptionData>();
+            mockSubscriptionData.Setup(o => o.SubscriptionSiteName).Returns("16BjmNSXISIQjctO");
+            mockSubscriptionData.Setup(o => o.SubscriptionKey).Returns("test_VMxitsiobdAyth62k0DiqpAUKocG6sV3");
+
+            var subscriptionData = new SubscriptionData
+            {
+                PlanId = "developer",
+                NoOfCores = 1,
+                CustomerFirstName = "firstName",
+                CustomerLastName = "lastName",
+                CustomerEmail = "email@email.com",
+                MachineName = machineName
+            };
+            var serializedSubsciptionData = serializer.SerializeToBuilder(subscriptionData);
+
+            subscriptionData.SubscriptionKey = "16BjmNSXISIQjctO";
+            subscriptionData.SubscriptionSiteName = "test_VMxitsiobdAyth62k0DiqpAUKocG6sV3";
+            var subscriptionDataPlanCreated = new SubscriptionData
+            {
+                PlanId = "developer",
+                NoOfCores = 1,
+                CustomerFirstName = "firstName",
+                CustomerLastName = "lastName",
+                CustomerEmail = "email@email.com",
+                SubscriptionId = "asdsad",
+                CustomerId = "asdasdsd",
+                Status = SubscriptionStatus.Active,
+                IsLicensed = true,
+                SubscriptionSiteName = "16BjmNSXISIQjctO",
+                SubscriptionKey = "test_VMxitsiobdAyth62k0DiqpAUKocG6sV3",
+                MachineName = "machineName"
+            };
+
+            var values = new Dictionary<string, StringBuilder>
+            {
+                { Warewolf.Service.SaveSubscriptionData.SubscriptionData, serializedSubsciptionData }
+            };
+            var mockWarewolfLicense = new Mock<IWarewolfLicense>();
+            mockWarewolfLicense.Setup(o => o.CreatePlan(It.IsAny<ISubscriptionData>())).Returns(subscriptionDataPlanCreated);
+            mockWarewolfLicense.Setup(o => o.SubscriptionExists(subscriptionData)).Returns(false);
+            mockWarewolfLicense.Setup(o => o.SubscriptionExistsForMachine(subscriptionData)).Returns(true);
+            //------------Execute Test---------------------------
+            var mockSecurityProvider = new Mock<ISubscriptionProvider>();
+            mockSecurityProvider.Setup(o => o.SaveSubscriptionData(subscriptionDataPlanCreated));
+
+            var mockSerializer = new Mock<IBuilderSerializer>();
+            mockSerializer.Setup(o => o.Deserialize<SubscriptionData>(serializedSubsciptionData)).Returns(subscriptionData);
+
+            var expectedPassedResult = new StringBuilder("Passed");
+            mockSerializer.Setup(p => p.SerializeToBuilder(It.IsAny<ExecuteMessage>())).Returns(expectedPassedResult);
+
+            var saveSubscriptionData = new SaveSubscriptionData(
+                mockSerializer.Object,
+                mockWarewolfLicense.Object,
+                mockSecurityProvider.Object,
+                machineName);
+            var jsonResult = saveSubscriptionData.Execute(values, workspaceMock.Object);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(expectedPassedResult, jsonResult);
+
+            mockWarewolfLicense.Verify(o => o.CreatePlan(It.IsAny<ISubscriptionData>()), Times.Never);
+            mockWarewolfLicense.Verify(o => o.SubscriptionExists(It.IsAny<ISubscriptionData>()), Times.Once);
+            mockWarewolfLicense.Verify(o => o.SubscriptionExistsForMachine(It.IsAny<ISubscriptionData>()), Times.Once);
+            mockSecurityProvider.Verify(o => o.SaveSubscriptionData(subscriptionDataPlanCreated), Times.Never);
+            mockSerializer.Verify(o => o.Deserialize<SubscriptionData>(serializedSubsciptionData), Times.Once);
+            mockSerializer.Verify(p => p.SerializeToBuilder(It.IsAny<ExecuteMessage>()), Times.Once);
+        }
     }
 }

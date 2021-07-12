@@ -78,7 +78,11 @@ namespace Dev2.Runtime.ESB.Management.Services
                     result.SetMessage("A Subscription already exists for this Customer on the current machine. For help please contact support@warewolf.io");
                     return ReturnError(result);
                 }
-
+                if(string.IsNullOrEmpty(subscriptionData.SubscriptionId) && _warewolfLicense.SubscriptionExistsForMachine(subscriptionData))
+                {
+                    result.SetMessage("A Subscription already exists for the current machine. For help please contact support@warewolf.io");
+                    return ReturnError(result);
+                }
                 var resultData = string.IsNullOrEmpty(subscriptionData.SubscriptionId)
                     ? _warewolfLicense.CreatePlan(subscriptionData)
                     : _warewolfLicense.RetrievePlan(
