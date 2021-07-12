@@ -40,7 +40,7 @@ namespace Dev2.Core.Tests.Environments
     /// Summary description for EnvironmentRepositoryTest
     /// </summary>
     [TestClass]
-    public class EnviromentRepositoryTest
+    public class EnvironmentRepositoryTest
     {
         static readonly object TestLock = new object();
 
@@ -1084,10 +1084,8 @@ namespace Dev2.Core.Tests.Environments
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void CreateEnvironment_GivenEmptyUri_ShouldUseMachineName()
+        public void CreateEnvironment_GivenEmptyUri_ShouldUseTheUniversalLoopback()
         {
-
-
             var env = new Mock<IServer>();
             var con = new Mock<IEnvironmentConnection>();
             var repo = new Mock<IResourceRepository>();
@@ -1117,12 +1115,12 @@ namespace Dev2.Core.Tests.Environments
             var obj = new PrivateObject(instance, new PrivateType(typeof(ServerRepository)));
             var environmentModel = obj.Invoke("CreateEnvironmentModel", BindingFlags.NonPublic | BindingFlags.Static, new[] { typeof(Guid), typeof(Uri), typeof(string) }, new object[] { Guid.NewGuid(), new Uri("http://LOCALHOST"), "" }) as IServer;
 
-            Assert.IsTrue(environmentModel?.Connection.WebServerUri.AbsoluteUri.Contains(Environment.MachineName.ToLowerInvariant()) ?? false);
+            Assert.IsTrue(environmentModel?.Connection.WebServerUri.AbsoluteUri.Contains("localhost") ?? false);
         }
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void CreateEnvironment_GivenLocalHostIsEmpty_ShouldUseMachineName()
+        public void CreateEnvironment_GivenLocalHostIsEmpty_ShouldUseTheUniversalLoopback()
         {
             AppUsageStats.LocalHost = "";
             var env = new Mock<IServer>();
@@ -1154,8 +1152,8 @@ namespace Dev2.Core.Tests.Environments
             var obj = new PrivateObject(instance, new PrivateType(typeof(ServerRepository)));
             var environmentModel = obj.Invoke("CreateEnvironmentModel", BindingFlags.NonPublic | BindingFlags.Static, new[] { typeof(Guid), typeof(Uri), typeof(string) }, new object[] { Guid.NewGuid(), new Uri("http://LOCALHOST"), "" }) as IServer;
 
-            Assert.IsTrue(environmentModel?.Connection.WebServerUri.AbsoluteUri.Contains(Environment.MachineName.ToLowerInvariant()) ?? false);
-            Assert.AreEqual(new Uri($"http://{Environment.MachineName.ToLowerInvariant()}"), environmentModel?.Connection.WebServerUri);
+            Assert.IsTrue(environmentModel?.Connection.WebServerUri.AbsoluteUri.Contains("localhost") ?? false);
+            Assert.AreEqual(new Uri("http://localhost"), environmentModel?.Connection.WebServerUri);
         }
 
         #endregion

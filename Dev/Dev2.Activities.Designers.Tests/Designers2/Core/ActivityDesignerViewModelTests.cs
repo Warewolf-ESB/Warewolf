@@ -426,7 +426,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
 
             var repo = new Mock<IResourceRepository>();
             repo.Setup(r => r.FetchResourceDefinition(It.IsAny<IServer>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
-            var env = EnviromentRepositoryTest.CreateMockEnvironment();
+            var env = EnvironmentRepositoryTest.CreateMockEnvironment();
             env.Setup(e => e.ResourceRepository).Returns(repo.Object);
             var crm = new Mock<IContextualResourceModel>();
             crm.Setup(r => r.Environment).Returns(env.Object);

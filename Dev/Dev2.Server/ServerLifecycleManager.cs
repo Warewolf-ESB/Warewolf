@@ -30,8 +30,6 @@ using Dev2.Common.Interfaces.Wrappers;
 using System.Collections.Generic;
 using System.Management;
 using Dev2.Runtime.Interfaces;
-using Dev2.Studio.Utils;
-using System.Security.Claims;
 using System.Reflection;
 using System.Threading.Tasks;
 using Dev2.Activities;
@@ -56,7 +54,6 @@ namespace Dev2
         bool InteractiveMode { get; set; }
 
         Task Run(IEnumerable<IServerLifecycleWorker> initWorkers);
-
         void Stop(bool didBreak, int result, bool mute);
     }
 
@@ -498,8 +495,6 @@ namespace Dev2
             }
         }
 
-#if DEBUG
-
         static void SetAsStarted()
         {
             try
@@ -510,13 +505,13 @@ namespace Dev2
                 }
 
                 File.WriteAllText(".\\ServerStarted", DateTime.Now.Ticks.ToString(CultureInfo.InvariantCulture));
+
             }
-            catch(Exception err)
+            catch (Exception err)
             {
                 Dev2Logger.Error(err, GlobalConstants.WarewolfError);
             }
         }
-#endif
     }
 
     class Writer : IWriter
@@ -551,7 +546,7 @@ namespace Dev2
         {
             var ex = e;
             var errors = new StringBuilder();
-            while(ex != null)
+            while (ex != null)
             {
                 errors.AppendLine(ex.Message);
                 errors.AppendLine(ex.StackTrace);
