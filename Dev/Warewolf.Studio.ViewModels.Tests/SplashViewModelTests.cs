@@ -319,5 +319,30 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(expectedValue, value);
             Assert.IsTrue(_changedProperties.Contains("WarewolfLicense"));
         }
+
+        [TestMethod]
+       // [Timeout(100)]
+        [TestCategory(nameof(SplashViewModel))]
+        public void SplashViewModel_ShowSplashScreenInformation()
+        {
+            //arrange
+            var subscriptionData = new SubscriptionData
+            {
+                IsLicensed = true,
+                PlanId = "Developer",
+                Status = SubscriptionStatus.InTrial,
+            };
+            _serverMock.Setup(o => o.GetSubscriptionData()).Returns(subscriptionData);
+            _serverMock.Setup(o => o.GetServerVersion()).Returns("1.2.3.4");
+
+            //act
+            var splashViewModel = new SplashViewModel(_serverMock.Object, _externalProcessExecutorMock.Object);
+            splashViewModel.ShowSplashScreenInformation();
+
+            //assert
+            Assert.AreEqual("Developer: InTrial", splashViewModel.WarewolfLicense);
+            Assert.AreEqual("Version 0.0.0.0", splashViewModel.StudioVersion);
+            Assert.AreEqual("Version 1.2.3.4", splashViewModel.ServerVersion);
+        }
     }
 }
