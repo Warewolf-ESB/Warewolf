@@ -302,6 +302,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(expectedValue, value);
             Assert.IsTrue(_changedProperties.Contains("StudioVersion"));
         }
+
         [TestMethod]
         [TestCategory(nameof(SplashViewModel))]
         public void SplashViewModel_TestWarewolfLicense()
@@ -317,47 +318,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             //assert
             Assert.AreEqual(expectedValue, value);
             Assert.IsTrue(_changedProperties.Contains("WarewolfLicense"));
-        }
-        [TestMethod]
-        [Timeout(100)]
-        [TestCategory(nameof(SplashViewModel))]
-        public void SplashViewModel_TestWarewolfLicense_IsLicensed_True()
-        {
-            //arrange
-            var subscriptionData = new SubscriptionData
-            {
-                IsLicensed = true,
-                PlanId = "Developer",
-                Status = SubscriptionStatus.InTrial,
-            };
-            _serverMock.Setup(o => o.GetSubscriptionData()).Returns(subscriptionData);
-
-            //act
-            var splashViewModel = new SplashViewModel(_serverMock.Object, _externalProcessExecutorMock.Object);
-
-            //assert
-            Assert.AreEqual("Developer: InTrial", splashViewModel.WarewolfLicense);
-        }
-
-        [TestMethod]
-        [Timeout(100)]
-        [TestCategory(nameof(SplashViewModel))]
-        public void SplashViewModel_TestWarewolfLicense_IsLicensed_False()
-        {
-            //arrange
-            var subscriptionData = new SubscriptionData
-            {
-                IsLicensed = false,
-                PlanId = "Not Registered",
-                Status = SubscriptionStatus.NotActive,
-            };
-            _serverMock.Setup(o => o.GetSubscriptionData()).Returns(subscriptionData);
-
-            //act
-            var splashViewModel = new SplashViewModel(_serverMock.Object, _externalProcessExecutorMock.Object);
-
-            //assert
-            Assert.AreEqual("Not Registered: NotActive", splashViewModel.WarewolfLicense);
         }
     }
 }
