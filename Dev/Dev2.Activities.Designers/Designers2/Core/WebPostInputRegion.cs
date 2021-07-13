@@ -159,30 +159,30 @@ namespace Dev2.Activities.Designers2.Core
 
         public bool IsManualChecked
         {
-            get => GetBoolSetting("IsManualChecked");
+            get => GetBoolSetting(nameof(IsManualChecked));
             set
             {
-                UpdateBoolSetting("IsManualChecked", value);
+                UpdateBoolSetting(nameof(IsManualChecked), value);
                 OnPropertyChanged();
             }
         }
 
         public bool IsFormDataChecked
         {
-            get => GetBoolSetting("IsFormDataChecked");
+            get => GetBoolSetting(nameof(IsFormDataChecked));
             set
             {
-                UpdateBoolSetting("IsFormDataChecked", value);
+                UpdateBoolSetting(nameof(IsFormDataChecked), value);
                 OnPropertyChanged();
             }
         }
 
         public bool IsUrlEncodedChecked
         {
-            get => GetBoolSetting("IsUrlEncodedChecked");
+            get => GetBoolSetting(nameof(IsUrlEncodedChecked));
             set
             {
-                UpdateBoolSetting("IsUrlEncodedChecked", value);
+                UpdateBoolSetting(nameof(IsUrlEncodedChecked), value);
                 OnPropertyChanged();
             }
         }
@@ -206,7 +206,7 @@ namespace Dev2.Activities.Designers2.Core
                 }
             }
 
-            var variables = new[] { "IsManualChecked", "IsFormDataChecked", "IsUrlEncodedChecked" };
+            var variables = new[] { nameof(IsManualChecked), nameof(IsFormDataChecked), nameof(IsUrlEncodedChecked) };
             foreach(var variable in variables)
             {
                 if(newSettings.FirstOrDefault(n => n.Name == variable) == null)
@@ -217,11 +217,11 @@ namespace Dev2.Activities.Designers2.Core
 
             Settings = newSettings;
 
-            OnPropertyChanged("IsManualChecked");
-            OnPropertyChanged("IsFormDataChecked");
-            OnPropertyChanged("IsUrlEncodedChecked");
+            OnPropertyChanged(nameof(IsManualChecked));
+            OnPropertyChanged(nameof(IsFormDataChecked));
+            OnPropertyChanged(nameof(IsUrlEncodedChecked));
 
-            if(ViewModel != null && ViewModel.GetType() == typeof(WebPostActivityViewModelNew))
+            if(ViewModel?.GetType() == typeof(WebPostActivityViewModelNew))
             {
                 var list = new List<IOption>(((WebPostActivityViewModelNew)ViewModel).ConditionExpressionOptions.Options);
                 list.ForEach(c => ((FormDataOptionConditionExpression)c).IsMultiPart = !IsUrlEncodedChecked);
@@ -230,12 +230,12 @@ namespace Dev2.Activities.Designers2.Core
         
         private bool GetBoolSetting(string variableName)
         {
-            if(ViewModel != null && ViewModel.GetType() == typeof(WebPostActivityViewModelNew))
+            if(ViewModel?.GetType() == typeof(WebPostActivityViewModelNew))
             {
                 var settings = _modelItem.GetProperty<IList<INameValue>>("Settings");
                 return Convert.ToBoolean(settings?.FirstOrDefault(s => s.Name == variableName)?.Value);
             }
-            else if(_modelItem.GetProperty<bool?>(variableName) != null)
+            if(_modelItem.GetProperty<bool?>(variableName) != null)
             {
                 return _modelItem.GetProperty<bool>(variableName);
             }
