@@ -946,6 +946,7 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
+        [Timeout(60000)]
         public void WorksurfaceContextManager_ShowRemovePopup_UnRegisteredDialog()
         {
             //---------------Set up test pack-------------------

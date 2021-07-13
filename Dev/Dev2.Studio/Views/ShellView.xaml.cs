@@ -199,6 +199,27 @@ namespace Dev2.Studio.Views
                 shellViewModel?.MergeCommand.Execute(null);
             }
 
+            if (e.Key == Key.S && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
+            {
+                if (DataContext is ShellViewModel shellViewModel)
+                {
+                    if (!shellViewModel.SubscriptionData.IsLicensed)
+                    {
+                        var result = shellViewModel.PopupProvider.UnRegisteredDialog();
+                        if (result == MessageBoxResult.Yes)
+                        {
+                            // Take the user to the register steps.
+                            shellViewModel.Register();
+                            shellViewModel.UpdateStudioLicense(shellViewModel.SubscriptionData.IsLicensed);
+                        }
+                    }
+                    else
+                    {
+                        shellViewModel.SaveCommand.Execute(null);
+                    }
+                }
+            }
+
             if (e.Key == Key.F1)
             {
                 Process.Start(Warewolf.Studio.Resources.Languages.HelpText.WarewolfHelpURL);
