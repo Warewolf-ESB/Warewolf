@@ -442,6 +442,58 @@ namespace Dev2.Tests.Runtime.ServiceModel
             //------------Assert Results-------------------------
             Assert.AreEqual("[{\"address_components\":[{\"long_name\":\"Address:\",\"short_name\":\"Address:\",\"types\":[\"point_of_interest\",\"establishment\"]}]}]", service.JsonPathResult);
         }
+        
+        [TestMethod]
+        [Owner("Njabulo Nxele")]
+        [TestCategory(nameof(WebServices))]
+        public void WebServices_Execute_IsUrlEncodedChecked_WithVariablesInAllField_ShouldUseEvaluatedValues()
+        {
+            //------------Setup for test--------------------------
+            var service = CreateDummyWebService();
+            service.IsUrlEncodedChecked = true;
+            service.Headers = new List<INameValue> { new NameValue { Name = "Accept", Value = "[[test1]]" } };
+            service.FormDataParameters = new List<IFormDataParameters>
+            {
+               new TextParameter
+               {
+                   Key = "to",
+                   Value = "[[test4]]"
+               },
+               new FileParameter
+               {
+                   Key = "attachment",
+                   FileName = "[[test5]]",
+                   FileBase64 = "[[test6]]"
+               }
+            };
+            service.RequestBody = "[[test2]]";
+            service.RequestUrl = "[[test3]]";
+            service.Method.Parameters.Add(new MethodParameter { Name = "test1", Value = "val1" });
+            service.Method.Parameters.Add(new MethodParameter { Name = "test2", Value = "val2" });
+            service.Method.Parameters.Add(new MethodParameter { Name = "test3", Value = "val3" });
+            service.Method.Parameters.Add(new MethodParameter { Name = "test4", Value = "val4" });
+            service.Method.Parameters.Add(new MethodParameter { Name = "test5", Value = "val5" });
+            service.Method.Parameters.Add(new MethodParameter { Name = "test6", Value = "val6" });
+
+            //------------Execute Test---------------------------
+            WebServices.ExecuteRequest(service, false, out ErrorResultTO errors, DummyWebExecute);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("Accept:val1", _requestHeadersEvaluated[0]);
+            Assert.AreEqual(string.Empty, _requestBodyEvaluated, "the body must only be evaluated when the IsManualChecked");
+            Assert.AreEqual("val3", _requestUrlEvaluated);
+
+            Assert.IsTrue(_requestFormDataParametersEvaluated.Count() == 2);
+
+            var item1 = _requestFormDataParametersEvaluated.First() as TextParameter;
+            var item2 = _requestFormDataParametersEvaluated.ToArray()[1] as FileParameter;
+
+            Assert.AreEqual("to", item1.Key);
+            Assert.AreEqual("val4", item1.Value);
+
+            Assert.AreEqual("attachment", item2.Key);
+            Assert.AreEqual("val5", item2.FileName);
+            Assert.AreEqual("val6", item2.FileBase64);
+        }
 
         [TestMethod]
         [Owner("Siphamandla Dube")]

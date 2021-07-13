@@ -38,6 +38,7 @@ namespace Dev2.Runtime.ServiceModel
         public IWebRequestFactory WebRequestFactory { get; set; }
         public bool IsManualChecked { get; set; }
         public bool IsFormDataChecked { get; set; }
+        public bool IsUrlEncodedChecked { get; set; }
     }
 
     public delegate string WebExecuteString(WebSource source, WebRequestMethod method, string relativeUri, string data, bool throwError, out ErrorResultTO errors, string[] headers = null, WebExecuteStringArgs webExecuteStringArgs = null);
@@ -144,6 +145,7 @@ namespace Dev2.Runtime.ServiceModel
                 {
                     IsManualChecked = true,
                     IsFormDataChecked = false,
+                    IsUrlEncodedChecked = false,
                     FormDataParameters = new List<IFormDataParameters>(),
                     WebRequestFactory = new WebRequestFactory()
                 };

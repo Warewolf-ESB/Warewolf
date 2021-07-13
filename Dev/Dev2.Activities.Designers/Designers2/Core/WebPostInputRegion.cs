@@ -159,81 +159,31 @@ namespace Dev2.Activities.Designers2.Core
 
         public bool IsManualChecked
         {
-            get
-            {
-                if(ViewModel != null && ViewModel.GetType() == typeof(WebPostActivityViewModelNew))
-                {
-                    var settings = _modelItem.GetProperty<IList<INameValue>>("Settings");
-                    return Convert.ToBoolean(settings?.FirstOrDefault(s => s.Name == "IsManualChecked")?.Value);
-                }
-                else if(_modelItem.GetProperty<bool?>("IsManualChecked") != null)
-                {
-                    return _modelItem.GetProperty<bool>("IsManualChecked");
-                }
-
-                return false;
-            }
+            get => GetBoolSetting("IsManualChecked");
             set
             {
-                if(ViewModel != null && ViewModel.GetType() == typeof(WebPostActivityViewModelNew))
-                {
-                    UpdateSettings("IsManualChecked", value);
-                }
-                else
-                {
-                    _modelItem.SetProperty("IsManualChecked", value);
-                    OnPropertyChanged();
-                }
+                UpdateBoolSetting("IsManualChecked", value);
+                OnPropertyChanged();
             }
         }
 
         public bool IsFormDataChecked
         {
-            get
-            {
-                if(ViewModel != null && ViewModel.GetType() == typeof(WebPostActivityViewModelNew))
-                {
-                    var settings = _modelItem.GetProperty<IList<INameValue>>("Settings");
-                    return Convert.ToBoolean(settings?.FirstOrDefault(s => s.Name == "IsFormDataChecked")?.Value);
-                }
-                else if(_modelItem.GetProperty<bool?>("IsFormDataChecked") != null)
-                {
-                    return _modelItem.GetProperty<bool>("IsFormDataChecked");
-                }
-
-                return false;
-            }
+            get => GetBoolSetting("IsFormDataChecked");
             set
             {
-                if(ViewModel != null && ViewModel.GetType() == typeof(WebPostActivityViewModelNew))
-                {
-                    UpdateSettings("IsFormDataChecked", value);
-                }
-                else
-                {
-                    _modelItem.SetProperty("IsFormDataChecked", value);
-                    OnPropertyChanged();
-                }
+                UpdateBoolSetting("IsFormDataChecked", value);
+                OnPropertyChanged();
             }
         }
 
         public bool IsUrlEncodedChecked
         {
-            get
-            {
-                if(ViewModel != null && ViewModel.GetType() == typeof(WebPostActivityViewModelNew))
-                {
-                    var settings = _modelItem.GetProperty<IList<INameValue>>("Settings");
-                    return Convert.ToBoolean(settings?.FirstOrDefault(s => s.Name == "IsUrlEncodedChecked")?.Value);
-                }
-                return false;
-            }
+            get => GetBoolSetting("IsUrlEncodedChecked");
             set
             {
-                if(ViewModel != null && ViewModel.GetType() == typeof(WebPostActivityViewModelNew))
-                {
-                    UpdateSettings("IsUrlEncodedChecked", value);
-                }
+                UpdateBoolSetting("IsUrlEncodedChecked", value);
+                OnPropertyChanged();
             }
         }
 
@@ -275,6 +225,34 @@ namespace Dev2.Activities.Designers2.Core
             {
                 var list = new List<IOption>(((WebPostActivityViewModelNew)ViewModel).ConditionExpressionOptions.Options);
                 list.ForEach(c => ((FormDataOptionConditionExpression)c).IsMultiPart = !IsUrlEncodedChecked);
+            }
+        }
+        
+        private bool GetBoolSetting(string variableName)
+        {
+            if(ViewModel != null && ViewModel.GetType() == typeof(WebPostActivityViewModelNew))
+            {
+                var settings = _modelItem.GetProperty<IList<INameValue>>("Settings");
+                return Convert.ToBoolean(settings?.FirstOrDefault(s => s.Name == variableName)?.Value);
+            }
+            else if(_modelItem.GetProperty<bool?>(variableName) != null)
+            {
+                return _modelItem.GetProperty<bool>(variableName);
+            }
+
+            return false;
+        }
+        
+        private void UpdateBoolSetting(string variableName, bool value)
+        {
+            if(ViewModel != null && ViewModel.GetType() == typeof(WebPostActivityViewModelNew))
+            {
+                UpdateSettings(variableName, value);
+            }
+            else
+            {
+                _modelItem.SetProperty(variableName, value);
+                OnPropertyChanged();
             }
         }
 
