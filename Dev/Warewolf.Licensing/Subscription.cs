@@ -72,7 +72,7 @@ namespace Warewolf.Licensing
             var result = ChargeBee.Models.Subscription.Create()
                 .PlanId(subscriptionData.PlanId)
                 .Param("customer[cf_machinename]", subscriptionData.MachineName)
-                .AutoCollection(AutoCollectionEnum.Off)
+                .AutoCollection(AutoCollectionEnum.On)
                 .CustomerFirstName(subscriptionData.CustomerFirstName)
                 .CustomerLastName(subscriptionData.CustomerLastName)
                 .CustomerEmail(subscriptionData.CustomerEmail)
