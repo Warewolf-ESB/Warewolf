@@ -101,3 +101,8 @@ Dev/SonarQube/SolutionBinding.sqconfig
 /Dev/Warewolf.Data1.Tests
 /Dev/.idea
 
+/Dev/.upgrade-assistant
+/Dev/log.txt
+/Dev.backup/Warewolf.Interfaces/upgrade.backup
+/Dev.backup/Warewolf.Interfaces/upgrade.backup
+/Dev.backup/Warewolf.Studio.Resources/upgrade.backup
