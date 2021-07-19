@@ -50,8 +50,8 @@ namespace Warewolf.LicencingTests
         {
             var mockSubscriptionData = new Mock<ISubscriptionData>();
             mockSubscriptionData.Setup(o => o.MachineName).Returns("321654");
-            mockSubscriptionData.Setup(o => o.CustomerFirstName).Returns("Candice");
-            mockSubscriptionData.Setup(o => o.CustomerLastName).Returns("Daniel");
+            mockSubscriptionData.Setup(o => o.CustomerFirstName).Returns("Dev2");
+            mockSubscriptionData.Setup(o => o.CustomerLastName).Returns("Test");
             mockSubscriptionData.Setup(o => o.CustomerEmail).Returns("candice.daniel@dev2.co.za");
             mockSubscriptionData.Setup(o => o.SubscriptionSiteName).Returns("warewolf-test");
             mockSubscriptionData.Setup(o => o.SubscriptionKey).Returns("test_VMxitsiobdAyth62k0DiqpAUKocG6sV3");
