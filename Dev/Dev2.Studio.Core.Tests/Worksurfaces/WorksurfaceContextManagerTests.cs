@@ -944,7 +944,7 @@ namespace Dev2.Core.Tests
             Assert.IsTrue(workSurfaceViewModels);
         }
 
-        [TestMethod]
+        /*[TestMethod]
         [Owner("Pieter Terblanche")]
         [Timeout(60000)]
         public void WorksurfaceContextManager_ShowRemovePopup_UnRegisteredDialog()
@@ -975,7 +975,7 @@ namespace Dev2.Core.Tests
             //------------Execute Test---------------------------
             privateObject.Invoke("ShowRemovePopup", new Mock<IWorkflowDesignerViewModel>().Object);
             _popupController.Verify(o => o.UnRegisteredDialog(), Times.Once);
-        }
+        }*/
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
