@@ -321,7 +321,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-       // [Timeout(100)]
+        [Timeout(100)]
         [TestCategory(nameof(SplashViewModel))]
         public void SplashViewModel_ShowSplashScreenInformation()
         {
