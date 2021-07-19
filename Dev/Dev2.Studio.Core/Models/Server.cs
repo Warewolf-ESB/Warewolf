@@ -369,14 +369,21 @@ namespace Dev2.Studio.Core.Models
 
         public ISubscriptionData GetSubscriptionData()
         {
-            if(!Connection.IsConnected)
+            try
             {
-                Connection.Connect(Guid.Empty);
+                if(!Connection.IsConnected)
+                {
+                    Connection.Connect(Guid.Empty);
+                }
+
+                _subscriptionData = ProxyLayer.AdminManagerProxy.GetSubscriptionData();
+
+                return _subscriptionData;
             }
-
-            _subscriptionData = ProxyLayer.AdminManagerProxy.GetSubscriptionData();
-
-            return _subscriptionData;
+            catch
+            {
+                return _subscriptionData = new SubscriptionData();
+            }
         }
 
         public IExplorerRepository ProxyLayer { get => _proxyLayer; set => _proxyLayer = value; }

@@ -93,9 +93,6 @@ namespace Warewolf.Studio.ViewModels
             Dispatcher.CurrentDispatcher.Invoke(
                 () =>
                 {
-                    var subscriptionData = Server.GetSubscriptionData();
-                    WarewolfLicense = subscriptionData.PlanId + ": " + subscriptionData.Status;
-
                     var serverVersion = Server.GetServerVersion();
                     var splitServerVersion = serverVersion.Split('.');
                     if(splitServerVersion.Length > 2 && int.Parse(splitServerVersion[2]) > 6000)
@@ -125,6 +122,8 @@ namespace Warewolf.Studio.ViewModels
                     {
                         StudioVersion = "Version " + studioVersion;
                     }
+                    var subscriptionData = Server.GetSubscriptionData();
+                    WarewolfLicense = subscriptionData?.PlanId + ": " + subscriptionData?.Status;
                 });
         }
 
