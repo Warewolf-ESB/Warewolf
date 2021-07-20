@@ -279,7 +279,6 @@
     <Compile Include="Models\ResourceModel.cs" />
     <Compile Include="Models\ServiceDebugInfoModel.cs" />
     <Compile Include="Network\ServerProxy.cs" />
-    <Compile Include="Network\StateController.cs" />
     <Compile Include="Network\WebServer.cs" />
     <Compile Include="ProxyBase.cs" />
     <Compile Include="QueryManagerProxy.cs" />

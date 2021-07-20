@@ -1,7 +1,7 @@
 ﻿#pragma warning disable
-﻿/*
+/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -43,7 +43,6 @@ using System.Threading.Tasks;
 
 namespace Dev2.Network
 {
-
     public class ServerProxyWithoutChunking : IEnvironmentConnection, IDisposable
     {
         const int MillisecondsTimeout = 10000;
@@ -69,10 +68,11 @@ namespace Dev2.Network
             ServerEvents = EventPublishers.Studio;
 
             var uriString = serverUri;
-            if (!serverUri.EndsWith("dsf"))
+            if(!serverUri.EndsWith("dsf"))
             {
                 uriString = serverUri + (serverUri.EndsWith("/") ? "" : "/") + "dsf";
             }
+
             Principal = ClaimsPrincipal.Current;
             AppServerUri = new Uri(uriString);
             WebServerUri = new Uri(uriString.Replace("/dsf", ""));
@@ -82,10 +82,8 @@ namespace Dev2.Network
             HubConnection.Error += OnHubConnectionError;
             HubConnection.Closed += HubConnectionOnClosed;
             HubConnection.StateChanged += HubConnectionStateChanged;
-            InitializeEsbProxy();
+            InitializeProxyHubs();
             AsyncWorker = worker;
-            StateController = new StateController(HubConnection);
-
         }
 
         public IPrincipal Principal { get; private set; }
@@ -96,7 +94,7 @@ namespace Dev2.Network
             UserName = userName;
             Password = password;
             AuthenticationType = userName == "\\" ? AuthenticationType.Public : AuthenticationType.User;
-            if (AuthenticationType == AuthenticationType.Public)
+            if(AuthenticationType == AuthenticationType.Public)
             {
                 Principal = null;
             }
@@ -106,19 +104,25 @@ namespace Dev2.Network
         {
             get
             {
-                if (string.IsNullOrEmpty(DisplayName))
+                if(string.IsNullOrEmpty(DisplayName))
                 {
                     return false;
                 }
+
                 var displayName = DisplayName.ToLower();
                 var isLocalHost = (displayName == "localhost") || (displayName == "localhost (connected)");
                 return isLocalHost;
             }
         }
 
+        private void InitializeProxyHubs()
+        {
+            InitializeEsbProxy();
+        }
+
         void InitializeEsbProxy()
         {
-            if (EsbProxy == null)
+            if(EsbProxy == null)
             {
                 EsbProxy = HubConnection.CreateHubProxy("esb");
                 EsbProxy.On<string>("SendMemo", OnMemoReceived);
@@ -132,15 +136,14 @@ namespace Dev2.Network
             }
         }
 
-
         public Action<Guid, CompileMessageList> ReceivedResourceAffectedMessage { get; set; }
 
         public void FetchResourcesAffectedMemo(Guid resourceId)
         {
-            if (ReceivedResourceAffectedMessage != null)
+            if(ReceivedResourceAffectedMessage != null)
             {
                 var result = Task.Run(async () => await EsbProxy.Invoke<string>("FetchResourcesAffectedMemo", resourceId).ConfigureAwait(true)).GetAwaiter().GetResult();
-                if (!string.IsNullOrWhiteSpace(result))
+                if(!string.IsNullOrWhiteSpace(result))
                 {
                     FetchResourcesAffectedMemo(result);
                 }
@@ -150,11 +153,11 @@ namespace Dev2.Network
         void FetchResourcesAffectedMemo(string result)
         {
             var obj = _serializer.Deserialize<CompileMessageList>(result);
-            if (obj != null)
+            if(obj != null)
             {
                 ReceivedResourceAffectedMessage.Invoke(obj.ServiceID, obj);
                 var shellViewModel = CustomContainer.Get<IShellViewModel>();
-                if (shellViewModel != null)
+                if(shellViewModel != null)
                 {
                     shellViewModel.ResourceCalled = false;
                 }
@@ -171,12 +174,12 @@ namespace Dev2.Network
             Dev2Logger.Debug("*********** Hub connection down", "Warewolf Debug");
             IsConnected = false;
             IsConnecting = false;
-            if (IsShuttingDown)
+            if(IsShuttingDown)
             {
                 return;
             }
 
-            if (HubConnection.State != ConnectionStateWrapped.Disconnected)
+            if(HubConnection.State != ConnectionStateWrapped.Disconnected)
             {
                 OnNetworkStateChanged(new NetworkStateEventArgs(NetworkState.Online, NetworkState.Offline));
             }
@@ -201,7 +204,7 @@ namespace Dev2.Network
 
         protected void HubConnectionStateChanged(IStateChangeWrapped stateChange)
         {
-            switch (stateChange.NewState)
+            switch(stateChange.NewState)
             {
                 case ConnectionStateWrapped.Connected:
                     IsConnected = true;
@@ -237,51 +240,52 @@ namespace Dev2.Network
             ID = id;
             try
             {
-                if (!IsConnecting)
+                if(!IsConnecting)
                 {
                     var t = ConnectAsync(id);
-                    t.ContinueWith((result) =>
-                    {
-                        if (result.IsFaulted)
+                    t.ContinueWith(
+                        (result) =>
                         {
-
-                        }
-                    });
+                            if(result.IsFaulted)
+                            {
+                            }
+                        });
                 }
+
                 //ensureConnectedWaitTask.Wait(Config.Studio.ConnectTimeout);
             }
-
-            catch (AggregateException aex)
+            catch(AggregateException aex)
             {
                 aex.Flatten();
-                aex.Handle(ex =>
-                {
-                    Dev2Logger.Error(this, aex, "Warewolf Error");
-                    if (ex is HttpClientException hex && (hex.Response.StatusCode == HttpStatusCode.Unauthorized || hex.Response.StatusCode == HttpStatusCode.Forbidden))
+                aex.Handle(
+                    ex =>
                     {
-                        UpdateIsAuthorized(false);
-                        throw new UnauthorizedAccessException();
-                    }
-                    throw ex;
-                });
+                        Dev2Logger.Error(this, aex, "Warewolf Error");
+                        if(ex is HttpClientException hex && (hex.Response.StatusCode == HttpStatusCode.Unauthorized || hex.Response.StatusCode == HttpStatusCode.Forbidden))
+                        {
+                            UpdateIsAuthorized(false);
+                            throw new UnauthorizedAccessException();
+                        }
+
+                        throw ex;
+                    });
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 HandleConnectError(e);
             }
-
         }
 
         public Task<bool> ConnectAsync(Guid id, TimeSpan timeout)
         {
             ID = id;
-            return StateController.MoveToState(State.Connected, timeout);
+            return HubConnection.EnsureConnected(timeout).ContinueWith((task) => { return !task.IsFaulted && task.IsCompleted; });
         }
+
         public Task<bool> ConnectAsync(Guid id)
         {
             return ConnectAsync(id, Timeout.InfiniteTimeSpan);
         }
-
 
         static bool ValidateServerCertificate(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslpolicyerrors) => true;
 
@@ -298,72 +302,72 @@ namespace Dev2.Network
             {
                 var timeout = TimeSpan.FromMilliseconds(MillisecondsTimeout);
                 IsShuttingDown = true;
-                //HubConnection.Stop(new TimeSpan(0, 0, 0, 5));
-                StateController.MoveToState(State.Disconnected, timeout);
-
+                HubConnection.Stop(new TimeSpan(0, 0, 0, 5));
             }
-            catch (AggregateException aex)
+            catch(AggregateException aex)
             {
                 aex.Flatten();
-                aex.Handle(ex =>
-                {
-                    Dev2Logger.Error(this, aex, "Warewolf Error");
-                    if (ex is HttpClientException hex)
+                aex.Handle(
+                    ex =>
                     {
-                        switch (hex.Response.StatusCode)
+                        Dev2Logger.Error(this, aex, "Warewolf Error");
+                        if(ex is HttpClientException hex)
                         {
-                            case HttpStatusCode.Unauthorized:
-                            case HttpStatusCode.Forbidden:
-                                UpdateIsAuthorized(false);
-                                throw new NotConnectedException();
-                            case HttpStatusCode.Continue:
-                            case HttpStatusCode.SwitchingProtocols:
-                            case HttpStatusCode.OK:
-                            case HttpStatusCode.Created:
-                            case HttpStatusCode.Accepted:
-                            case HttpStatusCode.NonAuthoritativeInformation:
-                            case HttpStatusCode.NoContent:
-                            case HttpStatusCode.ResetContent:
-                            case HttpStatusCode.PartialContent:
-                            case HttpStatusCode.MultipleChoices:
-                            case HttpStatusCode.MovedPermanently:
-                            case HttpStatusCode.Found:
-                            case HttpStatusCode.SeeOther:
-                            case HttpStatusCode.NotModified:
-                            case HttpStatusCode.UseProxy:
-                            case HttpStatusCode.Unused:
-                            case HttpStatusCode.TemporaryRedirect:
-                            case HttpStatusCode.BadRequest:
-                            case HttpStatusCode.PaymentRequired:
-                            case HttpStatusCode.NotFound:
-                            case HttpStatusCode.MethodNotAllowed:
-                            case HttpStatusCode.NotAcceptable:
-                            case HttpStatusCode.ProxyAuthenticationRequired:
-                            case HttpStatusCode.RequestTimeout:
-                            case HttpStatusCode.Conflict:
-                            case HttpStatusCode.Gone:
-                            case HttpStatusCode.LengthRequired:
-                            case HttpStatusCode.PreconditionFailed:
-                            case HttpStatusCode.RequestEntityTooLarge:
-                            case HttpStatusCode.RequestUriTooLong:
-                            case HttpStatusCode.UnsupportedMediaType:
-                            case HttpStatusCode.RequestedRangeNotSatisfiable:
-                            case HttpStatusCode.ExpectationFailed:
-                            case HttpStatusCode.UpgradeRequired:
-                            case HttpStatusCode.InternalServerError:
-                            case HttpStatusCode.NotImplemented:
-                            case HttpStatusCode.BadGateway:
-                            case HttpStatusCode.ServiceUnavailable:
-                            case HttpStatusCode.GatewayTimeout:
-                            case HttpStatusCode.HttpVersionNotSupported:
-                            default:
-                                throw new NotConnectedException();
+                            switch(hex.Response.StatusCode)
+                            {
+                                case HttpStatusCode.Unauthorized:
+                                case HttpStatusCode.Forbidden:
+                                    UpdateIsAuthorized(false);
+                                    throw new NotConnectedException();
+                                case HttpStatusCode.Continue:
+                                case HttpStatusCode.SwitchingProtocols:
+                                case HttpStatusCode.OK:
+                                case HttpStatusCode.Created:
+                                case HttpStatusCode.Accepted:
+                                case HttpStatusCode.NonAuthoritativeInformation:
+                                case HttpStatusCode.NoContent:
+                                case HttpStatusCode.ResetContent:
+                                case HttpStatusCode.PartialContent:
+                                case HttpStatusCode.MultipleChoices:
+                                case HttpStatusCode.MovedPermanently:
+                                case HttpStatusCode.Found:
+                                case HttpStatusCode.SeeOther:
+                                case HttpStatusCode.NotModified:
+                                case HttpStatusCode.UseProxy:
+                                case HttpStatusCode.Unused:
+                                case HttpStatusCode.TemporaryRedirect:
+                                case HttpStatusCode.BadRequest:
+                                case HttpStatusCode.PaymentRequired:
+                                case HttpStatusCode.NotFound:
+                                case HttpStatusCode.MethodNotAllowed:
+                                case HttpStatusCode.NotAcceptable:
+                                case HttpStatusCode.ProxyAuthenticationRequired:
+                                case HttpStatusCode.RequestTimeout:
+                                case HttpStatusCode.Conflict:
+                                case HttpStatusCode.Gone:
+                                case HttpStatusCode.LengthRequired:
+                                case HttpStatusCode.PreconditionFailed:
+                                case HttpStatusCode.RequestEntityTooLarge:
+                                case HttpStatusCode.RequestUriTooLong:
+                                case HttpStatusCode.UnsupportedMediaType:
+                                case HttpStatusCode.RequestedRangeNotSatisfiable:
+                                case HttpStatusCode.ExpectationFailed:
+                                case HttpStatusCode.UpgradeRequired:
+                                case HttpStatusCode.InternalServerError:
+                                case HttpStatusCode.NotImplemented:
+                                case HttpStatusCode.BadGateway:
+                                case HttpStatusCode.ServiceUnavailable:
+                                case HttpStatusCode.GatewayTimeout:
+                                case HttpStatusCode.HttpVersionNotSupported:
+                                default:
+                                    throw new NotConnectedException();
+                            }
                         }
-                    }
-                    return false;
-                });
+
+                        return false;
+                    });
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 Dev2Logger.Error(this, e, "Warewolf Error");
             }
@@ -373,29 +377,33 @@ namespace Dev2.Network
 
         public void Verify(Action<ConnectResult> callback, bool wait)
         {
-            if (IsConnected)
+            if(IsConnected)
             {
                 return;
             }
+
             ServicePointManager.ServerCertificateValidationCallback = ValidateServerCertificate;
 
-            if (wait)
+            if(wait)
             {
-                callback?.Invoke(HubConnection.State == (ConnectionStateWrapped)ConnectionState.Connected
-                             ? ConnectResult.Success
-                             : ConnectResult.ConnectFailed);
+                callback?.Invoke(
+                    HubConnection.State == (ConnectionStateWrapped)ConnectionState.Connected
+                        ? ConnectResult.Success
+                        : ConnectResult.ConnectFailed);
             }
             else
             {
-                AsyncWorker.Start(() => Thread.Sleep(MillisecondsTimeout), () => callback?.Invoke(HubConnection.State == (ConnectionStateWrapped)ConnectionState.Connected
-                                     ? ConnectResult.Success
-                                     : ConnectResult.ConnectFailed));
+                AsyncWorker.Start(
+                    () => Thread.Sleep(MillisecondsTimeout),
+                    () => callback?.Invoke(
+                        HubConnection.State == (ConnectionStateWrapped)ConnectionState.Connected
+                            ? ConnectResult.Success
+                            : ConnectResult.ConnectFailed));
             }
         }
 
         public void StartAutoConnect()
         {
-
         }
 
         public IEventPublisher ServerEvents { get; }
@@ -422,10 +430,11 @@ namespace Dev2.Network
             {
                 RaisePermissionsModified(obj.ModifiedPermissions);
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 Dev2Logger.Error(this, e, "Warewolf Error");
             }
+
             RaisePermissionsChanged();
         }
 
@@ -484,7 +493,7 @@ namespace Dev2.Network
 
         void UpdateIsAuthorized(bool isAuthorized)
         {
-            if (IsAuthorized != isAuthorized)
+            if(IsAuthorized != isAuthorized)
             {
                 IsAuthorized = isAuthorized;
                 RaisePermissionsChanged();
@@ -499,22 +508,28 @@ namespace Dev2.Network
 
         public StringBuilder ExecuteCommand(StringBuilder xmlRequest, Guid workspaceId)
         {
-            if (xmlRequest == null || xmlRequest.Length == 0)
+            return ExecuteCommand(xmlRequest, workspaceId, 120000);
+        }
+
+        public StringBuilder ExecuteCommand(StringBuilder xmlRequest, Guid workspaceId, int timeout)
+        {
+            if(xmlRequest == null || xmlRequest.Length == 0)
             {
                 throw new ArgumentNullException(nameof(xmlRequest));
             }
-            
+
             var executeRequestAsync = Task.Run(async () => await ExecuteCommandAsync(xmlRequest, workspaceId).ConfigureAwait(true));
-            if (executeRequestAsync.Wait(120000))
+            if(executeRequestAsync.Wait(timeout))
             {
                 return executeRequestAsync.Result;
             }
+
             return null;
         }
 
         public async Task<StringBuilder> ExecuteCommandAsync(StringBuilder xmlRequest, Guid workspaceId)
         {
-            if (xmlRequest == null || xmlRequest.Length == 0)
+            if(xmlRequest == null || xmlRequest.Length == 0)
             {
                 throw new ArgumentNullException(nameof(xmlRequest));
             }
@@ -536,23 +551,29 @@ namespace Dev2.Network
                 var fragmentInvoke = await EsbProxy.Invoke<string>("FetchExecutePayloadFragment", new FutureReceipt { PartID = 0, RequestID = messageId }).ConfigureAwait(false);
                 result.Append(fragmentInvoke);
 
-                if (result.Length > 0)
+                if(result.Length > 0)
                 {
                     var start = result.LastIndexOf("<" + GlobalConstants.ManagementServicePayload + ">", false);
                     var end = result.LastIndexOf("</" + GlobalConstants.ManagementServicePayload + ">", false);
-                    if (start > 0 && start < end && end - start > 1)
+                    if(start > 0 && start < end && end - start > 1)
                     {
                         start += GlobalConstants.ManagementServicePayload.Length + 2;
                         return new StringBuilder(result.Substring(start, end - start));
                     }
-
                 }
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 Dev2Logger.Error(e, "Warewolf Error");
             }
+
             return result;
+        }
+
+        public async Task<StringBuilder> ExecuteCommandAsync(Warewolf.Esb.Common.ICatalogRequest request, Guid workspaceId)
+        {
+            var toSend = _serializer.SerializeToBuilder(request);
+            return await ExecuteCommandAsync(toSend, workspaceId).ConfigureAwait(true);
         }
 
         public void AddDebugWriter(Guid workspaceId)
@@ -567,14 +588,15 @@ namespace Dev2.Network
         }
 
         public Guid ID { get; private set; }
-        public IStateController StateController { get; }
-        public State State => StateController.Current;
+
+        public IStateController StateController => HubConnection.StateController;
+        public ConnState State => HubConnection.StateController.Current;
 
         bool _disposedValue;
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!_disposedValue)
+            if(!_disposedValue)
             {
                 _disposedValue = true;
             }
