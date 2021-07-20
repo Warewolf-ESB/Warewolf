@@ -1,3 +1,12 @@
+/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
 using System;
 using System.Threading.Tasks;
 using Dev2.Network;
@@ -10,7 +19,6 @@ namespace Dev2.Core.Tests.Network
 {
     public partial class ServerProxyWithFallbackTests
     {
- 
         //Given a ServerProxy
         //When I Execute the AddDebugWriter
         //Then the EsbProxy is invoked with AddDebugWriter
@@ -30,7 +38,6 @@ namespace Dev2.Core.Tests.Network
             mockHubProxy.VerifyAll();
         }
 
-
         [TestMethod, Timeout(5000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("ServerProxy_Constructor")]
@@ -43,25 +50,21 @@ namespace Dev2.Core.Tests.Network
             var wrapped = new Mock<IEnvironmentConnection>();
             var fallback = new Mock<IEnvironmentConnection>();
             wrapped.Setup(a => a.Connect(It.IsAny<Guid>())).Throws(new FallbackException());
-            p.SetField("_wrappedConnection",wrapped.Object);
+            p.SetField("_wrappedConnection", wrapped.Object);
             try
             {
                 serverProxy.Connect(serverGuid);
             }
-            
-            catch
-            
-            {
 
+            catch
+
+            {
+                // ignored
             }
+
             var con = p.GetField("_wrappedConnection");
             Assert.IsNotNull(con);
-           
         }
-
-
-
-
 
         [TestMethod, Timeout(5000)]
         [Owner("Hagashen Naidu")]
@@ -80,18 +83,16 @@ namespace Dev2.Core.Tests.Network
             try
             {
                 serverProxy.Connect(serverGuid);
-
             }
-            
+
             catch
-            
+
             {
-
-
+                // ignored
             }
-            var con = p.GetField("_wrappedConnection");
-           Assert.IsNotNull(con);
 
+            var con = p.GetField("_wrappedConnection");
+            Assert.IsNotNull(con);
         }
     }
 }
