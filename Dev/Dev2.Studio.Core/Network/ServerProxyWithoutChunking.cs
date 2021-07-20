@@ -13,11 +13,9 @@ using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Infrastructure.Events;
-using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Studio.Core;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Communication;
-using Dev2.ConnectionHelpers;
 using Dev2.Data.ServiceModel.Messages;
 using Dev2.Diagnostics.Debug;
 using Dev2.Explorer;
@@ -42,12 +40,10 @@ using System.Security.Principal;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Timers;
-using System.Windows;
-using Warewolf.Resource.Errors;
 
 namespace Dev2.Network
 {
+
     public class ServerProxyWithoutChunking : IEnvironmentConnection, IDisposable
     {
         const int MillisecondsTimeout = 10000;
@@ -88,6 +84,8 @@ namespace Dev2.Network
             HubConnection.StateChanged += HubConnectionStateChanged;
             InitializeEsbProxy();
             AsyncWorker = worker;
+            StateController = new StateController(HubConnection);
+
         }
 
         public IPrincipal Principal { get; private set; }
@@ -133,6 +131,7 @@ namespace Dev2.Network
                 EsbProxy.On<string>("ItemAddedMessage", OnItemAddedMessageReceived);
             }
         }
+
 
         public Action<Guid, CompileMessageList> ReceivedResourceAffectedMessage { get; set; }
 
@@ -240,10 +239,18 @@ namespace Dev2.Network
             {
                 if (!IsConnecting)
                 {
-                    ConnectAsync(id);
+                    var t = ConnectAsync(id);
+                    t.ContinueWith((result) =>
+                    {
+                        if (result.IsFaulted)
+                        {
+
+                        }
+                    });
                 }
                 //ensureConnectedWaitTask.Wait(Config.Studio.ConnectTimeout);
             }
+
             catch (AggregateException aex)
             {
                 aex.Flatten();
@@ -262,23 +269,19 @@ namespace Dev2.Network
             {
                 HandleConnectError(e);
             }
+
         }
 
-        public Task<bool> ConnectAsync(Guid id)
+        public Task<bool> ConnectAsync(Guid id, TimeSpan timeout)
         {
             ID = id;
-            var ensureConnectedWaitTask = new Task<bool>(() =>
-            {
-                while (IsConnected == false)
-                {
-                    Task.Delay(300).Wait();
-                    Task.Yield();
-                }
-                return true;
-            });
-            ensureConnectedWaitTask.Start();
-            return ensureConnectedWaitTask;
+            return StateController.MoveToState(State.Connected, timeout);
         }
+        public Task<bool> ConnectAsync(Guid id)
+        {
+            return ConnectAsync(id, Timeout.InfiniteTimeSpan);
+        }
+
 
         static bool ValidateServerCertificate(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslpolicyerrors) => true;
 
@@ -293,8 +296,11 @@ namespace Dev2.Network
             // Give 5 seconds, then force a dispose ;)
             try
             {
+                var timeout = TimeSpan.FromMilliseconds(MillisecondsTimeout);
                 IsShuttingDown = true;
-                HubConnection.Stop(new TimeSpan(0, 0, 0, 5));
+                //HubConnection.Stop(new TimeSpan(0, 0, 0, 5));
+                StateController.MoveToState(State.Disconnected, timeout);
+
             }
             catch (AggregateException aex)
             {
@@ -561,6 +567,8 @@ namespace Dev2.Network
         }
 
         public Guid ID { get; private set; }
+        public IStateController StateController { get; }
+        public State State => StateController.Current;
 
         bool _disposedValue;
 
@@ -575,66 +583,6 @@ namespace Dev2.Network
         public void Dispose()
         {
             Dispose(true);
-        }
-    }
-
-    class ServerProxyPersistentConnection : ServerProxyWithoutChunking
-    {
-        public ServerProxyPersistentConnection(Uri serverUri)
-            : base(serverUri)
-        {
-            HubConnection.Start();
-            StartHubConnectionWatchdogThread();
-        }
-
-        public ServerProxyPersistentConnection(string webAddress, string userName, string password)
-            : base(webAddress, userName, password)
-        {
-            HubConnection.Start();
-            StartHubConnectionWatchdogThread();
-        }
-
-        public ServerProxyPersistentConnection(string serverUri, ICredentials credentials, IAsyncWorker worker) 
-            : base(serverUri, credentials, worker)
-        {
-            HubConnection.Start();
-            StartHubConnectionWatchdogThread();
-        }
-
-        private void StartHubConnectionWatchdogThread()
-        {
-            var t = new Thread(() =>
-            {
-                const int initialDelay = 1;
-                const int multiplier = 2;
-                const int maxDelay = 60;
-                var delay = initialDelay;
-                bool stopped = false;
-
-                HubConnection.StateChanged += (stateChange) =>
-                {
-                    if (stateChange.NewState == ConnectionStateWrapped.Disconnected)
-                    {
-                        stopped = true;
-                    }
-                };
-                while (true)
-                {
-                    Thread.Sleep(delay);
-                    if (stopped)
-                    {
-                        stopped = false;
-                        delay *= multiplier;
-                        if (delay > maxDelay)
-                        {
-                            delay = initialDelay;
-                        }
-                        HubConnection.Start();
-                    }
-                }
-            });
-            t.IsBackground = true;
-            t.Start();
         }
     }
 
