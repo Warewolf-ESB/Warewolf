@@ -23,10 +23,8 @@ namespace Dev2.Integration.Tests.Network
         [Timeout(16000)]
         public void ServerProxyWithoutChunking_GivenServerAvailable_ExpectConnected()
         {
-            var depend = new Depends(Depends.ContainerType.Warewolf);
-            var host = $"http://{depend.Container.IP}:{depend.Container.Port}";
-
-            var proxy = new ServerProxyWithoutChunking(new Uri(host));
+            var proxy = new ServerProxyWithoutChunking(new Uri("http://localhost:3142"));
+            
             Assert.AreEqual(ConnState.Disconnected, proxy.StateController.Current);
             Assert.AreEqual(ConnState.Disconnected, proxy.State);
             proxy.Connect(Guid.NewGuid());
