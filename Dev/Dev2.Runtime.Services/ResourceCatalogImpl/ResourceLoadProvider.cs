@@ -635,16 +635,23 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             {
                 return contents;
             }
-            
-            using (StreamReader sr = new StreamReader(resource.FilePath))
+
+            // Open the file with the file share option of read. This will ensure that if the file is opened for write while this read operation
+            // is happening the write will fail. This have runtime behavior advantages.
+            // Use the FileStream class, which has an option that causes asynchronous I/O to occur at the operating system level.  
+            // In many cases, this will avoid blocking a ThreadPool thread.
+            using (FileStream fs = new FileStream(resource.FilePath, FileMode.Open, FileAccess.Read, FileShare.Read, 4096, true))
             {
-                while (!sr.EndOfStream)
+                using (StreamReader sr = new StreamReader(fs))
                 {
-                    var readLine = sr.ReadLine();
-                    if (!string.IsNullOrEmpty(readLine))
+                    while (!sr.EndOfStream)
                     {
-                        contents.Append(readLine);
-                        contents.Append(Environment.NewLine);
+                        var readLine = sr.ReadLine();
+                        if (!string.IsNullOrEmpty(readLine))
+                        {
+                            contents.Append(readLine);
+                            contents.Append(Environment.NewLine);
+                        }
                     }
                 }
             }
