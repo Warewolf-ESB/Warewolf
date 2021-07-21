@@ -1,8 +1,19 @@
 #pragma warning disable
+/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
 using System;
 using System.Activities;
 using System.Activities.Presentation.Model;
 using System.Activities.Statements;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,8 +28,6 @@ namespace Dev2.Activities
 {
     public class ActivityParser : IActivityParser
     {
-        #region Implementation of IActivityParser
-
         public IDev2Activity Parse(List<IDev2Activity> seenActivities, object flowChart)
         {
             var modelItem = flowChart as ModelItem;
@@ -46,8 +55,8 @@ namespace Dev2.Activities
         public IEnumerable<IDev2Activity> ParseToLinkedFlatList(IDev2Activity topLevelActivity)
 #pragma warning restore S3776 // Cognitive Complexity of methods should not be too high
 #pragma warning restore S1541 // Methods and properties should not be too complex
-
         {
+            var guids = new ConcurrentDictionary<Guid, string>();
             if (topLevelActivity is DsfDecision roodDecision)
             {
                 IEnumerable<IDev2Activity> vb;
@@ -113,8 +122,12 @@ namespace Dev2.Activities
             }
             var dev2Activities = topLevelActivity.NextNodes?.Flatten(activity =>
             {
-                if (activity.NextNodes != null)
+                var uniqueId = Guid.Parse(activity.UniqueID);
+                var displayName = activity.GetDisplayName();
+
+                if (activity.NextNodes != null && !guids.ContainsKey(uniqueId))
                 {
+                    guids.TryAdd(uniqueId, displayName);
                     return activity.NextNodes;
                 }
 
@@ -342,12 +355,6 @@ namespace Dev2.Activities
             return new List<IDev2Activity> { action };
         }
 
-        #endregion
-
-        #region Implementation of IActivityParser
-
         public IDev2Activity Parse(DynamicActivity dynamicActivity) => Parse(dynamicActivity, new List<IDev2Activity>());
-
-        #endregion
     }
 }

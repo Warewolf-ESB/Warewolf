@@ -196,14 +196,14 @@
                                         Text="{Binding Path=Right, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                         ToolTip="{Binding Path=Right, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                         Grid.Column="0"
-                                        Visibility="{Binding IsTripleOperand, Converter={StaticResource BoolToVisibilityConverterNegative},UpdateSourceTrigger=PropertyChanged}" >
+                                        Visibility="{Binding IsBetween, Converter={StaticResource BoolToVisibilityConverterNegative},UpdateSourceTrigger=PropertyChanged}" >
                     <i:Interaction.Behaviors>
                         <core:HelpSetter Text="{x:Static languages:HelpText.FindHelpMatch}" DataContext="{Binding ., RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type di:IUpdatesHelp}, AncestorLevel=1}}" />
                     </i:Interaction.Behaviors>
                 </ui:IntellisenseTextBox>
 
                 <Grid Grid.Column="0" 
-                      Visibility="{Binding IsTripleOperand, Converter={StaticResource BoolToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}">
+                      Visibility="{Binding IsBetween, Converter={StaticResource BoolToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="*" />

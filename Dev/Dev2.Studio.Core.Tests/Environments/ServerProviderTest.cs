@@ -29,7 +29,7 @@ namespace Dev2.Core.Tests.Environments
         [ClassInitialize]
         public static void MyClassInitialize(TestContext testContext)
         {
-            EnviromentRepositoryTest.MyClassInitialize(testContext);
+            EnvironmentRepositoryTest.MyClassInitialize(testContext);
         }
 
         [TestInitialize]
@@ -79,7 +79,7 @@ namespace Dev2.Core.Tests.Environments
 
         static void TestLoad(bool useParameterless)
         {
-            var targetEnv = EnviromentRepositoryTest.CreateMockEnvironment(EnviromentRepositoryTest.Server1Source);
+            var targetEnv = EnvironmentRepositoryTest.CreateMockEnvironment(EnvironmentRepositoryTest.Server1Source);
             var repository = new Mock<IServerRepository>();
             repository.Setup(r => r.All()).Returns(new[] { targetEnv.Object });
             CustomContainer.DeRegister<IServerRepository>();

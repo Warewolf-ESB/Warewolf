@@ -12,14 +12,7 @@ using System.Collections.Specialized;
 using System.IO;
 using System.Reflection;
 using System.Security.Principal;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading;
-using System.Web;
-using System.Xml.Linq;
-using Dev2.Common;
-using Dev2.Common.Common;
-using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Runtime.Services;
 using Dev2.Runtime.Interfaces;
@@ -34,7 +27,7 @@ using Warewolf.Security;
 
 namespace Dev2.Runtime.WebServer.Handlers
 {
-    public abstract class AbstractWebRequestHandler : IRequestHandler
+    public abstract partial class AbstractWebRequestHandler : IRequestHandler
     {
         string _location;
         protected readonly IResourceCatalog _resourceCatalog;

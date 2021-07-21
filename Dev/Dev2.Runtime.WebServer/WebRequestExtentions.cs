@@ -72,7 +72,7 @@ namespace Dev2.Runtime.WebServer
                 path = path.Substring(0, lastForwardSlash);
             }
 
-            if (path == ".coverage" || path == ".tests")
+            if (path == ".coverage" || path == ".tests" || path == ".coverage.json" || path == ".tests.trx")
             {
                 return "/";
             }
