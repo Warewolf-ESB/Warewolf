@@ -26,8 +26,6 @@ namespace Dev2.SignalR.Wrappers.New
 
         public IStateController StateController => _stateController;
 
-        #region Implementation of IHubConnectionWrapper
-
         private HubConnectionWrapper(HubConnection wrapped)
         {
             _wrapped = wrapped;
@@ -88,26 +86,14 @@ namespace Dev2.SignalR.Wrappers.New
 
         public event Action<Exception> Error
         {
-            add
-            {
-                _wrapped.Error += value;
-            }
-            remove
-            {
-                _wrapped.Error -= value;
-            }
+            add => _wrapped.Error += value;
+            remove => _wrapped.Error -= value;
         }
 
         public event Action Closed
         {
-            add
-            {
-                _wrapped.Closed += value;
-            }
-            remove
-            {
-                _wrapped.Closed -= value;
-            }
+            add => _wrapped.Closed += value;
+            remove => _wrapped.Closed -= value;
         }
 
         public event Action<IStateChangeWrapped> StateChanged
@@ -116,10 +102,7 @@ namespace Dev2.SignalR.Wrappers.New
             {
                 _wrapped.StateChanged += change => value?.Invoke(new StateChangeWrapped(change));
             }
-            remove
-            {
-                throw new NotImplementedException();
-            }
+            remove => throw new NotImplementedException();
         }
 
         public ConnectionStateWrapped State => (ConnectionStateWrapped)_wrapped.State;
@@ -137,18 +120,9 @@ namespace Dev2.SignalR.Wrappers.New
 
         public ICredentials Credentials
         {
-            get
-            {
-                return _wrapped.Credentials;
-            }
-
-            set
-            {
-                _wrapped.Credentials=value;
-            }
+            get => _wrapped.Credentials;
+            set => _wrapped.Credentials=value;
         }
-
-        #endregion
 
         public void Dispose()
         {
@@ -295,8 +269,10 @@ namespace Dev2.SignalR.Wrappers.New
 
             private void InitializeThreadWorker()
             {
-                _threadWorker = new Thread(KeepConnected);
-                _threadWorker.IsBackground = true;
+                _threadWorker = new Thread(KeepConnected)
+                {
+                    IsBackground = true
+                };
             }
 
             internal void NotifyStateChanged(ConnState current, ConnState expectedState)

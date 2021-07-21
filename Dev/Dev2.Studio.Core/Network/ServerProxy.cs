@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -26,8 +26,6 @@ using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Security;
 using Dev2.SignalR.Wrappers;
 using Dev2.Studio.Interfaces;
-
-
 
 namespace Dev2.Network
 {
@@ -74,20 +72,12 @@ namespace Dev2.Network
             SetupPassthroughEvents();
         }
 
-        #region Implementation of IEnvironmentConnection
-
         public IEventPublisher ServerEvents => _wrappedConnection.ServerEvents;
 
         public Guid ServerID
         {
-            get
-            {
-                return _wrappedConnection.ServerID;
-            }
-            set
-            {
-                _wrappedConnection.ServerID = value;
-            }
+            get => _wrappedConnection.ServerID;
+            set => _wrappedConnection.ServerID = value;
         }
         public Guid WorkspaceID => _wrappedConnection.WorkspaceID;
 
@@ -104,15 +94,8 @@ namespace Dev2.Network
 
         public bool IsAuthorized
         {
-            get
-            {
-                return _wrappedConnection.IsAuthorized;
-            }
-
-            set
-            {
-                _wrappedConnection.IsAuthorized = value;
-            }
+            get => _wrappedConnection.IsAuthorized;
+            set => _wrappedConnection.IsAuthorized = value;
         }
 
         public StringBuilder ExecuteCommand(StringBuilder xmlRequest, Guid workspaceId) => _wrappedConnection.ExecuteCommand(xmlRequest, workspaceId);
@@ -127,25 +110,13 @@ namespace Dev2.Network
 
         public string Alias
         {
-            get
-            {
-                return _wrappedConnection.Alias;
-            }
-            set
-            {
-                _wrappedConnection.Alias = value;
-            }
+            get => _wrappedConnection.Alias;
+            set => _wrappedConnection.Alias = value;
         }
         public string DisplayName
         {
-            get
-            {
-                return _wrappedConnection.DisplayName;
-            }
-            set
-            {
-                _wrappedConnection.DisplayName = value;
-            }
+            get => _wrappedConnection.DisplayName;
+            set => _wrappedConnection.DisplayName = value;
         }
 
         public void Connect(Guid id)
@@ -167,7 +138,7 @@ namespace Dev2.Network
             {
                 return await _wrappedConnection.ConnectAsync(_wrappedConnection.ID).ConfigureAwait(true);
             }
-             catch( FallbackException)
+            catch( FallbackException)
             {
                 Dev2Logger.Info("Falling Back to previous signal r client", "Warewolf Info");
                 var name = _wrappedConnection.DisplayName;
@@ -206,14 +177,8 @@ namespace Dev2.Network
 
         public Action<IExplorerItem> ItemAddedMessageAction
         {
-            get
-            {
-                return _wrappedConnection.ItemAddedMessageAction;
-            }
-            set
-            {
-                _wrappedConnection.ItemAddedMessageAction = value;
-            }
+            get => _wrappedConnection.ItemAddedMessageAction;
+            set => _wrappedConnection.ItemAddedMessageAction = value;
         }
         public IAsyncWorker AsyncWorker => _wrappedConnection.AsyncWorker;
 
@@ -221,14 +186,8 @@ namespace Dev2.Network
 
         public Action<Guid, CompileMessageList> ReceivedResourceAffectedMessage
         {
-            get
-            {
-                return _wrappedConnection.ReceivedResourceAffectedMessage;
-            }
-            set
-            {
-                _wrappedConnection.ReceivedResourceAffectedMessage = value;
-            }
+            get => _wrappedConnection.ReceivedResourceAffectedMessage;
+            set => _wrappedConnection.ReceivedResourceAffectedMessage = value;
         }
         public IHubConnectionWrapper HubConnection => _wrappedConnection.HubConnection;
 
@@ -261,7 +220,6 @@ namespace Dev2.Network
             var handler = NetworkStateChanged;
             handler?.Invoke(this, e);
         }
-        #endregion
 
         public bool Equals(IEnvironmentConnection other)
         {
