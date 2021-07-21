@@ -3700,7 +3700,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.IsNull(result);
         }
 
-        private static void SaveTestResources(string path, string resourceName, out List<string> workflows, out List<Guid> resourceIds, int numOfTestWFs)
+        public static IEnumerable<IResource> SaveTestResources(string path, string resourceName, out List<string> workflows, out List<Guid> resourceIds, int numOfTestWFs)
         {
             workflows = new List<string>();
             resourceIds = new List<Guid>();
@@ -3710,7 +3710,7 @@ namespace Dev2.Tests.Runtime.Hosting
                 resourceIds.Add(Guid.NewGuid());
             }
 
-            SaveResources(path, null, true, false, workflows, resourceIds.ToArray(), true, true);
+            return SaveResources(path, null, true, false, workflows, resourceIds.ToArray(), true, true);
         }
 
         [TestMethod]
