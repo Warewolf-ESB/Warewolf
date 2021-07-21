@@ -29,27 +29,23 @@ namespace Dev2.Runtime.ESB.Management.Services
         private readonly IWarewolfLicense _warewolfLicense;
         private readonly IBuilderSerializer _serializer;
         private ISubscriptionProvider _subscriptionProvider;
-        private string _machineName;
 
         public SaveSubscriptionData()
             : this(
                 new Dev2JsonSerializer(),
                 new WarewolfLicense(),
-                SubscriptionProvider.Instance,
-                Environment.MachineName.ToLowerInvariant())
+                SubscriptionProvider.Instance)
         {
         }
 
         public SaveSubscriptionData(
             IBuilderSerializer serializer,
             IWarewolfLicense warewolfLicense,
-            ISubscriptionProvider subscriptionProvider,
-            string machineName)
+            ISubscriptionProvider subscriptionProvider)
         {
             _warewolfLicense = warewolfLicense;
             _serializer = serializer;
             _subscriptionProvider = subscriptionProvider;
-            _machineName = machineName;
         }
 
         public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
@@ -67,22 +63,13 @@ namespace Dev2.Runtime.ESB.Management.Services
                 var subscriptionData = _serializer.Deserialize<SubscriptionData>(data);
                 subscriptionData.SubscriptionKey = _subscriptionProvider.SubscriptionKey;
                 subscriptionData.SubscriptionSiteName = _subscriptionProvider.SubscriptionSiteName;
-                if(string.IsNullOrEmpty(_machineName))
-                {
-                    _machineName = Environment.MachineName.ToLowerInvariant();
-                }
 
-                subscriptionData.MachineName = _machineName;
                 if(string.IsNullOrEmpty(subscriptionData.SubscriptionId) && _warewolfLicense.SubscriptionExists(subscriptionData))
                 {
-                    result.SetMessage("A Subscription already exists for this Customer on the current machine. For help please contact support@warewolf.io");
+                    result.SetMessage("A Subscription already exists for this Customer.  For help please contact support@warewolf.io");
                     return ReturnError(result);
                 }
-                if(string.IsNullOrEmpty(subscriptionData.SubscriptionId) && _warewolfLicense.SubscriptionExistsForMachine(subscriptionData))
-                {
-                    result.SetMessage("A Subscription already exists for the current machine. For help please contact support@warewolf.io");
-                    return ReturnError(result);
-                }
+
                 var resultData = string.IsNullOrEmpty(subscriptionData.SubscriptionId)
                     ? _warewolfLicense.CreatePlan(subscriptionData)
                     : _warewolfLicense.RetrievePlan(
@@ -93,12 +80,6 @@ namespace Dev2.Runtime.ESB.Management.Services
                 if(resultData is null)
                 {
                     result.SetMessage("An error occured. For help please contact support@warewolf.io");
-                    return ReturnError(result);
-                }
-
-                if(resultData.MachineName != _machineName)
-                {
-                    result.SetMessage("This subscription is configured for a different machine. For help please contact support@warewolf.io");
                     return ReturnError(result);
                 }
 

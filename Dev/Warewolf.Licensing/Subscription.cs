@@ -16,25 +16,6 @@ namespace Warewolf.Licensing
 {
     public class Subscription : ISubscription
     {
-        public bool SubscriptionExistsForMachine(ISubscriptionData subscriptionData)
-        {
-            var subscriptionList = ChargeBee.Models.Customer.List().Request();
-            foreach(var item in subscriptionList.List)
-            {
-                var customer = item.Customer;
-                var machineName = customer.GetValue<string>("cf_machinename", false);
-                if(subscriptionData.MachineName != machineName)
-                    continue;
-                var subscription = RetrievePlan(customer.Id);
-                if(subscription.Status == SubscriptionStatus.Active || subscription.Status == SubscriptionStatus.InTrial)
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
         public bool SubscriptionExists(ISubscriptionData subscriptionData)
         {
             var subscriptionList = ChargeBee.Models.Customer.List()
@@ -42,23 +23,7 @@ namespace Warewolf.Licensing
                 .LastName().Is(subscriptionData.CustomerLastName)
                 .Email().Is(subscriptionData.CustomerEmail)
                 .Request();
-            foreach(var item in subscriptionList.List)
-            {
-                var customer = item.Customer;
-                var machineName = customer.GetValue<string>("cf_machinename", false);
-
-                if(machineName == null)
-                {
-                    return false;
-                }
-
-                if(subscriptionData.MachineName == machineName)
-                {
-                    return true;
-                }
-            }
-
-            return false;
+            return subscriptionList.List.Count >= 1;
         }
 
         public ISubscriptionData RetrievePlan(string subscriptionId)
@@ -71,7 +36,7 @@ namespace Warewolf.Licensing
         {
             var result = ChargeBee.Models.Subscription.Create()
                 .PlanId(subscriptionData.PlanId)
-                .Param("customer[cf_machinename]", subscriptionData.MachineName)
+                .Param("customer[cf_stopexecutions]", true)
                 .AutoCollection(AutoCollectionEnum.On)
                 .CustomerFirstName(subscriptionData.CustomerFirstName)
                 .CustomerLastName(subscriptionData.CustomerLastName)
@@ -85,7 +50,7 @@ namespace Warewolf.Licensing
         {
             var subscription = result.Subscription;
             var customer = result.Customer;
-            var machineName = customer.GetValue<string>("cf_machinename", false);
+            var stopExecutions = customer.GetValue<bool>("cf_stopexecutions", false);
 
             var licenseData = new SubscriptionData
             {
@@ -97,7 +62,7 @@ namespace Warewolf.Licensing
                 CustomerFirstName = customer.FirstName,
                 CustomerLastName = customer.LastName,
                 CustomerEmail = customer.Email,
-                MachineName = machineName,
+                StopExecutions = stopExecutions,
                 TrialEnd = subscription.TrialEnd
             };
             return licenseData;

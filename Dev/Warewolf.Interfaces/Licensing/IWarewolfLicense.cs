@@ -13,6 +13,5 @@ namespace Warewolf.Licensing
         ISubscriptionData CreatePlan(ISubscriptionData subscriptionData);
         ISubscriptionData RetrievePlan(string subscriptionId, string subscriptionKey, string subscriptionSiteName);
         bool SubscriptionExists(ISubscriptionData subscriptionData);
-        bool SubscriptionExistsForMachine(ISubscriptionData subscriptionData);
     }
 }

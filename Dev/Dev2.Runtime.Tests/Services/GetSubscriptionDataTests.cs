@@ -86,7 +86,7 @@ namespace Dev2.Tests.Runtime.Services
                 CustomerId = "asdsadsdsadsad",
                 SubscriptionId = "asdsadsdsadsad",
                 NoOfCores = 1,
-                MachineName = "MachineName",
+                StopExecutions = true,
                 IsLicensed = true
             };
 
@@ -111,14 +111,14 @@ namespace Dev2.Tests.Runtime.Services
                 .Returns(resultSubscriptionData);
 
             //------------Execute Test---------------------------
-            var getSubscriptionData = new GetSubscriptionData(mockWarewolfLicense.Object, mockSubscriptionProvider.Object,"MachineName");
+            var getSubscriptionData = new GetSubscriptionData(mockWarewolfLicense.Object, mockSubscriptionProvider.Object);
             var jsonResult = getSubscriptionData.Execute(values, workspaceMock.Object);
             var result = serializer.Deserialize<ExecuteMessage>(jsonResult);
 
             //------------Assert Results-------------------------
             var data = serializer.Deserialize<ISubscriptionData>(result.Message);
             Assert.IsNotNull(data.CustomerFirstName);
-            Assert.IsNotNull(data.MachineName);
+            Assert.IsNotNull(data.StopExecutions);
             Assert.IsNotNull(data.CustomerLastName);
             Assert.IsNotNull(data.CustomerEmail);
             Assert.IsNotNull(data.CustomerId);

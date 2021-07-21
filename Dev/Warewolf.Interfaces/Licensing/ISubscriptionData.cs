@@ -30,6 +30,6 @@ namespace Warewolf.Licensing
         DateTime? TrialEnd { get; set; }
         bool EndOfTerm { get; set; }
         int NoOfCores {get;set;}
-        string  MachineName {get;set;}
+        bool  StopExecutions {get;set;}
     }
 }

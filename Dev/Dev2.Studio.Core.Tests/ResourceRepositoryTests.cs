@@ -2696,7 +2696,7 @@ namespace BusinessDesignStudio.Unit.Tests
                 CustomerFirstName = "firstName",
                 CustomerLastName = "lastName",
                 CustomerEmail = "email",
-                MachineName = "machineName"
+                StopExecutions =true
             };
             var jsonSerializer = new Dev2JsonSerializer();
             var payload = jsonSerializer.Serialize(subscriptionData);
@@ -2731,7 +2731,7 @@ namespace BusinessDesignStudio.Unit.Tests
                 CustomerFirstName = "firstName",
                 CustomerLastName = "lastName",
                 CustomerEmail = "email",
-                MachineName = "machineName"
+                StopExecutions = true
             };
             var jsonSerializer = new Dev2JsonSerializer();
             var payload = jsonSerializer.Serialize(subscriptionData);
@@ -2765,7 +2765,7 @@ namespace BusinessDesignStudio.Unit.Tests
                 CustomerFirstName = "firstName",
                 CustomerLastName = "lastName",
                 CustomerEmail = "email",
-                MachineName = "machineName"
+                StopExecutions = true
             };
             var jsonSerializer = new Dev2JsonSerializer();
             var payload = jsonSerializer.Serialize(subscriptionData);
