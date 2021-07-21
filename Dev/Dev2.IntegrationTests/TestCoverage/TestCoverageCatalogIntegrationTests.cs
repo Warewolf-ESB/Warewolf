@@ -1,4 +1,4 @@
-﻿/*
+/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
@@ -23,6 +23,8 @@ using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using Newtonsoft.Json.Linq;
+using TestBase;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Data;
 
@@ -155,7 +157,44 @@ namespace Dev2.Integration.Tests.TestCoverage
             //Assert
             Assert.IsTrue(sut.TestCoverageReports.Count > 0);
         }
-
+        
+        [TestMethod]
+        [TestCategory(nameof(TestCoverageCatalog))]
+        public void ExecutionWithTest_ExpectedValidJson()
+        {
+            var result = TestHelper.PostDataToWebserver("http://localhost:3142/secure/.tests");
+            var json = Newtonsoft.Json.JsonConvert.DeserializeObject<JObject>(result);
+            Assert.IsNotNull(json);
+        }
+        
+        [TestMethod]
+        [TestCategory(nameof(TestCoverageCatalog))]
+        public void ExecutionWithTest_ExpectedValidXml()
+        {
+            const string ExpectedXmlStarter = "<?xml version=\"1.0\" encoding=\"utf-8\"?><TestRun";
+            var result = TestHelper.PostDataToWebserver("http://localhost:3142/secure/.tests.trx");
+            Assert.IsTrue(result.StartsWith(ExpectedXmlStarter), "Unexpected xml returned from tests:\n" + result);
+        }
+        
+        [TestMethod]
+        [TestCategory(nameof(TestCoverageCatalog))]
+        public void ExecutionWithCoverage_ExpectedValidHtml()
+        {
+            const string ExpectedHtmlStarter = "<div class=\"nav-bar-row\" style=\"padding:10px 10px 20px 10px;margin:5px;font-family:Roboto sans-serif;font-size:28px;font-weight:500;\">\r\n\t";
+            TestHelper.PostDataToWebserver("http://localhost:3142/secure/.tests");
+            var result = TestHelper.PostDataToWebserver("http://localhost:3142/secure/.coverage");
+            Assert.IsTrue(result.StartsWith(ExpectedHtmlStarter + "Coverage Summary"), "Invalid html returned from coverage:\n" + result);
+        }
+        
+        [TestMethod]
+        [TestCategory(nameof(TestCoverageCatalog))]
+        public void ExecutionWithCoverage_ExpectedValidJson()
+        {
+            TestHelper.PostDataToWebserver("http://localhost:3142/secure/.tests");
+            var result = TestHelper.PostDataToWebserver("http://localhost:3142/secure/.coverage.json");
+            var json = Newtonsoft.Json.JsonConvert.DeserializeObject<JObject>(result);
+            Assert.IsNotNull(json, "Coverage json is not valid as json.");
+        }
 
         public Mock<IResourceCatalog> GetMockResourceCatalog(IWarewolfWorkflow warewolfWorkflow)
         {

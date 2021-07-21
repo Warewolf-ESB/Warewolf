@@ -202,7 +202,7 @@ namespace Dev2.Core.Tests.Factories
         static IServerRepository SetupEnvironmentRepo(Guid environmentId)
         {
             var mockResourceRepository = new Mock<IResourceRepository>();
-            var mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment(mockResourceRepository.Object, "localhost");
+            var mockEnvironment = EnvironmentRepositoryTest.CreateMockEnvironment(mockResourceRepository.Object, "localhost");
             mockEnvironment.Setup(model => model.EnvironmentID).Returns(environmentId);
             return GetEnvironmentRepository(mockEnvironment);
         }

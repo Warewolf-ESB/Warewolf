@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Net;
+using System.Security.Principal;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Enums;
@@ -24,6 +25,8 @@ using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.WebServer.TransferObjects;
 using Dev2.Services.Security;
 using Dev2.Web;
+using Warewolf.Storage;
+using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using Warewolf.Data;
 using Warewolf.Services;
@@ -372,6 +375,140 @@ namespace Dev2.Runtime.WebServer
             return canExecute;
         }
 
+        public static DataListFormat RunMultipleTestBatchesAndReturnJSON(this IDSFDataObject dataObject, IPrincipal userPrinciple, Guid workspaceGuid,
+            Dev2JsonSerializer serializer,
+            IResourceCatalog catalog, ITestCatalog testCatalog,
+            out string executePayload, ITestCoverageCatalog testCoverageCatalog,
+            IServiceTestExecutorWrapper serviceTestExecutorWrapper)
+        {
+            var testResults = RunListOfTests(dataObject, userPrinciple, workspaceGuid, serializer, catalog, testCatalog, testCoverageCatalog, serviceTestExecutorWrapper);
+            var formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
+
+            var objArray = testResults.Results
+                .Where(o => o.HasTestResults)
+                .Select(o =>
+                {
+                    var name = o.Resource.ResourceName;
+                    if (o.Resource is IFilePathResource filePath)
+                    {
+                        name = filePath.Path;
+                    }
+
+                    return new JObject
+                    {
+                        {"ResourceID", o.Resource.ResourceID},
+                        {"Name", name},
+                        {"Tests", new JArray(o.Results.Select(o1 => o1.BuildTestResultJSONForWebRequest()))}
+                    };
+                });
+
+            var obj = new JObject
+            {
+                {"StartTime", testResults.StartTime},
+                {"EndTime", testResults.EndTime},
+                {"Results", new JArray(objArray)},
+            };
+
+            executePayload = serializer.Serialize(obj);
+            return formatter;
+        }
+
+        public static DataListFormat RunMultipleTestBatchesAndReturnTRX(this IDSFDataObject dataObject, IPrincipal userPrinciple, Guid workspaceGuid,
+            Dev2JsonSerializer serializer,
+            IResourceCatalog catalog, ITestCatalog testCatalog,
+            out string executePayload, ITestCoverageCatalog testCoverageCatalog,
+            IServiceTestExecutorWrapper serviceTestExecutorWrapper)
+        {
+            var testResults = RunListOfTests(dataObject, userPrinciple, workspaceGuid, serializer, catalog, testCatalog, testCoverageCatalog, serviceTestExecutorWrapper);
+            var formatter = DataListFormat.CreateFormat("XML", EmitionTypes.XML, "text/xml");
+            executePayload = ServiceTestModelTRXResultBuilder.BuildTestResultTRX(dataObject.ServiceName, testResults.Results.SelectMany(o => o.Results).ToList());
+            return formatter;
+        }
+
+        static TestResults RunListOfTests(IDSFDataObject dataObject, IPrincipal userPrinciple, Guid workspaceGuid, Dev2JsonSerializer serializer, IResourceCatalog catalog, ITestCatalog testCatalog, ITestCoverageCatalog testCoverageCatalog, IServiceTestExecutorWrapper serviceTestExecutorWrapper)
+        {
+            var result = new TestResults();
+
+            var selectedResources = catalog.GetResources(workspaceGuid)
+                ?.Where(resource => dataObject.TestsResourceIds.Contains(resource.ResourceID)).ToArray();
+
+            if (selectedResources != null)
+            {
+                var workflowTaskList = new List<Task<WorkflowTestResults>>();
+                foreach (var testsResourceId in dataObject.TestsResourceIds)
+                {
+                    var workflowTask = Task<WorkflowTestResults>.Factory.StartNew(() =>
+                    {
+                        var workflowTestTaskList = new List<Task<IServiceTestModelTO>>();
+                        var res = selectedResources.FirstOrDefault(o => o.ResourceID == testsResourceId);
+                        if (res is null)
+                        {
+                            return null;
+                        }
+                        else
+                        {
+                            var resourcePath = res.GetResourcePath(workspaceGuid).Replace("\\", "/");
+                            var workflowTestResults = new WorkflowTestResults(res);
+
+                            var allTests = testCatalog.Fetch(testsResourceId);
+                            foreach (var (test, dataObjectClone) in from test in allTests
+                                                                    let dataObjectClone = dataObject.Clone()
+                                                                    select (test, dataObjectClone))
+                            {
+                                dataObjectClone.Environment = new ExecutionEnvironment();
+                                dataObjectClone.TestName = test.TestName;
+                                dataObjectClone.ServiceName = res.ResourceName;
+                                dataObjectClone.ResourceID = res.ResourceID;
+                                var lastTask = serviceTestExecutorWrapper.ExecuteTestAsync(resourcePath, userPrinciple, workspaceGuid,
+                                               serializer, dataObjectClone);
+                                workflowTestTaskList.Add(lastTask);
+                                var report = testCoverageCatalog.FetchReport(res.ResourceID, test.TestName);
+                                var lastTestCoverageRun = report?.LastRunDate;
+                                if (report is null || test.LastRunDate > lastTestCoverageRun)
+                                {
+                                    testCoverageCatalog.GenerateSingleTestCoverage(res.ResourceID, lastTask.Result);
+                                }
+                            }
+
+                            Task.WaitAll(workflowTestTaskList.Cast<Task>().ToArray());
+                            foreach (var task in workflowTestTaskList)
+                            {
+                                workflowTestResults.Add(task.Result);
+                            }
+
+                            var testResults = workflowTestResults.Results;
+                            if (testResults.Count > 0)
+                            {
+                                testCoverageCatalog.GenerateAllTestsCoverage(res.ResourceName, res.ResourceID, testResults);
+                            }
+
+                            return workflowTestResults;
+                        }
+                    });
+
+                    if (workflowTask != null)
+                    {
+                        workflowTaskList.Add(workflowTask);
+                    }
+                }
+
+                Task.WaitAll(workflowTaskList.Cast<Task>().ToArray());
+
+                foreach (var task in workflowTaskList)
+                {
+                    if (task.Result != null)
+                    {
+                        result.Add(task.Result);
+                    }
+                }
+            }
+            
+            result.EndTime = DateTime.Now;
+
+            return result;
+        }
+
+
         public static DataListFormat RunCoverageAndReturnJSON(this ICoverageDataObject coverageData, ITestCoverageCatalog testCoverageCatalog, ITestCatalog testCatalog, IResourceCatalog catalog, Guid workspaceGuid, Dev2JsonSerializer serializer, out string executePayload)
         {
             var (allCoverageReports, _) = RunListOfCoverage(coverageData, testCoverageCatalog, testCatalog, workspaceGuid, catalog);
@@ -486,6 +623,18 @@ namespace Dev2.Runtime.WebServer
             allCoverageReports.EndTime = DateTime.Now;
 
             return (allCoverageReports, allTestResults);
+        }
+
+        public interface IServiceTestExecutorWrapper
+        {
+            Task<IServiceTestModelTO> ExecuteTestAsync(string resourcePath, IPrincipal userPrinciple, Guid workspaceGuid, Dev2JsonSerializer serializer, IDSFDataObject dataObjectClone);
+        }
+        public class ServiceTestExecutorWrapper : IServiceTestExecutorWrapper
+        {
+            public Task<IServiceTestModelTO> ExecuteTestAsync(string resourcePath, IPrincipal userPrinciple, Guid workspaceGuid, Dev2JsonSerializer serializer, IDSFDataObject dataObjectClone)
+            {
+                return new ServiceTestExecutor().ExecuteTestAsyncTask(resourcePath, userPrinciple, workspaceGuid, serializer, dataObjectClone);
+            }
         }
     }
 }

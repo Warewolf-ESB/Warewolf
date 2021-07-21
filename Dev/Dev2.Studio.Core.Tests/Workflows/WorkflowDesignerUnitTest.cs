@@ -1134,7 +1134,7 @@ namespace Dev2.Core.Tests.Workflows
             CustomContainer.Register(serverRepo.Object);
             var repo = new Mock<IResourceRepository>();
             repo.Setup(c => c.FetchResourceDefinition(It.IsAny<IServer>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage { Message = null });
-            var env = EnviromentRepositoryTest.CreateMockEnvironment();
+            var env = EnvironmentRepositoryTest.CreateMockEnvironment();
             env.Setup(e => e.ResourceRepository).Returns(repo.Object);
 
             var crm = new Mock<IContextualResourceModel>();
@@ -1247,7 +1247,7 @@ namespace Dev2.Core.Tests.Workflows
             var serverRepo = new Mock<IServerRepository>();
             CustomContainer.Register(serverRepo.Object);
             repo.Setup(r => r.FetchResourceDefinition(It.IsAny<IServer>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
-            var env = EnviromentRepositoryTest.CreateMockEnvironment();
+            var env = EnvironmentRepositoryTest.CreateMockEnvironment();
             env.Setup(e => e.ResourceRepository).Returns(repo.Object);
             var crm = new Mock<IContextualResourceModel>();
             crm.Setup(r => r.Environment).Returns(env.Object);
@@ -1291,7 +1291,7 @@ namespace Dev2.Core.Tests.Workflows
             var serverRepo = new Mock<IServerRepository>();
             CustomContainer.Register(serverRepo.Object);
             repo.Setup(r => r.FetchResourceDefinition(It.IsAny<IServer>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
-            var env = EnviromentRepositoryTest.CreateMockEnvironment();
+            var env = EnvironmentRepositoryTest.CreateMockEnvironment();
             env.Setup(e => e.ResourceRepository).Returns(repo.Object);
 
             var crm = new Mock<IContextualResourceModel>();
@@ -1342,7 +1342,7 @@ namespace Dev2.Core.Tests.Workflows
             CustomContainer.Register(serverRepo.Object);
             var repo = new Mock<IResourceRepository>();
             repo.Setup(r => r.FetchResourceDefinition(It.IsAny<IServer>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
-            var env = EnviromentRepositoryTest.CreateMockEnvironment();
+            var env = EnvironmentRepositoryTest.CreateMockEnvironment();
             env.Setup(e => e.ResourceRepository).Returns(repo.Object);
 
             var crm = new Mock<IContextualResourceModel>();
@@ -1533,7 +1533,7 @@ namespace Dev2.Core.Tests.Workflows
             #region Setup view model constructor parameters
 
             var repo = new Mock<IResourceRepository>();
-            var env = EnviromentRepositoryTest.CreateMockEnvironment();
+            var env = EnvironmentRepositoryTest.CreateMockEnvironment();
             env.Setup(e => e.ResourceRepository).Returns(repo.Object);
 
             var crm = new Mock<IContextualResourceModel>();
@@ -1618,7 +1618,7 @@ namespace Dev2.Core.Tests.Workflows
             mockRemoteEnvironment.Setup(model => model.Connection).Returns(mockRemoteConnection.Object);
             mockResourceModel.Setup(model => model.Environment).Returns(mockRemoteEnvironment.Object);
             repo.Setup(repository => repository.LoadContextualResourceModel(It.IsAny<Guid>())).Returns(mockResourceModel.Object);
-            var env = EnviromentRepositoryTest.CreateMockEnvironment();
+            var env = EnvironmentRepositoryTest.CreateMockEnvironment();
             env.Setup(model => model.EnvironmentID).Returns(Guid.Empty);
             env.Setup(e => e.ResourceRepository).Returns(repo.Object);
 
@@ -1685,7 +1685,7 @@ namespace Dev2.Core.Tests.Workflows
 
             var repo = new Mock<IResourceRepository>();
             repo.Setup(repository => repository.SaveToServer(It.IsAny<IResourceModel>())).Verifiable();
-            var env = EnviromentRepositoryTest.CreateMockEnvironment();
+            var env = EnvironmentRepositoryTest.CreateMockEnvironment();
             env.Setup(e => e.ResourceRepository).Returns(repo.Object);
 
             var crm = new Mock<IContextualResourceModel>();
@@ -1776,7 +1776,7 @@ namespace Dev2.Core.Tests.Workflows
             var repo = new Mock<IResourceRepository>();
             repo.Setup(repository => repository.SaveToServer(It.IsAny<IResourceModel>())).Verifiable();
             repo.Setup(repository => repository.Save(It.IsAny<IResourceModel>())).Verifiable();
-            var env = EnviromentRepositoryTest.CreateMockEnvironment();
+            var env = EnvironmentRepositoryTest.CreateMockEnvironment();
             env.Setup(e => e.ResourceRepository).Returns(repo.Object);
 
             var crm = new Mock<IContextualResourceModel>();
@@ -1861,7 +1861,7 @@ namespace Dev2.Core.Tests.Workflows
             #region Setup view model constructor parameters
 
             var repo = new Mock<IResourceRepository>();
-            var env = EnviromentRepositoryTest.CreateMockEnvironment();
+            var env = EnvironmentRepositoryTest.CreateMockEnvironment();
             env.Setup(e => e.ResourceRepository).Returns(repo.Object);
 
             var crm = new Mock<IContextualResourceModel>();
@@ -1924,7 +1924,7 @@ namespace Dev2.Core.Tests.Workflows
             #region Setup view model constructor parameters
 
             var repo = new Mock<IResourceRepository>();
-            var env = EnviromentRepositoryTest.CreateMockEnvironment();
+            var env = EnvironmentRepositoryTest.CreateMockEnvironment();
             env.Setup(e => e.ResourceRepository).Returns(repo.Object);
 
             var crm = new Mock<IContextualResourceModel>();
@@ -1988,7 +1988,7 @@ namespace Dev2.Core.Tests.Workflows
             #region Setup view model constructor parameters
 
             var repo = new Mock<IResourceRepository>();
-            var env = EnviromentRepositoryTest.CreateMockEnvironment();
+            var env = EnvironmentRepositoryTest.CreateMockEnvironment();
             env.Setup(e => e.ResourceRepository).Returns(repo.Object);
 
             var crm = new Mock<IContextualResourceModel>();
@@ -2053,7 +2053,7 @@ namespace Dev2.Core.Tests.Workflows
 
             var properties = new Dictionary<string, Mock<ModelProperty>>();
             var repo = new Mock<IResourceRepository>();
-            var env = EnviromentRepositoryTest.CreateMockEnvironment();
+            var env = EnvironmentRepositoryTest.CreateMockEnvironment();
             env.Setup(e => e.ResourceRepository).Returns(repo.Object);
 
             var crm = new Mock<IContextualResourceModel>();
@@ -2120,7 +2120,7 @@ namespace Dev2.Core.Tests.Workflows
 
             var properties = new Dictionary<string, Mock<ModelProperty>>();
             var repo = new Mock<IResourceRepository>();
-            var env = EnviromentRepositoryTest.CreateMockEnvironment();
+            var env = EnvironmentRepositoryTest.CreateMockEnvironment();
             env.Setup(e => e.ResourceRepository).Returns(repo.Object);
 
             var crm = new Mock<IContextualResourceModel>();
@@ -2189,7 +2189,7 @@ namespace Dev2.Core.Tests.Workflows
 
             var properties = new Dictionary<string, Mock<ModelProperty>>();
             var repo = new Mock<IResourceRepository>();
-            var env = EnviromentRepositoryTest.CreateMockEnvironment();
+            var env = EnvironmentRepositoryTest.CreateMockEnvironment();
             env.Setup(e => e.ResourceRepository).Returns(repo.Object);
 
             var crm = new Mock<IContextualResourceModel>();
@@ -2259,7 +2259,7 @@ namespace Dev2.Core.Tests.Workflows
             var properties = new Dictionary<string, Mock<ModelProperty>>();
             var repo = new Mock<IResourceRepository>();
 
-            var env = EnviromentRepositoryTest.CreateMockEnvironment();
+            var env = EnvironmentRepositoryTest.CreateMockEnvironment();
 
 
             var crm = new Mock<IContextualResourceModel>();
@@ -2334,7 +2334,7 @@ namespace Dev2.Core.Tests.Workflows
             var properties = new Dictionary<string, Mock<ModelProperty>>();
             var repo = new Mock<IResourceRepository>();
 
-            var env = EnviromentRepositoryTest.CreateMockEnvironment();
+            var env = EnvironmentRepositoryTest.CreateMockEnvironment();
 
             var crm = new Mock<IContextualResourceModel>();
             crm.Setup(r => r.Environment).Returns(env.Object);
@@ -2404,7 +2404,7 @@ namespace Dev2.Core.Tests.Workflows
 
             var properties = new Dictionary<string, Mock<ModelProperty>>();
             var repo = new Mock<IResourceRepository>();
-            var env = EnviromentRepositoryTest.CreateMockEnvironment();
+            var env = EnvironmentRepositoryTest.CreateMockEnvironment();
             env.Setup(e => e.ResourceRepository).Returns(repo.Object);
 
             var crm = new Mock<IContextualResourceModel>();
@@ -2502,7 +2502,7 @@ namespace Dev2.Core.Tests.Workflows
             #region Setup view model constructor parameters
 
             var repo = new Mock<IResourceRepository>();
-            var env = EnviromentRepositoryTest.CreateMockEnvironment();
+            var env = EnvironmentRepositoryTest.CreateMockEnvironment();
             env.Setup(e => e.ResourceRepository).Returns(repo.Object);
 
             var crm = new Mock<IContextualResourceModel>();
@@ -2986,7 +2986,7 @@ namespace Dev2.Core.Tests.Workflows
         public static IServerRepository SetupEnvironmentRepo(Guid environmentId)
         {
             var mockResourceRepository = new Mock<IResourceRepository>();
-            var mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment(mockResourceRepository.Object, "localhost");
+            var mockEnvironment = EnvironmentRepositoryTest.CreateMockEnvironment(mockResourceRepository.Object, "localhost");
             mockEnvironment.Setup(model => model.EnvironmentID).Returns(environmentId);
             return GetEnvironmentRepository(mockEnvironment);
         }
