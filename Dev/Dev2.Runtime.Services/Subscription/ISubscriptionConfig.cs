@@ -21,6 +21,8 @@ namespace Dev2.Runtime.Subscription
         string SubscriptionKey { get; }
         string SubscriptionSiteName { get; }
 
+        bool StopExecutions { get; }
+
         void UpdateSubscriptionSettings(ISubscriptionData newSubscriptionData);
     }
 }

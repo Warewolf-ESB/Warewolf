@@ -94,6 +94,7 @@ namespace Dev2.Tests.Runtime.Services
             mockSubscriptionProvider.Setup(o => o.SubscriptionId).Returns("16BjmNSXISIQjctO");
             mockSubscriptionProvider.Setup(o => o.PlanId).Returns("developer");
             mockSubscriptionProvider.Setup(o => o.CustomerId).Returns("16BjmNSXISIQjctO");
+            mockSubscriptionProvider.Setup(o => o.StopExecutions).Returns(true);
             mockSubscriptionProvider.Setup(o => o.Status).Returns(SubscriptionStatus.Active);
             mockSubscriptionProvider.Setup(o => o.SubscriptionSiteName).Returns("16BjmNSXISIQjctO");
             mockSubscriptionProvider.Setup(o => o.SubscriptionKey).Returns("test_VMxitsiobdAyth62k0DiqpAUKocG6sV3");
@@ -126,6 +127,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.IsNotNull(data.PlanId);
             Assert.IsNotNull(data.Status);
             Assert.IsTrue(data.IsLicensed);
+            Assert.IsTrue(data.StopExecutions);
         }
     }
 }

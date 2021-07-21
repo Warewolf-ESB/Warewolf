@@ -52,6 +52,8 @@ namespace Dev2.Runtime.Subscription
         public string SubscriptionId { get; private set; }
         public string Status { get; private set; }
 
+        public bool StopExecutions { get; private set; }
+
         protected void Initialize(NameValueCollection settings)
         {
             if(settings == null)
@@ -67,6 +69,7 @@ namespace Dev2.Runtime.Subscription
                 PlanId = DecryptKey(settings["PlanId"]);
                 SubscriptionId = DecryptKey(settings["SubscriptionId"]);
                 Status = DecryptKey(settings["Status"]);
+                StopExecutions = bool.Parse(DecryptKey(settings["StopExecutions"]));
             }
             else
             {
@@ -86,6 +89,7 @@ namespace Dev2.Runtime.Subscription
                 newSettings["PlanId"] = SubscriptionProvider.SubscriptionDefaultPlanId;
                 newSettings["SubscriptionKey"] = subscriptionKey;
                 newSettings["SubscriptionSiteName"] = subscriptionSiteName;
+                newSettings["StopExecutions"] = SubscriptionProvider.StopExecutionsDefault;
                 SaveConfig(newSettings);
             }
         }
@@ -112,9 +116,11 @@ namespace Dev2.Runtime.Subscription
                 newSettings["PlanId"] = SubscriptionProvider.SubscriptionDefaultPlanId;
                 newSettings["SubscriptionKey"] = subscriptionKey;
                 newSettings["SubscriptionSiteName"] = subscriptionSiteName;
+                newSettings["StopExecutions"] = SubscriptionProvider.StopExecutionsDefault;
                 SaveConfig(newSettings);
             }
         }
+
         public void UpdateSubscriptionSettings(ISubscriptionData subscriptionData)
         {
             try
@@ -126,6 +132,7 @@ namespace Dev2.Runtime.Subscription
                 newSettings["PlanId"] = SecurityEncryption.Encrypt(subscriptionData.PlanId);
                 newSettings["SubscriptionKey"] = SecurityEncryption.Encrypt(subscriptionData.SubscriptionKey);
                 newSettings["SubscriptionSiteName"] = SecurityEncryption.Encrypt(subscriptionData.SubscriptionSiteName);
+                newSettings["StopExecutions"] = SecurityEncryption.Encrypt(subscriptionData.StopExecutions.ToString());
                 SaveConfig(newSettings);
             }
             catch(Exception e)
@@ -169,7 +176,14 @@ namespace Dev2.Runtime.Subscription
             return SecurityEncryption.Decrypt(base64String).TrimEnd('\0');
         }
 
-        public static NameValueCollection CreateSettings(string customerId, string planId, string subscriptionId, string status, string subscriptionSiteName, string subscriptionKey) => new NameValueCollection
+        public static NameValueCollection CreateSettings(
+            string customerId,
+            string planId,
+            string subscriptionId,
+            string status,
+            string subscriptionSiteName,
+            string subscriptionKey,
+            string stopExecutions) => new NameValueCollection
         {
             {
                 "CustomerId", customerId
@@ -188,6 +202,9 @@ namespace Dev2.Runtime.Subscription
             },
             {
                 "SubscriptionSiteName", subscriptionSiteName
+            },
+            {
+                "StopExecutions", stopExecutions
             }
         };
     }

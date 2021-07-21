@@ -20,10 +20,15 @@ namespace Dev2.Runtime.Subscription
         string CustomerId { get; }
         string PlanId { get; }
         string SubscriptionId { get; }
-        bool IsLicensed {get;}
+        bool IsLicensed { get; }
+        bool StopExecutions { get; }
+
         SubscriptionStatus Status { get; }
+
         void SaveSubscriptionData(ISubscriptionData subscriptionData);
+
         ISubscriptionData GetSubscriptionData();
+
         ISubscriptionData DefaultSubscription();
     }
 }

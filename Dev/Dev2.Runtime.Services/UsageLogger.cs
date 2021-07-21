@@ -62,13 +62,21 @@ namespace Dev2.Runtime
             var jsonData = JsonConvert.SerializeObject(myData);
             //TODO: Add whether running in container
             var customerId = subscriptionProvider.CustomerId;
+
             var returnResult = UsageTracker.TrackEvent(customerId, usageType, jsonData);
+
             if(returnResult != UsageDataResult.ok)
             {
                 ServerStats.IncrementUsageServerRetry();
                 if(ServerStats.UsageServerRetry > 3)
                 {
-                    //TODO: Licensing: switch warewolf to readonly mode. Only Warn until Licensing is implemented
+                    //TODO: If the machine has not connected to the internet for 30 days, stop executions.
+                    //var stopExecutions = subscriptionProvider.StopExecutions;
+                    // if(stopExecutions && lastLoggedInDays > 30)
+                    //   {
+                    //      STOP Executions
+                    // }
+
                     Dev2Logger.Warn(
                         "Could not log usage. Retries: "
                         + ServerStats.UsageServerRetry

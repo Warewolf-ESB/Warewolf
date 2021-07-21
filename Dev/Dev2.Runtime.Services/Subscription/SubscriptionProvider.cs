@@ -22,11 +22,13 @@ namespace Dev2.Runtime.Subscription
         public static readonly string SubscriptionLiveSiteName = "tWPn5xcpWET9NX3yt+uPHQ==";
         public static readonly string SubscriptionDefaultPlanId = "qj2HmQwVsUt12btj/iXadA==";
         public static readonly string SubscriptionDefaultStatus = "aT/AoVWEMyf6OPvaYp47Gw==";
+        public static readonly string StopExecutionsDefault = "r/EOk8xFEhRno3TYRCvIKQ==";
         public string SubscriptionKey { get; }
         public string SubscriptionSiteName { get; }
         public string CustomerId { get; }
         public string PlanId { get; }
         public string SubscriptionId { get; }
+        public bool StopExecutions{get;}
         public SubscriptionStatus Status { get; }
         public bool IsLicensed { get; }
         static volatile ISubscriptionProvider _theInstance;
@@ -78,6 +80,7 @@ namespace Dev2.Runtime.Subscription
             Enum.TryParse(config.Status, out SubscriptionStatus status);
             Status = status;
             IsLicensed = Status == SubscriptionStatus.Active || Status == SubscriptionStatus.InTrial;
+            StopExecutions = config.StopExecutions;
         }
 
         public void SaveSubscriptionData(ISubscriptionData subscriptionData)
@@ -97,7 +100,8 @@ namespace Dev2.Runtime.Subscription
                 Status = subscriptionData.Status,
                 SubscriptionSiteName = SubscriptionSiteName,
                 SubscriptionKey = SubscriptionKey,
-                IsLicensed = subscriptionData.IsLicensed
+                IsLicensed = subscriptionData.IsLicensed,
+                StopExecutions = subscriptionData.StopExecutions
             };
             return newSubscriptionData;
         }
@@ -113,6 +117,7 @@ namespace Dev2.Runtime.Subscription
                 SubscriptionSiteName = SubscriptionSiteName,
                 SubscriptionKey = SubscriptionKey,
                 IsLicensed = IsLicensed,
+                StopExecutions = StopExecutions
             };
         }
 
@@ -124,7 +129,8 @@ namespace Dev2.Runtime.Subscription
                 SubscriptionKey = SubscriptionKey,
                 PlanId = PlanId,
                 Status = Status,
-                IsLicensed = IsLicensed
+                IsLicensed = IsLicensed,
+                StopExecutions =  StopExecutions
             };
         }
     }

@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Specialized;
 using Dev2.Runtime.Subscription;
+using Dev2.Services.Security;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.Enums;
 using Warewolf.Licensing;
@@ -26,12 +27,12 @@ namespace Dev2.Tests.Runtime.Services
         internal const string DefaultSubscriptionKey = "wCYcjqzbAiHIneFFib+LCrn73SSkOlRzm4QxP+mkeHsH7e3surKN5liDsrv39JFR";
         internal const string DefaultSubscriptionSiteName = "L8NilnImZ18r8VCMD88AdQ==";
         internal const string DefaultStatus = "aT/AoVWEMyf6OPvaYp47Gw==";
-
+        internal const string DefaultStopExecutions = "r/EOk8xFEhRno3TYRCvIKQ==";
         static NameValueCollection _defaultSettings;
 
         private static NameValueCollection CreateDefaultConfig()
         {
-            return SubscriptionConfig.CreateSettings(DefaultCustomerId, DefaultPlanId, DefaultSubscriptionId, DefaultStatus, DefaultSubscriptionSiteName, DefaultSubscriptionKey);
+            return SubscriptionConfig.CreateSettings(DefaultCustomerId, DefaultPlanId, DefaultSubscriptionId, DefaultStatus, DefaultSubscriptionSiteName, DefaultSubscriptionKey, DefaultStopExecutions);
         }
 
         /*[TestMethod]
@@ -63,6 +64,11 @@ namespace Dev2.Tests.Runtime.Services
             //
             //var decryptedBytes = SecurityEncryption.Decrypt(encryptedBytes2Live);
             // Assert.AreEqual(value, decryptedBytes);
+
+          //  var value = "true";
+          //  var encryptedData = SecurityEncryption.Encrypt(value);
+         //   var decryptedData = SecurityEncryption.Decrypt(encryptedData);
+          //  Assert.AreEqual(value, decryptedData.TrimEnd('\0'));
         }*/
 
         [TestMethod]
@@ -87,7 +93,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(SubscriptionConfig.DecryptKey(DefaultSubscriptionSiteName), config.SubscriptionSiteName);
             Assert.AreEqual(SubscriptionConfig.DecryptKey(DefaultSubscriptionKey), config.SubscriptionKey);
             Assert.AreEqual(SubscriptionConfig.DecryptKey(DefaultStatus), config.Status);
-
+            Assert.AreEqual(bool.Parse(SubscriptionConfig.DecryptKey(DefaultStopExecutions)), config.StopExecutions);
             Assert.IsNull(config.SaveConfigSettings);
 
             Assert.AreEqual(0, config.SaveConfigHitCount);
@@ -106,7 +112,7 @@ namespace Dev2.Tests.Runtime.Services
             const string CustomerId = "newCustomer";
             const SubscriptionStatus Status = SubscriptionStatus.InTrial;
             const string SubscriptionId = "5467897";
-
+            const string StopExecutions = "true";
             var newSubscriptionData = new SubscriptionData
             {
                 CustomerId = CustomerId,
@@ -114,7 +120,8 @@ namespace Dev2.Tests.Runtime.Services
                 PlanId = PlanId,
                 Status = Status,
                 SubscriptionSiteName = SubscriptionSiteName,
-                SubscriptionKey = SubscriptionKey
+                SubscriptionKey = SubscriptionKey,
+                StopExecutions = bool.Parse(StopExecutions)
             };
             config.UpdateSubscriptionSettings(newSubscriptionData);
 
