@@ -212,16 +212,18 @@ namespace Dev2.Runtime.ESB.Execution
     public class WfExecutionContainer : WfExecutionContainerBase
     {
         readonly IExecutionManager _executionManager;
+        private readonly ISubscriptionProvider _subscriptionProvider;
 
-        public WfExecutionContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel)
-            : this(sa, dataObj, theWorkspace, esbChannel, CustomContainer.Get<IExecutionManager>())
+        public WfExecutionContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel, ISubscriptionProvider subscriptionProvider)
+            : this(sa, dataObj, theWorkspace, esbChannel, subscriptionProvider, CustomContainer.Get<IExecutionManager>())
         {
         }
 
-        private WfExecutionContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel, IExecutionManager executionManager)
+        private WfExecutionContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel, ISubscriptionProvider subscriptionProvider, IExecutionManager executionManager)
             : base(sa, dataObj, theWorkspace, esbChannel)
         {
             _executionManager = executionManager;
+            _subscriptionProvider = subscriptionProvider ?? SubscriptionProvider.Instance;
         }
 
         override protected void EvalInner(IDSFDataObject dsfDataObject, IDev2Activity resource, int update)
@@ -287,12 +289,12 @@ namespace Dev2.Runtime.ESB.Execution
             }
         }
 
-        private static void ExecuteNode(IDSFDataObject dsfDataObject, int update, ref IDev2Activity next, ref IDev2Activity lastActivity)
+        private void ExecuteNode(IDSFDataObject dsfDataObject, int update, ref IDev2Activity next, ref IDev2Activity lastActivity)
         {
             var environment = dsfDataObject.Environment;
             try
             {
-                if (!SubscriptionProvider.Instance.IsLicensed)
+                if (!_subscriptionProvider.IsLicensed)
                 {
                     dsfDataObject.Environment.AddError(ErrorResource.InvalidLicense);
                     dsfDataObject.ExecutionException = new Exception(ErrorResource.InvalidLicense);
@@ -376,12 +378,12 @@ namespace Dev2.Runtime.ESB.Execution
         readonly IExecutionEnvironment _resumeEnvironment;
 
         public ResumableExecutionContainer(Guid resumeActivityId, ServiceAction sa, IDSFDataObject dataObject)
-            : this(resumeActivityId, dataObject.Environment, sa, dataObject, WorkspaceRepository.Instance.ServerWorkspace, new EsbServicesEndpoint())
+            : this(resumeActivityId, dataObject.Environment, sa, dataObject, WorkspaceRepository.Instance.ServerWorkspace, new EsbServicesEndpoint(), SubscriptionProvider.Instance)
         {
         }
 
-        public ResumableExecutionContainer(Guid resumeActivityId, IExecutionEnvironment env, ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel)
-            : base(sa, dataObj, theWorkspace, esbChannel)
+        public ResumableExecutionContainer(Guid resumeActivityId, IExecutionEnvironment env, ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel, ISubscriptionProvider subscriptionProvider)
+            : base(sa, dataObj, theWorkspace, esbChannel, subscriptionProvider)
         {
             _resumeActivityId = resumeActivityId;
             _resumeEnvironment = env;
