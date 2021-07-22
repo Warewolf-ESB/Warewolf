@@ -62,7 +62,10 @@ namespace Dev2.Runtime
             var jsonData = JsonConvert.SerializeObject(myData);
             //TODO: Add whether running in container
             var customerId = subscriptionProvider.CustomerId;
-
+            if(customerId == "")
+            {
+                customerId = "UnRegistered";
+            }
             var returnResult = UsageTracker.TrackEvent(customerId, usageType, jsonData);
 
             if(returnResult != UsageDataResult.ok)

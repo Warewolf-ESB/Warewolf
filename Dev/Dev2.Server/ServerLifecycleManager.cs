@@ -54,6 +54,7 @@ namespace Dev2
         bool InteractiveMode { get; set; }
 
         Task Run(IEnumerable<IServerLifecycleWorker> initWorkers);
+
         void Stop(bool didBreak, int result, bool mute);
     }
 
@@ -259,6 +260,7 @@ namespace Dev2
 
                                 Stop(false, 0, true);
                             }
+
                             var logger = _loggerFactory.New(new JsonSerializer(), _webSocketPool);
                             LogWarewolfVersion(logger);
 #if DEBUG
@@ -267,7 +269,7 @@ namespace Dev2
                                 SetAsStarted();
                             }
 #else
-                            TrackUsage(UsageType.ServerStart,logger);
+                            TrackUsage(UsageType.ServerStart, logger);
 #endif
                         }
                         catch(Exception e)
@@ -342,6 +344,10 @@ namespace Dev2
             //TODO: Add whether running in container
             var jsonData = JsonConvert.SerializeObject(myData);
             var customerId = _subscriptionDataInstance.CustomerId;
+            if(customerId == "")
+            {
+                customerId = "UnRegistered";
+            }
 
             var returnResult = UsageTracker.TrackEvent(customerId, usageType, jsonData);
             if(returnResult != UsageDataResult.ok)
@@ -441,10 +447,12 @@ namespace Dev2
             {
                 _pulseTracker.Dispose();
             }
+
             if(_usageLogger != null)
             {
                 _usageLogger.Dispose();
             }
+
             if(_serverEnvironmentPreparer != null)
             {
                 _serverEnvironmentPreparer.Dispose();
@@ -483,7 +491,6 @@ namespace Dev2
             _writer.WriteLine("done.");
         }
 
-
         void LoadSubscriptionProvider()
         {
             _writer.Write("Loading subscription provider...  ");
@@ -505,9 +512,8 @@ namespace Dev2
                 }
 
                 File.WriteAllText(".\\ServerStarted", DateTime.Now.Ticks.ToString(CultureInfo.InvariantCulture));
-
             }
-            catch (Exception err)
+            catch(Exception err)
             {
                 Dev2Logger.Error(err, GlobalConstants.WarewolfError);
             }
@@ -546,7 +552,7 @@ namespace Dev2
         {
             var ex = e;
             var errors = new StringBuilder();
-            while (ex != null)
+            while(ex != null)
             {
                 errors.AppendLine(ex.Message);
                 errors.AppendLine(ex.StackTrace);
