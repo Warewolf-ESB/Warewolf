@@ -31,7 +31,6 @@ using Moq;
 using Dev2.Common.Interfaces.Versioning;
 using Dev2.Tests.Runtime.Hosting;
 using System.Collections.Generic;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Runtime.Hosting;
 using System.IO;
 using Dev2.Common.Interfaces.Monitoring;
@@ -43,25 +42,12 @@ namespace Dev2.Integration.Tests
     [TestCategory("Load Tests")]
     public class Load_Tests
     {
-        private string _path = EnvironmentVariables.ResourcePath + "\\ResourceLoadProvider_Intergration";
+        private string _path = EnvironmentVariables.ResourcePath;
         private string _resourceName = "Load_Test_LoadProvider_WF_";
         private int _numOfResources = 2000;
-        private IEnumerable<IResource> _resourses;
-
+        
         [TestInitialize]
         public void Setup()
-        {
-            
-            if (!Directory.Exists(_path))
-            {
-                Directory.CreateDirectory(_path);
-            }
-
-            _resourses = ResourceCatalogTests.SaveTestResources(_path, _resourceName, out List<string> workflows, out List<Guid> resourceIds, _numOfResources);
-        }
-
-        [TestCleanup]
-        public void Cleanup()
         {
             if (Directory.Exists(_path))
             {
@@ -73,12 +59,19 @@ namespace Dev2.Integration.Tests
                 { //Best effort
                 }
             }
+
+            if (!Directory.Exists(_path))
+            {
+                Directory.CreateDirectory(_path);
+            }
+
+            _ = ResourceCatalogTests.SaveTestResources(_path, _resourceName, out List<string> workflows, out List<Guid> resourceIds, _numOfResources);
         }
 
         [TestMethod]
         [DoNotParallelize]
         [Owner("Siphamandla Dube")]
-        [TestCategory("ResourceCatalog_LoadTest")]
+        [TestCategory("ResourceCatalog_LoadTests")]
         public void LoadTest_ResourceCatalog_LoadWorkspace_Given_2000Resources_ShouldLoad()
         {
             //Note: current time elapsed on 2000 resources: 16759
