@@ -269,8 +269,8 @@ namespace Dev2
                                 SetAsStarted();
                             }
 #else
-#endif
                             TrackUsage(UsageType.ServerStart, logger);
+#endif
                         }
                         catch(Exception e)
                         {
