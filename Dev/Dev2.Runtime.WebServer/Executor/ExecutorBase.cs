@@ -55,13 +55,14 @@ namespace Dev2.Runtime.WebServer.Executor
         IServiceTestExecutor _serviceTestExecutor;
         readonly IEsbChannelFactory _esbChannelFactory;
         protected readonly IJwtManager _jwtManager;
+        private readonly ISubscriptionProvider _subscriptionProvider;
 
-        protected ExecutorBase(IWorkspaceRepository workspaceRepository, IResourceCatalog resourceCatalog, IAuthorizationService authorizationService, IDataObjectFactory dataObjectFactory, IEsbChannelFactory esbChannelFactory, IJwtManager jwtManager)
-            : this(workspaceRepository, resourceCatalog, TestCatalog.Instance, TestCoverageCatalog.Instance, null, authorizationService, dataObjectFactory, esbChannelFactory, jwtManager)
+        protected ExecutorBase(IWorkspaceRepository workspaceRepository, IResourceCatalog resourceCatalog, IAuthorizationService authorizationService, IDataObjectFactory dataObjectFactory, IEsbChannelFactory esbChannelFactory, IJwtManager jwtManager, ISubscriptionProvider subscriptionProvider)
+            : this(workspaceRepository, resourceCatalog, TestCatalog.Instance, TestCoverageCatalog.Instance, null, authorizationService, dataObjectFactory, esbChannelFactory, jwtManager, subscriptionProvider)
         {
         }
 
-        protected ExecutorBase(IWorkspaceRepository workspaceRepository, IResourceCatalog resourceCatalog, ITestCatalog testCatalog, ITestCoverageCatalog testCoverageCatalog, IServiceTestExecutor serviceTestExecutor, IAuthorizationService authorizationService, IDataObjectFactory dataObjectFactory, IEsbChannelFactory esbChannelFactory, IJwtManager jwtManager)
+        protected ExecutorBase(IWorkspaceRepository workspaceRepository, IResourceCatalog resourceCatalog, ITestCatalog testCatalog, ITestCoverageCatalog testCoverageCatalog, IServiceTestExecutor serviceTestExecutor, IAuthorizationService authorizationService, IDataObjectFactory dataObjectFactory, IEsbChannelFactory esbChannelFactory, IJwtManager jwtManager, ISubscriptionProvider subscriptionProvider)
         {
             _repository = workspaceRepository;
             _resourceCatalog = resourceCatalog;
@@ -72,6 +73,7 @@ namespace Dev2.Runtime.WebServer.Executor
             _esbChannelFactory = esbChannelFactory;
             _jwtManager = jwtManager;
             _serviceTestExecutor = serviceTestExecutor;
+            _subscriptionProvider = subscriptionProvider;
         }
 
         Guid EnsureWorkspaceIdValid(string workspaceId)
@@ -161,7 +163,7 @@ namespace Dev2.Runtime.WebServer.Executor
             _canExecute = workflowCanBeExecutedByGroup;
 
             _executionDataListId = GlobalConstants.NullDataListID;
-            if(!SubscriptionProvider.Instance.IsLicensed)
+            if(!_subscriptionProvider.IsLicensed)
             {
                 _dataObject.Environment.AddError(Warewolf.Resource.Errors.ErrorResource.InvalidLicense);
                 _dataObject.ExecutionException = new AccessDeniedException(Warewolf.Resource.Errors.ErrorResource.InvalidLicense);
