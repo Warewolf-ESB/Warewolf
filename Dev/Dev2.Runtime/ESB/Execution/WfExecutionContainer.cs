@@ -28,6 +28,8 @@ using System;
 using System.Activities;
 using System.Linq;
 using System.Threading;
+using Dev2.Runtime.Subscription;
+using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Auditing;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage.Interfaces;
@@ -290,6 +292,13 @@ namespace Dev2.Runtime.ESB.Execution
             var environment = dsfDataObject.Environment;
             try
             {
+                if (!SubscriptionProvider.Instance.IsLicensed)
+                {
+                    dsfDataObject.Environment.AddError(ErrorResource.InvalidLicense);
+                    dsfDataObject.ExecutionException = new Exception(ErrorResource.InvalidLicense);
+                    return;
+                }
+
                 Dev2Logger.Debug("Executing first node", dsfDataObject.ExecutionID?.ToString());
                 while (next != null)
                 {
