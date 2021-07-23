@@ -1,9 +1,5 @@
 23 July 2021
 ======================
-Enhancements
-----------------
-- Post tool now supports x-www-form-urlencoded format.
-
 Bug fixes
 -----------	
 - Fixed crash when suspending workflows that contain recursive loops.
