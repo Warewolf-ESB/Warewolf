@@ -1,3 +1,20 @@
+23 July 2021
+======================
+Bug fixes
+-----------	
+- Fixed crash when suspending workflows that contain recursive loops.
+
+15 July 2021
+======================
+Enhancements
+----------------
+- Server supports new json and xml formats for running folder and server wide workflow tests and coverage.
+- Duplicate UI shows the progress of long running workflow folder duplicate operations.
+
+Bug fixes
+-----------	
+- Gate tool not showing the correct "Match Type" options.
+
 29 June 2021
 ================
 
