@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Xml.Linq;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
+using Dev2.Data.TO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Warewolf.Common.Interfaces.NetStandard20;
@@ -20,6 +21,36 @@ using Warewolf.Security.Encryption;
 
 namespace Dev2.Runtime.ServiceModel.Data
 {
+    public interface IWebPostOptions
+    {
+        WebSource Source { get; set; }
+        WebRequestMethod Method { get; set; }
+        IEnumerable<INameValue> Head { get; set; }
+        IEnumerable<string> Headers { get; set; }
+        IEnumerable<INameValue> Settings { get; set; }
+        IEnumerable<IFormDataParameters> Parameters { get; set; }
+        string Query { get; set; }
+        string PostData { get; set; }
+        bool IsFormDataChecked { get; set; }
+        bool IsManualChecked { get; set; }
+        bool IsUrlEncodedChecked { get; set; }
+    }
+    
+    public class WebPostOptions : IWebPostOptions
+    {
+        public WebSource Source { get; set; }
+        public WebRequestMethod Method { get; set; }
+        public IEnumerable<INameValue> Head { get; set; }
+        public IEnumerable<string> Headers { get; set; }
+        public IEnumerable<IFormDataParameters> Parameters { get; set; }
+        public IEnumerable<INameValue> Settings { get; set; }
+        public string Query { get; set; }
+        public string PostData { get; set; }
+        public bool IsFormDataChecked { get; set; }
+        public bool IsManualChecked { get; set; }
+        public bool IsUrlEncodedChecked { get; set; }
+    }
+    
     public class WebSource : Resource, IDisposable, IResourceSource, IWebSource
     {
         bool _disposed;

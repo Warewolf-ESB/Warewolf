@@ -31,6 +31,7 @@ namespace Dev2.Activities.Designers2.Core
         string _queryString;
         string _requestUrl;
         ObservableCollection<INameValue> _headers;
+        private ObservableCollection<INameValue> _settings;
         bool _isEnabled;
 
         public WebGetInputRegion()
@@ -124,6 +125,17 @@ namespace Dev2.Activities.Designers2.Core
             {
                 _headers = value;
                 _modelItem.SetProperty("Headers", value.ToList());
+                OnPropertyChanged();
+            }
+        }
+        
+        public ObservableCollection<INameValue> Settings
+        {
+            get => _settings;
+            set
+            {
+                _settings = value;
+                _modelItem.SetProperty("Settings", value.ToList());
                 OnPropertyChanged();
             }
         }

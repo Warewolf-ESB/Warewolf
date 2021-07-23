@@ -17,6 +17,7 @@ using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.Graph;
+using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Data.TO;
 using Dev2.Data.Util;
 using Dev2.Diagnostics;
@@ -25,6 +26,7 @@ using Dev2.Runtime.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
 using Newtonsoft.Json;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Warewolf.Core;
 using Warewolf.Data.Options;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
@@ -32,21 +34,24 @@ using Warewolf.Storage.Interfaces;
 namespace Dev2.Activities
 {
 
-    [Obsolete("WebPostActivity is deprecated. It will be deleted in future releases.\r\n\r\nPlease use WebPostActivityNew.")]
-    public class WebPostActivity : DsfActivity, IEquatable<WebPostActivity>
+    [ToolDescriptorInfo("WebMethods", "POST", ToolType.Native, "6AEB1038-6332-46F9-8BDD-752DE4EA038E", "Dev2.Activities", "1.0.0.0", "Legacy", "HTTP Web Methods", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_WebMethod_Post")]
+    public class WebPostActivityNew : DsfActivity, IEquatable<WebPostActivityNew>
     {
         private IDSFDataObject _dataObject;
 
         public IList<INameValue> Headers { get; set; }
-        public bool IsFormDataChecked { get; set; }
-        public bool IsManualChecked { get; set; }
+        
+        public IList<INameValue> Settings { get; set; }
+        private bool IsFormDataChecked => Convert.ToBoolean(this.Settings?.FirstOrDefault(s => s.Name == nameof(IsFormDataChecked))?.Value);
+        private bool IsManualChecked => Convert.ToBoolean(this.Settings?.FirstOrDefault(s => s.Name == nameof(IsManualChecked))?.Value);
+        private bool IsUrlEncodedChecked => Convert.ToBoolean(this.Settings?.FirstOrDefault(s => s.Name == nameof(IsUrlEncodedChecked))?.Value);
         public IList<FormDataConditionExpression> Conditions { get; set; }
         public string QueryString { get; set; }
         public IOutputDescription OutputDescription { get; set; }
         public IResponseManager ResponseManager { get; set; }
         public string PostData { get; set; }
 
-        public WebPostActivity()
+        public WebPostActivityNew()
         {
             Type = "POST Web Method";
             DisplayName = "POST Web Method";
@@ -94,13 +99,14 @@ namespace Dev2.Activities
                 _debugInputs.Add(debugItem);
             }
 
-            if (IsFormDataChecked)
+            if (IsFormDataChecked || IsUrlEncodedChecked)
             {
                 AddDebugFormDataInputs(conditions);
             }
 
             return _debugInputs;
         }
+
 
         private void AddDebugFormDataInputs(IEnumerable<IFormDataParameters> conditions)
         {
@@ -153,14 +159,28 @@ namespace Dev2.Activities
                 var (head, query, postData, conditions) = GetEnvironmentInputVariables(_dataObject.Environment, update);
 
                 var source = ResourceCatalog.GetResource<WebSource>(Guid.Empty, SourceId);
-
-                if (IsFormDataChecked)
+                var isManualChecked = Convert.ToBoolean(Settings?.FirstOrDefault(s => s.Name == nameof(IsManualChecked))?.Value);
+                var isFormDataChecked = Convert.ToBoolean(Settings?.FirstOrDefault(s => s.Name == nameof(IsFormDataChecked))?.Value);
+                var isUrlEncodedChecked = Convert.ToBoolean(Settings?.FirstOrDefault(s => s.Name == nameof(IsUrlEncodedChecked))?.Value);
+                
+                if(isManualChecked || isFormDataChecked || isUrlEncodedChecked)
                 {
-                    webRequestResult = PerformFormDataWebPostRequest(source, WebRequestMethod.Post, query, head, conditions);
-                }
-                else if (IsManualChecked)
-                {
-                    webRequestResult = PerformManualWebPostRequest(head, query, source, postData);
+                    var webPostOptions = new WebPostOptions
+                    {
+                        Head = head,
+                        Headers = head?.Select(h => h.Name + ":" + h.Value)?.ToArray() ?? new string[0],
+                        Method = WebRequestMethod.Post,
+                        Parameters = conditions,
+                        Query = query,
+                        Source = source,
+                        PostData = postData,
+                        Settings = Settings,
+                        IsManualChecked = isManualChecked,
+                        IsFormDataChecked = isFormDataChecked,
+                        IsUrlEncodedChecked = isUrlEncodedChecked
+                    };
+                    
+                    webRequestResult = PerformWebPostRequest(webPostOptions);
                 }
             }
             catch (Exception ex)
@@ -186,6 +206,11 @@ namespace Dev2.Activities
             }
         }
 
+        protected virtual string PerformWebPostRequest(IWebPostOptions webPostOptions)
+        {
+            return WebSources.Execute(webPostOptions);
+        }
+
         private (IEnumerable<INameValue> head, string query, string data, IEnumerable<IFormDataParameters> conditions) GetEnvironmentInputVariables(IExecutionEnvironment environment, int update)
         {
             IEnumerable<INameValue> head = null;
@@ -196,6 +221,11 @@ namespace Dev2.Activities
                 {
                     var headersHelper = new WebRequestHeadersHelper(notEvaluatedHeaders: Headers, evaluatedHeaders: head);
                     head = headersHelper.CalculateFormDataContentType();
+                }
+                else if(IsUrlEncodedChecked)
+                {
+                    var headersHelper = new WebRequestHeadersHelper(notEvaluatedHeaders: Headers, evaluatedHeaders: head);
+                    head = headersHelper.CalculateUrlEncodedContentType();
                 }
             }
             var query = string.Empty;
@@ -209,7 +239,7 @@ namespace Dev2.Activities
                 postData = ExecutionEnvironment.WarewolfEvalResultToString(environment.Eval(PostData, update, true));
             }
             var conditions = new List<IFormDataParameters>();
-            if ((Conditions ?? (Conditions = new List<FormDataConditionExpression>())).Any() && IsFormDataChecked)
+            if ((Conditions ?? (Conditions = new List<FormDataConditionExpression>())).Any() && (IsFormDataChecked || IsUrlEncodedChecked))
             {
                 _errorsTo = new ErrorResultTO();
                 conditions = Conditions.SelectMany(o => o.Eval(GetArgumentsFunc, _errorsTo.HasErrors())).ToList();
@@ -240,17 +270,7 @@ namespace Dev2.Activities
             return (head, query, postData, conditions);
         }
 
-        protected virtual string PerformManualWebPostRequest(IEnumerable<INameValue> head, string query, IWebSource source, string postData)
-        {
-            return WebSources.Execute(source, WebRequestMethod.Post, query, postData, throwError: true, out _errorsTo, head.Select(h => h.Name + ":" + h.Value).ToArray());
-        }
-
-        protected virtual string PerformFormDataWebPostRequest(IWebSource source, WebRequestMethod method, string query, IEnumerable<INameValue> head, IEnumerable<IFormDataParameters> parameters)
-        {
-            return WebSources.Execute(source, method, head.Select(h => h.Name + ":" + h.Value).ToArray(), query, isNoneChecked: false, isFormDataChecked: true, data: string.Empty, throwError: true, out _errorsTo, parameters);
-        }
-
-        public bool Equals(WebPostActivity other)
+        public bool Equals(WebPostActivityNew other)
         {
             if (other is null)
             {
@@ -287,7 +307,7 @@ namespace Dev2.Activities
                 return false;
             }
 
-            return Equals((WebPostActivity)obj);
+            return Equals((WebPostActivityNew)obj);
         }
 
         public override int GetHashCode()

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -12,8 +12,11 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using Dev2.Activities.Designers.Tests.WebGetTool;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Core.Source;
+using Dev2.Activities.Designers2.Web_Post;
+using Dev2.Activities.Designers2.Web_Post_New;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.ServerProxyLayer;
@@ -177,6 +180,82 @@ namespace Dev2.Activities.Designers.Tests.Core
             Assert.AreEqual("b", region.Headers[0].Value);
             Assert.AreEqual("", region.Headers[1].Name);
             Assert.AreEqual("", region.Headers[1].Value);
+        }
+        
+        [TestMethod]
+        [Owner("Njabulo Nxele")]
+        [TestCategory(nameof(WebPostInputRegion))]
+        public void WebPostInputRegion_Settings_SetIsUrlEncodedChecked_WebPostActivityNew()
+        {
+            //------------Setup for test--------------------------
+            var id = Guid.NewGuid();
+            var webPostActivity = new WebPostActivityNew()
+            {
+                SourceId = id,
+                Headers = new ObservableCollection<INameValue> { new NameValue("a", "b") },
+            };
+
+            var mod = new Mock<IWebServiceModel>();
+            mod.Setup(a => a.RetrieveSources()).Returns(new List<IWebServiceSource>());
+
+            var modelItem = ModelItemUtils.CreateModelItem(webPostActivity);
+
+            var webSourceRegion = new WebSourceRegion(mod.Object, modelItem);
+            var region = new WebPostInputRegion(modelItem, webSourceRegion) { ViewModel = new WebPostActivityViewModelNew(modelItem, GetMockModel()) };
+            region.IsFormDataChecked = true; 
+            region.IsUrlEncodedChecked = true;
+            //------------Execute Test---------------------------
+
+            //------------Assert Results-------------------------
+
+            Assert.AreEqual(true, Convert.ToBoolean(region?.Settings?.FirstOrDefault(s => s.Name == "IsUrlEncodedChecked")?.Value));
+            Assert.AreEqual(false, Convert.ToBoolean(region?.Settings?.FirstOrDefault(s => s.Name == "IsFormDataChecked")?.Value));
+            Assert.AreEqual(false, Convert.ToBoolean(region?.Settings?.FirstOrDefault(s => s.Name == "IsManualChecked")?.Value));
+        }
+        
+        [TestMethod]
+        [Owner("Njabulo Nxele")]
+        [TestCategory(nameof(WebPostInputRegion))]
+        public void WebPostInputRegion_Settings_SetIsFormDataChecked_WebPostActivity()
+        {
+            //------------Setup for test--------------------------
+            var id = Guid.NewGuid();
+            var webPostActivity = new WebPostActivity()
+            {
+                SourceId = id,
+                Headers = new ObservableCollection<INameValue> { new NameValue("a", "b") },
+            };
+
+            var mod = new Mock<IWebServiceModel>();
+            mod.Setup(a => a.RetrieveSources()).Returns(new List<IWebServiceSource>());
+
+            var modelItem = ModelItemUtils.CreateModelItem(webPostActivity);
+
+            var webSourceRegion = new WebSourceRegion(mod.Object, modelItem);
+            var region = new WebPostInputRegion(modelItem, webSourceRegion) { ViewModel = new WebPostActivityViewModel(modelItem, GetMockModel()) };
+            region.IsFormDataChecked = true; 
+            //------------Execute Test---------------------------
+
+            //------------Assert Results-------------------------
+
+            Assert.IsNull(region?.Settings?.FirstOrDefault(s => s.Name == "IsUrlEncodedChecked")?.Value);
+            Assert.IsNull(region?.Settings?.FirstOrDefault(s => s.Name == "IsFormDataChecked")?.Value);
+            Assert.IsNull(region?.Settings?.FirstOrDefault(s => s.Name == "IsManualChecked")?.Value);
+        }
+        
+        WebPostActivityViewModelNew GetWebPostActivityViewModel()
+        {
+            return new WebPostActivityViewModelNew(ModelItemUtils.CreateModelItem(GetEmptyPostActivity(), GetMockModel()));
+        }
+        
+        static MyWebModel GetMockModel()
+        {
+            return new MyWebModel();
+        }
+        
+        static WebPostActivityNew GetEmptyPostActivity()
+        {
+            return new WebPostActivityNew();
         }
     }
 }

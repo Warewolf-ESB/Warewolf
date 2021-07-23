@@ -29,6 +29,7 @@ namespace Dev2.Activities.Designers2.Core.Web.Put
         readonly ModelItem _modelItem;
         readonly ISourceToolRegion<IWebServiceSource> _source;
         ObservableCollection<INameValue> _headers;
+        private ObservableCollection<INameValue> _settings;
         bool _isEnabled;
         string _requestUrl;
         private bool _isPutDataBase64;
@@ -125,6 +126,18 @@ namespace Dev2.Activities.Designers2.Core.Web.Put
                 OnPropertyChanged();
             }
         }
+        
+        public ObservableCollection<INameValue> Settings
+        {
+            get => _settings;
+            set
+            {
+                _settings = value;
+                _modelItem.SetProperty("Settings", value.ToList());
+                OnPropertyChanged();
+            }
+        }
+        
         public string PutData
         {
             get => _modelItem?.GetProperty<string>("PutData") ?? string.Empty;

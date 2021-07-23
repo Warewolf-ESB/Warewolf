@@ -58,6 +58,7 @@ namespace Dev2.Activities.Designers2.Core
         bool _testFailed;
         readonly IWebServiceHeaderBuilder _serviceHeaderBuilder;
         private bool _isFormDataChecked;
+        private bool _isUrlEncodedChecked;
         private IOptionsWithNotifier _conditionExpressionOptions;
 
         public ManageWebServiceInputViewModel(IWebServiceHeaderBuilder serviceHeaderBuilder)
@@ -258,6 +259,16 @@ namespace Dev2.Activities.Designers2.Core
                 OnPropertyChanged();
             }
         }
+        
+        public bool IsUrlEncodedChecked
+        {
+            get => _isUrlEncodedChecked;
+            set
+            {
+                _isUrlEncodedChecked = value;
+                OnPropertyChanged();
+            }
+        }
 
         public IOptionsWithNotifier ConditionExpressionOptions
         {
@@ -317,7 +328,7 @@ namespace Dev2.Activities.Designers2.Core
 
             if (!emptyRows.Any())
             {
-                var conditionExpression = new FormDataOptionConditionExpression();
+                var conditionExpression = new FormDataOptionConditionExpression(){ IsMultiPart = !IsUrlEncodedChecked};
                 var list = new List<IOption>(_conditionExpressionOptions.Options)
                 {
                     conditionExpression

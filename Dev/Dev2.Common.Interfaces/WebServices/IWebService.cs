@@ -28,6 +28,7 @@ namespace Dev2.Common.Interfaces.WebServices
         List<INameValue> Headers { get; set; }
         string PostData { get; set; }
         bool IsFormDataChecked { get; set; }
+        bool IsUrlEncodedChecked { get; set; }
         bool IsManualChecked { get; set; }
         bool IsPutDataBase64 { get; set; }
         string SourceUrl { get; set; }

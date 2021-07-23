@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -112,6 +112,7 @@ using Dev2.Activities.Designers2.Web_Put;
 using Dev2.Activities.Designers2.SuspendExecution;
 using Dev2.Activities.Designers2.ManualResumption;
 using Dev2.Activities.Designers2.Web_Post;
+using Dev2.Activities.Designers2.Web_Post_New;
 
 namespace Dev2.Studio.ActivityDesigners
 {
@@ -124,6 +125,7 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfWebGetActivity), typeof(WebServiceGetDesigner) },
                 { typeof(DsfWebPutActivity), typeof(WebServicePutDesigner) },
                 { typeof(DsfWebPostActivity), typeof(WebServicePostDesigner) },
+                { typeof(WebPostActivity), typeof(WebPostActivityDesigner) },
 
                 // EXISTING
                 { typeof(DsfDotNetMultiAssignActivity), typeof(MultiAssignDesigner) },
@@ -193,7 +195,7 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfEnhancedDotNetDllActivity), typeof(Activities.Designers2.Net_Dll_Enhanced.DotNetDllDesigner) },
                 { typeof(DsfComDllActivity), typeof(ComDllDesigner) },
                 { typeof(WebGetActivity), typeof(WebGetActivityDesigner) },
-                { typeof(WebPostActivity), typeof(WebPostActivityDesigner) },
+                { typeof(WebPostActivityNew), typeof(WebPostActivityDesignerNew) },
                 { typeof(DsfWebDeleteActivity), typeof(WebServiceDeleteDesigner) },
                 { typeof(WebPutActivity), typeof(WebPutActivityDesigner) },
                 { typeof(DsfDropBoxUploadActivity), typeof(DropBoxUploadDesigner) },
