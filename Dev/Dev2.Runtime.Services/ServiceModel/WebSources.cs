@@ -38,6 +38,7 @@ namespace Dev2.Runtime.ServiceModel
         public IWebRequestFactory WebRequestFactory { get; set; }
         public bool IsManualChecked { get; set; }
         public bool IsFormDataChecked { get; set; }
+        public bool IsUrlEncodedChecked { get; set; }
     }
 
     public delegate string WebExecuteString(WebSource source, WebRequestMethod method, string relativeUri, string data, bool throwError, out ErrorResultTO errors, string[] headers = null, WebExecuteStringArgs webExecuteStringArgs = null);
@@ -109,7 +110,7 @@ namespace Dev2.Runtime.ServiceModel
             {
                 return new ValidationResult
                 {
-                    Result = Execute(source, WebRequestMethod.Get, source.DefaultQuery, (string)null, true, out ErrorResultTO errors)
+                    Result = Execute(source, WebRequestMethod.Get, source.DefaultQuery, null, true, out var errors)
                 };
             }
             catch (WebException wex)
@@ -144,14 +145,37 @@ namespace Dev2.Runtime.ServiceModel
                 {
                     IsManualChecked = true,
                     IsFormDataChecked = false,
+                    IsUrlEncodedChecked = false,
                     FormDataParameters = new List<IFormDataParameters>(),
                     WebRequestFactory = new WebRequestFactory()
                 };
             }
-            return Execute(source, method, headers, relativeUri, webExecuteStringArgs.IsManualChecked, webExecuteStringArgs.IsFormDataChecked, data, throwError, out errors, webExecuteStringArgs?.FormDataParameters, webExecuteStringArgs.WebRequestFactory);
+            var settings = new List<INameValue>();
+            settings.Add(new NameValue("IsManualChecked", "true"));
+            return Execute(source, method, headers, relativeUri, data, throwError, out errors, webExecuteStringArgs.FormDataParameters, webExecuteStringArgs.WebRequestFactory, settings: settings);
         }
         
-        public static string Execute(IWebSource source, WebRequestMethod method, IEnumerable<string> headers, string relativeUrl, bool isNoneChecked, bool isFormDataChecked, string data, bool throwError, out ErrorResultTO errors, IEnumerable<IFormDataParameters> formDataParameters = null, IWebRequestFactory webRequestFactory = null)
+        public static string Execute(IWebPostOptions options)
+        {
+            return Execute(source: options.Source, method: options.Method, headers: options.Headers, relativeUrl: options.Query,
+                data: options.PostData, throwError: true, errors: out ErrorResultTO errors, formDataParameters: options.Parameters, settings: options.Settings);
+        }
+        
+        public static string Execute(IWebSource source, WebRequestMethod method, IEnumerable<string> headers, string relativeUrl,
+            bool isNoneChecked, bool isFormDataChecked, string data, bool throwError, out ErrorResultTO errors,
+            IEnumerable<IFormDataParameters> formDataParameters = null, IWebRequestFactory webRequestFactory = null)
+        {
+            var settings = new List<INameValue>();
+            settings.Add(new NameValue("IsManualChecked", isNoneChecked.ToString()));
+            settings.Add(new NameValue("IsFormDataChecked", isFormDataChecked.ToString()));
+            
+            return Execute(source: source, method: method, headers: headers, relativeUrl: relativeUrl,
+                data: data, throwError: true, errors: out errors, formDataParameters: formDataParameters, settings: settings);
+        }
+        
+        public static string Execute(IWebSource source, WebRequestMethod method, IEnumerable<string> headers, string relativeUrl,
+            string data, bool throwError, out ErrorResultTO errors,
+            IEnumerable<IFormDataParameters> formDataParameters = null, IWebRequestFactory webRequestFactory = null, IEnumerable<INameValue> settings = null)
         {
             IWebClientWrapper client = null;
 
@@ -167,15 +191,21 @@ namespace Dev2.Runtime.ServiceModel
                 client = CreateWebClient(source.AuthenticationType, source.UserName, source.Password, source.Client, headers);
                 var address = GetAddress(source, relativeUrl);
                 var contentType = client.Headers[HttpRequestHeader.ContentType];
-
-                if (isFormDataChecked)
+                
+                var isManualChecked = Convert.ToBoolean(settings?.FirstOrDefault(s => s.Name == "IsManualChecked")?.Value);
+                var isFormDataChecked = Convert.ToBoolean(settings?.FirstOrDefault(s => s.Name == "IsFormDataChecked")?.Value);
+                var isUrlEncodedChecked = Convert.ToBoolean(settings?.FirstOrDefault(s => s.Name == "IsUrlEncodedChecked")?.Value);
+                
+                if (isFormDataChecked || isUrlEncodedChecked)
                 {
                     VerifyArgument.IsNotNullOrWhitespace("Content-Type", contentType);
                     var formDataBoundary = contentType.Split('=').Last();
-                    var bytesData = GetMultipartFormData(formDataParameters, formDataBoundary);
+                    var bytesData = isFormDataChecked ? GetMultipartFormData(formDataParameters, formDataBoundary) : GetFormUrlEncodedData(formDataParameters, formDataBoundary);
+                    
                     return PerformMultipartWebRequest(webRequestFactory, client, address, bytesData);
                 }
-                if (isNoneChecked && (contentType != null && contentType.ToLowerInvariant().Contains("multipart")))
+
+                if (isManualChecked && contentType != null && (contentType.ToLowerInvariant().Contains("multipart") || contentType.ToLowerInvariant().Contains("x-www")))
                 {
                     var bytesData = ConvertToHttpNewLine(ref data);
                     return PerformMultipartWebRequest(webRequestFactory, client, address, bytesData);
@@ -220,28 +250,24 @@ namespace Dev2.Runtime.ServiceModel
         {
             var encoding = Encoding.UTF8;
             Stream formDataStream = new MemoryStream();
-            bool needsCLRF = false;
+            var needsClrf = false;
 
             var dds = postParameters.GetEnumerator();
             while (dds.MoveNext())
             {
                 var conditionExpression = dds.Current;
-                var formValueType = conditionExpression;
 
-                if (needsCLRF)
-                    formDataStream.Write(encoding.GetBytes("\r\n"), 0, encoding.GetByteCount("\r\n"));
-
-                needsCLRF = true;
-
-                if (formValueType is FileParameter fileToUpload)
+                if (needsClrf)
                 {
+                    formDataStream.Write(encoding.GetBytes("\r\n"), 0, encoding.GetByteCount("\r\n"));
+                }
 
+                needsClrf = true;
+
+                if (conditionExpression is FileParameter fileToUpload)
+                {
                     var fileKey = fileToUpload.Key;
-                    var header = string.Format("--{0}\r\nContent-Disposition: form-data; name=\"{1}\"; filename=\"{2}\"\r\nContent-Type: {3}\r\n\r\n",
-                        boundary,
-                        fileKey,
-                        fileToUpload.FileName ?? fileKey,
-                        fileToUpload.ContentType ?? "application/octet-stream");
+                    var header = $"--{boundary}\r\nContent-Disposition: form-data; name=\"{fileKey}\"; filename=\"{fileToUpload.FileName ?? fileKey}\"\r\nContent-Type: {fileToUpload.ContentType ?? "application/octet-stream"}\r\n\r\n";
 
                     var fileBytes = fileToUpload.FileBytes;
 
@@ -249,13 +275,9 @@ namespace Dev2.Runtime.ServiceModel
                     
                     formDataStream.Write(fileBytes, 0, fileBytes.Length);
                 }
-                else if (formValueType is TextParameter textToUpload)
+                else if (conditionExpression is TextParameter textToUpload)
                 {
-
-                    var postData = string.Format("--{0}\r\nContent-Disposition: form-data; name=\"{1}\"\r\n\r\n{2}",
-                        boundary,
-                        textToUpload.Key,
-                        textToUpload.Value);
+                    var postData = $"--{boundary}\r\nContent-Disposition: form-data; name=\"{textToUpload.Key}\"\r\n\r\n{textToUpload.Value}";
                     formDataStream.Write(encoding.GetBytes(postData), 0, encoding.GetByteCount(postData));
                 }
             }
@@ -270,7 +292,30 @@ namespace Dev2.Runtime.ServiceModel
 
             return formData;
         }
+        
+        private static byte[] GetFormUrlEncodedData(IEnumerable<IFormDataParameters> postParameters, string boundary)
+        {
+            var encoding = Encoding.UTF8;
+            Stream formDataStream = new MemoryStream();
 
+            var dds = postParameters.GetEnumerator();
+            while (dds.MoveNext())
+            {
+                var conditionExpression = dds.Current;
+                var formValueType = conditionExpression;
+
+                var textToUpload = formValueType as TextParameter;
+                var postData = $"{textToUpload.Key}={textToUpload.Value}&";
+                formDataStream.Write(encoding.GetBytes(postData), 0, encoding.GetByteCount(postData));
+            }
+            
+            formDataStream.Position = 0;
+            var formData = new byte[formDataStream.Length];
+            formDataStream.Read(formData, 0, formData.Length);
+            formDataStream.Close();
+
+            return formData;
+        }
 
         private static void ValidateSource(IWebSource source)
         {
@@ -279,7 +324,8 @@ namespace Dev2.Runtime.ServiceModel
                 throw new Exception(Constants.ErrorMessages.WebAddressError);
             }
         }
-        static string GetAddress(IWebSource source, string relativeUri)
+
+        private static string GetAddress(IWebSource source, string relativeUri)
         {
             if (source == null)
             {
@@ -327,7 +373,7 @@ namespace Dev2.Runtime.ServiceModel
 
             using (var wresp = wr.GetResponse() as HttpWebResponse)
             {
-                if (wresp.StatusCode == HttpStatusCode.OK)
+                if (wresp != null && wresp.StatusCode == HttpStatusCode.OK)
                 {
                     using (var responseStream = wresp.GetResponseStream())
                     {
@@ -342,7 +388,8 @@ namespace Dev2.Runtime.ServiceModel
                     }
                 }
 
-                throw new ApplicationException("Error while upload files. Server status code: " + wresp.StatusCode);
+                var wrespStatusCode = wresp?.StatusCode ?? HttpStatusCode.Ambiguous;
+                throw new ApplicationException("Error while upload files. Server status code: " + wrespStatusCode);
             }
         }
 

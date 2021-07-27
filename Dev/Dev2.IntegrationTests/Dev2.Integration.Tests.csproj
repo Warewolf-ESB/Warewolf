@@ -58,6 +58,7 @@
     <Compile Include="Database Tools Refresh\SqlHelper.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Load Tests.cs" />
+    <Compile Include="Network\ServerProxyWithoutChunkingTests.cs" />
     <Compile Include="Redis\RedisCacheIntegrationTests.cs" />
     <Compile Include="Redis\RedisRemoveIntegrationTests.cs" />
     <Compile Include="Redis\TestRedisActivity.cs" />

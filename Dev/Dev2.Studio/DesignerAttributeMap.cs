@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -121,6 +121,7 @@ using Unlimited.Applications.BusinessDesignStudio.Activities.PathOperations;
 using Dev2.Activities.Designers2.SuspendExecution;
 using Dev2.Activities.Designers2.Web_Post;
 using Dev2.Activities.Designers2.WebGet;
+using Dev2.Activities.Designers2.Web_Post_New;
 
 namespace Dev2
 {
@@ -133,6 +134,7 @@ namespace Dev2
             {typeof(DsfWebGetActivity), typeof(WebServiceGetViewModel)},
             {typeof(DsfWebPutActivity), typeof(WebServicePutViewModel)},
             {typeof(DsfWebPostActivity), typeof(WebServicePostViewModel)},
+            {typeof(WebPostActivity), typeof(WebPostActivityViewModel)},
         };
 
         public static readonly Dictionary<Type, Type> DesignerAttributes = new Dictionary<Type, Type>
@@ -205,7 +207,7 @@ namespace Dev2
             {typeof(DsfEnhancedDotNetDllActivity), typeof(DotNetDllEnhancedViewModel)},
             {typeof(DsfComDllActivity), typeof(ComDllViewModel)},
             {typeof(WebGetActivity), typeof(WebGetActivityViewModel)},
-            {typeof(WebPostActivity), typeof(WebPostActivityViewModel)},
+            {typeof(WebPostActivityNew), typeof(WebPostActivityViewModelNew)},
             {typeof(DsfWebDeleteActivity), typeof(WebServiceDeleteViewModel)},
             {typeof(WebPutActivity), typeof(WebPutActivityViewModel)},
             {typeof(DsfDropBoxUploadActivity), typeof(DropBoxUploadViewModel)},

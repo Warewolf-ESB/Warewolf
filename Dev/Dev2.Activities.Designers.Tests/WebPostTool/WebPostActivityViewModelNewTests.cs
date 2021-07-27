@@ -27,6 +27,7 @@ using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Linq;
+using Dev2.Activities.Designers2.Web_Post_New;
 using TestingDotnetDllCascading;
 using Warewolf.Core;
 using Warewolf.Data;
@@ -37,16 +38,16 @@ using Warewolf.Studio.ViewModels;
 namespace Dev2.Activities.Designers.Tests.WebPostTool
 {
     [TestClass]
-    public class WebPostActivityViewModelTests
+    public class WebPostActivityViewModelNewTests
     {
         static MyWebModel GetMockModel()
         {
             return new MyWebModel();
         }
 
-        static WebPostActivity GetPostActivityWithOutPuts(MyWebModel mod)
+        static WebPostActivityNew GetPostActivityWithOutPuts(MyWebModel mod)
         {
-            return new WebPostActivity()
+            return new WebPostActivityNew()
             {
                 DisplayName = "test displayName",
                 SourceId = mod.Sources[0].Id,
@@ -62,14 +63,14 @@ namespace Dev2.Activities.Designers.Tests.WebPostTool
             };
         }
 
-        static WebPostActivity GetEmptyPostActivity()
+        static WebPostActivityNew GetEmptyPostActivity()
         {
-            return new WebPostActivity();
+            return new WebPostActivityNew();
         }
 
-        WebPostActivityViewModel GetWebPostActivityViewModel()
+        WebPostActivityViewModelNew GetWebPostActivityViewModel()
         {
-            return new WebPostActivityViewModel(ModelItemUtils.CreateModelItem(GetEmptyPostActivity(), GetMockModel()));
+            return new WebPostActivityViewModelNew(ModelItemUtils.CreateModelItem(GetEmptyPostActivity(), GetMockModel()));
         }
 
         [TestMethod]
@@ -80,7 +81,7 @@ namespace Dev2.Activities.Designers.Tests.WebPostTool
             var id = Guid.NewGuid();
             var mod = GetMockModel();
             var act = GetPostActivityWithOutPuts(mod);
-            var postViewModel = new WebPostActivityViewModel(ModelItemUtils.CreateModelItem(act), mod);
+            var postViewModel = new WebPostActivityViewModelNew(ModelItemUtils.CreateModelItem(act), mod);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             //---------------Test Result -----------------------
@@ -100,7 +101,7 @@ namespace Dev2.Activities.Designers.Tests.WebPostTool
             //---------------Set up test pack-------------------
             var mod = GetMockModel();
             var act = GetEmptyPostActivity();
-            var postViewModel = new WebPostActivityViewModel(ModelItemUtils.CreateModelItem(act), mod);
+            var postViewModel = new WebPostActivityViewModelNew(ModelItemUtils.CreateModelItem(act), mod);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(postViewModel);
             //---------------Execute Test ----------------------
@@ -131,7 +132,7 @@ namespace Dev2.Activities.Designers.Tests.WebPostTool
             var act = GetPostActivityWithOutPuts(mod);
             act.Headers = new List<INameValue>();
             var modelItem = ModelItemUtils.CreateModelItem(act);
-            var postViewModel = new WebPostActivityViewModel(modelItem);
+            var postViewModel = new WebPostActivityViewModelNew(modelItem);
             var oldHeaderCount = postViewModel.InputArea.Headers.Count;
             //---------------Assert Precondition----------------
             Assert.AreEqual(1, oldHeaderCount);
@@ -168,7 +169,7 @@ namespace Dev2.Activities.Designers.Tests.WebPostTool
             var act = GetPostActivityWithOutPuts(mod);
             act.Headers = new List<INameValue>();
             var modelItem = ModelItemUtils.CreateModelItem(act);
-            var postViewModel = new WebPostActivityViewModel(modelItem);
+            var postViewModel = new WebPostActivityViewModelNew(modelItem);
             var oldCount = postViewModel.InputArea.Headers.Count;
             //---------------Assert Precondition----------------
 
@@ -203,7 +204,7 @@ namespace Dev2.Activities.Designers.Tests.WebPostTool
             var mod = GetMockModel();
             var act = GetPostActivityWithOutPuts(mod);
             var modelItem = ModelItemUtils.CreateModelItem(act);
-            var postViewModel = new WebPostActivityViewModel(modelItem);
+            var postViewModel = new WebPostActivityViewModelNew(modelItem);
 
             var oldCount = postViewModel.InputArea.Headers.Count;
             //---------------Assert Precondition----------------
@@ -230,7 +231,7 @@ namespace Dev2.Activities.Designers.Tests.WebPostTool
 
             var mod = GetMockModel();
             var act = GetEmptyPostActivity();
-            var viewModel = new WebPostActivityViewModel(ModelItemUtils.CreateModelItem(act), mod);
+            var viewModel = new WebPostActivityViewModelNew(ModelItemUtils.CreateModelItem(act), mod);
             //------------Execute Test---------------------------
             viewModel.UpdateHelpDescriptor("help");
             //------------Assert Results-------------------------
@@ -244,7 +245,7 @@ namespace Dev2.Activities.Designers.Tests.WebPostTool
             //---------------Set up test pack-------------------
             var mod = GetMockModel();
             var act = GetPostActivityWithOutPuts(mod);
-            var postViewModel = new WebPostActivityViewModel(ModelItemUtils.CreateModelItem(act), mod);
+            var postViewModel = new WebPostActivityViewModelNew(ModelItemUtils.CreateModelItem(act), mod);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             postViewModel.ClearValidationMemoWithNoFoundError();
@@ -262,7 +263,7 @@ namespace Dev2.Activities.Designers.Tests.WebPostTool
             //---------------Set up test pack-------------------
             var mod = GetMockModel();
             var act = GetEmptyPostActivity();
-            var postViewModel = new WebPostActivityViewModel(ModelItemUtils.CreateModelItem(act), mod);
+            var postViewModel = new WebPostActivityViewModelNew(ModelItemUtils.CreateModelItem(act), mod);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             Assert.IsTrue(postViewModel.SourceRegion.IsEnabled);
@@ -280,7 +281,7 @@ namespace Dev2.Activities.Designers.Tests.WebPostTool
             //---------------Set up test pack-------------------
             var mod = GetMockModel();
             var act = GetEmptyPostActivity();
-            var postViewModel = new WebPostActivityViewModel(ModelItemUtils.CreateModelItem(act), mod);
+            var postViewModel = new WebPostActivityViewModelNew(ModelItemUtils.CreateModelItem(act), mod);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             Assert.IsTrue(postViewModel.SourceRegion.IsEnabled);
@@ -298,7 +299,7 @@ namespace Dev2.Activities.Designers.Tests.WebPostTool
             //---------------Set up test pack-------------------
             var mod = GetMockModel();
             var act = GetPostActivityWithOutPuts(mod);
-            var postViewModel = new WebPostActivityViewModel(ModelItemUtils.CreateModelItem(act), mod);
+            var postViewModel = new WebPostActivityViewModelNew(ModelItemUtils.CreateModelItem(act), mod);
             postViewModel.ManageServiceInputViewModel = new InputViewForWebPostTest(postViewModel, mod);
             postViewModel.SourceRegion.SelectedSource = postViewModel.SourceRegion.Sources.First();
             //---------------Assert Precondition----------------
@@ -319,7 +320,7 @@ namespace Dev2.Activities.Designers.Tests.WebPostTool
             //---------------Set up test pack-------------------
             var mod = GetMockModel();
             var act = GetPostActivityWithOutPuts(mod);
-            var postViewModel = new WebPostActivityViewModel(ModelItemUtils.CreateModelItem(act), mod);
+            var postViewModel = new WebPostActivityViewModelNew(ModelItemUtils.CreateModelItem(act), mod);
             postViewModel.ManageServiceInputViewModel = new InputViewForWebPostTest(postViewModel, mod);
             postViewModel.SourceRegion.SelectedSource = postViewModel.SourceRegion.Sources.First();
 #pragma warning disable 4014
@@ -347,7 +348,7 @@ namespace Dev2.Activities.Designers.Tests.WebPostTool
             //---------------Set up test pack-------------------
             var mod = GetMockModel();
             var act = GetPostActivityWithOutPuts(mod);
-            var postViewModel = new WebPostActivityViewModel(ModelItemUtils.CreateModelItem(act), mod);
+            var postViewModel = new WebPostActivityViewModelNew(ModelItemUtils.CreateModelItem(act), mod);
             postViewModel.ManageServiceInputViewModel = new InputViewForWebPostTest(postViewModel, mod);
             postViewModel.SourceRegion.SelectedSource = postViewModel.SourceRegion.Sources.First();
 #pragma warning disable 4014
@@ -372,7 +373,7 @@ namespace Dev2.Activities.Designers.Tests.WebPostTool
             var mod = GetMockModel();
             mod.IsTextResponse = true;
             var act = GetEmptyPostActivity();
-            var postViewModel = new WebPostActivityViewModel(ModelItemUtils.CreateModelItem(act), mod);
+            var postViewModel = new WebPostActivityViewModelNew(ModelItemUtils.CreateModelItem(act), mod);
             postViewModel.ManageServiceInputViewModel = new InputViewForWebPostTest(postViewModel, mod);
             postViewModel.SourceRegion.SelectedSource = postViewModel.SourceRegion.Sources.First();
 #pragma warning disable 4014
@@ -396,7 +397,7 @@ namespace Dev2.Activities.Designers.Tests.WebPostTool
             var id = Guid.NewGuid();
             var mod = GetMockModel();
             var act = GetPostActivityWithOutPuts(mod);
-            var postViewModel = new WebPostActivityViewModel(ModelItemUtils.CreateModelItem(act), mod)
+            var postViewModel = new WebPostActivityViewModelNew(ModelItemUtils.CreateModelItem(act), mod)
             {
 
             };
@@ -431,7 +432,7 @@ namespace Dev2.Activities.Designers.Tests.WebPostTool
             var id = Guid.NewGuid();
             var mod = GetMockModel();
             var act = GetPostActivityWithOutPuts(mod);
-            var postViewModel = new WebPostActivityViewModel(ModelItemUtils.CreateModelItem(act), mod);
+            var postViewModel = new WebPostActivityViewModelNew(ModelItemUtils.CreateModelItem(act), mod);
             postViewModel.ManageServiceInputViewModel = new InputViewForWebPostTest(postViewModel, mod);
             postViewModel.SourceRegion.SelectedSource = postViewModel.SourceRegion.Sources.First();
             postViewModel.InputArea.Headers.Add(new NameValue("[[a]]", "asa"));
@@ -464,7 +465,7 @@ namespace Dev2.Activities.Designers.Tests.WebPostTool
             //---------------Set up test pack-------------------
             var mod = GetMockModel();
             var act = GetPostActivityWithOutPuts(mod);
-            var postViewModel = new WebPostActivityViewModel(ModelItemUtils.CreateModelItem(act), mod);
+            var postViewModel = new WebPostActivityViewModelNew(ModelItemUtils.CreateModelItem(act), mod);
             postViewModel.ManageServiceInputViewModel = new InputViewForWebPostTest(postViewModel, mod);
             postViewModel.SourceRegion.SelectedSource = postViewModel.SourceRegion.Sources.First();
             postViewModel.InputArea.Headers.Add(new NameValue("[[a]]", "asa"));
@@ -492,7 +493,7 @@ namespace Dev2.Activities.Designers.Tests.WebPostTool
 
         [TestMethod]
         [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(WebPostActivityViewModel))]
+        [TestCategory(nameof(WebPostActivityViewModelNew))]
         public void WebPostActivityViewModel_LoadConditions()
         {
             //------------Setup for test--------------------------
@@ -523,7 +524,7 @@ namespace Dev2.Activities.Designers.Tests.WebPostTool
             var mockModelItem = new Mock<ModelItem>();
             mockModelItem.Setup(modelItem => modelItem.Properties).Returns(mockProperties.Object);
             //------------Execute Test---------------------------
-            var gateDesignerViewModel = new WebPostActivityViewModel(mockModelItem.Object, mod);
+            var gateDesignerViewModel = new WebPostActivityViewModelNew(mockModelItem.Object, mod);
 
             var conditions = gateDesignerViewModel.ConditionExpressionOptions.Options.ToList();
 
@@ -542,7 +543,7 @@ namespace Dev2.Activities.Designers.Tests.WebPostTool
 
         [TestMethod]
         [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(WebPostActivityViewModel))]
+        [TestCategory(nameof(WebPostActivityViewModelNew))]
         public void WebPostActivityViewModel_DeleteCondition()
         {
             //------------Setup for test--------------------------
@@ -572,7 +573,7 @@ namespace Dev2.Activities.Designers.Tests.WebPostTool
             var mockModelItem = new Mock<ModelItem>();
             mockModelItem.Setup(modelItem => modelItem.Properties).Returns(mockProperties.Object);
             //------------Execute Test---------------------------
-            var gateDesignerViewModel = new WebPostActivityViewModel(mockModelItem.Object, mod);
+            var gateDesignerViewModel = new WebPostActivityViewModelNew(mockModelItem.Object, mod);
 
             var conditions = gateDesignerViewModel.ConditionExpressionOptions.Options.ToList();
 
@@ -594,14 +595,14 @@ namespace Dev2.Activities.Designers.Tests.WebPostTool
 
         [TestMethod]
         [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(WebPostActivityViewModel))]
+        [TestCategory(nameof(WebPostActivityViewModelNew))]
         public void WebPostActivityViewModel_TestInputCommand_IsFormDataChecked()
         {
             //---------------Set up test pack-------------------
             var mockModel = GetMockModel();
             var postActivity = GetPostActivityWithOutPuts(mockModel);
 
-            var postViewModel = new WebPostActivityViewModel(ModelItemUtils.CreateModelItem(postActivity), mockModel);
+            var postViewModel = new WebPostActivityViewModelNew(ModelItemUtils.CreateModelItem(postActivity), mockModel);
             postViewModel.ManageServiceInputViewModel = new InputViewForWebPostTest(postViewModel, mockModel);
             postViewModel.SourceRegion.SelectedSource = postViewModel.SourceRegion.Sources.First();
             postViewModel.InputArea.Headers.Add(new NameValue("[[a]]", "asa"));
@@ -647,14 +648,14 @@ namespace Dev2.Activities.Designers.Tests.WebPostTool
 
         [TestMethod]
         [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(WebPostActivityViewModel))]
+        [TestCategory(nameof(WebPostActivityViewModelNew))]
         public void WebPostActivityViewModel_ToModel_Given_IsManualChecked_True_ExpectFromPostDataVariableInputs()
         {
             //---------------Set up test pack-------------------
             var mockModel = GetMockModel();
             var postActivity = GetPostActivityWithOutPuts(mockModel);
 
-            var postViewModel = new WebPostActivityViewModel(ModelItemUtils.CreateModelItem(postActivity), mockModel);
+            var postViewModel = new WebPostActivityViewModelNew(ModelItemUtils.CreateModelItem(postActivity), mockModel);
             postViewModel.ManageServiceInputViewModel = new InputViewForWebPostTest(postViewModel, mockModel);
             postViewModel.SourceRegion.SelectedSource = postViewModel.SourceRegion.Sources.First();
             postViewModel.InputArea.Headers.Add(new NameValue("a", "asa"));
@@ -680,14 +681,14 @@ namespace Dev2.Activities.Designers.Tests.WebPostTool
 
         [TestMethod]
         [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(WebPostActivityViewModel))]
+        [TestCategory(nameof(WebPostActivityViewModelNew))]
         public void WebPostActivityViewModel_ToModel_Given_IsFormDataChecked_True_ExpectFromFormDataVariableInputs()
         {
             //---------------Set up test pack-------------------
             var mockModel = GetMockModel();
             var postActivity = GetPostActivityWithOutPuts(mockModel);
 
-            var postViewModel = new WebPostActivityViewModel(ModelItemUtils.CreateModelItem(postActivity), mockModel);
+            var postViewModel = new WebPostActivityViewModelNew(ModelItemUtils.CreateModelItem(postActivity), mockModel);
             postViewModel.ManageServiceInputViewModel = new InputViewForWebPostTest(postViewModel, mockModel);
             postViewModel.SourceRegion.SelectedSource = postViewModel.SourceRegion.Sources.First();
             postViewModel.InputArea.Headers.Add(new NameValue("a", "asa"));
@@ -725,6 +726,17 @@ namespace Dev2.Activities.Designers.Tests.WebPostTool
             prop.Setup(p => p.Name).Returns(name);
             prop.Setup(p => p.ComputedValue).Returns(value);
             return prop;
+        }
+
+
+    }
+
+    public class InputViewForWebPostTest : ManageWebServiceInputViewModel
+    {
+
+        public InputViewForWebPostTest(IWebServiceBaseViewModel model, IWebServiceModel serviceModel)
+            : base(model, serviceModel)
+        {
         }
     }
 }

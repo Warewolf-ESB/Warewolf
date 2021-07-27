@@ -2631,8 +2631,14 @@ To create a SFTP Key, put the full path and file or folder name here.</value>
   <data name="ManageWebServiceRequestManualTooltip" xml:space="preserve">
     <value>Check this to manually add your own request body.</value>
   </data>
+  <data name="ManageWebServiceRequestUrlEncodedTooltip" xml:space="preserve">
+    <value>Check this to use application/x-www-form-urlencoded as your request payload.</value>
+  </data>
   <data name="WebPostFromDataParametersToolTip" xml:space="preserve">
     <value>To supply multipart/form-data parameters with your request, use these fields. Fields can be scalars and/or different recordsets.</value>
+  </data>
+  <data name="WebPostUrlEncodedParametersToolTip" xml:space="preserve">
+    <value>To supply application/x-www-form-urlencoded parameters with your request, use these fields. Fields can be scalars and/or different recordsets.</value>
   </data>
   <data name="MappingsResponseToBase64Tooltip" xml:space="preserve">
     <value>Check this to put the web response into a Base64 [[variable]]</value>

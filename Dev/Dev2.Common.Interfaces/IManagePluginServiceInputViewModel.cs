@@ -52,6 +52,7 @@ namespace Dev2.Common.Interfaces
     public interface IManageWebInputViewModel : IManageWebServiceInputViewModel
     {
         bool IsFormDataChecked { get; set; }
+        bool IsUrlEncodedChecked { get; set; }
         IOptionsWithNotifier ConditionExpressionOptions { get; set; }
 
         void LoadConditionExpressionOptions(IList<IOption> conditionExpressionOptions);
