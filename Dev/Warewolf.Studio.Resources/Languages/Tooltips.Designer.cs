@@ -2807,6 +2807,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Check this to use application/x-www-form-urlencoded as your request payload..
+        /// </summary>
+        public static string ManageWebServiceRequestUrlEncodedTooltip {
+            get {
+                return ResourceManager.GetString("ManageWebServiceRequestUrlEncodedTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select the webservice host you want to use.
         /// </summary>
         public static string ManageWebServiceSourcesTooltip {
@@ -6891,6 +6900,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string WebPostFromDataParametersToolTip {
             get {
                 return ResourceManager.GetString("WebPostFromDataParametersToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to To supply application/x-www-form-urlencoded parameters with your request, use these fields. Fields can be scalars and/or different recordsets..
+        /// </summary>
+        public static string WebPostUrlEncodedParametersToolTip {
+            get {
+                return ResourceManager.GetString("WebPostUrlEncodedParametersToolTip", resourceCulture);
             }
         }
         

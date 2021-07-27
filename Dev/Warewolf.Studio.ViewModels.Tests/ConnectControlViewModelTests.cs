@@ -202,7 +202,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(250)]
+        [Timeout(1000)]
         public void TestSelectedConnectionLocalhostLabel()
         {
             //arrange

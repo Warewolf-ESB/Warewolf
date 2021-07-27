@@ -35,6 +35,7 @@ using Warewolf.UI;
 
 namespace Dev2.Activities.Designers2.Web_Post
 {
+    [Obsolete("WebPostActivityViewModel is deprecated. It will be deleted in future releases.\r\n\r\nPlease use WebPostActivityViewModelNew.")]
     public class WebPostActivityViewModel : CustomToolWithRegionBase, IWebServiceBaseViewModel
     {
         private IOutputsToolRegion _outputsRegion;
@@ -555,7 +556,6 @@ namespace Dev2.Activities.Designers2.Web_Post
                     {
                         if (parameter is FileParameter fileParam && !fileParam.IsIncompleteRow)
                         {
-                             
                             _builder.GetValue(fileParam.Key, dt);
                             _builder.GetValue(fileParam.FileName, dt);
                             _builder.GetValue(fileParam.FileBase64, dt);
@@ -564,6 +564,7 @@ namespace Dev2.Activities.Designers2.Web_Post
                         {
                             _builder.GetValue(textParam.Key, dt);
                             _builder.GetValue(textParam.Value, dt);
+
                         }
                     }
                 }

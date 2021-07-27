@@ -830,6 +830,13 @@ namespace Warewolf.Options
             }
         }
 
+        private bool _isMultiPart = true;
+        public bool IsMultiPart
+        {
+            get => _isMultiPart;
+            set { _isMultiPart = value; OnPropertyChanged(); }
+        }
+
         public bool IsTripleOperand => TableType.IsTripleOperand();
         public bool IsEmptyRow
         {
