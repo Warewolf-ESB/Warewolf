@@ -3386,7 +3386,7 @@ namespace Dev2.Tests.Runtime.Hosting
         [Timeout(60000)]
         [DoNotParallelize]
         [TestCategory("CannotParallelize")]
-        public void ResourceCatalog_DuplicateFolder_ResourceWithValidArgs_And_FixReferences_False_ExpectSuccesResult()
+        public void ResourceCatalog_DuplicateFolder_ResourceWithValidArgs_And_FixReferences_False_ExpectSuccess()
         {
             //------------Setup for test--------------------------
             var workspaceID = GlobalConstants.ServerWorkspaceID;
