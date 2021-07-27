@@ -1,4 +1,15 @@
-﻿using System;
+﻿/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+
+using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Dev2.Tests.Runtime.Util;
 using System.Diagnostics;
@@ -17,6 +28,13 @@ using Dev2.Controller;
 using Dev2.Studio.Core;
 using Dev2.Studio.Interfaces;
 using Moq;
+using Dev2.Common.Interfaces.Versioning;
+using Dev2.Tests.Runtime.Hosting;
+using System.Collections.Generic;
+using Dev2.Runtime.Hosting;
+using System.IO;
+using Dev2.Common.Interfaces.Monitoring;
+using System.Linq;
 
 namespace Dev2.Integration.Tests
 {
@@ -24,6 +42,56 @@ namespace Dev2.Integration.Tests
     [TestCategory("Load Tests")]
     public class Load_Tests
     {
+        private string _path = EnvironmentVariables.ResourcePath;
+        private string _resourceName = "Load_Test_LoadProvider_WF_";
+        private int _numOfResources = 2000;
+        
+        [TestInitialize]
+        public void Setup()
+        {
+            if (Directory.Exists(_path))
+            {
+                try
+                {
+                    Directory.Delete(_path, true);
+                }
+                catch (IOException)
+                { //Best effort
+                }
+            }
+
+            if (!Directory.Exists(_path))
+            {
+                Directory.CreateDirectory(_path);
+            }
+
+            _ = ResourceCatalogTests.SaveTestResources(_path, _resourceName, out List<string> workflows, out List<Guid> resourceIds, _numOfResources);
+        }
+
+        [TestMethod]
+        [DoNotParallelize]
+        [Owner("Siphamandla Dube")]
+        [TestCategory("ResourceCatalog_LoadTests")]
+        public void LoadTest_ResourceCatalog_LoadWorkspace_Given_2000Resources_ShouldLoad()
+        {
+            //Note: current time elapsed on 2000 resources: 16759
+            //After the FileStream access mode check the time elapsed: 16825, the 0.066 deference is not worth the runtime irregularities
+            //After adding isAsync the time elapsed: 16657 best time so far
+            //------------Setup for test--------------------------
+            CustomContainer.Register(new Mock<IWarewolfPerformanceCounterLocater>().Object);
+            var expectedTimeElapsed = TimeSpan.FromSeconds(16.7).TotalMilliseconds;
+            
+            var sut = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
+            
+            //------------Execute Test---------------------------
+            var result = PerformanceGadge.TimedExecution(()=> sut.LoadWorkspace(GlobalConstants.ServerWorkspaceID));
+            
+            //------------Assert Results-------------------------
+            Assert.AreEqual(_numOfResources, sut.WorkspaceResources.Values.First().Count);
+            Assert.IsTrue(result <= expectedTimeElapsed, $"TimeElapsed: {result} is greater then the expected: {expectedTimeElapsed}");
+            
+        }
+
         [TestMethod]
         [Owner("Hagashen Naidu")]
         public void ExecutionManager_StartRefresh_WaitsForCurrentExecutions()
@@ -190,4 +258,17 @@ namespace Dev2.Integration.Tests
             mockPopupController.Verify(popup => popup.Show(It.IsAny<string>(), It.IsAny<string>(), MessageBoxButton.OK, MessageBoxImage.Warning, "", false, false, true, false, false, false), Times.Never);
         }
     }
+
+    internal class PerformanceGadge
+    {
+        internal static long TimedExecution(Action method)
+        {
+            var stopWatch = new Stopwatch();
+            stopWatch.Start();
+            method.Invoke();
+            stopWatch.Stop();
+            return stopWatch.ElapsedMilliseconds;
+        }
+    }
+
 }
