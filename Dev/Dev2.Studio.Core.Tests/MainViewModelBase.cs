@@ -71,9 +71,9 @@ namespace Dev2.Core.Tests
 
         protected Mock<IServerRepository> EmptyEnvRepo { get; set; }
 
-        protected void CreateFullExportsAndVmWithEmptyRepo(bool isLicensed)
+        protected void CreateFullExportsAndVmWithEmptyRepo(bool isLicensed, SubscriptionStatus status)
         {
-            CreateResourceRepo(isLicensed);
+            CreateResourceRepo(isLicensed, status);
             var mockEnv = new Mock<IServerRepository>();
             mockEnv.SetupProperty(g => g.ActiveServer); // Start tracking changes
             mockEnv.Setup(g => g.All()).Returns(new List<IServer>());
@@ -113,15 +113,15 @@ namespace Dev2.Core.Tests
             return mockEnvironmentConnection;
         }
 
-        protected void CreateFullExportsAndVm(IExplorerViewModel viewModel,bool isLicensed)
+        protected void CreateFullExportsAndVm(IExplorerViewModel viewModel, bool isLicensed, SubscriptionStatus status)
         {
-            CreateFullExportsAndVm(isLicensed);
+            CreateFullExportsAndVm(isLicensed, status);
             _shellViewModel.ExplorerViewModel = viewModel;
         }
 
-        protected void CreateFullExportsAndVm(bool isLicensed)
+        protected void CreateFullExportsAndVm(bool isLicensed, SubscriptionStatus status)
         {
-            CreateResourceRepo(isLicensed);
+            CreateResourceRepo(isLicensed, status);
             var environmentRepo = GetEnvironmentRepository();
             _eventAggregator = new Mock<IEventAggregator>();
             EventPublishers.Aggregator = _eventAggregator.Object;
@@ -157,23 +157,16 @@ namespace Dev2.Core.Tests
             _activeEnvironment = activeEnvironment;
             _authorizationService = new Mock<IAuthorizationService>();
             _activeEnvironment.Setup(e => e.AuthorizationService).Returns(_authorizationService.Object);
-            _activeEnvironment.Setup(e => e.GetSubscriptionData()).Returns(MockSubscriptionData(isLicensed).Object);
+            _activeEnvironment.Setup(e => e.GetSubscriptionData()).Returns(MockSubscriptionData(isLicensed, status).Object);
 
             _shellViewModel.ActiveServer = _activeEnvironment.Object;
         }
 
-        public static Mock<ISubscriptionData> MockSubscriptionData(bool isLicensed)
+        public static Mock<ISubscriptionData> MockSubscriptionData(bool isLicensed, SubscriptionStatus status)
         {
             var mockSubscriptionData = new Mock<ISubscriptionData>();
             mockSubscriptionData.Setup(o => o.IsLicensed).Returns(isLicensed);
-            if (isLicensed)
-            {
-                mockSubscriptionData.Setup(o => o.Status).Returns(SubscriptionStatus.Active);
-            }
-            else
-            {
-                mockSubscriptionData.Setup(o => o.Status).Returns(SubscriptionStatus.InTrial);
-            }
+            mockSubscriptionData.Setup(o => o.Status).Returns(status);
             mockSubscriptionData.Setup(o => o.PlanId).Returns("developer");
             return mockSubscriptionData;
         }
@@ -210,7 +203,7 @@ namespace Dev2.Core.Tests
             return _serverRepo;
         }
 
-        protected void CreateResourceRepo(bool isLicensed)
+        protected void CreateResourceRepo(bool isLicensed, SubscriptionStatus status)
         {
             var msg = new ExecuteMessage { HasError = false };
             msg.SetMessage("");
@@ -224,7 +217,7 @@ namespace Dev2.Core.Tests
             _resourceRepo.Setup(c => c.All()).Returns(coll);
 
             _environmentModel.Setup(m => m.ResourceRepository).Returns(_resourceRepo.Object);
-            _environmentModel.Setup(m => m.GetSubscriptionData()).Returns(MockSubscriptionData(isLicensed).Object);
+            _environmentModel.Setup(m => m.GetSubscriptionData()).Returns(MockSubscriptionData(isLicensed, status).Object);
         }
 
         protected Mock<IEnvironmentConnection> CreateMockConnection(Random rand, params string[] sources)
