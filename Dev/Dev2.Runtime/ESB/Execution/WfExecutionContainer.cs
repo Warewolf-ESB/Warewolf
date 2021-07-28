@@ -298,6 +298,7 @@ namespace Dev2.Runtime.ESB.Execution
                 {
                     dsfDataObject.Environment.AddError(ErrorResource.InvalidLicense);
                     dsfDataObject.ExecutionException = new Exception(ErrorResource.InvalidLicense);
+                    Dev2Logger.Error(ErrorResource.InvalidLicense, dsfDataObject.ExecutionID?.ToString());
                     return;
                 }
 

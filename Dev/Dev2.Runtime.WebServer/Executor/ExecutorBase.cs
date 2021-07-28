@@ -167,6 +167,7 @@ namespace Dev2.Runtime.WebServer.Executor
             {
                 _dataObject.Environment.AddError(Warewolf.Resource.Errors.ErrorResource.InvalidLicense);
                 _dataObject.ExecutionException = new AccessDeniedException(Warewolf.Resource.Errors.ErrorResource.InvalidLicense);
+                Dev2Logger.Error(Warewolf.Resource.Errors.ErrorResource.InvalidLicense, _dataObject.ExecutionID?.ToString());
             }
             else
             {
