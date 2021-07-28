@@ -3565,7 +3565,7 @@ namespace Dev2.Tests.Runtime.Hosting
         [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(ResourceCatalog))]
-        public void ResourceCatalog_Parse_GivenHasActivityInCache_ShouldReturnExistingActivityCacheEntry()
+        public void ResourceCatalog_Parse_GivenHasActivityInCache_ShouldReturnFromExistingActivityCacheEntry()
         {
             //Note: there seems to be a race condition with: ResourceCatalog_Parse_GivenHasActivityInCache_And_GetActivityFails_ShouldReturnNull
             //------------Setup for test--------------------------
@@ -3638,7 +3638,7 @@ namespace Dev2.Tests.Runtime.Hosting
         [TestCategory(nameof(ResourceCatalog))]
         public void ResourceCatalog_Parse_GivenHasActivityInCache_And_GetActivityFails_ShouldReturnNull()
         {
-            //Note: there seems to be a race condition with: ResourceCatalog_Parse_GivenHasActivityInCache_ShouldReturnExistingActivityCacheEntry
+            //Note: there seems to be a race condition with: ResourceCatalog_Parse_GivenHasActivityInCache_ShouldReturnFromExistingActivityCacheEntry
             //------------Setup for test--------------------------
             var resource = new Resource
             {
