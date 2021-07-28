@@ -394,6 +394,7 @@ namespace Dev2.Runtime.ESB.Execution
         {
             var startAtActivity = FindActivity(resource) ?? throw new InvalidWorkflowException($"Resume Node not found. UniqueID:{_resumeActivityId}");
             dsfDataObject.Environment = _resumeEnvironment;
+            dsfDataObject.StartActivityId = Guid.Empty;
             base.EvalInner(dsfDataObject, startAtActivity, update);
         }
 
