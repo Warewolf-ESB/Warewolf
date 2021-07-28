@@ -329,7 +329,7 @@ namespace Dev2.Runtime.ESB
                         break;
 
                     case enActionType.Workflow:
-                        result = new PerfmonExecutionContainer(new WfExecutionContainer(serviceAction, dataObj, theWorkspace, _esbChannel, SubscriptionProvider.Instance));
+                        result = new PerfmonExecutionContainer(new WfExecutionContainer(serviceAction, dataObj, theWorkspace, _esbChannel, CustomContainer.Get<ISubscriptionProvider>()));
                         break;
 
                     case enActionType.RemoteService:
