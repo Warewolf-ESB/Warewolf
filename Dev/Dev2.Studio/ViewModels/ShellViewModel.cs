@@ -2323,9 +2323,9 @@ namespace Dev2.Studio.ViewModels
 
                     case SubscriptionStatus.InTrial:
                     case SubscriptionStatus.Active:
+                    case SubscriptionStatus.Cancelled:
                         return "[" + SubscriptionData.PlanId + " - " + SubscriptionData.Status + "]";
 
-                    case SubscriptionStatus.Cancelled:
                     case SubscriptionStatus.Future:
                     case SubscriptionStatus.NonRenewing:
                     case SubscriptionStatus.Paused:
