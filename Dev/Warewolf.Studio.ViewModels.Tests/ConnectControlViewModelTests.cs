@@ -539,7 +539,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(1000)]
+        [Timeout(5000)]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(ConnectControlViewModel))]
         public void ConnectControlViewModel_EditServerServerIDMatchIsTrue()
