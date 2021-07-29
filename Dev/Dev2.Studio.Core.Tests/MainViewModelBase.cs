@@ -153,6 +153,7 @@ namespace Dev2.Core.Tests
                 null);
             var activeEnvironment = new Mock<IServer>();
             activeEnvironment.Setup(server => server.DisplayName).Returns("localhost");
+            activeEnvironment.Setup(server => server.Name).Returns("localhost");
 
             _activeEnvironment = activeEnvironment;
             _authorizationService = new Mock<IAuthorizationService>();

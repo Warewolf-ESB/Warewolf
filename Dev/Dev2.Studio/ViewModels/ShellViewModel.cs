@@ -747,6 +747,7 @@ namespace Dev2.Studio.ViewModels
             {
                 SetActiveServer(server);
             }
+            NotifyOfPropertyChange(() => LicensePlanTitle);
         }
 
         public void SetActiveServer(IServer server)
@@ -2316,15 +2317,16 @@ namespace Dev2.Studio.ViewModels
         {
             get
             {
+                var serverName = ActiveServer.Name;
                 switch(SubscriptionData.Status)
                 {
                     case SubscriptionStatus.NotActive:
-                        return "[ Not registered ]";
+                        return serverName + " [ Not registered ]";
 
                     case SubscriptionStatus.InTrial:
                     case SubscriptionStatus.Active:
                     case SubscriptionStatus.Cancelled:
-                        return "[" + SubscriptionData.PlanId + " - " + SubscriptionData.Status + "]";
+                        return serverName + " [" + SubscriptionData.PlanId + " - " + SubscriptionData.Status + "]";
 
                     case SubscriptionStatus.Future:
                     case SubscriptionStatus.NonRenewing:

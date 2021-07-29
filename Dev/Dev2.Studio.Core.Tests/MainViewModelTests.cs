@@ -101,7 +101,7 @@ namespace Dev2.Core.Tests
         public void MainViewModel_LicensePlanTitle_ExpectTitle()
         {
             CreateFullExportsAndVm(true,SubscriptionStatus.Active);
-            Assert.AreEqual("[developer - Active]", _shellViewModel.LicensePlanTitle);
+            Assert.AreEqual("localhost [developer - Active]", _shellViewModel.LicensePlanTitle);
         }
 
         [TestMethod]
@@ -4805,7 +4805,7 @@ namespace Dev2.Core.Tests
             //---------------Execute Test ----------------------
             _shellViewModel.UpdateStudioLicense(true);
             //---------------Test Result -----------------------
-            Assert.AreEqual("[developer - InTrial]", _shellViewModel.LicensePlanTitle);
+            Assert.AreEqual("localhost [developer - InTrial]", _shellViewModel.LicensePlanTitle);
         }
 
         [TestMethod]
@@ -4825,7 +4825,7 @@ namespace Dev2.Core.Tests
             //---------------Execute Test ----------------------
             _shellViewModel.UpdateStudioLicense(true);
             //---------------Test Result -----------------------
-            Assert.AreEqual("[developer - Cancelled]", _shellViewModel.LicensePlanTitle);
+            Assert.AreEqual("localhost [developer - Cancelled]", _shellViewModel.LicensePlanTitle);
         }
         [TestMethod]
         public void ShellViewModel_UpdateStudioLicense_SubscriptionStatus_NotActive()
@@ -4844,7 +4844,7 @@ namespace Dev2.Core.Tests
             //---------------Execute Test ----------------------
             _shellViewModel.UpdateStudioLicense(true);
             //---------------Test Result -----------------------
-            Assert.AreEqual("[ Not registered ]", _shellViewModel.LicensePlanTitle);
+            Assert.AreEqual("localhost [ Not registered ]", _shellViewModel.LicensePlanTitle);
         }
         public class IEnvironmentRepository
         {
