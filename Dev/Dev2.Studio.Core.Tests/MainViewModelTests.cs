@@ -103,6 +103,29 @@ namespace Dev2.Core.Tests
             CreateFullExportsAndVm(true,SubscriptionStatus.Active);
             Assert.AreEqual("localhost [developer - Active]", _shellViewModel.LicensePlanTitle);
         }
+        
+        [TestMethod]
+        [Owner("Njabulo Nxele")]
+        [TestCategory("MainViewModel_LicensePlanTitle")]
+        public void MainViewModel_LicensePlanTitle_ChangeServer()
+        {
+            CreateFullExportsAndVm(true,SubscriptionStatus.Active);
+            
+            Assert.AreEqual("localhost [developer - Active]", _shellViewModel.LicensePlanTitle);
+            
+            var activeEnvironment = new Mock<IServer>();
+            activeEnvironment.Setup(server => server.DisplayName).Returns("testserver");
+            activeEnvironment.Setup(server => server.Name).Returns("testserver");
+
+            _activeEnvironment = activeEnvironment;
+            _authorizationService = new Mock<IAuthorizationService>();
+            _activeEnvironment.Setup(e => e.AuthorizationService).Returns(_authorizationService.Object);
+            _activeEnvironment.Setup(e => e.GetSubscriptionData()).Returns(MockSubscriptionData(true,SubscriptionStatus.Active).Object);
+
+            _shellViewModel.ActiveServer = activeEnvironment.Object;
+            
+            Assert.AreEqual("testserver [developer - Active]", _shellViewModel.LicensePlanTitle);
+        }
 
         [TestMethod]
         public void DeployCommandCanExecuteIrrespectiveOfEnvironments()
