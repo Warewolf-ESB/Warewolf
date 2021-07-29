@@ -109,6 +109,7 @@ namespace Warewolf.OS.Tests
         [TestCategory(nameof(MessageToInputsMapper))]
         [DoNotParallelize]
         [TestCategory("CannotParallelize")]
+        [TestCategory("Multithread")]
         public void ProcessThreadList_GivenConfigConcurrent3_ExpectThreeWorkers()
         {
             var mockConfig = new Mock<IJobConfig>();
@@ -151,6 +152,7 @@ namespace Warewolf.OS.Tests
         [TestCategory(nameof(MessageToInputsMapper))]
         [DoNotParallelize]
         [TestCategory("CannotParallelize")]
+        [TestCategory("Multithread")]
         public void ProcessThreadList_GivenKillCalled_ExpectAllWorkersKilled()
         {
             var mockConfig = new Mock<IJobConfig>();
@@ -239,6 +241,7 @@ namespace Warewolf.OS.Tests
         [TestCategory(nameof(MessageToInputsMapper))]
         [DoNotParallelize]
         [TestCategory("CannotParallelize")]
+        [TestCategory("Multithread")]
         public void ProcessThreadList_GivenConfigConcurrentChanges_ExpectWorkerCountChanges()
         {
             var mockConfig = new Mock<IJobConfig>();

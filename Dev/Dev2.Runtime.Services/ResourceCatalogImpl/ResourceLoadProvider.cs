@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -22,9 +22,12 @@ using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Factories;
 using Dev2.Common.Interfaces.Monitoring;
 using Dev2.Common.Interfaces.Resources;
+using Dev2.Common.Interfaces.Runtime.Services;
 using Dev2.Common.Interfaces.Versioning;
+using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
 using Dev2.Data.ServiceModel;
 using Dev2.DynamicServices;
@@ -47,12 +50,14 @@ namespace Dev2.Runtime.ResourceCatalogImpl
         public ConcurrentDictionary<Guid, object> WorkspaceLocks { get; } = new ConcurrentDictionary<Guid, object>();
         public List<DuplicateResource> DuplicateResources { get; set; }
         readonly object _loadLock = new object();
-        readonly FileWrapper _dev2FileWrapper;
+        readonly IFile _dev2FileWrapper;
+        readonly IFileStreamFactory _fileStreamFactory;
+        readonly IStreamReaderFactory _streamReaderFactory;
         readonly IPerformanceCounter _perfCounter;
         private readonly TypeCache _typeCache;
 
-        public ResourceLoadProvider(ConcurrentDictionary<Guid, List<IResource>> workspaceResources, IServerVersionRepository serverVersionRepository, IEnumerable<DynamicService> managementServices = null)
-            : this(new FileWrapper())
+        public ResourceLoadProvider(ConcurrentDictionary<Guid, List<IResource>> workspaceResources, IServerVersionRepository serverVersionRepository, IEnumerable<DynamicService> managementServices = null, IFile dev2FileWrapper = null, IFileStreamFactory fileStreamFactory = null, IStreamReaderFactory streamReaderFactory = null)
+            : this(dev2FileWrapper ?? new FileWrapper(), fileStreamFactory ?? new FileStreamFactory(), streamReaderFactory ?? new StreamReaderFactory())
         {
             try
             {
@@ -78,9 +83,11 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             LoadResourceTypeCache();
         }
 
-        ResourceLoadProvider(FileWrapper fileWrapper)
+        ResourceLoadProvider(IFile fileWrapper, IFileStreamFactory fileStreamFactory, IStreamReaderFactory streamReaderFactory)
         {
             _dev2FileWrapper = fileWrapper;
+            _fileStreamFactory = fileStreamFactory;
+            _streamReaderFactory = streamReaderFactory;
         }
 
         void LoadFrequentlyUsedServices()
@@ -635,16 +642,33 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             {
                 return contents;
             }
-            
-            using (StreamReader sr = new StreamReader(resource.FilePath))
+
+            // Open the file with the file share option of read. This will ensure that if the file is opened for write while this read operation
+            // is happening the write will fail. This have runtime behavior advantages.
+            // Use the FileStream class, which has an option that causes asynchronous I/O to occur at the operating system level.  
+            // In many cases, this will avoid blocking a ThreadPool thread.
+            var fileStreamArgs = new FileStreamArgs
             {
-                while (!sr.EndOfStream)
+                FileAccess = FileAccess.Read,
+                FileShare = FileShare.Read,
+                FileMode = FileMode.Open,
+                FilePath = resource.FilePath,
+                IsAsync = true
+            };
+
+            using (var fileStream = _fileStreamFactory.New(fileStreamArgs))
+            {
+                var streamReaderFactory = _streamReaderFactory.New();
+                using (var sr = streamReaderFactory.GetStream(fileStream))
                 {
-                    var readLine = sr.ReadLine();
-                    if (!string.IsNullOrEmpty(readLine))
+                    while (!sr.EndOfStream)
                     {
-                        contents.Append(readLine);
-                        contents.Append(Environment.NewLine);
+                        var readLine = sr.ReadLine();
+                        if (!string.IsNullOrEmpty(readLine))
+                        {
+                            contents.Append(readLine);
+                            contents.Append(Environment.NewLine);
+                        }
                     }
                 }
             }

@@ -13,9 +13,21 @@ using System.IO;
 
 namespace Dev2.Common.Interfaces.Factories
 {
+    public class FileStreamArgs
+    {
+        public string FilePath { get; set; }
+        public FileMode FileMode { get; set; }
+        public FileAccess FileAccess { get; set; }
+        public FileShare FileShare { get; set; }
+        public int BufferSize { get; set; } = 4096;
+        public bool IsAsync { get; set; }
+    }
+
     public interface IFileStreamFactory
     {
-        
+        //Note: these can be merged later, by setting the appropriate defaults on FileStreamArgs initialization
+
         Stream New(string path, FileMode append);
+        Stream New(FileStreamArgs fileStreamArgs);
     }
 }
