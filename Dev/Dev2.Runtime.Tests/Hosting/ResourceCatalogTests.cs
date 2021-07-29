@@ -3386,7 +3386,7 @@ namespace Dev2.Tests.Runtime.Hosting
         [Timeout(60000)]
         [DoNotParallelize]
         [TestCategory("CannotParallelize")]
-        public void ResourceCatalog_DuplicateFolder_ResourceWithValidArgs_And_FixReferences_False_ExpectSuccesResult()
+        public void ResourceCatalog_DuplicateFolder_ResourceWithValidArgs_And_FixReferences_False_ExpectSuccess()
         {
             //------------Setup for test--------------------------
             var workspaceID = GlobalConstants.ServerWorkspaceID;
@@ -3565,7 +3565,7 @@ namespace Dev2.Tests.Runtime.Hosting
         [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(ResourceCatalog))]
-        public void ResourceCatalog_Parse_GivenHasActivityInCache_ShouldReturnExistingActivityCacheEntry()
+        public void ResourceCatalog_Parse_GivenHasActivityInCache_ShouldReturnFromExistingActivityCacheEntry()
         {
             //Note: there seems to be a race condition with: ResourceCatalog_Parse_GivenHasActivityInCache_And_GetActivityFails_ShouldReturnNull
             //------------Setup for test--------------------------
@@ -3638,7 +3638,7 @@ namespace Dev2.Tests.Runtime.Hosting
         [TestCategory(nameof(ResourceCatalog))]
         public void ResourceCatalog_Parse_GivenHasActivityInCache_And_GetActivityFails_ShouldReturnNull()
         {
-            //Note: there seems to be a race condition with: ResourceCatalog_Parse_GivenHasActivityInCache_ShouldReturnExistingActivityCacheEntry
+            //Note: there seems to be a race condition with: ResourceCatalog_Parse_GivenHasActivityInCache_ShouldReturnFromExistingActivityCacheEntry
             //------------Setup for test--------------------------
             var resource = new Resource
             {
@@ -3700,7 +3700,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.IsNull(result);
         }
 
-        private static void SaveTestResources(string path, string resourceName, out List<string> workflows, out List<Guid> resourceIds, int numOfTestWFs)
+        public static IEnumerable<IResource> SaveTestResources(string path, string resourceName, out List<string> workflows, out List<Guid> resourceIds, int numOfTestWFs)
         {
             workflows = new List<string>();
             resourceIds = new List<Guid>();
@@ -3710,7 +3710,7 @@ namespace Dev2.Tests.Runtime.Hosting
                 resourceIds.Add(Guid.NewGuid());
             }
 
-            SaveResources(path, null, true, false, workflows, resourceIds.ToArray(), true, true);
+            return SaveResources(path, null, true, false, workflows, resourceIds.ToArray(), true, true);
         }
 
         [TestMethod]
