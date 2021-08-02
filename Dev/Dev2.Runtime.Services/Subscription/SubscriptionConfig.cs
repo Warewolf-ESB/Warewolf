@@ -99,7 +99,7 @@ namespace Dev2.Runtime.Subscription
             ConfigurationManager.RefreshSection(SectionName);
             if(!File.Exists(FileName))
             {
-                Dev2Logger.Info(string.Format(ErrorResource.FileNotFound, FileName), GlobalConstants.WarewolfInfo);
+                Dev2Logger.Info(string.Format(ErrorResource.FileNotFound, Environment.CurrentDirectory + "\\" + FileName), GlobalConstants.WarewolfInfo);
 
                 // ReSharper disable once RedundantAssignment
                 var subscriptionKey = SubscriptionProvider.SubscriptionLiveKey;
