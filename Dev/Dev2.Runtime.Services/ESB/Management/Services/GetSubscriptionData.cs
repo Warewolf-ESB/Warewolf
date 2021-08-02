@@ -57,6 +57,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                     if(subscriptionData.PlanId != _subscriptionProvider.PlanId || subscriptionData.Status != _subscriptionProvider.Status)
                     {
+                        Dev2Logger.Info("Got Subscription Data Service. Got PlanId: \"" + subscriptionData.PlanId + "\". Got Status: \"" + subscriptionData.Status + "\". Was expecting PlanId: \"" + _subscriptionProvider.PlanId + "\" and Status: \"" + _subscriptionProvider.Status + "\".", GlobalConstants.WarewolfInfo);
                         _subscriptionProvider.SaveSubscriptionData(subscriptionData);
                     }
 

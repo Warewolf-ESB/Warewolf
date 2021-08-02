@@ -8,6 +8,7 @@
     </PropertyGroup>   
     <ItemGroup>
       <ProjectReference Include="..\Dev2.Common\Dev2.Common.csproj" />
+      <ProjectReference Include="..\Dev2.Diagnostics\Dev2.Diagnostics.csproj" />
       <ProjectReference Include="..\Dev2.Util\Dev2.Util.csproj" />
       <ProjectReference Include="..\Warewolf.Interfaces\Warewolf.Interfaces.csproj" />
     </ItemGroup>   

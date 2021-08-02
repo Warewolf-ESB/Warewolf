@@ -10,6 +10,7 @@
 
 using System;
 using ChargeBee.Api;
+using Dev2.Common;
 using Warewolf.Enums;
 
 namespace Warewolf.Licensing
@@ -47,6 +48,7 @@ namespace Warewolf.Licensing
         {
             try
             {
+                Dev2Logger.Info("Retrieving Subscription Data For subscriptionId: \"" + subscriptionId + "\" and subscriptionKey: \"" + subscriptionKey + "\" and subscriptionSiteName: \"" + subscriptionSiteName + "\".", GlobalConstants.WarewolfInfo);
                 if (!string.IsNullOrEmpty(subscriptionSiteName) || !string.IsNullOrEmpty(subscriptionKey))
                 {
                     ApiConfig.Configure(subscriptionSiteName, subscriptionKey);
