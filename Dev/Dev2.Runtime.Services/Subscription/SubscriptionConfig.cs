@@ -164,6 +164,7 @@ namespace Dev2.Runtime.Subscription
 
                 var configDoc = new XDocument(new XDeclaration("1.0", "utf-8", ""), config);
                 configDoc.Save(FileName, SaveOptions.None);
+                Dev2Logger.Info("New licensing file created at: \"" + Environment.CurrentDirectory + "\\" + FileName + "\"", GlobalConstants.WarewolfInfo);
             }
             catch(Exception ex)
             {
