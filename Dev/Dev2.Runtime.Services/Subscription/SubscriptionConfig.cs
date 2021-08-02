@@ -73,7 +73,7 @@ namespace Dev2.Runtime.Subscription
             }
             else
             {
-                //Broken Installation
+                Dev2Logger.Info("Broken installation: \"" + Environment.CurrentDirectory + "\\" + FileName + "\" reads \"" + File.ReadAllText(FileName) + "\" does not contain a value for SubscriptionSiteName or SubscriptionKey in " + SectionName, GlobalConstants.WarewolfInfo);
                 // ReSharper disable once RedundantAssignment
                 var subscriptionKey = SubscriptionProvider.SubscriptionLiveKey;
                 // ReSharper disable once RedundantAssignment
@@ -164,7 +164,6 @@ namespace Dev2.Runtime.Subscription
 
                 var configDoc = new XDocument(new XDeclaration("1.0", "utf-8", ""), config);
                 configDoc.Save(FileName, SaveOptions.None);
-                Dev2Logger.Info("New licensing file created at: \"" + Environment.CurrentDirectory + "\\" + FileName + "\"", GlobalConstants.WarewolfInfo);
             }
             catch(Exception ex)
             {
