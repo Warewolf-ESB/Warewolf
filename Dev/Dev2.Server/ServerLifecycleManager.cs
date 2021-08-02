@@ -263,12 +263,11 @@ namespace Dev2
 
                             var logger = _loggerFactory.New(new JsonSerializer(), _webSocketPool);
                             LogWarewolfVersion(logger);
-#if DEBUG
                             if(EnvironmentVariables.IsServerOnline)
                             {
                                 SetAsStarted();
                             }
-#else
+#if RELEASE
                             TrackUsage(UsageType.ServerStart, logger);
 #endif
                         }
