@@ -73,7 +73,7 @@ namespace Dev2.Runtime.Subscription
             }
             else
             {
-                Dev2Logger.Info("Broken installation: \"" + Environment.CurrentDirectory + "\\" + FileName + "\" reads \"" + File.ReadAllText(FileName) + "\" does not contain a value for SubscriptionSiteName or SubscriptionKey in " + SectionName, GlobalConstants.WarewolfInfo);
+                //Broken Installation
                 // ReSharper disable once RedundantAssignment
                 var subscriptionKey = SubscriptionProvider.SubscriptionLiveKey;
                 // ReSharper disable once RedundantAssignment
