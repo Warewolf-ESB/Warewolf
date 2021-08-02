@@ -1,3 +1,13 @@
+2 August 2021
+======================
+Bug fixes
+----------
+- Fixed an issue with the manual resume tool
+
+Enhancements
+------------
+- Studio/Server connection stability improvements
+
 23 July 2021
 ======================
 Enhancements
