@@ -121,6 +121,10 @@ namespace Dev2.Runtime.Hosting
         {
             var programDataBuilders = new List<ResourceBuilderTO>();
 
+            if (!Directory.Exists(EnvironmentVariables.ResourcePath))
+            {
+                Directory.CreateDirectory(EnvironmentVariables.ResourcePath);
+            } 
             var resourcesFolders = Directory.EnumerateDirectories(EnvironmentVariables.ResourcePath, "*", SearchOption.AllDirectories);
             var allResourcesFolders = resourcesFolders.ToList();
             allResourcesFolders.Add(EnvironmentVariables.ResourcePath);
