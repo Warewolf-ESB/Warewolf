@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -287,7 +287,7 @@ namespace Dev2.Tests.Runtime.WebServer
             Assert.IsNotNull(executePayload);
             Assert.AreEqual("application/json", sut.ContentType);
             StringAssert.Contains(executePayload, "\r\n  \"Results\": []\r\n");
-            StringAssert.Contains(executePayload, "\r\n  \"ResultsSummary\": {\r\n    \"TestsTotalCount\": 1,\r\n    \"TestsFailed\": 0,\r\n    \"TestsPassed\": 0,\r\n    \"TestsInvalid\": 1\r\n  }");
+            StringAssert.Contains(executePayload, "\r\n  \"TestSummary\": {\r\n    \"TestsTotalCount\": 1,\r\n    \"TestsFailed\": 0,\r\n    \"TestsPassed\": 0,\r\n    \"TestsInvalid\": 1\r\n  }");
         }
 
         [TestMethod]
@@ -323,7 +323,7 @@ namespace Dev2.Tests.Runtime.WebServer
             Assert.IsNotNull(executePayload);
             Assert.AreEqual("application/json", sut.ContentType);
             StringAssert.Contains(executePayload, "\"Results\": [\r\n    {\r\n      \"ResourceID\": \"fbda8700-2717-4879-88cd-6abdea4560da\",\r\n  ");
-            StringAssert.Contains(executePayload, "\r\n  \"ResultsSummary\": {\r\n    \"TestsTotalCount\": 1,\r\n    \"TestsFailed\": 0,\r\n    \"TestsPassed\": 0,\r\n    \"TestsInvalid\": 1\r\n  }");
+            StringAssert.Contains(executePayload, "\r\n  \"TestSummary\": {\r\n    \"TestsTotalCount\": 1,\r\n    \"TestsFailed\": 0,\r\n    \"TestsPassed\": 0,\r\n    \"TestsInvalid\": 1\r\n  }");
         }
 
         [TestMethod]

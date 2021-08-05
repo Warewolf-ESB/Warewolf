@@ -36,6 +36,7 @@ using System.Web.UI;
 using Dev2.Data;
 using Dev2.Common.Interfaces.Runtime.Services;
 using Newtonsoft.Json;
+using Dev2.Common.Interfaces.Runtime.WebServer;
 
 namespace Dev2.Runtime.WebServer
 {
@@ -516,8 +517,7 @@ namespace Dev2.Runtime.WebServer
 
             var formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
 
-            var objArray = allCoverageReports.AllCoverageReportsSummary
-                .Where(o => o.HasTestReports)
+            var objArray = allCoverageReports.WithTestReports
                 .Select(o =>
                 {
                     var name = o.Resource.ResourceName;
@@ -534,10 +534,18 @@ namespace Dev2.Runtime.WebServer
                     };
                 });
 
+            var resultCoverageSummaryWriter = new StringWriter();
+            using (var writer = new JsonTextWriter(resultCoverageSummaryWriter))
+            {
+                writer.WriteStartObject();
+                writer.WritePropertyName("TotalCoverage");
+                writer.WriteValueAsync(allCoverageReports.TotalReportsCoverage);
+                writer.WriteEndObject();
+            }
+            
             var resultSummaryWriter = new StringWriter();
             using (var writer = new JsonTextWriter(resultSummaryWriter))
             {
-
                 allTestResults.Results
                     .SelectMany(o => o.Results)
                     .ToList()
@@ -548,8 +556,9 @@ namespace Dev2.Runtime.WebServer
             {
                 {"StartTime", allCoverageReports.StartTime},
                 {"EndTime", allCoverageReports.EndTime},
-                {"ResultsSummary", JToken.Parse(resultSummaryWriter.ToString()) },
-                {"Results", new JArray(objArray)},
+                {"CoverageSummary", JToken.Parse(resultCoverageSummaryWriter.ToString()) },
+                {"TestSummary", JToken.Parse(resultSummaryWriter.ToString()) },
+                {"TestResults", new JArray(objArray)},
             };
             executePayload = serializer.Serialize(obj);
             return formatter;
@@ -572,8 +581,7 @@ namespace Dev2.Runtime.WebServer
                     .ToList()
                     .SetupCountSummaryHtml(writer, coverageData);
 
-                allCoverageReports.AllCoverageReportsSummary
-                    .Where(o => o.HasTestReports)
+                allCoverageReports.WithTestReports
                     .ToList()
                     .ForEach(oo =>
                     {
