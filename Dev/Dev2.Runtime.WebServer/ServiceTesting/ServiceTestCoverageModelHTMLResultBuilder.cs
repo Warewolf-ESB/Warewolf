@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -60,16 +60,15 @@ namespace Dev2.Runtime.WebServer
             writer.RenderEndTag();
             writer.RenderEndTag();
 
-            (double totalCoverage, List<IWorkflowNode> workflowNodes, IWorkflowNode[] coveredNodes) = coverageReports.GetTotalCoverage();
-
-            writer.SetupWorkflowReportsHtml(totalCoverage, nameof(SetupWorkflowReportsHtml));
+            writer.SetupWorkflowReportsHtml(coverageReports.TotalCoverage, nameof(SetupWorkflowReportsHtml));
             writer.AddStyleAttribute(HtmlTextWriterStyle.FontSize, "16px");
             writer.AddStyleAttribute(HtmlTextWriterStyle.FontWeight, "500");
             writer.AddStyleAttribute(HtmlTextWriterStyle.Margin, "0 0 0 35px");
             writer.AddAttribute(HtmlTextWriterAttribute.Class, "workflow-nodes-row");
             writer.RenderBeginTag(HtmlTextWriterTag.Div);
 
-            workflowNodes.ForEach(node => node.SetupWorkflowNodeHtml(writer, coveredNodes));
+            coverageReports.WorkflowNodes.ToList()
+                .ForEach(node => node.SetupWorkflowNodeHtml(writer, coverageReports.CoveredWorkflowNodes));
 
             writer.RenderEndTag();
         }
@@ -80,7 +79,7 @@ namespace Dev2.Runtime.WebServer
             writer.AddAttribute(HtmlTextWriterAttribute.Class, classValue);
             writer.RenderBeginTag(HtmlTextWriterTag.Div);
 
-            double testFailing = (1 - (CoveragePercentage));
+            double testFailing = 1 - CoveragePercentage;
             double testPassed = CoveragePercentage;
 
             writer.AddStyleAttribute(HtmlTextWriterStyle.Display, "inline-block");
