@@ -574,7 +574,7 @@ namespace Dev2.Runtime.WebServer
 
             using (var writer = new HtmlTextWriter(stringWriter))
             {
-                writer.SetupNavBarHtml();
+                writer.SetupNavBarHtml(allCoverageReports.TotalReportsCoverage);
                 
                 allTestResults.Results
                     .SelectMany(o => o.Results)

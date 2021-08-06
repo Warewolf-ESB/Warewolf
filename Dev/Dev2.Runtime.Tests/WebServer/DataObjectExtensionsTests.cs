@@ -262,7 +262,7 @@ namespace Dev2.Tests.Runtime.WebServer
 
             Assert.IsNotNull(executePayload);
             Assert.AreEqual("application/json", sut.ContentType);
-            StringAssert.Contains(executePayload, "\r\n  \"Results\": []\r\n");
+            StringAssert.Contains(executePayload, "\r\n  \"TestResults\": []\r\n");
         }
 
         [TestMethod]
@@ -286,7 +286,8 @@ namespace Dev2.Tests.Runtime.WebServer
 
             Assert.IsNotNull(executePayload);
             Assert.AreEqual("application/json", sut.ContentType);
-            StringAssert.Contains(executePayload, "\r\n  \"Results\": []\r\n");
+            StringAssert.Contains(executePayload, "\r\n  \"TestResults\": []\r\n");
+            StringAssert.Contains(executePayload, "\r\n  \"CoverageSummary\": {\r\n    \"TotalCoverage\": 0.0\r\n  },");
             StringAssert.Contains(executePayload, "\r\n  \"TestSummary\": {\r\n    \"TestsTotalCount\": 1,\r\n    \"TestsFailed\": 0,\r\n    \"TestsPassed\": 0,\r\n    \"TestsInvalid\": 1\r\n  }");
         }
 
@@ -322,7 +323,8 @@ namespace Dev2.Tests.Runtime.WebServer
 
             Assert.IsNotNull(executePayload);
             Assert.AreEqual("application/json", sut.ContentType);
-            StringAssert.Contains(executePayload, "\"Results\": [\r\n    {\r\n      \"ResourceID\": \"fbda8700-2717-4879-88cd-6abdea4560da\",\r\n  ");
+            StringAssert.Contains(executePayload, "\"TestResults\": [\r\n    {\r\n      \"ResourceID\": \"fbda8700-2717-4879-88cd-6abdea4560da\",\r\n  ");
+            StringAssert.Contains(executePayload, "\r\n  \"CoverageSummary\": {\r\n    \"TotalCoverage\": 30.0\r\n  },");
             StringAssert.Contains(executePayload, "\r\n  \"TestSummary\": {\r\n    \"TestsTotalCount\": 1,\r\n    \"TestsFailed\": 0,\r\n    \"TestsPassed\": 0,\r\n    \"TestsInvalid\": 1\r\n  }");
         }
 
