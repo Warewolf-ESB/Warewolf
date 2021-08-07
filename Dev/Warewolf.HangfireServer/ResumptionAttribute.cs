@@ -69,7 +69,7 @@ namespace HangfireServer
             {
                 var resumptionFactory = _resumptionFactory ?? new ResumptionFactory();
                 var resumption = resumptionFactory.New(_logger);
-                if (resumption.Connect(_logger))
+                if (resumption.Connect())
                 {
                     _logger.Info("Performing Resume of job {" + backgroundJobId + "}, connection established.", backgroundJobId);
                     

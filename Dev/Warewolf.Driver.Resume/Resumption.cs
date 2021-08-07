@@ -89,11 +89,10 @@ namespace Warewolf.Driver.Resume
             return executeMessage;
         }
 
-        public bool Connect(IExecutionLogPublisher executionLogPublisher)
+        public bool Connect()
         {
             try
             {
-                _logger = executionLogPublisher;
                 _logger.Info("Connecting to server: " + ServerEndpoint + "...");
                 _environmentConnection = _serverProxyFactory.New(_serverEndpoint);
                 Task<bool> connectTask = TryConnectingToWarewolfServer(_environmentConnection);
