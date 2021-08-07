@@ -86,7 +86,7 @@ namespace Warewolf.Driver.Resume.Tests
         {
             //--------------Arrange------------------------------
             var serverEndpoint = new Uri($"https://{System.Net.Dns.GetHostName()}:3143");
-            var exMessage = "Connecting to server: " + serverEndpoint + "... unsuccessful One or more errors occurred. failed to connect";
+            var exMessage = "Connecting to server: " + serverEndpoint + "... unsuccessful";
             //--------------Act----------------------------------
             var mockExecutionLogPublisher = new Mock<IExecutionLogPublisher>();
             mockExecutionLogPublisher.Setup(o => o.Info("Connecting to server: " + serverEndpoint + "..."));
@@ -135,11 +135,10 @@ namespace Warewolf.Driver.Resume.Tests
 
             var resumption = new Resumption(mockExecutionLogPublisher.Object, mockServerProxyFactory.Object, new Mock<IResourceCatalogProxyFactory>().Object);
             //--------------Assert-------------------------------
-            var connect = resumption.Connect();
-            Assert.IsFalse(connect);
+            var result = resumption.Connect();
+            Assert.IsFalse(result);
             mockEnvironmentConnection.Verify(o => o.ConnectAsync(Guid.Empty), Times.Once);
             mockExecutionLogPublisher.Verify(o => o.Info($"Connecting to server: { serverEndpoint }..."), Times.Once);
-            mockExecutionLogPublisher.Verify(o => o.Error($"Connecting to server: {serverEndpoint}... unsuccessful failed to connect Connection Error: "), Times.Once); // this does not read right
             mockExecutionLogPublisher.Verify(o => o.Error($"Connecting to server: {serverEndpoint}... unsuccessful"), Times.Once);
         }
 

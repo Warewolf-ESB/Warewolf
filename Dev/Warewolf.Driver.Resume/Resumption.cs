@@ -38,11 +38,10 @@ namespace Warewolf.Driver.Resume
 
     public class Resumption : IResumption
     {
-        private Uri _serverEndpoint;
-        private readonly IEnvironmentConnection _environmentConnection;
 
         private readonly IExecutionLogPublisher _logger;
         private readonly IServerProxyFactory _serverProxyFactory;
+        private readonly IEnvironmentConnection _environmentConnection;
         private readonly IResourceCatalogProxyFactory _resourceCatalogProxyFactory;
 
         public Resumption(IExecutionLogPublisher logger, IServerProxyFactory serverProxyFactory, IResourceCatalogProxyFactory resourceCatalogProxyFactory)
@@ -55,14 +54,7 @@ namespace Warewolf.Driver.Resume
             _resourceCatalogProxyFactory = resourceCatalogProxyFactory;
         }
 
-        private Uri ServerEndpoint
-        {
-            get
-            {
-                _serverEndpoint = new Uri($"https://{System.Net.Dns.GetHostName()}:3143");
-                return _serverEndpoint;
-            }
-        }
+        private Uri ServerEndpoint => new Uri($"https://{System.Net.Dns.GetHostName()}:3143");
 
         public ExecuteMessage Resume(Dictionary<string, StringBuilder> values)
         {
@@ -91,29 +83,14 @@ namespace Warewolf.Driver.Resume
 
         public bool Connect()
         {
-            try
+            _logger.Info($"Connecting to server: { ServerEndpoint }...");
+            var connectTask = TryConnectingToWarewolfServer(_environmentConnection);
+            if (connectTask.Result == true)
             {
-                _logger.Info("Connecting to server: " + ServerEndpoint + "...");
-                var connectTask = TryConnectingToWarewolfServer(_environmentConnection);
-                if (connectTask.Result is false)
-                {
-                    _logger.Error("Connecting to server: " + _serverEndpoint + "... unsuccessful");
-                    return false;
-                }
-                _logger.Info("Connecting to server: " + _serverEndpoint + "... successful");
+                _logger.Info($"Connecting to server: { ServerEndpoint }... successful");
                 return true;
             }
-            catch (Exception ex)
-            {
-                var exMessage = "Connecting to server: " + _serverEndpoint + "... unsuccessful " + ex.Message;
-                if (ex.InnerException != null)
-                {
-                    exMessage += " " + ex.InnerException.Message;
-                }
-
-                _logger.Error(exMessage);
-                return false;
-            }
+            return false;
         }
 
         private Task<bool> TryConnectingToWarewolfServer(IEnvironmentConnection environmentConnection)
@@ -124,14 +101,9 @@ namespace Warewolf.Driver.Resume
                 connectTask.Wait(600);
                 return connectTask;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                var exMessage = "Connecting to server: " + _serverEndpoint + "... unsuccessful " + ex.Message;
-                if (ex.InnerException != null)
-                {
-                    exMessage += " " + ex.InnerException.Message;
-                }
-                _logger.Error(exMessage);
+                _logger.Error("Connecting to server: " + ServerEndpoint + "... unsuccessful");
                 return Task.FromResult(false);
             }
         }
