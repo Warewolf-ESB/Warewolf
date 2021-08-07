@@ -15,22 +15,23 @@ using System.Threading.Tasks;
 using Dev2.Communication;
 using Dev2.Network;
 using Dev2.Studio.Interfaces;
-using Dev2.Util;
+using Warewolf.Auditing;
 using Warewolf.Common;
 using Warewolf.Execution;
+using LogLevel = Warewolf.Logging.LogLevel;
 
 namespace Warewolf.Driver.Resume
 {
     public interface IResumptionFactory
     {
-        IResumption New();
+        IResumption New(IExecutionLogPublisher logger);
     }
 
     public class ResumptionFactory : IResumptionFactory
     {
-        public IResumption New()
+        public IResumption New(IExecutionLogPublisher logger)
         {
-            return new Resumption(new ServerProxyFactory(), new ResourceCatalogProxyFactory());
+            return new Resumption(logger, new ServerProxyFactory(), new ResourceCatalogProxyFactory());
         }
     }
 
@@ -43,8 +44,9 @@ namespace Warewolf.Driver.Resume
         private readonly IServerProxyFactory _serverProxyFactory;
         private readonly IResourceCatalogProxyFactory _resourceCatalogProxyFactory;
 
-        public Resumption(IServerProxyFactory serverProxyFactory, IResourceCatalogProxyFactory resourceCatalogProxyFactory)
+        public Resumption(IExecutionLogPublisher logger, IServerProxyFactory serverProxyFactory, IResourceCatalogProxyFactory resourceCatalogProxyFactory)
         {
+            _logger = logger;
             _serverProxyFactory = serverProxyFactory;
             _resourceCatalogProxyFactory = resourceCatalogProxyFactory;
         }
@@ -65,6 +67,18 @@ namespace Warewolf.Driver.Resume
             values.TryGetValue("startActivityId", out var startActivityId);
             values.TryGetValue("versionNumber", out var versionNumber);
             values.TryGetValue("currentuserprincipal", out var currentuserprincipal);
+
+            _logger.LogResumedExecution(new Audit
+            {
+                AuditDate = DateTime.Now,
+                WorkflowID = resourceId?.ToString(),
+                Environment = string.Empty,
+                VersionNumber = versionNumber?.ToString(),
+                NextActivityId = startActivityId?.ToString(),
+                AuditType = "LogResumeExecutionState",
+                LogLevel = LogLevel.Info,
+                ExecutingUser = currentuserprincipal?.ToString()
+            });
 
             if (_environmentConnection is null)
             {

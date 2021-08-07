@@ -42,7 +42,7 @@ namespace Warewolf.Driver.Resume.Tests
             var mockServerProxy = new Mock<IServerProxyFactory>();
             mockServerProxy.Setup(o => o.New(serverEndpoint)).Returns(mockEnvironmentConnection.Object);
 
-            var resumption = new Resumption(mockServerProxy.Object, null);
+            var resumption = new Resumption(new Mock<IExecutionLogPublisher>().Object, mockServerProxy.Object, null);
             var connect = resumption.Connect(mockExecutionLogPublisher.Object);
             //--------------Assert-------------------------------
             Assert.IsFalse(connect);
@@ -69,7 +69,7 @@ namespace Warewolf.Driver.Resume.Tests
             var mockServerProxy = new Mock<IServerProxyFactory>();
             mockServerProxy.Setup(o => o.New(serverEndpoint)).Returns(mockEnvironmentConnection.Object);
 
-            var resumption = new Resumption(mockServerProxy.Object, null);
+            var resumption = new Resumption(new Mock<IExecutionLogPublisher>().Object, mockServerProxy.Object, null);
             var connect = resumption.Connect(mockExecutionLogPublisher.Object);
             //--------------Assert-------------------------------
             Assert.IsTrue(connect);
@@ -102,7 +102,7 @@ namespace Warewolf.Driver.Resume.Tests
             var mockServerProxy = new Mock<IServerProxyFactory>();
             mockServerProxy.Setup(o => o.New(serverEndpoint)).Returns(mockEnvironmentConnection.Object);
 
-            var resumption = new Resumption(mockServerProxy.Object, null);
+            var resumption = new Resumption(new Mock<IExecutionLogPublisher>().Object, mockServerProxy.Object, null);
             var connect = resumption.Connect(mockExecutionLogPublisher.Object);
             //--------------Assert-------------------------------
             Assert.IsFalse(connect);
@@ -132,7 +132,7 @@ namespace Warewolf.Driver.Resume.Tests
 
             mockEnvironmentConnection.Setup(o => o.ConnectAsync(Guid.Empty)).ThrowsAsync(exception);
 
-            var resumption = new Resumption(null, null);
+            var resumption = new Resumption(new Mock<IExecutionLogPublisher>().Object, null, null);
             var connect = resumption.Connect(mockExecutionLogPublisher.Object);
             //--------------Assert-------------------------------
             Assert.IsFalse(connect);
@@ -181,7 +181,7 @@ namespace Warewolf.Driver.Resume.Tests
             var mockServerProxy = new Mock<IServerProxyFactory>();
             mockServerProxy.Setup(o => o.New(serverEndpoint)).Returns(mockEnvironmentConnection.Object);
 
-            var resumption = new Resumption(mockServerProxy.Object, mockResourceCatalogProxyFactory.Object);
+            var resumption = new Resumption(new Mock<IExecutionLogPublisher>().Object, mockServerProxy.Object, mockResourceCatalogProxyFactory.Object);
 
             var message = resumption.Resume(values);
             //--------------Assert-------------------------------

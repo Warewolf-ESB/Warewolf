@@ -23,7 +23,6 @@ using HangfireServer;
 using Warewolf.Auditing;
 using Warewolf.Driver.Resume;
 using Warewolf.Execution;
-using LogLevel = Warewolf.Logging.LogLevel;
 
 namespace Warewolf.HangfireServer.Tests
 {
@@ -70,18 +69,18 @@ namespace Warewolf.HangfireServer.Tests
             mockResumption.Setup(o => o.Resume(values)).Returns(executeMessage);
 
             var mockResumptionFactory = new Mock<IResumptionFactory>();
-            mockResumptionFactory.Setup(o => o.New()).Returns(mockResumption.Object).Verifiable();
+            mockResumptionFactory.Setup(o => o.New(mockLogger.Object)).Returns(mockResumption.Object).Verifiable();
 
             var resumptionAttribute = new ResumptionAttribute(mockLogger.Object, mockResumptionFactory.Object);
             var audit = new Audit
             {
                 AuditDate = DateTime.Now
             };
-            resumptionAttribute.OnPerformResume(new PerformingContext(performContext.Object), audit);
+            resumptionAttribute.OnPerformResume(new PerformingContext(performContext.Object));
 
-            mockResumptionFactory.Verify(o => o.New(), Times.Once);
+            mockResumptionFactory.Verify(o => o.New(mockLogger.Object), Times.Once);
             mockResumption.Verify(o => o.Connect(mockLogger.Object), Times.Once);
-            mockLogger.Verify(o => o.LogResumedExecution(It.IsAny<Audit>()), Times.Once);
+            mockLogger.Verify(o => o.LogResumedExecution(It.IsAny<Audit>()), Times.Never, "This call can be called inside the Resume method in Resumption.cs");
             mockResumption.Verify(o => o.Resume(values), Times.Once);
         }
 
@@ -117,15 +116,12 @@ namespace Warewolf.HangfireServer.Tests
             mockResumption.Setup(o => o.Resume(values)).Verifiable();
 
             var mockResumptionFactory = new Mock<IResumptionFactory>();
-            mockResumptionFactory.Setup(o => o.New()).Returns(mockResumption.Object).Verifiable();
+            mockResumptionFactory.Setup(o => o.New(mockLogger.Object)).Returns(mockResumption.Object).Verifiable();
 
             var resumptionAttribute = new ResumptionAttribute(mockLogger.Object, mockResumptionFactory.Object);
-            var audit = new Audit
-            {
-                AuditDate = DateTime.Now
-            };
-            resumptionAttribute.OnPerformResume(new PerformingContext(performContext.Object), audit);
-            mockResumptionFactory.Verify(o => o.New(), Times.Once);
+            
+            resumptionAttribute.OnPerformResume(new PerformingContext(performContext.Object));
+            mockResumptionFactory.Verify(o => o.New(mockLogger.Object), Times.Once);
             mockResumption.Verify(o => o.Connect(mockLogger.Object), Times.Once);
             mockLogger.Verify(o => o.LogResumedExecution(It.IsAny<Audit>()), Times.Never);
             mockResumption.Verify(o => o.Resume(values), Times.Never);
@@ -170,17 +166,13 @@ namespace Warewolf.HangfireServer.Tests
             mockResumption.Setup(o => o.Resume(values)).Returns(executeMessage);
 
             var mockResumptionFactory = new Mock<IResumptionFactory>();
-            mockResumptionFactory.Setup(o => o.New()).Returns(mockResumption.Object).Verifiable();
+            mockResumptionFactory.Setup(o => o.New(mockLogger.Object)).Returns(mockResumption.Object).Verifiable();
 
             var resumptionAttribute = new ResumptionAttribute(mockLogger.Object, mockResumptionFactory.Object);
-            var audit = new Audit
-            {
-                AuditDate = DateTime.Now
-            };
-            resumptionAttribute.OnPerformResume(new PerformingContext(performContext.Object), audit);
+            resumptionAttribute.OnPerformResume(new PerformingContext(performContext.Object));
         }
 
-        [TestMethod]
+        /*[TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ResumptionAttribute))]
         public void ResumptionAttribute_LogResumption_Environment_in_Audit_IsBlank()
@@ -240,8 +232,8 @@ namespace Warewolf.HangfireServer.Tests
             mockLogger.Verify(o => o.LogResumedExecution(audit), Times.Once);
             mockResumption.Verify(o => o.Resume(values), Times.Once);
         }
-
-        [TestMethod]
+*/
+        /*[TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ResumptionAttribute))]
         public void ResumptionAttribute_LogResumption_Environment_in_Audit_IsNotBlank_Fails()
@@ -315,7 +307,7 @@ namespace Warewolf.HangfireServer.Tests
             mockLogger.Verify(o => o.LogResumedExecution(auditWithOverWrittenEnvironment), Times.Once);
             mockLogger.Verify(o => o.LogResumedExecution(auditValidation), Times.Never);
             mockResumption.Verify(o => o.Resume(values), Times.Once);
-        }
+        }*/
 
         class PerformContextMock
         {
