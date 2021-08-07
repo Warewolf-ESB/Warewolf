@@ -10,7 +10,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using Hangfire.Client;
 using Hangfire.Common;
@@ -24,6 +23,7 @@ using Warewolf.Execution;
 namespace HangfireServer
 {
     // TODO: Refactor Hangfire implementations into separate wrappers.
+    // TODO: All these methods should be tested
     public class ResumptionAttribute : JobFilterAttribute, IClientFilter, IServerFilter, IElectStateFilter, IApplyStateFilter
     {
         private static readonly ILog _hangfireLogger = LogProvider.GetCurrentClassLogger();
@@ -49,7 +49,6 @@ namespace HangfireServer
                 context.BackgroundJob?.Id);
         }
 
-        [ExcludeFromCodeCoverage]
         public void OnPerforming(PerformingContext context)
         {
             if (context is null)
@@ -63,34 +62,8 @@ namespace HangfireServer
 
         public void OnPerformResume(PerformingContext context)
         {
-            var jobArg = context.BackgroundJob.Job.Args[0];
-            var backgroundJobId = context.BackgroundJob.Id;
-            try
-            {
-                var resumptionFactory = _resumptionFactory ?? new ResumptionFactory();
-                var resumption = resumptionFactory.New(_logger);
-                if (resumption.Connect())
-                {
-                    _logger.Info("Performing Resume of job {" + backgroundJobId + "}, connection established.", backgroundJobId);
-                    
-                    var values = jobArg as Dictionary<string, StringBuilder>;
-                    var result = resumption.Resume(values);
-                    if (result.HasError)
-                    {
-                        throw new InvalidOperationException(result.Message?.ToString(), new Exception(result.Message?.ToString()));
-                    }
-                }
-                else
-                {
-                    _logger.Error("Failed to perform job {" + backgroundJobId + "}, could not establish a connection.", backgroundJobId);
-                    throw new InvalidOperationException("Failed to perform job " + backgroundJobId + " could not establish a connection.");
-                }
-            }
-            catch (Exception ex)
-            {
-                _logger.Error("Failed to perform job {" + backgroundJobId + "}" + ex.InnerException);
-                throw;
-            }
+            var resumeWorkflow = new WarewolfResumeWorkflow(_logger, context, _resumptionFactory);
+            resumeWorkflow.PerformResumption();
         }
 
         public void OnPerformed(PerformedContext context)
@@ -128,6 +101,52 @@ namespace HangfireServer
                 "Job {0} state {1} was not applied.",
                 context.BackgroundJob.Id,
                 context.OldStateName);
+        }
+    }
+
+    internal class WarewolfResumeWorkflow
+    {
+        private readonly PerformingContext _context;
+        private readonly IResumptionFactory _resumptionFactory;
+        private readonly IExecutionLogPublisher _logger;
+
+        public WarewolfResumeWorkflow(IExecutionLogPublisher logger, PerformingContext context, IResumptionFactory resumptionFactory)
+        {
+            _logger = logger;
+            _context = context;
+            _resumptionFactory = resumptionFactory;
+        }
+
+        internal void PerformResumption()
+        {
+            var jobArg = _context.BackgroundJob.Job.Args[0];
+            var backgroundJobId = _context.BackgroundJob.Id;
+            try
+            {
+                var resumptionFactory = _resumptionFactory ?? new ResumptionFactory();
+                var resumption = resumptionFactory.New(_logger);
+                if (resumption.Connect())
+                {
+                    _logger.Info("Performing Resume of job {" + backgroundJobId + "}, connection established.", backgroundJobId);
+
+                    var values = jobArg as Dictionary<string, StringBuilder>;
+                    var result = resumption.Resume(values);
+                    if (result.HasError)
+                    {
+                        throw new InvalidOperationException(result.Message?.ToString(), new Exception(result.Message?.ToString()));
+                    }
+                }
+                else
+                {
+                    _logger.Error("Failed to perform job {" + backgroundJobId + "}, could not establish a connection.", backgroundJobId);
+                    throw new InvalidOperationException("Failed to perform job " + backgroundJobId + " could not establish a connection.");
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.Error("Failed to perform job {" + backgroundJobId + "}" + ex.InnerException);
+                throw;
+            }
         }
     }
 }
