@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using Dev2.Common.Utils;
 using Dev2.Communication;
 using Dev2.Network;
 using Dev2.Studio.Interfaces;
@@ -38,16 +39,19 @@ namespace Warewolf.Driver.Resume
     public class Resumption : IResumption
     {
         private Uri _serverEndpoint;
+        private readonly IEnvironmentConnection _environmentConnection;
 
-        private IEnvironmentConnection _environmentConnection;
-        private IExecutionLogPublisher _logger;
+        private readonly IExecutionLogPublisher _logger;
         private readonly IServerProxyFactory _serverProxyFactory;
         private readonly IResourceCatalogProxyFactory _resourceCatalogProxyFactory;
 
         public Resumption(IExecutionLogPublisher logger, IServerProxyFactory serverProxyFactory, IResourceCatalogProxyFactory resourceCatalogProxyFactory)
         {
             _logger = logger;
+            VerifyArgument.IsNotNull(nameof(serverProxyFactory), serverProxyFactory);
+            VerifyArgument.IsNotNull(nameof(resourceCatalogProxyFactory), resourceCatalogProxyFactory);
             _serverProxyFactory = serverProxyFactory;
+            _environmentConnection = _serverProxyFactory.New(ServerEndpoint);
             _resourceCatalogProxyFactory = resourceCatalogProxyFactory;
         }
 
@@ -80,10 +84,6 @@ namespace Warewolf.Driver.Resume
                 ExecutingUser = currentuserprincipal?.ToString()
             });
 
-            if (_environmentConnection is null)
-            {
-                _environmentConnection = _serverProxyFactory.New(ServerEndpoint);
-            }
             var resourceCatalogProxy = _resourceCatalogProxyFactory.New(_environmentConnection);
             var executeMessage = resourceCatalogProxy.ResumeWorkflowExecution(resourceId?.ToString(), environment?.ToString(), startActivityId?.ToString(), versionNumber?.ToString(), currentuserprincipal?.ToString());
             return executeMessage;
@@ -94,8 +94,7 @@ namespace Warewolf.Driver.Resume
             try
             {
                 _logger.Info("Connecting to server: " + ServerEndpoint + "...");
-                _environmentConnection = _serverProxyFactory.New(_serverEndpoint);
-                Task<bool> connectTask = TryConnectingToWarewolfServer(_environmentConnection);
+                var connectTask = TryConnectingToWarewolfServer(_environmentConnection);
                 if (connectTask.Result is false)
                 {
                     _logger.Error("Connecting to server: " + _serverEndpoint + "... unsuccessful");
