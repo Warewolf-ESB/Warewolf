@@ -36,15 +36,7 @@ namespace Warewolf.Common.NetStandard20
         {
         }
 
-        private void LogExecutionCompleted(IExecutionHistory executionHistory)
-        {
-            var command = new AuditCommand
-            {
-                Type = "ExecutionAuditCommand",
-                ExecutionHistory = executionHistory as ExecutionHistory
-            };
-            Publish(Serializer.Serialize(command));
-        }
+        public void StartExecution(string message, params object[] args) => Info(message, args);
 
         public void ExecutionFailed(IExecutionHistory executionHistory)
         {
@@ -56,13 +48,22 @@ namespace Warewolf.Common.NetStandard20
             LogExecutionCompleted(executionHistory);
         }
 
-        public void StartExecution(string message, params object[] args) => Info(message, args);
+        private void LogExecutionCompleted(IExecutionHistory executionHistory)
+        {
+            var command = new AuditCommand
+            {
+                Type = executionHistory.AuditType,
+                ExecutionHistory = executionHistory
+            };
+            Publish(Serializer.Serialize(command));
+        }
+
 
         public void LogResumedExecution(IAudit values)
         {
             var command = new AuditCommand
             {
-                Type = "LogResumeExecutionState",
+                Type =  values.AuditType,
                 Audit = values as Audit
             };
             Publish(Serializer.Serialize(command));

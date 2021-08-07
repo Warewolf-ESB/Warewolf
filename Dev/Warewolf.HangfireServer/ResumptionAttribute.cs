@@ -18,11 +18,8 @@ using Hangfire.Logging;
 using Hangfire.Server;
 using Hangfire.States;
 using Hangfire.Storage;
-using Warewolf.Auditing;
 using Warewolf.Driver.Resume;
 using Warewolf.Execution;
-using Warewolf.Interfaces.Auditing;
-using LogLevel = Warewolf.Logging.LogLevel;
 
 namespace HangfireServer
 {
@@ -32,8 +29,6 @@ namespace HangfireServer
         private static readonly ILog _hangfireLogger = LogProvider.GetCurrentClassLogger();
         private readonly IExecutionLogPublisher _logger;
         private readonly IResumptionFactory _resumptionFactory;
-
-        private IAudit _audit;
 
         public ResumptionAttribute(IExecutionLogPublisher logger, IResumptionFactory resumptionFactory)
         {
@@ -63,27 +58,22 @@ namespace HangfireServer
                 return;
             }
 
-            var audit = new Audit
-            {
-                AuditDate = DateTime.Now
-            };
-            OnPerformResume(context, audit);
+            OnPerformResume(context);
         }
 
-        public void OnPerformResume(PerformingContext context, IAudit audit)
+        public void OnPerformResume(PerformingContext context)
         {
             var jobArg = context.BackgroundJob.Job.Args[0];
             var backgroundJobId = context.BackgroundJob.Id;
-            _audit = audit;
             try
             {
                 var resumptionFactory = _resumptionFactory ?? new ResumptionFactory();
-                var resumption = resumptionFactory.New();
+                var resumption = resumptionFactory.New(_logger);
                 if (resumption.Connect(_logger))
                 {
                     _logger.Info("Performing Resume of job {" + backgroundJobId + "}, connection established.", backgroundJobId);
+                    
                     var values = jobArg as Dictionary<string, StringBuilder>;
-                    LogResumption(values);
                     var result = resumption.Resume(values);
                     if (result.HasError)
                     {
@@ -101,30 +91,6 @@ namespace HangfireServer
                 _logger.Error("Failed to perform job {" + backgroundJobId + "}" + ex.InnerException);
                 throw;
             }
-        }
-
-        private void LogResumption(Dictionary<string, StringBuilder> values)
-        {
-            values.TryGetValue("resourceID", out StringBuilder workflowId);
-            values.TryGetValue("startActivityId", out StringBuilder startActivityId);
-            values.TryGetValue("versionNumber", out StringBuilder versionNumber);
-            values.TryGetValue("currentuserprincipal", out StringBuilder currentuserprincipal);
-            if (_audit is null)
-            {
-                _audit = new Audit
-                {
-                    AuditDate = DateTime.Now
-                };
-            }
-
-            _audit.WorkflowID = workflowId?.ToString();
-            _audit.Environment = string.Empty;
-            _audit.VersionNumber = versionNumber?.ToString();
-            _audit.NextActivityId = startActivityId?.ToString();
-            _audit.AuditType = "LogResumeExecutionState";
-            _audit.LogLevel = LogLevel.Info;
-            _audit.ExecutingUser = currentuserprincipal?.ToString();
-            _logger.LogResumedExecution(_audit);
         }
 
         public void OnPerformed(PerformedContext context)
