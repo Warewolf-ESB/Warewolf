@@ -13,10 +13,7 @@ using System.Collections.Generic;
 using System.Security.Principal;
 using System.Text;
 using Dev2.Communication;
-using Hangfire;
-using Hangfire.Common;
 using Hangfire.Server;
-using Hangfire.Storage;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using HangfireServer;
@@ -28,6 +25,7 @@ using Dev2.Studio.Interfaces;
 using System.Threading.Tasks;
 using Warewolf.Common;
 using Warewolf.Interfaces.Auditing;
+using Warewolf.HangfireServer.Tests.Test_Utils;
 
 namespace Warewolf.HangfireServer.Tests
 {
@@ -317,54 +315,5 @@ namespace Warewolf.HangfireServer.Tests
             mockResumption.Verify(o => o.Resume(values), Times.Once);
         }*/
 
-        class PerformContextMock
-        {
-            private readonly Lazy<PerformContext> _context;
-
-            public PerformContextMock(string jobId, Dictionary<string, StringBuilder> values)
-            {
-                Connection = new Mock<IStorageConnection>();
-                BackgroundJob = new BackgroundJobMock(jobId, values);
-                CancellationToken = new Mock<IJobCancellationToken>();
-
-                _context = new Lazy<PerformContext>(
-                    () => new PerformContext(Connection.Object, BackgroundJob.Object, CancellationToken.Object));
-            }
-
-            public Mock<IStorageConnection> Connection { get; set; }
-            public BackgroundJobMock BackgroundJob { get; set; }
-            public Mock<IJobCancellationToken> CancellationToken { get; set; }
-
-            public PerformContext Object => _context.Value;
-
-            public static void SomeMethod()
-            {
-            }
-        }
-
-        class BackgroundJobMock
-        {
-            private readonly Lazy<BackgroundJob> _object;
-
-            public BackgroundJobMock(string jobId, Dictionary<string, StringBuilder> values)
-            {
-                Id = jobId;
-                Job = Job.FromExpression(() => ResumeWorkflow(values, null));
-                CreatedAt = DateTime.UtcNow;
-
-                _object = new Lazy<BackgroundJob>(
-                    () => new BackgroundJob(Id, Job, CreatedAt));
-            }
-
-            public string Id { get; set; }
-            public Job Job { get; set; }
-            public DateTime CreatedAt { get; set; }
-
-            public BackgroundJob Object => _object.Value;
-
-            public static void ResumeWorkflow(Dictionary<string, StringBuilder> values, PerformContext context)
-            {
-            }
-        }
     }
 }
