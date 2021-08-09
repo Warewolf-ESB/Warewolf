@@ -8,12 +8,14 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using Dev2.Common.Interfaces;
 using Hangfire.Server;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using Warewolf.Driver.Resume;
 using Warewolf.Execution;
+using static Dev2.Common.Interfaces.WarewolfExecutionEnvironmentException;
 
 namespace Warewolf.HangfireServer
 {
@@ -32,8 +34,9 @@ namespace Warewolf.HangfireServer
 
         public void PerformResumption()
         {
-            var jobArg = _context.BackgroundJob.Job.Args[0];
-            var backgroundJobId = _context.BackgroundJob.Id;
+            var backgroundJob = _context.BackgroundJob;
+            var jobArg = backgroundJob.Job.Args[0];
+            var backgroundJobId = backgroundJob.Id;
             try
             {
                 var resumptionFactory = _resumptionFactory ?? new ResumptionFactory();
@@ -46,19 +49,27 @@ namespace Warewolf.HangfireServer
                     var result = resumption.Resume(values);
                     if (result.HasError)
                     {
-                        throw new InvalidOperationException(result.Message?.ToString(), new Exception(result.Message?.ToString()));
+                        //Can return exception message or details here as this might be an execution error based on user setup
+                        throw new WarewolfResumeWorkflowException(result.Message?.ToString());
                     }
                 }
                 else
                 {
-                    _logger.Error("Failed to perform job {" + backgroundJobId + "}, could not establish a connection.", backgroundJobId);
-                    throw new InvalidOperationException("Failed to perform job " + backgroundJobId + " could not establish a connection.");
+                    throw new WarewolfServerConnectionException("could not establish a connection.");
                 }
+            }
+            catch (Exception ex) when (ex is WarewolfException warewolf) 
+            {
+                var message = "Failed to perform job { " +backgroundJobId+ " }, "+ ex.Message;
+                _logger.Error(message, backgroundJobId);
+                throw new WarewolfException(message, warewolf.InnerException, warewolf.ExceptionType, warewolf.Severity);
             }
             catch (Exception ex)
             {
-                _logger.Error("Failed to perform job {" + backgroundJobId + "}" + ex.InnerException);
-                throw;
+                //Note: this failure error or exception will mostly not be ideal to send to user for security, remove + ex.Message later
+                var message = "Failed to perform job { " + backgroundJobId + " }, " + ex.Message;
+                _logger.Error(message, backgroundJobId);
+                throw new WarewolfException(message, null, ExceptionType.Execution, ExceptionSeverity.Critical);
             }
         }
     }

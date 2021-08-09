@@ -47,5 +47,30 @@ namespace Dev2.Common.Interfaces
             {
             }
         }
+
+        /// <summary>
+        /// warewolf server connection exceptions and errors are considered to be inbound and the reason for failure is not deeded to be user setup related, so they can be investigated as bugs
+        /// </summary>
+        public class WarewolfServerConnectionException : WarewolfException
+        {
+            //NOTE: warewolf server connection exceptions and errors are considered to be inbound and the reason for failure is not deeded to be user setup related, so they can be investigated as bugs
+            public WarewolfServerConnectionException(string message, Exception innerException = null)
+                : base(message, innerException, ExceptionType.Connection, ExceptionSeverity.Minor)
+            {
+            }
+        }
+
+
+        /// <summary>
+        /// warewolf workflow resumption exceptions and errors may a lot to do with user setup, so they can be investigated as bugs
+        /// </summary>
+        public class WarewolfResumeWorkflowException : WarewolfException
+        {
+            //NOTE: warewolf workflow resumption exceptions and errors may a lot to do with user setup, so they can be investigated as bugs
+            public WarewolfResumeWorkflowException(string message, Exception innerException = null)
+                : base(message, innerException, ExceptionType.Execution, ExceptionSeverity.Error)
+            {
+            }
+        }
     }
 }
