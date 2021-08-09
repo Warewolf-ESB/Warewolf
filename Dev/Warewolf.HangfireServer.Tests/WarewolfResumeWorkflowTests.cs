@@ -9,6 +9,7 @@
 */
 
 
+using Dev2.Common.Interfaces;
 using Hangfire.Server;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -44,7 +45,7 @@ namespace Warewolf.HangfireServer.Tests
         [TestMethod]
         [TestCategory(nameof(WarewolfResumeWorkflow))]
         [Owner("Siphamandla Dube")]
-        public void WarewolfResumeWorkflow_PerformResumption_Given_ConnectionFails_ShouldThrowInvalidOperationException()
+        public void WarewolfResumeWorkflow_PerformResumption_Given_ConnectionFails_ShouldWarewolfException()
         {
             var jobId = Guid.Parse("dc80a09e-21f3-4f92-9ec0-6d3b348e49fa").ToString();
 
@@ -61,17 +62,16 @@ namespace Warewolf.HangfireServer.Tests
 
             var sut = new WarewolfResumeWorkflow(mockExecutionLogPublisher.Object, new PerformingContext(performingContextMock.Object), mockResumptionFactory.Object);
 
-            Assert.ThrowsException<InvalidOperationException>(() => sut.PerformResumption());
+            Assert.ThrowsException<WarewolfException>(() => sut.PerformResumption());
             
-            mockExecutionLogPublisher.Verify(o => o.Error("Failed to perform job {dc80a09e-21f3-4f92-9ec0-6d3b348e49fa}, could not establish a connection.", new object[] { "dc80a09e-21f3-4f92-9ec0-6d3b348e49fa" }), Times.Once);
-            mockExecutionLogPublisher.Verify(o => o.Error("Failed to perform job {dc80a09e-21f3-4f92-9ec0-6d3b348e49fa}"), Times.Once); //PBI: this duplicate the above message
+            mockExecutionLogPublisher.Verify(o => o.Error("Failed to perform job { dc80a09e-21f3-4f92-9ec0-6d3b348e49fa }, could not establish a connection.", new object [] { "dc80a09e-21f3-4f92-9ec0-6d3b348e49fa"}), Times.Once);
             mockIResumption.Verify(o => o.Connect(), Times.Once);
         }
 
         [TestMethod]
         [TestCategory(nameof(WarewolfResumeWorkflow))]
         [Owner("Siphamandla Dube")]
-        public void WarewolfResumeWorkflow_PerformResumption_Given_ConnectionSuccess_Then_ResumeThrows_ShouldThrowInvalidOperationException()
+        public void WarewolfResumeWorkflow_PerformResumption_Given_ConnectionSuccess_Then_ResumeThrows_ShouldWarewolfException()
         {
             var jobId = Guid.Parse("dc80a09e-21f3-4f92-9ec0-6d3b348e49fa").ToString();
             var resumeFalseExceptionMessage = "test resume exception";
@@ -92,17 +92,17 @@ namespace Warewolf.HangfireServer.Tests
 
             var sut = new WarewolfResumeWorkflow(mockExecutionLogPublisher.Object, new PerformingContext(performingContextMock.Object), mockResumptionFactory.Object);
 
-            Assert.ThrowsException<Exception>(() => sut.PerformResumption(), resumeFalseExceptionMessage);
+            Assert.ThrowsException<WarewolfException>(() => sut.PerformResumption(), resumeFalseExceptionMessage);
 
             mockExecutionLogPublisher.Verify(o => o.Info("Performing Resume of job {dc80a09e-21f3-4f92-9ec0-6d3b348e49fa}, connection established.", new object [] {"dc80a09e-21f3-4f92-9ec0-6d3b348e49fa"}), Times.Once);
-            mockExecutionLogPublisher.Verify(o => o.Error("Failed to perform job {dc80a09e-21f3-4f92-9ec0-6d3b348e49fa}System.Exception: test resume Inner exception"), Times.Once); //PBI: notice the System.Exception with our inner exception
+            mockExecutionLogPublisher.Verify(o => o.Error("Failed to perform job {dc80a09e-21f3-4f92-9ec0-6d3b348e49fa}, test resume Inner exception"), Times.Never); //PBI: notice the System.Exception with our inner exception
             mockIResumption.Verify(o => o.Connect(), Times.Once);
         }
 
         [TestMethod]
         [TestCategory(nameof(WarewolfResumeWorkflow))]
         [Owner("Siphamandla Dube")]
-        public void WarewolfResumeWorkflow_PerformResumption_Given_ConnectionSuccess_Then_ResumeFails_ShouldThrowInvalidOperationException()
+        public void WarewolfResumeWorkflow_PerformResumption_Given_ConnectionSuccess_Then_ResumeFails_ShouldWarewolfException()
         {
             var jobId = Guid.Parse("dc80a09e-21f3-4f92-9ec0-6d3b348e49fa").ToString();
             var resumeFalseFailureMessage = "test resume false failure";
@@ -122,10 +122,10 @@ namespace Warewolf.HangfireServer.Tests
 
             var sut = new WarewolfResumeWorkflow(mockExecutionLogPublisher.Object, new PerformingContext(performingContextMock.Object), mockResumptionFactory.Object);
 
-            Assert.ThrowsException<InvalidOperationException>(() => sut.PerformResumption(), resumeFalseFailureMessage);
+            Assert.ThrowsException<WarewolfException>(() => sut.PerformResumption(), resumeFalseFailureMessage);
 
             mockExecutionLogPublisher.Verify(o => o.Info("Performing Resume of job {dc80a09e-21f3-4f92-9ec0-6d3b348e49fa}, connection established.", new object[] { "dc80a09e-21f3-4f92-9ec0-6d3b348e49fa" }), Times.Once);
-            mockExecutionLogPublisher.Verify(o => o.Error("Failed to perform job {dc80a09e-21f3-4f92-9ec0-6d3b348e49fa}System.Exception: test resume false failure"), Times.Once); //PBI: notice the System.Exception with our inner exception
+            mockExecutionLogPublisher.Verify(o => o.Error("Failed to perform job {dc80a09e-21f3-4f92-9ec0-6d3b348e49fa}, test resume false failure"), Times.Never); //PBI: notice the System.Exception with our inner exception
             mockIResumption.Verify(o => o.Connect(), Times.Once);
         }
     }
