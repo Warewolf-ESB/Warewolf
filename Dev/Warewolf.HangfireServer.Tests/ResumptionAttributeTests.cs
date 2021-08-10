@@ -26,6 +26,7 @@ using System.Threading.Tasks;
 using Warewolf.Common;
 using Warewolf.Interfaces.Auditing;
 using Warewolf.HangfireServer.Tests.Test_Utils;
+using Dev2.Common.Interfaces;
 
 namespace Warewolf.HangfireServer.Tests
 {
@@ -90,7 +91,7 @@ namespace Warewolf.HangfireServer.Tests
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(ResumptionAttribute))]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [ExpectedException(typeof(WarewolfException))]
         public void ResumptionAttribute_LogResumption_Connect_False()
         {
             var workflowId = Guid.NewGuid().ToString();
@@ -134,7 +135,7 @@ namespace Warewolf.HangfireServer.Tests
         [TestMethod]
         [Owner("Candie Daniel")]
         [TestCategory(nameof(ResumptionAttribute))]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [ExpectedException(typeof(WarewolfException))]
         public void ResumptionAttribute_LogResumption_HasError_FailsWithMessage()
         {
             var workflowId = Guid.NewGuid().ToString();
@@ -218,7 +219,6 @@ namespace Warewolf.HangfireServer.Tests
             mockResourceCatalogProxy.Setup(o => o.ResumeWorkflowExecution(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))//(new StringBuilder(workflowId).ToString(), new StringBuilder(environment).ToString(), new StringBuilder(startActivityId).ToString(), new StringBuilder(versionNumber).ToString(), new StringBuilder(currentuserprincipal).ToString()))
                 .Returns(executeMessage);
 
-            //PBI: This setup is weird, take not of EnvironmentConnection
             var mockResourceCatalogProxyFactory = new Mock<IResourceCatalogProxyFactory>();
             mockResourceCatalogProxyFactory.Setup(o => o.New(mockEnvironmentConnection.Object))
                 .Returns(mockResourceCatalogProxy.Object); 
