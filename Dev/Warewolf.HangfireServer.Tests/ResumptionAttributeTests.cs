@@ -35,7 +35,8 @@ namespace Warewolf.HangfireServer.Tests
     [TestCategory("CannotParallelize")]
     public class ResumptionAttributeTests
     {
-        string currentuserprincipal = WindowsIdentity.GetCurrent().Name;
+        private readonly string _currentuserprincipal = WindowsIdentity.GetCurrent().Name;
+        private readonly Uri _serverEndpoint = new Uri($"https://{System.Net.Dns.GetHostName()}:3143");
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
@@ -53,7 +54,7 @@ namespace Warewolf.HangfireServer.Tests
                 {"environment", new StringBuilder(environment)},
                 {"startActivityId", new StringBuilder(versionNumber)},
                 {"versionNumber", new StringBuilder(startActivityId)},
-                {"currentuserprincipal", new StringBuilder(currentuserprincipal)}
+                {"currentuserprincipal", new StringBuilder(_currentuserprincipal)}
             };
 
             var jobId = Guid.NewGuid().ToString();
@@ -105,7 +106,7 @@ namespace Warewolf.HangfireServer.Tests
                 {"environment", new StringBuilder(environment)},
                 {"startActivityId", new StringBuilder(versionNumber)},
                 {"versionNumber", new StringBuilder(startActivityId)},
-                {"currentuserprincipal", new StringBuilder(currentuserprincipal)}
+                {"currentuserprincipal", new StringBuilder(_currentuserprincipal)}
             };
 
             var jobId = Guid.NewGuid().ToString();
@@ -150,7 +151,7 @@ namespace Warewolf.HangfireServer.Tests
                 {"environment", new StringBuilder(environment)},
                 {"startActivityId", new StringBuilder(versionNumber)},
                 {"versionNumber", new StringBuilder(startActivityId)},
-                {"currentuserprincipal", new StringBuilder(currentuserprincipal)}
+                {"currentuserprincipal", new StringBuilder(_currentuserprincipal)}
             };
 
             var jobId = Guid.NewGuid().ToString();
@@ -192,7 +193,7 @@ namespace Warewolf.HangfireServer.Tests
                 {"environment", new StringBuilder(environment)},
                 {"startActivityId", new StringBuilder(versionNumber)},
                 {"versionNumber", new StringBuilder(startActivityId)},
-                {"currentuserprincipal", new StringBuilder(currentuserprincipal)}
+                {"currentuserprincipal", new StringBuilder(_currentuserprincipal)}
             };
 
             var executeMessage = new ExecuteMessage
@@ -233,10 +234,10 @@ namespace Warewolf.HangfireServer.Tests
 
             mockResumptionFactory.Verify(o => o.New(mockLogger.Object), Times.Once);
             mockLogger.Verify(o => o.LogResumedExecution(It.IsAny<IAudit>()), Times.Once);
-            mockLogger.Verify(o => o.Info("Connecting to server: https://t005000:3143/..."), Times.Once);
-            mockLogger.Verify(o => o.Info("Connecting to server: https://t005000:3143/... successful"), Times.Once);
+            mockLogger.Verify(o => o.Info($"Connecting to server: {_serverEndpoint}..."), Times.Once);
+            mockLogger.Verify(o => o.Info($"Connecting to server: {_serverEndpoint}... successful"), Times.Once);
             mockLogger.Verify(o => o.Info("Performing Resume of job {679680ae-ba65-4dcc-afb1-1004f237c325}, connection established.", new object[] { "679680ae-ba65-4dcc-afb1-1004f237c325" }), Times.Once);
-            mockResourceCatalogProxy.Verify(o => o.ResumeWorkflowExecution("ba3f406b-cad6-4c77-be41-6ffae67aeae6", "this should be nothing", "0", "115611f9-0c0b-4244-88b9-65b08d89dbb8", currentuserprincipal), Times.Once);
+            mockResourceCatalogProxy.Verify(o => o.ResumeWorkflowExecution("ba3f406b-cad6-4c77-be41-6ffae67aeae6", "this should be nothing", "0", "115611f9-0c0b-4244-88b9-65b08d89dbb8", _currentuserprincipal), Times.Once);
         }
 
         /*[TestMethod]
