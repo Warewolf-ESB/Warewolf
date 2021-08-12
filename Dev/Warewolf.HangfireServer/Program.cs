@@ -120,11 +120,11 @@ namespace HangfireServer
                     WebApp.Start<Dashboard>(options);
                     _writer.WriteLine("Hangfire dashboard started...");
                     _logger.Debug("Hangfire dashboard started...");
-                    var backgroundJobServerOptions = new BackgroundJobServerOptions
-                    {
-                        WorkerCount = Environment.ProcessorCount * 5
-                    };
-                    _ = new BackgroundJobServer(backgroundJobServerOptions);
+                    // var backgroundJobServerOptions = new BackgroundJobServerOptions
+                    // {
+                    //     WorkerCount = Environment.ProcessorCount * 5
+                    // };
+                    // _ = new BackgroundJobServer(backgroundJobServerOptions);
                     _writer.WriteLine("Hangfire server started...");
                     _logger.Info("Hangfire server started...");
                 }

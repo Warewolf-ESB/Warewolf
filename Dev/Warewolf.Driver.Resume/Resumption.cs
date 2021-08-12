@@ -83,6 +83,9 @@ namespace Warewolf.Driver.Resume
 
         public bool Connect()
         {
+            if(_environmentConnection.IsConnected)
+                return true;
+            
             _logger.Info($"Connecting to server: { ServerEndpoint }...");
             var connectTask = TryConnectingToWarewolfServer(_environmentConnection);
             if (connectTask.Result == true)
