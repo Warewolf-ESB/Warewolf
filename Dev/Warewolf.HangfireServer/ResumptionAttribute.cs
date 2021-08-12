@@ -8,6 +8,8 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
+using System.Threading;
 using Hangfire.Client;
 using Hangfire.Common;
 using Hangfire.Logging;
@@ -27,6 +29,7 @@ namespace HangfireServer
         private static readonly ILog _hangfireLogger = LogProvider.GetCurrentClassLogger();
         private readonly IExecutionLogPublisher _logger;
         private readonly IResumptionFactory _resumptionFactory;
+        private readonly SemaphoreSlim throttler = new SemaphoreSlim(Environment.ProcessorCount);
 
         public ResumptionAttribute(IExecutionLogPublisher logger, IResumptionFactory resumptionFactory)
         {
@@ -60,8 +63,16 @@ namespace HangfireServer
 
         public void OnPerformResume(PerformingContext context)
         {
-            var resumeWorkflow = new WarewolfResumeWorkflow(_logger, context, _resumptionFactory);
-            resumeWorkflow.PerformResumption();
+            throttler.Wait();
+            try
+            {
+                var resumeWorkflow = new WarewolfResumeWorkflow(_logger, context, _resumptionFactory);
+                resumeWorkflow.PerformResumption();
+            }
+            finally
+            {
+                throttler.Release();
+            }
         }
 
         public void OnPerformed(PerformedContext context)
