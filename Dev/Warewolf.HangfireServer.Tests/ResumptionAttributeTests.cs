@@ -26,7 +26,6 @@ using System.Threading.Tasks;
 using Warewolf.Common;
 using Warewolf.Interfaces.Auditing;
 using Warewolf.HangfireServer.Tests.Test_Utils;
-using Dev2.Common.Interfaces;
 
 namespace Warewolf.HangfireServer.Tests
 {
@@ -63,15 +62,15 @@ namespace Warewolf.HangfireServer.Tests
             var mockLogger = new Mock<IExecutionLogPublisher>();
             mockLogger.Setup(o => o.LogResumedExecution(It.IsAny<Audit>())).Verifiable();
 
-            var executeMessage = new ExecuteMessage
+            var executeMessage = Task.FromResult(new ExecuteMessage
             {
                 Message = new StringBuilder("Execution Completed."),
                 HasError = false
-            };
+            });
 
             var mockResumption = new Mock<IResumption>();
             mockResumption.Setup(o => o.Connect()).Returns(true);
-            mockResumption.Setup(o => o.Resume(values)).Returns(executeMessage);
+            mockResumption.Setup(o => o.ResumeAsync(values)).Returns(executeMessage);
 
             var mockResumptionFactory = new Mock<IResumptionFactory>();
             mockResumptionFactory.Setup(o => o.New(mockLogger.Object)).Returns(mockResumption.Object).Verifiable();
@@ -86,13 +85,12 @@ namespace Warewolf.HangfireServer.Tests
             mockResumptionFactory.Verify(o => o.New(mockLogger.Object), Times.Once);
             mockResumption.Verify(o => o.Connect(), Times.Once);
             mockLogger.Verify(o => o.LogResumedExecution(It.IsAny<Audit>()), Times.Never, "This call can be called inside the Resume method in Resumption.cs");
-            mockResumption.Verify(o => o.Resume(values), Times.Once);
+            mockResumption.Verify(o => o.ResumeAsync(values), Times.Once);
         }
 
         [TestMethod]
-        [Owner("Pieter Terblanche")]
+        [Owner("Siphamamandla Dube")]
         [TestCategory(nameof(ResumptionAttribute))]
-        [ExpectedException(typeof(WarewolfException))]
         public void ResumptionAttribute_LogResumption_Connect_False()
         {
             var workflowId = Guid.NewGuid().ToString();
@@ -109,7 +107,7 @@ namespace Warewolf.HangfireServer.Tests
                 {"currentuserprincipal", new StringBuilder(_currentuserprincipal)}
             };
 
-            var jobId = Guid.NewGuid().ToString();
+            var jobId = Guid.Parse("61577009-7c48-491b-849c-a89d2cd1d117").ToString();
             var performContext = new PerformContextMock(jobId, values);
 
             var mockLogger = new Mock<IExecutionLogPublisher>();
@@ -118,25 +116,25 @@ namespace Warewolf.HangfireServer.Tests
 
             var mockResumption = new Mock<IResumption>();
             mockResumption.Setup(o => o.Connect()).Returns(false);
-            mockResumption.Setup(o => o.Resume(values)).Verifiable();
+            mockResumption.Setup(o => o.ResumeAsync(values)).Verifiable();
 
             var mockResumptionFactory = new Mock<IResumptionFactory>();
             mockResumptionFactory.Setup(o => o.New(mockLogger.Object)).Returns(mockResumption.Object).Verifiable();
 
             var resumptionAttribute = new ResumptionAttribute(mockLogger.Object, mockResumptionFactory.Object);
-            
-            resumptionAttribute.OnPerformResume(new PerformingContext(performContext.Object));
+
+            resumptionAttribute.OnPerformResume(new PerformingContext(performContext.Object));//Fire and Forget
+            //Assert.ThrowsException<AggregateException>(()=> resumptionAttribute.OnPerformResume(new PerformingContext(performContext.Object)));
             mockResumptionFactory.Verify(o => o.New(mockLogger.Object), Times.Once);
             mockResumption.Verify(o => o.Connect(), Times.Once);
             mockLogger.Verify(o => o.LogResumedExecution(It.IsAny<Audit>()), Times.Never);
-            mockResumption.Verify(o => o.Resume(values), Times.Never);
-            mockLogger.Verify(o => o.Error("Failed to perform job {0}, could not establish a connection.", jobId), Times.Once);
+            mockResumption.Verify(o => o.ResumeAsync(values), Times.Never);
+            mockLogger.Verify(o => o.Error("Failed to perform job { 61577009-7c48-491b-849c-a89d2cd1d117 }, could not establish a connection.", new object[] {"61577009-7c48-491b-849c-a89d2cd1d117"}), Times.Once);
         }
 
         [TestMethod]
-        [Owner("Candie Daniel")]
+        [Owner("Siphamandla Dube")]
         [TestCategory(nameof(ResumptionAttribute))]
-        [ExpectedException(typeof(WarewolfException))]
         public void ResumptionAttribute_LogResumption_HasError_FailsWithMessage()
         {
             var workflowId = Guid.NewGuid().ToString();
@@ -154,31 +152,36 @@ namespace Warewolf.HangfireServer.Tests
                 {"currentuserprincipal", new StringBuilder(_currentuserprincipal)}
             };
 
-            var jobId = Guid.NewGuid().ToString();
+            var jobId = Guid.Parse("787fad72-86f7-4f20-8bff-8e5307441fc4").ToString();
             var performContext = new PerformContextMock(jobId, values);
 
             var mockLogger = new Mock<IExecutionLogPublisher>();
             mockLogger.Setup(o => o.LogResumedExecution(It.IsAny<Audit>())).Verifiable();
 
-            var executeMessage = new ExecuteMessage
+            var executeMessage = Task.FromResult(new ExecuteMessage
             {
                 Message = new StringBuilder("Error In Execution."),
                 HasError = true
-            };
+            });
 
             var mockResumption = new Mock<IResumption>();
             mockResumption.Setup(o => o.Connect()).Returns(true);
-            mockResumption.Setup(o => o.Resume(values)).Returns(executeMessage);
+            mockResumption.Setup(o => o.ResumeAsync(values)).Returns(executeMessage);
 
             var mockResumptionFactory = new Mock<IResumptionFactory>();
             mockResumptionFactory.Setup(o => o.New(mockLogger.Object)).Returns(mockResumption.Object).Verifiable();
 
             var resumptionAttribute = new ResumptionAttribute(mockLogger.Object, mockResumptionFactory.Object);
-            resumptionAttribute.OnPerformResume(new PerformingContext(performContext.Object));
+
+            resumptionAttribute.OnPerformResume(new PerformingContext(performContext.Object));//Fire and Forget
+            //Assert.ThrowsException<AggregateException>(() => resumptionAttribute.OnPerformResume(new PerformingContext(performContext.Object)));
+
+            mockLogger.Verify(o => o.Info("Performing Resume of job {787fad72-86f7-4f20-8bff-8e5307441fc4}, connection established.", new object[] { "787fad72-86f7-4f20-8bff-8e5307441fc4" }), Times.Once);
+            mockLogger.Verify(o => o.Error("Failed to perform job { 787fad72-86f7-4f20-8bff-8e5307441fc4 }, Error In Execution.", new object[] {"787fad72-86f7-4f20-8bff-8e5307441fc4"}), Times.Once);
         }
 
         [TestMethod]
-        [Owner("Candice Daniel")]
+        [Owner("Siphamandla Dube")]
         [TestCategory(nameof(ResumptionAttribute))]
         public void ResumptionAttribute_LogResumption_Environment_in_Audit_IsBlank()
         {
@@ -217,8 +220,8 @@ namespace Warewolf.HangfireServer.Tests
                 .Returns(mockEnvironmentConnection.Object);
 
             var mockResourceCatalogProxy = new Mock<IResourceCatalogProxy>();
-            mockResourceCatalogProxy.Setup(o => o.ResumeWorkflowExecution(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))//(new StringBuilder(workflowId).ToString(), new StringBuilder(environment).ToString(), new StringBuilder(startActivityId).ToString(), new StringBuilder(versionNumber).ToString(), new StringBuilder(currentuserprincipal).ToString()))
-                .Returns(executeMessage);
+            mockResourceCatalogProxy.Setup(o => o.ResumeWorkflowExecutionAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))//(new StringBuilder(workflowId).ToString(), new StringBuilder(environment).ToString(), new StringBuilder(startActivityId).ToString(), new StringBuilder(versionNumber).ToString(), new StringBuilder(currentuserprincipal).ToString()))
+                .Returns(Task.FromResult(executeMessage));
 
             var mockResourceCatalogProxyFactory = new Mock<IResourceCatalogProxyFactory>();
             mockResourceCatalogProxyFactory.Setup(o => o.New(mockEnvironmentConnection.Object))
@@ -237,7 +240,7 @@ namespace Warewolf.HangfireServer.Tests
             mockLogger.Verify(o => o.Info($"Connecting to server: {_serverEndpoint}..."), Times.Once);
             mockLogger.Verify(o => o.Info($"Connecting to server: {_serverEndpoint}... successful"), Times.Once);
             mockLogger.Verify(o => o.Info("Performing Resume of job {679680ae-ba65-4dcc-afb1-1004f237c325}, connection established.", new object[] { "679680ae-ba65-4dcc-afb1-1004f237c325" }), Times.Once);
-            mockResourceCatalogProxy.Verify(o => o.ResumeWorkflowExecution("ba3f406b-cad6-4c77-be41-6ffae67aeae6", "this should be nothing", "0", "115611f9-0c0b-4244-88b9-65b08d89dbb8", _currentuserprincipal), Times.Once);
+            mockResourceCatalogProxy.Verify(o => o.ResumeWorkflowExecutionAsync("ba3f406b-cad6-4c77-be41-6ffae67aeae6", "this should be nothing", "0", "115611f9-0c0b-4244-88b9-65b08d89dbb8", _currentuserprincipal), Times.Once);
         }
 
         /*[TestMethod]

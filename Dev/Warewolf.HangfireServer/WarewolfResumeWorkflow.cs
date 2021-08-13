@@ -12,9 +12,8 @@ using Dev2.Common.Interfaces;
 using Hangfire.Server;
 using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading;
+using System.Threading.Tasks;
 using Warewolf.Driver.Resume;
 using Warewolf.Execution;
 using static Dev2.Common.Interfaces.WarewolfExecutionEnvironmentException;
@@ -34,7 +33,7 @@ namespace Warewolf.HangfireServer
             _resumptionFactory = resumptionFactory;
         }
 
-        public void PerformResumption()
+        public async Task PerformResumptionAsync()
         {
             var backgroundJob = _context.BackgroundJob;
             var jobArg = backgroundJob.Job.Args[0];
@@ -48,7 +47,7 @@ namespace Warewolf.HangfireServer
                     _logger.Info("Performing Resume of job {" + backgroundJobId + "}, connection established.", backgroundJobId);
 
                     var values = jobArg as Dictionary<string, StringBuilder>;
-                    var result = resumption.Resume(values);
+                    var result = await resumption.ResumeAsync(values);
                     if (result.HasError)
                     {
                         //Can return exception message or details here as this might be an execution error based on user setup
