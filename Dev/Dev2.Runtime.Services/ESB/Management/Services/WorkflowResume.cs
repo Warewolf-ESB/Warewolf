@@ -59,12 +59,14 @@ namespace Dev2.Runtime.ESB.Management.Services
                 IsDebug = true
             };
 
-            if (!CanExecute(dataObject))
+            //PBI: this might have already been done before this execution and not a good idea to make this call for each execution
+            //temporally disabled for (HOTFIX) investigate to a permanent fix
+            /*if (!CanExecute(dataObject))
             {
                 var errorMessage = string.Format(ErrorResource.AuthenticationError, executingUser.Identity.Name);
                 Dev2Logger.Error(errorMessage, GlobalConstants.WarewolfError);
                 return new ExecuteMessage {HasError = true, Message = new StringBuilder(errorMessage)};
-            }
+            }*/
 
             var dynamicService = ResourceCatalogInstance.GetService(GlobalConstants.ServerWorkspaceID, resourceId, "");
             if (dynamicService is null)
