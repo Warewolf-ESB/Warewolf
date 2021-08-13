@@ -9,7 +9,7 @@
 */
 
 
-using Dev2.Common.Interfaces;
+using Dev2.Communication;
 using Hangfire.Server;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -17,6 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.Security.Principal;
 using System.Text;
+using System.Threading.Tasks;
 using Warewolf.Driver.Resume;
 using Warewolf.Execution;
 using Warewolf.HangfireServer.Tests.Test_Utils;
@@ -62,7 +63,7 @@ namespace Warewolf.HangfireServer.Tests
 
             var sut = new WarewolfResumeWorkflow(mockExecutionLogPublisher.Object, new PerformingContext(performingContextMock.Object), mockResumptionFactory.Object);
 
-            Assert.ThrowsException<WarewolfException>(() => sut.PerformResumption());
+            Assert.ThrowsException<AggregateException>(() => sut.PerformResumptionAsync().Wait());
             
             mockExecutionLogPublisher.Verify(o => o.Error("Failed to perform job { dc80a09e-21f3-4f92-9ec0-6d3b348e49fa }, could not establish a connection.", new object [] { "dc80a09e-21f3-4f92-9ec0-6d3b348e49fa"}), Times.Once);
             mockIResumption.Verify(o => o.Connect(), Times.Once);
@@ -80,7 +81,7 @@ namespace Warewolf.HangfireServer.Tests
             var mockIResumption = new Mock<IResumption>();
             mockIResumption.Setup(o => o.Connect())
                 .Returns(true);
-            mockIResumption.Setup(o => o.Resume(_values))
+            mockIResumption.Setup(o => o.ResumeAsync(_values))
                 .Throws(new Exception(resumeFalseExceptionMessage, new Exception(resumeFalseInnerExceptionMessage)));
 
             var mockExecutionLogPublisher = new Mock<IExecutionLogPublisher>();
@@ -92,7 +93,7 @@ namespace Warewolf.HangfireServer.Tests
 
             var sut = new WarewolfResumeWorkflow(mockExecutionLogPublisher.Object, new PerformingContext(performingContextMock.Object), mockResumptionFactory.Object);
 
-            Assert.ThrowsException<WarewolfException>(() => sut.PerformResumption(), resumeFalseExceptionMessage);
+            Assert.ThrowsException<AggregateException>(() => sut.PerformResumptionAsync().Wait(), resumeFalseExceptionMessage);
 
             mockExecutionLogPublisher.Verify(o => o.Info("Performing Resume of job {dc80a09e-21f3-4f92-9ec0-6d3b348e49fa}, connection established.", new object [] {"dc80a09e-21f3-4f92-9ec0-6d3b348e49fa"}), Times.Once);
             mockExecutionLogPublisher.Verify(o => o.Error("Failed to perform job {dc80a09e-21f3-4f92-9ec0-6d3b348e49fa}, test resume Inner exception"), Times.Never); //PBI: notice the System.Exception with our inner exception
@@ -110,8 +111,8 @@ namespace Warewolf.HangfireServer.Tests
             var mockIResumption = new Mock<IResumption>();
             mockIResumption.Setup(o => o.Connect())
                 .Returns(true);
-            mockIResumption.Setup(o => o.Resume(_values))
-                .Returns(new Dev2.Communication.ExecuteMessage { HasError = true, Message = new StringBuilder(resumeFalseFailureMessage) });
+            mockIResumption.Setup(o => o.ResumeAsync(_values))
+                .Returns(Task.FromResult(new ExecuteMessage { HasError = true, Message = new StringBuilder(resumeFalseFailureMessage) }));
 
             var mockExecutionLogPublisher = new Mock<IExecutionLogPublisher>();
             var mockResumptionFactory = new Mock<IResumptionFactory>();
@@ -122,7 +123,7 @@ namespace Warewolf.HangfireServer.Tests
 
             var sut = new WarewolfResumeWorkflow(mockExecutionLogPublisher.Object, new PerformingContext(performingContextMock.Object), mockResumptionFactory.Object);
 
-            Assert.ThrowsException<WarewolfException>(() => sut.PerformResumption(), resumeFalseFailureMessage);
+            Assert.ThrowsException<AggregateException>(() => sut.PerformResumptionAsync().Wait(), resumeFalseFailureMessage);
 
             mockExecutionLogPublisher.Verify(o => o.Info("Performing Resume of job {dc80a09e-21f3-4f92-9ec0-6d3b348e49fa}, connection established.", new object[] { "dc80a09e-21f3-4f92-9ec0-6d3b348e49fa" }), Times.Once);
             mockExecutionLogPublisher.Verify(o => o.Error("Failed to perform job {dc80a09e-21f3-4f92-9ec0-6d3b348e49fa}, test resume false failure"), Times.Never); //PBI: notice the System.Exception with our inner exception

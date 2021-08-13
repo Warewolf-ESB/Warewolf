@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Security.Principal;
 using System.Text;
+using System.Threading.Tasks;
 using Dev2.Communication;
 using Dev2.Network;
 using Dev2.Studio.Interfaces;
@@ -170,8 +171,8 @@ namespace Warewolf.Driver.Resume.Tests
 
             var mockResourceCatalogProxy = new Mock<IResourceCatalogProxy>();
             mockResourceCatalogProxy
-                .Setup(o => o.ResumeWorkflowExecution(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(),
-                    It.IsAny<string>(), It.IsAny<string>())).Returns(executeMessage);
+                .Setup(o => o.ResumeWorkflowExecutionAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(),
+                    It.IsAny<string>(), It.IsAny<string>())).Returns(Task.FromResult(executeMessage));
 
             var mockEnvironmentConnection = new Mock<IEnvironmentConnection>();
 
@@ -184,7 +185,7 @@ namespace Warewolf.Driver.Resume.Tests
 
             var resumption = new Resumption(new Mock<IExecutionLogPublisher>().Object, mockServerProxy.Object, mockResourceCatalogProxyFactory.Object);
 
-            var message = resumption.Resume(values);
+            var message = resumption.ResumeAsync(values).Result;
             //--------------Assert-------------------------------
             Assert.AreEqual("Success", message.Message.ToString());
         }
