@@ -10,7 +10,10 @@
 
 using System;
 using System.Diagnostics;
+using System.IO;
+using System.Linq;
 using System.Management;
+using System.Threading.Tasks;
 using System.Timers;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
@@ -23,6 +26,7 @@ namespace Dev2.Runtime
     public class UsageLogger : IStartTimer
     {
         internal readonly Timer _timer;
+        static string _persistencePath = Path.Combine(Config.UserDataPath, "Persistence");
 
         public UsageLogger(double intervalMs)
         {
@@ -44,6 +48,8 @@ namespace Dev2.Runtime
 
         static void TrackUsage(UsageType usageType)
         {
+            UploadOfflineFiles();
+
             var subscriptionProvider = SubscriptionProvider.Instance;
             var myData = new
             {
@@ -66,19 +72,27 @@ namespace Dev2.Runtime
             {
                 customerId = "UnRegistered";
             }
+
             var returnResult = UsageTracker.TrackEvent(customerId, usageType, jsonData);
 
             if(returnResult != UsageDataResult.ok)
             {
+                SaveOfflineUsage(customerId, jsonData, usageType);
+
                 ServerStats.IncrementUsageServerRetry();
                 if(ServerStats.UsageServerRetry > 3)
                 {
                     //TODO: If the machine has not connected to the internet for 30 days, stop executions.
-                    //var stopExecutions = subscriptionProvider.StopExecutions;
-                    // if(stopExecutions && lastLoggedInDays > 30)
-                    //   {
-                    //      STOP Executions
-                    // }
+                    var stopExecutions = subscriptionProvider.StopExecutions;
+                    var lastUploadDate = GetLastUploadTime();
+                    if(lastUploadDate.HasValue)
+                    {
+                        var lastUploadDays = DateTime.Now.Subtract(lastUploadDate.Value).Days;
+                        if(stopExecutions && lastUploadDays > 30)
+                        {
+                            //subscriptionProvider.IsLicensed = false;
+                        }
+                    }
 
                     Dev2Logger.Warn(
                         "Could not log usage. Retries: "
@@ -99,6 +113,64 @@ namespace Dev2.Runtime
             {
                 ServerStats.ResetUsageServerRetry();
             }
+        }
+
+        private static void UploadOfflineFiles()
+        {
+            Task.Run(
+                () =>
+                {
+                    var files = Directory.GetFiles(_persistencePath);
+                    foreach(var file in files)
+                    {
+                        var session = JsonConvert.DeserializeObject<SessionData>(File.ReadAllText(file));
+                        var returnResult = UsageTracker.TrackEvent(session.CustomerId, (UsageType)session.UsageType, session.JsonData);
+                        if(returnResult == UsageDataResult.ok)
+                        {
+                            File.Delete(file);
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                });
+        }
+
+        public static void SaveOfflineUsage(string customerId, string jsonData, UsageType usageType)
+        {
+            if(!Directory.Exists(_persistencePath)) Directory.CreateDirectory(_persistencePath);
+            var sessionData = new SessionData
+            {
+                Date = DateTime.Now,
+                CustomerId = customerId,
+                JsonData = jsonData,
+                UsageType = (int)usageType
+            };
+            File.WriteAllText(Path.Combine(_persistencePath, ServerStats.SessionId.ToString()), JsonConvert.SerializeObject(sessionData));
+        }
+
+        private static DateTime? GetLastUploadTime()
+        {
+            var persistencePath = Path.Combine(Config.AppDataPath, "Persistence");
+            var files = Directory.GetFiles(persistencePath);
+
+            if(files.Any())
+            {
+                var fileDates = files.Select(File.GetCreationTime);
+                var oldestFile = fileDates.OrderByDescending(d => d).FirstOrDefault();
+                return oldestFile;
+            }
+
+            return null;
+        }
+
+        private class SessionData
+        {
+            public DateTime Date { get; set; }
+            public string CustomerId { get; set; }
+            public string JsonData { get; set; }
+            public int UsageType { get; set; }
         }
 
         static void Timer_Elapsed(object sender, ElapsedEventArgs e)

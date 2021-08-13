@@ -351,6 +351,7 @@ namespace Dev2
             var returnResult = UsageTracker.TrackEvent(customerId, usageType, jsonData);
             if(returnResult != UsageDataResult.ok)
             {
+                UsageLogger.SaveOfflineUsage(customerId, jsonData, usageType);
                 ServerStats.IncrementUsageServerRetry();
                 _writer.WriteLine("UsageTracker: Could not log usage.");
                 var msg = "Could not log usage. Retry: " + ServerStats.UsageServerRetry + "/3. Connect to the internet to avoid Warewolf reverting to ReadOnly mode.";
@@ -497,6 +498,9 @@ namespace Dev2
             if(_subscriptionDataInstance != null)
             {
                 //TODO: get subscription data service
+                
+                //ServerStats.SessionId
+                
                 _writer.WriteLine("done.");
             }
         }
