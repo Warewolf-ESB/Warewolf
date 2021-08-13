@@ -61,7 +61,7 @@ namespace HangfireServer
         public void OnPerformResume(PerformingContext context)
         {
             var resumeWorkflow = new WarewolfResumeWorkflow(_logger, context, _resumptionFactory);
-            resumeWorkflow.PerformResumption();
+            resumeWorkflow.PerformResumptionAsync();
         }
 
         public void OnPerformed(PerformedContext context)
