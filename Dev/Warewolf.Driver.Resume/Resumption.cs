@@ -56,7 +56,7 @@ namespace Warewolf.Driver.Resume
 
         private Uri ServerEndpoint => new Uri($"https://{System.Net.Dns.GetHostName()}:3143");
 
-        public ExecuteMessage Resume(Dictionary<string, StringBuilder> values)
+        public async Task<ExecuteMessage> ResumeAsync(Dictionary<string, StringBuilder> values)
         {
             values.TryGetValue("resourceID", out var resourceId);
             values.TryGetValue("environment", out var environment);
@@ -77,8 +77,8 @@ namespace Warewolf.Driver.Resume
             });
 
             var resourceCatalogProxy = _resourceCatalogProxyFactory.New(_environmentConnection);
-            var executeMessage = resourceCatalogProxy.ResumeWorkflowExecution(resourceId.ToString(), environment.ToString(), startActivityId.ToString(), versionNumber.ToString(), currentuserprincipal.ToString());
-            return executeMessage;
+            var executeMessage = resourceCatalogProxy.ResumeWorkflowExecutionAsync(resourceId.ToString(), environment.ToString(), startActivityId.ToString(), versionNumber.ToString(), currentuserprincipal.ToString());
+            return await executeMessage;
         }
 
         public bool Connect()
