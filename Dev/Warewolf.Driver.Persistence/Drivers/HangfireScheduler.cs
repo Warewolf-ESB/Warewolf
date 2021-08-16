@@ -335,7 +335,29 @@ namespace Warewolf.Driver.Persistence.Drivers
         {
             try
             {
-                //This method is intercepted in the HangfireServer Performing method
+               //PBI: This method is intercepted in the HangfireServer Performing method
+
+                var jobId = context.BackgroundJob.Id;
+
+                var workflowResume = new WorkflowResume();
+                var result = workflowResume.Execute(values, null);
+                if (result == null)
+                {
+                    var ex = new Exception("job {" + jobId + "} failed to Execute in Warewolf, it is safe Requeue this job manually.");
+                    var failedState = new FailedState(ex);
+                    _client.ChangeState(jobId, failedState, ScheduledState.StateName);
+                    throw ex;
+                }
+
+                var serializer = new Dev2JsonSerializer();
+                var executeMessage = serializer.Deserialize<ExecuteMessage>(result);
+                if (executeMessage.HasError)
+                {
+                    var failedState = new FailedState(new Exception(executeMessage.Message?.ToString()));
+                    _client.ChangeState(jobId, failedState, ScheduledState.StateName);
+                    throw new Exception(executeMessage.Message?.ToString());
+                }
+
                 return GlobalConstants.Success;
             }
             catch (Exception)
@@ -388,4 +410,5 @@ namespace Warewolf.Driver.Persistence.Drivers
             return resumptionDate;
         }
     }
+
 }

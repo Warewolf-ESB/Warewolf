@@ -63,7 +63,7 @@ namespace HangfireServer
                 return;
             }
 
-            OnPerformResume(context);
+            //OnPerformResume(context);
         }
 
         public void OnPerformResume(PerformingContext context)
