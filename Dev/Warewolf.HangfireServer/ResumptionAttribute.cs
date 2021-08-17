@@ -77,17 +77,18 @@ namespace HangfireServer
             _hangfireLogger.InfoFormat("Job {0} has been performed", context.BackgroundJob.Id);
             _logger.Info("Job {"+ context.BackgroundJob.Id + "} has been performed ");
 
-            if(context.Exception != null)
+            var backgroundJob = context.BackgroundJob;
+            if (context.Exception != null)
             {
-                LogJobPerfomedOnSchedulerException(context.BackgroundJob, context.Exception, "HasException", context.Result.ToString());
+                LogJobPerfomedOnSchedulerException(backgroundJob, context.Exception, "HasException", context.Result.ToString());
             }
             if (context.Canceled)
             {
-                LogJobPerfomedOnSchedulerException(context.BackgroundJob, context.Exception, "WasCanceled", context.Result.ToString());
+                LogJobPerfomedOnSchedulerException(backgroundJob, context.Exception, "WasCanceled", context.Result.ToString());
             }
             if (context.ExceptionHandled)
             {
-                LogJobPerfomedOnSchedulerException(context.BackgroundJob, context.Exception, "ExceptionHandled", context.Result.ToString());
+                LogJobPerfomedOnSchedulerException(backgroundJob, context.Exception, "ExceptionHandled", context.Result.ToString());
             }
 
         }
@@ -101,7 +102,7 @@ namespace HangfireServer
                     context.BackgroundJob.Id,
                     failedState.Exception);
                 _logger.Warn("Job {" + context.BackgroundJob.Id + "} has been failed due to an exception {" + failedState.Exception + "}");
-
+                
                 if (IsReapiting(context.TraversedStates, "Failed"))
                 {
                     LogJobPerfomedOnSchedulerException(context.BackgroundJob, failedState.Exception, context.CandidateState.ToString(), context.TraversedStates.ToString());
