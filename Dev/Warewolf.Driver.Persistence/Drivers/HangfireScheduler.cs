@@ -336,7 +336,6 @@ namespace Warewolf.Driver.Persistence.Drivers
             try
             {
                //PBI: This method is intercepted in the HangfireServer Performing method
-
                 var jobId = context.BackgroundJob.Id;
 
                 var workflowResume = new WorkflowResume();
@@ -344,8 +343,11 @@ namespace Warewolf.Driver.Persistence.Drivers
                 if (result == null)
                 {
                     var ex = new Exception("job {" + jobId + "} failed to Execute in Warewolf, it is safe Requeue this job manually.");
-                    var failedState = new FailedState(ex);
-                    _client.ChangeState(jobId, failedState, ScheduledState.StateName);
+                    var failedState = new FailedState(ex)
+                    {
+                        Reason = "Execution returned null"
+                    };
+                    _client.ChangeState(jobId, failedState, ProcessingState.StateName);
                     throw ex;
                 }
 
@@ -353,8 +355,11 @@ namespace Warewolf.Driver.Persistence.Drivers
                 var executeMessage = serializer.Deserialize<ExecuteMessage>(result);
                 if (executeMessage.HasError)
                 {
-                    var failedState = new FailedState(new Exception(executeMessage.Message?.ToString()));
-                    _client.ChangeState(jobId, failedState, ScheduledState.StateName);
+                    var failedState = new FailedState(new Exception(executeMessage.Message?.ToString()))
+                    {
+                        Reason = "Execution return exception"   
+                    };
+                    _client.ChangeState(jobId, failedState, ProcessingState.StateName);
                     throw new Exception(executeMessage.Message?.ToString());
                 }
 
