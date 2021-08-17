@@ -82,7 +82,6 @@ namespace Dev2.Runtime
                 ServerStats.IncrementUsageServerRetry();
                 if(ServerStats.UsageServerRetry > 3)
                 {
-                    //TODO: If the machine has not connected to the internet for 30 days, stop executions.
                     var stopExecutions = subscriptionProvider.StopExecutions;
                     var lastUploadDate = GetLastUploadTime();
                     if(lastUploadDate.HasValue)
@@ -90,7 +89,9 @@ namespace Dev2.Runtime
                         var lastUploadDays = DateTime.Now.Subtract(lastUploadDate.Value).Days;
                         if(stopExecutions && lastUploadDays > 30)
                         {
-                            //subscriptionProvider.IsLicensed = false;
+                            var data = subscriptionProvider.GetSubscriptionData();
+                            data.IsLicensed = false;
+                            subscriptionProvider.SaveSubscriptionData(data);
                         }
                     }
 
