@@ -62,6 +62,7 @@
     <Compile Include="Redis\RedisCacheIntegrationTests.cs" />
     <Compile Include="Redis\RedisRemoveIntegrationTests.cs" />
     <Compile Include="Redis\TestRedisActivity.cs" />
+    <Compile Include="Server Refresh\FreshlyInstalledServerStartupTest.cs" />
     <Compile Include="TestCoverage\TestCoverageCatalogIntegrationTests.cs" />
     <Compile Include="TestResource.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -140,6 +141,7 @@
     <Reference Include="System.Runtime.DurableInstancing" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceProcess" />
     <Reference Include="System.Transactions" />
     <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
