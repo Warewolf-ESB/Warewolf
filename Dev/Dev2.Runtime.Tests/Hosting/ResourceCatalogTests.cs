@@ -4043,11 +4043,48 @@ namespace Dev2.Tests.Runtime.Hosting
         [ExpectedException(typeof(DirectoryNotFoundException))]
         [DoNotParallelize]
         [TestCategory("CannotParallelize")]
-        public void ResourceCatalog_BuildReleaseExamples()
+        public void ResourceCatalog_BuildReleaseExamples_CannotFindReleaseExamples()
         {
             //------------Setup for test--------------------------
             var rc = new ResourceCatalogBuilder(ResourceUpgraderFactory.GetUpgrader());
             rc.BuildReleaseExamples("some value");
+        }
+
+        [TestMethod]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
+        public void ResourceCatalog_BuildReleaseExamples_CreateMissingDestinationDirectory()
+        {
+            const string ResourcesBackup = "C:\\programdata\\warewolf\\resources_BACKUP";
+            if (Directory.Exists(ResourcesBackup))
+            {
+                Directory.Delete(ResourcesBackup);
+            }
+            if (Directory.Exists(EnvironmentVariables.ResourcePath)) 
+            {
+                Directory.Move(EnvironmentVariables.ResourcePath, ResourcesBackup);
+            }
+            try {
+                //------------Setup for test--------------------------
+                var rc = new ResourceCatalogBuilder(ResourceUpgraderFactory.GetUpgrader());
+                //------------Assert Precondition-------------------
+                Assert.IsFalse(Directory.Exists(EnvironmentVariables.ResourcePath), "Failed to prepare for unit test. Cannot delete directory: \"" + EnvironmentVariables.ResourcePath + "\"");
+                //------------Execute Test--------------------------
+                rc.BuildReleaseExamples("release");
+                //------------Assert Results------------------------
+                Assert.IsTrue(Directory.Exists(EnvironmentVariables.ResourcePath), "Destination directory for deploying release examples was not created.");
+            }
+            catch
+            {
+                if (Directory.Exists(EnvironmentVariables.ResourcePath))
+                {
+                    Directory.Delete(EnvironmentVariables.ResourcePath);
+                }
+                if (Directory.Exists(ResourcesBackup)) 
+                {
+                    Directory.Move(ResourcesBackup, EnvironmentVariables.ResourcePath);
+                }
+            }
         }
 
         class ResourceSaveProviderMock : ResourceSaveProvider

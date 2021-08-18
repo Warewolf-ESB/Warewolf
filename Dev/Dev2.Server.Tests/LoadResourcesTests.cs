@@ -274,7 +274,7 @@ namespace Dev2.Server.Tests
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(LoadResources))]
-        public void LoadResources_MigrateOldTests_DirecotoryExists_False()
+        public void LoadResources_MigrateOldTests_DirectoryExists_False()
         {
             //------------------Arrange---------------
             const string resourceDirectory = "Resources - ServerTests";
@@ -293,6 +293,48 @@ namespace Dev2.Server.Tests
             //------------------Assert----------------
             mockDirectory.Verify(o => o.Copy(It.IsAny<string>(), It.IsAny<string>(), true), Times.Once);
             mockDirectory.Verify(o => o.CleanUp(It.IsAny<string>()), Times.Once);
+        }
+
+        [TestMethod]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
+        public void ResourceCatalog_LoadExamplesViaBuilder_DespiteProgramdataResourcesDirectoryNotExisting()
+        {
+            const string ResourcesBackup = "C:\\programdata\\warewolf\\resources_BACKUP";
+            if (Directory.Exists(ResourcesBackup))
+            {
+                Directory.Delete(ResourcesBackup);
+            }
+            if (Directory.Exists(EnvironmentVariables.ResourcePath)) 
+            {
+                Directory.Move(EnvironmentVariables.ResourcePath, ResourcesBackup);
+            }
+            try
+            {
+                //------------------Arrange---------------
+                var mockDirectory = new Mock<IDirectory>();
+                var mockResourceCatalog = new Mock<IResourceCatalog>();
+                var mockResourceCatalogFactory = new Mock<IResourceCatalogFactory>();
+                mockDirectory.Setup(o => o.Exists(It.IsAny<string>())).Returns(true);
+                mockResourceCatalogFactory.Setup(o => o.New()).Returns(mockResourceCatalog.Object);
+                mockResourceCatalog.Setup(o => o.LoadExamplesViaBuilder(It.IsAny<string>())).Verifiable();
+                //------------------Act-------------------
+                var loadResources =  new LoadResources("Resources - ServerTests", new Mock<IWriter>().Object, mockDirectory.Object, mockResourceCatalogFactory.Object);
+                loadResources.CheckExampleResources();
+                //------------------Assert----------------
+                mockResourceCatalog.Verify();
+            }
+            catch
+            {
+                if (Directory.Exists(EnvironmentVariables.ResourcePath))
+                {
+                    Directory.Delete(EnvironmentVariables.ResourcePath);
+                }
+                if (Directory.Exists(ResourcesBackup)) 
+                {
+                    Directory.Move(ResourcesBackup, EnvironmentVariables.ResourcePath);
+                }
+            }
         }
     }
 }
