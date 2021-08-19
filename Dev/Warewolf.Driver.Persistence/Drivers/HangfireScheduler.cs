@@ -421,7 +421,7 @@ namespace Warewolf.Driver.Persistence.Drivers
         private void Throw(string jobId, string message, string reason)
         {
             var exception = new Exception(message);
-            _client.ChangeState(jobId, new FailedState(exception) { Reason = reason }, ProcessingState.StateName);
+            _ = _client.ChangeState(jobId, new FailedState(exception) { Reason = reason }, ProcessingState.StateName);
             throw exception;
         }
 
@@ -490,8 +490,8 @@ namespace Warewolf.Driver.Persistence.Drivers
 
     public class TransactionScopeWrapper : ITransactionScopeWrapper
     {
-        private TransactionScopeAsyncFlowOption _scopeAsyncFlowOption;
-        private TransactionScope _instance;
+        private readonly TransactionScopeAsyncFlowOption _scopeAsyncFlowOption;
+        private readonly TransactionScope _instance;
 
         public TransactionScopeWrapper(TransactionScopeAsyncFlowOption scopeAsyncFlowOption)
         {
