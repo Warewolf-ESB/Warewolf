@@ -21,6 +21,7 @@ using Dev2.Common.Interfaces.Enums;
 using Dev2.Communication;
 using Dev2.Data.TO;
 using Dev2.DynamicServices;
+using Dev2.Runtime.ESB.Management;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.Security;
@@ -35,7 +36,7 @@ namespace Dev2.Runtime.ESB.Management.Services
     {
         private IAuthorizationService _authorizationService;
         private IResourceCatalog _resourceCatalog;
-
+        
         public override string HandlesType() => nameof(WorkflowResume);
 
         protected override ExecuteMessage ExecuteImpl(Dev2JsonSerializer serializer, Guid resourceId, Dictionary<string, StringBuilder> values)
@@ -59,8 +60,6 @@ namespace Dev2.Runtime.ESB.Management.Services
                 IsDebug = true
             };
 
-            //PBI: this might have already been done before this execution and not a good idea to make this call for each execution
-            //temporally disabled for (HOTFIX) investigate to a permanent fix
             if (!CanExecute(dataObject))
             {
                 var errorMessage = string.Format(ErrorResource.AuthenticationError, executingUser.Identity.Name);
@@ -80,14 +79,12 @@ namespace Dev2.Runtime.ESB.Management.Services
                 return new ExecuteMessage {HasError = true, Message = new StringBuilder($"Error resuming. ServiceAction is null for Resource ID:{resourceId}")};
             }
 
-            var errorResultTO = new ErrorResultTO();
-            var container = CustomContainer.Get<IResumableExecutionContainerFactory>().New(startActivityId, sa, dataObject);
+            var container = CustomContainer.CreateInstance<IResumableExecutionContainer>(startActivityId, sa, dataObject);
             container.Execute(out ErrorResultTO errors, 0);
-            errorResultTO = errors;
-
-            if (errorResultTO.HasErrors())
+            
+            if (errors.HasErrors())
             {
-                return new ExecuteMessage {HasError = true, Message = new StringBuilder(errorResultTO.MakeDisplayReady())};
+                return new ExecuteMessage {HasError = true, Message = new StringBuilder(errors.MakeDisplayReady())};
             }
 
             return new ExecuteMessage {HasError = false, Message = new StringBuilder("Execution Completed.")};

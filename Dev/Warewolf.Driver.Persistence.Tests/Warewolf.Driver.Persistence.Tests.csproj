@@ -27,4 +27,8 @@
         <ProjectReference Include="..\Warewolf.Driver.RabbitMQ\Warewolf.Driver.RabbitMQ.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Reference Include="System.Transactions" />
+    </ItemGroup>
+
 </Project>
