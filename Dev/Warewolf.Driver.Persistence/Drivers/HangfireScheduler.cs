@@ -369,6 +369,9 @@ namespace Warewolf.Driver.Persistence.Drivers
         {
             try
             {
+                var jobStorage = SqlServerStorage();
+                var client = new BackgroundJobClient(jobStorage);
+
                 var jobId = context.BackgroundJob.Id;
                 var activityParserType = Type.GetType(ActivityParserTypeString);
                 var resumableExecutionContainerType = Type.GetType(ResumableExecutionContainerTypeString);
@@ -379,7 +382,7 @@ namespace Warewolf.Driver.Persistence.Drivers
 
                 if (resumableExecutionContainerType == null || activityParserType == null)
                 {
-                    Throw(jobId, message: "job {" + jobId + "} failed, one of Warewolf's dependencies were missing", reason: "Execution not run");
+                    Throw(client, jobId, message: "job {" + jobId + "} failed, one of Warewolf's dependencies were missing", reason: "Execution not run");
                 }
 
                 var activityParserInstance = CustomContainer.CreateInstance<IActivityParser>("just_to_get_a_CTOR_match_DO_NOT_REMOVE");
@@ -392,14 +395,14 @@ namespace Warewolf.Driver.Persistence.Drivers
                         var result = WorkflowResume.Execute(values, null);
                         if (result == null)
                         {
-                            Throw(jobId: jobId, message: "job {" + jobId + "} failed to execute in Warewolf, requeue this job manually.", reason: "Execution returned null");
+                            Throw(client, jobId: jobId, message: "job {" + jobId + "} failed to execute in Warewolf, requeue this job manually.", reason: "Execution returned null");
                         }
 
                         var serializer = new Dev2JsonSerializer();
                         var executeMessage = serializer.Deserialize<ExecuteMessage>(result);
                         if (executeMessage.HasError)
                         {
-                            Throw(jobId: jobId, message: executeMessage.Message?.ToString(), reason: "Execution return exception");
+                            Throw(client, jobId: jobId, message: executeMessage.Message?.ToString(), reason: "Execution return exception");
                         }
                         ts.Complete();
                     }
@@ -407,7 +410,7 @@ namespace Warewolf.Driver.Persistence.Drivers
                 catch (TransactionAbortedException ex)
                 {
                     //Note: these jobs may not be very safe to resume, but should be failed as they might be incomplete
-                    Throw(jobId, message: ex.Message, reason: "Execution return TransactionAbortedException");
+                    Throw(client, jobId, message: ex.Message, reason: "Execution return TransactionAbortedException");
                 }
 
                 return GlobalConstants.Success;
@@ -418,10 +421,10 @@ namespace Warewolf.Driver.Persistence.Drivers
             }
         }
 
-        private void Throw(string jobId, string message, string reason)
+        private void Throw(IBackgroundJobClient client, string jobId, string message, string reason)
         {
             var exception = new Exception(message);
-            _client.ChangeState(jobId, new FailedState(exception) { Reason = reason }, ProcessingState.StateName);
+            _ = client.ChangeState(jobId, new FailedState(exception) { Reason = reason }, ProcessingState.StateName);
             throw exception;
         }
 
@@ -490,8 +493,8 @@ namespace Warewolf.Driver.Persistence.Drivers
 
     public class TransactionScopeWrapper : ITransactionScopeWrapper
     {
-        private TransactionScopeAsyncFlowOption _scopeAsyncFlowOption;
-        private TransactionScope _instance;
+        private readonly TransactionScopeAsyncFlowOption _scopeAsyncFlowOption;
+        private readonly TransactionScope _instance;
 
         public TransactionScopeWrapper(TransactionScopeAsyncFlowOption scopeAsyncFlowOption)
         {
