@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
@@ -31,12 +32,19 @@ namespace Dev2.Integration.Tests.Server_Refresh
                 Directory.Move(EnvironmentVariables.ResourcePath, ResourcesBackup);
             }
             var serverUnderTest = Process.GetProcessesByName("Warewolf Server")[0];
-            Assert.IsNotNull(serverUnderTest?.MainModule, "No server under test found.");
-            var exePath = serverUnderTest.MainModule.FileName;
-            var destDirName = Path.Combine(Path.GetDirectoryName(exePath), "Resources");
+            string exePath;
+            try 
+            {
+                exePath = Path.GetDirectoryName(serverUnderTest.MainModule?.FileName);
+            }
+            catch (Win32Exception)
+            {
+                exePath = Environment.CurrentDirectory;
+            }
+            var destDirName = Path.Combine(exePath, "Resources");
             if (!Directory.Exists(destDirName))
             {
-                Directory.Move(Path.Combine(Path.GetDirectoryName(exePath), "Resources - Release", "Resources"), destDirName);
+                Directory.Move(Path.Combine(exePath, "Resources - Release", "Resources"), destDirName);
             }
         }
 
