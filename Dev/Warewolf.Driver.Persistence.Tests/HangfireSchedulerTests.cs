@@ -16,14 +16,17 @@ using System.Security.Claims;
 using System.Security.Principal;
 using System.Text;
 using System.Threading;
+using System.Transactions;
 using Dev2;
 using Dev2.Common;
+using Dev2.Communication;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.TO;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Interfaces;
 using Dev2.Runtime;
+using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Runtime.Interfaces;
 using Hangfire;
 using Hangfire.MemoryStorage;
@@ -31,7 +34,9 @@ using Hangfire.States;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Warewolf.Auditing;
+using Warewolf.Driver.Drivers.HangfireScheduler.Test_Utils;
 using Warewolf.Driver.Persistence;
+using Warewolf.Driver.Persistence.Drivers;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
@@ -818,6 +823,186 @@ namespace Warewolf.Driver.Drivers.HangfireScheduler.Tests
             var withOverrideJob = scheduler.ManualResumeWithOverrideJob(mockDataObject.Object, jobId);
             Assert.AreEqual(GlobalConstants.Success, withOverrideJob);
         }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(HangfireScheduler))]
+        public void HangfireScheduler_ResumeWorkflow_GIVEN_NoPropertySetups_ShouldUseRealTypes_AND_Fail()
+        {
+            var jobStorage = new MemoryStorage();
+            var mockBackgroundJobClient = new Mock<IBackgroundJobClient>();
+            var mockPersistedValues = new Mock<IPersistedValues>();
+
+            var sut = new Persistence.Drivers.HangfireScheduler(mockBackgroundJobClient.Object, jobStorage, mockPersistedValues.Object);
+
+            var values = new Dictionary<string, StringBuilder>
+            {
+                {"resourceID", new StringBuilder("ab04663e-1e09-4338-8f61-a06a7ae5ebab")},
+                {"environment", new StringBuilder("")},
+                {"startActivityId", new StringBuilder(string.Empty)},
+                {"versionNumber", new StringBuilder("1")},
+                {"currentuserprincipal", new StringBuilder(new MockPrincipal().Name)}
+            };
+
+            var contextMock = new PerformContextMock("11", values);
+
+            var result = sut.ResumeWorkflow(values, contextMock.Object);
+            Assert.AreEqual(GlobalConstants.Failed, result);
+
+            mockBackgroundJobClient.Verify(o => o.ChangeState("11", It.IsAny<FailedState>(), "Processing"));
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(HangfireScheduler))]
+        public void HangfireScheduler_ResumeWorkflow_GIVEN_ActivityParserTypeString_IsSetToIncorrectString_ShouldThrow_AND_Fail()
+        {
+            var jobStorage = new MemoryStorage();
+            var mockBackgroundJobClient = new Mock<IBackgroundJobClient>();
+            var mockPersistedValues = new Mock<IPersistedValues>();
+
+            var sut = new Persistence.Drivers.HangfireScheduler(mockBackgroundJobClient.Object, jobStorage, mockPersistedValues.Object)
+            {
+                ActivityParserTypeString = "incorrect string"
+            };
+
+            var values = new Dictionary<string, StringBuilder>
+            {
+                {"resourceID", new StringBuilder("ab04663e-1e09-4338-8f61-a06a7ae5ebab")},
+                {"environment", new StringBuilder("")},
+                {"startActivityId", new StringBuilder(string.Empty)},
+                {"versionNumber", new StringBuilder("1")},
+                {"currentuserprincipal", new StringBuilder(new MockPrincipal().Name)}
+            };
+
+            var contextMock = new PerformContextMock("11", values);
+
+            var result = sut.ResumeWorkflow(values, contextMock.Object);
+            Assert.AreEqual(GlobalConstants.Failed, result);
+
+            mockBackgroundJobClient.Verify(o => o.ChangeState("11", It.IsAny<FailedState>(), "Processing"));
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(HangfireScheduler))]
+        public void HangfireScheduler_ResumeWorkflow_GIVEN_ResumableExecutionContainerTypeString_IsSetToIncorrectString_ShouldThrow_AND_Fail()
+        {
+            var jobStorage = new MemoryStorage();
+            var mockBackgroundJobClient = new Mock<IBackgroundJobClient>();
+            var mockPersistedValues = new Mock<IPersistedValues>();
+
+            var sut = new Persistence.Drivers.HangfireScheduler(mockBackgroundJobClient.Object, jobStorage, mockPersistedValues.Object)
+            {
+                ResumableExecutionContainerTypeString = "incorrect string"
+            };
+
+            var values = new Dictionary<string, StringBuilder>
+            {
+                {"resourceID", new StringBuilder("ab04663e-1e09-4338-8f61-a06a7ae5ebab")},
+                {"environment", new StringBuilder("")},
+                {"startActivityId", new StringBuilder(string.Empty)},
+                {"versionNumber", new StringBuilder("1")},
+                {"currentuserprincipal", new StringBuilder(new MockPrincipal().Name)}
+            };
+
+            var contextMock = new PerformContextMock("11", values);
+
+            var result = sut.ResumeWorkflow(values, contextMock.Object);
+            Assert.AreEqual(GlobalConstants.Failed, result);
+
+            mockBackgroundJobClient.Verify(o => o.ChangeState("11", It.IsAny<FailedState>(), "Processing"));
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(HangfireScheduler))]
+        public void HangfireScheduler_ResumeWorkflow_GIVEN_TransactionScopeFactory_FailsToCreateScope_ShouldThrow_AND_Fail()
+        {
+            var jobStorage = new MemoryStorage();
+            var mockBackgroundJobClient = new Mock<IBackgroundJobClient>();
+            var mockPersistedValues = new Mock<IPersistedValues>();
+            var mockWarewolfTransactionScopeFactory = new Mock<IWarewolfTransactionScopeFactory>();
+
+            mockWarewolfTransactionScopeFactory.Setup(o => o.New(TransactionScopeAsyncFlowOption.Suppress))
+                .Throws(new TransactionAbortedException("test transaction threat failed"));
+
+            var sut = new Persistence.Drivers.HangfireScheduler(mockBackgroundJobClient.Object, jobStorage, mockPersistedValues.Object)
+            {
+                TransactionScopeFactory = mockWarewolfTransactionScopeFactory.Object
+            };
+
+            var values = new Dictionary<string, StringBuilder>
+            {
+                {"resourceID", new StringBuilder("ab04663e-1e09-4338-8f61-a06a7ae5ebab")},
+                {"environment", new StringBuilder("")},
+                {"startActivityId", new StringBuilder(string.Empty)},
+                {"versionNumber", new StringBuilder("1")},
+                {"currentuserprincipal", new StringBuilder(new MockPrincipal().Name)}
+            };
+
+            var contextMock = new PerformContextMock("11", values);
+
+            var result = sut.ResumeWorkflow(values, contextMock.Object);
+            Assert.AreEqual(GlobalConstants.Failed, result);
+
+            mockBackgroundJobClient.Verify(o => o.ChangeState("11", It.IsAny<FailedState>(), "Processing"));
+            mockWarewolfTransactionScopeFactory.Verify(o => o.New(TransactionScopeAsyncFlowOption.Suppress), Times.Once);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(HangfireScheduler))]
+        public void HangfireScheduler_ResumeWorkflow_GIVEN_WorkflowResume_ExecutionWasASuccess_ShouldReturnSuccess()
+        {
+            var jobStorage = new MemoryStorage();
+            var mockBackgroundJobClient = new Mock<IBackgroundJobClient>();
+            var mockPersistedValues = new Mock<IPersistedValues>();
+            var mockWarewolfTransactionScopeFactory = new Mock<IWarewolfTransactionScopeFactory>();
+            var mockTransactionScopeWrapper = new Mock<ITransactionScopeWrapper>();
+            /*mockTransactionScopeWrapper.Setup(o => o.Instance)
+                .Returns();*/
+
+            mockWarewolfTransactionScopeFactory.Setup(o => o.New(TransactionScopeAsyncFlowOption.Suppress))
+                .Returns(mockTransactionScopeWrapper.Object);
+
+            var sut = new Persistence.Drivers.HangfireScheduler(mockBackgroundJobClient.Object, jobStorage, mockPersistedValues.Object)
+            {
+                TransactionScopeFactory = mockWarewolfTransactionScopeFactory.Object,
+                WorkflowResume = new TestWorkflowResume() { HasError = false, Message = new StringBuilder("false positive") }
+            };
+
+            var values = new Dictionary<string, StringBuilder>
+            {
+                {"resourceID", new StringBuilder("ab04663e-1e09-4338-8f61-a06a7ae5ebab")},
+                {"environment", new StringBuilder("")},
+                {"startActivityId", new StringBuilder(string.Empty)},
+                {"versionNumber", new StringBuilder("1")},
+                {"currentuserprincipal", new StringBuilder(new MockPrincipal().Name)}
+            };
+
+            var contextMock = new PerformContextMock("11", values);
+
+            var result = sut.ResumeWorkflow(values, contextMock.Object);
+            Assert.AreEqual(GlobalConstants.Success, result);
+
+            mockBackgroundJobClient.Verify(o => o.ChangeState("11", It.IsAny<FailedState>(), "Processing"), Times.Never);
+            mockWarewolfTransactionScopeFactory.Verify(o => o.New(TransactionScopeAsyncFlowOption.Suppress), Times.Once);
+            mockTransactionScopeWrapper.Verify(o => o.Complete());
+            mockTransactionScopeWrapper.Verify(o => o.Dispose());
+        }
+
+        public class TestWorkflowResume : WorkflowResume
+        {
+            public bool HasError { get; set; }
+            public StringBuilder Message { get; set; }
+
+            protected override ExecuteMessage ExecuteImpl(Dev2JsonSerializer serializer, Guid resourceId, Dictionary<string, StringBuilder> values)
+            {
+                return new ExecuteMessage { HasError = HasError, Message = Message };
+            }
+        }
+
 
         private static DynamicService CreateServiceEntry()
         {
