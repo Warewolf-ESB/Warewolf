@@ -121,7 +121,7 @@ namespace Dev2.Integration.Tests.Server_Refresh
             }
             catch (AggregateException e)
             {
-                return new StreamReader((e.InnerExceptions[0] as WebException)?.Response.GetResponseStream()).ReadToEnd();
+                return new StreamReader((e.InnerExceptions[0] as WebException)?.Response?.GetResponseStream())?.ReadToEnd();
             }
 
             return failRequestResult;
