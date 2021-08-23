@@ -26,6 +26,7 @@ namespace Dev2.Runtime
     public class UsageLogger : IStartTimer
     {
         internal readonly Timer _timer;
+        static readonly string _persistencePath = EnvironmentVariables.PersistencePath;
 
         public UsageLogger(double intervalMs)
         {
@@ -120,7 +121,7 @@ namespace Dev2.Runtime
             Task.Run(
                 () =>
                 {
-                    var files = Directory.GetFiles(EnvironmentVariables.PersistencePath);
+                    var files = Directory.GetFiles(_persistencePath);
                     foreach(var file in files)
                     {
                         var session = JsonConvert.DeserializeObject<SessionData>(File.ReadAllText(file));
@@ -139,7 +140,11 @@ namespace Dev2.Runtime
 
         public static void SaveOfflineUsage(string customerId, string jsonData, UsageType usageType)
         {
-            if(!Directory.Exists(EnvironmentVariables.PersistencePath)) { Directory.CreateDirectory(EnvironmentVariables.PersistencePath); }
+            if(!Directory.Exists(_persistencePath )) 
+            { 
+                Directory.CreateDirectory(_persistencePath ); 
+            }
+
             var sessionData = new SessionData
             {
                 Date = DateTime.Now,
@@ -147,7 +152,7 @@ namespace Dev2.Runtime
                 JsonData = jsonData,
                 UsageType = (int)usageType
             };
-            File.WriteAllText(Path.Combine(EnvironmentVariables.PersistencePath, ServerStats.SessionId.ToString()), JsonConvert.SerializeObject(sessionData));
+            File.WriteAllText(Path.Combine(_persistencePath , ServerStats.SessionId.ToString()), JsonConvert.SerializeObject(sessionData));
         }
 
         private static DateTime? GetLastUploadTime()

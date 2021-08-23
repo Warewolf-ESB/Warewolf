@@ -74,7 +74,13 @@ namespace Dev2.Tests.Runtime
             {
                 var testGuid = Guid.Empty.ToString();
                 var persistencePath = Path.Combine(Config.UserDataPath, "Persistence");
-                if(File.Exists(persistencePath)) File.Delete(Path.Combine(persistencePath, testGuid));
+                var persistenceGuidPath = Path.Combine(persistencePath, testGuid);
+
+                if (File.Exists(persistencePath))
+                {
+                    File.Delete(persistenceGuidPath);
+                }
+
                 var timer = usageLogger._timer;
                 timer.Elapsed += (sender, e) =>
                 {
@@ -86,8 +92,8 @@ namespace Dev2.Tests.Runtime
                 Thread.Sleep(10000);
                 //------------Assert Results-------------------------
                 Assert.IsTrue(Directory.Exists(persistencePath));
-                Assert.IsTrue(File.Exists(Path.Combine(persistencePath, testGuid)));
-                File.Delete(Path.Combine(persistencePath, testGuid));
+                Assert.IsTrue(File.Exists(persistenceGuidPath));
+                File.Delete(persistenceGuidPath);
             }
         }
     }
