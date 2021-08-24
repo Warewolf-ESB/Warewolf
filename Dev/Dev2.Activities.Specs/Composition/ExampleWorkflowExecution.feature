@@ -1,5 +1,4 @@
-﻿@ExampleWorkflowExecution
-Feature: ExampleWorkflowExecution
+﻿Feature: ExampleWorkflowExecution
 	In order to execute an Example Workflow
 	As a Warewolf user
 	I want to be able to build workflows that contain one of the example workflows
@@ -8,6 +7,7 @@ Background: Setup for example workflow execution
 			Given Debug events are reset
 			And Debug states are cleared
 
+@ExampleWorkflowExecution
 Scenario: Example Executing Utility - Format Number example workflow
 	  Given I have a workflow "Utility - Format Number Test"
 	  And "Utility - Format Number Test" contains "Utility - Format Number" from server "localhost" with mapping as
@@ -27,7 +27,7 @@ Scenario: Example Executing Utility - Format Number example workflow
 	  |                   |
 	  | [[PriceInK]] = 14 |
 
- 
+@ExampleWorkflowExecution
 Scenario: Example Executing Utility - Random example workflow
 	  Given I have a workflow "Utility - Random Test"
 	  And "Utility - Random Test" contains "Utility - Random" from server "localhost" with mapping as
@@ -88,6 +88,7 @@ Scenario: Example Executing Utility - Date and Time example workflow
 	  | Input            | =        | Input Format            | =                      | Add Time |  | Output Format                                 |
 	  | System Date Time | DateTime | System Date Time Format | yyyy/MM/dd hh:mm:ss tt | ""       |  | "'Date format yyyy MM dd yields : ' yyyy MM dd |
 
+@ExampleWorkflowExecution
 Scenario: Example Executing Utility - System Information example workflow
 	  Given I have a workflow "Utility - System Information Test"
 	  And "Utility - System Information Test" contains "Utility - System Information" from server "localhost" with mapping as
@@ -129,9 +130,9 @@ Scenario: Example Executing Utility - System Information example workflow
 	   | 13 | [[Region]]        =    String |
 	   | 14 | [[UserRoles]]     =    String |
 	   | 15 | [[UserName]]      =    String |
-	   | 16 | [[Domain]]        =    String |	   
+	   | 16 | [[Domain]]        =    String |
 
-
+@ExampleWorkflowExecution
 Scenario: Example Executing Utility - Web Request example workflow
 	  Given I have a workflow "Utility - Web Request Test"
 	  And "Utility - Web Request Test" contains "Utility - Web Request" from server "localhost" with mapping as
@@ -151,6 +152,7 @@ Scenario: Example Executing Utility - Web Request example workflow
 	  |                             |
 	  | [[GecodedAddress]] = String |
 
+@ExampleWorkflowExecution
 Scenario: Example Executing Data - Assign example workflows
 	  Given I have a workflow "Test Example Data - Assign"
 	  And "Test Example Data - Assign" contains "Data - Assign" from server "localhost" with mapping as
@@ -166,8 +168,7 @@ Scenario: Example Executing Data - Assign example workflows
 	  | [[hero(1).pushups]] = All of them.                             |
 	  | [[hero(1).name]] = Chuck Norris                                |
 
-	
-
+@ExampleWorkflowExecution
 Scenario: Example Executing Data - Base Conversion example workflow
 	  Given I have a workflow "Data - Base Conversion Test"
 	  And "Data - Base Conversion Test" contains "Data - Base Conversion" from server "localhost" with mapping as
@@ -181,7 +182,7 @@ Scenario: Example Executing Data - Base Conversion example workflow
 	   | # |                          |
 	   | 1 | [[Blob]] = I was mangled |
 
-
+@ExampleWorkflowExecution
 Scenario: Example Executing Data - Case Conversion example workflow
 	  Given I have a workflow "Data - Case Conversion Test"
 	  And "Data - Case Conversion Test" contains "Data - Case Conversion" from server "localhost" with mapping as
@@ -237,7 +238,7 @@ Scenario: Example Executing Data - Case Conversion example workflow
 	   | # |                               |
 	  | 1 | [[sometext]] = 1Mixed Up 5Om3 |
 
-
+@ExampleWorkflowExecution
 Scenario: Example Executing Data - Data Merge example workflow
 	  Given I have a workflow "Data - Data Merge Test"
 	  And "Data - Data Merge Test" contains "Data - Data Merge" from server "localhost" with mapping as
@@ -248,7 +249,8 @@ Scenario: Example Executing Data - Data Merge example workflow
 	  And the "Data - Data Merge" in Workflow "Data - Data Merge" debug outputs as    
 	    |                                                                |
 	    | [[FileContent]] = String |
-	   
+
+@ExampleWorkflowExecution
 Scenario: Example Executing Data - Find Index example workflow
 	  Given I have a workflow "Data - Find Index Test"
 	  And "Data - Find Index Test" contains "Data - Find Index" from server "localhost" with mapping as
@@ -268,6 +270,7 @@ Scenario: Example Executing Data - Find Index example workflow
 	  |                            |
 	  | [[WhereAreTheBs]] = 2,4,11 |
 
+@ExampleWorkflowExecution
 Scenario: Example Executing File and Folder - Copy
 	  Given I have a workflow "File and Folder - Copy Test"
 	  And "File and Folder - Copy Test" contains "File and Folder - Copy" from server "localhost" with mapping as
@@ -278,6 +281,7 @@ Scenario: Example Executing File and Folder - Copy
 	  |                  |
 	  | [[Complete]] = Success |
 
+@ExampleWorkflowExecution
 Scenario: Example Executing File and Folder - Create
 	  Given I have a workflow "File and Folder - Create Test"
 	  And "File and Folder - Create Test" contains "File and Folder - Create" from server "localhost" with mapping as
@@ -288,6 +292,7 @@ Scenario: Example Executing File and Folder - Create
 	  |                        |
 	  | [[Complete]] = Success |
 
+@ExampleWorkflowExecution
 Scenario: Example Executing File and Folder - Delete
 	  Given I have a workflow "File and Folder - Delete Test"
 	  And "File and Folder - Delete Test" contains "File and Folder - Delete" from server "localhost" with mapping as
@@ -298,6 +303,7 @@ Scenario: Example Executing File and Folder - Delete
 	  |                        |
 	  | [[Complete]] = Success |
 
+@ExampleWorkflowExecution
 Scenario: Example Executing File and Folder - Move
 	  Given I have a workflow "File and Folder - Move Test"
 	  And "File and Folder - Move Test" contains "File and Folder - Move" from server "localhost" with mapping as
@@ -308,6 +314,7 @@ Scenario: Example Executing File and Folder - Move
 	  |                        |
 	  | [[Complete]] = Success |
 
+@ExampleWorkflowExecution
 Scenario:Example Executing File and Folder - Read File
 	  Given I have a workflow "File and Folder - Read File Test"
 	  And "File and Folder - Read File Test" contains "File and Folder - Read File" from server "localhost" with mapping as
@@ -318,6 +325,7 @@ Scenario:Example Executing File and Folder - Read File
 	  |                                         |
 	  | [[Logs]] = the contents of the log file |
 
+@ExampleWorkflowExecution
 Scenario: Example Executing File and Folder - Rename
 	  Given I have a workflow "File and Folder - Rename Test"
 	  And "File and Folder - Rename Test" contains "File and Folder - Rename" from server "localhost" with mapping as
@@ -328,6 +336,7 @@ Scenario: Example Executing File and Folder - Rename
 	  |                        |
 	  | [[Complete]] = Success |
 
+@ExampleWorkflowExecution
 Scenario: Example Executing File and Folder - Unzip
 	  Given I have a workflow "File and Folder - Unzip Test"
 	  And "File and Folder - Unzip Test" contains "File and Folder - Unzip" from server "localhost" with mapping as
@@ -338,6 +347,7 @@ Scenario: Example Executing File and Folder - Unzip
 	  |                        |
 	  | [[Complete]] = Success |
 
+@ExampleWorkflowExecution
 Scenario: Example Executing File and Folder - Write File
 	  Given I have a workflow "File and Folder - Write File Test"
 	  And "File and Folder - Write File Test" contains "File and Folder - Write File" from server "localhost" with mapping as
@@ -348,6 +358,7 @@ Scenario: Example Executing File and Folder - Write File
 	  |                        |
 	  | [[Complete]] = Success |
 
+@ExampleWorkflowExecution
 Scenario: Example Executing File and Folder - Zip
 	  Given I have a workflow "File and Folder - Zip Test"
 	  And "File and Folder - Zip Test" contains "File and Folder - Zip" from server "localhost" with mapping as
@@ -358,6 +369,7 @@ Scenario: Example Executing File and Folder - Zip
 	  |                        |
 	  | [[Complete]] = Success |
 
+@ExampleWorkflowExecution
 Scenario: Example Executing Recordset - Count Records example workflow
 	  Given I have a workflow "Recordset - Count Records Test"
 	  And "Recordset - Count Records Test" contains "Recordset - Count Records" from server "localhost" with mapping as
@@ -373,6 +385,7 @@ Scenario: Example Executing Recordset - Count Records example workflow
 	  |               |
 	  | [[count]] = 3 |
 
+@ExampleWorkflowExecution
 Scenario: Example Executing Data - Replace example workflow
 	  Given I have a workflow "Data - Replace Test"
 	  And "Data - Replace Test" contains "Data - Replace" from server "localhost" with mapping as
@@ -394,6 +407,7 @@ Scenario: Example Executing Data - Replace example workflow
 	  | [[rec(2).mobileNumber]] = +1985623145 |
 	  | [[recount]] = 3                       |
 
+@ExampleWorkflowExecution
 Scenario: Example Executing Recordset - Records Length example workflow
 	  Given I have a workflow "Recordset - Records Length Test"
 	  And "Recordset - Records Length Test" contains "Recordset - Records Length" from server "localhost" with mapping as
@@ -414,6 +428,7 @@ Scenario: Example Executing Recordset - Records Length example workflow
 	  |                |
 	  | [[length]] = 5 |
 
+@ExampleWorkflowExecution
 Scenario: Example Executing Recordset - Delete Records example workflow
 	  Given I have a workflow "Recordset - Delete Records Test"
 	  And "Recordset - Delete Records Test" contains "Recordset - Delete Records" from server "localhost" with mapping as
@@ -434,6 +449,7 @@ Scenario: Example Executing Recordset - Delete Records example workflow
 	  |                      |
 	  | [[result]] = Success |
 
+@ExampleWorkflowExecution
 Scenario: Example Executing Recordset - Find Records example workflow
 	  Given I have a workflow "Recordset - Find Records Test"
 	  And "Recordset - Find Records Test" contains "Recordset - Find Records" from server "localhost" with mapping as
@@ -443,7 +459,8 @@ Scenario: Example Executing Recordset - Find Records example workflow
 	  And the "Find Record Index (2)" in Workflow "Recordset - Find Records" debug outputs as  
 	  |                   |
 	  | [[Results]] = 6,8 |
-	  
+
+@ExampleWorkflowExecution
 Scenario:Example Executing Recordset - Sort Records example workflow
 	  Given I have a workflow "Recordset - Sort Records Test"
 	  And "Recordset - Sort Records Test" contains "Recordset - Sort Records" from server "localhost" with mapping as
@@ -499,6 +516,7 @@ Scenario:Example Executing Recordset - Sort Records example workflow
 	 | [[rec(9).set]] = 1 |
 	 | [[rec(10).set]] = 0 |
 
+@ExampleWorkflowExecution
 Scenario: Example Executing Recordset - Unique Records example workflow
 	  Given I have a workflow "Recordset - Unique Records Test"
 	  And "Recordset - Unique Records Test" contains "Recordset - Unique Records" from server "localhost" with mapping as
@@ -522,6 +540,7 @@ Scenario: Example Executing Recordset - Unique Records example workflow
 	   |   | [[Result(2).example2]] = 2 |
 	   |   | [[Result(3).example2]] = 4 |
 
+@ExampleWorkflowExecution
 Scenario: Example Executing Control Flow - Sequence example workflow
 	  Given I have a workflow "Control Flow - Sequence Test"
 	  And "Control Flow - Sequence Test" contains "Control Flow - Sequence" from server "localhost" with mapping as
@@ -560,6 +579,7 @@ Scenario: Example Executing Control Flow - Sequence example workflow
 	   | [[Customers(4).FirstName]] = maggie |
 	   | [[Customers(5).FirstName]] = marge  |
 
+@ExampleWorkflowExecution
 Scenario: Example Executing Control Flow - Decision example workflow
 	  Given I have a workflow "Control Flow - Decision Test"
 	  And "Control Flow - Decision Test" contains "Control Flow - Decision" from server "localhost" with mapping as
@@ -567,6 +587,7 @@ Scenario: Example Executing Control Flow - Decision example workflow
 	  When "Control Flow - Decision Test" is executed
 	  Then the workflow execution has "NO" error
 
+@ExampleWorkflowExecution
 Scenario: Example Executing Control Flow - Switch example workflow
 	  Given I have a workflow "Control Flow - Switch Test"
 	  And "Control Flow - Switch Test" contains "Control Flow - Switch" from server "localhost" with mapping as
@@ -576,43 +597,46 @@ Scenario: Example Executing Control Flow - Switch example workflow
 	  And the "[[DiceRollValue]]" in Workflow "Control Flow - Switch" debug outputs as
 	  |   |
 	  | 4 |
-  
- Scenario: Example Executing Scripting - Ruby example workflow
-  Given I have a workflow "Scripting - Ruby Test"
-  And "Scripting - Ruby Test" contains "Scripting - Ruby" from server "localhost" with mapping as
-  | Input to Service | From Variable | Output from Service | To Variable     |
-  When "Scripting - Ruby Test" is executed
-  Then the workflow execution has "NO" error
-  And the "Ruby" in WorkFlow "Scripting - Ruby" debug inputs as	
-  | Language | Script   |
-  | Ruby     | sleep(5) | 
-  And the "Ruby" in Workflow "Scripting - Ruby" debug outputs as    
-  |                    |
-  | [[RubyResult]] = 5 |
-  
- Scenario: Example Executing Scripting - Python example workflow
-  Given I have a workflow "Scripting - Python Test"
-  And "Scripting - Python Test" contains "Scripting - Python" from server "localhost" with mapping as
-  | Input to Service | From Variable | Output from Service | To Variable     |
-  When "Scripting - Python Test" is executed
-  Then the workflow execution has "NO" error 
-   And the "Python" in WorkFlow "Scripting - Python" debug inputs as	
-  | Language | Script          |
-  | Python   | String = String |
-  And the "Python" in Workflow "Scripting - Python" debug outputs as    
-  |                                   |
-  | [[PythonResult]] = not one or two |
-  
- Scenario: Example Executing Scripting - Javascript example workflow
-  Given I have a workflow "Scripting - JavaScript Test"
-  And "Scripting - JavaScript Test" contains "Scripting - JavaScript" from server "localhost" with mapping as
-  | Input to Service | From Variable | Output from Service | To Variable     |
-  When "Scripting - JavaScript Test" is executed
-  Then the workflow execution has "NO" error 
-   And the "JavaScript" in WorkFlow "Scripting - JavaScript" debug inputs as	
-  | Language   | Script          |
-  | JavaScript | String = String |
-  And the "JavaScript" in Workflow "Scripting - JavaScript" debug outputs as    
-  |                          |
-  | [[JavaScriptResult]] = 7 |
+
+@ExampleWorkflowExecution
+Scenario: Example Executing Scripting - Ruby example workflow
+	  Given I have a workflow "Scripting - Ruby Test"
+	  And "Scripting - Ruby Test" contains "Scripting - Ruby" from server "localhost" with mapping as
+	  | Input to Service | From Variable | Output from Service | To Variable     |
+	  When "Scripting - Ruby Test" is executed
+	  Then the workflow execution has "NO" error
+	  And the "Ruby" in WorkFlow "Scripting - Ruby" debug inputs as	
+	  | Language | Script   |
+	  | Ruby     | sleep(5) | 
+	  And the "Ruby" in Workflow "Scripting - Ruby" debug outputs as    
+	  |                    |
+	  | [[RubyResult]] = 5 |
+
+@ExampleWorkflowExecution
+Scenario: Example Executing Scripting - Python example workflow
+	  Given I have a workflow "Scripting - Python Test"
+	  And "Scripting - Python Test" contains "Scripting - Python" from server "localhost" with mapping as
+	  | Input to Service | From Variable | Output from Service | To Variable     |
+	  When "Scripting - Python Test" is executed
+	  Then the workflow execution has "NO" error 
+	   And the "Python" in WorkFlow "Scripting - Python" debug inputs as	
+	  | Language | Script          |
+	  | Python   | String = String |
+	  And the "Python" in Workflow "Scripting - Python" debug outputs as    
+	  |                                   |
+	  | [[PythonResult]] = not one or two |
+
+@ExampleWorkflowExecution
+Scenario: Example Executing Scripting - Javascript example workflow
+	  Given I have a workflow "Scripting - JavaScript Test"
+	  And "Scripting - JavaScript Test" contains "Scripting - JavaScript" from server "localhost" with mapping as
+	  | Input to Service | From Variable | Output from Service | To Variable     |
+	  When "Scripting - JavaScript Test" is executed
+	  Then the workflow execution has "NO" error 
+	   And the "JavaScript" in WorkFlow "Scripting - JavaScript" debug inputs as	
+	  | Language   | Script          |
+	  | JavaScript | String = String |
+	  And the "JavaScript" in Workflow "Scripting - JavaScript" debug outputs as    
+	  |                          |
+	  | [[JavaScriptResult]] = 7 |
  
