@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -20,17 +20,64 @@ namespace Dev2.Runtime.WebServer
 {
     public static class ServiceTestCoverageModelHTMLResultBuilder
     {
-        public static void SetupNavBarHtml(this HtmlTextWriter writer)
+        public static void SetupNavBarHtml(this HtmlTextWriter writer, double totalReportsCoverage)
         {
             writer.AddStyleAttribute(HtmlTextWriterStyle.Padding, "10px 10px 20px 10px");
             writer.AddStyleAttribute(HtmlTextWriterStyle.Margin, "5px");
             writer.AddStyleAttribute(HtmlTextWriterStyle.FontFamily, "Roboto sans-serif");
             writer.AddStyleAttribute(HtmlTextWriterStyle.FontSize, "28px");
             writer.AddStyleAttribute(HtmlTextWriterStyle.FontWeight, "500");
+            writer.AddStyleAttribute(HtmlTextWriterStyle.Display, "inline-block");
             writer.AddAttribute(HtmlTextWriterAttribute.Class, "nav-bar-row");
+
             writer.RenderBeginTag(HtmlTextWriterTag.Div);
-            writer.Write("Coverage Summary");
+            writer.Write("Coverage Summary:");
             writer.RenderEndTag();
+
+            writer.AddStyleAttribute(HtmlTextWriterStyle.Margin, "5px");
+            writer.AddStyleAttribute(HtmlTextWriterStyle.FontFamily, "Roboto sans-serif");
+            writer.AddStyleAttribute(HtmlTextWriterStyle.FontSize, "28px");
+            writer.AddStyleAttribute(HtmlTextWriterStyle.FontWeight, "500");
+            writer.AddStyleAttribute(HtmlTextWriterStyle.Display, "inline-block");
+            writer.AddAttribute(HtmlTextWriterAttribute.Class, "nav-bar-row");
+
+            writer.AddColorCoding(totalReportsCoverage);
+
+            writer.RenderBeginTag(HtmlTextWriterTag.Div);
+            writer.Write(totalReportsCoverage);
+            writer.RenderEndTag();
+
+        }
+
+        private static void AddColorCoding(this HtmlTextWriter writer, double totalReportsCoverage)
+        {
+            if (IsCoverageRed(totalReportsCoverage))
+            {
+                writer.AddStyleAttribute(HtmlTextWriterStyle.Color, "red");
+            }
+            if (IsCoverageYellow(totalReportsCoverage))
+            {
+                writer.AddStyleAttribute(HtmlTextWriterStyle.Color, "orange");
+            }
+            if (IsCoverageGreen(totalReportsCoverage))
+            {
+                writer.AddStyleAttribute(HtmlTextWriterStyle.Color, "green");
+            }
+        }
+
+        private static bool IsCoverageGreen(double totalReportsCoverage)
+        {
+            return totalReportsCoverage >= 85 && totalReportsCoverage <= 100;
+        }
+
+        private static bool IsCoverageYellow(double totalReportsCoverage)
+        {
+            return totalReportsCoverage >= 65 && totalReportsCoverage <= 85;
+        }
+
+        private static bool IsCoverageRed(double totalReportsCoverage)
+        {
+            return totalReportsCoverage >= 0 && totalReportsCoverage <= 65;
         }
 
         public static void SetupWorkflowRowHtml(this HtmlTextWriter writer, string resourcePath, ICoverageDataObject coverageData, IWorkflowCoverageReports coverageReports)
@@ -60,16 +107,15 @@ namespace Dev2.Runtime.WebServer
             writer.RenderEndTag();
             writer.RenderEndTag();
 
-            (double totalCoverage, List<IWorkflowNode> workflowNodes, IWorkflowNode[] coveredNodes) = coverageReports.GetTotalCoverage();
-
-            writer.SetupWorkflowReportsHtml(totalCoverage, nameof(SetupWorkflowReportsHtml));
+            writer.SetupWorkflowReportsHtml(coverageReports.TotalCoverage, nameof(SetupWorkflowReportsHtml));
             writer.AddStyleAttribute(HtmlTextWriterStyle.FontSize, "16px");
             writer.AddStyleAttribute(HtmlTextWriterStyle.FontWeight, "500");
             writer.AddStyleAttribute(HtmlTextWriterStyle.Margin, "0 0 0 35px");
             writer.AddAttribute(HtmlTextWriterAttribute.Class, "workflow-nodes-row");
             writer.RenderBeginTag(HtmlTextWriterTag.Div);
 
-            workflowNodes.ForEach(node => node.SetupWorkflowNodeHtml(writer, coveredNodes));
+            coverageReports.WorkflowNodes.ToList()
+                .ForEach(node => node.SetupWorkflowNodeHtml(writer, coverageReports.CoveredWorkflowNodes));
 
             writer.RenderEndTag();
         }
@@ -80,7 +126,7 @@ namespace Dev2.Runtime.WebServer
             writer.AddAttribute(HtmlTextWriterAttribute.Class, classValue);
             writer.RenderBeginTag(HtmlTextWriterTag.Div);
 
-            double testFailing = (1 - (CoveragePercentage));
+            double testFailing = 1 - CoveragePercentage;
             double testPassed = CoveragePercentage;
 
             writer.AddStyleAttribute(HtmlTextWriterStyle.Display, "inline-block");
