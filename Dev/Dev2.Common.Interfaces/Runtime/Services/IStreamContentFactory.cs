@@ -9,6 +9,7 @@
 */
 
 
+using System;
 using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -23,7 +24,7 @@ namespace Dev2.Common.Interfaces.Runtime.Services
         Task<MultipartMemoryStreamProvider> ReadAsMultipartAsync(MultipartMemoryStreamProvider provider);
         Task<byte[]> ReadAsByteArrayAsync();
     }
-    public class StreamContentWrapper  : IStreamContentWrapper
+    public class StreamContentWrapper  : IStreamContentWrapper, IDisposable
     {
         private readonly StreamContent _content;
 
@@ -43,6 +44,8 @@ namespace Dev2.Common.Interfaces.Runtime.Services
         {
             return await _content.ReadAsMultipartAsync(provider);
         }
+
+        public void Dispose() => _content.Dispose();
     }
 
     public interface IStreamContentFactory
