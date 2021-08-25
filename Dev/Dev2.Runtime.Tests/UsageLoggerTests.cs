@@ -9,15 +9,18 @@
 */
 
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Runtime;
+using Dev2.Runtime.Subscription;
 using Hangfire.Dashboard.Resources;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Nest;
+using Newtonsoft.Json;
 using Warewolf.Usage;
 
 namespace Dev2.Tests.Runtime
@@ -33,7 +36,7 @@ namespace Dev2.Tests.Runtime
         public void UsageLogger_Ctor_CheckValues_ExpectInitialised()
         {
             //------------Setup for test--------------------------
-            using (var usageLogger = new UsageLogger(25))
+            using(var usageLogger = new UsageLogger(25))
             {
                 Assert.AreEqual(25, usageLogger.Interval);
                 var timer = usageLogger._timer;
@@ -47,14 +50,11 @@ namespace Dev2.Tests.Runtime
         public void UsageLogger_Ctor_Start_ExpectInitialised()
         {
             //------------Setup for test--------------------------
-            using (var usageLogger = new UsageLogger(10000))
+            using(var usageLogger = new UsageLogger(10000))
             {
                 Assert.AreEqual(10000, usageLogger.Interval);
                 var timer = usageLogger._timer;
-                timer.Elapsed += (sender, e) =>
-                {
-                    _elapsed = true;
-                };
+                timer.Elapsed += (sender, e) => { _elapsed = true; };
                 Assert.AreEqual(false, timer.Enabled);
                 //------------Execute Test---------------------------
                 usageLogger.Start();
@@ -63,38 +63,67 @@ namespace Dev2.Tests.Runtime
                 Assert.IsTrue(_elapsed);
             }
         }
+
+        [TestMethod]
+        [Owner("Njabulo Nxele")]
+        [TestCategory(nameof(UsageLogger))]
+        public void UsageLogger_TrackUsage_Failed()
+        {
+            //------------Setup for test--------------------------
+            var testGuid = Guid.NewGuid();
+            ServerStats.SessionId = testGuid;
+            var mockUsageTracker = new Mock<IUsageTrackerWrapper>();
+            mockUsageTracker.Setup(o => o.TrackEvent(It.IsAny<string>(), It.IsAny<UsageType>(), It.IsAny<string>())).Returns(UsageDataResult.networkConnectionError);
+
+            var usageLogger = new UsageLogger(5000, mockUsageTracker.Object);
+            var persistencePath = Path.Combine(Config.UserDataPath, "Persistence");
+            var persistenceGuidPath = Path.Combine(persistencePath, testGuid.ToString());
+
+            if(File.Exists(persistencePath))
+            {
+                File.Delete(persistenceGuidPath);
+            }
+
+            var timer = usageLogger._timer;
+            timer.Elapsed += (sender, e) => { usageLogger.TrackUsage(UsageType.ServerStart, testGuid); };
+            Assert.AreEqual(false, timer.Enabled);
+            //------------Execute Test---------------------------
+            usageLogger.Start();
+            Thread.Sleep(10000);
+            //------------Assert Results-------------------------
+            Assert.IsTrue(Directory.Exists(persistencePath));
+            Assert.IsTrue(File.Exists(persistenceGuidPath));
+            File.Delete(persistenceGuidPath);
+        }
         
         [TestMethod]
         [Owner("Njabulo Nxele")]
         [TestCategory(nameof(UsageLogger))]
-        public void UsageLogger_Ctor_Start_Offline()
+        public void UsageLogger_TrackUsage_Success()
         {
+            var testGuid = Guid.NewGuid();
+            ServerStats.SessionId = testGuid;
             //------------Setup for test--------------------------
-            using (var usageLogger = new UsageLogger(5000))
+            var mockUsageTracker = new Mock<IUsageTrackerWrapper>();
+            mockUsageTracker.Setup(o => o.TrackEvent(It.IsAny<string>(), It.IsAny<UsageType>(), It.IsAny<string>())).Returns(UsageDataResult.ok);
+
+            var usageLogger = new UsageLogger(5000, mockUsageTracker.Object);
+            var persistencePath = Path.Combine(Config.UserDataPath, "Persistence");
+            var persistenceGuidPath = Path.Combine(persistencePath, testGuid.ToString());
+
+            if(File.Exists(persistencePath))
             {
-                var testGuid = Guid.Empty.ToString();
-                var persistencePath = Path.Combine(Config.UserDataPath, "Persistence");
-                var persistenceGuidPath = Path.Combine(persistencePath, testGuid);
-
-                if (File.Exists(persistencePath))
-                {
-                    File.Delete(persistenceGuidPath);
-                }
-
-                var timer = usageLogger._timer;
-                timer.Elapsed += (sender, e) =>
-                {
-                    UsageLogger.SaveOfflineUsage("", "", UsageType.ServerStart);
-                };
-                Assert.AreEqual(false, timer.Enabled);
-                //------------Execute Test---------------------------
-                usageLogger.Start();
-                Thread.Sleep(10000);
-                //------------Assert Results-------------------------
-                Assert.IsTrue(Directory.Exists(persistencePath));
-                Assert.IsTrue(File.Exists(persistenceGuidPath));
                 File.Delete(persistenceGuidPath);
             }
+
+            var timer = usageLogger._timer;
+            timer.Elapsed += (sender, e) => { usageLogger.TrackUsage(UsageType.ServerStart, testGuid); };
+            Assert.AreEqual(false, timer.Enabled);
+            //------------Execute Test---------------------------
+            usageLogger.Start();
+            Thread.Sleep(10000);
+            //------------Assert Results-------------------------
+            Assert.IsTrue(!File.Exists(persistenceGuidPath));
         }
     }
 }

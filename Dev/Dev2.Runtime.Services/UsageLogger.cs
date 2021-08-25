@@ -17,6 +17,7 @@ using System.Threading.Tasks;
 using System.Timers;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Wrappers;
 using Dev2.Runtime.Subscription;
 using Newtonsoft.Json;
 using Warewolf.Usage;
@@ -27,12 +28,21 @@ namespace Dev2.Runtime
     {
         internal readonly Timer _timer;
         static readonly string _persistencePath = EnvironmentVariables.PersistencePath;
+        static DirectoryWrapper _directoryWrapper = new DirectoryWrapper();
+        static FileWrapper _fileWrapper = new FileWrapper();
+        IUsageTrackerWrapper _usageTrackerWrapper = new UsageTrackerWrapper();
 
-        public UsageLogger(double intervalMs)
+        public UsageLogger(double intervalMs) : this(intervalMs, new UsageTrackerWrapper())
+        {
+            
+        }
+        
+        public UsageLogger(double intervalMs, IUsageTrackerWrapper usageTrackerWrapper)
         {
             Interval = intervalMs;
+            _usageTrackerWrapper = usageTrackerWrapper;
             _timer = new Timer(Interval);
-            _timer.Elapsed += Timer_Elapsed;
+            _timer.Elapsed += (sender, e) => Timer_Elapsed(this, e);
         }
 
         static int GetNumberOfCores()
@@ -46,14 +56,16 @@ namespace Dev2.Runtime
             return coreCount;
         }
 
-        static void TrackUsage(UsageType usageType)
+        public void TrackUsage(UsageType usageType, Guid sessionId)
         {
+#pragma warning disable 4014
             UploadOfflineFiles();
+#pragma warning restore 4014
 
             var subscriptionProvider = SubscriptionProvider.Instance;
             var myData = new
             {
-                ServerStats.SessionId,
+                sessionId,
                 subscriptionProvider.SubscriptionId,
                 subscriptionProvider.PlanId,
                 subscriptionProvider.Status,
@@ -73,10 +85,10 @@ namespace Dev2.Runtime
                 customerId = "UnRegistered";
             }
 
-            var returnResult = UsageTracker.TrackEvent(customerId, usageType, jsonData);
-
+            var returnResult = _usageTrackerWrapper.TrackEvent(customerId, usageType, jsonData);
             if(returnResult != UsageDataResult.ok)
             {
+                Dev2Logger.Warn("Could not log usage: " + Enum.GetName(typeof(UsageDataResult), returnResult), GlobalConstants.UsageTracker);
                 SaveOfflineUsage(customerId, jsonData, usageType);
 
                 ServerStats.IncrementUsageServerRetry();
@@ -116,33 +128,31 @@ namespace Dev2.Runtime
             }
         }
 
-        private static void UploadOfflineFiles()
+#pragma warning disable 1998
+        private async Task UploadOfflineFiles()
+#pragma warning restore 1998
         {
-            Task.Run(
-                () =>
+            var files = _directoryWrapper.GetFiles(_persistencePath);
+            foreach(var file in files)
+            {
+                var session = JsonConvert.DeserializeObject<SessionData>(_fileWrapper.ReadAllText(file));
+                var returnResult = _usageTrackerWrapper.TrackEvent(session.CustomerId, (UsageType)session.UsageType, session.JsonData);
+                if(returnResult == UsageDataResult.ok)
                 {
-                    var files = Directory.GetFiles(_persistencePath);
-                    foreach(var file in files)
-                    {
-                        var session = JsonConvert.DeserializeObject<SessionData>(File.ReadAllText(file));
-                        var returnResult = UsageTracker.TrackEvent(session.CustomerId, (UsageType)session.UsageType, session.JsonData);
-                        if(returnResult == UsageDataResult.ok)
-                        {
-                            File.Delete(file);
-                        }
-                        else
-                        {
-                            break;
-                        }
-                    }
-                });
+                    _fileWrapper.Delete(file);
+                }
+                else
+                {
+                    break;
+                }
+            }
         }
 
         public static void SaveOfflineUsage(string customerId, string jsonData, UsageType usageType)
         {
-            if(!Directory.Exists(_persistencePath )) 
-            { 
-                Directory.CreateDirectory(_persistencePath ); 
+            if(!_directoryWrapper.Exists(_persistencePath))
+            {
+                _directoryWrapper.CreateDirectory(_persistencePath);
             }
 
             var sessionData = new SessionData
@@ -152,13 +162,13 @@ namespace Dev2.Runtime
                 JsonData = jsonData,
                 UsageType = (int)usageType
             };
-            File.WriteAllText(Path.Combine(_persistencePath , ServerStats.SessionId.ToString()), JsonConvert.SerializeObject(sessionData));
+            _fileWrapper.WriteAllText(Path.Combine(_persistencePath, ServerStats.SessionId.ToString()), JsonConvert.SerializeObject(sessionData));
         }
 
         private static DateTime? GetLastUploadTime()
         {
             var persistencePath = Path.Combine(Config.AppDataPath, "Persistence");
-            var files = Directory.GetFiles(persistencePath);
+            var files = _directoryWrapper.GetFiles(persistencePath);
 
             if(files.Any())
             {
@@ -183,7 +193,8 @@ namespace Dev2.Runtime
             try
             {
 #if !DEBUG
-                TrackUsage(UsageType.Usage);
+                var usageLogger = (UsageLogger)sender;
+                usageLogger.TrackUsage(UsageType.Usage, ServerStats.SessionId);
 #endif
             }
             catch(Exception err)
@@ -211,5 +222,18 @@ namespace Dev2.Runtime
         }
 
         public double Interval { get; private set; }
+    }
+    
+    public class UsageTrackerWrapper : IUsageTrackerWrapper
+    {
+        public UsageDataResult TrackEvent(string uniqueId, UsageType usageType, string usageInfo)
+        {
+            return UsageTracker.TrackEvent(uniqueId, usageType, usageInfo);
+        }
+    }
+    
+    public interface IUsageTrackerWrapper
+    {
+        UsageDataResult TrackEvent(string uniqueId, UsageType usageType, string usageInfo);
     }
 }
