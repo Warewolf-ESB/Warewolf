@@ -26,4 +26,7 @@
           <Link>Properties\AssemblyCommonInfo.cs</Link>
         </Compile>
     </ItemGroup>
+	<ItemGroup>
+	  <Reference Include="System.Transactions" />
+	</ItemGroup>
 </Project>

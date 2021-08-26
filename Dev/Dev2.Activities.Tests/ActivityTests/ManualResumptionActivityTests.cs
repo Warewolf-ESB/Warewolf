@@ -24,7 +24,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Auditing;
+using Warewolf.Common.NetStandard20;
 using Warewolf.Driver.Persistence;
+using Warewolf.Execution;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
@@ -248,8 +250,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             const bool OverrideInputVariables = false;
 
             var mockResumeJob = new Mock<IPersistenceExecution>();
+            var mockExecutionLogPublish = new Mock<IExecutionLogPublisher>();
             mockResumeJob.Setup(o => o.ResumeJob(dataObject, SuspensionId, OverrideInputVariables, "")).Verifiable();
-            var manualResumptionActivity = new ManualResumptionActivity(config, mockResumeJob.Object)
+            var manualResumptionActivity = new ManualResumptionActivity(config, mockResumeJob.Object, mockExecutionLogPublish.Object)
             {
                 Response = "[[result]]",
                 OverrideInputVariables = OverrideInputVariables,
@@ -323,10 +326,11 @@ namespace Dev2.Tests.Activities.ActivityTests
             mockPersistedValues.Setup(o => o.StartActivityId).Returns(startActivityId);
 
             var mockResumeJob = new Mock<IPersistenceExecution>();
+            var mockExecutionLogPublish = new Mock<IExecutionLogPublisher>();
             mockResumeJob.Setup(o => o.ResumeJob(dataObject, SuspensionId, OverrideInputVariables, environment)).Verifiable();
             mockResumeJob.Setup(o => o.GetPersistedValues(SuspensionId)).Returns(mockPersistedValues.Object).Verifiable();
             mockResumeJob.Setup(o => o.ManualResumeWithOverrideJob(It.IsAny<IDSFDataObject>(), SuspensionId)).Returns(startActivityId.ToString()).Verifiable();
-            var manualResumptionActivity = new ManualResumptionActivity(config, mockResumeJob.Object)
+            var manualResumptionActivity = new ManualResumptionActivity(config, mockResumeJob.Object, mockExecutionLogPublish.Object)
             {
                 Response = "[[result]]",
                 OverrideInputVariables = OverrideInputVariables,
@@ -403,10 +407,11 @@ namespace Dev2.Tests.Activities.ActivityTests
             mockPersistedValues.Setup(o => o.StartActivityId).Returns(startActivityId);
 
             var mockResumeJob = new Mock<IPersistenceExecution>();
+            var mockExecutionLogPublish = new Mock<IExecutionLogPublisher>();
             mockResumeJob.Setup(o => o.ResumeJob(dataObject, SuspensionId, OverrideInputVariables, environment)).Verifiable();
             mockResumeJob.Setup(o => o.GetPersistedValues(SuspensionId)).Returns(mockPersistedValues.Object).Verifiable();
             mockResumeJob.Setup(o => o.ManualResumeWithOverrideJob(It.IsAny<IDSFDataObject>(), SuspensionId)).Returns(GlobalConstants.Success).Verifiable();
-            var manualResumptionActivity = new ManualResumptionActivity(config, mockResumeJob.Object)
+            var manualResumptionActivity = new ManualResumptionActivity(config, mockResumeJob.Object, mockExecutionLogPublish.Object)
             {
                 Response = "[[result]]",
                 OverrideInputVariables = OverrideInputVariables,
@@ -483,10 +488,11 @@ namespace Dev2.Tests.Activities.ActivityTests
             mockPersistedValues.Setup(o => o.StartActivityId).Returns(startActivityId);
 
             var mockResumeJob = new Mock<IPersistenceExecution>();
+            var mockExecutionLogPublish = new Mock<IExecutionLogPublisher>();
             mockResumeJob.Setup(o => o.ResumeJob(dataObject, SuspensionId, OverrideInputVariables, overrideEnvironment)).Verifiable();
             mockResumeJob.Setup(o => o.GetPersistedValues(SuspensionId)).Returns(mockPersistedValues.Object).Verifiable();
             mockResumeJob.Setup(o => o.ManualResumeWithOverrideJob(It.IsAny<IDSFDataObject>(), SuspensionId)).Returns(startActivityId.ToString()).Verifiable();
-            var manualResumptionActivity = new ManualResumptionActivity(config, mockResumeJob.Object)
+            var manualResumptionActivity = new ManualResumptionActivity(config, mockResumeJob.Object, mockExecutionLogPublish.Object)
             {
                 Response = "[[result]]",
                 OverrideInputVariables = OverrideInputVariables,
@@ -547,7 +553,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             {
                 Enable = true
             };
-            var manualResumptionActivity = new ManualResumptionActivity(config, new Mock<IPersistenceExecution>().Object)
+            var manualResumptionActivity = new ManualResumptionActivity(config, new Mock<IPersistenceExecution>().Object, new Mock<IExecutionLogPublisher>().Object)
             {
                 Response = "[[result]]",
                 OverrideInputVariables = false,
@@ -600,7 +606,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 Enable = false
             };
 
-            var manualResumptionActivity = new ManualResumptionActivity(config, new Mock<IPersistenceExecution>().Object)
+            var manualResumptionActivity = new ManualResumptionActivity(config, new Mock<IPersistenceExecution>().Object, new Mock<IExecutionLogPublisher>().Object)
             {
                 Response = "[[result]]",
                 OverrideInputVariables = false,
@@ -690,8 +696,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             const string SuspensionId = "321";
 
             var mockResumeJob = new Mock<IPersistenceExecution>();
+            var mockExecutionLogPublish = new Mock<IExecutionLogPublisher>();
             mockResumeJob.Setup(o => o.GetPersistedValues(SuspensionId)).Returns(new Mock<IPersistedValues>().Object).Verifiable();
-            var manualResumptionActivity = new ManualResumptionActivity(config, mockResumeJob.Object)
+            var manualResumptionActivity = new ManualResumptionActivity(config, mockResumeJob.Object, mockExecutionLogPublish.Object)
             {
                 Response = "[[result]]",
                 OverrideInputVariables = true,
@@ -774,10 +781,11 @@ namespace Dev2.Tests.Activities.ActivityTests
             mockPersistedValues.Setup(o => o.StartActivityId).Returns(startActivityId);
 
             var mockResumeJob = new Mock<IPersistenceExecution>();
+            var mockExecutionLogPublish = new Mock<IExecutionLogPublisher>();
             mockResumeJob.Setup(o => o.ResumeJob(dataObject, SuspensionId, OverrideInputVariables, SuspendedEnv)).Verifiable();
             mockResumeJob.Setup(o => o.GetPersistedValues(SuspensionId)).Returns(mockPersistedValues.Object).Verifiable();
             mockResumeJob.Setup(o => o.ManualResumeWithOverrideJob(resumeObject, SuspensionId)).Returns(startActivityId.ToString()).Verifiable();
-            var manualResumptionActivity = new ManualResumptionActivity(config, mockResumeJob.Object)
+            var manualResumptionActivity = new ManualResumptionActivity(config, mockResumeJob.Object, mockExecutionLogPublish.Object)
             {
                 Response = "[[result]]",
                 OverrideInputVariables = OverrideInputVariables,
@@ -859,10 +867,11 @@ namespace Dev2.Tests.Activities.ActivityTests
             resumeObject.Environment = dataObject.Environment;
 
             var mockResumeJob = new Mock<IPersistenceExecution>();
+            var mockExecutionLogPublish = new Mock<IExecutionLogPublisher>();
             mockResumeJob.Setup(o => o.ResumeJob(dataObject, SuspensionId, OverrideInputVariables, SuspendedEnv)).Verifiable();
             mockResumeJob.Setup(o => o.GetPersistedValues(SuspensionId)).Returns(mockPersistedValues.Object).Verifiable();
             mockResumeJob.Setup(o => o.ManualResumeWithOverrideJob(resumeObject, SuspensionId)).Returns(startActivityId.ToString()).Verifiable();
-            var manualResumptionActivity = new ManualResumptionActivity(config, mockResumeJob.Object)
+            var manualResumptionActivity = new ManualResumptionActivity(config, mockResumeJob.Object, mockExecutionLogPublish.Object)
             {
                 Response = "[[result]]",
                 OverrideInputVariables = OverrideInputVariables,
