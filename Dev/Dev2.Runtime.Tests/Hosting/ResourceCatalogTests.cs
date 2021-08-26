@@ -4076,8 +4076,10 @@ namespace Dev2.Tests.Runtime.Hosting
             {
                 //------------Setup for test--------------------------
                 var rc = new ResourceCatalogBuilder(ResourceUpgraderFactory.GetUpgrader());
+                directoryWrapper.CreateIfNotExists("release");
                 //------------Assert Precondition-------------------
                 Assert.IsFalse(Directory.Exists(EnvironmentVariables.ResourcePath), "Failed to prepare for unit test. Cannot delete directory: \"" + EnvironmentVariables.ResourcePath + "\"");
+                Assert.IsTrue(directoryWrapper.Exists("release"));
                 //------------Execute Test--------------------------
                 rc.BuildReleaseExamples("release");
                 //------------Assert Results------------------------
