@@ -17,10 +17,12 @@ using System.Text;
 using System.Transactions;
 using Dev2;
 using Dev2.Common;
+using Dev2.Common.Interfaces.Monitoring;
+using Dev2.Common.Wrappers;
 using Dev2.Communication;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.Interfaces;
-using Dev2.Runtime;
+using Dev2.PerformanceCounters.Management;
 using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Runtime.ServiceModel.Data;
 using Hangfire;
@@ -78,6 +80,21 @@ namespace Warewolf.Driver.Persistence.Drivers
         {
             get => _transactionScopeFactory ?? new WarewolfTransactionScopeFactory();
             set => _transactionScopeFactory = value;
+        }
+
+        //PBI: these will be refactered and/or removed with the separation of this service
+        [ExcludeFromCodeCoverage]
+        public WarewolfPerformanceCounterManager GetPerformanceCounter()
+        {
+            var perf = new PerformanceCounterPersistence(new FileWrapper());
+            var register = new WarewolfPerformanceCounterRegister(perf.LoadOrCreate(), perf.LoadOrCreateResourcesCounters(perf.DefaultResourceCounters));
+            var locater = new WarewolfPerformanceCounterManager(register.Counters, register.ResourceCounters, register, perf);
+            locater.CreateCounter(Guid.Parse("a64fc548-3045-407d-8603-2a7337d874a6"), WarewolfPerfCounterType.ExecutionErrors, "workflow1");
+            locater.CreateCounter(Guid.Parse("a64fc548-3045-407d-8603-2a7337d874a6"), WarewolfPerfCounterType.AverageExecutionTime, "workflow1");
+            locater.CreateCounter(Guid.Parse("a64fc548-3045-407d-8603-2a7337d874a6"), WarewolfPerfCounterType.ConcurrentRequests, "workflow1");
+            locater.CreateCounter(Guid.Parse("a64fc548-3045-407d-8603-2a7337d874a6"), WarewolfPerfCounterType.RequestsPerSecond, "workflow1");
+
+            return locater;
         }
 
         public string ActivityParserTypeString
@@ -385,8 +402,9 @@ namespace Warewolf.Driver.Persistence.Drivers
                         Throw(jobId, message: "job {" + jobId + "} failed, one of Warewolf's dependencies were missing", reason: "Execution not run");
                     }
 
-                    var activityParserInstance = CustomContainer.CreateInstance<IActivityParser>("just_to_get_a_CTOR_match_DO_NOT_REMOVE");
-                    CustomContainer.Register(activityParserInstance);
+                var activityParserInstance = CustomContainer.CreateInstance<IActivityParser>("just_to_get_a_CTOR_match_DO_NOT_REMOVE");
+                CustomContainer.Register(activityParserInstance);
+                CustomContainer.Register<IWarewolfPerformanceCounterLocater>(GetPerformanceCounter());
 
                     var result = WorkflowResume.Execute(values, null);
                     if (result == null)
