@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -24,32 +24,42 @@ namespace Dev2.Data
             Resource = resource;
         }
 
-        public List<IServiceTestCoverageModelTo> Reports { get; } = new List<IServiceTestCoverageModelTo>();
-        public bool HasTestReports => Reports.Count > 0;
+        public List<IServiceTestCoverageModelTo> Reports { get; private set; } = new List<IServiceTestCoverageModelTo>();
+        public bool HasTestReports => Reports.ToList().Count > 0;
         public IWarewolfWorkflow Resource { get; }
+        public IEnumerable<IWorkflowNode> WorkflowNodes => Resource.WorkflowNodes;
+        public IWorkflowNode[] CoveredWorkflowNodes => CalculateCoveredWorkflowNodes();
+        public IEnumerable<Guid> CoveredWorkflowNodesNotMockedIds => CalculateCoveredWorkflowNodesNotMockedIds();
+        public double TotalCoverage => GetTotalCoverage();
 
         public void Add(IServiceTestCoverageModelTo coverage)
         {
             Reports.Add(coverage);
         }
 
-        public (double TotalCoverage, List<IWorkflowNode> WorkflowNodes, IWorkflowNode[] CoveredNodes) GetTotalCoverage()
+        private IEnumerable<Guid> CalculateCoveredWorkflowNodesNotMockedIds()
         {
-            var coveredNodes = Reports
+            return CoveredWorkflowNodes
+                .Where(o => o.MockSelected is false)
+                .Select(o => o.ActivityID)
+                .Distinct().ToList();
+        }
+
+        private IWorkflowNode[] CalculateCoveredWorkflowNodes()
+        {
+            return Reports
                 .SelectMany(o => o.AllTestNodesCovered)
                 .SelectMany(o => o.TestNodesCovered)
                 .GroupBy(n => n.ActivityID)
                 .Select(o => o.First()).ToArray();
+        }
 
-            var accum = coveredNodes
-                .Where(o => o.MockSelected is false)
-                .Select(o => o.ActivityID)
-                .Distinct().ToList();
-            var allWorkflowNodes = Resource.WorkflowNodes;
-            var accum2 = allWorkflowNodes.Select(o => o.UniqueID).ToList();
-            var activitiesExistingInTests = accum2.Intersect(accum).ToList();
+        private double GetTotalCoverage()
+        {
+            var accum2 = WorkflowNodes.Select(o => o.UniqueID).ToList();
+            var activitiesExistingInTests = accum2.Intersect(CoveredWorkflowNodesNotMockedIds).ToList();
             var total = Math.Round(activitiesExistingInTests.Count / (double)accum2.Count, 2);
-            return (total, allWorkflowNodes, coveredNodes);
+            return total;
         }
     }
 }

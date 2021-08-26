@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -9,7 +9,7 @@
 */
 
 using System;
-using System.Security.Principal;
+using System.Threading.Tasks;
 using Dev2.Common;
 using Dev2.Communication;
 using Dev2.Controller;
@@ -33,8 +33,9 @@ namespace Warewolf.Common
     public interface IResourceCatalogProxy
     {
         T GetResourceById<T>(Guid workspaceId, Guid resourceId) where T : class;
-        ExecuteMessage ResumeWorkflowExecution(string resource, string environment, string startActivityId, string versionNumber,string currentUserPrincipal);
+        Task<ExecuteMessage> ResumeWorkflowExecutionAsync(string resourceId, string environment, string startActivityId, string versionNumber, string currentUserPrincipal);
     }
+
     public class ResourceCatalogProxy : IResourceCatalogProxy
     {
         readonly IEnvironmentConnection _environmentConnection;
@@ -55,17 +56,18 @@ namespace Warewolf.Common
 
             return result;
         }
-        public ExecuteMessage ResumeWorkflowExecution(string resourceId, string environment, string startActivityId, string versionNumber,string currentUserPrincipal)
+        
+        public async Task<ExecuteMessage> ResumeWorkflowExecutionAsync(string resourceId, string environment, string startActivityId, string versionNumber, string currentUserPrincipal)
         {
-            var comController = new CommunicationController {ServiceName = "WorkflowResume"};
+            var comController = new CommunicationController { ServiceName = "WorkflowResume" };
             comController.AddPayloadArgument("resourceID", resourceId);
             comController.AddPayloadArgument("environment", environment);
             comController.AddPayloadArgument("startActivityId", startActivityId);
             comController.AddPayloadArgument("versionNumber", versionNumber);
             comController.AddPayloadArgument("currentuserprincipal", currentUserPrincipal);
 
-            var result =  comController.ExecuteCommand<ExecuteMessage>(_environmentConnection, GlobalConstants.ServerWorkspaceID);
-            return result;
+            var result = comController.ExecuteCommandAsync<ExecuteMessage>(_environmentConnection, GlobalConstants.ServerWorkspaceID);
+            return await result;
         }
     }
 }

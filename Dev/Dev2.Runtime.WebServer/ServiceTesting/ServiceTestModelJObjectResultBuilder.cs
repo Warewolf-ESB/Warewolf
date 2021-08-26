@@ -9,9 +9,10 @@
 */
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Runtime;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Warewolf.Data;
 
@@ -19,6 +20,21 @@ namespace Dev2.Runtime.WebServer
 {
     internal static class ServiceTestModelJObjectResultBuilder
     {
+        public static void SetupResultSummaryJSON(this List<IServiceTestModelTO> serviceTestModelTOs, JsonTextWriter writer)
+        {
+            writer.WriteStartObject();
+            writer.WritePropertyName("TestsTotalCount");
+            writer.WriteValueAsync(serviceTestModelTOs.Count);
+
+            writer.WritePropertyName("TestsFailed");
+            writer.WriteValueAsync(serviceTestModelTOs.Count(o => o.TestFailing));
+            writer.WritePropertyName("TestsPassed");
+            writer.WriteValueAsync(serviceTestModelTOs.Count(o => o.TestPassed));
+            writer.WritePropertyName("TestsInvalid");
+            writer.WriteValueAsync(serviceTestModelTOs.Count(o => o.TestInvalid));
+            writer.WriteEndObject();
+        }
+
         public static JObject BuildTestResultJSONForWebRequest(this IServiceTestModelTO result)
         {
             var resObj = new JObject { { "Test Name", result.TestName } };
