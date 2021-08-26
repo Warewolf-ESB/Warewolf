@@ -3495,6 +3495,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
         [TestMethod]
         [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(ResourceCatalog))]
@@ -3537,6 +3538,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
         [TestMethod]
         [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(ResourceCatalog))]
@@ -3563,6 +3565,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
         [TestMethod]
         [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(ResourceCatalog))]
@@ -3600,6 +3603,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
         [TestMethod]
         [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory("ResourceCatalog_Intergation")]
@@ -3634,6 +3638,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
         [TestMethod]
         [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(ResourceCatalog))]
@@ -3669,6 +3674,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
         [TestMethod]
         [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(ResourceCatalog))]
