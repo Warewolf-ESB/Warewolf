@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 using Warewolf.Data;
+using WarewolfParserInterop;
 
 namespace Warewolf.Storage.Interfaces
 {
