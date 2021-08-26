@@ -8,6 +8,7 @@ using System.ServiceProcess;
 using System.Threading.Tasks;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Security;
+using Dev2.Common.Wrappers;
 using Dev2.Services.Security;
 using Dev2.Studio.Core;
 using Dev2.Util;
@@ -19,17 +20,19 @@ namespace Dev2.Integration.Tests.Server_Refresh
     public class FreshlyInstalledServerStartupTest
     {
         const string ResourcesBackup = "C:\\programdata\\warewolf\\resources_BACKUP";
+        DirectoryWrapper _directoryWrapper;
         
         [TestInitialize]
         public void Startup()
         {
-            if (Directory.Exists(ResourcesBackup))
+            _directoryWrapper = new DirectoryWrapper();
+            if (_directoryWrapper.Exists(ResourcesBackup))
             {
-                Directory.Delete(ResourcesBackup);
+                _directoryWrapper.Delete(ResourcesBackup, true);
             }
-            if (Directory.Exists(EnvironmentVariables.ResourcePath)) 
+            if (_directoryWrapper.Exists(EnvironmentVariables.ResourcePath)) 
             {
-                Directory.Move(EnvironmentVariables.ResourcePath, ResourcesBackup);
+                _directoryWrapper.Move(EnvironmentVariables.ResourcePath, ResourcesBackup);
             }
             var serverUnderTest = Process.GetProcessesByName("Warewolf Server")[0];
             string exePath;
@@ -42,22 +45,22 @@ namespace Dev2.Integration.Tests.Server_Refresh
                 exePath = Environment.CurrentDirectory;
             }
             var destDirName = Path.Combine(exePath, "Resources");
-            if (!Directory.Exists(destDirName))
+            if (!_directoryWrapper.Exists(destDirName))
             {
-                Directory.Move(Path.Combine(exePath, "Resources - Release", "Resources"), destDirName);
+                _directoryWrapper.Move(Path.Combine(exePath, "Resources - Release", "Resources"), destDirName);
             }
         }
 
         [TestCleanup]
         public void Cleanup()
         {
-            if (Directory.Exists(EnvironmentVariables.ResourcePath))
+            if (_directoryWrapper.Exists(EnvironmentVariables.ResourcePath))
             {
-                Directory.Delete(EnvironmentVariables.ResourcePath, true);
+                _directoryWrapper.Delete(EnvironmentVariables.ResourcePath, true);
             }
-            if (Directory.Exists(ResourcesBackup)) 
+            if (_directoryWrapper.Exists(ResourcesBackup)) 
             {
-                Directory.Move(ResourcesBackup, EnvironmentVariables.ResourcePath);
+                _directoryWrapper.Move(ResourcesBackup, EnvironmentVariables.ResourcePath);
             }
             ExecuteRequest(new Uri("http://localhost:3142/services/FetchExplorerItemsService.json?ReloadResourceCatalogue=true"));
         }

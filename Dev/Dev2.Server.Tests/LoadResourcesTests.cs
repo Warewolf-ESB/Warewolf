@@ -15,6 +15,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.IO;
 using System.Reflection;
+using Dev2.Common.Wrappers;
 
 [assembly: Parallelize(Workers = 0, Scope = ExecutionScope.MethodLevel)]
 namespace Dev2.Server.Tests
@@ -301,13 +302,14 @@ namespace Dev2.Server.Tests
         public void ResourceCatalog_LoadExamplesViaBuilder_DespiteProgramdataResourcesDirectoryNotExisting()
         {
             const string ResourcesBackup = "C:\\programdata\\warewolf\\resources_BACKUP";
-            if (Directory.Exists(ResourcesBackup))
+            var directoryWrapper = new DirectoryWrapper();
+            if (directoryWrapper.Exists(ResourcesBackup))
             {
-                Directory.Delete(ResourcesBackup);
+                directoryWrapper.Delete(ResourcesBackup, true);
             }
-            if (Directory.Exists(EnvironmentVariables.ResourcePath)) 
+            if (directoryWrapper.Exists(EnvironmentVariables.ResourcePath)) 
             {
-                Directory.Move(EnvironmentVariables.ResourcePath, ResourcesBackup);
+                directoryWrapper.Move(EnvironmentVariables.ResourcePath, ResourcesBackup);
             }
             try
             {
@@ -324,15 +326,15 @@ namespace Dev2.Server.Tests
                 //------------------Assert----------------
                 mockResourceCatalog.Verify();
             }
-            catch
+            finally
             {
-                if (Directory.Exists(EnvironmentVariables.ResourcePath))
+                if (directoryWrapper.Exists(EnvironmentVariables.ResourcePath))
                 {
-                    Directory.Delete(EnvironmentVariables.ResourcePath);
+                    directoryWrapper.Delete(EnvironmentVariables.ResourcePath, true);
                 }
-                if (Directory.Exists(ResourcesBackup)) 
+                if (directoryWrapper.Exists(ResourcesBackup)) 
                 {
-                    Directory.Move(ResourcesBackup, EnvironmentVariables.ResourcePath);
+                    directoryWrapper.Move(ResourcesBackup, EnvironmentVariables.ResourcePath);
                 }
             }
         }

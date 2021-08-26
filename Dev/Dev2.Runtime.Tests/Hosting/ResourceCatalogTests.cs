@@ -47,6 +47,7 @@ using Unlimited.Framework.Converters.Graph.Ouput;
 using Warewolf.ResourceManagement;
 using System.Collections.Concurrent;
 using Dev2.Common.Interfaces.Wrappers;
+using Dev2.Common.Wrappers;
 
 namespace Dev2.Tests.Runtime.Hosting
 {
@@ -4056,15 +4057,17 @@ namespace Dev2.Tests.Runtime.Hosting
         public void ResourceCatalog_BuildReleaseExamples_CreateMissingDestinationDirectory()
         {
             const string ResourcesBackup = "C:\\programdata\\warewolf\\resources_BACKUP";
-            if (Directory.Exists(ResourcesBackup))
+            var directoryWrapper = new DirectoryWrapper();
+            if (directoryWrapper.Exists(ResourcesBackup))
             {
-                Directory.Delete(ResourcesBackup);
+                directoryWrapper.Delete(ResourcesBackup, true);
             }
-            if (Directory.Exists(EnvironmentVariables.ResourcePath)) 
+            if (directoryWrapper.Exists(EnvironmentVariables.ResourcePath)) 
             {
-                Directory.Move(EnvironmentVariables.ResourcePath, ResourcesBackup);
+                directoryWrapper.Move(EnvironmentVariables.ResourcePath, ResourcesBackup);
             }
-            try {
+            try 
+            {
                 //------------Setup for test--------------------------
                 var rc = new ResourceCatalogBuilder(ResourceUpgraderFactory.GetUpgrader());
                 //------------Assert Precondition-------------------
@@ -4074,15 +4077,15 @@ namespace Dev2.Tests.Runtime.Hosting
                 //------------Assert Results------------------------
                 Assert.IsTrue(Directory.Exists(EnvironmentVariables.ResourcePath), "Destination directory for deploying release examples was not created.");
             }
-            catch
+            finally
             {
-                if (Directory.Exists(EnvironmentVariables.ResourcePath))
+                if (directoryWrapper.Exists(EnvironmentVariables.ResourcePath))
                 {
-                    Directory.Delete(EnvironmentVariables.ResourcePath);
+                    directoryWrapper.Delete(EnvironmentVariables.ResourcePath, true);
                 }
-                if (Directory.Exists(ResourcesBackup)) 
+                if (directoryWrapper.Exists(ResourcesBackup)) 
                 {
-                    Directory.Move(ResourcesBackup, EnvironmentVariables.ResourcePath);
+                    directoryWrapper.Move(ResourcesBackup, EnvironmentVariables.ResourcePath);
                 }
             }
         }
