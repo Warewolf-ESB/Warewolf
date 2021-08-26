@@ -10,14 +10,14 @@
 
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using Dev2.Communication;
-using Warewolf.Execution;
 
 namespace Warewolf.Driver.Resume
 {
     public interface IResumption
     {
-        ExecuteMessage Resume(Dictionary<string, StringBuilder> values);
-        bool Connect(IExecutionLogPublisher executionLogPublisher);
+        Task<ExecuteMessage> ResumeAsync(Dictionary<string, StringBuilder> values);
+        bool Connect();
     }
 }

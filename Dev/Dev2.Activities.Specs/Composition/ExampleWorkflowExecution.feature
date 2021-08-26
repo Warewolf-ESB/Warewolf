@@ -1,4 +1,4 @@
-﻿Feature: ExampleWorkflowExecution
+Feature: ExampleWorkflowExecution
 	In order to execute an Example Workflow
 	As a Warewolf user
 	I want to be able to build workflows that contain one of the example workflows
@@ -347,7 +347,7 @@ Scenario: Example Executing File and Folder - Unzip
 	  |                        |
 	  | [[Complete]] = Success |
 
-@ExampleWorkflowExecution
+@ExampleFileWriteWorkflowExecution
 Scenario: Example Executing File and Folder - Write File
 	  Given I have a workflow "File and Folder - Write File Test"
 	  And "File and Folder - Write File Test" contains "File and Folder - Write File" from server "localhost" with mapping as

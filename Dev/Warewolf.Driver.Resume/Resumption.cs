@@ -12,53 +12,51 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using Dev2.Common.Utils;
 using Dev2.Communication;
 using Dev2.Network;
 using Dev2.Studio.Interfaces;
-using Dev2.Util;
+using Warewolf.Auditing;
 using Warewolf.Common;
 using Warewolf.Execution;
+using LogLevel = Warewolf.Logging.LogLevel;
 
 namespace Warewolf.Driver.Resume
 {
     public interface IResumptionFactory
     {
-        IResumption New();
+        IResumption New(IExecutionLogPublisher logger);
     }
 
     public class ResumptionFactory : IResumptionFactory
     {
-        public IResumption New()
+        public IResumption New(IExecutionLogPublisher logger)
         {
-            return new Resumption(new ServerProxyFactory(), new ResourceCatalogProxyFactory());
+            return new Resumption(logger, new ServerProxyFactory(), new ResourceCatalogProxyFactory());
         }
     }
 
     public class Resumption : IResumption
     {
-        private Uri _serverEndpoint;
 
-        private IEnvironmentConnection _environmentConnection;
-        private IExecutionLogPublisher _logger;
+        private readonly IExecutionLogPublisher _logger;
         private readonly IServerProxyFactory _serverProxyFactory;
+        private readonly IEnvironmentConnection _environmentConnection;
         private readonly IResourceCatalogProxyFactory _resourceCatalogProxyFactory;
 
-        public Resumption(IServerProxyFactory serverProxyFactory, IResourceCatalogProxyFactory resourceCatalogProxyFactory)
+        public Resumption(IExecutionLogPublisher logger, IServerProxyFactory serverProxyFactory, IResourceCatalogProxyFactory resourceCatalogProxyFactory)
         {
+            _logger = logger;
+            VerifyArgument.IsNotNull(nameof(serverProxyFactory), serverProxyFactory);
+            VerifyArgument.IsNotNull(nameof(resourceCatalogProxyFactory), resourceCatalogProxyFactory);
             _serverProxyFactory = serverProxyFactory;
+            _environmentConnection = _serverProxyFactory.New(ServerEndpoint);
             _resourceCatalogProxyFactory = resourceCatalogProxyFactory;
         }
 
-        private Uri ServerEndpoint
-        {
-            get
-            {
-                _serverEndpoint = new Uri($"https://{System.Net.Dns.GetHostName()}:3143");
-                return _serverEndpoint;
-            }
-        }
+        private Uri ServerEndpoint => new Uri($"https://{System.Net.Dns.GetHostName()}:3143");
 
-        public ExecuteMessage Resume(Dictionary<string, StringBuilder> values)
+        public async Task<ExecuteMessage> ResumeAsync(Dictionary<string, StringBuilder> values)
         {
             values.TryGetValue("resourceID", out var resourceId);
             values.TryGetValue("environment", out var environment);
@@ -66,42 +64,36 @@ namespace Warewolf.Driver.Resume
             values.TryGetValue("versionNumber", out var versionNumber);
             values.TryGetValue("currentuserprincipal", out var currentuserprincipal);
 
-            if (_environmentConnection is null)
+            _logger.LogResumedExecution(new Audit
             {
-                _environmentConnection = _serverProxyFactory.New(ServerEndpoint);
-            }
+                AuditDate = DateTime.Now,
+                WorkflowID = resourceId?.ToString(),
+                Environment = string.Empty,
+                VersionNumber = versionNumber?.ToString(),
+                NextActivityId = startActivityId?.ToString(),
+                AuditType = "LogResumeExecutionState",
+                LogLevel = LogLevel.Info,
+                ExecutingUser = currentuserprincipal?.ToString()
+            });
+
             var resourceCatalogProxy = _resourceCatalogProxyFactory.New(_environmentConnection);
-            var executeMessage = resourceCatalogProxy.ResumeWorkflowExecution(resourceId?.ToString(), environment?.ToString(), startActivityId?.ToString(), versionNumber?.ToString(), currentuserprincipal?.ToString());
-            return executeMessage;
+            var executeMessage = resourceCatalogProxy.ResumeWorkflowExecutionAsync(resourceId.ToString(), environment.ToString(), startActivityId.ToString(), versionNumber.ToString(), currentuserprincipal.ToString());
+            return await executeMessage;
         }
 
-        public bool Connect(IExecutionLogPublisher executionLogPublisher)
+        public bool Connect()
         {
-            try
+            if(_environmentConnection.IsConnected)
+                return true;
+            
+            _logger.Info($"Connecting to server: { ServerEndpoint }...");
+            var connectTask = TryConnectingToWarewolfServer(_environmentConnection);
+            if (connectTask.Result == true)
             {
-                _logger = executionLogPublisher;
-                _logger.Info("Connecting to server: " + ServerEndpoint + "...");
-                _environmentConnection = _serverProxyFactory.New(_serverEndpoint);
-                Task<bool> connectTask = TryConnectingToWarewolfServer(_environmentConnection);
-                if (connectTask.Result is false)
-                {
-                    _logger.Error("Connecting to server: " + _serverEndpoint + "... unsuccessful");
-                    return false;
-                }
-                _logger.Info("Connecting to server: " + _serverEndpoint + "... successful");
+                _logger.Info($"Connecting to server: { ServerEndpoint }... successful");
                 return true;
             }
-            catch (Exception ex)
-            {
-                var exMessage = "Connecting to server: " + _serverEndpoint + "... unsuccessful " + ex.Message;
-                if (ex.InnerException != null)
-                {
-                    exMessage += " " + ex.InnerException.Message;
-                }
-
-                _logger.Error(exMessage);
-                return false;
-            }
+            return false;
         }
 
         private Task<bool> TryConnectingToWarewolfServer(IEnvironmentConnection environmentConnection)
@@ -112,14 +104,9 @@ namespace Warewolf.Driver.Resume
                 connectTask.Wait(600);
                 return connectTask;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                var exMessage = "Connecting to server: " + _serverEndpoint + "... unsuccessful " + ex.Message;
-                if (ex.InnerException != null)
-                {
-                    exMessage += " " + ex.InnerException.Message;
-                }
-                _logger.Error(exMessage);
+                _logger.Error("Connecting to server: " + ServerEndpoint + "... unsuccessful");
                 return Task.FromResult(false);
             }
         }

@@ -16,6 +16,7 @@ using System;
 using System.Security.Principal;
 using System.Text;
 using Dev2.Communication;
+using System.Threading.Tasks;
 
 namespace Warewolf.Common.Framework48.Tests
 {
@@ -47,9 +48,9 @@ namespace Warewolf.Common.Framework48.Tests
         }
 		
         [TestMethod]
-        [Owner("Pieter Terblanche")]
+        [Owner("Siphamandla Dube")]
         [TestCategory(nameof(ResourceCatalogProxy))]
-        public void ResourceCatalogProxy_ResumeWorkflowExecution_Executes()
+        public void ResourceCatalogProxy_ResumeWorkflowExecutionAsync_Executes()
         {
             var executeMessage = new ExecuteMessage
             {
@@ -58,15 +59,15 @@ namespace Warewolf.Common.Framework48.Tests
             var serialize = new Dev2JsonSerializer().Serialize(executeMessage);
 
             var environmentConnection = GetConnection();
-            environmentConnection.Setup(o => o.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder(serialize));
+            environmentConnection.Setup(o => o.ExecuteCommandAsync(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(Task.FromResult(new StringBuilder(serialize)));
 
             var proxy = new ResourceCatalogProxy(environmentConnection.Object);
             const string resourceId = "acb75027-ddeb-47d7-814e-a54c37247ec1";
             const string startActivity = "bd557ca7-113b-4197-afc3-de5d086dfc69";
             const string version = "0";
-            var resource = proxy.ResumeWorkflowExecution(resourceId,"{}",startActivity,version,new Mock<IPrincipal>().Object.ToString());
+            var resource = proxy.ResumeWorkflowExecutionAsync(resourceId,"{}",startActivity,version,new Mock<IPrincipal>().Object.ToString());
 
-            Assert.AreEqual("success", resource.Message.ToString());
+            Assert.AreEqual("success", resource.Result.Message.ToString());
         }
         private static ResourceCatalogProxy GetResourceCatalog()
         {
