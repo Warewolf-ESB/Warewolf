@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Text;
 using Warewolf.Interfaces.Auditing;
 using Warewolf.Logging;
+using Warewolf.Triggers;
 
 namespace Warewolf.Auditing
 {
@@ -21,7 +22,7 @@ namespace Warewolf.Auditing
         public string Type { get; set; }
         public Audit Audit { get; set; }
         public Dictionary<string, StringBuilder> Query { get; set; }
-        public ExecutionHistory ExecutionHistory { get; set; }
+        public IExecutionHistory ExecutionHistory { get; set; }
         public LogEntry LogEntry { get; set; }
     }
 

@@ -11,6 +11,7 @@
 using System;
 using System.Activities;
 using System.Collections.Generic;
+using System.Text;
 using Dev2.Activities.Debug;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Toolbox;
@@ -20,9 +21,12 @@ using Dev2.Data.TO;
 using Dev2.Interfaces;
 using Dev2.Util;
 using Warewolf.Auditing;
+using Warewolf.Common.NetStandard20;
 using Warewolf.Core;
 using Warewolf.Driver.Persistence;
+using Warewolf.Execution;
 using Warewolf.Resource.Errors;
+using Warewolf.Streams;
 
 namespace Dev2.Activities
 {
@@ -34,13 +38,15 @@ namespace Dev2.Activities
         private IStateNotifier _stateNotifier;
         private readonly bool _persistenceEnabled;
         private readonly IPersistenceExecution _scheduler;
+        private readonly IExecutionLogPublisher _logger;
 
         public ManualResumptionActivity()
-            : this(Config.Persistence, new PersistenceExecution())
+            : this(Config.Persistence, new PersistenceExecution(),
+                new ExecutionLogger.ExecutionLoggerFactory().New(new JsonSerializer(), new WebSocketPool()))
         {
         }
 
-        public ManualResumptionActivity(PersistenceSettings config, IPersistenceExecution resumeExecution)
+        public ManualResumptionActivity(PersistenceSettings config, IPersistenceExecution resumeExecution, IExecutionLogPublisher logger)
         {
             DisplayName = "Manual Resumption";
             OverrideDataFunc = new ActivityFunc<string, bool>
@@ -51,6 +57,7 @@ namespace Dev2.Activities
             };
             _persistenceEnabled = config.Enable;
             _scheduler = resumeExecution;
+            _logger = logger;
         }
 
         /// <summary>
@@ -126,11 +133,12 @@ namespace Dev2.Activities
                     throw new Exception(ErrorResource.PersistenceSettingsNoConfigured);
                 }
 
+                _logger.Info("Performing Resume of job {" + suspensionId + "}, connection established.", suspensionId);
+                
                 const string OverrideVariables = "";
                 if (OverrideInputVariables)
                 {
                     var persistedValues = _scheduler.GetPersistedValues(suspensionId);
-
                     if (string.IsNullOrEmpty(persistedValues.SuspendedEnvironment))
                     {
                         throw new Exception(ErrorResource.ManualResumptionSuspensionEnvBlank);

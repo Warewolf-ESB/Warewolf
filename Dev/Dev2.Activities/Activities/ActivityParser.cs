@@ -28,6 +28,13 @@ namespace Dev2.Activities
 {
     public class ActivityParser : IActivityParser
     {
+        public ActivityParser() { }
+
+        public ActivityParser(string notInUse)
+        {
+            //PBI: this added for us with CustomContainer.CreateInstance
+        }
+
         public IDev2Activity Parse(List<IDev2Activity> seenActivities, object flowChart)
         {
             var modelItem = flowChart as ModelItem;
