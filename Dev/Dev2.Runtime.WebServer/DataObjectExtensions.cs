@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -35,6 +35,8 @@ using System.IO;
 using System.Web.UI;
 using Dev2.Data;
 using Dev2.Common.Interfaces.Runtime.Services;
+using Newtonsoft.Json;
+using Dev2.Common.Interfaces.Runtime.WebServer;
 
 namespace Dev2.Runtime.WebServer
 {
@@ -511,12 +513,11 @@ namespace Dev2.Runtime.WebServer
 
         public static DataListFormat RunCoverageAndReturnJSON(this ICoverageDataObject coverageData, ITestCoverageCatalog testCoverageCatalog, ITestCatalog testCatalog, IResourceCatalog catalog, Guid workspaceGuid, Dev2JsonSerializer serializer, out string executePayload)
         {
-            var (allCoverageReports, _) = RunListOfCoverage(coverageData, testCoverageCatalog, testCatalog, workspaceGuid, catalog);
+            var (allCoverageReports, allTestResults) = RunListOfCoverage(coverageData, testCoverageCatalog, testCatalog, workspaceGuid, catalog);
 
             var formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
 
-            var objArray = allCoverageReports.AllCoverageReportsSummary
-                .Where(o => o.HasTestReports)
+            var objArray = allCoverageReports.WithTestReports
                 .Select(o =>
                 {
                     var name = o.Resource.ResourceName;
@@ -533,11 +534,31 @@ namespace Dev2.Runtime.WebServer
                     };
                 });
 
+            var resultCoverageSummaryWriter = new StringWriter();
+            using (var writer = new JsonTextWriter(resultCoverageSummaryWriter))
+            {
+                writer.WriteStartObject();
+                writer.WritePropertyName("TotalCoverage");
+                writer.WriteValueAsync(allCoverageReports.TotalReportsCoverage);
+                writer.WriteEndObject();
+            }
+            
+            var resultSummaryWriter = new StringWriter();
+            using (var writer = new JsonTextWriter(resultSummaryWriter))
+            {
+                allTestResults.Results
+                    .SelectMany(o => o.Results)
+                    .ToList()
+                    .SetupResultSummaryJSON(writer);
+            }
+
             var obj = new JObject
             {
                 {"StartTime", allCoverageReports.StartTime},
                 {"EndTime", allCoverageReports.EndTime},
-                {"Results", new JArray(objArray)},
+                {"CoverageSummary", JToken.Parse(resultCoverageSummaryWriter.ToString()) },
+                {"TestSummary", JToken.Parse(resultSummaryWriter.ToString()) },
+                {"TestResults", new JArray(objArray)},
             };
             executePayload = serializer.Serialize(obj);
             return formatter;
@@ -553,15 +574,14 @@ namespace Dev2.Runtime.WebServer
 
             using (var writer = new HtmlTextWriter(stringWriter))
             {
-                writer.SetupNavBarHtml();
+                writer.SetupNavBarHtml(allCoverageReports.TotalReportsCoverage);
                 
                 allTestResults.Results
                     .SelectMany(o => o.Results)
                     .ToList()
                     .SetupCountSummaryHtml(writer, coverageData);
 
-                allCoverageReports.AllCoverageReportsSummary
-                    .Where(o => o.HasTestReports)
+                allCoverageReports.WithTestReports
                     .ToList()
                     .ForEach(oo =>
                     {

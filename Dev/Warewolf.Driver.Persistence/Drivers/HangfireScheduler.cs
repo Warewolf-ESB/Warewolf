@@ -14,10 +14,13 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Security.Principal;
 using System.Text;
+using System.Transactions;
+using Dev2;
 using Dev2.Common;
 using Dev2.Communication;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.Interfaces;
+using Dev2.Runtime;
 using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Runtime.ServiceModel.Data;
 using Hangfire;
@@ -48,6 +51,14 @@ namespace Warewolf.Driver.Persistence.Drivers
         private readonly JobStorage _jobStorage;
         private readonly IBackgroundJobClient _client;
         private readonly IPersistedValues _persistedValues;
+        
+        private WorkflowResume _workflowResume;
+        private IWarewolfTransactionScopeFactory _transactionScopeFactory;
+        private string _activityParser;
+        private string _resumableExecutionContainer;
+        private const string ACTIVITY_PARSER = "Dev2.Activities.ActivityParser, Dev2.Activities, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null";
+        private const string RESUMABLE_EXECUTION_CONTAINER = "Dev2.Runtime.ESB.Execution.ResumableExecutionContainer, Dev2.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null";
+
 
         [ExcludeFromCodeCoverage]
         public HangfireScheduler()
@@ -55,6 +66,30 @@ namespace Warewolf.Driver.Persistence.Drivers
             _jobStorage = SqlServerStorage();
             _client = new BackgroundJobClient(_jobStorage);
             _persistedValues = new PersistedValues();
+        }
+
+        public WorkflowResume WorkflowResume
+        {
+            get => _workflowResume ?? new WorkflowResume();
+            set => _workflowResume = value;
+        }
+
+        public IWarewolfTransactionScopeFactory TransactionScopeFactory
+        {
+            get => _transactionScopeFactory ?? new WarewolfTransactionScopeFactory();
+            set => _transactionScopeFactory = value;
+        }
+
+        public string ActivityParserTypeString
+        {
+            get => string.IsNullOrEmpty(_activityParser) ? ACTIVITY_PARSER : _activityParser;
+            set => _activityParser = value;
+        }
+
+        public string ResumableExecutionContainerTypeString
+        {
+            get => string.IsNullOrEmpty(_resumableExecutionContainer) ?  RESUMABLE_EXECUTION_CONTAINER : _resumableExecutionContainer;
+            set => _resumableExecutionContainer = value;
         }
 
         [ExcludeFromCodeCoverage]
@@ -328,20 +363,69 @@ namespace Warewolf.Driver.Persistence.Drivers
         }
 
 
-        [ExcludeFromCodeCoverage]
         [AutomaticRetry(Attempts = 0)]
         [DisableConcurrentExecution(timeoutInSeconds: 10 * 60)]
         public string ResumeWorkflow(Dictionary<string, StringBuilder> values, PerformContext context)
         {
             try
             {
-                //This method is intercepted in the HangfireServer Performing method
+                var jobStorage = SqlServerStorage();
+                var client = new BackgroundJobClient(jobStorage);
+
+                var jobId = context.BackgroundJob.Id;
+                var activityParserType = Type.GetType(ActivityParserTypeString);
+                var resumableExecutionContainerType = Type.GetType(ResumableExecutionContainerTypeString);
+
+                CustomContainer.LoadedTypes = new List<Type>(); 
+                CustomContainer.AddToLoadedTypes(activityParserType);
+                CustomContainer.AddToLoadedTypes(resumableExecutionContainerType);
+
+                if (resumableExecutionContainerType == null || activityParserType == null)
+                {
+                    Throw(client, jobId, message: "job {" + jobId + "} failed, one of Warewolf's dependencies were missing", reason: "Execution not run");
+                }
+
+                var activityParserInstance = CustomContainer.CreateInstance<IActivityParser>("just_to_get_a_CTOR_match_DO_NOT_REMOVE");
+                CustomContainer.Register(activityParserInstance);
+
+                try
+                {
+                    using (var ts = TransactionScopeFactory.New(TransactionScopeAsyncFlowOption.Suppress))
+                    {
+                        var result = WorkflowResume.Execute(values, null);
+                        if (result == null)
+                        {
+                            Throw(client, jobId: jobId, message: "job {" + jobId + "} failed to execute in Warewolf, requeue this job manually.", reason: "Execution returned null");
+                        }
+
+                        var serializer = new Dev2JsonSerializer();
+                        var executeMessage = serializer.Deserialize<ExecuteMessage>(result);
+                        if (executeMessage.HasError)
+                        {
+                            Throw(client, jobId: jobId, message: executeMessage.Message?.ToString(), reason: "Execution return exception");
+                        }
+                        ts.Complete();
+                    }
+                }
+                catch (TransactionAbortedException ex)
+                {
+                    //Note: these jobs may not be very safe to resume, but should be failed as they might be incomplete
+                    Throw(client, jobId, message: ex.Message, reason: "Execution return TransactionAbortedException");
+                }
+
                 return GlobalConstants.Success;
             }
             catch (Exception)
             {
                 return GlobalConstants.Failed;
             }
+        }
+
+        private void Throw(IBackgroundJobClient client, string jobId, string message, string reason)
+        {
+            var exception = new Exception(message);
+            _ = _client.ChangeState(jobId, new FailedState(exception) { Reason = reason }, ProcessingState.StateName);
+            throw exception;
         }
 
         [ExcludeFromCodeCoverage]
@@ -388,4 +472,39 @@ namespace Warewolf.Driver.Persistence.Drivers
             return resumptionDate;
         }
     }
+
+    public interface IWarewolfTransactionScopeFactory
+    {
+        ITransactionScopeWrapper New(TransactionScopeAsyncFlowOption scopeAsyncFlowOption);
+    }
+
+    public class WarewolfTransactionScopeFactory : IWarewolfTransactionScopeFactory
+    {
+        public ITransactionScopeWrapper New(TransactionScopeAsyncFlowOption scopeAsyncFlowOption)
+        {
+            return new TransactionScopeWrapper(scopeAsyncFlowOption);
+        }
+    }
+
+    public interface ITransactionScopeWrapper : IDisposable
+    {
+        void Complete();
+    }
+
+    public class TransactionScopeWrapper : ITransactionScopeWrapper
+    {
+        private readonly TransactionScopeAsyncFlowOption _scopeAsyncFlowOption;
+        private readonly TransactionScope _instance;
+
+        public TransactionScopeWrapper(TransactionScopeAsyncFlowOption scopeAsyncFlowOption)
+        {
+            _scopeAsyncFlowOption = scopeAsyncFlowOption;
+            _instance = new TransactionScope(_scopeAsyncFlowOption);
+        }
+
+        public void Complete() => _instance.Complete();
+
+        public void Dispose() => _instance.Dispose();
+    }
+
 }
