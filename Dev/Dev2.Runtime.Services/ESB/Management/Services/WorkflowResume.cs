@@ -92,7 +92,11 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public IResourceCatalog ResourceCatalogInstance
         {
-            get => _resourceCatalog ?? ResourceCatalog.Instance;
+            get
+            {
+                ResourceCatalog.Instance.Reload();
+                return _resourceCatalog ?? ResourceCatalog.Instance; 
+            }
             set => _resourceCatalog = value;
         }
 

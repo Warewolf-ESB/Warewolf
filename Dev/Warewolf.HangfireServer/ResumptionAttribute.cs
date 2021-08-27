@@ -78,17 +78,20 @@ namespace HangfireServer
             _logger.Info("Job {"+ context.BackgroundJob.Id + "} has been performed ");
 
             var backgroundJob = context.BackgroundJob;
+            var result = context.Result?.ToString();
             if (context.Exception != null)
             {
-                LogJobPerfomedOnSchedulerException(backgroundJob, context.Exception, "HasException", context.Result.ToString());
+                LogJobPerfomedOnSchedulerException(backgroundJob, context.Exception, "HasException", result);
+                //PBI: this can be handled better later with the testing, refactor of this class
+                Throw(backgroundJob.Id, context.Exception?.Message, "Resumption service returned Exception");
             }
             if (context.Canceled)
             {
-                LogJobPerfomedOnSchedulerException(backgroundJob, context.Exception, "WasCanceled", context.Result.ToString());
+                LogJobPerfomedOnSchedulerException(backgroundJob, context.Exception, "WasCanceled", result);
             }
             if (context.ExceptionHandled)
             {
-                LogJobPerfomedOnSchedulerException(backgroundJob, context.Exception, "ExceptionHandled", context.Result.ToString());
+                LogJobPerfomedOnSchedulerException(backgroundJob, context.Exception, "ExceptionHandled", result);
             }
 
         }
@@ -140,6 +143,14 @@ namespace HangfireServer
         }
 
         //Note: this can be done better later
+        private void Throw(string jobId, string message, string reason)
+        {
+            var client = new BackgroundJobClient();
+            var exception = new Exception(message);
+            _ = client.ChangeState(jobId, new FailedState(exception) { Reason = reason }, ProcessingState.StateName);
+            throw exception;
+        }
+
         private void LogJobPerfomedOnSchedulerException(BackgroundJob backgroundJob, Exception exception, string schedulerState, string schedulerAdditionalDetail)
         {
             var jobArg = backgroundJob.Job.Args[0];
