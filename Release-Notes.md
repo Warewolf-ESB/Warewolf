@@ -1,3 +1,14 @@
+27 August 2021
+======================
+Bug fixes
+----------
+- General Suspend/Resume tool stability
+- Suspend/Resume tool can handle more suspended executions simultaneously.
+
+Enhancements
+------------
+- Resume execution is now logged into the audit log.
+
 2 August 2021
 ======================
 Bug fixes
