@@ -8,6 +8,7 @@ Bug fixes
 Enhancements
 ------------
 - Resume execution is now logged into the audit log.
+- New values added to coverage JSON output.
 
 2 August 2021
 ======================
