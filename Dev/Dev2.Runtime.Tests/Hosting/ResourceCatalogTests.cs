@@ -4042,7 +4042,7 @@ namespace Dev2.Tests.Runtime.Hosting
         public void ResourceCatalog_TryBuildCatalogFromWorkspace_WithNullFolders_ThrowsException()
         {
             //------------Setup for test--------------------------
-            var rc = new ResourceCatalogBuilder(ResourceUpgraderFactory.GetUpgrader());
+            var rc = new ResourceCatalogBuilder(ResourceUpgraderFactory.GetUpgrader(), new DirectoryWrapper(), new FileWrapper());
             rc.TryBuildCatalogFromWorkspace("some value", null);
         }
 
@@ -4053,49 +4053,35 @@ namespace Dev2.Tests.Runtime.Hosting
         public void ResourceCatalog_BuildReleaseExamples_CannotFindReleaseExamples()
         {
             //------------Setup for test--------------------------
-            var rc = new ResourceCatalogBuilder(ResourceUpgraderFactory.GetUpgrader());
+            var rc = new ResourceCatalogBuilder(ResourceUpgraderFactory.GetUpgrader(), new DirectoryWrapper(), new FileWrapper());
             rc.BuildReleaseExamples("some value");
         }
 
+        //TODO: move this test to ResourceCatalogBuilderTests
         [TestMethod]
-        [DoNotParallelize]
+        [Owner("Siphamandla Dube")]
         [TestCategory("CannotParallelize")]
-        public void ResourceCatalog_BuildReleaseExamples_CreateMissingDestinationDirectory()
+        public void ResourceCatalogBuilder_BuildReleaseExamples_CreateMissingDestinationDirectory()
         {
-            const string ResourcesBackup = "C:\\programdata\\warewolf\\resources_BACKUP";
-            var directoryWrapper = new DirectoryWrapper();
-            if (directoryWrapper.Exists(ResourcesBackup))
-            {
-                directoryWrapper.Delete(ResourcesBackup, true);
-            }
-            if (directoryWrapper.Exists(EnvironmentVariables.ResourcePath)) 
-            {
-                directoryWrapper.Move(EnvironmentVariables.ResourcePath, ResourcesBackup);
-            }
-            try 
-            {
-                //------------Setup for test--------------------------
-                var rc = new ResourceCatalogBuilder(ResourceUpgraderFactory.GetUpgrader());
-                directoryWrapper.CreateIfNotExists("release");
-                //------------Assert Precondition-------------------
-                Assert.IsFalse(Directory.Exists(EnvironmentVariables.ResourcePath), "Failed to prepare for unit test. Cannot delete directory: \"" + EnvironmentVariables.ResourcePath + "\"");
-                Assert.IsTrue(directoryWrapper.Exists("release"));
-                //------------Execute Test--------------------------
-                rc.BuildReleaseExamples("release");
-                //------------Assert Results------------------------
-                Assert.IsTrue(Directory.Exists(EnvironmentVariables.ResourcePath), "Destination directory for deploying release examples was not created.");
-            }
-            finally
-            {
-                if (directoryWrapper.Exists(EnvironmentVariables.ResourcePath))
-                {
-                    directoryWrapper.Delete(EnvironmentVariables.ResourcePath, true);
-                }
-                if (directoryWrapper.Exists(ResourcesBackup)) 
-                {
-                    directoryWrapper.Move(ResourcesBackup, EnvironmentVariables.ResourcePath);
-                }
-            }
+            var resourcePath = EnvironmentVariables.ResourcePath;
+
+            var mockDirectory = new Mock<IDirectory>();
+            mockDirectory.Setup(o => o.Exists(resourcePath))
+                .Returns(false);
+            mockDirectory.Setup(o => o.EnumerateDirectories(resourcePath, "*", SearchOption.AllDirectories))
+                .Returns(new List<string> { "item_one", "item_two" });
+
+            //------------Setup for test--------------------------
+            var rc = new ResourceCatalogBuilder(ResourceUpgraderFactory.GetUpgrader(), mockDirectory.Object, new FileWrapper());
+            //------------Assert Precondition-------------------
+            //------------Execute Test--------------------------
+            rc.BuildReleaseExamples("release");
+            //------------Assert Results------------------------
+            mockDirectory.Verify(o => o.Exists(@"C:\ProgramData\Warewolf\Resources"), Times.Once);
+            mockDirectory.Verify(o => o.CreateDirectory(@"C:\ProgramData\Warewolf\Resources"), Times.Once);
+            mockDirectory.Verify(o => o.EnumerateDirectories(@"C:\ProgramData\Warewolf\Resources", "*", SearchOption.AllDirectories), Times.Once);
+            mockDirectory.Verify(o => o.EnumerateDirectories("release", "*", SearchOption.AllDirectories), Times.Once);
+           
         }
 
         class ResourceSaveProviderMock : ResourceSaveProvider

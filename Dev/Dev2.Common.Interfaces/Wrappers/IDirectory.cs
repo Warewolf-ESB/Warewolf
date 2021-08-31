@@ -39,6 +39,7 @@ namespace Dev2.Common.Interfaces.Wrappers
         IEnumerable<string> EnumerateFileSystemEntries(string path);
         IEnumerable<string> EnumerateDirectories(string path);
         IEnumerable<string> EnumerateDirectories(string path, string pattern);
+        IEnumerable<string> EnumerateDirectories(string path, string pattern, SearchOption searchOption);
         IEnumerable<string> EnumerateFiles(string path, string pattern);
         IEnumerable<string> EnumerateFileSystemEntries(string path, string pattern);
         IEnumerable<string> GetFilesByExtensions(string path, params string[] extensions);
