@@ -16,28 +16,23 @@ using Hangfire;
 using Hangfire.Client;
 using Hangfire.Common;
 using Hangfire.Logging;
-using Hangfire.Server;
 using Hangfire.States;
 using Hangfire.Storage;
 using Warewolf.Auditing;
-using Warewolf.Driver.Resume;
 using Warewolf.Execution;
-using Warewolf.HangfireServer;
 
 namespace HangfireServer
 {
     // TODO: Refactor Hangfire implementations into separate wrappers.
     // TODO: All these methods should be tested
-    public class ResumptionAttribute : JobFilterAttribute, IClientFilter, IServerFilter, IElectStateFilter, IApplyStateFilter
+    public class ResumptionAttribute : JobFilterAttribute, IClientFilter, IElectStateFilter, IApplyStateFilter
     {
         private static readonly ILog _hangfireLogger = LogProvider.GetCurrentClassLogger();
         private readonly IExecutionLogPublisher _logger;
-        private readonly IResumptionFactory _resumptionFactory;
         
-        public ResumptionAttribute(IExecutionLogPublisher logger, IResumptionFactory resumptionFactory)
+        public ResumptionAttribute(IExecutionLogPublisher logger)
         {
             _logger = logger;
-            _resumptionFactory = resumptionFactory;
         }
 
         public void OnCreating(CreatingContext context)
@@ -53,47 +48,6 @@ namespace HangfireServer
                 context.Job.Method.Name,
                 context.BackgroundJob?.Id);
             _logger.Info("Job that is based on method {"+ context.Job.Method.Name + "} has been created with id {"+ context.BackgroundJob?.Id + "}");
-        }
-
-        public void OnPerforming(PerformingContext context)
-        {
-            if (context is null)
-            {
-                _logger.Error("Failed to perform jobPerformingContext is null");
-                return;
-            }
-
-            //OnPerformResume(context);
-        }
-
-        public void OnPerformResume(PerformingContext context)
-        {
-            var resumeWorkflow = new WarewolfResumeWorkflow(_logger, context, _resumptionFactory);
-            resumeWorkflow.PerformResumptionAsync();
-        }
-
-        public void OnPerformed(PerformedContext context)
-        {
-            _hangfireLogger.InfoFormat("Job {0} has been performed", context.BackgroundJob.Id);
-            _logger.Info("Job {"+ context.BackgroundJob.Id + "} has been performed ");
-
-            var backgroundJob = context.BackgroundJob;
-            var result = context.Result?.ToString();
-            if (context.Exception != null)
-            {
-                LogJobPerfomedOnSchedulerException(backgroundJob, context.Exception, "HasException", result);
-                //PBI: this can be handled better later with the testing, refactor of this class
-                Throw(backgroundJob.Id, context.Exception?.Message, "Resumption service returned Exception");
-            }
-            if (context.Canceled)
-            {
-                LogJobPerfomedOnSchedulerException(backgroundJob, context.Exception, "WasCanceled", result);
-            }
-            if (context.ExceptionHandled)
-            {
-                LogJobPerfomedOnSchedulerException(backgroundJob, context.Exception, "ExceptionHandled", result);
-            }
-
         }
 
         public void OnStateElection(ElectStateContext context)
