@@ -307,7 +307,7 @@ namespace Dev2.Server.Tests
             var mockResourceCatalogFactory = new Mock<IResourceCatalogFactory>();
             mockDirectory.Setup(o => o.Exists(EnvironmentVariables.ResourcePath)).Returns(true);
             mockResourceCatalogFactory.Setup(o => o.New()).Returns(mockResourceCatalog.Object);
-            mockResourceCatalog.Setup(o => o.LoadExamplesViaBuilder(Path.Combine(EnvironmentVariables.ApplicationPath, "Resources - ServerTests"))).Verifiable();
+            mockResourceCatalog.Setup(o => o.LoadExamplesViaBuilder(It.IsAny<string>())).Verifiable();
             //------------------Act-------------------
             var loadResources =  new LoadResources("Resources - ServerTests", new Mock<IWriter>().Object, mockDirectory.Object, mockResourceCatalogFactory.Object);
             loadResources.CheckExampleResources();
