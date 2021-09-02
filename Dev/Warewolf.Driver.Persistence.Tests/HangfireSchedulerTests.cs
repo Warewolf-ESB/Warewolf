@@ -846,9 +846,8 @@ namespace Warewolf.Driver.Drivers.HangfireScheduler.Tests
 
             var contextMock = new PerformContextMock("11", values);
 
-            var result = sut.ResumeWorkflow(values, contextMock.Object);
-            Assert.AreEqual(GlobalConstants.Failed, result);
-
+            Assert.ThrowsException<Exception>(()=> sut.ResumeWorkflow(values, contextMock.Object), "startActivityId is not a valid GUID.");
+            
             mockBackgroundJobClient.Verify(o => o.ChangeState("11", It.IsAny<FailedState>(), "Processing"));
         }
 
@@ -877,9 +876,8 @@ namespace Warewolf.Driver.Drivers.HangfireScheduler.Tests
 
             var contextMock = new PerformContextMock("11", values);
 
-            var result = sut.ResumeWorkflow(values, contextMock.Object);
-            Assert.AreEqual(GlobalConstants.Failed, result);
-
+            Assert.ThrowsException<Exception>(()=> sut.ResumeWorkflow(values, contextMock.Object), "job {11} failed, one of Warewolf's dependencies were missing");
+            
             mockBackgroundJobClient.Verify(o => o.ChangeState("11", It.IsAny<FailedState>(), "Processing"));
         }
 
@@ -908,9 +906,8 @@ namespace Warewolf.Driver.Drivers.HangfireScheduler.Tests
 
             var contextMock = new PerformContextMock("11", values);
 
-            var result = sut.ResumeWorkflow(values, contextMock.Object);
-            Assert.AreEqual(GlobalConstants.Failed, result);
-
+            Assert.ThrowsException<Exception>(()=> sut.ResumeWorkflow(values, contextMock.Object), "job {11} failed, one of Warewolf's dependencies were missing");
+            
             mockBackgroundJobClient.Verify(o => o.ChangeState("11", It.IsAny<FailedState>(), "Processing"));
         }
 
@@ -943,11 +940,10 @@ namespace Warewolf.Driver.Drivers.HangfireScheduler.Tests
 
             var contextMock = new PerformContextMock("11", values);
 
-            var result = sut.ResumeWorkflow(values, contextMock.Object);
-            Assert.AreEqual(GlobalConstants.Failed, result);
+            Assert.ThrowsException<Exception>(()=> sut.ResumeWorkflow(values, contextMock.Object), "test transaction threat failed");
 
-            mockBackgroundJobClient.Verify(o => o.ChangeState("11", It.IsAny<FailedState>(), "Processing"));
             mockWarewolfTransactionScopeFactory.Verify(o => o.New(TransactionScopeAsyncFlowOption.Suppress), Times.Once);
+            mockBackgroundJobClient.Verify(o => o.ChangeState("11", It.IsAny<FailedState>(), "Processing"), Times.Once);
         }
 
         [TestMethod]
@@ -960,8 +956,6 @@ namespace Warewolf.Driver.Drivers.HangfireScheduler.Tests
             var mockPersistedValues = new Mock<IPersistedValues>();
             var mockWarewolfTransactionScopeFactory = new Mock<IWarewolfTransactionScopeFactory>();
             var mockTransactionScopeWrapper = new Mock<ITransactionScopeWrapper>();
-            /*mockTransactionScopeWrapper.Setup(o => o.Instance)
-                .Returns();*/
 
             mockWarewolfTransactionScopeFactory.Setup(o => o.New(TransactionScopeAsyncFlowOption.Suppress))
                 .Returns(mockTransactionScopeWrapper.Object);
