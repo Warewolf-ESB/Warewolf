@@ -299,6 +299,7 @@ namespace Dev2.Runtime.ESB.Execution
 
                     if (dsfDataObject.StopExecution)
                     {
+                        dsfDataObject.StopExecution = false; //Reset stop execution value. This is required if there are sub activities that need to be run (For Each loop)
                         if (dsfDataObject.Environment.FetchErrors().Length > 1)
                         {
                             dsfDataObject.ExecutionException = new Exception(dsfDataObject.Environment.FetchErrors());

@@ -208,6 +208,32 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             //--------------Assert-------------------------------
             Assert.IsNull(dataObjectMock.Object.ExecutionException);
         }
+        
+        [TestMethod]
+        [Owner("Njabulo Nxele")]
+        [TestCategory(nameof(WfExecutionContainer))]
+        public void WfExecutionContainer_ExecuteNode_StopExecutionResetToFalse()
+        {
+            //--------------Arrange------------------------------
+            var dataObjectMock = new Mock<IDSFDataObject>();
+            var workSpaceMock = new Mock<IWorkspace>();
+            var esbChannelMock = new Mock<IEsbChannel>();
+            var executionEnvironment = new Mock<ExecutionEnvironment>();
+            var serviceAction = new ServiceAction();
+
+
+            dataObjectMock.SetupAllProperties();
+            dataObjectMock.SetupGet(o => o.Environment).Returns(executionEnvironment.Object);
+
+            dataObjectMock.Object.StopExecution = true;
+            var wfExecutionContainer = new WfExecutionContainer(serviceAction, dataObjectMock.Object, workSpaceMock.Object, esbChannelMock.Object);
+
+            //--------------Act----------------------------------
+            wfExecutionContainer.Eval(FlowchartProcess, dataObjectMock.Object, 0);
+
+            //--------------Assert-------------------------------
+            Assert.IsFalse(dataObjectMock.Object.StopExecution);
+        }
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
