@@ -299,44 +299,20 @@ namespace Dev2.Server.Tests
         [TestMethod]
         [DoNotParallelize]
         [TestCategory("CannotParallelize")]
-        public void ResourceCatalog_LoadExamplesViaBuilder_DespiteProgramdataResourcesDirectoryNotExisting()
+        public void ResourceCatalog_LoadExamplesViaBuilder_ResourcesDirectoryDoesNotExist()
         {
-            const string ResourcesBackup = "C:\\programdata\\warewolf\\resources_BACKUP";
-            var directoryWrapper = new DirectoryWrapper();
-            if (directoryWrapper.Exists(ResourcesBackup))
-            {
-                directoryWrapper.Delete(ResourcesBackup, true);
-            }
-            if (directoryWrapper.Exists(EnvironmentVariables.ResourcePath)) 
-            {
-                directoryWrapper.Move(EnvironmentVariables.ResourcePath, ResourcesBackup);
-            }
-            try
-            {
-                //------------------Arrange---------------
-                var mockDirectory = new Mock<IDirectory>();
-                var mockResourceCatalog = new Mock<IResourceCatalog>();
-                var mockResourceCatalogFactory = new Mock<IResourceCatalogFactory>();
-                mockDirectory.Setup(o => o.Exists(It.IsAny<string>())).Returns(true);
-                mockResourceCatalogFactory.Setup(o => o.New()).Returns(mockResourceCatalog.Object);
-                mockResourceCatalog.Setup(o => o.LoadExamplesViaBuilder(It.IsAny<string>())).Verifiable();
-                //------------------Act-------------------
-                var loadResources =  new LoadResources("Resources - ServerTests", new Mock<IWriter>().Object, mockDirectory.Object, mockResourceCatalogFactory.Object);
-                loadResources.CheckExampleResources();
-                //------------------Assert----------------
-                mockResourceCatalog.Verify();
-            }
-            finally
-            {
-                if (directoryWrapper.Exists(EnvironmentVariables.ResourcePath))
-                {
-                    directoryWrapper.Delete(EnvironmentVariables.ResourcePath, true);
-                }
-                if (directoryWrapper.Exists(ResourcesBackup)) 
-                {
-                    directoryWrapper.Move(ResourcesBackup, EnvironmentVariables.ResourcePath);
-                }
-            }
+            //------------------Arrange---------------
+            var mockDirectory = new Mock<IDirectory>();
+            var mockResourceCatalog = new Mock<IResourceCatalog>();
+            var mockResourceCatalogFactory = new Mock<IResourceCatalogFactory>();
+            mockDirectory.Setup(o => o.Exists(EnvironmentVariables.ResourcePath)).Returns(true);
+            mockResourceCatalogFactory.Setup(o => o.New()).Returns(mockResourceCatalog.Object);
+            mockResourceCatalog.Setup(o => o.LoadExamplesViaBuilder(Path.Combine(EnvironmentVariables.ApplicationPath, "Resources - ServerTests"))).Verifiable();
+            //------------------Act-------------------
+            var loadResources =  new LoadResources("Resources - ServerTests", new Mock<IWriter>().Object, mockDirectory.Object, mockResourceCatalogFactory.Object);
+            loadResources.CheckExampleResources();
+            //------------------Assert----------------
+            mockResourceCatalog.Verify();
         }
     }
 }
