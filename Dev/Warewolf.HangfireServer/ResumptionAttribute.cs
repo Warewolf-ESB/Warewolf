@@ -16,6 +16,7 @@ using Hangfire;
 using Hangfire.Client;
 using Hangfire.Common;
 using Hangfire.Logging;
+using Hangfire.Server;
 using Hangfire.States;
 using Hangfire.Storage;
 using Warewolf.Auditing;
@@ -25,20 +26,21 @@ namespace HangfireServer
 {
     // TODO: Refactor Hangfire implementations into separate wrappers.
     // TODO: All these methods should be tested
-    public class ResumptionAttribute : JobFilterAttribute, IClientFilter, IElectStateFilter, IApplyStateFilter
+    public class ResumptionAttribute : JobFilterAttribute, IClientFilter, IServerFilter, IElectStateFilter, IApplyStateFilter
     {
         private static readonly ILog _hangfireLogger = LogProvider.GetCurrentClassLogger();
         private readonly IExecutionLogPublisher _logger;
-        
+
         public ResumptionAttribute(IExecutionLogPublisher logger)
         {
             _logger = logger;
+
         }
 
         public void OnCreating(CreatingContext context)
         {
             _hangfireLogger.InfoFormat("Creating a job based on method {0}...", context.Job.Method.Name);
-            _logger.Info("Creating a job based on method {"+ context.Job.Method.Name + "}...");
+            _logger.Info("Creating a job based on method {" + context.Job.Method.Name + "}...");
         }
 
         public void OnCreated(CreatedContext context)
@@ -47,7 +49,40 @@ namespace HangfireServer
                 "Job that is based on method {0} has been created with id {1}",
                 context.Job.Method.Name,
                 context.BackgroundJob?.Id);
-            _logger.Info("Job that is based on method {"+ context.Job.Method.Name + "} has been created with id {"+ context.BackgroundJob?.Id + "}");
+            _logger.Info("Job that is based on method {" + context.Job.Method.Name + "} has been created with id {" + context.BackgroundJob?.Id + "}");
+        }
+
+        public void OnPerforming(PerformingContext context)
+        {
+            if (context is null)
+            {
+                _logger.Error("Failed to perform jobPerformingContext is null");
+                return;
+            }
+        }
+
+        public void OnPerformed(PerformedContext context)
+        {
+            _hangfireLogger.InfoFormat("Job {0} has been performed", context.BackgroundJob.Id);
+            _logger.Info("Job {" + context.BackgroundJob.Id + "} has been performed ");
+
+            var backgroundJob = context.BackgroundJob;
+            var result = context.Result?.ToString();
+            if (context.Exception != null)
+            {
+                LogJobPerfomedOnSchedulerException(backgroundJob, context.Exception, "HasException", result);
+                //PBI: this can be handled better later with the testing, refactor of this class
+                Throw(backgroundJob.Id, context.Exception?.Message, "Resumption service returned Exception");
+            }
+            if (context.Canceled)
+            {
+                LogJobPerfomedOnSchedulerException(backgroundJob, context.Exception, "WasCanceled", result);
+            }
+            if (context.ExceptionHandled)
+            {
+                LogJobPerfomedOnSchedulerException(backgroundJob, context.Exception, "ExceptionHandled", result);
+            }
+
         }
 
         public void OnStateElection(ElectStateContext context)
@@ -59,18 +94,18 @@ namespace HangfireServer
                     context.BackgroundJob.Id,
                     failedState.Exception);
                 _logger.Warn("Job {" + context.BackgroundJob.Id + "} has been failed due to an exception {" + failedState.Exception + "}");
-                
+
                 if (IsReapiting(context.TraversedStates, "Failed"))
                 {
                     LogJobPerfomedOnSchedulerException(context.BackgroundJob, failedState.Exception, context.CandidateState.ToString(), context.TraversedStates.ToString());
                     _logger.Warn("Job {" + context.BackgroundJob.Id + "} has been failed before and again now due to {" + failedState.Exception + "}, TraversedStates: {" + context.TraversedStates.ToString() + "}");
                 }
             }
-            
+
             if (IsReapiting(context.TraversedStates, "Enqueued"))
             {
                 LogJobPerfomedOnSchedulerException(context.BackgroundJob, null, context.CandidateState.ToString(), context.TraversedStates.ToString());
-                _logger.Warn("Job {" + context.BackgroundJob.Id + "} has been enqueued before and again now due to {" + context.CandidateState.Reason + "}, TraversedStates: {"+ context.TraversedStates.ToString() +"}");
+                _logger.Warn("Job {" + context.BackgroundJob.Id + "} has been enqueued before and again now due to {" + context.CandidateState.Reason + "}, TraversedStates: {" + context.TraversedStates.ToString() + "}");
             }
 
         }
@@ -83,7 +118,7 @@ namespace HangfireServer
                 context.OldStateName,
                 context.NewState.Name);
 
-            _logger.Info("Job {"+ context.BackgroundJob.Id + "} state was changed from {"+ context.OldStateName + "} to {"+ context.NewState.Name + "}");
+            _logger.Info("Job {" + context.BackgroundJob.Id + "} state was changed from {" + context.OldStateName + "} to {" + context.NewState.Name + "}");
         }
 
         public void OnStateUnapplied(ApplyStateContext context, IWriteOnlyTransaction transaction)
@@ -93,7 +128,7 @@ namespace HangfireServer
                 context.BackgroundJob.Id,
                 context.OldStateName);
 
-            _logger.Warn("Job {"+ context.BackgroundJob.Id + "} state {"+ context.OldStateName + "} was not applied.");
+            _logger.Warn("Job {" + context.BackgroundJob.Id + "} state {" + context.OldStateName + "} was not applied.");
         }
 
         //Note: this can be done better later
