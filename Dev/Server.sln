@@ -177,6 +177,10 @@ ProjectSection(SolutionItems) = preProject
 	.run\Studio.run.xml = .run\Studio.run.xml
 EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Driver.Resume", "Warewolf.Driver.Resume\Warewolf.Driver.Resume.csproj", "{1B79863D-8E08-4EBF-8CDB-4B5069E47833}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Driver.Resume.Tests", "Warewolf.Driver.Resume.Tests\Warewolf.Driver.Resume.Tests.csproj", "{AEB840C3-C7FE-4EE0-89AB-A31E29F190B3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -758,6 +762,22 @@ Global
 		{0854EEF7-0DC3-45D7-9C81-DF5B44FCE9C1}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0854EEF7-0DC3-45D7-9C81-DF5B44FCE9C1}.Release|x86.ActiveCfg = Release|Any CPU
 		{0854EEF7-0DC3-45D7-9C81-DF5B44FCE9C1}.Release|x86.Build.0 = Release|Any CPU
+		{1B79863D-8E08-4EBF-8CDB-4B5069E47833}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B79863D-8E08-4EBF-8CDB-4B5069E47833}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B79863D-8E08-4EBF-8CDB-4B5069E47833}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1B79863D-8E08-4EBF-8CDB-4B5069E47833}.Debug|x86.Build.0 = Debug|Any CPU
+		{1B79863D-8E08-4EBF-8CDB-4B5069E47833}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B79863D-8E08-4EBF-8CDB-4B5069E47833}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B79863D-8E08-4EBF-8CDB-4B5069E47833}.Release|x86.ActiveCfg = Release|Any CPU
+		{1B79863D-8E08-4EBF-8CDB-4B5069E47833}.Release|x86.Build.0 = Release|Any CPU
+		{AEB840C3-C7FE-4EE0-89AB-A31E29F190B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AEB840C3-C7FE-4EE0-89AB-A31E29F190B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AEB840C3-C7FE-4EE0-89AB-A31E29F190B3}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{AEB840C3-C7FE-4EE0-89AB-A31E29F190B3}.Debug|x86.Build.0 = Debug|Any CPU
+		{AEB840C3-C7FE-4EE0-89AB-A31E29F190B3}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{AEB840C3-C7FE-4EE0-89AB-A31E29F190B3}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{AEB840C3-C7FE-4EE0-89AB-A31E29F190B3}.Release|x86.ActiveCfg = Debug|Any CPU
+		{AEB840C3-C7FE-4EE0-89AB-A31E29F190B3}.Release|x86.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
