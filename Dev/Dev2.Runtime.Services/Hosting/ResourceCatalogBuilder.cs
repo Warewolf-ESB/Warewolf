@@ -43,12 +43,24 @@ namespace Dev2.Runtime.Hosting
         readonly HashSet<Guid> _addedResources = new HashSet<Guid>();
         readonly IResourceUpgrader _resourceUpgrader;
         readonly List<DuplicateResource> _duplicateResources = new List<DuplicateResource>();
+        readonly IDirectory _directoryWrapper;
+        readonly FileWrapper _fileWrapper;
         readonly object _addLock = new object();
         readonly List<string> _convertToBiteExtension = new List<string>();
 
-        public ResourceCatalogBuilder(IResourceUpgrader resourceUpgrader) => _resourceUpgrader = resourceUpgrader;
+        public ResourceCatalogBuilder(IResourceUpgrader resourceUpgrader, IDirectory directoryWrapper, FileWrapper fileWrapper)
+        {
+            _resourceUpgrader = resourceUpgrader;
+            _directoryWrapper = directoryWrapper;
+            _fileWrapper = fileWrapper;
+        }
 
-        public ResourceCatalogBuilder() => _resourceUpgrader = ResourceUpgraderFactory.GetUpgrader();
+        public ResourceCatalogBuilder()
+        {
+            _resourceUpgrader = ResourceUpgraderFactory.GetUpgrader();
+            _directoryWrapper = new DirectoryWrapper();
+            _fileWrapper = new FileWrapper();
+        }
 
         public IList<IResource> ResourceList => _resources;
         public List<DuplicateResource> DuplicateResources => _duplicateResources;
@@ -120,12 +132,17 @@ namespace Dev2.Runtime.Hosting
         public void BuildReleaseExamples(string releasePath)
         {
             var programDataBuilders = new List<ResourceBuilderTO>();
+            var resourcePath = EnvironmentVariables.ResourcePath;
 
-            var resourcesFolders = Directory.EnumerateDirectories(EnvironmentVariables.ResourcePath, "*", SearchOption.AllDirectories);
+            if (!_directoryWrapper.Exists(resourcePath))
+            {
+                _directoryWrapper.CreateDirectory(resourcePath);
+            } 
+            var resourcesFolders = _directoryWrapper.EnumerateDirectories(resourcePath, "*", SearchOption.AllDirectories);
             var allResourcesFolders = resourcesFolders.ToList();
-            allResourcesFolders.Add(EnvironmentVariables.ResourcePath);
+            allResourcesFolders.Add(resourcePath);
 
-            BuildStream(EnvironmentVariables.ResourcePath, allResourcesFolders.ToArray(), programDataBuilders);
+            BuildStream(resourcePath, allResourcesFolders.ToArray(), programDataBuilders);
 
             // get all installed resource ids in ProgramData
             var programDataIds = programDataBuilders.Select(currentItem =>
@@ -145,7 +162,7 @@ namespace Dev2.Runtime.Hosting
             .Where(o => o != null) // ignore files with no id
             .OrderBy(o => o).ToArray(); // cache installed ids in array
 
-            var releaseFolders = Directory.EnumerateDirectories(releasePath, "*", SearchOption.AllDirectories);
+            var releaseFolders = _directoryWrapper.EnumerateDirectories(releasePath, "*", SearchOption.AllDirectories);
             var allReleaseFolders = releaseFolders.ToList();
             allReleaseFolders.Add(releasePath);
 
@@ -153,7 +170,7 @@ namespace Dev2.Runtime.Hosting
 
             BuildStream(releasePath, allReleaseFolders.ToArray(), programFilesBuilders);
 
-            var foundMissingResources = CopyMissingResources(programDataIds, programFilesBuilders, new DirectoryWrapper(), new FileWrapper());
+            var foundMissingResources = CopyMissingResources(programDataIds, programFilesBuilders, _directoryWrapper, _fileWrapper);
             foreach (var builderTO in programDataBuilders.Concat(programFilesBuilders))
             {
                 builderTO._fileStream.Close();
