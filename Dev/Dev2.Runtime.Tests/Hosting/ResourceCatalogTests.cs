@@ -47,6 +47,7 @@ using Unlimited.Framework.Converters.Graph.Ouput;
 using Warewolf.ResourceManagement;
 using System.Collections.Concurrent;
 using Dev2.Common.Interfaces.Wrappers;
+using Dev2.Common.Wrappers;
 
 namespace Dev2.Tests.Runtime.Hosting
 {
@@ -4041,7 +4042,7 @@ namespace Dev2.Tests.Runtime.Hosting
         public void ResourceCatalog_TryBuildCatalogFromWorkspace_WithNullFolders_ThrowsException()
         {
             //------------Setup for test--------------------------
-            var rc = new ResourceCatalogBuilder(ResourceUpgraderFactory.GetUpgrader());
+            var rc = new ResourceCatalogBuilder(ResourceUpgraderFactory.GetUpgrader(), new DirectoryWrapper(), new FileWrapper());
             rc.TryBuildCatalogFromWorkspace("some value", null);
         }
 
@@ -4049,11 +4050,38 @@ namespace Dev2.Tests.Runtime.Hosting
         [ExpectedException(typeof(DirectoryNotFoundException))]
         [DoNotParallelize]
         [TestCategory("CannotParallelize")]
-        public void ResourceCatalog_BuildReleaseExamples()
+        public void ResourceCatalog_BuildReleaseExamples_CannotFindReleaseExamples()
         {
             //------------Setup for test--------------------------
-            var rc = new ResourceCatalogBuilder(ResourceUpgraderFactory.GetUpgrader());
+            var rc = new ResourceCatalogBuilder(ResourceUpgraderFactory.GetUpgrader(), new DirectoryWrapper(), new FileWrapper());
             rc.BuildReleaseExamples("some value");
+        }
+
+        //TODO: move this test to ResourceCatalogBuilderTests
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory("CannotParallelize")]
+        public void ResourceCatalogBuilder_BuildReleaseExamples_CreateMissingDestinationDirectory()
+        {
+            var resourcePath = EnvironmentVariables.ResourcePath;
+
+            var mockDirectory = new Mock<IDirectory>();
+            mockDirectory.Setup(o => o.Exists(resourcePath))
+                .Returns(false);
+            mockDirectory.Setup(o => o.EnumerateDirectories(resourcePath, "*", SearchOption.AllDirectories))
+                .Returns(new List<string> { "item_one", "item_two" });
+
+            //------------Setup for test--------------------------
+            var rc = new ResourceCatalogBuilder(ResourceUpgraderFactory.GetUpgrader(), mockDirectory.Object, new FileWrapper());
+            //------------Assert Precondition-------------------
+            //------------Execute Test--------------------------
+            rc.BuildReleaseExamples("release");
+            //------------Assert Results------------------------
+            mockDirectory.Verify(o => o.Exists(@"C:\ProgramData\Warewolf\Resources"), Times.Once);
+            mockDirectory.Verify(o => o.CreateDirectory(@"C:\ProgramData\Warewolf\Resources"), Times.Once);
+            mockDirectory.Verify(o => o.EnumerateDirectories(@"C:\ProgramData\Warewolf\Resources", "*", SearchOption.AllDirectories), Times.Once);
+            mockDirectory.Verify(o => o.EnumerateDirectories("release", "*", SearchOption.AllDirectories), Times.Once);
+           
         }
 
         class ResourceSaveProviderMock : ResourceSaveProvider

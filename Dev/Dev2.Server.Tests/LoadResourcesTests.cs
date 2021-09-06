@@ -15,6 +15,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.IO;
 using System.Reflection;
+using Dev2.Common.Wrappers;
 
 [assembly: Parallelize(Workers = 0, Scope = ExecutionScope.MethodLevel)]
 namespace Dev2.Server.Tests
@@ -274,7 +275,7 @@ namespace Dev2.Server.Tests
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(LoadResources))]
-        public void LoadResources_MigrateOldTests_DirecotoryExists_False()
+        public void LoadResources_MigrateOldTests_DirectoryExists_False()
         {
             //------------------Arrange---------------
             const string resourceDirectory = "Resources - ServerTests";
@@ -293,6 +294,25 @@ namespace Dev2.Server.Tests
             //------------------Assert----------------
             mockDirectory.Verify(o => o.Copy(It.IsAny<string>(), It.IsAny<string>(), true), Times.Once);
             mockDirectory.Verify(o => o.CleanUp(It.IsAny<string>()), Times.Once);
+        }
+
+        [TestMethod]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
+        public void ResourceCatalog_LoadExamplesViaBuilder_ResourcesDirectoryDoesNotExist()
+        {
+            //------------------Arrange---------------
+            var mockDirectory = new Mock<IDirectory>();
+            var mockResourceCatalog = new Mock<IResourceCatalog>();
+            var mockResourceCatalogFactory = new Mock<IResourceCatalogFactory>();
+            mockDirectory.Setup(o => o.Exists(Path.Combine(EnvironmentVariables.ApplicationPath, "Resources - Release"))).Returns(true);
+            mockResourceCatalogFactory.Setup(o => o.New()).Returns(mockResourceCatalog.Object);
+            mockResourceCatalog.Setup(o => o.LoadExamplesViaBuilder(Path.Combine(EnvironmentVariables.ApplicationPath, "Resources - Release"))).Verifiable();
+            //------------------Act-------------------
+            var loadResources =  new LoadResources("Resources - Release", new Mock<IWriter>().Object, mockDirectory.Object, mockResourceCatalogFactory.Object);
+            loadResources.CheckExampleResources();
+            //------------------Assert----------------
+            mockResourceCatalog.Verify();
         }
     }
 }

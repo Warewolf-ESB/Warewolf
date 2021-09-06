@@ -60,7 +60,7 @@ namespace Dev2
         public void CheckExampleResources()
         {
             var serverReleaseResources = Path.Combine(EnvironmentVariables.ApplicationPath, _resourceDirectory);
-            if (_directory.Exists(EnvironmentVariables.ResourcePath) && _directory.Exists(serverReleaseResources))
+            if (_directory.Exists(serverReleaseResources))
             {
                 _catalog.LoadExamplesViaBuilder(serverReleaseResources);
             }
