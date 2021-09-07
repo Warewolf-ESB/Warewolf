@@ -237,7 +237,7 @@ namespace Warewolf.UnitTestAttributes
                 case ContainerType.HTTPVerbsApi:
                     return new[] {"9810"};
                 case ContainerType.FTP:
-                    return new[] {"21"};
+                    return new[] {"21", "1004"};
                 case ContainerType.FTPS:
                     return new[] {"1002"};
             }
