@@ -2140,7 +2140,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var result = rc.GetResources(workspaceID);
             var oldResource = result.FirstOrDefault(resource => resource.ResourceName == resourceName);
             //------------Assert Precondition-----------------
-            Assert.AreEqual(2, result.Count);
+            Assert.IsTrue(result.Count > 0, "Cannot save a resource to test with.");
             Assert.IsNotNull(oldResource);
             //------------Execute Test---------------------------
             rc.DeleteResource(workspaceID, Guid.NewGuid(), null);
