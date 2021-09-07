@@ -33,12 +33,12 @@ using Warewolf.Driver.Persistence;
 using Warewolf.Resource.Errors;
 using Warewolf.Resource.Messages;
 using Warewolf.Security.Encryption;
+using Warewolf.Storage.Interfaces;
 
 namespace Dev2.Activities
 {
     [ToolDescriptorInfo("ControlFlow-SuspendExecution", "Suspend Execution", ToolType.Native, "8999E58B-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Activities", "1.0.0.0", "Legacy", "Control Flow", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Flow_SuspendExecution")]
-    public class SuspendExecutionActivity : DsfBaseActivity, IEquatable<SuspendExecutionActivity>,
-        IStateNotifierRequired
+    public class SuspendExecutionActivity : DsfBaseActivity, IEquatable<SuspendExecutionActivity>, IStateNotifierRequired
     {
         private IDSFDataObject _dataObject;
         private IStateNotifier _stateNotifier = null;
@@ -88,33 +88,36 @@ namespace Dev2.Activities
         [FindMissing]
         public bool EncryptData { get; set; }
 
-        [FindMissing] public string Response { get; set; }
+        [FindMissing] 
+        public string Response { get; set; }
 
         public ActivityFunc<string, bool> SaveDataFunc { get; set; }
 
         protected override void OnExecute(NativeActivityContext context)
         {
-            var dataObject = context.GetExtension<IDSFDataObject>();
-            _dataObject = dataObject;
-            ExecuteTool(_dataObject, 0);
+
         }
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
-            _previousParentId = dataObject.ParentInstanceID;
-            _dataObject = dataObject;
-            _update = update;
-            base.ExecuteTool(_dataObject, update);
+            throw new Exception("this should not be reached");
         }
 
-        protected override List<string> PerformExecution(Dictionary<string, string> evaluatedValues)
+        private IExecutionEnvironment _originalExecutionEnvironment;
+        public override IDev2Activity Execute(IDSFDataObject data, int update)
         {
+            _previousParentId = data.ParentInstanceID;
+            _debugInputs?.Clear();
+            _debugOutputs?.Clear();
+            _dataObject = data;
+            _update = update;
+            _originalExecutionEnvironment = data.Environment.Snapshot();
+
             _suspensionId = "";
             var allErrors = new ErrorResultTO();
-            var dataObject = _dataObject;
             try
             {
-                dataObject.ForEachNestingLevel++;
+                _dataObject.ForEachNestingLevel++;
                 if (!_persistenceEnabled)
                 {
                     throw new Exception(ErrorResource.PersistenceSettingsNoConfigured);
@@ -132,21 +135,22 @@ namespace Dev2.Activities
                     throw new Exception(string.Format(ErrorResource.SuspendOptionValueNotSet, GetSuspendValidationMessageType(SuspendOption)));
                 }
 
-                var activityId = Guid.Parse(NextNodes.First()?.UniqueID ??
-                                            throw new Exception(GlobalConstants.NextNodeIDNotFound));
-                var currentEnvironment = _dataObject.Environment.ToJson();
-
+                var currentEnvironment = _originalExecutionEnvironment.ToJson();
                 var currentuserprincipal = _dataObject.ExecutingUser.Identity.Name;
                 var versionNumber = _dataObject.VersionNumber.ToString();
+                var resourceId = _dataObject.ResourceID;
                 if (EncryptData)
                 {
                     currentEnvironment = DpapiWrapper.Encrypt(currentEnvironment);
                     currentuserprincipal = DpapiWrapper.Encrypt(currentuserprincipal);
                 }
 
+                var firstActivity = NextNodes.First();
+                var activityId = Guid.Parse(firstActivity?.UniqueID ??
+                                            throw new Exception(GlobalConstants.NextNodeIDNotFound));
                 var values = new Dictionary<string, StringBuilder>
                 {
-                    {"resourceID", new StringBuilder(_dataObject.ResourceID.ToString())},
+                    {"resourceID", new StringBuilder(resourceId.ToString())},
                     {"environment", new StringBuilder(currentEnvironment)},
                     {"startActivityId", new StringBuilder(activityId.ToString())},
                     {nameof(versionNumber), new StringBuilder(versionNumber)},
@@ -159,15 +163,15 @@ namespace Dev2.Activities
                     AddDebugInputItem(debugItemStaticDataParams);
                 }
 
-                DispatchDebug(dataObject, StateType.Before, _update);
+                DispatchDebug(_dataObject, StateType.Before, _update);
                 _suspensionId = _scheduler.CreateAndScheduleJob(SuspendOption, persistScheduleValue, values);
 
-                dataObject.ParentInstanceID = UniqueID;
-                dataObject.IsDebugNested = true;
-                DispatchDebug(dataObject, StateType.After, _update);
+                _dataObject.ParentInstanceID = UniqueID;
+                _dataObject.IsDebugNested = true;
+                DispatchDebug(_dataObject, StateType.After, _update);
 
                 Response = _suspensionId;
-                _dataObject.Environment.Assign(Result, _suspensionId, 0);
+                _dataObject.Environment.Assign(Result, Response, 0);
                 _dataObject.Environment.CommitAssign();
                 _stateNotifier?.LogActivityExecuteState(this);
                 Dev2Logger.Debug($"{_dataObject.ServiceName} execution suspended: SuspensionId {_suspensionId} scheduled", GlobalConstants.WarewolfDebug);
@@ -194,14 +198,14 @@ namespace Dev2.Activities
             }
             finally
             {
-                var serviceTestStep = HandleServiceTestExecution(dataObject);
-                dataObject.ParentInstanceID = _previousParentId;
-                dataObject.ForEachNestingLevel--;
-                dataObject.IsDebugNested = false;
-                HandleDebug(dataObject, serviceTestStep);
-                HandleErrors(dataObject, allErrors);
+                var serviceTestStep = HandleServiceTestExecution(_dataObject);
+                _dataObject.ParentInstanceID = _previousParentId;
+                _dataObject.ForEachNestingLevel--;
+                _dataObject.IsDebugNested = false;
+                HandleDebug(_dataObject, serviceTestStep);
+                HandleErrors(_dataObject, allErrors);
             }
-            return new List<string> {_suspensionId};
+            return  null; //fire once the rest should be done on resumption service
         }
 
         private void LogException(Exception ex, ErrorResultTO allErrors)
@@ -357,6 +361,34 @@ namespace Dev2.Activities
             }
         }
 
+        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
+        {
+            if (updates != null && updates.Count == 1)
+            {
+                Response = updates[0].Item2;
+            }
+        }
+
+        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
+        {
+            var itemUpdate = updates?.FirstOrDefault(tuple => tuple.Item1 == Result);
+            if (itemUpdate != null)
+            {
+                Result = itemUpdate.Item2;
+            }
+        }
+
+        public override IList<DsfForEachItem> GetForEachInputs() => GetForEachItems(Response);
+
+        public override IList<DsfForEachItem> GetForEachOutputs() => GetForEachItems(Result);
+
+        public override List<string> GetOutputs() => new List<string> { Result };
+
+        protected override List<string> PerformExecution(Dictionary<string, string> evaluatedValues)
+        {
+            throw new NotImplementedException();
+        }
+
         public override IEnumerable<StateVariable> GetState()
         {
             return new[]
@@ -391,6 +423,12 @@ namespace Dev2.Activities
                     Value = Response,
                     Type = StateVariable.StateType.Output
                 },
+                new StateVariable
+                {
+                    Name = nameof(Result),
+                    Value = Result,
+                    Type = StateVariable.StateType.Output
+                },
             };
         }
 
@@ -413,6 +451,7 @@ namespace Dev2.Activities
             equals &= Equals(AllowManualResumption, other.AllowManualResumption);
             equals &= Equals(EncryptData, other.EncryptData);
             equals &= Equals(Response, other.Response);
+            equals &= Equals(Result, other.Result);
             equals &= activityFuncComparer.Equals(SaveDataFunc, other.SaveDataFunc);
 
             return equals;
@@ -448,6 +487,7 @@ namespace Dev2.Activities
                 hashCode = (hashCode * 397) ^ AllowManualResumption.GetHashCode();
                 hashCode = (hashCode * 397) ^ EncryptData.GetHashCode();
                 hashCode = (hashCode * 397) ^ (Response != null ? Response.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Result != null ? Result.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (SaveDataFunc != null ? SaveDataFunc.GetHashCode() : 0);
                 return hashCode;
             }
