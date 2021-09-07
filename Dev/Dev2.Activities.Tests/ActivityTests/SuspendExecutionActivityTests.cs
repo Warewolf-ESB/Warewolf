@@ -146,11 +146,12 @@ namespace Dev2.Tests.Activities.ActivityTests
                 PersistValue = "15",
                 AllowManualResumption = true,
                 EncryptData = true,
-                Response = "[[result]]",
+                Response = "[[response]]",
+                Result = "[[result]]"
             };
             var stateItems = suspendExecutionActivity.GetState();
 
-            Assert.AreEqual(5, stateItems.Count());
+            Assert.AreEqual(6, stateItems.Count());
 
             var expectedResults = new[]
             {
@@ -181,9 +182,15 @@ namespace Dev2.Tests.Activities.ActivityTests
                 new StateVariable
                 {
                     Name = "Response",
-                    Value = "[[result]]",
+                    Value = "[[response]]",
                     Type = StateVariable.StateType.Output
                 },
+                new StateVariable
+                {
+                    Name = "Result",
+                    Value = "[[result]]",
+                    Type = StateVariable.StateType.Output
+                }
             };
 
             var iter = suspendExecutionActivity.GetState().Select(
@@ -258,7 +265,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 PersistValue = "15",
                 AllowManualResumption = true,
                 SaveDataFunc = activityFunction,
-                Result = "[[SuspendID]]",
+                //Result = "[[SuspendID]]",
                 NextNodes = dev2Activities,
             };
 
@@ -328,7 +335,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 PersistValue = "15",
                 AllowManualResumption = true,
                 SaveDataFunc = activityFunction,
-                Result = "[[SuspendID]]",
+                //Result = "[[SuspendID]]",
                 NextNodes = dev2Activities,
             };
 
@@ -398,7 +405,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 PersistValue = "15",
                 AllowManualResumption = true,
                 SaveDataFunc = activityFunction,
-                Result = "[[SuspendID]]",
+                //Result = "[[SuspendID]]",
                 NextNodes = dev2Activities,
             };
 
@@ -467,7 +474,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 PersistValue = "20",
                 AllowManualResumption = true,
                 SaveDataFunc = activityFunction,
-                Result = "[[SuspendID]]",
+                //Result = "[[SuspendID]]",
                 NextNodes = dev2Activities
             };
 
@@ -536,7 +543,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             suspendExecutionActivity.PersistValue = suspendUntil.ToString();
             suspendExecutionActivity.AllowManualResumption = true;
             suspendExecutionActivity.SaveDataFunc = activityFunction;
-            suspendExecutionActivity.Result = "[[SuspendID]]";
+            //suspendExecutionActivity.Result = "[[SuspendID]]";
             suspendExecutionActivity.NextNodes = dev2Activities;
 
             suspendExecutionActivity.SetStateNotifier(mockStateNotifier.Object);
@@ -619,7 +626,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 AllowManualResumption = true,
                 EncryptData = true,
                 SaveDataFunc = activityFunction,
-                Result = "[[SuspendID]]",
+                //Result = "[[SuspendID]]",
                 NextNodes = dev2Activities
             };
 
@@ -706,7 +713,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 AllowManualResumption = true,
                 EncryptData = false,
                 SaveDataFunc = activityFunction,
-                Result = "[[SuspendID]]",
+                //Result = "[[SuspendID]]",
                 NextNodes = dev2Activities
             };
 
@@ -782,8 +789,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Execute Test---------------------------
             suspendExecutionActivity.Execute(dataObject, 0);
             //------------Assert Results-------------------------
-            Assert.AreEqual(1, env.AllErrors.Count);
-            var errors = env.AllErrors.ToList();
+            Assert.AreEqual(1, env.Errors.Count);
+            var errors = env.Errors.ToList();
             Assert.AreEqual(ErrorResource.NextNodeRequiredForSuspendExecution, errors[0]);
         }
 
@@ -1029,8 +1036,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Execute Test---------------------------
             suspendExecutionActivity.Execute(dataObject, 0);
             Assert.AreEqual(null, suspendExecutionActivity.Response);
-            Assert.AreEqual(1, env.AllErrors.Count);
-            var errors = env.AllErrors.ToList();
+            Assert.AreEqual(1, env.Errors.Count());
+            var errors = env.Errors.ToList();
             Assert.AreEqual("Suspend option Date value must not be null or empty.", errors[0]);
         }
 
