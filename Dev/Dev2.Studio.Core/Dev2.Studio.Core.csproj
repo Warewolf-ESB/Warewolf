@@ -15,7 +15,7 @@
     <RootNamespace>Dev2.Studio.Core</RootNamespace>
     <AssemblyName>Dev2.Studio.Core</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <RuntimeIdentifier>win</RuntimeIdentifier>
+    <RuntimeIdentifiers>win-x86;win-x64</RuntimeIdentifiers>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>SAK</SccProjectName>
     <SccLocalPath>SAK</SccLocalPath>
