@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -1708,7 +1708,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(500)]
+        [Timeout(2500)]
         [Owner("Nkosinathi Sangweni")]
         public void RefreshCommands_ShouldUpdateDisplayName()
         {
