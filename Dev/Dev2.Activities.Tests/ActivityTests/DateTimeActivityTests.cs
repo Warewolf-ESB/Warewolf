@@ -141,14 +141,14 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
-        [Timeout(120000)]
+        [Timeout(60000)]
         [TestCategory(nameof(DsfDateTimeActivity))]
         [Owner("Rory McGuire")]
         public void DsfDateTimeActivity_ExecuteWithBlankInput_DateTimeNowIsUsed()
         {
             var startTime = DateTime.Now;
 
-            Thread.Sleep(30000);
+            Thread.Sleep(12000);
 
             const string currDL = @"<root><MyTestResult></MyTestResult></root>";
             SetupArguments(currDL
@@ -164,7 +164,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             GetScalarValueFromEnvironment(result.Environment, "MyTestResult", out string actual, out string error);
             var parsedResult = DateTime.Parse(actual);
 
-            Thread.Sleep(30000);
+            Thread.Sleep(11000);
 
             var endTime = DateTime.Now;
 
