@@ -140,7 +140,7 @@ namespace HangfireServer
 
             private void ConfigureServerStorage(string connectionString)
             {
-                var resumptionAttribute = new ResumptionAttribute(_logger, null);
+                var resumptionAttribute = new ResumptionAttribute(_logger);
 
                 GlobalConfiguration.Configuration
                     .UseFilter(resumptionAttribute)

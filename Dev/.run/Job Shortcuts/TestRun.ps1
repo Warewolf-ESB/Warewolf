@@ -1,8 +1,8 @@
-
 param(
   [Parameter(Mandatory=$true)]
   [String[]] $Projects, 
   [String] $Category,
+  [String[]] $Categories,
   [String[]] $ExcludeProjects = @(), 
   [String[]] $ExcludeCategories,
   [String] $TestsToRun="${bamboo.TestsToRun}",
@@ -85,13 +85,13 @@ if ($Coverage.IsPresent) {
 }
 for ($LoopCounter=0; $LoopCounter -le $RetryCount; $LoopCounter++) {
     if ($RetryRebuild.IsPresent) {
-		if (!(Test-Path "$PWD\*tests.dll") -or $LoopCounter -gt 0) {
-			Get-ChildItem -Path  "$PWD" -Recurse |
-Select -ExpandProperty FullName |
-Where {$_ -notlike "$PWD\TestResults*" -and $_ -notlike "$PWD\Microsoft.TestPlatform*" -and $_ -notlike "$PWD\JetBrains.dotCover.CommandLineTools*"} |
-sort length -Descending |
-Remove-Item -force -recurse
-			&..\..\Compile.ps1 "-AcceptanceTesting -NuGet `"$NuGet`" -MSBuildPath `"$MSBuildPath`""
+		if (Test-Path "$PWD\..\..\Compile.ps1") {
+			&"$PWD\..\..\Compile.ps1" "-AcceptanceTesting -NuGet `"$NuGet`" -MSBuildPath `"$MSBuildPath`""
+		} else {
+			if (Test-Path "$PWD\Compile.ps1") {
+				&"$PWD\Compile.ps1" "-AcceptanceTesting -NuGet `"$NuGet`" -MSBuildPath `"$MSBuildPath`""
+				Set-Location "$PWD\bin\AcceptanceTesting"
+			}
 		}
 	} else {
 		if (!(Test-Path "$PWD\*tests.dll")) {
@@ -170,6 +170,12 @@ Remove-Item -force -recurse
 		} else {
 			if ($Category -ne $null -and $Category -ne "") {
 			    $CategoryArg = "/TestCaseFilter:`"(TestCategory=" + $Category + ")`""
+			} else {
+				if ($Categories -ne $null -and $Categories.Count -ne 0) {
+					$CategoryArg = "/TestCaseFilter:`"("
+					$CategoryArg += $Categories -join ")&(TestCategory="
+					$CategoryArg += ")`""
+				}
 			}
 		}
 		if ($PreTestRunScript) {
