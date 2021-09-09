@@ -402,9 +402,9 @@ namespace Warewolf.Driver.Persistence.Drivers
                         Throw(jobId, message: "job {" + jobId + "} failed, one of Warewolf's dependencies were missing", reason: "Execution not run");
                     }
 
-                var activityParserInstance = CustomContainer.CreateInstance<IActivityParser>("just_to_get_a_CTOR_match_DO_NOT_REMOVE");
-                CustomContainer.Register(activityParserInstance);
-                CustomContainer.Register<IWarewolfPerformanceCounterLocater>(GetPerformanceCounter());
+                    var activityParserInstance = CustomContainer.CreateInstance<IActivityParser>("just_to_get_a_CTOR_match_DO_NOT_REMOVE");
+                    CustomContainer.Register(activityParserInstance);
+                    CustomContainer.Register<IWarewolfPerformanceCounterLocater>(GetPerformanceCounter());
 
                     var result = WorkflowResume.Execute(values, null);
                     if (result == null)
@@ -444,9 +444,7 @@ namespace Warewolf.Driver.Persistence.Drivers
 
         private void Throw(string jobId, string message, string reason)
         {
-            var exception = new Exception(message);
-            _ = _client.ChangeState(jobId, new FailedState(exception) { Reason = reason }, ProcessingState.StateName);
-            throw exception;
+            _ = _client.ChangeState(jobId, new FailedState(new Exception(message)) { Reason = reason }, ProcessingState.StateName);
         }
 
         [ExcludeFromCodeCoverage]
