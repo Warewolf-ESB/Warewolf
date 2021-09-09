@@ -940,7 +940,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Assert Results-------------------------
             Assert.AreEqual(0, env.Errors.Count);
             Assert.AreEqual(expectedSuspendId, suspendExecutionActivity.Response);
-            Assert.IsTrue(dataObject.StopExecution);
+            Assert.IsFalse(dataObject.StopExecution, "this will Stop Execution for the whole workflow, which is not ideal for the problem we are resolving");
             Assert.IsFalse(dataObject.IsDebugNested);
             Assert.AreEqual(0, dataObject.ForEachNestingLevel);
         }
