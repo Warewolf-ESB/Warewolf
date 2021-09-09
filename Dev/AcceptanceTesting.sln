@@ -345,8 +345,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Driver.Persistence
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.HangfireServer", "Warewolf.HangfireServer\Warewolf.HangfireServer.csproj", "{DF07AA43-6906-4944-87E9-AE7EDD342E3A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Driver.Resume", "Warewolf.Driver.Resume\Warewolf.Driver.Resume.csproj", "{912033CC-90DD-4601-996F-60B9A54123E5}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.HangfireServer.Tests", "Warewolf.HangfireServer.Tests\Warewolf.HangfireServer.Tests.csproj", "{36E72735-10ED-489B-B952-9B4B2C4E00C6}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Common.NetStandard20", "Warewolf.Common.NetStandard20\Warewolf.Common.NetStandard20.csproj", "{A87F5F4B-4098-4895-BF40-67CA23755FBD}"
@@ -360,8 +358,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Run Configurations", "Run C
 		.run\Server.docker.run.xml = .run\Server.docker.run.xml
 		.run\AcceptanceTesting.sln.Dockerfile.run.xml = .run\AcceptanceTesting.sln.Dockerfile.run.xml
 	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Driver.Resume.Tests", "Warewolf.Driver.Resume.Tests\Warewolf.Driver.Resume.Tests.csproj", "{19726818-57DE-4160-9866-9ECD6E31E65D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Studio.AntiCorruptionLayer", "Warewolf.Studio.AntiCorruptionLayer\Warewolf.Studio.AntiCorruptionLayer.csproj", "{CC1B89CD-3222-4019-A0D1-58664F92CC47}"
 EndProject
@@ -1343,14 +1339,6 @@ Global
 		{DF07AA43-6906-4944-87E9-AE7EDD342E3A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DF07AA43-6906-4944-87E9-AE7EDD342E3A}.Release|x86.ActiveCfg = Release|Any CPU
 		{DF07AA43-6906-4944-87E9-AE7EDD342E3A}.Release|x86.Build.0 = Release|Any CPU
-		{912033CC-90DD-4601-996F-60B9A54123E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{912033CC-90DD-4601-996F-60B9A54123E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{912033CC-90DD-4601-996F-60B9A54123E5}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{912033CC-90DD-4601-996F-60B9A54123E5}.Debug|x86.Build.0 = Debug|Any CPU
-		{912033CC-90DD-4601-996F-60B9A54123E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{912033CC-90DD-4601-996F-60B9A54123E5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{912033CC-90DD-4601-996F-60B9A54123E5}.Release|x86.ActiveCfg = Release|Any CPU
-		{912033CC-90DD-4601-996F-60B9A54123E5}.Release|x86.Build.0 = Release|Any CPU
 		{36E72735-10ED-489B-B952-9B4B2C4E00C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{36E72735-10ED-489B-B952-9B4B2C4E00C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{36E72735-10ED-489B-B952-9B4B2C4E00C6}.Debug|x86.ActiveCfg = Debug|Any CPU
@@ -1397,12 +1385,6 @@ Global
 		{0A953FE8-3BA2-4F2C-9F8C-936E7DDBD2A7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0A953FE8-3BA2-4F2C-9F8C-936E7DDBD2A7}.Release|x86.ActiveCfg = Release|Any CPU
 		{0A953FE8-3BA2-4F2C-9F8C-936E7DDBD2A7}.Release|x86.Build.0 = Release|Any CPU
-		{19726818-57DE-4160-9866-9ECD6E31E65D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{19726818-57DE-4160-9866-9ECD6E31E65D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{19726818-57DE-4160-9866-9ECD6E31E65D}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{19726818-57DE-4160-9866-9ECD6E31E65D}.Debug|x86.Build.0 = Debug|Any CPU
-		{19726818-57DE-4160-9866-9ECD6E31E65D}.Release|Any CPU.ActiveCfg = Debug|Any CPU
-		{19726818-57DE-4160-9866-9ECD6E31E65D}.Release|x86.ActiveCfg = Debug|Any CPU
 		{CC1B89CD-3222-4019-A0D1-58664F92CC47}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CC1B89CD-3222-4019-A0D1-58664F92CC47}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CC1B89CD-3222-4019-A0D1-58664F92CC47}.Debug|x86.ActiveCfg = Debug|Any CPU
