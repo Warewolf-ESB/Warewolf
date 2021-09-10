@@ -185,7 +185,6 @@ namespace Dev2.Activities
                     _originalUniqueID = Guid.Parse(UniqueID);
                 }
 
-                _dataObject.StopExecution = true;
             }
             catch (Hangfire.BackgroundJobClientException)
             {
@@ -208,12 +207,10 @@ namespace Dev2.Activities
             return  null; //fire once the rest should be done on resumption service
         }
 
-        private void LogException(Exception ex, ErrorResultTO allErrors)
+        private static void LogException(Exception ex, ErrorResultTO allErrors)
         {
             Dev2Logger.Error(nameof(SuspendExecutionActivity), ex, GlobalConstants.WarewolfError);
-            _dataObject.ExecutionException = ex;
-            _dataObject.StopExecution = true;
-            allErrors.AddError(ex.Message);
+            allErrors.AddError(ex.Message); 
         }
 
         public static string GetSuspendValidationMessageType(enSuspendOption suspendOption)
