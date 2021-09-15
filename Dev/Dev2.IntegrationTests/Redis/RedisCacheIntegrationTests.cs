@@ -46,6 +46,7 @@ namespace Dev2.Integration.Tests.Redis
                 //----------------------Arrange----------------------
                 var key = "key" + Guid.NewGuid();
                 TestAnonymousAuth(out string hostName, out string password, out int port);
+                Console.WriteLine("Using redis server at: " + hostName + ":" + port);
                 var redisSource = new RedisSource {HostName = hostName, Password = password, Port = port.ToString()};
 
                 var isCalValue = GlobalConstants.CalculateTextConvertPrefix + "rec(*).name" + GlobalConstants.CalculateTextConvertSuffix;
@@ -176,6 +177,7 @@ namespace Dev2.Integration.Tests.Redis
                 var key = "[[RedisKey]]";
                 var keyValue = "someval" + Guid.NewGuid();
                 TestAnonymousAuth(out string hostName, out string password, out int port);
+                Console.WriteLine("Using redis server at: " + hostName + ":" + port);
                 var redisSource = new RedisSource {HostName = hostName, Password = password, Port = port.ToString()};
                 var innerActivity = new DsfMultiAssignActivity()
                 {
@@ -236,7 +238,7 @@ namespace Dev2.Integration.Tests.Redis
                 //----------------------Arrange----------------------
                 var key = "key" + Guid.NewGuid();
                 TestAnonymousAuth(out string hostName, out string password, out int port);
-
+                Console.WriteLine("Using redis server at: " + hostName + ":" + port);
                 var redisSource = new RedisSource {HostName = hostName, Password = password, Port = port.ToString()};
                 var innerActivity = new DsfMultiAssignActivity()
                 {
