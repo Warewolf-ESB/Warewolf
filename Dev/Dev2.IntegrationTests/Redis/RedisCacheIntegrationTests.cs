@@ -36,7 +36,7 @@ namespace Dev2.Integration.Tests.Redis
     public class RedisCacheIntegrationTests
     {
         [TestMethod]
-        [Timeout(60000)]
+        [Timeout(120000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(RedisCacheActivity))]
         public void RedisCacheIntegration_CacheVariableResult_GetDebugInputs_With_DataListUtilIsEvaluated_ShouldReturnInnerActivityOutputs()
@@ -166,7 +166,7 @@ namespace Dev2.Integration.Tests.Redis
         }
 
         [TestMethod]
-        [Timeout(60000)]
+        [Timeout(120000)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(RedisCacheActivity))]
         public void RedisCacheIntegration_CacheVariableResult_EvaluateVariableAsKey()
@@ -226,7 +226,7 @@ namespace Dev2.Integration.Tests.Redis
         }
 
         [TestMethod]
-        [Timeout(60000)]
+        [Timeout(120000)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(RedisCacheActivity))]
         public void RedisCacheIntegration_CacheRecordsetResult_ReturnInnerActivityOutputs()
