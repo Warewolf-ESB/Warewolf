@@ -41,7 +41,6 @@ namespace Dev2.Integration.Tests.Redis
         [TestCategory(nameof(RedisCacheActivity))]
         public void RedisCacheIntegration_CacheVariableResult_GetDebugInputs_With_DataListUtilIsEvaluated_ShouldReturnInnerActivityOutputs()
         {
-            Console.WriteLine("Starting flakey test.");
             try
             {
                 //----------------------Arrange----------------------
@@ -172,7 +171,6 @@ namespace Dev2.Integration.Tests.Redis
         [TestCategory(nameof(RedisCacheActivity))]
         public void RedisCacheIntegration_CacheVariableResult_EvaluateVariableAsKey()
         {
-            Console.WriteLine("Starting flakey test.");
             try
             {
                 var key = "[[RedisKey]]";
@@ -233,7 +231,6 @@ namespace Dev2.Integration.Tests.Redis
         [TestCategory(nameof(RedisCacheActivity))]
         public void RedisCacheIntegration_CacheRecordsetResult_ReturnInnerActivityOutputs()
         {
-            Console.WriteLine("Starting flakey test.");
             try
             {
                 //----------------------Arrange----------------------
