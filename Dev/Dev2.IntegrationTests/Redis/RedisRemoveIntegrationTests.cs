@@ -41,6 +41,7 @@ namespace Dev2.Integration.Tests.Redis
             try
             {
                 var redisSource = TestRedisSource(out var hostName, out var password, out var port);
+                Console.WriteLine("Using redis server at: " + hostName + ":" + port);
                 var key = "[[RedisKey]]";
                 var keyValue = "someval" + Guid.NewGuid();
                 var innerActivity = new DsfMultiAssignActivity()
@@ -115,6 +116,7 @@ namespace Dev2.Integration.Tests.Redis
             try
             {
                 var redisSource = TestRedisSource(out var hostName, out var password, out var port);
+                Console.WriteLine("Using redis server at: " + hostName + ":" + port);
                 var keyValue1 = "Cache-1";
                 var keyValue2 = "Cache-2";
                 var keyValue3 = "Cache-3";
