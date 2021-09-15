@@ -24,7 +24,7 @@ namespace Dev2.Common.Tests.DateAndTime.TO
         {
             var dateTimeResultTO = new DateTimeResultTO();
 
-            Assert.AreEqual("South Africa Standard Time", dateTimeResultTO.TimeZone.Name);
+            Assert.IsTrue("South Africa Standard Time" == dateTimeResultTO.TimeZone.Name || "GMT Standard Time" == dateTimeResultTO.TimeZone.Name, "DateTimeResultTO does not get the correct timezone for South Africa or Ireland");
             Assert.AreEqual("(UTC+02:00) Harare, Pretoria", dateTimeResultTO.TimeZone.LongName);
             Assert.AreEqual("South Africa Standard Time", dateTimeResultTO.TimeZone.ShortName);
         }
