@@ -107,7 +107,7 @@ namespace Dev2.Integration.Tests.Redis
         }
 
         [TestMethod]
-        [Timeout(60000)]
+        [Timeout(120000)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(RedisRemoveActivity))]
         public void RedisRemoveIntegration_RecordsetAsKey()
