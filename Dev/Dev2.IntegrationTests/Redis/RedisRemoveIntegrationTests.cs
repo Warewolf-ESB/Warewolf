@@ -33,7 +33,7 @@ namespace Dev2.Integration.Tests.Redis
     public class RedisRemoveIntegrationTests
     {
         [TestMethod]
-        [Timeout(60000)]
+        [Timeout(120000)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(RedisRemoveActivity))]
         public void RedisRemoveIntegration_UseVariableAsKey()
