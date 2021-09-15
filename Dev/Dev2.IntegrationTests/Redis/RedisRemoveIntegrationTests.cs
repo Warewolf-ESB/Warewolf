@@ -38,6 +38,7 @@ namespace Dev2.Integration.Tests.Redis
         [TestCategory(nameof(RedisRemoveActivity))]
         public void RedisRemoveIntegration_UseVariableAsKey()
         {
+            Console.WriteLine("Starting flakey test.");
             try
             {
                 var redisSource = TestRedisSource(out var hostName, out var password, out var port);
@@ -112,6 +113,7 @@ namespace Dev2.Integration.Tests.Redis
         [TestCategory(nameof(RedisRemoveActivity))]
         public void RedisRemoveIntegration_RecordsetAsKey()
         {
+            Console.WriteLine("Starting flakey test.");
             try
             {
                 var redisSource = TestRedisSource(out var hostName, out var password, out var port);
