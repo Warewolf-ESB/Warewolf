@@ -9,6 +9,7 @@ build:
   stage: build
   script:
     - ./Compile.ps1 -AcceptanceTesting
+  tags: opswolf
 
 Zip_Tool_Specs:
   stage: test
