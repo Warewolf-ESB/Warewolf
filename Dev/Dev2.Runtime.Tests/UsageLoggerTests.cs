@@ -12,6 +12,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Threading;
+using System.Timers;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Runtime;
@@ -35,13 +36,16 @@ namespace Dev2.Tests.Runtime
         [TestCategory(nameof(UsageLogger))]
         public void UsageLogger_Ctor_CheckValues_ExpectInitialised()
         {
+            var usageLogger = new Mock<IUsageLogger>();
+            usageLogger.Setup(o => o.Start()).Returns(new UsageLogger(25));
+            usageLogger.Setup(o => o.Timer).Returns(new System.Timers.Timer(25));
+            usageLogger.Setup(o => o.Interval).Returns(25);
+            var usageLoggerObj = usageLogger.Object;
+            
             //------------Setup for test--------------------------
-            using(var usageLogger = new UsageLogger(25))
-            {
-                Assert.AreEqual(25, usageLogger.Interval);
-                var timer = usageLogger._timer;
-                Assert.AreEqual(false, timer.Enabled);
-            }
+            Assert.AreEqual(25, usageLoggerObj.Interval);
+            var timer = usageLoggerObj.Timer;
+            Assert.AreEqual(false, timer.Enabled);
         }
 
         [TestMethod]
@@ -49,19 +53,25 @@ namespace Dev2.Tests.Runtime
         [TestCategory(nameof(UsageLogger))]
         public void UsageLogger_Ctor_Start_ExpectInitialised()
         {
+            var t = new System.Timers.Timer(10000);
+            var usageLogger = new Mock<IUsageLogger>();
+            var mockUsageTracker = new Mock<IUsageTrackerWrapper>();
+            usageLogger.Setup(o => o.Start()).Returns(new UsageLogger(10000)).Callback(() => t.Enabled = true);
+            usageLogger.Setup(o => o.Timer).Returns(t);
+            usageLogger.Setup(o => o.Interval).Returns(10000);
+            var usageLoggerObj = usageLogger.Object;
+
             //------------Setup for test--------------------------
-            using(var usageLogger = new UsageLogger(10000))
-            {
-                Assert.AreEqual(10000, usageLogger.Interval);
-                var timer = usageLogger._timer;
-                timer.Elapsed += (sender, e) => { _elapsed = true; };
-                Assert.AreEqual(false, timer.Enabled);
-                //------------Execute Test---------------------------
-                usageLogger.Start();
-                Thread.Sleep(30000);
-                //------------Assert Results-------------------------
-                Assert.IsTrue(_elapsed);
-            }
+            Assert.AreEqual(10000, usageLoggerObj.Interval);
+            var timer = usageLoggerObj.Timer;
+            timer.Elapsed += (sender, e) => { _elapsed = true; };
+            Assert.AreEqual(false, timer.Enabled);
+            //------------Execute Test---------------------------
+            usageLoggerObj.Start();
+            Thread.Sleep(30000);
+            //------------Assert Results-------------------------
+            Assert.IsTrue(_elapsed);
+
         }
 
         [TestMethod]
@@ -95,7 +105,7 @@ namespace Dev2.Tests.Runtime
             Assert.IsTrue(File.Exists(persistenceGuidPath));
             File.Delete(persistenceGuidPath);
         }
-        
+
         [TestMethod]
         [Owner("Njabulo Nxele")]
         [TestCategory(nameof(UsageLogger))]

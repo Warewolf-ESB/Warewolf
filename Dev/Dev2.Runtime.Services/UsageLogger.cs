@@ -24,7 +24,15 @@ using Warewolf.Usage;
 
 namespace Dev2.Runtime
 {
-    public class UsageLogger : IStartTimer
+    public interface IUsageLogger
+    {
+        void TrackUsage(UsageType usageType, Guid sessionId);
+        IStartTimer Start();
+        Timer Timer { get; }
+        double Interval { get; }
+    }
+    
+    public class UsageLogger : IUsageLogger, IStartTimer
     {
         internal readonly Timer _timer;
         static readonly string _persistencePath = EnvironmentVariables.PersistencePath;
@@ -36,7 +44,7 @@ namespace Dev2.Runtime
         {
             
         }
-        
+            
         public UsageLogger(double intervalMs, IUsageTrackerWrapper usageTrackerWrapper)
         {
             Interval = intervalMs;
@@ -55,6 +63,8 @@ namespace Dev2.Runtime
 
             return coreCount;
         }
+        
+        public Timer Timer => _timer;
 
         public void TrackUsage(UsageType usageType, Guid sessionId)
         {
