@@ -1,6 +1,6 @@
 # For more information on GitHub Actions, refer to https://github.com/features/actions
 
-on: [workflow_dispatch]
+on: [push]
 
 jobs:
 
