@@ -29,11 +29,13 @@ jobs:
   Zip_Tool_Specs:  
     runs-on: self-hosted
     needs: build
-    uses: actions/download-artifact@v2
-    with:
-      name: AcceptanceTesting.zip
     
     steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: AcceptanceTesting.zip
+    
     - name: Unzip
       run: "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
     
@@ -43,11 +45,13 @@ jobs:
   Email_Tools_Specs:
     runs-on: self-hosted
     needs: build
-    uses: actions/download-artifact@v2
-    with:
-      name: AcceptanceTesting.zip
     
     steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: AcceptanceTesting.zip
+    
     - name: Unzip
       run: "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
     
@@ -57,11 +61,13 @@ jobs:
   Resource_Tools_Specs:
     runs-on: self-hosted
     needs: build
-    uses: actions/download-artifact@v2
-    with:
-      name: AcceptanceTesting.zip
     
     steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: AcceptanceTesting.zip
+    
     - name: Unzip
       run: "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
     
@@ -71,11 +77,13 @@ jobs:
   File_And_Folder_Copy_Tool_Specs:
     runs-on: self-hosted
     needs: build
-    uses: actions/download-artifact@v2
-    with:
-      name: AcceptanceTesting.zip
     
     steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: AcceptanceTesting.zip
+    
     - name: Unzip
       run: "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
     
@@ -85,11 +93,13 @@ jobs:
   Data_Tools_Specs:
     runs-on: self-hosted
     needs: build
-    uses: actions/download-artifact@v2
-    with:
-      name: AcceptanceTesting.zip
     
     steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: AcceptanceTesting.zip
+    
     - name: Unzip
       run: "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
     
@@ -99,11 +109,13 @@ jobs:
   Request_Service_Name_View_Models_Unit_Tests:
     runs-on: self-hosted
     needs: build
-    uses: actions/download-artifact@v2
-    with:
-      name: AcceptanceTesting.zip
     
     steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: AcceptanceTesting.zip
+    
     - name: Unzip
       run: "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
     
@@ -113,11 +125,13 @@ jobs:
   Unzip_Tool_Specs_Validation:
     runs-on: self-hosted
     needs: build
-    uses: actions/download-artifact@v2
-    with:
-      name: AcceptanceTesting.zip
     
     steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: AcceptanceTesting.zip
+    
     - name: Unzip
       run: "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
     
@@ -127,11 +141,13 @@ jobs:
   Recordset_Tools_Specs:
     runs-on: self-hosted
     needs: build
-    uses: actions/download-artifact@v2
-    with:
-      name: AcceptanceTesting.zip
     
     steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: AcceptanceTesting.zip
+    
     - name: Unzip
       run: "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
     
@@ -141,11 +157,13 @@ jobs:
   File_And_Folder_Rename_Tool_Specs:
     runs-on: self-hosted
     needs: build
-    uses: actions/download-artifact@v2
-    with:
-      name: AcceptanceTesting.zip
     
     steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: AcceptanceTesting.zip
+    
     - name: Unzip
       run: "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
     
@@ -155,11 +173,13 @@ jobs:
   Other_Tools_Specs:
     runs-on: self-hosted
     needs: build
-    uses: actions/download-artifact@v2
-    with:
-      name: AcceptanceTesting.zip
     
     steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: AcceptanceTesting.zip
+    
     - name: Unzip
       run: "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
     
@@ -169,11 +189,13 @@ jobs:
   File_And_Folder_Move_Tool_Specs:
     runs-on: self-hosted
     needs: build
-    uses: actions/download-artifact@v2
-    with:
-      name: AcceptanceTesting.zip
     
     steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: AcceptanceTesting.zip
+    
     - name: Unzip
       run: "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
     
@@ -183,11 +205,13 @@ jobs:
   File_Read_Tool_Specs:
     runs-on: self-hosted
     needs: build
-    uses: actions/download-artifact@v2
-    with:
-      name: AcceptanceTesting.zip
     
     steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: AcceptanceTesting.zip
+    
     - name: Unzip
       run: "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
     
@@ -197,11 +221,13 @@ jobs:
   Infrastructure_Unit_Tests:
     runs-on: self-hosted
     needs: build
-    uses: actions/download-artifact@v2
-    with:
-      name: AcceptanceTesting.zip
     
     steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: AcceptanceTesting.zip
+    
     - name: Unzip
       run: "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
     
@@ -211,11 +237,13 @@ jobs:
   New_Folder_Read_Tool_Specs:
     runs-on: self-hosted
     needs: build
-    uses: actions/download-artifact@v2
-    with:
-      name: AcceptanceTesting.zip
     
     steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: AcceptanceTesting.zip
+    
     - name: Unzip
       run: "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
     
@@ -225,11 +253,13 @@ jobs:
   Write_File_Tool_Specs:
     runs-on: self-hosted
     needs: build
-    uses: actions/download-artifact@v2
-    with:
-      name: AcceptanceTesting.zip
     
     steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: AcceptanceTesting.zip
+    
     - name: Unzip
       run: "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
     
@@ -239,11 +269,13 @@ jobs:
   Loop_Construct_Tools_Specs:
     runs-on: self-hosted
     needs: build
-    uses: actions/download-artifact@v2
-    with:
-      name: AcceptanceTesting.zip
     
     steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: AcceptanceTesting.zip
+    
     - name: Unzip
       run: "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
     
@@ -253,11 +285,13 @@ jobs:
   Utility_Tools_Specs:
     runs-on: self-hosted
     needs: build
-    uses: actions/download-artifact@v2
-    with:
-      name: AcceptanceTesting.zip
     
     steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: AcceptanceTesting.zip
+    
     - name: Unzip
       run: "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
     
@@ -267,11 +301,13 @@ jobs:
   Folder_Read_Tool_Specs:
     runs-on: self-hosted
     needs: build
-    uses: actions/download-artifact@v2
-    with:
-      name: AcceptanceTesting.zip
     
     steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: AcceptanceTesting.zip
+    
     - name: Unzip
       run: "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
     
@@ -281,11 +317,13 @@ jobs:
   SQL_Bulk_Insert_Tool_Specs:
     runs-on: self-hosted
     needs: build
-    uses: actions/download-artifact@v2
-    with:
-      name: AcceptanceTesting.zip
     
     steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: AcceptanceTesting.zip
+    
     - name: Unzip
       run: "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
     
@@ -295,11 +333,13 @@ jobs:
   Control_Flow_Tools_Specs:
     runs-on: self-hosted
     needs: build
-    uses: actions/download-artifact@v2
-    with:
-      name: AcceptanceTesting.zip
     
     steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: AcceptanceTesting.zip
+    
     - name: Unzip
       run: "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
     
@@ -309,11 +349,13 @@ jobs:
   Studio_View_Models_Unit_Tests:
     runs-on: self-hosted
     needs: build
-    uses: actions/download-artifact@v2
-    with:
-      name: AcceptanceTesting.zip
     
     steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: AcceptanceTesting.zip
+    
     - name: Unzip
       run: "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
     
@@ -323,11 +365,13 @@ jobs:
   File_And_Folder_Create_Tool_Specs:
     runs-on: self-hosted
     needs: build
-    uses: actions/download-artifact@v2
-    with:
-      name: AcceptanceTesting.zip
     
     steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: AcceptanceTesting.zip
+    
     - name: Unzip
       run: "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
     
@@ -337,11 +381,13 @@ jobs:
   Storage_Unit_Tests:
     runs-on: self-hosted
     needs: build
-    uses: actions/download-artifact@v2
-    with:
-      name: AcceptanceTesting.zip
     
     steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: AcceptanceTesting.zip
+    
     - name: Unzip
       run: "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
     
@@ -351,11 +397,13 @@ jobs:
   Storage_Tools_Specs:
     runs-on: self-hosted
     needs: build
-    uses: actions/download-artifact@v2
-    with:
-      name: AcceptanceTesting.zip
     
     steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: AcceptanceTesting.zip
+    
     - name: Unzip
       run: "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
     
@@ -365,11 +413,13 @@ jobs:
   File_And_Folder_Delete_Tool_Specs:
     runs-on: self-hosted
     needs: build
-    uses: actions/download-artifact@v2
-    with:
-      name: AcceptanceTesting.zip
     
     steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: AcceptanceTesting.zip
+    
     - name: Unzip
       run: "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
     
@@ -379,11 +429,13 @@ jobs:
   Scripting_Tools_Specs:
     runs-on: self-hosted
     needs: build
-    uses: actions/download-artifact@v2
-    with:
-      name: AcceptanceTesting.zip
     
     steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: AcceptanceTesting.zip
+    
     - name: Unzip
       run: "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
     
@@ -393,11 +445,13 @@ jobs:
   Database_Tools_Specs:
     runs-on: self-hosted
     needs: build
-    uses: actions/download-artifact@v2
-    with:
-      name: AcceptanceTesting.zip
     
     steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: AcceptanceTesting.zip
+    
     - name: Unzip
       run: "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
     
@@ -407,11 +461,13 @@ jobs:
   Auditing_Unit_Tests:
     runs-on: self-hosted
     needs: build
-    uses: actions/download-artifact@v2
-    with:
-      name: AcceptanceTesting.zip
     
     steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: AcceptanceTesting.zip
+    
     - name: Unzip
       run: "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
     
@@ -421,11 +477,13 @@ jobs:
   Workflow_Execution_Specs:
     runs-on: self-hosted
     needs: build
-    uses: actions/download-artifact@v2
-    with:
-      name: AcceptanceTesting.zip
     
     steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: AcceptanceTesting.zip
+    
     - name: Unzip
       run: "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
     
@@ -435,11 +493,13 @@ jobs:
   Studio_Test_Framework_With_Hello_World_Workflow_Specs:
     runs-on: self-hosted
     needs: build
-    uses: actions/download-artifact@v2
-    with:
-      name: AcceptanceTesting.zip
     
     steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: AcceptanceTesting.zip
+    
     - name: Unzip
       run: "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
     
@@ -449,11 +509,13 @@ jobs:
   Studio_Test_Framework_With_Utility_Tools_Specs:
     runs-on: self-hosted
     needs: build
-    uses: actions/download-artifact@v2
-    with:
-      name: AcceptanceTesting.zip
     
     steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: AcceptanceTesting.zip
+    
     - name: Unzip
       run: "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
     
@@ -463,11 +525,13 @@ jobs:
   MS_SQL_Server_Specs:
     runs-on: self-hosted
     needs: build
-    uses: actions/download-artifact@v2
-    with:
-      name: AcceptanceTesting.zip
     
     steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: AcceptanceTesting.zip
+    
     - name: Unzip
       run: "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
     
@@ -477,11 +541,13 @@ jobs:
   Studio_Test_Framework_With_Data_Tools_Specs:
     runs-on: self-hosted
     needs: build
-    uses: actions/download-artifact@v2
-    with:
-      name: AcceptanceTesting.zip
     
     steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: AcceptanceTesting.zip
+    
     - name: Unzip
       run: "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
     
@@ -491,11 +557,13 @@ jobs:
   Assign_Workflow_Execution_Specs:
     runs-on: self-hosted
     needs: build
-    uses: actions/download-artifact@v2
-    with:
-      name: AcceptanceTesting.zip
     
     steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: AcceptanceTesting.zip
+    
     - name: Unzip
       run: "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
     
@@ -505,11 +573,13 @@ jobs:
   Integration_Tests:
     runs-on: self-hosted
     needs: build
-    uses: actions/download-artifact@v2
-    with:
-      name: AcceptanceTesting.zip
     
     steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: AcceptanceTesting.zip
+    
     - name: Unzip
       run: "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
     
@@ -519,11 +589,13 @@ jobs:
   Studio_Test_Framework_With_Scripting_Tools_Specs:
     runs-on: self-hosted
     needs: build
-    uses: actions/download-artifact@v2
-    with:
-      name: AcceptanceTesting.zip
     
     steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: AcceptanceTesting.zip
+    
     - name: Unzip
       run: "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
     
@@ -533,11 +605,13 @@ jobs:
   Other_Activities_Specs:
     runs-on: self-hosted
     needs: build
-    uses: actions/download-artifact@v2
-    with:
-      name: AcceptanceTesting.zip
     
     steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: AcceptanceTesting.zip
+    
     - name: Unzip
       run: "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
     
@@ -547,11 +621,13 @@ jobs:
   Studio_Test_Framework_With_File_And_Folder_Tools_Specs:
     runs-on: self-hosted
     needs: build
-    uses: actions/download-artifact@v2
-    with:
-      name: AcceptanceTesting.zip
     
     steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: AcceptanceTesting.zip
+    
     - name: Unzip
       run: "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
     
@@ -561,11 +637,13 @@ jobs:
   Studio_Test_Framework_With_HTTP_Web_Tools_Specs:
     runs-on: self-hosted
     needs: build
-    uses: actions/download-artifact@v2
-    with:
-      name: AcceptanceTesting.zip
     
     steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: AcceptanceTesting.zip
+    
     - name: Unzip
       run: "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
     
@@ -575,11 +653,13 @@ jobs:
   Studio_Test_Framework_With_Subworkflow_Specs:
     runs-on: self-hosted
     needs: build
-    uses: actions/download-artifact@v2
-    with:
-      name: AcceptanceTesting.zip
     
     steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: AcceptanceTesting.zip
+    
     - name: Unzip
       run: "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
     
@@ -589,11 +669,13 @@ jobs:
   Workflow_Merging_Specs:
     runs-on: self-hosted
     needs: build
-    uses: actions/download-artifact@v2
-    with:
-      name: AcceptanceTesting.zip
     
     steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: AcceptanceTesting.zip
+    
     - name: Unzip
       run: "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
     
@@ -603,11 +685,13 @@ jobs:
   Example_Workflow_Execution_Specs:
     runs-on: self-hosted
     needs: build
-    uses: actions/download-artifact@v2
-    with:
-      name: AcceptanceTesting.zip
     
     steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: AcceptanceTesting.zip
+    
     - name: Unzip
       run: "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
     
@@ -617,11 +701,13 @@ jobs:
   Studio_Test_Framework_Specs:
     runs-on: self-hosted
     needs: build
-    uses: actions/download-artifact@v2
-    with:
-      name: AcceptanceTesting.zip
     
     steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: AcceptanceTesting.zip
+    
     - name: Unzip
       run: "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
     
@@ -631,11 +717,13 @@ jobs:
   Subworkflow_Execution_Specs:
     runs-on: self-hosted
     needs: build
-    uses: actions/download-artifact@v2
-    with:
-      name: AcceptanceTesting.zip
     
     steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: AcceptanceTesting.zip
+    
     - name: Unzip
       run: "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
     
@@ -645,11 +733,13 @@ jobs:
   Other_Specs:
     runs-on: self-hosted
     needs: build
-    uses: actions/download-artifact@v2
-    with:
-      name: AcceptanceTesting.zip
     
     steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: AcceptanceTesting.zip
+    
     - name: Unzip
       run: "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
     
@@ -659,11 +749,13 @@ jobs:
   Studio_Test_Framework_With_Deleted_Resources_Specs:
     runs-on: self-hosted
     needs: build
-    uses: actions/download-artifact@v2
-    with:
-      name: AcceptanceTesting.zip
     
     steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: AcceptanceTesting.zip
+    
     - name: Unzip
       run: "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
     
@@ -673,11 +765,13 @@ jobs:
   SQL_Integration_Tests:
     runs-on: self-hosted
     needs: build
-    uses: actions/download-artifact@v2
-    with:
-      name: AcceptanceTesting.zip
     
     steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: AcceptanceTesting.zip
+    
     - name: Unzip
       run: "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
     
@@ -687,11 +781,13 @@ jobs:
   For_Each_Workflow_Execution_Specs:
     runs-on: self-hosted
     needs: build
-    uses: actions/download-artifact@v2
-    with:
-      name: AcceptanceTesting.zip
     
     steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: AcceptanceTesting.zip
+    
     - name: Unzip
       run: "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
     
@@ -701,11 +797,13 @@ jobs:
   Copy_Tool_Specs_From_Local:
     runs-on: self-hosted
     needs: build
-    uses: actions/download-artifact@v2
-    with:
-      name: AcceptanceTesting.zip
     
     steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: AcceptanceTesting.zip
+    
     - name: Unzip
       run: "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
     
@@ -715,11 +813,13 @@ jobs:
   Move_Tool_Specs_From_Local:
     runs-on: self-hosted
     needs: build
-    uses: actions/download-artifact@v2
-    with:
-      name: AcceptanceTesting.zip
     
     steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: AcceptanceTesting.zip
+    
     - name: Unzip
       run: "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
     
@@ -729,11 +829,13 @@ jobs:
   Rename_Tool_Specs_From_Local:
     runs-on: self-hosted
     needs: build
-    uses: actions/download-artifact@v2
-    with:
-      name: AcceptanceTesting.zip
     
     steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: AcceptanceTesting.zip
+    
     - name: Unzip
       run: "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
     
@@ -743,11 +845,13 @@ jobs:
   Unzip_Tool_Specs_From_Local:
     runs-on: self-hosted
     needs: build
-    uses: actions/download-artifact@v2
-    with:
-      name: AcceptanceTesting.zip
     
     steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: AcceptanceTesting.zip
+    
     - name: Unzip
       run: "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
     
@@ -757,11 +861,13 @@ jobs:
   Zip_Tool_Specs_From_Local:
     runs-on: self-hosted
     needs: build
-    uses: actions/download-artifact@v2
-    with:
-      name: AcceptanceTesting.zip
     
     steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: AcceptanceTesting.zip
+    
     - name: Unzip
       run: "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
     
@@ -771,11 +877,13 @@ jobs:
   Copy_Tool_Specs_From_FTP:
     runs-on: self-hosted
     needs: build
-    uses: actions/download-artifact@v2
-    with:
-      name: AcceptanceTesting.zip
     
     steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: AcceptanceTesting.zip
+    
     - name: Unzip
       run: "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
     
@@ -785,11 +893,13 @@ jobs:
   Move_Tool_Specs_From_FTP:
     runs-on: self-hosted
     needs: build
-    uses: actions/download-artifact@v2
-    with:
-      name: AcceptanceTesting.zip
     
     steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: AcceptanceTesting.zip
+    
     - name: Unzip
       run: "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
     
@@ -799,11 +909,13 @@ jobs:
   Rename_Tool_Specs_From_FTP:
     runs-on: self-hosted
     needs: build
-    uses: actions/download-artifact@v2
-    with:
-      name: AcceptanceTesting.zip
     
     steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: AcceptanceTesting.zip
+    
     - name: Unzip
       run: "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
     
@@ -813,11 +925,13 @@ jobs:
   Unzip_Tool_Specs_From_FTP:
     runs-on: self-hosted
     needs: build
-    uses: actions/download-artifact@v2
-    with:
-      name: AcceptanceTesting.zip
     
     steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: AcceptanceTesting.zip
+    
     - name: Unzip
       run: "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
     
@@ -827,11 +941,13 @@ jobs:
   Zip_Tool_Specs_From_FTP:
     runs-on: self-hosted
     needs: build
-    uses: actions/download-artifact@v2
-    with:
-      name: AcceptanceTesting.zip
     
     steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: AcceptanceTesting.zip
+    
     - name: Unzip
       run: "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
     
@@ -841,11 +957,13 @@ jobs:
   Copy_Tool_Specs_From_FTPS:
     runs-on: self-hosted
     needs: build
-    uses: actions/download-artifact@v2
-    with:
-      name: AcceptanceTesting.zip
     
     steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: AcceptanceTesting.zip
+    
     - name: Unzip
       run: "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
     
@@ -855,11 +973,13 @@ jobs:
   Move_Tool_Specs_From_FTPS:
     runs-on: self-hosted
     needs: build
-    uses: actions/download-artifact@v2
-    with:
-      name: AcceptanceTesting.zip
     
     steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: AcceptanceTesting.zip
+    
     - name: Unzip
       run: "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
     
@@ -869,11 +989,13 @@ jobs:
   Rename_Tool_Specs_From_FTPS:
     runs-on: self-hosted
     needs: build
-    uses: actions/download-artifact@v2
-    with:
-      name: AcceptanceTesting.zip
     
     steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: AcceptanceTesting.zip
+    
     - name: Unzip
       run: "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
     
@@ -883,11 +1005,13 @@ jobs:
   Unzip_Tool_Specs_From_FTPS:
     runs-on: self-hosted
     needs: build
-    uses: actions/download-artifact@v2
-    with:
-      name: AcceptanceTesting.zip
     
     steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: AcceptanceTesting.zip
+    
     - name: Unzip
       run: "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
     
@@ -897,11 +1021,13 @@ jobs:
   Zip_Tool_Specs_From_FTPS:
     runs-on: self-hosted
     needs: build
-    uses: actions/download-artifact@v2
-    with:
-      name: AcceptanceTesting.zip
     
     steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: AcceptanceTesting.zip
+    
     - name: Unzip
       run: "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
     
@@ -911,11 +1037,13 @@ jobs:
   Copy_Tool_Specs_From_SFTP:
     runs-on: self-hosted
     needs: build
-    uses: actions/download-artifact@v2
-    with:
-      name: AcceptanceTesting.zip
     
     steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: AcceptanceTesting.zip
+    
     - name: Unzip
       run: "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
     
@@ -925,11 +1053,13 @@ jobs:
   Move_Tool_Specs_From_SFTP:
     runs-on: self-hosted
     needs: build
-    uses: actions/download-artifact@v2
-    with:
-      name: AcceptanceTesting.zip
     
     steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: AcceptanceTesting.zip
+    
     - name: Unzip
       run: "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
     
@@ -939,11 +1069,13 @@ jobs:
   Rename_Tool_Specs_From_SFTP:
     runs-on: self-hosted
     needs: build
-    uses: actions/download-artifact@v2
-    with:
-      name: AcceptanceTesting.zip
     
     steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: AcceptanceTesting.zip
+    
     - name: Unzip
       run: "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
     
@@ -953,11 +1085,13 @@ jobs:
   Unzip_Tool_Specs_From_SFTP:
     runs-on: self-hosted
     needs: build
-    uses: actions/download-artifact@v2
-    with:
-      name: AcceptanceTesting.zip
     
     steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: AcceptanceTesting.zip
+    
     - name: Unzip
       run: "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
     
@@ -967,11 +1101,13 @@ jobs:
   Zip_Tool_Specs_From_SFTP:
     runs-on: self-hosted
     needs: build
-    uses: actions/download-artifact@v2
-    with:
-      name: AcceptanceTesting.zip
     
     steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: AcceptanceTesting.zip
+    
     - name: Unzip
       run: "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
     
@@ -981,11 +1117,13 @@ jobs:
   Copy_Tool_Specs_From_UNC:
     runs-on: self-hosted
     needs: build
-    uses: actions/download-artifact@v2
-    with:
-      name: AcceptanceTesting.zip
     
     steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: AcceptanceTesting.zip
+    
     - name: Unzip
       run: "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
     
@@ -995,11 +1133,13 @@ jobs:
   Move_Tool_Specs_From_UNC:
     runs-on: self-hosted
     needs: build
-    uses: actions/download-artifact@v2
-    with:
-      name: AcceptanceTesting.zip
     
     steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: AcceptanceTesting.zip
+    
     - name: Unzip
       run: "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
     
@@ -1009,11 +1149,13 @@ jobs:
   Studio_Core_Unit_Tests:
     runs-on: self-hosted
     needs: build
-    uses: actions/download-artifact@v2
-    with:
-      name: AcceptanceTesting.zip
     
     steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: AcceptanceTesting.zip
+    
     - name: Unzip
       run: "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
     
@@ -1023,11 +1165,13 @@ jobs:
   Elasticsearch_View_Models_Unit_Tests:
     runs-on: self-hosted
     needs: build
-    uses: actions/download-artifact@v2
-    with:
-      name: AcceptanceTesting.zip
     
     steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: AcceptanceTesting.zip
+    
     - name: Unzip
       run: "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
     
@@ -1037,11 +1181,13 @@ jobs:
   Search_Specs:
     runs-on: self-hosted
     needs: build
-    uses: actions/download-artifact@v2
-    with:
-      name: AcceptanceTesting.zip
     
     steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: AcceptanceTesting.zip
+    
     - name: Unzip
       run: "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
     
@@ -1051,11 +1197,13 @@ jobs:
   Logger_Unit_Tests:
     runs-on: self-hosted
     needs: build
-    uses: actions/download-artifact@v2
-    with:
-      name: AcceptanceTesting.zip
     
     steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: AcceptanceTesting.zip
+    
     - name: Unzip
       run: "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
     
@@ -1065,11 +1213,13 @@ jobs:
   Rename_Tool_Specs_From_UNC:
     runs-on: self-hosted
     needs: build
-    uses: actions/download-artifact@v2
-    with:
-      name: AcceptanceTesting.zip
     
     steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: AcceptanceTesting.zip
+    
     - name: Unzip
       run: "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
     
@@ -1079,11 +1229,13 @@ jobs:
   Not_Parallelizable_Unit_Tests:
     runs-on: self-hosted
     needs: build
-    uses: actions/download-artifact@v2
-    with:
-      name: AcceptanceTesting.zip
     
     steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: AcceptanceTesting.zip
+    
     - name: Unzip
       run: "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
     
@@ -1093,11 +1245,13 @@ jobs:
   Database_Workflow_Execution_Specs:
     runs-on: self-hosted
     needs: build
-    uses: actions/download-artifact@v2
-    with:
-      name: AcceptanceTesting.zip
     
     steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: AcceptanceTesting.zip
+    
     - name: Unzip
       run: "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
     
@@ -1107,11 +1261,13 @@ jobs:
   RabbitMQ_Workflow_Execution_Specs:
     runs-on: self-hosted
     needs: build
-    uses: actions/download-artifact@v2
-    with:
-      name: AcceptanceTesting.zip
     
     steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: AcceptanceTesting.zip
+    
     - name: Unzip
       run: "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
     
@@ -1121,11 +1277,13 @@ jobs:
   Studio_Test_Framework_With_HTTP_Web_Get_Tools_Specs:
     runs-on: self-hosted
     needs: build
-    uses: actions/download-artifact@v2
-    with:
-      name: AcceptanceTesting.zip
     
     steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: AcceptanceTesting.zip
+    
     - name: Unzip
       run: "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
     
@@ -1135,11 +1293,13 @@ jobs:
   Studio_Test_Framework_With_HTTP_Web_Delete_Tools_Specs:
     runs-on: self-hosted
     needs: build
-    uses: actions/download-artifact@v2
-    with:
-      name: AcceptanceTesting.zip
     
     steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: AcceptanceTesting.zip
+    
     - name: Unzip
       run: "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
     
@@ -1149,11 +1309,13 @@ jobs:
   Studio_Test_Framework_With_HTTP_Web_Post_Tools_Specs:
     runs-on: self-hosted
     needs: build
-    uses: actions/download-artifact@v2
-    with:
-      name: AcceptanceTesting.zip
     
     steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: AcceptanceTesting.zip
+    
     - name: Unzip
       run: "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
     
@@ -1163,11 +1325,13 @@ jobs:
   Studio_Test_Framework_With_HTTP_Web_Put_Tools_Specs:
     runs-on: self-hosted
     needs: build
-    uses: actions/download-artifact@v2
-    with:
-      name: AcceptanceTesting.zip
     
     steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: AcceptanceTesting.zip
+    
     - name: Unzip
       run: "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
     
@@ -1177,11 +1341,13 @@ jobs:
   Studio_Test_Framework_With_RabbitMQ_Tools_Specs:
     runs-on: self-hosted
     needs: build
-    uses: actions/download-artifact@v2
-    with:
-      name: AcceptanceTesting.zip
     
     steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: AcceptanceTesting.zip
+    
     - name: Unzip
       run: "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
     
@@ -1191,11 +1357,13 @@ jobs:
   Database_Subworkflow_Execution_Specs:
     runs-on: self-hosted
     needs: build
-    uses: actions/download-artifact@v2
-    with:
-      name: AcceptanceTesting.zip
     
     steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: AcceptanceTesting.zip
+    
     - name: Unzip
       run: "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
     
