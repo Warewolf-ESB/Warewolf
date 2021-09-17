@@ -15,7 +15,7 @@ jobs:
         fetch-depth: 0
 
     - name: Compile
-      run: &.\Compile.ps1 -AcceptanceTesting
+      run: &.\\Compile.ps1 -AcceptanceTesting
       
     - name: Zip
       run: &'C:/Builds/7Zip/7za.exe' u -up0q3r2x2y2z1w2 ${{ env.Wap_Project_Directory }}\AcceptanceTesting.zip .\Bin\AcceptanceTesting\*
