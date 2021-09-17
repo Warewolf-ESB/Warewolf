@@ -51,7 +51,7 @@ Request_Service_Name_View_Models_Unit_Tests:
 Unzip_Tool_Specs_Validation:
   stage: test
   script:
-    - "&'./Dev/.run/Job Shortcuts/Container/Unzip Tool Spec Validation.bat'"
+    - "&'./Dev/.run/Job Shortcuts/Container/Unzip Tool Specs Validation.bat'"
   tags:
     - opswolf
 Recordset_Tools_Specs:

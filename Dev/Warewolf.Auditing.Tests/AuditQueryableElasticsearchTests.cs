@@ -53,6 +53,14 @@ namespace Warewolf.Auditing.Tests
         }
 
         [TestMethod]
+        [Owner("Ashley Lewis")]
+        [TestCategory(nameof(AuditQueryableElastic))]
+        public void Trivial_Test_That_Always_Fails_As_A_Demonstration_Of_GitLab_GitHub_AzureDevOps()
+        {
+            Assert.Fail("This test always fails. This test is just to demonstrate what a failing test looks like on GitLab, GitHub and Azure DevOps");
+        }
+
+        [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AuditQueryableElastic))]
         [ExpectedException(typeof(ElasticsearchClientException))]
