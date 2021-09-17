@@ -18,13 +18,13 @@ jobs:
       run: "&.\\Compile.ps1 -AcceptanceTesting"
       
     - name: Zip
-      run: "&'C:/Builds/7Zip/7za.exe' u -up0q3r2x2y2z1w2 ${{env.base_directory}}\\AcceptanceTesting.zip .\\Bin\\AcceptanceTesting\\*"
+      run: "&'C:/Builds/7Zip/7za.exe' u -up0q3r2x2y2z1w2 ${{env.GITHUB_WORKSPACE}}\\AcceptanceTesting.zip .\\Bin\\AcceptanceTesting\\*"
 
     - name: Upload
       uses: actions/upload-artifact@v2
       with:
         name: AcceptanceTesting.zip
-        path: ${{env.base_directory}}\AcceptanceTesting.zip"
+        path: ${{env.GITHUB_WORKSPACE}}\AcceptanceTesting.zip"
 
   Zip_Tool_Specs:  
     runs-on: self-hosted
