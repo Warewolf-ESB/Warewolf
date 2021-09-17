@@ -24,7 +24,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: AcceptanceTesting.zip
-        path: ~\\AcceptanceTesting.zip"
+        path: ~\\AcceptanceTesting.zip
 
   Zip_Tool_Specs:  
     runs-on: self-hosted
