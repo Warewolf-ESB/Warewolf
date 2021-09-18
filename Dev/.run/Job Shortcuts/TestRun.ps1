@@ -281,10 +281,21 @@ for ($LoopCounter=0; $LoopCounter -le $RetryCount; $LoopCounter++) {
 		exit 1
 	}
 }
+$getXMLFiles = @(Get-ChildItem "$TestResultsPath\*.trx")
+if ($getXMLFiles.Count -eq 1) {
+    $getXML = [xml](Get-Content $getXMLFiles[0].FullName)
+    $AllErrors = ""
+	$getXMl.TestRun.Results.UnitTestResult | % {
+		if ($_.outcome -eq 'Failed') {
+            $AllErrors += "`n" + $_.testName + "`n" + $_.Output.ErrorInfo.Message
+		}
+    }
+    if ($AllErrors -ne "") {
+        throw "Test run failed." + $AllErrors
+    }
+}
 if ($Coverage.IsPresent) {
 	$MergedSnapshotPath = "$TestResultsPath\MergedDotCover.dcvr"
 	&".\JetBrains.dotCover.CommandLineTools\tools\dotCover.exe" merge --Sources="$TestResultsPath\DotCover*.dcvr" --Output=$MergedSnapshotPath
 	&".\JetBrains.dotCover.CommandLineTools\tools\dotCover.exe" report --Source=$MergedSnapshotPath --Output="$TestResultsPath\DotCover-Coverage-Report.html" --ReportType=HTML
 }
-Write-Host Exiting with exit code $LASTEXITCODE
-exit $LASTEXITCODE
