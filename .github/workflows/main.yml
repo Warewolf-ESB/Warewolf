@@ -36,7 +36,7 @@ jobs:
         path: .\\Bin\\AcceptanceTesting
     
     - name: Run Tests
-      run: "&'./Dev/.run/Job Shortcuts/Container/Zip_Tool_Specs.bat'"
+      run: "&'./Dev/.run/Job Shortcuts/Container/Zip Tool Specs.bat'"
 
   Email_Tools_Specs:
     runs-on: self-hosted
@@ -47,6 +47,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: AcceptanceTesting
+        path: .\\Bin\\AcceptanceTesting
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Email Tools Specs.bat'"
@@ -60,6 +61,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: AcceptanceTesting
+        path: .\\Bin\\AcceptanceTesting
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Resource Tools Specs.bat'"
@@ -73,6 +75,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: AcceptanceTesting
+        path: .\\Bin\\AcceptanceTesting
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/File And Folder Copy Tool Specs.bat'"
@@ -86,6 +89,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: AcceptanceTesting
+        path: .\\Bin\\AcceptanceTesting
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Data Tools Specs.bat'"
@@ -99,6 +103,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: AcceptanceTesting
+        path: .\\Bin\\AcceptanceTesting
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Request Service Name View Models Unit Tests.bat'"
@@ -112,6 +117,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: AcceptanceTesting
+        path: .\\Bin\\AcceptanceTesting
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Unzip Tool Specs Validation.bat'"
@@ -125,6 +131,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: AcceptanceTesting
+        path: .\\Bin\\AcceptanceTesting
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Recordset Tools Specs.bat'"
@@ -138,6 +145,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: AcceptanceTesting
+        path: .\\Bin\\AcceptanceTesting
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/File And Folder Rename Tool Specs.bat'"
@@ -151,6 +159,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: AcceptanceTesting
+        path: .\\Bin\\AcceptanceTesting
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Other Tools Specs.bat'"
@@ -164,6 +173,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: AcceptanceTesting
+        path: .\\Bin\\AcceptanceTesting
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/File And Folder Move Tool Specs.bat'"
@@ -177,6 +187,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: AcceptanceTesting
+        path: .\\Bin\\AcceptanceTesting
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/File Read Tool Specs.bat'"
@@ -190,6 +201,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: AcceptanceTesting
+        path: .\\Bin\\AcceptanceTesting
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Infrastructure Unit Tests.bat'"
@@ -203,6 +215,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: AcceptanceTesting
+        path: .\\Bin\\AcceptanceTesting
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/New Folder Read Tool Specs.bat'"
@@ -216,6 +229,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: AcceptanceTesting
+        path: .\\Bin\\AcceptanceTesting
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Write File Tool Specs.bat'"
@@ -229,6 +243,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: AcceptanceTesting
+        path: .\\Bin\\AcceptanceTesting
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Loop Construct Tools Specs.bat'"
@@ -242,6 +257,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: AcceptanceTesting
+        path: .\\Bin\\AcceptanceTesting
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Utility Tools Specs.bat'"
@@ -255,6 +271,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: AcceptanceTesting
+        path: .\\Bin\\AcceptanceTesting
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Folder Read Tool Specs.bat'"
@@ -268,6 +285,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: AcceptanceTesting
+        path: .\\Bin\\AcceptanceTesting
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/SQL Bulk Insert Tool Specs.bat'"
@@ -281,6 +299,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: AcceptanceTesting
+        path: .\\Bin\\AcceptanceTesting
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Control Flow Tools Specs.bat'"
@@ -294,6 +313,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: AcceptanceTesting
+        path: .\\Bin\\AcceptanceTesting
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Studio View Models Unit Tests.bat'"
@@ -307,6 +327,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: AcceptanceTesting
+        path: .\\Bin\\AcceptanceTesting
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/File And Folder Create Tool Specs.bat'"
@@ -320,6 +341,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: AcceptanceTesting
+        path: .\\Bin\\AcceptanceTesting
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Storage Unit Tests.bat'"
@@ -333,6 +355,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: AcceptanceTesting
+        path: .\\Bin\\AcceptanceTesting
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Storage Tools Specs.bat'"
@@ -346,6 +369,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: AcceptanceTesting
+        path: .\\Bin\\AcceptanceTesting
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/File And Folder Delete Tool Specs.bat'"
@@ -359,6 +383,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: AcceptanceTesting
+        path: .\\Bin\\AcceptanceTesting
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Scripting Tools Specs.bat'"
@@ -372,6 +397,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: AcceptanceTesting
+        path: .\\Bin\\AcceptanceTesting
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Database Tools Specs.bat'"
@@ -385,6 +411,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: AcceptanceTesting
+        path: .\\Bin\\AcceptanceTesting
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Auditing Unit Tests.bat'"
@@ -398,6 +425,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: AcceptanceTesting
+        path: .\\Bin\\AcceptanceTesting
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Workflow Execution Specs.bat'"
@@ -411,6 +439,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: AcceptanceTesting
+        path: .\\Bin\\AcceptanceTesting
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Studio Test Framework With Hello World Workflow Specs.bat'"
@@ -424,6 +453,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: AcceptanceTesting
+        path: .\\Bin\\AcceptanceTesting
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Studio Test Framework With Utility Tools Specs.bat'"
@@ -437,6 +467,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: AcceptanceTesting
+        path: .\\Bin\\AcceptanceTesting
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/MS SQL Server Specs.bat'"
@@ -450,6 +481,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: AcceptanceTesting
+        path: .\\Bin\\AcceptanceTesting
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Studio Test Framework With Data Tools Specs.bat'"
@@ -463,6 +495,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: AcceptanceTesting
+        path: .\\Bin\\AcceptanceTesting
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Assign Workflow Execution Specs.bat'"
@@ -476,6 +509,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: AcceptanceTesting
+        path: .\\Bin\\AcceptanceTesting
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Integration Tests.bat'"
@@ -489,6 +523,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: AcceptanceTesting
+        path: .\\Bin\\AcceptanceTesting
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Studio Test Framework With Scripting Tools Specs.bat'"
@@ -502,6 +537,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: AcceptanceTesting
+        path: .\\Bin\\AcceptanceTesting
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Other Activities Specs.bat'"
@@ -515,6 +551,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: AcceptanceTesting
+        path: .\\Bin\\AcceptanceTesting
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Studio Test Framework With File And Folder Tools Specs.bat'"
@@ -528,6 +565,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: AcceptanceTesting
+        path: .\\Bin\\AcceptanceTesting
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Studio Test Framework With HTTP Web Tools Specs.bat'"
@@ -541,6 +579,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: AcceptanceTesting
+        path: .\\Bin\\AcceptanceTesting
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Studio Test Framework With Subworkflow Specs.bat'"
@@ -554,6 +593,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: AcceptanceTesting
+        path: .\\Bin\\AcceptanceTesting
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Workflow Merging Specs.bat'"
@@ -567,6 +607,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: AcceptanceTesting
+        path: .\\Bin\\AcceptanceTesting
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Example Workflow Execution Specs.bat'"
@@ -580,6 +621,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: AcceptanceTesting
+        path: .\\Bin\\AcceptanceTesting
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Studio Test Framework Specs.bat'"
@@ -593,6 +635,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: AcceptanceTesting
+        path: .\\Bin\\AcceptanceTesting
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Subworkflow Execution Specs.bat'"
@@ -606,6 +649,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: AcceptanceTesting
+        path: .\\Bin\\AcceptanceTesting
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Other Specs.bat'"
@@ -619,6 +663,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: AcceptanceTesting
+        path: .\\Bin\\AcceptanceTesting
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Studio Test Framework With Deleted Resources Specs.bat'"
@@ -632,6 +677,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: AcceptanceTesting
+        path: .\\Bin\\AcceptanceTesting
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/SQL Integration Tests.bat'"
@@ -645,6 +691,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: AcceptanceTesting
+        path: .\\Bin\\AcceptanceTesting
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/For Each Workflow Execution Specs.bat'"
@@ -658,6 +705,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: AcceptanceTesting
+        path: .\\Bin\\AcceptanceTesting
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Copy Tool Specs From Local.bat'"
@@ -671,6 +719,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: AcceptanceTesting
+        path: .\\Bin\\AcceptanceTesting
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Move Tool Specs From Local.bat'"
@@ -684,6 +733,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: AcceptanceTesting
+        path: .\\Bin\\AcceptanceTesting
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Rename Tool Specs From Local.bat'"
@@ -697,6 +747,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: AcceptanceTesting
+        path: .\\Bin\\AcceptanceTesting
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Unzip Tool Specs From Local.bat'"
@@ -710,6 +761,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: AcceptanceTesting
+        path: .\\Bin\\AcceptanceTesting
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Zip Tool Specs From Local.bat'"
@@ -723,6 +775,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: AcceptanceTesting
+        path: .\\Bin\\AcceptanceTesting
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Copy Tool Specs From FTP.bat'"
@@ -736,6 +789,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: AcceptanceTesting
+        path: .\\Bin\\AcceptanceTesting
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Move Tool Specs From FTP.bat'"
@@ -749,6 +803,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: AcceptanceTesting
+        path: .\\Bin\\AcceptanceTesting
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Rename Tool Specs From FTP.bat'"
@@ -762,6 +817,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: AcceptanceTesting
+        path: .\\Bin\\AcceptanceTesting
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Unzip Tool Specs From FTP.bat'"
@@ -775,6 +831,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: AcceptanceTesting
+        path: .\\Bin\\AcceptanceTesting
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Zip Tool Specs From FTP.bat'"
@@ -788,6 +845,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: AcceptanceTesting
+        path: .\\Bin\\AcceptanceTesting
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Copy Tool Specs From FTPS.bat'"
@@ -801,6 +859,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: AcceptanceTesting
+        path: .\\Bin\\AcceptanceTesting
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Move Tool Specs From FTPS.bat'"
@@ -814,6 +873,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: AcceptanceTesting
+        path: .\\Bin\\AcceptanceTesting
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Rename Tool Specs From FTPS.bat'"
@@ -827,6 +887,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: AcceptanceTesting
+        path: .\\Bin\\AcceptanceTesting
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Unzip Tool Specs From FTPS.bat'"
@@ -840,6 +901,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: AcceptanceTesting
+        path: .\\Bin\\AcceptanceTesting
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Zip Tool Specs From FTPS.bat'"
@@ -853,6 +915,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: AcceptanceTesting
+        path: .\\Bin\\AcceptanceTesting
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Copy Tool Specs From SFTP.bat'"
@@ -866,6 +929,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: AcceptanceTesting
+        path: .\\Bin\\AcceptanceTesting
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Move Tool Specs From SFTP.bat'"
@@ -879,6 +943,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: AcceptanceTesting
+        path: .\\Bin\\AcceptanceTesting
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Rename Tool Specs From SFTP.bat'"
@@ -892,6 +957,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: AcceptanceTesting
+        path: .\\Bin\\AcceptanceTesting
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Unzip Tool Specs From SFTP.bat'"
@@ -905,6 +971,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: AcceptanceTesting
+        path: .\\Bin\\AcceptanceTesting
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Zip Tool Specs From SFTP.bat'"
@@ -918,6 +985,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: AcceptanceTesting
+        path: .\\Bin\\AcceptanceTesting
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Copy Tool Specs From UNC.bat'"
@@ -931,6 +999,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: AcceptanceTesting
+        path: .\\Bin\\AcceptanceTesting
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Move Tool Specs From UNC.bat'"
@@ -944,6 +1013,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: AcceptanceTesting
+        path: .\\Bin\\AcceptanceTesting
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Studio Core Unit Tests.bat'"
@@ -957,6 +1027,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: AcceptanceTesting
+        path: .\\Bin\\AcceptanceTesting
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Elasticsearch View Models Unit Tests.bat'"
@@ -970,6 +1041,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: AcceptanceTesting
+        path: .\\Bin\\AcceptanceTesting
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Search Specs.bat'"
@@ -983,6 +1055,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: AcceptanceTesting
+        path: .\\Bin\\AcceptanceTesting
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Logger Unit Tests.bat'"
@@ -996,6 +1069,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: AcceptanceTesting
+        path: .\\Bin\\AcceptanceTesting
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Rename Tool Specs From UNC.bat'"
@@ -1009,6 +1083,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: AcceptanceTesting
+        path: .\\Bin\\AcceptanceTesting
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Not Parallelizable Unit Tests.bat'"
@@ -1022,6 +1097,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: AcceptanceTesting
+        path: .\\Bin\\AcceptanceTesting
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Database Workflow Execution Specs.bat'"
@@ -1035,6 +1111,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: AcceptanceTesting
+        path: .\\Bin\\AcceptanceTesting
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/RabbitMQ Workflow Execution Specs.bat'"
@@ -1048,6 +1125,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: AcceptanceTesting
+        path: .\\Bin\\AcceptanceTesting
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Studio Test Framework With HTTP Web Get Tools Specs.bat'"
@@ -1061,6 +1139,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: AcceptanceTesting
+        path: .\\Bin\\AcceptanceTesting
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Studio Test Framework With HTTP Web Delete Tools Specs.bat'"
@@ -1074,6 +1153,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: AcceptanceTesting
+        path: .\\Bin\\AcceptanceTesting
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Studio Test Framework With HTTP Web Post Tools Specs.bat'"
@@ -1087,6 +1167,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: AcceptanceTesting
+        path: .\\Bin\\AcceptanceTesting
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Studio Test Framework With HTTP Web Put Tools Specs.bat'"
@@ -1100,6 +1181,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: AcceptanceTesting
+        path: .\\Bin\\AcceptanceTesting
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Studio Test Framework With RabbitMQ Tools Specs.bat'"
@@ -1113,6 +1195,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: AcceptanceTesting
+        path: .\\Bin\\AcceptanceTesting
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Database Subworkflow Execution Specs.bat'"
