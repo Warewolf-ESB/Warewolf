@@ -37,6 +37,12 @@ jobs:
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Zip Tool Specs.bat'"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: "**/*.trx"
 
   Email_Tools_Specs:
     runs-on: self-hosted
@@ -51,6 +57,12 @@ jobs:
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Email Tools Specs.bat'"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: "**/*.trx"
 
   Resource_Tools_Specs:
     runs-on: self-hosted
@@ -65,6 +77,12 @@ jobs:
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Resource Tools Specs.bat'"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: "**/*.trx"
 
   File_And_Folder_Copy_Tool_Specs:
     runs-on: self-hosted
@@ -79,6 +97,12 @@ jobs:
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/File And Folder Copy Tool Specs.bat'"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: "**/*.trx"
 
   Data_Tools_Specs:
     runs-on: self-hosted
@@ -93,6 +117,12 @@ jobs:
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Data Tools Specs.bat'"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: "**/*.trx"
 
   Request_Service_Name_View_Models_Unit_Tests:
     runs-on: self-hosted
@@ -107,6 +137,12 @@ jobs:
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Request Service Name View Models Unit Tests.bat'"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: "**/*.trx"
 
   Unzip_Tool_Specs_Validation:
     runs-on: self-hosted
@@ -121,6 +157,12 @@ jobs:
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Unzip Tool Specs Validation.bat'"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: "**/*.trx"
 
   Recordset_Tools_Specs:
     runs-on: self-hosted
@@ -135,6 +177,12 @@ jobs:
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Recordset Tools Specs.bat'"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: "**/*.trx"
 
   File_And_Folder_Rename_Tool_Specs:
     runs-on: self-hosted
@@ -149,6 +197,12 @@ jobs:
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/File And Folder Rename Tool Specs.bat'"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: "**/*.trx"
 
   Other_Tools_Specs:
     runs-on: self-hosted
@@ -163,6 +217,12 @@ jobs:
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Other Tools Specs.bat'"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: "**/*.trx"
 
   File_And_Folder_Move_Tool_Specs:
     runs-on: self-hosted
@@ -177,6 +237,12 @@ jobs:
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/File And Folder Move Tool Specs.bat'"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: "**/*.trx"
 
   File_Read_Tool_Specs:
     runs-on: self-hosted
@@ -191,6 +257,12 @@ jobs:
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/File Read Tool Specs.bat'"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: "**/*.trx"
 
   Infrastructure_Unit_Tests:
     runs-on: self-hosted
@@ -205,6 +277,12 @@ jobs:
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Infrastructure Unit Tests.bat'"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: "**/*.trx"
 
   New_Folder_Read_Tool_Specs:
     runs-on: self-hosted
@@ -219,6 +297,12 @@ jobs:
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/New Folder Read Tool Specs.bat'"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: "**/*.trx"
 
   Write_File_Tool_Specs:
     runs-on: self-hosted
@@ -233,6 +317,12 @@ jobs:
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Write File Tool Specs.bat'"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: "**/*.trx"
 
   Loop_Construct_Tools_Specs:
     runs-on: self-hosted
@@ -247,6 +337,12 @@ jobs:
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Loop Construct Tools Specs.bat'"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: "**/*.trx"
 
   Utility_Tools_Specs:
     runs-on: self-hosted
@@ -261,6 +357,12 @@ jobs:
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Utility Tools Specs.bat'"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: "**/*.trx"
 
   Folder_Read_Tool_Specs:
     runs-on: self-hosted
@@ -275,6 +377,12 @@ jobs:
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Folder Read Tool Specs.bat'"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: "**/*.trx"
 
   SQL_Bulk_Insert_Tool_Specs:
     runs-on: self-hosted
@@ -289,6 +397,12 @@ jobs:
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/SQL Bulk Insert Tool Specs.bat'"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: "**/*.trx"
 
   Control_Flow_Tools_Specs:
     runs-on: self-hosted
@@ -303,6 +417,12 @@ jobs:
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Control Flow Tools Specs.bat'"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: "**/*.trx"
 
   Studio_View_Models_Unit_Tests:
     runs-on: self-hosted
@@ -317,6 +437,12 @@ jobs:
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Studio View Models Unit Tests.bat'"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: "**/*.trx"
 
   File_And_Folder_Create_Tool_Specs:
     runs-on: self-hosted
@@ -331,6 +457,12 @@ jobs:
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/File And Folder Create Tool Specs.bat'"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: "**/*.trx"
 
   Storage_Unit_Tests:
     runs-on: self-hosted
@@ -345,6 +477,12 @@ jobs:
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Storage Unit Tests.bat'"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: "**/*.trx"
 
   Storage_Tools_Specs:
     runs-on: self-hosted
@@ -359,6 +497,12 @@ jobs:
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Storage Tools Specs.bat'"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: "**/*.trx"
 
   File_And_Folder_Delete_Tool_Specs:
     runs-on: self-hosted
@@ -373,6 +517,12 @@ jobs:
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/File And Folder Delete Tool Specs.bat'"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: "**/*.trx"
 
   Scripting_Tools_Specs:
     runs-on: self-hosted
@@ -387,6 +537,12 @@ jobs:
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Scripting Tools Specs.bat'"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: "**/*.trx"
 
   Database_Tools_Specs:
     runs-on: self-hosted
@@ -401,6 +557,12 @@ jobs:
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Database Tools Specs.bat'"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: "**/*.trx"
 
   Auditing_Unit_Tests:
     runs-on: self-hosted
@@ -415,6 +577,12 @@ jobs:
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Auditing Unit Tests.bat'"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: "**/*.trx"
 
   Workflow_Execution_Specs:
     runs-on: self-hosted
@@ -429,6 +597,12 @@ jobs:
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Workflow Execution Specs.bat'"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: "**/*.trx"
 
   Studio_Test_Framework_With_Hello_World_Workflow_Specs:
     runs-on: self-hosted
@@ -443,6 +617,12 @@ jobs:
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Studio Test Framework With Hello World Workflow Specs.bat'"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: "**/*.trx"
 
   Studio_Test_Framework_With_Utility_Tools_Specs:
     runs-on: self-hosted
@@ -457,6 +637,12 @@ jobs:
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Studio Test Framework With Utility Tools Specs.bat'"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: "**/*.trx"
 
   MS_SQL_Server_Specs:
     runs-on: self-hosted
@@ -471,6 +657,12 @@ jobs:
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/MS SQL Server Specs.bat'"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: "**/*.trx"
 
   Studio_Test_Framework_With_Data_Tools_Specs:
     runs-on: self-hosted
@@ -485,6 +677,12 @@ jobs:
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Studio Test Framework With Data Tools Specs.bat'"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: "**/*.trx"
 
   Assign_Workflow_Execution_Specs:
     runs-on: self-hosted
@@ -499,6 +697,12 @@ jobs:
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Assign Workflow Execution Specs.bat'"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: "**/*.trx"
 
   Integration_Tests:
     runs-on: self-hosted
@@ -513,6 +717,12 @@ jobs:
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Integration Tests.bat'"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: "**/*.trx"
 
   Studio_Test_Framework_With_Scripting_Tools_Specs:
     runs-on: self-hosted
@@ -527,6 +737,12 @@ jobs:
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Studio Test Framework With Scripting Tools Specs.bat'"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: "**/*.trx"
 
   Other_Activities_Specs:
     runs-on: self-hosted
@@ -541,6 +757,12 @@ jobs:
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Other Activities Specs.bat'"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: "**/*.trx"
 
   Studio_Test_Framework_With_File_And_Folder_Tools_Specs:
     runs-on: self-hosted
@@ -555,6 +777,12 @@ jobs:
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Studio Test Framework With File And Folder Tools Specs.bat'"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: "**/*.trx"
 
   Studio_Test_Framework_With_HTTP_Web_Tools_Specs:
     runs-on: self-hosted
@@ -569,6 +797,12 @@ jobs:
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Studio Test Framework With HTTP Web Tools Specs.bat'"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: "**/*.trx"
 
   Studio_Test_Framework_With_Subworkflow_Specs:
     runs-on: self-hosted
@@ -583,6 +817,12 @@ jobs:
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Studio Test Framework With Subworkflow Specs.bat'"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: "**/*.trx"
 
   Workflow_Merging_Specs:
     runs-on: self-hosted
@@ -597,6 +837,12 @@ jobs:
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Workflow Merging Specs.bat'"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: "**/*.trx"
 
   Example_Workflow_Execution_Specs:
     runs-on: self-hosted
@@ -611,6 +857,12 @@ jobs:
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Example Workflow Execution Specs.bat'"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: "**/*.trx"
 
   Studio_Test_Framework_Specs:
     runs-on: self-hosted
@@ -625,6 +877,12 @@ jobs:
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Studio Test Framework Specs.bat'"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: "**/*.trx"
 
   Subworkflow_Execution_Specs:
     runs-on: self-hosted
@@ -639,6 +897,12 @@ jobs:
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Subworkflow Execution Specs.bat'"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: "**/*.trx"
 
   Other_Specs:
     runs-on: self-hosted
@@ -653,6 +917,12 @@ jobs:
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Other Specs.bat'"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: "**/*.trx"
 
   Studio_Test_Framework_With_Deleted_Resources_Specs:
     runs-on: self-hosted
@@ -667,6 +937,12 @@ jobs:
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Studio Test Framework With Deleted Resources Specs.bat'"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: "**/*.trx"
 
   SQL_Integration_Tests:
     runs-on: self-hosted
@@ -681,6 +957,12 @@ jobs:
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/SQL Integration Tests.bat'"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: "**/*.trx"
 
   For_Each_Workflow_Execution_Specs:
     runs-on: self-hosted
@@ -695,6 +977,12 @@ jobs:
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/For Each Workflow Execution Specs.bat'"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: "**/*.trx"
 
   Copy_Tool_Specs_From_Local:
     runs-on: self-hosted
@@ -709,6 +997,12 @@ jobs:
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Copy Tool Specs From Local.bat'"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: "**/*.trx"
 
   Move_Tool_Specs_From_Local:
     runs-on: self-hosted
@@ -723,6 +1017,12 @@ jobs:
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Move Tool Specs From Local.bat'"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: "**/*.trx"
 
   Rename_Tool_Specs_From_Local:
     runs-on: self-hosted
@@ -737,6 +1037,12 @@ jobs:
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Rename Tool Specs From Local.bat'"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: "**/*.trx"
 
   Unzip_Tool_Specs_From_Local:
     runs-on: self-hosted
@@ -751,6 +1057,12 @@ jobs:
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Unzip Tool Specs From Local.bat'"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: "**/*.trx"
 
   Zip_Tool_Specs_From_Local:
     runs-on: self-hosted
@@ -765,6 +1077,12 @@ jobs:
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Zip Tool Specs From Local.bat'"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: "**/*.trx"
 
   Copy_Tool_Specs_From_FTP:
     runs-on: self-hosted
@@ -779,6 +1097,12 @@ jobs:
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Copy Tool Specs From FTP.bat'"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: "**/*.trx"
 
   Move_Tool_Specs_From_FTP:
     runs-on: self-hosted
@@ -793,6 +1117,12 @@ jobs:
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Move Tool Specs From FTP.bat'"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: "**/*.trx"
 
   Rename_Tool_Specs_From_FTP:
     runs-on: self-hosted
@@ -807,6 +1137,12 @@ jobs:
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Rename Tool Specs From FTP.bat'"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: "**/*.trx"
 
   Unzip_Tool_Specs_From_FTP:
     runs-on: self-hosted
@@ -821,6 +1157,12 @@ jobs:
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Unzip Tool Specs From FTP.bat'"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: "**/*.trx"
 
   Zip_Tool_Specs_From_FTP:
     runs-on: self-hosted
@@ -835,6 +1177,12 @@ jobs:
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Zip Tool Specs From FTP.bat'"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: "**/*.trx"
 
   Copy_Tool_Specs_From_FTPS:
     runs-on: self-hosted
@@ -849,6 +1197,12 @@ jobs:
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Copy Tool Specs From FTPS.bat'"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: "**/*.trx"
 
   Move_Tool_Specs_From_FTPS:
     runs-on: self-hosted
@@ -863,6 +1217,12 @@ jobs:
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Move Tool Specs From FTPS.bat'"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: "**/*.trx"
 
   Rename_Tool_Specs_From_FTPS:
     runs-on: self-hosted
@@ -877,6 +1237,12 @@ jobs:
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Rename Tool Specs From FTPS.bat'"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: "**/*.trx"
 
   Unzip_Tool_Specs_From_FTPS:
     runs-on: self-hosted
@@ -891,6 +1257,12 @@ jobs:
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Unzip Tool Specs From FTPS.bat'"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: "**/*.trx"
 
   Zip_Tool_Specs_From_FTPS:
     runs-on: self-hosted
@@ -905,6 +1277,12 @@ jobs:
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Zip Tool Specs From FTPS.bat'"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: "**/*.trx"
 
   Copy_Tool_Specs_From_SFTP:
     runs-on: self-hosted
@@ -919,6 +1297,12 @@ jobs:
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Copy Tool Specs From SFTP.bat'"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: "**/*.trx"
 
   Move_Tool_Specs_From_SFTP:
     runs-on: self-hosted
@@ -933,6 +1317,12 @@ jobs:
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Move Tool Specs From SFTP.bat'"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: "**/*.trx"
 
   Rename_Tool_Specs_From_SFTP:
     runs-on: self-hosted
@@ -947,6 +1337,12 @@ jobs:
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Rename Tool Specs From SFTP.bat'"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: "**/*.trx"
 
   Unzip_Tool_Specs_From_SFTP:
     runs-on: self-hosted
@@ -961,6 +1357,12 @@ jobs:
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Unzip Tool Specs From SFTP.bat'"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: "**/*.trx"
 
   Zip_Tool_Specs_From_SFTP:
     runs-on: self-hosted
@@ -975,6 +1377,12 @@ jobs:
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Zip Tool Specs From SFTP.bat'"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: "**/*.trx"
 
   Copy_Tool_Specs_From_UNC:
     runs-on: self-hosted
@@ -989,6 +1397,12 @@ jobs:
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Copy Tool Specs From UNC.bat'"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: "**/*.trx"
 
   Move_Tool_Specs_From_UNC:
     runs-on: self-hosted
@@ -1003,6 +1417,12 @@ jobs:
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Move Tool Specs From UNC.bat'"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: "**/*.trx"
 
   Studio_Core_Unit_Tests:
     runs-on: self-hosted
@@ -1017,6 +1437,12 @@ jobs:
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Studio Core Unit Tests.bat'"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: "**/*.trx"
 
   Elasticsearch_View_Models_Unit_Tests:
     runs-on: self-hosted
@@ -1031,6 +1457,12 @@ jobs:
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Elasticsearch View Models Unit Tests.bat'"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: "**/*.trx"
 
   Search_Specs:
     runs-on: self-hosted
@@ -1045,6 +1477,12 @@ jobs:
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Search Specs.bat'"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: "**/*.trx"
 
   Logger_Unit_Tests:
     runs-on: self-hosted
@@ -1059,6 +1497,12 @@ jobs:
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Logger Unit Tests.bat'"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: "**/*.trx"
 
   Rename_Tool_Specs_From_UNC:
     runs-on: self-hosted
@@ -1073,6 +1517,12 @@ jobs:
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Rename Tool Specs From UNC.bat'"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: "**/*.trx"
 
   Not_Parallelizable_Unit_Tests:
     runs-on: self-hosted
@@ -1087,6 +1537,12 @@ jobs:
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Not Parallelizable Unit Tests.bat'"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: "**/*.trx"
 
   Database_Workflow_Execution_Specs:
     runs-on: self-hosted
@@ -1101,6 +1557,12 @@ jobs:
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Database Workflow Execution Specs.bat'"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: "**/*.trx"
 
   RabbitMQ_Workflow_Execution_Specs:
     runs-on: self-hosted
@@ -1115,6 +1577,12 @@ jobs:
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/RabbitMQ Workflow Execution Specs.bat'"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: "**/*.trx"
 
   Studio_Test_Framework_With_HTTP_Web_Get_Tools_Specs:
     runs-on: self-hosted
@@ -1129,6 +1597,12 @@ jobs:
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Studio Test Framework With HTTP Web Get Tools Specs.bat'"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: "**/*.trx"
 
   Studio_Test_Framework_With_HTTP_Web_Delete_Tools_Specs:
     runs-on: self-hosted
@@ -1143,6 +1617,12 @@ jobs:
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Studio Test Framework With HTTP Web Delete Tools Specs.bat'"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: "**/*.trx"
 
   Studio_Test_Framework_With_HTTP_Web_Post_Tools_Specs:
     runs-on: self-hosted
@@ -1157,6 +1637,12 @@ jobs:
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Studio Test Framework With HTTP Web Post Tools Specs.bat'"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: "**/*.trx"
 
   Studio_Test_Framework_With_HTTP_Web_Put_Tools_Specs:
     runs-on: self-hosted
@@ -1171,6 +1657,12 @@ jobs:
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Studio Test Framework With HTTP Web Put Tools Specs.bat'"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: "**/*.trx"
 
   Studio_Test_Framework_With_RabbitMQ_Tools_Specs:
     runs-on: self-hosted
@@ -1185,6 +1677,12 @@ jobs:
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Studio Test Framework With RabbitMQ Tools Specs.bat'"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: "**/*.trx"
 
   Database_Subworkflow_Execution_Specs:
     runs-on: self-hosted
@@ -1199,3 +1697,9 @@ jobs:
     
     - name: Run Tests
       run: "&'./Dev/.run/Job Shortcuts/Container/Database Subworkflow Execution Specs.bat'"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: "**/*.trx"

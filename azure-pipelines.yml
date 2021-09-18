@@ -10,6 +10,7 @@ pool:
   name: Default
 
 jobs:
+
 - job: build
   displayName: 'Compile AcceptanceTesting.sln'
 
@@ -25,6 +26,12 @@ jobs:
   - script: "\"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Zip Tool Specs.bat\""
     displayName: 'Run Zip Tool Specs'
 
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: '**/*.trx'
+      failTaskOnFailedTests: true
+
 - job: Email_Tools_Specs
   displayName: 'Run Email Tools Specs'
   dependsOn: build
@@ -32,6 +39,12 @@ jobs:
   steps:
   - script: "\"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Email Tools Specs.bat\""
     displayName: 'Run Email Tools Specs'
+
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: '**/*.trx'
+      failTaskOnFailedTests: true
 
 - job: Resource_Tools_Specs
   displayName: 'Run Resource Tools Specs'
@@ -41,6 +54,12 @@ jobs:
   - script: "\"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Resource Tools Specs.bat\""
     displayName: 'Run Resource Tools Specs'
 
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: '**/*.trx'
+      failTaskOnFailedTests: true
+
 - job: File_And_Folder_Copy_Tool_Specs
   displayName: 'Run File And Folder Copy Tool Specs'
   dependsOn: build
@@ -48,6 +67,12 @@ jobs:
   steps:
   - script: "\"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\File And Folder Copy Tool Specs.bat\""
     displayName: 'Run File And Folder Copy Tool Specs'
+
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: '**/*.trx'
+      failTaskOnFailedTests: true
 
 - job: Data_Tools_Specs
   displayName: 'Run Data Tools Specs'
@@ -57,6 +82,12 @@ jobs:
   - script: "\"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Data Tools Specs.bat\""
     displayName: 'Run Data Tools Specs'
 
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: '**/*.trx'
+      failTaskOnFailedTests: true
+
 - job: Request_Service_Name_View_Models_Unit_Tests
   displayName: 'Run Request Service Name View Models Unit Tests'
   dependsOn: build
@@ -64,6 +95,12 @@ jobs:
   steps:
   - script: "\"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Request Service Name View Models Unit Tests.bat\""
     displayName: 'Run Request Service Name View Models Unit Tests'
+
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: '**/*.trx'
+      failTaskOnFailedTests: true
 
 - job: Unzip_Tool_Specs_Validation
   displayName: 'Run Unzip Tool Specs Validation'
@@ -73,6 +110,12 @@ jobs:
   - script: "\"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Unzip Tool Specs Validation.bat\""
     displayName: 'Run Unzip Tool Specs Validation'
 
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: '**/*.trx'
+      failTaskOnFailedTests: true
+
 - job: Recordset_Tools_Specs
   displayName: 'Run Recordset Tools Specs'
   dependsOn: build
@@ -80,6 +123,12 @@ jobs:
   steps:
   - script: "\"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Recordset Tools Specs.bat\""
     displayName: 'Run Recordset Tools Specs'
+
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: '**/*.trx'
+      failTaskOnFailedTests: true
 
 - job: File_And_Folder_Rename_Tool_Specs
   displayName: 'Run File And Folder Rename Tool Specs'
@@ -89,6 +138,12 @@ jobs:
   - script: "\"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\File And Folder Rename Tool Specs.bat\""
     displayName: 'Run File And Folder Rename Tool Specs'
 
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: '**/*.trx'
+      failTaskOnFailedTests: true
+
 - job: Other_Tools_Specs
   displayName: 'Run Other Tools Specs'
   dependsOn: build
@@ -96,6 +151,12 @@ jobs:
   steps:
   - script: "\"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Other Tools Specs.bat\""
     displayName: 'Run Other Tools Specs'
+
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: '**/*.trx'
+      failTaskOnFailedTests: true
 
 - job: File_And_Folder_Move_Tool_Specs
   displayName: 'Run File And Folder Move Tool Specs'
@@ -105,6 +166,12 @@ jobs:
   - script: "\"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\File And Folder Move Tool Specs.bat\""
     displayName: 'Run File And Folder Move Tool Specs'
 
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: '**/*.trx'
+      failTaskOnFailedTests: true
+
 - job: File_Read_Tool_Specs
   displayName: 'Run File Read Tool Specs'
   dependsOn: build
@@ -112,6 +179,12 @@ jobs:
   steps:
   - script: "\"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\File Read Tool Specs.bat\""
     displayName: 'Run File Read Tool Specs'
+
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: '**/*.trx'
+      failTaskOnFailedTests: true
 
 - job: Infrastructure_Unit_Tests
   displayName: 'Run Infrastructure Unit Tests'
@@ -121,6 +194,12 @@ jobs:
   - script: "\"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Infrastructure Unit Tests.bat\""
     displayName: 'Run Infrastructure Unit Tests'
 
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: '**/*.trx'
+      failTaskOnFailedTests: true
+
 - job: New_Folder_Read_Tool_Specs
   displayName: 'Run New Folder Read Tool Specs'
   dependsOn: build
@@ -128,6 +207,12 @@ jobs:
   steps:
   - script: "\"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\New Folder Read Tool Specs.bat\""
     displayName: 'Run New Folder Read Tool Specs'
+
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: '**/*.trx'
+      failTaskOnFailedTests: true
 
 - job: Write_File_Tool_Specs
   displayName: 'Run Write File Tool Specs'
@@ -137,6 +222,12 @@ jobs:
   - script: "\"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Write File Tool Specs.bat\""
     displayName: 'Run Write File Tool Specs'
 
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: '**/*.trx'
+      failTaskOnFailedTests: true
+
 - job: Loop_Construct_Tools_Specs
   displayName: 'Run Loop Construct Tools Specs'
   dependsOn: build
@@ -144,6 +235,12 @@ jobs:
   steps:
   - script: "\"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Loop Construct Tools Specs.bat\""
     displayName: 'Run Loop Construct Tools Specs'
+
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: '**/*.trx'
+      failTaskOnFailedTests: true
 
 - job: Utility_Tools_Specs
   displayName: 'Run Utility Tools Specs'
@@ -153,6 +250,12 @@ jobs:
   - script: "\"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Utility Tools Specs.bat\""
     displayName: 'Run Utility Tools Specs'
 
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: '**/*.trx'
+      failTaskOnFailedTests: true
+
 - job: Folder_Read_Tool_Specs
   displayName: 'Run Folder Read Tool Specs'
   dependsOn: build
@@ -160,6 +263,12 @@ jobs:
   steps:
   - script: "\"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Folder Read Tool Specs.bat\""
     displayName: 'Run Folder Read Tool Specs'
+
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: '**/*.trx'
+      failTaskOnFailedTests: true
 
 - job: SQL_Bulk_Insert_Tool_Specs
   displayName: 'Run SQL Bulk Insert Tool Specs'
@@ -169,6 +278,12 @@ jobs:
   - script: "\"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\SQL Bulk Insert Tool Specs.bat\""
     displayName: 'Run SQL Bulk Insert Tool Specs'
 
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: '**/*.trx'
+      failTaskOnFailedTests: true
+
 - job: Control_Flow_Tools_Specs
   displayName: 'Run Control Flow Tools Specs'
   dependsOn: build
@@ -176,6 +291,12 @@ jobs:
   steps:
   - script: "\"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Control Flow Tools Specs.bat\""
     displayName: 'Run Control Flow Tools Specs'
+
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: '**/*.trx'
+      failTaskOnFailedTests: true
 
 - job: Studio_View_Models_Unit_Tests
   displayName: 'Run Studio View Models Unit Tests'
@@ -185,6 +306,12 @@ jobs:
   - script: "\"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Studio View Models Unit Tests.bat\""
     displayName: 'Run Studio View Models Unit Tests'
 
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: '**/*.trx'
+      failTaskOnFailedTests: true
+
 - job: File_And_Folder_Create_Tool_Specs
   displayName: 'Run File And Folder Create Tool Specs'
   dependsOn: build
@@ -192,6 +319,12 @@ jobs:
   steps:
   - script: "\"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\File And Folder Create Tool Specs.bat\""
     displayName: 'Run File And Folder Create Tool Specs'
+
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: '**/*.trx'
+      failTaskOnFailedTests: true
 
 - job: Storage_Unit_Tests
   displayName: 'Run Storage Unit Tests'
@@ -201,6 +334,12 @@ jobs:
   - script: "\"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Storage Unit Tests.bat\""
     displayName: 'Run Storage Unit Tests'
 
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: '**/*.trx'
+      failTaskOnFailedTests: true
+
 - job: Storage_Tools_Specs
   displayName: 'Run Storage Tools Specs'
   dependsOn: build
@@ -208,6 +347,12 @@ jobs:
   steps:
   - script: "\"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Storage Tools Specs.bat\""
     displayName: 'Run Storage Tools Specs'
+
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: '**/*.trx'
+      failTaskOnFailedTests: true
 
 - job: File_And_Folder_Delete_Tool_Specs
   displayName: 'Run File And Folder Delete Tool Specs'
@@ -217,6 +362,12 @@ jobs:
   - script: "\"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\File And Folder Delete Tool Specs.bat\""
     displayName: 'Run File And Folder Delete Tool Specs'
 
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: '**/*.trx'
+      failTaskOnFailedTests: true
+
 - job: Scripting_Tools_Specs
   displayName: 'Run Scripting Tools Specs'
   dependsOn: build
@@ -224,6 +375,12 @@ jobs:
   steps:
   - script: "\"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Scripting Tools Specs.bat\""
     displayName: 'Run Scripting Tools Specs'
+
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: '**/*.trx'
+      failTaskOnFailedTests: true
 
 - job: Database_Tools_Specs
   displayName: 'Run Database Tools Specs'
@@ -233,6 +390,12 @@ jobs:
   - script: "\"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Database Tools Specs.bat\""
     displayName: 'Run Database Tools Specs'
 
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: '**/*.trx'
+      failTaskOnFailedTests: true
+
 - job: Auditing_Unit_Tests
   displayName: 'Run Auditing Unit Tests'
   dependsOn: build
@@ -240,6 +403,12 @@ jobs:
   steps:
   - script: "\"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Auditing Unit Tests.bat\""
     displayName: 'Run Auditing Unit Tests'
+
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: '**/*.trx'
+      failTaskOnFailedTests: true
 
 - job: Workflow_Execution_Specs
   displayName: 'Run Workflow Execution Specs'
@@ -249,6 +418,12 @@ jobs:
   - script: "\"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Workflow Execution Specs.bat\""
     displayName: 'Run Workflow Execution Specs'
 
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: '**/*.trx'
+      failTaskOnFailedTests: true
+
 - job: Studio_Test_Framework_With_Hello_World_Workflow_Specs
   displayName: 'Run Studio Test Framework With Hello World Workflow Specs'
   dependsOn: build
@@ -256,6 +431,12 @@ jobs:
   steps:
   - script: "\"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Studio Test Framework With Hello World Workflow Specs.bat\""
     displayName: 'Run Studio Test Framework With Hello World Workflow Specs'
+
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: '**/*.trx'
+      failTaskOnFailedTests: true
 
 - job: Studio_Test_Framework_With_Utility_Tools_Specs
   displayName: 'Run Studio Test Framework With Utility Tools Specs'
@@ -265,6 +446,12 @@ jobs:
   - script: "\"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Studio Test Framework With Utility Tools Specs.bat\""
     displayName: 'Run Studio Test Framework With Utility Tools Specs'
 
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: '**/*.trx'
+      failTaskOnFailedTests: true
+
 - job: MS_SQL_Server_Specs
   displayName: 'Run MS SQL Server Specs'
   dependsOn: build
@@ -272,6 +459,12 @@ jobs:
   steps:
   - script: "\"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\MS SQL Server Specs.bat\""
     displayName: 'Run MS SQL Server Specs'
+
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: '**/*.trx'
+      failTaskOnFailedTests: true
 
 - job: Studio_Test_Framework_With_Data_Tools_Specs
   displayName: 'Run Studio Test Framework With Data Tools Specs'
@@ -281,6 +474,12 @@ jobs:
   - script: "\"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Studio Test Framework With Data Tools Specs.bat\""
     displayName: 'Run Studio Test Framework With Data Tools Specs'
 
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: '**/*.trx'
+      failTaskOnFailedTests: true
+
 - job: Assign_Workflow_Execution_Specs
   displayName: 'Run Assign Workflow Execution Specs'
   dependsOn: build
@@ -288,6 +487,12 @@ jobs:
   steps:
   - script: "\"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Assign Workflow Execution Specs.bat\""
     displayName: 'Run Assign Workflow Execution Specs'
+
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: '**/*.trx'
+      failTaskOnFailedTests: true
 
 - job: Integration_Tests
   displayName: 'Run Integration Tests'
@@ -297,6 +502,12 @@ jobs:
   - script: "\"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Integration Tests.bat\""
     displayName: 'Run Integration Tests'
 
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: '**/*.trx'
+      failTaskOnFailedTests: true
+
 - job: Studio_Test_Framework_With_Scripting_Tools_Specs
   displayName: 'Run Studio Test Framework With Scripting Tools Specs'
   dependsOn: build
@@ -304,6 +515,12 @@ jobs:
   steps:
   - script: "\"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Studio Test Framework With Scripting Tools Specs.bat\""
     displayName: 'Run Studio Test Framework With Scripting Tools Specs'
+
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: '**/*.trx'
+      failTaskOnFailedTests: true
 
 - job: Other_Activities_Specs
   displayName: 'Run Other Activities Specs'
@@ -313,6 +530,12 @@ jobs:
   - script: "\"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Other Activities Specs.bat\""
     displayName: 'Run Other Activities Specs'
 
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: '**/*.trx'
+      failTaskOnFailedTests: true
+
 - job: Studio_Test_Framework_With_File_And_Folder_Tools_Specs
   displayName: 'Run Studio Test Framework With File And Folder Tools Specs'
   dependsOn: build
@@ -320,6 +543,12 @@ jobs:
   steps:
   - script: "\"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Studio Test Framework With File And Folder Tools Specs.bat\""
     displayName: 'Run Studio Test Framework With File And Folder Tools Specs'
+
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: '**/*.trx'
+      failTaskOnFailedTests: true
 
 - job: Studio_Test_Framework_With_HTTP_Web_Tools_Specs
   displayName: 'Run Studio Test Framework With HTTP Web Tools Specs'
@@ -329,6 +558,12 @@ jobs:
   - script: "\"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Studio Test Framework With HTTP Web Tools Specs.bat\""
     displayName: 'Run Studio Test Framework With HTTP Web Tools Specs'
 
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: '**/*.trx'
+      failTaskOnFailedTests: true
+
 - job: Studio_Test_Framework_With_Subworkflow_Specs
   displayName: 'Run Studio Test Framework With Subworkflow Specs'
   dependsOn: build
@@ -336,6 +571,12 @@ jobs:
   steps:
   - script: "\"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Studio Test Framework With Subworkflow Specs.bat\""
     displayName: 'Run Studio Test Framework With Subworkflow Specs'
+
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: '**/*.trx'
+      failTaskOnFailedTests: true
 
 - job: Workflow_Merging_Specs
   displayName: 'Run Workflow Merging Specs'
@@ -345,6 +586,12 @@ jobs:
   - script: "\"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Workflow Merging Specs.bat\""
     displayName: 'Run Workflow Merging Specs'
 
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: '**/*.trx'
+      failTaskOnFailedTests: true
+
 - job: Example_Workflow_Execution_Specs
   displayName: 'Run Example Workflow Execution Specs'
   dependsOn: build
@@ -352,6 +599,12 @@ jobs:
   steps:
   - script: "\"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Example Workflow Execution Specs.bat\""
     displayName: 'Run Example Workflow Execution Specs'
+
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: '**/*.trx'
+      failTaskOnFailedTests: true
 
 - job: Studio_Test_Framework_Specs
   displayName: 'Run Studio Test Framework Specs'
@@ -361,6 +614,12 @@ jobs:
   - script: "\"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Studio Test Framework Specs.bat\""
     displayName: 'Run Studio Test Framework Specs'
 
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: '**/*.trx'
+      failTaskOnFailedTests: true
+
 - job: Subworkflow_Execution_Specs
   displayName: 'Run Subworkflow Execution Specs'
   dependsOn: build
@@ -368,6 +627,12 @@ jobs:
   steps:
   - script: "\"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Subworkflow Execution Specs.bat\""
     displayName: 'Run Subworkflow Execution Specs'
+
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: '**/*.trx'
+      failTaskOnFailedTests: true
 
 - job: Other_Specs
   displayName: 'Run Other Specs'
@@ -377,6 +642,12 @@ jobs:
   - script: "\"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Other Specs.bat\""
     displayName: 'Run Other Specs'
 
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: '**/*.trx'
+      failTaskOnFailedTests: true
+
 - job: Studio_Test_Framework_With_Deleted_Resources_Specs
   displayName: 'Run Studio Test Framework With Deleted Resources Specs'
   dependsOn: build
@@ -384,6 +655,12 @@ jobs:
   steps:
   - script: "\"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Studio Test Framework With Deleted Resources Specs.bat\""
     displayName: 'Run Studio Test Framework With Deleted Resources Specs'
+
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: '**/*.trx'
+      failTaskOnFailedTests: true
 
 - job: SQL_Integration_Tests
   displayName: 'Run SQL Integration Tests'
@@ -393,6 +670,12 @@ jobs:
   - script: "\"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\SQL Integration Tests.bat\""
     displayName: 'Run SQL Integration Tests'
 
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: '**/*.trx'
+      failTaskOnFailedTests: true
+
 - job: For_Each_Workflow_Execution_Specs
   displayName: 'Run For Each Workflow Execution Specs'
   dependsOn: build
@@ -400,6 +683,12 @@ jobs:
   steps:
   - script: "\"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\For Each Workflow Execution Specs.bat\""
     displayName: 'Run For Each Workflow Execution Specs'
+
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: '**/*.trx'
+      failTaskOnFailedTests: true
 
 - job: Copy_Tool_Specs_From_Local
   displayName: 'Run Copy Tool Specs From Local'
@@ -409,6 +698,12 @@ jobs:
   - script: "\"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Copy Tool Specs From Local.bat\""
     displayName: 'Run Copy Tool Specs From Local'
 
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: '**/*.trx'
+      failTaskOnFailedTests: true
+
 - job: Move_Tool_Specs_From_Local
   displayName: 'Run Move Tool Specs From Local'
   dependsOn: build
@@ -416,6 +711,12 @@ jobs:
   steps:
   - script: "\"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Move Tool Specs From Local.bat\""
     displayName: 'Run Move Tool Specs From Local'
+
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: '**/*.trx'
+      failTaskOnFailedTests: true
 
 - job: Rename_Tool_Specs_From_Local
   displayName: 'Run Rename Tool Specs From Local'
@@ -425,6 +726,12 @@ jobs:
   - script: "\"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Rename Tool Specs From Local.bat\""
     displayName: 'Run Rename Tool Specs From Local'
 
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: '**/*.trx'
+      failTaskOnFailedTests: true
+
 - job: Unzip_Tool_Specs_From_Local
   displayName: 'Run Unzip Tool Specs From Local'
   dependsOn: build
@@ -432,6 +739,12 @@ jobs:
   steps:
   - script: "\"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Unzip Tool Specs From Local.bat\""
     displayName: 'Run Unzip Tool Specs From Local'
+
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: '**/*.trx'
+      failTaskOnFailedTests: true
 
 - job: Zip_Tool_Specs_From_Local
   displayName: 'Run Zip Tool Specs From Local'
@@ -441,6 +754,12 @@ jobs:
   - script: "\"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Zip Tool Specs From Local.bat\""
     displayName: 'Run Zip Tool Specs From Local'
 
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: '**/*.trx'
+      failTaskOnFailedTests: true
+
 - job: Copy_Tool_Specs_From_FTP
   displayName: 'Run Copy Tool Specs From FTP'
   dependsOn: build
@@ -448,6 +767,12 @@ jobs:
   steps:
   - script: "\"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Copy Tool Specs From FTP.bat\""
     displayName: 'Run Zip Tool Specs'
+
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: '**/*.trx'
+      failTaskOnFailedTests: true
 
 - job: Move_Tool_Specs_From_FTP
   displayName: 'Run Move Tool Specs From FTP'
@@ -457,6 +782,12 @@ jobs:
   - script: "\"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Move Tool Specs From FTP.bat\""
     displayName: 'Run Move Tool Specs From FTP'
 
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: '**/*.trx'
+      failTaskOnFailedTests: true
+
 - job: Rename_Tool_Specs_From_FTP
   displayName: 'Run Rename Tool Specs From FTP'
   dependsOn: build
@@ -464,6 +795,12 @@ jobs:
   steps:
   - script: "\"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Rename Tool Specs From FTP.bat\""
     displayName: 'Run Rename Tool Specs From FTP'
+
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: '**/*.trx'
+      failTaskOnFailedTests: true
 
 - job: Unzip_Tool_Specs_From_FTP
   displayName: 'Run Unzip Tool Specs From FTP'
@@ -473,6 +810,12 @@ jobs:
   - script: "\"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Unzip Tool Specs From FTP.bat\""
     displayName: 'Run Unzip Tool Specs From FTP'
 
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: '**/*.trx'
+      failTaskOnFailedTests: true
+
 - job: Zip_Tool_Specs_From_FTP
   displayName: 'Run Zip Tool Specs From FTP'
   dependsOn: build
@@ -480,6 +823,12 @@ jobs:
   steps:
   - script: "\"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Zip Tool Specs From FTP.bat\""
     displayName: 'Run Zip Tool Specs From FTP'
+
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: '**/*.trx'
+      failTaskOnFailedTests: true
 
 - job: Copy_Tool_Specs_From_FTPS
   displayName: 'Run Copy Tool Specs From FTPS'
@@ -489,6 +838,12 @@ jobs:
   - script: "\"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Copy Tool Specs From FTPS.bat\""
     displayName: 'Run Copy Tool Specs From FTPS'
 
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: '**/*.trx'
+      failTaskOnFailedTests: true
+
 - job: Move_Tool_Specs_From_FTPS
   displayName: 'Run Move Tool Specs From FTPS'
   dependsOn: build
@@ -496,6 +851,12 @@ jobs:
   steps:
   - script: "\"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Move Tool Specs From FTPS.bat\""
     displayName: 'Run Move Tool Specs From FTPS'
+
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: '**/*.trx'
+      failTaskOnFailedTests: true
 
 - job: Rename_Tool_Specs_From_FTPS
   displayName: 'Run Rename Tool Specs From FTPS'
@@ -505,6 +866,12 @@ jobs:
   - script: "\"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Rename Tool Specs From FTPS.bat\""
     displayName: 'Run Rename Tool Specs From FTPS'
 
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: '**/*.trx'
+      failTaskOnFailedTests: true
+
 - job: Unzip_Tool_Specs_From_FTPS
   displayName: 'Run Unzip Tool Specs From FTPS'
   dependsOn: build
@@ -512,6 +879,12 @@ jobs:
   steps:
   - script: "\"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Unzip Tool Specs From FTPS.bat\""
     displayName: 'Run Unzip Tool Specs From FTPS'
+
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: '**/*.trx'
+      failTaskOnFailedTests: true
 
 - job: Zip_Tool_Specs_From_FTPS
   displayName: 'Run Zip Tool Specs From FTPS'
@@ -521,6 +894,12 @@ jobs:
   - script: "\"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Zip Tool Specs From FTPS.bat\""
     displayName: 'Run Zip Tool Specs From FTPS'
 
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: '**/*.trx'
+      failTaskOnFailedTests: true
+
 - job: Copy_Tool_Specs_From_SFTP
   displayName: 'Run Copy Tool Specs From SFTP'
   dependsOn: build
@@ -528,6 +907,12 @@ jobs:
   steps:
   - script: "\"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Copy Tool Specs From SFTP.bat\""
     displayName: 'Run Copy Tool Specs From SFTP'
+
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: '**/*.trx'
+      failTaskOnFailedTests: true
 
 - job: Move_Tool_Specs_From_SFTP
   displayName: 'Run Move Tool Specs From SFTP'
@@ -537,6 +922,12 @@ jobs:
   - script: "\"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Move Tool Specs From SFTP.bat\""
     displayName: 'Run Move Tool Specs From SFTP'
 
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: '**/*.trx'
+      failTaskOnFailedTests: true
+
 - job: Rename_Tool_Specs_From_SFTP
   displayName: 'Run Rename Tool Specs From SFTP'
   dependsOn: build
@@ -544,6 +935,12 @@ jobs:
   steps:
   - script: "\"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Rename Tool Specs From SFTP.bat\""
     displayName: 'Run Rename Tool Specs From SFTP'
+
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: '**/*.trx'
+      failTaskOnFailedTests: true
 
 - job: Unzip_Tool_Specs_From_SFTP
   displayName: 'Run Unzip Tool Specs From SFTP'
@@ -553,6 +950,12 @@ jobs:
   - script: "\"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Unzip Tool Specs From SFTP.bat\""
     displayName: 'Run Unzip Tool Specs From SFTP'
 
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: '**/*.trx'
+      failTaskOnFailedTests: true
+
 - job: Zip_Tool_Specs_From_SFTP
   displayName: 'Run Zip Tool Specs From SFTP'
   dependsOn: build
@@ -560,6 +963,12 @@ jobs:
   steps:
   - script: "\"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Zip Tool Specs From SFTP.bat\""
     displayName: 'Run Zip Tool Specs From SFTP'
+
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: '**/*.trx'
+      failTaskOnFailedTests: true
 
 - job: Copy_Tool_Specs_From_UNC
   displayName: 'Run Copy Tool Specs From UNC'
@@ -569,6 +978,12 @@ jobs:
   - script: "\"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Copy Tool Specs From UNC.bat\""
     displayName: 'Run Copy Tool Specs From UNC'
 
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: '**/*.trx'
+      failTaskOnFailedTests: true
+
 - job: Move_Tool_Specs_From_UNC
   displayName: 'Run Move Tool Specs From UNC'
   dependsOn: build
@@ -576,6 +991,12 @@ jobs:
   steps:
   - script: "\"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Move Tool Specs From UNC.bat\""
     displayName: 'Run Move Tool Specs From UNC'
+
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: '**/*.trx'
+      failTaskOnFailedTests: true
 
 - job: Studio_Core_Unit_Tests
   displayName: 'Run Studio Core Unit Tests'
@@ -585,6 +1006,12 @@ jobs:
   - script: "\"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Studio Core Unit Tests.bat\""
     displayName: 'Run Studio Core Unit Tests'
 
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: '**/*.trx'
+      failTaskOnFailedTests: true
+
 - job: Elasticsearch_View_Models_Unit_Tests
   displayName: 'Run Elasticsearch View Models Unit Tests'
   dependsOn: build
@@ -592,6 +1019,12 @@ jobs:
   steps:
   - script: "\"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Elasticsearch View Models Unit Tests.bat\""
     displayName: 'Run Elasticsearch View Models Unit Tests'
+
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: '**/*.trx'
+      failTaskOnFailedTests: true
 
 - job: Search_Specs
   displayName: 'Run Search Specs'
@@ -601,6 +1034,12 @@ jobs:
   - script: "\"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Search Specs.bat\""
     displayName: 'Run Search Specs'
 
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: '**/*.trx'
+      failTaskOnFailedTests: true
+
 - job: Logger_Unit_Tests
   displayName: 'Run Logger Unit Tests'
   dependsOn: build
@@ -608,6 +1047,12 @@ jobs:
   steps:
   - script: "\"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Logger Unit Tests.bat\""
     displayName: 'Run Logger Unit Tests'
+
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: '**/*.trx'
+      failTaskOnFailedTests: true
 
 - job: Rename_Tool_Specs_From_UNC
   displayName: 'Run Rename Tool Specs From UNC'
@@ -617,6 +1062,12 @@ jobs:
   - script: "\"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Rename Tool Specs From UNC.bat\""
     displayName: 'Run Rename Tool Specs From UNC'
 
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: '**/*.trx'
+      failTaskOnFailedTests: true
+
 - job: Not_Parallelizable_Unit_Tests
   displayName: 'Run Not Parallelizable Unit Tests'
   dependsOn: build
@@ -624,6 +1075,12 @@ jobs:
   steps:
   - script: "\"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Not Parallelizable Unit Tests.bat\""
     displayName: 'Run Not Parallelizable Unit Tests'
+
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: '**/*.trx'
+      failTaskOnFailedTests: true
 
 - job: Database_Workflow_Execution_Specs
   displayName: 'Run Database Workflow Execution Specs'
@@ -633,6 +1090,12 @@ jobs:
   - script: "\"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Database Workflow Execution Specs.bat\""
     displayName: 'Run Database Workflow Execution Specs'
 
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: '**/*.trx'
+      failTaskOnFailedTests: true
+
 - job: RabbitMQ_Workflow_Execution_Specs
   displayName: 'Run RabbitMQ Workflow Execution Specs'
   dependsOn: build
@@ -640,6 +1103,12 @@ jobs:
   steps:
   - script: "\"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\RabbitMQ Workflow Execution Specs.bat\""
     displayName: 'Run RabbitMQ Workflow Execution Specs'
+
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: '**/*.trx'
+      failTaskOnFailedTests: true
 
 - job: Studio_Test_Framework_With_HTTP_Web_Get_Tools_Specs
   displayName: 'Run Studio Test Framework With HTTP Web Get Tools Specs'
@@ -649,6 +1118,12 @@ jobs:
   - script: "\"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Studio Test Framework With HTTP Web Get Tools Specs.bat\""
     displayName: 'Run Studio Test Framework With HTTP Web Get Tools Specs'
 
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: '**/*.trx'
+      failTaskOnFailedTests: true
+
 - job: Studio_Test_Framework_With_HTTP_Web_Delete_Tools_Specs
   displayName: 'Run Studio Test Framework With HTTP Web Delete Tools Specs'
   dependsOn: build
@@ -656,6 +1131,12 @@ jobs:
   steps:
   - script: "\"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Studio Test Framework With HTTP Web Delete Tools Specs.bat\""
     displayName: 'Run Studio Test Framework With HTTP Web Delete Tools Specs'
+
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: '**/*.trx'
+      failTaskOnFailedTests: true
 
 - job: Studio_Test_Framework_With_HTTP_Web_Post_Tools_Specs
   displayName: 'Run Studio Test Framework With HTTP Web Post Tools Specs'
@@ -665,6 +1146,12 @@ jobs:
   - script: "\"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Studio Test Framework With HTTP Web Post Tools Specs.bat\""
     displayName: 'Run Studio Test Framework With HTTP Web Post Tools Specs'
 
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: '**/*.trx'
+      failTaskOnFailedTests: true
+
 - job: Studio_Test_Framework_With_HTTP_Web_Put_Tools_Specs
   displayName: 'Run Studio Test Framework With HTTP Web Put Tools Specs'
   dependsOn: build
@@ -673,6 +1160,12 @@ jobs:
   - script: "\"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Studio Test Framework With HTTP Web Put Tools Specs.bat\""
     displayName: 'Run Studio Test Framework With HTTP Web Put Tools Specs'
 
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: '**/*.trx'
+      failTaskOnFailedTests: true
+
 - job: Studio_Test_Framework_With_RabbitMQ_Tools_Specs
   displayName: 'Run Studio Test Framework With RabbitMQ Tools Specs'
   dependsOn: build
@@ -680,6 +1173,12 @@ jobs:
   steps:
   - script: "\"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Studio Test Framework With RabbitMQ Tools Specs.bat\""
     displayName: 'Run Studio Test Framework With RabbitMQ Tools Specs'
+
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: '**/*.trx'
+      failTaskOnFailedTests: true
 
 - job: Database_Subworkflow_Execution_Specs
   displayName: 'Run Database Subworkflow Execution Specs'
