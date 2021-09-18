@@ -42,7 +42,7 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        files: "**/*.trx"
+        files: **/*.trx
 
   Email_Tools_Specs:
     runs-on: self-hosted
@@ -62,7 +62,7 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        files: "**/*.trx"
+        files: **/*.trx
 
   Resource_Tools_Specs:
     runs-on: self-hosted
@@ -82,7 +82,7 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        files: "**/*.trx"
+        files: **/*.trx
 
   File_And_Folder_Copy_Tool_Specs:
     runs-on: self-hosted
@@ -102,7 +102,7 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        files: "**/*.trx"
+        files: **/*.trx
 
   Data_Tools_Specs:
     runs-on: self-hosted
@@ -122,7 +122,7 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        files: "**/*.trx"
+        files: **/*.trx
 
   Request_Service_Name_View_Models_Unit_Tests:
     runs-on: self-hosted
@@ -142,7 +142,7 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        files: "**/*.trx"
+        files: **/*.trx
 
   Unzip_Tool_Specs_Validation:
     runs-on: self-hosted
@@ -162,7 +162,7 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        files: "**/*.trx"
+        files: **/*.trx
 
   Recordset_Tools_Specs:
     runs-on: self-hosted
@@ -182,7 +182,7 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        files: "**/*.trx"
+        files: **/*.trx
 
   File_And_Folder_Rename_Tool_Specs:
     runs-on: self-hosted
@@ -202,7 +202,7 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        files: "**/*.trx"
+        files: **/*.trx
 
   Other_Tools_Specs:
     runs-on: self-hosted
@@ -222,7 +222,7 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        files: "**/*.trx"
+        files: **/*.trx
 
   File_And_Folder_Move_Tool_Specs:
     runs-on: self-hosted
@@ -242,7 +242,7 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        files: "**/*.trx"
+        files: **/*.trx
 
   File_Read_Tool_Specs:
     runs-on: self-hosted
@@ -262,7 +262,7 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        files: "**/*.trx"
+        files: **/*.trx
 
   Infrastructure_Unit_Tests:
     runs-on: self-hosted
@@ -282,7 +282,7 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        files: "**/*.trx"
+        files: **/*.trx
 
   New_Folder_Read_Tool_Specs:
     runs-on: self-hosted
@@ -302,7 +302,7 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        files: "**/*.trx"
+        files: **/*.trx
 
   Write_File_Tool_Specs:
     runs-on: self-hosted
@@ -322,7 +322,7 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        files: "**/*.trx"
+        files: **/*.trx
 
   Loop_Construct_Tools_Specs:
     runs-on: self-hosted
@@ -342,7 +342,7 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        files: "**/*.trx"
+        files: **/*.trx
 
   Utility_Tools_Specs:
     runs-on: self-hosted
@@ -362,7 +362,7 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        files: "**/*.trx"
+        files: **/*.trx
 
   Folder_Read_Tool_Specs:
     runs-on: self-hosted
@@ -382,7 +382,7 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        files: "**/*.trx"
+        files: **/*.trx
 
   SQL_Bulk_Insert_Tool_Specs:
     runs-on: self-hosted
@@ -402,7 +402,7 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        files: "**/*.trx"
+        files: **/*.trx
 
   Control_Flow_Tools_Specs:
     runs-on: self-hosted
@@ -422,7 +422,7 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        files: "**/*.trx"
+        files: **/*.trx
 
   Studio_View_Models_Unit_Tests:
     runs-on: self-hosted
@@ -442,7 +442,7 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        files: "**/*.trx"
+        files: **/*.trx
 
   File_And_Folder_Create_Tool_Specs:
     runs-on: self-hosted
@@ -462,7 +462,7 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        files: "**/*.trx"
+        files: **/*.trx
 
   Storage_Unit_Tests:
     runs-on: self-hosted
@@ -482,7 +482,7 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        files: "**/*.trx"
+        files: **/*.trx
 
   Storage_Tools_Specs:
     runs-on: self-hosted
@@ -502,7 +502,7 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        files: "**/*.trx"
+        files: **/*.trx
 
   File_And_Folder_Delete_Tool_Specs:
     runs-on: self-hosted
@@ -522,7 +522,7 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        files: "**/*.trx"
+        files: **/*.trx
 
   Scripting_Tools_Specs:
     runs-on: self-hosted
@@ -542,7 +542,7 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        files: "**/*.trx"
+        files: **/*.trx
 
   Database_Tools_Specs:
     runs-on: self-hosted
@@ -562,7 +562,7 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        files: "**/*.trx"
+        files: **/*.trx
 
   Auditing_Unit_Tests:
     runs-on: self-hosted
@@ -582,7 +582,7 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        files: "**/*.trx"
+        files: **/*.trx
 
   Workflow_Execution_Specs:
     runs-on: self-hosted
@@ -602,7 +602,7 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        files: "**/*.trx"
+        files: **/*.trx
 
   Studio_Test_Framework_With_Hello_World_Workflow_Specs:
     runs-on: self-hosted
@@ -622,7 +622,7 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        files: "**/*.trx"
+        files: **/*.trx
 
   Studio_Test_Framework_With_Utility_Tools_Specs:
     runs-on: self-hosted
@@ -642,7 +642,7 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        files: "**/*.trx"
+        files: **/*.trx
 
   MS_SQL_Server_Specs:
     runs-on: self-hosted
@@ -662,7 +662,7 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        files: "**/*.trx"
+        files: **/*.trx
 
   Studio_Test_Framework_With_Data_Tools_Specs:
     runs-on: self-hosted
@@ -682,7 +682,7 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        files: "**/*.trx"
+        files: **/*.trx
 
   Assign_Workflow_Execution_Specs:
     runs-on: self-hosted
@@ -702,7 +702,7 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        files: "**/*.trx"
+        files: **/*.trx
 
   Integration_Tests:
     runs-on: self-hosted
@@ -722,7 +722,7 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        files: "**/*.trx"
+        files: **/*.trx
 
   Studio_Test_Framework_With_Scripting_Tools_Specs:
     runs-on: self-hosted
@@ -742,7 +742,7 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        files: "**/*.trx"
+        files: **/*.trx
 
   Other_Activities_Specs:
     runs-on: self-hosted
@@ -762,7 +762,7 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        files: "**/*.trx"
+        files: **/*.trx
 
   Studio_Test_Framework_With_File_And_Folder_Tools_Specs:
     runs-on: self-hosted
@@ -782,7 +782,7 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        files: "**/*.trx"
+        files: **/*.trx
 
   Studio_Test_Framework_With_HTTP_Web_Tools_Specs:
     runs-on: self-hosted
@@ -802,7 +802,7 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        files: "**/*.trx"
+        files: **/*.trx
 
   Studio_Test_Framework_With_Subworkflow_Specs:
     runs-on: self-hosted
@@ -822,7 +822,7 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        files: "**/*.trx"
+        files: **/*.trx
 
   Workflow_Merging_Specs:
     runs-on: self-hosted
@@ -842,7 +842,7 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        files: "**/*.trx"
+        files: **/*.trx
 
   Example_Workflow_Execution_Specs:
     runs-on: self-hosted
@@ -862,7 +862,7 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        files: "**/*.trx"
+        files: **/*.trx
 
   Studio_Test_Framework_Specs:
     runs-on: self-hosted
@@ -882,7 +882,7 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        files: "**/*.trx"
+        files: **/*.trx
 
   Subworkflow_Execution_Specs:
     runs-on: self-hosted
@@ -902,7 +902,7 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        files: "**/*.trx"
+        files: **/*.trx
 
   Other_Specs:
     runs-on: self-hosted
@@ -922,7 +922,7 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        files: "**/*.trx"
+        files: **/*.trx
 
   Studio_Test_Framework_With_Deleted_Resources_Specs:
     runs-on: self-hosted
@@ -942,7 +942,7 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        files: "**/*.trx"
+        files: **/*.trx
 
   SQL_Integration_Tests:
     runs-on: self-hosted
@@ -962,7 +962,7 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        files: "**/*.trx"
+        files: **/*.trx
 
   For_Each_Workflow_Execution_Specs:
     runs-on: self-hosted
@@ -982,7 +982,7 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        files: "**/*.trx"
+        files: **/*.trx
 
   Copy_Tool_Specs_From_Local:
     runs-on: self-hosted
@@ -1002,7 +1002,7 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        files: "**/*.trx"
+        files: **/*.trx
 
   Move_Tool_Specs_From_Local:
     runs-on: self-hosted
@@ -1022,7 +1022,7 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        files: "**/*.trx"
+        files: **/*.trx
 
   Rename_Tool_Specs_From_Local:
     runs-on: self-hosted
@@ -1042,7 +1042,7 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        files: "**/*.trx"
+        files: **/*.trx
 
   Unzip_Tool_Specs_From_Local:
     runs-on: self-hosted
@@ -1062,7 +1062,7 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        files: "**/*.trx"
+        files: **/*.trx
 
   Zip_Tool_Specs_From_Local:
     runs-on: self-hosted
@@ -1082,7 +1082,7 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        files: "**/*.trx"
+        files: **/*.trx
 
   Copy_Tool_Specs_From_FTP:
     runs-on: self-hosted
@@ -1102,7 +1102,7 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        files: "**/*.trx"
+        files: **/*.trx
 
   Move_Tool_Specs_From_FTP:
     runs-on: self-hosted
@@ -1122,7 +1122,7 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        files: "**/*.trx"
+        files: **/*.trx
 
   Rename_Tool_Specs_From_FTP:
     runs-on: self-hosted
@@ -1142,7 +1142,7 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        files: "**/*.trx"
+        files: **/*.trx
 
   Unzip_Tool_Specs_From_FTP:
     runs-on: self-hosted
@@ -1162,7 +1162,7 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        files: "**/*.trx"
+        files: **/*.trx
 
   Zip_Tool_Specs_From_FTP:
     runs-on: self-hosted
@@ -1182,7 +1182,7 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        files: "**/*.trx"
+        files: **/*.trx
 
   Copy_Tool_Specs_From_FTPS:
     runs-on: self-hosted
@@ -1202,7 +1202,7 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        files: "**/*.trx"
+        files: **/*.trx
 
   Move_Tool_Specs_From_FTPS:
     runs-on: self-hosted
@@ -1222,7 +1222,7 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        files: "**/*.trx"
+        files: **/*.trx
 
   Rename_Tool_Specs_From_FTPS:
     runs-on: self-hosted
@@ -1242,7 +1242,7 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        files: "**/*.trx"
+        files: **/*.trx
 
   Unzip_Tool_Specs_From_FTPS:
     runs-on: self-hosted
@@ -1262,7 +1262,7 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        files: "**/*.trx"
+        files: **/*.trx
 
   Zip_Tool_Specs_From_FTPS:
     runs-on: self-hosted
@@ -1282,7 +1282,7 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        files: "**/*.trx"
+        files: **/*.trx
 
   Copy_Tool_Specs_From_SFTP:
     runs-on: self-hosted
@@ -1302,7 +1302,7 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        files: "**/*.trx"
+        files: **/*.trx
 
   Move_Tool_Specs_From_SFTP:
     runs-on: self-hosted
@@ -1322,7 +1322,7 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        files: "**/*.trx"
+        files: **/*.trx
 
   Rename_Tool_Specs_From_SFTP:
     runs-on: self-hosted
@@ -1342,7 +1342,7 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        files: "**/*.trx"
+        files: **/*.trx
 
   Unzip_Tool_Specs_From_SFTP:
     runs-on: self-hosted
@@ -1362,7 +1362,7 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        files: "**/*.trx"
+        files: **/*.trx
 
   Zip_Tool_Specs_From_SFTP:
     runs-on: self-hosted
@@ -1382,7 +1382,7 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        files: "**/*.trx"
+        files: **/*.trx
 
   Copy_Tool_Specs_From_UNC:
     runs-on: self-hosted
@@ -1402,7 +1402,7 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        files: "**/*.trx"
+        files: **/*.trx
 
   Move_Tool_Specs_From_UNC:
     runs-on: self-hosted
@@ -1422,7 +1422,7 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        files: "**/*.trx"
+        files: **/*.trx
 
   Studio_Core_Unit_Tests:
     runs-on: self-hosted
@@ -1442,7 +1442,7 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        files: "**/*.trx"
+        files: **/*.trx
 
   Elasticsearch_View_Models_Unit_Tests:
     runs-on: self-hosted
@@ -1462,7 +1462,7 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        files: "**/*.trx"
+        files: **/*.trx
 
   Search_Specs:
     runs-on: self-hosted
@@ -1482,7 +1482,7 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        files: "**/*.trx"
+        files: **/*.trx
 
   Logger_Unit_Tests:
     runs-on: self-hosted
@@ -1502,7 +1502,7 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        files: "**/*.trx"
+        files: **/*.trx
 
   Rename_Tool_Specs_From_UNC:
     runs-on: self-hosted
@@ -1522,7 +1522,7 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        files: "**/*.trx"
+        files: **/*.trx
 
   Not_Parallelizable_Unit_Tests:
     runs-on: self-hosted
@@ -1542,7 +1542,7 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        files: "**/*.trx"
+        files: **/*.trx
 
   Database_Workflow_Execution_Specs:
     runs-on: self-hosted
@@ -1562,7 +1562,7 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        files: "**/*.trx"
+        files: **/*.trx
 
   RabbitMQ_Workflow_Execution_Specs:
     runs-on: self-hosted
@@ -1582,7 +1582,7 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        files: "**/*.trx"
+        files: **/*.trx
 
   Studio_Test_Framework_With_HTTP_Web_Get_Tools_Specs:
     runs-on: self-hosted
@@ -1602,7 +1602,7 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        files: "**/*.trx"
+        files: **/*.trx
 
   Studio_Test_Framework_With_HTTP_Web_Delete_Tools_Specs:
     runs-on: self-hosted
@@ -1622,7 +1622,7 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        files: "**/*.trx"
+        files: **/*.trx
 
   Studio_Test_Framework_With_HTTP_Web_Post_Tools_Specs:
     runs-on: self-hosted
@@ -1642,7 +1642,7 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        files: "**/*.trx"
+        files: **/*.trx
 
   Studio_Test_Framework_With_HTTP_Web_Put_Tools_Specs:
     runs-on: self-hosted
@@ -1662,7 +1662,7 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        files: "**/*.trx"
+        files: **/*.trx
 
   Studio_Test_Framework_With_RabbitMQ_Tools_Specs:
     runs-on: self-hosted
@@ -1682,7 +1682,7 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        files: "**/*.trx"
+        files: **/*.trx
 
   Database_Subworkflow_Execution_Specs:
     runs-on: self-hosted
@@ -1702,4 +1702,4 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        files: "**/*.trx"
+        files: **/*.trx
