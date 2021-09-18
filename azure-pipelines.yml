@@ -14,7 +14,7 @@ jobs:
   displayName: 'Compile AcceptanceTesting.sln'
 
   steps:
-  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\Compile.ps1\" -AcceptanceTesting"
+  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\s\\Compile.ps1\" -AcceptanceTesting"
     displayName: 'Compile AcceptanceTesting.sln'
 
 - job: Zip_Tool_Specs
@@ -22,7 +22,7 @@ jobs:
   dependsOn: build
 
   steps:
-  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\Dev\\.run\\Job Shortcuts\\Container\\Zip Tool Specs.bat\""
+  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Zip Tool Specs.bat\""
     displayName: 'Run Zip_Tool_Specs'
 
 - job: Email_Tools_Specs
@@ -30,7 +30,7 @@ jobs:
   dependsOn: build
 
   steps:
-  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\Dev\\.run\\Job Shortcuts\\Container\\Email_Tools_Specs.bat\""
+  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Email_Tools_Specs.bat\""
     displayName: 'Run Email_Tools_Specs'
 
 - job: Resource_Tools_Specs
@@ -38,7 +38,7 @@ jobs:
   dependsOn: build
 
   steps:
-  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\Dev\\.run\\Job Shortcuts\\Container\\Resource_Tools_Specs.bat\""
+  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Resource_Tools_Specs.bat\""
     displayName: 'Run Resource_Tools_Specs'
 
 - job: File_And_Folder_Copy_Tool_Specs
@@ -46,7 +46,7 @@ jobs:
   dependsOn: build
 
   steps:
-  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\Dev\\.run\\Job Shortcuts\\Container\\File_And_Folder_Copy_Tool_Specs.bat\""
+  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\File_And_Folder_Copy_Tool_Specs.bat\""
     displayName: 'Run File_And_Folder_Copy_Tool_Specs'
 
 - job: Data_Tools_Specs
@@ -54,7 +54,7 @@ jobs:
   dependsOn: build
 
   steps:
-  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\Dev\\.run\\Job Shortcuts\\Container\\Data_Tools_Specs.bat\""
+  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Data_Tools_Specs.bat\""
     displayName: 'Run Data_Tools_Specs'
 
 - job: Request_Service_Name_View_Models_Unit_Tests
@@ -62,7 +62,7 @@ jobs:
   dependsOn: build
 
   steps:
-  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\Dev\\.run\\Job Shortcuts\\Container\\Request_Service_Name_View_Models_Unit_Tests.bat\""
+  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Request_Service_Name_View_Models_Unit_Tests.bat\""
     displayName: 'Run Request_Service_Name_View_Models_Unit_Tests'
 
 - job: Unzip_Tool_Specs_Validation
@@ -70,7 +70,7 @@ jobs:
   dependsOn: build
 
   steps:
-  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\Dev\\.run\\Job Shortcuts\\Container\\Unzip_Tool_Specs_Validation.bat\""
+  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Unzip_Tool_Specs_Validation.bat\""
     displayName: 'Run Unzip_Tool_Specs_Validation'
 
 - job: Recordset_Tools_Specs
@@ -78,7 +78,7 @@ jobs:
   dependsOn: build
 
   steps:
-  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\Dev\\.run\\Job Shortcuts\\Container\\Recordset_Tools_Specs.bat\""
+  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Recordset_Tools_Specs.bat\""
     displayName: 'Run Recordset_Tools_Specs'
 
 - job: File_And_Folder_Rename_Tool_Specs
@@ -86,7 +86,7 @@ jobs:
   dependsOn: build
 
   steps:
-  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\Dev\\.run\\Job Shortcuts\\Container\\File_And_Folder_Rename_Tool_Specs.bat\""
+  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\File_And_Folder_Rename_Tool_Specs.bat\""
     displayName: 'Run File_And_Folder_Rename_Tool_Specs'
 
 - job: Other_Tools_Specs
@@ -94,7 +94,7 @@ jobs:
   dependsOn: build
 
   steps:
-  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\Dev\\.run\\Job Shortcuts\\Container\\Other_Tools_Specs.bat\""
+  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Other_Tools_Specs.bat\""
     displayName: 'Run Other_Tools_Specs'
 
 - job: File_And_Folder_Move_Tool_Specs
@@ -102,7 +102,7 @@ jobs:
   dependsOn: build
 
   steps:
-  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\Dev\\.run\\Job Shortcuts\\Container\\File_And_Folder_Move_Tool_Specs.bat\""
+  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\File_And_Folder_Move_Tool_Specs.bat\""
     displayName: 'Run File_And_Folder_Move_Tool_Specs'
 
 - job: File_Read_Tool_Specs
@@ -110,7 +110,7 @@ jobs:
   dependsOn: build
 
   steps:
-  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\Dev\\.run\\Job Shortcuts\\Container\\File_Read_Tool_Specs.bat\""
+  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\File_Read_Tool_Specs.bat\""
     displayName: 'Run File_Read_Tool_Specs'
 
 - job: Infrastructure_Unit_Tests
@@ -118,7 +118,7 @@ jobs:
   dependsOn: build
 
   steps:
-  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\Dev\\.run\\Job Shortcuts\\Container\\Infrastructure_Unit_Tests.bat\""
+  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Infrastructure_Unit_Tests.bat\""
     displayName: 'Run Infrastructure_Unit_Tests'
 
 - job: New_Folder_Read_Tool_Specs
@@ -126,7 +126,7 @@ jobs:
   dependsOn: build
 
   steps:
-  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\Dev\\.run\\Job Shortcuts\\Container\\New_Folder_Read_Tool_Specs.bat\""
+  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\New_Folder_Read_Tool_Specs.bat\""
     displayName: 'Run New_Folder_Read_Tool_Specs'
 
 - job: Write_File_Tool_Specs
@@ -134,7 +134,7 @@ jobs:
   dependsOn: build
 
   steps:
-  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\Dev\\.run\\Job Shortcuts\\Container\\Write_File_Tool_Specs.bat\""
+  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Write_File_Tool_Specs.bat\""
     displayName: 'Run Write_File_Tool_Specs'
 
 - job: Loop_Construct_Tools_Specs
@@ -142,7 +142,7 @@ jobs:
   dependsOn: build
 
   steps:
-  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\Dev\\.run\\Job Shortcuts\\Container\\Loop_Construct_Tools_Specs.bat\""
+  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Loop_Construct_Tools_Specs.bat\""
     displayName: 'Run Loop_Construct_Tools_Specs'
 
 - job: Utility_Tools_Specs
@@ -150,7 +150,7 @@ jobs:
   dependsOn: build
 
   steps:
-  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\Dev\\.run\\Job Shortcuts\\Container\\Utility_Tools_Specs.bat\""
+  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Utility_Tools_Specs.bat\""
     displayName: 'Run Utility_Tools_Specs'
 
 - job: Folder_Read_Tool_Specs
@@ -158,7 +158,7 @@ jobs:
   dependsOn: build
 
   steps:
-  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\Dev\\.run\\Job Shortcuts\\Container\\Folder_Read_Tool_Specs.bat\""
+  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Folder_Read_Tool_Specs.bat\""
     displayName: 'Run Folder_Read_Tool_Specs'
 
 - job: SQL_Bulk_Insert_Tool_Specs
@@ -166,7 +166,7 @@ jobs:
   dependsOn: build
 
   steps:
-  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\Dev\\.run\\Job Shortcuts\\Container\\SQL_Bulk_Insert_Tool_Specs.bat\""
+  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\SQL_Bulk_Insert_Tool_Specs.bat\""
     displayName: 'Run SQL_Bulk_Insert_Tool_Specs'
 
 - job: Control_Flow_Tools_Specs
@@ -174,7 +174,7 @@ jobs:
   dependsOn: build
 
   steps:
-  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\Dev\\.run\\Job Shortcuts\\Container\\Control_Flow_Tools_Specs.bat\""
+  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Control_Flow_Tools_Specs.bat\""
     displayName: 'Run Control_Flow_Tools_Specs'
 
 - job: Studio_View_Models_Unit_Tests
@@ -182,7 +182,7 @@ jobs:
   dependsOn: build
 
   steps:
-  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\Dev\\.run\\Job Shortcuts\\Container\\Studio_View_Models_Unit_Tests.bat\""
+  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Studio_View_Models_Unit_Tests.bat\""
     displayName: 'Run Studio_View_Models_Unit_Tests'
 
 - job: File_And_Folder_Create_Tool_Specs
@@ -190,7 +190,7 @@ jobs:
   dependsOn: build
 
   steps:
-  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\Dev\\.run\\Job Shortcuts\\Container\\File_And_Folder_Create_Tool_Specs.bat\""
+  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\File_And_Folder_Create_Tool_Specs.bat\""
     displayName: 'Run File_And_Folder_Create_Tool_Specs'
 
 - job: Storage_Unit_Tests
@@ -198,7 +198,7 @@ jobs:
   dependsOn: build
 
   steps:
-  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\Dev\\.run\\Job Shortcuts\\Container\\Storage_Unit_Tests.bat\""
+  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Storage_Unit_Tests.bat\""
     displayName: 'Run Storage_Unit_Tests'
 
 - job: Storage_Tools_Specs
@@ -206,7 +206,7 @@ jobs:
   dependsOn: build
 
   steps:
-  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\Dev\\.run\\Job Shortcuts\\Container\\Storage_Tools_Specs.bat\""
+  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Storage_Tools_Specs.bat\""
     displayName: 'Run Storage_Tools_Specs'
 
 - job: File_And_Folder_Delete_Tool_Specs
@@ -214,7 +214,7 @@ jobs:
   dependsOn: build
 
   steps:
-  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\Dev\\.run\\Job Shortcuts\\Container\\File_And_Folder_Delete_Tool_Specs.bat\""
+  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\File_And_Folder_Delete_Tool_Specs.bat\""
     displayName: 'Run File_And_Folder_Delete_Tool_Specs'
 
 - job: Scripting_Tools_Specs
@@ -222,7 +222,7 @@ jobs:
   dependsOn: build
 
   steps:
-  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\Dev\\.run\\Job Shortcuts\\Container\\Scripting_Tools_Specs.bat\""
+  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Scripting_Tools_Specs.bat\""
     displayName: 'Run Scripting_Tools_Specs'
 
 - job: Database_Tools_Specs
@@ -230,7 +230,7 @@ jobs:
   dependsOn: build
 
   steps:
-  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\Dev\\.run\\Job Shortcuts\\Container\\Database_Tools_Specs.bat\""
+  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Database_Tools_Specs.bat\""
     displayName: 'Run Database_Tools_Specs'
 
 - job: Auditing_Unit_Tests
@@ -238,7 +238,7 @@ jobs:
   dependsOn: build
 
   steps:
-  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\Dev\\.run\\Job Shortcuts\\Container\\Auditing_Unit_Tests.bat\""
+  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Auditing_Unit_Tests.bat\""
     displayName: 'Run Auditing_Unit_Tests'
 
 - job: Workflow_Execution_Specs
@@ -246,7 +246,7 @@ jobs:
   dependsOn: build
 
   steps:
-  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\Dev\\.run\\Job Shortcuts\\Container\\Workflow_Execution_Specs.bat\""
+  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Workflow_Execution_Specs.bat\""
     displayName: 'Run Workflow_Execution_Specs'
 
 - job: Studio_Test_Framework_With_Hello_World_Workflow_Specs
@@ -254,7 +254,7 @@ jobs:
   dependsOn: build
 
   steps:
-  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\Dev\\.run\\Job Shortcuts\\Container\\Studio_Test_Framework_With_Hello_World_Workflow_Specs.bat\""
+  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Studio_Test_Framework_With_Hello_World_Workflow_Specs.bat\""
     displayName: 'Run Studio_Test_Framework_With_Hello_World_Workflow_Specs'
 
 - job: Studio_Test_Framework_With_Utility_Tools_Specs
@@ -262,7 +262,7 @@ jobs:
   dependsOn: build
 
   steps:
-  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\Dev\\.run\\Job Shortcuts\\Container\\Studio_Test_Framework_With_Utility_Tools_Specs.bat\""
+  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Studio_Test_Framework_With_Utility_Tools_Specs.bat\""
     displayName: 'Run Studio_Test_Framework_With_Utility_Tools_Specs'
 
 - job: MS_SQL_Server_Specs
@@ -270,7 +270,7 @@ jobs:
   dependsOn: build
 
   steps:
-  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\Dev\\.run\\Job Shortcuts\\Container\\MS_SQL_Server_Specs.bat\""
+  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\MS_SQL_Server_Specs.bat\""
     displayName: 'Run MS_SQL_Server_Specs'
 
 - job: Studio_Test_Framework_With_Data_Tools_Specs
@@ -278,7 +278,7 @@ jobs:
   dependsOn: build
 
   steps:
-  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\Dev\\.run\\Job Shortcuts\\Container\\Studio_Test_Framework_With_Data_Tools_Specs.bat\""
+  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Studio_Test_Framework_With_Data_Tools_Specs.bat\""
     displayName: 'Run Studio_Test_Framework_With_Data_Tools_Specs'
 
 - job: Assign_Workflow_Execution_Specs
@@ -286,7 +286,7 @@ jobs:
   dependsOn: build
 
   steps:
-  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\Dev\\.run\\Job Shortcuts\\Container\\Assign_Workflow_Execution_Specs.bat\""
+  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Assign_Workflow_Execution_Specs.bat\""
     displayName: 'Run Assign_Workflow_Execution_Specs'
 
 - job: Integration_Tests
@@ -294,7 +294,7 @@ jobs:
   dependsOn: build
 
   steps:
-  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\Dev\\.run\\Job Shortcuts\\Container\\Integration_Tests.bat\""
+  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Integration_Tests.bat\""
     displayName: 'Run Integration_Tests'
 
 - job: Studio_Test_Framework_With_Scripting_Tools_Specs
@@ -302,7 +302,7 @@ jobs:
   dependsOn: build
 
   steps:
-  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\Dev\\.run\\Job Shortcuts\\Container\\Studio_Test_Framework_With_Scripting_Tools_Specs.bat\""
+  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Studio_Test_Framework_With_Scripting_Tools_Specs.bat\""
     displayName: 'Run Studio_Test_Framework_With_Scripting_Tools_Specs'
 
 - job: Other_Activities_Specs
@@ -310,7 +310,7 @@ jobs:
   dependsOn: build
 
   steps:
-  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\Dev\\.run\\Job Shortcuts\\Container\\Other_Activities_Specs.bat\""
+  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Other_Activities_Specs.bat\""
     displayName: 'Run Other_Activities_Specs'
 
 - job: Studio_Test_Framework_With_File_And_Folder_Tools_Specs
@@ -318,7 +318,7 @@ jobs:
   dependsOn: build
 
   steps:
-  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\Dev\\.run\\Job Shortcuts\\Container\\Studio_Test_Framework_With_File_And_Folder_Tools_Specs.bat\""
+  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Studio_Test_Framework_With_File_And_Folder_Tools_Specs.bat\""
     displayName: 'Run Studio_Test_Framework_With_File_And_Folder_Tools_Specs'
 
 - job: Studio_Test_Framework_With_HTTP_Web_Tools_Specs
@@ -326,7 +326,7 @@ jobs:
   dependsOn: build
 
   steps:
-  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\Dev\\.run\\Job Shortcuts\\Container\\Studio_Test_Framework_With_HTTP_Web_Tools_Specs.bat\""
+  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Studio_Test_Framework_With_HTTP_Web_Tools_Specs.bat\""
     displayName: 'Run Studio_Test_Framework_With_HTTP_Web_Tools_Specs'
 
 - job: Studio_Test_Framework_With_Subworkflow_Specs
@@ -334,7 +334,7 @@ jobs:
   dependsOn: build
 
   steps:
-  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\Dev\\.run\\Job Shortcuts\\Container\\Studio_Test_Framework_With_Subworkflow_Specs.bat\""
+  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Studio_Test_Framework_With_Subworkflow_Specs.bat\""
     displayName: 'Run Studio_Test_Framework_With_Subworkflow_Specs'
 
 - job: Workflow_Merging_Specs
@@ -342,7 +342,7 @@ jobs:
   dependsOn: build
 
   steps:
-  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\Dev\\.run\\Job Shortcuts\\Container\\Workflow_Merging_Specs.bat\""
+  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Workflow_Merging_Specs.bat\""
     displayName: 'Run Workflow_Merging_Specs'
 
 - job: Example_Workflow_Execution_Specs
@@ -350,7 +350,7 @@ jobs:
   dependsOn: build
 
   steps:
-  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\Dev\\.run\\Job Shortcuts\\Container\\Example_Workflow_Execution_Specs.bat\""
+  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Example_Workflow_Execution_Specs.bat\""
     displayName: 'Run Example_Workflow_Execution_Specs'
 
 - job: Studio_Test_Framework_Specs
@@ -358,7 +358,7 @@ jobs:
   dependsOn: build
 
   steps:
-  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\Dev\\.run\\Job Shortcuts\\Container\\Studio_Test_Framework_Specs.bat\""
+  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Studio_Test_Framework_Specs.bat\""
     displayName: 'Run Studio_Test_Framework_Specs'
 
 - job: Subworkflow_Execution_Specs
@@ -366,7 +366,7 @@ jobs:
   dependsOn: build
 
   steps:
-  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\Dev\\.run\\Job Shortcuts\\Container\\Subworkflow_Execution_Specs.bat\""
+  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Subworkflow_Execution_Specs.bat\""
     displayName: 'Run Subworkflow_Execution_Specs'
 
 - job: Other_Specs
@@ -374,7 +374,7 @@ jobs:
   dependsOn: build
 
   steps:
-  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\Dev\\.run\\Job Shortcuts\\Container\\Other_Specs.bat\""
+  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Other_Specs.bat\""
     displayName: 'Run Other_Specs'
 
 - job: Studio_Test_Framework_With_Deleted_Resources_Specs
@@ -382,7 +382,7 @@ jobs:
   dependsOn: build
 
   steps:
-  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\Dev\\.run\\Job Shortcuts\\Container\\Studio_Test_Framework_With_Deleted_Resources_Specs.bat\""
+  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Studio_Test_Framework_With_Deleted_Resources_Specs.bat\""
     displayName: 'Run Studio_Test_Framework_With_Deleted_Resources_Specs'
 
 - job: SQL_Integration_Tests
@@ -390,7 +390,7 @@ jobs:
   dependsOn: build
 
   steps:
-  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\Dev\\.run\\Job Shortcuts\\Container\\SQL_Integration_Tests.bat\""
+  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\SQL_Integration_Tests.bat\""
     displayName: 'Run SQL_Integration_Tests'
 
 - job: For_Each_Workflow_Execution_Specs
@@ -398,7 +398,7 @@ jobs:
   dependsOn: build
 
   steps:
-  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\Dev\\.run\\Job Shortcuts\\Container\\For_Each_Workflow_Execution_Specs.bat\""
+  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\For_Each_Workflow_Execution_Specs.bat\""
     displayName: 'Run For_Each_Workflow_Execution_Specs'
 
 - job: Copy_Tool_Specs_From_Local
@@ -406,7 +406,7 @@ jobs:
   dependsOn: build
 
   steps:
-  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\Dev\\.run\\Job Shortcuts\\Container\\Copy_Tool_Specs_From_Local.bat\""
+  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Copy_Tool_Specs_From_Local.bat\""
     displayName: 'Run Copy_Tool_Specs_From_Local'
 
 - job: Move_Tool_Specs_From_Local
@@ -414,7 +414,7 @@ jobs:
   dependsOn: build
 
   steps:
-  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\Dev\\.run\\Job Shortcuts\\Container\\Move_Tool_Specs_From_Local.bat\""
+  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Move_Tool_Specs_From_Local.bat\""
     displayName: 'Run Move_Tool_Specs_From_Local'
 
 - job: Rename_Tool_Specs_From_Local
@@ -422,7 +422,7 @@ jobs:
   dependsOn: build
 
   steps:
-  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\Dev\\.run\\Job Shortcuts\\Container\\Rename_Tool_Specs_From_Local.bat\""
+  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Rename_Tool_Specs_From_Local.bat\""
     displayName: 'Run Rename_Tool_Specs_From_Local'
 
 - job: Unzip_Tool_Specs_From_Local
@@ -430,7 +430,7 @@ jobs:
   dependsOn: build
 
   steps:
-  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\Dev\\.run\\Job Shortcuts\\Container\\Unzip_Tool_Specs_From_Local.bat\""
+  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Unzip_Tool_Specs_From_Local.bat\""
     displayName: 'Run Unzip_Tool_Specs_From_Local'
 
 - job: Zip_Tool_Specs_From_Local
@@ -438,7 +438,7 @@ jobs:
   dependsOn: build
 
   steps:
-  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\Dev\\.run\\Job Shortcuts\\Container\\Zip_Tool_Specs_From_Local.bat\""
+  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Zip_Tool_Specs_From_Local.bat\""
     displayName: 'Run Zip_Tool_Specs_From_Local'
 
 - job: Copy_Tool_Specs_From_FTP
@@ -446,7 +446,7 @@ jobs:
   dependsOn: build
 
   steps:
-  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\Dev\\.run\\Job Shortcuts\\Container\\Copy_Tool_Specs_From_FTP.bat\""
+  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Copy_Tool_Specs_From_FTP.bat\""
     displayName: 'Run Zip_Tool_Specs'
 
 - job: Move_Tool_Specs_From_FTP
@@ -454,7 +454,7 @@ jobs:
   dependsOn: build
 
   steps:
-  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\Dev\\.run\\Job Shortcuts\\Container\\Move_Tool_Specs_From_FTP.bat\""
+  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Move_Tool_Specs_From_FTP.bat\""
     displayName: 'Run Move_Tool_Specs_From_FTP'
 
 - job: Rename_Tool_Specs_From_FTP
@@ -462,7 +462,7 @@ jobs:
   dependsOn: build
 
   steps:
-  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\Dev\\.run\\Job Shortcuts\\Container\\Rename_Tool_Specs_From_FTP.bat\""
+  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Rename_Tool_Specs_From_FTP.bat\""
     displayName: 'Run Rename_Tool_Specs_From_FTP'
 
 - job: Unzip_Tool_Specs_From_FTP
@@ -470,7 +470,7 @@ jobs:
   dependsOn: build
 
   steps:
-  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\Dev\\.run\\Job Shortcuts\\Container\\Unzip_Tool_Specs_From_FTP.bat\""
+  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Unzip_Tool_Specs_From_FTP.bat\""
     displayName: 'Run Unzip_Tool_Specs_From_FTP'
 
 - job: Zip_Tool_Specs_From_FTP
@@ -478,7 +478,7 @@ jobs:
   dependsOn: build
 
   steps:
-  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\Dev\\.run\\Job Shortcuts\\Container\\Zip_Tool_Specs_From_FTP.bat\""
+  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Zip_Tool_Specs_From_FTP.bat\""
     displayName: 'Run Zip_Tool_Specs_From_FTP'
 
 - job: Copy_Tool_Specs_From_FTPS
@@ -486,7 +486,7 @@ jobs:
   dependsOn: build
 
   steps:
-  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\Dev\\.run\\Job Shortcuts\\Container\\Copy_Tool_Specs_From_FTPS.bat\""
+  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Copy_Tool_Specs_From_FTPS.bat\""
     displayName: 'Run Copy_Tool_Specs_From_FTPS'
 
 - job: Move_Tool_Specs_From_FTPS
@@ -494,7 +494,7 @@ jobs:
   dependsOn: build
 
   steps:
-  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\Dev\\.run\\Job Shortcuts\\Container\\Move_Tool_Specs_From_FTPS.bat\""
+  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Move_Tool_Specs_From_FTPS.bat\""
     displayName: 'Run Move_Tool_Specs_From_FTPS'
 
 - job: Rename_Tool_Specs_From_FTPS
@@ -502,7 +502,7 @@ jobs:
   dependsOn: build
 
   steps:
-  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\Dev\\.run\\Job Shortcuts\\Container\\Rename_Tool_Specs_From_FTPS.bat\""
+  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Rename_Tool_Specs_From_FTPS.bat\""
     displayName: 'Run Rename_Tool_Specs_From_FTPS'
 
 - job: Unzip_Tool_Specs_From_FTPS
@@ -510,7 +510,7 @@ jobs:
   dependsOn: build
 
   steps:
-  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\Dev\\.run\\Job Shortcuts\\Container\\Unzip_Tool_Specs_From_FTPS.bat\""
+  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Unzip_Tool_Specs_From_FTPS.bat\""
     displayName: 'Run Unzip_Tool_Specs_From_FTPS'
 
 - job: Zip_Tool_Specs_From_FTPS
@@ -518,7 +518,7 @@ jobs:
   dependsOn: build
 
   steps:
-  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\Dev\\.run\\Job Shortcuts\\Container\\Zip_Tool_Specs_From_FTPS.bat\""
+  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Zip_Tool_Specs_From_FTPS.bat\""
     displayName: 'Run Zip_Tool_Specs_From_FTPS'
 
 - job: Copy_Tool_Specs_From_SFTP
@@ -526,7 +526,7 @@ jobs:
   dependsOn: build
 
   steps:
-  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\Dev\\.run\\Job Shortcuts\\Container\\Copy_Tool_Specs_From_SFTP.bat\""
+  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Copy_Tool_Specs_From_SFTP.bat\""
     displayName: 'Run Copy_Tool_Specs_From_SFTP'
 
 - job: Move_Tool_Specs_From_SFTP
@@ -534,7 +534,7 @@ jobs:
   dependsOn: build
 
   steps:
-  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\Dev\\.run\\Job Shortcuts\\Container\\Move_Tool_Specs_From_SFTP.bat\""
+  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Move_Tool_Specs_From_SFTP.bat\""
     displayName: 'Run Move_Tool_Specs_From_SFTP'
 
 - job: Rename_Tool_Specs_From_SFTP
@@ -542,7 +542,7 @@ jobs:
   dependsOn: build
 
   steps:
-  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\Dev\\.run\\Job Shortcuts\\Container\\Rename_Tool_Specs_From_SFTP.bat\""
+  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Rename_Tool_Specs_From_SFTP.bat\""
     displayName: 'Run Rename_Tool_Specs_From_SFTP'
 
 - job: Unzip_Tool_Specs_From_SFTP
@@ -550,7 +550,7 @@ jobs:
   dependsOn: build
 
   steps:
-  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\Dev\\.run\\Job Shortcuts\\Container\\Unzip_Tool_Specs_From_SFTP.bat\""
+  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Unzip_Tool_Specs_From_SFTP.bat\""
     displayName: 'Run Unzip_Tool_Specs_From_SFTP'
 
 - job: Zip_Tool_Specs_From_SFTP
@@ -558,7 +558,7 @@ jobs:
   dependsOn: build
 
   steps:
-  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\Dev\\.run\\Job Shortcuts\\Container\\Zip_Tool_Specs_From_SFTP.bat\""
+  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Zip_Tool_Specs_From_SFTP.bat\""
     displayName: 'Run Zip_Tool_Specs_From_SFTP'
 
 - job: Copy_Tool_Specs_From_UNC
@@ -566,7 +566,7 @@ jobs:
   dependsOn: build
 
   steps:
-  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\Dev\\.run\\Job Shortcuts\\Container\\Copy_Tool_Specs_From_UNC.bat\""
+  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Copy_Tool_Specs_From_UNC.bat\""
     displayName: 'Run Copy_Tool_Specs_From_UNC'
 
 - job: Move_Tool_Specs_From_UNC
@@ -574,7 +574,7 @@ jobs:
   dependsOn: build
 
   steps:
-  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\Dev\\.run\\Job Shortcuts\\Container\\Move_Tool_Specs_From_UNC.bat\""
+  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Move_Tool_Specs_From_UNC.bat\""
     displayName: 'Run Move_Tool_Specs_From_UNC'
 
 - job: Studio_Core_Unit_Tests
@@ -582,7 +582,7 @@ jobs:
   dependsOn: build
 
   steps:
-  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\Dev\\.run\\Job Shortcuts\\Container\\Studio_Core_Unit_Tests.bat\""
+  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Studio_Core_Unit_Tests.bat\""
     displayName: 'Run Studio_Core_Unit_Tests'
 
 - job: Elasticsearch_View_Models_Unit_Tests
@@ -590,7 +590,7 @@ jobs:
   dependsOn: build
 
   steps:
-  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\Dev\\.run\\Job Shortcuts\\Container\\Elasticsearch_View_Models_Unit_Tests.bat\""
+  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Elasticsearch_View_Models_Unit_Tests.bat\""
     displayName: 'Run Elasticsearch_View_Models_Unit_Tests'
 
 - job: Search_Specs
@@ -598,7 +598,7 @@ jobs:
   dependsOn: build
 
   steps:
-  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\Dev\\.run\\Job Shortcuts\\Container\\Search_Specs.bat\""
+  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Search_Specs.bat\""
     displayName: 'Run Search_Specs'
 
 - job: Logger_Unit_Tests
@@ -606,7 +606,7 @@ jobs:
   dependsOn: build
 
   steps:
-  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\Dev\\.run\\Job Shortcuts\\Container\\Logger_Unit_Tests.bat\""
+  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Logger_Unit_Tests.bat\""
     displayName: 'Run Logger_Unit_Tests'
 
 - job: Rename_Tool_Specs_From_UNC
@@ -614,7 +614,7 @@ jobs:
   dependsOn: build
 
   steps:
-  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\Dev\\.run\\Job Shortcuts\\Container\\Rename_Tool_Specs_From_UNC.bat\""
+  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Rename_Tool_Specs_From_UNC.bat\""
     displayName: 'Run Rename_Tool_Specs_From_UNC'
 
 - job: Not_Parallelizable_Unit_Tests
@@ -622,7 +622,7 @@ jobs:
   dependsOn: build
 
   steps:
-  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\Dev\\.run\\Job Shortcuts\\Container\\Not_Parallelizable_Unit_Tests.bat\""
+  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Not_Parallelizable_Unit_Tests.bat\""
     displayName: 'Run Not_Parallelizable_Unit_Tests'
 
 - job: Database_Workflow_Execution_Specs
@@ -630,7 +630,7 @@ jobs:
   dependsOn: build
 
   steps:
-  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\Dev\\.run\\Job Shortcuts\\Container\\Database_Workflow_Execution_Specs.bat\""
+  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Database_Workflow_Execution_Specs.bat\""
     displayName: 'Run Database_Workflow_Execution_Specs'
 
 - job: RabbitMQ_Workflow_Execution_Specs
@@ -638,7 +638,7 @@ jobs:
   dependsOn: build
 
   steps:
-  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\Dev\\.run\\Job Shortcuts\\Container\\RabbitMQ_Workflow_Execution_Specs.bat\""
+  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\RabbitMQ_Workflow_Execution_Specs.bat\""
     displayName: 'Run RabbitMQ_Workflow_Execution_Specs'
 
 - job: Studio_Test_Framework_With_HTTP_Web_Get_Tools_Specs
@@ -646,7 +646,7 @@ jobs:
   dependsOn: build
 
   steps:
-  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\Dev\\.run\\Job Shortcuts\\Container\\Studio_Test_Framework_With_HTTP_Web_Get_Tools_Specs.bat\""
+  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Studio_Test_Framework_With_HTTP_Web_Get_Tools_Specs.bat\""
     displayName: 'Run Studio_Test_Framework_With_HTTP_Web_Get_Tools_Specs'
 
 - job: Studio_Test_Framework_With_HTTP_Web_Delete_Tools_Specs
@@ -654,7 +654,7 @@ jobs:
   dependsOn: build
 
   steps:
-  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\Dev\\.run\\Job Shortcuts\\Container\\Studio_Test_Framework_With_HTTP_Web_Delete_Tools_Specs.bat\""
+  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Studio_Test_Framework_With_HTTP_Web_Delete_Tools_Specs.bat\""
     displayName: 'Run Studio_Test_Framework_With_HTTP_Web_Delete_Tools_Specs'
 
 - job: Studio_Test_Framework_With_HTTP_Web_Post_Tools_Specs
@@ -662,7 +662,7 @@ jobs:
   dependsOn: build
 
   steps:
-  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\Dev\\.run\\Job Shortcuts\\Container\\Studio_Test_Framework_With_HTTP_Web_Post_Tools_Specs.bat\""
+  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Studio_Test_Framework_With_HTTP_Web_Post_Tools_Specs.bat\""
     displayName: 'Run Studio_Test_Framework_With_HTTP_Web_Post_Tools_Specs'
 
 - job: Studio_Test_Framework_With_HTTP_Web_Put_Tools_Specs
@@ -670,7 +670,7 @@ jobs:
   dependsOn: build
 
   steps:
-  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\Dev\\.run\\Job Shortcuts\\Container\\Studio_Test_Framework_With_HTTP_Web_Put_Tools_Specs.bat\""
+  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Studio_Test_Framework_With_HTTP_Web_Put_Tools_Specs.bat\""
     displayName: 'Run Studio_Test_Framework_With_HTTP_Web_Put_Tools_Specs'
 
 - job: Studio_Test_Framework_With_RabbitMQ_Tools_Specs
@@ -678,7 +678,7 @@ jobs:
   dependsOn: build
 
   steps:
-  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\Dev\\.run\\Job Shortcuts\\Container\\Studio_Test_Framework_With_RabbitMQ_Tools_Specs.bat\""
+  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Studio_Test_Framework_With_RabbitMQ_Tools_Specs.bat\""
     displayName: 'Run Studio_Test_Framework_With_RabbitMQ_Tools_Specs'
 
 - job: Database_Subworkflow_Execution_Specs
@@ -686,5 +686,5 @@ jobs:
   dependsOn: build
 
   steps:
-  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\Dev\\.run\\Job Shortcuts\\Container\\Database_Subworkflow_Execution_Specs.bat\""
+  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\Container\\Database_Subworkflow_Execution_Specs.bat\""
     displayName: 'Run Database_Subworkflow_Execution_Specs'
