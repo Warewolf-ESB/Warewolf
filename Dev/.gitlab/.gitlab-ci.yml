@@ -17,10 +17,598 @@ build:
       - AcceptanceTesting.zip
     expire_in: 1 week
 
+Zip_Tool_Specs:
+  stage: test
+  script:
+    - "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
+    - "&'./Dev/.run/Job Shortcuts/Container/Zip Tool Specs.bat'"
+  tags:
+    - opswolf
+Email_Tools_Specs:
+  stage: test
+  script:
+    - "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
+    - "&'./Dev/.run/Job Shortcuts/Container/Email Tools Specs.bat'"
+  tags:
+    - opswolf
+Resource_Tools_Specs:
+  stage: test
+  script:
+    - "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
+    - "&'./Dev/.run/Job Shortcuts/Container/Resource Tools Specs.bat'"
+  tags:
+    - opswolf
+File_And_Folder_Copy_Tool_Specs:
+  stage: test
+  script:
+    - "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
+    - "&'./Dev/.run/Job Shortcuts/Container/File And Folder Copy Tool Specs.bat'"
+  tags:
+    - opswolf
+Data_Tools_Specs:
+  stage: test
+  script:
+    - "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
+    - "&'./Dev/.run/Job Shortcuts/Container/Data Tools Specs.bat'"
+  tags:
+    - opswolf
+Request_Service_Name_View_Models_Unit_Tests:
+  stage: test
+  script:
+    - "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
+    - "&'./Dev/.run/Job Shortcuts/Container/Request Service Name View Models Unit Tests.bat'"
+  tags:
+    - opswolf
+Unzip_Tool_Specs_Validation:
+  stage: test
+  script:
+    - "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
+    - "&'./Dev/.run/Job Shortcuts/Container/Unzip Tool Specs Validation.bat'"
+  tags:
+    - opswolf
+Recordset_Tools_Specs:
+  stage: test
+  script:
+    - "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
+    - "&'./Dev/.run/Job Shortcuts/Container/Recordset Tools Specs.bat'"
+  tags:
+    - opswolf
+File_And_Folder_Rename_Tool_Specs:
+  stage: test
+  script:
+    - "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
+    - "&'./Dev/.run/Job Shortcuts/Container/File And Folder Rename Tool Specs.bat'"
+  tags:
+    - opswolf
+Other_Tools_Specs:
+  stage: test
+  script:
+    - "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
+    - "&'./Dev/.run/Job Shortcuts/Container/Other Tools Specs.bat'"
+  tags:
+    - opswolf
+File_And_Folder_Move_Tool_Specs:
+  stage: test
+  script:
+    - "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
+    - "&'./Dev/.run/Job Shortcuts/Container/File And Folder Move Tool Specs.bat'"
+  tags:
+    - opswolf
+File_Read_Tool_Specs:
+  stage: test
+  script:
+    - "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
+    - "&'./Dev/.run/Job Shortcuts/Container/File Read Tool Specs.bat'"
+  tags:
+    - opswolf
+Infrastructure_Unit_Tests:
+  stage: test
+  script:
+    - "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
+    - "&'./Dev/.run/Job Shortcuts/Container/Infrastructure Unit Tests.bat'"
+  tags:
+    - opswolf
+New_Folder_Read_Tool_Specs:
+  stage: test
+  script:
+    - "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
+    - "&'./Dev/.run/Job Shortcuts/Container/New Folder Read Tool Specs.bat'"
+  tags:
+    - opswolf
+Write_File_Tool_Specs:
+  stage: test
+  script:
+    - "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
+    - "&'./Dev/.run/Job Shortcuts/Container/Write File Tool Specs.bat'"
+  tags:
+    - opswolf
+Loop_Construct_Tools_Specs:
+  stage: test
+  script:
+    - "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
+    - "&'./Dev/.run/Job Shortcuts/Container/Loop Construct Tools Specs.bat'"
+  tags:
+    - opswolf
+Utility_Tools_Specs:
+  stage: test
+  script:
+    - "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
+    - "&'./Dev/.run/Job Shortcuts/Container/Utility Tools Specs.bat'"
+  tags:
+    - opswolf
+Folder_Read_Tool_Specs:
+  stage: test
+  script:
+    - "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
+    - "&'./Dev/.run/Job Shortcuts/Container/Folder Read Tool Specs.bat'"
+  tags:
+    - opswolf
+SQL_Bulk_Insert_Tool_Specs:
+  stage: test
+  script:
+    - "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
+    - "&'./Dev/.run/Job Shortcuts/Container/SQL Bulk Insert Tool Specs.bat'"
+  tags:
+    - opswolf
+Control_Flow_Tools_Specs:
+  stage: test
+  script:
+    - "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
+    - "&'./Dev/.run/Job Shortcuts/Container/Control Flow Tools Specs.bat'"
+  tags:
+    - opswolf
+Studio_View_Models_Unit_Tests:
+  stage: test
+  script:
+    - "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
+    - "&'./Dev/.run/Job Shortcuts/Container/Studio View Models Unit Tests.bat'"
+  tags:
+    - opswolf
+File_And_Folder_Create_Tool_Specs:
+  stage: test
+  script:
+    - "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
+    - "&'./Dev/.run/Job Shortcuts/Container/File And Folder Create Tool Specs.bat'"
+  tags:
+    - opswolf
+Storage_Unit_Tests:
+  stage: test
+  script:
+    - "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
+    - "&'./Dev/.run/Job Shortcuts/Container/Storage Unit Tests.bat'"
+  tags:
+    - opswolf
+Storage_Tools_Specs:
+  stage: test
+  script:
+    - "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
+    - "&'./Dev/.run/Job Shortcuts/Container/Storage Tools Specs.bat'"
+  tags:
+    - opswolf
+File_And_Folder_Delete_Tool_Specs:
+  stage: test
+  script:
+    - "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
+    - "&'./Dev/.run/Job Shortcuts/Container/File And Folder Delete Tool Specs.bat'"
+  tags:
+    - opswolf
+Scripting_Tools_Specs:
+  stage: test
+  script:
+    - "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
+    - "&'./Dev/.run/Job Shortcuts/Container/Scripting Tools Specs.bat'"
+  tags:
+    - opswolf
+Database_Tools_Specs:
+  stage: test
+  script:
+    - "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
+    - "&'./Dev/.run/Job Shortcuts/Container/Database Tools Specs.bat'"
+  tags:
+    - opswolf
 Auditing_Unit_Tests:
   stage: test
   script:
     - "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
     - "&'./Dev/.run/Job Shortcuts/Container/Auditing Unit Tests.bat'"
+  tags:
+    - opswolf
+Workflow_Execution_Specs:
+  stage: test
+  script:
+    - "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
+    - "&'./Dev/.run/Job Shortcuts/Container/Workflow Execution Specs.bat'"
+  tags:
+    - opswolf
+Studio_Test_Framework_With_Hello_World_Workflow_Specs:
+  stage: test
+  script:
+    - "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
+    - "&'./Dev/.run/Job Shortcuts/Container/Studio Test Framework With Hello World Workflow Specs.bat'"
+  tags:
+    - opswolf
+Studio_Test_Framework_With_Utility_Tools_Specs:
+  stage: test
+  script:
+    - "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
+    - "&'./Dev/.run/Job Shortcuts/Container/Studio Test Framework With Utility Tools Specs.bat'"
+  tags:
+    - opswolf
+MS_SQL_Server_Specs:
+  stage: test
+  script:
+    - "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
+    - "&'./Dev/.run/Job Shortcuts/Container/MS SQL Server Specs.bat'"
+  tags:
+    - opswolf
+Studio_Test_Framework_With_Data_Tools_Specs:
+  stage: test
+  script:
+    - "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
+    - "&'./Dev/.run/Job Shortcuts/Container/Studio Test Framework With Data Tools Specs.bat'"
+  tags:
+    - opswolf
+Assign_Workflow_Execution_Specs:
+  stage: test
+  script:
+    - "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
+    - "&'./Dev/.run/Job Shortcuts/Container/Assign Workflow Execution Specs.bat'"
+  tags:
+    - opswolf
+Integration_Tests:
+  stage: test
+  script:
+    - "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
+    - "&'./Dev/.run/Job Shortcuts/Container/Integration Tests.bat'"
+  tags:
+    - opswolf
+Studio_Test_Framework_With_Scripting_Tools_Specs:
+  stage: test
+  script:
+    - "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
+    - "&'./Dev/.run/Job Shortcuts/Container/Studio Test Framework With Scripting Tools Specs.bat'"
+  tags:
+    - opswolf
+Other_Activities_Specs:
+  stage: test
+  script:
+    - "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
+    - "&'./Dev/.run/Job Shortcuts/Container/Other Activities Specs.bat'"
+  tags:
+    - opswolf
+Studio_Test_Framework_With_File_And_Folder_Tools_Specs:
+  stage: test
+  script:
+    - "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
+    - "&'./Dev/.run/Job Shortcuts/Container/Studio Test Framework With File And Folder Tools Specs.bat'"
+  tags:
+    - opswolf
+Studio_Test_Framework_With_HTTP_Web_Tools_Specs:
+  stage: test
+  script:
+    - "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
+    - "&'./Dev/.run/Job Shortcuts/Container/Studio Test Framework With HTTP Web Tools Specs.bat'"
+  tags:
+    - opswolf
+Studio_Test_Framework_With_Subworkflow_Specs:
+  stage: test
+  script:
+    - "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
+    - "&'./Dev/.run/Job Shortcuts/Container/Studio Test Framework With Subworkflow Specs.bat'"
+  tags:
+    - opswolf
+Workflow_Merging_Specs:
+  stage: test
+  script:
+    - "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
+    - "&'./Dev/.run/Job Shortcuts/Container/Workflow Merging Specs.bat'"
+  tags:
+    - opswolf
+Example_Workflow_Execution_Specs:
+  stage: test
+  script:
+    - "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
+    - "&'./Dev/.run/Job Shortcuts/Container/Example Workflow Execution Specs.bat'"
+  tags:
+    - opswolf
+Studio_Test_Framework_Specs:
+  stage: test
+  script:
+    - "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
+    - "&'./Dev/.run/Job Shortcuts/Container/Studio Test Framework Specs.bat'"
+  tags:
+    - opswolf
+Subworkflow_Execution_Specs:
+  stage: test
+  script:
+    - "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
+    - "&'./Dev/.run/Job Shortcuts/Container/Subworkflow Execution Specs.bat'"
+  tags:
+    - opswolf
+Oracle_Execution_Specs:
+  stage: test
+  script:
+    - "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
+    - "&'./Dev/.run/Job Shortcuts/Container/Oracle Execution Specs.bat'"
+  tags:
+    - opswolf
+Other_Specs:
+  stage: test
+  script:
+    - "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
+    - "&'./Dev/.run/Job Shortcuts/Container/Other Specs.bat'"
+  tags:
+    - opswolf
+Studio_Test_Framework_With_Deleted_Resources_Specs:
+  stage: test
+  script:
+    - "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
+    - "&'./Dev/.run/Job Shortcuts/Container/Studio Test Framework With Deleted Resources Specs.bat'"
+  tags:
+    - opswolf
+SQL_Integration_Tests:
+  stage: test
+  script:
+    - "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
+    - "&'./Dev/.run/Job Shortcuts/Container/SQL Integration Tests.bat'"
+  tags:
+    - opswolf
+For_Each_Workflow_Execution_Specs:
+  stage: test
+  script:
+    - "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
+    - "&'./Dev/.run/Job Shortcuts/Container/For Each Workflow Execution Specs.bat'"
+  tags:
+    - opswolf
+Copy_Tool_Specs_From_Local:
+  stage: test
+  script:
+    - "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
+    - "&'./Dev/.run/Job Shortcuts/Container/Copy Tool Specs From Local.bat'"
+  tags:
+    - opswolf
+Move_Tool_Specs_From_Local:
+  stage: test
+  script:
+    - "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
+    - "&'./Dev/.run/Job Shortcuts/Container/Move Tool Specs From Local.bat'"
+  tags:
+    - opswolf
+Rename_Tool_Specs_From_Local:
+  stage: test
+  script:
+    - "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
+    - "&'./Dev/.run/Job Shortcuts/Container/Rename Tool Specs From Local.bat'"
+  tags:
+    - opswolf
+Unzip_Tool_Specs_From_Local:
+  stage: test
+  script:
+    - "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
+    - "&'./Dev/.run/Job Shortcuts/Container/Unzip Tool Specs From Local.bat'"
+  tags:
+    - opswolf
+Zip_Tool_Specs_From_Local:
+  stage: test
+  script:
+    - "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
+    - "&'./Dev/.run/Job Shortcuts/Container/Zip Tool Specs From Local.bat'"
+  tags:
+    - opswolf
+Copy_Tool_Specs_From_FTP:
+  stage: test
+  script:
+    - "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
+    - "&'./Dev/.run/Job Shortcuts/Container/Copy Tool Specs From FTP.bat'"
+  tags:
+    - opswolf
+Move_Tool_Specs_From_FTP:
+  stage: test
+  script:
+    - "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
+    - "&'./Dev/.run/Job Shortcuts/Container/Move Tool Specs From FTP.bat'"
+  tags:
+    - opswolf
+Rename_Tool_Specs_From_FTP:
+  stage: test
+  script:
+    - "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
+    - "&'./Dev/.run/Job Shortcuts/Container/Rename Tool Specs From FTP.bat'"
+  tags:
+    - opswolf
+Unzip_Tool_Specs_From_FTP:
+  stage: test
+  script:
+    - "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
+    - "&'./Dev/.run/Job Shortcuts/Container/Unzip Tool Specs From FTP.bat'"
+  tags:
+    - opswolf
+Zip_Tool_Specs_From_FTP:
+  stage: test
+  script:
+    - "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
+    - "&'./Dev/.run/Job Shortcuts/Container/Zip Tool Specs From FTP.bat'"
+  tags:
+    - opswolf
+Copy_Tool_Specs_From_FTPS:
+  stage: test
+  script:
+    - "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
+    - "&'./Dev/.run/Job Shortcuts/Container/Copy Tool Specs From FTPS.bat'"
+  tags:
+    - opswolf
+Move_Tool_Specs_From_FTPS:
+  stage: test
+  script:
+    - "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
+    - "&'./Dev/.run/Job Shortcuts/Container/Move Tool Specs From FTPS.bat'"
+  tags:
+    - opswolf
+Rename_Tool_Specs_From_FTPS:
+  stage: test
+  script:
+    - "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
+    - "&'./Dev/.run/Job Shortcuts/Container/Rename Tool Specs From FTPS.bat'"
+  tags:
+    - opswolf
+Unzip_Tool_Specs_From_FTPS:
+  stage: test
+  script:
+    - "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
+    - "&'./Dev/.run/Job Shortcuts/Container/Unzip Tool Specs From FTPS.bat'"
+  tags:
+    - opswolf
+Zip_Tool_Specs_From_FTPS:
+  stage: test
+  script:
+    - "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
+    - "&'./Dev/.run/Job Shortcuts/Container/Zip Tool Specs From FTPS.bat'"
+  tags:
+    - opswolf
+Copy_Tool_Specs_From_SFTP:
+  stage: test
+  script:
+    - "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
+    - "&'./Dev/.run/Job Shortcuts/Container/Copy Tool Specs From SFTP.bat'"
+  tags:
+    - opswolf
+Move_Tool_Specs_From_SFTP:
+  stage: test
+  script:
+    - "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
+    - "&'./Dev/.run/Job Shortcuts/Container/Move Tool Specs From SFTP.bat'"
+  tags:
+    - opswolf
+Rename_Tool_Specs_From_SFTP:
+  stage: test
+  script:
+    - "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
+    - "&'./Dev/.run/Job Shortcuts/Container/Rename Tool Specs From SFTP.bat'"
+  tags:
+    - opswolf
+Unzip_Tool_Specs_From_SFTP:
+  stage: test
+  script:
+    - "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
+    - "&'./Dev/.run/Job Shortcuts/Container/Unzip Tool Specs From SFTP.bat'"
+  tags:
+    - opswolf
+Zip_Tool_Specs_From_SFTP:
+  stage: test
+  script:
+    - "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
+    - "&'./Dev/.run/Job Shortcuts/Container/Zip Tool Specs From SFTP.bat'"
+  tags:
+    - opswolf
+Copy_Tool_Specs_From_UNC:
+  stage: test
+  script:
+    - "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
+    - "&'./Dev/.run/Job Shortcuts/Container/Copy Tool Specs From UNC.bat'"
+  tags:
+    - opswolf
+Move_Tool_Specs_From_UNC:
+  stage: test
+  script:
+    - "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
+    - "&'./Dev/.run/Job Shortcuts/Container/Move Tool Specs From UNC.bat'"
+  tags:
+    - opswolf
+Studio_Core_Unit_Tests:
+  stage: test
+  script:
+    - "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
+    - "&'./Dev/.run/Job Shortcuts/Container/Studio Core Unit Tests.bat'"
+  tags:
+    - opswolf
+Elasticsearch_View_Models_Unit_Tests:
+  stage: test
+  script:
+    - "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
+    - "&'./Dev/.run/Job Shortcuts/Container/Elasticsearch View Models Unit Tests.bat'"
+  tags:
+    - opswolf
+Search_Specs:
+  stage: test
+  script:
+    - "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
+    - "&'./Dev/.run/Job Shortcuts/Container/Search Specs.bat'"
+  tags:
+    - opswolf
+Logger_Unit_Tests:
+  stage: test
+  script:
+    - "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
+    - "&'./Dev/.run/Job Shortcuts/Container/Logger Unit Tests.bat'"
+  tags:
+    - opswolf
+Rename_Tool_Specs_From_UNC:
+  stage: test
+  script:
+    - "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
+    - "&'./Dev/.run/Job Shortcuts/Container/Rename Tool Specs From UNC.bat'"
+  tags:
+    - opswolf
+Not_Parallelizable_Unit_Tests:
+  stage: test
+  script:
+    - "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
+    - "&'./Dev/.run/Job Shortcuts/Container/Not Parallelizable Unit Tests.bat'"
+  tags:
+    - opswolf
+Database_Workflow_Execution_Specs:
+  stage: test
+  script:
+    - "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
+    - "&'./Dev/.run/Job Shortcuts/Container/Database Workflow Execution Specs.bat'"
+  tags:
+    - opswolf
+RabbitMQ_Workflow_Execution_Specs:
+  stage: test
+  script:
+    - "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
+    - "&'./Dev/.run/Job Shortcuts/Container/RabbitMQ Workflow Execution Specs.bat'"
+  tags:
+    - opswolf
+Studio_Test_Framework_With_HTTP_Web_Get_Tools_Specs:
+  stage: test
+  script:
+    - "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
+    - "&'./Dev/.run/Job Shortcuts/Container/Studio Test Framework With HTTP Web Get Tools Specs.bat'"
+  tags:
+    - opswolf
+Studio_Test_Framework_With_HTTP_Web_Delete_Tools_Specs:
+  stage: test
+  script:
+    - "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
+    - "&'./Dev/.run/Job Shortcuts/Container/Studio Test Framework With HTTP Web Delete Tools Specs.bat'"
+  tags:
+    - opswolf
+Studio_Test_Framework_With_HTTP_Web_Post_Tools_Specs:
+  stage: test
+  script:
+    - "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
+    - "&'./Dev/.run/Job Shortcuts/Container/Studio Test Framework With HTTP Web Post Tools Specs.bat'"
+  tags:
+    - opswolf
+Studio_Test_Framework_With_HTTP_Web_Put_Tools_Specs:
+  stage: test
+  script:
+    - "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
+    - "&'./Dev/.run/Job Shortcuts/Container/Studio Test Framework With HTTP Web Put Tools Specs.bat'"
+  tags:
+    - opswolf
+Studio_Test_Framework_With_RabbitMQ_Tools_Specs:
+  stage: test
+  script:
+    - "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
+    - "&'./Dev/.run/Job Shortcuts/Container/Studio Test Framework With RabbitMQ Tools Specs.bat'"
+  tags:
+    - opswolf
+Database_Subworkflow_Execution_Specs:
+  stage: test
+  script:
+    - "&'C:/Builds/7Zip/7za.exe' x -aoa -r -y -o\"./Bin/AcceptanceTesting\" AcceptanceTesting.zip"
+    - "&'./Dev/.run/Job Shortcuts/Container/Database Subworkflow Execution Specs.bat'"
   tags:
     - opswolf
