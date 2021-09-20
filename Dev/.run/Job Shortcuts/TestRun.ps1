@@ -292,6 +292,7 @@ if ($getXMLFiles.Count -eq 1) {
     }
     if ($AllErrors -ne "") {
         throw "Test run failed." + $AllErrors
+		exit 1
     }
 }
 if ($Coverage.IsPresent) {
