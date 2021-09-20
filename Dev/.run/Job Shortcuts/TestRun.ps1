@@ -287,11 +287,11 @@ if ($getXMLFiles.Count -eq 1) {
     $AllErrors = ""
 	$getXMl.TestRun.Results.UnitTestResult | % {
 		if ($_.outcome -eq 'Failed') {
-            $AllErrors += "`n" + $_.testName + "`n" + $_.Output.ErrorInfo.Message
+            $AllErrors += "`n" + $_.testName + "`n" + $_.Output.ErrorInfo.Message + "`n" + $_.Output.ErrorInfo.StackTrace
 		}
     }
     if ($AllErrors -ne "") {
-        throw "Test run failed." + $AllErrors
+        Write-Host "Test run failed." + $AllErrors
 		exit 1
     }
 }
