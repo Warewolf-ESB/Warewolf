@@ -283,12 +283,6 @@ for ($LoopCounter=0; $LoopCounter -le $RetryCount; $LoopCounter++) {
 }
 $getXMLFiles = @(Get-ChildItem "$TestResultsPath\*.trx")
 if ($getXMLFiles.Count -eq 1) {
-	$GetJunit = trx2junit
-	if ($GetJunit.StartsWith("trx2junit (c) gfoidl")) {
-		trx2junit $getXMLFiles[0].FullName
-	} else {
-		Write-Host "trx2junit not found. Please run `"dotnet tool install -g trx2junit`" to install it."
-	}
     $getXML = [xml](Get-Content $getXMLFiles[0].FullName)
     $AllErrors = ""
 	$getXMl.TestRun.Results.UnitTestResult | % {
