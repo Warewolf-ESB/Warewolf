@@ -316,7 +316,7 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
                 $NugetPackVersion = ""
             }
             if (!($InContainer.IsPresent)) {
-                &"$MSBuildPath" "$PSScriptRoot\$SolutionFile" "/p:Platform=`"Any CPU`";Configuration=`"$Config`"$NugetPackVersion" "/maxcpucount" "/nodeReuse:false" "/restore" $OutputProperty $Target
+                &"$MSBuildPath" "$PSScriptRoot\$SolutionFile" "/p:Platform=`"Any CPU`";Configuration=`"$Config`"$NugetPackVersion" "/maxcpucount" "/nodeReuse:false" "/restore" "/consoleloggerparameters:PerformanceSummary;NoSummary" "/verbosity:minimal" $OutputProperty $Target
             } else {
                 docker run -t -m 4g -v "$PSScriptRoot":"C:\Build" registry.gitlab.com/warewolf/msbuild "C:\Build\$SolutionFile" "/p:Platform=`"Any CPU`";Configuration=`"$Config`"$NugetPackVersion" "/maxcpucount" "/nodeReuse:false" "/restore" $OutputProperty $Target
             }
