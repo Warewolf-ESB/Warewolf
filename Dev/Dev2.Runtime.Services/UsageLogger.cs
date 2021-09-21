@@ -30,14 +30,16 @@ namespace Dev2.Runtime
         IStartTimer Start();
         Timer Timer { get; }
         double Interval { get; }
+        void SaveOfflineUsage(string customerId, string jsonData, UsageType usageType);
+        void Dispose();
     }
     
     public class UsageLogger : IUsageLogger, IStartTimer
     {
         internal readonly Timer _timer;
         static readonly string _persistencePath = EnvironmentVariables.PersistencePath;
-        static DirectoryWrapper _directoryWrapper = new DirectoryWrapper();
-        static FileWrapper _fileWrapper = new FileWrapper();
+        DirectoryWrapper _directoryWrapper = new DirectoryWrapper();
+        FileWrapper _fileWrapper = new FileWrapper();
         IUsageTrackerWrapper _usageTrackerWrapper = new UsageTrackerWrapper();
 
         public UsageLogger(double intervalMs) : this(intervalMs, new UsageTrackerWrapper())
@@ -158,7 +160,7 @@ namespace Dev2.Runtime
             }
         }
 
-        public static void SaveOfflineUsage(string customerId, string jsonData, UsageType usageType)
+        public void SaveOfflineUsage(string customerId, string jsonData, UsageType usageType)
         {
             if(!_directoryWrapper.Exists(_persistencePath))
             {
@@ -175,7 +177,7 @@ namespace Dev2.Runtime
             _fileWrapper.WriteAllText(Path.Combine(_persistencePath, ServerStats.SessionId.ToString()), JsonConvert.SerializeObject(sessionData));
         }
 
-        private static DateTime? GetLastUploadTime()
+        private DateTime? GetLastUploadTime()
         {
             var persistencePath = Path.Combine(Config.AppDataPath, "Persistence");
             var files = _directoryWrapper.GetFiles(persistencePath);
