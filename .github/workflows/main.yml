@@ -4,6 +4,465 @@ on: [push]
 
 jobs:
 
+  Zip_Tool_Specs:  
+    runs-on: self-hosted
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    
+    - name: Run Tests
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Zip Tool Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
+      with:
+        files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
+
+  Email_Tools_Specs:
+    runs-on: self-hosted
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    
+    - name: Run Tests
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Email Tools Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
+      with:
+        files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
+
+  Resource_Tools_Specs:
+    runs-on: self-hosted
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    
+    - name: Run Tests
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Resource Tools Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
+      with:
+        files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
+
+  File_And_Folder_Copy_Tool_Specs:
+    runs-on: self-hosted
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    
+    - name: Run Tests
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\File And Folder Copy Tool Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
+      with:
+        files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
+
+  Data_Tools_Specs:
+    runs-on: self-hosted
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    
+    - name: Run Tests
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Data Tools Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
+      with:
+        files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
+
+  Request_Service_Name_View_Models_Unit_Tests:
+    runs-on: self-hosted
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    
+    - name: Run Tests
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Request Service Name View Models Unit Tests.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
+      with:
+        files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
+
+  Unzip_Tool_Specs_Validation:
+    runs-on: self-hosted
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    
+    - name: Run Tests
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Unzip Tool Specs Validation.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
+      with:
+        files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
+
+  Recordset_Tools_Specs:
+    runs-on: self-hosted
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    
+    - name: Run Tests
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Recordset Tools Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
+      with:
+        files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
+
+  File_And_Folder_Rename_Tool_Specs:
+    runs-on: self-hosted
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    
+    - name: Run Tests
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\File And Folder Rename Tool Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
+      with:
+        files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
+
+  Other_Tools_Specs:
+    runs-on: self-hosted
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    
+    - name: Run Tests
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Other Tools Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
+      with:
+        files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
+
+  File_And_Folder_Move_Tool_Specs:
+    runs-on: self-hosted
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    
+    - name: Run Tests
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\File And Folder Move Tool Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
+      with:
+        files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
+
+  File_Read_Tool_Specs:
+    runs-on: self-hosted
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    
+    - name: Run Tests
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\File Read Tool Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
+      with:
+        files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
+
+  Infrastructure_Unit_Tests:
+    runs-on: self-hosted
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    
+    - name: Run Tests
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Infrastructure Unit Tests.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
+      with:
+        files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
+
+  New_Folder_Read_Tool_Specs:
+    runs-on: self-hosted
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    
+    - name: Run Tests
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\New Folder Read Tool Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
+      with:
+        files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
+
+  Write_File_Tool_Specs:
+    runs-on: self-hosted
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    
+    - name: Run Tests
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Write File Tool Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
+      with:
+        files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
+
+  Loop_Construct_Tools_Specs:
+    runs-on: self-hosted
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    
+    - name: Run Tests
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Loop Construct Tools Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
+      with:
+        files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
+
+  Utility_Tools_Specs:
+    runs-on: self-hosted
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    
+    - name: Run Tests
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Utility Tools Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
+      with:
+        files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
+
+  Folder_Read_Tool_Specs:
+    runs-on: self-hosted
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    
+    - name: Run Tests
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Folder Read Tool Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
+      with:
+        files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
+
+  SQL_Bulk_Insert_Tool_Specs:
+    runs-on: self-hosted
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    
+    - name: Run Tests
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\SQL Bulk Insert Tool Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
+      with:
+        files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
+
+  Control_Flow_Tools_Specs:
+    runs-on: self-hosted
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    
+    - name: Run Tests
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Control Flow Tools Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
+      with:
+        files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
+
+  Studio_View_Models_Unit_Tests:
+    runs-on: self-hosted
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    
+    - name: Run Tests
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Studio View Models Unit Tests.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
+      with:
+        files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
+
+  File_And_Folder_Create_Tool_Specs:
+    runs-on: self-hosted
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    
+    - name: Run Tests
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\File And Folder Create Tool Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
+      with:
+        files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
+
+  Storage_Unit_Tests:
+    runs-on: self-hosted
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    
+    - name: Run Tests
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Storage Unit Tests.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
+      with:
+        files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
+
+  Storage_Tools_Specs:
+    runs-on: self-hosted
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    
+    - name: Run Tests
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Storage Tools Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
+      with:
+        files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
+
+  File_And_Folder_Delete_Tool_Specs:
+    runs-on: self-hosted
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    
+    - name: Run Tests
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\File And Folder Delete Tool Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
+      with:
+        files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
+
+  Scripting_Tools_Specs:
+    runs-on: self-hosted
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    
+    - name: Run Tests
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Scripting Tools Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
+      with:
+        files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
+
+  Database_Tools_Specs:
+    runs-on: self-hosted
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    
+    - name: Run Tests
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Database Tools Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
+      with:
+        files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
+
   Auditing_Unit_Tests:
     runs-on: self-hosted
     
@@ -16,25 +475,959 @@ jobs:
     - name: Run Tests
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Auditing Unit Tests.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
       
-    - name: Publish Unit Test Results
-      run: "&python.exe D:\\actions-runner\\_work\\_actions\\EnricoMi\\publish-unit-test-result-action\\v1\\python\\publish_unit_test_results.py"
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-        GITHUB_RETRIES: 10
-        COMMIT: $GITHUB_SHA
-        CHECK_NAME: "Unit Test Results"
-        COMMENT_TITLE: "Unit Test Results"
-        FAIL_ON: "test failures"
-        FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
-        REPORT_INDIVIDUAL_RUNS: "false"
-        DEDUPLICATE_CLASSES_BY_FILE_NAME: "false"
-        HIDE_COMMENTS: "all but latest"
-        COMMENT_MODE: "update last"
-        COMPARE_TO_EARLIER_COMMIT: "true"
-        PULL_REQUEST_BUILD: "merge"
-        TEST_CHANGES_LIMIT: "10"
-        CHECK_RUN_ANNOTATIONS: "all tests, skipped tests"
-        CHECK_RUN_ANNOTATIONS_BRANCH: "develop"
-        SECONDS_BETWEEN_GITHUB_READS: "0.25"
-        SECONDS_BETWEEN_GITHUB_WRITES: "2.0"
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
+      with:
+        files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
 
+  Workflow_Execution_Specs:
+    runs-on: self-hosted
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    
+    - name: Run Tests
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Workflow Execution Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
+      with:
+        files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
+
+  Studio_Test_Framework_With_Hello_World_Workflow_Specs:
+    runs-on: self-hosted
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    
+    - name: Run Tests
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Studio Test Framework With Hello World Workflow Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
+      with:
+        files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
+
+  Studio_Test_Framework_With_Utility_Tools_Specs:
+    runs-on: self-hosted
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    
+    - name: Run Tests
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Studio Test Framework With Utility Tools Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
+      with:
+        files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
+
+  MS_SQL_Server_Specs:
+    runs-on: self-hosted
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    
+    - name: Run Tests
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\MS SQL Server Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
+      with:
+        files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
+
+  Studio_Test_Framework_With_Data_Tools_Specs:
+    runs-on: self-hosted
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    
+    - name: Run Tests
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Studio Test Framework With Data Tools Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
+      with:
+        files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
+
+  Assign_Workflow_Execution_Specs:
+    runs-on: self-hosted
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    
+    - name: Run Tests
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Assign Workflow Execution Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
+      with:
+        files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
+
+  Integration_Tests:
+    runs-on: self-hosted
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    
+    - name: Run Tests
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Integration Tests.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
+      with:
+        files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
+
+  Studio_Test_Framework_With_Scripting_Tools_Specs:
+    runs-on: self-hosted
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    
+    - name: Run Tests
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Studio Test Framework With Scripting Tools Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
+      with:
+        files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
+
+  Other_Activities_Specs:
+    runs-on: self-hosted
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    
+    - name: Run Tests
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Other Activities Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
+      with:
+        files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
+
+  Studio_Test_Framework_With_File_And_Folder_Tools_Specs:
+    runs-on: self-hosted
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    
+    - name: Run Tests
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Studio Test Framework With File And Folder Tools Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
+      with:
+        files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
+
+  Studio_Test_Framework_With_HTTP_Web_Tools_Specs:
+    runs-on: self-hosted
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    
+    - name: Run Tests
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Studio Test Framework With HTTP Web Tools Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
+      with:
+        files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
+
+  Studio_Test_Framework_With_Subworkflow_Specs:
+    runs-on: self-hosted
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    
+    - name: Run Tests
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Studio Test Framework With Subworkflow Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
+      with:
+        files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
+
+  Workflow_Merging_Specs:
+    runs-on: self-hosted
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    
+    - name: Run Tests
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Workflow Merging Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
+      with:
+        files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
+
+  Example_Workflow_Execution_Specs:
+    runs-on: self-hosted
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    
+    - name: Run Tests
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Example Workflow Execution Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
+      with:
+        files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
+
+  Studio_Test_Framework_Specs:
+    runs-on: self-hosted
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    
+    - name: Run Tests
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Studio Test Framework Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
+      with:
+        files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
+
+  Subworkflow_Execution_Specs:
+    runs-on: self-hosted
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    
+    - name: Run Tests
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Subworkflow Execution Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
+      with:
+        files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
+
+  Other_Specs:
+    runs-on: self-hosted
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    
+    - name: Run Tests
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Other Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
+      with:
+        files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
+
+  Studio_Test_Framework_With_Deleted_Resources_Specs:
+    runs-on: self-hosted
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    
+    - name: Run Tests
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Studio Test Framework With Deleted Resources Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
+      with:
+        files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
+
+  SQL_Integration_Tests:
+    runs-on: self-hosted
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    
+    - name: Run Tests
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\SQL Integration Tests.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
+      with:
+        files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
+
+  For_Each_Workflow_Execution_Specs:
+    runs-on: self-hosted
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    
+    - name: Run Tests
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\For Each Workflow Execution Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
+      with:
+        files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
+
+  Copy_Tool_Specs_From_Local:
+    runs-on: self-hosted
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    
+    - name: Run Tests
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Copy Tool Specs From Local.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
+      with:
+        files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
+
+  Move_Tool_Specs_From_Local:
+    runs-on: self-hosted
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    
+    - name: Run Tests
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Move Tool Specs From Local.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
+      with:
+        files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
+
+  Rename_Tool_Specs_From_Local:
+    runs-on: self-hosted
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    
+    - name: Run Tests
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Rename Tool Specs From Local.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
+      with:
+        files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
+
+  Unzip_Tool_Specs_From_Local:
+    runs-on: self-hosted
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    
+    - name: Run Tests
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Unzip Tool Specs From Local.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
+      with:
+        files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
+
+  Zip_Tool_Specs_From_Local:
+    runs-on: self-hosted
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    
+    - name: Run Tests
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Zip Tool Specs From Local.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
+      with:
+        files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
+
+  Copy_Tool_Specs_From_FTP:
+    runs-on: self-hosted
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    
+    - name: Run Tests
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Copy Tool Specs From FTP.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
+      with:
+        files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
+
+  Move_Tool_Specs_From_FTP:
+    runs-on: self-hosted
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    
+    - name: Run Tests
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Move Tool Specs From FTP.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
+      with:
+        files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
+
+  Rename_Tool_Specs_From_FTP:
+    runs-on: self-hosted
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    
+    - name: Run Tests
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Rename Tool Specs From FTP.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
+      with:
+        files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
+
+  Unzip_Tool_Specs_From_FTP:
+    runs-on: self-hosted
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    
+    - name: Run Tests
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Unzip Tool Specs From FTP.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
+      with:
+        files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
+
+  Zip_Tool_Specs_From_FTP:
+    runs-on: self-hosted
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    
+    - name: Run Tests
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Zip Tool Specs From FTP.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
+      with:
+        files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
+
+  Copy_Tool_Specs_From_FTPS:
+    runs-on: self-hosted
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    
+    - name: Run Tests
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Copy Tool Specs From FTPS.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
+      with:
+        files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
+
+  Move_Tool_Specs_From_FTPS:
+    runs-on: self-hosted
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    
+    - name: Run Tests
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Move Tool Specs From FTPS.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
+      with:
+        files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
+
+  Rename_Tool_Specs_From_FTPS:
+    runs-on: self-hosted
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    
+    - name: Run Tests
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Rename Tool Specs From FTPS.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
+      with:
+        files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
+
+  Unzip_Tool_Specs_From_FTPS:
+    runs-on: self-hosted
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    
+    - name: Run Tests
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Unzip Tool Specs From FTPS.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
+      with:
+        files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
+
+  Zip_Tool_Specs_From_FTPS:
+    runs-on: self-hosted
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    
+    - name: Run Tests
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Zip Tool Specs From FTPS.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
+      with:
+        files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
+
+  Copy_Tool_Specs_From_SFTP:
+    runs-on: self-hosted
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    
+    - name: Run Tests
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Copy Tool Specs From SFTP.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
+      with:
+        files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
+
+  Move_Tool_Specs_From_SFTP:
+    runs-on: self-hosted
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    
+    - name: Run Tests
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Move Tool Specs From SFTP.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
+      with:
+        files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
+
+  Rename_Tool_Specs_From_SFTP:
+    runs-on: self-hosted
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    
+    - name: Run Tests
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Rename Tool Specs From SFTP.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
+      with:
+        files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
+
+  Unzip_Tool_Specs_From_SFTP:
+    runs-on: self-hosted
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    
+    - name: Run Tests
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Unzip Tool Specs From SFTP.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
+      with:
+        files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
+
+  Zip_Tool_Specs_From_SFTP:
+    runs-on: self-hosted
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    
+    - name: Run Tests
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Zip Tool Specs From SFTP.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
+      with:
+        files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
+
+  Copy_Tool_Specs_From_UNC:
+    runs-on: self-hosted
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    
+    - name: Run Tests
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Copy Tool Specs From UNC.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
+      with:
+        files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
+
+  Move_Tool_Specs_From_UNC:
+    runs-on: self-hosted
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    
+    - name: Run Tests
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Move Tool Specs From UNC.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
+      with:
+        files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
+
+  Studio_Core_Unit_Tests:
+    runs-on: self-hosted
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    
+    - name: Run Tests
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Studio Core Unit Tests.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
+      with:
+        files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
+
+  Elasticsearch_View_Models_Unit_Tests:
+    runs-on: self-hosted
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    
+    - name: Run Tests
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Elasticsearch View Models Unit Tests.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
+      with:
+        files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
+
+  Search_Specs:
+    runs-on: self-hosted
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    
+    - name: Run Tests
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Search Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
+      with:
+        files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
+
+  Logger_Unit_Tests:
+    runs-on: self-hosted
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    
+    - name: Run Tests
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Logger Unit Tests.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
+      with:
+        files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
+
+  Rename_Tool_Specs_From_UNC:
+    runs-on: self-hosted
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    
+    - name: Run Tests
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Rename Tool Specs From UNC.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
+      with:
+        files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
+
+  Not_Parallelizable_Unit_Tests:
+    runs-on: self-hosted
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    
+    - name: Run Tests
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Not Parallelizable Unit Tests.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
+      with:
+        files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
+
+  Database_Workflow_Execution_Specs:
+    runs-on: self-hosted
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    
+    - name: Run Tests
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Database Workflow Execution Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
+      with:
+        files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
+
+  RabbitMQ_Workflow_Execution_Specs:
+    runs-on: self-hosted
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    
+    - name: Run Tests
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\RabbitMQ Workflow Execution Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
+      with:
+        files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
+
+  Studio_Test_Framework_With_HTTP_Web_Get_Tools_Specs:
+    runs-on: self-hosted
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    
+    - name: Run Tests
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Studio Test Framework With HTTP Web Get Tools Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
+      with:
+        files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
+
+  Studio_Test_Framework_With_HTTP_Web_Delete_Tools_Specs:
+    runs-on: self-hosted
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    
+    - name: Run Tests
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Studio Test Framework With HTTP Web Delete Tools Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
+      with:
+        files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
+
+  Studio_Test_Framework_With_HTTP_Web_Post_Tools_Specs:
+    runs-on: self-hosted
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    
+    - name: Run Tests
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Studio Test Framework With HTTP Web Post Tools Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
+      with:
+        files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
+
+  Studio_Test_Framework_With_HTTP_Web_Put_Tools_Specs:
+    runs-on: self-hosted
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    
+    - name: Run Tests
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Studio Test Framework With HTTP Web Put Tools Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
+      with:
+        files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
+
+  Studio_Test_Framework_With_RabbitMQ_Tools_Specs:
+    runs-on: self-hosted
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    
+    - name: Run Tests
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Studio Test Framework With RabbitMQ Tools Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
+      with:
+        files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
+
+  Database_Subworkflow_Execution_Specs:
+    runs-on: self-hosted
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    
+    - name: Run Tests
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Database Subworkflow Execution Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
+      with:
+        files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
