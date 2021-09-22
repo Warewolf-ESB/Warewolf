@@ -17,10 +17,7 @@ jobs:
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Auditing Unit Tests.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
       
     - name: Publish Unit Test Results
-      run: |
-        echo '##[group]Publish Unit Test Results'
-        python.exe D:\actions-runner\_work\_actions\EnricoMi\publish-unit-test-result-action\v1\python\publish_unit_test_results.py
-        echo '##[endgroup]'
+      run: "&python.exe D:\actions-runner\_work\_actions\EnricoMi\publish-unit-test-result-action\v1\python\publish_unit_test_results.py"
       env:
         GITHUB_TOKEN: ${{ github.token }}
         GITHUB_RETRIES: 10
