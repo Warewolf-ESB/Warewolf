@@ -17,6 +17,7 @@ using System.Threading.Tasks;
 using System.Timers;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
 using Dev2.Runtime.Subscription;
 using Newtonsoft.Json;
@@ -37,12 +38,13 @@ namespace Dev2.Runtime
     public class UsageLogger : IUsageLogger, IStartTimer
     {
         internal readonly Timer _timer;
-        static readonly string _persistencePath = EnvironmentVariables.PersistencePath;
-        DirectoryWrapper _directoryWrapper = new DirectoryWrapper();
-        FileWrapper _fileWrapper = new FileWrapper();
-        IUsageTrackerWrapper _usageTrackerWrapper = new UsageTrackerWrapper();
+        readonly string _persistencePath;
+        readonly IDirectory _directoryWrapper;
+        readonly IFile _fileWrapper;
+        readonly IUsageTrackerWrapper _usageTrackerWrapper;
 
-        public UsageLogger(double intervalMs) : this(intervalMs, new UsageTrackerWrapper())
+        public UsageLogger(double intervalMs) 
+            : this(intervalMs, new UsageTrackerWrapper())
         {
             
         }
@@ -51,6 +53,9 @@ namespace Dev2.Runtime
         {
             Interval = intervalMs;
             _usageTrackerWrapper = usageTrackerWrapper;
+            _directoryWrapper = new DirectoryWrapper();
+            _fileWrapper = new FileWrapper();
+            _persistencePath = EnvironmentVariables.PersistencePath;
             _timer = new Timer(Interval);
             _timer.Elapsed += (sender, e) => Timer_Elapsed(this, e);
         }
