@@ -495,4 +495,12 @@
       <Version>2.5.20</Version>
     </PackageReference>
   </ItemGroup>
+  <ItemGroup Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework'">
+    <PackageReference Include="UiPath.Workflow">
+      <Version>5.0.0-20210730-02</Version>
+    </PackageReference>
+    <PackageReference Include="System.Activities.Core.Presentation">
+      <Version>1.0.0-alpha003</Version>
+    </PackageReference>
+  </ItemGroup>
 </Project>

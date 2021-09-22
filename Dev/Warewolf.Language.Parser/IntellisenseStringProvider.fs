@@ -127,7 +127,7 @@ and verifyComplexExpression (lang : LanguageExpression list) =
         | _ -> (ComplexExpression lang, "Invalid region detected: An open [[ without a related close ]]")
     else (ComplexExpression lang, "")
 
-and validateRecordsetIndex (ind : Index) = 
+and validateRecordsetIndex (ind : LanguageAST.Index) = 
     match ind with
     | IndexExpression a -> 
         match a with
