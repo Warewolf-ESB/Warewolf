@@ -4,36 +4,14 @@ on: [push]
 
 jobs:
 
-  build:
-
+  Zip_Tool_Specs:  
     runs-on: self-hosted
-
+    
     steps:
     - name: Checkout
       uses: actions/checkout@v2
       with:
         fetch-depth: 0
-
-    - name: Compile
-      run: "&.\\Compile.ps1 -AcceptanceTesting"
-
-    - name: Upload
-      uses: actions/upload-artifact@v2
-      with:
-        name: AcceptanceTesting
-        path: .\\Bin\\AcceptanceTesting\\**\\*
-        if-no-files-found: error
-
-  Zip_Tool_Specs:  
-    runs-on: self-hosted
-    needs: build
-    
-    steps:
-    - name: Download      
-      uses: actions/download-artifact@v2
-      with:
-        name: AcceptanceTesting
-        path: .\\Bin\\AcceptanceTesting
     
     - name: Run Tests
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Zip Tool Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
@@ -46,14 +24,12 @@ jobs:
 
   Email_Tools_Specs:
     runs-on: self-hosted
-    needs: build
     
     steps:
-    - name: Download      
-      uses: actions/download-artifact@v2
+    - name: Checkout
+      uses: actions/checkout@v2
       with:
-        name: AcceptanceTesting
-        path: .\\Bin\\AcceptanceTesting
+        fetch-depth: 0
     
     - name: Run Tests
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Email Tools Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
@@ -66,14 +42,12 @@ jobs:
 
   Resource_Tools_Specs:
     runs-on: self-hosted
-    needs: build
     
     steps:
-    - name: Download      
-      uses: actions/download-artifact@v2
+    - name: Checkout
+      uses: actions/checkout@v2
       with:
-        name: AcceptanceTesting
-        path: .\\Bin\\AcceptanceTesting
+        fetch-depth: 0
     
     - name: Run Tests
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Resource Tools Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
@@ -86,14 +60,12 @@ jobs:
 
   File_And_Folder_Copy_Tool_Specs:
     runs-on: self-hosted
-    needs: build
     
     steps:
-    - name: Download      
-      uses: actions/download-artifact@v2
+    - name: Checkout
+      uses: actions/checkout@v2
       with:
-        name: AcceptanceTesting
-        path: .\\Bin\\AcceptanceTesting
+        fetch-depth: 0
     
     - name: Run Tests
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\File And Folder Copy Tool Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
@@ -106,14 +78,12 @@ jobs:
 
   Data_Tools_Specs:
     runs-on: self-hosted
-    needs: build
     
     steps:
-    - name: Download      
-      uses: actions/download-artifact@v2
+    - name: Checkout
+      uses: actions/checkout@v2
       with:
-        name: AcceptanceTesting
-        path: .\\Bin\\AcceptanceTesting
+        fetch-depth: 0
     
     - name: Run Tests
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Data Tools Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
@@ -126,14 +96,12 @@ jobs:
 
   Request_Service_Name_View_Models_Unit_Tests:
     runs-on: self-hosted
-    needs: build
     
     steps:
-    - name: Download      
-      uses: actions/download-artifact@v2
+    - name: Checkout
+      uses: actions/checkout@v2
       with:
-        name: AcceptanceTesting
-        path: .\\Bin\\AcceptanceTesting
+        fetch-depth: 0
     
     - name: Run Tests
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Request Service Name View Models Unit Tests.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
@@ -146,14 +114,12 @@ jobs:
 
   Unzip_Tool_Specs_Validation:
     runs-on: self-hosted
-    needs: build
     
     steps:
-    - name: Download      
-      uses: actions/download-artifact@v2
+    - name: Checkout
+      uses: actions/checkout@v2
       with:
-        name: AcceptanceTesting
-        path: .\\Bin\\AcceptanceTesting
+        fetch-depth: 0
     
     - name: Run Tests
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Unzip Tool Specs Validation.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
@@ -166,14 +132,12 @@ jobs:
 
   Recordset_Tools_Specs:
     runs-on: self-hosted
-    needs: build
     
     steps:
-    - name: Download      
-      uses: actions/download-artifact@v2
+    - name: Checkout
+      uses: actions/checkout@v2
       with:
-        name: AcceptanceTesting
-        path: .\\Bin\\AcceptanceTesting
+        fetch-depth: 0
     
     - name: Run Tests
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Recordset Tools Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
@@ -186,14 +150,12 @@ jobs:
 
   File_And_Folder_Rename_Tool_Specs:
     runs-on: self-hosted
-    needs: build
     
     steps:
-    - name: Download      
-      uses: actions/download-artifact@v2
+    - name: Checkout
+      uses: actions/checkout@v2
       with:
-        name: AcceptanceTesting
-        path: .\\Bin\\AcceptanceTesting
+        fetch-depth: 0
     
     - name: Run Tests
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\File And Folder Rename Tool Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
@@ -206,14 +168,12 @@ jobs:
 
   Other_Tools_Specs:
     runs-on: self-hosted
-    needs: build
     
     steps:
-    - name: Download      
-      uses: actions/download-artifact@v2
+    - name: Checkout
+      uses: actions/checkout@v2
       with:
-        name: AcceptanceTesting
-        path: .\\Bin\\AcceptanceTesting
+        fetch-depth: 0
     
     - name: Run Tests
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Other Tools Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
@@ -226,14 +186,12 @@ jobs:
 
   File_And_Folder_Move_Tool_Specs:
     runs-on: self-hosted
-    needs: build
     
     steps:
-    - name: Download      
-      uses: actions/download-artifact@v2
+    - name: Checkout
+      uses: actions/checkout@v2
       with:
-        name: AcceptanceTesting
-        path: .\\Bin\\AcceptanceTesting
+        fetch-depth: 0
     
     - name: Run Tests
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\File And Folder Move Tool Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
@@ -246,14 +204,12 @@ jobs:
 
   File_Read_Tool_Specs:
     runs-on: self-hosted
-    needs: build
     
     steps:
-    - name: Download      
-      uses: actions/download-artifact@v2
+    - name: Checkout
+      uses: actions/checkout@v2
       with:
-        name: AcceptanceTesting
-        path: .\\Bin\\AcceptanceTesting
+        fetch-depth: 0
     
     - name: Run Tests
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\File Read Tool Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
@@ -266,14 +222,12 @@ jobs:
 
   Infrastructure_Unit_Tests:
     runs-on: self-hosted
-    needs: build
     
     steps:
-    - name: Download      
-      uses: actions/download-artifact@v2
+    - name: Checkout
+      uses: actions/checkout@v2
       with:
-        name: AcceptanceTesting
-        path: .\\Bin\\AcceptanceTesting
+        fetch-depth: 0
     
     - name: Run Tests
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Infrastructure Unit Tests.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
@@ -286,14 +240,12 @@ jobs:
 
   New_Folder_Read_Tool_Specs:
     runs-on: self-hosted
-    needs: build
     
     steps:
-    - name: Download      
-      uses: actions/download-artifact@v2
+    - name: Checkout
+      uses: actions/checkout@v2
       with:
-        name: AcceptanceTesting
-        path: .\\Bin\\AcceptanceTesting
+        fetch-depth: 0
     
     - name: Run Tests
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\New Folder Read Tool Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
@@ -306,14 +258,12 @@ jobs:
 
   Write_File_Tool_Specs:
     runs-on: self-hosted
-    needs: build
     
     steps:
-    - name: Download      
-      uses: actions/download-artifact@v2
+    - name: Checkout
+      uses: actions/checkout@v2
       with:
-        name: AcceptanceTesting
-        path: .\\Bin\\AcceptanceTesting
+        fetch-depth: 0
     
     - name: Run Tests
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Write File Tool Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
@@ -326,14 +276,12 @@ jobs:
 
   Loop_Construct_Tools_Specs:
     runs-on: self-hosted
-    needs: build
     
     steps:
-    - name: Download      
-      uses: actions/download-artifact@v2
+    - name: Checkout
+      uses: actions/checkout@v2
       with:
-        name: AcceptanceTesting
-        path: .\\Bin\\AcceptanceTesting
+        fetch-depth: 0
     
     - name: Run Tests
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Loop Construct Tools Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
@@ -346,14 +294,12 @@ jobs:
 
   Utility_Tools_Specs:
     runs-on: self-hosted
-    needs: build
     
     steps:
-    - name: Download      
-      uses: actions/download-artifact@v2
+    - name: Checkout
+      uses: actions/checkout@v2
       with:
-        name: AcceptanceTesting
-        path: .\\Bin\\AcceptanceTesting
+        fetch-depth: 0
     
     - name: Run Tests
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Utility Tools Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
@@ -366,14 +312,12 @@ jobs:
 
   Folder_Read_Tool_Specs:
     runs-on: self-hosted
-    needs: build
     
     steps:
-    - name: Download      
-      uses: actions/download-artifact@v2
+    - name: Checkout
+      uses: actions/checkout@v2
       with:
-        name: AcceptanceTesting
-        path: .\\Bin\\AcceptanceTesting
+        fetch-depth: 0
     
     - name: Run Tests
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Folder Read Tool Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
@@ -386,14 +330,12 @@ jobs:
 
   SQL_Bulk_Insert_Tool_Specs:
     runs-on: self-hosted
-    needs: build
     
     steps:
-    - name: Download      
-      uses: actions/download-artifact@v2
+    - name: Checkout
+      uses: actions/checkout@v2
       with:
-        name: AcceptanceTesting
-        path: .\\Bin\\AcceptanceTesting
+        fetch-depth: 0
     
     - name: Run Tests
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\SQL Bulk Insert Tool Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
@@ -406,14 +348,12 @@ jobs:
 
   Control_Flow_Tools_Specs:
     runs-on: self-hosted
-    needs: build
     
     steps:
-    - name: Download      
-      uses: actions/download-artifact@v2
+    - name: Checkout
+      uses: actions/checkout@v2
       with:
-        name: AcceptanceTesting
-        path: .\\Bin\\AcceptanceTesting
+        fetch-depth: 0
     
     - name: Run Tests
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Control Flow Tools Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
@@ -426,14 +366,12 @@ jobs:
 
   Studio_View_Models_Unit_Tests:
     runs-on: self-hosted
-    needs: build
     
     steps:
-    - name: Download      
-      uses: actions/download-artifact@v2
+    - name: Checkout
+      uses: actions/checkout@v2
       with:
-        name: AcceptanceTesting
-        path: .\\Bin\\AcceptanceTesting
+        fetch-depth: 0
     
     - name: Run Tests
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Studio View Models Unit Tests.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
@@ -446,14 +384,12 @@ jobs:
 
   File_And_Folder_Create_Tool_Specs:
     runs-on: self-hosted
-    needs: build
     
     steps:
-    - name: Download      
-      uses: actions/download-artifact@v2
+    - name: Checkout
+      uses: actions/checkout@v2
       with:
-        name: AcceptanceTesting
-        path: .\\Bin\\AcceptanceTesting
+        fetch-depth: 0
     
     - name: Run Tests
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\File And Folder Create Tool Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
@@ -466,14 +402,12 @@ jobs:
 
   Storage_Unit_Tests:
     runs-on: self-hosted
-    needs: build
     
     steps:
-    - name: Download      
-      uses: actions/download-artifact@v2
+    - name: Checkout
+      uses: actions/checkout@v2
       with:
-        name: AcceptanceTesting
-        path: .\\Bin\\AcceptanceTesting
+        fetch-depth: 0
     
     - name: Run Tests
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Storage Unit Tests.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
@@ -486,14 +420,12 @@ jobs:
 
   Storage_Tools_Specs:
     runs-on: self-hosted
-    needs: build
     
     steps:
-    - name: Download      
-      uses: actions/download-artifact@v2
+    - name: Checkout
+      uses: actions/checkout@v2
       with:
-        name: AcceptanceTesting
-        path: .\\Bin\\AcceptanceTesting
+        fetch-depth: 0
     
     - name: Run Tests
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Storage Tools Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
@@ -506,14 +438,12 @@ jobs:
 
   File_And_Folder_Delete_Tool_Specs:
     runs-on: self-hosted
-    needs: build
     
     steps:
-    - name: Download      
-      uses: actions/download-artifact@v2
+    - name: Checkout
+      uses: actions/checkout@v2
       with:
-        name: AcceptanceTesting
-        path: .\\Bin\\AcceptanceTesting
+        fetch-depth: 0
     
     - name: Run Tests
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\File And Folder Delete Tool Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
@@ -526,14 +456,12 @@ jobs:
 
   Scripting_Tools_Specs:
     runs-on: self-hosted
-    needs: build
     
     steps:
-    - name: Download      
-      uses: actions/download-artifact@v2
+    - name: Checkout
+      uses: actions/checkout@v2
       with:
-        name: AcceptanceTesting
-        path: .\\Bin\\AcceptanceTesting
+        fetch-depth: 0
     
     - name: Run Tests
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Scripting Tools Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
@@ -546,14 +474,12 @@ jobs:
 
   Database_Tools_Specs:
     runs-on: self-hosted
-    needs: build
     
     steps:
-    - name: Download      
-      uses: actions/download-artifact@v2
+    - name: Checkout
+      uses: actions/checkout@v2
       with:
-        name: AcceptanceTesting
-        path: .\\Bin\\AcceptanceTesting
+        fetch-depth: 0
     
     - name: Run Tests
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Database Tools Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
@@ -566,14 +492,12 @@ jobs:
 
   Auditing_Unit_Tests:
     runs-on: self-hosted
-    needs: build
     
     steps:
-    - name: Download      
-      uses: actions/download-artifact@v2
+    - name: Checkout
+      uses: actions/checkout@v2
       with:
-        name: AcceptanceTesting
-        path: .\\Bin\\AcceptanceTesting
+        fetch-depth: 0
     
     - name: Run Tests
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Auditing Unit Tests.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
@@ -586,14 +510,12 @@ jobs:
 
   Workflow_Execution_Specs:
     runs-on: self-hosted
-    needs: build
     
     steps:
-    - name: Download      
-      uses: actions/download-artifact@v2
+    - name: Checkout
+      uses: actions/checkout@v2
       with:
-        name: AcceptanceTesting
-        path: .\\Bin\\AcceptanceTesting
+        fetch-depth: 0
     
     - name: Run Tests
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Workflow Execution Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
@@ -606,14 +528,12 @@ jobs:
 
   Studio_Test_Framework_With_Hello_World_Workflow_Specs:
     runs-on: self-hosted
-    needs: build
     
     steps:
-    - name: Download      
-      uses: actions/download-artifact@v2
+    - name: Checkout
+      uses: actions/checkout@v2
       with:
-        name: AcceptanceTesting
-        path: .\\Bin\\AcceptanceTesting
+        fetch-depth: 0
     
     - name: Run Tests
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Studio Test Framework With Hello World Workflow Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
@@ -626,14 +546,12 @@ jobs:
 
   Studio_Test_Framework_With_Utility_Tools_Specs:
     runs-on: self-hosted
-    needs: build
     
     steps:
-    - name: Download      
-      uses: actions/download-artifact@v2
+    - name: Checkout
+      uses: actions/checkout@v2
       with:
-        name: AcceptanceTesting
-        path: .\\Bin\\AcceptanceTesting
+        fetch-depth: 0
     
     - name: Run Tests
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Studio Test Framework With Utility Tools Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
@@ -646,14 +564,12 @@ jobs:
 
   MS_SQL_Server_Specs:
     runs-on: self-hosted
-    needs: build
     
     steps:
-    - name: Download      
-      uses: actions/download-artifact@v2
+    - name: Checkout
+      uses: actions/checkout@v2
       with:
-        name: AcceptanceTesting
-        path: .\\Bin\\AcceptanceTesting
+        fetch-depth: 0
     
     - name: Run Tests
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\MS SQL Server Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
@@ -666,14 +582,12 @@ jobs:
 
   Studio_Test_Framework_With_Data_Tools_Specs:
     runs-on: self-hosted
-    needs: build
     
     steps:
-    - name: Download      
-      uses: actions/download-artifact@v2
+    - name: Checkout
+      uses: actions/checkout@v2
       with:
-        name: AcceptanceTesting
-        path: .\\Bin\\AcceptanceTesting
+        fetch-depth: 0
     
     - name: Run Tests
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Studio Test Framework With Data Tools Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
@@ -686,14 +600,12 @@ jobs:
 
   Assign_Workflow_Execution_Specs:
     runs-on: self-hosted
-    needs: build
     
     steps:
-    - name: Download      
-      uses: actions/download-artifact@v2
+    - name: Checkout
+      uses: actions/checkout@v2
       with:
-        name: AcceptanceTesting
-        path: .\\Bin\\AcceptanceTesting
+        fetch-depth: 0
     
     - name: Run Tests
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Assign Workflow Execution Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
@@ -706,14 +618,12 @@ jobs:
 
   Integration_Tests:
     runs-on: self-hosted
-    needs: build
     
     steps:
-    - name: Download      
-      uses: actions/download-artifact@v2
+    - name: Checkout
+      uses: actions/checkout@v2
       with:
-        name: AcceptanceTesting
-        path: .\\Bin\\AcceptanceTesting
+        fetch-depth: 0
     
     - name: Run Tests
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Integration Tests.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
@@ -726,14 +636,12 @@ jobs:
 
   Studio_Test_Framework_With_Scripting_Tools_Specs:
     runs-on: self-hosted
-    needs: build
     
     steps:
-    - name: Download      
-      uses: actions/download-artifact@v2
+    - name: Checkout
+      uses: actions/checkout@v2
       with:
-        name: AcceptanceTesting
-        path: .\\Bin\\AcceptanceTesting
+        fetch-depth: 0
     
     - name: Run Tests
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Studio Test Framework With Scripting Tools Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
@@ -746,14 +654,12 @@ jobs:
 
   Other_Activities_Specs:
     runs-on: self-hosted
-    needs: build
     
     steps:
-    - name: Download      
-      uses: actions/download-artifact@v2
+    - name: Checkout
+      uses: actions/checkout@v2
       with:
-        name: AcceptanceTesting
-        path: .\\Bin\\AcceptanceTesting
+        fetch-depth: 0
     
     - name: Run Tests
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Other Activities Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
@@ -766,14 +672,12 @@ jobs:
 
   Studio_Test_Framework_With_File_And_Folder_Tools_Specs:
     runs-on: self-hosted
-    needs: build
     
     steps:
-    - name: Download      
-      uses: actions/download-artifact@v2
+    - name: Checkout
+      uses: actions/checkout@v2
       with:
-        name: AcceptanceTesting
-        path: .\\Bin\\AcceptanceTesting
+        fetch-depth: 0
     
     - name: Run Tests
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Studio Test Framework With File And Folder Tools Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
@@ -786,14 +690,12 @@ jobs:
 
   Studio_Test_Framework_With_HTTP_Web_Tools_Specs:
     runs-on: self-hosted
-    needs: build
     
     steps:
-    - name: Download      
-      uses: actions/download-artifact@v2
+    - name: Checkout
+      uses: actions/checkout@v2
       with:
-        name: AcceptanceTesting
-        path: .\\Bin\\AcceptanceTesting
+        fetch-depth: 0
     
     - name: Run Tests
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Studio Test Framework With HTTP Web Tools Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
@@ -806,14 +708,12 @@ jobs:
 
   Studio_Test_Framework_With_Subworkflow_Specs:
     runs-on: self-hosted
-    needs: build
     
     steps:
-    - name: Download      
-      uses: actions/download-artifact@v2
+    - name: Checkout
+      uses: actions/checkout@v2
       with:
-        name: AcceptanceTesting
-        path: .\\Bin\\AcceptanceTesting
+        fetch-depth: 0
     
     - name: Run Tests
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Studio Test Framework With Subworkflow Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
@@ -826,14 +726,12 @@ jobs:
 
   Workflow_Merging_Specs:
     runs-on: self-hosted
-    needs: build
     
     steps:
-    - name: Download      
-      uses: actions/download-artifact@v2
+    - name: Checkout
+      uses: actions/checkout@v2
       with:
-        name: AcceptanceTesting
-        path: .\\Bin\\AcceptanceTesting
+        fetch-depth: 0
     
     - name: Run Tests
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Workflow Merging Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
@@ -846,14 +744,12 @@ jobs:
 
   Example_Workflow_Execution_Specs:
     runs-on: self-hosted
-    needs: build
     
     steps:
-    - name: Download      
-      uses: actions/download-artifact@v2
+    - name: Checkout
+      uses: actions/checkout@v2
       with:
-        name: AcceptanceTesting
-        path: .\\Bin\\AcceptanceTesting
+        fetch-depth: 0
     
     - name: Run Tests
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Example Workflow Execution Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
@@ -866,14 +762,12 @@ jobs:
 
   Studio_Test_Framework_Specs:
     runs-on: self-hosted
-    needs: build
     
     steps:
-    - name: Download      
-      uses: actions/download-artifact@v2
+    - name: Checkout
+      uses: actions/checkout@v2
       with:
-        name: AcceptanceTesting
-        path: .\\Bin\\AcceptanceTesting
+        fetch-depth: 0
     
     - name: Run Tests
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Studio Test Framework Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
@@ -886,14 +780,12 @@ jobs:
 
   Subworkflow_Execution_Specs:
     runs-on: self-hosted
-    needs: build
     
     steps:
-    - name: Download      
-      uses: actions/download-artifact@v2
+    - name: Checkout
+      uses: actions/checkout@v2
       with:
-        name: AcceptanceTesting
-        path: .\\Bin\\AcceptanceTesting
+        fetch-depth: 0
     
     - name: Run Tests
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Subworkflow Execution Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
@@ -906,14 +798,12 @@ jobs:
 
   Other_Specs:
     runs-on: self-hosted
-    needs: build
     
     steps:
-    - name: Download      
-      uses: actions/download-artifact@v2
+    - name: Checkout
+      uses: actions/checkout@v2
       with:
-        name: AcceptanceTesting
-        path: .\\Bin\\AcceptanceTesting
+        fetch-depth: 0
     
     - name: Run Tests
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Other Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
@@ -926,14 +816,12 @@ jobs:
 
   Studio_Test_Framework_With_Deleted_Resources_Specs:
     runs-on: self-hosted
-    needs: build
     
     steps:
-    - name: Download      
-      uses: actions/download-artifact@v2
+    - name: Checkout
+      uses: actions/checkout@v2
       with:
-        name: AcceptanceTesting
-        path: .\\Bin\\AcceptanceTesting
+        fetch-depth: 0
     
     - name: Run Tests
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Studio Test Framework With Deleted Resources Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
@@ -946,14 +834,12 @@ jobs:
 
   SQL_Integration_Tests:
     runs-on: self-hosted
-    needs: build
     
     steps:
-    - name: Download      
-      uses: actions/download-artifact@v2
+    - name: Checkout
+      uses: actions/checkout@v2
       with:
-        name: AcceptanceTesting
-        path: .\\Bin\\AcceptanceTesting
+        fetch-depth: 0
     
     - name: Run Tests
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\SQL Integration Tests.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
@@ -966,14 +852,12 @@ jobs:
 
   For_Each_Workflow_Execution_Specs:
     runs-on: self-hosted
-    needs: build
     
     steps:
-    - name: Download      
-      uses: actions/download-artifact@v2
+    - name: Checkout
+      uses: actions/checkout@v2
       with:
-        name: AcceptanceTesting
-        path: .\\Bin\\AcceptanceTesting
+        fetch-depth: 0
     
     - name: Run Tests
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\For Each Workflow Execution Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
@@ -986,14 +870,12 @@ jobs:
 
   Copy_Tool_Specs_From_Local:
     runs-on: self-hosted
-    needs: build
     
     steps:
-    - name: Download      
-      uses: actions/download-artifact@v2
+    - name: Checkout
+      uses: actions/checkout@v2
       with:
-        name: AcceptanceTesting
-        path: .\\Bin\\AcceptanceTesting
+        fetch-depth: 0
     
     - name: Run Tests
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Copy Tool Specs From Local.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
@@ -1006,14 +888,12 @@ jobs:
 
   Move_Tool_Specs_From_Local:
     runs-on: self-hosted
-    needs: build
     
     steps:
-    - name: Download      
-      uses: actions/download-artifact@v2
+    - name: Checkout
+      uses: actions/checkout@v2
       with:
-        name: AcceptanceTesting
-        path: .\\Bin\\AcceptanceTesting
+        fetch-depth: 0
     
     - name: Run Tests
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Move Tool Specs From Local.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
@@ -1026,14 +906,12 @@ jobs:
 
   Rename_Tool_Specs_From_Local:
     runs-on: self-hosted
-    needs: build
     
     steps:
-    - name: Download      
-      uses: actions/download-artifact@v2
+    - name: Checkout
+      uses: actions/checkout@v2
       with:
-        name: AcceptanceTesting
-        path: .\\Bin\\AcceptanceTesting
+        fetch-depth: 0
     
     - name: Run Tests
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Rename Tool Specs From Local.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
@@ -1046,14 +924,12 @@ jobs:
 
   Unzip_Tool_Specs_From_Local:
     runs-on: self-hosted
-    needs: build
     
     steps:
-    - name: Download      
-      uses: actions/download-artifact@v2
+    - name: Checkout
+      uses: actions/checkout@v2
       with:
-        name: AcceptanceTesting
-        path: .\\Bin\\AcceptanceTesting
+        fetch-depth: 0
     
     - name: Run Tests
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Unzip Tool Specs From Local.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
@@ -1066,14 +942,12 @@ jobs:
 
   Zip_Tool_Specs_From_Local:
     runs-on: self-hosted
-    needs: build
     
     steps:
-    - name: Download      
-      uses: actions/download-artifact@v2
+    - name: Checkout
+      uses: actions/checkout@v2
       with:
-        name: AcceptanceTesting
-        path: .\\Bin\\AcceptanceTesting
+        fetch-depth: 0
     
     - name: Run Tests
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Zip Tool Specs From Local.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
@@ -1086,14 +960,12 @@ jobs:
 
   Copy_Tool_Specs_From_FTP:
     runs-on: self-hosted
-    needs: build
     
     steps:
-    - name: Download      
-      uses: actions/download-artifact@v2
+    - name: Checkout
+      uses: actions/checkout@v2
       with:
-        name: AcceptanceTesting
-        path: .\\Bin\\AcceptanceTesting
+        fetch-depth: 0
     
     - name: Run Tests
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Copy Tool Specs From FTP.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
@@ -1106,14 +978,12 @@ jobs:
 
   Move_Tool_Specs_From_FTP:
     runs-on: self-hosted
-    needs: build
     
     steps:
-    - name: Download      
-      uses: actions/download-artifact@v2
+    - name: Checkout
+      uses: actions/checkout@v2
       with:
-        name: AcceptanceTesting
-        path: .\\Bin\\AcceptanceTesting
+        fetch-depth: 0
     
     - name: Run Tests
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Move Tool Specs From FTP.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
@@ -1126,14 +996,12 @@ jobs:
 
   Rename_Tool_Specs_From_FTP:
     runs-on: self-hosted
-    needs: build
     
     steps:
-    - name: Download      
-      uses: actions/download-artifact@v2
+    - name: Checkout
+      uses: actions/checkout@v2
       with:
-        name: AcceptanceTesting
-        path: .\\Bin\\AcceptanceTesting
+        fetch-depth: 0
     
     - name: Run Tests
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Rename Tool Specs From FTP.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
@@ -1146,14 +1014,12 @@ jobs:
 
   Unzip_Tool_Specs_From_FTP:
     runs-on: self-hosted
-    needs: build
     
     steps:
-    - name: Download      
-      uses: actions/download-artifact@v2
+    - name: Checkout
+      uses: actions/checkout@v2
       with:
-        name: AcceptanceTesting
-        path: .\\Bin\\AcceptanceTesting
+        fetch-depth: 0
     
     - name: Run Tests
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Unzip Tool Specs From FTP.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
@@ -1166,14 +1032,12 @@ jobs:
 
   Zip_Tool_Specs_From_FTP:
     runs-on: self-hosted
-    needs: build
     
     steps:
-    - name: Download      
-      uses: actions/download-artifact@v2
+    - name: Checkout
+      uses: actions/checkout@v2
       with:
-        name: AcceptanceTesting
-        path: .\\Bin\\AcceptanceTesting
+        fetch-depth: 0
     
     - name: Run Tests
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Zip Tool Specs From FTP.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
@@ -1186,14 +1050,12 @@ jobs:
 
   Copy_Tool_Specs_From_FTPS:
     runs-on: self-hosted
-    needs: build
     
     steps:
-    - name: Download      
-      uses: actions/download-artifact@v2
+    - name: Checkout
+      uses: actions/checkout@v2
       with:
-        name: AcceptanceTesting
-        path: .\\Bin\\AcceptanceTesting
+        fetch-depth: 0
     
     - name: Run Tests
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Copy Tool Specs From FTPS.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
@@ -1206,14 +1068,12 @@ jobs:
 
   Move_Tool_Specs_From_FTPS:
     runs-on: self-hosted
-    needs: build
     
     steps:
-    - name: Download      
-      uses: actions/download-artifact@v2
+    - name: Checkout
+      uses: actions/checkout@v2
       with:
-        name: AcceptanceTesting
-        path: .\\Bin\\AcceptanceTesting
+        fetch-depth: 0
     
     - name: Run Tests
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Move Tool Specs From FTPS.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
@@ -1226,14 +1086,12 @@ jobs:
 
   Rename_Tool_Specs_From_FTPS:
     runs-on: self-hosted
-    needs: build
     
     steps:
-    - name: Download      
-      uses: actions/download-artifact@v2
+    - name: Checkout
+      uses: actions/checkout@v2
       with:
-        name: AcceptanceTesting
-        path: .\\Bin\\AcceptanceTesting
+        fetch-depth: 0
     
     - name: Run Tests
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Rename Tool Specs From FTPS.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
@@ -1246,14 +1104,12 @@ jobs:
 
   Unzip_Tool_Specs_From_FTPS:
     runs-on: self-hosted
-    needs: build
     
     steps:
-    - name: Download      
-      uses: actions/download-artifact@v2
+    - name: Checkout
+      uses: actions/checkout@v2
       with:
-        name: AcceptanceTesting
-        path: .\\Bin\\AcceptanceTesting
+        fetch-depth: 0
     
     - name: Run Tests
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Unzip Tool Specs From FTPS.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
@@ -1266,14 +1122,12 @@ jobs:
 
   Zip_Tool_Specs_From_FTPS:
     runs-on: self-hosted
-    needs: build
     
     steps:
-    - name: Download      
-      uses: actions/download-artifact@v2
+    - name: Checkout
+      uses: actions/checkout@v2
       with:
-        name: AcceptanceTesting
-        path: .\\Bin\\AcceptanceTesting
+        fetch-depth: 0
     
     - name: Run Tests
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Zip Tool Specs From FTPS.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
@@ -1286,14 +1140,12 @@ jobs:
 
   Copy_Tool_Specs_From_SFTP:
     runs-on: self-hosted
-    needs: build
     
     steps:
-    - name: Download      
-      uses: actions/download-artifact@v2
+    - name: Checkout
+      uses: actions/checkout@v2
       with:
-        name: AcceptanceTesting
-        path: .\\Bin\\AcceptanceTesting
+        fetch-depth: 0
     
     - name: Run Tests
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Copy Tool Specs From SFTP.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
@@ -1306,14 +1158,12 @@ jobs:
 
   Move_Tool_Specs_From_SFTP:
     runs-on: self-hosted
-    needs: build
     
     steps:
-    - name: Download      
-      uses: actions/download-artifact@v2
+    - name: Checkout
+      uses: actions/checkout@v2
       with:
-        name: AcceptanceTesting
-        path: .\\Bin\\AcceptanceTesting
+        fetch-depth: 0
     
     - name: Run Tests
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Move Tool Specs From SFTP.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
@@ -1326,14 +1176,12 @@ jobs:
 
   Rename_Tool_Specs_From_SFTP:
     runs-on: self-hosted
-    needs: build
     
     steps:
-    - name: Download      
-      uses: actions/download-artifact@v2
+    - name: Checkout
+      uses: actions/checkout@v2
       with:
-        name: AcceptanceTesting
-        path: .\\Bin\\AcceptanceTesting
+        fetch-depth: 0
     
     - name: Run Tests
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Rename Tool Specs From SFTP.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
@@ -1346,14 +1194,12 @@ jobs:
 
   Unzip_Tool_Specs_From_SFTP:
     runs-on: self-hosted
-    needs: build
     
     steps:
-    - name: Download      
-      uses: actions/download-artifact@v2
+    - name: Checkout
+      uses: actions/checkout@v2
       with:
-        name: AcceptanceTesting
-        path: .\\Bin\\AcceptanceTesting
+        fetch-depth: 0
     
     - name: Run Tests
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Unzip Tool Specs From SFTP.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
@@ -1366,14 +1212,12 @@ jobs:
 
   Zip_Tool_Specs_From_SFTP:
     runs-on: self-hosted
-    needs: build
     
     steps:
-    - name: Download      
-      uses: actions/download-artifact@v2
+    - name: Checkout
+      uses: actions/checkout@v2
       with:
-        name: AcceptanceTesting
-        path: .\\Bin\\AcceptanceTesting
+        fetch-depth: 0
     
     - name: Run Tests
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Zip Tool Specs From SFTP.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
@@ -1386,14 +1230,12 @@ jobs:
 
   Copy_Tool_Specs_From_UNC:
     runs-on: self-hosted
-    needs: build
     
     steps:
-    - name: Download      
-      uses: actions/download-artifact@v2
+    - name: Checkout
+      uses: actions/checkout@v2
       with:
-        name: AcceptanceTesting
-        path: .\\Bin\\AcceptanceTesting
+        fetch-depth: 0
     
     - name: Run Tests
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Copy Tool Specs From UNC.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
@@ -1406,14 +1248,12 @@ jobs:
 
   Move_Tool_Specs_From_UNC:
     runs-on: self-hosted
-    needs: build
     
     steps:
-    - name: Download      
-      uses: actions/download-artifact@v2
+    - name: Checkout
+      uses: actions/checkout@v2
       with:
-        name: AcceptanceTesting
-        path: .\\Bin\\AcceptanceTesting
+        fetch-depth: 0
     
     - name: Run Tests
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Move Tool Specs From UNC.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
@@ -1426,14 +1266,12 @@ jobs:
 
   Studio_Core_Unit_Tests:
     runs-on: self-hosted
-    needs: build
     
     steps:
-    - name: Download      
-      uses: actions/download-artifact@v2
+    - name: Checkout
+      uses: actions/checkout@v2
       with:
-        name: AcceptanceTesting
-        path: .\\Bin\\AcceptanceTesting
+        fetch-depth: 0
     
     - name: Run Tests
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Studio Core Unit Tests.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
@@ -1446,14 +1284,12 @@ jobs:
 
   Elasticsearch_View_Models_Unit_Tests:
     runs-on: self-hosted
-    needs: build
     
     steps:
-    - name: Download      
-      uses: actions/download-artifact@v2
+    - name: Checkout
+      uses: actions/checkout@v2
       with:
-        name: AcceptanceTesting
-        path: .\\Bin\\AcceptanceTesting
+        fetch-depth: 0
     
     - name: Run Tests
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Elasticsearch View Models Unit Tests.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
@@ -1466,14 +1302,12 @@ jobs:
 
   Search_Specs:
     runs-on: self-hosted
-    needs: build
     
     steps:
-    - name: Download      
-      uses: actions/download-artifact@v2
+    - name: Checkout
+      uses: actions/checkout@v2
       with:
-        name: AcceptanceTesting
-        path: .\\Bin\\AcceptanceTesting
+        fetch-depth: 0
     
     - name: Run Tests
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Search Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
@@ -1486,14 +1320,12 @@ jobs:
 
   Logger_Unit_Tests:
     runs-on: self-hosted
-    needs: build
     
     steps:
-    - name: Download      
-      uses: actions/download-artifact@v2
+    - name: Checkout
+      uses: actions/checkout@v2
       with:
-        name: AcceptanceTesting
-        path: .\\Bin\\AcceptanceTesting
+        fetch-depth: 0
     
     - name: Run Tests
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Logger Unit Tests.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
@@ -1506,14 +1338,12 @@ jobs:
 
   Rename_Tool_Specs_From_UNC:
     runs-on: self-hosted
-    needs: build
     
     steps:
-    - name: Download      
-      uses: actions/download-artifact@v2
+    - name: Checkout
+      uses: actions/checkout@v2
       with:
-        name: AcceptanceTesting
-        path: .\\Bin\\AcceptanceTesting
+        fetch-depth: 0
     
     - name: Run Tests
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Rename Tool Specs From UNC.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
@@ -1526,14 +1356,12 @@ jobs:
 
   Not_Parallelizable_Unit_Tests:
     runs-on: self-hosted
-    needs: build
     
     steps:
-    - name: Download      
-      uses: actions/download-artifact@v2
+    - name: Checkout
+      uses: actions/checkout@v2
       with:
-        name: AcceptanceTesting
-        path: .\\Bin\\AcceptanceTesting
+        fetch-depth: 0
     
     - name: Run Tests
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Not Parallelizable Unit Tests.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
@@ -1546,14 +1374,12 @@ jobs:
 
   Database_Workflow_Execution_Specs:
     runs-on: self-hosted
-    needs: build
     
     steps:
-    - name: Download      
-      uses: actions/download-artifact@v2
+    - name: Checkout
+      uses: actions/checkout@v2
       with:
-        name: AcceptanceTesting
-        path: .\\Bin\\AcceptanceTesting
+        fetch-depth: 0
     
     - name: Run Tests
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Database Workflow Execution Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
@@ -1566,14 +1392,12 @@ jobs:
 
   RabbitMQ_Workflow_Execution_Specs:
     runs-on: self-hosted
-    needs: build
     
     steps:
-    - name: Download      
-      uses: actions/download-artifact@v2
+    - name: Checkout
+      uses: actions/checkout@v2
       with:
-        name: AcceptanceTesting
-        path: .\\Bin\\AcceptanceTesting
+        fetch-depth: 0
     
     - name: Run Tests
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\RabbitMQ Workflow Execution Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
@@ -1586,14 +1410,12 @@ jobs:
 
   Studio_Test_Framework_With_HTTP_Web_Get_Tools_Specs:
     runs-on: self-hosted
-    needs: build
     
     steps:
-    - name: Download      
-      uses: actions/download-artifact@v2
+    - name: Checkout
+      uses: actions/checkout@v2
       with:
-        name: AcceptanceTesting
-        path: .\\Bin\\AcceptanceTesting
+        fetch-depth: 0
     
     - name: Run Tests
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Studio Test Framework With HTTP Web Get Tools Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
@@ -1606,14 +1428,12 @@ jobs:
 
   Studio_Test_Framework_With_HTTP_Web_Delete_Tools_Specs:
     runs-on: self-hosted
-    needs: build
     
     steps:
-    - name: Download      
-      uses: actions/download-artifact@v2
+    - name: Checkout
+      uses: actions/checkout@v2
       with:
-        name: AcceptanceTesting
-        path: .\\Bin\\AcceptanceTesting
+        fetch-depth: 0
     
     - name: Run Tests
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Studio Test Framework With HTTP Web Delete Tools Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
@@ -1626,14 +1446,12 @@ jobs:
 
   Studio_Test_Framework_With_HTTP_Web_Post_Tools_Specs:
     runs-on: self-hosted
-    needs: build
     
     steps:
-    - name: Download      
-      uses: actions/download-artifact@v2
+    - name: Checkout
+      uses: actions/checkout@v2
       with:
-        name: AcceptanceTesting
-        path: .\\Bin\\AcceptanceTesting
+        fetch-depth: 0
     
     - name: Run Tests
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Studio Test Framework With HTTP Web Post Tools Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
@@ -1646,14 +1464,12 @@ jobs:
 
   Studio_Test_Framework_With_HTTP_Web_Put_Tools_Specs:
     runs-on: self-hosted
-    needs: build
     
     steps:
-    - name: Download      
-      uses: actions/download-artifact@v2
+    - name: Checkout
+      uses: actions/checkout@v2
       with:
-        name: AcceptanceTesting
-        path: .\\Bin\\AcceptanceTesting
+        fetch-depth: 0
     
     - name: Run Tests
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Studio Test Framework With HTTP Web Put Tools Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
@@ -1666,14 +1482,12 @@ jobs:
 
   Studio_Test_Framework_With_RabbitMQ_Tools_Specs:
     runs-on: self-hosted
-    needs: build
     
     steps:
-    - name: Download      
-      uses: actions/download-artifact@v2
+    - name: Checkout
+      uses: actions/checkout@v2
       with:
-        name: AcceptanceTesting
-        path: .\\Bin\\AcceptanceTesting
+        fetch-depth: 0
     
     - name: Run Tests
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Studio Test Framework With RabbitMQ Tools Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
@@ -1686,14 +1500,12 @@ jobs:
 
   Database_Subworkflow_Execution_Specs:
     runs-on: self-hosted
-    needs: build
     
     steps:
-    - name: Download      
-      uses: actions/download-artifact@v2
+    - name: Checkout
+      uses: actions/checkout@v2
       with:
-        name: AcceptanceTesting
-        path: .\\Bin\\AcceptanceTesting
+        fetch-depth: 0
     
     - name: Run Tests
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Database Subworkflow Execution Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
