@@ -17,8 +17,7 @@ jobs:
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Zip Tool Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
       
     - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always()
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
       with:
         files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
 
@@ -35,8 +34,7 @@ jobs:
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Email Tools Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
       
     - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always()
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
       with:
         files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
 
@@ -53,8 +51,7 @@ jobs:
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Resource Tools Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
       
     - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always()
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
       with:
         files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
 
@@ -71,8 +68,7 @@ jobs:
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\File And Folder Copy Tool Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
       
     - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always()
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
       with:
         files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
 
@@ -89,8 +85,7 @@ jobs:
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Data Tools Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
       
     - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always()
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
       with:
         files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
 
@@ -107,8 +102,7 @@ jobs:
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Request Service Name View Models Unit Tests.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
       
     - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always()
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
       with:
         files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
 
@@ -125,8 +119,7 @@ jobs:
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Unzip Tool Specs Validation.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
       
     - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always()
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
       with:
         files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
 
@@ -143,8 +136,7 @@ jobs:
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Recordset Tools Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
       
     - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always()
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
       with:
         files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
 
@@ -161,8 +153,7 @@ jobs:
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\File And Folder Rename Tool Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
       
     - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always()
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
       with:
         files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
 
@@ -179,8 +170,7 @@ jobs:
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Other Tools Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
       
     - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always()
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
       with:
         files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
 
@@ -197,8 +187,7 @@ jobs:
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\File And Folder Move Tool Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
       
     - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always()
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
       with:
         files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
 
@@ -215,8 +204,7 @@ jobs:
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\File Read Tool Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
       
     - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always()
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
       with:
         files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
 
@@ -233,8 +221,7 @@ jobs:
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Infrastructure Unit Tests.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
       
     - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always()
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
       with:
         files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
 
@@ -251,8 +238,7 @@ jobs:
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\New Folder Read Tool Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
       
     - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always()
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
       with:
         files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
 
@@ -269,8 +255,7 @@ jobs:
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Write File Tool Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
       
     - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always()
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
       with:
         files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
 
@@ -287,8 +272,7 @@ jobs:
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Loop Construct Tools Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
       
     - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always()
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
       with:
         files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
 
@@ -305,8 +289,7 @@ jobs:
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Utility Tools Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
       
     - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always()
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
       with:
         files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
 
@@ -323,8 +306,7 @@ jobs:
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Folder Read Tool Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
       
     - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always()
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
       with:
         files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
 
@@ -341,8 +323,7 @@ jobs:
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\SQL Bulk Insert Tool Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
       
     - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always()
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
       with:
         files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
 
@@ -359,8 +340,7 @@ jobs:
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Control Flow Tools Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
       
     - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always()
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
       with:
         files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
 
@@ -377,8 +357,7 @@ jobs:
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Studio View Models Unit Tests.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
       
     - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always()
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
       with:
         files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
 
@@ -395,8 +374,7 @@ jobs:
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\File And Folder Create Tool Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
       
     - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always()
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
       with:
         files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
 
@@ -413,8 +391,7 @@ jobs:
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Storage Unit Tests.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
       
     - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always()
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
       with:
         files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
 
@@ -431,8 +408,7 @@ jobs:
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Storage Tools Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
       
     - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always()
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
       with:
         files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
 
@@ -449,8 +425,7 @@ jobs:
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\File And Folder Delete Tool Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
       
     - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always()
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
       with:
         files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
 
@@ -467,8 +442,7 @@ jobs:
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Scripting Tools Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
       
     - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always()
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
       with:
         files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
 
@@ -485,8 +459,7 @@ jobs:
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Database Tools Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
       
     - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always()
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
       with:
         files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
 
@@ -503,8 +476,7 @@ jobs:
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Auditing Unit Tests.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
       
     - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always()
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
       with:
         files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
 
@@ -521,8 +493,7 @@ jobs:
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Workflow Execution Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
       
     - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always()
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
       with:
         files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
 
@@ -539,8 +510,7 @@ jobs:
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Studio Test Framework With Hello World Workflow Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
       
     - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always()
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
       with:
         files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
 
@@ -557,8 +527,7 @@ jobs:
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Studio Test Framework With Utility Tools Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
       
     - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always()
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
       with:
         files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
 
@@ -575,8 +544,7 @@ jobs:
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\MS SQL Server Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
       
     - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always()
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
       with:
         files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
 
@@ -593,8 +561,7 @@ jobs:
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Studio Test Framework With Data Tools Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
       
     - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always()
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
       with:
         files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
 
@@ -611,8 +578,7 @@ jobs:
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Assign Workflow Execution Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
       
     - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always()
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
       with:
         files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
 
@@ -629,8 +595,7 @@ jobs:
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Integration Tests.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
       
     - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always()
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
       with:
         files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
 
@@ -647,8 +612,7 @@ jobs:
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Studio Test Framework With Scripting Tools Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
       
     - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always()
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
       with:
         files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
 
@@ -665,8 +629,7 @@ jobs:
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Other Activities Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
       
     - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always()
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
       with:
         files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
 
@@ -683,8 +646,7 @@ jobs:
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Studio Test Framework With File And Folder Tools Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
       
     - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always()
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
       with:
         files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
 
@@ -701,8 +663,7 @@ jobs:
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Studio Test Framework With HTTP Web Tools Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
       
     - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always()
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
       with:
         files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
 
@@ -719,8 +680,7 @@ jobs:
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Studio Test Framework With Subworkflow Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
       
     - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always()
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
       with:
         files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
 
@@ -737,8 +697,7 @@ jobs:
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Workflow Merging Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
       
     - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always()
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
       with:
         files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
 
@@ -755,8 +714,7 @@ jobs:
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Example Workflow Execution Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
       
     - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always()
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
       with:
         files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
 
@@ -773,8 +731,7 @@ jobs:
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Studio Test Framework Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
       
     - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always()
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
       with:
         files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
 
@@ -791,8 +748,7 @@ jobs:
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Subworkflow Execution Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
       
     - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always()
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
       with:
         files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
 
@@ -809,8 +765,7 @@ jobs:
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Other Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
       
     - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always()
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
       with:
         files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
 
@@ -827,8 +782,7 @@ jobs:
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Studio Test Framework With Deleted Resources Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
       
     - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always()
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
       with:
         files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
 
@@ -845,8 +799,7 @@ jobs:
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\SQL Integration Tests.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
       
     - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always()
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
       with:
         files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
 
@@ -863,8 +816,7 @@ jobs:
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\For Each Workflow Execution Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
       
     - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always()
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
       with:
         files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
 
@@ -881,8 +833,7 @@ jobs:
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Copy Tool Specs From Local.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
       
     - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always()
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
       with:
         files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
 
@@ -899,8 +850,7 @@ jobs:
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Move Tool Specs From Local.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
       
     - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always()
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
       with:
         files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
 
@@ -917,8 +867,7 @@ jobs:
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Rename Tool Specs From Local.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
       
     - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always()
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
       with:
         files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
 
@@ -935,8 +884,7 @@ jobs:
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Unzip Tool Specs From Local.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
       
     - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always()
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
       with:
         files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
 
@@ -953,8 +901,7 @@ jobs:
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Zip Tool Specs From Local.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
       
     - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always()
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
       with:
         files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
 
@@ -971,8 +918,7 @@ jobs:
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Copy Tool Specs From FTP.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
       
     - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always()
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
       with:
         files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
 
@@ -989,8 +935,7 @@ jobs:
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Move Tool Specs From FTP.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
       
     - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always()
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
       with:
         files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
 
@@ -1007,8 +952,7 @@ jobs:
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Rename Tool Specs From FTP.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
       
     - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always()
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
       with:
         files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
 
@@ -1025,8 +969,7 @@ jobs:
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Unzip Tool Specs From FTP.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
       
     - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always()
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
       with:
         files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
 
@@ -1043,8 +986,7 @@ jobs:
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Zip Tool Specs From FTP.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
       
     - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always()
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
       with:
         files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
 
@@ -1061,8 +1003,7 @@ jobs:
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Copy Tool Specs From FTPS.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
       
     - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always()
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
       with:
         files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
 
@@ -1079,8 +1020,7 @@ jobs:
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Move Tool Specs From FTPS.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
       
     - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always()
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
       with:
         files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
 
@@ -1097,8 +1037,7 @@ jobs:
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Rename Tool Specs From FTPS.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
       
     - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always()
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
       with:
         files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
 
@@ -1115,8 +1054,7 @@ jobs:
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Unzip Tool Specs From FTPS.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
       
     - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always()
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
       with:
         files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
 
@@ -1133,8 +1071,7 @@ jobs:
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Zip Tool Specs From FTPS.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
       
     - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always()
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
       with:
         files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
 
@@ -1151,8 +1088,7 @@ jobs:
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Copy Tool Specs From SFTP.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
       
     - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always()
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
       with:
         files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
 
@@ -1169,8 +1105,7 @@ jobs:
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Move Tool Specs From SFTP.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
       
     - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always()
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
       with:
         files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
 
@@ -1187,8 +1122,7 @@ jobs:
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Rename Tool Specs From SFTP.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
       
     - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always()
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
       with:
         files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
 
@@ -1205,8 +1139,7 @@ jobs:
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Unzip Tool Specs From SFTP.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
       
     - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always()
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
       with:
         files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
 
@@ -1223,8 +1156,7 @@ jobs:
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Zip Tool Specs From SFTP.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
       
     - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always()
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
       with:
         files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
 
@@ -1241,8 +1173,7 @@ jobs:
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Copy Tool Specs From UNC.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
       
     - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always()
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
       with:
         files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
 
@@ -1259,8 +1190,7 @@ jobs:
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Move Tool Specs From UNC.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
       
     - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always()
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
       with:
         files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
 
@@ -1277,8 +1207,7 @@ jobs:
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Studio Core Unit Tests.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
       
     - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always()
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
       with:
         files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
 
@@ -1295,8 +1224,7 @@ jobs:
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Elasticsearch View Models Unit Tests.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
       
     - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always()
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
       with:
         files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
 
@@ -1313,8 +1241,7 @@ jobs:
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Search Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
       
     - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always()
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
       with:
         files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
 
@@ -1331,8 +1258,7 @@ jobs:
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Logger Unit Tests.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
       
     - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always()
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
       with:
         files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
 
@@ -1349,8 +1275,7 @@ jobs:
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Rename Tool Specs From UNC.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
       
     - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always()
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
       with:
         files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
 
@@ -1367,8 +1292,7 @@ jobs:
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Not Parallelizable Unit Tests.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
       
     - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always()
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
       with:
         files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
 
@@ -1385,8 +1309,7 @@ jobs:
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Database Workflow Execution Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
       
     - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always()
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
       with:
         files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
 
@@ -1403,8 +1326,7 @@ jobs:
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\RabbitMQ Workflow Execution Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
       
     - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always()
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
       with:
         files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
 
@@ -1421,8 +1343,7 @@ jobs:
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Studio Test Framework With HTTP Web Get Tools Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
       
     - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always()
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
       with:
         files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
 
@@ -1439,8 +1360,7 @@ jobs:
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Studio Test Framework With HTTP Web Delete Tools Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
       
     - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always()
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
       with:
         files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
 
@@ -1457,8 +1377,7 @@ jobs:
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Studio Test Framework With HTTP Web Post Tools Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
       
     - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always()
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
       with:
         files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
 
@@ -1475,8 +1394,7 @@ jobs:
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Studio Test Framework With HTTP Web Put Tools Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
       
     - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always()
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
       with:
         files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
 
@@ -1493,8 +1411,7 @@ jobs:
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Studio Test Framework With RabbitMQ Tools Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
       
     - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always()
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
       with:
         files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
 
@@ -1511,7 +1428,6 @@ jobs:
       run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Database Subworkflow Execution Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
       
     - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always()
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
       with:
         files: .\\Bin\\AcceptanceTesting\\TestResults\\*.xml
