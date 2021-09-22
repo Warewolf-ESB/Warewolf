@@ -21,7 +21,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ github.token }}
         GITHUB_RETRIES: 10
-        COMMIT: $GITHUB_SHA
+        COMMIT: ${{ github.sha }}
         CHECK_NAME: "Unit Test Results"
         COMMENT_TITLE: "Unit Test Results"
         FAIL_ON: "test failures"
