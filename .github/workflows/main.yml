@@ -22,8 +22,8 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
         GITHUB_RETRIES: 10
         COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Unit Test Results"
-        COMMENT_TITLE: "Unit Test Results"
+        CHECK_NAME: "Test Results"
+        COMMENT_TITLE: "Test Results"
         FAIL_ON: "test failures"
         FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
         REPORT_INDIVIDUAL_RUNS: "false"
@@ -56,8 +56,8 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
         GITHUB_RETRIES: 10
         COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Unit Test Results"
-        COMMENT_TITLE: "Unit Test Results"
+        CHECK_NAME: "Test Results"
+        COMMENT_TITLE: "Test Results"
         FAIL_ON: "test failures"
         FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
         REPORT_INDIVIDUAL_RUNS: "false"
@@ -90,8 +90,8 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
         GITHUB_RETRIES: 10
         COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Unit Test Results"
-        COMMENT_TITLE: "Unit Test Results"
+        CHECK_NAME: "Test Results"
+        COMMENT_TITLE: "Test Results"
         FAIL_ON: "test failures"
         FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
         REPORT_INDIVIDUAL_RUNS: "false"
@@ -124,8 +124,8 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
         GITHUB_RETRIES: 10
         COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Unit Test Results"
-        COMMENT_TITLE: "Unit Test Results"
+        CHECK_NAME: "Test Results"
+        COMMENT_TITLE: "Test Results"
         FAIL_ON: "test failures"
         FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
         REPORT_INDIVIDUAL_RUNS: "false"
@@ -158,8 +158,8 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
         GITHUB_RETRIES: 10
         COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Unit Test Results"
-        COMMENT_TITLE: "Unit Test Results"
+        CHECK_NAME: "Test Results"
+        COMMENT_TITLE: "Test Results"
         FAIL_ON: "test failures"
         FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
         REPORT_INDIVIDUAL_RUNS: "false"
@@ -192,8 +192,8 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
         GITHUB_RETRIES: 10
         COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Unit Test Results"
-        COMMENT_TITLE: "Unit Test Results"
+        CHECK_NAME: "Test Results"
+        COMMENT_TITLE: "Test Results"
         FAIL_ON: "test failures"
         FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
         REPORT_INDIVIDUAL_RUNS: "false"
@@ -226,8 +226,8 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
         GITHUB_RETRIES: 10
         COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Unit Test Results"
-        COMMENT_TITLE: "Unit Test Results"
+        CHECK_NAME: "Test Results"
+        COMMENT_TITLE: "Test Results"
         FAIL_ON: "test failures"
         FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
         REPORT_INDIVIDUAL_RUNS: "false"
@@ -260,8 +260,8 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
         GITHUB_RETRIES: 10
         COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Unit Test Results"
-        COMMENT_TITLE: "Unit Test Results"
+        CHECK_NAME: "Test Results"
+        COMMENT_TITLE: "Test Results"
         FAIL_ON: "test failures"
         FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
         REPORT_INDIVIDUAL_RUNS: "false"
@@ -294,8 +294,8 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
         GITHUB_RETRIES: 10
         COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Unit Test Results"
-        COMMENT_TITLE: "Unit Test Results"
+        CHECK_NAME: "Test Results"
+        COMMENT_TITLE: "Test Results"
         FAIL_ON: "test failures"
         FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
         REPORT_INDIVIDUAL_RUNS: "false"
@@ -328,8 +328,8 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
         GITHUB_RETRIES: 10
         COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Unit Test Results"
-        COMMENT_TITLE: "Unit Test Results"
+        CHECK_NAME: "Test Results"
+        COMMENT_TITLE: "Test Results"
         FAIL_ON: "test failures"
         FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
         REPORT_INDIVIDUAL_RUNS: "false"
@@ -362,8 +362,8 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
         GITHUB_RETRIES: 10
         COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Unit Test Results"
-        COMMENT_TITLE: "Unit Test Results"
+        CHECK_NAME: "Test Results"
+        COMMENT_TITLE: "Test Results"
         FAIL_ON: "test failures"
         FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
         REPORT_INDIVIDUAL_RUNS: "false"
@@ -396,8 +396,8 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
         GITHUB_RETRIES: 10
         COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Unit Test Results"
-        COMMENT_TITLE: "Unit Test Results"
+        CHECK_NAME: "Test Results"
+        COMMENT_TITLE: "Test Results"
         FAIL_ON: "test failures"
         FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
         REPORT_INDIVIDUAL_RUNS: "false"
@@ -430,8 +430,8 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
         GITHUB_RETRIES: 10
         COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Unit Test Results"
-        COMMENT_TITLE: "Unit Test Results"
+        CHECK_NAME: "Test Results"
+        COMMENT_TITLE: "Test Results"
         FAIL_ON: "test failures"
         FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
         REPORT_INDIVIDUAL_RUNS: "false"
@@ -464,8 +464,8 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
         GITHUB_RETRIES: 10
         COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Unit Test Results"
-        COMMENT_TITLE: "Unit Test Results"
+        CHECK_NAME: "Test Results"
+        COMMENT_TITLE: "Test Results"
         FAIL_ON: "test failures"
         FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
         REPORT_INDIVIDUAL_RUNS: "false"
@@ -498,8 +498,8 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
         GITHUB_RETRIES: 10
         COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Unit Test Results"
-        COMMENT_TITLE: "Unit Test Results"
+        CHECK_NAME: "Test Results"
+        COMMENT_TITLE: "Test Results"
         FAIL_ON: "test failures"
         FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
         REPORT_INDIVIDUAL_RUNS: "false"
@@ -532,8 +532,8 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
         GITHUB_RETRIES: 10
         COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Unit Test Results"
-        COMMENT_TITLE: "Unit Test Results"
+        CHECK_NAME: "Test Results"
+        COMMENT_TITLE: "Test Results"
         FAIL_ON: "test failures"
         FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
         REPORT_INDIVIDUAL_RUNS: "false"
@@ -566,8 +566,8 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
         GITHUB_RETRIES: 10
         COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Unit Test Results"
-        COMMENT_TITLE: "Unit Test Results"
+        CHECK_NAME: "Test Results"
+        COMMENT_TITLE: "Test Results"
         FAIL_ON: "test failures"
         FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
         REPORT_INDIVIDUAL_RUNS: "false"
@@ -600,8 +600,8 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
         GITHUB_RETRIES: 10
         COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Unit Test Results"
-        COMMENT_TITLE: "Unit Test Results"
+        CHECK_NAME: "Test Results"
+        COMMENT_TITLE: "Test Results"
         FAIL_ON: "test failures"
         FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
         REPORT_INDIVIDUAL_RUNS: "false"
@@ -634,8 +634,8 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
         GITHUB_RETRIES: 10
         COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Unit Test Results"
-        COMMENT_TITLE: "Unit Test Results"
+        CHECK_NAME: "Test Results"
+        COMMENT_TITLE: "Test Results"
         FAIL_ON: "test failures"
         FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
         REPORT_INDIVIDUAL_RUNS: "false"
@@ -668,8 +668,8 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
         GITHUB_RETRIES: 10
         COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Unit Test Results"
-        COMMENT_TITLE: "Unit Test Results"
+        CHECK_NAME: "Test Results"
+        COMMENT_TITLE: "Test Results"
         FAIL_ON: "test failures"
         FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
         REPORT_INDIVIDUAL_RUNS: "false"
@@ -702,8 +702,8 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
         GITHUB_RETRIES: 10
         COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Unit Test Results"
-        COMMENT_TITLE: "Unit Test Results"
+        CHECK_NAME: "Test Results"
+        COMMENT_TITLE: "Test Results"
         FAIL_ON: "test failures"
         FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
         REPORT_INDIVIDUAL_RUNS: "false"
@@ -736,8 +736,8 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
         GITHUB_RETRIES: 10
         COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Unit Test Results"
-        COMMENT_TITLE: "Unit Test Results"
+        CHECK_NAME: "Test Results"
+        COMMENT_TITLE: "Test Results"
         FAIL_ON: "test failures"
         FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
         REPORT_INDIVIDUAL_RUNS: "false"
@@ -770,8 +770,8 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
         GITHUB_RETRIES: 10
         COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Unit Test Results"
-        COMMENT_TITLE: "Unit Test Results"
+        CHECK_NAME: "Test Results"
+        COMMENT_TITLE: "Test Results"
         FAIL_ON: "test failures"
         FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
         REPORT_INDIVIDUAL_RUNS: "false"
@@ -804,8 +804,8 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
         GITHUB_RETRIES: 10
         COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Unit Test Results"
-        COMMENT_TITLE: "Unit Test Results"
+        CHECK_NAME: "Test Results"
+        COMMENT_TITLE: "Test Results"
         FAIL_ON: "test failures"
         FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
         REPORT_INDIVIDUAL_RUNS: "false"
@@ -838,8 +838,8 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
         GITHUB_RETRIES: 10
         COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Unit Test Results"
-        COMMENT_TITLE: "Unit Test Results"
+        CHECK_NAME: "Test Results"
+        COMMENT_TITLE: "Test Results"
         FAIL_ON: "test failures"
         FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
         REPORT_INDIVIDUAL_RUNS: "false"
@@ -872,8 +872,8 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
         GITHUB_RETRIES: 10
         COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Unit Test Results"
-        COMMENT_TITLE: "Unit Test Results"
+        CHECK_NAME: "Test Results"
+        COMMENT_TITLE: "Test Results"
         FAIL_ON: "test failures"
         FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
         REPORT_INDIVIDUAL_RUNS: "false"
@@ -906,8 +906,8 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
         GITHUB_RETRIES: 10
         COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Unit Test Results"
-        COMMENT_TITLE: "Unit Test Results"
+        CHECK_NAME: "Test Results"
+        COMMENT_TITLE: "Test Results"
         FAIL_ON: "test failures"
         FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
         REPORT_INDIVIDUAL_RUNS: "false"
@@ -940,8 +940,8 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
         GITHUB_RETRIES: 10
         COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Unit Test Results"
-        COMMENT_TITLE: "Unit Test Results"
+        CHECK_NAME: "Test Results"
+        COMMENT_TITLE: "Test Results"
         FAIL_ON: "test failures"
         FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
         REPORT_INDIVIDUAL_RUNS: "false"
@@ -974,8 +974,8 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
         GITHUB_RETRIES: 10
         COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Unit Test Results"
-        COMMENT_TITLE: "Unit Test Results"
+        CHECK_NAME: "Test Results"
+        COMMENT_TITLE: "Test Results"
         FAIL_ON: "test failures"
         FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
         REPORT_INDIVIDUAL_RUNS: "false"
@@ -1008,8 +1008,8 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
         GITHUB_RETRIES: 10
         COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Unit Test Results"
-        COMMENT_TITLE: "Unit Test Results"
+        CHECK_NAME: "Test Results"
+        COMMENT_TITLE: "Test Results"
         FAIL_ON: "test failures"
         FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
         REPORT_INDIVIDUAL_RUNS: "false"
@@ -1042,8 +1042,8 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
         GITHUB_RETRIES: 10
         COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Unit Test Results"
-        COMMENT_TITLE: "Unit Test Results"
+        CHECK_NAME: "Test Results"
+        COMMENT_TITLE: "Test Results"
         FAIL_ON: "test failures"
         FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
         REPORT_INDIVIDUAL_RUNS: "false"
@@ -1076,8 +1076,8 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
         GITHUB_RETRIES: 10
         COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Unit Test Results"
-        COMMENT_TITLE: "Unit Test Results"
+        CHECK_NAME: "Test Results"
+        COMMENT_TITLE: "Test Results"
         FAIL_ON: "test failures"
         FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
         REPORT_INDIVIDUAL_RUNS: "false"
@@ -1110,8 +1110,8 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
         GITHUB_RETRIES: 10
         COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Unit Test Results"
-        COMMENT_TITLE: "Unit Test Results"
+        CHECK_NAME: "Test Results"
+        COMMENT_TITLE: "Test Results"
         FAIL_ON: "test failures"
         FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
         REPORT_INDIVIDUAL_RUNS: "false"
@@ -1144,8 +1144,8 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
         GITHUB_RETRIES: 10
         COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Unit Test Results"
-        COMMENT_TITLE: "Unit Test Results"
+        CHECK_NAME: "Test Results"
+        COMMENT_TITLE: "Test Results"
         FAIL_ON: "test failures"
         FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
         REPORT_INDIVIDUAL_RUNS: "false"
@@ -1178,8 +1178,8 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
         GITHUB_RETRIES: 10
         COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Unit Test Results"
-        COMMENT_TITLE: "Unit Test Results"
+        CHECK_NAME: "Test Results"
+        COMMENT_TITLE: "Test Results"
         FAIL_ON: "test failures"
         FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
         REPORT_INDIVIDUAL_RUNS: "false"
@@ -1212,8 +1212,8 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
         GITHUB_RETRIES: 10
         COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Unit Test Results"
-        COMMENT_TITLE: "Unit Test Results"
+        CHECK_NAME: "Test Results"
+        COMMENT_TITLE: "Test Results"
         FAIL_ON: "test failures"
         FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
         REPORT_INDIVIDUAL_RUNS: "false"
@@ -1246,8 +1246,8 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
         GITHUB_RETRIES: 10
         COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Unit Test Results"
-        COMMENT_TITLE: "Unit Test Results"
+        CHECK_NAME: "Test Results"
+        COMMENT_TITLE: "Test Results"
         FAIL_ON: "test failures"
         FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
         REPORT_INDIVIDUAL_RUNS: "false"
@@ -1280,8 +1280,8 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
         GITHUB_RETRIES: 10
         COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Unit Test Results"
-        COMMENT_TITLE: "Unit Test Results"
+        CHECK_NAME: "Test Results"
+        COMMENT_TITLE: "Test Results"
         FAIL_ON: "test failures"
         FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
         REPORT_INDIVIDUAL_RUNS: "false"
@@ -1314,8 +1314,8 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
         GITHUB_RETRIES: 10
         COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Unit Test Results"
-        COMMENT_TITLE: "Unit Test Results"
+        CHECK_NAME: "Test Results"
+        COMMENT_TITLE: "Test Results"
         FAIL_ON: "test failures"
         FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
         REPORT_INDIVIDUAL_RUNS: "false"
@@ -1348,8 +1348,8 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
         GITHUB_RETRIES: 10
         COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Unit Test Results"
-        COMMENT_TITLE: "Unit Test Results"
+        CHECK_NAME: "Test Results"
+        COMMENT_TITLE: "Test Results"
         FAIL_ON: "test failures"
         FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
         REPORT_INDIVIDUAL_RUNS: "false"
@@ -1382,8 +1382,8 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
         GITHUB_RETRIES: 10
         COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Unit Test Results"
-        COMMENT_TITLE: "Unit Test Results"
+        CHECK_NAME: "Test Results"
+        COMMENT_TITLE: "Test Results"
         FAIL_ON: "test failures"
         FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
         REPORT_INDIVIDUAL_RUNS: "false"
@@ -1416,8 +1416,8 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
         GITHUB_RETRIES: 10
         COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Unit Test Results"
-        COMMENT_TITLE: "Unit Test Results"
+        CHECK_NAME: "Test Results"
+        COMMENT_TITLE: "Test Results"
         FAIL_ON: "test failures"
         FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
         REPORT_INDIVIDUAL_RUNS: "false"
@@ -1450,8 +1450,8 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
         GITHUB_RETRIES: 10
         COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Unit Test Results"
-        COMMENT_TITLE: "Unit Test Results"
+        CHECK_NAME: "Test Results"
+        COMMENT_TITLE: "Test Results"
         FAIL_ON: "test failures"
         FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
         REPORT_INDIVIDUAL_RUNS: "false"
@@ -1484,8 +1484,8 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
         GITHUB_RETRIES: 10
         COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Unit Test Results"
-        COMMENT_TITLE: "Unit Test Results"
+        CHECK_NAME: "Test Results"
+        COMMENT_TITLE: "Test Results"
         FAIL_ON: "test failures"
         FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
         REPORT_INDIVIDUAL_RUNS: "false"
@@ -1518,8 +1518,8 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
         GITHUB_RETRIES: 10
         COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Unit Test Results"
-        COMMENT_TITLE: "Unit Test Results"
+        CHECK_NAME: "Test Results"
+        COMMENT_TITLE: "Test Results"
         FAIL_ON: "test failures"
         FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
         REPORT_INDIVIDUAL_RUNS: "false"
@@ -1552,8 +1552,8 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
         GITHUB_RETRIES: 10
         COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Unit Test Results"
-        COMMENT_TITLE: "Unit Test Results"
+        CHECK_NAME: "Test Results"
+        COMMENT_TITLE: "Test Results"
         FAIL_ON: "test failures"
         FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
         REPORT_INDIVIDUAL_RUNS: "false"
@@ -1586,8 +1586,8 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
         GITHUB_RETRIES: 10
         COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Unit Test Results"
-        COMMENT_TITLE: "Unit Test Results"
+        CHECK_NAME: "Test Results"
+        COMMENT_TITLE: "Test Results"
         FAIL_ON: "test failures"
         FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
         REPORT_INDIVIDUAL_RUNS: "false"
@@ -1620,8 +1620,8 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
         GITHUB_RETRIES: 10
         COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Unit Test Results"
-        COMMENT_TITLE: "Unit Test Results"
+        CHECK_NAME: "Test Results"
+        COMMENT_TITLE: "Test Results"
         FAIL_ON: "test failures"
         FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
         REPORT_INDIVIDUAL_RUNS: "false"
@@ -1654,8 +1654,8 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
         GITHUB_RETRIES: 10
         COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Unit Test Results"
-        COMMENT_TITLE: "Unit Test Results"
+        CHECK_NAME: "Test Results"
+        COMMENT_TITLE: "Test Results"
         FAIL_ON: "test failures"
         FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
         REPORT_INDIVIDUAL_RUNS: "false"
@@ -1688,8 +1688,8 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
         GITHUB_RETRIES: 10
         COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Unit Test Results"
-        COMMENT_TITLE: "Unit Test Results"
+        CHECK_NAME: "Test Results"
+        COMMENT_TITLE: "Test Results"
         FAIL_ON: "test failures"
         FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
         REPORT_INDIVIDUAL_RUNS: "false"
@@ -1722,8 +1722,8 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
         GITHUB_RETRIES: 10
         COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Unit Test Results"
-        COMMENT_TITLE: "Unit Test Results"
+        CHECK_NAME: "Test Results"
+        COMMENT_TITLE: "Test Results"
         FAIL_ON: "test failures"
         FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
         REPORT_INDIVIDUAL_RUNS: "false"
@@ -1756,8 +1756,8 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
         GITHUB_RETRIES: 10
         COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Unit Test Results"
-        COMMENT_TITLE: "Unit Test Results"
+        CHECK_NAME: "Test Results"
+        COMMENT_TITLE: "Test Results"
         FAIL_ON: "test failures"
         FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
         REPORT_INDIVIDUAL_RUNS: "false"
@@ -1790,8 +1790,8 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
         GITHUB_RETRIES: 10
         COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Unit Test Results"
-        COMMENT_TITLE: "Unit Test Results"
+        CHECK_NAME: "Test Results"
+        COMMENT_TITLE: "Test Results"
         FAIL_ON: "test failures"
         FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
         REPORT_INDIVIDUAL_RUNS: "false"
@@ -1824,8 +1824,8 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
         GITHUB_RETRIES: 10
         COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Unit Test Results"
-        COMMENT_TITLE: "Unit Test Results"
+        CHECK_NAME: "Test Results"
+        COMMENT_TITLE: "Test Results"
         FAIL_ON: "test failures"
         FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
         REPORT_INDIVIDUAL_RUNS: "false"
@@ -1858,8 +1858,8 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
         GITHUB_RETRIES: 10
         COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Unit Test Results"
-        COMMENT_TITLE: "Unit Test Results"
+        CHECK_NAME: "Test Results"
+        COMMENT_TITLE: "Test Results"
         FAIL_ON: "test failures"
         FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
         REPORT_INDIVIDUAL_RUNS: "false"
@@ -1892,8 +1892,8 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
         GITHUB_RETRIES: 10
         COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Unit Test Results"
-        COMMENT_TITLE: "Unit Test Results"
+        CHECK_NAME: "Test Results"
+        COMMENT_TITLE: "Test Results"
         FAIL_ON: "test failures"
         FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
         REPORT_INDIVIDUAL_RUNS: "false"
@@ -1926,8 +1926,8 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
         GITHUB_RETRIES: 10
         COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Unit Test Results"
-        COMMENT_TITLE: "Unit Test Results"
+        CHECK_NAME: "Test Results"
+        COMMENT_TITLE: "Test Results"
         FAIL_ON: "test failures"
         FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
         REPORT_INDIVIDUAL_RUNS: "false"
@@ -1960,8 +1960,8 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
         GITHUB_RETRIES: 10
         COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Unit Test Results"
-        COMMENT_TITLE: "Unit Test Results"
+        CHECK_NAME: "Test Results"
+        COMMENT_TITLE: "Test Results"
         FAIL_ON: "test failures"
         FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
         REPORT_INDIVIDUAL_RUNS: "false"
@@ -1994,8 +1994,8 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
         GITHUB_RETRIES: 10
         COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Unit Test Results"
-        COMMENT_TITLE: "Unit Test Results"
+        CHECK_NAME: "Test Results"
+        COMMENT_TITLE: "Test Results"
         FAIL_ON: "test failures"
         FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
         REPORT_INDIVIDUAL_RUNS: "false"
@@ -2028,8 +2028,8 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
         GITHUB_RETRIES: 10
         COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Unit Test Results"
-        COMMENT_TITLE: "Unit Test Results"
+        CHECK_NAME: "Test Results"
+        COMMENT_TITLE: "Test Results"
         FAIL_ON: "test failures"
         FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
         REPORT_INDIVIDUAL_RUNS: "false"
@@ -2062,8 +2062,8 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
         GITHUB_RETRIES: 10
         COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Unit Test Results"
-        COMMENT_TITLE: "Unit Test Results"
+        CHECK_NAME: "Test Results"
+        COMMENT_TITLE: "Test Results"
         FAIL_ON: "test failures"
         FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
         REPORT_INDIVIDUAL_RUNS: "false"
@@ -2096,8 +2096,8 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
         GITHUB_RETRIES: 10
         COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Unit Test Results"
-        COMMENT_TITLE: "Unit Test Results"
+        CHECK_NAME: "Test Results"
+        COMMENT_TITLE: "Test Results"
         FAIL_ON: "test failures"
         FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
         REPORT_INDIVIDUAL_RUNS: "false"
@@ -2130,8 +2130,8 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
         GITHUB_RETRIES: 10
         COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Unit Test Results"
-        COMMENT_TITLE: "Unit Test Results"
+        CHECK_NAME: "Test Results"
+        COMMENT_TITLE: "Test Results"
         FAIL_ON: "test failures"
         FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
         REPORT_INDIVIDUAL_RUNS: "false"
@@ -2164,8 +2164,8 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
         GITHUB_RETRIES: 10
         COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Unit Test Results"
-        COMMENT_TITLE: "Unit Test Results"
+        CHECK_NAME: "Test Results"
+        COMMENT_TITLE: "Test Results"
         FAIL_ON: "test failures"
         FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
         REPORT_INDIVIDUAL_RUNS: "false"
@@ -2198,8 +2198,8 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
         GITHUB_RETRIES: 10
         COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Unit Test Results"
-        COMMENT_TITLE: "Unit Test Results"
+        CHECK_NAME: "Test Results"
+        COMMENT_TITLE: "Test Results"
         FAIL_ON: "test failures"
         FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
         REPORT_INDIVIDUAL_RUNS: "false"
@@ -2232,8 +2232,8 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
         GITHUB_RETRIES: 10
         COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Unit Test Results"
-        COMMENT_TITLE: "Unit Test Results"
+        CHECK_NAME: "Test Results"
+        COMMENT_TITLE: "Test Results"
         FAIL_ON: "test failures"
         FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
         REPORT_INDIVIDUAL_RUNS: "false"
@@ -2266,8 +2266,8 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
         GITHUB_RETRIES: 10
         COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Unit Test Results"
-        COMMENT_TITLE: "Unit Test Results"
+        CHECK_NAME: "Test Results"
+        COMMENT_TITLE: "Test Results"
         FAIL_ON: "test failures"
         FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
         REPORT_INDIVIDUAL_RUNS: "false"
@@ -2300,8 +2300,8 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
         GITHUB_RETRIES: 10
         COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Unit Test Results"
-        COMMENT_TITLE: "Unit Test Results"
+        CHECK_NAME: "Test Results"
+        COMMENT_TITLE: "Test Results"
         FAIL_ON: "test failures"
         FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
         REPORT_INDIVIDUAL_RUNS: "false"
@@ -2334,8 +2334,8 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
         GITHUB_RETRIES: 10
         COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Unit Test Results"
-        COMMENT_TITLE: "Unit Test Results"
+        CHECK_NAME: "Test Results"
+        COMMENT_TITLE: "Test Results"
         FAIL_ON: "test failures"
         FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
         REPORT_INDIVIDUAL_RUNS: "false"
@@ -2368,8 +2368,8 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
         GITHUB_RETRIES: 10
         COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Unit Test Results"
-        COMMENT_TITLE: "Unit Test Results"
+        CHECK_NAME: "Test Results"
+        COMMENT_TITLE: "Test Results"
         FAIL_ON: "test failures"
         FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
         REPORT_INDIVIDUAL_RUNS: "false"
@@ -2402,8 +2402,8 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
         GITHUB_RETRIES: 10
         COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Unit Test Results"
-        COMMENT_TITLE: "Unit Test Results"
+        CHECK_NAME: "Test Results"
+        COMMENT_TITLE: "Test Results"
         FAIL_ON: "test failures"
         FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
         REPORT_INDIVIDUAL_RUNS: "false"
@@ -2436,8 +2436,8 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
         GITHUB_RETRIES: 10
         COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Unit Test Results"
-        COMMENT_TITLE: "Unit Test Results"
+        CHECK_NAME: "Test Results"
+        COMMENT_TITLE: "Test Results"
         FAIL_ON: "test failures"
         FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
         REPORT_INDIVIDUAL_RUNS: "false"
@@ -2470,8 +2470,8 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
         GITHUB_RETRIES: 10
         COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Unit Test Results"
-        COMMENT_TITLE: "Unit Test Results"
+        CHECK_NAME: "Test Results"
+        COMMENT_TITLE: "Test Results"
         FAIL_ON: "test failures"
         FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
         REPORT_INDIVIDUAL_RUNS: "false"
@@ -2504,8 +2504,8 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
         GITHUB_RETRIES: 10
         COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Unit Test Results"
-        COMMENT_TITLE: "Unit Test Results"
+        CHECK_NAME: "Test Results"
+        COMMENT_TITLE: "Test Results"
         FAIL_ON: "test failures"
         FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
         REPORT_INDIVIDUAL_RUNS: "false"
@@ -2538,8 +2538,8 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
         GITHUB_RETRIES: 10
         COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Unit Test Results"
-        COMMENT_TITLE: "Unit Test Results"
+        CHECK_NAME: "Test Results"
+        COMMENT_TITLE: "Test Results"
         FAIL_ON: "test failures"
         FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
         REPORT_INDIVIDUAL_RUNS: "false"
@@ -2572,8 +2572,8 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
         GITHUB_RETRIES: 10
         COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Unit Test Results"
-        COMMENT_TITLE: "Unit Test Results"
+        CHECK_NAME: "Test Results"
+        COMMENT_TITLE: "Test Results"
         FAIL_ON: "test failures"
         FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
         REPORT_INDIVIDUAL_RUNS: "false"
@@ -2606,8 +2606,8 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
         GITHUB_RETRIES: 10
         COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Unit Test Results"
-        COMMENT_TITLE: "Unit Test Results"
+        CHECK_NAME: "Test Results"
+        COMMENT_TITLE: "Test Results"
         FAIL_ON: "test failures"
         FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
         REPORT_INDIVIDUAL_RUNS: "false"
@@ -2640,8 +2640,8 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
         GITHUB_RETRIES: 10
         COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Unit Test Results"
-        COMMENT_TITLE: "Unit Test Results"
+        CHECK_NAME: "Test Results"
+        COMMENT_TITLE: "Test Results"
         FAIL_ON: "test failures"
         FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
         REPORT_INDIVIDUAL_RUNS: "false"
@@ -2674,8 +2674,8 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
         GITHUB_RETRIES: 10
         COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Unit Test Results"
-        COMMENT_TITLE: "Unit Test Results"
+        CHECK_NAME: "Test Results"
+        COMMENT_TITLE: "Test Results"
         FAIL_ON: "test failures"
         FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
         REPORT_INDIVIDUAL_RUNS: "false"
@@ -2708,8 +2708,8 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
         GITHUB_RETRIES: 10
         COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Unit Test Results"
-        COMMENT_TITLE: "Unit Test Results"
+        CHECK_NAME: "Test Results"
+        COMMENT_TITLE: "Test Results"
         FAIL_ON: "test failures"
         FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
         REPORT_INDIVIDUAL_RUNS: "false"
@@ -2742,8 +2742,8 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
         GITHUB_RETRIES: 10
         COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Unit Test Results"
-        COMMENT_TITLE: "Unit Test Results"
+        CHECK_NAME: "Test Results"
+        COMMENT_TITLE: "Test Results"
         FAIL_ON: "test failures"
         FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
         REPORT_INDIVIDUAL_RUNS: "false"
@@ -2776,8 +2776,8 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
         GITHUB_RETRIES: 10
         COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Unit Test Results"
-        COMMENT_TITLE: "Unit Test Results"
+        CHECK_NAME: "Test Results"
+        COMMENT_TITLE: "Test Results"
         FAIL_ON: "test failures"
         FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
         REPORT_INDIVIDUAL_RUNS: "false"
@@ -2810,8 +2810,8 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
         GITHUB_RETRIES: 10
         COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Unit Test Results"
-        COMMENT_TITLE: "Unit Test Results"
+        CHECK_NAME: "Test Results"
+        COMMENT_TITLE: "Test Results"
         FAIL_ON: "test failures"
         FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
         REPORT_INDIVIDUAL_RUNS: "false"
@@ -2844,8 +2844,8 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
         GITHUB_RETRIES: 10
         COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Unit Test Results"
-        COMMENT_TITLE: "Unit Test Results"
+        CHECK_NAME: "Test Results"
+        COMMENT_TITLE: "Test Results"
         FAIL_ON: "test failures"
         FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
         REPORT_INDIVIDUAL_RUNS: "false"
