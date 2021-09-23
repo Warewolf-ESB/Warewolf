@@ -4,7 +4,7 @@ on: [push]
 
 jobs:
 
-  Zip Tool Specs:  
+  Zip_Tool_Specs:  
     runs-on: self-hosted
     
     steps:
@@ -23,7 +23,7 @@ jobs:
         path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
         if-no-files-found: error
 
-  Email Tools Specs:
+  Email_Tools_Specs:
     runs-on: self-hosted
     
     steps:
@@ -42,7 +42,7 @@ jobs:
         path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
         if-no-files-found: error
 
-  Resource Tools Specs:
+  Resource_Tools_Specs:
     runs-on: self-hosted
     
     steps:
@@ -61,7 +61,7 @@ jobs:
         path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
         if-no-files-found: error
 
-  File And Folder Copy Tool Specs:
+  File_And_Folder_Copy_Tool_Specs:
     runs-on: self-hosted
     
     steps:
@@ -80,7 +80,7 @@ jobs:
         path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
         if-no-files-found: error
 
-  Data Tools Specs:
+  Data_Tools_Specs:
     runs-on: self-hosted
     
     steps:
@@ -99,7 +99,7 @@ jobs:
         path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
         if-no-files-found: error
 
-  Request Service Name View Models Unit Tests:
+  Request_Service_Name_View_Models_Unit_Tests:
     runs-on: self-hosted
     
     steps:
@@ -118,7 +118,7 @@ jobs:
         path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
         if-no-files-found: error
 
-  Unzip Tool Specs Validation:
+  Unzip_Tool_Specs_Validation:
     runs-on: self-hosted
     
     steps:
@@ -137,7 +137,7 @@ jobs:
         path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
         if-no-files-found: error
 
-  Recordset Tools Specs:
+  Recordset_Tools_Specs:
     runs-on: self-hosted
     
     steps:
@@ -156,7 +156,7 @@ jobs:
         path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
         if-no-files-found: error
 
-  File And Folder Rename Tool Specs:
+  File_And_Folder_Rename_Tool_Specs:
     runs-on: self-hosted
     
     steps:
@@ -175,7 +175,7 @@ jobs:
         path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
         if-no-files-found: error
 
-  Other Tools Specs:
+  Other_Tools_Specs:
     runs-on: self-hosted
     
     steps:
@@ -194,7 +194,7 @@ jobs:
         path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
         if-no-files-found: error
 
-  File And Folder Move Tool Specs:
+  File_And_Folder_Move_Tool_Specs:
     runs-on: self-hosted
     
     steps:
@@ -213,7 +213,7 @@ jobs:
         path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
         if-no-files-found: error
 
-  File Read Tool Specs:
+  File_Read_Tool_Specs:
     runs-on: self-hosted
     
     steps:
@@ -232,7 +232,7 @@ jobs:
         path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
         if-no-files-found: error
 
-  Infrastructure Unit Tests:
+  Infrastructure_Unit_Tests:
     runs-on: self-hosted
     
     steps:
@@ -251,7 +251,7 @@ jobs:
         path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
         if-no-files-found: error
 
-  New Folder Read Tool Specs:
+  New_Folder_Read_Tool_Specs:
     runs-on: self-hosted
     
     steps:
@@ -270,7 +270,7 @@ jobs:
         path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
         if-no-files-found: error
 
-  Write File Tool Specs:
+  Write_File_Tool_Specs:
     runs-on: self-hosted
     
     steps:
@@ -289,7 +289,7 @@ jobs:
         path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
         if-no-files-found: error
 
-  Loop Construct Tools Specs:
+  Loop_Construct_Tools_Specs:
     runs-on: self-hosted
     
     steps:
@@ -308,7 +308,7 @@ jobs:
         path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
         if-no-files-found: error
 
-  Utility Tools Specs:
+  Utility_Tools_Specs:
     runs-on: self-hosted
     
     steps:
@@ -327,7 +327,7 @@ jobs:
         path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
         if-no-files-found: error
 
-  Folder Read Tool Specs:
+  Folder_Read_Tool_Specs:
     runs-on: self-hosted
     
     steps:
@@ -346,7 +346,7 @@ jobs:
         path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
         if-no-files-found: error
 
-  SQL Bulk Insert Tool Specs:
+  SQL_Bulk_Insert_Tool_Specs:
     runs-on: self-hosted
     
     steps:
@@ -365,7 +365,7 @@ jobs:
         path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
         if-no-files-found: error
 
-  Control Flow Tools Specs:
+  Control_Flow_Tools_Specs:
     runs-on: self-hosted
     
     steps:
@@ -384,7 +384,7 @@ jobs:
         path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
         if-no-files-found: error
 
-  Studio View Models Unit Tests:
+  Studio_View_Models_Unit_Tests:
     runs-on: self-hosted
     
     steps:
@@ -403,7 +403,7 @@ jobs:
         path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
         if-no-files-found: error
 
-  File And Folder Create Tool Specs:
+  File_And_Folder_Create_Tool_Specs:
     runs-on: self-hosted
     
     steps:
@@ -422,7 +422,7 @@ jobs:
         path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
         if-no-files-found: error
 
-  Storage Unit Tests:
+  Storage_Unit_Tests:
     runs-on: self-hosted
     
     steps:
@@ -441,7 +441,7 @@ jobs:
         path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
         if-no-files-found: error
 
-  Storage Tools Specs:
+  Storage_Tools_Specs:
     runs-on: self-hosted
     
     steps:
@@ -460,7 +460,7 @@ jobs:
         path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
         if-no-files-found: error
 
-  File And Folder Delete Tool Specs:
+  File_And_Folder_Delete_Tool_Specs:
     runs-on: self-hosted
     
     steps:
@@ -479,7 +479,7 @@ jobs:
         path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
         if-no-files-found: error
 
-  Scripting Tools Specs:
+  Scripting_Tools_Specs:
     runs-on: self-hosted
     
     steps:
@@ -498,7 +498,7 @@ jobs:
         path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
         if-no-files-found: error
 
-  Database Tools Specs:
+  Database_Tools_Specs:
     runs-on: self-hosted
     
     steps:
@@ -517,7 +517,7 @@ jobs:
         path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
         if-no-files-found: error
 
-  Auditing Unit Tests:
+  Auditing_Unit_Tests:
     runs-on: self-hosted
     
     steps:
@@ -536,7 +536,7 @@ jobs:
         path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
         if-no-files-found: error
 
-  Workflow Execution Specs:
+  Workflow_Execution_Specs:
     runs-on: self-hosted
     
     steps:
@@ -555,7 +555,7 @@ jobs:
         path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
         if-no-files-found: error
 
-  Studio Test Framework With Hello World Workflow Specs:
+  Studio_Test_Framework_With_Hello_World_Workflow_Specs:
     runs-on: self-hosted
     
     steps:
@@ -574,7 +574,7 @@ jobs:
         path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
         if-no-files-found: error
 
-  Studio Test Framework With Utility Tools Specs:
+  Studio_Test_Framework_With_Utility_Tools_Specs:
     runs-on: self-hosted
     
     steps:
@@ -593,7 +593,7 @@ jobs:
         path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
         if-no-files-found: error
 
-  MS SQL Server Specs:
+  MS_SQL_Server_Specs:
     runs-on: self-hosted
     
     steps:
@@ -612,7 +612,7 @@ jobs:
         path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
         if-no-files-found: error
 
-  Studio Test Framework With Data Tools Specs:
+  Studio_Test_Framework_With_Data_Tools_Specs:
     runs-on: self-hosted
     
     steps:
@@ -631,7 +631,7 @@ jobs:
         path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
         if-no-files-found: error
 
-  Assign Workflow Execution Specs:
+  Assign_Workflow_Execution_Specs:
     runs-on: self-hosted
     
     steps:
@@ -650,7 +650,7 @@ jobs:
         path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
         if-no-files-found: error
 
-  Integration Tests:
+  Integration_Tests:
     runs-on: self-hosted
     
     steps:
@@ -669,7 +669,7 @@ jobs:
         path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
         if-no-files-found: error
 
-  Studio Test Framework With Scripting Tools Specs:
+  Studio_Test_Framework_With_Scripting_Tools_Specs:
     runs-on: self-hosted
     
     steps:
@@ -688,7 +688,7 @@ jobs:
         path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
         if-no-files-found: error
 
-  Other Activities Specs:
+  Other_Activities_Specs:
     runs-on: self-hosted
     
     steps:
@@ -707,7 +707,7 @@ jobs:
         path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
         if-no-files-found: error
 
-  Studio Test Framework With File And Folder Tools Specs:
+  Studio_Test_Framework_With_File_And_Folder_Tools_Specs:
     runs-on: self-hosted
     
     steps:
@@ -726,7 +726,7 @@ jobs:
         path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
         if-no-files-found: error
 
-  Studio Test Framework With HTTP Web Tools Specs:
+  Studio_Test_Framework_With_HTTP_Web_Tools_Specs:
     runs-on: self-hosted
     
     steps:
@@ -745,7 +745,7 @@ jobs:
         path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
         if-no-files-found: error
 
-  Studio Test Framework With Subworkflow Specs:
+  Studio_Test_Framework_With_Subworkflow_Specs:
     runs-on: self-hosted
     
     steps:
@@ -764,7 +764,7 @@ jobs:
         path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
         if-no-files-found: error
 
-  Workflow Merging Specs:
+  Workflow_Merging_Specs:
     runs-on: self-hosted
     
     steps:
@@ -783,7 +783,7 @@ jobs:
         path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
         if-no-files-found: error
 
-  Example Workflow Execution Specs:
+  Example_Workflow_Execution_Specs:
     runs-on: self-hosted
     
     steps:
@@ -802,7 +802,7 @@ jobs:
         path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
         if-no-files-found: error
 
-  Studio Test Framework Specs:
+  Studio_Test_Framework_Specs:
     runs-on: self-hosted
     
     steps:
@@ -821,7 +821,7 @@ jobs:
         path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
         if-no-files-found: error
 
-  Subworkflow Execution Specs:
+  Subworkflow_Execution_Specs:
     runs-on: self-hosted
     
     steps:
@@ -840,7 +840,7 @@ jobs:
         path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
         if-no-files-found: error
 
-  Other Specs:
+  Other_Specs:
     runs-on: self-hosted
     
     steps:
@@ -859,7 +859,7 @@ jobs:
         path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
         if-no-files-found: error
 
-  Studio Test Framework With Deleted Resources Specs:
+  Studio_Test_Framework_With_Deleted_Resources_Specs:
     runs-on: self-hosted
     
     steps:
@@ -878,7 +878,7 @@ jobs:
         path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
         if-no-files-found: error
 
-  SQL Integration Tests:
+  SQL_Integration_Tests:
     runs-on: self-hosted
     
     steps:
@@ -897,7 +897,7 @@ jobs:
         path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
         if-no-files-found: error
 
-  For Each Workflow Execution Specs:
+  For_Each_Workflow_Execution_Specs:
     runs-on: self-hosted
     
     steps:
@@ -916,7 +916,7 @@ jobs:
         path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
         if-no-files-found: error
 
-  Copy Tool Specs From Local:
+  Copy_Tool_Specs_From_Local:
     runs-on: self-hosted
     
     steps:
@@ -935,7 +935,7 @@ jobs:
         path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
         if-no-files-found: error
 
-  Move Tool Specs From Local:
+  Move_Tool_Specs_From_Local:
     runs-on: self-hosted
     
     steps:
@@ -954,7 +954,7 @@ jobs:
         path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
         if-no-files-found: error
 
-  Rename Tool Specs From Local:
+  Rename_Tool_Specs_From_Local:
     runs-on: self-hosted
     
     steps:
@@ -973,7 +973,7 @@ jobs:
         path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
         if-no-files-found: error
 
-  Unzip Tool Specs From Local:
+  Unzip_Tool_Specs_From_Local:
     runs-on: self-hosted
     
     steps:
@@ -992,7 +992,7 @@ jobs:
         path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
         if-no-files-found: error
 
-  Zip Tool Specs From Local:
+  Zip_Tool_Specs_From_Local:
     runs-on: self-hosted
     
     steps:
@@ -1011,7 +1011,7 @@ jobs:
         path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
         if-no-files-found: error
 
-  Copy Tool Specs From FTP:
+  Copy_Tool_Specs_From_FTP:
     runs-on: self-hosted
     
     steps:
@@ -1030,7 +1030,7 @@ jobs:
         path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
         if-no-files-found: error
 
-  Move Tool Specs From FTP:
+  Move_Tool_Specs_From_FTP:
     runs-on: self-hosted
     
     steps:
@@ -1049,7 +1049,7 @@ jobs:
         path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
         if-no-files-found: error
 
-  Rename Tool Specs From FTP:
+  Rename_Tool_Specs_From_FTP:
     runs-on: self-hosted
     
     steps:
@@ -1068,7 +1068,7 @@ jobs:
         path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
         if-no-files-found: error
 
-  Unzip Tool Specs From FTP:
+  Unzip_Tool_Specs_From_FTP:
     runs-on: self-hosted
     
     steps:
@@ -1087,7 +1087,7 @@ jobs:
         path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
         if-no-files-found: error
 
-  Zip Tool Specs From FTP:
+  Zip_Tool_Specs_From_FTP:
     runs-on: self-hosted
     
     steps:
@@ -1106,7 +1106,7 @@ jobs:
         path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
         if-no-files-found: error
 
-  Copy Tool Specs From FTPS:
+  Copy_Tool_Specs_From_FTPS:
     runs-on: self-hosted
     
     steps:
@@ -1125,7 +1125,7 @@ jobs:
         path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
         if-no-files-found: error
 
-  Move Tool Specs From FTPS:
+  Move_Tool_Specs_From_FTPS:
     runs-on: self-hosted
     
     steps:
@@ -1144,7 +1144,7 @@ jobs:
         path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
         if-no-files-found: error
 
-  Rename Tool Specs From FTPS:
+  Rename_Tool_Specs_From_FTPS:
     runs-on: self-hosted
     
     steps:
@@ -1163,7 +1163,7 @@ jobs:
         path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
         if-no-files-found: error
 
-  Unzip Tool Specs From FTPS:
+  Unzip_Tool_Specs_From_FTPS:
     runs-on: self-hosted
     
     steps:
@@ -1182,7 +1182,7 @@ jobs:
         path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
         if-no-files-found: error
 
-  Zip Tool Specs From FTPS:
+  Zip_Tool_Specs_From_FTPS:
     runs-on: self-hosted
     
     steps:
@@ -1201,7 +1201,7 @@ jobs:
         path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
         if-no-files-found: error
 
-  Copy Tool Specs From SFTP:
+  Copy_Tool_Specs_From_SFTP:
     runs-on: self-hosted
     
     steps:
@@ -1220,7 +1220,7 @@ jobs:
         path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
         if-no-files-found: error
 
-  Move Tool Specs From SFTP:
+  Move_Tool_Specs_From_SFTP:
     runs-on: self-hosted
     
     steps:
@@ -1239,7 +1239,7 @@ jobs:
         path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
         if-no-files-found: error
 
-  Rename Tool Specs From SFTP:
+  Rename_Tool_Specs_From_SFTP:
     runs-on: self-hosted
     
     steps:
@@ -1258,7 +1258,7 @@ jobs:
         path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
         if-no-files-found: error
 
-  Unzip Tool Specs From SFTP:
+  Unzip_Tool_Specs_From_SFTP:
     runs-on: self-hosted
     
     steps:
@@ -1277,7 +1277,7 @@ jobs:
         path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
         if-no-files-found: error
 
-  Zip Tool Specs From SFTP:
+  Zip_Tool_Specs_From_SFTP:
     runs-on: self-hosted
     
     steps:
@@ -1296,7 +1296,7 @@ jobs:
         path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
         if-no-files-found: error
 
-  Copy Tool Specs From UNC:
+  Copy_Tool_Specs_From_UNC:
     runs-on: self-hosted
     
     steps:
@@ -1315,7 +1315,7 @@ jobs:
         path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
         if-no-files-found: error
 
-  Move Tool Specs From UNC:
+  Move_Tool_Specs_From_UNC:
     runs-on: self-hosted
     
     steps:
@@ -1334,7 +1334,7 @@ jobs:
         path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
         if-no-files-found: error
 
-  Studio Core Unit Tests:
+  Studio_Core_Unit_Tests:
     runs-on: self-hosted
     
     steps:
@@ -1353,7 +1353,7 @@ jobs:
         path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
         if-no-files-found: error
 
-  Elasticsearch View Models Unit Tests:
+  Elasticsearch_View_Models_Unit_Tests:
     runs-on: self-hosted
     
     steps:
@@ -1372,7 +1372,7 @@ jobs:
         path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
         if-no-files-found: error
 
-  Search Specs:
+  Search_Specs:
     runs-on: self-hosted
     
     steps:
@@ -1391,7 +1391,7 @@ jobs:
         path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
         if-no-files-found: error
 
-  Logger Unit Tests:
+  Logger_Unit_Tests:
     runs-on: self-hosted
     
     steps:
@@ -1410,7 +1410,7 @@ jobs:
         path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
         if-no-files-found: error
 
-  Rename Tool Specs From UNC:
+  Rename_Tool_Specs_From_UNC:
     runs-on: self-hosted
     
     steps:
@@ -1429,7 +1429,7 @@ jobs:
         path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
         if-no-files-found: error
 
-  Not Parallelizable Unit Tests:
+  Not_Parallelizable_Unit_Tests:
     runs-on: self-hosted
     
     steps:
@@ -1448,7 +1448,7 @@ jobs:
         path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
         if-no-files-found: error
 
-  Database Workflow Execution Specs:
+  Database_Workflow_Execution_Specs:
     runs-on: self-hosted
     
     steps:
@@ -1467,7 +1467,7 @@ jobs:
         path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
         if-no-files-found: error
 
-  RabbitMQ Workflow Execution Specs:
+  RabbitMQ_Workflow_Execution_Specs:
     runs-on: self-hosted
     
     steps:
@@ -1486,7 +1486,7 @@ jobs:
         path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
         if-no-files-found: error
 
-  Studio Test Framework With HTTP Web Get Tools Specs:
+  Studio_Test_Framework_With_HTTP_Web_Get_Tools_Specs:
     runs-on: self-hosted
     
     steps:
@@ -1505,7 +1505,7 @@ jobs:
         path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
         if-no-files-found: error
 
-  Studio Test Framework With HTTP Web Delete Tools Specs:
+  Studio_Test_Framework_With_HTTP_Web_Delete_Tools_Specs:
     runs-on: self-hosted
     
     steps:
@@ -1524,7 +1524,7 @@ jobs:
         path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
         if-no-files-found: error
 
-  Studio Test Framework With HTTP Web Post Tools Specs:
+  Studio_Test_Framework_With_HTTP_Web_Post_Tools_Specs:
     runs-on: self-hosted
     
     steps:
@@ -1543,7 +1543,7 @@ jobs:
         path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
         if-no-files-found: error
 
-  Studio Test Framework With HTTP Web Put Tools Specs:
+  Studio_Test_Framework_With_HTTP_Web_Put_Tools_Specs:
     runs-on: self-hosted
     
     steps:
@@ -1562,7 +1562,7 @@ jobs:
         path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
         if-no-files-found: error
 
-  Studio Test Framework With RabbitMQ Tools Specs:
+  Studio_Test_Framework_With_RabbitMQ_Tools_Specs:
     runs-on: self-hosted
     
     steps:
@@ -1581,7 +1581,7 @@ jobs:
         path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
         if-no-files-found: error
 
-  Database Subworkflow Execution Specs:
+  Database_Subworkflow_Execution_Specs:
     runs-on: self-hosted
     
     steps:
@@ -1603,7 +1603,7 @@ jobs:
   Publish Test Results:  
     runs-on: self-hosted
     if: always()
-    needs: [Zip Tool Specs, Email Tools Specs, Resource Tools Specs, File And Folder Copy Tool Specs, Data Tools Specs, Request Service Name View Models Unit Tests, Unzip Tool Specs Validation, Recordset Tools Specs, File And Folder Rename Tool Specs, Other Tools Specs, File And Folder Move Tool Specs, File Read Tool Specs, Infrastructure Unit Tests, New Folder Read Tool Specs, Write File Tool Specs, Loop Construct Tools Specs, Utility Tools Specs, Folder Read Tool Specs, SQL Bulk Insert Tool Specs, Control Flow Tools Specs, Studio View Models Unit Tests, File And Folder Create Tool Specs, Storage Unit Tests, Storage Tools Specs, File And Folder Delete Tool Specs, Scripting Tools Specs, Database Tools Specs, Auditing Unit Tests, Workflow Execution Specs, Studio Test Framework With Hello World Workflow Specs, Studio Test Framework With Utility Tools Specs, MS SQL Server Specs, Studio Test Framework With Data Tools Specs, Assign Workflow Execution Specs, Integration Tests, Studio Test Framework With Scripting Tools Specs, Other Activities Specs, Studio Test Framework With File And Folder Tools Specs, Studio Test Framework With HTTP Web Tools Specs, Studio Test Framework With Subworkflow Specs, Workflow Merging Specs, Example Workflow Execution Specs, Studio Test Framework Specs, Subworkflow Execution Specs, Oracle Execution Specs, Other Specs, Studio Test Framework With Deleted Resources Specs, SQL Integration Tests, For Each Workflow Execution Specs, Copy Tool Specs From Local, Move Tool Specs From Local, Rename Tool Specs From Local, Unzip Tool Specs From Local, Zip Tool Specs From Local, Copy Tool Specs From FTP, Move Tool Specs From FTP, Rename Tool Specs From FTP, Unzip Tool Specs From FTP, Zip Tool Specs From FTP, Copy Tool Specs From FTPS, Move Tool Specs From FTPS, Rename Tool Specs From FTPS, Unzip Tool Specs From FTPS, Zip Tool Specs From FTPS, Copy Tool Specs From SFTP, Move Tool Specs From SFTP, Rename Tool Specs From SFTP, Unzip Tool Specs From SFTP, Zip Tool Specs From SFTP, Copy Tool Specs From UNC, Move Tool Specs From UNC, Studio Core Unit Tests, Elasticsearch View Models Unit Tests, Search Specs, Logger Unit Tests, Rename Tool Specs From UNC, Not Parallelizable Unit Tests, Database Workflow Execution Specs, RabbitMQ Workflow Execution Specs, Studio Test Framework With HTTP Web Get Tools Specs, Studio Test Framework With HTTP Web Delete Tools Specs, Studio Test Framework With HTTP Web Post Tools Specs, Studio Test Framework With HTTP Web Put Tools Specs, Studio Test Framework With RabbitMQ Tools Specs, Database Subworkflow Execution Specs]
+    needs: [Zip_Tool_Specs, Email_Tools_Specs, Resource_Tools_Specs, File_And_Folder_Copy_Tool_Specs, Data_Tools_Specs, Request_Service_Name_View_Models_Unit_Tests, Unzip_Tool_Specs_Validation, Recordset_Tools_Specs, File_And_Folder_Rename_Tool_Specs, Other_Tools_Specs, File_And_Folder_Move_Tool_Specs, File_Read_Tool_Specs, Infrastructure_Unit_Tests, New_Folder_Read_Tool_Specs, Write_File_Tool_Specs, Loop_Construct_Tools_Specs, Utility_Tools_Specs, Folder_Read_Tool_Specs, SQL_Bulk_Insert_Tool_Specs, Control_Flow_Tools_Specs, Studio_View_Models_Unit_Tests, File_And_Folder_Create_Tool_Specs, Storage_Unit_Tests, Storage_Tools_Specs, File_And_Folder_Delete_Tool_Specs, Scripting_Tools_Specs, Database_Tools_Specs, Auditing_Unit_Tests, Workflow_Execution_Specs, Studio_Test_Framework_With_Hello_World_Workflow_Specs, Studio_Test_Framework_With_Utility_Tools_Specs, MS_SQL_Server_Specs, Studio_Test_Framework_With_Data_Tools_Specs, Assign_Workflow_Execution_Specs, Integration_Tests, Studio_Test_Framework_With_Scripting_Tools_Specs, Other_Activities_Specs, Studio_Test_Framework_With_File_And_Folder_Tools_Specs, Studio_Test_Framework_With_HTTP_Web_Tools_Specs, Studio_Test_Framework_With_Subworkflow_Specs, Workflow_Merging_Specs, Example_Workflow_Execution_Specs, Studio_Test_Framework_Specs, Subworkflow_Execution_Specs, Oracle_Execution_Specs, Other_Specs, Studio_Test_Framework_With_Deleted_Resources_Specs, SQL_Integration_Tests, For_Each_Workflow_Execution_Specs, Copy_Tool_Specs_From_Local, Move_Tool_Specs_From_Local, Rename_Tool_Specs_From_Local, Unzip_Tool_Specs_From_Local, Zip_Tool_Specs_From_Local, Copy_Tool_Specs_From_FTP, Move_Tool_Specs_From_FTP, Rename_Tool_Specs_From_FTP, Unzip_Tool_Specs_From_FTP, Zip_Tool_Specs_From_FTP, Copy_Tool_Specs_From_FTPS, Move_Tool_Specs_From_FTPS, Rename_Tool_Specs_From_FTPS, Unzip_Tool_Specs_From_FTPS, Zip_Tool_Specs_From_FTPS, Copy_Tool_Specs_From_SFTP, Move_Tool_Specs_From_SFTP, Rename_Tool_Specs_From_SFTP, Unzip_Tool_Specs_From_SFTP, Zip_Tool_Specs_From_SFTP, Copy_Tool_Specs_From_UNC, Move_Tool_Specs_From_UNC, Studio_Core_Unit_Tests, Elasticsearch_View_Models_Unit_Tests, Search_Specs, Logger_Unit_Tests, Rename_Tool_Specs_From_UNC, Not_Parallelizable_Unit_Tests, Database_Workflow_Execution_Specs, RabbitMQ_Workflow_Execution_Specs, Studio_Test_Framework_With_HTTP_Web_Get_Tools_Specs, Studio_Test_Framework_With_HTTP_Web_Delete_Tools_Specs, Studio_Test_Framework_With_HTTP_Web_Post_Tools_Specs, Studio_Test_Framework_With_HTTP_Web_Put_Tools_Specs, Studio_Test_Framework_With_RabbitMQ_Tools_Specs, Database_Subworkflow_Execution_Specs]
     
     steps:
     - name: Download      
