@@ -3,6 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:wv2="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
     mc:Ignorable="d"
     WindowStartupLocation="CenterScreen"
     Title="Warewolf"
@@ -12,7 +13,24 @@
     MinWidth="700"
     Closing="WebBrowserView_OnClosing">
     <Grid>
-        <WebBrowser x:Name="webBrowser"
+
+        <wv2:WebView2 x:Name="webView"
+            NavigationStarting="webView_NavigationStarting"
+            NavigationCompleted="webView_NavigationCompleted"
+            Margin="0,0,0,0"
+            RenderTransformOrigin="0.5,0.5">
+            <wv2:WebView2.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform />
+                    <SkewTransform />
+                    <RotateTransform Angle="-0.018" />
+                    <TranslateTransform />
+                </TransformGroup>
+            </wv2:WebView2.RenderTransform>
+
+        </wv2:WebView2>
+
+        <!--<WebBrowser x:Name="webBrowser"
             Navigating="WebBrowser_OnNavigating"
             Navigated="WebBrowserOnNavigated"
             Margin="0,0,0,0"
@@ -25,6 +43,6 @@
                     <TranslateTransform />
                 </TransformGroup>
             </WebBrowser.RenderTransform>
-        </WebBrowser>
+        </WebBrowser>-->
     </Grid>
 </Window>

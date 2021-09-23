@@ -24,10 +24,10 @@
         const monthNames = ["January", "February", "March", "April", "May", "June",
             "July", "August", "September", "October", "November", "December"
         ];
+        let helper = chrome.webview.hostObjects.helper;
 
-        jQuery(document).ready(function () {
-
-            let result = window.external.RetrieveSubscription();
+        jQuery(document).ready(async function () {
+            let result = await helper.RetrieveSubscription();
             let objData = jQuery.parseJSON(result);
 
             let planId = objData.PlanId.toUpperCase();
@@ -37,7 +37,7 @@
             $("#planStatus").text(getStatus(planStatus));
             $(".close-btn").click(function (e) {
                 e.preventDefault();
-                window.external.CloseBrowser();
+                helper.CloseBrowser();
             });
 
             function getStatus(key) {

@@ -11,12 +11,14 @@
             integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="styles/warewolf.css">
     <script type='text/javascript'>
+        let helper = chrome.webview.hostObjects.helper;
+
         jQuery(document).ready(function () {
             $(".close-btn").click(function (e) {
-                e.preventDefault();
-                window.external.CloseBrowser();
+                e.preventDefault(); 
+                helper.CloseBrowser();
             });
-            $(".submit-btn").click(function (e) {
+            $(".submit-btn").click(async function (e) {
                 e.preventDefault();
 
                 let valid = true;
@@ -44,8 +46,7 @@
                         }
                     }
                     if (valid === true) {
-                        let result = window.external.CreateSubscriptionWithId(email, subscriptionId);
-
+                        let result = await helper.CreateSubscriptionWithId(email, subscriptionId);
                         if (result === "Success") {
                             $("#errorContainer").css("display", "none");
                             $("#register-result").css("display", "block");

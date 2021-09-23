@@ -607,6 +607,166 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Properties\licenses.licx" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\93.0.961.52.manifest" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\concrt140.dll" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\d3dcompiler_47.dll" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\dual_engine_adapter_x64.dll" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\dual_engine_adapter_x86.dll" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\EBWebView\x86\EmbeddedBrowserWebView.dll" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Edge.dat" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\EdgeWebView.dat" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\eventlog_provider.dll" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\ffmpeg.dll" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\icudtl.dat" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\learning_tools.dll" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\libEGL.dll" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\libGLESv2.dll" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\libsmartscreen.dll" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\libsmartscreenn.dll" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Locales\af.pak" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Locales\am.pak" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Locales\ar.pak" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Locales\as.pak" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Locales\az.pak" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Locales\bg.pak" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Locales\bn-IN.pak" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Locales\bs.pak" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Locales\ca-Es-VALENCIA.pak" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Locales\ca.pak" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Locales\cs.pak" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Locales\cy.pak" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Locales\da.pak" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Locales\de.pak" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Locales\el.pak" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Locales\en-GB.pak" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Locales\en-US.pak" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Locales\es-419.pak" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Locales\es.pak" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Locales\et.pak" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Locales\eu.pak" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Locales\fa.pak" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Locales\fi.pak" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Locales\fil.pak" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Locales\fr-CA.pak" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Locales\fr.pak" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Locales\ga.pak" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Locales\gd.pak" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Locales\gl.pak" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Locales\gu.pak" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Locales\he.pak" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Locales\hi.pak" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Locales\hr.pak" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Locales\hu.pak" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Locales\id.pak" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Locales\is.pak" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Locales\it.pak" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Locales\ja.pak" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Locales\ka.pak" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Locales\kk.pak" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Locales\km.pak" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Locales\kn.pak" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Locales\ko.pak" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Locales\kok.pak" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Locales\lb.pak" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Locales\lo.pak" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Locales\lt.pak" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Locales\lv.pak" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Locales\mi.pak" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Locales\mk.pak" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Locales\ml.pak" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Locales\mr.pak" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Locales\ms.pak" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Locales\mt.pak" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Locales\nb.pak" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Locales\ne.pak" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Locales\nl.pak" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Locales\nn.pak" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Locales\or.pak" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Locales\pa.pak" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Locales\pl.pak" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Locales\pt-BR.pak" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Locales\pt-PT.pak" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Locales\qu.pak" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Locales\ro.pak" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Locales\ru.pak" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Locales\sk.pak" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Locales\sl.pak" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Locales\sq.pak" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Locales\sr-Cyrl-BA.pak" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Locales\sr-Latn-RS.pak" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Locales\sr.pak" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Locales\sv.pak" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Locales\ta.pak" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Locales\te.pak" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Locales\th.pak" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Locales\tr.pak" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Locales\tt.pak" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Locales\ug.pak" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Locales\uk.pak" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Locales\ur.pak" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Locales\vi.pak" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Locales\zh-CN.pak" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Locales\zh-TW.pak" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\MEIPreload\preloaded_data.pb" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\microsoft_apis.dll" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\microsoft_shell_integration.dll" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\mip_core.dll" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\mip_protection_sdk.dll" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\MLModels\autofill_labeling.ort" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\MLModels\autofill_labeling_email.ort" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\MLModels\nexturl.ort" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\mojo_core.dll" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\msedge.dll" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\msedge.dll.sig" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\msedgewebview2.exe" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\msedgewebview2.exe.sig" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\msedge_100_percent.pak" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\msedge_200_percent.pak" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\msedge_elf.dll" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\msvcp140.dll" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\nacl64.exe" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\nacl_irt_x86_32.nexe" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\nacl_irt_x86_64.nexe" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\notification_helper.exe" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\oneauth.dll" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\oneds.dll" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\onnxruntime.dll" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\onramp.dll" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\PlayReadyCdm\_platform_specific\win_x86\playreadycdm.dll" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\resources.pak" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\show_third_party_software_licenses.bat" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\swiftshader\libEGL.dll" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\swiftshader\libGLESv2.dll" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\telclient.dll" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Trust Protection Lists\Mu\Advertising" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Trust Protection Lists\Mu\Analytics" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Trust Protection Lists\Mu\CompatExceptions" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Trust Protection Lists\Mu\Content" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Trust Protection Lists\Mu\Cryptomining" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Trust Protection Lists\Mu\Entities" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Trust Protection Lists\Mu\Fingerprinting" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Trust Protection Lists\Mu\LICENSE" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Trust Protection Lists\Mu\Other" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Trust Protection Lists\Mu\Social" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Trust Protection Lists\Mu\TransparentAdvertisers" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Trust Protection Lists\Sigma\Advertising" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Trust Protection Lists\Sigma\Analytics" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Trust Protection Lists\Sigma\Content" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Trust Protection Lists\Sigma\Cryptomining" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Trust Protection Lists\Sigma\Entities" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Trust Protection Lists\Sigma\Fingerprinting" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Trust Protection Lists\Sigma\LICENSE" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Trust Protection Lists\Sigma\Other" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Trust Protection Lists\Sigma\Social" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Trust Protection Lists\Sigma\Staging" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\v8_context_snapshot.bin" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\vccorlib140.dll" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\vcruntime140.dll" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\vk_swiftshader.dll" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\vulkan-1.dll" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\WidevineCdm\_platform_specific\win_x86\widevinecdm.dll" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\WidevineCdm\_platform_specific\win_x86\widevinecdm.dll.sig" />
+    <None Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\wns_push_client.dll" />
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
@@ -811,6 +971,15 @@
     <Content Include="Help\PageNotAvailable.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Extensions\external_extensions.json" />
+    <Content Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\MEIPreload\manifest.json" />
+    <Content Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\MLModels\autofill_labeling_features.txt" />
+    <Content Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\MLModels\autofill_labeling_features_email.txt" />
+    <Content Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Notifications\SoftLandingAssetDark.gif" />
+    <Content Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Notifications\SoftLandingAssetLight.gif" />
+    <Content Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\Trust Protection Lists\manifest.json" />
+    <Content Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\vk_swiftshader_icd.json" />
+    <Content Include="Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\WidevineCdm\manifest.json" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ViewModels\Administration\" />
@@ -863,15 +1032,17 @@
     </PackageReference>
   </ItemGroup>
   <PropertyGroup>
-    <PostBuildEvent>if exist "$(SolutionDir)Dev2.Studio\bin\Debug\net48\win\Warewolf Studio.exe" (
-  if not exist "$(SolutionDir)Dev2.Studio\bin\Debug\net48\win\Trackerbird.x64.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.x64.dll" "$(SolutionDir)Dev2.Studio\bin\Debug\net48\win\Trackerbird.x64.dll"
-  if not exist "$(SolutionDir)Dev2.Studio\bin\Debug\net48\win\Trackerbird.x86.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.x86.dll" "$(SolutionDir)Dev2.Studio\bin\Debug\net48\win"
-  if not exist "$(SolutionDir)Dev2.Studio\bin\Debug\net48\win\Trackerbird.Tracker.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.Tracker.dll" "$(SolutionDir)Dev2.Studio\bin\Debug\net48\win"
+    <PostBuildEvent>if exist "C:\Repos\Dev\Dev2.Studio\bin\Debug\net48\win\Warewolf Studio.exe" (
+  if not exist "C:\Repos\Dev\Dev2.Studio\bin\Debug\net48\win\Trackerbird.x64.dll" copy /Y "C:\Repos\Dev\Binaries\Trackerbird.x64.dll" "C:\Repos\Dev\Dev2.Studio\bin\Debug\net48\win\Trackerbird.x64.dll"
+  if not exist "C:\Repos\Dev\Dev2.Studio\bin\Debug\net48\win\Trackerbird.x86.dll" copy /Y "C:\Repos\Dev\Binaries\Trackerbird.x86.dll" "C:\Repos\Dev\Dev2.Studio\bin\Debug\net48\win"
+  if not exist "C:\Repos\Dev\Dev2.Studio\bin\Debug\net48\win\Trackerbird.Tracker.dll" copy /Y "C:\Repos\Dev\Binaries\Trackerbird.Tracker.dll" "C:\Repos\Dev\Dev2.Studio\bin\Debug\net48\win"
 )
-if exist "$(SolutionDir)Dev2.Studio\bin\Release\net48\win\Warewolf Studio.exe" (
-  if not exist "$(SolutionDir)Dev2.Studio\bin\Release\net48\win\Trackerbird.x64.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.x64.dll" "$(SolutionDir)Dev2.Studio\bin\Release\net48\win\Trackerbird.x64.dll"
-  if not exist "$(SolutionDir)Dev2.Studio\bin\Release\net48\win\Trackerbird.x86.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.x86.dll" "$(SolutionDir)Dev2.Studio\bin\Release\net48\win"
-  if not exist "$(SolutionDir)Dev2.Studio\bin\Release\net48\win\Trackerbird.Tracker.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.Tracker.dll" "$(SolutionDir)Dev2.Studio\bin\Release\net48\win"
-)</PostBuildEvent>
+if exist "C:\Repos\Dev\Dev2.Studio\bin\Release\net48\win\Warewolf Studio.exe" (
+  if not exist "C:\Repos\Dev\Dev2.Studio\bin\Release\net48\win\Trackerbird.x64.dll" copy /Y "C:\Repos\Dev\Binaries\Trackerbird.x64.dll" "C:\Repos\Dev\Dev2.Studio\bin\Release\net48\win\Trackerbird.x64.dll"
+  if not exist "C:\Repos\Dev\Dev2.Studio\bin\Release\net48\win\Trackerbird.x86.dll" copy /Y "C:\Repos\Dev\Binaries\Trackerbird.x86.dll" "C:\Repos\Dev\Dev2.Studio\bin\Release\net48\win"
+  if not exist "C:\Repos\Dev\Dev2.Studio\bin\Release\net48\win\Trackerbird.Tracker.dll" copy /Y "C:\Repos\Dev\Binaries\Trackerbird.Tracker.dll" "C:\Repos\Dev\Dev2.Studio\bin\Release\net48\win"
+)
+
+XCOPY "C:\Repos\Dev\Dev2.Studio\Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86" "Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86\" /E /Y</PostBuildEvent>
   </PropertyGroup>
 </Project>

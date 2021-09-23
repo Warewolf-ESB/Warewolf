@@ -13,6 +13,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Windows.Controls;
 using System.Windows.Navigation;
 using Microsoft.Practices.Prism.Mvvm;
+using Microsoft.Web.WebView2.Core;
 using Warewolf.Studio.Core;
 
 namespace Warewolf.Studio.CustomControls
@@ -21,21 +22,32 @@ namespace Warewolf.Studio.CustomControls
     public partial class WebBrowserView : IView
     {
         private readonly Grid _blackoutGrid = new Grid();
+        private string _licenseType = "";
 
         public WebBrowserView(string licenseType)
         {
             InitializeComponent();
             PopupViewManageEffects.AddBlackOutEffect(_blackoutGrid);
+            _licenseType = licenseType;
+        }
 
+        public async System.Threading.Tasks.Task Initialize()
+        {
             var helper = new ScriptManager(this);
-            webBrowser.ObjectForScripting = helper;
-            webBrowser.AllowDrop = false;
-            webBrowser.Source = ScriptManager.GetSourceUri(licenseType);
+            const string installPath = "Microsoft.WebView2.FixedVersionRuntime.93.0.961.52.x86";
+
+            webView.CreationProperties = new Microsoft.Web.WebView2.Wpf.CoreWebView2CreationProperties { BrowserExecutableFolder = installPath };
+            var webView2Environment = await Microsoft.Web.WebView2.Core.CoreWebView2Environment.CreateAsync(installPath);
+
+            await webView.EnsureCoreWebView2Async(webView2Environment);
+            webView.CoreWebView2.AddHostObjectToScript(nameof(helper), helper);
+
+            webView.Source = ScriptManager.GetSourceUri(_licenseType);
         }
 
         private void WebBrowserOnNavigated(object sender, NavigationEventArgs e)
         {
-            ScriptManager.SetSilent(webBrowser, true); // make it silent
+            
         }
 
         private void WebBrowser_OnNavigating(object sender, NavigatingCancelEventArgs e)
@@ -61,6 +73,28 @@ namespace Warewolf.Studio.CustomControls
         private void WebBrowserView_OnClosing(object sender, CancelEventArgs e)
         {
             PopupViewManageEffects.RemoveBlackOutEffect(_blackoutGrid);
+        }
+
+        private void WebBrowser_OnNavigating(object sender, Microsoft.Web.WebView2.Core.CoreWebView2NavigationStartingEventArgs e)
+        {
+
+        }
+
+        private void webView_NavigationStarting(object sender, Microsoft.Web.WebView2.Core.CoreWebView2NavigationStartingEventArgs e)
+        {
+            //var helper = new ScriptManager(this);
+
+
+            //var installPath = System.IO.Path.Combine(System.IO.Directory.GetCurrentDirectory() , "WebView");  //@"C:\Program Files (x86)\WebView2Runtime\Microsoft.WebView2.FixedVersionRuntime.88.0.705.81.x64\";
+            //var webView2Environment = Microsoft.Web.WebView2.Core.CoreWebView2Environment.CreateAsync(installPath).Result;
+
+            //webView.EnsureCoreWebView2Async(webView2Environment).Wait();
+            //webView.CoreWebView2.AddHostObjectToScript(nameof(helper), helper);
+        }
+
+        private void webView_NavigationCompleted(object sender, Microsoft.Web.WebView2.Core.CoreWebView2NavigationCompletedEventArgs e)
+        {
+            
         }
     }
 }
