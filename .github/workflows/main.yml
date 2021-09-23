@@ -4,7 +4,7 @@ on: [push]
 
 jobs:
 
-  Zip_Tool_Specs:  
+  Zip Tool Specs:  
     runs-on: self-hosted
     
     steps:
@@ -14,31 +14,16 @@ jobs:
         fetch-depth: 0
     
     - name: Run Tests
-      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Zip Tool Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Zip Tool Specs.bat'"
 
-    - name: Publish Test Results
-      run: "&python.exe D:\\EnricoMi\\publish-unit-test-result-action\\v1\\python\\publish_unit_test_results.py"
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-        GITHUB_RETRIES: 10
-        COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Test Results"
-        COMMENT_TITLE: "Test Results"
-        FAIL_ON: "test failures"
-        FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
-        REPORT_INDIVIDUAL_RUNS: "false"
-        DEDUPLICATE_CLASSES_BY_FILE_NAME: "false"
-        HIDE_COMMENTS: "all but latest"
-        COMMENT_MODE: "update last"
-        COMPARE_TO_EARLIER_COMMIT: "true"
-        PULL_REQUEST_BUILD: "merge"
-        TEST_CHANGES_LIMIT: "10"
-        CHECK_RUN_ANNOTATIONS: "all tests, skipped tests"
-        CHECK_RUN_ANNOTATIONS_BRANCH: "develop"
-        SECONDS_BETWEEN_GITHUB_READS: "0.25"
-        SECONDS_BETWEEN_GITHUB_WRITES: "2.0"
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: Zip Tool Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
+        if-no-files-found: error
 
-  Email_Tools_Specs:
+  Email Tools Specs:
     runs-on: self-hosted
     
     steps:
@@ -48,31 +33,16 @@ jobs:
         fetch-depth: 0
     
     - name: Run Tests
-      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Email Tools Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Email Tools Specs.bat'"
 
-    - name: Publish Test Results
-      run: "&python.exe D:\\EnricoMi\\publish-unit-test-result-action\\v1\\python\\publish_unit_test_results.py"
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-        GITHUB_RETRIES: 10
-        COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Test Results"
-        COMMENT_TITLE: "Test Results"
-        FAIL_ON: "test failures"
-        FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
-        REPORT_INDIVIDUAL_RUNS: "false"
-        DEDUPLICATE_CLASSES_BY_FILE_NAME: "false"
-        HIDE_COMMENTS: "all but latest"
-        COMMENT_MODE: "update last"
-        COMPARE_TO_EARLIER_COMMIT: "true"
-        PULL_REQUEST_BUILD: "merge"
-        TEST_CHANGES_LIMIT: "10"
-        CHECK_RUN_ANNOTATIONS: "all tests, skipped tests"
-        CHECK_RUN_ANNOTATIONS_BRANCH: "develop"
-        SECONDS_BETWEEN_GITHUB_READS: "0.25"
-        SECONDS_BETWEEN_GITHUB_WRITES: "2.0"
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: Email Tools Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
+        if-no-files-found: error
 
-  Resource_Tools_Specs:
+  Resource Tools Specs:
     runs-on: self-hosted
     
     steps:
@@ -82,31 +52,16 @@ jobs:
         fetch-depth: 0
     
     - name: Run Tests
-      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Resource Tools Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Resource Tools Specs.bat'"
 
-    - name: Publish Test Results
-      run: "&python.exe D:\\EnricoMi\\publish-unit-test-result-action\\v1\\python\\publish_unit_test_results.py"
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-        GITHUB_RETRIES: 10
-        COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Test Results"
-        COMMENT_TITLE: "Test Results"
-        FAIL_ON: "test failures"
-        FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
-        REPORT_INDIVIDUAL_RUNS: "false"
-        DEDUPLICATE_CLASSES_BY_FILE_NAME: "false"
-        HIDE_COMMENTS: "all but latest"
-        COMMENT_MODE: "update last"
-        COMPARE_TO_EARLIER_COMMIT: "true"
-        PULL_REQUEST_BUILD: "merge"
-        TEST_CHANGES_LIMIT: "10"
-        CHECK_RUN_ANNOTATIONS: "all tests, skipped tests"
-        CHECK_RUN_ANNOTATIONS_BRANCH: "develop"
-        SECONDS_BETWEEN_GITHUB_READS: "0.25"
-        SECONDS_BETWEEN_GITHUB_WRITES: "2.0"
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: Resource Tools Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
+        if-no-files-found: error
 
-  File_And_Folder_Copy_Tool_Specs:
+  File And Folder Copy Tool Specs:
     runs-on: self-hosted
     
     steps:
@@ -116,31 +71,16 @@ jobs:
         fetch-depth: 0
     
     - name: Run Tests
-      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\File And Folder Copy Tool Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\File And Folder Copy Tool Specs.bat'"
 
-    - name: Publish Test Results
-      run: "&python.exe D:\\EnricoMi\\publish-unit-test-result-action\\v1\\python\\publish_unit_test_results.py"
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-        GITHUB_RETRIES: 10
-        COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Test Results"
-        COMMENT_TITLE: "Test Results"
-        FAIL_ON: "test failures"
-        FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
-        REPORT_INDIVIDUAL_RUNS: "false"
-        DEDUPLICATE_CLASSES_BY_FILE_NAME: "false"
-        HIDE_COMMENTS: "all but latest"
-        COMMENT_MODE: "update last"
-        COMPARE_TO_EARLIER_COMMIT: "true"
-        PULL_REQUEST_BUILD: "merge"
-        TEST_CHANGES_LIMIT: "10"
-        CHECK_RUN_ANNOTATIONS: "all tests, skipped tests"
-        CHECK_RUN_ANNOTATIONS_BRANCH: "develop"
-        SECONDS_BETWEEN_GITHUB_READS: "0.25"
-        SECONDS_BETWEEN_GITHUB_WRITES: "2.0"
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: File And Folder Copy Tool Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
+        if-no-files-found: error
 
-  Data_Tools_Specs:
+  Data Tools Specs:
     runs-on: self-hosted
     
     steps:
@@ -150,31 +90,16 @@ jobs:
         fetch-depth: 0
     
     - name: Run Tests
-      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Data Tools Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Data Tools Specs.bat'"
 
-    - name: Publish Test Results
-      run: "&python.exe D:\\EnricoMi\\publish-unit-test-result-action\\v1\\python\\publish_unit_test_results.py"
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-        GITHUB_RETRIES: 10
-        COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Test Results"
-        COMMENT_TITLE: "Test Results"
-        FAIL_ON: "test failures"
-        FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
-        REPORT_INDIVIDUAL_RUNS: "false"
-        DEDUPLICATE_CLASSES_BY_FILE_NAME: "false"
-        HIDE_COMMENTS: "all but latest"
-        COMMENT_MODE: "update last"
-        COMPARE_TO_EARLIER_COMMIT: "true"
-        PULL_REQUEST_BUILD: "merge"
-        TEST_CHANGES_LIMIT: "10"
-        CHECK_RUN_ANNOTATIONS: "all tests, skipped tests"
-        CHECK_RUN_ANNOTATIONS_BRANCH: "develop"
-        SECONDS_BETWEEN_GITHUB_READS: "0.25"
-        SECONDS_BETWEEN_GITHUB_WRITES: "2.0"
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: Data Tools Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
+        if-no-files-found: error
 
-  Request_Service_Name_View_Models_Unit_Tests:
+  Request Service Name View Models Unit Tests:
     runs-on: self-hosted
     
     steps:
@@ -184,31 +109,16 @@ jobs:
         fetch-depth: 0
     
     - name: Run Tests
-      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Request Service Name View Models Unit Tests.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Request Service Name View Models Unit Tests.bat'"
 
-    - name: Publish Test Results
-      run: "&python.exe D:\\EnricoMi\\publish-unit-test-result-action\\v1\\python\\publish_unit_test_results.py"
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-        GITHUB_RETRIES: 10
-        COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Test Results"
-        COMMENT_TITLE: "Test Results"
-        FAIL_ON: "test failures"
-        FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
-        REPORT_INDIVIDUAL_RUNS: "false"
-        DEDUPLICATE_CLASSES_BY_FILE_NAME: "false"
-        HIDE_COMMENTS: "all but latest"
-        COMMENT_MODE: "update last"
-        COMPARE_TO_EARLIER_COMMIT: "true"
-        PULL_REQUEST_BUILD: "merge"
-        TEST_CHANGES_LIMIT: "10"
-        CHECK_RUN_ANNOTATIONS: "all tests, skipped tests"
-        CHECK_RUN_ANNOTATIONS_BRANCH: "develop"
-        SECONDS_BETWEEN_GITHUB_READS: "0.25"
-        SECONDS_BETWEEN_GITHUB_WRITES: "2.0"
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: Request Service Name View Models Unit Tests Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
+        if-no-files-found: error
 
-  Unzip_Tool_Specs_Validation:
+  Unzip Tool Specs Validation:
     runs-on: self-hosted
     
     steps:
@@ -218,31 +128,16 @@ jobs:
         fetch-depth: 0
     
     - name: Run Tests
-      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Unzip Tool Specs Validation.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Unzip Tool Specs Validation.bat'"
 
-    - name: Publish Test Results
-      run: "&python.exe D:\\EnricoMi\\publish-unit-test-result-action\\v1\\python\\publish_unit_test_results.py"
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-        GITHUB_RETRIES: 10
-        COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Test Results"
-        COMMENT_TITLE: "Test Results"
-        FAIL_ON: "test failures"
-        FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
-        REPORT_INDIVIDUAL_RUNS: "false"
-        DEDUPLICATE_CLASSES_BY_FILE_NAME: "false"
-        HIDE_COMMENTS: "all but latest"
-        COMMENT_MODE: "update last"
-        COMPARE_TO_EARLIER_COMMIT: "true"
-        PULL_REQUEST_BUILD: "merge"
-        TEST_CHANGES_LIMIT: "10"
-        CHECK_RUN_ANNOTATIONS: "all tests, skipped tests"
-        CHECK_RUN_ANNOTATIONS_BRANCH: "develop"
-        SECONDS_BETWEEN_GITHUB_READS: "0.25"
-        SECONDS_BETWEEN_GITHUB_WRITES: "2.0"
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: Unzip Tool Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
+        if-no-files-found: error
 
-  Recordset_Tools_Specs:
+  Recordset Tools Specs:
     runs-on: self-hosted
     
     steps:
@@ -252,31 +147,16 @@ jobs:
         fetch-depth: 0
     
     - name: Run Tests
-      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Recordset Tools Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Recordset Tools Specs.bat'"
 
-    - name: Publish Test Results
-      run: "&python.exe D:\\EnricoMi\\publish-unit-test-result-action\\v1\\python\\publish_unit_test_results.py"
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-        GITHUB_RETRIES: 10
-        COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Test Results"
-        COMMENT_TITLE: "Test Results"
-        FAIL_ON: "test failures"
-        FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
-        REPORT_INDIVIDUAL_RUNS: "false"
-        DEDUPLICATE_CLASSES_BY_FILE_NAME: "false"
-        HIDE_COMMENTS: "all but latest"
-        COMMENT_MODE: "update last"
-        COMPARE_TO_EARLIER_COMMIT: "true"
-        PULL_REQUEST_BUILD: "merge"
-        TEST_CHANGES_LIMIT: "10"
-        CHECK_RUN_ANNOTATIONS: "all tests, skipped tests"
-        CHECK_RUN_ANNOTATIONS_BRANCH: "develop"
-        SECONDS_BETWEEN_GITHUB_READS: "0.25"
-        SECONDS_BETWEEN_GITHUB_WRITES: "2.0"
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: Recordset Tools Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
+        if-no-files-found: error
 
-  File_And_Folder_Rename_Tool_Specs:
+  File And Folder Rename Tool Specs:
     runs-on: self-hosted
     
     steps:
@@ -286,31 +166,16 @@ jobs:
         fetch-depth: 0
     
     - name: Run Tests
-      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\File And Folder Rename Tool Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\File And Folder Rename Tool Specs.bat'"
 
-    - name: Publish Test Results
-      run: "&python.exe D:\\EnricoMi\\publish-unit-test-result-action\\v1\\python\\publish_unit_test_results.py"
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-        GITHUB_RETRIES: 10
-        COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Test Results"
-        COMMENT_TITLE: "Test Results"
-        FAIL_ON: "test failures"
-        FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
-        REPORT_INDIVIDUAL_RUNS: "false"
-        DEDUPLICATE_CLASSES_BY_FILE_NAME: "false"
-        HIDE_COMMENTS: "all but latest"
-        COMMENT_MODE: "update last"
-        COMPARE_TO_EARLIER_COMMIT: "true"
-        PULL_REQUEST_BUILD: "merge"
-        TEST_CHANGES_LIMIT: "10"
-        CHECK_RUN_ANNOTATIONS: "all tests, skipped tests"
-        CHECK_RUN_ANNOTATIONS_BRANCH: "develop"
-        SECONDS_BETWEEN_GITHUB_READS: "0.25"
-        SECONDS_BETWEEN_GITHUB_WRITES: "2.0"
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: File And Folder Rename Tool Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
+        if-no-files-found: error
 
-  Other_Tools_Specs:
+  Other Tools Specs:
     runs-on: self-hosted
     
     steps:
@@ -320,31 +185,16 @@ jobs:
         fetch-depth: 0
     
     - name: Run Tests
-      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Other Tools Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Other Tools Specs.bat'"
 
-    - name: Publish Test Results
-      run: "&python.exe D:\\EnricoMi\\publish-unit-test-result-action\\v1\\python\\publish_unit_test_results.py"
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-        GITHUB_RETRIES: 10
-        COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Test Results"
-        COMMENT_TITLE: "Test Results"
-        FAIL_ON: "test failures"
-        FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
-        REPORT_INDIVIDUAL_RUNS: "false"
-        DEDUPLICATE_CLASSES_BY_FILE_NAME: "false"
-        HIDE_COMMENTS: "all but latest"
-        COMMENT_MODE: "update last"
-        COMPARE_TO_EARLIER_COMMIT: "true"
-        PULL_REQUEST_BUILD: "merge"
-        TEST_CHANGES_LIMIT: "10"
-        CHECK_RUN_ANNOTATIONS: "all tests, skipped tests"
-        CHECK_RUN_ANNOTATIONS_BRANCH: "develop"
-        SECONDS_BETWEEN_GITHUB_READS: "0.25"
-        SECONDS_BETWEEN_GITHUB_WRITES: "2.0"
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: Other Tools Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
+        if-no-files-found: error
 
-  File_And_Folder_Move_Tool_Specs:
+  File And Folder Move Tool Specs:
     runs-on: self-hosted
     
     steps:
@@ -354,31 +204,16 @@ jobs:
         fetch-depth: 0
     
     - name: Run Tests
-      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\File And Folder Move Tool Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\File And Folder Move Tool Specs.bat'"
 
-    - name: Publish Test Results
-      run: "&python.exe D:\\EnricoMi\\publish-unit-test-result-action\\v1\\python\\publish_unit_test_results.py"
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-        GITHUB_RETRIES: 10
-        COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Test Results"
-        COMMENT_TITLE: "Test Results"
-        FAIL_ON: "test failures"
-        FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
-        REPORT_INDIVIDUAL_RUNS: "false"
-        DEDUPLICATE_CLASSES_BY_FILE_NAME: "false"
-        HIDE_COMMENTS: "all but latest"
-        COMMENT_MODE: "update last"
-        COMPARE_TO_EARLIER_COMMIT: "true"
-        PULL_REQUEST_BUILD: "merge"
-        TEST_CHANGES_LIMIT: "10"
-        CHECK_RUN_ANNOTATIONS: "all tests, skipped tests"
-        CHECK_RUN_ANNOTATIONS_BRANCH: "develop"
-        SECONDS_BETWEEN_GITHUB_READS: "0.25"
-        SECONDS_BETWEEN_GITHUB_WRITES: "2.0"
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: File And Folder Move Tool Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
+        if-no-files-found: error
 
-  File_Read_Tool_Specs:
+  File Read Tool Specs:
     runs-on: self-hosted
     
     steps:
@@ -388,31 +223,16 @@ jobs:
         fetch-depth: 0
     
     - name: Run Tests
-      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\File Read Tool Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\File Read Tool Specs.bat'"
 
-    - name: Publish Test Results
-      run: "&python.exe D:\\EnricoMi\\publish-unit-test-result-action\\v1\\python\\publish_unit_test_results.py"
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-        GITHUB_RETRIES: 10
-        COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Test Results"
-        COMMENT_TITLE: "Test Results"
-        FAIL_ON: "test failures"
-        FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
-        REPORT_INDIVIDUAL_RUNS: "false"
-        DEDUPLICATE_CLASSES_BY_FILE_NAME: "false"
-        HIDE_COMMENTS: "all but latest"
-        COMMENT_MODE: "update last"
-        COMPARE_TO_EARLIER_COMMIT: "true"
-        PULL_REQUEST_BUILD: "merge"
-        TEST_CHANGES_LIMIT: "10"
-        CHECK_RUN_ANNOTATIONS: "all tests, skipped tests"
-        CHECK_RUN_ANNOTATIONS_BRANCH: "develop"
-        SECONDS_BETWEEN_GITHUB_READS: "0.25"
-        SECONDS_BETWEEN_GITHUB_WRITES: "2.0"
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: File Read Tool Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
+        if-no-files-found: error
 
-  Infrastructure_Unit_Tests:
+  Infrastructure Unit Tests:
     runs-on: self-hosted
     
     steps:
@@ -422,31 +242,16 @@ jobs:
         fetch-depth: 0
     
     - name: Run Tests
-      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Infrastructure Unit Tests.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Infrastructure Unit Tests.bat'"
 
-    - name: Publish Test Results
-      run: "&python.exe D:\\EnricoMi\\publish-unit-test-result-action\\v1\\python\\publish_unit_test_results.py"
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-        GITHUB_RETRIES: 10
-        COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Test Results"
-        COMMENT_TITLE: "Test Results"
-        FAIL_ON: "test failures"
-        FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
-        REPORT_INDIVIDUAL_RUNS: "false"
-        DEDUPLICATE_CLASSES_BY_FILE_NAME: "false"
-        HIDE_COMMENTS: "all but latest"
-        COMMENT_MODE: "update last"
-        COMPARE_TO_EARLIER_COMMIT: "true"
-        PULL_REQUEST_BUILD: "merge"
-        TEST_CHANGES_LIMIT: "10"
-        CHECK_RUN_ANNOTATIONS: "all tests, skipped tests"
-        CHECK_RUN_ANNOTATIONS_BRANCH: "develop"
-        SECONDS_BETWEEN_GITHUB_READS: "0.25"
-        SECONDS_BETWEEN_GITHUB_WRITES: "2.0"
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: Infrastructure Unit Tests Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
+        if-no-files-found: error
 
-  New_Folder_Read_Tool_Specs:
+  New Folder Read Tool Specs:
     runs-on: self-hosted
     
     steps:
@@ -456,31 +261,16 @@ jobs:
         fetch-depth: 0
     
     - name: Run Tests
-      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\New Folder Read Tool Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\New Folder Read Tool Specs.bat'"
 
-    - name: Publish Test Results
-      run: "&python.exe D:\\EnricoMi\\publish-unit-test-result-action\\v1\\python\\publish_unit_test_results.py"
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-        GITHUB_RETRIES: 10
-        COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Test Results"
-        COMMENT_TITLE: "Test Results"
-        FAIL_ON: "test failures"
-        FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
-        REPORT_INDIVIDUAL_RUNS: "false"
-        DEDUPLICATE_CLASSES_BY_FILE_NAME: "false"
-        HIDE_COMMENTS: "all but latest"
-        COMMENT_MODE: "update last"
-        COMPARE_TO_EARLIER_COMMIT: "true"
-        PULL_REQUEST_BUILD: "merge"
-        TEST_CHANGES_LIMIT: "10"
-        CHECK_RUN_ANNOTATIONS: "all tests, skipped tests"
-        CHECK_RUN_ANNOTATIONS_BRANCH: "develop"
-        SECONDS_BETWEEN_GITHUB_READS: "0.25"
-        SECONDS_BETWEEN_GITHUB_WRITES: "2.0"
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: New Folder Read Tool Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
+        if-no-files-found: error
 
-  Write_File_Tool_Specs:
+  Write File Tool Specs:
     runs-on: self-hosted
     
     steps:
@@ -490,31 +280,16 @@ jobs:
         fetch-depth: 0
     
     - name: Run Tests
-      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Write File Tool Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Write File Tool Specs.bat'"
 
-    - name: Publish Test Results
-      run: "&python.exe D:\\EnricoMi\\publish-unit-test-result-action\\v1\\python\\publish_unit_test_results.py"
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-        GITHUB_RETRIES: 10
-        COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Test Results"
-        COMMENT_TITLE: "Test Results"
-        FAIL_ON: "test failures"
-        FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
-        REPORT_INDIVIDUAL_RUNS: "false"
-        DEDUPLICATE_CLASSES_BY_FILE_NAME: "false"
-        HIDE_COMMENTS: "all but latest"
-        COMMENT_MODE: "update last"
-        COMPARE_TO_EARLIER_COMMIT: "true"
-        PULL_REQUEST_BUILD: "merge"
-        TEST_CHANGES_LIMIT: "10"
-        CHECK_RUN_ANNOTATIONS: "all tests, skipped tests"
-        CHECK_RUN_ANNOTATIONS_BRANCH: "develop"
-        SECONDS_BETWEEN_GITHUB_READS: "0.25"
-        SECONDS_BETWEEN_GITHUB_WRITES: "2.0"
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+        name:  Write File Tool Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
+        if-no-files-found: error
 
-  Loop_Construct_Tools_Specs:
+  Loop Construct Tools Specs:
     runs-on: self-hosted
     
     steps:
@@ -524,31 +299,16 @@ jobs:
         fetch-depth: 0
     
     - name: Run Tests
-      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Loop Construct Tools Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Loop Construct Tools Specs.bat'"
 
-    - name: Publish Test Results
-      run: "&python.exe D:\\EnricoMi\\publish-unit-test-result-action\\v1\\python\\publish_unit_test_results.py"
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-        GITHUB_RETRIES: 10
-        COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Test Results"
-        COMMENT_TITLE: "Test Results"
-        FAIL_ON: "test failures"
-        FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
-        REPORT_INDIVIDUAL_RUNS: "false"
-        DEDUPLICATE_CLASSES_BY_FILE_NAME: "false"
-        HIDE_COMMENTS: "all but latest"
-        COMMENT_MODE: "update last"
-        COMPARE_TO_EARLIER_COMMIT: "true"
-        PULL_REQUEST_BUILD: "merge"
-        TEST_CHANGES_LIMIT: "10"
-        CHECK_RUN_ANNOTATIONS: "all tests, skipped tests"
-        CHECK_RUN_ANNOTATIONS_BRANCH: "develop"
-        SECONDS_BETWEEN_GITHUB_READS: "0.25"
-        SECONDS_BETWEEN_GITHUB_WRITES: "2.0"
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: Loop Construct Tools Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
+        if-no-files-found: error
 
-  Utility_Tools_Specs:
+  Utility Tools Specs:
     runs-on: self-hosted
     
     steps:
@@ -558,31 +318,16 @@ jobs:
         fetch-depth: 0
     
     - name: Run Tests
-      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Utility Tools Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Utility Tools Specs.bat'"
 
-    - name: Publish Test Results
-      run: "&python.exe D:\\EnricoMi\\publish-unit-test-result-action\\v1\\python\\publish_unit_test_results.py"
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-        GITHUB_RETRIES: 10
-        COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Test Results"
-        COMMENT_TITLE: "Test Results"
-        FAIL_ON: "test failures"
-        FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
-        REPORT_INDIVIDUAL_RUNS: "false"
-        DEDUPLICATE_CLASSES_BY_FILE_NAME: "false"
-        HIDE_COMMENTS: "all but latest"
-        COMMENT_MODE: "update last"
-        COMPARE_TO_EARLIER_COMMIT: "true"
-        PULL_REQUEST_BUILD: "merge"
-        TEST_CHANGES_LIMIT: "10"
-        CHECK_RUN_ANNOTATIONS: "all tests, skipped tests"
-        CHECK_RUN_ANNOTATIONS_BRANCH: "develop"
-        SECONDS_BETWEEN_GITHUB_READS: "0.25"
-        SECONDS_BETWEEN_GITHUB_WRITES: "2.0"
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: Utility Tools Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
+        if-no-files-found: error
 
-  Folder_Read_Tool_Specs:
+  Folder Read Tool Specs:
     runs-on: self-hosted
     
     steps:
@@ -592,31 +337,16 @@ jobs:
         fetch-depth: 0
     
     - name: Run Tests
-      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Folder Read Tool Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Folder Read Tool Specs.bat'"
 
-    - name: Publish Test Results
-      run: "&python.exe D:\\EnricoMi\\publish-unit-test-result-action\\v1\\python\\publish_unit_test_results.py"
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-        GITHUB_RETRIES: 10
-        COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Test Results"
-        COMMENT_TITLE: "Test Results"
-        FAIL_ON: "test failures"
-        FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
-        REPORT_INDIVIDUAL_RUNS: "false"
-        DEDUPLICATE_CLASSES_BY_FILE_NAME: "false"
-        HIDE_COMMENTS: "all but latest"
-        COMMENT_MODE: "update last"
-        COMPARE_TO_EARLIER_COMMIT: "true"
-        PULL_REQUEST_BUILD: "merge"
-        TEST_CHANGES_LIMIT: "10"
-        CHECK_RUN_ANNOTATIONS: "all tests, skipped tests"
-        CHECK_RUN_ANNOTATIONS_BRANCH: "develop"
-        SECONDS_BETWEEN_GITHUB_READS: "0.25"
-        SECONDS_BETWEEN_GITHUB_WRITES: "2.0"
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: Folder Read Tool Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
+        if-no-files-found: error
 
-  SQL_Bulk_Insert_Tool_Specs:
+  SQL Bulk Insert Tool Specs:
     runs-on: self-hosted
     
     steps:
@@ -626,31 +356,16 @@ jobs:
         fetch-depth: 0
     
     - name: Run Tests
-      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\SQL Bulk Insert Tool Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\SQL Bulk Insert Tool Specs.bat'"
 
-    - name: Publish Test Results
-      run: "&python.exe D:\\EnricoMi\\publish-unit-test-result-action\\v1\\python\\publish_unit_test_results.py"
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-        GITHUB_RETRIES: 10
-        COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Test Results"
-        COMMENT_TITLE: "Test Results"
-        FAIL_ON: "test failures"
-        FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
-        REPORT_INDIVIDUAL_RUNS: "false"
-        DEDUPLICATE_CLASSES_BY_FILE_NAME: "false"
-        HIDE_COMMENTS: "all but latest"
-        COMMENT_MODE: "update last"
-        COMPARE_TO_EARLIER_COMMIT: "true"
-        PULL_REQUEST_BUILD: "merge"
-        TEST_CHANGES_LIMIT: "10"
-        CHECK_RUN_ANNOTATIONS: "all tests, skipped tests"
-        CHECK_RUN_ANNOTATIONS_BRANCH: "develop"
-        SECONDS_BETWEEN_GITHUB_READS: "0.25"
-        SECONDS_BETWEEN_GITHUB_WRITES: "2.0"
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: SQL Bulk Insert Tool Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
+        if-no-files-found: error
 
-  Control_Flow_Tools_Specs:
+  Control Flow Tools Specs:
     runs-on: self-hosted
     
     steps:
@@ -660,31 +375,16 @@ jobs:
         fetch-depth: 0
     
     - name: Run Tests
-      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Control Flow Tools Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Control Flow Tools Specs.bat'"
 
-    - name: Publish Test Results
-      run: "&python.exe D:\\EnricoMi\\publish-unit-test-result-action\\v1\\python\\publish_unit_test_results.py"
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-        GITHUB_RETRIES: 10
-        COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Test Results"
-        COMMENT_TITLE: "Test Results"
-        FAIL_ON: "test failures"
-        FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
-        REPORT_INDIVIDUAL_RUNS: "false"
-        DEDUPLICATE_CLASSES_BY_FILE_NAME: "false"
-        HIDE_COMMENTS: "all but latest"
-        COMMENT_MODE: "update last"
-        COMPARE_TO_EARLIER_COMMIT: "true"
-        PULL_REQUEST_BUILD: "merge"
-        TEST_CHANGES_LIMIT: "10"
-        CHECK_RUN_ANNOTATIONS: "all tests, skipped tests"
-        CHECK_RUN_ANNOTATIONS_BRANCH: "develop"
-        SECONDS_BETWEEN_GITHUB_READS: "0.25"
-        SECONDS_BETWEEN_GITHUB_WRITES: "2.0"
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: Control Flow Tools Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
+        if-no-files-found: error
 
-  Studio_View_Models_Unit_Tests:
+  Studio View Models Unit Tests:
     runs-on: self-hosted
     
     steps:
@@ -694,31 +394,16 @@ jobs:
         fetch-depth: 0
     
     - name: Run Tests
-      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Studio View Models Unit Tests.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Studio View Models Unit Tests.bat'"
 
-    - name: Publish Test Results
-      run: "&python.exe D:\\EnricoMi\\publish-unit-test-result-action\\v1\\python\\publish_unit_test_results.py"
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-        GITHUB_RETRIES: 10
-        COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Test Results"
-        COMMENT_TITLE: "Test Results"
-        FAIL_ON: "test failures"
-        FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
-        REPORT_INDIVIDUAL_RUNS: "false"
-        DEDUPLICATE_CLASSES_BY_FILE_NAME: "false"
-        HIDE_COMMENTS: "all but latest"
-        COMMENT_MODE: "update last"
-        COMPARE_TO_EARLIER_COMMIT: "true"
-        PULL_REQUEST_BUILD: "merge"
-        TEST_CHANGES_LIMIT: "10"
-        CHECK_RUN_ANNOTATIONS: "all tests, skipped tests"
-        CHECK_RUN_ANNOTATIONS_BRANCH: "develop"
-        SECONDS_BETWEEN_GITHUB_READS: "0.25"
-        SECONDS_BETWEEN_GITHUB_WRITES: "2.0"
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: Studio View Models Unit Tests Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
+        if-no-files-found: error
 
-  File_And_Folder_Create_Tool_Specs:
+  File And Folder Create Tool Specs:
     runs-on: self-hosted
     
     steps:
@@ -728,31 +413,16 @@ jobs:
         fetch-depth: 0
     
     - name: Run Tests
-      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\File And Folder Create Tool Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\File And Folder Create Tool Specs.bat'"
 
-    - name: Publish Test Results
-      run: "&python.exe D:\\EnricoMi\\publish-unit-test-result-action\\v1\\python\\publish_unit_test_results.py"
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-        GITHUB_RETRIES: 10
-        COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Test Results"
-        COMMENT_TITLE: "Test Results"
-        FAIL_ON: "test failures"
-        FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
-        REPORT_INDIVIDUAL_RUNS: "false"
-        DEDUPLICATE_CLASSES_BY_FILE_NAME: "false"
-        HIDE_COMMENTS: "all but latest"
-        COMMENT_MODE: "update last"
-        COMPARE_TO_EARLIER_COMMIT: "true"
-        PULL_REQUEST_BUILD: "merge"
-        TEST_CHANGES_LIMIT: "10"
-        CHECK_RUN_ANNOTATIONS: "all tests, skipped tests"
-        CHECK_RUN_ANNOTATIONS_BRANCH: "develop"
-        SECONDS_BETWEEN_GITHUB_READS: "0.25"
-        SECONDS_BETWEEN_GITHUB_WRITES: "2.0"
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: File And Folder Create Tool Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
+        if-no-files-found: error
 
-  Storage_Unit_Tests:
+  Storage Unit Tests:
     runs-on: self-hosted
     
     steps:
@@ -762,31 +432,16 @@ jobs:
         fetch-depth: 0
     
     - name: Run Tests
-      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Storage Unit Tests.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Storage Unit Tests.bat'"
 
-    - name: Publish Test Results
-      run: "&python.exe D:\\EnricoMi\\publish-unit-test-result-action\\v1\\python\\publish_unit_test_results.py"
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-        GITHUB_RETRIES: 10
-        COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Test Results"
-        COMMENT_TITLE: "Test Results"
-        FAIL_ON: "test failures"
-        FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
-        REPORT_INDIVIDUAL_RUNS: "false"
-        DEDUPLICATE_CLASSES_BY_FILE_NAME: "false"
-        HIDE_COMMENTS: "all but latest"
-        COMMENT_MODE: "update last"
-        COMPARE_TO_EARLIER_COMMIT: "true"
-        PULL_REQUEST_BUILD: "merge"
-        TEST_CHANGES_LIMIT: "10"
-        CHECK_RUN_ANNOTATIONS: "all tests, skipped tests"
-        CHECK_RUN_ANNOTATIONS_BRANCH: "develop"
-        SECONDS_BETWEEN_GITHUB_READS: "0.25"
-        SECONDS_BETWEEN_GITHUB_WRITES: "2.0"
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: Storage Unit Tests Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
+        if-no-files-found: error
 
-  Storage_Tools_Specs:
+  Storage Tools Specs:
     runs-on: self-hosted
     
     steps:
@@ -796,31 +451,16 @@ jobs:
         fetch-depth: 0
     
     - name: Run Tests
-      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Storage Tools Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Storage Tools Specs.bat'"
 
-    - name: Publish Test Results
-      run: "&python.exe D:\\EnricoMi\\publish-unit-test-result-action\\v1\\python\\publish_unit_test_results.py"
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-        GITHUB_RETRIES: 10
-        COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Test Results"
-        COMMENT_TITLE: "Test Results"
-        FAIL_ON: "test failures"
-        FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
-        REPORT_INDIVIDUAL_RUNS: "false"
-        DEDUPLICATE_CLASSES_BY_FILE_NAME: "false"
-        HIDE_COMMENTS: "all but latest"
-        COMMENT_MODE: "update last"
-        COMPARE_TO_EARLIER_COMMIT: "true"
-        PULL_REQUEST_BUILD: "merge"
-        TEST_CHANGES_LIMIT: "10"
-        CHECK_RUN_ANNOTATIONS: "all tests, skipped tests"
-        CHECK_RUN_ANNOTATIONS_BRANCH: "develop"
-        SECONDS_BETWEEN_GITHUB_READS: "0.25"
-        SECONDS_BETWEEN_GITHUB_WRITES: "2.0"
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: Storage Tools Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
+        if-no-files-found: error
 
-  File_And_Folder_Delete_Tool_Specs:
+  File And Folder Delete Tool Specs:
     runs-on: self-hosted
     
     steps:
@@ -830,31 +470,16 @@ jobs:
         fetch-depth: 0
     
     - name: Run Tests
-      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\File And Folder Delete Tool Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\File And Folder Delete Tool Specs.bat'"
 
-    - name: Publish Test Results
-      run: "&python.exe D:\\EnricoMi\\publish-unit-test-result-action\\v1\\python\\publish_unit_test_results.py"
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-        GITHUB_RETRIES: 10
-        COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Test Results"
-        COMMENT_TITLE: "Test Results"
-        FAIL_ON: "test failures"
-        FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
-        REPORT_INDIVIDUAL_RUNS: "false"
-        DEDUPLICATE_CLASSES_BY_FILE_NAME: "false"
-        HIDE_COMMENTS: "all but latest"
-        COMMENT_MODE: "update last"
-        COMPARE_TO_EARLIER_COMMIT: "true"
-        PULL_REQUEST_BUILD: "merge"
-        TEST_CHANGES_LIMIT: "10"
-        CHECK_RUN_ANNOTATIONS: "all tests, skipped tests"
-        CHECK_RUN_ANNOTATIONS_BRANCH: "develop"
-        SECONDS_BETWEEN_GITHUB_READS: "0.25"
-        SECONDS_BETWEEN_GITHUB_WRITES: "2.0"
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: File And Folder Delete Tool Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
+        if-no-files-found: error
 
-  Scripting_Tools_Specs:
+  Scripting Tools Specs:
     runs-on: self-hosted
     
     steps:
@@ -864,31 +489,16 @@ jobs:
         fetch-depth: 0
     
     - name: Run Tests
-      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Scripting Tools Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Scripting Tools Specs.bat'"
 
-    - name: Publish Test Results
-      run: "&python.exe D:\\EnricoMi\\publish-unit-test-result-action\\v1\\python\\publish_unit_test_results.py"
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-        GITHUB_RETRIES: 10
-        COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Test Results"
-        COMMENT_TITLE: "Test Results"
-        FAIL_ON: "test failures"
-        FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
-        REPORT_INDIVIDUAL_RUNS: "false"
-        DEDUPLICATE_CLASSES_BY_FILE_NAME: "false"
-        HIDE_COMMENTS: "all but latest"
-        COMMENT_MODE: "update last"
-        COMPARE_TO_EARLIER_COMMIT: "true"
-        PULL_REQUEST_BUILD: "merge"
-        TEST_CHANGES_LIMIT: "10"
-        CHECK_RUN_ANNOTATIONS: "all tests, skipped tests"
-        CHECK_RUN_ANNOTATIONS_BRANCH: "develop"
-        SECONDS_BETWEEN_GITHUB_READS: "0.25"
-        SECONDS_BETWEEN_GITHUB_WRITES: "2.0"
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: Scripting Tools Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
+        if-no-files-found: error
 
-  Database_Tools_Specs:
+  Database Tools Specs:
     runs-on: self-hosted
     
     steps:
@@ -898,31 +508,16 @@ jobs:
         fetch-depth: 0
     
     - name: Run Tests
-      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Database Tools Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Database Tools Specs.bat'"
 
-    - name: Publish Test Results
-      run: "&python.exe D:\\EnricoMi\\publish-unit-test-result-action\\v1\\python\\publish_unit_test_results.py"
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-        GITHUB_RETRIES: 10
-        COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Test Results"
-        COMMENT_TITLE: "Test Results"
-        FAIL_ON: "test failures"
-        FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
-        REPORT_INDIVIDUAL_RUNS: "false"
-        DEDUPLICATE_CLASSES_BY_FILE_NAME: "false"
-        HIDE_COMMENTS: "all but latest"
-        COMMENT_MODE: "update last"
-        COMPARE_TO_EARLIER_COMMIT: "true"
-        PULL_REQUEST_BUILD: "merge"
-        TEST_CHANGES_LIMIT: "10"
-        CHECK_RUN_ANNOTATIONS: "all tests, skipped tests"
-        CHECK_RUN_ANNOTATIONS_BRANCH: "develop"
-        SECONDS_BETWEEN_GITHUB_READS: "0.25"
-        SECONDS_BETWEEN_GITHUB_WRITES: "2.0"
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: Database Tools Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
+        if-no-files-found: error
 
-  Auditing_Unit_Tests:
+  Auditing Unit Tests:
     runs-on: self-hosted
     
     steps:
@@ -932,31 +527,16 @@ jobs:
         fetch-depth: 0
     
     - name: Run Tests
-      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Auditing Unit Tests.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Auditing Unit Tests.bat'"
 
-    - name: Publish Test Results
-      run: "&python.exe D:\\EnricoMi\\publish-unit-test-result-action\\v1\\python\\publish_unit_test_results.py"
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-        GITHUB_RETRIES: 10
-        COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Test Results"
-        COMMENT_TITLE: "Test Results"
-        FAIL_ON: "test failures"
-        FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
-        REPORT_INDIVIDUAL_RUNS: "false"
-        DEDUPLICATE_CLASSES_BY_FILE_NAME: "false"
-        HIDE_COMMENTS: "all but latest"
-        COMMENT_MODE: "update last"
-        COMPARE_TO_EARLIER_COMMIT: "true"
-        PULL_REQUEST_BUILD: "merge"
-        TEST_CHANGES_LIMIT: "10"
-        CHECK_RUN_ANNOTATIONS: "all tests, skipped tests"
-        CHECK_RUN_ANNOTATIONS_BRANCH: "develop"
-        SECONDS_BETWEEN_GITHUB_READS: "0.25"
-        SECONDS_BETWEEN_GITHUB_WRITES: "2.0"
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: Auditing Unit Tests Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
+        if-no-files-found: error
 
-  Workflow_Execution_Specs:
+  Workflow Execution Specs:
     runs-on: self-hosted
     
     steps:
@@ -966,31 +546,16 @@ jobs:
         fetch-depth: 0
     
     - name: Run Tests
-      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Workflow Execution Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Workflow Execution Specs.bat'"
 
-    - name: Publish Test Results
-      run: "&python.exe D:\\EnricoMi\\publish-unit-test-result-action\\v1\\python\\publish_unit_test_results.py"
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-        GITHUB_RETRIES: 10
-        COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Test Results"
-        COMMENT_TITLE: "Test Results"
-        FAIL_ON: "test failures"
-        FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
-        REPORT_INDIVIDUAL_RUNS: "false"
-        DEDUPLICATE_CLASSES_BY_FILE_NAME: "false"
-        HIDE_COMMENTS: "all but latest"
-        COMMENT_MODE: "update last"
-        COMPARE_TO_EARLIER_COMMIT: "true"
-        PULL_REQUEST_BUILD: "merge"
-        TEST_CHANGES_LIMIT: "10"
-        CHECK_RUN_ANNOTATIONS: "all tests, skipped tests"
-        CHECK_RUN_ANNOTATIONS_BRANCH: "develop"
-        SECONDS_BETWEEN_GITHUB_READS: "0.25"
-        SECONDS_BETWEEN_GITHUB_WRITES: "2.0"
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: Workflow Execution Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
+        if-no-files-found: error
 
-  Studio_Test_Framework_With_Hello_World_Workflow_Specs:
+  Studio Test Framework With Hello World Workflow Specs:
     runs-on: self-hosted
     
     steps:
@@ -1000,31 +565,16 @@ jobs:
         fetch-depth: 0
     
     - name: Run Tests
-      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Studio Test Framework With Hello World Workflow Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Studio Test Framework With Hello World Workflow Specs.bat'"
 
-    - name: Publish Test Results
-      run: "&python.exe D:\\EnricoMi\\publish-unit-test-result-action\\v1\\python\\publish_unit_test_results.py"
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-        GITHUB_RETRIES: 10
-        COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Test Results"
-        COMMENT_TITLE: "Test Results"
-        FAIL_ON: "test failures"
-        FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
-        REPORT_INDIVIDUAL_RUNS: "false"
-        DEDUPLICATE_CLASSES_BY_FILE_NAME: "false"
-        HIDE_COMMENTS: "all but latest"
-        COMMENT_MODE: "update last"
-        COMPARE_TO_EARLIER_COMMIT: "true"
-        PULL_REQUEST_BUILD: "merge"
-        TEST_CHANGES_LIMIT: "10"
-        CHECK_RUN_ANNOTATIONS: "all tests, skipped tests"
-        CHECK_RUN_ANNOTATIONS_BRANCH: "develop"
-        SECONDS_BETWEEN_GITHUB_READS: "0.25"
-        SECONDS_BETWEEN_GITHUB_WRITES: "2.0"
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: Studio Test Framework With Hello World Workflow Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
+        if-no-files-found: error
 
-  Studio_Test_Framework_With_Utility_Tools_Specs:
+  Studio Test Framework With Utility Tools Specs:
     runs-on: self-hosted
     
     steps:
@@ -1034,31 +584,16 @@ jobs:
         fetch-depth: 0
     
     - name: Run Tests
-      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Studio Test Framework With Utility Tools Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Studio Test Framework With Utility Tools Specs.bat'"
 
-    - name: Publish Test Results
-      run: "&python.exe D:\\EnricoMi\\publish-unit-test-result-action\\v1\\python\\publish_unit_test_results.py"
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-        GITHUB_RETRIES: 10
-        COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Test Results"
-        COMMENT_TITLE: "Test Results"
-        FAIL_ON: "test failures"
-        FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
-        REPORT_INDIVIDUAL_RUNS: "false"
-        DEDUPLICATE_CLASSES_BY_FILE_NAME: "false"
-        HIDE_COMMENTS: "all but latest"
-        COMMENT_MODE: "update last"
-        COMPARE_TO_EARLIER_COMMIT: "true"
-        PULL_REQUEST_BUILD: "merge"
-        TEST_CHANGES_LIMIT: "10"
-        CHECK_RUN_ANNOTATIONS: "all tests, skipped tests"
-        CHECK_RUN_ANNOTATIONS_BRANCH: "develop"
-        SECONDS_BETWEEN_GITHUB_READS: "0.25"
-        SECONDS_BETWEEN_GITHUB_WRITES: "2.0"
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: Studio Test Framework With Utility Tools Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
+        if-no-files-found: error
 
-  MS_SQL_Server_Specs:
+  MS SQL Server Specs:
     runs-on: self-hosted
     
     steps:
@@ -1068,31 +603,16 @@ jobs:
         fetch-depth: 0
     
     - name: Run Tests
-      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\MS SQL Server Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\MS SQL Server Specs.bat'"
 
-    - name: Publish Test Results
-      run: "&python.exe D:\\EnricoMi\\publish-unit-test-result-action\\v1\\python\\publish_unit_test_results.py"
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-        GITHUB_RETRIES: 10
-        COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Test Results"
-        COMMENT_TITLE: "Test Results"
-        FAIL_ON: "test failures"
-        FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
-        REPORT_INDIVIDUAL_RUNS: "false"
-        DEDUPLICATE_CLASSES_BY_FILE_NAME: "false"
-        HIDE_COMMENTS: "all but latest"
-        COMMENT_MODE: "update last"
-        COMPARE_TO_EARLIER_COMMIT: "true"
-        PULL_REQUEST_BUILD: "merge"
-        TEST_CHANGES_LIMIT: "10"
-        CHECK_RUN_ANNOTATIONS: "all tests, skipped tests"
-        CHECK_RUN_ANNOTATIONS_BRANCH: "develop"
-        SECONDS_BETWEEN_GITHUB_READS: "0.25"
-        SECONDS_BETWEEN_GITHUB_WRITES: "2.0"
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: MS SQL Server Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
+        if-no-files-found: error
 
-  Studio_Test_Framework_With_Data_Tools_Specs:
+  Studio Test Framework With Data Tools Specs:
     runs-on: self-hosted
     
     steps:
@@ -1102,31 +622,16 @@ jobs:
         fetch-depth: 0
     
     - name: Run Tests
-      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Studio Test Framework With Data Tools Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Studio Test Framework With Data Tools Specs.bat'"
 
-    - name: Publish Test Results
-      run: "&python.exe D:\\EnricoMi\\publish-unit-test-result-action\\v1\\python\\publish_unit_test_results.py"
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-        GITHUB_RETRIES: 10
-        COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Test Results"
-        COMMENT_TITLE: "Test Results"
-        FAIL_ON: "test failures"
-        FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
-        REPORT_INDIVIDUAL_RUNS: "false"
-        DEDUPLICATE_CLASSES_BY_FILE_NAME: "false"
-        HIDE_COMMENTS: "all but latest"
-        COMMENT_MODE: "update last"
-        COMPARE_TO_EARLIER_COMMIT: "true"
-        PULL_REQUEST_BUILD: "merge"
-        TEST_CHANGES_LIMIT: "10"
-        CHECK_RUN_ANNOTATIONS: "all tests, skipped tests"
-        CHECK_RUN_ANNOTATIONS_BRANCH: "develop"
-        SECONDS_BETWEEN_GITHUB_READS: "0.25"
-        SECONDS_BETWEEN_GITHUB_WRITES: "2.0"
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: Studio Test Framework With Data Tools Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
+        if-no-files-found: error
 
-  Assign_Workflow_Execution_Specs:
+  Assign Workflow Execution Specs:
     runs-on: self-hosted
     
     steps:
@@ -1136,31 +641,16 @@ jobs:
         fetch-depth: 0
     
     - name: Run Tests
-      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Assign Workflow Execution Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Assign Workflow Execution Specs.bat'"
 
-    - name: Publish Test Results
-      run: "&python.exe D:\\EnricoMi\\publish-unit-test-result-action\\v1\\python\\publish_unit_test_results.py"
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-        GITHUB_RETRIES: 10
-        COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Test Results"
-        COMMENT_TITLE: "Test Results"
-        FAIL_ON: "test failures"
-        FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
-        REPORT_INDIVIDUAL_RUNS: "false"
-        DEDUPLICATE_CLASSES_BY_FILE_NAME: "false"
-        HIDE_COMMENTS: "all but latest"
-        COMMENT_MODE: "update last"
-        COMPARE_TO_EARLIER_COMMIT: "true"
-        PULL_REQUEST_BUILD: "merge"
-        TEST_CHANGES_LIMIT: "10"
-        CHECK_RUN_ANNOTATIONS: "all tests, skipped tests"
-        CHECK_RUN_ANNOTATIONS_BRANCH: "develop"
-        SECONDS_BETWEEN_GITHUB_READS: "0.25"
-        SECONDS_BETWEEN_GITHUB_WRITES: "2.0"
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: Assign Workflow Execution Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
+        if-no-files-found: error
 
-  Integration_Tests:
+  Integration Tests:
     runs-on: self-hosted
     
     steps:
@@ -1170,31 +660,16 @@ jobs:
         fetch-depth: 0
     
     - name: Run Tests
-      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Integration Tests.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Integration Tests.bat'"
 
-    - name: Publish Test Results
-      run: "&python.exe D:\\EnricoMi\\publish-unit-test-result-action\\v1\\python\\publish_unit_test_results.py"
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-        GITHUB_RETRIES: 10
-        COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Test Results"
-        COMMENT_TITLE: "Test Results"
-        FAIL_ON: "test failures"
-        FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
-        REPORT_INDIVIDUAL_RUNS: "false"
-        DEDUPLICATE_CLASSES_BY_FILE_NAME: "false"
-        HIDE_COMMENTS: "all but latest"
-        COMMENT_MODE: "update last"
-        COMPARE_TO_EARLIER_COMMIT: "true"
-        PULL_REQUEST_BUILD: "merge"
-        TEST_CHANGES_LIMIT: "10"
-        CHECK_RUN_ANNOTATIONS: "all tests, skipped tests"
-        CHECK_RUN_ANNOTATIONS_BRANCH: "develop"
-        SECONDS_BETWEEN_GITHUB_READS: "0.25"
-        SECONDS_BETWEEN_GITHUB_WRITES: "2.0"
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: Integration Tests Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
+        if-no-files-found: error
 
-  Studio_Test_Framework_With_Scripting_Tools_Specs:
+  Studio Test Framework With Scripting Tools Specs:
     runs-on: self-hosted
     
     steps:
@@ -1204,31 +679,16 @@ jobs:
         fetch-depth: 0
     
     - name: Run Tests
-      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Studio Test Framework With Scripting Tools Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Studio Test Framework With Scripting Tools Specs.bat'"
 
-    - name: Publish Test Results
-      run: "&python.exe D:\\EnricoMi\\publish-unit-test-result-action\\v1\\python\\publish_unit_test_results.py"
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-        GITHUB_RETRIES: 10
-        COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Test Results"
-        COMMENT_TITLE: "Test Results"
-        FAIL_ON: "test failures"
-        FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
-        REPORT_INDIVIDUAL_RUNS: "false"
-        DEDUPLICATE_CLASSES_BY_FILE_NAME: "false"
-        HIDE_COMMENTS: "all but latest"
-        COMMENT_MODE: "update last"
-        COMPARE_TO_EARLIER_COMMIT: "true"
-        PULL_REQUEST_BUILD: "merge"
-        TEST_CHANGES_LIMIT: "10"
-        CHECK_RUN_ANNOTATIONS: "all tests, skipped tests"
-        CHECK_RUN_ANNOTATIONS_BRANCH: "develop"
-        SECONDS_BETWEEN_GITHUB_READS: "0.25"
-        SECONDS_BETWEEN_GITHUB_WRITES: "2.0"
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: Studio Test Framework With Scripting Tools Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
+        if-no-files-found: error
 
-  Other_Activities_Specs:
+  Other Activities Specs:
     runs-on: self-hosted
     
     steps:
@@ -1238,31 +698,16 @@ jobs:
         fetch-depth: 0
     
     - name: Run Tests
-      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Other Activities Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Other Activities Specs.bat'"
 
-    - name: Publish Test Results
-      run: "&python.exe D:\\EnricoMi\\publish-unit-test-result-action\\v1\\python\\publish_unit_test_results.py"
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-        GITHUB_RETRIES: 10
-        COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Test Results"
-        COMMENT_TITLE: "Test Results"
-        FAIL_ON: "test failures"
-        FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
-        REPORT_INDIVIDUAL_RUNS: "false"
-        DEDUPLICATE_CLASSES_BY_FILE_NAME: "false"
-        HIDE_COMMENTS: "all but latest"
-        COMMENT_MODE: "update last"
-        COMPARE_TO_EARLIER_COMMIT: "true"
-        PULL_REQUEST_BUILD: "merge"
-        TEST_CHANGES_LIMIT: "10"
-        CHECK_RUN_ANNOTATIONS: "all tests, skipped tests"
-        CHECK_RUN_ANNOTATIONS_BRANCH: "develop"
-        SECONDS_BETWEEN_GITHUB_READS: "0.25"
-        SECONDS_BETWEEN_GITHUB_WRITES: "2.0"
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: Other Activities Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
+        if-no-files-found: error
 
-  Studio_Test_Framework_With_File_And_Folder_Tools_Specs:
+  Studio Test Framework With File And Folder Tools Specs:
     runs-on: self-hosted
     
     steps:
@@ -1272,31 +717,16 @@ jobs:
         fetch-depth: 0
     
     - name: Run Tests
-      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Studio Test Framework With File And Folder Tools Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Studio Test Framework With File And Folder Tools Specs.bat'"
 
-    - name: Publish Test Results
-      run: "&python.exe D:\\EnricoMi\\publish-unit-test-result-action\\v1\\python\\publish_unit_test_results.py"
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-        GITHUB_RETRIES: 10
-        COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Test Results"
-        COMMENT_TITLE: "Test Results"
-        FAIL_ON: "test failures"
-        FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
-        REPORT_INDIVIDUAL_RUNS: "false"
-        DEDUPLICATE_CLASSES_BY_FILE_NAME: "false"
-        HIDE_COMMENTS: "all but latest"
-        COMMENT_MODE: "update last"
-        COMPARE_TO_EARLIER_COMMIT: "true"
-        PULL_REQUEST_BUILD: "merge"
-        TEST_CHANGES_LIMIT: "10"
-        CHECK_RUN_ANNOTATIONS: "all tests, skipped tests"
-        CHECK_RUN_ANNOTATIONS_BRANCH: "develop"
-        SECONDS_BETWEEN_GITHUB_READS: "0.25"
-        SECONDS_BETWEEN_GITHUB_WRITES: "2.0"
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: Studio Test Framework With File And Folder Tools Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
+        if-no-files-found: error
 
-  Studio_Test_Framework_With_HTTP_Web_Tools_Specs:
+  Studio Test Framework With HTTP Web Tools Specs:
     runs-on: self-hosted
     
     steps:
@@ -1306,31 +736,16 @@ jobs:
         fetch-depth: 0
     
     - name: Run Tests
-      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Studio Test Framework With HTTP Web Tools Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Studio Test Framework With HTTP Web Tools Specs.bat'"
 
-    - name: Publish Test Results
-      run: "&python.exe D:\\EnricoMi\\publish-unit-test-result-action\\v1\\python\\publish_unit_test_results.py"
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-        GITHUB_RETRIES: 10
-        COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Test Results"
-        COMMENT_TITLE: "Test Results"
-        FAIL_ON: "test failures"
-        FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
-        REPORT_INDIVIDUAL_RUNS: "false"
-        DEDUPLICATE_CLASSES_BY_FILE_NAME: "false"
-        HIDE_COMMENTS: "all but latest"
-        COMMENT_MODE: "update last"
-        COMPARE_TO_EARLIER_COMMIT: "true"
-        PULL_REQUEST_BUILD: "merge"
-        TEST_CHANGES_LIMIT: "10"
-        CHECK_RUN_ANNOTATIONS: "all tests, skipped tests"
-        CHECK_RUN_ANNOTATIONS_BRANCH: "develop"
-        SECONDS_BETWEEN_GITHUB_READS: "0.25"
-        SECONDS_BETWEEN_GITHUB_WRITES: "2.0"
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: Studio Test Framework With HTTP Web Tools Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
+        if-no-files-found: error
 
-  Studio_Test_Framework_With_Subworkflow_Specs:
+  Studio Test Framework With Subworkflow Specs:
     runs-on: self-hosted
     
     steps:
@@ -1340,31 +755,16 @@ jobs:
         fetch-depth: 0
     
     - name: Run Tests
-      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Studio Test Framework With Subworkflow Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Studio Test Framework With Subworkflow Specs.bat'"
 
-    - name: Publish Test Results
-      run: "&python.exe D:\\EnricoMi\\publish-unit-test-result-action\\v1\\python\\publish_unit_test_results.py"
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-        GITHUB_RETRIES: 10
-        COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Test Results"
-        COMMENT_TITLE: "Test Results"
-        FAIL_ON: "test failures"
-        FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
-        REPORT_INDIVIDUAL_RUNS: "false"
-        DEDUPLICATE_CLASSES_BY_FILE_NAME: "false"
-        HIDE_COMMENTS: "all but latest"
-        COMMENT_MODE: "update last"
-        COMPARE_TO_EARLIER_COMMIT: "true"
-        PULL_REQUEST_BUILD: "merge"
-        TEST_CHANGES_LIMIT: "10"
-        CHECK_RUN_ANNOTATIONS: "all tests, skipped tests"
-        CHECK_RUN_ANNOTATIONS_BRANCH: "develop"
-        SECONDS_BETWEEN_GITHUB_READS: "0.25"
-        SECONDS_BETWEEN_GITHUB_WRITES: "2.0"
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: Studio Test Framework With Subworkflow Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
+        if-no-files-found: error
 
-  Workflow_Merging_Specs:
+  Workflow Merging Specs:
     runs-on: self-hosted
     
     steps:
@@ -1374,31 +774,16 @@ jobs:
         fetch-depth: 0
     
     - name: Run Tests
-      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Workflow Merging Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Workflow Merging Specs.bat'"
 
-    - name: Publish Test Results
-      run: "&python.exe D:\\EnricoMi\\publish-unit-test-result-action\\v1\\python\\publish_unit_test_results.py"
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-        GITHUB_RETRIES: 10
-        COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Test Results"
-        COMMENT_TITLE: "Test Results"
-        FAIL_ON: "test failures"
-        FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
-        REPORT_INDIVIDUAL_RUNS: "false"
-        DEDUPLICATE_CLASSES_BY_FILE_NAME: "false"
-        HIDE_COMMENTS: "all but latest"
-        COMMENT_MODE: "update last"
-        COMPARE_TO_EARLIER_COMMIT: "true"
-        PULL_REQUEST_BUILD: "merge"
-        TEST_CHANGES_LIMIT: "10"
-        CHECK_RUN_ANNOTATIONS: "all tests, skipped tests"
-        CHECK_RUN_ANNOTATIONS_BRANCH: "develop"
-        SECONDS_BETWEEN_GITHUB_READS: "0.25"
-        SECONDS_BETWEEN_GITHUB_WRITES: "2.0"
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: Workflow Merging Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
+        if-no-files-found: error
 
-  Example_Workflow_Execution_Specs:
+  Example Workflow Execution Specs:
     runs-on: self-hosted
     
     steps:
@@ -1408,31 +793,16 @@ jobs:
         fetch-depth: 0
     
     - name: Run Tests
-      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Example Workflow Execution Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Example Workflow Execution Specs.bat'"
 
-    - name: Publish Test Results
-      run: "&python.exe D:\\EnricoMi\\publish-unit-test-result-action\\v1\\python\\publish_unit_test_results.py"
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-        GITHUB_RETRIES: 10
-        COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Test Results"
-        COMMENT_TITLE: "Test Results"
-        FAIL_ON: "test failures"
-        FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
-        REPORT_INDIVIDUAL_RUNS: "false"
-        DEDUPLICATE_CLASSES_BY_FILE_NAME: "false"
-        HIDE_COMMENTS: "all but latest"
-        COMMENT_MODE: "update last"
-        COMPARE_TO_EARLIER_COMMIT: "true"
-        PULL_REQUEST_BUILD: "merge"
-        TEST_CHANGES_LIMIT: "10"
-        CHECK_RUN_ANNOTATIONS: "all tests, skipped tests"
-        CHECK_RUN_ANNOTATIONS_BRANCH: "develop"
-        SECONDS_BETWEEN_GITHUB_READS: "0.25"
-        SECONDS_BETWEEN_GITHUB_WRITES: "2.0"
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: Example Workflow Execution Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
+        if-no-files-found: error
 
-  Studio_Test_Framework_Specs:
+  Studio Test Framework Specs:
     runs-on: self-hosted
     
     steps:
@@ -1442,31 +812,16 @@ jobs:
         fetch-depth: 0
     
     - name: Run Tests
-      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Studio Test Framework Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Studio Test Framework Specs.bat'"
 
-    - name: Publish Test Results
-      run: "&python.exe D:\\EnricoMi\\publish-unit-test-result-action\\v1\\python\\publish_unit_test_results.py"
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-        GITHUB_RETRIES: 10
-        COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Test Results"
-        COMMENT_TITLE: "Test Results"
-        FAIL_ON: "test failures"
-        FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
-        REPORT_INDIVIDUAL_RUNS: "false"
-        DEDUPLICATE_CLASSES_BY_FILE_NAME: "false"
-        HIDE_COMMENTS: "all but latest"
-        COMMENT_MODE: "update last"
-        COMPARE_TO_EARLIER_COMMIT: "true"
-        PULL_REQUEST_BUILD: "merge"
-        TEST_CHANGES_LIMIT: "10"
-        CHECK_RUN_ANNOTATIONS: "all tests, skipped tests"
-        CHECK_RUN_ANNOTATIONS_BRANCH: "develop"
-        SECONDS_BETWEEN_GITHUB_READS: "0.25"
-        SECONDS_BETWEEN_GITHUB_WRITES: "2.0"
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: Studio Test Framework Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
+        if-no-files-found: error
 
-  Subworkflow_Execution_Specs:
+  Subworkflow Execution Specs:
     runs-on: self-hosted
     
     steps:
@@ -1476,31 +831,16 @@ jobs:
         fetch-depth: 0
     
     - name: Run Tests
-      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Subworkflow Execution Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Subworkflow Execution Specs.bat'"
 
-    - name: Publish Test Results
-      run: "&python.exe D:\\EnricoMi\\publish-unit-test-result-action\\v1\\python\\publish_unit_test_results.py"
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-        GITHUB_RETRIES: 10
-        COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Test Results"
-        COMMENT_TITLE: "Test Results"
-        FAIL_ON: "test failures"
-        FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
-        REPORT_INDIVIDUAL_RUNS: "false"
-        DEDUPLICATE_CLASSES_BY_FILE_NAME: "false"
-        HIDE_COMMENTS: "all but latest"
-        COMMENT_MODE: "update last"
-        COMPARE_TO_EARLIER_COMMIT: "true"
-        PULL_REQUEST_BUILD: "merge"
-        TEST_CHANGES_LIMIT: "10"
-        CHECK_RUN_ANNOTATIONS: "all tests, skipped tests"
-        CHECK_RUN_ANNOTATIONS_BRANCH: "develop"
-        SECONDS_BETWEEN_GITHUB_READS: "0.25"
-        SECONDS_BETWEEN_GITHUB_WRITES: "2.0"
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: Subworkflow Execution Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
+        if-no-files-found: error
 
-  Other_Specs:
+  Other Specs:
     runs-on: self-hosted
     
     steps:
@@ -1510,31 +850,16 @@ jobs:
         fetch-depth: 0
     
     - name: Run Tests
-      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Other Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Other Specs.bat'"
 
-    - name: Publish Test Results
-      run: "&python.exe D:\\EnricoMi\\publish-unit-test-result-action\\v1\\python\\publish_unit_test_results.py"
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-        GITHUB_RETRIES: 10
-        COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Test Results"
-        COMMENT_TITLE: "Test Results"
-        FAIL_ON: "test failures"
-        FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
-        REPORT_INDIVIDUAL_RUNS: "false"
-        DEDUPLICATE_CLASSES_BY_FILE_NAME: "false"
-        HIDE_COMMENTS: "all but latest"
-        COMMENT_MODE: "update last"
-        COMPARE_TO_EARLIER_COMMIT: "true"
-        PULL_REQUEST_BUILD: "merge"
-        TEST_CHANGES_LIMIT: "10"
-        CHECK_RUN_ANNOTATIONS: "all tests, skipped tests"
-        CHECK_RUN_ANNOTATIONS_BRANCH: "develop"
-        SECONDS_BETWEEN_GITHUB_READS: "0.25"
-        SECONDS_BETWEEN_GITHUB_WRITES: "2.0"
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: Other Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
+        if-no-files-found: error
 
-  Studio_Test_Framework_With_Deleted_Resources_Specs:
+  Studio Test Framework With Deleted Resources Specs:
     runs-on: self-hosted
     
     steps:
@@ -1544,31 +869,16 @@ jobs:
         fetch-depth: 0
     
     - name: Run Tests
-      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Studio Test Framework With Deleted Resources Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Studio Test Framework With Deleted Resources Specs.bat'"
 
-    - name: Publish Test Results
-      run: "&python.exe D:\\EnricoMi\\publish-unit-test-result-action\\v1\\python\\publish_unit_test_results.py"
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-        GITHUB_RETRIES: 10
-        COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Test Results"
-        COMMENT_TITLE: "Test Results"
-        FAIL_ON: "test failures"
-        FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
-        REPORT_INDIVIDUAL_RUNS: "false"
-        DEDUPLICATE_CLASSES_BY_FILE_NAME: "false"
-        HIDE_COMMENTS: "all but latest"
-        COMMENT_MODE: "update last"
-        COMPARE_TO_EARLIER_COMMIT: "true"
-        PULL_REQUEST_BUILD: "merge"
-        TEST_CHANGES_LIMIT: "10"
-        CHECK_RUN_ANNOTATIONS: "all tests, skipped tests"
-        CHECK_RUN_ANNOTATIONS_BRANCH: "develop"
-        SECONDS_BETWEEN_GITHUB_READS: "0.25"
-        SECONDS_BETWEEN_GITHUB_WRITES: "2.0"
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: Studio Test Framework With Deleted Resources Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
+        if-no-files-found: error
 
-  SQL_Integration_Tests:
+  SQL Integration Tests:
     runs-on: self-hosted
     
     steps:
@@ -1578,31 +888,16 @@ jobs:
         fetch-depth: 0
     
     - name: Run Tests
-      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\SQL Integration Tests.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\SQL Integration Tests.bat'"
 
-    - name: Publish Test Results
-      run: "&python.exe D:\\EnricoMi\\publish-unit-test-result-action\\v1\\python\\publish_unit_test_results.py"
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-        GITHUB_RETRIES: 10
-        COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Test Results"
-        COMMENT_TITLE: "Test Results"
-        FAIL_ON: "test failures"
-        FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
-        REPORT_INDIVIDUAL_RUNS: "false"
-        DEDUPLICATE_CLASSES_BY_FILE_NAME: "false"
-        HIDE_COMMENTS: "all but latest"
-        COMMENT_MODE: "update last"
-        COMPARE_TO_EARLIER_COMMIT: "true"
-        PULL_REQUEST_BUILD: "merge"
-        TEST_CHANGES_LIMIT: "10"
-        CHECK_RUN_ANNOTATIONS: "all tests, skipped tests"
-        CHECK_RUN_ANNOTATIONS_BRANCH: "develop"
-        SECONDS_BETWEEN_GITHUB_READS: "0.25"
-        SECONDS_BETWEEN_GITHUB_WRITES: "2.0"
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: SQL Integration Tests Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
+        if-no-files-found: error
 
-  For_Each_Workflow_Execution_Specs:
+  For Each Workflow Execution Specs:
     runs-on: self-hosted
     
     steps:
@@ -1612,31 +907,16 @@ jobs:
         fetch-depth: 0
     
     - name: Run Tests
-      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\For Each Workflow Execution Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\For Each Workflow Execution Specs.bat'"
 
-    - name: Publish Test Results
-      run: "&python.exe D:\\EnricoMi\\publish-unit-test-result-action\\v1\\python\\publish_unit_test_results.py"
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-        GITHUB_RETRIES: 10
-        COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Test Results"
-        COMMENT_TITLE: "Test Results"
-        FAIL_ON: "test failures"
-        FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
-        REPORT_INDIVIDUAL_RUNS: "false"
-        DEDUPLICATE_CLASSES_BY_FILE_NAME: "false"
-        HIDE_COMMENTS: "all but latest"
-        COMMENT_MODE: "update last"
-        COMPARE_TO_EARLIER_COMMIT: "true"
-        PULL_REQUEST_BUILD: "merge"
-        TEST_CHANGES_LIMIT: "10"
-        CHECK_RUN_ANNOTATIONS: "all tests, skipped tests"
-        CHECK_RUN_ANNOTATIONS_BRANCH: "develop"
-        SECONDS_BETWEEN_GITHUB_READS: "0.25"
-        SECONDS_BETWEEN_GITHUB_WRITES: "2.0"
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: For Each Workflow Execution Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
+        if-no-files-found: error
 
-  Copy_Tool_Specs_From_Local:
+  Copy Tool Specs From Local:
     runs-on: self-hosted
     
     steps:
@@ -1646,31 +926,16 @@ jobs:
         fetch-depth: 0
     
     - name: Run Tests
-      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Copy Tool Specs From Local.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Copy Tool Specs From Local.bat'"
 
-    - name: Publish Test Results
-      run: "&python.exe D:\\EnricoMi\\publish-unit-test-result-action\\v1\\python\\publish_unit_test_results.py"
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-        GITHUB_RETRIES: 10
-        COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Test Results"
-        COMMENT_TITLE: "Test Results"
-        FAIL_ON: "test failures"
-        FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
-        REPORT_INDIVIDUAL_RUNS: "false"
-        DEDUPLICATE_CLASSES_BY_FILE_NAME: "false"
-        HIDE_COMMENTS: "all but latest"
-        COMMENT_MODE: "update last"
-        COMPARE_TO_EARLIER_COMMIT: "true"
-        PULL_REQUEST_BUILD: "merge"
-        TEST_CHANGES_LIMIT: "10"
-        CHECK_RUN_ANNOTATIONS: "all tests, skipped tests"
-        CHECK_RUN_ANNOTATIONS_BRANCH: "develop"
-        SECONDS_BETWEEN_GITHUB_READS: "0.25"
-        SECONDS_BETWEEN_GITHUB_WRITES: "2.0"
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: Copy Tool Specs From Local Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
+        if-no-files-found: error
 
-  Move_Tool_Specs_From_Local:
+  Move Tool Specs From Local:
     runs-on: self-hosted
     
     steps:
@@ -1680,31 +945,16 @@ jobs:
         fetch-depth: 0
     
     - name: Run Tests
-      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Move Tool Specs From Local.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Move Tool Specs From Local.bat'"
 
-    - name: Publish Test Results
-      run: "&python.exe D:\\EnricoMi\\publish-unit-test-result-action\\v1\\python\\publish_unit_test_results.py"
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-        GITHUB_RETRIES: 10
-        COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Test Results"
-        COMMENT_TITLE: "Test Results"
-        FAIL_ON: "test failures"
-        FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
-        REPORT_INDIVIDUAL_RUNS: "false"
-        DEDUPLICATE_CLASSES_BY_FILE_NAME: "false"
-        HIDE_COMMENTS: "all but latest"
-        COMMENT_MODE: "update last"
-        COMPARE_TO_EARLIER_COMMIT: "true"
-        PULL_REQUEST_BUILD: "merge"
-        TEST_CHANGES_LIMIT: "10"
-        CHECK_RUN_ANNOTATIONS: "all tests, skipped tests"
-        CHECK_RUN_ANNOTATIONS_BRANCH: "develop"
-        SECONDS_BETWEEN_GITHUB_READS: "0.25"
-        SECONDS_BETWEEN_GITHUB_WRITES: "2.0"
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: Move Tool Specs From Local Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
+        if-no-files-found: error
 
-  Rename_Tool_Specs_From_Local:
+  Rename Tool Specs From Local:
     runs-on: self-hosted
     
     steps:
@@ -1714,31 +964,16 @@ jobs:
         fetch-depth: 0
     
     - name: Run Tests
-      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Rename Tool Specs From Local.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Rename Tool Specs From Local.bat'"
 
-    - name: Publish Test Results
-      run: "&python.exe D:\\EnricoMi\\publish-unit-test-result-action\\v1\\python\\publish_unit_test_results.py"
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-        GITHUB_RETRIES: 10
-        COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Test Results"
-        COMMENT_TITLE: "Test Results"
-        FAIL_ON: "test failures"
-        FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
-        REPORT_INDIVIDUAL_RUNS: "false"
-        DEDUPLICATE_CLASSES_BY_FILE_NAME: "false"
-        HIDE_COMMENTS: "all but latest"
-        COMMENT_MODE: "update last"
-        COMPARE_TO_EARLIER_COMMIT: "true"
-        PULL_REQUEST_BUILD: "merge"
-        TEST_CHANGES_LIMIT: "10"
-        CHECK_RUN_ANNOTATIONS: "all tests, skipped tests"
-        CHECK_RUN_ANNOTATIONS_BRANCH: "develop"
-        SECONDS_BETWEEN_GITHUB_READS: "0.25"
-        SECONDS_BETWEEN_GITHUB_WRITES: "2.0"
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: Rename Tool Specs From Local Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
+        if-no-files-found: error
 
-  Unzip_Tool_Specs_From_Local:
+  Unzip Tool Specs From Local:
     runs-on: self-hosted
     
     steps:
@@ -1748,31 +983,16 @@ jobs:
         fetch-depth: 0
     
     - name: Run Tests
-      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Unzip Tool Specs From Local.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Unzip Tool Specs From Local.bat'"
 
-    - name: Publish Test Results
-      run: "&python.exe D:\\EnricoMi\\publish-unit-test-result-action\\v1\\python\\publish_unit_test_results.py"
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-        GITHUB_RETRIES: 10
-        COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Test Results"
-        COMMENT_TITLE: "Test Results"
-        FAIL_ON: "test failures"
-        FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
-        REPORT_INDIVIDUAL_RUNS: "false"
-        DEDUPLICATE_CLASSES_BY_FILE_NAME: "false"
-        HIDE_COMMENTS: "all but latest"
-        COMMENT_MODE: "update last"
-        COMPARE_TO_EARLIER_COMMIT: "true"
-        PULL_REQUEST_BUILD: "merge"
-        TEST_CHANGES_LIMIT: "10"
-        CHECK_RUN_ANNOTATIONS: "all tests, skipped tests"
-        CHECK_RUN_ANNOTATIONS_BRANCH: "develop"
-        SECONDS_BETWEEN_GITHUB_READS: "0.25"
-        SECONDS_BETWEEN_GITHUB_WRITES: "2.0"
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: Unzip Tool Specs From Local Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
+        if-no-files-found: error
 
-  Zip_Tool_Specs_From_Local:
+  Zip Tool Specs From Local:
     runs-on: self-hosted
     
     steps:
@@ -1782,31 +1002,16 @@ jobs:
         fetch-depth: 0
     
     - name: Run Tests
-      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Zip Tool Specs From Local.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Zip Tool Specs From Local.bat'"
 
-    - name: Publish Test Results
-      run: "&python.exe D:\\EnricoMi\\publish-unit-test-result-action\\v1\\python\\publish_unit_test_results.py"
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-        GITHUB_RETRIES: 10
-        COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Test Results"
-        COMMENT_TITLE: "Test Results"
-        FAIL_ON: "test failures"
-        FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
-        REPORT_INDIVIDUAL_RUNS: "false"
-        DEDUPLICATE_CLASSES_BY_FILE_NAME: "false"
-        HIDE_COMMENTS: "all but latest"
-        COMMENT_MODE: "update last"
-        COMPARE_TO_EARLIER_COMMIT: "true"
-        PULL_REQUEST_BUILD: "merge"
-        TEST_CHANGES_LIMIT: "10"
-        CHECK_RUN_ANNOTATIONS: "all tests, skipped tests"
-        CHECK_RUN_ANNOTATIONS_BRANCH: "develop"
-        SECONDS_BETWEEN_GITHUB_READS: "0.25"
-        SECONDS_BETWEEN_GITHUB_WRITES: "2.0"
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: Zip Tool Specs From Local Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
+        if-no-files-found: error
 
-  Copy_Tool_Specs_From_FTP:
+  Copy Tool Specs From FTP:
     runs-on: self-hosted
     
     steps:
@@ -1816,31 +1021,16 @@ jobs:
         fetch-depth: 0
     
     - name: Run Tests
-      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Copy Tool Specs From FTP.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Copy Tool Specs From FTP.bat'"
 
-    - name: Publish Test Results
-      run: "&python.exe D:\\EnricoMi\\publish-unit-test-result-action\\v1\\python\\publish_unit_test_results.py"
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-        GITHUB_RETRIES: 10
-        COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Test Results"
-        COMMENT_TITLE: "Test Results"
-        FAIL_ON: "test failures"
-        FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
-        REPORT_INDIVIDUAL_RUNS: "false"
-        DEDUPLICATE_CLASSES_BY_FILE_NAME: "false"
-        HIDE_COMMENTS: "all but latest"
-        COMMENT_MODE: "update last"
-        COMPARE_TO_EARLIER_COMMIT: "true"
-        PULL_REQUEST_BUILD: "merge"
-        TEST_CHANGES_LIMIT: "10"
-        CHECK_RUN_ANNOTATIONS: "all tests, skipped tests"
-        CHECK_RUN_ANNOTATIONS_BRANCH: "develop"
-        SECONDS_BETWEEN_GITHUB_READS: "0.25"
-        SECONDS_BETWEEN_GITHUB_WRITES: "2.0"
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: Copy Tool Specs From FTP Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
+        if-no-files-found: error
 
-  Move_Tool_Specs_From_FTP:
+  Move Tool Specs From FTP:
     runs-on: self-hosted
     
     steps:
@@ -1850,31 +1040,16 @@ jobs:
         fetch-depth: 0
     
     - name: Run Tests
-      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Move Tool Specs From FTP.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Move Tool Specs From FTP.bat'"
 
-    - name: Publish Test Results
-      run: "&python.exe D:\\EnricoMi\\publish-unit-test-result-action\\v1\\python\\publish_unit_test_results.py"
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-        GITHUB_RETRIES: 10
-        COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Test Results"
-        COMMENT_TITLE: "Test Results"
-        FAIL_ON: "test failures"
-        FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
-        REPORT_INDIVIDUAL_RUNS: "false"
-        DEDUPLICATE_CLASSES_BY_FILE_NAME: "false"
-        HIDE_COMMENTS: "all but latest"
-        COMMENT_MODE: "update last"
-        COMPARE_TO_EARLIER_COMMIT: "true"
-        PULL_REQUEST_BUILD: "merge"
-        TEST_CHANGES_LIMIT: "10"
-        CHECK_RUN_ANNOTATIONS: "all tests, skipped tests"
-        CHECK_RUN_ANNOTATIONS_BRANCH: "develop"
-        SECONDS_BETWEEN_GITHUB_READS: "0.25"
-        SECONDS_BETWEEN_GITHUB_WRITES: "2.0"
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: Move Tool Specs From FTP Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
+        if-no-files-found: error
 
-  Rename_Tool_Specs_From_FTP:
+  Rename Tool Specs From FTP:
     runs-on: self-hosted
     
     steps:
@@ -1884,31 +1059,16 @@ jobs:
         fetch-depth: 0
     
     - name: Run Tests
-      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Rename Tool Specs From FTP.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Rename Tool Specs From FTP.bat'"
 
-    - name: Publish Test Results
-      run: "&python.exe D:\\EnricoMi\\publish-unit-test-result-action\\v1\\python\\publish_unit_test_results.py"
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-        GITHUB_RETRIES: 10
-        COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Test Results"
-        COMMENT_TITLE: "Test Results"
-        FAIL_ON: "test failures"
-        FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
-        REPORT_INDIVIDUAL_RUNS: "false"
-        DEDUPLICATE_CLASSES_BY_FILE_NAME: "false"
-        HIDE_COMMENTS: "all but latest"
-        COMMENT_MODE: "update last"
-        COMPARE_TO_EARLIER_COMMIT: "true"
-        PULL_REQUEST_BUILD: "merge"
-        TEST_CHANGES_LIMIT: "10"
-        CHECK_RUN_ANNOTATIONS: "all tests, skipped tests"
-        CHECK_RUN_ANNOTATIONS_BRANCH: "develop"
-        SECONDS_BETWEEN_GITHUB_READS: "0.25"
-        SECONDS_BETWEEN_GITHUB_WRITES: "2.0"
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: Rename Tool Specs From FTP Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
+        if-no-files-found: error
 
-  Unzip_Tool_Specs_From_FTP:
+  Unzip Tool Specs From FTP:
     runs-on: self-hosted
     
     steps:
@@ -1918,31 +1078,16 @@ jobs:
         fetch-depth: 0
     
     - name: Run Tests
-      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Unzip Tool Specs From FTP.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Unzip Tool Specs From FTP.bat'"
 
-    - name: Publish Test Results
-      run: "&python.exe D:\\EnricoMi\\publish-unit-test-result-action\\v1\\python\\publish_unit_test_results.py"
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-        GITHUB_RETRIES: 10
-        COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Test Results"
-        COMMENT_TITLE: "Test Results"
-        FAIL_ON: "test failures"
-        FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
-        REPORT_INDIVIDUAL_RUNS: "false"
-        DEDUPLICATE_CLASSES_BY_FILE_NAME: "false"
-        HIDE_COMMENTS: "all but latest"
-        COMMENT_MODE: "update last"
-        COMPARE_TO_EARLIER_COMMIT: "true"
-        PULL_REQUEST_BUILD: "merge"
-        TEST_CHANGES_LIMIT: "10"
-        CHECK_RUN_ANNOTATIONS: "all tests, skipped tests"
-        CHECK_RUN_ANNOTATIONS_BRANCH: "develop"
-        SECONDS_BETWEEN_GITHUB_READS: "0.25"
-        SECONDS_BETWEEN_GITHUB_WRITES: "2.0"
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: Unzip Tool Specs From FTP Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
+        if-no-files-found: error
 
-  Zip_Tool_Specs_From_FTP:
+  Zip Tool Specs From FTP:
     runs-on: self-hosted
     
     steps:
@@ -1952,31 +1097,16 @@ jobs:
         fetch-depth: 0
     
     - name: Run Tests
-      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Zip Tool Specs From FTP.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Zip Tool Specs From FTP.bat'"
 
-    - name: Publish Test Results
-      run: "&python.exe D:\\EnricoMi\\publish-unit-test-result-action\\v1\\python\\publish_unit_test_results.py"
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-        GITHUB_RETRIES: 10
-        COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Test Results"
-        COMMENT_TITLE: "Test Results"
-        FAIL_ON: "test failures"
-        FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
-        REPORT_INDIVIDUAL_RUNS: "false"
-        DEDUPLICATE_CLASSES_BY_FILE_NAME: "false"
-        HIDE_COMMENTS: "all but latest"
-        COMMENT_MODE: "update last"
-        COMPARE_TO_EARLIER_COMMIT: "true"
-        PULL_REQUEST_BUILD: "merge"
-        TEST_CHANGES_LIMIT: "10"
-        CHECK_RUN_ANNOTATIONS: "all tests, skipped tests"
-        CHECK_RUN_ANNOTATIONS_BRANCH: "develop"
-        SECONDS_BETWEEN_GITHUB_READS: "0.25"
-        SECONDS_BETWEEN_GITHUB_WRITES: "2.0"
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: Zip Tool Specs From FTP Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
+        if-no-files-found: error
 
-  Copy_Tool_Specs_From_FTPS:
+  Copy Tool Specs From FTPS:
     runs-on: self-hosted
     
     steps:
@@ -1986,31 +1116,16 @@ jobs:
         fetch-depth: 0
     
     - name: Run Tests
-      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Copy Tool Specs From FTPS.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Copy Tool Specs From FTPS.bat'"
 
-    - name: Publish Test Results
-      run: "&python.exe D:\\EnricoMi\\publish-unit-test-result-action\\v1\\python\\publish_unit_test_results.py"
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-        GITHUB_RETRIES: 10
-        COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Test Results"
-        COMMENT_TITLE: "Test Results"
-        FAIL_ON: "test failures"
-        FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
-        REPORT_INDIVIDUAL_RUNS: "false"
-        DEDUPLICATE_CLASSES_BY_FILE_NAME: "false"
-        HIDE_COMMENTS: "all but latest"
-        COMMENT_MODE: "update last"
-        COMPARE_TO_EARLIER_COMMIT: "true"
-        PULL_REQUEST_BUILD: "merge"
-        TEST_CHANGES_LIMIT: "10"
-        CHECK_RUN_ANNOTATIONS: "all tests, skipped tests"
-        CHECK_RUN_ANNOTATIONS_BRANCH: "develop"
-        SECONDS_BETWEEN_GITHUB_READS: "0.25"
-        SECONDS_BETWEEN_GITHUB_WRITES: "2.0"
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: Copy Tool Specs From FTPS Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
+        if-no-files-found: error
 
-  Move_Tool_Specs_From_FTPS:
+  Move Tool Specs From FTPS:
     runs-on: self-hosted
     
     steps:
@@ -2020,31 +1135,16 @@ jobs:
         fetch-depth: 0
     
     - name: Run Tests
-      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Move Tool Specs From FTPS.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Move Tool Specs From FTPS.bat'"
 
-    - name: Publish Test Results
-      run: "&python.exe D:\\EnricoMi\\publish-unit-test-result-action\\v1\\python\\publish_unit_test_results.py"
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-        GITHUB_RETRIES: 10
-        COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Test Results"
-        COMMENT_TITLE: "Test Results"
-        FAIL_ON: "test failures"
-        FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
-        REPORT_INDIVIDUAL_RUNS: "false"
-        DEDUPLICATE_CLASSES_BY_FILE_NAME: "false"
-        HIDE_COMMENTS: "all but latest"
-        COMMENT_MODE: "update last"
-        COMPARE_TO_EARLIER_COMMIT: "true"
-        PULL_REQUEST_BUILD: "merge"
-        TEST_CHANGES_LIMIT: "10"
-        CHECK_RUN_ANNOTATIONS: "all tests, skipped tests"
-        CHECK_RUN_ANNOTATIONS_BRANCH: "develop"
-        SECONDS_BETWEEN_GITHUB_READS: "0.25"
-        SECONDS_BETWEEN_GITHUB_WRITES: "2.0"
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: Move Tool Specs From FTPS Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
+        if-no-files-found: error
 
-  Rename_Tool_Specs_From_FTPS:
+  Rename Tool Specs From FTPS:
     runs-on: self-hosted
     
     steps:
@@ -2054,31 +1154,16 @@ jobs:
         fetch-depth: 0
     
     - name: Run Tests
-      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Rename Tool Specs From FTPS.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Rename Tool Specs From FTPS.bat'"
 
-    - name: Publish Test Results
-      run: "&python.exe D:\\EnricoMi\\publish-unit-test-result-action\\v1\\python\\publish_unit_test_results.py"
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-        GITHUB_RETRIES: 10
-        COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Test Results"
-        COMMENT_TITLE: "Test Results"
-        FAIL_ON: "test failures"
-        FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
-        REPORT_INDIVIDUAL_RUNS: "false"
-        DEDUPLICATE_CLASSES_BY_FILE_NAME: "false"
-        HIDE_COMMENTS: "all but latest"
-        COMMENT_MODE: "update last"
-        COMPARE_TO_EARLIER_COMMIT: "true"
-        PULL_REQUEST_BUILD: "merge"
-        TEST_CHANGES_LIMIT: "10"
-        CHECK_RUN_ANNOTATIONS: "all tests, skipped tests"
-        CHECK_RUN_ANNOTATIONS_BRANCH: "develop"
-        SECONDS_BETWEEN_GITHUB_READS: "0.25"
-        SECONDS_BETWEEN_GITHUB_WRITES: "2.0"
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: Rename Tool Specs From FTPS Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
+        if-no-files-found: error
 
-  Unzip_Tool_Specs_From_FTPS:
+  Unzip Tool Specs From FTPS:
     runs-on: self-hosted
     
     steps:
@@ -2088,31 +1173,16 @@ jobs:
         fetch-depth: 0
     
     - name: Run Tests
-      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Unzip Tool Specs From FTPS.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Unzip Tool Specs From FTPS.bat'"
 
-    - name: Publish Test Results
-      run: "&python.exe D:\\EnricoMi\\publish-unit-test-result-action\\v1\\python\\publish_unit_test_results.py"
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-        GITHUB_RETRIES: 10
-        COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Test Results"
-        COMMENT_TITLE: "Test Results"
-        FAIL_ON: "test failures"
-        FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
-        REPORT_INDIVIDUAL_RUNS: "false"
-        DEDUPLICATE_CLASSES_BY_FILE_NAME: "false"
-        HIDE_COMMENTS: "all but latest"
-        COMMENT_MODE: "update last"
-        COMPARE_TO_EARLIER_COMMIT: "true"
-        PULL_REQUEST_BUILD: "merge"
-        TEST_CHANGES_LIMIT: "10"
-        CHECK_RUN_ANNOTATIONS: "all tests, skipped tests"
-        CHECK_RUN_ANNOTATIONS_BRANCH: "develop"
-        SECONDS_BETWEEN_GITHUB_READS: "0.25"
-        SECONDS_BETWEEN_GITHUB_WRITES: "2.0"
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: Unzip Tool Specs From FTPS Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
+        if-no-files-found: error
 
-  Zip_Tool_Specs_From_FTPS:
+  Zip Tool Specs From FTPS:
     runs-on: self-hosted
     
     steps:
@@ -2122,31 +1192,16 @@ jobs:
         fetch-depth: 0
     
     - name: Run Tests
-      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Zip Tool Specs From FTPS.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Zip Tool Specs From FTPS.bat'"
 
-    - name: Publish Test Results
-      run: "&python.exe D:\\EnricoMi\\publish-unit-test-result-action\\v1\\python\\publish_unit_test_results.py"
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-        GITHUB_RETRIES: 10
-        COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Test Results"
-        COMMENT_TITLE: "Test Results"
-        FAIL_ON: "test failures"
-        FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
-        REPORT_INDIVIDUAL_RUNS: "false"
-        DEDUPLICATE_CLASSES_BY_FILE_NAME: "false"
-        HIDE_COMMENTS: "all but latest"
-        COMMENT_MODE: "update last"
-        COMPARE_TO_EARLIER_COMMIT: "true"
-        PULL_REQUEST_BUILD: "merge"
-        TEST_CHANGES_LIMIT: "10"
-        CHECK_RUN_ANNOTATIONS: "all tests, skipped tests"
-        CHECK_RUN_ANNOTATIONS_BRANCH: "develop"
-        SECONDS_BETWEEN_GITHUB_READS: "0.25"
-        SECONDS_BETWEEN_GITHUB_WRITES: "2.0"
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: Zip Tool Specs From FTPS Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
+        if-no-files-found: error
 
-  Copy_Tool_Specs_From_SFTP:
+  Copy Tool Specs From SFTP:
     runs-on: self-hosted
     
     steps:
@@ -2156,31 +1211,16 @@ jobs:
         fetch-depth: 0
     
     - name: Run Tests
-      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Copy Tool Specs From SFTP.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Copy Tool Specs From SFTP.bat'"
 
-    - name: Publish Test Results
-      run: "&python.exe D:\\EnricoMi\\publish-unit-test-result-action\\v1\\python\\publish_unit_test_results.py"
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-        GITHUB_RETRIES: 10
-        COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Test Results"
-        COMMENT_TITLE: "Test Results"
-        FAIL_ON: "test failures"
-        FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
-        REPORT_INDIVIDUAL_RUNS: "false"
-        DEDUPLICATE_CLASSES_BY_FILE_NAME: "false"
-        HIDE_COMMENTS: "all but latest"
-        COMMENT_MODE: "update last"
-        COMPARE_TO_EARLIER_COMMIT: "true"
-        PULL_REQUEST_BUILD: "merge"
-        TEST_CHANGES_LIMIT: "10"
-        CHECK_RUN_ANNOTATIONS: "all tests, skipped tests"
-        CHECK_RUN_ANNOTATIONS_BRANCH: "develop"
-        SECONDS_BETWEEN_GITHUB_READS: "0.25"
-        SECONDS_BETWEEN_GITHUB_WRITES: "2.0"
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: Copy Tool Specs From SFTP Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
+        if-no-files-found: error
 
-  Move_Tool_Specs_From_SFTP:
+  Move Tool Specs From SFTP:
     runs-on: self-hosted
     
     steps:
@@ -2190,31 +1230,16 @@ jobs:
         fetch-depth: 0
     
     - name: Run Tests
-      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Move Tool Specs From SFTP.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Move Tool Specs From SFTP.bat'"
 
-    - name: Publish Test Results
-      run: "&python.exe D:\\EnricoMi\\publish-unit-test-result-action\\v1\\python\\publish_unit_test_results.py"
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-        GITHUB_RETRIES: 10
-        COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Test Results"
-        COMMENT_TITLE: "Test Results"
-        FAIL_ON: "test failures"
-        FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
-        REPORT_INDIVIDUAL_RUNS: "false"
-        DEDUPLICATE_CLASSES_BY_FILE_NAME: "false"
-        HIDE_COMMENTS: "all but latest"
-        COMMENT_MODE: "update last"
-        COMPARE_TO_EARLIER_COMMIT: "true"
-        PULL_REQUEST_BUILD: "merge"
-        TEST_CHANGES_LIMIT: "10"
-        CHECK_RUN_ANNOTATIONS: "all tests, skipped tests"
-        CHECK_RUN_ANNOTATIONS_BRANCH: "develop"
-        SECONDS_BETWEEN_GITHUB_READS: "0.25"
-        SECONDS_BETWEEN_GITHUB_WRITES: "2.0"
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: Move Tool Specs From SFTP Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
+        if-no-files-found: error
 
-  Rename_Tool_Specs_From_SFTP:
+  Rename Tool Specs From SFTP:
     runs-on: self-hosted
     
     steps:
@@ -2224,31 +1249,16 @@ jobs:
         fetch-depth: 0
     
     - name: Run Tests
-      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Rename Tool Specs From SFTP.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Rename Tool Specs From SFTP.bat'"
 
-    - name: Publish Test Results
-      run: "&python.exe D:\\EnricoMi\\publish-unit-test-result-action\\v1\\python\\publish_unit_test_results.py"
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-        GITHUB_RETRIES: 10
-        COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Test Results"
-        COMMENT_TITLE: "Test Results"
-        FAIL_ON: "test failures"
-        FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
-        REPORT_INDIVIDUAL_RUNS: "false"
-        DEDUPLICATE_CLASSES_BY_FILE_NAME: "false"
-        HIDE_COMMENTS: "all but latest"
-        COMMENT_MODE: "update last"
-        COMPARE_TO_EARLIER_COMMIT: "true"
-        PULL_REQUEST_BUILD: "merge"
-        TEST_CHANGES_LIMIT: "10"
-        CHECK_RUN_ANNOTATIONS: "all tests, skipped tests"
-        CHECK_RUN_ANNOTATIONS_BRANCH: "develop"
-        SECONDS_BETWEEN_GITHUB_READS: "0.25"
-        SECONDS_BETWEEN_GITHUB_WRITES: "2.0"
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: Rename Tool Specs From SFTP Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
+        if-no-files-found: error
 
-  Unzip_Tool_Specs_From_SFTP:
+  Unzip Tool Specs From SFTP:
     runs-on: self-hosted
     
     steps:
@@ -2258,31 +1268,16 @@ jobs:
         fetch-depth: 0
     
     - name: Run Tests
-      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Unzip Tool Specs From SFTP.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Unzip Tool Specs From SFTP.bat'"
 
-    - name: Publish Test Results
-      run: "&python.exe D:\\EnricoMi\\publish-unit-test-result-action\\v1\\python\\publish_unit_test_results.py"
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-        GITHUB_RETRIES: 10
-        COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Test Results"
-        COMMENT_TITLE: "Test Results"
-        FAIL_ON: "test failures"
-        FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
-        REPORT_INDIVIDUAL_RUNS: "false"
-        DEDUPLICATE_CLASSES_BY_FILE_NAME: "false"
-        HIDE_COMMENTS: "all but latest"
-        COMMENT_MODE: "update last"
-        COMPARE_TO_EARLIER_COMMIT: "true"
-        PULL_REQUEST_BUILD: "merge"
-        TEST_CHANGES_LIMIT: "10"
-        CHECK_RUN_ANNOTATIONS: "all tests, skipped tests"
-        CHECK_RUN_ANNOTATIONS_BRANCH: "develop"
-        SECONDS_BETWEEN_GITHUB_READS: "0.25"
-        SECONDS_BETWEEN_GITHUB_WRITES: "2.0"
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: Unzip Tool Specs From SFTP Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
+        if-no-files-found: error
 
-  Zip_Tool_Specs_From_SFTP:
+  Zip Tool Specs From SFTP:
     runs-on: self-hosted
     
     steps:
@@ -2292,31 +1287,16 @@ jobs:
         fetch-depth: 0
     
     - name: Run Tests
-      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Zip Tool Specs From SFTP.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Zip Tool Specs From SFTP.bat'"
 
-    - name: Publish Test Results
-      run: "&python.exe D:\\EnricoMi\\publish-unit-test-result-action\\v1\\python\\publish_unit_test_results.py"
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-        GITHUB_RETRIES: 10
-        COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Test Results"
-        COMMENT_TITLE: "Test Results"
-        FAIL_ON: "test failures"
-        FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
-        REPORT_INDIVIDUAL_RUNS: "false"
-        DEDUPLICATE_CLASSES_BY_FILE_NAME: "false"
-        HIDE_COMMENTS: "all but latest"
-        COMMENT_MODE: "update last"
-        COMPARE_TO_EARLIER_COMMIT: "true"
-        PULL_REQUEST_BUILD: "merge"
-        TEST_CHANGES_LIMIT: "10"
-        CHECK_RUN_ANNOTATIONS: "all tests, skipped tests"
-        CHECK_RUN_ANNOTATIONS_BRANCH: "develop"
-        SECONDS_BETWEEN_GITHUB_READS: "0.25"
-        SECONDS_BETWEEN_GITHUB_WRITES: "2.0"
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: Zip Tool Specs From SFTP Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
+        if-no-files-found: error
 
-  Copy_Tool_Specs_From_UNC:
+  Copy Tool Specs From UNC:
     runs-on: self-hosted
     
     steps:
@@ -2326,31 +1306,16 @@ jobs:
         fetch-depth: 0
     
     - name: Run Tests
-      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Copy Tool Specs From UNC.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Copy Tool Specs From UNC.bat'"
 
-    - name: Publish Test Results
-      run: "&python.exe D:\\EnricoMi\\publish-unit-test-result-action\\v1\\python\\publish_unit_test_results.py"
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-        GITHUB_RETRIES: 10
-        COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Test Results"
-        COMMENT_TITLE: "Test Results"
-        FAIL_ON: "test failures"
-        FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
-        REPORT_INDIVIDUAL_RUNS: "false"
-        DEDUPLICATE_CLASSES_BY_FILE_NAME: "false"
-        HIDE_COMMENTS: "all but latest"
-        COMMENT_MODE: "update last"
-        COMPARE_TO_EARLIER_COMMIT: "true"
-        PULL_REQUEST_BUILD: "merge"
-        TEST_CHANGES_LIMIT: "10"
-        CHECK_RUN_ANNOTATIONS: "all tests, skipped tests"
-        CHECK_RUN_ANNOTATIONS_BRANCH: "develop"
-        SECONDS_BETWEEN_GITHUB_READS: "0.25"
-        SECONDS_BETWEEN_GITHUB_WRITES: "2.0"
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: Copy Tool Specs From UNC Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
+        if-no-files-found: error
 
-  Move_Tool_Specs_From_UNC:
+  Move Tool Specs From UNC:
     runs-on: self-hosted
     
     steps:
@@ -2360,31 +1325,16 @@ jobs:
         fetch-depth: 0
     
     - name: Run Tests
-      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Move Tool Specs From UNC.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Move Tool Specs From UNC.bat'"
 
-    - name: Publish Test Results
-      run: "&python.exe D:\\EnricoMi\\publish-unit-test-result-action\\v1\\python\\publish_unit_test_results.py"
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-        GITHUB_RETRIES: 10
-        COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Test Results"
-        COMMENT_TITLE: "Test Results"
-        FAIL_ON: "test failures"
-        FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
-        REPORT_INDIVIDUAL_RUNS: "false"
-        DEDUPLICATE_CLASSES_BY_FILE_NAME: "false"
-        HIDE_COMMENTS: "all but latest"
-        COMMENT_MODE: "update last"
-        COMPARE_TO_EARLIER_COMMIT: "true"
-        PULL_REQUEST_BUILD: "merge"
-        TEST_CHANGES_LIMIT: "10"
-        CHECK_RUN_ANNOTATIONS: "all tests, skipped tests"
-        CHECK_RUN_ANNOTATIONS_BRANCH: "develop"
-        SECONDS_BETWEEN_GITHUB_READS: "0.25"
-        SECONDS_BETWEEN_GITHUB_WRITES: "2.0"
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: Move Tool Specs From UNC Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
+        if-no-files-found: error
 
-  Studio_Core_Unit_Tests:
+  Studio Core Unit Tests:
     runs-on: self-hosted
     
     steps:
@@ -2394,31 +1344,16 @@ jobs:
         fetch-depth: 0
     
     - name: Run Tests
-      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Studio Core Unit Tests.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Studio Core Unit Tests.bat'"
 
-    - name: Publish Test Results
-      run: "&python.exe D:\\EnricoMi\\publish-unit-test-result-action\\v1\\python\\publish_unit_test_results.py"
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-        GITHUB_RETRIES: 10
-        COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Test Results"
-        COMMENT_TITLE: "Test Results"
-        FAIL_ON: "test failures"
-        FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
-        REPORT_INDIVIDUAL_RUNS: "false"
-        DEDUPLICATE_CLASSES_BY_FILE_NAME: "false"
-        HIDE_COMMENTS: "all but latest"
-        COMMENT_MODE: "update last"
-        COMPARE_TO_EARLIER_COMMIT: "true"
-        PULL_REQUEST_BUILD: "merge"
-        TEST_CHANGES_LIMIT: "10"
-        CHECK_RUN_ANNOTATIONS: "all tests, skipped tests"
-        CHECK_RUN_ANNOTATIONS_BRANCH: "develop"
-        SECONDS_BETWEEN_GITHUB_READS: "0.25"
-        SECONDS_BETWEEN_GITHUB_WRITES: "2.0"
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: Studio Core Unit Tests Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
+        if-no-files-found: error
 
-  Elasticsearch_View_Models_Unit_Tests:
+  Elasticsearch View Models Unit Tests:
     runs-on: self-hosted
     
     steps:
@@ -2428,31 +1363,16 @@ jobs:
         fetch-depth: 0
     
     - name: Run Tests
-      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Elasticsearch View Models Unit Tests.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Elasticsearch View Models Unit Tests.bat'"
 
-    - name: Publish Test Results
-      run: "&python.exe D:\\EnricoMi\\publish-unit-test-result-action\\v1\\python\\publish_unit_test_results.py"
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-        GITHUB_RETRIES: 10
-        COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Test Results"
-        COMMENT_TITLE: "Test Results"
-        FAIL_ON: "test failures"
-        FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
-        REPORT_INDIVIDUAL_RUNS: "false"
-        DEDUPLICATE_CLASSES_BY_FILE_NAME: "false"
-        HIDE_COMMENTS: "all but latest"
-        COMMENT_MODE: "update last"
-        COMPARE_TO_EARLIER_COMMIT: "true"
-        PULL_REQUEST_BUILD: "merge"
-        TEST_CHANGES_LIMIT: "10"
-        CHECK_RUN_ANNOTATIONS: "all tests, skipped tests"
-        CHECK_RUN_ANNOTATIONS_BRANCH: "develop"
-        SECONDS_BETWEEN_GITHUB_READS: "0.25"
-        SECONDS_BETWEEN_GITHUB_WRITES: "2.0"
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: Elasticsearch View Models Unit Tests Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
+        if-no-files-found: error
 
-  Search_Specs:
+  Search Specs:
     runs-on: self-hosted
     
     steps:
@@ -2462,31 +1382,16 @@ jobs:
         fetch-depth: 0
     
     - name: Run Tests
-      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Search Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Search Specs.bat'"
 
-    - name: Publish Test Results
-      run: "&python.exe D:\\EnricoMi\\publish-unit-test-result-action\\v1\\python\\publish_unit_test_results.py"
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-        GITHUB_RETRIES: 10
-        COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Test Results"
-        COMMENT_TITLE: "Test Results"
-        FAIL_ON: "test failures"
-        FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
-        REPORT_INDIVIDUAL_RUNS: "false"
-        DEDUPLICATE_CLASSES_BY_FILE_NAME: "false"
-        HIDE_COMMENTS: "all but latest"
-        COMMENT_MODE: "update last"
-        COMPARE_TO_EARLIER_COMMIT: "true"
-        PULL_REQUEST_BUILD: "merge"
-        TEST_CHANGES_LIMIT: "10"
-        CHECK_RUN_ANNOTATIONS: "all tests, skipped tests"
-        CHECK_RUN_ANNOTATIONS_BRANCH: "develop"
-        SECONDS_BETWEEN_GITHUB_READS: "0.25"
-        SECONDS_BETWEEN_GITHUB_WRITES: "2.0"
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: Search Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
+        if-no-files-found: error
 
-  Logger_Unit_Tests:
+  Logger Unit Tests:
     runs-on: self-hosted
     
     steps:
@@ -2496,31 +1401,16 @@ jobs:
         fetch-depth: 0
     
     - name: Run Tests
-      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Logger Unit Tests.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Logger Unit Tests.bat'"
 
-    - name: Publish Test Results
-      run: "&python.exe D:\\EnricoMi\\publish-unit-test-result-action\\v1\\python\\publish_unit_test_results.py"
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-        GITHUB_RETRIES: 10
-        COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Test Results"
-        COMMENT_TITLE: "Test Results"
-        FAIL_ON: "test failures"
-        FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
-        REPORT_INDIVIDUAL_RUNS: "false"
-        DEDUPLICATE_CLASSES_BY_FILE_NAME: "false"
-        HIDE_COMMENTS: "all but latest"
-        COMMENT_MODE: "update last"
-        COMPARE_TO_EARLIER_COMMIT: "true"
-        PULL_REQUEST_BUILD: "merge"
-        TEST_CHANGES_LIMIT: "10"
-        CHECK_RUN_ANNOTATIONS: "all tests, skipped tests"
-        CHECK_RUN_ANNOTATIONS_BRANCH: "develop"
-        SECONDS_BETWEEN_GITHUB_READS: "0.25"
-        SECONDS_BETWEEN_GITHUB_WRITES: "2.0"
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: Logger Unit Tests Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
+        if-no-files-found: error
 
-  Rename_Tool_Specs_From_UNC:
+  Rename Tool Specs From UNC:
     runs-on: self-hosted
     
     steps:
@@ -2530,31 +1420,16 @@ jobs:
         fetch-depth: 0
     
     - name: Run Tests
-      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Rename Tool Specs From UNC.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Rename Tool Specs From UNC.bat'"
 
-    - name: Publish Test Results
-      run: "&python.exe D:\\EnricoMi\\publish-unit-test-result-action\\v1\\python\\publish_unit_test_results.py"
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-        GITHUB_RETRIES: 10
-        COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Test Results"
-        COMMENT_TITLE: "Test Results"
-        FAIL_ON: "test failures"
-        FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
-        REPORT_INDIVIDUAL_RUNS: "false"
-        DEDUPLICATE_CLASSES_BY_FILE_NAME: "false"
-        HIDE_COMMENTS: "all but latest"
-        COMMENT_MODE: "update last"
-        COMPARE_TO_EARLIER_COMMIT: "true"
-        PULL_REQUEST_BUILD: "merge"
-        TEST_CHANGES_LIMIT: "10"
-        CHECK_RUN_ANNOTATIONS: "all tests, skipped tests"
-        CHECK_RUN_ANNOTATIONS_BRANCH: "develop"
-        SECONDS_BETWEEN_GITHUB_READS: "0.25"
-        SECONDS_BETWEEN_GITHUB_WRITES: "2.0"
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: Rename Tool Specs From UNC Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
+        if-no-files-found: error
 
-  Not_Parallelizable_Unit_Tests:
+  Not Parallelizable Unit Tests:
     runs-on: self-hosted
     
     steps:
@@ -2564,31 +1439,16 @@ jobs:
         fetch-depth: 0
     
     - name: Run Tests
-      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Not Parallelizable Unit Tests.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Not Parallelizable Unit Tests.bat'"
 
-    - name: Publish Test Results
-      run: "&python.exe D:\\EnricoMi\\publish-unit-test-result-action\\v1\\python\\publish_unit_test_results.py"
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-        GITHUB_RETRIES: 10
-        COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Test Results"
-        COMMENT_TITLE: "Test Results"
-        FAIL_ON: "test failures"
-        FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
-        REPORT_INDIVIDUAL_RUNS: "false"
-        DEDUPLICATE_CLASSES_BY_FILE_NAME: "false"
-        HIDE_COMMENTS: "all but latest"
-        COMMENT_MODE: "update last"
-        COMPARE_TO_EARLIER_COMMIT: "true"
-        PULL_REQUEST_BUILD: "merge"
-        TEST_CHANGES_LIMIT: "10"
-        CHECK_RUN_ANNOTATIONS: "all tests, skipped tests"
-        CHECK_RUN_ANNOTATIONS_BRANCH: "develop"
-        SECONDS_BETWEEN_GITHUB_READS: "0.25"
-        SECONDS_BETWEEN_GITHUB_WRITES: "2.0"
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: Not Parallelizable Unit Tests Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
+        if-no-files-found: error
 
-  Database_Workflow_Execution_Specs:
+  Database Workflow Execution Specs:
     runs-on: self-hosted
     
     steps:
@@ -2598,31 +1458,16 @@ jobs:
         fetch-depth: 0
     
     - name: Run Tests
-      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Database Workflow Execution Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Database Workflow Execution Specs.bat'"
 
-    - name: Publish Test Results
-      run: "&python.exe D:\\EnricoMi\\publish-unit-test-result-action\\v1\\python\\publish_unit_test_results.py"
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-        GITHUB_RETRIES: 10
-        COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Test Results"
-        COMMENT_TITLE: "Test Results"
-        FAIL_ON: "test failures"
-        FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
-        REPORT_INDIVIDUAL_RUNS: "false"
-        DEDUPLICATE_CLASSES_BY_FILE_NAME: "false"
-        HIDE_COMMENTS: "all but latest"
-        COMMENT_MODE: "update last"
-        COMPARE_TO_EARLIER_COMMIT: "true"
-        PULL_REQUEST_BUILD: "merge"
-        TEST_CHANGES_LIMIT: "10"
-        CHECK_RUN_ANNOTATIONS: "all tests, skipped tests"
-        CHECK_RUN_ANNOTATIONS_BRANCH: "develop"
-        SECONDS_BETWEEN_GITHUB_READS: "0.25"
-        SECONDS_BETWEEN_GITHUB_WRITES: "2.0"
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: Database Workflow Execution Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
+        if-no-files-found: error
 
-  RabbitMQ_Workflow_Execution_Specs:
+  RabbitMQ Workflow Execution Specs:
     runs-on: self-hosted
     
     steps:
@@ -2632,31 +1477,16 @@ jobs:
         fetch-depth: 0
     
     - name: Run Tests
-      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\RabbitMQ Workflow Execution Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\RabbitMQ Workflow Execution Specs.bat'"
 
-    - name: Publish Test Results
-      run: "&python.exe D:\\EnricoMi\\publish-unit-test-result-action\\v1\\python\\publish_unit_test_results.py"
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-        GITHUB_RETRIES: 10
-        COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Test Results"
-        COMMENT_TITLE: "Test Results"
-        FAIL_ON: "test failures"
-        FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
-        REPORT_INDIVIDUAL_RUNS: "false"
-        DEDUPLICATE_CLASSES_BY_FILE_NAME: "false"
-        HIDE_COMMENTS: "all but latest"
-        COMMENT_MODE: "update last"
-        COMPARE_TO_EARLIER_COMMIT: "true"
-        PULL_REQUEST_BUILD: "merge"
-        TEST_CHANGES_LIMIT: "10"
-        CHECK_RUN_ANNOTATIONS: "all tests, skipped tests"
-        CHECK_RUN_ANNOTATIONS_BRANCH: "develop"
-        SECONDS_BETWEEN_GITHUB_READS: "0.25"
-        SECONDS_BETWEEN_GITHUB_WRITES: "2.0"
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: RabbitMQ Workflow Execution Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
+        if-no-files-found: error
 
-  Studio_Test_Framework_With_HTTP_Web_Get_Tools_Specs:
+  Studio Test Framework With HTTP Web Get Tools Specs:
     runs-on: self-hosted
     
     steps:
@@ -2666,31 +1496,16 @@ jobs:
         fetch-depth: 0
     
     - name: Run Tests
-      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Studio Test Framework With HTTP Web Get Tools Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Studio Test Framework With HTTP Web Get Tools Specs.bat'"
 
-    - name: Publish Test Results
-      run: "&python.exe D:\\EnricoMi\\publish-unit-test-result-action\\v1\\python\\publish_unit_test_results.py"
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-        GITHUB_RETRIES: 10
-        COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Test Results"
-        COMMENT_TITLE: "Test Results"
-        FAIL_ON: "test failures"
-        FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
-        REPORT_INDIVIDUAL_RUNS: "false"
-        DEDUPLICATE_CLASSES_BY_FILE_NAME: "false"
-        HIDE_COMMENTS: "all but latest"
-        COMMENT_MODE: "update last"
-        COMPARE_TO_EARLIER_COMMIT: "true"
-        PULL_REQUEST_BUILD: "merge"
-        TEST_CHANGES_LIMIT: "10"
-        CHECK_RUN_ANNOTATIONS: "all tests, skipped tests"
-        CHECK_RUN_ANNOTATIONS_BRANCH: "develop"
-        SECONDS_BETWEEN_GITHUB_READS: "0.25"
-        SECONDS_BETWEEN_GITHUB_WRITES: "2.0"
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: Studio Test Framework With HTTP Web Get Tools Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
+        if-no-files-found: error
 
-  Studio_Test_Framework_With_HTTP_Web_Delete_Tools_Specs:
+  Studio Test Framework With HTTP Web Delete Tools Specs:
     runs-on: self-hosted
     
     steps:
@@ -2700,31 +1515,16 @@ jobs:
         fetch-depth: 0
     
     - name: Run Tests
-      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Studio Test Framework With HTTP Web Delete Tools Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Studio Test Framework With HTTP Web Delete Tools Specs.bat'"
 
-    - name: Publish Test Results
-      run: "&python.exe D:\\EnricoMi\\publish-unit-test-result-action\\v1\\python\\publish_unit_test_results.py"
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-        GITHUB_RETRIES: 10
-        COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Test Results"
-        COMMENT_TITLE: "Test Results"
-        FAIL_ON: "test failures"
-        FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
-        REPORT_INDIVIDUAL_RUNS: "false"
-        DEDUPLICATE_CLASSES_BY_FILE_NAME: "false"
-        HIDE_COMMENTS: "all but latest"
-        COMMENT_MODE: "update last"
-        COMPARE_TO_EARLIER_COMMIT: "true"
-        PULL_REQUEST_BUILD: "merge"
-        TEST_CHANGES_LIMIT: "10"
-        CHECK_RUN_ANNOTATIONS: "all tests, skipped tests"
-        CHECK_RUN_ANNOTATIONS_BRANCH: "develop"
-        SECONDS_BETWEEN_GITHUB_READS: "0.25"
-        SECONDS_BETWEEN_GITHUB_WRITES: "2.0"
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: Studio Test Framework With HTTP Web Delete Tools Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
+        if-no-files-found: error
 
-  Studio_Test_Framework_With_HTTP_Web_Post_Tools_Specs:
+  Studio Test Framework With HTTP Web Post Tools Specs:
     runs-on: self-hosted
     
     steps:
@@ -2734,31 +1534,16 @@ jobs:
         fetch-depth: 0
     
     - name: Run Tests
-      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Studio Test Framework With HTTP Web Post Tools Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Studio Test Framework With HTTP Web Post Tools Specs.bat'"
 
-    - name: Publish Test Results
-      run: "&python.exe D:\\EnricoMi\\publish-unit-test-result-action\\v1\\python\\publish_unit_test_results.py"
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-        GITHUB_RETRIES: 10
-        COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Test Results"
-        COMMENT_TITLE: "Test Results"
-        FAIL_ON: "test failures"
-        FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
-        REPORT_INDIVIDUAL_RUNS: "false"
-        DEDUPLICATE_CLASSES_BY_FILE_NAME: "false"
-        HIDE_COMMENTS: "all but latest"
-        COMMENT_MODE: "update last"
-        COMPARE_TO_EARLIER_COMMIT: "true"
-        PULL_REQUEST_BUILD: "merge"
-        TEST_CHANGES_LIMIT: "10"
-        CHECK_RUN_ANNOTATIONS: "all tests, skipped tests"
-        CHECK_RUN_ANNOTATIONS_BRANCH: "develop"
-        SECONDS_BETWEEN_GITHUB_READS: "0.25"
-        SECONDS_BETWEEN_GITHUB_WRITES: "2.0"
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: Studio Test Framework With HTTP Web Post Tools Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
+        if-no-files-found: error
 
-  Studio_Test_Framework_With_HTTP_Web_Put_Tools_Specs:
+  Studio Test Framework With HTTP Web Put Tools Specs:
     runs-on: self-hosted
     
     steps:
@@ -2768,31 +1553,16 @@ jobs:
         fetch-depth: 0
     
     - name: Run Tests
-      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Studio Test Framework With HTTP Web Put Tools Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Studio Test Framework With HTTP Web Put Tools Specs.bat'"
 
-    - name: Publish Test Results
-      run: "&python.exe D:\\EnricoMi\\publish-unit-test-result-action\\v1\\python\\publish_unit_test_results.py"
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-        GITHUB_RETRIES: 10
-        COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Test Results"
-        COMMENT_TITLE: "Test Results"
-        FAIL_ON: "test failures"
-        FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
-        REPORT_INDIVIDUAL_RUNS: "false"
-        DEDUPLICATE_CLASSES_BY_FILE_NAME: "false"
-        HIDE_COMMENTS: "all but latest"
-        COMMENT_MODE: "update last"
-        COMPARE_TO_EARLIER_COMMIT: "true"
-        PULL_REQUEST_BUILD: "merge"
-        TEST_CHANGES_LIMIT: "10"
-        CHECK_RUN_ANNOTATIONS: "all tests, skipped tests"
-        CHECK_RUN_ANNOTATIONS_BRANCH: "develop"
-        SECONDS_BETWEEN_GITHUB_READS: "0.25"
-        SECONDS_BETWEEN_GITHUB_WRITES: "2.0"
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: Test Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
+        if-no-files-found: error
 
-  Studio_Test_Framework_With_RabbitMQ_Tools_Specs:
+  Studio Test Framework With RabbitMQ Tools Specs:
     runs-on: self-hosted
     
     steps:
@@ -2802,31 +1572,16 @@ jobs:
         fetch-depth: 0
     
     - name: Run Tests
-      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Studio Test Framework With RabbitMQ Tools Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Studio Test Framework With RabbitMQ Tools Specs.bat'"
 
-    - name: Publish Test Results
-      run: "&python.exe D:\\EnricoMi\\publish-unit-test-result-action\\v1\\python\\publish_unit_test_results.py"
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-        GITHUB_RETRIES: 10
-        COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Test Results"
-        COMMENT_TITLE: "Test Results"
-        FAIL_ON: "test failures"
-        FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
-        REPORT_INDIVIDUAL_RUNS: "false"
-        DEDUPLICATE_CLASSES_BY_FILE_NAME: "false"
-        HIDE_COMMENTS: "all but latest"
-        COMMENT_MODE: "update last"
-        COMPARE_TO_EARLIER_COMMIT: "true"
-        PULL_REQUEST_BUILD: "merge"
-        TEST_CHANGES_LIMIT: "10"
-        CHECK_RUN_ANNOTATIONS: "all tests, skipped tests"
-        CHECK_RUN_ANNOTATIONS_BRANCH: "develop"
-        SECONDS_BETWEEN_GITHUB_READS: "0.25"
-        SECONDS_BETWEEN_GITHUB_WRITES: "2.0"
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: Studio Test Framework With RabbitMQ Tools Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
+        if-no-files-found: error
 
-  Database_Subworkflow_Execution_Specs:
+  Database Subworkflow Execution Specs:
     runs-on: self-hosted
     
     steps:
@@ -2836,26 +1591,636 @@ jobs:
         fetch-depth: 0
     
     - name: Run Tests
-      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Database Subworkflow Execution Specs.bat';trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
+      run: "&'.\\Dev\\.run\\Job Shortcuts\\Container\\Database Subworkflow Execution Specs.bat'"
+
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: Database Subworkflow Execution Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults\\*.trx
+        if-no-files-found: error
+        
+  Publish Test Results:  
+    runs-on: self-hosted
+    if: always()
+    needs: [Zip Tool Specs, Email Tools Specs, Resource Tools Specs, File And Folder Copy Tool Specs, Data Tools Specs, Request Service Name View Models Unit Tests, Unzip Tool Specs Validation, Recordset Tools Specs, File And Folder Rename Tool Specs, Other Tools Specs, File And Folder Move Tool Specs, File Read Tool Specs, Infrastructure Unit Tests, New Folder Read Tool Specs, Write File Tool Specs, Loop Construct Tools Specs, Utility Tools Specs, Folder Read Tool Specs, SQL Bulk Insert Tool Specs, Control Flow Tools Specs, Studio View Models Unit Tests, File And Folder Create Tool Specs, Storage Unit Tests, Storage Tools Specs, File And Folder Delete Tool Specs, Scripting Tools Specs, Database Tools Specs, Auditing Unit Tests, Workflow Execution Specs, Studio Test Framework With Hello World Workflow Specs, Studio Test Framework With Utility Tools Specs, MS SQL Server Specs, Studio Test Framework With Data Tools Specs, Assign Workflow Execution Specs, Integration Tests, Studio Test Framework With Scripting Tools Specs, Other Activities Specs, Studio Test Framework With File And Folder Tools Specs, Studio Test Framework With HTTP Web Tools Specs, Studio Test Framework With Subworkflow Specs, Workflow Merging Specs, Example Workflow Execution Specs, Studio Test Framework Specs, Subworkflow Execution Specs, Oracle Execution Specs, Other Specs, Studio Test Framework With Deleted Resources Specs, SQL Integration Tests, For Each Workflow Execution Specs, Copy Tool Specs From Local, Move Tool Specs From Local, Rename Tool Specs From Local, Unzip Tool Specs From Local, Zip Tool Specs From Local, Copy Tool Specs From FTP, Move Tool Specs From FTP, Rename Tool Specs From FTP, Unzip Tool Specs From FTP, Zip Tool Specs From FTP, Copy Tool Specs From FTPS, Move Tool Specs From FTPS, Rename Tool Specs From FTPS, Unzip Tool Specs From FTPS, Zip Tool Specs From FTPS, Copy Tool Specs From SFTP, Move Tool Specs From SFTP, Rename Tool Specs From SFTP, Unzip Tool Specs From SFTP, Zip Tool Specs From SFTP, Copy Tool Specs From UNC, Move Tool Specs From UNC, Studio Core Unit Tests, Elasticsearch View Models Unit Tests, Search Specs, Logger Unit Tests, Rename Tool Specs From UNC, Not Parallelizable Unit Tests, Database Workflow Execution Specs, RabbitMQ Workflow Execution Specs, Studio Test Framework With HTTP Web Get Tools Specs, Studio Test Framework With HTTP Web Delete Tools Specs, Studio Test Framework With HTTP Web Post Tools Specs, Studio Test Framework With HTTP Web Put Tools Specs, Studio Test Framework With RabbitMQ Tools Specs, Database Subworkflow Execution Specs]
+    
+    steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: Zip Tool Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults
+
+    steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: Email Tools Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults
+
+    steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: Resource Tools Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults
+
+    steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: File And Folder Copy Tool Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults
+
+    steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: Data Tools Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults
+
+    steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: Request Service Name View Models Unit Tests Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults
+
+    steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: Unzip Tool Specs Validation Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults
+
+    steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: Recordset Tools Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults
+
+    steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: File And Folder Rename Tool Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults
+
+    steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: Other Tools Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults
+
+    steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: File And Folder Move Tool Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults
+
+    steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: File Read Tool Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults
+
+    steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: Infrastructure Unit Tests Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults
+
+    steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: New Folder Read Tool Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults
+
+    steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: Write File Tool Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults
+
+    steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: Loop Construct Tools Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults
+
+    steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: Utility Tools Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults
+
+    steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: Folder Read Tool Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults
+
+    steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: SQL Bulk Insert Tool Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults
+
+    steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: Control Flow Tools Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults
+
+    steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: Studio View Models Unit Tests Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults
+
+    steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: File And Folder Create Tool Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults
+
+    steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: Storage Unit Tests Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults
+
+    steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: Storage Tools Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults
+
+    steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: File And Folder Delete Tool Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults
+
+    steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: Scripting Tools Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults
+
+    steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: Database Tools Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults
+
+    steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: Auditing Unit Tests Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults
+
+    steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: Workflow Execution Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults
+
+    steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: Studio Test Framework With Hello World Workflow Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults
+
+    steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: Studio Test Framework With Utility Tools Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults
+
+    steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: MS SQL Server Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults
+
+    steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: Studio Test Framework With Data Tools Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults
+
+    steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: Assign Workflow Execution Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults
+
+    steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: Integration Tests Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults
+
+    steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: Studio Test Framework With Scripting Tools Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults
+
+    steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: Other Activities Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults
+
+    steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: Studio Test Framework With File And Folder Tools Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults
+
+    steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: Studio Test Framework With HTTP Web Tools Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults
+
+    steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: Studio Test Framework With Subworkflow Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults
+
+    steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: Workflow Merging Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults
+
+    steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: Example Workflow Execution Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults
+
+    steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: Studio Test Framework Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults
+
+    steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: Subworkflow Execution Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults
+
+    steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: Oracle Execution Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults
+
+    steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: Other Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults
+
+    steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: Studio Test Framework With Deleted Resources Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults
+
+    steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: SQL Integration Tests Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults
+
+    steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: For Each Workflow Execution Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults
+
+    steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: Copy Tool Specs From Local Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults
+
+    steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: Move Tool Specs From Local Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults
+
+    steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: Rename Tool Specs From Local Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults
+
+    steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: Unzip Tool Specs From Local Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults
+
+    steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: Zip Tool Specs From Local Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults
+
+    steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: Copy Tool Specs From FTP Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults
+
+    steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: Move Tool Specs From FTP Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults
+
+    steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: Rename Tool Specs From FTP Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults
+
+    steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: Unzip Tool Specs From FTP Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults
+
+    steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: Zip Tool Specs From FTP Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults
+
+    steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: Copy Tool Specs From FTPS Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults
+
+    steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: Move Tool Specs From FTPS Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults
+
+    steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: Rename Tool Specs From FTPS Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults
+
+    steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: Unzip Tool Specs From FTPS Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults
+
+    steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: Zip Tool Specs From FTPS Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults
+
+    steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: Copy Tool Specs From SFTP Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults
+
+    steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: Move Tool Specs From SFTP Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults
+
+    steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: Rename Tool Specs From SFTP Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults
+
+    steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: Unzip Tool Specs From SFTP Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults
+
+    steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: Zip Tool Specs From SFTP Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults
+
+    steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: Copy Tool Specs From UNC Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults
+
+    steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: Move Tool Specs From UNC Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults
+
+    steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: Studio Core Unit Tests Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults
+
+    steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: Elasticsearch View Models Unit Tests Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults
+
+    steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: Search Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults
+
+    steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: Logger Unit Tests Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults
+
+    steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: Rename Tool Specs From UNC Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults
+
+    steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: Not Parallelizable Unit Tests Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults
+
+    steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: Database Workflow Execution Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults
+
+    steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: RabbitMQ Workflow Execution Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults
+
+    steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: Studio Test Framework With HTTP Web Get Tools Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults
+
+    steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: Studio Test Framework With HTTP Web Delete Tools Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults
+
+    steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: Studio Test Framework With HTTP Web Post Tools Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults
+
+    steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: Studio Test Framework With HTTP Web Put Tools Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults
+
+    steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: Studio Test Framework With RabbitMQ Tools Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults
+
+    steps:
+    - name: Download      
+      uses: actions/download-artifact@v2
+      with:
+        name: Database Subworkflow Execution Specs Results
+        path: .\\Bin\\AcceptanceTesting\\TestResults
+
+    - name: Convert
+      run: "trx2junit .\\Bin\\AcceptanceTesting\\TestResults\\*.trx"
 
-    - name: Publish Test Results
-      run: "&python.exe D:\\EnricoMi\\publish-unit-test-result-action\\v1\\python\\publish_unit_test_results.py"
+    - name: Publish All Test Results
+      run: "&python.exe D:\\EnricoMi\\publish-unit-test-result-action\\v1\\python\\publish unit test results.py"
       env:
-        GITHUB_TOKEN: ${{ github.token }}
-        GITHUB_RETRIES: 10
+        GITHUB TOKEN: ${{ github.token }}
+        GITHUB RETRIES: 10
         COMMIT: ${{ github.sha }}
-        CHECK_NAME: "Test Results"
-        COMMENT_TITLE: "Test Results"
-        FAIL_ON: "test failures"
+        CHECK NAME: "Test Results"
+        COMMENT TITLE: "Test Results"
+        FAIL ON: "test failures"
         FILES: ".\\Bin\\AcceptanceTesting\\TestResults\\*.xml"
-        REPORT_INDIVIDUAL_RUNS: "false"
-        DEDUPLICATE_CLASSES_BY_FILE_NAME: "false"
-        HIDE_COMMENTS: "all but latest"
-        COMMENT_MODE: "update last"
-        COMPARE_TO_EARLIER_COMMIT: "true"
-        PULL_REQUEST_BUILD: "merge"
-        TEST_CHANGES_LIMIT: "10"
-        CHECK_RUN_ANNOTATIONS: "all tests, skipped tests"
-        CHECK_RUN_ANNOTATIONS_BRANCH: "develop"
-        SECONDS_BETWEEN_GITHUB_READS: "0.25"
-        SECONDS_BETWEEN_GITHUB_WRITES: "2.0"
+        REPORT INDIVIDUAL RUNS: "false"
+        DEDUPLICATE CLASSES BY FILE NAME: "false"
+        HIDE COMMENTS: "all but latest"
+        COMMENT MODE: "update last"
+        COMPARE TO EARLIER COMMIT: "true"
+        PULL REQUEST BUILD: "merge"
+        TEST CHANGES LIMIT: "10"
+        CHECK RUN ANNOTATIONS: "all tests, skipped tests"
+        CHECK RUN ANNOTATIONS BRANCH: "develop"
+        SECONDS BETWEEN GITHUB READS: "0.25"
+        SECONDS BETWEEN GITHUB WRITES: "2.0"
