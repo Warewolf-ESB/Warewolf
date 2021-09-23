@@ -29,7 +29,7 @@ jobs:
   - task: PublishTestResults@2
     inputs:
       testRunner: VSTest
-      testResultsFiles: '**/*.trx'
+      testResultsFiles: '$(Agent.BuildDirectory)\\s\\Dev\\Bin\\AcceptanceTesting\\TestResults\\*.trx'
       failTaskOnFailedTests: true
 
 - job: Email_Tools_Specs
@@ -43,7 +43,7 @@ jobs:
   - task: PublishTestResults@2
     inputs:
       testRunner: VSTest
-      testResultsFiles: '**/*.trx'
+      testResultsFiles: '$(Agent.BuildDirectory)\\s\\Dev\\Bin\\AcceptanceTesting\\TestResults\\*.trx'
       failTaskOnFailedTests: true
 
 - job: Resource_Tools_Specs
@@ -57,7 +57,7 @@ jobs:
   - task: PublishTestResults@2
     inputs:
       testRunner: VSTest
-      testResultsFiles: '**/*.trx'
+      testResultsFiles: '$(Agent.BuildDirectory)\\s\\Dev\\Bin\\AcceptanceTesting\\TestResults\\*.trx'
       failTaskOnFailedTests: true
 
 - job: File_And_Folder_Copy_Tool_Specs
@@ -71,7 +71,7 @@ jobs:
   - task: PublishTestResults@2
     inputs:
       testRunner: VSTest
-      testResultsFiles: '**/*.trx'
+      testResultsFiles: '$(Agent.BuildDirectory)\\s\\Dev\\Bin\\AcceptanceTesting\\TestResults\\*.trx'
       failTaskOnFailedTests: true
 
 - job: Data_Tools_Specs
@@ -85,7 +85,7 @@ jobs:
   - task: PublishTestResults@2
     inputs:
       testRunner: VSTest
-      testResultsFiles: '**/*.trx'
+      testResultsFiles: '$(Agent.BuildDirectory)\\s\\Dev\\Bin\\AcceptanceTesting\\TestResults\\*.trx'
       failTaskOnFailedTests: true
 
 - job: Request_Service_Name_View_Models_Unit_Tests
@@ -99,7 +99,7 @@ jobs:
   - task: PublishTestResults@2
     inputs:
       testRunner: VSTest
-      testResultsFiles: '**/*.trx'
+      testResultsFiles: '$(Agent.BuildDirectory)\\s\\Dev\\Bin\\AcceptanceTesting\\TestResults\\*.trx'
       failTaskOnFailedTests: true
 
 - job: Unzip_Tool_Specs_Validation
@@ -113,7 +113,7 @@ jobs:
   - task: PublishTestResults@2
     inputs:
       testRunner: VSTest
-      testResultsFiles: '**/*.trx'
+      testResultsFiles: '$(Agent.BuildDirectory)\\s\\Dev\\Bin\\AcceptanceTesting\\TestResults\\*.trx'
       failTaskOnFailedTests: true
 
 - job: Recordset_Tools_Specs
@@ -127,7 +127,7 @@ jobs:
   - task: PublishTestResults@2
     inputs:
       testRunner: VSTest
-      testResultsFiles: '**/*.trx'
+      testResultsFiles: '$(Agent.BuildDirectory)\\s\\Dev\\Bin\\AcceptanceTesting\\TestResults\\*.trx'
       failTaskOnFailedTests: true
 
 - job: File_And_Folder_Rename_Tool_Specs
@@ -141,7 +141,7 @@ jobs:
   - task: PublishTestResults@2
     inputs:
       testRunner: VSTest
-      testResultsFiles: '**/*.trx'
+      testResultsFiles: '$(Agent.BuildDirectory)\\s\\Dev\\Bin\\AcceptanceTesting\\TestResults\\*.trx'
       failTaskOnFailedTests: true
 
 - job: Other_Tools_Specs
@@ -155,7 +155,7 @@ jobs:
   - task: PublishTestResults@2
     inputs:
       testRunner: VSTest
-      testResultsFiles: '**/*.trx'
+      testResultsFiles: '$(Agent.BuildDirectory)\\s\\Dev\\Bin\\AcceptanceTesting\\TestResults\\*.trx'
       failTaskOnFailedTests: true
 
 - job: File_And_Folder_Move_Tool_Specs
@@ -169,7 +169,7 @@ jobs:
   - task: PublishTestResults@2
     inputs:
       testRunner: VSTest
-      testResultsFiles: '**/*.trx'
+      testResultsFiles: '$(Agent.BuildDirectory)\\s\\Dev\\Bin\\AcceptanceTesting\\TestResults\\*.trx'
       failTaskOnFailedTests: true
 
 - job: File_Read_Tool_Specs
@@ -183,7 +183,7 @@ jobs:
   - task: PublishTestResults@2
     inputs:
       testRunner: VSTest
-      testResultsFiles: '**/*.trx'
+      testResultsFiles: '$(Agent.BuildDirectory)\\s\\Dev\\Bin\\AcceptanceTesting\\TestResults\\*.trx'
       failTaskOnFailedTests: true
 
 - job: Infrastructure_Unit_Tests
@@ -197,7 +197,7 @@ jobs:
   - task: PublishTestResults@2
     inputs:
       testRunner: VSTest
-      testResultsFiles: '**/*.trx'
+      testResultsFiles: '$(Agent.BuildDirectory)\\s\\Dev\\Bin\\AcceptanceTesting\\TestResults\\*.trx'
       failTaskOnFailedTests: true
 
 - job: New_Folder_Read_Tool_Specs
@@ -211,7 +211,7 @@ jobs:
   - task: PublishTestResults@2
     inputs:
       testRunner: VSTest
-      testResultsFiles: '**/*.trx'
+      testResultsFiles: '$(Agent.BuildDirectory)\\s\\Dev\\Bin\\AcceptanceTesting\\TestResults\\*.trx'
       failTaskOnFailedTests: true
 
 - job: Write_File_Tool_Specs
@@ -225,7 +225,7 @@ jobs:
   - task: PublishTestResults@2
     inputs:
       testRunner: VSTest
-      testResultsFiles: '**/*.trx'
+      testResultsFiles: '$(Agent.BuildDirectory)\\s\\Dev\\Bin\\AcceptanceTesting\\TestResults\\*.trx'
       failTaskOnFailedTests: true
 
 - job: Loop_Construct_Tools_Specs
@@ -239,7 +239,7 @@ jobs:
   - task: PublishTestResults@2
     inputs:
       testRunner: VSTest
-      testResultsFiles: '**/*.trx'
+      testResultsFiles: '$(Agent.BuildDirectory)\\s\\Dev\\Bin\\AcceptanceTesting\\TestResults\\*.trx'
       failTaskOnFailedTests: true
 
 - job: Utility_Tools_Specs
@@ -253,7 +253,7 @@ jobs:
   - task: PublishTestResults@2
     inputs:
       testRunner: VSTest
-      testResultsFiles: '**/*.trx'
+      testResultsFiles: '$(Agent.BuildDirectory)\\s\\Dev\\Bin\\AcceptanceTesting\\TestResults\\*.trx'
       failTaskOnFailedTests: true
 
 - job: Folder_Read_Tool_Specs
@@ -267,7 +267,7 @@ jobs:
   - task: PublishTestResults@2
     inputs:
       testRunner: VSTest
-      testResultsFiles: '**/*.trx'
+      testResultsFiles: '$(Agent.BuildDirectory)\\s\\Dev\\Bin\\AcceptanceTesting\\TestResults\\*.trx'
       failTaskOnFailedTests: true
 
 - job: SQL_Bulk_Insert_Tool_Specs
@@ -281,7 +281,7 @@ jobs:
   - task: PublishTestResults@2
     inputs:
       testRunner: VSTest
-      testResultsFiles: '**/*.trx'
+      testResultsFiles: '$(Agent.BuildDirectory)\\s\\Dev\\Bin\\AcceptanceTesting\\TestResults\\*.trx'
       failTaskOnFailedTests: true
 
 - job: Control_Flow_Tools_Specs
@@ -295,7 +295,7 @@ jobs:
   - task: PublishTestResults@2
     inputs:
       testRunner: VSTest
-      testResultsFiles: '**/*.trx'
+      testResultsFiles: '$(Agent.BuildDirectory)\\s\\Dev\\Bin\\AcceptanceTesting\\TestResults\\*.trx'
       failTaskOnFailedTests: true
 
 - job: Studio_View_Models_Unit_Tests
@@ -309,7 +309,7 @@ jobs:
   - task: PublishTestResults@2
     inputs:
       testRunner: VSTest
-      testResultsFiles: '**/*.trx'
+      testResultsFiles: '$(Agent.BuildDirectory)\\s\\Dev\\Bin\\AcceptanceTesting\\TestResults\\*.trx'
       failTaskOnFailedTests: true
 
 - job: File_And_Folder_Create_Tool_Specs
@@ -323,7 +323,7 @@ jobs:
   - task: PublishTestResults@2
     inputs:
       testRunner: VSTest
-      testResultsFiles: '**/*.trx'
+      testResultsFiles: '$(Agent.BuildDirectory)\\s\\Dev\\Bin\\AcceptanceTesting\\TestResults\\*.trx'
       failTaskOnFailedTests: true
 
 - job: Storage_Unit_Tests
@@ -337,7 +337,7 @@ jobs:
   - task: PublishTestResults@2
     inputs:
       testRunner: VSTest
-      testResultsFiles: '**/*.trx'
+      testResultsFiles: '$(Agent.BuildDirectory)\\s\\Dev\\Bin\\AcceptanceTesting\\TestResults\\*.trx'
       failTaskOnFailedTests: true
 
 - job: Storage_Tools_Specs
@@ -351,7 +351,7 @@ jobs:
   - task: PublishTestResults@2
     inputs:
       testRunner: VSTest
-      testResultsFiles: '**/*.trx'
+      testResultsFiles: '$(Agent.BuildDirectory)\\s\\Dev\\Bin\\AcceptanceTesting\\TestResults\\*.trx'
       failTaskOnFailedTests: true
 
 - job: File_And_Folder_Delete_Tool_Specs
@@ -365,7 +365,7 @@ jobs:
   - task: PublishTestResults@2
     inputs:
       testRunner: VSTest
-      testResultsFiles: '**/*.trx'
+      testResultsFiles: '$(Agent.BuildDirectory)\\s\\Dev\\Bin\\AcceptanceTesting\\TestResults\\*.trx'
       failTaskOnFailedTests: true
 
 - job: Scripting_Tools_Specs
@@ -379,7 +379,7 @@ jobs:
   - task: PublishTestResults@2
     inputs:
       testRunner: VSTest
-      testResultsFiles: '**/*.trx'
+      testResultsFiles: '$(Agent.BuildDirectory)\\s\\Dev\\Bin\\AcceptanceTesting\\TestResults\\*.trx'
       failTaskOnFailedTests: true
 
 - job: Database_Tools_Specs
@@ -393,7 +393,7 @@ jobs:
   - task: PublishTestResults@2
     inputs:
       testRunner: VSTest
-      testResultsFiles: '**/*.trx'
+      testResultsFiles: '$(Agent.BuildDirectory)\\s\\Dev\\Bin\\AcceptanceTesting\\TestResults\\*.trx'
       failTaskOnFailedTests: true
 
 - job: Auditing_Unit_Tests
@@ -407,7 +407,7 @@ jobs:
   - task: PublishTestResults@2
     inputs:
       testRunner: VSTest
-      testResultsFiles: '**/*.trx'
+      testResultsFiles: '$(Agent.BuildDirectory)\\s\\Dev\\Bin\\AcceptanceTesting\\TestResults\\*.trx'
       failTaskOnFailedTests: true
 
 - job: Workflow_Execution_Specs
@@ -421,7 +421,7 @@ jobs:
   - task: PublishTestResults@2
     inputs:
       testRunner: VSTest
-      testResultsFiles: '**/*.trx'
+      testResultsFiles: '$(Agent.BuildDirectory)\\s\\Dev\\Bin\\AcceptanceTesting\\TestResults\\*.trx'
       failTaskOnFailedTests: true
 
 - job: Studio_Test_Framework_With_Hello_World_Workflow_Specs
@@ -435,7 +435,7 @@ jobs:
   - task: PublishTestResults@2
     inputs:
       testRunner: VSTest
-      testResultsFiles: '**/*.trx'
+      testResultsFiles: '$(Agent.BuildDirectory)\\s\\Dev\\Bin\\AcceptanceTesting\\TestResults\\*.trx'
       failTaskOnFailedTests: true
 
 - job: Studio_Test_Framework_With_Utility_Tools_Specs
@@ -449,7 +449,7 @@ jobs:
   - task: PublishTestResults@2
     inputs:
       testRunner: VSTest
-      testResultsFiles: '**/*.trx'
+      testResultsFiles: '$(Agent.BuildDirectory)\\s\\Dev\\Bin\\AcceptanceTesting\\TestResults\\*.trx'
       failTaskOnFailedTests: true
 
 - job: MS_SQL_Server_Specs
@@ -463,7 +463,7 @@ jobs:
   - task: PublishTestResults@2
     inputs:
       testRunner: VSTest
-      testResultsFiles: '**/*.trx'
+      testResultsFiles: '$(Agent.BuildDirectory)\\s\\Dev\\Bin\\AcceptanceTesting\\TestResults\\*.trx'
       failTaskOnFailedTests: true
 
 - job: Studio_Test_Framework_With_Data_Tools_Specs
@@ -477,7 +477,7 @@ jobs:
   - task: PublishTestResults@2
     inputs:
       testRunner: VSTest
-      testResultsFiles: '**/*.trx'
+      testResultsFiles: '$(Agent.BuildDirectory)\\s\\Dev\\Bin\\AcceptanceTesting\\TestResults\\*.trx'
       failTaskOnFailedTests: true
 
 - job: Assign_Workflow_Execution_Specs
@@ -491,7 +491,7 @@ jobs:
   - task: PublishTestResults@2
     inputs:
       testRunner: VSTest
-      testResultsFiles: '**/*.trx'
+      testResultsFiles: '$(Agent.BuildDirectory)\\s\\Dev\\Bin\\AcceptanceTesting\\TestResults\\*.trx'
       failTaskOnFailedTests: true
 
 - job: Integration_Tests
@@ -505,7 +505,7 @@ jobs:
   - task: PublishTestResults@2
     inputs:
       testRunner: VSTest
-      testResultsFiles: '**/*.trx'
+      testResultsFiles: '$(Agent.BuildDirectory)\\s\\Dev\\Bin\\AcceptanceTesting\\TestResults\\*.trx'
       failTaskOnFailedTests: true
 
 - job: Studio_Test_Framework_With_Scripting_Tools_Specs
@@ -519,7 +519,7 @@ jobs:
   - task: PublishTestResults@2
     inputs:
       testRunner: VSTest
-      testResultsFiles: '**/*.trx'
+      testResultsFiles: '$(Agent.BuildDirectory)\\s\\Dev\\Bin\\AcceptanceTesting\\TestResults\\*.trx'
       failTaskOnFailedTests: true
 
 - job: Other_Activities_Specs
@@ -533,7 +533,7 @@ jobs:
   - task: PublishTestResults@2
     inputs:
       testRunner: VSTest
-      testResultsFiles: '**/*.trx'
+      testResultsFiles: '$(Agent.BuildDirectory)\\s\\Dev\\Bin\\AcceptanceTesting\\TestResults\\*.trx'
       failTaskOnFailedTests: true
 
 - job: Studio_Test_Framework_With_File_And_Folder_Tools_Specs
@@ -547,7 +547,7 @@ jobs:
   - task: PublishTestResults@2
     inputs:
       testRunner: VSTest
-      testResultsFiles: '**/*.trx'
+      testResultsFiles: '$(Agent.BuildDirectory)\\s\\Dev\\Bin\\AcceptanceTesting\\TestResults\\*.trx'
       failTaskOnFailedTests: true
 
 - job: Studio_Test_Framework_With_HTTP_Web_Tools_Specs
@@ -561,7 +561,7 @@ jobs:
   - task: PublishTestResults@2
     inputs:
       testRunner: VSTest
-      testResultsFiles: '**/*.trx'
+      testResultsFiles: '$(Agent.BuildDirectory)\\s\\Dev\\Bin\\AcceptanceTesting\\TestResults\\*.trx'
       failTaskOnFailedTests: true
 
 - job: Studio_Test_Framework_With_Subworkflow_Specs
@@ -575,7 +575,7 @@ jobs:
   - task: PublishTestResults@2
     inputs:
       testRunner: VSTest
-      testResultsFiles: '**/*.trx'
+      testResultsFiles: '$(Agent.BuildDirectory)\\s\\Dev\\Bin\\AcceptanceTesting\\TestResults\\*.trx'
       failTaskOnFailedTests: true
 
 - job: Workflow_Merging_Specs
@@ -589,7 +589,7 @@ jobs:
   - task: PublishTestResults@2
     inputs:
       testRunner: VSTest
-      testResultsFiles: '**/*.trx'
+      testResultsFiles: '$(Agent.BuildDirectory)\\s\\Dev\\Bin\\AcceptanceTesting\\TestResults\\*.trx'
       failTaskOnFailedTests: true
 
 - job: Example_Workflow_Execution_Specs
@@ -603,7 +603,7 @@ jobs:
   - task: PublishTestResults@2
     inputs:
       testRunner: VSTest
-      testResultsFiles: '**/*.trx'
+      testResultsFiles: '$(Agent.BuildDirectory)\\s\\Dev\\Bin\\AcceptanceTesting\\TestResults\\*.trx'
       failTaskOnFailedTests: true
 
 - job: Studio_Test_Framework_Specs
@@ -617,7 +617,7 @@ jobs:
   - task: PublishTestResults@2
     inputs:
       testRunner: VSTest
-      testResultsFiles: '**/*.trx'
+      testResultsFiles: '$(Agent.BuildDirectory)\\s\\Dev\\Bin\\AcceptanceTesting\\TestResults\\*.trx'
       failTaskOnFailedTests: true
 
 - job: Subworkflow_Execution_Specs
@@ -631,7 +631,7 @@ jobs:
   - task: PublishTestResults@2
     inputs:
       testRunner: VSTest
-      testResultsFiles: '**/*.trx'
+      testResultsFiles: '$(Agent.BuildDirectory)\\s\\Dev\\Bin\\AcceptanceTesting\\TestResults\\*.trx'
       failTaskOnFailedTests: true
 
 - job: Other_Specs
@@ -645,7 +645,7 @@ jobs:
   - task: PublishTestResults@2
     inputs:
       testRunner: VSTest
-      testResultsFiles: '**/*.trx'
+      testResultsFiles: '$(Agent.BuildDirectory)\\s\\Dev\\Bin\\AcceptanceTesting\\TestResults\\*.trx'
       failTaskOnFailedTests: true
 
 - job: Studio_Test_Framework_With_Deleted_Resources_Specs
@@ -659,7 +659,7 @@ jobs:
   - task: PublishTestResults@2
     inputs:
       testRunner: VSTest
-      testResultsFiles: '**/*.trx'
+      testResultsFiles: '$(Agent.BuildDirectory)\\s\\Dev\\Bin\\AcceptanceTesting\\TestResults\\*.trx'
       failTaskOnFailedTests: true
 
 - job: SQL_Integration_Tests
@@ -673,7 +673,7 @@ jobs:
   - task: PublishTestResults@2
     inputs:
       testRunner: VSTest
-      testResultsFiles: '**/*.trx'
+      testResultsFiles: '$(Agent.BuildDirectory)\\s\\Dev\\Bin\\AcceptanceTesting\\TestResults\\*.trx'
       failTaskOnFailedTests: true
 
 - job: For_Each_Workflow_Execution_Specs
@@ -687,7 +687,7 @@ jobs:
   - task: PublishTestResults@2
     inputs:
       testRunner: VSTest
-      testResultsFiles: '**/*.trx'
+      testResultsFiles: '$(Agent.BuildDirectory)\\s\\Dev\\Bin\\AcceptanceTesting\\TestResults\\*.trx'
       failTaskOnFailedTests: true
 
 - job: Copy_Tool_Specs_From_Local
@@ -701,7 +701,7 @@ jobs:
   - task: PublishTestResults@2
     inputs:
       testRunner: VSTest
-      testResultsFiles: '**/*.trx'
+      testResultsFiles: '$(Agent.BuildDirectory)\\s\\Dev\\Bin\\AcceptanceTesting\\TestResults\\*.trx'
       failTaskOnFailedTests: true
 
 - job: Move_Tool_Specs_From_Local
@@ -715,7 +715,7 @@ jobs:
   - task: PublishTestResults@2
     inputs:
       testRunner: VSTest
-      testResultsFiles: '**/*.trx'
+      testResultsFiles: '$(Agent.BuildDirectory)\\s\\Dev\\Bin\\AcceptanceTesting\\TestResults\\*.trx'
       failTaskOnFailedTests: true
 
 - job: Rename_Tool_Specs_From_Local
@@ -729,7 +729,7 @@ jobs:
   - task: PublishTestResults@2
     inputs:
       testRunner: VSTest
-      testResultsFiles: '**/*.trx'
+      testResultsFiles: '$(Agent.BuildDirectory)\\s\\Dev\\Bin\\AcceptanceTesting\\TestResults\\*.trx'
       failTaskOnFailedTests: true
 
 - job: Unzip_Tool_Specs_From_Local
@@ -743,7 +743,7 @@ jobs:
   - task: PublishTestResults@2
     inputs:
       testRunner: VSTest
-      testResultsFiles: '**/*.trx'
+      testResultsFiles: '$(Agent.BuildDirectory)\\s\\Dev\\Bin\\AcceptanceTesting\\TestResults\\*.trx'
       failTaskOnFailedTests: true
 
 - job: Zip_Tool_Specs_From_Local
@@ -757,7 +757,7 @@ jobs:
   - task: PublishTestResults@2
     inputs:
       testRunner: VSTest
-      testResultsFiles: '**/*.trx'
+      testResultsFiles: '$(Agent.BuildDirectory)\\s\\Dev\\Bin\\AcceptanceTesting\\TestResults\\*.trx'
       failTaskOnFailedTests: true
 
 - job: Copy_Tool_Specs_From_FTP
@@ -771,7 +771,7 @@ jobs:
   - task: PublishTestResults@2
     inputs:
       testRunner: VSTest
-      testResultsFiles: '**/*.trx'
+      testResultsFiles: '$(Agent.BuildDirectory)\\s\\Dev\\Bin\\AcceptanceTesting\\TestResults\\*.trx'
       failTaskOnFailedTests: true
 
 - job: Move_Tool_Specs_From_FTP
@@ -785,7 +785,7 @@ jobs:
   - task: PublishTestResults@2
     inputs:
       testRunner: VSTest
-      testResultsFiles: '**/*.trx'
+      testResultsFiles: '$(Agent.BuildDirectory)\\s\\Dev\\Bin\\AcceptanceTesting\\TestResults\\*.trx'
       failTaskOnFailedTests: true
 
 - job: Rename_Tool_Specs_From_FTP
@@ -799,7 +799,7 @@ jobs:
   - task: PublishTestResults@2
     inputs:
       testRunner: VSTest
-      testResultsFiles: '**/*.trx'
+      testResultsFiles: '$(Agent.BuildDirectory)\\s\\Dev\\Bin\\AcceptanceTesting\\TestResults\\*.trx'
       failTaskOnFailedTests: true
 
 - job: Unzip_Tool_Specs_From_FTP
@@ -813,7 +813,7 @@ jobs:
   - task: PublishTestResults@2
     inputs:
       testRunner: VSTest
-      testResultsFiles: '**/*.trx'
+      testResultsFiles: '$(Agent.BuildDirectory)\\s\\Dev\\Bin\\AcceptanceTesting\\TestResults\\*.trx'
       failTaskOnFailedTests: true
 
 - job: Zip_Tool_Specs_From_FTP
@@ -827,7 +827,7 @@ jobs:
   - task: PublishTestResults@2
     inputs:
       testRunner: VSTest
-      testResultsFiles: '**/*.trx'
+      testResultsFiles: '$(Agent.BuildDirectory)\\s\\Dev\\Bin\\AcceptanceTesting\\TestResults\\*.trx'
       failTaskOnFailedTests: true
 
 - job: Copy_Tool_Specs_From_FTPS
@@ -841,7 +841,7 @@ jobs:
   - task: PublishTestResults@2
     inputs:
       testRunner: VSTest
-      testResultsFiles: '**/*.trx'
+      testResultsFiles: '$(Agent.BuildDirectory)\\s\\Dev\\Bin\\AcceptanceTesting\\TestResults\\*.trx'
       failTaskOnFailedTests: true
 
 - job: Move_Tool_Specs_From_FTPS
@@ -855,7 +855,7 @@ jobs:
   - task: PublishTestResults@2
     inputs:
       testRunner: VSTest
-      testResultsFiles: '**/*.trx'
+      testResultsFiles: '$(Agent.BuildDirectory)\\s\\Dev\\Bin\\AcceptanceTesting\\TestResults\\*.trx'
       failTaskOnFailedTests: true
 
 - job: Rename_Tool_Specs_From_FTPS
@@ -869,7 +869,7 @@ jobs:
   - task: PublishTestResults@2
     inputs:
       testRunner: VSTest
-      testResultsFiles: '**/*.trx'
+      testResultsFiles: '$(Agent.BuildDirectory)\\s\\Dev\\Bin\\AcceptanceTesting\\TestResults\\*.trx'
       failTaskOnFailedTests: true
 
 - job: Unzip_Tool_Specs_From_FTPS
@@ -883,7 +883,7 @@ jobs:
   - task: PublishTestResults@2
     inputs:
       testRunner: VSTest
-      testResultsFiles: '**/*.trx'
+      testResultsFiles: '$(Agent.BuildDirectory)\\s\\Dev\\Bin\\AcceptanceTesting\\TestResults\\*.trx'
       failTaskOnFailedTests: true
 
 - job: Zip_Tool_Specs_From_FTPS
@@ -897,7 +897,7 @@ jobs:
   - task: PublishTestResults@2
     inputs:
       testRunner: VSTest
-      testResultsFiles: '**/*.trx'
+      testResultsFiles: '$(Agent.BuildDirectory)\\s\\Dev\\Bin\\AcceptanceTesting\\TestResults\\*.trx'
       failTaskOnFailedTests: true
 
 - job: Copy_Tool_Specs_From_SFTP
@@ -911,7 +911,7 @@ jobs:
   - task: PublishTestResults@2
     inputs:
       testRunner: VSTest
-      testResultsFiles: '**/*.trx'
+      testResultsFiles: '$(Agent.BuildDirectory)\\s\\Dev\\Bin\\AcceptanceTesting\\TestResults\\*.trx'
       failTaskOnFailedTests: true
 
 - job: Move_Tool_Specs_From_SFTP
@@ -925,7 +925,7 @@ jobs:
   - task: PublishTestResults@2
     inputs:
       testRunner: VSTest
-      testResultsFiles: '**/*.trx'
+      testResultsFiles: '$(Agent.BuildDirectory)\\s\\Dev\\Bin\\AcceptanceTesting\\TestResults\\*.trx'
       failTaskOnFailedTests: true
 
 - job: Rename_Tool_Specs_From_SFTP
@@ -939,7 +939,7 @@ jobs:
   - task: PublishTestResults@2
     inputs:
       testRunner: VSTest
-      testResultsFiles: '**/*.trx'
+      testResultsFiles: '$(Agent.BuildDirectory)\\s\\Dev\\Bin\\AcceptanceTesting\\TestResults\\*.trx'
       failTaskOnFailedTests: true
 
 - job: Unzip_Tool_Specs_From_SFTP
@@ -953,7 +953,7 @@ jobs:
   - task: PublishTestResults@2
     inputs:
       testRunner: VSTest
-      testResultsFiles: '**/*.trx'
+      testResultsFiles: '$(Agent.BuildDirectory)\\s\\Dev\\Bin\\AcceptanceTesting\\TestResults\\*.trx'
       failTaskOnFailedTests: true
 
 - job: Zip_Tool_Specs_From_SFTP
@@ -967,7 +967,7 @@ jobs:
   - task: PublishTestResults@2
     inputs:
       testRunner: VSTest
-      testResultsFiles: '**/*.trx'
+      testResultsFiles: '$(Agent.BuildDirectory)\\s\\Dev\\Bin\\AcceptanceTesting\\TestResults\\*.trx'
       failTaskOnFailedTests: true
 
 - job: Copy_Tool_Specs_From_UNC
@@ -981,7 +981,7 @@ jobs:
   - task: PublishTestResults@2
     inputs:
       testRunner: VSTest
-      testResultsFiles: '**/*.trx'
+      testResultsFiles: '$(Agent.BuildDirectory)\\s\\Dev\\Bin\\AcceptanceTesting\\TestResults\\*.trx'
       failTaskOnFailedTests: true
 
 - job: Move_Tool_Specs_From_UNC
@@ -995,7 +995,7 @@ jobs:
   - task: PublishTestResults@2
     inputs:
       testRunner: VSTest
-      testResultsFiles: '**/*.trx'
+      testResultsFiles: '$(Agent.BuildDirectory)\\s\\Dev\\Bin\\AcceptanceTesting\\TestResults\\*.trx'
       failTaskOnFailedTests: true
 
 - job: Studio_Core_Unit_Tests
@@ -1009,7 +1009,7 @@ jobs:
   - task: PublishTestResults@2
     inputs:
       testRunner: VSTest
-      testResultsFiles: '**/*.trx'
+      testResultsFiles: '$(Agent.BuildDirectory)\\s\\Dev\\Bin\\AcceptanceTesting\\TestResults\\*.trx'
       failTaskOnFailedTests: true
 
 - job: Elasticsearch_View_Models_Unit_Tests
@@ -1023,7 +1023,7 @@ jobs:
   - task: PublishTestResults@2
     inputs:
       testRunner: VSTest
-      testResultsFiles: '**/*.trx'
+      testResultsFiles: '$(Agent.BuildDirectory)\\s\\Dev\\Bin\\AcceptanceTesting\\TestResults\\*.trx'
       failTaskOnFailedTests: true
 
 - job: Search_Specs
@@ -1037,7 +1037,7 @@ jobs:
   - task: PublishTestResults@2
     inputs:
       testRunner: VSTest
-      testResultsFiles: '**/*.trx'
+      testResultsFiles: '$(Agent.BuildDirectory)\\s\\Dev\\Bin\\AcceptanceTesting\\TestResults\\*.trx'
       failTaskOnFailedTests: true
 
 - job: Logger_Unit_Tests
@@ -1051,7 +1051,7 @@ jobs:
   - task: PublishTestResults@2
     inputs:
       testRunner: VSTest
-      testResultsFiles: '**/*.trx'
+      testResultsFiles: '$(Agent.BuildDirectory)\\s\\Dev\\Bin\\AcceptanceTesting\\TestResults\\*.trx'
       failTaskOnFailedTests: true
 
 - job: Rename_Tool_Specs_From_UNC
@@ -1065,7 +1065,7 @@ jobs:
   - task: PublishTestResults@2
     inputs:
       testRunner: VSTest
-      testResultsFiles: '**/*.trx'
+      testResultsFiles: '$(Agent.BuildDirectory)\\s\\Dev\\Bin\\AcceptanceTesting\\TestResults\\*.trx'
       failTaskOnFailedTests: true
 
 - job: Not_Parallelizable_Unit_Tests
@@ -1079,7 +1079,7 @@ jobs:
   - task: PublishTestResults@2
     inputs:
       testRunner: VSTest
-      testResultsFiles: '**/*.trx'
+      testResultsFiles: '$(Agent.BuildDirectory)\\s\\Dev\\Bin\\AcceptanceTesting\\TestResults\\*.trx'
       failTaskOnFailedTests: true
 
 - job: Database_Workflow_Execution_Specs
@@ -1093,7 +1093,7 @@ jobs:
   - task: PublishTestResults@2
     inputs:
       testRunner: VSTest
-      testResultsFiles: '**/*.trx'
+      testResultsFiles: '$(Agent.BuildDirectory)\\s\\Dev\\Bin\\AcceptanceTesting\\TestResults\\*.trx'
       failTaskOnFailedTests: true
 
 - job: RabbitMQ_Workflow_Execution_Specs
@@ -1107,7 +1107,7 @@ jobs:
   - task: PublishTestResults@2
     inputs:
       testRunner: VSTest
-      testResultsFiles: '**/*.trx'
+      testResultsFiles: '$(Agent.BuildDirectory)\\s\\Dev\\Bin\\AcceptanceTesting\\TestResults\\*.trx'
       failTaskOnFailedTests: true
 
 - job: Studio_Test_Framework_With_HTTP_Web_Get_Tools_Specs
@@ -1121,7 +1121,7 @@ jobs:
   - task: PublishTestResults@2
     inputs:
       testRunner: VSTest
-      testResultsFiles: '**/*.trx'
+      testResultsFiles: '$(Agent.BuildDirectory)\\s\\Dev\\Bin\\AcceptanceTesting\\TestResults\\*.trx'
       failTaskOnFailedTests: true
 
 - job: Studio_Test_Framework_With_HTTP_Web_Delete_Tools_Specs
@@ -1135,7 +1135,7 @@ jobs:
   - task: PublishTestResults@2
     inputs:
       testRunner: VSTest
-      testResultsFiles: '**/*.trx'
+      testResultsFiles: '$(Agent.BuildDirectory)\\s\\Dev\\Bin\\AcceptanceTesting\\TestResults\\*.trx'
       failTaskOnFailedTests: true
 
 - job: Studio_Test_Framework_With_HTTP_Web_Post_Tools_Specs
@@ -1149,7 +1149,7 @@ jobs:
   - task: PublishTestResults@2
     inputs:
       testRunner: VSTest
-      testResultsFiles: '**/*.trx'
+      testResultsFiles: '$(Agent.BuildDirectory)\\s\\Dev\\Bin\\AcceptanceTesting\\TestResults\\*.trx'
       failTaskOnFailedTests: true
 
 - job: Studio_Test_Framework_With_HTTP_Web_Put_Tools_Specs
@@ -1163,7 +1163,7 @@ jobs:
   - task: PublishTestResults@2
     inputs:
       testRunner: VSTest
-      testResultsFiles: '**/*.trx'
+      testResultsFiles: '$(Agent.BuildDirectory)\\s\\Dev\\Bin\\AcceptanceTesting\\TestResults\\*.trx'
       failTaskOnFailedTests: true
 
 - job: Studio_Test_Framework_With_RabbitMQ_Tools_Specs
@@ -1177,7 +1177,7 @@ jobs:
   - task: PublishTestResults@2
     inputs:
       testRunner: VSTest
-      testResultsFiles: '**/*.trx'
+      testResultsFiles: '$(Agent.BuildDirectory)\\s\\Dev\\Bin\\AcceptanceTesting\\TestResults\\*.trx'
       failTaskOnFailedTests: true
 
 - job: Database_Subworkflow_Execution_Specs
