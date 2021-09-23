@@ -1612,588 +1612,504 @@ jobs:
         name: Zip Tool Specs Results
         path: .\\Bin\\AcceptanceTesting\\TestResults
 
-    steps:
     - name: Download      
       uses: actions/download-artifact@v2
       with:
         name: Email Tools Specs Results
         path: .\\Bin\\AcceptanceTesting\\TestResults
 
-    steps:
     - name: Download      
       uses: actions/download-artifact@v2
       with:
         name: Resource Tools Specs Results
         path: .\\Bin\\AcceptanceTesting\\TestResults
 
-    steps:
     - name: Download      
       uses: actions/download-artifact@v2
       with:
         name: File And Folder Copy Tool Specs Results
         path: .\\Bin\\AcceptanceTesting\\TestResults
 
-    steps:
     - name: Download      
       uses: actions/download-artifact@v2
       with:
         name: Data Tools Specs Results
         path: .\\Bin\\AcceptanceTesting\\TestResults
 
-    steps:
     - name: Download      
       uses: actions/download-artifact@v2
       with:
         name: Request Service Name View Models Unit Tests Results
         path: .\\Bin\\AcceptanceTesting\\TestResults
 
-    steps:
     - name: Download      
       uses: actions/download-artifact@v2
       with:
         name: Unzip Tool Specs Validation Results
         path: .\\Bin\\AcceptanceTesting\\TestResults
 
-    steps:
     - name: Download      
       uses: actions/download-artifact@v2
       with:
         name: Recordset Tools Specs Results
         path: .\\Bin\\AcceptanceTesting\\TestResults
 
-    steps:
     - name: Download      
       uses: actions/download-artifact@v2
       with:
         name: File And Folder Rename Tool Specs Results
         path: .\\Bin\\AcceptanceTesting\\TestResults
 
-    steps:
     - name: Download      
       uses: actions/download-artifact@v2
       with:
         name: Other Tools Specs Results
         path: .\\Bin\\AcceptanceTesting\\TestResults
 
-    steps:
     - name: Download      
       uses: actions/download-artifact@v2
       with:
         name: File And Folder Move Tool Specs Results
         path: .\\Bin\\AcceptanceTesting\\TestResults
 
-    steps:
     - name: Download      
       uses: actions/download-artifact@v2
       with:
         name: File Read Tool Specs Results
         path: .\\Bin\\AcceptanceTesting\\TestResults
 
-    steps:
     - name: Download      
       uses: actions/download-artifact@v2
       with:
         name: Infrastructure Unit Tests Results
         path: .\\Bin\\AcceptanceTesting\\TestResults
 
-    steps:
     - name: Download      
       uses: actions/download-artifact@v2
       with:
         name: New Folder Read Tool Specs Results
         path: .\\Bin\\AcceptanceTesting\\TestResults
 
-    steps:
     - name: Download      
       uses: actions/download-artifact@v2
       with:
         name: Write File Tool Specs Results
         path: .\\Bin\\AcceptanceTesting\\TestResults
 
-    steps:
     - name: Download      
       uses: actions/download-artifact@v2
       with:
         name: Loop Construct Tools Specs Results
         path: .\\Bin\\AcceptanceTesting\\TestResults
 
-    steps:
     - name: Download      
       uses: actions/download-artifact@v2
       with:
         name: Utility Tools Specs Results
         path: .\\Bin\\AcceptanceTesting\\TestResults
 
-    steps:
     - name: Download      
       uses: actions/download-artifact@v2
       with:
         name: Folder Read Tool Specs Results
         path: .\\Bin\\AcceptanceTesting\\TestResults
 
-    steps:
     - name: Download      
       uses: actions/download-artifact@v2
       with:
         name: SQL Bulk Insert Tool Specs Results
         path: .\\Bin\\AcceptanceTesting\\TestResults
 
-    steps:
     - name: Download      
       uses: actions/download-artifact@v2
       with:
         name: Control Flow Tools Specs Results
         path: .\\Bin\\AcceptanceTesting\\TestResults
 
-    steps:
     - name: Download      
       uses: actions/download-artifact@v2
       with:
         name: Studio View Models Unit Tests Results
         path: .\\Bin\\AcceptanceTesting\\TestResults
 
-    steps:
     - name: Download      
       uses: actions/download-artifact@v2
       with:
         name: File And Folder Create Tool Specs Results
         path: .\\Bin\\AcceptanceTesting\\TestResults
 
-    steps:
     - name: Download      
       uses: actions/download-artifact@v2
       with:
         name: Storage Unit Tests Results
         path: .\\Bin\\AcceptanceTesting\\TestResults
 
-    steps:
     - name: Download      
       uses: actions/download-artifact@v2
       with:
         name: Storage Tools Specs Results
         path: .\\Bin\\AcceptanceTesting\\TestResults
 
-    steps:
     - name: Download      
       uses: actions/download-artifact@v2
       with:
         name: File And Folder Delete Tool Specs Results
         path: .\\Bin\\AcceptanceTesting\\TestResults
 
-    steps:
     - name: Download      
       uses: actions/download-artifact@v2
       with:
         name: Scripting Tools Specs Results
         path: .\\Bin\\AcceptanceTesting\\TestResults
 
-    steps:
     - name: Download      
       uses: actions/download-artifact@v2
       with:
         name: Database Tools Specs Results
         path: .\\Bin\\AcceptanceTesting\\TestResults
 
-    steps:
     - name: Download      
       uses: actions/download-artifact@v2
       with:
         name: Auditing Unit Tests Results
         path: .\\Bin\\AcceptanceTesting\\TestResults
 
-    steps:
     - name: Download      
       uses: actions/download-artifact@v2
       with:
         name: Workflow Execution Specs Results
         path: .\\Bin\\AcceptanceTesting\\TestResults
 
-    steps:
     - name: Download      
       uses: actions/download-artifact@v2
       with:
         name: Studio Test Framework With Hello World Workflow Specs Results
         path: .\\Bin\\AcceptanceTesting\\TestResults
 
-    steps:
     - name: Download      
       uses: actions/download-artifact@v2
       with:
         name: Studio Test Framework With Utility Tools Specs Results
         path: .\\Bin\\AcceptanceTesting\\TestResults
 
-    steps:
     - name: Download      
       uses: actions/download-artifact@v2
       with:
         name: MS SQL Server Specs Results
         path: .\\Bin\\AcceptanceTesting\\TestResults
 
-    steps:
     - name: Download      
       uses: actions/download-artifact@v2
       with:
         name: Studio Test Framework With Data Tools Specs Results
         path: .\\Bin\\AcceptanceTesting\\TestResults
 
-    steps:
     - name: Download      
       uses: actions/download-artifact@v2
       with:
         name: Assign Workflow Execution Specs Results
         path: .\\Bin\\AcceptanceTesting\\TestResults
 
-    steps:
     - name: Download      
       uses: actions/download-artifact@v2
       with:
         name: Integration Tests Results
         path: .\\Bin\\AcceptanceTesting\\TestResults
 
-    steps:
     - name: Download      
       uses: actions/download-artifact@v2
       with:
         name: Studio Test Framework With Scripting Tools Specs Results
         path: .\\Bin\\AcceptanceTesting\\TestResults
 
-    steps:
     - name: Download      
       uses: actions/download-artifact@v2
       with:
         name: Other Activities Specs Results
         path: .\\Bin\\AcceptanceTesting\\TestResults
 
-    steps:
     - name: Download      
       uses: actions/download-artifact@v2
       with:
         name: Studio Test Framework With File And Folder Tools Specs Results
         path: .\\Bin\\AcceptanceTesting\\TestResults
 
-    steps:
     - name: Download      
       uses: actions/download-artifact@v2
       with:
         name: Studio Test Framework With HTTP Web Tools Specs Results
         path: .\\Bin\\AcceptanceTesting\\TestResults
 
-    steps:
     - name: Download      
       uses: actions/download-artifact@v2
       with:
         name: Studio Test Framework With Subworkflow Specs Results
         path: .\\Bin\\AcceptanceTesting\\TestResults
 
-    steps:
     - name: Download      
       uses: actions/download-artifact@v2
       with:
         name: Workflow Merging Specs Results
         path: .\\Bin\\AcceptanceTesting\\TestResults
 
-    steps:
     - name: Download      
       uses: actions/download-artifact@v2
       with:
         name: Example Workflow Execution Specs Results
         path: .\\Bin\\AcceptanceTesting\\TestResults
 
-    steps:
     - name: Download      
       uses: actions/download-artifact@v2
       with:
         name: Studio Test Framework Specs Results
         path: .\\Bin\\AcceptanceTesting\\TestResults
 
-    steps:
     - name: Download      
       uses: actions/download-artifact@v2
       with:
         name: Subworkflow Execution Specs Results
         path: .\\Bin\\AcceptanceTesting\\TestResults
 
-    steps:
     - name: Download      
       uses: actions/download-artifact@v2
       with:
         name: Oracle Execution Specs Results
         path: .\\Bin\\AcceptanceTesting\\TestResults
 
-    steps:
     - name: Download      
       uses: actions/download-artifact@v2
       with:
         name: Other Specs Results
         path: .\\Bin\\AcceptanceTesting\\TestResults
 
-    steps:
     - name: Download      
       uses: actions/download-artifact@v2
       with:
         name: Studio Test Framework With Deleted Resources Specs Results
         path: .\\Bin\\AcceptanceTesting\\TestResults
 
-    steps:
     - name: Download      
       uses: actions/download-artifact@v2
       with:
         name: SQL Integration Tests Results
         path: .\\Bin\\AcceptanceTesting\\TestResults
 
-    steps:
     - name: Download      
       uses: actions/download-artifact@v2
       with:
         name: For Each Workflow Execution Specs Results
         path: .\\Bin\\AcceptanceTesting\\TestResults
 
-    steps:
     - name: Download      
       uses: actions/download-artifact@v2
       with:
         name: Copy Tool Specs From Local Results
         path: .\\Bin\\AcceptanceTesting\\TestResults
 
-    steps:
     - name: Download      
       uses: actions/download-artifact@v2
       with:
         name: Move Tool Specs From Local Results
         path: .\\Bin\\AcceptanceTesting\\TestResults
 
-    steps:
     - name: Download      
       uses: actions/download-artifact@v2
       with:
         name: Rename Tool Specs From Local Results
         path: .\\Bin\\AcceptanceTesting\\TestResults
 
-    steps:
     - name: Download      
       uses: actions/download-artifact@v2
       with:
         name: Unzip Tool Specs From Local Results
         path: .\\Bin\\AcceptanceTesting\\TestResults
 
-    steps:
     - name: Download      
       uses: actions/download-artifact@v2
       with:
         name: Zip Tool Specs From Local Results
         path: .\\Bin\\AcceptanceTesting\\TestResults
 
-    steps:
     - name: Download      
       uses: actions/download-artifact@v2
       with:
         name: Copy Tool Specs From FTP Results
         path: .\\Bin\\AcceptanceTesting\\TestResults
 
-    steps:
     - name: Download      
       uses: actions/download-artifact@v2
       with:
         name: Move Tool Specs From FTP Results
         path: .\\Bin\\AcceptanceTesting\\TestResults
 
-    steps:
     - name: Download      
       uses: actions/download-artifact@v2
       with:
         name: Rename Tool Specs From FTP Results
         path: .\\Bin\\AcceptanceTesting\\TestResults
 
-    steps:
     - name: Download      
       uses: actions/download-artifact@v2
       with:
         name: Unzip Tool Specs From FTP Results
         path: .\\Bin\\AcceptanceTesting\\TestResults
 
-    steps:
     - name: Download      
       uses: actions/download-artifact@v2
       with:
         name: Zip Tool Specs From FTP Results
         path: .\\Bin\\AcceptanceTesting\\TestResults
 
-    steps:
     - name: Download      
       uses: actions/download-artifact@v2
       with:
         name: Copy Tool Specs From FTPS Results
         path: .\\Bin\\AcceptanceTesting\\TestResults
 
-    steps:
     - name: Download      
       uses: actions/download-artifact@v2
       with:
         name: Move Tool Specs From FTPS Results
         path: .\\Bin\\AcceptanceTesting\\TestResults
 
-    steps:
     - name: Download      
       uses: actions/download-artifact@v2
       with:
         name: Rename Tool Specs From FTPS Results
         path: .\\Bin\\AcceptanceTesting\\TestResults
 
-    steps:
     - name: Download      
       uses: actions/download-artifact@v2
       with:
         name: Unzip Tool Specs From FTPS Results
         path: .\\Bin\\AcceptanceTesting\\TestResults
 
-    steps:
     - name: Download      
       uses: actions/download-artifact@v2
       with:
         name: Zip Tool Specs From FTPS Results
         path: .\\Bin\\AcceptanceTesting\\TestResults
 
-    steps:
     - name: Download      
       uses: actions/download-artifact@v2
       with:
         name: Copy Tool Specs From SFTP Results
         path: .\\Bin\\AcceptanceTesting\\TestResults
 
-    steps:
     - name: Download      
       uses: actions/download-artifact@v2
       with:
         name: Move Tool Specs From SFTP Results
         path: .\\Bin\\AcceptanceTesting\\TestResults
 
-    steps:
     - name: Download      
       uses: actions/download-artifact@v2
       with:
         name: Rename Tool Specs From SFTP Results
         path: .\\Bin\\AcceptanceTesting\\TestResults
 
-    steps:
     - name: Download      
       uses: actions/download-artifact@v2
       with:
         name: Unzip Tool Specs From SFTP Results
         path: .\\Bin\\AcceptanceTesting\\TestResults
 
-    steps:
     - name: Download      
       uses: actions/download-artifact@v2
       with:
         name: Zip Tool Specs From SFTP Results
         path: .\\Bin\\AcceptanceTesting\\TestResults
 
-    steps:
     - name: Download      
       uses: actions/download-artifact@v2
       with:
         name: Copy Tool Specs From UNC Results
         path: .\\Bin\\AcceptanceTesting\\TestResults
 
-    steps:
     - name: Download      
       uses: actions/download-artifact@v2
       with:
         name: Move Tool Specs From UNC Results
         path: .\\Bin\\AcceptanceTesting\\TestResults
 
-    steps:
     - name: Download      
       uses: actions/download-artifact@v2
       with:
         name: Studio Core Unit Tests Results
         path: .\\Bin\\AcceptanceTesting\\TestResults
 
-    steps:
     - name: Download      
       uses: actions/download-artifact@v2
       with:
         name: Elasticsearch View Models Unit Tests Results
         path: .\\Bin\\AcceptanceTesting\\TestResults
 
-    steps:
     - name: Download      
       uses: actions/download-artifact@v2
       with:
         name: Search Specs Results
         path: .\\Bin\\AcceptanceTesting\\TestResults
 
-    steps:
     - name: Download      
       uses: actions/download-artifact@v2
       with:
         name: Logger Unit Tests Results
         path: .\\Bin\\AcceptanceTesting\\TestResults
 
-    steps:
     - name: Download      
       uses: actions/download-artifact@v2
       with:
         name: Rename Tool Specs From UNC Results
         path: .\\Bin\\AcceptanceTesting\\TestResults
 
-    steps:
     - name: Download      
       uses: actions/download-artifact@v2
       with:
         name: Not Parallelizable Unit Tests Results
         path: .\\Bin\\AcceptanceTesting\\TestResults
 
-    steps:
     - name: Download      
       uses: actions/download-artifact@v2
       with:
         name: Database Workflow Execution Specs Results
         path: .\\Bin\\AcceptanceTesting\\TestResults
 
-    steps:
     - name: Download      
       uses: actions/download-artifact@v2
       with:
         name: RabbitMQ Workflow Execution Specs Results
         path: .\\Bin\\AcceptanceTesting\\TestResults
 
-    steps:
     - name: Download      
       uses: actions/download-artifact@v2
       with:
         name: Studio Test Framework With HTTP Web Get Tools Specs Results
         path: .\\Bin\\AcceptanceTesting\\TestResults
 
-    steps:
     - name: Download      
       uses: actions/download-artifact@v2
       with:
         name: Studio Test Framework With HTTP Web Delete Tools Specs Results
         path: .\\Bin\\AcceptanceTesting\\TestResults
 
-    steps:
     - name: Download      
       uses: actions/download-artifact@v2
       with:
         name: Studio Test Framework With HTTP Web Post Tools Specs Results
         path: .\\Bin\\AcceptanceTesting\\TestResults
 
-    steps:
     - name: Download      
       uses: actions/download-artifact@v2
       with:
         name: Studio Test Framework With HTTP Web Put Tools Specs Results
         path: .\\Bin\\AcceptanceTesting\\TestResults
 
-    steps:
     - name: Download      
       uses: actions/download-artifact@v2
       with:
         name: Studio Test Framework With RabbitMQ Tools Specs Results
         path: .\\Bin\\AcceptanceTesting\\TestResults
 
-    steps:
     - name: Download      
       uses: actions/download-artifact@v2
       with:
