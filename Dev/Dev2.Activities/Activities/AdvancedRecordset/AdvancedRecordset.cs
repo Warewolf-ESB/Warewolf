@@ -251,25 +251,17 @@ namespace Dev2.Activities
 
             if (!key.Contains("_Primary_Id"))
             {
-                if (value.Equals(DataStorage.WarewolfAtom.Nothing))
+                if (value.Equals(DataStorage.WarewolfAtom.Nothing) || colType == "WarewolfAtom")
                 {
                     _insertSql = "'',";
                 }
-                else if (colType == "Int")
+                else if (colType == "Int" || colType == "Float")
                 {
                     _insertSql = value + ",";
                 }
-                else if (colType == "DataString")
+                else if (colType == "DataString" || colType == "JsonObject")
                 {
                     _insertSql = "'" + value + "',";
-                }
-                else if (colType == "Float")
-                {
-                    _insertSql = value + ",";
-                }
-                else if (colType == "WarewolfAtom")
-                {
-                    _insertSql = "'',";
                 }
                 else
                 {
