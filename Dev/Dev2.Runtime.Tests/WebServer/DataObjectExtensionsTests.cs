@@ -305,10 +305,19 @@ namespace Dev2.Tests.Runtime.WebServer
                 WorkflowId = _workflowOne,
                 OldReportName = "test 1",
                 ReportName =  _reportName,
-                TotalCoverage = 0.3,
+                TotalCoverage = 0.1,
                 AllTestNodesCovered = new ISingleTestNodesCovered[]
                 {
-                    new SingleTestNodesCovered(_reportName, new List<IServiceTestStep>{ })
+                    new SingleTestNodesCovered(_reportName, new List<IServiceTestStep>
+                    {
+                        new ServiceTestStepTO
+                        {
+                            ActivityID = _testStepOne,
+                            UniqueID = _testStepOne,
+                            Type = StepType.Assert,
+                            StepDescription = "StepType Assert",
+                        }
+                    })
                 }
             }});
 
@@ -324,7 +333,7 @@ namespace Dev2.Tests.Runtime.WebServer
             Assert.IsNotNull(executePayload);
             Assert.AreEqual("application/json", sut.ContentType);
             StringAssert.Contains(executePayload, "\"TestResults\": [\r\n    {\r\n      \"ResourceID\": \"fbda8700-2717-4879-88cd-6abdea4560da\",\r\n  ");
-            StringAssert.Contains(executePayload, "\r\n  \"CoverageSummary\": {\r\n    \"TotalCoverage\": 30.0\r\n  },");
+            StringAssert.Contains(executePayload, "\r\n  \"CoverageSummary\": {\r\n    \"TotalCoverage\": 100.0\r\n  },");
             StringAssert.Contains(executePayload, "\r\n  \"TestSummary\": {\r\n    \"TestsTotalCount\": 1,\r\n    \"TestsFailed\": 0,\r\n    \"TestsPassed\": 0,\r\n    \"TestsInvalid\": 1\r\n  }");
         }
 
