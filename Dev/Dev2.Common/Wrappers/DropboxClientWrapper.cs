@@ -62,7 +62,7 @@ namespace Dev2.Common.Wrappers
 
         public Task<FileMetadata> UploadAsync(string path) => UploadAsync(path, null, false, null, false, null);
 
-        public Task<FileMetadata> UploadAsync(string path, WriteMode mode, bool autorename, DateTime? clientModified, bool mute, Stream body) => _client.Files.UploadAsync(path, mode, autorename, clientModified, mute, body);
+        public Task<FileMetadata> UploadAsync(string path, WriteMode mode, bool autorename, DateTime? clientModified, bool mute, Stream body) => _client.Files.UploadAsync(path, mode, autorename, clientModified, mute, null, false, body);
 
         public Task<Metadata> DeleteAsync(string path) => _client.Files.DeleteAsync(path);
 
