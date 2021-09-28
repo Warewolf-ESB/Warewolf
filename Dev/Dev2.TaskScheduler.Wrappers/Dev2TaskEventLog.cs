@@ -31,7 +31,7 @@ namespace Dev2.TaskScheduler.Wrappers
 
         public IEnumerator<ITaskEvent> GetEnumerator()
         {
-            IEnumerator<TaskEvent> en = _taskLog.GetEnumerator();
+            IEnumerator<TaskEvent> en = _taskLog.GetEnumerator(false);
             while (en.MoveNext())
             {
                 yield return _factory.CreateTaskEvent(en.Current);
