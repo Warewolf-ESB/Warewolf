@@ -27,22 +27,7 @@
                     <TranslateTransform />
                 </TransformGroup>
             </wv2:WebView2.RenderTransform>
-
         </wv2:WebView2>
 
-        <!--<WebBrowser x:Name="webBrowser"
-            Navigating="WebBrowser_OnNavigating"
-            Navigated="WebBrowserOnNavigated"
-            Margin="0,0,0,0"
-            RenderTransformOrigin="0.5,0.5">
-            <WebBrowser.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform />
-                    <SkewTransform />
-                    <RotateTransform Angle="-0.018" />
-                    <TranslateTransform />
-                </TransformGroup>
-            </WebBrowser.RenderTransform>
-        </WebBrowser>-->
     </Grid>
 </Window>
