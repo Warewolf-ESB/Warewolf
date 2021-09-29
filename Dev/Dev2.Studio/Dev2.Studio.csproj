@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -607,326 +607,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Properties\licenses.licx" />
-    <None Include="WebView\x64\94.0.992.31.manifest" />
-    <None Include="WebView\x64\concrt140.dll" />
-    <None Include="WebView\x64\d3dcompiler_47.dll" />
-    <None Include="WebView\x64\dual_engine_adapter_x64.dll" />
-    <None Include="WebView\x64\EBWebView\x64\EmbeddedBrowserWebView.dll" />
-    <None Include="WebView\x64\EBWebView\x86\EmbeddedBrowserWebView.dll" />
-    <None Include="WebView\x64\Edge.dat" />
-    <None Include="WebView\x64\EdgeWebView.dat" />
-    <None Include="WebView\x64\eventlog_provider.dll" />
-    <None Include="WebView\x64\ffmpeg.dll" />
-    <None Include="WebView\x64\icudtl.dat" />
-    <None Include="WebView\x64\learning_tools.dll" />
-    <None Include="WebView\x64\libEGL.dll" />
-    <None Include="WebView\x64\libGLESv2.dll" />
-    <None Include="WebView\x64\libsmartscreen.dll" />
-    <None Include="WebView\x64\libsmartscreenn.dll" />
-    <None Include="WebView\x64\Locales\af.pak" />
-    <None Include="WebView\x64\Locales\am.pak" />
-    <None Include="WebView\x64\Locales\ar.pak" />
-    <None Include="WebView\x64\Locales\as.pak" />
-    <None Include="WebView\x64\Locales\az.pak" />
-    <None Include="WebView\x64\Locales\bg.pak" />
-    <None Include="WebView\x64\Locales\bn-IN.pak" />
-    <None Include="WebView\x64\Locales\bs.pak" />
-    <None Include="WebView\x64\Locales\ca-Es-VALENCIA.pak" />
-    <None Include="WebView\x64\Locales\ca.pak" />
-    <None Include="WebView\x64\Locales\cs.pak" />
-    <None Include="WebView\x64\Locales\cy.pak" />
-    <None Include="WebView\x64\Locales\da.pak" />
-    <None Include="WebView\x64\Locales\de.pak" />
-    <None Include="WebView\x64\Locales\el.pak" />
-    <None Include="WebView\x64\Locales\en-GB.pak" />
-    <None Include="WebView\x64\Locales\en-US.pak" />
-    <None Include="WebView\x64\Locales\es-419.pak" />
-    <None Include="WebView\x64\Locales\es.pak" />
-    <None Include="WebView\x64\Locales\et.pak" />
-    <None Include="WebView\x64\Locales\eu.pak" />
-    <None Include="WebView\x64\Locales\fa.pak" />
-    <None Include="WebView\x64\Locales\fi.pak" />
-    <None Include="WebView\x64\Locales\fil.pak" />
-    <None Include="WebView\x64\Locales\fr-CA.pak" />
-    <None Include="WebView\x64\Locales\fr.pak" />
-    <None Include="WebView\x64\Locales\ga.pak" />
-    <None Include="WebView\x64\Locales\gd.pak" />
-    <None Include="WebView\x64\Locales\gl.pak" />
-    <None Include="WebView\x64\Locales\gu.pak" />
-    <None Include="WebView\x64\Locales\he.pak" />
-    <None Include="WebView\x64\Locales\hi.pak" />
-    <None Include="WebView\x64\Locales\hr.pak" />
-    <None Include="WebView\x64\Locales\hu.pak" />
-    <None Include="WebView\x64\Locales\id.pak" />
-    <None Include="WebView\x64\Locales\is.pak" />
-    <None Include="WebView\x64\Locales\it.pak" />
-    <None Include="WebView\x64\Locales\ja.pak" />
-    <None Include="WebView\x64\Locales\ka.pak" />
-    <None Include="WebView\x64\Locales\kk.pak" />
-    <None Include="WebView\x64\Locales\km.pak" />
-    <None Include="WebView\x64\Locales\kn.pak" />
-    <None Include="WebView\x64\Locales\ko.pak" />
-    <None Include="WebView\x64\Locales\kok.pak" />
-    <None Include="WebView\x64\Locales\lb.pak" />
-    <None Include="WebView\x64\Locales\lo.pak" />
-    <None Include="WebView\x64\Locales\lt.pak" />
-    <None Include="WebView\x64\Locales\lv.pak" />
-    <None Include="WebView\x64\Locales\mi.pak" />
-    <None Include="WebView\x64\Locales\mk.pak" />
-    <None Include="WebView\x64\Locales\ml.pak" />
-    <None Include="WebView\x64\Locales\mr.pak" />
-    <None Include="WebView\x64\Locales\ms.pak" />
-    <None Include="WebView\x64\Locales\mt.pak" />
-    <None Include="WebView\x64\Locales\nb.pak" />
-    <None Include="WebView\x64\Locales\ne.pak" />
-    <None Include="WebView\x64\Locales\nl.pak" />
-    <None Include="WebView\x64\Locales\nn.pak" />
-    <None Include="WebView\x64\Locales\or.pak" />
-    <None Include="WebView\x64\Locales\pa.pak" />
-    <None Include="WebView\x64\Locales\pl.pak" />
-    <None Include="WebView\x64\Locales\pt-BR.pak" />
-    <None Include="WebView\x64\Locales\pt-PT.pak" />
-    <None Include="WebView\x64\Locales\qu.pak" />
-    <None Include="WebView\x64\Locales\ro.pak" />
-    <None Include="WebView\x64\Locales\ru.pak" />
-    <None Include="WebView\x64\Locales\sk.pak" />
-    <None Include="WebView\x64\Locales\sl.pak" />
-    <None Include="WebView\x64\Locales\sq.pak" />
-    <None Include="WebView\x64\Locales\sr-Cyrl-BA.pak" />
-    <None Include="WebView\x64\Locales\sr-Latn-RS.pak" />
-    <None Include="WebView\x64\Locales\sr.pak" />
-    <None Include="WebView\x64\Locales\sv.pak" />
-    <None Include="WebView\x64\Locales\ta.pak" />
-    <None Include="WebView\x64\Locales\te.pak" />
-    <None Include="WebView\x64\Locales\th.pak" />
-    <None Include="WebView\x64\Locales\tr.pak" />
-    <None Include="WebView\x64\Locales\tt.pak" />
-    <None Include="WebView\x64\Locales\ug.pak" />
-    <None Include="WebView\x64\Locales\uk.pak" />
-    <None Include="WebView\x64\Locales\ur.pak" />
-    <None Include="WebView\x64\Locales\vi.pak" />
-    <None Include="WebView\x64\Locales\zh-CN.pak" />
-    <None Include="WebView\x64\Locales\zh-TW.pak" />
-    <None Include="WebView\x64\MEIPreload\preloaded_data.pb" />
-    <None Include="WebView\x64\microsoft_apis.dll" />
-    <None Include="WebView\x64\microsoft_shell_integration.dll" />
-    <None Include="WebView\x64\mip_core.dll" />
-    <None Include="WebView\x64\mip_protection_sdk.dll" />
-    <None Include="WebView\x64\MLModels\autofill_labeling.ort" />
-    <None Include="WebView\x64\MLModels\autofill_labeling_email.ort" />
-    <None Include="WebView\x64\MLModels\nexturl.ort" />
-    <None Include="WebView\x64\mojo_core.dll" />
-    <None Include="WebView\x64\msedge.dll" />
-    <None Include="WebView\x64\msedge.dll.sig" />
-    <None Include="WebView\x64\msedgewebview2.exe" />
-    <None Include="WebView\x64\msedgewebview2.exe.sig" />
-    <None Include="WebView\x64\msedge_100_percent.pak" />
-    <None Include="WebView\x64\msedge_200_percent.pak" />
-    <None Include="WebView\x64\msedge_elf.dll" />
-    <None Include="WebView\x64\msvcp140.dll" />
-    <None Include="WebView\x64\nacl_irt_x86_64.nexe" />
-    <None Include="WebView\x64\notification_helper.exe" />
-    <None Include="WebView\x64\oneauth.dll" />
-    <None Include="WebView\x64\oneds.dll" />
-    <None Include="WebView\x64\onnxruntime.dll" />
-    <None Include="WebView\x64\onramp.dll" />
-    <None Include="WebView\x64\PlayReadyCdm\_platform_specific\win_x64\playreadycdm.dll" />
-    <None Include="WebView\x64\resources.pak" />
-    <None Include="WebView\x64\show_third_party_software_licenses.bat" />
-    <None Include="WebView\x64\swiftshader\libEGL.dll" />
-    <None Include="WebView\x64\swiftshader\libGLESv2.dll" />
-    <None Include="WebView\x64\telclient.dll" />
-    <None Include="WebView\x64\Trust Protection Lists\Mu\Advertising" />
-    <None Include="WebView\x64\Trust Protection Lists\Mu\Analytics" />
-    <None Include="WebView\x64\Trust Protection Lists\Mu\CompatExceptions" />
-    <None Include="WebView\x64\Trust Protection Lists\Mu\Content" />
-    <None Include="WebView\x64\Trust Protection Lists\Mu\Cryptomining" />
-    <None Include="WebView\x64\Trust Protection Lists\Mu\Entities" />
-    <None Include="WebView\x64\Trust Protection Lists\Mu\Fingerprinting" />
-    <None Include="WebView\x64\Trust Protection Lists\Mu\LICENSE" />
-    <None Include="WebView\x64\Trust Protection Lists\Mu\Other" />
-    <None Include="WebView\x64\Trust Protection Lists\Mu\Social" />
-    <None Include="WebView\x64\Trust Protection Lists\Mu\TransparentAdvertisers" />
-    <None Include="WebView\x64\Trust Protection Lists\Sigma\Advertising" />
-    <None Include="WebView\x64\Trust Protection Lists\Sigma\Analytics" />
-    <None Include="WebView\x64\Trust Protection Lists\Sigma\Content" />
-    <None Include="WebView\x64\Trust Protection Lists\Sigma\Cryptomining" />
-    <None Include="WebView\x64\Trust Protection Lists\Sigma\Entities" />
-    <None Include="WebView\x64\Trust Protection Lists\Sigma\Fingerprinting" />
-    <None Include="WebView\x64\Trust Protection Lists\Sigma\LICENSE" />
-    <None Include="WebView\x64\Trust Protection Lists\Sigma\Other" />
-    <None Include="WebView\x64\Trust Protection Lists\Sigma\Social" />
-    <None Include="WebView\x64\Trust Protection Lists\Sigma\Staging" />
-    <None Include="WebView\x64\v8_context_snapshot.bin" />
-    <None Include="WebView\x64\vccorlib140.dll" />
-    <None Include="WebView\x64\vcruntime140.dll" />
-    <None Include="WebView\x64\vcruntime140_1.dll" />
-    <None Include="WebView\x64\vk_swiftshader.dll" />
-    <None Include="WebView\x64\vulkan-1.dll" />
-    <None Include="WebView\x64\wdag.dll" />
-    <None Include="WebView\x64\WidevineCdm\_platform_specific\win_x64\widevinecdm.dll" />
-    <None Include="WebView\x64\WidevineCdm\_platform_specific\win_x64\widevinecdm.dll.sig" />
-    <None Include="WebView\x64\wns_push_client.dll" />
-    <None Include="WebView\x86\94.0.992.31.manifest" />
-    <None Include="WebView\x86\concrt140.dll" />
-    <None Include="WebView\x86\d3dcompiler_47.dll" />
-    <None Include="WebView\x86\dual_engine_adapter_x64.dll" />
-    <None Include="WebView\x86\dual_engine_adapter_x86.dll" />
-    <None Include="WebView\x86\EBWebView\x86\EmbeddedBrowserWebView.dll" />
-    <None Include="WebView\x86\Edge.dat" />
-    <None Include="WebView\x86\EdgeWebView.dat" />
-    <None Include="WebView\x86\eventlog_provider.dll" />
-    <None Include="WebView\x86\ffmpeg.dll" />
-    <None Include="WebView\x86\icudtl.dat" />
-    <None Include="WebView\x86\learning_tools.dll" />
-    <None Include="WebView\x86\libEGL.dll" />
-    <None Include="WebView\x86\libGLESv2.dll" />
-    <None Include="WebView\x86\libsmartscreen.dll" />
-    <None Include="WebView\x86\libsmartscreenn.dll" />
-    <None Include="WebView\x86\Locales\af.pak" />
-    <None Include="WebView\x86\Locales\am.pak" />
-    <None Include="WebView\x86\Locales\ar.pak" />
-    <None Include="WebView\x86\Locales\as.pak" />
-    <None Include="WebView\x86\Locales\az.pak" />
-    <None Include="WebView\x86\Locales\bg.pak" />
-    <None Include="WebView\x86\Locales\bn-IN.pak" />
-    <None Include="WebView\x86\Locales\bs.pak" />
-    <None Include="WebView\x86\Locales\ca-Es-VALENCIA.pak" />
-    <None Include="WebView\x86\Locales\ca.pak" />
-    <None Include="WebView\x86\Locales\cs.pak" />
-    <None Include="WebView\x86\Locales\cy.pak" />
-    <None Include="WebView\x86\Locales\da.pak" />
-    <None Include="WebView\x86\Locales\de.pak" />
-    <None Include="WebView\x86\Locales\el.pak" />
-    <None Include="WebView\x86\Locales\en-GB.pak" />
-    <None Include="WebView\x86\Locales\en-US.pak" />
-    <None Include="WebView\x86\Locales\es-419.pak" />
-    <None Include="WebView\x86\Locales\es.pak" />
-    <None Include="WebView\x86\Locales\et.pak" />
-    <None Include="WebView\x86\Locales\eu.pak" />
-    <None Include="WebView\x86\Locales\fa.pak" />
-    <None Include="WebView\x86\Locales\fi.pak" />
-    <None Include="WebView\x86\Locales\fil.pak" />
-    <None Include="WebView\x86\Locales\fr-CA.pak" />
-    <None Include="WebView\x86\Locales\fr.pak" />
-    <None Include="WebView\x86\Locales\ga.pak" />
-    <None Include="WebView\x86\Locales\gd.pak" />
-    <None Include="WebView\x86\Locales\gl.pak" />
-    <None Include="WebView\x86\Locales\gu.pak" />
-    <None Include="WebView\x86\Locales\he.pak" />
-    <None Include="WebView\x86\Locales\hi.pak" />
-    <None Include="WebView\x86\Locales\hr.pak" />
-    <None Include="WebView\x86\Locales\hu.pak" />
-    <None Include="WebView\x86\Locales\id.pak" />
-    <None Include="WebView\x86\Locales\is.pak" />
-    <None Include="WebView\x86\Locales\it.pak" />
-    <None Include="WebView\x86\Locales\ja.pak" />
-    <None Include="WebView\x86\Locales\ka.pak" />
-    <None Include="WebView\x86\Locales\kk.pak" />
-    <None Include="WebView\x86\Locales\km.pak" />
-    <None Include="WebView\x86\Locales\kn.pak" />
-    <None Include="WebView\x86\Locales\ko.pak" />
-    <None Include="WebView\x86\Locales\kok.pak" />
-    <None Include="WebView\x86\Locales\lb.pak" />
-    <None Include="WebView\x86\Locales\lo.pak" />
-    <None Include="WebView\x86\Locales\lt.pak" />
-    <None Include="WebView\x86\Locales\lv.pak" />
-    <None Include="WebView\x86\Locales\mi.pak" />
-    <None Include="WebView\x86\Locales\mk.pak" />
-    <None Include="WebView\x86\Locales\ml.pak" />
-    <None Include="WebView\x86\Locales\mr.pak" />
-    <None Include="WebView\x86\Locales\ms.pak" />
-    <None Include="WebView\x86\Locales\mt.pak" />
-    <None Include="WebView\x86\Locales\nb.pak" />
-    <None Include="WebView\x86\Locales\ne.pak" />
-    <None Include="WebView\x86\Locales\nl.pak" />
-    <None Include="WebView\x86\Locales\nn.pak" />
-    <None Include="WebView\x86\Locales\or.pak" />
-    <None Include="WebView\x86\Locales\pa.pak" />
-    <None Include="WebView\x86\Locales\pl.pak" />
-    <None Include="WebView\x86\Locales\pt-BR.pak" />
-    <None Include="WebView\x86\Locales\pt-PT.pak" />
-    <None Include="WebView\x86\Locales\qu.pak" />
-    <None Include="WebView\x86\Locales\ro.pak" />
-    <None Include="WebView\x86\Locales\ru.pak" />
-    <None Include="WebView\x86\Locales\sk.pak" />
-    <None Include="WebView\x86\Locales\sl.pak" />
-    <None Include="WebView\x86\Locales\sq.pak" />
-    <None Include="WebView\x86\Locales\sr-Cyrl-BA.pak" />
-    <None Include="WebView\x86\Locales\sr-Latn-RS.pak" />
-    <None Include="WebView\x86\Locales\sr.pak" />
-    <None Include="WebView\x86\Locales\sv.pak" />
-    <None Include="WebView\x86\Locales\ta.pak" />
-    <None Include="WebView\x86\Locales\te.pak" />
-    <None Include="WebView\x86\Locales\th.pak" />
-    <None Include="WebView\x86\Locales\tr.pak" />
-    <None Include="WebView\x86\Locales\tt.pak" />
-    <None Include="WebView\x86\Locales\ug.pak" />
-    <None Include="WebView\x86\Locales\uk.pak" />
-    <None Include="WebView\x86\Locales\ur.pak" />
-    <None Include="WebView\x86\Locales\vi.pak" />
-    <None Include="WebView\x86\Locales\zh-CN.pak" />
-    <None Include="WebView\x86\Locales\zh-TW.pak" />
-    <None Include="WebView\x86\MEIPreload\preloaded_data.pb" />
-    <None Include="WebView\x86\microsoft_apis.dll" />
-    <None Include="WebView\x86\microsoft_shell_integration.dll" />
-    <None Include="WebView\x86\mip_core.dll" />
-    <None Include="WebView\x86\mip_protection_sdk.dll" />
-    <None Include="WebView\x86\MLModels\autofill_labeling.ort" />
-    <None Include="WebView\x86\MLModels\autofill_labeling_email.ort" />
-    <None Include="WebView\x86\MLModels\nexturl.ort" />
-    <None Include="WebView\x86\mojo_core.dll" />
-    <None Include="WebView\x86\msedge.dll" />
-    <None Include="WebView\x86\msedge.dll.sig" />
-    <None Include="WebView\x86\msedgewebview2.exe" />
-    <None Include="WebView\x86\msedgewebview2.exe.sig" />
-    <None Include="WebView\x86\msedge_100_percent.pak" />
-    <None Include="WebView\x86\msedge_200_percent.pak" />
-    <None Include="WebView\x86\msedge_elf.dll" />
-    <None Include="WebView\x86\msvcp140.dll" />
-    <None Include="WebView\x86\nacl64.exe" />
-    <None Include="WebView\x86\nacl_irt_x86_32.nexe" />
-    <None Include="WebView\x86\nacl_irt_x86_64.nexe" />
-    <None Include="WebView\x86\notification_helper.exe" />
-    <None Include="WebView\x86\oneauth.dll" />
-    <None Include="WebView\x86\oneds.dll" />
-    <None Include="WebView\x86\onnxruntime.dll" />
-    <None Include="WebView\x86\onramp.dll" />
-    <None Include="WebView\x86\PlayReadyCdm\_platform_specific\win_x86\playreadycdm.dll" />
-    <None Include="WebView\x86\resources.pak" />
-    <None Include="WebView\x86\show_third_party_software_licenses.bat" />
-    <None Include="WebView\x86\swiftshader\libEGL.dll" />
-    <None Include="WebView\x86\swiftshader\libGLESv2.dll" />
-    <None Include="WebView\x86\telclient.dll" />
-    <None Include="WebView\x86\Trust Protection Lists\Mu\Advertising" />
-    <None Include="WebView\x86\Trust Protection Lists\Mu\Analytics" />
-    <None Include="WebView\x86\Trust Protection Lists\Mu\CompatExceptions" />
-    <None Include="WebView\x86\Trust Protection Lists\Mu\Content" />
-    <None Include="WebView\x86\Trust Protection Lists\Mu\Cryptomining" />
-    <None Include="WebView\x86\Trust Protection Lists\Mu\Entities" />
-    <None Include="WebView\x86\Trust Protection Lists\Mu\Fingerprinting" />
-    <None Include="WebView\x86\Trust Protection Lists\Mu\LICENSE" />
-    <None Include="WebView\x86\Trust Protection Lists\Mu\Other" />
-    <None Include="WebView\x86\Trust Protection Lists\Mu\Social" />
-    <None Include="WebView\x86\Trust Protection Lists\Mu\TransparentAdvertisers" />
-    <None Include="WebView\x86\Trust Protection Lists\Sigma\Advertising" />
-    <None Include="WebView\x86\Trust Protection Lists\Sigma\Analytics" />
-    <None Include="WebView\x86\Trust Protection Lists\Sigma\Content" />
-    <None Include="WebView\x86\Trust Protection Lists\Sigma\Cryptomining" />
-    <None Include="WebView\x86\Trust Protection Lists\Sigma\Entities" />
-    <None Include="WebView\x86\Trust Protection Lists\Sigma\Fingerprinting" />
-    <None Include="WebView\x86\Trust Protection Lists\Sigma\LICENSE" />
-    <None Include="WebView\x86\Trust Protection Lists\Sigma\Other" />
-    <None Include="WebView\x86\Trust Protection Lists\Sigma\Social" />
-    <None Include="WebView\x86\Trust Protection Lists\Sigma\Staging" />
-    <None Include="WebView\x86\v8_context_snapshot.bin" />
-    <None Include="WebView\x86\vccorlib140.dll" />
-    <None Include="WebView\x86\vcruntime140.dll" />
-    <None Include="WebView\x86\vk_swiftshader.dll" />
-    <None Include="WebView\x86\vulkan-1.dll" />
-    <None Include="WebView\x86\WidevineCdm\_platform_specific\win_x86\widevinecdm.dll" />
-    <None Include="WebView\x86\WidevineCdm\_platform_specific\win_x86\widevinecdm.dll.sig" />
-    <None Include="WebView\x86\wns_push_client.dll" />
+    <None Include="WebView.7z" />
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
@@ -1131,30 +812,13 @@
     <Content Include="Help\PageNotAvailable.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="WebView\x64\Extensions\external_extensions.json" />
-    <Content Include="WebView\x64\MEIPreload\manifest.json" />
-    <Content Include="WebView\x64\MLModels\autofill_labeling_features.txt" />
-    <Content Include="WebView\x64\MLModels\autofill_labeling_features_email.txt" />
-    <Content Include="WebView\x64\Notifications\SoftLandingAssetDark.gif" />
-    <Content Include="WebView\x64\Notifications\SoftLandingAssetLight.gif" />
-    <Content Include="WebView\x64\Trust Protection Lists\manifest.json" />
-    <Content Include="WebView\x64\vk_swiftshader_icd.json" />
-    <Content Include="WebView\x64\WidevineCdm\manifest.json" />
-    <Content Include="WebView\x86\Extensions\external_extensions.json" />
-    <Content Include="WebView\x86\MEIPreload\manifest.json" />
-    <Content Include="WebView\x86\MLModels\autofill_labeling_features.txt" />
-    <Content Include="WebView\x86\MLModels\autofill_labeling_features_email.txt" />
-    <Content Include="WebView\x86\Notifications\SoftLandingAssetDark.gif" />
-    <Content Include="WebView\x86\Notifications\SoftLandingAssetLight.gif" />
-    <Content Include="WebView\x86\Trust Protection Lists\manifest.json" />
-    <Content Include="WebView\x86\vk_swiftshader_icd.json" />
-    <Content Include="WebView\x86\WidevineCdm\manifest.json" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ViewModels\Administration\" />
     <Folder Include="Views\Wizards\" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="7-Zip.CommandLine" Version="18.1.0" />
     <PackageReference Include="Caliburn.Micro">
       <Version>1.4.1</Version>
     </PackageReference>
@@ -1202,17 +866,19 @@
     </PackageReference>
   </ItemGroup>
   <PropertyGroup>
-    <PostBuildEvent>if exist "$(SolutionDir)Dev2.Studio\bin\Debug\net48\win\Warewolf Studio.exe" (
-  if not exist "$(SolutionDir)Dev2.Studio\bin\Debug\net48\win\Trackerbird.x64.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.x64.dll" "$(SolutionDir)Dev2.Studio\bin\Debug\net48\win\Trackerbird.x64.dll"
-  if not exist "$(SolutionDir)Dev2.Studio\bin\Debug\net48\win\Trackerbird.x86.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.x86.dll" "$(SolutionDir)Dev2.Studio\bin\Debug\net48\win"
-  if not exist "$(SolutionDir)Dev2.Studio\bin\Debug\net48\win\Trackerbird.Tracker.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.Tracker.dll" "$(SolutionDir)Dev2.Studio\bin\Debug\net48\win"
-)
-if exist "$(SolutionDir)Dev2.Studio\bin\Release\net48\win\Warewolf Studio.exe" (
-  if not exist "$(SolutionDir)Dev2.Studio\bin\Release\net48\win\Trackerbird.x64.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.x64.dll" "$(SolutionDir)Dev2.Studio\bin\Release\net48\win\Trackerbird.x64.dll"
-  if not exist "$(SolutionDir)Dev2.Studio\bin\Release\net48\win\Trackerbird.x86.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.x86.dll" "$(SolutionDir)Dev2.Studio\bin\Release\net48\win"
-  if not exist "$(SolutionDir)Dev2.Studio\bin\Release\net48\win\Trackerbird.Tracker.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.Tracker.dll" "$(SolutionDir)Dev2.Studio\bin\Release\net48\win"
-)
+    <PostBuildEvent>
+		if exist "$(SolutionDir)Dev2.Studio\bin\Debug\net48\win\Warewolf Studio.exe" (
+		if not exist "$(SolutionDir)Dev2.Studio\bin\Debug\net48\win\Trackerbird.x64.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.x64.dll" "$(SolutionDir)Dev2.Studio\bin\Debug\net48\win\Trackerbird.x64.dll"
+		if not exist "$(SolutionDir)Dev2.Studio\bin\Debug\net48\win\Trackerbird.x86.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.x86.dll" "$(SolutionDir)Dev2.Studio\bin\Debug\net48\win"
+		if not exist "$(SolutionDir)Dev2.Studio\bin\Debug\net48\win\Trackerbird.Tracker.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.Tracker.dll" "$(SolutionDir)Dev2.Studio\bin\Debug\net48\win"
+		)
+		if exist "$(SolutionDir)Dev2.Studio\bin\Release\net48\win\Warewolf Studio.exe" (
+		if not exist "$(SolutionDir)Dev2.Studio\bin\Release\net48\win\Trackerbird.x64.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.x64.dll" "$(SolutionDir)Dev2.Studio\bin\Release\net48\win\Trackerbird.x64.dll"
+		if not exist "$(SolutionDir)Dev2.Studio\bin\Release\net48\win\Trackerbird.x86.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.x86.dll" "$(SolutionDir)Dev2.Studio\bin\Release\net48\win"
+		if not exist "$(SolutionDir)Dev2.Studio\bin\Release\net48\win\Trackerbird.Tracker.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.Tracker.dll" "$(SolutionDir)Dev2.Studio\bin\Release\net48\win"
+		)
 
-XCOPY "$(SolutionDir)Dev2.Studio\WebView" "WebView\" /E /Y</PostBuildEvent>
+		Powershell %userprofile%\.nuget\packages\7-zip.commandline\18.1.0\tools\7za.exe x '$(SolutionDir)Dev2.Studio\WebView.7z' -o'WebView\' -aoa
+	</PostBuildEvent>
   </PropertyGroup>
 </Project>
