@@ -118,12 +118,14 @@ namespace Dev2.Common.Wrappers
             => Directory.EnumerateFiles(path);
         public IEnumerable<string> EnumerateDirectories(string path)
             => Directory.EnumerateDirectories(path);
+        public IEnumerable<string> EnumerateDirectories(string path, string pattern)
+            => Directory.EnumerateDirectories(path, pattern);
+        public IEnumerable<string> EnumerateDirectories(string path, string pattern, SearchOption searchOption)
+           => Directory.EnumerateDirectories(path, pattern, searchOption);
         public IEnumerable<string> EnumerateFileSystemEntries(string path)
             => Directory.EnumerateFileSystemEntries(path);
         public IEnumerable<string> EnumerateFiles(string path, string pattern)
             => Directory.EnumerateFiles(path, pattern);
-        public IEnumerable<string> EnumerateDirectories(string path, string pattern)
-            => Directory.EnumerateDirectories(path, pattern);
         public IEnumerable<string> EnumerateFileSystemEntries(string path, string pattern)
             => Directory.EnumerateFileSystemEntries(path, pattern);
 

@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -230,6 +230,124 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.AreEqual(2, nodes[0].NextNodes.Count);
 
             Assert.AreEqual(3, sut.WorkflowNodes.Count);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(Workflow))]
+        public void Workflow_WorkflowNodesForHtml_FlowDecision_HandlingNestedObjects_With_NoFalseArm_ShouldSuccess()
+        {
+            var dev2DecisionStack = new Dev2DecisionStack
+            {
+                TheStack = new List<Dev2Decision>
+                {
+                    new Dev2Decision
+                    {
+                        Cols1 = new List<DataStorage.WarewolfAtom>
+                        {
+                            DataStorage.WarewolfAtom.NewDataString("a")
+                        }
+                    },
+                    new Dev2Decision
+                    {
+                        Cols1 = new List<DataStorage.WarewolfAtom>
+                        {
+                            DataStorage.WarewolfAtom.NewDataString("a")
+                        }
+                    }
+                },
+                DisplayText = "a",
+                FalseArmText = "ErrorArm",
+                TrueArmText = "true Arm",
+                Version = "2",
+                Mode = Dev2DecisionMode.AND
+            };
+
+            var jsonSerializer = new Dev2JsonSerializer();
+            var flowDecisionActivity = new DsfFlowDecisionActivity
+            {
+                ExpressionText = jsonSerializer.Serialize(dev2DecisionStack)
+            };
+
+            var flowNodes = new Collection<FlowNode>
+            {
+                new FlowDecision(flowDecisionActivity)
+                {
+                    DisplayName = "Decision (sdf)",
+                    True = new FlowStep { Action = new DsfMultiAssignActivity { DisplayName = "Assign (success)" } },
+                }
+            };
+
+            var sut = new Workflow(flowNodes);
+            var nodes = sut.WorkflowNodesForHtml;
+
+            Assert.AreEqual(1, nodes.Count);
+            Assert.AreEqual(1, nodes[0].NextNodes.Count);
+
+            Assert.AreEqual(2, sut.WorkflowNodes.Count);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(Workflow))]
+        public void Workflow_WorkflowNodesForHtml_FlowDecision_HandlingNestedObjects_With_NoTrueArm_ShouldSuccess()
+        {
+            var dev2DecisionStack = new Dev2DecisionStack
+            {
+                TheStack = new List<Dev2Decision>
+                {
+                    new Dev2Decision
+                    {
+                        Cols1 = new List<DataStorage.WarewolfAtom>
+                        {
+                            DataStorage.WarewolfAtom.NewDataString("a")
+                        }
+                    },
+                    new Dev2Decision
+                    {
+                        Cols1 = new List<DataStorage.WarewolfAtom>
+                        {
+                            DataStorage.WarewolfAtom.NewDataString("a")
+                        }
+                    }
+                },
+                DisplayText = "a",
+                FalseArmText = "ErrorArm",
+                TrueArmText = "true Arm",
+                Version = "2",
+                Mode = Dev2DecisionMode.AND
+            };
+
+            var jsonSerializer = new Dev2JsonSerializer();
+            var flowDecisionActivity = new DsfFlowDecisionActivity
+            {
+                ExpressionText = jsonSerializer.Serialize(dev2DecisionStack)
+            };
+
+            var flowNodes = new Collection<FlowNode>
+            {
+                new FlowDecision(flowDecisionActivity)
+                {
+                    DisplayName = "Decision (sdf)",
+                    False = new FlowStep { Action = new DsfMultiAssignActivity
+                    {
+                        DisplayName = "Assign (fail)",
+                        NextNodes = new List<IDev2Activity>
+                        {
+                            new DsfCommentActivity { DisplayName = "Comment (this activity should not be part of the coverage)" },
+                            new DsfMultiAssignActivity { DisplayName = "Assign (child node)" }
+                        }
+                    }}
+                }
+            };
+
+            var sut = new Workflow(flowNodes);
+            var nodes = sut.WorkflowNodesForHtml;
+
+            Assert.AreEqual(1, nodes.Count);
+            Assert.AreEqual(1, nodes[0].NextNodes.Count);
+
+            Assert.AreEqual(2, sut.WorkflowNodes.Count);
         }
 
         [TestMethod]

@@ -15,6 +15,7 @@ using System.Web.UI;
 using Dev2.Interfaces;
 using Warewolf.Data;
 using Dev2.Common.Interfaces.Runtime.WebServer;
+using System;
 
 namespace Dev2.Runtime.WebServer
 {
@@ -44,7 +45,7 @@ namespace Dev2.Runtime.WebServer
             writer.AddColorCoding(totalReportsCoverage);
 
             writer.RenderBeginTag(HtmlTextWriterTag.Div);
-            writer.Write(totalReportsCoverage);
+            writer.Write(Math.Round(totalReportsCoverage, 0) +" %");
             writer.RenderEndTag();
 
         }

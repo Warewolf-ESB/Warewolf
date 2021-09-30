@@ -1,3 +1,37 @@
+27 September 2021
+======================
+
+Bug fixes
+----------
+- Total coverage shows correct average of all workflow's coverage
+- Coverage for workflows with spaces in their path is showing the correct coverage percentage
+- JSON objects recordsets map all fields and arrays to recordsets correctly
+
+13 September 2021
+======================
+
+Bug fixes
+----------
+- Fix For Each bug where suspend only runs once
+- Fix duplicate records issue on suspend/resume
+- Fix "resume node not found" error on resume
+
+Enhancements
+------------
+- General performance inmprovements
+
+27 August 2021
+======================
+Bug fixes
+----------
+- General Suspend/Resume tool stability
+- Suspend/Resume tool can handle more suspended executions simultaneously.
+
+Enhancements
+------------
+- Resume execution is now logged into the audit log.
+- New values added to coverage JSON output.
+
 2 August 2021
 ======================
 Bug fixes

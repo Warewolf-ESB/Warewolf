@@ -17,10 +17,12 @@ using System.Text;
 using System.Transactions;
 using Dev2;
 using Dev2.Common;
+using Dev2.Common.Interfaces.Monitoring;
+using Dev2.Common.Wrappers;
 using Dev2.Communication;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.Interfaces;
-using Dev2.Runtime;
+using Dev2.PerformanceCounters.Management;
 using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Runtime.ServiceModel.Data;
 using Hangfire;
@@ -78,6 +80,21 @@ namespace Warewolf.Driver.Persistence.Drivers
         {
             get => _transactionScopeFactory ?? new WarewolfTransactionScopeFactory();
             set => _transactionScopeFactory = value;
+        }
+
+        //PBI: these will be refactered and/or removed with the separation of this service
+        [ExcludeFromCodeCoverage]
+        public WarewolfPerformanceCounterManager GetPerformanceCounter()
+        {
+            var perf = new PerformanceCounterPersistence(new FileWrapper());
+            var register = new WarewolfPerformanceCounterRegister(perf.LoadOrCreate(), perf.LoadOrCreateResourcesCounters(perf.DefaultResourceCounters));
+            var locater = new WarewolfPerformanceCounterManager(register.Counters, register.ResourceCounters, register, perf);
+            locater.CreateCounter(Guid.Parse("a64fc548-3045-407d-8603-2a7337d874a6"), WarewolfPerfCounterType.ExecutionErrors, "workflow1");
+            locater.CreateCounter(Guid.Parse("a64fc548-3045-407d-8603-2a7337d874a6"), WarewolfPerfCounterType.AverageExecutionTime, "workflow1");
+            locater.CreateCounter(Guid.Parse("a64fc548-3045-407d-8603-2a7337d874a6"), WarewolfPerfCounterType.ConcurrentRequests, "workflow1");
+            locater.CreateCounter(Guid.Parse("a64fc548-3045-407d-8603-2a7337d874a6"), WarewolfPerfCounterType.RequestsPerSecond, "workflow1");
+
+            return locater;
         }
 
         public string ActivityParserTypeString
@@ -367,65 +384,67 @@ namespace Warewolf.Driver.Persistence.Drivers
         [DisableConcurrentExecution(timeoutInSeconds: 10 * 60)]
         public string ResumeWorkflow(Dictionary<string, StringBuilder> values, PerformContext context)
         {
+            var jobId = context.BackgroundJob.Id;
+
             try
             {
-                var jobStorage = SqlServerStorage();
-                var client = new BackgroundJobClient(jobStorage);
-
-                var jobId = context.BackgroundJob.Id;
-                var activityParserType = Type.GetType(ActivityParserTypeString);
-                var resumableExecutionContainerType = Type.GetType(ResumableExecutionContainerTypeString);
-
-                CustomContainer.LoadedTypes = new List<Type>(); 
-                CustomContainer.AddToLoadedTypes(activityParserType);
-                CustomContainer.AddToLoadedTypes(resumableExecutionContainerType);
-
-                if (resumableExecutionContainerType == null || activityParserType == null)
+                using (var ts = TransactionScopeFactory.New(TransactionScopeAsyncFlowOption.Suppress))
                 {
-                    Throw(client, jobId, message: "job {" + jobId + "} failed, one of Warewolf's dependencies were missing", reason: "Execution not run");
-                }
+                    var activityParserType = Type.GetType(ActivityParserTypeString);
+                    var resumableExecutionContainerType = Type.GetType(ResumableExecutionContainerTypeString);
 
-                var activityParserInstance = CustomContainer.CreateInstance<IActivityParser>("just_to_get_a_CTOR_match_DO_NOT_REMOVE");
-                CustomContainer.Register(activityParserInstance);
+                    CustomContainer.LoadedTypes = new List<Type>();
+                    CustomContainer.AddToLoadedTypes(activityParserType);
+                    CustomContainer.AddToLoadedTypes(resumableExecutionContainerType);
 
-                try
-                {
-                    using (var ts = TransactionScopeFactory.New(TransactionScopeAsyncFlowOption.Suppress))
+                    if (resumableExecutionContainerType == null || activityParserType == null)
                     {
-                        var result = WorkflowResume.Execute(values, null);
-                        if (result == null)
-                        {
-                            Throw(client, jobId: jobId, message: "job {" + jobId + "} failed to execute in Warewolf, requeue this job manually.", reason: "Execution returned null");
-                        }
-
-                        var serializer = new Dev2JsonSerializer();
-                        var executeMessage = serializer.Deserialize<ExecuteMessage>(result);
-                        if (executeMessage.HasError)
-                        {
-                            Throw(client, jobId: jobId, message: executeMessage.Message?.ToString(), reason: "Execution return exception");
-                        }
-                        ts.Complete();
+                        Throw(jobId, message: "job {" + jobId + "} failed, one of Warewolf's dependencies were missing", reason: "Execution not run");
                     }
-                }
-                catch (TransactionAbortedException ex)
-                {
-                    //Note: these jobs may not be very safe to resume, but should be failed as they might be incomplete
-                    Throw(client, jobId, message: ex.Message, reason: "Execution return TransactionAbortedException");
-                }
 
-                return GlobalConstants.Success;
+                    var activityParserInstance = CustomContainer.CreateInstance<IActivityParser>("just_to_get_a_CTOR_match_DO_NOT_REMOVE");
+                    CustomContainer.Register(activityParserInstance);
+                    CustomContainer.Register<IWarewolfPerformanceCounterLocater>(GetPerformanceCounter());
+
+                    var result = WorkflowResume.Execute(values, null);
+                    if (result == null)
+                    {
+                        Throw(jobId: jobId, message: "job {" + jobId + "} failed to execute in Warewolf, requeue this job manually.", reason: "Execution returned null");
+                    }
+
+                    var serializer = new Dev2JsonSerializer();
+                    var executeMessage = serializer.Deserialize<ExecuteMessage>(result);
+                    if (executeMessage.HasError)
+                    {
+                        Throw(jobId: jobId, message: executeMessage.Message?.ToString(), reason: "Execution return exception");
+                    }
+
+                    ts.Complete();
+                    return GlobalConstants.Success;
+                }
             }
-            catch (Exception)
+            catch (Exception ex) when (ex is TransactionAbortedException)
             {
+                //Note: these jobs may not be very safe to resume, but should be failed as they might be incomplete.
+                //This would most likely be an machine instance based error and is safe to return the exception message to user for diagnosis 
+                Throw(jobId: jobId, message: ex.Message?.ToString(), reason: "Execution return TransactionAbortedException: re-queue with caution.");
+
                 return GlobalConstants.Failed;
             }
+            catch (Exception ex)
+            { 
+                //Note: these jobs may not be very safe to resume, but should be failed as they might be incomplete.
+                //It may not be safe to return the exception message from this exception to user, fix this with the final tool clean up
+                Throw(jobId: jobId, message: ex.Message?.ToString(), reason: "Execution return Exception: re-queue with caution.");
+
+                return GlobalConstants.Failed;
+            }
+               
         }
 
-        private void Throw(IBackgroundJobClient client, string jobId, string message, string reason)
+        private void Throw(string jobId, string message, string reason)
         {
-            var exception = new Exception(message);
-            _ = _client.ChangeState(jobId, new FailedState(exception) { Reason = reason }, ProcessingState.StateName);
-            throw exception;
+            _ = _client.ChangeState(jobId, new FailedState(new Exception(message)) { Reason = reason }, ProcessingState.StateName);
         }
 
         [ExcludeFromCodeCoverage]

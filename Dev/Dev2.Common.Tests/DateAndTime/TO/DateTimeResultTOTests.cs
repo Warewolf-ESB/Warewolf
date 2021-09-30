@@ -24,9 +24,9 @@ namespace Dev2.Common.Tests.DateAndTime.TO
         {
             var dateTimeResultTO = new DateTimeResultTO();
 
-            Assert.AreEqual("South Africa Standard Time", dateTimeResultTO.TimeZone.Name);
-            Assert.AreEqual("(UTC+02:00) Harare, Pretoria", dateTimeResultTO.TimeZone.LongName);
-            Assert.AreEqual("South Africa Standard Time", dateTimeResultTO.TimeZone.ShortName);
+            Assert.IsTrue("South Africa Standard Time" == dateTimeResultTO.TimeZone.Name || "GMT Standard Time" == dateTimeResultTO.TimeZone.Name, "DateTimeResultTO did not get the correct timezone for South Africa or Ireland. Got: " + dateTimeResultTO.TimeZone.Name);
+            Assert.IsTrue("(UTC+02:00) Harare, Pretoria" == dateTimeResultTO.TimeZone.LongName || "(UTC+00:00) Dublin, Edinburgh, Lisbon, London" == dateTimeResultTO.TimeZone.LongName, "DateTimeResultTO did not get the correct long format timezone for South Africa or Ireland. Got: " + dateTimeResultTO.TimeZone.LongName);
+            Assert.IsTrue("South Africa Standard Time" == dateTimeResultTO.TimeZone.ShortName || "GMT Standard Time" == dateTimeResultTO.TimeZone.ShortName, "DateTimeResultTO did not get the correct short format timezone for South Africa or Ireland. Got: " + dateTimeResultTO.TimeZone.ShortName);
         }
         [TestMethod]
         [Owner("Candice Daniel")]

@@ -847,15 +847,16 @@ namespace Warewolf.Driver.Drivers.HangfireScheduler.Tests
             var contextMock = new PerformContextMock("11", values);
 
             var result = sut.ResumeWorkflow(values, contextMock.Object);
-            Assert.AreEqual(GlobalConstants.Failed, result);
 
+            Assert.AreEqual(GlobalConstants.Success, result);
+            
             mockBackgroundJobClient.Verify(o => o.ChangeState("11", It.IsAny<FailedState>(), "Processing"));
         }
 
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(HangfireScheduler))]
-        public void HangfireScheduler_ResumeWorkflow_GIVEN_ActivityParserTypeString_IsSetToIncorrectString_ShouldThrow_AND_Fail()
+        public void HangfireScheduler_ResumeWorkflow_GIVEN_ActivityParserTypeString_IsSetToIncorrectString_ShouldReturnFailed()
         {
             var jobStorage = new MemoryStorage();
             var mockBackgroundJobClient = new Mock<IBackgroundJobClient>();
@@ -878,15 +879,16 @@ namespace Warewolf.Driver.Drivers.HangfireScheduler.Tests
             var contextMock = new PerformContextMock("11", values);
 
             var result = sut.ResumeWorkflow(values, contextMock.Object);
-            Assert.AreEqual(GlobalConstants.Failed, result);
 
+            Assert.AreEqual(GlobalConstants.Failed, result, "the exception should not be thrown here so the Suspend will continue on");
+            
             mockBackgroundJobClient.Verify(o => o.ChangeState("11", It.IsAny<FailedState>(), "Processing"));
         }
 
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(HangfireScheduler))]
-        public void HangfireScheduler_ResumeWorkflow_GIVEN_ResumableExecutionContainerTypeString_IsSetToIncorrectString_ShouldThrow_AND_Fail()
+        public void HangfireScheduler_ResumeWorkflow_GIVEN_ResumableExecutionContainerTypeString_IsSetToIncorrectString_ShouldReturnFail()
         {
             var jobStorage = new MemoryStorage();
             var mockBackgroundJobClient = new Mock<IBackgroundJobClient>();
@@ -909,15 +911,16 @@ namespace Warewolf.Driver.Drivers.HangfireScheduler.Tests
             var contextMock = new PerformContextMock("11", values);
 
             var result = sut.ResumeWorkflow(values, contextMock.Object);
-            Assert.AreEqual(GlobalConstants.Failed, result);
 
+            Assert.AreEqual(GlobalConstants.Failed, result, "the exception should not be thrown here so the Suspend will continue on");
+            
             mockBackgroundJobClient.Verify(o => o.ChangeState("11", It.IsAny<FailedState>(), "Processing"));
         }
 
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(HangfireScheduler))]
-        public void HangfireScheduler_ResumeWorkflow_GIVEN_TransactionScopeFactory_FailsToCreateScope_ShouldThrow_AND_Fail()
+        public void HangfireScheduler_ResumeWorkflow_GIVEN_TransactionScopeFactory_FailsToCreateScope_ShouldResurnFailed()
         {
             var jobStorage = new MemoryStorage();
             var mockBackgroundJobClient = new Mock<IBackgroundJobClient>();
@@ -944,10 +947,11 @@ namespace Warewolf.Driver.Drivers.HangfireScheduler.Tests
             var contextMock = new PerformContextMock("11", values);
 
             var result = sut.ResumeWorkflow(values, contextMock.Object);
+
             Assert.AreEqual(GlobalConstants.Failed, result);
 
-            mockBackgroundJobClient.Verify(o => o.ChangeState("11", It.IsAny<FailedState>(), "Processing"));
             mockWarewolfTransactionScopeFactory.Verify(o => o.New(TransactionScopeAsyncFlowOption.Suppress), Times.Once);
+            mockBackgroundJobClient.Verify(o => o.ChangeState("11", It.IsAny<FailedState>(), "Processing"), Times.Once);
         }
 
         [TestMethod]
@@ -960,8 +964,6 @@ namespace Warewolf.Driver.Drivers.HangfireScheduler.Tests
             var mockPersistedValues = new Mock<IPersistedValues>();
             var mockWarewolfTransactionScopeFactory = new Mock<IWarewolfTransactionScopeFactory>();
             var mockTransactionScopeWrapper = new Mock<ITransactionScopeWrapper>();
-            /*mockTransactionScopeWrapper.Setup(o => o.Instance)
-                .Returns();*/
 
             mockWarewolfTransactionScopeFactory.Setup(o => o.New(TransactionScopeAsyncFlowOption.Suppress))
                 .Returns(mockTransactionScopeWrapper.Object);
