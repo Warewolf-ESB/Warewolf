@@ -11,14 +11,12 @@
             integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="styles/warewolf.css">
     <script type='text/javascript'>
-        let helper = chrome.webview.hostObjects.helper;
-
         jQuery(document).ready(function () {
             $(".close-btn").click(function (e) {
-                e.preventDefault(); 
-                helper.CloseBrowser();
+                e.preventDefault();
+                window.external.CloseBrowser();
             });
-            $(".submit-btn").click(async function (e) {
+            $(".submit-btn").click(function (e) {
                 e.preventDefault();
 
                 let valid = true;
@@ -46,7 +44,8 @@
                         }
                     }
                     if (valid === true) {
-                        let result = await helper.CreateSubscriptionWithId(email, subscriptionId);
+                        let result = window.external.CreateSubscriptionWithId(email, subscriptionId);
+
                         if (result === "Success") {
                             $("#errorContainer").css("display", "none");
                             $("#register-result").css("display", "block");
@@ -93,75 +92,84 @@
     </script>
 </head>
 <body>
-<div class="navbar navbar-static-top">
-    <div class="container">
-        <div class="navbar-header">
-            <a href="https://www.warewolf.io"><img src="images/logo.png" height="auto" width="240px"/></a>
+    <div class="navbar navbar-static-top">
+        <div class="container">
+            <div class="navbar-header">
+                <a href="https://www.warewolf.io"><img src="images/logo.png" height="auto" width="240px" /></a>
+            </div>
         </div>
     </div>
-</div>
-<div id="container" class="container">
-    <div id="register-result" class="row" style="display:none">
+    <div id="container" class="container">
+        <div id="register-result" class="row" style="display:none">
 
-        <div class="col-sm-12 text-center">
-            <p class="text-success" id="successContainer">Your registration was successfully loaded. You can close this
-                window and continue.</p>
-            <input type="submit" class="close-btn btn btn-success btn-md" value="Close">
-        </div>
-    </div>
-    <div id="customer-info" class="row">
-        <div class="col-sm-12" id="checkout_info">
-            <form id="subscribe-form">
-                <div class="page-header text-center">
-                    <h4>Register Existing Subscription</h4>
-                </div>
-                <div class="row">
-                    <div class="col-sm-12">
-                        <div class="form-group required">
-                            <label class='control-label' for="subscriptionId">SubscriptionId</label>
-                            <input type="text" required="required" class="form-control" id="subscriptionId"
-                                   name="subscriptionId">
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-12">
-                        <div class="form-group required">
-                            <label class='control-label' for="email">Email address</label>
-                            <input type="email" class="form-control" required="required" id="email" name="email">
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-12">
-                        <p><small><em>Enter your existing SubscriptionId and the Email Address used when your Subscription was
-                            created.</em></small></p>
-                    </div>
-                </div>
-                <br/>
-                <div class="row">
-                    <div class="col-sm-6 text-center">
-                        <button type="button" id="submit-btn" class="submit-btn btn btn-register btn-md">Submit</button>
-                    </div>
-                </div>
-                <br/>
-            </form>
-        </div>
-        <div class="col-sm-12">
-            <div class="messageContainer">
-                <span class="text-danger" id="errorContainer" style="display:none"></span>
-            </div>
-            <br/>
-            <div class="messageContainer">
-            <span style="display:block" class="form-text text-center  text-muted terms">I agree to the <a target=_new
-                                                                                                          href="http://warewolf.io/sla.php">Terms of Service</a> & <a
-                    target=_new href="http://warewolf.io/privacy-policy.php">Privacy Policy.</a></span>
+            <div class="col-sm-12 text-center">
+                <p class="text-success" id="successContainer">
+                    Your registration was successfully loaded. You can close this
+                    window and continue.
+                </p>
+                <input type="submit" class="close-btn btn btn-success btn-md" value="Close">
             </div>
         </div>
+        <div id="customer-info" class="row">
+            <div class="col-sm-12" id="checkout_info">
+                <form id="subscribe-form">
+                    <div class="page-header text-center">
+                        <h4>Register Existing Subscription</h4>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group required">
+                                <label class='control-label' for="subscriptionId">SubscriptionId</label>
+                                <input type="text" required="required" class="form-control" id="subscriptionId"
+                                       name="subscriptionId">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group required">
+                                <label class='control-label' for="email">Email address</label>
+                                <input type="email" class="form-control" required="required" id="email" name="email">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <p>
+                                <small>
+                                    <em>
+                                        Enter your existing SubscriptionId and the Email Address used when your Subscription was
+                                        created.
+                                    </em>
+                                </small>
+                            </p>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-sm-6 text-center">
+                            <button type="button" id="submit-btn" class="submit-btn btn btn-register btn-md">Submit</button>
+                        </div>
+                    </div>
+                    <br />
+                </form>
+            </div>
+            <div class="col-sm-12">
+                <div class="messageContainer">
+                    <span class="text-danger" id="errorContainer" style="display:none"></span>
+                </div>
+                <br />
+                <div class="messageContainer">
+                    <span style="display:block" class="form-text text-center  text-muted terms">
+                        I agree to the <a target=_new
+                                          href="http://warewolf.io/sla.php">Terms of Service</a> & <a target=_new href="http://warewolf.io/privacy-policy.php">Privacy Policy.</a>
+                    </span>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
-<div class="footer text-center">
-    <span class="form-text text-muted rights">&copy; Warewolf. All Rights Reserved.</span>
-</div>
+    <div class="footer text-center">
+        <span class="form-text text-muted rights">&copy; Warewolf. All Rights Reserved.</span>
+    </div>
 </body>
 </html>

@@ -607,7 +607,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Properties\licenses.licx" />
-    <None Include="WebView.7z" />
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
@@ -877,8 +876,6 @@
 		if not exist "$(SolutionDir)Dev2.Studio\bin\Release\net48\win\Trackerbird.x86.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.x86.dll" "$(SolutionDir)Dev2.Studio\bin\Release\net48\win"
 		if not exist "$(SolutionDir)Dev2.Studio\bin\Release\net48\win\Trackerbird.Tracker.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.Tracker.dll" "$(SolutionDir)Dev2.Studio\bin\Release\net48\win"
 		)
-
-		Powershell %userprofile%\.nuget\packages\7-zip.commandline\18.1.0\tools\7za.exe x '$(SolutionDir)Dev2.Studio\WebView.7z' -o'WebView\' -aoa
 	</PostBuildEvent>
   </PropertyGroup>
 </Project>
