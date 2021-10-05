@@ -33,21 +33,20 @@ namespace Dev2.Runtime.WebServer
         private double CalculateSumOfAllReports()
         {
             return WithTestReports
-                   .Sum(o => o.Reports
-                   .Sum(x => x.TotalCoverage * 100));
+                .Sum(x => x.TotalCoverage * 100);
         }
 
         private double CalculateTotalReportCount()
         {
             var count = WithTestReports.Count();
-            return (count == 0) ? 1 : 100 * count;
+            return (count == 0) ? 1 : (count == 1) ? 1 : 100 * count;
         }
 
         private double CalculateTotalReportsCoverage()
         {
-            var sumAllOfResports = CalculateSumOfAllReports();
+            var sumAllOfReports = CalculateSumOfAllReports();
             var totalReportCount = CalculateTotalReportCount();
-            return sumAllOfResports / totalReportCount * 100;
+            return (sumAllOfReports / (totalReportCount == 1 ? totalReportCount * 100 : totalReportCount)) * 100;
         }
     }
 

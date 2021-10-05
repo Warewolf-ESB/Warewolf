@@ -1,7 +1,7 @@
 #pragma warning disable
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -15,6 +15,7 @@ using Dev2.Common.Interfaces.DB;
 using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Data;
 using Warewolf.Core;
@@ -287,9 +288,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             // workerInvoker.ExecuteSql(0, ref started);
         }
         [TestMethod, DeploymentItem(@"x86\SQLite.Interop.dll")]
-        [Owner("Candice Daniel")]
+        [Owner("Siphamandla Dube")]
         [TestCategory(nameof(AdvancedRecordsetActivity))]
-        public void AdvancedRecordsetActivity_ExecuteRecordset()
+        public void AdvancedRecordsetActivity_ExecuteRecordset_GIVEN_DataString_ShouldSuccess()
         {
             var started = false;
             var personRecordsetName = "person";
@@ -304,13 +305,18 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             var recordset = new AdvancedRecordset(env);
             recordset.LoadRecordsetAsTable(personRecordsetName);
-            recordset.ApplyResultToEnvironment(personRecordsetName, new List<IServiceOutputMapping>(), new List<DataRow>(), false, 0, ref started);
-            recordset.CreateVariableTable();
-            recordset.InsertIntoVariableTable("TestVariable", "testdata");
 
             var activity = new AdvancedRecordsetActivity()
             {
                 SqlQuery = "Select * from person",
+                Outputs = new List<IServiceOutputMapping>
+                {
+                    new ServiceOutputMapping
+                    {
+                        MappedFrom = "name",
+                        MappedTo = "[[TableCopy().name]]",
+                    }
+                }
             };
             var worker = new AdvancedRecordsetActivityWorker(activity, recordset);
 
@@ -318,8 +324,57 @@ namespace Dev2.Tests.Activities.ActivityTests
             dataObject.Setup(o => o.IsDebugMode()).Returns(true);
             dataObject.Setup(o => o.Environment).Returns(env);
             dataObject.Object.Environment = env;
-            //TODO: this is failing as it needs a mock of the recorset
-            //  worker.ExecuteRecordset(dataObject.Object, 0)
+
+            worker.ExecuteRecordset(dataObject.Object, 0);
+
+            var result = env.Eval("[[TableCopy(1).name]]", 0);
+            Assert.AreEqual("bob", ExecutionEnvironment.WarewolfEvalResultToString(result));
+        }
+
+        [TestMethod, DeploymentItem(@"x86\SQLite.Interop.dll")]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(AdvancedRecordsetActivity))]
+        public void AdvancedRecordsetActivity_ExecuteRecordset_GIVEN_JsonObject_ShouldSuccess()
+        {
+            var started = false;
+            var personRecordsetName = "personRec";
+            
+            var env = CreateExecutionEnvironment();
+            
+            var personObject = new List<AssignValue> { new AssignValue("[[@person()]]", "{'name':'bob', 'age':21, 'address_id':'1'}") };
+            env.AssignWithFrame(personObject, 0);
+            env.CommitAssign();
+
+            var personRec = new List<AssignValue> { new AssignValue("[[personRec().name]]", "[[@person(*).name]]") };
+            env.AssignWithFrame(personRec, 0);
+            env.CommitAssign();
+
+            var recordset = new AdvancedRecordset(env);
+            recordset.LoadRecordsetAsTable(personRecordsetName);
+
+            var activity = new AdvancedRecordsetActivity()
+            {
+                SqlQuery = "Select * from personRec",
+                Outputs = new List<IServiceOutputMapping> 
+                {
+                    new ServiceOutputMapping
+                    {
+                        MappedFrom = "name",
+                        MappedTo = "[[TableCopy().name]]",
+                    }
+                }
+            };
+            var worker = new AdvancedRecordsetActivityWorker(activity, recordset);
+
+            var dataObject = new Mock<IDSFDataObject>();
+            dataObject.Setup(o => o.IsDebugMode()).Returns(true);
+            dataObject.Setup(o => o.Environment).Returns(env);
+            dataObject.Object.Environment = env;
+            
+            worker.ExecuteRecordset(dataObject.Object, 0);
+
+            var result = env.Eval("[[TableCopy(1).name]]", 0);
+            Assert.AreEqual("bob", ExecutionEnvironment.WarewolfEvalResultToString(result));
         }
 
         [TestMethod, DeploymentItem(@"x86\SQLite.Interop.dll")]

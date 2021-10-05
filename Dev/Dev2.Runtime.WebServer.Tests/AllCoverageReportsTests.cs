@@ -14,6 +14,7 @@ using Dev2.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Warewolf.Data;
 
@@ -62,16 +63,12 @@ namespace Dev2.Runtime.WebServer.Tests
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(AllCoverageReports))]
-        public void AllCoverageReports_Given_WithTestReports_IsNotNull_ShouldReturn()
+        public void AllCoverageReports_Given_WithTestReports_IsNotNull_AND_HasOneReports_ShouldSuccess()
         {
             var mockWarewolfWorkflow = new Mock<IWarewolfWorkflow>();
-            var mockServiceTestCoverageModelTo_1 = new Mock<IServiceTestCoverageModelTo>();
-            var mockServiceTestCoverageModelTo_2 = new Mock<IServiceTestCoverageModelTo>();
 
-            mockServiceTestCoverageModelTo_1.Setup(o => o.TotalCoverage)
-                .Returns(.25);
-            mockServiceTestCoverageModelTo_2.Setup(o => o.TotalCoverage)
-                .Returns(0.5);
+            mockWarewolfWorkflow.Setup(o => o.WorkflowNodes)
+                .Returns(_workflow_Three_Nodes);
 
             var sut = new AllCoverageReports
             {
@@ -80,14 +77,93 @@ namespace Dev2.Runtime.WebServer.Tests
             };
 
             var coverageReports = new WorkflowCoverageReports(mockWarewolfWorkflow.Object); 
-            coverageReports.Add(mockServiceTestCoverageModelTo_1.Object);
-            coverageReports.Add(mockServiceTestCoverageModelTo_2.Object);
+            coverageReports.Add(_test_One_CoverageModelTo);
             sut.Add(coverageReports);
 
             Assert.IsNotNull(sut.StartTime);
             Assert.IsNotNull(sut.EndTime);
-            Assert.AreEqual(75, sut.TotalReportsCoverage, "code for safety; this should return zero not NaN");
+            Assert.AreEqual(33, sut.TotalReportsCoverage, "code for safety; this should return zero not NaN");
             Assert.AreEqual(1, sut.WithTestReports.ToList().Count, "should be initialized");
         }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(AllCoverageReports))]
+        public void AllCoverageReports_Given_WithTestReports_IsNotNull_AND_HasALotOfReports_ShouldSuccess()
+        {
+            var mockWarewolfWorkflow = new Mock<IWarewolfWorkflow>();
+
+            mockWarewolfWorkflow.Setup(o => o.WorkflowNodes)
+               .Returns(_workflow_Three_Nodes);
+
+            var sut = new AllCoverageReports
+            {
+                StartTime = DateTime.Now,
+                EndTime = DateTime.Now
+            };
+
+            var coverageReports = new WorkflowCoverageReports(mockWarewolfWorkflow.Object);
+            coverageReports.Add(_test_One_CoverageModelTo);
+            coverageReports.Add(_test_One_CoverageModelTo);
+            sut.Add(coverageReports);
+
+            var coverageReports_1 = new WorkflowCoverageReports(mockWarewolfWorkflow.Object);
+            coverageReports_1.Add(_test_One_CoverageModelTo);
+            coverageReports_1.Add(_test_One_CoverageModelTo);
+            sut.Add(coverageReports_1);
+
+            Assert.IsNotNull(sut.StartTime);
+            Assert.IsNotNull(sut.EndTime);
+            var sss = sut.TotalReportsCoverage;
+            Assert.AreEqual(33, sut.TotalReportsCoverage, "code for safety; this should return zero not NaN");
+            Assert.AreEqual(2, sut.WithTestReports.ToList().Count, "should be initialized");
+        }
+        
+        private List<IWorkflowNode> _workflow_Three_Nodes =>
+            new List<IWorkflowNode>
+            {
+                new WorkflowNode
+                {
+                    ActivityID = Guid.Parse("7ed4ab9c-d227-409a-acc3-18330fe6b84e"),
+                    UniqueID = Guid.Parse("7ed4ab9c-d227-409a-acc3-18330fe6b84e"),
+                },
+                new WorkflowNode
+                {
+                    ActivityID = Guid.Parse("981ff0e1-5604-44ac-ad63-d82eff392882"),
+                    UniqueID = Guid.Parse("981ff0e1-5604-44ac-ad63-d82eff392882"),
+                },
+                new WorkflowNode
+                {
+                    ActivityID = Guid.Parse("58df5745-c1c7-43fa-bb12-30c890dd7223"),
+                    UniqueID = Guid.Parse("58df5745-c1c7-43fa-bb12-30c890dd7223"),
+                }
+            };
+
+        private ServiceTestCoverageModelTo _test_One_CoverageModelTo =>
+            new ServiceTestCoverageModelTo
+            {
+                WorkflowId = Guid.NewGuid(),
+                LastRunDate = DateTime.Now,
+                OldReportName = "passing test old name",
+                ReportName = "passing test new name",
+                TotalCoverage = .25,
+                AllTestNodesCovered = new ISingleTestNodesCovered[]
+                {
+                    new SingleTestNodesCovered("Test", new List<IServiceTestStep>
+                    {
+                        new ServiceTestStepTO
+                        {
+                            ActivityID = Guid.Parse("7ed4ab9c-d227-409a-acc3-18330fe6b84e"),
+                            UniqueID = Guid.Parse("7ed4ab9c-d227-409a-acc3-18330fe6b84e"),
+                            Type = StepType.Assert,
+                            Result = new TestRunResult
+                            {
+                                RunTestResult = RunResult.TestPassed
+                            }
+                        }
+                    })
+                }
+            };
     }
+
 }

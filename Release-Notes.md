@@ -1,3 +1,12 @@
+27 September 2021
+======================
+
+Bug fixes
+----------
+- Total coverage shows correct average of all workflow's coverage
+- Coverage for workflows with spaces in their path is showing the correct coverage percentage
+- JSON objects recordsets map all fields and arrays to recordsets correctly
+
 13 September 2021
 ======================
 

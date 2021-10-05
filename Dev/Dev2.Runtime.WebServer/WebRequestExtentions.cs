@@ -52,7 +52,7 @@ namespace Dev2.Runtime.WebServer
             {
                 throw new Exception("expected absolute uri");
             }
-            var path = uri.AbsolutePath;
+            var path = uri.LocalPath;
             var isCoverageReport = path.EndsWith(".coverage") || path.EndsWith(".coverage.json");
             var isTestReport = path.EndsWith(".tests") || path.EndsWith(".tests.trx");
             if (!isCoverageReport && !isTestReport)
