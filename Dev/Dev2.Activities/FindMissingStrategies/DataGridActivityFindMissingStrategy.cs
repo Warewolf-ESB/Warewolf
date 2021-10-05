@@ -102,7 +102,7 @@ namespace Dev2.FindMissingStrategies
             {
                 return GetWebGetActivityFields(activity);
             }
-            else if (activityType == typeof(WebPostActivity))
+            else if (activityType == typeof(WebPostActivityNew))
             {
                 return GetWebPostActivityFields(activity);
             }
@@ -649,7 +649,7 @@ namespace Dev2.FindMissingStrategies
         private List<string> GetWebPostActivityFields(object activity)
         {
             var results = new List<string>();
-            if (activity is WebPostActivity webPostActivity)
+            if (activity is WebPostActivityNew webPostActivity)
             {
                 if (webPostActivity.Inputs != null)
                 {
@@ -958,7 +958,7 @@ namespace Dev2.FindMissingStrategies
             return results;
         }
 
-        private static IEnumerable<string> AddAllHeaders(WebPostActivity webPostActivity)
+        private static IEnumerable<string> AddAllHeaders(WebPostActivityNew webPostActivity)
         {
             var results = new List<string>();
             foreach (var nameValue in webPostActivity.Headers)
