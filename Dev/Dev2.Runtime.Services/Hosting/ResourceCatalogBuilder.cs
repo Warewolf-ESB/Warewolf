@@ -113,9 +113,10 @@ namespace Dev2.Runtime.Hosting
                 var files = dir.GetFilesByExtensions(path, ".xml", ".bite");
                 foreach (var file in files)
                 {
+                    FileAttributes fa;
                     if (File.Exists(file))
                     {
-                        var fa = File.GetAttributes(file);
+                        fa = File.GetAttributes(file);
                     }
                     else 
                     {
