@@ -104,7 +104,7 @@ namespace Dev2.FindMissingStrategies
             }
             else if (activityType == typeof(WebPostActivityNew))
             {
-                return GetWebPostActivityFields(activity);
+                return GetWebPostActivityFieldsNew(activity);
             }
             else if (activityType == typeof(DsfDotNetDllActivity))
             {
@@ -123,6 +123,10 @@ namespace Dev2.FindMissingStrategies
                 return GetDsfWcfEndPointActivityFields(activity);
             }
             //DEPRICATED
+            else if (activityType == typeof(WebPostActivity))
+            {
+                return GetWebPostActivityFields(activity);
+            }
             else if (activityType == typeof(DsfWebGetActivity))
             {
                 return GetDsfWebGetActivityFields(activity);
@@ -646,10 +650,58 @@ namespace Dev2.FindMissingStrategies
             return results;
         }
 
-        private List<string> GetWebPostActivityFields(object activity)
+        private List<string> GetWebPostActivityFieldsNew(object activity)
         {
             var results = new List<string>();
             if (activity is WebPostActivityNew webPostActivity)
+            {
+                if (webPostActivity.Inputs != null)
+                {
+                    results.AddRange(InternalFindMissing(webPostActivity.Inputs));
+                }
+
+                if (webPostActivity.QueryString != null)
+                {
+                    results.Add(webPostActivity.QueryString);
+                }
+                if (webPostActivity.PostData != null)
+                {
+                    results.Add(webPostActivity.PostData);
+                }
+                if (webPostActivity.Headers != null)
+                {
+                    results.AddRange(AddAllHeadersNew(webPostActivity));
+                }
+                if (!string.IsNullOrEmpty(webPostActivity.OnErrorVariable))
+                {
+                    results.Add(webPostActivity.OnErrorVariable);
+                }
+                if (!string.IsNullOrEmpty(webPostActivity.OnErrorWorkflow))
+                {
+                    results.Add(webPostActivity.OnErrorWorkflow);
+                }
+                if (webPostActivity.IsObject)
+                {
+                    if (!string.IsNullOrEmpty(webPostActivity.ObjectName))
+                    {
+                        results.Add(webPostActivity.ObjectName);
+                    }
+                }
+                else
+                {
+                    if (webPostActivity.Outputs != null)
+                    {
+                        results.AddRange(InternalFindMissing(webPostActivity.Outputs));
+                    }
+                }
+            }
+            return results;
+        }
+
+        private List<string> GetWebPostActivityFields(object activity)
+        {
+            var results = new List<string>();
+            if (activity is WebPostActivity webPostActivity)
             {
                 if (webPostActivity.Inputs != null)
                 {
@@ -958,7 +1010,19 @@ namespace Dev2.FindMissingStrategies
             return results;
         }
 
-        private static IEnumerable<string> AddAllHeaders(WebPostActivityNew webPostActivity)
+
+        private static IEnumerable<string> AddAllHeadersNew(WebPostActivityNew webPostActivity)
+        {
+            var results = new List<string>();
+            foreach (var nameValue in webPostActivity.Headers)
+            {
+                results.Add(nameValue.Name);
+                results.Add(nameValue.Value);
+            }
+            return results;
+        }
+
+        private static IEnumerable<string> AddAllHeaders(WebPostActivity webPostActivity)
         {
             var results = new List<string>();
             foreach (var nameValue in webPostActivity.Headers)
