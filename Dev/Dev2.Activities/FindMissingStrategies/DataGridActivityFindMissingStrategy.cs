@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -104,7 +104,7 @@ namespace Dev2.FindMissingStrategies
             }
             else if (activityType == typeof(WebPostActivityNew))
             {
-                return GetWebPostActivityFieldsNew(activity);
+                return GetWebPostActivityNewFields(activity);
             }
             else if (activityType == typeof(DsfDotNetDllActivity))
             {
@@ -650,7 +650,7 @@ namespace Dev2.FindMissingStrategies
             return results;
         }
 
-        private List<string> GetWebPostActivityFieldsNew(object activity)
+        private List<string> GetWebPostActivityNewFields(object activity)
         {
             var results = new List<string>();
             if (activity is WebPostActivityNew webPostActivity)
