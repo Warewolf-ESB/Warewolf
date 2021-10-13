@@ -63,7 +63,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Redis Source.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Redis Source.feature.cs</LastGenOutput>
     </None>
   </ItemGroup>

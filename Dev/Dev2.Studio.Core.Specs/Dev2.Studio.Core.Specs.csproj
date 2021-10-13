@@ -69,7 +69,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="IntellisenseSpecs\IntellisenseProvider.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>IntellisenseProvider.feature.cs</LastGenOutput>
     </None>
   </ItemGroup>

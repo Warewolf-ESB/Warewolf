@@ -65,7 +65,6 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="Exchange Source.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Exchange Source.feature.cs</LastGenOutput>
     </None>
   </ItemGroup>

@@ -64,7 +64,6 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="Elasticsearch Source.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Elasticsearch Source.feature.cs</LastGenOutput>
     </None>
   </ItemGroup>

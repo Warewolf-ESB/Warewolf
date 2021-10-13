@@ -113,7 +113,6 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="Settings Permissions.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Settings Permissions.feature.cs</LastGenOutput>
     </None>
   </ItemGroup>

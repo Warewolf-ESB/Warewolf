@@ -65,7 +65,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="PluginSource.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>PluginSource.feature.cs</LastGenOutput>
     </None>
   </ItemGroup>

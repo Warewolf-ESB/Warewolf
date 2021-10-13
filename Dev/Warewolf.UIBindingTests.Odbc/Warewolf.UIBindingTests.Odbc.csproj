@@ -62,7 +62,6 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="New ODBC Database Source.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>New ODBC Database Source.feature.cs</LastGenOutput>
     </None>
   </ItemGroup>

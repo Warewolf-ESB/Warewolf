@@ -102,7 +102,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="New MySql Database Source.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>New MySql Database Source.feature.cs</LastGenOutput>
     </None>
   </ItemGroup>
