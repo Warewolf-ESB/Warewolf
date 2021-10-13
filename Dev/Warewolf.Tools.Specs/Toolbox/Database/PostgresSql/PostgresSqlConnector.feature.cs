@@ -173,16 +173,14 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Opening Saved workflow with PostgresSql tool")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "PostgresSqlConnector")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Database")]
         public virtual void OpeningSavedWorkflowWithPostgresSqlTool()
         {
             string[] tagsOfScenario = new string[] {
-                    "Database",
-                    "Ignore"};
+                    "Database"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Opening Saved workflow with PostgresSql tool", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
-#line 26
+#line 24
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -202,22 +200,22 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 27
+#line 25
  testRunner.Given("I Open workflow with PostgreSql connector", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 28
+#line 26
  testRunner.And("PostgresSql Source Is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 29
+#line 27
  testRunner.And("PostgresSql Source Is \"postgressql\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 30
+#line 28
  testRunner.And("PostgresSql Action Is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 31
+#line 29
  testRunner.And("PostgresSql Action Is \"getemployees\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 32
+#line 30
  testRunner.And("PostgresSql Inputs Are Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table1061 = new TechTalk.SpecFlow.Table(new string[] {
@@ -228,10 +226,10 @@ this.ScenarioInitialize(scenarioInfo);
                             "fname",
                             "[[fname]]",
                             "false"});
-#line 33
+#line 31
  testRunner.Then("PostgresSql Inputs appear As", ((string)(null)), table1061, "Then ");
 #line hidden
-#line 36
+#line 34
  testRunner.And("Validate PostgresSql Is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
@@ -241,16 +239,14 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Change the source on existing PostgresSql tool")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "PostgresSqlConnector")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Database")]
         public virtual void ChangeTheSourceOnExistingPostgresSqlTool()
         {
             string[] tagsOfScenario = new string[] {
-                    "Database",
-                    "Ignore"};
+                    "Database"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Change the source on existing PostgresSql tool", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
-#line 41
+#line 37
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -270,22 +266,22 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 42
+#line 38
  testRunner.Given("I Open workflow with PostgreSql connector", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 43
+#line 39
  testRunner.And("PostgresSql Source Is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 44
+#line 40
  testRunner.And("PostgresSql Source Is \"postgressql\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 45
+#line 41
  testRunner.And("PostgresSql Action Is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 46
+#line 42
  testRunner.And("PostgresSql Action Is \"getemployees\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 47
+#line 43
  testRunner.And("PostgresSql Inputs Are Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table1062 = new TechTalk.SpecFlow.Table(new string[] {
@@ -296,10 +292,10 @@ this.ScenarioInitialize(scenarioInfo);
                             "fname",
                             "[[fname]]",
                             "false"});
-#line 48
+#line 44
  testRunner.Then("PostgresSql Inputs appear As", ((string)(null)), table1062, "Then ");
 #line hidden
-#line 51
+#line 47
  testRunner.And("Validate PostgresSql Is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
@@ -309,16 +305,14 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Change the action on existing PostgresSql tool")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "PostgresSqlConnector")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Database")]
         public virtual void ChangeTheActionOnExistingPostgresSqlTool()
         {
             string[] tagsOfScenario = new string[] {
-                    "Database",
-                    "Ignore"};
+                    "Database"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Change the action on existing PostgresSql tool", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
-#line 56
+#line 50
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -338,22 +332,22 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 57
+#line 51
  testRunner.Given("I Open workflow with PostgreSql connector", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 58
+#line 52
  testRunner.And("PostgresSql Source Is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 59
+#line 53
  testRunner.And("PostgresSql Source Is \"postgressql\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 60
+#line 54
  testRunner.And("PostgresSql Action Is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 61
+#line 55
  testRunner.And("PostgresSql Action Is \"getemployees\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 62
+#line 56
  testRunner.And("PostgresSql Inputs Are Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table1063 = new TechTalk.SpecFlow.Table(new string[] {
@@ -364,10 +358,10 @@ this.ScenarioInitialize(scenarioInfo);
                             "fname",
                             "[[fname]]",
                             "false"});
-#line 63
+#line 57
  testRunner.Then("PostgresSql Inputs appear As", ((string)(null)), table1063, "Then ");
 #line hidden
-#line 66
+#line 60
  testRunner.And("Validate PostgresSql Is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
@@ -377,16 +371,14 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Change the recordset on existing PostgresSql tool")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "PostgresSqlConnector")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Database")]
         public virtual void ChangeTheRecordsetOnExistingPostgresSqlTool()
         {
             string[] tagsOfScenario = new string[] {
-                    "Database",
-                    "Ignore"};
+                    "Database"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Change the recordset on existing PostgresSql tool", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
-#line 71
+#line 63
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -406,22 +398,22 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 72
+#line 64
  testRunner.Given("I Open workflow with PostgreSql connector", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 73
+#line 65
  testRunner.And("PostgresSql Source Is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 74
+#line 66
  testRunner.And("PostgresSql Source Is \"postgressql\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 75
+#line 67
  testRunner.And("PostgresSql Action Is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 76
+#line 68
  testRunner.And("PostgresSql Action Is \"getemployees\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 77
+#line 69
  testRunner.And("PostgresSql Inputs Are Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table1064 = new TechTalk.SpecFlow.Table(new string[] {
@@ -432,10 +424,10 @@ this.ScenarioInitialize(scenarioInfo);
                             "fname",
                             "[[fname]]",
                             "false"});
-#line 78
+#line 70
  testRunner.Then("PostgresSql Inputs appear As", ((string)(null)), table1064, "Then ");
 #line hidden
-#line 81
+#line 73
  testRunner.And("Validate PostgresSql Is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
@@ -452,7 +444,7 @@ this.ScenarioInitialize(scenarioInfo);
                     "DatabaseTimeout"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute Postgres Server With Timeout", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
-#line 84
+#line 76
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -472,33 +464,33 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 85
+#line 77
  testRunner.Given("this test depends on a remote Postgres database container", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 86
+#line 78
     testRunner.And("I have workflow \"PostgreWorkflowForTimeout\" with \"PostgresActivity\" Postgres data" +
                         "base connector", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 87
+#line 79
     testRunner.And("Postgres Server Source is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 88
+#line 80
     testRunner.And("I Select \"NewPostgresSource\" as Postgres Source for \"PostgresActivity\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 89
+#line 81
     testRunner.And("I Select \"get_countries_delayed\" as Postgres Server Action for \"PostgresActivity\"" +
                         "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 90
+#line 82
  testRunner.And("Postgres Command Timeout is \"30\" milliseconds for \"PostgresActivity\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 91
+#line 83
  testRunner.And("Validate Postgres Server is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 92
+#line 84
     testRunner.And("I click Postgres Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 93
+#line 85
     testRunner.And("I click Postgres Test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table1065 = new TechTalk.SpecFlow.Table(new string[] {
@@ -513,23 +505,23 @@ this.ScenarioInitialize(scenarioInfo);
                 table1065.AddRow(new string[] {
                             "code",
                             "[[get_countries_delayed().code]]"});
-#line 94
+#line 86
     testRunner.Then("Postgres Server Outputs appear as", ((string)(null)), table1065, "Then ");
 #line hidden
-#line 99
+#line 91
  testRunner.And("Postgres Server Recordset Name equals \"get_countries_delayed\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 100
+#line 92
  testRunner.And("Postgres Command Timeout is \"5\" milliseconds for \"PostgresActivity\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 101
+#line 93
  testRunner.When("Postgres Workflow \"PostgreWorkflowForTimeout\" containing dbTool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 102
+#line 94
     testRunner.And("the workflow \"PostgreWorkflowForTimeout\" execution has \"AN\" error \"statement time" +
                         "out\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 103
+#line 95
  testRunner.And("the workflow \"PostgreWorkflowForTimeout\" error does not contain \"NewLine\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
