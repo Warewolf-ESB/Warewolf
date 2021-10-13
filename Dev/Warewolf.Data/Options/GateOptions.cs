@@ -307,7 +307,6 @@ namespace Warewolf.Data.Options
         {
             option.MatchType = MatchType;
             option.Right = Right;
-            //option.Left = Left;
         }
 
         internal static Condition FromOption(OptionConditionExpression optionConditionExpression)
@@ -383,7 +382,6 @@ namespace Warewolf.Data.Options
                 Left = optionConditionExpression.Left,
                 From = optionConditionExpression.From,
                 To = optionConditionExpression.To,
-
             };
         }
 
