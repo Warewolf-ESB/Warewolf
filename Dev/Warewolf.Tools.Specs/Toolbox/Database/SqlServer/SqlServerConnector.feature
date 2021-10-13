@@ -60,8 +60,6 @@ Scenario: Change SQL Server Source on Existing tool
     And Validate Sql Server is Enabled
 
 @Database
-@Ignore
-#Broken by update to Specflow 3
 Scenario: Changing SQL Server Actions
     Given I open workflow with database connector
     And Sql Server Source is Enabled

@@ -34,8 +34,6 @@ Scenario Outline: Copy file at local location
 
 @CopyFileFromUNC
 @CopyFileFromUNCWithOverwrite
-@Ignore
-#Broken by update to Specflow 3
 Scenario Outline: Copy file at UNC location
 	Given I have a source path "<source>" with value "<sourceLocation>"
 	And source credentials as "<username>" and "<password>"
