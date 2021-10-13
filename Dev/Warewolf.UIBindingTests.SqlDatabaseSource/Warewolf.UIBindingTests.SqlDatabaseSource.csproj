@@ -103,7 +103,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="New SqlDatabase Source.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>New SqlDatabase Source.feature.cs</LastGenOutput>
     </None>
   </ItemGroup>

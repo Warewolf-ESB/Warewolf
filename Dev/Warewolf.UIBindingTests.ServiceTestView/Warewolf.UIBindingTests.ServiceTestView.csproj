@@ -60,7 +60,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Service Test View.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Service Test View.feature.cs</LastGenOutput>
     </None>
   </ItemGroup>

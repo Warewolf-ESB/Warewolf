@@ -62,7 +62,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Wcf Source.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Wcf Source.feature.cs</LastGenOutput>
     </None>
   </ItemGroup>

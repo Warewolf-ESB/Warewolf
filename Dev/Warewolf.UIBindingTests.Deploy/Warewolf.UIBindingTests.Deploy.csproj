@@ -72,7 +72,6 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="DeployTab.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>DeployTab.feature.cs</LastGenOutput>
     </None>
   </ItemGroup>

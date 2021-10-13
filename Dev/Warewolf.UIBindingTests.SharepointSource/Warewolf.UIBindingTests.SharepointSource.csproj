@@ -68,7 +68,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Sharepoint.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Sharepoint.feature.cs</LastGenOutput>
     </None>
   </ItemGroup>

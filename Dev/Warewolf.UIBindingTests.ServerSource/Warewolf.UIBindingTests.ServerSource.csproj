@@ -65,7 +65,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="NewServerSource.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>NewServerSource.feature.cs</LastGenOutput>
     </None>
   </ItemGroup>

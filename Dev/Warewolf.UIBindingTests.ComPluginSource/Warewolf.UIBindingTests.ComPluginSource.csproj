@@ -69,7 +69,6 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="ComPluginSource.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>ComPluginSource.feature.cs</LastGenOutput>
     </None>
   </ItemGroup>

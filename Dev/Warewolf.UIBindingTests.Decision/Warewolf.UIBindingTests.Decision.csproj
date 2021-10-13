@@ -68,7 +68,6 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="DecDialog.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>DecDialog.feature.cs</LastGenOutput>
     </None>
   </ItemGroup>
