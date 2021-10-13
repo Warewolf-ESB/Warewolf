@@ -81,69 +81,6 @@
     <Reference Include="ICSharpCode.AvalonEdit">
       <HintPath>..\Binaries\ICSharpCode.AvalonEdit.dll</HintPath>
     </Reference>
-    <Reference Include="InfragisticsWPF4.Calculations.XamCalculationManager.v15.1, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\InfragisticsWPF4.Calculations.XamCalculationManager.v15.1.dll</HintPath>
-    </Reference>
-    <Reference Include="InfragisticsWPF4.Controls.Editors.XamComboEditor.v15.1, Version=15.1.20151.2055, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Editors.XamComboEditor.v15.1.dll</HintPath>
-    </Reference>
-    <Reference Include="InfragisticsWPF4.Controls.Grids.XamGrid.v15.1, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Grids.XamGrid.v15.1.dll</HintPath>
-    </Reference>
-    <Reference Include="InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll</HintPath>
-    </Reference>
-    <Reference Include="InfragisticsWPF4.Controls.Maps.XamNetworkNode.v15.1, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Maps.XamNetworkNode.v15.1.dll</HintPath>
-    </Reference>
-    <Reference Include="InfragisticsWPF4.Controls.Menus.XamDataTree.v15.1, Version=15.1.20151.2055, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Menus.XamDataTree.v15.1.dll</HintPath>
-    </Reference>
-    <Reference Include="InfragisticsWPF4.Controls.Menus.XamMenu.v15.1, Version=15.1.20151.2055, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Menus.XamMenu.v15.1.dll</HintPath>
-    </Reference>
-    <Reference Include="InfragisticsWPF4.DataManager.v15.1, Version=15.1.20151.2055, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\InfragisticsWPF4.DataManager.v15.1.dll</HintPath>
-    </Reference>
-    <Reference Include="InfragisticsWPF4.DataPresenter.v15.1">
-      <HintPath>..\Binaries\InfragisticsWPF4.DataPresenter.v15.1.dll</HintPath>
-    </Reference>
-    <Reference Include="InfragisticsWPF4.DataVisualization.v15.1, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\InfragisticsWPF4.DataVisualization.v15.1.dll</HintPath>
-    </Reference>
-    <Reference Include="InfragisticsWPF4.DockManager.v15.1, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\InfragisticsWPF4.DockManager.v15.1.dll</HintPath>
-    </Reference>
-    <Reference Include="InfragisticsWPF4.DragDrop.v15.1, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\InfragisticsWPF4.DragDrop.v15.1.dll</HintPath>
-    </Reference>
-    <Reference Include="InfragisticsWPF4.Editors.v15.1, Version=15.1.20151.2055, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\InfragisticsWPF4.Editors.v15.1.dll</HintPath>
-    </Reference>
-    <Reference Include="InfragisticsWPF4.Math.Calculators.v15.1, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\InfragisticsWPF4.Math.Calculators.v15.1.dll</HintPath>
-    </Reference>
-    <Reference Include="InfragisticsWPF4.Math.v15.1, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\InfragisticsWPF4.Math.v15.1.dll</HintPath>
-    </Reference>
-    <Reference Include="InfragisticsWPF4.v15.1, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\InfragisticsWPF4.v15.1.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Expression.Interactions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\Microsoft.Expression.Interactions.dll</HintPath>
@@ -833,6 +770,21 @@
     </PackageReference>
     <PackageReference Include="FontAwesome.WPF">
       <Version>4.5.0.8</Version>
+    </PackageReference>
+    <PackageReference Include="Infragistics.WPF.Controls.Editors.XamComboEditor.Trial">
+      <Version>21.1.49</Version>
+    </PackageReference>
+    <PackageReference Include="Infragistics.WPF.Controls.Grids.XamGrid.Trial">
+      <Version>21.1.49</Version>
+    </PackageReference>
+    <PackageReference Include="Infragistics.WPF.DockManager.Trial">
+      <Version>21.1.49</Version>
+    </PackageReference>
+    <PackageReference Include="Infragistics.WPF.DragDrop.Trial">
+      <Version>21.1.49</Version>
+    </PackageReference>
+    <PackageReference Include="Infragistics.WPF.NetworkNode.Trial">
+      <Version>21.1.49</Version>
     </PackageReference>
     <PackageReference Include="log4net">
       <Version>2.0.12</Version>
