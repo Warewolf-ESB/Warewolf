@@ -466,7 +466,7 @@ namespace Dev2.Runtime.WebServer
                                 workflowTestTaskList.Add(lastTask);
                                 var report = testCoverageCatalog.FetchReport(res.ResourceID, test.TestName);
                                 var lastTestCoverageRun = report?.LastRunDate;
-                                if (report is null || test.LastRunDate > lastTestCoverageRun)
+                                //Note: to enable Mock and Assert updates this should be executed every time
                                 {
                                     testCoverageCatalog.GenerateSingleTestCoverage(res.ResourceID, lastTask.Result);
                                 }
