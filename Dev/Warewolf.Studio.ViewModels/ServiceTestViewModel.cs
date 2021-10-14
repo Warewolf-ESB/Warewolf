@@ -939,9 +939,7 @@ namespace Warewolf.Studio.ViewModels
             }
 
             var uniqueId = gate.UniqueID;
-            var exists = SelectedServiceTest
-                .TestSteps
-                .FirstOrDefault(a => a.ActivityID.ToString() == uniqueId);
+            var exists = FindExistingStep(uniqueId);
 
             var conditionExpressionList = gate.Conditions;
             var conditions = conditionExpressionList.ToConditions();
@@ -980,67 +978,22 @@ namespace Warewolf.Studio.ViewModels
 
                     var parentType = gate.GetType();
                     var childActivity = gate.DataFunc.Handler;
+                    var childNativeActivity = childActivity as DsfNativeActivity<string>;
                     var parentActicityDisplayName = gate.DisplayName;
                     var parentTestStep = CreateServiceTestStep(Guid.Parse(uniqueId), parentActicityDisplayName, parentType, serviceTestOutputs.ToList());
 
                     if (childActivity != null)
                     {
                         //child is the innerAcvitity
-                        AddChildActivity(childActivity, parentTestStep);
+                        //PBI: disable this logic until the changes to the view controller accommodating the child activity are done.
+                        //AddChildActivity(childNativeActivity, parentTestStep);
                     }
-
                     //put it all together
                     SelectedServiceTest.TestSteps.Add(parentTestStep);
                 }
 
             }
 
-        }
-
-        private void AddChildActivity(Activity activity, IServiceTestStep parentTestStep)
-        {
-            var childNativeActivity = activity as DsfNativeActivity<string>;
-            var childType = childNativeActivity.GetType();
-            var childUniqueId = activity.Id;
-            var childTypeName = childType.Name;
-            var workFlowService = activity as DsfActivity;
-            var parentTestStepChildren = parentTestStep.Children;
-
-            if (childNativeActivity != null)
-            {
-                if (childNativeActivity.GetType() == typeof(DsfSequenceActivity))
-                {
-                    AddSequence(childNativeActivity as DsfSequenceActivity, parentTestStep, parentTestStepChildren);
-                }
-                else
-                {
-                    AddChildActivity(childNativeActivity, parentTestStep);
-                }
-            }
-            else
-            {
-                if (activity?.GetType() == typeof(DsfSelectAndApplyActivity))
-                {
-                    AddSelectAndApply(activity as DsfSelectAndApplyActivity, parentTestStep, parentTestStepChildren);
-                }
-                else
-                {
-                    if (activity?.GetType() == childType)
-                    {
-                        AddGate(activity as GateActivity);
-                    }
-                }
-            }
-
-            if (workFlowService != null)
-            {
-                AddChildActivity(workFlowService, parentTestStep);
-            }
-            var exists = parentTestStep.Children.FirstOrDefault(a => a.ActivityID.ToString() == childUniqueId);
-            if (exists == null)
-            {
-                AddChildActivity(activity, parentTestStep);
-            }
         }
 
         void ProcessSuspendExecution(ModelItem modelItem)
@@ -1422,7 +1375,7 @@ namespace Warewolf.Studio.ViewModels
                                                 .ToObservableCollection();
                 
                 SetStepIcon(act.GetType(), serviceTestStep);
-                parentTestStep.Children.Add(serviceTestStep);
+                parentTestStep.Children.Add(serviceTestStep); 
             }
         }
 
