@@ -45,6 +45,7 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <ProjectReference Include="..\Warewolf.Data\Warewolf.Data.csproj" />
     <ProjectReference Include="..\Warewolf.Interfaces\Warewolf.Interfaces.csproj">
       <Name>Warewolf.Interfaces</Name>
       <Project>{926cf512-b3fd-410d-aa83-ebdf4c4868de}</Project>
