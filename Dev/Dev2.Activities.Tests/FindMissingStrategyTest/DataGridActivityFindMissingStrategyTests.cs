@@ -526,6 +526,44 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
 
         [TestMethod]
         [Timeout(60000)]
+        [Owner("Yogesh Rajpurohit")]
+        [TestCategory("DataGridActivityFindMissingStrategy_GetActivityFields")]
+        public void DataGridActivityFindMissingStrategy_GetActivityFields_WebPostActivityNew_ShouldReturnResults()
+        {
+            //------------Setup for test--------------------------
+            var fac = new Dev2FindMissingStrategyFactory();
+            var strategy = fac.CreateFindMissingStrategy(enFindMissingType.DataGridActivity);
+            var activity = new WebPostActivityNew
+            {
+                Inputs = new List<IServiceInput> { new ServiceInput("Input1", "[[InputValue1]]"), new ServiceInput("Input2", "[[InputValue2]]"), new ServiceInput("Input3", "[[InputValue3]]") },
+                Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("Output1", "OutputValue1", "rec"), new ServiceOutputMapping("Output2", "OutputValue2", "rec") },
+                QueryString = "[[qstring]]",
+                Headers = new List<INameValue> { new NameValue("Content-Type", "[[ctype]]") },
+                OnErrorVariable = "[[err]]",
+                OnErrorWorkflow = "[[errSvc]]",
+                PostData = "[[data]]"
+            };
+            //------------Execute Test---------------------------
+            var fields = strategy.GetActivityFields(activity);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(11, fields.Count);
+            Assert.IsTrue(fields.Contains("[[InputValue1]]"));
+            Assert.IsTrue(fields.Contains("[[InputValue2]]"));
+            Assert.IsTrue(fields.Contains("[[InputValue3]]"));
+            Assert.IsTrue(fields.Contains("[[rec().OutputValue1]]"));
+            Assert.IsTrue(fields.Contains("[[rec().OutputValue2]]"));
+            Assert.IsTrue(fields.Contains("[[qstring]]"));
+            Assert.IsTrue(fields.Contains("[[err]]"));
+            Assert.IsTrue(fields.Contains("[[errSvc]]"));
+            Assert.IsTrue(fields.Contains("Content-Type"));
+            Assert.IsTrue(fields.Contains("[[ctype]]"));
+            Assert.IsTrue(fields.Contains("[[data]]"));
+        }
+
+
+
+        [TestMethod]
+        [Timeout(60000)]
         [Owner("Rory McGuire")]
         [TestCategory("DataGridActivityFindMissingStrategy_GetActivityFields")]
         public void DataGridActivityFindMissingStrategy_GetActivityFields_WebPostActivity_ShouldReturnResults_IsObject()
