@@ -94,7 +94,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.WebRequest
                 variableList = new List<Tuple<string, string>>();
                 scenarioContext.Add("variableList", variableList);
             }
-            variableList.Add(new Tuple<string, string>(variable, value));
+            variableList.Add(new Tuple<string, string>(variable, value.Replace("opswolf.com", _containerOps.Container.IP).Replace("9810", _containerOps.Container.Port)));
         }
 
         [Given(@"I have the Header ""(.*)""")]

@@ -521,5 +521,55 @@ namespace Dev2.Data.Tests
             Assert.AreEqual(null, dataListModel.ShapeComplexObjects[0].Parent);
             Assert.AreEqual(0, dataListModel.ShapeComplexObjects[0].Children.Count);
         }
+
+
+        [TestMethod]
+        [Owner("Yogesh RajPurohit")]
+        [TestCategory(nameof(DataListModel))]
+        public void DataListModel_Create_PayLoadWithComplexObjectValue_ShouldMatchExpectedValue()
+        {
+            //------------Setup for test--------------------------
+            const string Data = @"<DataList>
+                                    <RequestPayload>
+                                        <EmailAddress>Yogesh.rajpurohit@gmail.com</EmailAddress>
+                                        <FirstName>Sune</FirstName>
+                                        <DisplayNumber>TU00000</DisplayNumber>
+                                        <MobilePhone>27832640</MobilePhone>
+                                    </RequestPayload>
+                                </DataList>";
+
+            const string Shape = @"
+                                <DataList>
+                                    <RequestPayload Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""Input"">
+                                    <EmailAddress Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None""></EmailAddress>    
+                                    <FirstName Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None""></FirstName>
+                                    <DisplayNumber Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None""></DisplayNumber>
+                                    <MobilePhone Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None""></MobilePhone>                               
+                                    </RequestPayload>
+                                </DataList>";
+            var dataListModel = new DataListModel();
+            //------------Execute Test---------------------------
+            dataListModel.Create(Data, Shape);
+
+
+            Assert.AreEqual(0, dataListModel.RecordSets.Count);
+            Assert.AreEqual(0, dataListModel.ShapeRecordSets.Count);
+            Assert.AreEqual(0, dataListModel.Scalars.Count);
+            Assert.AreEqual(0, dataListModel.ShapeScalars.Count);
+
+
+            const string expectedValue = "{\r\n  \"EmailAddress\": \"Yogesh.rajpurohit@gmail.com\",\r\n  \"FirstName\": \"Sune\",\r\n  \"DisplayNumber\": \"TU00000\",\r\n  \"MobilePhone\": \"27832640\"\r\n}";
+
+            Assert.AreEqual(1, dataListModel.ComplexObjects.Count);
+            Assert.AreEqual("", dataListModel.ComplexObjects[0].Description);
+            Assert.AreEqual("@RequestPayload", dataListModel.ComplexObjects[0].Name);
+            Assert.AreEqual(expectedValue, dataListModel.ComplexObjects[0].Value);
+            Assert.AreEqual(enDev2ColumnArgumentDirection.Input, dataListModel.ComplexObjects[0].IODirection);
+            Assert.AreEqual(false, dataListModel.ComplexObjects[0].IsArray);
+            Assert.AreEqual(false, dataListModel.ComplexObjects[0].IsEditable);
+            Assert.AreEqual(null, dataListModel.ComplexObjects[0].Parent);
+            Assert.AreEqual(0, dataListModel.ComplexObjects[0].Children.Count);
+        }
+
     }
 }
