@@ -130,13 +130,20 @@ namespace Dev2
         private readonly ExecutionLogger.IExecutionLoggerFactory _loggerFactory;
         private readonly IGetSystemInformation _systemInformationHelper;
         private ISubscriptionProvider _subscriptionDataInstance;
+        IUsageTrackerWrapper _usageTrackerWrapper = new UsageTrackerWrapper();
 
+        
         public ServerLifecycleManager(IServerEnvironmentPreparer serverEnvironmentPreparer)
             : this(StartupConfiguration.GetStartupConfiguration(serverEnvironmentPreparer))
         {
         }
-
+        
         public ServerLifecycleManager(StartupConfiguration startupConfiguration)
+            : this(startupConfiguration, new UsageTrackerWrapper())
+        {
+        }
+        
+        public ServerLifecycleManager(StartupConfiguration startupConfiguration, IUsageTrackerWrapper usageTrackerWrapper)
         {
             SetApplicationDirectory();
             _writer = startupConfiguration.Writer;
@@ -166,6 +173,8 @@ namespace Dev2
             _systemInformationHelper = startupConfiguration.SystemInformationHelper;
 
             SecurityIdentityFactory.Set(startupConfiguration.SecurityIdentityFactory);
+            
+            _usageTrackerWrapper = usageTrackerWrapper;
         }
 
         private static void SetApplicationDirectory()
@@ -317,7 +326,7 @@ namespace Dev2
             return coreCount;
         }
 
-        void TrackUsage(UsageType usageType, IExecutionLogPublisher logger)
+        public void TrackUsage(UsageType usageType, IExecutionLogPublisher logger)
         {
             if(usageType == UsageType.ServerStart)
             {
@@ -348,7 +357,7 @@ namespace Dev2
                 customerId = "UnRegistered";
             }
 
-            var returnResult = UsageTracker.TrackEvent(customerId, usageType, jsonData);
+            var returnResult = _usageTrackerWrapper.TrackEvent(customerId, usageType, jsonData);
             if(returnResult != UsageDataResult.ok)
             {
                 UsageLogger.SaveOfflineUsage(customerId, jsonData, usageType);
