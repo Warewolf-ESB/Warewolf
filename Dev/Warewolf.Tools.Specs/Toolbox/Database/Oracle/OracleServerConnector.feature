@@ -4,8 +4,6 @@
 	I want to be shown the database service setup
 
 @Database
-@Ignore
-#Broken by update to Specflow 3
 Scenario: Running Oracle Tool Test
 	Given I open New Workflow containing an Oracle Connector
 	And I drag a Oracle Server database connector
@@ -71,8 +69,6 @@ Scenario: Change Source on Oracle Tool
 	And Validate is Enable
 
 @Database
-@Ignore
-#Broken by update to Specflow 3
 Scenario: Changing Actions on Oracle Tool
 	Given I open workflow with Oracle connector
 	And Oracle Source is Enabled

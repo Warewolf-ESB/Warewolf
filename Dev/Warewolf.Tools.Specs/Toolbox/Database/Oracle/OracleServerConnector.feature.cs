@@ -95,16 +95,14 @@ namespace Warewolf.Tools.Specs.Toolbox.Database.Oracle
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Running Oracle Tool Test")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "OracleServerConnector")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Database")]
         public virtual void RunningOracleToolTest()
         {
             string[] tagsOfScenario = new string[] {
-                    "Database",
-                    "Ignore"};
+                    "Database"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Running Oracle Tool Test", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
-#line 9
+#line 7
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -124,34 +122,34 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 10
+#line 8
  testRunner.Given("I open New Workflow containing an Oracle Connector", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 11
+#line 9
  testRunner.And("I drag a Oracle Server database connector", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 12
+#line 10
  testRunner.And("Oracle Source is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 13
+#line 11
  testRunner.And("Oracle Action is Disabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 14
+#line 12
  testRunner.And("Oracle Inputs are Disabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 15
+#line 13
  testRunner.And("Oracle Outputs are Disabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 16
+#line 14
  testRunner.When("I Selected GreenPoint as Source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 17
+#line 15
  testRunner.Then("Action is Enable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 18
+#line 16
  testRunner.When("I select HR.TESTPROC9 as the Oracle action", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 19
+#line 17
  testRunner.Then("Inputs is Enable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
                 TechTalk.SpecFlow.Table table1044 = new TechTalk.SpecFlow.Table(new string[] {
@@ -162,26 +160,26 @@ this.ScenarioInitialize(scenarioInfo);
                             "EID",
                             "[[EID]]",
                             "false"});
-#line 20
+#line 18
  testRunner.And("Oracle Inputs appear as", ((string)(null)), table1044, "And ");
 #line hidden
-#line 23
+#line 21
  testRunner.And("Validate is Enable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 24
+#line 22
  testRunner.When("I click Oracle Validate", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
                 TechTalk.SpecFlow.Table table1045 = new TechTalk.SpecFlow.Table(new string[] {
                             "EID"});
                 table1045.AddRow(new string[] {
                             "100"});
-#line 25
+#line 23
  testRunner.Then("Test Oracle Inputs appear as", ((string)(null)), table1045, "Then ");
 #line hidden
-#line 28
+#line 26
  testRunner.When("I click Oracle Tests", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 29
+#line 27
  testRunner.When("I click Oracle OK", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
                 TechTalk.SpecFlow.Table table1046 = new TechTalk.SpecFlow.Table(new string[] {
@@ -190,10 +188,10 @@ this.ScenarioInitialize(scenarioInfo);
                 table1046.AddRow(new string[] {
                             "Column1",
                             "[[HR_TESTPROC9().Column1]]"});
-#line 30
+#line 28
  testRunner.Then("Oracle Outputs appear as", ((string)(null)), table1046, "Then ");
 #line hidden
-#line 33
+#line 31
  testRunner.Then("Oracle Recordset Name equals \"HR_TESTPROC9\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -210,7 +208,7 @@ this.ScenarioInitialize(scenarioInfo);
                     "Database"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Opening Saved workflow with Oracle tool", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
-#line 36
+#line 34
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -230,19 +228,19 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 37
+#line 35
  testRunner.Given("I open workflow with Oracle connector", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 38
+#line 36
  testRunner.And("Oracle Source is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 39
+#line 37
  testRunner.And("Oracle Source is \"testingDBSrc\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 40
+#line 38
  testRunner.And("Oracle Action is \"dbo.Pr_CitiesGetCountries\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 41
+#line 39
  testRunner.And("Inputs is Enable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table1047 = new TechTalk.SpecFlow.Table(new string[] {
@@ -253,10 +251,10 @@ this.ScenarioInitialize(scenarioInfo);
                             "Prefix",
                             "[[Prefix]]",
                             "false"});
-#line 42
+#line 40
  testRunner.Then("Oracle Inputs appear as", ((string)(null)), table1047, "Then ");
 #line hidden
-#line 45
+#line 43
  testRunner.And("Validate is Enable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table1048 = new TechTalk.SpecFlow.Table(new string[] {
@@ -268,10 +266,10 @@ this.ScenarioInitialize(scenarioInfo);
                 table1048.AddRow(new string[] {
                             "Description",
                             "[[dbo_Pr_CitiesGetCountries().Description]]"});
-#line 46
+#line 44
  testRunner.Then("Oracle Outputs appear as", ((string)(null)), table1048, "Then ");
 #line hidden
-#line 50
+#line 48
  testRunner.And("Oracle Recordset Name equals \"dbo_Pr_CitiesGetCountries\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
@@ -288,7 +286,7 @@ this.ScenarioInitialize(scenarioInfo);
                     "Database"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Change Source on Oracle Tool", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
-#line 53
+#line 51
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -308,19 +306,19 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 54
+#line 52
  testRunner.Given("I open workflow with Oracle connector", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 55
+#line 53
  testRunner.And("Oracle Source is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 56
+#line 54
  testRunner.And("Oracle Source is \"testingDBSrc\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 57
+#line 55
  testRunner.And("Oracle Action is \"dbo.Pr_CitiesGetCountries\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 58
+#line 56
  testRunner.And("Inputs is Enable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table1049 = new TechTalk.SpecFlow.Table(new string[] {
@@ -331,10 +329,10 @@ this.ScenarioInitialize(scenarioInfo);
                             "Prefix",
                             "[[Prefix]]",
                             "false"});
-#line 59
+#line 57
  testRunner.Then("Oracle Inputs appear as", ((string)(null)), table1049, "Then ");
 #line hidden
-#line 62
+#line 60
  testRunner.And("Validate is Enable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table1050 = new TechTalk.SpecFlow.Table(new string[] {
@@ -346,22 +344,22 @@ this.ScenarioInitialize(scenarioInfo);
                 table1050.AddRow(new string[] {
                             "Description",
                             "[[dbo_Pr_CitiesGetCountries().Description]]"});
-#line 63
+#line 61
  testRunner.Then("Oracle Outputs appear as", ((string)(null)), table1050, "Then ");
 #line hidden
-#line 67
+#line 65
  testRunner.And("Oracle Recordset Name equals \"dbo_Pr_CitiesGetCountries\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 68
+#line 66
  testRunner.When("Oracle Source is changed from to GreenPoint", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 69
+#line 67
  testRunner.Then("Action is Enable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 70
+#line 68
  testRunner.And("Inputs is Enable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 71
+#line 69
  testRunner.And("Validate is Enable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
@@ -371,16 +369,14 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Changing Actions on Oracle Tool")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "OracleServerConnector")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Database")]
         public virtual void ChangingActionsOnOracleTool()
         {
             string[] tagsOfScenario = new string[] {
-                    "Database",
-                    "Ignore"};
+                    "Database"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Changing Actions on Oracle Tool", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
-#line 76
+#line 72
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -400,19 +396,19 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 77
+#line 73
  testRunner.Given("I open workflow with Oracle connector", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 78
+#line 74
  testRunner.And("Oracle Source is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 79
+#line 75
  testRunner.And("Oracle Source is \"testingDBSrc\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 80
+#line 76
  testRunner.And("Oracle Action is \"dbo.Pr_CitiesGetCountries\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 81
+#line 77
  testRunner.And("Inputs is Enable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table1051 = new TechTalk.SpecFlow.Table(new string[] {
@@ -423,10 +419,10 @@ this.ScenarioInitialize(scenarioInfo);
                             "Prefix",
                             "[[Prefix]]",
                             "false"});
-#line 82
+#line 78
  testRunner.Then("Oracle Inputs appear as", ((string)(null)), table1051, "Then ");
 #line hidden
-#line 85
+#line 81
  testRunner.And("Validate is Enable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table1052 = new TechTalk.SpecFlow.Table(new string[] {
@@ -438,16 +434,16 @@ this.ScenarioInitialize(scenarioInfo);
                 table1052.AddRow(new string[] {
                             "Description",
                             "[[dbo_Pr_CitiesGetCountries().Description]]"});
-#line 86
+#line 82
  testRunner.Then("Oracle Outputs appear as", ((string)(null)), table1052, "Then ");
 #line hidden
-#line 90
+#line 86
  testRunner.And("Oracle Recordset Name equals \"dbo_Pr_CitiesGetCountries\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 91
+#line 87
  testRunner.When("Oracle Action is changed from to dbo.ImportOrder", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 92
+#line 88
  testRunner.And("Inputs is Enable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table1053 = new TechTalk.SpecFlow.Table(new string[] {
@@ -458,10 +454,10 @@ this.ScenarioInitialize(scenarioInfo);
                             "ProductId",
                             "[[ProductId]]",
                             "false"});
-#line 93
+#line 89
  testRunner.Then("Oracle Inputs appear as", ((string)(null)), table1053, "Then ");
 #line hidden
-#line 96
+#line 92
  testRunner.And("Validate is Enable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
@@ -478,7 +474,7 @@ this.ScenarioInitialize(scenarioInfo);
                     "Database"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Change Recordset Name on Oracle Tool", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
-#line 99
+#line 95
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -498,19 +494,19 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 100
+#line 96
  testRunner.Given("I open workflow with Oracle connector", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 101
+#line 97
  testRunner.And("Oracle Source is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 102
+#line 98
  testRunner.And("Oracle Source is \"testingDBSrc\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 103
+#line 99
  testRunner.And("Oracle Action is \"dbo.Pr_CitiesGetCountries\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 104
+#line 100
  testRunner.And("Inputs is Enable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table1054 = new TechTalk.SpecFlow.Table(new string[] {
@@ -521,10 +517,10 @@ this.ScenarioInitialize(scenarioInfo);
                             "Prefix",
                             "[[Prefix]]",
                             "false"});
-#line 105
+#line 101
  testRunner.Then("Oracle Inputs appear as", ((string)(null)), table1054, "Then ");
 #line hidden
-#line 108
+#line 104
  testRunner.And("Validate is Enable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table1055 = new TechTalk.SpecFlow.Table(new string[] {
@@ -536,13 +532,13 @@ this.ScenarioInitialize(scenarioInfo);
                 table1055.AddRow(new string[] {
                             "Description",
                             "[[dbo_Pr_CitiesGetCountries().Description]]"});
-#line 109
+#line 105
  testRunner.Then("Oracle Outputs appear as", ((string)(null)), table1055, "Then ");
 #line hidden
-#line 113
+#line 109
  testRunner.And("Oracle Recordset Name equals \"dbo_Pr_CitiesGetCountries\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 114
+#line 110
  testRunner.When("Oracle Recordset Name is changed to \"Pr_Cities\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
                 TechTalk.SpecFlow.Table table1056 = new TechTalk.SpecFlow.Table(new string[] {
@@ -554,7 +550,7 @@ this.ScenarioInitialize(scenarioInfo);
                 table1056.AddRow(new string[] {
                             "Description",
                             "[[Pr_Cities().Description]]"});
-#line 115
+#line 111
  testRunner.Then("Oracle Outputs appear as", ((string)(null)), table1056, "Then ");
 #line hidden
             }
@@ -571,7 +567,7 @@ this.ScenarioInitialize(scenarioInfo);
                     "DatabaseTimeout"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute Oracle Server With Timeout", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
-#line 121
+#line 117
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -591,29 +587,29 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 122
+#line 118
     testRunner.Given("I have workflow \"OracleWorkflowForTimeout\" with \"OracleActivity\" Oracle database " +
                         "connector", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 123
+#line 119
     testRunner.And("Oracle Server Source is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 124
+#line 120
     testRunner.And("I Select \"NewOracleSource\" as Oracle Source for \"OracleActivity\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 125
+#line 121
     testRunner.And("I Select \"HR.GET_COUNTRIES_DELAYED\" as Oracle Server Action for \"OracleActivity\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 126
+#line 122
  testRunner.And("Oracle Command Timeout is \"30\" seconds for \"OracleActivity\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 127
+#line 123
  testRunner.And("Validate Oracle Server is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 128
+#line 124
     testRunner.And("I click Oracle Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 129
+#line 125
     testRunner.And("I click Test for Oracle", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table1057 = new TechTalk.SpecFlow.Table(new string[] {
@@ -628,22 +624,22 @@ this.ScenarioInitialize(scenarioInfo);
                 table1057.AddRow(new string[] {
                             "REGION_ID",
                             "[[HR_GET_COUNTRIES_DELAYED().REGION_ID]]"});
-#line 130
+#line 126
     testRunner.Then("Oracle Server Outputs appear as", ((string)(null)), table1057, "Then ");
 #line hidden
-#line 135
+#line 131
  testRunner.And("Oracle Server Recordset Name equals \"HR_GET_COUNTRIES_DELAYED\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 136
+#line 132
  testRunner.And("Oracle Command Timeout is \"5\" seconds for \"OracleActivity\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 137
+#line 133
  testRunner.When("Oracle Workflow \"OracleWorkflowForTimeout\" containing dbTool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 138
+#line 134
     testRunner.And("the workflow \"OracleWorkflowForTimeout\" execution has \"AN\" error \"ORA-01013\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 139
+#line 135
  testRunner.And("the workflow \"OracleWorkflowForTimeout\" error does not contain \"NewLine\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
