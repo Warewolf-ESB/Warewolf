@@ -181,7 +181,7 @@ namespace Dev2.Server.Tests
             var mockUsageTracker = new Mock<IUsageTrackerWrapper>();
             mockUsageTracker.Setup(o => o.TrackEvent(It.IsAny<string>(), It.IsAny<UsageType>(), It.IsAny<string>())).Returns(UsageDataResult.internalError);
             var persistencePath = EnvironmentVariables.PersistencePath;
-            
+
             //------------------------Act----------------------------
             var config = new StartupConfiguration
             {
@@ -198,9 +198,10 @@ namespace Dev2.Server.Tests
                 HangfireServerMonitor = mockHangfireServerMonitorWithRestart,
                 WebSocketPool = mockWebSocketPool.Object,
                 SystemInformationHelper = mockSystemInformation.Object,
-                LoggerFactory = mockExecutionLoggerFactory.Object
+                LoggerFactory = mockExecutionLoggerFactory.Object,
+                //UssageTracker = mockUsageTracker.Object
             };
-            using (var serverLifeCycleManager = new ServerLifecycleManager(config, mockUsageTracker.Object))
+            using (var serverLifeCycleManager = new ServerLifecycleManager(config))
             {
                 serverLifeCycleManager.Run(items).Wait();
                 
@@ -211,9 +212,11 @@ namespace Dev2.Server.Tests
 
             //------------------------Assert-------------------------
             mockUsageTracker.Verify(o => o.TrackEvent(It.IsAny<string>(), It.IsAny<UsageType>(), It.IsAny<string>()), Times.AtLeastOnce);
-            mockExecutionLogPublisher.Verify(o => o.Warn(It.IsAny<string>(), It.IsAny<object[]>()), Times.AtLeastOnce);
+            //the below It.IsAny<string>() is not the best route for mocked objects, suggestion is to test for a fixed string as an example. This achieves robustness for our tests
+            mockExecutionLogPublisher.Verify(o => o.Warn(It.IsAny<string>(), It.IsAny<object[]>()), Times.AtLeastOnce); //this can also verify the "UsageTracker: Could not log usage." error message and also: logger.Warn(msg)
+            //General Note: if we must write to disc then a suggestion would be to EnvironmentVariables.PersistencePath + "persistancePathForTests" as this isolates the test workspace with that of realtime?
             Assert.IsTrue(File.Exists(Path.Combine(persistencePath, ServerStats.SessionId.ToString())));
-            
+
             File.Delete(Path.Combine(persistencePath, ServerStats.SessionId.ToString()));
         }
 

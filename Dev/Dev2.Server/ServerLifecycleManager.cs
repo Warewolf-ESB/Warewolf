@@ -130,7 +130,7 @@ namespace Dev2
         private readonly ExecutionLogger.IExecutionLoggerFactory _loggerFactory;
         private readonly IGetSystemInformation _systemInformationHelper;
         private ISubscriptionProvider _subscriptionDataInstance;
-        IUsageTrackerWrapper _usageTrackerWrapper = new UsageTrackerWrapper();
+        private readonly IUsageTrackerWrapper _usageTrackerWrapper;
 
         
         public ServerLifecycleManager(IServerEnvironmentPreparer serverEnvironmentPreparer)
@@ -139,11 +139,6 @@ namespace Dev2
         }
         
         public ServerLifecycleManager(StartupConfiguration startupConfiguration)
-            : this(startupConfiguration, new UsageTrackerWrapper())
-        {
-        }
-        
-        public ServerLifecycleManager(StartupConfiguration startupConfiguration, IUsageTrackerWrapper usageTrackerWrapper)
         {
             SetApplicationDirectory();
             _writer = startupConfiguration.Writer;
@@ -152,7 +147,10 @@ namespace Dev2
             _startupResourceCatalogFactory = startupConfiguration.ResourceCatalogFactory;
             _ipcClient = startupConfiguration.IpcClient;
             _assemblyLoader = startupConfiguration.AssemblyLoader;
-            _usageLogger = new UsageLogger(TimeSpan.FromHours(2).TotalMilliseconds);
+
+            _usageLogger = new UsageLogger(TimeSpan.FromHours(2).TotalMilliseconds); //this can also use a UsageLoggerWrapper also use the startupConfiguration on initiation of UsageLoggerWrapper
+            //_usageTrackerWrapper = startupConfiguration.UsageTracker; //this can also be added to the startupConfiguration
+
             _pulseLogger = new PulseLogger(60000).Start();
             _pulseTracker = new PulseTracker(TimeSpan.FromDays(1).TotalMilliseconds).Start();
             _serverEnvironmentPreparer.PrepareEnvironment();
@@ -174,7 +172,6 @@ namespace Dev2
 
             SecurityIdentityFactory.Set(startupConfiguration.SecurityIdentityFactory);
             
-            _usageTrackerWrapper = usageTrackerWrapper;
         }
 
         private static void SetApplicationDirectory()
@@ -360,7 +357,8 @@ namespace Dev2
             var returnResult = _usageTrackerWrapper.TrackEvent(customerId, usageType, jsonData);
             if(returnResult != UsageDataResult.ok)
             {
-                UsageLogger.SaveOfflineUsage(customerId, jsonData, usageType);
+                UsageLogger.SaveOfflineUsage(customerId, jsonData, usageType); // we can also use the UsageLoggerWrapper here so we are able to Moq.Verify the execution of SaveOfflineUsage
+                //eg: _usageLogger.SaveOfflineUsage(customerId, jsonData, usageType);
                 ServerStats.IncrementUsageServerRetry();
                 _writer.WriteLine("UsageTracker: Could not log usage.");
                 var msg = "Could not log usage. Retry: " + ServerStats.UsageServerRetry + "/3. Connect to the internet to avoid Warewolf reverting to ReadOnly mode.";
