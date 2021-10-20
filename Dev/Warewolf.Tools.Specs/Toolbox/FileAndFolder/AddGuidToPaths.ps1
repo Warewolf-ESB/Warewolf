@@ -1,5 +1,5 @@
 #Source and Destination
-"$PSScriptRoot\Copy\Copy.feature.cs", "$PSScriptRoot\Move\Move.feature.cs", "$PSScriptRoot\Zip\Zip.feature.cs", "$PSScriptRoot\Rename\Rename.feature.cs", "$PSScriptRoot\Unzip\Unzip.feature.cs" |
+"$PSScriptRoot\Copy\Copy.feature.cs", "$PSScriptRoot\Move\Move.feature.cs", "$PSScriptRoot\Zip\Zip.feature.cs" |
     Foreach-Object {
         $PreviousLine = ""
         (Get-Content $_) | 
