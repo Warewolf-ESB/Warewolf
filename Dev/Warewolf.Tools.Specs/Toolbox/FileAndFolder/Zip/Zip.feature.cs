@@ -1842,7 +1842,7 @@ this.ZipFileAtFTPLocationWithOverwriteDisabled("4", "FTP to FTPS", "[[sourcePath
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "sftp://DEVOPSPDC.premier.local/filetozip.zip")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "sftp://SVRDEV.premier.local/filetozip.zip")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "dev2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "False")]
@@ -1856,7 +1856,7 @@ this.ZipFileAtFTPLocationWithOverwriteDisabled("4", "FTP to FTPS", "[[sourcePath
         public virtual void ZipFileAtFTPLocationWithOverwriteDisabled_5()
         {
 #line 156
-this.ZipFileAtFTPLocationWithOverwriteDisabled("5", "FTP to SFTP", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local:1001/FORZIPTESTING/filetozip4.txt", "dev2", "Q/ulw&]", "[[destPath]]", "sftp://DEVOPSPDC.premier.local/filetozip.zip", "dev2", "Q/ulw&]", "False", "", "Default", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+this.ZipFileAtFTPLocationWithOverwriteDisabled("5", "FTP to SFTP", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local:1001/FORZIPTESTING/filetozip4.txt", "dev2", "Q/ulw&]", "[[destPath]]", "sftp://SVRDEV.premier.local/filetozip.zip", "dev2", "Q/ulw&]", "False", "", "Default", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
