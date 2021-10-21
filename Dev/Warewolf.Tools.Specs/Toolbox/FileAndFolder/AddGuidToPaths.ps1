@@ -46,3 +46,17 @@
                 $PreviousLine = $_
     } | Set-Content $_
 }
+
+"$PSScriptRoot\Rename\Rename.feature.cs" |
+    Foreach-Object {
+        (Get-Content $_) | 
+            Foreach-Object {
+                $_
+                if ($_ -eq "                    `"FileRenameFromUNCWithoutOverwrite`"};") 
+                {
+					"            var getGuid = Dev2.Activities.Specs.BaseTypes.CommonSteps.GetGuid();"
+					"            sourceLocation = Dev2.Activities.Specs.BaseTypes.CommonSteps.AddGuidToPath(sourceLocation, getGuid);"
+					"            destinationLocation = Dev2.Activities.Specs.BaseTypes.CommonSteps.AddGuidToPath(destinationLocation, getGuid);"
+                }
+    } | Set-Content $_
+}
