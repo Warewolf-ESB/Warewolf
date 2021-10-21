@@ -863,10 +863,6 @@ namespace Warewolf.Studio.ViewModels
             {
                 ProcessSequence(modelItem);
             }
-            else if (itemType == typeof(SuspendExecutionActivity))
-            {
-                ProcessSuspendExecution(modelItem);
-            }
             else if (itemType == typeof(DsfEnhancedDotNetDllActivity))
             {
                 ProcessEnhancedDotNetDll(modelItem);
@@ -994,12 +990,6 @@ namespace Warewolf.Studio.ViewModels
 
             }
 
-        }
-
-        void ProcessSuspendExecution(ModelItem modelItem)
-        {
-            var suspendExecutionActivity = GetCurrentActivity<SuspendExecutionActivity>(modelItem);
-            AddSuspendExecution(suspendExecutionActivity, null, SelectedServiceTest.TestSteps);
         }
 
         void ProcessEnhancedDotNetDll(ModelItem modelItem)
