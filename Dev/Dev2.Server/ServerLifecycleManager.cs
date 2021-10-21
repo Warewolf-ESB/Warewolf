@@ -75,6 +75,8 @@ namespace Dev2
         public IWebSocketPool WebSocketPool { get; set; }
         public IGetSystemInformation SystemInformationHelper { get; set; }
         public ExecutionLogger.IExecutionLoggerFactory LoggerFactory { get; set; }
+        public IUsageTrackerWrapper UsageTracker { get; set; }
+        public UsageLogger UsageLogger { get; set; }
 
         public static StartupConfiguration GetStartupConfiguration(IServerEnvironmentPreparer serverEnvironmentPreparer)
         {
@@ -82,6 +84,7 @@ namespace Dev2
 
             var childProcessTracker = new ChildProcessTrackerWrapper();
             var processFactory = new ProcessWrapperFactory();
+            var usageTracker = new UsageTrackerWrapper();
             return new StartupConfiguration
             {
                 ServerEnvironmentPreparer = serverEnvironmentPreparer,
@@ -98,7 +101,9 @@ namespace Dev2
                 HangfireServerMonitor = new HangfireServerMonitorWithRestart(childProcessTracker, processFactory),
                 WebSocketPool = new WebSocketPool(),
                 LoggerFactory = new ExecutionLogger.ExecutionLoggerFactory(),
-                SystemInformationHelper = new GetSystemInformationHelper()
+                SystemInformationHelper = new GetSystemInformationHelper(),
+                UsageTracker = usageTracker,
+                UsageLogger = new UsageLogger(TimeSpan.FromHours(2).TotalMilliseconds, usageTracker)
             };
         }
     }
@@ -148,8 +153,8 @@ namespace Dev2
             _ipcClient = startupConfiguration.IpcClient;
             _assemblyLoader = startupConfiguration.AssemblyLoader;
 
-            _usageLogger = new UsageLogger(TimeSpan.FromHours(2).TotalMilliseconds); //this can also use a UsageLoggerWrapper also use the startupConfiguration on initiation of UsageLoggerWrapper
-            //_usageTrackerWrapper = startupConfiguration.UsageTracker; //this can also be added to the startupConfiguration
+            _usageLogger = startupConfiguration.UsageLogger;
+            _usageTrackerWrapper = startupConfiguration.UsageTracker;
 
             _pulseLogger = new PulseLogger(60000).Start();
             _pulseTracker = new PulseTracker(TimeSpan.FromDays(1).TotalMilliseconds).Start();

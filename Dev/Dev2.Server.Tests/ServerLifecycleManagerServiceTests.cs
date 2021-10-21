@@ -199,7 +199,8 @@ namespace Dev2.Server.Tests
                 WebSocketPool = mockWebSocketPool.Object,
                 SystemInformationHelper = mockSystemInformation.Object,
                 LoggerFactory = mockExecutionLoggerFactory.Object,
-                //UssageTracker = mockUsageTracker.Object
+                UsageTracker = mockUsageTracker.Object,
+                UsageLogger = new UsageLogger(20000, mockUsageTracker.Object)
             };
             using (var serverLifeCycleManager = new ServerLifecycleManager(config))
             {
