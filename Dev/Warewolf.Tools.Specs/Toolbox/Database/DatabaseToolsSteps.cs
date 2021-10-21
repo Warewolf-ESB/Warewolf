@@ -98,7 +98,7 @@ namespace Warewolf.Tools.Specs.Toolbox.Database
             environmentModel?.ResourceRepository?.DeleteResource(resourceModel);
         }
 
-        [BeforeScenario]
+        [BeforeScenario("@Database")]
         public void InitChangingFunction()
         {
             if (DataListSingleton.ActiveDataList == null)
