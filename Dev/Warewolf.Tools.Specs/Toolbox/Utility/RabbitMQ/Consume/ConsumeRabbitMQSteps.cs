@@ -47,7 +47,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.RabbitMQ.Consum
             var model = new Mock<IRabbitMQSourceModel>();
 
             var viewModel = new RabbitMQConsumeDesignerViewModel(modelItem, model.Object);
-            var privateObject = new PrivateObject(consumeActivity);
+            var privateObject = new Warewolf.Testing.PrivateObject(consumeActivity);
 
             scenarioContext.Add("ViewModel", viewModel);
             scenarioContext.Add("Model", model);
@@ -184,7 +184,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.RabbitMQ.Consum
          
 
             var consumeRabbitMQActivity = scenarioContext.Get<DsfConsumeRabbitMQActivity>("Activity");
-            var _privateObject = scenarioContext.Get<PrivateObject>("PrivateObj");
+            var _privateObject = scenarioContext.Get<Warewolf.Testing.PrivateObject>("PrivateObj");
             var executeResults = _privateObject.Invoke("PerformExecution", new Dictionary<string, string>());
         }
 
