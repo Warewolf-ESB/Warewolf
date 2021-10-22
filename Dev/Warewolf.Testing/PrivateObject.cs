@@ -26,7 +26,7 @@ namespace Warewolf.Testing
         {
             var getType = _privateObject.GetType();
             var getMethod = getType.GetMethod(memberName, BindingFlags.Instance | BindingFlags.NonPublic);
-            return getMethod?.Invoke(memberName, inputParameters);
+            return getMethod?.Invoke(_privateObject, inputParameters);
         }
         
         public object GetFieldOrProperty(string fieldName) => GetFieldOrProperty(fieldName, false);
