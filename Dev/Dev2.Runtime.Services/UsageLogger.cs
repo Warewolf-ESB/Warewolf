@@ -24,7 +24,13 @@ using Warewolf.Usage;
 
 namespace Dev2.Runtime
 {
-    public class UsageLogger : IStartTimer
+    public interface IUsageLogger : IStartTimer
+    {
+        void SaveOfflineUsage(string customerId, string jsonData, UsageType usageType);
+
+    }
+
+    public class UsageLogger : IUsageLogger
     {
         internal readonly Timer _timer;
         static readonly string _persistencePath = EnvironmentVariables.PersistencePath;
@@ -148,7 +154,7 @@ namespace Dev2.Runtime
             }
         }
 
-        public static void SaveOfflineUsage(string customerId, string jsonData, UsageType usageType)
+        public void SaveOfflineUsage(string customerId, string jsonData, UsageType usageType)
         {
             if(!_directoryWrapper.Exists(_persistencePath))
             {
