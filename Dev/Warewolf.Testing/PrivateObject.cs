@@ -57,7 +57,7 @@ namespace Warewolf.Testing
             getField?.SetValue(_privateObject, setValue);
         }
         
-        public void GetProperty(string propertyName) => SetField(propertyName, false);
+        public object GetProperty(string propertyName) => GetProperty(propertyName, false);
         public object GetProperty(string propertyName, bool isStaticProperty)
         {
             var getType = _privateObject.GetType();
