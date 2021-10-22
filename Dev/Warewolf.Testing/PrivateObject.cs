@@ -25,6 +25,10 @@ namespace Warewolf.Testing
         public object Invoke(string memberName, params object[] inputParameters)
         {
             var getType = _privateObject.GetType();
+            while (getType.GetMethod(memberName, BindingFlags.Instance | BindingFlags.NonPublic) == null && getType.BaseType != null)
+            {
+                getType = getType.BaseType;
+            }
             var getMethod = getType.GetMethod(memberName, BindingFlags.Instance | BindingFlags.NonPublic);
             return getMethod?.Invoke(_privateObject, inputParameters);
         }
@@ -33,6 +37,10 @@ namespace Warewolf.Testing
         public object GetFieldOrProperty(string fieldName, bool isStaticField)
         {
             var getType = _privateObject.GetType();
+            while (getType.GetField(fieldName, (isStaticField ? BindingFlags.Static : BindingFlags.Instance) | BindingFlags.NonPublic) == null && getType.BaseType != null)
+            {
+                getType = getType.BaseType;
+            }
             var getField = getType.GetField(fieldName, (isStaticField ? BindingFlags.Static : BindingFlags.Instance) | BindingFlags.NonPublic);
             return getField?.GetValue(_privateObject);
         }
@@ -41,25 +49,35 @@ namespace Warewolf.Testing
         public void SetField(string fieldName, object setValue, bool isStaticField)
         {
             var getType = _privateObject.GetType();
+            while (getType.GetField(fieldName, (isStaticField ? BindingFlags.Static : BindingFlags.Instance) | BindingFlags.NonPublic) == null && getType.BaseType != null)
+            {
+                getType = getType.BaseType;
+            }
             var getField = getType.GetField(fieldName, (isStaticField ? BindingFlags.Static : BindingFlags.Instance) | BindingFlags.NonPublic);
             getField?.SetValue(_privateObject, setValue);
         }
         
-        public object GetProperty(string propertyName)
+        public void GetProperty(string propertyName) => SetField(propertyName, false);
+        public object GetProperty(string propertyName, bool isStaticProperty)
         {
             var getType = _privateObject.GetType();
-            while (getType.GetProperty(propertyName, BindingFlags.Instance | BindingFlags.NonPublic) == null && getType.BaseType != null)
+            while (getType.GetProperty(propertyName, (isStaticProperty ? BindingFlags.Static : BindingFlags.Instance) | BindingFlags.NonPublic) == null && getType.BaseType != null)
             {
                 getType = getType.BaseType;
             }
-            var getProperty = getType.GetProperty(propertyName, BindingFlags.Instance | BindingFlags.NonPublic);
+            var getProperty = getType.GetProperty(propertyName, (isStaticProperty ? BindingFlags.Static : BindingFlags.Instance) | BindingFlags.NonPublic);
             return getProperty?.GetValue(_privateObject);
         }
         
-        public void SetProperty(string propertyName, object setValue)
+        public void SetProperty(string propertyName) => SetField(propertyName, false);
+        public void SetProperty(string propertyName, object setValue, bool isStaticProperty)
         {
             var getType = _privateObject.GetType();
-            var getProperty = getType.GetProperty(propertyName);
+            while (getType.GetProperty(propertyName, (isStaticProperty ? BindingFlags.Static : BindingFlags.Instance) | BindingFlags.NonPublic) == null && getType.BaseType != null)
+            {
+                getType = getType.BaseType;
+            }
+            var getProperty = getType.GetProperty(propertyName, (isStaticProperty ? BindingFlags.Static : BindingFlags.Instance) | BindingFlags.NonPublic);
             getProperty?.SetValue(_privateObject, setValue);
         }
     }
