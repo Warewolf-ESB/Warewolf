@@ -48,7 +48,11 @@ namespace Warewolf.Testing
         public object GetProperty(string propertyName)
         {
             var getType = _privateObject.GetType();
-            var getProperty = getType.GetProperty(propertyName);
+            while (getType.GetProperty(propertyName, BindingFlags.Instance | BindingFlags.NonPublic) == null && getType.BaseType != null)
+            {
+                getType = getType.BaseType;
+            }
+            var getProperty = getType.GetProperty(propertyName, BindingFlags.Instance | BindingFlags.NonPublic);
             return getProperty?.GetValue(_privateObject);
         }
         
