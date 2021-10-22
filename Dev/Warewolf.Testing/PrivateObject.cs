@@ -37,6 +37,21 @@ namespace Warewolf.Testing
             return getField?.GetValue(_privateObject);
         }
         
+        public void SetField(string fieldName, object setValue) => SetField(fieldName, setValue, false);
+        public void SetField(string fieldName, object setValue, bool isStaticField)
+        {
+            var getType = _privateObject.GetType();
+            var getField = getType.GetField(fieldName, (isStaticField ? BindingFlags.Static : BindingFlags.Instance) | BindingFlags.NonPublic);
+            getField?.SetValue(_privateObject, setValue);
+        }
+        
+        public object GetProperty(string propertyName)
+        {
+            var getType = _privateObject.GetType();
+            var getProperty = getType.GetProperty(propertyName);
+            return getProperty?.GetValue(_privateObject);
+        }
+        
         public void SetProperty(string propertyName, object setValue)
         {
             var getType = _privateObject.GetType();
