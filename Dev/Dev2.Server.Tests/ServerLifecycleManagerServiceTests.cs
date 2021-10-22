@@ -18,12 +18,14 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Threading.Tasks;
 using Dev2.Activities;
 using Dev2.Common.Interfaces;
 using Dev2.Runtime;
+using Dev2.Runtime.Subscription;
 using Warewolf.Common.NetStandard20;
 using Warewolf.Execution;
 using Warewolf.Interfaces.Auditing;
@@ -180,7 +182,7 @@ namespace Dev2.Server.Tests
             
             var mockUsageTracker = new Mock<IUsageTrackerWrapper>();
             mockUsageTracker.Setup(o => o.TrackEvent(It.IsAny<string>(), It.IsAny<UsageType>(), It.IsAny<string>())).Returns(UsageDataResult.internalError);
-            var persistencePath = EnvironmentVariables.PersistencePath;
+            var persistencePath = EnvironmentVariables.PersistencePathForTests;
 
             //------------------------Act----------------------------
             var config = new StartupConfiguration
@@ -200,27 +202,32 @@ namespace Dev2.Server.Tests
                 SystemInformationHelper = mockSystemInformation.Object,
                 LoggerFactory = mockExecutionLoggerFactory.Object,
                 UsageTracker = mockUsageTracker.Object,
-                UsageLogger = new UsageLogger(20000, mockUsageTracker.Object)
+                UsageLogger = new UsageLoggerForTests(20000, mockUsageTracker.Object)
             };
             using (var serverLifeCycleManager = new ServerLifecycleManager(config))
             {
                 serverLifeCycleManager.Run(items).Wait();
                 
-                serverLifeCycleManager.TrackUsage((UsageType)1, mockExecutionLogPublisher.Object);
+                serverLifeCycleManager.TrackUsage(UsageType.ServerStart, mockExecutionLogPublisher.Object);
                 
                 serverLifeCycleManager.Stop(false, 0, false);
             }
 
             //------------------------Assert-------------------------
             mockUsageTracker.Verify(o => o.TrackEvent(It.IsAny<string>(), It.IsAny<UsageType>(), It.IsAny<string>()), Times.AtLeastOnce);
-
-            //the below It.IsAny<string>() is not the best route for mocked objects, suggestion is to test for a fixed string as an example. This achieves robustness for our tests
-            mockExecutionLogPublisher.Verify(o => o.Warn(It.IsAny<string>(), It.IsAny<object[]>()), Times.AtLeastOnce); //this can also verify the "UsageTracker: Could not log usage." error message and also: logger.Warn(msg)
-                                                                                                                        //General Note: if we must write to disc then a suggestion would be to EnvironmentVariables.PersistencePath + "persistancePathForTests" as this isolates the test workspace with that of realtime?
-
-            mockUsageTracker.Verify(o => o.TrackEvent(null, UsageType.ServerStart, "{'SessionId':'a40c7aaa-366f-4618-a57b-31bdd4c70bbf','SubscriptionId':null,'PlanId':null,'Status':0,'VersionNo':'1.1.1.1','IPAddress':null,'ProcessorCount':12,'NumberOfCores':6,'OSType':null,'MachineName':null,'Region':null,'Executions':0,'Uptime':00:00:19.3097415}"), Times.Once);
             
-            Assert.IsTrue(File.Exists(Path.Combine(persistencePath, ServerStats.SessionId.ToString())));
+            mockExecutionLogPublisher.Verify(o => o.Warn(It.Is<string>(str => str.StartsWith("Could not log usage. Retry: ")), It.IsAny<object[]>()), Times.AtLeastOnce);
+
+            var subscriptionDataInstance = SubscriptionProvider.Instance;
+            var usageInfo = $@"{{'SessionId':'{ServerStats.SessionId}','SubscriptionId':null,'PlanId':null,'Status':0,'VersionNo':'1.1.1.1','IPAddress':null,'ProcessorCount':12,'NumberOfCores':6,'OSType':null,'MachineName':null,'Region':null,'Executions':0".Replace("'", "\"");
+            mockUsageTracker.Verify(o => o.TrackEvent(subscriptionDataInstance.CustomerId, UsageType.ServerStart, It.Is<string>(str => str.StartsWith(usageInfo))), Times.Once);
+            
+            var filePath = Path.Combine(persistencePath, ServerStats.SessionId.ToString());
+            Assert.IsTrue(File.Exists(filePath));
+            
+            var usageData = "JsonData\":\"{\\\"SessionId\\\":\\\"" + ServerStats.SessionId + "\\\",\\\"SubscriptionId\\\":null,\\\"PlanId\\\":null,\\\"Status\\\":0,\\\"VersionNo\\\":\\\"1.1.1.1\\\",\\\"IPAddress\\\":null,\\\"ProcessorCount\\\":12,\\\"NumberOfCores\\\":6,\\\"OSType\\\":null,\\\"MachineName\\\":null,\\\"Region\\\":null,\\\"Executions\\\":0";
+            var fileText = File.ReadAllText(filePath);
+            Assert.IsTrue(fileText.Contains(usageData));
 
             File.Delete(Path.Combine(persistencePath, ServerStats.SessionId.ToString()));
         }
@@ -1146,6 +1153,14 @@ namespace Dev2.Server.Tests
             public void TestStop()
             {
                 OnStop();
+            }
+        }
+        
+        private class UsageLoggerForTests : UsageLogger
+        {
+            public UsageLoggerForTests(double intervalMs, IUsageTrackerWrapper usageTrackerWrapper) : base(intervalMs, usageTrackerWrapper)
+            {
+                _persistencePath = EnvironmentVariables.PersistencePathForTests;
             }
         }
     }

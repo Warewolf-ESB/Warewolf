@@ -33,7 +33,9 @@ namespace Dev2.Runtime
     public class UsageLogger : IUsageLogger
     {
         internal readonly Timer _timer;
-        static readonly string _persistencePath = EnvironmentVariables.PersistencePath;
+#pragma warning disable CC0074 //disable make variable read-only warning
+        protected string _persistencePath = EnvironmentVariables.PersistencePath;
+#pragma warning restore CC0074
         static DirectoryWrapper _directoryWrapper = new DirectoryWrapper();
         static FileWrapper _fileWrapper = new FileWrapper();
         IUsageTrackerWrapper _usageTrackerWrapper = new UsageTrackerWrapper();
