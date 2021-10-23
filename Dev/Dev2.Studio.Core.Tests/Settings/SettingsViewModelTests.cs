@@ -366,7 +366,7 @@ You need Administrator permission.", viewModel.Errors);
             environment.Setup(c => c.AuthorizationService).Returns(authService.Object);
             viewModel.CurrentEnvironment = environment.Object;
             viewModel.IsDirty = true;
-            var p = new PrivateObject(viewModel.SecurityViewModel);
+            var p = new Warewolf.Testing.PrivateObject(viewModel.SecurityViewModel);
             p.SetProperty("ServerPermissions", new ObservableCollection<WindowsGroupPermission>()
             {
                 new WindowsGroupPermission
@@ -426,7 +426,7 @@ You need Administrator permission.", viewModel.Errors);
             environment.Setup(c => c.AuthorizationService).Returns(authService.Object);
             //viewModel.CurrentEnvironment = environment.Object;
             viewModel.IsDirty = true;
-            var p = new PrivateObject(viewModel.SecurityViewModel);
+            var p = new Warewolf.Testing.PrivateObject(viewModel.SecurityViewModel);
             p.SetProperty("ResourcePermissions", new ObservableCollection<WindowsGroupPermission>()
             {
                 new WindowsGroupPermission

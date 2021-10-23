@@ -173,6 +173,7 @@
       <Project>{926cf512-b3fd-410d-aa83-ebdf4c4868de}</Project>
       <Name>Warewolf.Interfaces</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Testing\Warewolf.Testing.csproj" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="XML\Utility - Assign.xml" />

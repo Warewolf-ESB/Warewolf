@@ -421,7 +421,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var testModel = new ServiceTestStep(Guid.NewGuid(), typeof(DsfDecision).Name, new ObservableCollection<IServiceTestOutput>()
             { serviceTestOutput
             }, StepType.Mock);
-            var testModelObject = new PrivateObject(testModel);
+            var testModelObject = new Warewolf.Testing.PrivateObject(testModel);
             //---------------Assert Precondition----------------
             var ExpectedCount = testModel.StepOutputs.Count + 1;
             Assert.IsTrue(testModel.MockSelected);
@@ -447,7 +447,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var testModel = new ServiceTestStep(Guid.NewGuid(), typeof(DsfDecision).Name, new ObservableCollection<IServiceTestOutput>()
             { serviceTestOutput
             }, StepType.Mock);
-            var testModelObject = new PrivateObject(testModel);
+            var testModelObject = new Warewolf.Testing.PrivateObject(testModel);
             //---------------Assert Precondition----------------
             Assert.IsTrue(testModel.MockSelected);
             //---------------Execute Test ----------------------           
@@ -470,7 +470,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var testModel = new ServiceTestStep(Guid.NewGuid(), typeof(DsfDecision).Name, new ObservableCollection<IServiceTestOutput>()
             { serviceTestOutput
             }, StepType.Mock);
-            var testModelObject = new PrivateObject(testModel);
+            var testModelObject = new Warewolf.Testing.PrivateObject(testModel);
             //---------------Assert Precondition----------------
             Assert.IsTrue(testModel.MockSelected);
             //---------------Execute Test ----------------------           
@@ -493,7 +493,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var testModel = new ServiceTestStep(Guid.NewGuid(), typeof(DsfDecision).Name, new ObservableCollection<IServiceTestOutput>()
             { serviceTestOutput
             }, StepType.Mock);
-            var testModelObject = new PrivateObject(testModel);
+            var testModelObject = new Warewolf.Testing.PrivateObject(testModel);
             //---------------Assert Precondition----------------
             var ExpectedCount = testModel.StepOutputs.Count + 1;
             Assert.IsTrue(testModel.MockSelected);

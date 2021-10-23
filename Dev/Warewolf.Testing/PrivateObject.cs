@@ -22,14 +22,17 @@ namespace Warewolf.Testing
             _privateObject = privateObject;
         }
         
-        public object Invoke(string memberName, params object[] inputParameters)
+        public object Invoke(string memberName) => Invoke(memberName, false, new object[]{});
+        public object Invoke(string memberName, params object[] inputParameters) => Invoke(memberName, false, inputParameters);
+        public object Invoke(string memberName, bool isStaticMember) => Invoke(memberName, isStaticMember, new object[]{});
+        public object Invoke(string memberName, bool isStaticMember, params object[] inputParameters)
         {
             var getType = _privateObject.GetType();
-            while (getType.GetMethod(memberName, BindingFlags.Instance | BindingFlags.NonPublic) == null && getType.BaseType != null)
+            while (getType.GetMethod(memberName, (isStaticMember ? BindingFlags.Static : BindingFlags.Instance) | BindingFlags.NonPublic) == null && getType.BaseType != null)
             {
                 getType = getType.BaseType;
             }
-            var getMethod = getType.GetMethod(memberName, BindingFlags.Instance | BindingFlags.NonPublic);
+            var getMethod = getType.GetMethod(memberName, (isStaticMember ? BindingFlags.Static : BindingFlags.Instance) | BindingFlags.NonPublic);
             return getMethod?.Invoke(_privateObject, inputParameters);
         }
         
@@ -45,6 +48,9 @@ namespace Warewolf.Testing
             return getField?.GetValue(_privateObject);
         }
         
+        public object GetField(string fieldName) => GetField(fieldName, false);
+        public object GetField(string fieldName, bool isStaticField) => GetFieldOrProperty(fieldName, isStaticField);
+        
         public void SetField(string fieldName, object setValue) => SetField(fieldName, setValue, false);
         public void SetField(string fieldName, object setValue, bool isStaticField)
         {
@@ -56,6 +62,9 @@ namespace Warewolf.Testing
             var getField = getType.GetField(fieldName, (isStaticField ? BindingFlags.Static : BindingFlags.Instance) | BindingFlags.NonPublic);
             getField?.SetValue(_privateObject, setValue);
         }
+        
+        public void SetFieldOrProperty(string fieldName, object setValue) => SetFieldOrProperty(fieldName, setValue, false);
+        public void SetFieldOrProperty(string fieldName, object setValue, bool isStaticField) => SetField(fieldName, setValue, isStaticField);
         
         public object GetProperty(string propertyName) => GetProperty(propertyName, false);
         public object GetProperty(string propertyName, bool isStaticProperty)

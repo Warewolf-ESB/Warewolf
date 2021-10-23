@@ -57,7 +57,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Publish
             channel.Setup(c => c.BasicPublish(string.Empty, queueName, It.IsAny<bool>(), null, body));
             channel.Setup(c => c.CreateBasicProperties()).Returns(mockBasicProperties.Object);
 
-            var p = new PrivateObject(dsfPublishRabbitMQActivity);
+            var p = new Warewolf.Testing.PrivateObject(dsfPublishRabbitMQActivity);
             p.SetProperty("ConnectionFactory", connectionFactory.Object);
             p.SetProperty("ResourceCatalog", resourceCatalog.Object);
 
@@ -87,7 +87,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Publish
             var resourceCatalog = new Mock<IResourceCatalog>();
             resourceCatalog.Setup(r => r.GetResource<RabbitMQSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns<RabbitMQSource>(null);
 
-            var p = new PrivateObject(dsfPublishRabbitMQActivity);
+            var p = new Warewolf.Testing.PrivateObject(dsfPublishRabbitMQActivity);
             p.SetProperty("ResourceCatalog", resourceCatalog.Object);
 
             //------------Execute Test---------------------------
@@ -113,7 +113,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Publish
 
             resourceCatalog.Setup(r => r.GetResource<RabbitMQSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(rabbitMQSource.Object);
 
-            var p = new PrivateObject(dsfPublishRabbitMQActivity);
+            var p = new Warewolf.Testing.PrivateObject(dsfPublishRabbitMQActivity);
             p.SetProperty("ResourceCatalog", resourceCatalog.Object);
 
             //------------Execute Test---------------------------
@@ -139,7 +139,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Publish
 
             resourceCatalog.Setup(r => r.GetResource<RabbitMQSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(rabbitMQSource.Object);
 
-            var p = new PrivateObject(dsfPublishRabbitMQActivity);
+            var p = new Warewolf.Testing.PrivateObject(dsfPublishRabbitMQActivity);
             p.SetProperty("ResourceCatalog", resourceCatalog.Object);
 
             //------------Execute Test---------------------------
@@ -168,7 +168,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Publish
             resourceCatalog.Setup(r => r.GetResource<RabbitMQSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(rabbitMQSource.Object);
             connectionFactory.Setup(c => c.CreateConnection()).Returns<IConnection>(null);
 
-            var p = new PrivateObject(dsfPublishRabbitMQActivity);
+            var p = new Warewolf.Testing.PrivateObject(dsfPublishRabbitMQActivity);
             p.SetProperty("ConnectionFactory", connectionFactory.Object);
             p.SetProperty("ResourceCatalog", resourceCatalog.Object);
 

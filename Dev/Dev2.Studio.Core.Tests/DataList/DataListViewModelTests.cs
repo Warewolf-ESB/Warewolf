@@ -2853,7 +2853,7 @@ namespace Dev2.Core.Tests
             var child = CreateComplexObjectDataListModel("Child", parent);
             dataListViewModel.Add(child);
             var handler = new ComplexObjectHandler(dataListViewModel);
-            var p = new PrivateObject(handler);
+            var p = new Warewolf.Testing.PrivateObject(handler);
             //---------------Assert Precondition----------------
 
             //---------------Execute Test ----------------------
@@ -2895,7 +2895,7 @@ namespace Dev2.Core.Tests
 
             IComplexObjectItemModel item = new ComplexObjectItemModel("Name", null, enDev2ColumnArgumentDirection.Input, "Name", null, false, "", true, true, false, false);
             dataListViewModel.Add(item);
-            var privateObject = new PrivateObject(dataListViewModel);
+            var privateObject = new Warewolf.Testing.PrivateObject(dataListViewModel);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             try

@@ -28,7 +28,7 @@ using Warewolf.Storage;
 namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
 {
     //TODO : Remove [ExpectedException(typeof(TargetInvocationException))] and manually assert each method below
-    //TODO : Test each method without using PrivateObject
+    //TODO : Test each method without using Warewolf.Testing.PrivateObject
     [TestClass]
     public partial class SharepointCopyFileActivityTests : BaseActivityUnitTest
     {
@@ -69,7 +69,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
                 ServerInputPathTo = "Hello World.bite",
                 Overwrite = true
             };
-            var privateObject = new PrivateObject(sharepointCopyFileActivity);
+            var privateObject = new Warewolf.Testing.PrivateObject(sharepointCopyFileActivity);
             
             privateObject.SetProperty("ResourceCatalog", resourceCatalog.Object);
             sharepointCopyFileActivity.SharepointSource = mockSharepointSource.Object;
@@ -104,7 +104,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
                 ServerInputPathTo = "Hello World.bite",
                 Overwrite = true
             };
-            var privateObject = new PrivateObject(sharepointCopyFileActivity);
+            var privateObject = new Warewolf.Testing.PrivateObject(sharepointCopyFileActivity);
 
             var mockSharepointSource = new MockSharepointSource
             {
@@ -148,7 +148,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
                 Overwrite = true
             };
             
-            var privateObject = new PrivateObject(sharepointCopyFileActivity);
+            var privateObject = new Warewolf.Testing.PrivateObject(sharepointCopyFileActivity);
 
             var mockSharepointSource = new MockSharepointSource
             {
@@ -191,7 +191,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
                 Overwrite = true
             };
 
-            var privateObject = new PrivateObject(sharepointCopyFileActivity);
+            var privateObject = new Warewolf.Testing.PrivateObject(sharepointCopyFileActivity);
             var mockSharepointSource = new MockSharepointSource
             {
                 MockSharepointHelper = mockSharepointHelper.Object
@@ -231,7 +231,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
                 ServerInputPathTo = "Hello World.bite",
                 Overwrite = true
             };
-            var privateObject = new PrivateObject(sharepointCopyFileActivity);
+            var privateObject = new Warewolf.Testing.PrivateObject(sharepointCopyFileActivity);
             var dataObj = new DsfDataObject("", Guid.NewGuid(), "");
 
             resourceCatalog.Setup(r => r.GetResource<SharepointSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(mockSharepointSource.Object);
@@ -269,7 +269,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
                 Overwrite = true
             };
 
-            var privateObject = new PrivateObject(sharepointCopyFileActivity);
+            var privateObject = new Warewolf.Testing.PrivateObject(sharepointCopyFileActivity);
             var dataObj = new DsfDataObject("", Guid.NewGuid(), "");
 
             resourceCatalog.Setup(r => r.GetResource<SharepointSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(mockSharepointSource.Object);
@@ -308,7 +308,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
                 Overwrite = true,
             };
 
-            var privateObject = new PrivateObject(sharepointCopyFileActivity);
+            var privateObject = new Warewolf.Testing.PrivateObject(sharepointCopyFileActivity);
             var dataObj = new DsfDataObject("", Guid.NewGuid(), "");
 
             resourceCatalog.Setup(r => r.GetResource<SharepointSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(mockSharepointSource.Object);
@@ -358,7 +358,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
             var dataObj = new DsfDataObject("", Guid.NewGuid(), "");
             object[] args = new object[] { mockDSFDataObject.Object, new ErrorResultTO(), 0 };
 
-            var privateObject = new PrivateObject(sharepointCopyFileActivity);
+            var privateObject = new Warewolf.Testing.PrivateObject(sharepointCopyFileActivity);
 
             resourceCatalog.Setup(r => r.GetResource<SharepointSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(mockSharepointSource.Object);
 

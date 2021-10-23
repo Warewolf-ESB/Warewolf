@@ -182,7 +182,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             };
             var dataObject = new Mock<IDSFDataObject>();
             dataObject.Setup(o => o.IsDebugMode()).Returns(true);
-            var obj = new PrivateObject(activity);
+            var obj = new Warewolf.Testing.PrivateObject(activity);
             //---------------Assert Precondition----------------
             var activityDebugOutputs = activity.GetDebugOutputs(new Mock<IExecutionEnvironment>().Object, 1);
             Assert.AreEqual(0, activityDebugOutputs.Count);
@@ -212,7 +212,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             };
             var dataObject = new Mock<IDSFDataObject>();
             dataObject.Setup(o => o.IsDebugMode()).Returns(true);
-            var obj = new PrivateObject(activity);
+            var obj = new Warewolf.Testing.PrivateObject(activity);
             //---------------Assert Precondition----------------
             var getDebugInputs = activity.GetDebugInputs(new Mock<IExecutionEnvironment>().Object, 1);
             Assert.AreEqual(0, getDebugInputs.Count);

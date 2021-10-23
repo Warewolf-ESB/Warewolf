@@ -111,7 +111,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Setup for test--------------------------
             const string password = "123456";
             var act = new TestActivity("TestActivity") { Password = password };
-            var privateObject = new PrivateObject(act);
+            var privateObject = new Warewolf.Testing.PrivateObject(act);
             var decryptedPassword = privateObject.GetProperty("DecryptedPassword");
 
             //------------Execute Test---------------------------
@@ -128,7 +128,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             const string password = "123456";
             var encrypt = DpapiWrapper.Encrypt(password);
             var act = new TestActivity("TestActivity") { Password = encrypt };
-            var privateObject = new PrivateObject(act);
+            var privateObject = new Warewolf.Testing.PrivateObject(act);
             var decryptedPassword = privateObject.GetProperty("DecryptedPassword");
 
             //------------Execute Test---------------------------

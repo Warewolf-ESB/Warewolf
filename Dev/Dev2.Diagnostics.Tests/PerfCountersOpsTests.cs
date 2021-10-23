@@ -132,7 +132,7 @@ namespace Dev2.Diagnostics.Test
             var counter = CustomContainer.Get<IWarewolfPerformanceCounterLocater>().GetCounter(Guid.NewGuid(), WarewolfPerfCounterType.AverageExecutionTime).FromSafe();
             Assert.AreEqual("Empty", counter.Name);
             Assert.AreEqual(CategoryName, counter.Category);
-            var po = new PrivateObject(counter);
+            var po = new Warewolf.Testing.PrivateObject(counter);
             po.Invoke("Setup", new object[0]);
 
             Assert.IsNull(counter.CreationData());

@@ -57,7 +57,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Setup for test--------------------------
             var dsfSqlBulkInsertActivity = new DsfSqlBulkInsertActivity();
             //------------Execute Test---------------------------
-            var px = new PrivateObject(dsfSqlBulkInsertActivity);
+            var px = new Warewolf.Testing.PrivateObject(dsfSqlBulkInsertActivity);
 
             var sqlBulkInserter = px.GetProperty("SqlBulkInserter");
             //------------Assert Results-------------------------
@@ -73,7 +73,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //------------Setup for test--------------------------
             var dsfSqlBulkInsertActivity = new DsfSqlBulkInsertActivity();
-            var p = new PrivateObject(dsfSqlBulkInsertActivity);
+            var p = new Warewolf.Testing.PrivateObject(dsfSqlBulkInsertActivity);
             p.SetProperty("SqlBulkInserter",new Mock<ISqlBulkInserter>().Object);
             
             //------------Execute Test---------------------------
@@ -2028,7 +2028,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 IgnoreBlankRows = ignoreBlankRows,
                 KeepIdentity = keepIdentity
             };
-            var p = new PrivateObject(x);
+            var p = new Warewolf.Testing.PrivateObject(x);
             p.SetProperty("SqlBulkInserter", sqlBulkInserter);
 
             TestStartNode = new FlowStep

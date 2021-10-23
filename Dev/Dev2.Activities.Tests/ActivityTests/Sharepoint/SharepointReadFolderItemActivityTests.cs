@@ -58,7 +58,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
             var resourceCatalog = new Mock<IResourceCatalog>();
             var mockSharepointSource = new Mock<SharepointSource>();
 
-            var privateObject = new PrivateObject(sharepointReadFolderItemActivity);
+            var privateObject = new Warewolf.Testing.PrivateObject(sharepointReadFolderItemActivity);
             privateObject.SetProperty("ResourceCatalog", resourceCatalog.Object);
             sharepointReadFolderItemActivity.SharepointSource = mockSharepointSource.Object;
 
@@ -102,7 +102,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
 
             resourceCatalog.Setup(r => r.GetResource<SharepointSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(mockSharepointSource);
 
-            var privateObject = new PrivateObject(sharepointReadFolderItemActivity);
+            var privateObject = new Warewolf.Testing.PrivateObject(sharepointReadFolderItemActivity);
             privateObject.SetProperty("ResourceCatalog", resourceCatalog.Object);
             sharepointReadFolderItemActivity.SharepointSource = mockSharepointSource;
 
@@ -146,7 +146,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
 
             resourceCatalog.Setup(r => r.GetResource<SharepointSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(mockSharepointSource);
 
-            var privateObject = new PrivateObject(sharepointReadFolderItemActivity);
+            var privateObject = new Warewolf.Testing.PrivateObject(sharepointReadFolderItemActivity);
             privateObject.SetProperty("ResourceCatalog", resourceCatalog.Object);
             sharepointReadFolderItemActivity.SharepointSource = mockSharepointSource;
 
@@ -191,7 +191,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
 
             resourceCatalog.Setup(r => r.GetResource<SharepointSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(mockSharepointSource);
 
-            var privateObject = new PrivateObject(sharepointReadFolderItemActivity);
+            var privateObject = new Warewolf.Testing.PrivateObject(sharepointReadFolderItemActivity);
             privateObject.SetProperty("ResourceCatalog", resourceCatalog.Object);
             sharepointReadFolderItemActivity.SharepointSource = mockSharepointSource;
 
@@ -236,7 +236,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
 
             resourceCatalog.Setup(r => r.GetResource<SharepointSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(mockSharepointSource);
 
-            var privateObject = new PrivateObject(sharepointReadFolderItemActivity);
+            var privateObject = new Warewolf.Testing.PrivateObject(sharepointReadFolderItemActivity);
             privateObject.SetProperty("ResourceCatalog", resourceCatalog.Object);
             sharepointReadFolderItemActivity.SharepointSource = mockSharepointSource;
 
@@ -280,7 +280,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
 
             resourceCatalog.Setup(r => r.GetResource<SharepointSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(mockSharepointSource);
 
-            var privateObject = new PrivateObject(sharepointReadFolderItemActivity);
+            var privateObject = new Warewolf.Testing.PrivateObject(sharepointReadFolderItemActivity);
             privateObject.SetProperty("ResourceCatalog", resourceCatalog.Object);
             sharepointReadFolderItemActivity.SharepointSource = mockSharepointSource;
 
@@ -325,7 +325,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
 
             resourceCatalog.Setup(r => r.GetResource<SharepointSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(mockSharepointSource);
 
-            var privateObject = new PrivateObject(sharepointReadFolderItemActivity);
+            var privateObject = new Warewolf.Testing.PrivateObject(sharepointReadFolderItemActivity);
             privateObject.SetProperty("ResourceCatalog", resourceCatalog.Object);
             sharepointReadFolderItemActivity.SharepointSource = mockSharepointSource;
 
@@ -361,7 +361,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
 
             resourceCatalog.Setup(r => r.GetResource<SharepointSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(mockSharepointSource.Object);
 
-            var privateObject = new PrivateObject(sharepointReadFolderItemActivity);
+            var privateObject = new Warewolf.Testing.PrivateObject(sharepointReadFolderItemActivity);
             privateObject.SetProperty("ResourceCatalog", resourceCatalog.Object);
             sharepointReadFolderItemActivity.SharepointSource = mockSharepointSource.Object;
 
@@ -404,7 +404,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
 
             resourceCatalog.Setup(r => r.GetResource<SharepointSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(mockSharepointSource);
 
-            var privateObject = new PrivateObject(sharepointReadFolderItemActivity);
+            var privateObject = new Warewolf.Testing.PrivateObject(sharepointReadFolderItemActivity);
             privateObject.SetProperty("ResourceCatalog", resourceCatalog.Object);
             sharepointReadFolderItemActivity.SharepointSource = mockSharepointSource;
 
@@ -505,7 +505,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
 
             resourceCatalog.Setup(r => r.GetResource<SharepointSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(mockSharepointSource);
 
-            var privateObject = new PrivateObject(sharepointReadFolderItemActivity);
+            var privateObject = new Warewolf.Testing.PrivateObject(sharepointReadFolderItemActivity);
             privateObject.SetProperty("ResourceCatalog", resourceCatalog.Object);
             sharepointReadFolderItemActivity.SharepointSource = mockSharepointSource;
 
@@ -608,7 +608,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
 
             resourceCatalog.Setup(r => r.GetResource<SharepointSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(mockSharepointSource);
 
-            var privateObject = new PrivateObject(sharepointReadFolderItemActivity);
+            var privateObject = new Warewolf.Testing.PrivateObject(sharepointReadFolderItemActivity);
             privateObject.SetProperty("ResourceCatalog", resourceCatalog.Object);
             sharepointReadFolderItemActivity.SharepointSource = mockSharepointSource;
 
@@ -709,7 +709,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
 
             resourceCatalog.Setup(r => r.GetResource<SharepointSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(mockSharepointSource);
 
-            var privateObject = new PrivateObject(sharepointReadFolderItemActivity);
+            var privateObject = new Warewolf.Testing.PrivateObject(sharepointReadFolderItemActivity);
             privateObject.SetProperty("ResourceCatalog", resourceCatalog.Object);
             sharepointReadFolderItemActivity.SharepointSource = mockSharepointSource;
 
