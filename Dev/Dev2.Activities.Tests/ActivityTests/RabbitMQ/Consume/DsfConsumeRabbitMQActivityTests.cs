@@ -737,7 +737,6 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
         }
 
         [TestMethod]
-        [Timeout(60000)]
         [Owner("Mthembu Sanele")]
         [TestCategory("DsfConsumeRabbitMQActivity_Execute")]
         public void PerformExecution_Given_UnExisting_Queue_Returns_QeueuNotFoundException_Timeout()
@@ -764,7 +763,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
 
             var privateObject = new Warewolf.Testing.PrivateObject(dsfConsumeRabbitMQActivity);
             privateObject.SetProperty("ConnectionFactory", connectionFactory.Object);
-            privateObject.SetProperty("ResourceCatalog", resourceCatalog.Object);
+            dsfConsumeRabbitMQActivity.ResourceCatalog = resourceCatalog.Object;
             privateObject.SetProperty("Channel", channel.Object);
             //------------Execute Test---------------------------
             try
@@ -774,7 +773,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
             }
             catch (Exception ex)
             {
-                Assert.AreEqual(ex.Message, string.Format("Queue {0} not found", queueName));
+                Assert.AreEqual(ex.InnerException.Message, string.Format("Queue {0} not found", queueName));
             }
             //------------Assert Results-------------------------
         }
