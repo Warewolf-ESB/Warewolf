@@ -696,7 +696,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             //---------------Precondition------------------------
             Assert.IsNotNull(viewModel);
             //------------Execute Test---------------------------
-            privateType.Invoke("Done", BindingFlags.Instance | BindingFlags.NonPublic);
+            privateType.Invoke("Done");
             //---------------Test Result -----------------------
 
         }
