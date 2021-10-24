@@ -363,7 +363,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
             resourceCatalog.Setup(r => r.GetResource<RabbitMQSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(rabbitMQSource.Object);
 
             var privateObject = new Warewolf.Testing.PrivateObject(dsfConsumeRabbitMQActivity);
-            privateObject.SetProperty("ResourceCatalog", resourceCatalog.Object);
+            dsfConsumeRabbitMQActivity.ResourceCatalog = resourceCatalog.Object;
 
             //------------Execute Test---------------------------
 
@@ -737,6 +737,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Mthembu Sanele")]
         [TestCategory("DsfConsumeRabbitMQActivity_Execute")]
         public void PerformExecution_Given_UnExisting_Queue_Returns_QeueuNotFoundException_Timeout()

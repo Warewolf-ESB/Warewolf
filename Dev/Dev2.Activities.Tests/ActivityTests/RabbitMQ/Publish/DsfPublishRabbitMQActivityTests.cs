@@ -155,7 +155,6 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Publish
         [Timeout(60000)]
         [Owner("Clint Stedman")]
         [TestCategory("DsfPublishRabbitMQActivity_Execute")]
-        [ExpectedException(typeof(Exception))]
         public void DsfPublishRabbitMQActivity_Execute_Failure_NullException()
         {
             //------------Setup for test--------------------------
@@ -170,13 +169,18 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Publish
 
             var p = new Warewolf.Testing.PrivateObject(dsfPublishRabbitMQActivity);
             p.SetProperty("ConnectionFactory", connectionFactory.Object);
-            p.SetProperty("ResourceCatalog", resourceCatalog.Object);
+            dsfPublishRabbitMQActivity.ResourceCatalog = resourceCatalog.Object;
 
-            //------------Execute Test---------------------------
-            var result = p.Invoke("PerformExecution", new Dictionary<string, string> { { "QueueName", "Q1" }, { "Message", "Test message" } });
-
-            //------------Assert Results-------------------------
-            Assert.Fail("Exception not thrown");
+            try
+            {
+                //------------Execute Test---------------------------
+                var result = p.Invoke("PerformExecution", new Dictionary<string, string> { { "QueueName", "Q1" }, { "Message", "Test message" } });
+            }
+            catch(TargetInvocationException e)
+            {
+                //------------Assert Results-------------------------
+                Assert.AreEqual("Object reference not set to an instance of an object.", e.InnerException?.Message, "Incorrect exception thrown.");
+            }
         }
 
         [TestMethod]
