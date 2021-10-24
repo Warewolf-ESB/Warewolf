@@ -842,6 +842,8 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
             var channel = new Mock<IModel>();
 
             resourceCatalog.Setup(r => r.GetResource<RabbitMQSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(rabbitMQSource.Object);
+            dsfConsumeRabbitMQActivity.ResourceCatalog = resourceCatalog.Object;
+            dsfConsumeRabbitMQActivity.QueueName = queueName;
             connectionFactory.Setup(c => c.CreateConnection()).Returns(connection.Object);
             connection.Setup(c => c.CreateModel()).Returns(channel.Object);
             channel.Setup(c => c.BasicQos(0, 1, false));
@@ -853,8 +855,6 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
             channel.SetupSequence(model => model.BasicGet(queueName, It.IsAny<bool>())).Returns(basicGetResult1).Returns(basicGetResult2);
             var privateObject = new Warewolf.Testing.PrivateObject(dsfConsumeRabbitMQActivity);
             privateObject.SetProperty("ConnectionFactory", connectionFactory.Object);
-            privateObject.SetProperty("ResourceCatalog", resourceCatalog.Object);
-            privateObject.SetProperty("QueueName", queueName);
             dsfConsumeRabbitMQActivity.Response = "[[msgs().message]]";
             dsfConsumeRabbitMQActivity.ReQueue = true;
             //------------Execute Test---------------------------
