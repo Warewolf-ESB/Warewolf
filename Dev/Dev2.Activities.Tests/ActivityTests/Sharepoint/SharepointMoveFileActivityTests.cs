@@ -106,7 +106,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
             resourceCatalog.Setup(r => r.GetResource<SharepointSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(mockSharepointSource);
 
             var privateObject = new Warewolf.Testing.PrivateObject(sharepointMoveFileActivity);
-            privateObject.SetProperty("ResourceCatalog", resourceCatalog.Object);
+            sharepointMoveFileActivity.ResourceCatalog = resourceCatalog.Object;
             sharepointMoveFileActivity.SharepointSource = mockSharepointSource;
 
             //------------Execute Test---------------------------
@@ -151,7 +151,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
             resourceCatalog.Setup(r => r.GetResource<SharepointSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(mockSharepointSource);
 
             var privateObject = new Warewolf.Testing.PrivateObject(sharepointMoveFileActivity);
-            privateObject.SetProperty("ResourceCatalog", resourceCatalog.Object);
+            sharepointMoveFileActivity.ResourceCatalog = resourceCatalog.Object;
             sharepointMoveFileActivity.SharepointSource = mockSharepointSource;
 
             //------------Execute Test---------------------------
@@ -166,7 +166,6 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
         [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory("SharepointFileUpload_Execute")]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void SharepointFileUploadActivity_ValidateRequest_SharepointServerResourceId_EmptyGuid()
         {
             //------------Setup for test--------------------------
@@ -189,15 +188,22 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
             privateObject.SetProperty("ResourceCatalog", resourceCatalog.Object);
             sharepointMoveFileActivity.SharepointSource = mockSharepointSource.Object;
 
-            //------------Execute Test---------------------------
-            privateObject.Invoke("ValidateRequest");
+            try
+            {
+                //------------Execute Test---------------------------
+                privateObject.Invoke("ValidateRequest");
+            }
+            catch (TargetInvocationException e)
+            {
+                //------------Assert Results-------------------------
+                Assert.AreEqual("Please select valid source\r\nParameter name: 00000000-0000-0000-0000-000000000000", e.InnerException?.Message, "Expected exception was not thrown.");
+            }
         }
 
         [TestMethod]
         [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory("SharepointFileUpload_Execute")]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void SharepointFileUploadActivity_ValidateRequest_ServerInputPath_IsEmpty()
         {
             //------------Setup for test--------------------------
@@ -221,8 +227,16 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
             privateObject.SetProperty("ResourceCatalog", resourceCatalog.Object);
             sharepointMoveFileActivity.SharepointSource = mockSharepointSource.Object;
 
-            //------------Execute Test---------------------------
-            privateObject.Invoke("ValidateRequest");
+            try
+            {
+                //------------Execute Test---------------------------
+                privateObject.Invoke("ValidateRequest");
+            }
+            catch (TargetInvocationException e)
+            {
+                //------------Assert Results-------------------------
+                Assert.AreEqual("Server input path FROM is not set", e.InnerException?.Message, "Expected exception was not thrown.");
+            }
         }
         [TestMethod]
         [Timeout(60000)]
@@ -255,7 +269,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
 
 
             var privateObject = new Warewolf.Testing.PrivateObject(sharepointMoveFileActivity);
-            privateObject.SetProperty("ResourceCatalog", resourceCatalog.Object);
+            sharepointMoveFileActivity.ResourceCatalog = resourceCatalog.Object;
             sharepointMoveFileActivity.SharepointSource = mockSharepointSource.Object;
 
             //------------Execute Test---------------------------
