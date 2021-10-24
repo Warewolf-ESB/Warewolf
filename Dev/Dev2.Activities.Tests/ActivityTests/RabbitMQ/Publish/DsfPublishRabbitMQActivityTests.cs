@@ -59,7 +59,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Publish
 
             var p = new Warewolf.Testing.PrivateObject(dsfPublishRabbitMQActivity);
             p.SetProperty("ConnectionFactory", connectionFactory.Object);
-            p.SetProperty("ResourceCatalog", resourceCatalog.Object);
+            dsfPublishRabbitMQActivity.ResourceCatalog = resourceCatalog.Object;
 
             //------------Execute Test---------------------------
             var result = p.Invoke("PerformExecution", new Dictionary<string, string> { { "QueueName", queueName }, { "Message", message } }) as List<string>;
@@ -114,7 +114,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Publish
             resourceCatalog.Setup(r => r.GetResource<RabbitMQSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(rabbitMQSource.Object);
 
             var p = new Warewolf.Testing.PrivateObject(dsfPublishRabbitMQActivity);
-            p.SetProperty("ResourceCatalog", resourceCatalog.Object);
+            dsfPublishRabbitMQActivity.ResourceCatalog = resourceCatalog.Object;
 
             //------------Execute Test---------------------------
 
@@ -140,7 +140,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Publish
             resourceCatalog.Setup(r => r.GetResource<RabbitMQSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(rabbitMQSource.Object);
 
             var p = new Warewolf.Testing.PrivateObject(dsfPublishRabbitMQActivity);
-            p.SetProperty("ResourceCatalog", resourceCatalog.Object);
+            dsfPublishRabbitMQActivity.ResourceCatalog = resourceCatalog.Object;
 
             //------------Execute Test---------------------------
 
@@ -174,7 +174,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Publish
             try
             {
                 //------------Execute Test---------------------------
-                var result = p.Invoke("PerformExecution", new Dictionary<string, string> { { "QueueName", "Q1" }, { "Message", "Test message" } });
+                _ = p.Invoke("PerformExecution", new Dictionary<string, string> { { "QueueName", "Q1" }, { "Message", "Test message" } });
             }
             catch(TargetInvocationException e)
             {

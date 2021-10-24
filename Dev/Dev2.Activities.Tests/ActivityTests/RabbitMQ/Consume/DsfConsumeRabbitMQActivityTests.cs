@@ -416,7 +416,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
             resourceCatalog.Setup(r => r.GetResource<RabbitMQSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(rabbitMQSource.Object);
 
             var p = new Warewolf.Testing.PrivateObject(dsfConsumeRabbitMQActivity);
-            p.SetProperty("ResourceCatalog", resourceCatalog.Object);
+            dsfConsumeRabbitMQActivity.ResourceCatalog = resourceCatalog.Object;
             //------------Execute Test---------------------------
             //------------Assert Results-------------------------
             if (p.Invoke("PerformExecution", new Dictionary<string, string> { { "Param1", "Blah1" }, { "Param2", "Blah2" } }) is List<string> result)
@@ -443,7 +443,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
             resourceCatalog.Setup(r => r.GetResource<RabbitMQSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(rabbitMQSource.Object);
 
             var p = new Warewolf.Testing.PrivateObject(dsfConsumeRabbitMQActivity);
-            p.SetProperty("ResourceCatalog", resourceCatalog.Object);
+            dsfConsumeRabbitMQActivity.ResourceCatalog = resourceCatalog.Object;
             //------------Execute Test---------------------------
             //------------Assert Results-------------------------
             if (p.Invoke("PerformExecution", new Dictionary<string, string> { { "Param1", "Blah1" }, { "Param2", "Blah2" } }) is List<string> result)
@@ -456,13 +456,12 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
         [Timeout(60000)]
         [Owner("Mthembu Sanele")]
         [TestCategory("DsfConsumeRabbitMQActivity_Execute")]
-        [ExpectedException(typeof(Exception))]
         public void PerformExecution_Given_No_Source_Should_Return_NullException()
         {
             //------------Setup for test--------------------------
             var dsfConsumeRabbitMQActivity = new DsfConsumeRabbitMQActivity();
 
-
+            const string queueName = "Q1";
             var resourceCatalog = new Mock<IResourceCatalog>();
             var rabbitMQSource = new Mock<RabbitMQSource>();
             var connectionFactory = new Mock<ConnectionFactory>();
@@ -472,12 +471,18 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
 
             var privateObject = new Warewolf.Testing.PrivateObject(dsfConsumeRabbitMQActivity);
             privateObject.SetProperty("ConnectionFactory", connectionFactory.Object);
-            privateObject.SetProperty("ResourceCatalog", resourceCatalog.Object);
+            dsfConsumeRabbitMQActivity.ResourceCatalog = resourceCatalog.Object;
 
-            //------------Execute Test---------------------------
-            privateObject.Invoke("PerformExecution", new Dictionary<string, string> { { "QueueName", "Q1" } });
-            //------------Assert Results-------------------------
-            Assert.Fail("Exception not thrown");
+            try
+            {
+                //------------Execute Test---------------------------
+                privateObject.Invoke("PerformExecution", new Dictionary<string, string> { { "QueueName", queueName } });
+            }
+            catch (Exception ex)
+            {
+                //------------Assert Results-------------------------
+                Assert.AreEqual(ex.InnerException?.Message, "Object reference not set to an instance of an object.", "Expected exception was not thrown.");
+            }
         }
 
 
@@ -507,16 +512,16 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
             privateObject.SetProperty("ConnectionFactory", connectionFactory.Object);
             privateObject.SetProperty("ResourceCatalog", resourceCatalog.Object);
 
-            //------------Execute Test---------------------------
             try
             {
-                privateObject.Invoke("PerformExecution", new Dictionary<string, string> { { "QueueName", queueName } });
+            //------------Execute Test---------------------------
+                privateObject.Invoke("PerformExecution", new Dictionary<string, string> { { "QueueName", queueName } }, "Expected exception was not thrown.");
             }
             catch (Exception ex)
             {
+            //------------Assert Results-------------------------
                 Assert.AreEqual(ex.Message, string.Format("Nothing in the Queue : {0}", queueName));
             }
-            //------------Assert Results-------------------------
         }
 
         [TestMethod]
@@ -892,8 +897,8 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
             channel.SetupSequence(model => model.BasicGet(queueName, It.IsAny<bool>())).Returns(basicGetResult1).Returns(basicGetResult2);
             var privateObject = new Warewolf.Testing.PrivateObject(dsfConsumeRabbitMQActivity);
             privateObject.SetProperty("ConnectionFactory", connectionFactory.Object);
-            privateObject.SetProperty("ResourceCatalog", resourceCatalog.Object);
-            privateObject.SetProperty("QueueName", queueName);
+            dsfConsumeRabbitMQActivity.ResourceCatalog = resourceCatalog.Object;
+            dsfConsumeRabbitMQActivity.QueueName = queueName;
             dsfConsumeRabbitMQActivity.Response = "[[msgs().message]]";
             dsfConsumeRabbitMQActivity.ReQueue = true;
             //------------Execute Test---------------------------
