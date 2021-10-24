@@ -246,10 +246,8 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
         }
 
         [TestMethod]
-        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(SharepointCopyFileActivity))]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void SharepointCopyFileActivity_ValidateRequest_ServerInputPathFrom_IsEmpty_ExpectAreEqual_Success()
         {
             //------------Setup for test--------------------------
@@ -275,13 +273,16 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
 
             sharepointCopyFileActivity.ResourceCatalog = resourceCatalog.Object;
             sharepointCopyFileActivity.SharepointSource = mockSharepointSource.Object;
-            //------------Execute Test---------------------------
-            privateObject.Invoke("ValidateRequest");
-            //------------Assert Result--------------------------
-            GetRecordSetFieldValueFromDataList(dataObj.Environment, "Files", "Name", out IList<string> result, out string error);
-
-            Assert.IsNotNull(result);
-            Assert.AreEqual("Success", result[0]);
+            try
+            {
+                //------------Execute Test---------------------------
+                privateObject.Invoke("ValidateRequest");
+            }
+            catch(TargetInvocationException e)
+            {
+                //------------Assert Result--------------------------
+                Assert.AreEqual("Server input path FROM is not set", e.InnerException?.Message, "Expected exception was not thrown");
+            }
         }
 
         [TestMethod]

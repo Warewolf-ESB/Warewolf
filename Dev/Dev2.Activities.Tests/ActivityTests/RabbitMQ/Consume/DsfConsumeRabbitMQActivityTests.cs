@@ -515,12 +515,12 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
             try
             {
             //------------Execute Test---------------------------
-                privateObject.Invoke("PerformExecution", new Dictionary<string, string> { { "QueueName", queueName } }, "Expected exception was not thrown.");
+                privateObject.Invoke("PerformExecution", new Dictionary<string, string> { { "QueueName", queueName } });
             }
             catch (Exception ex)
             {
             //------------Assert Results-------------------------
-                Assert.AreEqual(ex.Message, string.Format("Nothing in the Queue : {0}", queueName));
+                Assert.AreEqual(ex.Message, string.Format("Nothing in the Queue : {0}", queueName), "Expected exception was not thrown.");
             }
         }
 
