@@ -289,7 +289,6 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
         [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(SharepointCopyFileActivity))]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void SharepointCopyFileActivity_ValidateRequest_ServerInputPathTo_IsEmpty_Expect_Exception()
         {
             //------------Setup for test--------------------------
@@ -309,19 +308,19 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
             };
 
             var privateObject = new Warewolf.Testing.PrivateObject(sharepointCopyFileActivity);
-            var dataObj = new DsfDataObject("", Guid.NewGuid(), "");
-
             resourceCatalog.Setup(r => r.GetResource<SharepointSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(mockSharepointSource.Object);
-
             sharepointCopyFileActivity.ResourceCatalog = resourceCatalog.Object;
             sharepointCopyFileActivity.SharepointSource = mockSharepointSource.Object;
-            //------------Execute Test---------------------------
-            privateObject.Invoke("ValidateRequest");
-            //------------Assert Result--------------------------
-            GetRecordSetFieldValueFromDataList(dataObj.Environment, "Files", "Name", out IList<string> result, out string error);
-
-            Assert.IsNotNull(result);
-            Assert.AreEqual("Success", result[0]);
+            try
+            {
+                //------------Execute Test---------------------------
+                privateObject.Invoke("ValidateRequest");
+            }
+            catch(TargetInvocationException e)
+            {
+                //------------Assert Result--------------------------
+                Assert.AreEqual("Server input path TO is not set", e.InnerException?.Message, "Expected exception was not thrown.");
+            }
         }
 
         [TestMethod]
