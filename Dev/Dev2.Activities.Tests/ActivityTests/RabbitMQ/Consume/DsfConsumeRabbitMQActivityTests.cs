@@ -390,15 +390,13 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
             var rabbitMQSource = new Mock<RabbitMQSource>();
 
             resourceCatalog.Setup(r => r.GetResource<RabbitMQSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(rabbitMQSource.Object);
-
+            dsfConsumeRabbitMQActivity.ResourceCatalog = resourceCatalog.Object;
             var privateObject = new Warewolf.Testing.PrivateObject(dsfConsumeRabbitMQActivity);
-            privateObject.SetProperty("ResourceCatalog", resourceCatalog.Object);
 
             //------------Execute Test---------------------------
-
-            //------------Assert Results-------------------------
             if (privateObject.Invoke("PerformExecution", new Dictionary<string, string>()) is List<string> result)
             {
+                //------------Assert Results-------------------------
                 Assert.AreEqual(result[0], "Failure: Queue Name is required.");
             }
         }
