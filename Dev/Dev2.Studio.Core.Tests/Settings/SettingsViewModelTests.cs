@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.ObjectModel;
+using System.Reflection;
 using System.Text;
 using System.Windows;
 using System.Windows.Forms;
@@ -426,8 +427,7 @@ You need Administrator permission.", viewModel.Errors);
             environment.Setup(c => c.AuthorizationService).Returns(authService.Object);
             //viewModel.CurrentEnvironment = environment.Object;
             viewModel.IsDirty = true;
-            var p = new Warewolf.Testing.PrivateObject(viewModel.SecurityViewModel);
-            p.SetProperty("ResourcePermissions", new ObservableCollection<WindowsGroupPermission>()
+            viewModel.SecurityViewModel.GetType().GetProperty("ResourcePermissions", BindingFlags.Public | BindingFlags.Instance)?.SetValue(viewModel.SecurityViewModel,new ObservableCollection<WindowsGroupPermission>()
             {
                 new WindowsGroupPermission
                 {
