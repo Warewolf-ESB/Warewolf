@@ -195,7 +195,8 @@ namespace Warewolf.ToolsSpecs.Toolbox.RabbitMQ.Consum
             resourceCatalog.Setup(catalog => catalog.GetResource<RabbitMQSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(default(RabbitMQSource));
 
             var _privateObject = scenarioContext.Get<Warewolf.Testing.PrivateObject>("PrivateObj");
-            _privateObject.SetProperty("ResourceCatalog", resourceCatalog.Object);
+            var consumeRabbitMQActivity = scenarioContext.Get<DsfConsumeRabbitMQActivity>("Activity");
+            consumeRabbitMQActivity.ResourceCatalog = resourceCatalog.Object;
             var executeResults = _privateObject.Invoke("PerformExecution", new Dictionary<string, string>()) as List<string>;
             Assert.IsTrue(executeResults != null && string.Equals("Failure: Source has been deleted.", executeResults[0]));
         }
@@ -203,8 +204,6 @@ namespace Warewolf.ToolsSpecs.Toolbox.RabbitMQ.Consum
         [Then(@"No queue error is Returned")]
         public void ThenNoQueueErrorIsReturned()
         {
-            var consumeRabbitMQActivity = scenarioContext.Get<DsfConsumeRabbitMQActivity>("Activity");
-
             var resourceCatalog = new Mock<IResourceCatalog>();
             var rabbitMQSource = new Mock<RabbitMQSource>();
             resourceCatalog.Setup(r => r.GetResource<RabbitMQSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(rabbitMQSource.Object);
