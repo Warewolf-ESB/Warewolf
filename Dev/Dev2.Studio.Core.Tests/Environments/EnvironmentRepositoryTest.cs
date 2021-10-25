@@ -1149,7 +1149,6 @@ namespace Dev2.Core.Tests.Environments
 
             var instance = ServerRepository.Instance;
 
-            var obj = new Warewolf.Testing.PrivateObject(instance);
             var environmentModel = instance.GetType().GetMethod("CreateEnvironmentModel", BindingFlags.NonPublic | BindingFlags.Static, null, new[] { typeof(Guid), typeof(Uri), typeof(string) }, null).Invoke(instance, new object[] { Guid.NewGuid(), new Uri("http://LOCALHOST"), "" }) as IServer;
 
             Assert.IsTrue(environmentModel?.Connection.WebServerUri.AbsoluteUri.Contains("localhost") ?? false);
