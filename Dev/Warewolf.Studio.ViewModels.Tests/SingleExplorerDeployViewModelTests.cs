@@ -465,12 +465,14 @@ namespace Warewolf.Studio.ViewModels.Tests
                 SourceConnectControlViewModel = { SelectedConnection = _serverMock.Object },
                 DestinationConnectControlViewModel = { SelectedConnection = _differentServerMock.Object },
             };
+            var privateObject = new Warewolf.Testing.PrivateObject(singleExplorerDeployViewModel);
+            var propertyInfo = typeof(SingleExplorerDeployViewModel).GetProperty("IsDeploying");
             //---------------Assert Precondition----------------
+            Assert.IsNotNull(propertyInfo, "Cannot get private property.");
             //---------------Execute Test ----------------------
-            var privateObject = new PrivateObject(singleExplorerDeployViewModel);
-            typeof(SingleExplorerDeployViewModel).GetProperty("IsDeploying").SetValue(privateObject.Target, true);
-            var canDeploy = privateObject.GetProperty("CanDeploy");
+            propertyInfo.SetValue(singleExplorerDeployViewModel, true);
             //---------------Test Result -----------------------
+            var canDeploy = privateObject.GetProperty("CanDeploy");
             Assert.AreEqual(false, canDeploy);
         }
 
@@ -853,8 +855,10 @@ namespace Warewolf.Studio.ViewModels.Tests
             };
             _sourceView.Setup(model => model.SelectedItems).Returns(explorerTreeItems);
             var singleExplorerDeployViewModel = new SingleExplorerDeployViewModel(_destView.Object, _sourceView.Object, new List<IExplorerTreeItem>(), _statsView.Object, _shellVm.Object, popupController.Object);
-            var privateObject = new PrivateObject(singleExplorerDeployViewModel);
-            typeof(SingleExplorerDeployViewModel).GetProperty("IsDeploying").SetValue(privateObject.Target, true);
+            var privateObject = new Warewolf.Testing.PrivateObject(singleExplorerDeployViewModel);
+            var propertyInfo = typeof(SingleExplorerDeployViewModel).GetProperty("IsDeploying");
+            Assert.IsNotNull(propertyInfo, "Cannot get private property");
+            propertyInfo.SetValue(singleExplorerDeployViewModel, true);
             singleExplorerDeployViewModel.DestinationConnectControlViewModel.SelectedConnection = _differentServerMock.Object;
             singleExplorerDeployViewModel.SourceConnectControlViewModel.SelectedConnection = _serverMock.Object;
             //---------------Test Result -----------------------
@@ -902,8 +906,10 @@ namespace Warewolf.Studio.ViewModels.Tests
             };
             _sourceView.Setup(model => model.SelectedItems).Returns(explorerTreeItems);
             var singleExplorerDeployViewModel = new SingleExplorerDeployViewModel(_destView.Object, _sourceView.Object, new List<IExplorerTreeItem>(), _statsView.Object, _shellVm.Object, popupController.Object);
-            var privateObject = new PrivateObject(singleExplorerDeployViewModel);
-            typeof(SingleExplorerDeployViewModel).GetProperty("IsDeploying").SetValue(privateObject.Target, true);
+            var privateObject = new Warewolf.Testing.PrivateObject(singleExplorerDeployViewModel);
+            var propertyInfo = typeof(SingleExplorerDeployViewModel).GetProperty("IsDeploying");
+            Assert.IsNotNull(propertyInfo, "Cannot get private property.");
+            propertyInfo.SetValue(singleExplorerDeployViewModel, true);
             singleExplorerDeployViewModel.DestinationConnectControlViewModel.SelectedConnection = _differentServerMock.Object;
             singleExplorerDeployViewModel.SourceConnectControlViewModel.SelectedConnection = _serverMock.Object;
             //---------------Test Result -----------------------
@@ -1427,9 +1433,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsNotNull(singleExplorerDeployViewModel.DestinationConnectControlViewModel);
             Assert.IsNotNull(singleExplorerDeployViewModel.SourceConnectControlViewModel);
             //---------------Execute Test ----------------------
-            var privateObject = new PrivateObject(singleExplorerDeployViewModel);
-            typeof(SingleExplorerDeployViewModel).GetProperty("DestinationConnectControlViewModel").SetValue(privateObject.Target, connectControl.Object);
-            typeof(SingleExplorerDeployViewModel).GetProperty("SourceConnectControlViewModel").SetValue(privateObject.Target, connectControl.Object);
+            var privateObject = new Warewolf.Testing.PrivateObject(singleExplorerDeployViewModel);
+            typeof(SingleExplorerDeployViewModel).GetProperty("DestinationConnectControlViewModel").SetValue(singleExplorerDeployViewModel, connectControl.Object);
+            typeof(SingleExplorerDeployViewModel).GetProperty("SourceConnectControlViewModel").SetValue(singleExplorerDeployViewModel, connectControl.Object);
             //---------------Test Result -----------------------
             Assert.IsNotNull(singleExplorerDeployViewModel.DestinationConnectControlViewModel);
             Assert.IsNotNull(singleExplorerDeployViewModel.SourceConnectControlViewModel);
@@ -1600,8 +1606,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             {
                 new Conflict()
             };
-            var privateObject = new PrivateObject(singleExplorerDeployViewModel);
-            typeof(SingleExplorerDeployViewModel).GetProperty("ConflictItems").SetValue(privateObject.Target, conflicts);
+            var privateObject = new Warewolf.Testing.PrivateObject(singleExplorerDeployViewModel);
+            typeof(SingleExplorerDeployViewModel).GetProperty("ConflictItems").SetValue(singleExplorerDeployViewModel, conflicts);
             privateObject.Invoke("Deploy");
             //---------------Test Result -----------------------
             popupController.Verify(controller => controller.ShowDeployConflict(It.IsAny<int>()), Times.AtLeastOnce);
@@ -1668,8 +1674,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             {
                 new Conflict()
             };
-            var privateObject = new PrivateObject(singleExplorerDeployViewModel);
-            typeof(SingleExplorerDeployViewModel).GetProperty("ConflictItems").SetValue(privateObject.Target, conflicts);
+            var privateObject = new Warewolf.Testing.PrivateObject(singleExplorerDeployViewModel);
+            typeof(SingleExplorerDeployViewModel).GetProperty("ConflictItems").SetValue(singleExplorerDeployViewModel, conflicts);
             privateObject.Invoke("Deploy");
             //---------------Test Result -----------------------
             popupController.Verify(controller => controller.ShowDeployConflict(It.IsAny<int>()), Times.AtLeastOnce);

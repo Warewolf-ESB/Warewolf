@@ -266,8 +266,9 @@ namespace Dev2.Core.Tests.Settings
             var repo = new Mock<IResourceRepository>();
             environment.Setup(a => a.ResourceRepository).Returns(repo.Object);
             viewModel.CurrentEnvironment = environment.Object;
-            var p = new PrivateObject(viewModel, new PrivateType(typeof(SettingsViewModel)));
-            p.SetProperty("SecurityViewModel", securityViewModel);
+            var propertyInfo = typeof(SettingsViewModel).GetProperty("SecurityViewModel", BindingFlags.Public | BindingFlags.Instance);
+            Assert.IsNotNull(propertyInfo, "Cannot get private property.");
+            propertyInfo.SetValue(viewModel, securityViewModel);
             //------------Execute Test---------------------------
             viewModel.SaveCommand.Execute(null);
 
