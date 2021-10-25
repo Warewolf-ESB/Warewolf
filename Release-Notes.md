@@ -1,3 +1,12 @@
+25 October 2021
+======================
+
+Bug fixes
+----------
+- Gate and suspend tools contribute to overall test coverage percentage if they are executed during a test
+- @ symbol doesn't get stripped out of assign object tool after the first execution
+- Post tool recognizes variables in it's inputs and result textboxes
+
 27 September 2021
 ======================
 
