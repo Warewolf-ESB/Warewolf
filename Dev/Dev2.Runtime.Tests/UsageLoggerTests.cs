@@ -9,18 +9,14 @@
 */
 
 using System;
-using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Runtime;
-using Dev2.Runtime.Subscription;
-using Hangfire.Dashboard.Resources;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Nest;
-using Newtonsoft.Json;
+using Warewolf.Testing;
 using Warewolf.Usage;
 
 namespace Dev2.Tests.Runtime
@@ -75,7 +71,7 @@ namespace Dev2.Tests.Runtime
             var mockUsageTracker = new Mock<IUsageTrackerWrapper>();
             mockUsageTracker.Setup(o => o.TrackEvent(It.IsAny<string>(), It.IsAny<UsageType>(), It.IsAny<string>())).Returns(UsageDataResult.networkConnectionError);
 
-            var usageLogger = new UsageLogger(5000, mockUsageTracker.Object);
+            var usageLogger = new UsageLogger(5000, mockUsageTracker.Object, EnvironmentVariablesForTesting.PersistencePathForTests);
             var persistencePath = Path.Combine(Config.UserDataPath, "Persistence");
             var persistenceGuidPath = Path.Combine(persistencePath, testGuid.ToString());
 
@@ -107,7 +103,7 @@ namespace Dev2.Tests.Runtime
             var mockUsageTracker = new Mock<IUsageTrackerWrapper>();
             mockUsageTracker.Setup(o => o.TrackEvent(It.IsAny<string>(), It.IsAny<UsageType>(), It.IsAny<string>())).Returns(UsageDataResult.ok);
 
-            var usageLogger = new UsageLogger(5000, mockUsageTracker.Object);
+            var usageLogger = new UsageLogger(5000, mockUsageTracker.Object, EnvironmentVariablesForTesting.PersistencePathForTests);
             var persistencePath = Path.Combine(Config.UserDataPath, "Persistence");
             var persistenceGuidPath = Path.Combine(persistencePath, testGuid.ToString());
 

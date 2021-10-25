@@ -103,7 +103,7 @@ namespace Dev2
                 LoggerFactory = new ExecutionLogger.ExecutionLoggerFactory(),
                 SystemInformationHelper = new GetSystemInformationHelper(),
                 UsageTracker = usageTracker,
-                UsageLogger = new UsageLogger(TimeSpan.FromHours(2).TotalMilliseconds, usageTracker)
+                UsageLogger = new UsageLogger(TimeSpan.FromHours(2).TotalMilliseconds, usageTracker, EnvironmentVariables.PersistencePath)
             };
         }
     }

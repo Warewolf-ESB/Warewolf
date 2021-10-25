@@ -17,6 +17,7 @@ using System.Threading.Tasks;
 using System.Timers;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
 using Dev2.Runtime.Subscription;
 using Newtonsoft.Json;
@@ -33,22 +34,23 @@ namespace Dev2.Runtime
     public class UsageLogger : IUsageLogger
     {
         internal readonly Timer _timer;
-#pragma warning disable CC0074 //disable make variable read-only warning
-        protected string _persistencePath = EnvironmentVariables.PersistencePath;
-#pragma warning restore CC0074
-        static DirectoryWrapper _directoryWrapper = new DirectoryWrapper();
-        static FileWrapper _fileWrapper = new FileWrapper();
-        IUsageTrackerWrapper _usageTrackerWrapper = new UsageTrackerWrapper();
+        readonly string _persistencePath;
+        readonly IDirectory _directoryWrapper;
+        readonly IFile _fileWrapper;
+        readonly IUsageTrackerWrapper _usageTrackerWrapper;
 
-        public UsageLogger(double intervalMs) : this(intervalMs, new UsageTrackerWrapper())
+        public UsageLogger(double intervalMs) 
+            : this(intervalMs, new UsageTrackerWrapper(), EnvironmentVariables.PersistencePath)
         {
-            
         }
         
-        public UsageLogger(double intervalMs, IUsageTrackerWrapper usageTrackerWrapper)
+        public UsageLogger(double intervalMs, IUsageTrackerWrapper usageTrackerWrapper, string persistencePath)
         {
             Interval = intervalMs;
             _usageTrackerWrapper = usageTrackerWrapper;
+            _directoryWrapper = new DirectoryWrapper();
+            _fileWrapper = new FileWrapper();
+            _persistencePath = persistencePath;
             _timer = new Timer(Interval);
             _timer.Elapsed += (sender, e) => Timer_Elapsed(this, e);
         }
@@ -67,7 +69,7 @@ namespace Dev2.Runtime
         public void TrackUsage(UsageType usageType, Guid sessionId)
         {
 #pragma warning disable 4014
-            UploadOfflineFiles();
+            UploadOfflineFilesAsync();
 #pragma warning restore 4014
 
             var subscriptionProvider = SubscriptionProvider.Instance;
@@ -137,7 +139,7 @@ namespace Dev2.Runtime
         }
 
 #pragma warning disable 1998
-        private async Task UploadOfflineFiles()
+        private async Task UploadOfflineFilesAsync()
 #pragma warning restore 1998
         {
             var files = _directoryWrapper.GetFiles(_persistencePath);
@@ -173,7 +175,7 @@ namespace Dev2.Runtime
             _fileWrapper.WriteAllText(Path.Combine(_persistencePath, ServerStats.SessionId.ToString()), JsonConvert.SerializeObject(sessionData));
         }
 
-        private static DateTime? GetLastUploadTime()
+        private DateTime? GetLastUploadTime()
         {
             var persistencePath = Path.Combine(Config.AppDataPath, "Persistence");
             var files = _directoryWrapper.GetFiles(persistencePath);

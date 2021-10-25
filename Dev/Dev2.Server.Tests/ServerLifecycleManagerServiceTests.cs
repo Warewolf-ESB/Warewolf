@@ -18,7 +18,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -34,6 +33,8 @@ using Warewolf.Streams;
 using Warewolf.Triggers;
 using Warewolf.Usage;
 using WarewolfCOMIPC.Client;
+using Warewolf.Testing;
+using System.Management;
 
 namespace Dev2.Server.Tests
 {
@@ -182,7 +183,7 @@ namespace Dev2.Server.Tests
             
             var mockUsageTracker = new Mock<IUsageTrackerWrapper>();
             mockUsageTracker.Setup(o => o.TrackEvent(It.IsAny<string>(), It.IsAny<UsageType>(), It.IsAny<string>())).Returns(UsageDataResult.internalError);
-            var persistencePath = EnvironmentVariables.PersistencePathForTests;
+            var persistencePath = EnvironmentVariablesForTesting.PersistencePathForTests;
 
             //------------------------Act----------------------------
             var config = new StartupConfiguration
@@ -202,7 +203,7 @@ namespace Dev2.Server.Tests
                 SystemInformationHelper = mockSystemInformation.Object,
                 LoggerFactory = mockExecutionLoggerFactory.Object,
                 UsageTracker = mockUsageTracker.Object,
-                UsageLogger = new UsageLoggerForTests(20000, mockUsageTracker.Object)
+                UsageLogger = new UsageLoggerForTests(20000, mockUsageTracker.Object, EnvironmentVariablesForTesting.PersistencePathForTests)
             };
             using (var serverLifeCycleManager = new ServerLifecycleManager(config))
             {
@@ -218,14 +219,18 @@ namespace Dev2.Server.Tests
             
             mockExecutionLogPublisher.Verify(o => o.Warn(It.Is<string>(str => str.StartsWith("Could not log usage. Retry: ")), It.IsAny<object[]>()), Times.AtLeastOnce);
 
+            //this test will fail when the number of cores are not equal to 6
+            //thus, it could be a better approach to calculate this each time
+            var numOfCores = SystemInfomationForTesting.GetNumberOfCores();
+            var processorCount = Environment.ProcessorCount;
             var subscriptionDataInstance = SubscriptionProvider.Instance;
-            var usageInfo = $@"{{'SessionId':'{ServerStats.SessionId}','SubscriptionId':null,'PlanId':null,'Status':0,'VersionNo':'1.1.1.1','IPAddress':null,'ProcessorCount':12,'NumberOfCores':6,'OSType':null,'MachineName':null,'Region':null,'Executions':0".Replace("'", "\"");
+            var usageInfo = $@"{{'SessionId':'{ServerStats.SessionId}','SubscriptionId':null,'PlanId':null,'Status':0,'VersionNo':'1.1.1.1','IPAddress':null,'ProcessorCount':{processorCount},'NumberOfCores':{numOfCores},'OSType':null,'MachineName':null,'Region':null,'Executions':0".Replace("'", "\"");
             mockUsageTracker.Verify(o => o.TrackEvent(subscriptionDataInstance.CustomerId, UsageType.ServerStart, It.Is<string>(str => str.StartsWith(usageInfo))), Times.Once);
             
             var filePath = Path.Combine(persistencePath, ServerStats.SessionId.ToString());
             Assert.IsTrue(File.Exists(filePath));
-            
-            var usageData = "JsonData\":\"{\\\"SessionId\\\":\\\"" + ServerStats.SessionId + "\\\",\\\"SubscriptionId\\\":null,\\\"PlanId\\\":null,\\\"Status\\\":0,\\\"VersionNo\\\":\\\"1.1.1.1\\\",\\\"IPAddress\\\":null,\\\"ProcessorCount\\\":12,\\\"NumberOfCores\\\":6,\\\"OSType\\\":null,\\\"MachineName\\\":null,\\\"Region\\\":null,\\\"Executions\\\":0";
+
+            var usageData = "JsonData\":\"{\\\"SessionId\\\":\\\"" + ServerStats.SessionId + "\\\",\\\"SubscriptionId\\\":null,\\\"PlanId\\\":null,\\\"Status\\\":0,\\\"VersionNo\\\":\\\"1.1.1.1\\\",\\\"IPAddress\\\":null,\\\"ProcessorCount\\\":"+ processorCount +",\\\"NumberOfCores\\\":"+ numOfCores + ",\\\"OSType\\\":null,\\\"MachineName\\\":null,\\\"Region\\\":null,\\\"Executions\\\":0";
             var fileText = File.ReadAllText(filePath);
             Assert.IsTrue(fileText.Contains(usageData));
 
@@ -1158,9 +1163,25 @@ namespace Dev2.Server.Tests
         
         private class UsageLoggerForTests : UsageLogger
         {
-            public UsageLoggerForTests(double intervalMs, IUsageTrackerWrapper usageTrackerWrapper) : base(intervalMs, usageTrackerWrapper)
+            public UsageLoggerForTests(double intervalMs, IUsageTrackerWrapper usageTrackerWrapper, string persistencePath) 
+                : base(intervalMs, usageTrackerWrapper, persistencePath)
             {
-                _persistencePath = EnvironmentVariables.PersistencePathForTests;
+            }
+        }
+
+        //TODO: this can either be removed/or replaced once the consolidation of this code has been done with the call that get this information 
+        //or this object can be added to the Warewolf.Testing Project and further extended for testing any user system related information for testing
+        public static class SystemInfomationForTesting
+        {
+            public static int GetNumberOfCores()
+            {
+                var coreCount = 0;
+                foreach (var item in new ManagementObjectSearcher("Select * from Win32_Processor  ").Get())
+                {
+                    coreCount += int.Parse(item["NumberOfCores"].ToString());
+                }
+
+                return coreCount;
             }
         }
     }

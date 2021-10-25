@@ -36,11 +36,6 @@ namespace Dev2.Common
             get => Path.Combine(Config.UserDataPath, "Persistence");
         }
         
-        public static string PersistencePathForTests
-        {
-            get => Path.Combine(Config.UserDataPath, "PersistenceTests");
-        }
-
         public static string ResourcePath
         {
             get
