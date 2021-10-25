@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reflection;
 using Dev2.Activities;
 using Dev2.Common.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -434,7 +435,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
         [Owner("Pieter Terblanche")]
         public void AddNewRecordsetOutput_Sets_VariableName_Given_TestStep_Has_Empty_Variable()
         {
@@ -447,11 +447,12 @@ namespace Warewolf.Studio.ViewModels.Tests
             var testModel = new ServiceTestStep(Guid.NewGuid(), typeof(DsfDecision).Name, new ObservableCollection<IServiceTestOutput>()
             { serviceTestOutput
             }, StepType.Mock);
-            var testModelObject = new Warewolf.Testing.PrivateObject(testModel);
+            var methodInfo = testModel.GetType().GetMethod("AddNewRecordsetOutput", BindingFlags.Instance | BindingFlags.NonPublic, null, new[]{typeof(string)}, null);
             //---------------Assert Precondition----------------
+            Assert.IsNotNull(methodInfo, "Cannot get private method with reflection");
             Assert.IsTrue(testModel.MockSelected);
-            //---------------Execute Test ----------------------           
-            testModelObject.Invoke("AddNewRecordsetOutput", "[[Name]]");
+            //---------------Execute Test ----------------------
+            methodInfo.Invoke(testModel, new[]{"[[Name]]"});
             //---------------Test Result -----------------------
             Assert.AreEqual("[[Name]]", testModel.StepOutputs[0].Variable);
         }
