@@ -367,8 +367,7 @@ You need Administrator permission.", viewModel.Errors);
             environment.Setup(c => c.AuthorizationService).Returns(authService.Object);
             viewModel.CurrentEnvironment = environment.Object;
             viewModel.IsDirty = true;
-            var p = new Warewolf.Testing.PrivateObject(viewModel.SecurityViewModel);
-            p.SetProperty("ServerPermissions", new ObservableCollection<WindowsGroupPermission>()
+            viewModel.SecurityViewModel.GetType().GetProperty("ServerPermissions", BindingFlags.Public | BindingFlags.Instance)?.SetValue(viewModel.SecurityViewModel,new ObservableCollection<WindowsGroupPermission>()
             {
                 new WindowsGroupPermission
                 {
@@ -450,9 +449,7 @@ You need Administrator permission.", viewModel.Errors);
             Assert.IsTrue(viewModel.IsDirty);
             Assert.IsFalse(viewModel.IsSaved);
             Assert.IsTrue(viewModel.HasErrors);
-            Assert.AreEqual(@"There are duplicate permissions for a resource, 
-    i.e. one resource has permissions set twice with the same group. 
-    Please clear the duplicates before saving.", viewModel.Errors);
+            Assert.AreEqual(StringResources.SaveSettingsDuplicateResourcePermissions, viewModel.Errors);
             popupController.Verify(controller => controller.ShowHasDuplicateResourcePermissions(), Times.Once);
         }
 
