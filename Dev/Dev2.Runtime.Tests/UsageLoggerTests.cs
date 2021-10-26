@@ -72,7 +72,7 @@ namespace Dev2.Tests.Runtime
             mockUsageTracker.Setup(o => o.TrackEvent(It.IsAny<string>(), It.IsAny<UsageType>(), It.IsAny<string>())).Returns(UsageDataResult.networkConnectionError);
 
             var usageLogger = new UsageLogger(5000, mockUsageTracker.Object, EnvironmentVariablesForTesting.PersistencePathForTests);
-            var persistencePath = Path.Combine(Config.UserDataPath, "Persistence");
+            var persistencePath = Path.Combine(Config.UserDataPath, "PersistenceTests");
             var persistenceGuidPath = Path.Combine(persistencePath, testGuid.ToString());
 
             if(File.Exists(persistencePath))
