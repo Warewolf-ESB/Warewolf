@@ -54,7 +54,7 @@ jobs:
     inputs:
       filesharePath: 'D:/artifacts/Azure Devops'
       artifactName: 'AcceptanceTesting $(Build.BuildId)'
-      downloadPath: '$(Agent.BuildDirectory)'
+      downloadPath: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Email Tools Specs.bat\""
     displayName: 'Run Email Tools Specs'
@@ -74,7 +74,7 @@ jobs:
     inputs:
       filesharePath: 'D:/artifacts/Azure Devops'
       artifactName: 'AcceptanceTesting $(Build.BuildId)'
-      downloadPath: '$(Agent.BuildDirectory)'
+      downloadPath: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Resource Tools Specs.bat\""
     displayName: 'Run Resource Tools Specs'
@@ -94,7 +94,7 @@ jobs:
     inputs:
       filesharePath: 'D:/artifacts/Azure Devops'
       artifactName: 'AcceptanceTesting $(Build.BuildId)'
-      downloadPath: '$(Agent.BuildDirectory)'
+      downloadPath: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/File And Folder Copy Tool Specs.bat\""
     displayName: 'Run File And Folder Copy Tool Specs'
@@ -114,7 +114,7 @@ jobs:
     inputs:
       filesharePath: 'D:/artifacts/Azure Devops'
       artifactName: 'AcceptanceTesting $(Build.BuildId)'
-      downloadPath: '$(Agent.BuildDirectory)'
+      downloadPath: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Data Tools Specs.bat\""
     displayName: 'Run Data Tools Specs'
@@ -134,7 +134,7 @@ jobs:
     inputs:
       filesharePath: 'D:/artifacts/Azure Devops'
       artifactName: 'AcceptanceTesting $(Build.BuildId)'
-      downloadPath: '$(Agent.BuildDirectory)'
+      downloadPath: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Request Service Name View Models Unit Tests.bat\""
     displayName: 'Run Request Service Name View Models Unit Tests'
@@ -154,7 +154,7 @@ jobs:
     inputs:
       filesharePath: 'D:/artifacts/Azure Devops'
       artifactName: 'AcceptanceTesting $(Build.BuildId)'
-      downloadPath: '$(Agent.BuildDirectory)'
+      downloadPath: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Unzip Tool Specs Validation.bat\""
     displayName: 'Run Unzip Tool Specs Validation'
@@ -174,7 +174,7 @@ jobs:
     inputs:
       filesharePath: 'D:/artifacts/Azure Devops'
       artifactName: 'AcceptanceTesting $(Build.BuildId)'
-      downloadPath: '$(Agent.BuildDirectory)'
+      downloadPath: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Recordset Tools Specs.bat\""
     displayName: 'Run Recordset Tools Specs'
@@ -194,7 +194,7 @@ jobs:
     inputs:
       filesharePath: 'D:/artifacts/Azure Devops'
       artifactName: 'AcceptanceTesting $(Build.BuildId)'
-      downloadPath: '$(Agent.BuildDirectory)'
+      downloadPath: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/File And Folder Rename Tool Specs.bat\""
     displayName: 'Run File And Folder Rename Tool Specs'
@@ -214,7 +214,7 @@ jobs:
     inputs:
       filesharePath: 'D:/artifacts/Azure Devops'
       artifactName: 'AcceptanceTesting $(Build.BuildId)'
-      downloadPath: '$(Agent.BuildDirectory)'
+      downloadPath: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Other Tools Specs.bat\""
     displayName: 'Run Other Tools Specs'
@@ -234,7 +234,7 @@ jobs:
     inputs:
       filesharePath: 'D:/artifacts/Azure Devops'
       artifactName: 'AcceptanceTesting $(Build.BuildId)'
-      downloadPath: '$(Agent.BuildDirectory)'
+      downloadPath: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/File And Folder Move Tool Specs.bat\""
     displayName: 'Run File And Folder Move Tool Specs'
@@ -254,7 +254,7 @@ jobs:
     inputs:
       filesharePath: 'D:/artifacts/Azure Devops'
       artifactName: 'AcceptanceTesting $(Build.BuildId)'
-      downloadPath: '$(Agent.BuildDirectory)'
+      downloadPath: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/File Read Tool Specs.bat\""
     displayName: 'Run File Read Tool Specs'
@@ -274,7 +274,7 @@ jobs:
     inputs:
       filesharePath: 'D:/artifacts/Azure Devops'
       artifactName: 'AcceptanceTesting $(Build.BuildId)'
-      downloadPath: '$(Agent.BuildDirectory)'
+      downloadPath: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Infrastructure Unit Tests.bat\""
     displayName: 'Run Infrastructure Unit Tests'
@@ -294,7 +294,7 @@ jobs:
     inputs:
       filesharePath: 'D:/artifacts/Azure Devops'
       artifactName: 'AcceptanceTesting $(Build.BuildId)'
-      downloadPath: '$(Agent.BuildDirectory)'
+      downloadPath: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/New Folder Read Tool Specs.bat\""
     displayName: 'Run New Folder Read Tool Specs'
@@ -314,7 +314,7 @@ jobs:
     inputs:
       filesharePath: 'D:/artifacts/Azure Devops'
       artifactName: 'AcceptanceTesting $(Build.BuildId)'
-      downloadPath: '$(Agent.BuildDirectory)'
+      downloadPath: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Write File Tool Specs.bat\""
     displayName: 'Run Write File Tool Specs'
@@ -334,7 +334,7 @@ jobs:
     inputs:
       filesharePath: 'D:/artifacts/Azure Devops'
       artifactName: 'AcceptanceTesting $(Build.BuildId)'
-      downloadPath: '$(Agent.BuildDirectory)'
+      downloadPath: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Loop Construct Tools Specs.bat\""
     displayName: 'Run Loop Construct Tools Specs'
@@ -354,7 +354,7 @@ jobs:
     inputs:
       filesharePath: 'D:/artifacts/Azure Devops'
       artifactName: 'AcceptanceTesting $(Build.BuildId)'
-      downloadPath: '$(Agent.BuildDirectory)'
+      downloadPath: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Utility Tools Specs.bat\""
     displayName: 'Run Utility Tools Specs'
@@ -374,7 +374,7 @@ jobs:
     inputs:
       filesharePath: 'D:/artifacts/Azure Devops'
       artifactName: 'AcceptanceTesting $(Build.BuildId)'
-      downloadPath: '$(Agent.BuildDirectory)'
+      downloadPath: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Folder Read Tool Specs.bat\""
     displayName: 'Run Folder Read Tool Specs'
@@ -394,7 +394,7 @@ jobs:
     inputs:
       filesharePath: 'D:/artifacts/Azure Devops'
       artifactName: 'AcceptanceTesting $(Build.BuildId)'
-      downloadPath: '$(Agent.BuildDirectory)'
+      downloadPath: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/SQL Bulk Insert Tool Specs.bat\""
     displayName: 'Run SQL Bulk Insert Tool Specs'
@@ -414,7 +414,7 @@ jobs:
     inputs:
       filesharePath: 'D:/artifacts/Azure Devops'
       artifactName: 'AcceptanceTesting $(Build.BuildId)'
-      downloadPath: '$(Agent.BuildDirectory)'
+      downloadPath: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Control Flow Tools Specs.bat\""
     displayName: 'Run Control Flow Tools Specs'
@@ -434,7 +434,7 @@ jobs:
     inputs:
       filesharePath: 'D:/artifacts/Azure Devops'
       artifactName: 'AcceptanceTesting $(Build.BuildId)'
-      downloadPath: '$(Agent.BuildDirectory)'
+      downloadPath: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Studio View Models Unit Tests.bat\""
     displayName: 'Run Studio View Models Unit Tests'
@@ -454,7 +454,7 @@ jobs:
     inputs:
       filesharePath: 'D:/artifacts/Azure Devops'
       artifactName: 'AcceptanceTesting $(Build.BuildId)'
-      downloadPath: '$(Agent.BuildDirectory)'
+      downloadPath: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/File And Folder Create Tool Specs.bat\""
     displayName: 'Run File And Folder Create Tool Specs'
@@ -474,7 +474,7 @@ jobs:
     inputs:
       filesharePath: 'D:/artifacts/Azure Devops'
       artifactName: 'AcceptanceTesting $(Build.BuildId)'
-      downloadPath: '$(Agent.BuildDirectory)'
+      downloadPath: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Storage Unit Tests.bat\""
     displayName: 'Run Storage Unit Tests'
@@ -494,7 +494,7 @@ jobs:
     inputs:
       filesharePath: 'D:/artifacts/Azure Devops'
       artifactName: 'AcceptanceTesting $(Build.BuildId)'
-      downloadPath: '$(Agent.BuildDirectory)'
+      downloadPath: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Storage Tools Specs.bat\""
     displayName: 'Run Storage Tools Specs'
@@ -514,7 +514,7 @@ jobs:
     inputs:
       filesharePath: 'D:/artifacts/Azure Devops'
       artifactName: 'AcceptanceTesting $(Build.BuildId)'
-      downloadPath: '$(Agent.BuildDirectory)'
+      downloadPath: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/File And Folder Delete Tool Specs.bat\""
     displayName: 'Run File And Folder Delete Tool Specs'
@@ -534,7 +534,7 @@ jobs:
     inputs:
       filesharePath: 'D:/artifacts/Azure Devops'
       artifactName: 'AcceptanceTesting $(Build.BuildId)'
-      downloadPath: '$(Agent.BuildDirectory)'
+      downloadPath: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Scripting Tools Specs.bat\""
     displayName: 'Run Scripting Tools Specs'
@@ -554,7 +554,7 @@ jobs:
     inputs:
       filesharePath: 'D:/artifacts/Azure Devops'
       artifactName: 'AcceptanceTesting $(Build.BuildId)'
-      downloadPath: '$(Agent.BuildDirectory)'
+      downloadPath: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Database Tools Specs.bat\""
     displayName: 'Run Database Tools Specs'
@@ -574,7 +574,7 @@ jobs:
     inputs:
       filesharePath: 'D:/artifacts/Azure Devops'
       artifactName: 'AcceptanceTesting $(Build.BuildId)'
-      downloadPath: '$(Agent.BuildDirectory)'
+      downloadPath: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Auditing Unit Tests.bat\""
     displayName: 'Run Auditing Unit Tests'
@@ -594,7 +594,7 @@ jobs:
     inputs:
       filesharePath: 'D:/artifacts/Azure Devops'
       artifactName: 'AcceptanceTesting $(Build.BuildId)'
-      downloadPath: '$(Agent.BuildDirectory)'
+      downloadPath: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Workflow Execution Specs.bat\""
     displayName: 'Run Workflow Execution Specs'
@@ -614,7 +614,7 @@ jobs:
     inputs:
       filesharePath: 'D:/artifacts/Azure Devops'
       artifactName: 'AcceptanceTesting $(Build.BuildId)'
-      downloadPath: '$(Agent.BuildDirectory)'
+      downloadPath: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Studio Test Framework With Hello World Workflow Specs.bat\""
     displayName: 'Run Studio Test Framework With Hello World Workflow Specs'
@@ -634,7 +634,7 @@ jobs:
     inputs:
       filesharePath: 'D:/artifacts/Azure Devops'
       artifactName: 'AcceptanceTesting $(Build.BuildId)'
-      downloadPath: '$(Agent.BuildDirectory)'
+      downloadPath: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Studio Test Framework With Utility Tools Specs.bat\""
     displayName: 'Run Studio Test Framework With Utility Tools Specs'
@@ -654,7 +654,7 @@ jobs:
     inputs:
       filesharePath: 'D:/artifacts/Azure Devops'
       artifactName: 'AcceptanceTesting $(Build.BuildId)'
-      downloadPath: '$(Agent.BuildDirectory)'
+      downloadPath: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/MS SQL Server Specs.bat\""
     displayName: 'Run MS SQL Server Specs'
@@ -674,7 +674,7 @@ jobs:
     inputs:
       filesharePath: 'D:/artifacts/Azure Devops'
       artifactName: 'AcceptanceTesting $(Build.BuildId)'
-      downloadPath: '$(Agent.BuildDirectory)'
+      downloadPath: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Studio Test Framework With Data Tools Specs.bat\""
     displayName: 'Run Studio Test Framework With Data Tools Specs'
@@ -694,7 +694,7 @@ jobs:
     inputs:
       filesharePath: 'D:/artifacts/Azure Devops'
       artifactName: 'AcceptanceTesting $(Build.BuildId)'
-      downloadPath: '$(Agent.BuildDirectory)'
+      downloadPath: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Assign Workflow Execution Specs.bat\""
     displayName: 'Run Assign Workflow Execution Specs'
@@ -714,7 +714,7 @@ jobs:
     inputs:
       filesharePath: 'D:/artifacts/Azure Devops'
       artifactName: 'AcceptanceTesting $(Build.BuildId)'
-      downloadPath: '$(Agent.BuildDirectory)'
+      downloadPath: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Integration Tests.bat\""
     displayName: 'Run Integration Tests'
@@ -734,7 +734,7 @@ jobs:
     inputs:
       filesharePath: 'D:/artifacts/Azure Devops'
       artifactName: 'AcceptanceTesting $(Build.BuildId)'
-      downloadPath: '$(Agent.BuildDirectory)'
+      downloadPath: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Studio Test Framework With Scripting Tools Specs.bat\""
     displayName: 'Run Studio Test Framework With Scripting Tools Specs'
@@ -754,7 +754,7 @@ jobs:
     inputs:
       filesharePath: 'D:/artifacts/Azure Devops'
       artifactName: 'AcceptanceTesting $(Build.BuildId)'
-      downloadPath: '$(Agent.BuildDirectory)'
+      downloadPath: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Other Activities Specs.bat\""
     displayName: 'Run Other Activities Specs'
@@ -774,7 +774,7 @@ jobs:
     inputs:
       filesharePath: 'D:/artifacts/Azure Devops'
       artifactName: 'AcceptanceTesting $(Build.BuildId)'
-      downloadPath: '$(Agent.BuildDirectory)'
+      downloadPath: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Studio Test Framework With File And Folder Tools Specs.bat\""
     displayName: 'Run Studio Test Framework With File And Folder Tools Specs'
@@ -794,7 +794,7 @@ jobs:
     inputs:
       filesharePath: 'D:/artifacts/Azure Devops'
       artifactName: 'AcceptanceTesting $(Build.BuildId)'
-      downloadPath: '$(Agent.BuildDirectory)'
+      downloadPath: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Studio Test Framework With HTTP Web Tools Specs.bat\""
     displayName: 'Run Studio Test Framework With HTTP Web Tools Specs'
@@ -814,7 +814,7 @@ jobs:
     inputs:
       filesharePath: 'D:/artifacts/Azure Devops'
       artifactName: 'AcceptanceTesting $(Build.BuildId)'
-      downloadPath: '$(Agent.BuildDirectory)'
+      downloadPath: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Studio Test Framework With Subworkflow Specs.bat\""
     displayName: 'Run Studio Test Framework With Subworkflow Specs'
@@ -834,7 +834,7 @@ jobs:
     inputs:
       filesharePath: 'D:/artifacts/Azure Devops'
       artifactName: 'AcceptanceTesting $(Build.BuildId)'
-      downloadPath: '$(Agent.BuildDirectory)'
+      downloadPath: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Workflow Merging Specs.bat\""
     displayName: 'Run Workflow Merging Specs'
@@ -854,7 +854,7 @@ jobs:
     inputs:
       filesharePath: 'D:/artifacts/Azure Devops'
       artifactName: 'AcceptanceTesting $(Build.BuildId)'
-      downloadPath: '$(Agent.BuildDirectory)'
+      downloadPath: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Example Workflow Execution Specs.bat\""
     displayName: 'Run Example Workflow Execution Specs'
@@ -874,7 +874,7 @@ jobs:
     inputs:
       filesharePath: 'D:/artifacts/Azure Devops'
       artifactName: 'AcceptanceTesting $(Build.BuildId)'
-      downloadPath: '$(Agent.BuildDirectory)'
+      downloadPath: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Studio Test Framework Specs.bat\""
     displayName: 'Run Studio Test Framework Specs'
@@ -894,7 +894,7 @@ jobs:
     inputs:
       filesharePath: 'D:/artifacts/Azure Devops'
       artifactName: 'AcceptanceTesting $(Build.BuildId)'
-      downloadPath: '$(Agent.BuildDirectory)'
+      downloadPath: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Subworkflow Execution Specs.bat\""
     displayName: 'Run Subworkflow Execution Specs'
@@ -914,7 +914,7 @@ jobs:
     inputs:
       filesharePath: 'D:/artifacts/Azure Devops'
       artifactName: 'AcceptanceTesting $(Build.BuildId)'
-      downloadPath: '$(Agent.BuildDirectory)'
+      downloadPath: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Other Specs.bat\""
     displayName: 'Run Other Specs'
@@ -934,7 +934,7 @@ jobs:
     inputs:
       filesharePath: 'D:/artifacts/Azure Devops'
       artifactName: 'AcceptanceTesting $(Build.BuildId)'
-      downloadPath: '$(Agent.BuildDirectory)'
+      downloadPath: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Studio Test Framework With Deleted Resources Specs.bat\""
     displayName: 'Run Studio Test Framework With Deleted Resources Specs'
@@ -954,7 +954,7 @@ jobs:
     inputs:
       filesharePath: 'D:/artifacts/Azure Devops'
       artifactName: 'AcceptanceTesting $(Build.BuildId)'
-      downloadPath: '$(Agent.BuildDirectory)'
+      downloadPath: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/SQL Integration Tests.bat\""
     displayName: 'Run SQL Integration Tests'
@@ -974,7 +974,7 @@ jobs:
     inputs:
       filesharePath: 'D:/artifacts/Azure Devops'
       artifactName: 'AcceptanceTesting $(Build.BuildId)'
-      downloadPath: '$(Agent.BuildDirectory)'
+      downloadPath: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/For Each Workflow Execution Specs.bat\""
     displayName: 'Run For Each Workflow Execution Specs'
@@ -994,7 +994,7 @@ jobs:
     inputs:
       filesharePath: 'D:/artifacts/Azure Devops'
       artifactName: 'AcceptanceTesting $(Build.BuildId)'
-      downloadPath: '$(Agent.BuildDirectory)'
+      downloadPath: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Copy Tool Specs From Local.bat\""
     displayName: 'Run Copy Tool Specs From Local'
@@ -1014,7 +1014,7 @@ jobs:
     inputs:
       filesharePath: 'D:/artifacts/Azure Devops'
       artifactName: 'AcceptanceTesting $(Build.BuildId)'
-      downloadPath: '$(Agent.BuildDirectory)'
+      downloadPath: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Move Tool Specs From Local.bat\""
     displayName: 'Run Move Tool Specs From Local'
@@ -1034,7 +1034,7 @@ jobs:
     inputs:
       filesharePath: 'D:/artifacts/Azure Devops'
       artifactName: 'AcceptanceTesting $(Build.BuildId)'
-      downloadPath: '$(Agent.BuildDirectory)'
+      downloadPath: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Rename Tool Specs From Local.bat\""
     displayName: 'Run Rename Tool Specs From Local'
@@ -1054,7 +1054,7 @@ jobs:
     inputs:
       filesharePath: 'D:/artifacts/Azure Devops'
       artifactName: 'AcceptanceTesting $(Build.BuildId)'
-      downloadPath: '$(Agent.BuildDirectory)'
+      downloadPath: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Unzip Tool Specs From Local.bat\""
     displayName: 'Run Unzip Tool Specs From Local'
@@ -1074,7 +1074,7 @@ jobs:
     inputs:
       filesharePath: 'D:/artifacts/Azure Devops'
       artifactName: 'AcceptanceTesting $(Build.BuildId)'
-      downloadPath: '$(Agent.BuildDirectory)'
+      downloadPath: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Zip Tool Specs From Local.bat\""
     displayName: 'Run Zip Tool Specs From Local'
@@ -1094,7 +1094,7 @@ jobs:
     inputs:
       filesharePath: 'D:/artifacts/Azure Devops'
       artifactName: 'AcceptanceTesting $(Build.BuildId)'
-      downloadPath: '$(Agent.BuildDirectory)'
+      downloadPath: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Copy Tool Specs From FTP.bat\""
     displayName: 'Run Zip Tool Specs'
@@ -1114,7 +1114,7 @@ jobs:
     inputs:
       filesharePath: 'D:/artifacts/Azure Devops'
       artifactName: 'AcceptanceTesting $(Build.BuildId)'
-      downloadPath: '$(Agent.BuildDirectory)'
+      downloadPath: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Move Tool Specs From FTP.bat\""
     displayName: 'Run Move Tool Specs From FTP'
@@ -1134,7 +1134,7 @@ jobs:
     inputs:
       filesharePath: 'D:/artifacts/Azure Devops'
       artifactName: 'AcceptanceTesting $(Build.BuildId)'
-      downloadPath: '$(Agent.BuildDirectory)'
+      downloadPath: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Rename Tool Specs From FTP.bat\""
     displayName: 'Run Rename Tool Specs From FTP'
@@ -1154,7 +1154,7 @@ jobs:
     inputs:
       filesharePath: 'D:/artifacts/Azure Devops'
       artifactName: 'AcceptanceTesting $(Build.BuildId)'
-      downloadPath: '$(Agent.BuildDirectory)'
+      downloadPath: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Unzip Tool Specs From FTP.bat\""
     displayName: 'Run Unzip Tool Specs From FTP'
@@ -1174,7 +1174,7 @@ jobs:
     inputs:
       filesharePath: 'D:/artifacts/Azure Devops'
       artifactName: 'AcceptanceTesting $(Build.BuildId)'
-      downloadPath: '$(Agent.BuildDirectory)'
+      downloadPath: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Zip Tool Specs From FTP.bat\""
     displayName: 'Run Zip Tool Specs From FTP'
@@ -1194,7 +1194,7 @@ jobs:
     inputs:
       filesharePath: 'D:/artifacts/Azure Devops'
       artifactName: 'AcceptanceTesting $(Build.BuildId)'
-      downloadPath: '$(Agent.BuildDirectory)'
+      downloadPath: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Copy Tool Specs From FTPS.bat\""
     displayName: 'Run Copy Tool Specs From FTPS'
@@ -1214,7 +1214,7 @@ jobs:
     inputs:
       filesharePath: 'D:/artifacts/Azure Devops'
       artifactName: 'AcceptanceTesting $(Build.BuildId)'
-      downloadPath: '$(Agent.BuildDirectory)'
+      downloadPath: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Move Tool Specs From FTPS.bat\""
     displayName: 'Run Move Tool Specs From FTPS'
@@ -1234,7 +1234,7 @@ jobs:
     inputs:
       filesharePath: 'D:/artifacts/Azure Devops'
       artifactName: 'AcceptanceTesting $(Build.BuildId)'
-      downloadPath: '$(Agent.BuildDirectory)'
+      downloadPath: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Rename Tool Specs From FTPS.bat\""
     displayName: 'Run Rename Tool Specs From FTPS'
@@ -1254,7 +1254,7 @@ jobs:
     inputs:
       filesharePath: 'D:/artifacts/Azure Devops'
       artifactName: 'AcceptanceTesting $(Build.BuildId)'
-      downloadPath: '$(Agent.BuildDirectory)'
+      downloadPath: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Unzip Tool Specs From FTPS.bat\""
     displayName: 'Run Unzip Tool Specs From FTPS'
@@ -1274,7 +1274,7 @@ jobs:
     inputs:
       filesharePath: 'D:/artifacts/Azure Devops'
       artifactName: 'AcceptanceTesting $(Build.BuildId)'
-      downloadPath: '$(Agent.BuildDirectory)'
+      downloadPath: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Zip Tool Specs From FTPS.bat\""
     displayName: 'Run Zip Tool Specs From FTPS'
@@ -1294,7 +1294,7 @@ jobs:
     inputs:
       filesharePath: 'D:/artifacts/Azure Devops'
       artifactName: 'AcceptanceTesting $(Build.BuildId)'
-      downloadPath: '$(Agent.BuildDirectory)'
+      downloadPath: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Copy Tool Specs From SFTP.bat\""
     displayName: 'Run Copy Tool Specs From SFTP'
@@ -1314,7 +1314,7 @@ jobs:
     inputs:
       filesharePath: 'D:/artifacts/Azure Devops'
       artifactName: 'AcceptanceTesting $(Build.BuildId)'
-      downloadPath: '$(Agent.BuildDirectory)'
+      downloadPath: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Move Tool Specs From SFTP.bat\""
     displayName: 'Run Move Tool Specs From SFTP'
@@ -1334,7 +1334,7 @@ jobs:
     inputs:
       filesharePath: 'D:/artifacts/Azure Devops'
       artifactName: 'AcceptanceTesting $(Build.BuildId)'
-      downloadPath: '$(Agent.BuildDirectory)'
+      downloadPath: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Rename Tool Specs From SFTP.bat\""
     displayName: 'Run Rename Tool Specs From SFTP'
@@ -1354,7 +1354,7 @@ jobs:
     inputs:
       filesharePath: 'D:/artifacts/Azure Devops'
       artifactName: 'AcceptanceTesting $(Build.BuildId)'
-      downloadPath: '$(Agent.BuildDirectory)'
+      downloadPath: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Unzip Tool Specs From SFTP.bat\""
     displayName: 'Run Unzip Tool Specs From SFTP'
@@ -1374,7 +1374,7 @@ jobs:
     inputs:
       filesharePath: 'D:/artifacts/Azure Devops'
       artifactName: 'AcceptanceTesting $(Build.BuildId)'
-      downloadPath: '$(Agent.BuildDirectory)'
+      downloadPath: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Zip Tool Specs From SFTP.bat\""
     displayName: 'Run Zip Tool Specs From SFTP'
@@ -1394,7 +1394,7 @@ jobs:
     inputs:
       filesharePath: 'D:/artifacts/Azure Devops'
       artifactName: 'AcceptanceTesting $(Build.BuildId)'
-      downloadPath: '$(Agent.BuildDirectory)'
+      downloadPath: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Copy Tool Specs From UNC.bat\""
     displayName: 'Run Copy Tool Specs From UNC'
@@ -1414,7 +1414,7 @@ jobs:
     inputs:
       filesharePath: 'D:/artifacts/Azure Devops'
       artifactName: 'AcceptanceTesting $(Build.BuildId)'
-      downloadPath: '$(Agent.BuildDirectory)'
+      downloadPath: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Move Tool Specs From UNC.bat\""
     displayName: 'Run Move Tool Specs From UNC'
@@ -1434,7 +1434,7 @@ jobs:
     inputs:
       filesharePath: 'D:/artifacts/Azure Devops'
       artifactName: 'AcceptanceTesting $(Build.BuildId)'
-      downloadPath: '$(Agent.BuildDirectory)'
+      downloadPath: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Studio Core Unit Tests.bat\""
     displayName: 'Run Studio Core Unit Tests'
@@ -1454,7 +1454,7 @@ jobs:
     inputs:
       filesharePath: 'D:/artifacts/Azure Devops'
       artifactName: 'AcceptanceTesting $(Build.BuildId)'
-      downloadPath: '$(Agent.BuildDirectory)'
+      downloadPath: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Elasticsearch View Models Unit Tests.bat\""
     displayName: 'Run Elasticsearch View Models Unit Tests'
@@ -1474,7 +1474,7 @@ jobs:
     inputs:
       filesharePath: 'D:/artifacts/Azure Devops'
       artifactName: 'AcceptanceTesting $(Build.BuildId)'
-      downloadPath: '$(Agent.BuildDirectory)'
+      downloadPath: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Search Specs.bat\""
     displayName: 'Run Search Specs'
@@ -1494,7 +1494,7 @@ jobs:
     inputs:
       filesharePath: 'D:/artifacts/Azure Devops'
       artifactName: 'AcceptanceTesting $(Build.BuildId)'
-      downloadPath: '$(Agent.BuildDirectory)'
+      downloadPath: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Logger Unit Tests.bat\""
     displayName: 'Run Logger Unit Tests'
@@ -1514,7 +1514,7 @@ jobs:
     inputs:
       filesharePath: 'D:/artifacts/Azure Devops'
       artifactName: 'AcceptanceTesting $(Build.BuildId)'
-      downloadPath: '$(Agent.BuildDirectory)'
+      downloadPath: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Rename Tool Specs From UNC.bat\""
     displayName: 'Run Rename Tool Specs From UNC'
@@ -1534,7 +1534,7 @@ jobs:
     inputs:
       filesharePath: 'D:/artifacts/Azure Devops'
       artifactName: 'AcceptanceTesting $(Build.BuildId)'
-      downloadPath: '$(Agent.BuildDirectory)'
+      downloadPath: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Not Parallelizable Unit Tests.bat\""
     displayName: 'Run Not Parallelizable Unit Tests'
@@ -1554,7 +1554,7 @@ jobs:
     inputs:
       filesharePath: 'D:/artifacts/Azure Devops'
       artifactName: 'AcceptanceTesting $(Build.BuildId)'
-      downloadPath: '$(Agent.BuildDirectory)'
+      downloadPath: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Database Workflow Execution Specs.bat\""
     displayName: 'Run Database Workflow Execution Specs'
@@ -1574,7 +1574,7 @@ jobs:
     inputs:
       filesharePath: 'D:/artifacts/Azure Devops'
       artifactName: 'AcceptanceTesting $(Build.BuildId)'
-      downloadPath: '$(Agent.BuildDirectory)'
+      downloadPath: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/RabbitMQ Workflow Execution Specs.bat\""
     displayName: 'Run RabbitMQ Workflow Execution Specs'
@@ -1594,7 +1594,7 @@ jobs:
     inputs:
       filesharePath: 'D:/artifacts/Azure Devops'
       artifactName: 'AcceptanceTesting $(Build.BuildId)'
-      downloadPath: '$(Agent.BuildDirectory)'
+      downloadPath: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Studio Test Framework With HTTP Web Get Tools Specs.bat\""
     displayName: 'Run Studio Test Framework With HTTP Web Get Tools Specs'
@@ -1614,7 +1614,7 @@ jobs:
     inputs:
       filesharePath: 'D:/artifacts/Azure Devops'
       artifactName: 'AcceptanceTesting $(Build.BuildId)'
-      downloadPath: '$(Agent.BuildDirectory)'
+      downloadPath: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Studio Test Framework With HTTP Web Delete Tools Specs.bat\""
     displayName: 'Run Studio Test Framework With HTTP Web Delete Tools Specs'
@@ -1634,7 +1634,7 @@ jobs:
     inputs:
       filesharePath: 'D:/artifacts/Azure Devops'
       artifactName: 'AcceptanceTesting $(Build.BuildId)'
-      downloadPath: '$(Agent.BuildDirectory)'
+      downloadPath: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Studio Test Framework With HTTP Web Post Tools Specs.bat\""
     displayName: 'Run Studio Test Framework With HTTP Web Post Tools Specs'
@@ -1654,7 +1654,7 @@ jobs:
     inputs:
       filesharePath: 'D:/artifacts/Azure Devops'
       artifactName: 'AcceptanceTesting $(Build.BuildId)'
-      downloadPath: '$(Agent.BuildDirectory)'
+      downloadPath: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Studio Test Framework With HTTP Web Put Tools Specs.bat\""
     displayName: 'Run Studio Test Framework With HTTP Web Put Tools Specs'
@@ -1674,7 +1674,7 @@ jobs:
     inputs:
       filesharePath: 'D:/artifacts/Azure Devops'
       artifactName: 'AcceptanceTesting $(Build.BuildId)'
-      downloadPath: '$(Agent.BuildDirectory)'
+      downloadPath: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Studio Test Framework With RabbitMQ Tools Specs.bat\""
     displayName: 'Run Studio Test Framework With RabbitMQ Tools Specs'
@@ -1694,7 +1694,7 @@ jobs:
     inputs:
       filesharePath: 'D:/artifacts/Azure Devops'
       artifactName: 'AcceptanceTesting $(Build.BuildId)'
-      downloadPath: '$(Agent.BuildDirectory)'
+      downloadPath: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Database Subworkflow Execution Specs.bat\""
     displayName: 'Run Database Subworkflow Execution Specs'
