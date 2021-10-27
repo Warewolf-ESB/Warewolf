@@ -1591,9 +1591,10 @@ namespace Warewolf.Studio.ViewModels
                 }
 
                 //PBI: this check ServiceTestStepWithOutputs statement might not be right and time consuming
-                if (outputs != null && outputs.Count > 0 && ServiceTestStepWithOutputs(activityUniqueId, activityDisplayName, outputs, type, item, out IServiceTestStep serviceTestStep) && ServiceTestStepWithOutputs(activityUniqueId, activityDisplayName, outputs, type, item, out IServiceTestStep testStep))
+                var exists = FindExistingStep(activityUniqueId);
+                if (outputs != null && outputs.Count > 0 && exists != null)
                 {
-                    return testStep;
+                    return ServiceTestStepWithOutputs(activityUniqueId, activityDisplayName, outputs, type, item);
                 }
                 //PBI: this check ServiceTestStepWithOutputs statement might not be right and time consuming
                 if (!string.IsNullOrWhiteSpace(item.GetUniqueID().ToString()))
@@ -1648,22 +1649,13 @@ namespace Warewolf.Studio.ViewModels
             return exists;
         }
 
-        bool ServiceTestStepWithOutputs(string uniqueId, string displayName, List<string> outputs, Type type, ModelItem item, out IServiceTestStep serviceTestStep)
+        IServiceTestStep ServiceTestStepWithOutputs(string uniqueId, string displayName, List<string> outputs, Type type, ModelItem item)
         {
-            var exists = FindExistingStep(uniqueId);
-            if (exists == null)
-            {
                 var step = CreateServiceTestStep(Guid.Parse(uniqueId), displayName, type, new List<IServiceTestOutput>());
                 var serviceTestOutputs = AddOutputsIfHasVariable(outputs, step);
                 step.StepOutputs = serviceTestOutputs.ToObservableCollection();
                 SetParentChild(item, step);
-                {
-                    serviceTestStep = step;
-                    return true;
-                }
-            }
-            serviceTestStep = null;
-            return false;
+                return step;
         }
 
         static List<IServiceTestOutput> AddOutputsIfHasVariable(List<string> outputs, IServiceTestStep step)
