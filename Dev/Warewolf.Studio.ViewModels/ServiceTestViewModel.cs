@@ -1596,9 +1596,9 @@ namespace Warewolf.Studio.ViewModels
                     return testStep;
                 }
                 //PBI: this check ServiceTestStepWithOutputs statement might not be right and time consuming
-                if (ServiceTestStepGetParentType(item, out var serviceTestStep1))
+                if (!string.IsNullOrWhiteSpace(item.GetUniqueID().ToString()))
                 {
-                    return serviceTestStep1;
+                    return ServiceTestStepGetParentType(item);
                 }
                 return BuildParentsFromModelItem(item);
             }
@@ -1705,29 +1705,21 @@ namespace Warewolf.Studio.ViewModels
             return exists;
         }
 
-        bool ServiceTestStepGetParentType(ModelItem item, out IServiceTestStep serviceTestStep)
+        IServiceTestStep ServiceTestStepGetParentType(ModelItem item)
         {
             var activityType = item.ItemType;
             var uniqueId = item.GetUniqueID();
             string displayName = item.GetDisplayName();
 
-            if (!string.IsNullOrWhiteSpace(uniqueId.ToString()))
+            var existingStep = FindExistingStep(uniqueId.ToString());
+            if (existingStep == null)
             {
-                var existingStep = FindExistingStep(uniqueId.ToString());
-                if (existingStep == null)
-                {
-                    var step = CreateServiceTestStep(uniqueId, displayName, activityType, new List<IServiceTestOutput>());
-                    SetParentChild(item, step);
-                    {
-                        serviceTestStep = step;
-                        return true;
-                    }
-                }
-                serviceTestStep = existingStep;
-                return true;
+                var step = CreateServiceTestStep(uniqueId, displayName, activityType, new List<IServiceTestOutput>());
+                SetParentChild(item, step);
+                return step;
             }
-            serviceTestStep = null;
-            return false;
+            return existingStep;
+
         }
 
         IServiceTestStep CreateServiceTestStep(Guid uniqueId, string displayName, Type type, List<IServiceTestOutput> serviceTestOutputs)
