@@ -1707,58 +1707,23 @@ namespace Warewolf.Studio.ViewModels
 
         bool ServiceTestStepGetParentType(ModelItem item, out IServiceTestStep serviceTestStep)
         {
-            Type activityType = null;
-            var uniqueId = string.Empty;
-            var displayName = string.Empty;
-            if (item.ItemType == typeof(DsfSequenceActivity))
+            var activityType = item.ItemType;
+            var uniqueId = item.GetUniqueID();
+            string displayName = item.GetDisplayName();
+
+            if (!string.IsNullOrWhiteSpace(uniqueId.ToString()))
             {
-                if (item.GetCurrentValue() is DsfSequenceActivity act)
+                var existingStep = FindExistingStep(uniqueId.ToString());
+                if (existingStep == null)
                 {
-                    uniqueId = act.UniqueID;
-                    activityType = typeof(DsfSequenceActivity);
-                    displayName = act.DisplayName;
-                }
-            }
-            else if (item.ItemType == typeof(DsfForEachActivity))
-            {
-                if (item.GetCurrentValue() is DsfForEachActivity act)
-                {
-                    uniqueId = act.UniqueID;
-                    activityType = typeof(DsfForEachActivity);
-                    displayName = act.DisplayName;
-                }
-            }
-            else if (item.ItemType == typeof(SuspendExecutionActivity))
-            {
-                if (item.GetCurrentValue() is SuspendExecutionActivity act)
-                {
-                    uniqueId = act.UniqueID;
-                    activityType = typeof(SuspendExecutionActivity);
-                    displayName = act.DisplayName;
-                }
-            }
-            else
-            {
-                if (item.ItemType == typeof(DsfSelectAndApplyActivity) && item.GetCurrentValue() is DsfSelectAndApplyActivity act)
-                {
-                    uniqueId = act.UniqueID;
-                    activityType = typeof(DsfSelectAndApplyActivity);
-                    displayName = act.DisplayName;
-                }
-            }
-            if (!string.IsNullOrWhiteSpace(uniqueId))
-            {
-                var exists = FindExistingStep(uniqueId);
-                if (exists == null)
-                {
-                    var step = CreateServiceTestStep(Guid.Parse(uniqueId), displayName, activityType, new List<IServiceTestOutput>());
+                    var step = CreateServiceTestStep(uniqueId, displayName, activityType, new List<IServiceTestOutput>());
                     SetParentChild(item, step);
                     {
                         serviceTestStep = step;
                         return true;
                     }
                 }
-                serviceTestStep = SelectedServiceTest.TestSteps.Flatten(step => step.Children).FirstOrDefault(a => a.ActivityID.ToString() == uniqueId);
+                serviceTestStep = existingStep;
                 return true;
             }
             serviceTestStep = null;
