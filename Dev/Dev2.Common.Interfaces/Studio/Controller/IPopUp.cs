@@ -65,6 +65,7 @@ namespace Dev2.Common.Interfaces.Studio.Controller
         MessageBoxResult ShowDeployServerMinVersionConflict(string sourceServerVersion, string destinationServerVersion);
 
         MessageBoxResult ShowServerNotConnected(string server);
+        MessageBoxResult ShowGetSubscriptionDataFailed();
 
         IPopupMessage GetDeleteConfirmation(string nameOfItemBeingDeleted);
         IPopupMessage GetDuplicateMessage(string name);

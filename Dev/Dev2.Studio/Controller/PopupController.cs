@@ -222,6 +222,20 @@ namespace Dev2.Studio.Controller
             ApplyToAll = false;
             return Show();
         }
+        
+        public MessageBoxResult ShowGetSubscriptionDataFailed()
+        {
+            var description = "Unable to get subscription data.\n\nPlease make sure the Warewolf Server service is running.";
+            AssignCommonValues("Get Subscription Data Failed", description, MessageBoxButton.OK);
+            ImageType = MessageBoxImage.Error;
+            IsDependenciesButtonVisible = false;
+            IsInfo = false;
+            IsError = true;
+            IsQuestion = false;
+            IsDeleteAnywayButtonVisible = false;
+            ApplyToAll = false;
+            return Show();
+        }
 
         public MessageBoxResult ShowServerNotConnected(string server)
         {

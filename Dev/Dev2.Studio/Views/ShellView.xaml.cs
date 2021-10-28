@@ -375,6 +375,12 @@ namespace Dev2.Studio.Views
             }
             Toolbox.Activate();
             Toolboxcontrol.Focus();
+            
+            if(DataContext is ShellViewModel model)
+            {
+                if(!model.SubscriptionData.Connected)
+                    model.PopupProvider.ShowGetSubscriptionDataFailed();
+            }
         }
 
         static void SetMenuExpanded(XmlDocument xmlDocument, ShellViewModel shellViewModel)
