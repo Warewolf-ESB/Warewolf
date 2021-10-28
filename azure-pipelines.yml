@@ -21,14 +21,17 @@ jobs:
   - script: "(robocopy \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" \"D:\\artifacts\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Upload Artifacts'
 
-  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Bare Metal/Other Unit Tests.bat\""
-    displayName: 'Run Other Unit Tests'
+  - script: "cd /d \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" && powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"\"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\TestRun.ps1\" -RetryCount 6 -Projects Dev2.*.Tests,Warewolf.*.Tests,Warewolf.UIBindingTests.* -ExcludeProjects Dev2.Integration.Tests,Dev2.Studio.Core.Tests,Dev2.RunTime.Tests,Dev2.Infrastructure.Tests,Warewolf.UI.Tests,Warewolf.Logger.Tests,Warewolf.Studio.ViewModels.Tests,Warewolf.Web.UI.Tests,Warewolf.Storage.Tests,Warewolf.Auditing.Tests -ExcludeCategories CannotParallelize"
+    displayName: 'Run Zip Tool Specs'
 
   - task: PublishTestResults@2
     inputs:
       testRunner: VSTest
       testResultsFiles: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx'
       failTaskOnFailedTests: true
+
+  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Zip Tool Specs.bat\""
+    displayName: 'Run Zip Tool Specs'
 
 - job: Zip_Tool_Specs
   displayName: 'Run Zip Tool Specs'
