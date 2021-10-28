@@ -18,6 +18,9 @@ jobs:
   - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)/s/Compile.ps1\" -AcceptanceTesting"
     displayName: 'Compile AcceptanceTesting.sln'
 
+  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Bare Metal/Other Unit Tests.bat\""
+    displayName: 'Run Other Unit Tests'
+
   - script: "(robocopy \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" \"D:\\artifacts\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Upload Artifacts'
 
