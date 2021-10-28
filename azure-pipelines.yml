@@ -30,9 +30,6 @@ jobs:
       testResultsFiles: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx'
       failTaskOnFailedTests: true
 
-  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Zip Tool Specs.bat\""
-    displayName: 'Run Zip Tool Specs'
-
 - job: Zip_Tool_Specs
   displayName: 'Run Zip Tool Specs'
   dependsOn: build
