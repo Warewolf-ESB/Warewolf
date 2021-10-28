@@ -1033,7 +1033,7 @@ namespace Warewolf.Studio.ViewModels
                 return;
             }
             var uniqueId = forEachActivity.UniqueID;
-            var exists = serviceTestSteps.FirstOrDefault(a => a.ActivityID.ToString() == uniqueId);
+            var exists = FindExistingStep(uniqueId);
 
             var type = typeof(DsfForEachActivity);
             var testStep = CreateMockChildStep(Guid.Parse(uniqueId), parent, type.Name, forEachActivity.DisplayName);
@@ -1096,7 +1096,7 @@ namespace Warewolf.Studio.ViewModels
                 return;
             }
             var uniqueId = selectApplyActivity.UniqueID;
-            var exists = serviceTestSteps.FirstOrDefault(a => a.ActivityID.ToString() == uniqueId);
+            var exists = FindExistingStep(uniqueId);
 
             var type = typeof(DsfSelectAndApplyActivity);
             var testStep = CreateMockChildStep(Guid.Parse(uniqueId), parent, type.Name, selectApplyActivity.DisplayName);
@@ -1150,15 +1150,15 @@ namespace Warewolf.Studio.ViewModels
                 return;
             }
             var uniqueId = sequence.UniqueID;
-            var exists = serviceTestSteps.FirstOrDefault(a => a.ActivityID.ToString() == uniqueId);
 
-            var type = typeof(DsfSequenceActivity);
-            var testStep = CreateMockChildStep(Guid.Parse(uniqueId), parent, type.Name, sequence.DisplayName);
-            SetStepIcon(type, testStep);
+            var parentType = sequence.GetType();
+            var testStep = ServiceTestStepWithOutputs(uniqueId, sequence.DisplayName, new List<string>(), parentType, ModelItemUtils.CreateModelItem(sequence));
+            SetStepIcon(parentType, testStep);
             foreach (var activity in sequence.Activities)
             {
                 AddSequenceActivity(testStep, activity);
             }
+            var exists = FindExistingStep(uniqueId);
             if (exists == null)
             {
                 serviceTestSteps.Add(testStep);
@@ -1209,8 +1209,7 @@ namespace Warewolf.Studio.ViewModels
                 return;
             }
             var uniqueId = suspendExecutionActivity.UniqueID;
-            var exists = serviceTestSteps.FirstOrDefault(a => a.ActivityID.ToString() == uniqueId);
-
+            var exists = FindExistingStep(uniqueId);
             var type = typeof(SuspendExecutionActivity);
             var testStep = CreateMockChildStep(Guid.Parse(uniqueId), parent, type.Name, suspendExecutionActivity.DisplayName);
             SetStepIcon(type, testStep);
@@ -1260,7 +1259,7 @@ namespace Warewolf.Studio.ViewModels
                 return;
             }
             var uniqueId = dotNetDllActivity.UniqueID;
-            var exists = serviceTestSteps.FirstOrDefault(a => a.ActivityID.ToString() == uniqueId);
+            var exists = FindExistingStep(uniqueId);
 
             var type = typeof(DsfEnhancedDotNetDllActivity);
             var testStep = CreateMockChildStep(Guid.Parse(uniqueId), parent, type.Name, dotNetDllActivity.DisplayName);
@@ -1590,13 +1589,11 @@ namespace Warewolf.Studio.ViewModels
                     }
                 }
 
-                //PBI: this check ServiceTestStepWithOutputs statement might not be right and time consuming
                 var exists = FindExistingStep(activityUniqueId);
                 if (outputs != null && outputs.Count > 0 && exists != null)
                 {
                     return ServiceTestStepWithOutputs(activityUniqueId, activityDisplayName, outputs, type, item);
                 }
-                //PBI: this check ServiceTestStepWithOutputs statement might not be right and time consuming
                 if (!string.IsNullOrWhiteSpace(item.GetUniqueID().ToString()))
                 {
                     return ServiceTestStepGetParentType(item);
@@ -1651,11 +1648,11 @@ namespace Warewolf.Studio.ViewModels
 
         IServiceTestStep ServiceTestStepWithOutputs(string uniqueId, string displayName, List<string> outputs, Type type, ModelItem item)
         {
-                var step = CreateServiceTestStep(Guid.Parse(uniqueId), displayName, type, new List<IServiceTestOutput>());
-                var serviceTestOutputs = AddOutputsIfHasVariable(outputs, step);
-                step.StepOutputs = serviceTestOutputs.ToObservableCollection();
-                SetParentChild(item, step);
-                return step;
+            var step = CreateServiceTestStep(Guid.Parse(uniqueId), displayName, type, new List<IServiceTestOutput>());
+            var serviceTestOutputs = AddOutputsIfHasVariable(outputs, step);
+            step.StepOutputs = serviceTestOutputs.ToObservableCollection();
+            SetParentChild(item, step);
+            return step;
         }
 
         static List<IServiceTestOutput> AddOutputsIfHasVariable(List<string> outputs, IServiceTestStep step)
