@@ -196,7 +196,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var proxyLayer = new Mock<IExplorerRepository>();
 
             var adminManager = new Mock<IAdminManager>();
-            adminManager.Setup(manager => manager.GetSubscriptionData()).Returns(valueFunction);
+            adminManager.Setup(manager => manager.GetSubscriptionData().Result).Returns(valueFunction);
             proxyLayer.SetupGet(repository => repository.AdminManagerProxy).Returns(adminManager.Object);
             var server = new Server(Guid.Empty, _envConnection.Object);
             server.ProxyLayer = proxyLayer.Object;

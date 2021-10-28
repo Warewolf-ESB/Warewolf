@@ -8,6 +8,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Warewolf.Licensing;
 
 namespace Dev2.Common.Interfaces
@@ -28,6 +29,6 @@ namespace Dev2.Common.Interfaces
         Dictionary<string,string> GetServerInformation();
 
         string GetMinSupportedServerVersion();
-        ISubscriptionData GetSubscriptionData();
+        Task<ISubscriptionData> GetSubscriptionData();
     }
 }

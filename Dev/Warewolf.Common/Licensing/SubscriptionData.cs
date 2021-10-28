@@ -33,5 +33,6 @@ namespace Warewolf.Licensing
         public string SubscriptionKey { get; set; }
         public int NoOfCores { get; set; }
         public bool StopExecutions { get; set; }
+        public bool Connected  { get; set; } = true;
     }
 }

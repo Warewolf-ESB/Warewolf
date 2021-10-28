@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Dev2.Common.Interfaces;
 using Dev2.Communication;
 using Dev2.Controller;
@@ -51,11 +52,11 @@ namespace Dev2.Studio.Core
             return information;
         }
 
-        public ISubscriptionData GetSubscriptionData()
+        public async Task<ISubscriptionData> GetSubscriptionData()
         {
             var serializer = new Dev2JsonSerializer();
             var controller = CommunicationControllerFactory.CreateController(nameof(GetSubscriptionData));
-            var resultData = controller.ExecuteCommand<ExecuteMessage>(Connection, Guid.Empty);
+            var resultData = await controller.ExecuteCommandAsync<ExecuteMessage>(Connection, Guid.Empty);
             return serializer.Deserialize<ISubscriptionData>(resultData.Message);
         }
     }

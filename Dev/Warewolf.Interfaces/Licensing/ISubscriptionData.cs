@@ -31,5 +31,6 @@ namespace Warewolf.Licensing
         bool EndOfTerm { get; set; }
         int NoOfCores {get;set;}
         bool  StopExecutions {get;set;}
+        bool Connected  { get; set; }
     }
 }

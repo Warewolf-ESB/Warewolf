@@ -26,6 +26,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Network;
 using System.Threading.Tasks;
+using System.Windows.Controls.Primitives;
 using Dev2.Runtime.Subscription;
 using Warewolf.Data;
 using Warewolf.Licensing;
@@ -376,13 +377,17 @@ namespace Dev2.Studio.Core.Models
                     Connection.Connect(Guid.Empty);
                 }
 
-                _subscriptionData = ProxyLayer.AdminManagerProxy.GetSubscriptionData();
+                Task.Run(async() => 
+                {
+                    _subscriptionData = await ProxyLayer.AdminManagerProxy.GetSubscriptionData();
+                }).Wait();
 
                 return _subscriptionData;
             }
             catch
             {
-                return _subscriptionData = new SubscriptionData();
+                _subscriptionData = new SubscriptionData { Connected = false };
+                return _subscriptionData;
             }
         }
 

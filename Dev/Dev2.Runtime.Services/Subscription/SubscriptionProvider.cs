@@ -130,7 +130,8 @@ namespace Dev2.Runtime.Subscription
                 PlanId = PlanId,
                 Status = Status,
                 IsLicensed = IsLicensed,
-                StopExecutions =  StopExecutions
+                StopExecutions =  StopExecutions,
+                Connected = true
             };
         }
     }
