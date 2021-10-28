@@ -886,6 +886,33 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             }
         }
 
+
+        public void DeleteResourceTestCoverage(Guid resourceId)
+        {
+            if (GetCommunicationController != null)
+            {
+                var comsController = GetCommunicationController?.Invoke("DeleteTestCoverage");
+                comsController.AddPayloadArgument("resourceID", resourceId.ToString());               
+               
+                if (resourceId == Guid.Empty)
+                {
+                    throw new ArgumentNullException(nameof(resourceId));
+                }
+                var executeCommand = comsController.ExecuteCommand<CompressedExecuteMessage>(_server.Connection, GlobalConstants.ServerWorkspaceID);
+                var serializer = new Dev2JsonSerializer();
+                if (executeCommand.HasError)
+                {
+                    var message = executeCommand.GetDecompressedMessage();
+                    var msg = serializer.Deserialize<StringBuilder>(message);
+                    throw new Exception(msg.ToString());
+                }
+            }
+            else
+            {
+                throw new NullReferenceException("Cannot delete resource test coverage. Cannot get Communication Controller.");
+            }
+        }
+
         public List<ITriggerQueue> LoadResourceTriggersForDeploy(Guid resourceId)
         {
             if (GetCommunicationController != null)

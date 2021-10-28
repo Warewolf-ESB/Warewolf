@@ -2640,6 +2640,7 @@ namespace Warewolf.Studio.ViewModels
                     if (!test.IsNewTest)
                     {
                         ResourceModel.Environment.ResourceRepository.DeleteResourceTest(ResourceModel.ID, test.TestName);
+                        ResourceModel.Environment.ResourceRepository.DeleteResourceTestCoverage(ResourceModel.ID);
                     }
                     _tests.Remove(test);
                     OnPropertyChanged(() => Tests);
