@@ -1219,7 +1219,7 @@ jobs:
   - script: "(robocopy \"D:\\artifacts\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
-  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Studio Core Unit Tests.bat\""
+  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Bare Metal/Studio Core Unit Tests.bat\""
     displayName: 'Run Studio Core Unit Tests'
 
   - task: PublishTestResults@2
