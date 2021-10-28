@@ -23,7 +23,7 @@ jobs:
 
   - task: PowerShell@2
     inputs:
-      filePath: '\"$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\TestRun.ps1\"'
+      filePath: '$(Agent.BuildDirectory)\\s\\Dev\\.run\\Job Shortcuts\\TestRun.ps1'
       arguments: '-RetryCount 6 -Projects Dev2.*.Tests,Warewolf.*.Tests,Warewolf.UIBindingTests.* -ExcludeProjects Dev2.Integration.Tests,Dev2.Studio.Core.Tests,Dev2.RunTime.Tests,Dev2.Infrastructure.Tests,Warewolf.UI.Tests,Warewolf.Logger.Tests,Warewolf.Studio.ViewModels.Tests,Warewolf.Web.UI.Tests,Warewolf.Storage.Tests,Warewolf.Auditing.Tests -ExcludeCategories CannotParallelize'
       workingDirectory: '\"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\"'
 
