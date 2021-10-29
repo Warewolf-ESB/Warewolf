@@ -21,6 +21,34 @@ if (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]:
 	Write-Error "This script expects to be run as Administrator. (Right click run as administrator)"
 	exit 1
 }
+if ($ExcludeProjects.Length -eq 1 -and $ExcludeProjects[0].Contains(",")) {
+    $SplitExcludeProjects = $ExcludeProjects[0]
+    $ExcludeProjects = New-Object string[] $SplitExcludeProjects.Split(",").Count
+    for ($j=0; $j -le $SplitExcludeProjects.Split(",").Count-1; $j++) {
+        $ExcludeProjects[$j] = $SplitExcludeProjects.Split(",")[$j]
+    }
+}
+if ($Projects.Length -eq 1 -and $Projects[0].Contains(",")) {
+    $SplitProjects = $Projects[0]
+    $Projects = New-Object string[] $SplitProjects.Split(",").Count
+    for ($j=0; $j -le $SplitProjects.Split(",").Count-1; $j++) {
+        $Projects[$j] = $SplitProjects.Split(",")[$j]
+    }
+}
+if ($ExcludeCategories.Length -eq 1 -and $ExcludeCategories[0].Contains(",")) {
+    $SplitExcludeCategories = $ExcludeCategories[0]
+    $ExcludeCategories = New-Object string[] $SplitExcludeCategories.Split(",").Count
+    for ($j=0; $j -le $SplitExcludeCategories.Split(",").Count-1; $j++) {
+        $ExcludeCategories[$j] = $SplitExcludeCategories.Split(",")[$j]
+    }
+}
+if ($Categories.Length -eq 1 -and $Categories[0].Contains(",")) {
+    $SplitCategories = $Categories[0]
+    $Categories = New-Object string[] $SplitCategories.Split(",").Count
+    for ($j=0; $j -le $SplitCategories.Split(",").Count-1; $j++) {
+        $Categories[$j] = $SplitCategories.Split(",")[$j]
+    }
+}
 if ($PreTestRunScript -and $Coverage.IsPresent -and !($PreTestRunScript.Contains("-Coverage"))) {
 	$PreTestRunScript += " -Coverage"
 }
@@ -101,13 +129,7 @@ for ($LoopCounter=0; $LoopCounter -le $RetryCount; $LoopCounter++) {
 	}
 	$AllAssemblies = @()
 	foreach ($project in $Projects) {
-		if ($project.Contains(",")) {
-			foreach ($splitProject in $project.Split(",")) {
-				$AllAssemblies += @(Get-ChildItem ".\$splitProject.dll" -Recurse)
-			}
-		} else {
-			$AllAssemblies += @(Get-ChildItem ".\$project.dll" -Recurse)
-		}
+		$AllAssemblies += @(Get-ChildItem ".\$project.dll" -Recurse)
 	}
 	if ($AllAssemblies.Count -le 0) {
 		$ShowError = "Could not find any assemblies in the current environment directory matching the project definition of: " + ($Projects -join ",")
