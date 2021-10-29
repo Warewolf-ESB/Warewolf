@@ -101,7 +101,13 @@ for ($LoopCounter=0; $LoopCounter -le $RetryCount; $LoopCounter++) {
 	}
 	$AllAssemblies = @()
 	foreach ($project in $Projects) {
-		$AllAssemblies += @(Get-ChildItem ".\$project.dll" -Recurse)
+		if ($project.Contains(",")) {
+			foreach ($splitProject in $project.Split(",")) {
+				$AllAssemblies += @(Get-ChildItem ".\$splitProject.dll" -Recurse)
+			}
+		} else {
+			$AllAssemblies += @(Get-ChildItem ".\$project.dll" -Recurse)
+		}
 	}
 	if ($AllAssemblies.Count -le 0) {
 		$ShowError = "Could not find any assemblies in the current environment directory matching the project definition of: " + ($Projects -join ",")
