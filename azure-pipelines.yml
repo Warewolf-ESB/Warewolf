@@ -21,11 +21,8 @@ jobs:
   - script: "(robocopy \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" \"D:\\artifacts\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Upload Artifacts'
 
-  - task: PowerShell@2
-    inputs:
-      filePath: '$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/TestRun.ps1'
-      arguments: '-RetryCount 6 -Projects Dev2.*.Tests,Warewolf.*.Tests,Warewolf.UIBindingTests.* -ExcludeProjects Dev2.Integration.Tests,Dev2.Studio.Core.Tests,Dev2.RunTime.Tests,Dev2.Infrastructure.Tests,Warewolf.UI.Tests,Warewolf.Logger.Tests,Warewolf.Studio.ViewModels.Tests,Warewolf.Web.UI.Tests,Warewolf.Storage.Tests,Warewolf.Auditing.Tests -ExcludeCategories CannotParallelize,ResourceCatalog_LoadTests'
-      workingDirectory: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting'
+  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Bare Metal/Other Unit Tests.bat\""
+    displayName: 'Run Unit Tests'
 
   - task: PublishTestResults@2
     inputs:
