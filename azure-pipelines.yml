@@ -1562,8 +1562,9 @@ jobs:
       testRunTitle: 'Intellisense Textbox Visual Tree Unit Tests'
 
 - job: Workflow_Execution_Logging_Specs
-  displayName: 'Database Subworkflow Execution Specs'
+  displayName: 'Workflow Execution Logging Specs'
   dependsOn: build
+  pool: VM
 
   steps:
   - script: "(robocopy \"D:\\artifacts\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
