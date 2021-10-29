@@ -1313,7 +1313,7 @@ jobs:
   - script: "(robocopy \"D:\\artifacts\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
-  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Not Parallelizable Unit Tests.bat\""
+  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Bare Metal/Not Parallelizable Unit Tests.bat\""
     displayName: 'Run Not Parallelizable Unit Tests'
 
   - task: PublishTestResults@2
