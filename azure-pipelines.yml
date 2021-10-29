@@ -1466,7 +1466,7 @@ jobs:
   - script: "(robocopy \"D:\\artifacts\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
-  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Intellisense Textbox Visual Tree Unit Tests.bat\""
+  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Bare Metal/Intellisense Textbox Visual Tree Unit Tests.bat\""
     displayName: 'Run Intellisense Textbox Visual Tree Unit Tests'
 
   - task: PublishTestResults@2
@@ -1483,7 +1483,7 @@ jobs:
   - script: "(robocopy \"D:\\artifacts\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
-  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Workflow Execution Logging Specs.bat\""
+  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Bare Metal/Workflow Execution Logging Specs.bat\""
     displayName: 'Run Workflow Execution Logging Specs'
 
   - task: PublishTestResults@2
