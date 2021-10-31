@@ -1294,6 +1294,7 @@ jobs:
 - job: Studio_Core_Unit_Tests
   displayName: 'Studio Core Unit Tests'
   dependsOn: build
+  pool: VM
 
   steps:
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
