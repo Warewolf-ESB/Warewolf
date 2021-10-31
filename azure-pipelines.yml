@@ -1544,7 +1544,7 @@ jobs:
       testRunTitle: 'Database Subworkflow Execution Specs'
 
 - job: Intellisense_Textbox_Visual_Tree_Unit_Tests
-  displayName: 'Database Subworkflow Execution Specs'
+  displayName: 'Intellisense Textbox Visual Tree Unit Tests'
   dependsOn: build
 
   steps:
@@ -1579,22 +1579,3 @@ jobs:
       testResultsFiles: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx'
       failTaskOnFailedTests: true
       testRunTitle: 'Workflow Execution Logging Specs'
-
-- job: Intellisense_Textbox_Visual_Tree_Unit_Tests
-  displayName: 'Intellisense Textbox Visual Tree Unit Tests'
-  dependsOn: build
-  pool: VM
-
-  steps:
-  - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
-    displayName: 'Download Artifacts'
-
-  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Bare Metal/Workflow Execution Logging Specs.bat\""
-    displayName: 'Run Tests'
-
-  - task: PublishTestResults@2
-    inputs:
-      testRunner: VSTest
-      testResultsFiles: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx'
-      failTaskOnFailedTests: true
-      testRunTitle: 'Intellisense Textbox Visual Tree Unit Tests'
