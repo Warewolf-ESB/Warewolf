@@ -200,7 +200,7 @@ for ($LoopCounter=0; $LoopCounter -le $RetryCount; $LoopCounter++) {
 			    $CategoryArg = "/TestCaseFilter:`"(TestCategory=" + $Category + ")`""
 			} else {
 				if ($Categories -ne $null -and $Categories.Count -ne 0) {
-					$CategoryArg = "/TestCaseFilter:`"("
+					$CategoryArg = "/TestCaseFilter:`"(TestCategory="
 					$CategoryArg += $Categories -join ")|(TestCategory="
 					$CategoryArg += ")`""
 				}
