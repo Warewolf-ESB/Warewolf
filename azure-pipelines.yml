@@ -22,7 +22,7 @@ jobs:
     displayName: 'Upload Artifacts'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Bare Metal/Other Unit Tests.bat\""
-    displayName: 'Unit Tests'
+    displayName: 'Run Tests'
 
   - task: PublishTestResults@2
     inputs:
@@ -40,7 +40,7 @@ jobs:
     displayName: 'Download Artifacts'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Zip Tool Specs.bat\""
-    displayName: 'Zip Tool Specs'
+    displayName: 'Run Tests'
 
   - task: PublishTestResults@2
     inputs:
@@ -58,7 +58,7 @@ jobs:
     displayName: 'Download Artifacts'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Email Tools Specs.bat\""
-    displayName: 'Email Tools Specs'
+    displayName: 'Run Tests'
 
   - task: PublishTestResults@2
     inputs:
@@ -76,7 +76,7 @@ jobs:
     displayName: 'Download Artifacts'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Resource Tools Specs.bat\""
-    displayName: 'Resource Tools Specs'
+    displayName: 'Run Tests'
 
   - task: PublishTestResults@2
     inputs:
@@ -94,7 +94,7 @@ jobs:
     displayName: 'Download Artifacts'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/File And Folder Copy Tool Specs.bat\""
-    displayName: 'File And Folder Copy Tool Specs'
+    displayName: 'Run Tests'
 
   - task: PublishTestResults@2
     inputs:
@@ -112,7 +112,7 @@ jobs:
     displayName: 'Download Artifacts'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Data Tools Specs.bat\""
-    displayName: 'Data Tools Specs'
+    displayName: 'Run Tests'
 
   - task: PublishTestResults@2
     inputs:
@@ -130,7 +130,7 @@ jobs:
     displayName: 'Download Artifacts'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Request Service Name View Models Unit Tests.bat\""
-    displayName: 'Request Service Name View Models Unit Tests'
+    displayName: 'Run Tests'
 
   - task: PublishTestResults@2
     inputs:
@@ -148,7 +148,7 @@ jobs:
     displayName: 'Download Artifacts'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Unzip Tool Specs Validation.bat\""
-    displayName: 'Unzip Tool Specs Validation'
+    displayName: 'Run Tests'
 
   - task: PublishTestResults@2
     inputs:
@@ -166,7 +166,7 @@ jobs:
     displayName: 'Download Artifacts'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Recordset Tools Specs.bat\""
-    displayName: 'Recordset Tools Specs'
+    displayName: 'Run Tests'
 
   - task: PublishTestResults@2
     inputs:
@@ -184,7 +184,7 @@ jobs:
     displayName: 'Download Artifacts'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/File And Folder Rename Tool Specs.bat\""
-    displayName: 'File And Folder Rename Tool Specs'
+    displayName: 'Run Tests'
 
   - task: PublishTestResults@2
     inputs:
@@ -202,7 +202,7 @@ jobs:
     displayName: 'Download Artifacts'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Other Tools Specs.bat\""
-    displayName: 'Other Tools Specs'
+    displayName: 'Run Tests'
 
   - task: PublishTestResults@2
     inputs:
@@ -220,7 +220,7 @@ jobs:
     displayName: 'Download Artifacts'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/File And Folder Move Tool Specs.bat\""
-    displayName: 'File And Folder Move Tool Specs'
+    displayName: 'Run Tests'
 
   - task: PublishTestResults@2
     inputs:
@@ -238,7 +238,7 @@ jobs:
     displayName: 'Download Artifacts'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/File Read Tool Specs.bat\""
-    displayName: 'File Read Tool Specs'
+    displayName: 'Run Tests'
 
   - task: PublishTestResults@2
     inputs:
@@ -256,7 +256,7 @@ jobs:
     displayName: 'Download Artifacts'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Infrastructure Unit Tests.bat\""
-    displayName: 'Infrastructure Unit Tests'
+    displayName: 'Run Tests'
 
   - task: PublishTestResults@2
     inputs:
@@ -274,7 +274,7 @@ jobs:
     displayName: 'Download Artifacts'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/New Folder Read Tool Specs.bat\""
-    displayName: 'New Folder Read Tool Specs'
+    displayName: 'Run Tests'
 
   - task: PublishTestResults@2
     inputs:
@@ -292,7 +292,7 @@ jobs:
     displayName: 'Download Artifacts'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Write File Tool Specs.bat\""
-    displayName: 'Write File Tool Specs'
+    displayName: 'Run Tests'
 
   - task: PublishTestResults@2
     inputs:
@@ -310,7 +310,7 @@ jobs:
     displayName: 'Download Artifacts'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Loop Construct Tools Specs.bat\""
-    displayName: 'Loop Construct Tools Specs'
+    displayName: 'Run Tests'
 
   - task: PublishTestResults@2
     inputs:
@@ -328,7 +328,7 @@ jobs:
     displayName: 'Download Artifacts'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Utility Tools Specs.bat\""
-    displayName: 'Utility Tools Specs'
+    displayName: 'Run Tests'
 
   - task: PublishTestResults@2
     inputs:
@@ -346,7 +346,7 @@ jobs:
     displayName: 'Download Artifacts'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Folder Read Tool Specs.bat\""
-    displayName: 'Folder Read Tool Specs'
+    displayName: 'Run Tests'
 
   - task: PublishTestResults@2
     inputs:
@@ -364,7 +364,7 @@ jobs:
     displayName: 'Download Artifacts'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/SQL Bulk Insert Tool Specs.bat\""
-    displayName: 'SQL Bulk Insert Tool Specs'
+    displayName: 'Run Tests'
 
   - task: PublishTestResults@2
     inputs:
@@ -382,7 +382,7 @@ jobs:
     displayName: 'Download Artifacts'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Control Flow Tools Specs.bat\""
-    displayName: 'Control Flow Tools Specs'
+    displayName: 'Run Tests'
 
   - task: PublishTestResults@2
     inputs:
@@ -400,7 +400,7 @@ jobs:
     displayName: 'Download Artifacts'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Studio View Models Unit Tests.bat\""
-    displayName: 'Studio View Models Unit Tests'
+    displayName: 'Run Tests'
 
   - task: PublishTestResults@2
     inputs:
@@ -418,7 +418,7 @@ jobs:
     displayName: 'Download Artifacts'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/File And Folder Create Tool Specs.bat\""
-    displayName: 'File And Folder Create Tool Specs'
+    displayName: 'Run Tests'
 
   - task: PublishTestResults@2
     inputs:
@@ -436,7 +436,7 @@ jobs:
     displayName: 'Download Artifacts'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Storage Unit Tests.bat\""
-    displayName: 'Storage Unit Tests'
+    displayName: 'Run Tests'
 
   - task: PublishTestResults@2
     inputs:
@@ -454,7 +454,7 @@ jobs:
     displayName: 'Download Artifacts'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Storage Tools Specs.bat\""
-    displayName: 'Storage Tools Specs'
+    displayName: 'Run Tests'
 
   - task: PublishTestResults@2
     inputs:
@@ -472,7 +472,7 @@ jobs:
     displayName: 'Download Artifacts'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/File And Folder Delete Tool Specs.bat\""
-    displayName: 'File And Folder Delete Tool Specs'
+    displayName: 'Run Tests'
 
   - task: PublishTestResults@2
     inputs:
@@ -490,7 +490,7 @@ jobs:
     displayName: 'Download Artifacts'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Scripting Tools Specs.bat\""
-    displayName: 'Scripting Tools Specs'
+    displayName: 'Run Tests'
 
   - task: PublishTestResults@2
     inputs:
@@ -508,7 +508,7 @@ jobs:
     displayName: 'Download Artifacts'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Database Tools Specs.bat\""
-    displayName: 'Database Tools Specs'
+    displayName: 'Run Tests'
 
   - task: PublishTestResults@2
     inputs:
@@ -526,7 +526,7 @@ jobs:
     displayName: 'Download Artifacts'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Auditing Unit Tests.bat\""
-    displayName: 'Auditing Unit Tests'
+    displayName: 'Run Tests'
 
   - task: PublishTestResults@2
     inputs:
@@ -544,7 +544,7 @@ jobs:
     displayName: 'Download Artifacts'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Workflow Execution Specs.bat\""
-    displayName: 'Workflow Execution Specs'
+    displayName: 'Run Tests'
 
   - task: PublishTestResults@2
     inputs:
@@ -562,7 +562,7 @@ jobs:
     displayName: 'Download Artifacts'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Studio Test Framework With Hello World Workflow Specs.bat\""
-    displayName: 'Studio Test Framework With Hello World Workflow Specs'
+    displayName: 'Run Tests'
 
   - task: PublishTestResults@2
     inputs:
@@ -580,7 +580,7 @@ jobs:
     displayName: 'Download Artifacts'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Studio Test Framework With Utility Tools Specs.bat\""
-    displayName: 'Studio Test Framework With Utility Tools Specs'
+    displayName: 'Run Tests'
 
   - task: PublishTestResults@2
     inputs:
@@ -598,7 +598,7 @@ jobs:
     displayName: 'Download Artifacts'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/MS SQL Server Specs.bat\""
-    displayName: 'MS SQL Server Specs'
+    displayName: 'Run Tests'
 
   - task: PublishTestResults@2
     inputs:
@@ -616,7 +616,7 @@ jobs:
     displayName: 'Download Artifacts'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Studio Test Framework With Data Tools Specs.bat\""
-    displayName: 'Studio Test Framework With Data Tools Specs'
+    displayName: 'Run Tests'
 
   - task: PublishTestResults@2
     inputs:
@@ -634,7 +634,7 @@ jobs:
     displayName: 'Download Artifacts'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Assign Workflow Execution Specs.bat\""
-    displayName: 'Assign Workflow Execution Specs'
+    displayName: 'Run Tests'
 
   - task: PublishTestResults@2
     inputs:
@@ -652,7 +652,7 @@ jobs:
     displayName: 'Download Artifacts'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Integration Tests.bat\""
-    displayName: 'Integration Tests'
+    displayName: 'Run Tests'
 
   - task: PublishTestResults@2
     inputs:
@@ -670,7 +670,7 @@ jobs:
     displayName: 'Download Artifacts'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Studio Test Framework With Scripting Tools Specs.bat\""
-    displayName: 'Studio Test Framework With Scripting Tools Specs'
+    displayName: 'Run Tests'
 
   - task: PublishTestResults@2
     inputs:
@@ -688,7 +688,7 @@ jobs:
     displayName: 'Download Artifacts'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Other Activities Specs.bat\""
-    displayName: 'Other Activities Specs'
+    displayName: 'Run Tests'
 
   - task: PublishTestResults@2
     inputs:
@@ -706,7 +706,7 @@ jobs:
     displayName: 'Download Artifacts'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Studio Test Framework With File And Folder Tools Specs.bat\""
-    displayName: 'Studio Test Framework With File And Folder Tools Specs'
+    displayName: 'Run Tests'
 
   - task: PublishTestResults@2
     inputs:
@@ -724,7 +724,7 @@ jobs:
     displayName: 'Download Artifacts'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Studio Test Framework With HTTP Web Tools Specs.bat\""
-    displayName: 'Studio Test Framework With HTTP Web Tools Specs'
+    displayName: 'Run Tests'
 
   - task: PublishTestResults@2
     inputs:
@@ -742,7 +742,7 @@ jobs:
     displayName: 'Download Artifacts'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Studio Test Framework With Subworkflow Specs.bat\""
-    displayName: 'Studio Test Framework With Subworkflow Specs'
+    displayName: 'Run Tests'
 
   - task: PublishTestResults@2
     inputs:
@@ -760,7 +760,7 @@ jobs:
     displayName: 'Download Artifacts'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Workflow Merging Specs.bat\""
-    displayName: 'Workflow Merging Specs'
+    displayName: 'Run Tests'
 
   - task: PublishTestResults@2
     inputs:
@@ -778,7 +778,7 @@ jobs:
     displayName: 'Download Artifacts'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Example Workflow Execution Specs.bat\""
-    displayName: 'Example Workflow Execution Specs'
+    displayName: 'Run Tests'
 
   - task: PublishTestResults@2
     inputs:
@@ -796,7 +796,7 @@ jobs:
     displayName: 'Download Artifacts'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Studio Test Framework Specs.bat\""
-    displayName: 'Studio Test Framework Specs'
+    displayName: 'Run Tests'
 
   - task: PublishTestResults@2
     inputs:
@@ -814,7 +814,7 @@ jobs:
     displayName: 'Download Artifacts'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Subworkflow Execution Specs.bat\""
-    displayName: 'Subworkflow Execution Specs'
+    displayName: 'Run Tests'
 
   - task: PublishTestResults@2
     inputs:
@@ -832,7 +832,7 @@ jobs:
     displayName: 'Download Artifacts'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Other Specs.bat\""
-    displayName: 'Other Specs'
+    displayName: 'Run Tests'
 
   - task: PublishTestResults@2
     inputs:
@@ -850,7 +850,7 @@ jobs:
     displayName: 'Download Artifacts'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Studio Test Framework With Deleted Resources Specs.bat\""
-    displayName: 'Studio Test Framework With Deleted Resources Specs'
+    displayName: 'Run Tests'
 
   - task: PublishTestResults@2
     inputs:
@@ -868,7 +868,7 @@ jobs:
     displayName: 'Download Artifacts'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/SQL Integration Tests.bat\""
-    displayName: 'SQL Integration Tests'
+    displayName: 'Run Tests'
 
   - task: PublishTestResults@2
     inputs:
@@ -886,7 +886,7 @@ jobs:
     displayName: 'Download Artifacts'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/For Each Workflow Execution Specs.bat\""
-    displayName: 'For Each Workflow Execution Specs'
+    displayName: 'Run Tests'
 
   - task: PublishTestResults@2
     inputs:
@@ -904,7 +904,7 @@ jobs:
     displayName: 'Download Artifacts'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Copy Tool Specs From Local.bat\""
-    displayName: 'Copy Tool Specs From Local'
+    displayName: 'Run Tests'
 
   - task: PublishTestResults@2
     inputs:
@@ -922,7 +922,7 @@ jobs:
     displayName: 'Download Artifacts'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Move Tool Specs From Local.bat\""
-    displayName: 'Move Tool Specs From Local'
+    displayName: 'Run Tests'
 
   - task: PublishTestResults@2
     inputs:
@@ -940,7 +940,7 @@ jobs:
     displayName: 'Download Artifacts'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Rename Tool Specs From Local.bat\""
-    displayName: 'Rename Tool Specs From Local'
+    displayName: 'Run Tests'
 
   - task: PublishTestResults@2
     inputs:
@@ -958,7 +958,7 @@ jobs:
     displayName: 'Download Artifacts'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Unzip Tool Specs From Local.bat\""
-    displayName: 'Unzip Tool Specs From Local'
+    displayName: 'Run Tests'
 
   - task: PublishTestResults@2
     inputs:
@@ -976,7 +976,7 @@ jobs:
     displayName: 'Download Artifacts'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Zip Tool Specs From Local.bat\""
-    displayName: 'Zip Tool Specs From Local'
+    displayName: 'Run Tests'
 
   - task: PublishTestResults@2
     inputs:
@@ -994,7 +994,7 @@ jobs:
     displayName: 'Download Artifacts'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Copy Tool Specs From FTP.bat\""
-    displayName: 'Zip Tool Specs'
+    displayName: 'Run Tests'
 
   - task: PublishTestResults@2
     inputs:
@@ -1012,7 +1012,7 @@ jobs:
     displayName: 'Download Artifacts'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Move Tool Specs From FTP.bat\""
-    displayName: 'Move Tool Specs From FTP'
+    displayName: 'Run Tests'
 
   - task: PublishTestResults@2
     inputs:
@@ -1030,7 +1030,7 @@ jobs:
     displayName: 'Download Artifacts'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Rename Tool Specs From FTP.bat\""
-    displayName: 'Rename Tool Specs From FTP'
+    displayName: 'Run Tests'
 
   - task: PublishTestResults@2
     inputs:
@@ -1048,7 +1048,7 @@ jobs:
     displayName: 'Download Artifacts'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Unzip Tool Specs From FTP.bat\""
-    displayName: 'Unzip Tool Specs From FTP'
+    displayName: 'Run Tests'
 
   - task: PublishTestResults@2
     inputs:
@@ -1066,7 +1066,7 @@ jobs:
     displayName: 'Download Artifacts'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Zip Tool Specs From FTP.bat\""
-    displayName: 'Zip Tool Specs From FTP'
+    displayName: 'Run Tests'
 
   - task: PublishTestResults@2
     inputs:
@@ -1084,7 +1084,7 @@ jobs:
     displayName: 'Download Artifacts'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Copy Tool Specs From FTPS.bat\""
-    displayName: 'Copy Tool Specs From FTPS'
+    displayName: 'Run Tests'
 
   - task: PublishTestResults@2
     inputs:
@@ -1102,7 +1102,7 @@ jobs:
     displayName: 'Download Artifacts'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Move Tool Specs From FTPS.bat\""
-    displayName: 'Move Tool Specs From FTPS'
+    displayName: 'Run Tests'
 
   - task: PublishTestResults@2
     inputs:
@@ -1120,7 +1120,7 @@ jobs:
     displayName: 'Download Artifacts'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Rename Tool Specs From FTPS.bat\""
-    displayName: 'Rename Tool Specs From FTPS'
+    displayName: 'Run Tests'
 
   - task: PublishTestResults@2
     inputs:
@@ -1138,7 +1138,7 @@ jobs:
     displayName: 'Download Artifacts'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Unzip Tool Specs From FTPS.bat\""
-    displayName: 'Unzip Tool Specs From FTPS'
+    displayName: 'Run Tests'
 
   - task: PublishTestResults@2
     inputs:
@@ -1156,7 +1156,7 @@ jobs:
     displayName: 'Download Artifacts'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Zip Tool Specs From FTPS.bat\""
-    displayName: 'Zip Tool Specs From FTPS'
+    displayName: 'Run Tests'
 
   - task: PublishTestResults@2
     inputs:
@@ -1174,7 +1174,7 @@ jobs:
     displayName: 'Download Artifacts'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Copy Tool Specs From SFTP.bat\""
-    displayName: 'Copy Tool Specs From SFTP'
+    displayName: 'Run Tests'
 
   - task: PublishTestResults@2
     inputs:
@@ -1192,7 +1192,7 @@ jobs:
     displayName: 'Download Artifacts'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Move Tool Specs From SFTP.bat\""
-    displayName: 'Move Tool Specs From SFTP'
+    displayName: 'Run Tests'
 
   - task: PublishTestResults@2
     inputs:
@@ -1210,7 +1210,7 @@ jobs:
     displayName: 'Download Artifacts'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Rename Tool Specs From SFTP.bat\""
-    displayName: 'Rename Tool Specs From SFTP'
+    displayName: 'Run Tests'
 
   - task: PublishTestResults@2
     inputs:
@@ -1228,7 +1228,7 @@ jobs:
     displayName: 'Download Artifacts'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Unzip Tool Specs From SFTP.bat\""
-    displayName: 'Unzip Tool Specs From SFTP'
+    displayName: 'Run Tests'
 
   - task: PublishTestResults@2
     inputs:
@@ -1246,7 +1246,7 @@ jobs:
     displayName: 'Download Artifacts'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Zip Tool Specs From SFTP.bat\""
-    displayName: 'Zip Tool Specs From SFTP'
+    displayName: 'Run Tests'
 
   - task: PublishTestResults@2
     inputs:
@@ -1264,7 +1264,7 @@ jobs:
     displayName: 'Download Artifacts'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Copy Tool Specs From UNC.bat\""
-    displayName: 'Copy Tool Specs From UNC'
+    displayName: 'Run Tests'
 
   - task: PublishTestResults@2
     inputs:
@@ -1282,7 +1282,7 @@ jobs:
     displayName: 'Download Artifacts'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Move Tool Specs From UNC.bat\""
-    displayName: 'Move Tool Specs From UNC'
+    displayName: 'Run Tests'
 
   - task: PublishTestResults@2
     inputs:
@@ -1300,7 +1300,7 @@ jobs:
     displayName: 'Download Artifacts'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Bare Metal/Studio Core Unit Tests.bat\""
-    displayName: 'Studio Core Unit Tests'
+    displayName: 'Run Tests'
 
   - task: PublishTestResults@2
     inputs:
@@ -1318,7 +1318,7 @@ jobs:
     displayName: 'Download Artifacts'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Elasticsearch View Models Unit Tests.bat\""
-    displayName: 'Elasticsearch View Models Unit Tests'
+    displayName: 'Run Tests'
 
   - task: PublishTestResults@2
     inputs:
@@ -1336,7 +1336,7 @@ jobs:
     displayName: 'Download Artifacts'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Search Specs.bat\""
-    displayName: 'Search Specs'
+    displayName: 'Run Tests'
 
   - task: PublishTestResults@2
     inputs:
@@ -1354,7 +1354,7 @@ jobs:
     displayName: 'Download Artifacts'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Logger Unit Tests.bat\""
-    displayName: 'Logger Unit Tests'
+    displayName: 'Run Tests'
 
   - task: PublishTestResults@2
     inputs:
@@ -1372,7 +1372,7 @@ jobs:
     displayName: 'Download Artifacts'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Rename Tool Specs From UNC.bat\""
-    displayName: 'Rename Tool Specs From UNC'
+    displayName: 'Run Tests'
 
   - task: PublishTestResults@2
     inputs:
@@ -1390,7 +1390,7 @@ jobs:
     displayName: 'Download Artifacts'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Bare Metal/Not Parallelizable Unit Tests.bat\""
-    displayName: 'Not Parallelizable Unit Tests'
+    displayName: 'Run Tests'
 
   - task: PublishTestResults@2
     inputs:
@@ -1408,7 +1408,7 @@ jobs:
     displayName: 'Download Artifacts'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Database Workflow Execution Specs.bat\""
-    displayName: 'Database Workflow Execution Specs'
+    displayName: 'Run Tests'
 
   - task: PublishTestResults@2
     inputs:
@@ -1426,7 +1426,7 @@ jobs:
     displayName: 'Download Artifacts'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/RabbitMQ Workflow Execution Specs.bat\""
-    displayName: 'RabbitMQ Workflow Execution Specs'
+    displayName: 'Run Tests'
 
   - task: PublishTestResults@2
     inputs:
@@ -1444,7 +1444,7 @@ jobs:
     displayName: 'Download Artifacts'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Studio Test Framework With HTTP Web Get Tools Specs.bat\""
-    displayName: 'Studio Test Framework With HTTP Web Get Tools Specs'
+    displayName: 'Run Tests'
 
   - task: PublishTestResults@2
     inputs:
@@ -1462,7 +1462,7 @@ jobs:
     displayName: 'Download Artifacts'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Studio Test Framework With HTTP Web Delete Tools Specs.bat\""
-    displayName: 'Studio Test Framework With HTTP Web Delete Tools Specs'
+    displayName: 'Run Tests'
 
   - task: PublishTestResults@2
     inputs:
@@ -1480,7 +1480,7 @@ jobs:
     displayName: 'Download Artifacts'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Studio Test Framework With HTTP Web Post Tools Specs.bat\""
-    displayName: 'Studio Test Framework With HTTP Web Post Tools Specs'
+    displayName: 'Run Tests'
 
   - task: PublishTestResults@2
     inputs:
@@ -1498,7 +1498,7 @@ jobs:
     displayName: 'Download Artifacts'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Studio Test Framework With HTTP Web Put Tools Specs.bat\""
-    displayName: 'Studio Test Framework With HTTP Web Put Tools Specs'
+    displayName: 'Run Tests'
 
   - task: PublishTestResults@2
     inputs:
@@ -1516,7 +1516,7 @@ jobs:
     displayName: 'Download Artifacts'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Studio Test Framework With RabbitMQ Tools Specs.bat\""
-    displayName: 'Studio Test Framework With RabbitMQ Tools Specs'
+    displayName: 'Run Tests'
 
   - task: PublishTestResults@2
     inputs:
@@ -1534,7 +1534,7 @@ jobs:
     displayName: 'Download Artifacts'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Database Subworkflow Execution Specs.bat\""
-    displayName: 'Database Subworkflow Execution Specs'
+    displayName: 'Run Tests'
 
   - task: PublishTestResults@2
     inputs:
@@ -1552,7 +1552,7 @@ jobs:
     displayName: 'Download Artifacts'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Bare Metal/Intellisense Textbox Visual Tree Unit Tests.bat\""
-    displayName: 'Intellisense Textbox Visual Tree Unit Tests'
+    displayName: 'Run Tests'
 
   - task: PublishTestResults@2
     inputs:
@@ -1571,7 +1571,7 @@ jobs:
     displayName: 'Download Artifacts'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Bare Metal/Workflow Execution Logging Specs.bat\""
-    displayName: 'Workflow Execution Logging Specs'
+    displayName: 'Run Tests'
 
   - task: PublishTestResults@2
     inputs:
@@ -1579,3 +1579,22 @@ jobs:
       testResultsFiles: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx'
       failTaskOnFailedTests: true
       testRunTitle: 'Workflow Execution Logging Specs'
+
+- job: Intellisense_Textbox_Visual_Tree_Unit_Tests
+  displayName: 'Intellisense Textbox Visual Tree Unit Tests'
+  dependsOn: build
+  pool: VM
+
+  steps:
+  - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
+    displayName: 'Download Artifacts'
+
+  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Bare Metal/Workflow Execution Logging Specs.bat\""
+    displayName: 'Run Tests'
+
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx'
+      failTaskOnFailedTests: true
+      testRunTitle: 'Intellisense Textbox Visual Tree Unit Tests'
