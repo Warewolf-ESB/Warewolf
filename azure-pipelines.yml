@@ -1804,7 +1804,6 @@ jobs:
           }
       }
       Write-Host "##vso[task.setvariable variable=FullVersionString;isOutput=true;]$HighestReadVersion"
-    name: CheckAssemblyVersions
 
 - job: check_version_string
   displayName: 'Checking the version string from another job'
@@ -1812,7 +1811,7 @@ jobs:
   
   variables:
   - name: FullVersionString
-    value: $[ dependencies.build_release.outputs['build_release.CheckAssemblyVersions.FullVersionString'] ]
+    value: $[ dependencies.build_release.outputs['build_release.FullVersionString'] ]
 
   steps:
   - powershell: Write-Host Got version $(FullVersionString)
