@@ -1810,4 +1810,6 @@ jobs:
   dependsOn: build_release
 
   steps:
-  - powershell: Write-Host Got version $(FullVersionString)
+  - powershell: Write-Host Got version $env:My_FullVersionString
+    env:
+      My_FullVersionString: $(FullVersionString)
