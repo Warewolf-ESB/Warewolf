@@ -23,7 +23,7 @@ jobs:
       SourceFolder: '$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting'
       Contents: 'TestResults' 
 
-  - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
+  - script: "(robocopy \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Upload Artifacts'
 
   - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Bare Metal/Other Unit Tests.bat\""
