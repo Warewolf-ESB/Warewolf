@@ -36,6 +36,8 @@ jobs:
   dependsOn: build
 
   steps:
+  - checkout: none
+
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
@@ -54,6 +56,8 @@ jobs:
   dependsOn: build
 
   steps:
+  - checkout: none
+
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
@@ -72,6 +76,8 @@ jobs:
   dependsOn: build
 
   steps:
+  - checkout: none
+
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
@@ -90,6 +96,8 @@ jobs:
   dependsOn: build
 
   steps:
+  - checkout: none
+
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
@@ -108,6 +116,8 @@ jobs:
   dependsOn: build
 
   steps:
+  - checkout: none
+
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
@@ -126,6 +136,8 @@ jobs:
   dependsOn: build
 
   steps:
+  - checkout: none
+
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
@@ -144,6 +156,8 @@ jobs:
   dependsOn: build
 
   steps:
+  - checkout: none
+
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
@@ -162,6 +176,8 @@ jobs:
   dependsOn: build
 
   steps:
+  - checkout: none
+
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
@@ -180,6 +196,8 @@ jobs:
   dependsOn: build
 
   steps:
+  - checkout: none
+
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
@@ -198,6 +216,8 @@ jobs:
   dependsOn: build
 
   steps:
+  - checkout: none
+
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
@@ -216,6 +236,8 @@ jobs:
   dependsOn: build
 
   steps:
+  - checkout: none
+
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
@@ -234,6 +256,8 @@ jobs:
   dependsOn: build
 
   steps:
+  - checkout: none
+
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
@@ -252,6 +276,8 @@ jobs:
   dependsOn: build
 
   steps:
+  - checkout: none
+
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
@@ -270,6 +296,8 @@ jobs:
   dependsOn: build
 
   steps:
+  - checkout: none
+
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
@@ -288,6 +316,8 @@ jobs:
   dependsOn: build
 
   steps:
+  - checkout: none
+
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
@@ -306,6 +336,8 @@ jobs:
   dependsOn: build
 
   steps:
+  - checkout: none
+
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
@@ -324,6 +356,8 @@ jobs:
   dependsOn: build
 
   steps:
+  - checkout: none
+
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
@@ -342,6 +376,8 @@ jobs:
   dependsOn: build
 
   steps:
+  - checkout: none
+
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
@@ -360,6 +396,8 @@ jobs:
   dependsOn: build
 
   steps:
+  - checkout: none
+
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
@@ -378,6 +416,8 @@ jobs:
   dependsOn: build
 
   steps:
+  - checkout: none
+
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
@@ -396,6 +436,8 @@ jobs:
   dependsOn: build
 
   steps:
+  - checkout: none
+
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
@@ -414,6 +456,8 @@ jobs:
   dependsOn: build
 
   steps:
+  - checkout: none
+
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
@@ -432,6 +476,8 @@ jobs:
   dependsOn: build
 
   steps:
+  - checkout: none
+
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
@@ -450,6 +496,8 @@ jobs:
   dependsOn: build
 
   steps:
+  - checkout: none
+
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
@@ -468,6 +516,8 @@ jobs:
   dependsOn: build
 
   steps:
+  - checkout: none
+
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
@@ -486,6 +536,8 @@ jobs:
   dependsOn: build
 
   steps:
+  - checkout: none
+
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
@@ -504,6 +556,8 @@ jobs:
   dependsOn: build
 
   steps:
+  - checkout: none
+
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
@@ -522,6 +576,8 @@ jobs:
   dependsOn: build
 
   steps:
+  - checkout: none
+
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
@@ -540,6 +596,8 @@ jobs:
   dependsOn: build
 
   steps:
+  - checkout: none
+
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
@@ -558,6 +616,8 @@ jobs:
   dependsOn: build
 
   steps:
+  - checkout: none
+
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
@@ -576,6 +636,8 @@ jobs:
   dependsOn: build
 
   steps:
+  - checkout: none
+
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
@@ -594,6 +656,8 @@ jobs:
   dependsOn: build
 
   steps:
+  - checkout: none
+
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
@@ -612,6 +676,8 @@ jobs:
   dependsOn: build
 
   steps:
+  - checkout: none
+
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
@@ -630,6 +696,8 @@ jobs:
   dependsOn: build
 
   steps:
+  - checkout: none
+
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
@@ -648,6 +716,8 @@ jobs:
   dependsOn: build
 
   steps:
+  - checkout: none
+
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
@@ -666,6 +736,8 @@ jobs:
   dependsOn: build
 
   steps:
+  - checkout: none
+
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
@@ -684,6 +756,8 @@ jobs:
   dependsOn: build
 
   steps:
+  - checkout: none
+
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
@@ -702,6 +776,8 @@ jobs:
   dependsOn: build
 
   steps:
+  - checkout: none
+
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
@@ -720,6 +796,8 @@ jobs:
   dependsOn: build
 
   steps:
+  - checkout: none
+
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
@@ -738,6 +816,8 @@ jobs:
   dependsOn: build
 
   steps:
+  - checkout: none
+
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
@@ -756,6 +836,8 @@ jobs:
   dependsOn: build
 
   steps:
+  - checkout: none
+
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
@@ -774,6 +856,8 @@ jobs:
   dependsOn: build
 
   steps:
+  - checkout: none
+
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
@@ -792,6 +876,8 @@ jobs:
   dependsOn: build
 
   steps:
+  - checkout: none
+
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
@@ -810,6 +896,8 @@ jobs:
   dependsOn: build
 
   steps:
+  - checkout: none
+
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
@@ -828,6 +916,8 @@ jobs:
   dependsOn: build
 
   steps:
+  - checkout: none
+
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
@@ -846,6 +936,8 @@ jobs:
   dependsOn: build
 
   steps:
+  - checkout: none
+
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
@@ -864,6 +956,8 @@ jobs:
   dependsOn: build
 
   steps:
+  - checkout: none
+
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
@@ -882,6 +976,8 @@ jobs:
   dependsOn: build
 
   steps:
+  - checkout: none
+
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
@@ -900,6 +996,8 @@ jobs:
   dependsOn: build
 
   steps:
+  - checkout: none
+
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
@@ -918,6 +1016,8 @@ jobs:
   dependsOn: build
 
   steps:
+  - checkout: none
+
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
@@ -936,6 +1036,8 @@ jobs:
   dependsOn: build
 
   steps:
+  - checkout: none
+
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
@@ -954,6 +1056,8 @@ jobs:
   dependsOn: build
 
   steps:
+  - checkout: none
+
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
@@ -972,6 +1076,8 @@ jobs:
   dependsOn: build
 
   steps:
+  - checkout: none
+
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
@@ -990,6 +1096,8 @@ jobs:
   dependsOn: build
 
   steps:
+  - checkout: none
+
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
@@ -1008,6 +1116,8 @@ jobs:
   dependsOn: build
 
   steps:
+  - checkout: none
+
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
@@ -1026,6 +1136,8 @@ jobs:
   dependsOn: build
 
   steps:
+  - checkout: none
+
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
@@ -1044,6 +1156,8 @@ jobs:
   dependsOn: build
 
   steps:
+  - checkout: none
+
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
@@ -1062,6 +1176,8 @@ jobs:
   dependsOn: build
 
   steps:
+  - checkout: none
+
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
@@ -1080,6 +1196,8 @@ jobs:
   dependsOn: build
 
   steps:
+  - checkout: none
+
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
@@ -1098,6 +1216,8 @@ jobs:
   dependsOn: build
 
   steps:
+  - checkout: none
+
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
@@ -1116,6 +1236,8 @@ jobs:
   dependsOn: build
 
   steps:
+  - checkout: none
+
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
@@ -1134,6 +1256,8 @@ jobs:
   dependsOn: build
 
   steps:
+  - checkout: none
+
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
@@ -1152,6 +1276,8 @@ jobs:
   dependsOn: build
 
   steps:
+  - checkout: none
+
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
@@ -1170,6 +1296,8 @@ jobs:
   dependsOn: build
 
   steps:
+  - checkout: none
+
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
@@ -1188,6 +1316,8 @@ jobs:
   dependsOn: build
 
   steps:
+  - checkout: none
+
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
@@ -1206,6 +1336,8 @@ jobs:
   dependsOn: build
 
   steps:
+  - checkout: none
+
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
@@ -1224,6 +1356,8 @@ jobs:
   dependsOn: build
 
   steps:
+  - checkout: none
+
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
@@ -1242,6 +1376,8 @@ jobs:
   dependsOn: build
 
   steps:
+  - checkout: none
+
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
@@ -1260,6 +1396,8 @@ jobs:
   dependsOn: build
 
   steps:
+  - checkout: none
+
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
@@ -1278,6 +1416,8 @@ jobs:
   dependsOn: build
 
   steps:
+  - checkout: none
+
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
@@ -1297,6 +1437,8 @@ jobs:
   pool: VM
 
   steps:
+  - checkout: none
+
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
@@ -1315,6 +1457,8 @@ jobs:
   dependsOn: build
 
   steps:
+  - checkout: none
+
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
@@ -1333,6 +1477,8 @@ jobs:
   dependsOn: build
 
   steps:
+  - checkout: none
+
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
@@ -1351,6 +1497,8 @@ jobs:
   dependsOn: build
 
   steps:
+  - checkout: none
+
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
@@ -1369,6 +1517,8 @@ jobs:
   dependsOn: build
 
   steps:
+  - checkout: none
+
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
@@ -1387,6 +1537,8 @@ jobs:
   dependsOn: build
 
   steps:
+  - checkout: none
+
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
@@ -1405,6 +1557,8 @@ jobs:
   dependsOn: build
 
   steps:
+  - checkout: none
+
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
@@ -1423,6 +1577,8 @@ jobs:
   dependsOn: build
 
   steps:
+  - checkout: none
+
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
@@ -1441,6 +1597,8 @@ jobs:
   dependsOn: build
 
   steps:
+  - checkout: none
+
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
@@ -1459,6 +1617,8 @@ jobs:
   dependsOn: build
 
   steps:
+  - checkout: none
+
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
@@ -1477,6 +1637,8 @@ jobs:
   dependsOn: build
 
   steps:
+  - checkout: none
+
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
@@ -1495,6 +1657,8 @@ jobs:
   dependsOn: build
 
   steps:
+  - checkout: none
+
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
@@ -1513,6 +1677,8 @@ jobs:
   dependsOn: build
 
   steps:
+  - checkout: none
+
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
@@ -1531,6 +1697,8 @@ jobs:
   dependsOn: build
 
   steps:
+  - checkout: none
+
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
@@ -1549,6 +1717,8 @@ jobs:
   dependsOn: build
 
   steps:
+  - checkout: none
+
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
@@ -1568,6 +1738,8 @@ jobs:
   pool: VM
 
   steps:
+  - checkout: none
+
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
@@ -1586,5 +1758,11 @@ jobs:
   dependsOn: [Zip_Tool_Specs,Email_Tools_Specs,Resource_Tools_Specs,File_And_Folder_Copy_Tool_Specs,Data_Tools_Specs,Request_Service_Name_View_Models_Unit_Tests,Unzip_Tool_Specs_Validation,Recordset_Tools_Specs,File_And_Folder_Rename_Tool_Specs,Other_Tools_Specs,File_And_Folder_Move_Tool_Specs,File_Read_Tool_Specs,Infrastructure_Unit_Tests,New_Folder_Read_Tool_Specs,Write_File_Tool_Specs,Loop_Construct_Tools_Specs,Utility_Tools_Specs,Folder_Read_Tool_Specs,SQL_Bulk_Insert_Tool_Specs,Control_Flow_Tools_Specs,Studio_View_Models_Unit_Tests,File_And_Folder_Create_Tool_Specs,Storage_Unit_Tests,Storage_Tools_Specs,File_And_Folder_Delete_Tool_Specs,Scripting_Tools_Specs,Database_Tools_Specs,Auditing_Unit_Tests,Workflow_Execution_Specs,Studio_Test_Framework_With_Hello_World_Workflow_Specs,Studio_Test_Framework_With_Utility_Tools_Specs,MS_SQL_Server_Specs,Studio_Test_Framework_With_Data_Tools_Specs,Assign_Workflow_Execution_Specs,Integration_Tests,Studio_Test_Framework_With_Scripting_Tools_Specs,Other_Activities_Specs,Studio_Test_Framework_With_File_And_Folder_Tools_Specs,Studio_Test_Framework_With_HTTP_Web_Tools_Specs,Studio_Test_Framework_With_Subworkflow_Specs,Workflow_Merging_Specs,Example_Workflow_Execution_Specs,Studio_Test_Framework_Specs,Subworkflow_Execution_Specs,Other_Specs,Studio_Test_Framework_With_Deleted_Resources_Specs,SQL_Integration_Tests,For_Each_Workflow_Execution_Specs,Copy_Tool_Specs_From_Local,Move_Tool_Specs_From_Local,Rename_Tool_Specs_From_Local,Unzip_Tool_Specs_From_Local,Zip_Tool_Specs_From_Local,Copy_Tool_Specs_From_FTP,Move_Tool_Specs_From_FTP,Rename_Tool_Specs_From_FTP,Unzip_Tool_Specs_From_FTP,Zip_Tool_Specs_From_FTP,Copy_Tool_Specs_From_FTPS,Move_Tool_Specs_From_FTPS,Rename_Tool_Specs_From_FTPS,Unzip_Tool_Specs_From_FTPS,Zip_Tool_Specs_From_FTPS,Copy_Tool_Specs_From_SFTP,Move_Tool_Specs_From_SFTP,Rename_Tool_Specs_From_SFTP,Unzip_Tool_Specs_From_SFTP,Zip_Tool_Specs_From_SFTP,Copy_Tool_Specs_From_UNC,Move_Tool_Specs_From_UNC,Studio_Core_Unit_Tests,Elasticsearch_View_Models_Unit_Tests,Search_Specs,Logger_Unit_Tests,Rename_Tool_Specs_From_UNC,Not_Parallelizable_Unit_Tests,Database_Workflow_Execution_Specs,RabbitMQ_Workflow_Execution_Specs,Studio_Test_Framework_With_HTTP_Web_Get_Tools_Specs,Studio_Test_Framework_With_HTTP_Web_Delete_Tools_Specs,Studio_Test_Framework_With_HTTP_Web_Post_Tools_Specs,Studio_Test_Framework_With_HTTP_Web_Put_Tools_Specs,Studio_Test_Framework_With_RabbitMQ_Tools_Specs,Database_Subworkflow_Execution_Specs,Intellisense_Textbox_Visual_Tree_Unit_Tests,Workflow_Execution_Logging_Specs]
 
   steps:
+  - checkout: self
+    clean: true
+    persistCredentials: true
+
+  - script: "git fetch --all --tags"
+
   - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)/s/Compile.ps1\" -AcceptanceTesting -AutoVersion -Config 'Release' -Target 'Rebuild' -ProjectSpecificOutputs"
     displayName: 'Compile in Release Config'
