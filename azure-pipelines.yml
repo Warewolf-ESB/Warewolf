@@ -1788,9 +1788,9 @@ jobs:
               $SeperateVersionNumbers = $ReadVersion.split(".")
               $SeperateVersionNumbersHighest = $HighestReadVersion.split(".")
               if ([convert]::ToInt32($SeperateVersionNumbers[0], 10) -gt [convert]::ToInt32($SeperateVersionNumbersHighest[0], 10)`
-      		    -or [convert]::ToInt32($SeperateVersionNumbers[1], 10) -gt [convert]::ToInt32($SeperateVersionNumbersHighest[1], 10)`
-      		    -or [convert]::ToInt32($SeperateVersionNumbers[2], 10) -gt [convert]::ToInt32($SeperateVersionNumbersHighest[2], 10)`
-      		    -or [convert]::ToInt32($SeperateVersionNumbers[3], 10) -gt [convert]::ToInt32($SeperateVersionNumbersHighest[3], 10)){
+              -or [convert]::ToInt32($SeperateVersionNumbers[1], 10) -gt [convert]::ToInt32($SeperateVersionNumbersHighest[1], 10)`
+              -or [convert]::ToInt32($SeperateVersionNumbers[2], 10) -gt [convert]::ToInt32($SeperateVersionNumbersHighest[2], 10)`
+              -or [convert]::ToInt32($SeperateVersionNumbers[3], 10) -gt [convert]::ToInt32($SeperateVersionNumbersHighest[3], 10)){
                   $HighestReadVersion = $ReadVersion
               }
       
@@ -1803,13 +1803,15 @@ jobs:
               $LastReadVersion = $ReadVersion
           }
       }
-      Write-Host "##vso[task.setvariable variable=FullVersionString]$HighestReadVersion"
+      Write-Host "##vso[task.setvariable variable=FullVersionString;isOutput=true;]$HighestReadVersion"
 
 - job: check_version_string
   displayName: 'Checking the version string from another job'
   dependsOn: build_release
+  
+  variables:
+  - name: FullVersionString
+    value: $[ dependencies.build_release.outputs['FullVersionString'] ]
 
   steps:
-  - powershell: Write-Host Got version $env:My_FullVersionString
-    env:
-      My_FullVersionString: $(FullVersionString)
+  - powershell: Write-Host Got version $(FullVersionString)
