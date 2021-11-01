@@ -1762,7 +1762,6 @@ jobs:
     clean: true
     persistCredentials: true
 
-  - script: "git fetch --all --tags"
-
   - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)/s/Compile.ps1\" -AcceptanceTesting -AutoVersion -Config 'Release' -Target 'Rebuild' -ProjectSpecificOutputs"
     displayName: 'Compile in Release Config'
+    workingDirectory: '$(System.DefaultWorkingDirectory)'
