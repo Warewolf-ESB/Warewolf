@@ -112,9 +112,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
     <None Include="RabbitMq Source.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>RabbitMq Source.feature.cs</LastGenOutput>
     </None>
   </ItemGroup>
@@ -130,12 +128,9 @@
       <Version>2.1.2</Version>
     </PackageReference>
     <PackageReference Include="MSTest.TestFramework" Version="2.1.2" />
-    <PackageReference Include="SpecFlow" Version="2.3.2" />
+    <PackageReference Include="SpecFlow" Version="3.9.22" />
     <PackageReference Include="SpecFlow.MsTest">
-      <Version>2.3.2</Version>
-    </PackageReference>
-    <PackageReference Include="SpecFlow.Tools.MsBuild.Generation">
-      <Version>2.3.2</Version>
+      <Version>3.9.22</Version>
     </PackageReference>
     <PackageReference Include="System.Threading.Tasks.Extensions">
       <Version>4.5.4</Version>
