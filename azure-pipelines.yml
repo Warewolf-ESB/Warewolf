@@ -98,6 +98,10 @@ jobs:
     displayName: 'Download Studio Artifacts'
     
   - powershell: |
+      $Installers = Get-ChildItem -Path . -File -Filter Warewolf-*.exe
+      foreach ($Installer in $Installers) {
+          Remove-Item $Installer
+      }
       Set-Location "$(Agent.BuildDirectory)\InstallerSource"
       docker build --network "Virtual Switch #1" -t registry.gitlab.com/warewolf/installer .
       docker rm -f installerbuild
@@ -219,6 +223,12 @@ jobs:
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\Release Server $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\Server\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Server Artifacts'
 
+  - powershell: |
+      $Installers = Get-ChildItem -Path . -File -Filter Warewolf-*.exe
+      foreach ($Installer in $Installers) {
+          Remove-Item $Installer
+      }
+
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\Installer $(Build.BuildId)\" \"$(Agent.BuildDirectory)\") ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Installer'
 
@@ -229,8 +239,8 @@ jobs:
       }
       $VersionString = Get-Content "$(Agent.BuildDirectory)\Server\FullVersionString"
       $AllAssemblies = Get-ChildItem "$(Agent.BuildDirectory)\Server" | Foreach {$_.FullName}
-      Compress-Archive $AllAssemblies "${bamboo.build.working.directory}\Server-$VersionString.zip" -Update
-      Write-S3Object -BucketName warewolfreleases -File .\Server-$VersionString.zip -Key Server-$VersionString.zip -CannedACLName public-read -PublicReadOnly -StoredCredentials warewolfreleases -AccessKey $env:AccessKey -SecretKey $env:SecretKey
+      Compress-Archive $AllAssemblies "$(Agent.BuildDirectory)\Server-$VersionString.zip" -Update
+      Write-S3Object -BucketName warewolfreleases -File "$(Agent.BuildDirectory)\Server-$VersionString.zip" -Key Server-$VersionString.zip -CannedACLName public-read -PublicReadOnly -StoredCredentials warewolfreleases -AccessKey $env:AccessKey -SecretKey $env:SecretKey
       if ($VersionString.EndsWith(".0")) {
         $TrimmedVersionString = "$VersionString".TrimEnd(".0")
         Copy-Item ./Server-$VersionString.zip ./Server-$TrimmedVersionString.zip
