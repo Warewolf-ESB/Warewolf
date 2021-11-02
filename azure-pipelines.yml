@@ -107,10 +107,9 @@ jobs:
       $TrimmedVersionString = $VersionString.TrimEnd(".0")
       if ("$VersionString" -ne "$TrimmedVersionString") {
         Copy-Item ./Warewolf-$VersionString.exe ./Warewolf-$TrimmedVersionString.exe
+        (robocopy \"./Warewolf-$TrimmedVersionString.exe\" \"\\\\opswolf\\Azure Devops\\Installer $(Build.BuildId)\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0
       }
-
-  - script: "(robocopy \"./Warewolf-*.exe\" \"\\\\opswolf\\Azure Devops\\Installer $(Build.BuildId)\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
-    displayName: 'Upload Installer Artifact'
+      (robocopy \"./Warewolf-$VersionString.exe\" \"\\\\opswolf\\Azure Devops\\Installer $(Build.BuildId)\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0
 
 - job: Docker_Hub
   displayName: 'Docker Hub'
