@@ -102,10 +102,10 @@ jobs:
       docker build --network "Virtual Switch #1" -t registry.gitlab.com/warewolf/installer .
       docker rm -f installerbuild
       docker create --name=installerbuild registry.gitlab.com/warewolf/installer
-      docker cp installerbuild:app/WixWPF/bin/Debug/Warewolf-${bamboo.Release.FullVersionString}.exe ./Warewolf-${bamboo.Release.FullVersionString}.exe
       $VersionString = Get-Content "$(Agent.BuildDirectory)\InstallerSource\WarewolfInstaller\ProductBuild\Server\FullVersionString"
-      $VersionString = $VersionString.TrimEnd(".0")
-      Copy-Item ./Warewolf-$VersionString.exe ./Warewolf-$VersionString.exe
+      docker cp installerbuild:app/WixWPF/bin/Debug/Warewolf-$VersionString.exe ./Warewolf-$VersionString.exe
+      $TrimmedVersionString = $VersionString.TrimEnd(".0")
+      Copy-Item ./Warewolf-$VersionString.exe ./Warewolf-$TrimmedVersionString.exe
 
   - script: "(robocopy \"./Warewolf-*.exe\" \"\\\\opswolf\\Azure Devops\\Installer $(Build.BuildId)\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Upload Installer Artifact'
