@@ -75,30 +75,29 @@ jobs:
   - checkout: none
 
   - powershell: |
-      if (Test-Path "$(Agent.BuildDirectory)\InstallerSource") {
-        git -C "$(Agent.BuildDirectory)\InstallerSource" pull
+      if (Test-Path "$(Agent.BuildDirectory)\WarewolfInstaller") {
+        git -C "$(Agent.BuildDirectory)\WarewolfInstaller" pull
       } else {
-        git -C "$(Agent.BuildDirectory)" clone https://gitlab.com/warewolf/installer InstallerSource
+        git -C "$(Agent.BuildDirectory)" clone https://gitlab.com/warewolf/installer WarewolfInstaller
       }
-      $InstallerBranch = git -C "$(Agent.BuildDirectory)\InstallerSource" rev-parse --abbrev-ref HEAD
+      $InstallerBranch = git -C "$(Agent.BuildDirectory)\WarewolfInstaller" rev-parse --abbrev-ref HEAD
       $ThisBranch = git -C "$(Agent.BuildDirectory)\s" rev-parse --abbrev-ref HEAD
       if ($InstallerBranch -ne $ThisBranch) {
-        git -C "$(Agent.BuildDirectory)\InstallerSource" fetch
-        $TryGetThisBranchOnTheInstaller = git -C "$(Agent.BuildDirectory)\InstallerSource" ls-remote --heads "https://gitlab.com/warewolf/installer" $ThisBranch
+        git -C "$(Agent.BuildDirectory)\WarewolfInstaller" fetch
+        $TryGetThisBranchOnTheInstaller = git -C "$(Agent.BuildDirectory)\WarewolfInstaller" ls-remote --heads "https://gitlab.com/warewolf/installer" $ThisBranch
         if ("$TryGetThisBranchOnTheInstaller" -ne "") {
-          git -C "$(Agent.BuildDirectory)\InstallerSource" checkout $ThisBranch
-          git -C "$(Agent.BuildDirectory)\InstallerSource" pull
+          git -C "$(Agent.BuildDirectory)\WarewolfInstaller" checkout $ThisBranch
+          git -C "$(Agent.BuildDirectory)\WarewolfInstaller" pull
         }
       }
 
-  - script: "(robocopy \"\\\\opswolf\\Azure Devops\\Release Server $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\InstallerSource\\ProductBuild\\Server\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
+  - script: "(robocopy \"\\\\opswolf\\Azure Devops\\Release Server $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\WarewolfInstaller\\ProductBuild\\Server\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Server Artifacts'
 
-  - script: "(robocopy \"\\\\opswolf\\Azure Devops\\Release Studio $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\InstallerSource\\ProductBuild\\Studio\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
+  - script: "(robocopy \"\\\\opswolf\\Azure Devops\\Release Studio $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\WarewolfInstaller\\ProductBuild\\Studio\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Studio Artifacts'
     
   - powershell: |
-      Set-Location "$(Agent.BuildDirectory)\InstallerSource"
       docker build --network "Virtual Switch" -t registry.gitlab.com/warewolf/installer .
       docker rm -f installerbuild
       docker create --name=installerbuild registry.gitlab.com/warewolf/installer
