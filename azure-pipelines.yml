@@ -104,12 +104,11 @@ jobs:
       docker create --name=installerbuild registry.gitlab.com/warewolf/installer
       $VersionString = Get-Content "$(Agent.BuildDirectory)\InstallerSource\WarewolfInstaller\ProductBuild\Server\FullVersionString"
       docker cp installerbuild:app/WixWPF/bin/Debug/Warewolf-$VersionString.exe ./Warewolf-$VersionString.exe
+      Copy-Item ./Warewolf-$VersionString.exe "\\opswolf\Azure Devops\Installer $(Build.BuildId)\Warewolf-$VersionString.exe"
       $TrimmedVersionString = $VersionString.TrimEnd(".0")
       if ("$VersionString" -ne "$TrimmedVersionString") {
-        Copy-Item ./Warewolf-$VersionString.exe ./Warewolf-$TrimmedVersionString.exe
-        (robocopy \"./Warewolf-$TrimmedVersionString.exe\" \"\\\\opswolf\\Azure Devops\\Installer $(Build.BuildId)\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0
+        Copy-Item ./Warewolf-$VersionString.exe "\\opswolf\Azure Devops\Installer $(Build.BuildId)\Warewolf-$TrimmedVersionString.exe"
       }
-      (robocopy \"./Warewolf-$VersionString.exe\" \"\\\\opswolf\\Azure Devops\\Installer $(Build.BuildId)\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0
 
 - job: Docker_Hub
   displayName: 'Docker Hub'
