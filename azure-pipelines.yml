@@ -219,7 +219,7 @@ jobs:
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\Release Server $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\Server\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Server Artifacts'
 
-  - script: "(robocopy \"\\\\opswolf\\Azure Devops\\Installer $(Build.BuildId)\" \"$(Agent.BuildDirectory)\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
+  - script: "(robocopy \"\\\\opswolf\\Azure Devops\\Installer $(Build.BuildId)\" \"$(Agent.BuildDirectory)\") ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Installer'
 
   - powershell: |
