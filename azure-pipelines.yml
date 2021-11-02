@@ -1779,7 +1779,7 @@ jobs:
       Write-Host Testing Warewolf assembly file versions...
       $HighestReadVersion = "0.0.0.0"
       $LastReadVersion = "0.0.0.0"
-      foreach ($file in Get-ChildItem -recurse "$(Agent.BuildDirectory)/s/Dev") {
+      foreach ($file in Get-ChildItem -recurse \"$(Agent.BuildDirectory)\\s\\Dev\") {
           if (($file.Name.EndsWith(".dll") -or ($file.Name.EndsWith(".exe") -and -Not $file.Name.EndsWith(".vshost.exe"))) -and ($file.Name.StartsWith("Dev2.") -or $file.Name.StartsWith("Warewolf.") -or $file.Name.StartsWith("WareWolf")) -and $file.Name -ne "Warewolf.Usage.dll") {
               # Get version.
               $ReadVersion = [system.diagnostics.fileversioninfo]::GetVersionInfo($file.FullName).FileVersion
@@ -1803,15 +1803,187 @@ jobs:
               $LastReadVersion = $ReadVersion
           }
       }
-      Write-Host "##vso[task.setvariable variable=FullVersionString;isOutput=true;]$HighestReadVersion"
+      Out-File -LiteralPath \"$(Agent.BuildDirectory)\\s\\Dev\\Dev2.Server\\bin\\Debug\\net48\\win\\FullVersionString\" -InputObject $HighestReadVersion -Encoding default -Force
+      Out-File -LiteralPath \"$(Agent.BuildDirectory)\\s\\Dev\\Dev2.Studio\\bin\\Debug\\net48\\win\\FullVersionString\" -InputObject $HighestReadVersion -Encoding default -Force
+      git tag $HighestReadVersion
+      git push https://dev.azure.com/Warewolf-Dev/_git/Dev $HighestReadVersion
 
-- job: check_version_string
-  displayName: 'Checking the version string from another job'
+  - script: "(robocopy \"$(Agent.BuildDirectory)\\s\\Dev\\Dev2.Server\\bin\\Debug\\net48\\win\" \"\\\\opswolf\\Azure Devops\\Release Server $(Build.BuildId)\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
+    displayName: 'Upload Server Artifacts'
+
+  - script: "(robocopy \"$(Agent.BuildDirectory)\\s\\Dev\\Dev2.Studio\\bin\\Debug\\net48\\win\" \"\\\\opswolf\\Azure Devops\\Release Studio $(Build.BuildId)\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
+    displayName: 'Upload Studio Artifacts'
+
+- job: Compile_Installer
+  displayName: 'Compile Installer'
   dependsOn: build_release
-  
-  variables:
-  - name: FullVersionString
-    value: $[ dependencies.build_release.outputs['build_release.FullVersionString'] ]
 
   steps:
-  - powershell: Write-Host Got version $(FullVersionString)
+  - checkout: none
+
+  - powershell: |
+      if (Test-Path \"$(Agent.BuildDirectory)\\InstallerSource\") {
+        git -C \"$(Agent.BuildDirectory)\\InstallerSource\" pull
+      } else {
+        git -C \"$(Agent.BuildDirectory)\" clone https://gitlab.com/warewolf/installer InstallerSource
+      }
+      $InstallerBranch = git -C \"$(Agent.BuildDirectory)\\InstallerSource\" rev-parse --abbrev-ref HEAD
+      $ThisBranch = git -C \"$(Agent.BuildDirectory)\\s\" rev-parse --abbrev-ref HEAD
+      if ($InstallerBranch -ne $ThisBranch) {
+        git -C \"$(Agent.BuildDirectory)\\InstallerSource\" fetch
+        $TryGetThisBranchOnTheInstaller = git -C \"$(Agent.BuildDirectory)\\InstallerSource\" ls-remote --heads "https://gitlab.com/warewolf/installer" $ThisBranch
+        if ("$TryGetThisBranchOnTheInstaller" -ne "") {
+          git -C \"$(Agent.BuildDirectory)\\InstallerSource\" checkout $ThisBranch
+          git -C \"$(Agent.BuildDirectory)\\InstallerSource\" pull
+        }
+      }
+
+  - script: "(robocopy \"\\\\opswolf\\Azure Devops\\Release Server $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\InstallerSource\\ProductBuild\\Server\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
+    displayName: 'Download Server Artifacts'
+
+  - script: "(robocopy \"\\\\opswolf\\Azure Devops\\Release Studio $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\InstallerSource\\ProductBuild\\Studio\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
+    displayName: 'Download Studio Artifacts'
+    
+  - powershell: |
+      Set-Location \"$(Agent.BuildDirectory)\\InstallerSource\"
+      docker build --network "Virtual Switch" -t registry.gitlab.com/warewolf/installer .
+      docker rm -f installerbuild
+      docker create --name=installerbuild registry.gitlab.com/warewolf/installer
+      docker cp installerbuild:app/WixWPF/bin/Debug/Warewolf-${bamboo.Release.FullVersionString}.exe ./Warewolf-${bamboo.Release.FullVersionString}.exe
+      $VersionString = Get-Content \"$(Agent.BuildDirectory)\\InstallerSource\\ProductBuild\\Server\\FullVersionString\"
+      $VersionString = $VersionString.TrimEnd(".0")
+      Copy-Item ./Warewolf-${bamboo.Release.FullVersionString}.exe ./Warewolf-$VersionString.exe
+
+  - script: "(robocopy \"./Warewolf-*.exe\" \"\\\\opswolf\\Azure Devops\\Installer $(Build.BuildId)\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
+    displayName: 'Upload Installer Artifact'
+
+- job: Docker_Hub
+  displayName: 'Docker Hub'
+  dependsOn: build_release
+
+  steps:
+  - checkout: none
+
+  - script: "(robocopy \"\\\\opswolf\\Azure Devops\\Release Server $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\Server\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
+    displayName: 'Download Server Artifacts'
+  
+  - powershell: |
+      Set-Location \"$(Agent.BuildDirectory)\\Server\"
+      $VersionString = Get-Content \"$(Agent.BuildDirectory)\\Server\\FullVersionString\"
+      if ("$VersionString" -ne "") {
+        docker build --isolation=hyperv -t warewolfserver/warewolfserver:latest .
+        docker login
+        
+        $BranchName = git -C \"$(Agent.BuildDirectory)\\s\" rev-parse --abbrev-ref HEAD
+        if ("$BranchName" -eq "develop") {
+            Write-Host Pushing...
+            docker push warewolfserver/warewolfserver:latest
+            Write-Host Pushed.
+        } else {
+            $cleanBranchName = "$BranchName".Replace("/","-")
+            Write-Host Tagging with $cleanBranchName
+            docker tag warewolfserver/warewolfserver:latest warewolfserver/warewolfserver:$cleanBranchName
+            Write-Host Pushing...
+            docker push warewolfserver/warewolfserver:$cleanBranchName
+            Write-Host Pushed.
+            docker rmi warewolfserver/warewolfserver:$cleanBranchName
+        }
+        
+        Write-Host Tagging with $VersionString
+        docker tag warewolfserver/warewolfserver:latest warewolfserver/warewolfserver:$VersionString
+        Write-Host Pushing...
+        docker push warewolfserver/warewolfserver:$VersionString
+        Write-Host Pushed.
+        docker rmi warewolfserver/warewolfserver:$VersionString
+
+        $TrimmedVersionString = "$VersionString".TrimEnd(".0")
+        if ("$VersionString" -ne "$TrimmedVersionString") {
+            Write-Host Tagging with $TrimmedVersionString
+            docker tag warewolfserver/warewolfserver:latest warewolfserver/warewolfserver:$TrimmedVersionString
+            Write-Host Pushing...
+            docker push warewolfserver/warewolfserver:$TrimmedVersionString
+            Write-Host Pushed.
+            docker rmi warewolfserver/warewolfserver:$TrimmedVersionString
+        }
+      }
+
+- job: GitLab_Registry
+  displayName: 'GitLab Registry'
+  dependsOn: build_release
+
+  steps:
+  - script: "(robocopy \"\\\\opswolf\\Azure Devops\\Release Server $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\Server\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
+    displayName: 'Download Server Artifacts'
+  
+  - powershell: |
+      Set-Location \"$(Agent.BuildDirectory)\\Server\"
+      $VersionString = Get-Content \"$(Agent.BuildDirectory)\\Server\\FullVersionString\"
+      if ("$VersionString" -ne "") {    
+        docker build --isolation=hyperv -t registry.gitlab.com/warewolf/warewolf .
+        docker login registry.gitlab.com/warewolf/warewolf
+        
+        $BranchName = git -C \"$(Agent.BuildDirectory)\\s\" rev-parse --abbrev-ref HEAD
+        if ("$BranchName" -eq "develop") {
+            Write-Host Pushing...
+            docker push registry.gitlab.com/warewolf/warewolf
+            Write-Host Pushed.
+        } else {
+            $cleanBranchName = "$BranchName".Replace("/","-")
+            Write-Host Tagging with $cleanBranchName
+            docker tag registry.gitlab.com/warewolf/warewolf registry.gitlab.com/warewolf/warewolf:$cleanBranchName
+            Write-Host Pushing...
+            docker push registry.gitlab.com/warewolf/warewolf:$cleanBranchName
+            Write-Host Pushed.
+            docker rmi registry.gitlab.com/warewolf/warewolf:$cleanBranchName
+        }
+        
+        Write-Host Tagging with $VersionString
+        docker tag registry.gitlab.com/warewolf/warewolf:latest registry.gitlab.com/warewolf/warewolf:$VersionString
+        Write-Host Pushing...
+        docker push registry.gitlab.com/warewolf/warewolf:$VersionString
+        Write-Host Pushed.
+        docker rmi registry.gitlab.com/warewolf/warewolf:$VersionString
+
+        $TrimmedVersionString = "$VersionString".TrimEnd(".0")
+        if ("$VersionString" -ne "$TrimmedVersionString") {
+            Write-Host Tagging with $VersionString
+            docker tag registry.gitlab.com/warewolf/warewolf:latest registry.gitlab.com/warewolf/warewolf:$TrimmedVersionString
+            Write-Host Pushing...
+            docker push registry.gitlab.com/warewolf/warewolf:$TrimmedVersionString
+            Write-Host Pushed.
+            docker rmi registry.gitlab.com/warewolf/warewolf:$TrimmedVersionString
+        }
+      }
+
+- job: Upload_To_AWS_S3
+  displayName: 'Upload To AWS S3'
+  dependsOn: Compile_Installer
+
+  steps:
+  - checkout: none
+    env:
+      AccessKey: $(AccessKeyPassword)
+      SecretKey: $(SecretKeyPassword)
+
+  - script: "(robocopy \"\\\\opswolf\\Azure Devops\\Release Server $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\Server\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
+    displayName: 'Download Server Artifacts'
+
+  - script: "(robocopy \"\\\\opswolf\\Azure Devops\\Installer $(Build.BuildId)\" \"$(Agent.BuildDirectory)\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
+    displayName: 'Download Installer'
+
+  - powershell: |
+      $Installers = Get-ChildItem -Path . -File -Filter Warewolf-*.exe
+      foreach ($Installer in $Installers) {
+          Write-S3Object -BucketName warewolfreleases -File $Installer.FullName -Key $Installer.Name -CannedACLName public-read -PublicReadOnly -StoredCredentials warewolfreleases -AccessKey $env:AccessKey -SecretKey $env:SecretKey
+      }
+
+  - powershell: |
+      $VersionString = Get-Content \"$(Agent.BuildDirectory)\\Server\\FullVersionString\"
+      $AllAssemblies = Get-ChildItem "$(Agent.BuildDirectory)\\Server" | Foreach {$_.FullName}
+      Compress-Archive $AllAssemblies "${bamboo.build.working.directory}\Server-$VersionString.zip" -Update
+      Write-S3Object -BucketName warewolfreleases -File .\Server-$VersionString.zip -Key Server-$VersionString.zip -CannedACLName public-read -PublicReadOnly -StoredCredentials warewolfreleases -AccessKey $env:AccessKey -SecretKey $env:SecretKey
+      $VersionString = "$VersionString".TrimEnd(".0")
+      if (!(Test-Path ./Server-$VersionString.zip)) {
+          Copy-Item ./Server-$VersionString.zip ./Server-$VersionString.zip
+          Write-S3Object -BucketName warewolfreleases -File .\Server-$VersionString.zip -Key Server-$VersionString.zip -CannedACLName public-read -PublicReadOnly -StoredCredentials warewolfreleases -AccessKey $env:AccessKey -SecretKey $env:SecretKey
+      }
