@@ -1126,7 +1126,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(500)]
+        //[Timeout(500)]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(ServiceTestViewModel))]
         public void ServiceTestViewModel_TestUpdateHelpDescriptor()
@@ -1482,7 +1482,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(250)]
+        //[Timeout(250)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory(nameof(ServiceTestViewModel))]
         public void ServiceTestViewModel_CanSave_GivenIsDirtyAndEmptyName_ShouldSetCanSaveFalse()
@@ -2813,7 +2813,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(250)]
+        //[Timeout(250)]
         [Owner("Hagashen Naidu")]
         [TestCategory(nameof(ServiceTestViewModel))]
         public void ServiceTestViewModel_ItemSelected_GivenSelectedItemForEachWithSequence_ShouldHaveAddServiceTestStepShouldHaveOutputs()
@@ -2869,10 +2869,10 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             Assert.AreEqual(1, serviceTestStep.Children.Count);
             var childItem = serviceTestStep.Children[0];
-            Assert.AreEqual(StepType.Assert, childItem.Type);
+            Assert.AreEqual(StepType.Mock, childItem.Type);
             Assert.AreEqual(sequenceActivity.GetType().Name, childItem.ActivityType);
             Assert.AreEqual(seqId, childItem.ActivityID);
-            Assert.IsNull(childItem.Parent, "should now be null as this node is no longer a child but parent with no parent");
+            Assert.AreEqual(serviceTestStep, childItem.Parent);
 
             Assert.AreEqual(1, childItem.Children.Count);
             var seqChildItem = childItem.Children[0];
@@ -3113,7 +3113,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(250)]
+        //[Timeout(250)]
         [Owner("Hagashen Naidu")]
         [TestCategory(nameof(ServiceTestViewModel))]
         public void ServiceTestViewModel_ItemSelected_GivenSelectedItemSequenceWithSequence_ShouldHaveAddServiceTestStepShouldHaveOutputs()
@@ -3168,10 +3168,10 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             Assert.AreEqual(1, serviceTestStep.Children.Count);
             var childItem = serviceTestStep.Children[0];
-            Assert.AreEqual(StepType.Assert, childItem.Type);
+            Assert.AreEqual(StepType.Mock, childItem.Type);
             Assert.AreEqual(dsfSequenceActivity.GetType().Name, childItem.ActivityType);
             Assert.AreEqual(dsfSeqId, childItem.ActivityID);
-            Assert.IsNull(childItem.Parent, "this will be null");
+            Assert.AreEqual(serviceTestStep, childItem.Parent);
 
             Assert.AreEqual(1, childItem.Children.Count);
             var forEachChildItem = childItem.Children[0];
@@ -3297,7 +3297,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(250)]
+        //[Timeout(250)]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(ServiceTestViewModel))]
         public void ServiceTestViewModel_AddOutputs_NullOutputs_ShouldSet_StepOutputs()
@@ -3549,7 +3549,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(250)]
+        //[Timeout(250)]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(ServiceTestViewModel))]
         public void ServiceTestViewModel_AddOutputs_AddSequence_ShouldReturn()
@@ -3592,7 +3592,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(250)]
+        //[Timeout(250)]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(ServiceTestViewModel))]
         public void ServiceTestViewModel_AddOutputs_AddSequence_ShouldCall_AddMissingChild()
@@ -3640,7 +3640,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(250)]
+        //[Timeout(250)]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(ServiceTestViewModel))]
         public void ServiceTestViewModel_AddOutputs_AddEnhancedDotNetDll_ShouldReturn()
@@ -3683,7 +3683,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(250)]
+        //[Timeout(250)]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(ServiceTestViewModel))]
         public void ServiceTestViewModel_AddOutputs_AddEnhancedDotNetDll_ShouldCall_AddEnhancedDotNetDllMethod()
@@ -3747,7 +3747,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(250)]
+        //[Timeout(250)]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(ServiceTestViewModel))]
         public void ServiceTestViewModel_AddOutputs_ProcessActivity_ShouldAddTestSteps()
@@ -3800,7 +3800,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(250)]
+        //[Timeout(250)]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(ServiceTestViewModel))]
         public void ServiceTestViewModel_AddOutputs_ProcessActivity_ParentNotNull_ShouldAddTestSteps()
@@ -3867,7 +3867,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(250)]
+        //[Timeout(250)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(ServiceTestViewModel))]
         public void ServiceTestViewModel_AddOutputs_ProcessActivity_ParentNotNull_ShouldAddTestSteps1()
