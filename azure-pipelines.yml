@@ -1779,7 +1779,7 @@ jobs:
       Write-Host Testing Warewolf assembly file versions...
       $HighestReadVersion = "0.0.0.0"
       $LastReadVersion = "0.0.0.0"
-      foreach ($file in Get-ChildItem -recurse \"$(Agent.BuildDirectory)\\s\\Dev\") {
+      foreach ($file in Get-ChildItem -recurse "$(Agent.BuildDirectory)\s\Dev") {
           if (($file.Name.EndsWith(".dll") -or ($file.Name.EndsWith(".exe") -and -Not $file.Name.EndsWith(".vshost.exe"))) -and ($file.Name.StartsWith("Dev2.") -or $file.Name.StartsWith("Warewolf.") -or $file.Name.StartsWith("WareWolf")) -and $file.Name -ne "Warewolf.Usage.dll") {
               # Get version.
               $ReadVersion = [system.diagnostics.fileversioninfo]::GetVersionInfo($file.FullName).FileVersion
@@ -1822,19 +1822,19 @@ jobs:
   - checkout: none
 
   - powershell: |
-      if (Test-Path \"$(Agent.BuildDirectory)\\InstallerSource\") {
-        git -C \"$(Agent.BuildDirectory)\\InstallerSource\" pull
+      if (Test-Path "$(Agent.BuildDirectory)\InstallerSource") {
+        git -C "$(Agent.BuildDirectory)\InstallerSource" pull
       } else {
-        git -C \"$(Agent.BuildDirectory)\" clone https://gitlab.com/warewolf/installer InstallerSource
+        git -C "$(Agent.BuildDirectory)" clone https://gitlab.com/warewolf/installer InstallerSource
       }
-      $InstallerBranch = git -C \"$(Agent.BuildDirectory)\\InstallerSource\" rev-parse --abbrev-ref HEAD
-      $ThisBranch = git -C \"$(Agent.BuildDirectory)\\s\" rev-parse --abbrev-ref HEAD
+      $InstallerBranch = git -C "$(Agent.BuildDirectory)\InstallerSource" rev-parse --abbrev-ref HEAD
+      $ThisBranch = git -C "$(Agent.BuildDirectory)\s" rev-parse --abbrev-ref HEAD
       if ($InstallerBranch -ne $ThisBranch) {
-        git -C \"$(Agent.BuildDirectory)\\InstallerSource\" fetch
-        $TryGetThisBranchOnTheInstaller = git -C \"$(Agent.BuildDirectory)\\InstallerSource\" ls-remote --heads "https://gitlab.com/warewolf/installer" $ThisBranch
+        git -C "$(Agent.BuildDirectory)\InstallerSource" fetch
+        $TryGetThisBranchOnTheInstaller = git -C "$(Agent.BuildDirectory)\InstallerSource" ls-remote --heads "https://gitlab.com/warewolf/installer" $ThisBranch
         if ("$TryGetThisBranchOnTheInstaller" -ne "") {
-          git -C \"$(Agent.BuildDirectory)\\InstallerSource\" checkout $ThisBranch
-          git -C \"$(Agent.BuildDirectory)\\InstallerSource\" pull
+          git -C "$(Agent.BuildDirectory)\InstallerSource" checkout $ThisBranch
+          git -C "$(Agent.BuildDirectory)\InstallerSource" pull
         }
       }
 
@@ -1845,12 +1845,12 @@ jobs:
     displayName: 'Download Studio Artifacts'
     
   - powershell: |
-      Set-Location \"$(Agent.BuildDirectory)\\InstallerSource\"
+      Set-Location "$(Agent.BuildDirectory)\InstallerSource"
       docker build --network "Virtual Switch" -t registry.gitlab.com/warewolf/installer .
       docker rm -f installerbuild
       docker create --name=installerbuild registry.gitlab.com/warewolf/installer
       docker cp installerbuild:app/WixWPF/bin/Debug/Warewolf-${bamboo.Release.FullVersionString}.exe ./Warewolf-${bamboo.Release.FullVersionString}.exe
-      $VersionString = Get-Content \"$(Agent.BuildDirectory)\\InstallerSource\\ProductBuild\\Server\\FullVersionString\"
+      $VersionString = Get-Content "$(Agent.BuildDirectory)\InstallerSource\ProductBuild\Server\FullVersionString"
       $VersionString = $VersionString.TrimEnd(".0")
       Copy-Item ./Warewolf-${bamboo.Release.FullVersionString}.exe ./Warewolf-$VersionString.exe
 
@@ -1868,13 +1868,13 @@ jobs:
     displayName: 'Download Server Artifacts'
   
   - powershell: |
-      Set-Location \"$(Agent.BuildDirectory)\\Server\"
-      $VersionString = Get-Content \"$(Agent.BuildDirectory)\\Server\\FullVersionString\"
+      Set-Location "$(Agent.BuildDirectory)\Server"
+      $VersionString = Get-Content "$(Agent.BuildDirectory)\Server\FullVersionString"
       if ("$VersionString" -ne "") {
         docker build --isolation=hyperv -t warewolfserver/warewolfserver:latest .
         docker login
         
-        $BranchName = git -C \"$(Agent.BuildDirectory)\\s\" rev-parse --abbrev-ref HEAD
+        $BranchName = git -C "$(Agent.BuildDirectory)\s" rev-parse --abbrev-ref HEAD
         if ("$BranchName" -eq "develop") {
             Write-Host Pushing...
             docker push warewolfserver/warewolfserver:latest
@@ -1916,13 +1916,13 @@ jobs:
     displayName: 'Download Server Artifacts'
   
   - powershell: |
-      Set-Location \"$(Agent.BuildDirectory)\\Server\"
-      $VersionString = Get-Content \"$(Agent.BuildDirectory)\\Server\\FullVersionString\"
+      Set-Location "$(Agent.BuildDirectory)\Server"
+      $VersionString = Get-Content "$(Agent.BuildDirectory)\Server\FullVersionString"
       if ("$VersionString" -ne "") {    
         docker build --isolation=hyperv -t registry.gitlab.com/warewolf/warewolf .
         docker login registry.gitlab.com/warewolf/warewolf
         
-        $BranchName = git -C \"$(Agent.BuildDirectory)\\s\" rev-parse --abbrev-ref HEAD
+        $BranchName = git -C "$(Agent.BuildDirectory)\s" rev-parse --abbrev-ref HEAD
         if ("$BranchName" -eq "develop") {
             Write-Host Pushing...
             docker push registry.gitlab.com/warewolf/warewolf
@@ -1978,8 +1978,8 @@ jobs:
       }
 
   - powershell: |
-      $VersionString = Get-Content \"$(Agent.BuildDirectory)\\Server\\FullVersionString\"
-      $AllAssemblies = Get-ChildItem "$(Agent.BuildDirectory)\\Server" | Foreach {$_.FullName}
+      $VersionString = Get-Content "$(Agent.BuildDirectory)\Server\FullVersionString"
+      $AllAssemblies = Get-ChildItem "$(Agent.BuildDirectory)\Server" | Foreach {$_.FullName}
       Compress-Archive $AllAssemblies "${bamboo.build.working.directory}\Server-$VersionString.zip" -Update
       Write-S3Object -BucketName warewolfreleases -File .\Server-$VersionString.zip -Key Server-$VersionString.zip -CannedACLName public-read -PublicReadOnly -StoredCredentials warewolfreleases -AccessKey $env:AccessKey -SecretKey $env:SecretKey
       $VersionString = "$VersionString".TrimEnd(".0")
