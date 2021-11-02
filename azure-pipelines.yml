@@ -59,7 +59,7 @@ jobs:
       Out-File -LiteralPath "$(Agent.BuildDirectory)\s\Dev\Dev2.Server\bin\Release\net48\win\FullVersionString" -InputObject $HighestReadVersion -Encoding default -Force
       Out-File -LiteralPath "$(Agent.BuildDirectory)\s\Dev\Dev2.Studio\bin\Release\net48\win\FullVersionString" -InputObject $HighestReadVersion -Encoding default -Force
       git tag $HighestReadVersion
-      git push --tags
+      git push origin $HighestReadVersion
 
   - script: "(robocopy \"$(Agent.BuildDirectory)\\s\\Dev\\Dev2.Server\\bin\\Debug\\net48\\win\" \"\\\\opswolf\\Azure Devops\\Release Server $(Build.BuildId)\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Upload Server Artifacts'
