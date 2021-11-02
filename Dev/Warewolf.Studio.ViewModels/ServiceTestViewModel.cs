@@ -909,7 +909,7 @@ namespace Warewolf.Studio.ViewModels
             var testStep = BuildParentsFromModelItem(modelItem);
             if (testStep != null)
             {
-                AddSequence(sequence, testStep, testStep.Children);
+                //AddSequence(sequence, testStep, testStep.Children);
                 if (FindExistingStep(testStep.ActivityID.ToString()) == null)
                 {
                     SelectedServiceTest.TestSteps.Add(testStep);
@@ -1151,9 +1151,9 @@ namespace Warewolf.Studio.ViewModels
             }
             var uniqueId = sequence.UniqueID;
 
-            var parentType = sequence.GetType();
-            var testStep = ServiceTestStepWithOutputs(uniqueId, sequence.DisplayName, new List<string>(), parentType, ModelItemUtils.CreateModelItem(sequence));
-            SetStepIcon(parentType, testStep);
+            var type = sequence.GetType();
+            var testStep = CreateMockChildStep(Guid.Parse(uniqueId), parent, type.Name, sequence.DisplayName);
+            SetStepIcon(type, testStep);
             foreach (var activity in sequence.Activities)
             {
                 AddSequenceActivity(testStep, activity);
@@ -1620,29 +1620,35 @@ namespace Warewolf.Studio.ViewModels
             return parentActivityUniqueId;
         }
 
+        //PBI: This name might not be intent revealing enough
         IServiceTestStep CheckForExists(string activityUniqueId, List<string> outputs, string activityDisplayName, Type type)
         {
             var exists = FindExistingStep(activityUniqueId);
-            if (exists == null && outputs != null && outputs.Count > 0)
+            if (exists == null)
             {
                 var serviceTestStep = SelectedServiceTest.AddTestStep(activityUniqueId, activityDisplayName, type.Name, new ObservableCollection<IServiceTestOutput>());
-
-                var serviceTestOutputs = outputs.Select(output =>
+                
+                if (outputs != null && outputs.Count > 0)
                 {
-                    return new ServiceTestOutput(output ?? "", "", "", "")
+
+                    var serviceTestOutputs = outputs.Select(output =>
                     {
-                        HasOptionsForValue = false,
-                        AddStepOutputRow = s => { serviceTestStep?.AddNewOutput(s); }
-                    };
-                }).Cast<IServiceTestOutput>().ToList();
-                if (serviceTestStep != null)
-                {
-                    serviceTestStep.StepOutputs = serviceTestOutputs.ToObservableCollection();
-                    SetStepIcon(type, serviceTestStep);
+                        return new ServiceTestOutput(output ?? "", "", "", "")
+                        {
+                            HasOptionsForValue = false,
+                            AddStepOutputRow = s => { serviceTestStep?.AddNewOutput(s); }
+                        };
+                    }).Cast<IServiceTestOutput>().ToList();
+                    if (serviceTestStep != null)
+                    {
+                        serviceTestStep.StepOutputs = serviceTestOutputs.ToObservableCollection();
+                        SetStepIcon(type, serviceTestStep);
 
-                    return serviceTestStep;
+                        return serviceTestStep;
+                    }
                 }
             }
+
             return exists;
         }
 

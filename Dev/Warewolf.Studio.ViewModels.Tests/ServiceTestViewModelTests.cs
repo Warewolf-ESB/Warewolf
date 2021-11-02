@@ -2697,8 +2697,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         [Timeout(500)]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(ServiceTestViewModel))]
-        public void
-        ServiceTestViewModel_ItemSelected_GivenSelectedItemEnhancedDotNetDll_ShouldHaveAddServiceTestStepShouldHaveOutputs()
+        public void ServiceTestViewModel_ItemSelected_GivenSelectedItemEnhancedDotNetDll_ShouldHaveAddServiceTestStepShouldHaveOutputs()
         {
             //---------------Set up test pack-------------------
             var popupController = new Mock<IPopupController>();
@@ -2733,7 +2732,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockWorkflowDesignerViewModel.Object.ItemSelectedAction(modelItem);
             //---------------Test Result -----------------------
             Assert.AreEqual(1, testFrameworkViewModel.SelectedServiceTest.TestSteps.Count);
-            Assert.AreEqual(StepType.Mock, testFrameworkViewModel.SelectedServiceTest.TestSteps[0].Type);
+            Assert.AreEqual(StepType.Assert, testFrameworkViewModel.SelectedServiceTest.TestSteps[0].Type);
             Assert.AreEqual(dotNetDllActivity.GetType().Name,
                 testFrameworkViewModel.SelectedServiceTest.TestSteps[0].ActivityType);
             Assert.AreEqual(0, testFrameworkViewModel.SelectedServiceTest.TestSteps[0].StepOutputs.Count);
@@ -3796,6 +3795,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(1, testSteps.Count);
             Assert.AreEqual("DsfActivity", testSteps[0].ActivityType);
             Assert.AreEqual("a", testSteps[0].StepDescription);
+            //PBI: this might no longer relevant, more investigation before this work is completed. 
             Assert.AreEqual(1, testSteps[0].StepOutputs.Count);
         }
 
