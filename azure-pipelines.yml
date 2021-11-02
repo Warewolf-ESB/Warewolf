@@ -102,9 +102,9 @@ jobs:
       docker rm -f installerbuild
       docker create --name=installerbuild registry.gitlab.com/warewolf/installer
       docker cp installerbuild:app/WixWPF/bin/Debug/Warewolf-${bamboo.Release.FullVersionString}.exe ./Warewolf-${bamboo.Release.FullVersionString}.exe
-      $VersionString = Get-Content "$(Agent.BuildDirectory)\InstallerSource\ProductBuild\Server\FullVersionString"
+      $VersionString = Get-Content "$(Agent.BuildDirectory)\WarewolfInstaller\ProductBuild\Server\FullVersionString"
       $VersionString = $VersionString.TrimEnd(".0")
-      Copy-Item ./Warewolf-${bamboo.Release.FullVersionString}.exe ./Warewolf-$VersionString.exe
+      Copy-Item ./Warewolf-$VersionString.exe ./Warewolf-$VersionString.exe
 
   - script: "(robocopy \"./Warewolf-*.exe\" \"\\\\opswolf\\Azure Devops\\Installer $(Build.BuildId)\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Upload Installer Artifact'
