@@ -216,9 +216,6 @@ jobs:
 
   steps:
   - checkout: none
-    env:
-      AccessKey: $(AccessKeyPassword)
-      SecretKey: $(SecretKeyPassword)
 
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\Release Server $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\Server\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Server Artifacts'
@@ -231,8 +228,6 @@ jobs:
       foreach ($Installer in $Installers) {
           Write-S3Object -BucketName warewolfreleases -File $Installer.FullName -Key $Installer.Name -CannedACLName public-read -PublicReadOnly -StoredCredentials warewolfreleases -AccessKey $env:AccessKey -SecretKey $env:SecretKey
       }
-
-  - powershell: |
       $VersionString = Get-Content "$(Agent.BuildDirectory)\Server\FullVersionString"
       $AllAssemblies = Get-ChildItem "$(Agent.BuildDirectory)\Server" | Foreach {$_.FullName}
       Compress-Archive $AllAssemblies "${bamboo.build.working.directory}\Server-$VersionString.zip" -Update
@@ -242,3 +237,6 @@ jobs:
           Copy-Item ./Server-$VersionString.zip ./Server-$VersionString.zip
           Write-S3Object -BucketName warewolfreleases -File .\Server-$VersionString.zip -Key Server-$VersionString.zip -CannedACLName public-read -PublicReadOnly -StoredCredentials warewolfreleases -AccessKey $env:AccessKey -SecretKey $env:SecretKey
       }
+    env:
+      AccessKey: $(AccessKeyPassword)
+      SecretKey: $(SecretKeyPassword)
