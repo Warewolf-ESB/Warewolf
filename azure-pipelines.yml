@@ -104,6 +104,7 @@ jobs:
       docker create --name=installerbuild registry.gitlab.com/warewolf/installer
       $VersionString = Get-Content "$(Agent.BuildDirectory)\InstallerSource\WarewolfInstaller\ProductBuild\Server\FullVersionString"
       docker cp installerbuild:app/WixWPF/bin/Debug/Warewolf-$VersionString.exe ./Warewolf-$VersionString.exe
+      New-Item -ItemType Directory "\\opswolf\Azure Devops\Installer $(Build.BuildId)"
       Copy-Item ./Warewolf-$VersionString.exe "\\opswolf\Azure Devops\Installer $(Build.BuildId)\Warewolf-$VersionString.exe"
       $TrimmedVersionString = $VersionString.TrimEnd(".0")
       if ("$VersionString" -ne "$TrimmedVersionString") {
