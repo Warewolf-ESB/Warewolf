@@ -106,8 +106,8 @@ jobs:
       docker cp installerbuild:app/WixWPF/bin/Debug/Warewolf-$VersionString.exe ./Warewolf-$VersionString.exe
       New-Item -ItemType Directory "\\opswolf\Azure Devops\Installer $(Build.BuildId)"
       Copy-Item ./Warewolf-$VersionString.exe "\\opswolf\Azure Devops\Installer $(Build.BuildId)\Warewolf-$VersionString.exe"
-      $TrimmedVersionString = $VersionString.TrimEnd(".0")
-      if ("$VersionString" -ne "$TrimmedVersionString") {
+      if ($VersionString.EndsWith(".0")) {
+        $TrimmedVersionString = $VersionString.TrimEnd(".0")
         Copy-Item ./Warewolf-$VersionString.exe "\\opswolf\Azure Devops\Installer $(Build.BuildId)\Warewolf-$TrimmedVersionString.exe"
       }
 
@@ -118,7 +118,7 @@ jobs:
   steps:
   - checkout: none
 
-  - script: "(robocopy \"\\\\opswolf\\Azure Devops\\Release Server $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\Server\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
+  - script: "(mkdir \"$(Agent.BuildDirectory)\\Server\" && robocopy \"\\\\opswolf\\Azure Devops\\Release Server $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\Server\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Server Artifacts'
   
   - powershell: |
@@ -130,17 +130,17 @@ jobs:
         
         $BranchName = git -C "$(Agent.BuildDirectory)\s" rev-parse --abbrev-ref HEAD
         if ("$BranchName" -eq "develop") {
-            Write-Host Pushing...
-            docker push warewolfserver/warewolfserver:latest
-            Write-Host Pushed.
+          Write-Host Pushing...
+          docker push warewolfserver/warewolfserver:latest
+          Write-Host Pushed.
         } else {
-            $cleanBranchName = "$BranchName".Replace("/","-")
-            Write-Host Tagging with $cleanBranchName
-            docker tag warewolfserver/warewolfserver:latest warewolfserver/warewolfserver:$cleanBranchName
-            Write-Host Pushing...
-            docker push warewolfserver/warewolfserver:$cleanBranchName
-            Write-Host Pushed.
-            docker rmi warewolfserver/warewolfserver:$cleanBranchName
+          $cleanBranchName = "$BranchName".Replace("/","-")
+          Write-Host Tagging with $cleanBranchName
+          docker tag warewolfserver/warewolfserver:latest warewolfserver/warewolfserver:$cleanBranchName
+          Write-Host Pushing...
+          docker push warewolfserver/warewolfserver:$cleanBranchName
+          Write-Host Pushed.
+          docker rmi warewolfserver/warewolfserver:$cleanBranchName
         }
         
         Write-Host Tagging with $VersionString
@@ -150,14 +150,14 @@ jobs:
         Write-Host Pushed.
         docker rmi warewolfserver/warewolfserver:$VersionString
 
-        $TrimmedVersionString = "$VersionString".TrimEnd(".0")
-        if ("$VersionString" -ne "$TrimmedVersionString") {
-            Write-Host Tagging with $TrimmedVersionString
-            docker tag warewolfserver/warewolfserver:latest warewolfserver/warewolfserver:$TrimmedVersionString
-            Write-Host Pushing...
-            docker push warewolfserver/warewolfserver:$TrimmedVersionString
-            Write-Host Pushed.
-            docker rmi warewolfserver/warewolfserver:$TrimmedVersionString
+        if ($VersionString.EndsWith(".0")) {
+          $TrimmedVersionString = "$VersionString".TrimEnd(".0")
+          Write-Host Tagging with $TrimmedVersionString
+          docker tag warewolfserver/warewolfserver:latest warewolfserver/warewolfserver:$TrimmedVersionString
+          Write-Host Pushing...
+          docker push warewolfserver/warewolfserver:$TrimmedVersionString
+          Write-Host Pushed.
+          docker rmi warewolfserver/warewolfserver:$TrimmedVersionString
         }
       }
 
@@ -166,7 +166,7 @@ jobs:
   dependsOn: build_release
 
   steps:
-  - script: "(robocopy \"\\\\opswolf\\Azure Devops\\Release Server $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\Server\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
+  - script: "(mkdir \"$(Agent.BuildDirectory)\\Server\" && robocopy \"\\\\opswolf\\Azure Devops\\Release Server $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\Server\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Server Artifacts'
   
   - powershell: |
@@ -178,17 +178,17 @@ jobs:
         
         $BranchName = git -C "$(Agent.BuildDirectory)\s" rev-parse --abbrev-ref HEAD
         if ("$BranchName" -eq "develop") {
-            Write-Host Pushing...
-            docker push registry.gitlab.com/warewolf/warewolf
-            Write-Host Pushed.
+          Write-Host Pushing...
+          docker push registry.gitlab.com/warewolf/warewolf
+          Write-Host Pushed.
         } else {
-            $cleanBranchName = "$BranchName".Replace("/","-")
-            Write-Host Tagging with $cleanBranchName
-            docker tag registry.gitlab.com/warewolf/warewolf registry.gitlab.com/warewolf/warewolf:$cleanBranchName
-            Write-Host Pushing...
-            docker push registry.gitlab.com/warewolf/warewolf:$cleanBranchName
-            Write-Host Pushed.
-            docker rmi registry.gitlab.com/warewolf/warewolf:$cleanBranchName
+          $cleanBranchName = "$BranchName".Replace("/","-")
+          Write-Host Tagging with $cleanBranchName
+          docker tag registry.gitlab.com/warewolf/warewolf registry.gitlab.com/warewolf/warewolf:$cleanBranchName
+          Write-Host Pushing...
+          docker push registry.gitlab.com/warewolf/warewolf:$cleanBranchName
+          Write-Host Pushed.
+          docker rmi registry.gitlab.com/warewolf/warewolf:$cleanBranchName
         }
         
         Write-Host Tagging with $VersionString
@@ -198,14 +198,14 @@ jobs:
         Write-Host Pushed.
         docker rmi registry.gitlab.com/warewolf/warewolf:$VersionString
 
-        $TrimmedVersionString = "$VersionString".TrimEnd(".0")
-        if ("$VersionString" -ne "$TrimmedVersionString") {
-            Write-Host Tagging with $VersionString
-            docker tag registry.gitlab.com/warewolf/warewolf:latest registry.gitlab.com/warewolf/warewolf:$TrimmedVersionString
-            Write-Host Pushing...
-            docker push registry.gitlab.com/warewolf/warewolf:$TrimmedVersionString
-            Write-Host Pushed.
-            docker rmi registry.gitlab.com/warewolf/warewolf:$TrimmedVersionString
+        if ($VersionString.EndsWith(".0")) {
+          $TrimmedVersionString = "$VersionString".TrimEnd(".0")
+          Write-Host Tagging with $VersionString
+          docker tag registry.gitlab.com/warewolf/warewolf:latest registry.gitlab.com/warewolf/warewolf:$TrimmedVersionString
+          Write-Host Pushing...
+          docker push registry.gitlab.com/warewolf/warewolf:$TrimmedVersionString
+          Write-Host Pushed.
+          docker rmi registry.gitlab.com/warewolf/warewolf:$TrimmedVersionString
         }
       }
 
@@ -216,7 +216,7 @@ jobs:
   steps:
   - checkout: none
 
-  - script: "(robocopy \"\\\\opswolf\\Azure Devops\\Release Server $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\Server\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
+  - script: "(mkdir \"$(Agent.BuildDirectory)\\Server\" && robocopy \"\\\\opswolf\\Azure Devops\\Release Server $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\Server\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Server Artifacts'
 
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\Installer $(Build.BuildId)\" \"$(Agent.BuildDirectory)\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
@@ -231,10 +231,10 @@ jobs:
       $AllAssemblies = Get-ChildItem "$(Agent.BuildDirectory)\Server" | Foreach {$_.FullName}
       Compress-Archive $AllAssemblies "${bamboo.build.working.directory}\Server-$VersionString.zip" -Update
       Write-S3Object -BucketName warewolfreleases -File .\Server-$VersionString.zip -Key Server-$VersionString.zip -CannedACLName public-read -PublicReadOnly -StoredCredentials warewolfreleases -AccessKey $env:AccessKey -SecretKey $env:SecretKey
-      $VersionString = "$VersionString".TrimEnd(".0")
-      if (!(Test-Path ./Server-$VersionString.zip)) {
-          Copy-Item ./Server-$VersionString.zip ./Server-$VersionString.zip
-          Write-S3Object -BucketName warewolfreleases -File .\Server-$VersionString.zip -Key Server-$VersionString.zip -CannedACLName public-read -PublicReadOnly -StoredCredentials warewolfreleases -AccessKey $env:AccessKey -SecretKey $env:SecretKey
+      if ($VersionString.EndsWith(".0")) {
+        $TrimmedVersionString = "$VersionString".TrimEnd(".0")
+        Copy-Item ./Server-$VersionString.zip ./Server-$TrimmedVersionString.zip
+        Write-S3Object -BucketName warewolfreleases -File .\Server-$TrimmedVersionString.zip -Key Server-$TrimmedVersionString.zip -CannedACLName public-read -PublicReadOnly -StoredCredentials warewolfreleases -AccessKey $env:AccessKey -SecretKey $env:SecretKey
       }
     env:
       AccessKey: $(AccessKeyPassword)
