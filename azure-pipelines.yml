@@ -98,6 +98,7 @@ jobs:
     displayName: 'Download Studio Artifacts'
     
   - powershell: |
+      Set-Location "$(Agent.BuildDirectory)\WarewolfInstaller"
       docker build --network "Virtual Switch" -t registry.gitlab.com/warewolf/installer .
       docker rm -f installerbuild
       docker create --name=installerbuild registry.gitlab.com/warewolf/installer
