@@ -99,7 +99,7 @@ jobs:
     
   - powershell: |
       Set-Location "$(Agent.BuildDirectory)\InstallerSource"
-      docker build --network "Virtual Switch" -t registry.gitlab.com/warewolf/installer .
+      docker build --network "Virtual Switch #1" -t registry.gitlab.com/warewolf/installer .
       docker rm -f installerbuild
       docker create --name=installerbuild registry.gitlab.com/warewolf/installer
       docker cp installerbuild:app/WixWPF/bin/Debug/Warewolf-${bamboo.Release.FullVersionString}.exe ./Warewolf-${bamboo.Release.FullVersionString}.exe
