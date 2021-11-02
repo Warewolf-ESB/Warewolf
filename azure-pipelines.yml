@@ -61,10 +61,10 @@ jobs:
       git -C "$(Build.SourcesDirectory)" tag $HighestReadVersion
       git -C "$(Build.SourcesDirectory)" push origin $HighestReadVersion
 
-  - script: "(robocopy \"$(Agent.BuildDirectory)\\s\\Dev\\Dev2.Server\\bin\\Debug\\net48\\win\" \"\\\\opswolf\\Azure Devops\\Release Server $(Build.BuildId)\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
+  - script: "(robocopy \"$(Agent.BuildDirectory)\\s\\Dev\\Dev2.Server\\bin\\Release\\net48\\win\" \"\\\\opswolf\\Azure Devops\\Release Server $(Build.BuildId)\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Upload Server Artifacts'
 
-  - script: "(robocopy \"$(Agent.BuildDirectory)\\s\\Dev\\Dev2.Studio\\bin\\Debug\\net48\\win\" \"\\\\opswolf\\Azure Devops\\Release Studio $(Build.BuildId)\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
+  - script: "(robocopy \"$(Agent.BuildDirectory)\\s\\Dev\\Dev2.Studio\\bin\\Release\\net48\\win\" \"\\\\opswolf\\Azure Devops\\Release Studio $(Build.BuildId)\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Upload Studio Artifacts'
 
 - job: Compile_Installer
