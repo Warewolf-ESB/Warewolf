@@ -1989,6 +1989,11 @@ jobs:
       }
       $VersionString = Get-Content "$(Agent.BuildDirectory)\Server\FullVersionString"
       $AllAssemblies = Get-ChildItem "$(Agent.BuildDirectory)\Server" | Foreach {$_.FullName}
+      $ServerZips = Get-ChildItem -Path "$(Agent.BuildDirectory)" -File -Filter Server-*.zip
+      foreach ($ServerZip in $ServerZips) {
+        Write-Host Found extra zipped server in working directory: $ServerZip.FullName
+        Remove-Item $ServerZip.FullName
+      }
       Compress-Archive $AllAssemblies "$(Agent.BuildDirectory)\Server-$VersionString.zip" -Update
       Write-S3Object -BucketName warewolfreleases -File "$(Agent.BuildDirectory)\Server-$VersionString.zip" -Key Server-$VersionString.zip -CannedACLName public-read -PublicReadOnly -StoredCredentials warewolfreleases -AccessKey $env:AccessKey -SecretKey $env:SecretKey
       if ($VersionString.EndsWith(".0")) {
