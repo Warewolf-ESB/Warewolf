@@ -30,6 +30,8 @@ namespace Dev2.Data
         public IEnumerable<IWorkflowNode> WorkflowNodes => Resource.WorkflowNodes;
         public IWorkflowNode[] CoveredWorkflowNodes => CalculateCoveredWorkflowNodes();
         public IEnumerable<Guid> CoveredWorkflowNodesNotMockedIds => CalculateCoveredWorkflowNodesNotMockedIds();
+        public IEnumerable<Guid> CoveredWorkflowNodesMockedIds => CalculateCoveredWorkflowNodesMockedIds();
+        public IEnumerable<Guid> CoveredWorkflowNodesIds => CalculateCoveredWorkflowNodesIds();
         public double TotalCoverage => GetTotalCoverage();
 
         public void Add(IServiceTestCoverageModelTo coverage)
@@ -41,6 +43,21 @@ namespace Dev2.Data
         {
             return CoveredWorkflowNodes
                 .Where(o => o.MockSelected is false)
+                .Select(o => o.ActivityID)
+                .Distinct().ToList();
+        }
+
+        private IEnumerable<Guid> CalculateCoveredWorkflowNodesMockedIds()
+        {
+            return CoveredWorkflowNodes
+                .Where(o => o.MockSelected is true)
+                .Select(o => o.ActivityID)
+                .Distinct().ToList();
+        }
+
+        private IEnumerable<Guid> CalculateCoveredWorkflowNodesIds()
+        {
+            return CoveredWorkflowNodes
                 .Select(o => o.ActivityID)
                 .Distinct().ToList();
         }
@@ -57,7 +74,7 @@ namespace Dev2.Data
         private double GetTotalCoverage()
         {
             var accum2 = WorkflowNodes.Select(o => o.UniqueID).ToList();
-            var activitiesExistingInTests = accum2.Intersect(CoveredWorkflowNodesNotMockedIds).ToList();
+            var activitiesExistingInTests = accum2.Intersect(CoveredWorkflowNodesIds).ToList();
             var total = Math.Round(activitiesExistingInTests.Count / (double)accum2.Count, 2);
             return total;
         }

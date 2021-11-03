@@ -355,11 +355,10 @@ namespace Dev2.Runtime.WebServer
             writer.AddAttribute(HtmlTextWriterAttribute.Class, "table-td-green");
             writer.RenderBeginTag(HtmlTextWriterTag.Td);
 
- 
-            var mockedCount = coverageReports.CoveredWorkflowNodes.Count(x => x.MockSelected == true);
+            var mockedCount = coverageReports.CoveredWorkflowNodesMockedIds.Count();
+            var assertCount = coverageReports.CoveredWorkflowNodes.Count();
 
-
-            writer.Write("Covered Counts: " + coverageReports.CoveredWorkflowNodes.Count() + "<br> (Assert : " + coverageReports.CoveredWorkflowNodesNotMockedIds.Count() + " / <font color='#9ACD32'> Mocked : " + mockedCount + "</font>)");
+            writer.Write("Covered Counts: " + assertCount + "<br> (Assert : " + coverageReports.CoveredWorkflowNodesNotMockedIds.Count() + " / <font color='#9ACD32'> Mocked : " + mockedCount + "</font>)");
             writer.RenderEndTag();
 
             var failedCount = (coverageReports.WorkflowNodes.Count() - coverageReports.CoveredWorkflowNodes.Count());

@@ -19,6 +19,8 @@ namespace Dev2.Common.Interfaces.Runtime.WebServer
     {
         IWorkflowNode[] CoveredWorkflowNodes { get; }
         IEnumerable<Guid> CoveredWorkflowNodesNotMockedIds { get; }
+        IEnumerable<Guid> CoveredWorkflowNodesMockedIds { get; }
+        IEnumerable<Guid> CoveredWorkflowNodesIds { get; }
         bool HasTestReports { get; }
         List<IServiceTestCoverageModelTo> Reports { get; }
         IWarewolfWorkflow Resource { get; }
