@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -44,6 +44,8 @@ using Dev2.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Warewolf.Data.Options;
+using Warewolf.Storage;
 
 namespace Warewolf.Studio.ViewModels.Tests
 {
@@ -1602,7 +1604,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(250)]
+        [Timeout(500)]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(ServiceTestViewModel))]
         public void ServiceTestViewModel_DeleteSelectedTestCommand_GivenTestNameExists_ShouldDeleteSelectedTest()
@@ -1761,7 +1763,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(250)]
+        [Timeout(500)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory(nameof(ServiceTestViewModel))]
         public void ServiceTestViewModel_DeleteTestCommand_GivenTests_ShouldShowConfirmation()
@@ -1800,7 +1802,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(250)]
+        [Timeout(500)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory(nameof(ServiceTestViewModel))]
         public void ServiceTestViewModel_DeleteTestCommand_GivenTests_ShouldUpdateTestsCollection()
@@ -2174,6 +2176,201 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual("True Path", serviceTestOutput.OptionsForValue[0]);
             Assert.AreEqual("False Path", serviceTestOutput.OptionsForValue[1]);
             Assert.AreEqual(GlobalConstants.ArmResultText, serviceTestOutput.Variable);
+        }
+
+        [TestMethod]
+        [Timeout(5000)]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ServiceTestViewModel))]
+        public void ServiceTestViewModel_ItemSelectedAction_GivenDebugStateGate_With_NoChildActivity_ShouldHaveAddServiceTestStep_AND_HaveVariableAndValue()
+        {
+            //---------------Set up test pack-------------------
+            var popupController = new Mock<IPopupController>();
+            popupController.Setup(controller => controller.ShowDeleteConfirmation(It.IsAny<string>()))
+                .Returns(MessageBoxResult.Yes);
+            var resourceId = Guid.NewGuid();
+            var decisionUniqueId = Guid.NewGuid();
+
+            List<IServiceTestModelTO> testModelTOs = new List<IServiceTestModelTO>
+            {
+                new ServiceTestModelTO()
+            };
+
+            var mockResourceRepository = new Mock<IResourceRepository>();
+            mockResourceRepository.Setup(o => o.LoadResourceTests(resourceId))
+                .Returns(testModelTOs);
+
+            var expectedRetryActivity = new GateActivity { DisplayName = "Gate One" };
+            var expectedRetryActivityId = Guid.NewGuid();
+            expectedRetryActivity.UniqueID = expectedRetryActivityId.ToString();
+            expectedRetryActivity.GateOptions.GateOpts = new Continue();
+
+            var env = new ExecutionEnvironment();
+            env.Assign("[[a]]", "notbob", 0);
+            
+            var mockDataObject = new Mock<IDSFDataObject>();
+            mockDataObject.Setup(o => o.Environment)
+                .Returns(env);
+            mockDataObject.Setup(o => o.Gates)
+                .Returns(new Dictionary<IDev2Activity, (RetryState, IEnumerator<bool>)>());
+
+            var dataObject = mockDataObject.Object;
+            dataObject.Gates[expectedRetryActivity] = (new RetryState(), null);
+
+            var gate = new GateActivity
+            {
+                DisplayName = "Gate Two",
+                UniqueID = decisionUniqueId.ToString(),
+                Conditions = new List<ConditionExpression>
+                {
+                    new ConditionExpression
+                    {
+                        Left = "[[left]]",
+                        Cond = new ConditionMatch
+                        {
+                            MatchType = Options.enDecisionType.IsEqual,
+                            Right = "right value"
+                        }
+                    }
+                }
+            };
+
+            gate.Execute(dataObject, 0);
+
+            var mockWorkflowDesignerViewModel = new Mock<IWorkflowDesignerViewModel>();
+            mockWorkflowDesignerViewModel.SetupProperty(model => model.ItemSelectedAction);
+
+            var sut = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(),
+                new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object,
+                mockWorkflowDesignerViewModel.Object, popupController.Object, new NewTestFromDebugMessage(), null);
+
+            var testModel = new ServiceTestModel(Guid.NewGuid()) 
+            { 
+                TestName = "Test 2", 
+                NameForDisplay = "Test 2" 
+            };
+
+            sut.Tests = new ObservableCollection<IServiceTestModel> { testModel };
+            sut.SelectedServiceTest = testModel;
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            var modelItem = ModelItemUtils.CreateModelItem(gate);
+            mockWorkflowDesignerViewModel.Object.ItemSelectedAction(modelItem);
+            //---------------Test Result -----------------------
+            Assert.AreEqual(1, sut.SelectedServiceTest.TestSteps.Count);
+            Assert.AreEqual(StepType.Assert, sut.SelectedServiceTest.TestSteps[0].Type);
+            Assert.AreEqual(gate.GetType().Name, sut.SelectedServiceTest.TestSteps[0].ActivityType);
+            Assert.AreEqual(1, sut.SelectedServiceTest.TestSteps[0].StepOutputs.Count);
+
+            var serviceTestOutput = sut.SelectedServiceTest.TestSteps[0].StepOutputs[0] as ServiceTestOutput;
+            Assert.IsNotNull(serviceTestOutput);
+            Assert.IsNull(serviceTestOutput.OptionsForValue);
+            Assert.IsFalse(serviceTestOutput.HasOptionsForValue);
+            Assert.AreEqual("[[left]]", serviceTestOutput.Variable);
+            Assert.AreEqual("=", serviceTestOutput.AssertOp);
+            Assert.AreEqual("right value", serviceTestOutput.Value);
+        }
+
+        [TestMethod]
+        [Timeout(5000)]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ServiceTestViewModel))]
+        public void ServiceTestViewModel_ItemSelectedAction_GivenDebugStateGate_With_ChildActivity_ShouldHaveAddServiceTestStep_AND_HaveVariableAndValue()
+        {
+            //---------------Set up test pack-------------------
+            var popupController = new Mock<IPopupController>();
+            popupController.Setup(controller => controller.ShowDeleteConfirmation(It.IsAny<string>()))
+                .Returns(MessageBoxResult.Yes);
+            var resourceId = Guid.NewGuid();
+            var decisionUniqueId = Guid.NewGuid();
+
+            List<IServiceTestModelTO> testModelTOs = new List<IServiceTestModelTO>
+            {
+                new ServiceTestModelTO()
+            };
+
+            var mockResourceRepository = new Mock<IResourceRepository>();
+            mockResourceRepository.Setup(o => o.LoadResourceTests(resourceId))
+                .Returns(testModelTOs);
+
+            var expectedRetryActivity = new GateActivity { DisplayName = "Gate One" };
+            var expectedRetryActivityId = Guid.NewGuid();
+            expectedRetryActivity.UniqueID = expectedRetryActivityId.ToString();
+            expectedRetryActivity.GateOptions.GateOpts = new Continue();
+
+            var env = new ExecutionEnvironment();
+            env.Assign("[[a]]", "notbob", 0);
+
+            var mockDataObject = new Mock<IDSFDataObject>();
+            mockDataObject.Setup(o => o.Environment)
+                .Returns(env);
+            mockDataObject.Setup(o => o.Gates)
+                .Returns(new Dictionary<IDev2Activity, (RetryState, IEnumerator<bool>)>());
+
+            var dataObject = mockDataObject.Object;
+            dataObject.Gates[expectedRetryActivity] = (new RetryState(), null);
+
+            var gate = new GateActivity
+            {
+                DisplayName = "Gate Two",
+                UniqueID = decisionUniqueId.ToString(),
+                Conditions = new List<ConditionExpression>
+                {
+                    new ConditionExpression
+                    {
+                        Left = "[[left]]",
+                        Cond = new ConditionMatch
+                        {
+                            MatchType = Options.enDecisionType.IsEqual,
+                            Right = "right value"
+                        }
+                    }
+                },
+                DataFunc = new ActivityFunc<string, bool>
+                { 
+                    Handler = new DsfMultiAssignActivity 
+                    { 
+                        UniqueID = Guid.NewGuid().ToString(),
+                        DisplayName = "Assign Activity",
+                    }
+                }
+            };
+
+            gate.Execute(dataObject, 0);
+
+            var mockWorkflowDesignerViewModel = new Mock<IWorkflowDesignerViewModel>();
+            mockWorkflowDesignerViewModel.SetupProperty(model => model.ItemSelectedAction);
+
+            var sut = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(),
+                new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object,
+                mockWorkflowDesignerViewModel.Object, popupController.Object, new NewTestFromDebugMessage(), null);
+
+            var testModel = new ServiceTestModel(Guid.NewGuid())
+            {
+                TestName = "Test 2",
+                NameForDisplay = "Test 2"
+            };
+
+            sut.Tests = new ObservableCollection<IServiceTestModel> { testModel };
+            sut.SelectedServiceTest = testModel;
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            var modelItem = ModelItemUtils.CreateModelItem(gate);
+            mockWorkflowDesignerViewModel.Object.ItemSelectedAction(modelItem);
+            //---------------Test Result -----------------------
+            Assert.AreEqual(1, sut.SelectedServiceTest.TestSteps.Count);
+            Assert.AreEqual(StepType.Assert, sut.SelectedServiceTest.TestSteps[0].Type);
+            Assert.AreEqual(gate.GetType().Name, sut.SelectedServiceTest.TestSteps[0].ActivityType);
+            Assert.AreEqual(1, sut.SelectedServiceTest.TestSteps[0].StepOutputs.Count);
+
+            var serviceTestOutput = sut.SelectedServiceTest.TestSteps[0].StepOutputs[0] as ServiceTestOutput;
+            Assert.IsNotNull(serviceTestOutput);
+            Assert.IsNull(serviceTestOutput.OptionsForValue);
+            Assert.IsFalse(serviceTestOutput.HasOptionsForValue);
+            Assert.IsTrue(serviceTestOutput.CanEditVariable);
+            Assert.AreEqual("[[left]]", serviceTestOutput.Variable);
+            Assert.AreEqual("=", serviceTestOutput.AssertOp);
+            Assert.AreEqual("right value", serviceTestOutput.Value);
         }
 
         [TestMethod]

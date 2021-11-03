@@ -1579,6 +1579,127 @@ namespace BusinessDesignStudio.Unit.Tests
             //------------Assert Results-------------------------
         }
 
+
+
+        [TestMethod]
+        [Owner("Yogesh Rajpurohit")]
+        [TestCategory("ResourceRepository_DeleteResourceTestCoverage")]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void ResourceRepository_DeleteResourceTestCoverage_WhenResourceIdIsNull_ExpectNothing()
+        {
+            //------------Setup for test--------------------------
+            var env = new Mock<IServer>();
+            var con = new Mock<IEnvironmentConnection>();
+            con.Setup(c => c.IsConnected).Returns(true);
+            env.Setup(e => e.Connection).Returns(con.Object);
+
+
+            var serviceTestModel = new ServiceTestModelTO();
+            var jsonSerializer = new Dev2JsonSerializer();
+            var payload = jsonSerializer.Serialize(serviceTestModel);
+            var message = new CompressedExecuteMessage();
+            message.SetMessage(payload);
+
+            var msgResult = jsonSerializer.Serialize(message);
+            con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(msgResult.ToStringBuilder);
+
+            //------------Execute Test---------------------------
+            var result = new ResourceRepository(env.Object);
+            result.DeleteResourceTestCoverage(Guid.Empty);
+            //------------Assert Results-------------------------
+        }
+
+
+        [TestMethod]
+        [Owner("Yogesh Rajpurohit")]
+        [TestCategory("ResourceRepository_DeleteResourceTestCoverage")]
+        public void ResourceRepository_DeleteResourceTestCoverage_WhenGetCommunicationControllerNull_ExpectException()
+        {
+            //------------Setup for test--------------------------
+            var env = new Mock<IServer>();
+            var con = new Mock<IEnvironmentConnection>();
+            con.Setup(c => c.IsConnected).Returns(true);
+            env.Setup(e => e.Connection).Returns(con.Object);
+
+            var serviceTestModel = new ServiceTestModelTO();
+            var jsonSerializer = new Dev2JsonSerializer();
+            var payload = jsonSerializer.Serialize(serviceTestModel);
+            var message = new CompressedExecuteMessage();
+            message.SetMessage(payload);
+
+            var msgResult = jsonSerializer.Serialize(message);
+            con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(msgResult.ToStringBuilder);
+
+            //------------Execute Test---------------------------
+            var resourceId = Guid.Parse("1fe780a0-282a-4477-85da-c0e41832ed25");
+            var result = new ResourceRepository(env.Object)
+            {
+                GetCommunicationController = null
+            };
+
+            Assert.ThrowsException<NullReferenceException>(() => result.DeleteResourceTestCoverage(resourceId), "Cannot delete resource test coverage. Cannot get Communication Controller.");
+            //------------Assert Results-------------------------
+            // No Result for positive scenario
+        }
+
+
+        [TestMethod]
+        [Owner("Yogesh Rajpurohit")]
+        [TestCategory("ResourceRepository_DeleteResourceTestCoverage")]
+        public void ResourceRepository_DeleteResourceTestCoverage_WhenPassResourceId_CoverageReportDeleted()
+        {
+            //------------Setup for test--------------------------
+            var env = new Mock<IServer>();
+            var con = new Mock<IEnvironmentConnection>();
+            con.Setup(c => c.IsConnected).Returns(true);
+            env.Setup(e => e.Connection).Returns(con.Object);
+
+            var serviceTestModel = new ServiceTestModelTO();
+            var jsonSerializer = new Dev2JsonSerializer();
+            var payload = jsonSerializer.Serialize(serviceTestModel);
+            var message = new CompressedExecuteMessage();
+            message.SetMessage(payload);
+
+            var msgResult = jsonSerializer.Serialize(message);
+            con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(msgResult.ToStringBuilder);
+
+            //------------Execute Test---------------------------
+            var resourceId = Guid.Parse("1fe780a0-282a-4477-85da-c0e41832ed25");
+            var result = new ResourceRepository(env.Object);
+            result.DeleteResourceTestCoverage(resourceId);
+            //------------Assert Results-------------------------
+            //No Result for positive scenario
+        }
+
+        [TestMethod]
+        [Owner("Yogesh Rajpurohit")]
+        [TestCategory("ResourceRepository_DeleteResourceTestCoverage")]
+        public void ResourceRepository_DeleteResourceTestCoverage_WhenResultHasError_ExpectNothing()
+        {
+            //------------Setup for test--------------------------
+            var env = new Mock<IServer>();
+            var con = new Mock<IEnvironmentConnection>();
+            con.Setup(c => c.IsConnected).Returns(true);
+            env.Setup(e => e.Connection).Returns(con.Object);
+
+
+            var msg = new StringBuilder("Error occured");
+            var jsonSerializer = new Dev2JsonSerializer();
+            var payload = jsonSerializer.Serialize(msg);
+            var message = new CompressedExecuteMessage();
+            message.SetMessage(payload);
+            message.HasError = true;
+
+            var msgResult = jsonSerializer.Serialize(message);
+            con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(msgResult.ToStringBuilder);
+
+            //------------Execute Test---------------------------
+            var result = new ResourceRepository(env.Object);
+            Assert.ThrowsException<Exception>(() => result.DeleteResourceTestCoverage(Guid.NewGuid()), "Error occured");
+            //------------Assert Results-------------------------
+        }
+
+
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("ResourceRepository_LoadResourceTests")]

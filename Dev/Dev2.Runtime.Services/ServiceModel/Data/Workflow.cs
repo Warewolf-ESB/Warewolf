@@ -186,7 +186,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             {
                 var workflowNode = new WorkflowNode
                 {
-                    ActivityID = activity.ActivityId,
+                    ActivityID = activity.ActivityId != Guid.Empty ? activity.ActivityId : Guid.Parse(activity.UniqueID),
                     UniqueID = Guid.Parse(activity.UniqueID),
                     StepDescription = activity.GetDisplayName(),
                 };

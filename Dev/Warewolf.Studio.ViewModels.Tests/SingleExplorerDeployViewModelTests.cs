@@ -1,4 +1,4 @@
-﻿/*
+/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
@@ -893,7 +893,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         [Owner("Sanele Mthembu")]
         public void IsDeploying_GivenSourceServerIsOldVersionAndPopupCancelClick_ShouldHaveIsDeployingTrue()
         {
