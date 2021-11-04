@@ -355,8 +355,8 @@ namespace Dev2.Runtime.WebServer
             writer.AddAttribute(HtmlTextWriterAttribute.Class, "table-td-green");
             writer.RenderBeginTag(HtmlTextWriterTag.Td);
 
-            var coveredNodesCount = coverageReports.CoveredWorkflowNodesNotMockedIds.Count();
-            var assertCount = coverageReports.CoveredWorkflowNodes.Count();
+            var coveredNodesCount = coverageReports.CoveredWorkflowNodesIds.Count();
+            var assertCount = coverageReports.CoveredWorkflowNodesNotMockedIds.Count();
             var mockedCount = coverageReports.CoveredWorkflowNodesMockedIds.Count();
 
             writer.Write("Covered Nodes: " + coveredNodesCount + "<br> (Assert : " + assertCount + " / <font color='#9ACD32'> Mocked : " + mockedCount + "</font>)");

@@ -10,15 +10,15 @@
 
 using System;
 using Warewolf.Data;
-using System.Collections.Generic;
 using Dev2.Common.Interfaces;
+using System.Collections.Generic;
 
 namespace Dev2.Data
 {
     public class ServiceTestCoverageModelTo : IServiceTestCoverageModelTo
     {
         public ISingleTestNodesCovered[] AllTestNodesCovered { get; set; }
-        public IEnumerable<IWorkflowNode> AllWorkflowNodes { get; set; }
+        public IEnumerable<IWorkflowNode> AllWorkflowNodes { get; set; } = new List<IWorkflowNode>(); 
 
         public string OldReportName { get; set; }
 
