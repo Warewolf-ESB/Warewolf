@@ -355,18 +355,19 @@ namespace Dev2.Runtime.WebServer
             writer.AddAttribute(HtmlTextWriterAttribute.Class, "table-td-green");
             writer.RenderBeginTag(HtmlTextWriterTag.Td);
 
-            var mockedCount = coverageReports.CoveredWorkflowNodesMockedIds.Count();
+            var coveredNodesCount = coverageReports.CoveredWorkflowNodesNotMockedIds.Count();
             var assertCount = coverageReports.CoveredWorkflowNodes.Count();
+            var mockedCount = coverageReports.CoveredWorkflowNodesMockedIds.Count();
 
-            writer.Write("Covered Counts: " + assertCount + "<br> (Assert : " + coverageReports.CoveredWorkflowNodesNotMockedIds.Count() + " / <font color='#9ACD32'> Mocked : " + mockedCount + "</font>)");
+            writer.Write("Covered Nodes: " + coveredNodesCount + "<br> (Assert : " + assertCount + " / <font color='#9ACD32'> Mocked : " + mockedCount + "</font>)");
             writer.RenderEndTag();
 
-            var failedCount = (coverageReports.WorkflowNodes.Count() - coverageReports.CoveredWorkflowNodes.Count());
+            var notCoveredNodesCount = coverageReports.NotCoveredNodesCount; 
             writer.AddStyleAttribute(HtmlTextWriterStyle.Width, "200px");
             writer.AddStyleAttribute(HtmlTextWriterStyle.FontWeight, "bold");
             writer.AddStyleAttribute(HtmlTextWriterStyle.FontSize, "14px");
             writer.AddStyleAttribute(HtmlTextWriterStyle.FontFamily, "roboto sans-serif");
-            if (failedCount > 0)
+            if (notCoveredNodesCount > 0)
             {
                 writer.AddStyleAttribute(HtmlTextWriterStyle.Color, "red");
             }
@@ -376,7 +377,7 @@ namespace Dev2.Runtime.WebServer
             }
             writer.AddAttribute(HtmlTextWriterAttribute.Class, "table-td-red");
             writer.RenderBeginTag(HtmlTextWriterTag.Td);
-            writer.Write("Not Covered Counts: " + failedCount);
+            writer.Write("Not Covered Nodes: " + notCoveredNodesCount);
             writer.RenderEndTag();
             writer.RenderBeginTag(HtmlTextWriterTag.Td);  
             writer.RenderEndTag();

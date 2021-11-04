@@ -34,6 +34,9 @@ namespace Dev2.Data
         public IEnumerable<Guid> CoveredWorkflowNodesIds => CalculateCoveredWorkflowNodesIds();
         public double TotalCoverage => GetTotalCoverage();
 
+        //PBI: at this point we only need the count, later change this to a list of objects
+        public int NotCoveredNodesCount => WorkflowNodes.Count() - CoveredWorkflowNodesIds.Count();
+
         public void Add(IServiceTestCoverageModelTo coverage)
         {
             Reports.Add(coverage);

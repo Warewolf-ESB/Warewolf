@@ -26,6 +26,7 @@ namespace Dev2.Common.Interfaces.Runtime.WebServer
         IWarewolfWorkflow Resource { get; }
         double TotalCoverage { get; }
         IEnumerable<IWorkflowNode> WorkflowNodes { get; }
+        int NotCoveredNodesCount { get; }
 
         void Add(IServiceTestCoverageModelTo coverage);
     }

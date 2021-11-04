@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -9,6 +9,8 @@
 */
 
 using System;
+using Warewolf.Data;
+using System.Collections.Generic;
 using Dev2.Common.Interfaces;
 
 namespace Dev2.Data
@@ -16,6 +18,7 @@ namespace Dev2.Data
     public class ServiceTestCoverageModelTo : IServiceTestCoverageModelTo
     {
         public ISingleTestNodesCovered[] AllTestNodesCovered { get; set; }
+        public IEnumerable<IWorkflowNode> AllWorkflowNodes { get; set; }
 
         public string OldReportName { get; set; }
 
@@ -26,6 +29,8 @@ namespace Dev2.Data
         public DateTime LastRunDate { get; set; }
 
         public double TotalCoverage { get; set; }
+
+        public int NotCoveredNodesCount { get; set; }
     }
 
 }

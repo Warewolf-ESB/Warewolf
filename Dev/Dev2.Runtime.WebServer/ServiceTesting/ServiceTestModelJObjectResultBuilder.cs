@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -77,12 +77,33 @@ namespace Dev2.Runtime.WebServer
 
         public static JObject BuildTestResultJSONForWebRequest(this IServiceTestCoverageModelTo report)
         {
+            var totalWorkflowNodesCount = report.AllWorkflowNodes;
+            int notCoveredNodesCount = report.NotCoveredNodesCount;
+            var totalNodesCoveredCount = report.AllTestNodesCovered.Select(o => o.TestNodesCovered);
+            var coveredNodes = totalNodesCoveredCount.Where(o => o.Any(oo => oo.MockSelected == false));
+            var assertedNodes = totalNodesCoveredCount.Where(o => o.Any(oo => oo.MockSelected == false));
+            var mockedNodes = totalNodesCoveredCount.Where(o => o.Any(oo => oo.MockSelected == true));
             var resObj = new JObject
             {
-                {"Report Name", report.ReportName},
-                {"OldReportName", report.OldReportName},
-                {"WorkflowId", report.WorkflowId},
-                {"CoveragePercentage", Math.Round(report.TotalCoverage * 100)},
+                { "Report Name", report.ReportName},
+                { "OldReportName", report.OldReportName},
+                { "WorkflowId", report.WorkflowId},
+                { "CoveragePercentage", Math.Round(report.TotalCoverage * 100)},
+                { "NodesSummary", new JObject
+                    {
+                        { "TotalNodesCount", totalWorkflowNodesCount.Count() },
+                        { "NotCoveredNodes", notCoveredNodesCount },
+                        { "CoveredNodes", coveredNodes.Count() },
+                        { "CoveredNodesDetails", new JArray
+                        (
+                            new JObject 
+                            {
+                                { "Assert", assertedNodes.Count() },
+                                { "Mocked", mockedNodes.Count() }
+                            }) 
+                        } 
+                    } 
+                },
                 {
                     "AllTestNodesCovered",
                     new JArray(report.AllTestNodesCovered.Select(node => node.BuildTestResultJSONForWebRequest()))
