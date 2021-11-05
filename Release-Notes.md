@@ -1,3 +1,15 @@
+05 November 2021
+======================
+
+Bug fixes
+----------
+- Deleted workflow tests no longer contribute to overall test coverage
+- Fixed a crash that happenned in RabbitMQ queue workers when changing the number of concurrent RabbitMQ queues
+
+Enhancements
+------------
+- Coverage shows not covered node count
+
 25 October 2021
 ======================
 
