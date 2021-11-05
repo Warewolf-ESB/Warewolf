@@ -30,7 +30,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Execute Test---------------------------
             var elasticsearchSourceModel = new ElasticsearchSourceModel(updateManager.Object, queryManager.Object, shellViewModel.Object);
             //------------Assert Results-------------------------
-            var p = new PrivateObject(elasticsearchSourceModel);
+            var p = new Warewolf.Testing.PrivateObject(elasticsearchSourceModel);
 
             Assert.IsNotNull(p.GetField("_updateRepository"));
             Assert.IsNotNull(p.GetField("_queryManager"));

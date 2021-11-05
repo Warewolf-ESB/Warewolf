@@ -58,7 +58,7 @@ namespace Warewolf.Storage.Tests
         public void WarewolfListIterator_Instance_ShouldHaveConstructor()
         {
             Assert.IsNotNull(_warewolfListIterator);
-            var privateObj = new PrivateObject(_warewolfListIterator);
+            var privateObj = new Warewolf.Testing.PrivateObject(_warewolfListIterator);
             var variablesToIterateOn = privateObj.GetField("_variablesToIterateOn");
             var count = privateObj.GetField("_count");
             Assert.IsNotNull(variablesToIterateOn);
@@ -71,7 +71,7 @@ namespace Warewolf.Storage.Tests
         public void GivenResultExpression_WarewolfListIterator_FetchNextValue_Should()
         {
             Assert.IsNotNull(_warewolfListIterator);
-            var privateObj = new PrivateObject(_warewolfListIterator);
+            var privateObj = new Warewolf.Testing.PrivateObject(_warewolfListIterator);
             var variablesToIterateOn = privateObj.GetField("_variablesToIterateOn") as List<IWarewolfIterator>;
             Assert.IsNotNull(variablesToIterateOn);
 
@@ -86,7 +86,7 @@ namespace Warewolf.Storage.Tests
         public void GivenPosition_WarewolfListIterator_FetchNextValue_Should()
         {
             Assert.IsNotNull(_warewolfListIterator);
-            var privateObj = new PrivateObject(_warewolfListIterator);
+            var privateObj = new Warewolf.Testing.PrivateObject(_warewolfListIterator);
             var variablesToIterateOn = privateObj.GetField("_variablesToIterateOn") as List<IWarewolfIterator>;
             Assert.IsNotNull(variablesToIterateOn);
             var listIterator = _warewolfListIterator as WarewolfListIterator;
@@ -106,7 +106,7 @@ namespace Warewolf.Storage.Tests
         {
             _expr3 = new WarewolfIterator(_environment.Eval("[[RecSet()]]", 0));
             Assert.IsNotNull(_warewolfListIterator);
-            var privateObj = new PrivateObject(_warewolfListIterator);
+            var privateObj = new Warewolf.Testing.PrivateObject(_warewolfListIterator);
             var variablesToIterateOn = privateObj.GetField("_variablesToIterateOn") as List<IWarewolfIterator>;
             Assert.IsNotNull(variablesToIterateOn);
             Assert.AreEqual(2, variablesToIterateOn.Count);
@@ -143,7 +143,7 @@ namespace Warewolf.Storage.Tests
         public void WarewolfListIterator_Read_ShouldReturnTrue()
         {
             Assert.IsNotNull(_warewolfListIterator);
-            var privateObj = new PrivateObject(_warewolfListIterator);
+            var privateObj = new Warewolf.Testing.PrivateObject(_warewolfListIterator);
             var variablesToIterateOn = privateObj.GetField("_variablesToIterateOn") as List<IWarewolfIterator>;
             Assert.IsNotNull(variablesToIterateOn);
             var listIterator = _warewolfListIterator as WarewolfListIterator;
@@ -163,7 +163,7 @@ namespace Warewolf.Storage.Tests
         public void WarewolfListIterator_NextResult_ShouldReturnFalse()
         {
             Assert.IsNotNull(_warewolfListIterator);
-            var privateObj = new PrivateObject(_warewolfListIterator);
+            var privateObj = new Warewolf.Testing.PrivateObject(_warewolfListIterator);
             var variablesToIterateOn = privateObj.GetField("_variablesToIterateOn") as List<IWarewolfIterator>;
             Assert.IsNotNull(variablesToIterateOn);
             var listIterator = _warewolfListIterator as WarewolfListIterator;
@@ -183,7 +183,7 @@ namespace Warewolf.Storage.Tests
         public void WarewolfListIterator_HasMoreData_ShouldReturnTrue()
         {
             Assert.IsNotNull(_warewolfListIterator);
-            var privateObj = new PrivateObject(_warewolfListIterator);
+            var privateObj = new Warewolf.Testing.PrivateObject(_warewolfListIterator);
             var variablesToIterateOn = privateObj.GetField("_variablesToIterateOn") as List<IWarewolfIterator>;
             Assert.IsNotNull(variablesToIterateOn);
             var hasMoreData = _warewolfListIterator.HasMoreData();
@@ -196,7 +196,7 @@ namespace Warewolf.Storage.Tests
         public void WarewolfListIterator_GetName_ShouldReturnString()
         {
             Assert.IsNotNull(_warewolfListIterator);
-            var privateObj = new PrivateObject(_warewolfListIterator);
+            var privateObj = new Warewolf.Testing.PrivateObject(_warewolfListIterator);
             var variablesToIterateOn = privateObj.GetField("_variablesToIterateOn") as List<IWarewolfIterator>;
             Assert.IsNotNull(variablesToIterateOn);
             var listIterator = _warewolfListIterator as WarewolfListIterator;
@@ -217,7 +217,7 @@ namespace Warewolf.Storage.Tests
         public void WarewolfListIterator_GetDataTypeName_ShouldReturnTrue()
         {
             Assert.IsNotNull(_warewolfListIterator);
-            var privateObj = new PrivateObject(_warewolfListIterator);
+            var privateObj = new Warewolf.Testing.PrivateObject(_warewolfListIterator);
             var variablesToIterateOn = privateObj.GetField("_variablesToIterateOn") as List<IWarewolfIterator>;
             Assert.IsNotNull(variablesToIterateOn);
             var listIterator = _warewolfListIterator as WarewolfListIterator;
@@ -236,7 +236,7 @@ namespace Warewolf.Storage.Tests
         public void WarewolfListIterator_GetFieldType_ShouldReturnTrue()
         {
             Assert.IsNotNull(_warewolfListIterator);
-            var privateObj = new PrivateObject(_warewolfListIterator);
+            var privateObj = new Warewolf.Testing.PrivateObject(_warewolfListIterator);
             var variablesToIterateOn = privateObj.GetField("_variablesToIterateOn") as List<IWarewolfIterator>;
             Assert.IsNotNull(variablesToIterateOn);
             var listIterator = _warewolfListIterator as WarewolfListIterator;
@@ -256,7 +256,7 @@ namespace Warewolf.Storage.Tests
         {
             var names = new List<string> { Result };
             Assert.IsNotNull(_warewolfListIterator);
-            var privateObj = new PrivateObject(_warewolfListIterator);
+            var privateObj = new Warewolf.Testing.PrivateObject(_warewolfListIterator);
             var variablesToIterateOn = privateObj.GetField("_variablesToIterateOn") as List<IWarewolfIterator>;
             Assert.IsNotNull(variablesToIterateOn);
             var listIterator = _warewolfListIterator as WarewolfListIterator;
@@ -277,7 +277,7 @@ namespace Warewolf.Storage.Tests
         [TestCategory(nameof(WarewolfListIterator))]
         public void GivenStringTrueIsAssigned_WarewolfListIterator_GetBoolean_ShouldReturnTrue()
         {
-            ValidateInstance(out PrivateObject privateObj, out List<IWarewolfIterator> variablesToIterateOn);
+            ValidateInstance(out Warewolf.Testing.PrivateObject privateObj, out List<IWarewolfIterator> variablesToIterateOn);
             _environment.Assign("[[RecSet().a]]", "True", 0);
             if (AssignExpression(out WarewolfListIterator listIterator))
             {
@@ -293,7 +293,7 @@ namespace Warewolf.Storage.Tests
         [TestCategory(nameof(WarewolfListIterator))]
         public void WarewolfListIterator_GetChars_ShouldReturn0()
         {
-            ValidateInstance(out PrivateObject privateObj, out List<IWarewolfIterator> variablesToIterateOn);
+            ValidateInstance(out Warewolf.Testing.PrivateObject privateObj, out List<IWarewolfIterator> variablesToIterateOn);
             _environment.Assign("[[RecSet().a]]", "SomeValue", 0);
             if (AssignExpression(out WarewolfListIterator listIterator))
             {
@@ -309,7 +309,7 @@ namespace Warewolf.Storage.Tests
         [TestCategory(nameof(WarewolfListIterator))]
         public void WarewolfListIterator_GetStrings_ShouldReturnStringValue()
         {
-            ValidateInstance(out PrivateObject privateObj, out List<IWarewolfIterator> variablesToIterateOn);
+            ValidateInstance(out Warewolf.Testing.PrivateObject privateObj, out List<IWarewolfIterator> variablesToIterateOn);
             _environment.Assign("[[RecSet().a]]", "SomeValue", 0);
             if (AssignExpression(out WarewolfListIterator listIterator))
             {
@@ -326,7 +326,7 @@ namespace Warewolf.Storage.Tests
         [TestCategory(nameof(WarewolfListIterator))]
         public void WarewolfListIterator_GetDateTime_ShouldReturnDateFormat()
         {
-            ValidateInstance(out PrivateObject privateObj, out List<IWarewolfIterator> variablesToIterateOn);
+            ValidateInstance(out Warewolf.Testing.PrivateObject privateObj, out List<IWarewolfIterator> variablesToIterateOn);
             _environment.Assign("[[RecSet().a]]", "01/01/2000", 0);
             if (AssignExpression(out WarewolfListIterator listIterator))
             {
@@ -343,7 +343,7 @@ namespace Warewolf.Storage.Tests
         [TestCategory(nameof(WarewolfListIterator))]
         public void WarewolfListIterator_GetDataAndGetSchemaTable_ShouldReturnNull()
         {
-            ValidateInstance(out PrivateObject privateObj, out List<IWarewolfIterator> variablesToIterateOn);
+            ValidateInstance(out Warewolf.Testing.PrivateObject privateObj, out List<IWarewolfIterator> variablesToIterateOn);
             _environment.Assign("[[RecSet().a]]", "", 0);
             if (AssignExpression(out WarewolfListIterator listIterator))
             {
@@ -372,10 +372,10 @@ namespace Warewolf.Storage.Tests
             return false;
         }
 
-        void ValidateInstance(out PrivateObject privateObj, out List<IWarewolfIterator> variablesToIterateOn)
+        void ValidateInstance(out Warewolf.Testing.PrivateObject privateObj, out List<IWarewolfIterator> variablesToIterateOn)
         {
             Assert.IsNotNull(_warewolfListIterator);
-            privateObj = new PrivateObject(_warewolfListIterator);
+            privateObj = new Warewolf.Testing.PrivateObject(_warewolfListIterator);
             variablesToIterateOn = privateObj.GetField("_variablesToIterateOn") as List<IWarewolfIterator>;
             Assert.IsNotNull(variablesToIterateOn);
         }
@@ -385,7 +385,7 @@ namespace Warewolf.Storage.Tests
         [TestCategory(nameof(WarewolfListIterator))]
         public void WarewolfListIterator_GetGuid_ShouldReturn0()
         {
-            ValidateInstance(out PrivateObject privateObj, out List<IWarewolfIterator> variablesToIterateOn);
+            ValidateInstance(out Warewolf.Testing.PrivateObject privateObj, out List<IWarewolfIterator> variablesToIterateOn);
             _environment.Assign("[[RecSet().a]]", "00d1c07e-7fa7-4127-a85f-3ae9aaa7c6de", 0);
             _expr3 = new WarewolfIterator(_environment.Eval("[[RecSet().a]]", 0));
             _warewolfListIterator.AddVariableToIterateOn(_expr3);
@@ -404,7 +404,7 @@ namespace Warewolf.Storage.Tests
         [TestCategory(nameof(WarewolfListIterator))]
         public void WarewolfListIterator_IDataRecordFunctions_Should()
         {
-            ValidateInstance(out PrivateObject privateObj, out List<IWarewolfIterator> variablesToIterateOn);
+            ValidateInstance(out Warewolf.Testing.PrivateObject privateObj, out List<IWarewolfIterator> variablesToIterateOn);
             _environment.Assign("[[RecSet().a]]", "1", 0);
             if (AssignExpression(out WarewolfListIterator listIterator))
             {
@@ -618,7 +618,7 @@ namespace Warewolf.Storage.Tests
         {
             //------------Setup for test--------------------------
             _expr3 = new WarewolfIterator(_environment.Eval("[[RecSet()]]", 0));
-            var privateObj = new PrivateObject(_warewolfListIterator);
+            var privateObj = new Warewolf.Testing.PrivateObject(_warewolfListIterator);
             var variablesToIterateOn = privateObj.GetField("_variablesToIterateOn") as List<IWarewolfIterator>;
             _warewolfListIterator.AddVariableToIterateOn(_expr3);
 
@@ -910,7 +910,7 @@ namespace Warewolf.Storage.Tests
         {
             //------------Setup for test--------------------------
             _expr3 = new WarewolfIterator(_environment.Eval("[[RecSet()]]", 0));
-            var privateObj = new PrivateObject(_warewolfListIterator);
+            var privateObj = new Warewolf.Testing.PrivateObject(_warewolfListIterator);
             var variablesToIterateOn = privateObj.GetField("_variablesToIterateOn") as List<IWarewolfIterator>;
             _warewolfListIterator.AddVariableToIterateOn(_expr3);
 

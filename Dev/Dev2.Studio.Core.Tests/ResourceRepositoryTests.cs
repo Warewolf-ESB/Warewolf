@@ -1989,7 +1989,7 @@ namespace BusinessDesignStudio.Unit.Tests
             var resourceRepository = GetResourceRepository();
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            var privateObject = new PrivateObject(resourceRepository);
+            var privateObject = new Warewolf.Testing.PrivateObject(resourceRepository);
             var invoke = privateObject.Invoke("CreateServiceName", typeof(DropBoxSource));
             //---------------Test Result -----------------------
             var serviceName = invoke.ToString();
@@ -2562,7 +2562,7 @@ namespace BusinessDesignStudio.Unit.Tests
             testEnvironmentModel2.Setup(e => e.ResourceRepository).Returns(resRepo);
 
             var perm = new WindowsGroupPermission {ResourceID = testResources.First().ID};
-            var p = new PrivateObject(resRepo);
+            var p = new Warewolf.Testing.PrivateObject(resRepo);
             p.Invoke("ReceivePermissionsModified", new List<WindowsGroupPermission> {perm});
         }
 
@@ -2601,7 +2601,7 @@ namespace BusinessDesignStudio.Unit.Tests
             testEnvironmentModel2.Setup(e => e.ResourceRepository).Returns(resRepo);
 
             var perm = new WindowsGroupPermission {ResourceID = testResources.First().ID};
-            var p = new PrivateObject(resRepo);
+            var p = new Warewolf.Testing.PrivateObject(resRepo);
             p.Invoke("ReceivePermissionsModified", new List<WindowsGroupPermission> {perm});
         }
 
@@ -2644,7 +2644,7 @@ namespace BusinessDesignStudio.Unit.Tests
 
             testEnvironmentModel2.Setup(e => e.ResourceRepository).Returns(resRepo);
 
-            var p = new PrivateObject(resRepo);
+            var p = new Warewolf.Testing.PrivateObject(resRepo);
             p.Invoke("ReceivePermissionsModified", new List<WindowsGroupPermission> {perm, perm2});
         }
 
@@ -2670,7 +2670,7 @@ namespace BusinessDesignStudio.Unit.Tests
             _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
 
             _repo.SaveToServer(_resourceModel.Object);
-            var p = new PrivateObject(_repo);
+            var p = new Warewolf.Testing.PrivateObject(_repo);
             Assert.AreEqual(1, ((List<IResourceModel>) p.GetField("_resourceModels")).Count);
         }
 

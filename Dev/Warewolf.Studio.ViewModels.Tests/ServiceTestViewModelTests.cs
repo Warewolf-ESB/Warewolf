@@ -434,7 +434,7 @@ namespace Warewolf.Studio.ViewModels.Tests
                 new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object, null, null);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(vm);
-            var privateObj = new PrivateObject(vm);
+            var privateObj = new Warewolf.Testing.PrivateObject(vm);
             var names = new List<string> {"", "Test2"};
             var results = privateObj.Invoke("AllNamesValid", names);
             //---------------Execute Test ----------------------
@@ -455,7 +455,7 @@ namespace Warewolf.Studio.ViewModels.Tests
                 new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object, null, null);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(vm);
-            var privateObj = new PrivateObject(vm);
+            var privateObj = new Warewolf.Testing.PrivateObject(vm);
             var names = new List<string> {"Test1", "Test2"};
             var results = privateObj.Invoke("AllNamesValid", names);
             //---------------Execute Test ----------------------

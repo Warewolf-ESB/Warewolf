@@ -33,7 +33,7 @@ namespace Warewolf.Storage.Tests
             var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, "bob", "builder");
 
 
-            var p = new PrivateObject(scopedEnvironment);
+            var p = new Warewolf.Testing.PrivateObject(scopedEnvironment);
 
             Assert.AreEqual(_mockEnv.Object, p.GetField("_inner"));
             Assert.AreEqual("bob", p.GetField("_datasource").ToString());
@@ -796,7 +796,7 @@ namespace Warewolf.Storage.Tests
             var personName = "[[@Person(*).Name]]";
             var _mockEnv = new Mock<IExecutionEnvironment>();
             var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, datasource, "[[a]]");
-            var privateObj = new PrivateObject(scopedEnvironment);
+            var privateObj = new Warewolf.Testing.PrivateObject(scopedEnvironment);
             var ds = privateObj.GetField("_datasource");
             Assert.IsNotNull(ds);
             Assert.AreEqual(datasource, ds);
@@ -885,7 +885,7 @@ namespace Warewolf.Storage.Tests
         void SetupReplacementFunction(ScopedEnvironment env, IEnumerable<string> originals, IEnumerable<string> replacements, Action<ScopedEnvironment> envAction)
         {
             var orzipped = originals.Zip(replacements, (a, b) => new Tuple<string, string>(a, b));
-           var p = new PrivateObject(env);
+           var p = new Warewolf.Testing.PrivateObject(env);
             var fun = p.GetFieldOrProperty("_doReplace") as Func<string, int,string,string>;
            p.SetFieldOrProperty("_doReplace",new Func<string, int,string,string>(
                (s, i,val) =>
@@ -900,7 +900,7 @@ namespace Warewolf.Storage.Tests
 
         void SetupReplacementFunctionDoesNotOccur(ScopedEnvironment env, Action<ScopedEnvironment> envAction)
         {
-            var p = new PrivateObject(env);
+            var p = new Warewolf.Testing.PrivateObject(env);
             var fun = p.GetFieldOrProperty("_doReplace") as Func<string, int, string, string>;
             p.SetFieldOrProperty("_doReplace", new Func<string, int, string, string>(
                 (s, i, val) =>

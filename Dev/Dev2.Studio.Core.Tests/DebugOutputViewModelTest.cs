@@ -100,7 +100,7 @@ namespace Dev2.Core.Tests
             var endTime = DateTime.Now;
             var localhost = "localhost";
             var vm = DebugOutputViewModelMock();
-            var privateObject = new PrivateObject(vm);
+            var privateObject = new Warewolf.Testing.PrivateObject(vm);
             Assert.IsNotNull(privateObject);
 
             var contentItems = privateObject.GetField("_contentItems") as List<IDebugState>;
@@ -382,7 +382,7 @@ namespace Dev2.Core.Tests
         {
             var endTime = DateTime.Now;
             var vm = DebugOutputViewModelMock();
-            var privateObject = new PrivateObject(vm);
+            var privateObject = new Warewolf.Testing.PrivateObject(vm);
             Assert.IsNotNull(privateObject);
 
             var contentItems = privateObject.GetField("_contentItems") as List<IDebugState>;

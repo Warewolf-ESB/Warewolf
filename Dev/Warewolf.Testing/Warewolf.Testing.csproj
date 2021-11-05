@@ -47,6 +47,7 @@
     <AdditionalFiles Include="..\SonarQube\SonarLint.xml">
       <Visible>False</Visible>
     </AdditionalFiles>
+    <Compile Include="PrivateObject.cs" />
     <Compile Include="ServerForTesting.cs" />
   </ItemGroup>
   <ItemGroup>

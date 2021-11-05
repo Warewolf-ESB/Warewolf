@@ -707,7 +707,7 @@ namespace Dev2.Core.Tests
 
             //------------Execute Test---------------------------
             _shellViewModel.WorksurfaceContextManager.CloseWorkSurfaceContext(activetx, null);
-            var pvt = new PrivateObject(_shellViewModel);
+            var pvt = new Warewolf.Testing.PrivateObject(_shellViewModel);
             //------------Assert Results-------------------------
             _eventAggregator.Verify(e => e.Publish(It.IsAny<SaveResourceMessage>()), Times.Never());
             _firstResource.Verify(r => r.Commit(), Times.Never(), "ResourceModel was committed when saved.");
@@ -1980,7 +1980,7 @@ namespace Dev2.Core.Tests
             var source = new ExplorerItemViewModel(server.Object, treeItem.Object, action, _shellViewModel, popUpController.Object);
             var contextManager = new Mock<IWorksurfaceContextManager>();
             contextManager.Setup(p => p.ViewMergeConflictsService(currentItem.Object, difItem.Object, It.IsAny<bool>(), It.IsAny<IWorkSurfaceKey>()));
-            var privateObject = new PrivateObject(_shellViewModel);
+            var privateObject = new Warewolf.Testing.PrivateObject(_shellViewModel);
             var currentSurfaceManager = (IWorksurfaceContextManager)privateObject.GetField("_worksurfaceContextManager");
             privateObject.SetField("_worksurfaceContextManager", contextManager.Object);
             _shellViewModel.OpenMergeConflictsView(source, viewModel.Object.ActiveServer.EnvironmentID, serverDef.Object);
@@ -3973,14 +3973,14 @@ namespace Dev2.Core.Tests
             //---------------Set up test pack-------------------
 
             CreateFullExportsAndVm();
-            var pv = new PrivateObject(_shellViewModel);
+            var pv = new Warewolf.Testing.PrivateObject(_shellViewModel);
             var resourceModel = new Mock<IContextualResourceModel>();
 
             var wcm = new Mock<IWorksurfaceContextManager>();
             wcm.Setup(manager => manager.DisplayResourceWizard(resourceModel.Object));
             _environmentModel.Setup(model => model.ResourceRepository.LoadContextualResourceModel(It.IsAny<Guid>()))
                 .Returns(resourceModel.Object);
-            pv.SetField("_worksurfaceContextManager", BindingFlags.Instance | BindingFlags.NonPublic, wcm.Object);
+            pv.SetField("_worksurfaceContextManager", wcm.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(_shellViewModel);
             try
@@ -4004,12 +4004,12 @@ namespace Dev2.Core.Tests
             //---------------Set up test pack-------------------
 
             CreateFullExportsAndVm();
-            var pv = new PrivateObject(_shellViewModel);
+            var pv = new Warewolf.Testing.PrivateObject(_shellViewModel);
             var resourceModel = new Mock<IContextualResourceModel>();
 
             var wcm = new Mock<IWorksurfaceContextManager>();
             wcm.Setup(manager => manager.NewComPluginSource("path"));
-            pv.SetField("_worksurfaceContextManager", BindingFlags.Instance | BindingFlags.NonPublic, wcm.Object);
+            pv.SetField("_worksurfaceContextManager", wcm.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(_shellViewModel);
 
@@ -4026,12 +4026,12 @@ namespace Dev2.Core.Tests
             //---------------Set up test pack-------------------
 
             CreateFullExportsAndVm();
-            var pv = new PrivateObject(_shellViewModel);
+            var pv = new Warewolf.Testing.PrivateObject(_shellViewModel);
 
             var wcm = new Mock<IWorksurfaceContextManager>();
             IEnumerable<IExplorerTreeItem> enumerable = new List<IExplorerTreeItem>();
             wcm.Setup(manager => manager.AddDeploySurface(enumerable));
-            pv.SetField("_worksurfaceContextManager", BindingFlags.Instance | BindingFlags.NonPublic, wcm.Object);
+            pv.SetField("_worksurfaceContextManager", wcm.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(_shellViewModel);
 
@@ -4047,12 +4047,12 @@ namespace Dev2.Core.Tests
         {
             //---------------Set up test pack-------------------
             CreateFullExportsAndVm();
-            var pv = new PrivateObject(_shellViewModel);
+            var pv = new Warewolf.Testing.PrivateObject(_shellViewModel);
 
             var wcm = new Mock<IWorksurfaceContextManager>();
             IVersionInfo version = new VersionInfo();
             wcm.Setup(manager => manager.OpenVersion(Guid.Empty, version));
-            pv.SetField("_worksurfaceContextManager", BindingFlags.Instance | BindingFlags.NonPublic, wcm.Object);
+            pv.SetField("_worksurfaceContextManager", wcm.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(_shellViewModel);
 
@@ -4068,14 +4068,14 @@ namespace Dev2.Core.Tests
         {
             //---------------Set up test pack-------------------
             CreateFullExportsAndVm();
-            var pv = new PrivateObject(_shellViewModel);
+            var pv = new Warewolf.Testing.PrivateObject(_shellViewModel);
             var resourceModel = new Mock<IContextualResourceModel>();
 
             var wcm = new Mock<IWorksurfaceContextManager>();
             wcm.Setup(manager => manager.DisplayResourceWizard(resourceModel.Object));
             _environmentModel.Setup(model => model.ResourceRepository.LoadContextualResourceModel(It.IsAny<Guid>()))
                 .Returns(resourceModel.Object);
-            pv.SetField("_worksurfaceContextManager", BindingFlags.Instance | BindingFlags.NonPublic, wcm.Object);
+            pv.SetField("_worksurfaceContextManager", wcm.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(_shellViewModel);
             try
@@ -4099,14 +4099,14 @@ namespace Dev2.Core.Tests
             //---------------Set up test pack-------------------
 
             CreateFullExportsAndVm();
-            var pv = new PrivateObject(_shellViewModel);
+            var pv = new Warewolf.Testing.PrivateObject(_shellViewModel);
             var resourceModel = new Mock<IContextualResourceModel>();
 
             var wcm = new Mock<IWorksurfaceContextManager>();
             wcm.Setup(manager => manager.TryCreateNewScheduleWorkSurface(resourceModel.Object));
             _environmentModel.Setup(model => model.ResourceRepository.LoadContextualResourceModel(It.IsAny<Guid>()))
                 .Returns(resourceModel.Object);
-            pv.SetField("_worksurfaceContextManager", BindingFlags.Instance | BindingFlags.NonPublic, wcm.Object);
+            pv.SetField("_worksurfaceContextManager", wcm.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(_shellViewModel);
 
@@ -4124,14 +4124,14 @@ namespace Dev2.Core.Tests
             //---------------Set up test pack-------------------
 
             CreateFullExportsAndVm();
-            var pv = new PrivateObject(_shellViewModel);
+            var pv = new Warewolf.Testing.PrivateObject(_shellViewModel);
             var resourceModel = new Mock<IContextualResourceModel>();
 
             var wcm = new Mock<IWorksurfaceContextManager>();
             wcm.Setup(manager => manager.TryCreateNewQueueEventWorkSurface(resourceModel.Object));
             _environmentModel.Setup(model => model.ResourceRepository.LoadContextualResourceModel(It.IsAny<Guid>()))
                 .Returns(resourceModel.Object);
-            pv.SetField("_worksurfaceContextManager", BindingFlags.Instance | BindingFlags.NonPublic, wcm.Object);
+            pv.SetField("_worksurfaceContextManager", wcm.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(_shellViewModel);
 
@@ -4184,7 +4184,7 @@ namespace Dev2.Core.Tests
             mock1.Setup(se => se.Name).Returns("a");
             mock1.Setup(se => se.DisplayName).Returns("a");
             _shellViewModel.ActiveServer = mock1.Object;
-            var po = new PrivateObject(_shellViewModel);
+            var po = new Warewolf.Testing.PrivateObject(_shellViewModel);
             po.Invoke("ShowServerDisconnectedPopup");
             //---------------Test Result -----------------------
             mock.VerifyAll();
