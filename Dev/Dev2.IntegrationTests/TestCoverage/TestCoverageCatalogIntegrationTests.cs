@@ -71,7 +71,7 @@ namespace Dev2.Integration.Tests.TestCoverage
 
             var coverage = sut.GenerateSingleTestCoverage(_workflowId, tests);
 
-            Assert.AreEqual(.33, Math.Round(coverage.TotalCoverage, 2));
+            Assert.AreEqual(.83, Math.Round(coverage.TotalCoverage, 2));
         }
 
         [TestMethod]
@@ -87,7 +87,7 @@ namespace Dev2.Integration.Tests.TestCoverage
 
             var report = sut.FetchReport(_workflowId, _workflowName);
 
-            Assert.AreEqual(.5, coverage.TotalCoverage);
+            Assert.AreEqual(1, coverage.TotalCoverage);
 
             Assert.AreEqual(_workflowName, report.ReportName);
             Assert.AreEqual(coverage.TotalCoverage, report.TotalCoverage);
@@ -106,7 +106,7 @@ namespace Dev2.Integration.Tests.TestCoverage
 
             var report = sut.FetchReport(_workflowId, _workflowName);
 
-            Assert.AreEqual(.12, report.TotalCoverage);
+            Assert.AreEqual(.25, report.TotalCoverage);
 
             Assert.AreEqual(_workflowName, report.ReportName);
             Assert.AreEqual(coverage.TotalCoverage, report.TotalCoverage);
@@ -126,7 +126,7 @@ namespace Dev2.Integration.Tests.TestCoverage
 
             var report = sut.FetchReport(_workflowId, _workflowName);
 
-            Assert.AreEqual(.5, coverage.TotalCoverage);
+            Assert.AreEqual(1, coverage.TotalCoverage);
 
             Assert.AreEqual(_workflowName, report.ReportName);
             Assert.AreEqual(coverage.TotalCoverage, report.TotalCoverage);
