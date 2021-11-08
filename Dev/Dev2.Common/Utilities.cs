@@ -50,7 +50,7 @@ namespace Dev2.Common
                 }
                 catch (Exception e)
                 {
-                    if(ServerUser.Identity is WindowsIdentity identity)
+                    if (ServerUser.Identity is WindowsIdentity identity)
                     {
                         WindowsIdentity.RunImpersonated(identity.AccessToken, actionToBePerformed);
                     }
