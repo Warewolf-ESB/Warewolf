@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
 using System.Threading;
+using Microsoft.AspNet.SignalR.Client;
 
 namespace Dev2.Common
 {
@@ -35,6 +36,27 @@ namespace Dev2.Common
             return source.Where(element => seenKeys.Add(keySelector(element)));
         }
 
+        public static IHubProxy PerformActionInsideImpersonatedContext(IPrincipal userPrinciple, Func<IHubProxy> actionToBePerformed)
+        {
+            if (userPrinciple == null || userPrinciple is GenericPrincipal)
+            {
+                return actionToBePerformed?.Invoke();
+            }
+            var impersonationContext = Impersonate(userPrinciple);
+            try
+            {
+                return WindowsIdentity.RunImpersonated(impersonationContext.AccessToken, actionToBePerformed);
+            }
+            catch (Exception e)
+            {
+                if (ServerUser.Identity is WindowsIdentity identity)
+                {
+                    return WindowsIdentity.RunImpersonated(identity.AccessToken, actionToBePerformed);
+                }
+            }
+            return null;
+        }
+        
         public static void PerformActionInsideImpersonatedContext(IPrincipal userPrinciple, Action actionToBePerformed)
         {
             if (userPrinciple == null || userPrinciple is GenericPrincipal)

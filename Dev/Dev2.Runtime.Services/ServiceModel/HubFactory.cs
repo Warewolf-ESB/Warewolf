@@ -25,61 +25,44 @@ namespace Dev2.Runtime.ServiceModel
     {
         public IHubProxy CreateHubProxy(Connection connection)
         {
-            var serverUser = Common.Utilities.OrginalExecutingUser;
-            var principle = serverUser;
-
-            var identity = principle.Identity as WindowsIdentity;
-
-            try
-            {
-                var createHubConnectionAction = new Func<IHubProxy>(()=> {
-                    using (var client = new WebClient())
+            var createHubConnectionAction = new Func<IHubProxy>(()=> {
+                using (var client = new WebClient())
+                {
+                    if (connection.AuthenticationType == AuthenticationType.Windows)
                     {
-                        if (connection.AuthenticationType == AuthenticationType.Windows)
-                        {
-                            client.UseDefaultCredentials = true;
-                        }
-                        else
-                        {
-                            client.UseDefaultCredentials = false;
-
-                            //// we to default to the hidden public user name of \, silly know but that is how to get around ntlm auth ;)
-                            if (connection.AuthenticationType == AuthenticationType.Public)
-                            {
-                                connection.UserName = GlobalConstants.PublicUsername;
-                                connection.Password = string.Empty;
-                            }
-
-                            client.Credentials = new NetworkCredential(connection.UserName, connection.Password);
-                        }
-
-                        var connectionAddress = connection.FetchTestConnectionAddress();
-                        var hub = new HubConnection(connectionAddress) { Credentials = client.Credentials };
-                        hub.Error += exception => { };
-                        ServicePointManager.ServerCertificateValidationCallback = (sender, certificate, chain, errors) => true;
-                        var proxy = hub.CreateHubProxy("esb");
-                        if (!hub.Start().Wait(GlobalConstants.NetworkTimeOut))
-                        {
-                            throw new HttpClientException(new HttpResponseMessage(HttpStatusCode.GatewayTimeout));
-                        }
-                        return proxy;
+                        client.UseDefaultCredentials = true;
                     }
-                });
-                if (identity != null && connection.AuthenticationType == AuthenticationType.Windows)
-                {
-                    return WindowsIdentity.RunImpersonated(identity.AccessToken, createHubConnectionAction);
-                } else
-                {
-                    return createHubConnectionAction.Invoke();
+                    else
+                    {
+                        client.UseDefaultCredentials = false;
+
+                        //// we to default to the hidden public user name of \, silly know but that is how to get around ntlm auth ;)
+                        if (connection.AuthenticationType == AuthenticationType.Public)
+                        {
+                            connection.UserName = GlobalConstants.PublicUsername;
+                            connection.Password = string.Empty;
+                        }
+
+                        client.Credentials = new NetworkCredential(connection.UserName, connection.Password);
+                    }
+
+                    var connectionAddress = connection.FetchTestConnectionAddress();
+                    var hub = new HubConnection(connectionAddress) { Credentials = client.Credentials };
+                    hub.Error += exception => { };
+                    ServicePointManager.ServerCertificateValidationCallback = (sender, certificate, chain, errors) => true;
+                    var proxy = hub.CreateHubProxy("esb");
+                    if (!hub.Start().Wait(GlobalConstants.NetworkTimeOut))
+                    {
+                        throw new HttpClientException(new HttpResponseMessage(HttpStatusCode.GatewayTimeout));
+                    }
+                    return proxy;
                 }
-            }
-            finally
+            });
+            if (Common.Utilities.OrginalExecutingUser != null && connection.AuthenticationType == AuthenticationType.Windows)
             {
-                if (identity != null && connection.AuthenticationType == AuthenticationType.Windows)
-                {
-                    identity.Dispose();
-                }
+                return Dev2.Common.Utilities.PerformActionInsideImpersonatedContext(Common.Utilities.OrginalExecutingUser, createHubConnectionAction);
             }
+            return createHubConnectionAction.Invoke();
         }
     }
 }

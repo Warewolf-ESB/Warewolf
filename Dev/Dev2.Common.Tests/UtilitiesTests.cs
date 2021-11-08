@@ -203,26 +203,15 @@ namespace Dev2.Common.Tests
             var mockPrincipal = new Mock<IPrincipal>();
             var mockServerUserPrincipal = new Mock<IPrincipal>();
 
-
             mockPrincipal.Setup(o => o.Identity).Returns(WindowsIdentity.GetAnonymous());
-
             mockServerUserPrincipal.Setup(o => o.Identity).Returns(WindowsIdentity.GetAnonymous());
             Utilities.ServerUser = mockServerUserPrincipal.Object;
 
-            try
-            {
-                Utilities.PerformActionInsideImpersonatedContext(mockPrincipal.Object, () => { executed = true; });
-                Assert.Fail("Expected exception");
-            }
-            catch (Exception e)
-            {
-                Assert.AreEqual("An anonymous identity cannot perform an impersonation.", e.Message);
-            }
+            Utilities.PerformActionInsideImpersonatedContext(mockPrincipal.Object, () => { executed = true; });
 
             mockPrincipal.Verify(o => o.Identity, Times.Exactly(1));
             mockServerUserPrincipal.Verify(o => o.Identity, Times.Once);
-
-            Assert.IsFalse(executed);
+            Assert.IsTrue(executed);
         }
 
         [TestMethod]
@@ -234,9 +223,7 @@ namespace Dev2.Common.Tests
             var mockPrincipal = new Mock<IPrincipal>();
             var mockServerUserPrincipal = new Mock<IPrincipal>();
 
-
             mockPrincipal.Setup(o => o.Identity).Returns(WindowsIdentity.GetCurrent());
-
             mockServerUserPrincipal.Setup(o => o.Identity).Returns(WindowsIdentity.GetCurrent());
             Utilities.ServerUser = mockServerUserPrincipal.Object;
 
