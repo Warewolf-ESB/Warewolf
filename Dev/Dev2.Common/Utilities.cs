@@ -37,7 +37,7 @@ namespace Dev2.Common
 
         public static void PerformActionInsideImpersonatedContext(IPrincipal userPrinciple, Action actionToBePerformed)
         {
-            if (userPrinciple == null)
+            if (userPrinciple == null || userPrinciple is GenericPrincipal)
             {
                 actionToBePerformed?.Invoke();
             }
@@ -50,7 +50,7 @@ namespace Dev2.Common
                 }
                 catch (Exception e)
                 {
-                    if (ServerUser.Identity is WindowsIdentity identity)
+                    if(ServerUser.Identity is WindowsIdentity identity)
                     {
                         WindowsIdentity.RunImpersonated(identity.AccessToken, actionToBePerformed);
                     }
