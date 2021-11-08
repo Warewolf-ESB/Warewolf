@@ -50,15 +50,10 @@ namespace Dev2.Common
                 }
                 catch (Exception e)
                 {
-                    impersonationContext?.Dispose();
                     if (ServerUser.Identity is WindowsIdentity identity)
                     {
                         WindowsIdentity.RunImpersonated(identity.AccessToken, actionToBePerformed);
                     }
-                }
-                finally
-                {
-                    impersonationContext?.Dispose();
                 }
             }
         }

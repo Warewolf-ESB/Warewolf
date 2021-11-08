@@ -22,12 +22,7 @@ namespace Dev2.Server.Tests
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ServerEnvironmentPreparerTests))]
-        public void ServerEnvironmentPreparer_Constructor()
-        {
-            using (var serverEnvironmentPreparer = new ServerEnvironmentPreparer())
-            {
-            }
-        }
+        public void ServerEnvironmentPreparer_Constructor() => _ = new ServerEnvironmentPreparer();
 
         [TestMethod]
         [Owner("Rory McGuire")]
