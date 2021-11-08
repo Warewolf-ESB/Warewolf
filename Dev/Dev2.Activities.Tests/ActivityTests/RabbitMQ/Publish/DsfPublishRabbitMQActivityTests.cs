@@ -57,9 +57,9 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Publish
             channel.Setup(c => c.BasicPublish(string.Empty, queueName, It.IsAny<bool>(), null, body));
             channel.Setup(c => c.CreateBasicProperties()).Returns(mockBasicProperties.Object);
 
-            var p = new PrivateObject(dsfPublishRabbitMQActivity);
+            var p = new Warewolf.Testing.PrivateObject(dsfPublishRabbitMQActivity);
             p.SetProperty("ConnectionFactory", connectionFactory.Object);
-            p.SetProperty("ResourceCatalog", resourceCatalog.Object);
+            dsfPublishRabbitMQActivity.ResourceCatalog = resourceCatalog.Object;
 
             //------------Execute Test---------------------------
             var result = p.Invoke("PerformExecution", new Dictionary<string, string> { { "QueueName", queueName }, { "Message", message } }) as List<string>;
@@ -87,7 +87,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Publish
             var resourceCatalog = new Mock<IResourceCatalog>();
             resourceCatalog.Setup(r => r.GetResource<RabbitMQSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns<RabbitMQSource>(null);
 
-            var p = new PrivateObject(dsfPublishRabbitMQActivity);
+            var p = new Warewolf.Testing.PrivateObject(dsfPublishRabbitMQActivity);
             p.SetProperty("ResourceCatalog", resourceCatalog.Object);
 
             //------------Execute Test---------------------------
@@ -113,8 +113,8 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Publish
 
             resourceCatalog.Setup(r => r.GetResource<RabbitMQSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(rabbitMQSource.Object);
 
-            var p = new PrivateObject(dsfPublishRabbitMQActivity);
-            p.SetProperty("ResourceCatalog", resourceCatalog.Object);
+            var p = new Warewolf.Testing.PrivateObject(dsfPublishRabbitMQActivity);
+            dsfPublishRabbitMQActivity.ResourceCatalog = resourceCatalog.Object;
 
             //------------Execute Test---------------------------
 
@@ -139,8 +139,8 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Publish
 
             resourceCatalog.Setup(r => r.GetResource<RabbitMQSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(rabbitMQSource.Object);
 
-            var p = new PrivateObject(dsfPublishRabbitMQActivity);
-            p.SetProperty("ResourceCatalog", resourceCatalog.Object);
+            var p = new Warewolf.Testing.PrivateObject(dsfPublishRabbitMQActivity);
+            dsfPublishRabbitMQActivity.ResourceCatalog = resourceCatalog.Object;
 
             //------------Execute Test---------------------------
 
@@ -155,7 +155,6 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Publish
         [Timeout(60000)]
         [Owner("Clint Stedman")]
         [TestCategory("DsfPublishRabbitMQActivity_Execute")]
-        [ExpectedException(typeof(Exception))]
         public void DsfPublishRabbitMQActivity_Execute_Failure_NullException()
         {
             //------------Setup for test--------------------------
@@ -168,15 +167,20 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Publish
             resourceCatalog.Setup(r => r.GetResource<RabbitMQSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(rabbitMQSource.Object);
             connectionFactory.Setup(c => c.CreateConnection()).Returns<IConnection>(null);
 
-            var p = new PrivateObject(dsfPublishRabbitMQActivity);
+            var p = new Warewolf.Testing.PrivateObject(dsfPublishRabbitMQActivity);
             p.SetProperty("ConnectionFactory", connectionFactory.Object);
-            p.SetProperty("ResourceCatalog", resourceCatalog.Object);
+            dsfPublishRabbitMQActivity.ResourceCatalog = resourceCatalog.Object;
 
-            //------------Execute Test---------------------------
-            var result = p.Invoke("PerformExecution", new Dictionary<string, string> { { "QueueName", "Q1" }, { "Message", "Test message" } });
-
-            //------------Assert Results-------------------------
-            Assert.Fail("Exception not thrown");
+            try
+            {
+                //------------Execute Test---------------------------
+                _ = p.Invoke("PerformExecution", new Dictionary<string, string> { { "QueueName", "Q1" }, { "Message", "Test message" } });
+            }
+            catch(TargetInvocationException e)
+            {
+                //------------Assert Results-------------------------
+                Assert.AreEqual("Object reference not set to an instance of an object.", e.InnerException?.Message, "Incorrect exception thrown.");
+            }
         }
 
         [TestMethod]

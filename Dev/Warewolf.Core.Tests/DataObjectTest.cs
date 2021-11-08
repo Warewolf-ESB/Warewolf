@@ -57,8 +57,8 @@ namespace Dev2.Tests
             mock.SetupAllProperties();
             IDSFDataObject dataObject = new DsfDataObject(string.Empty, Guid.NewGuid());
             dataObject.Environment = mock.Object;
-            var privateObject = new PrivateObject(dataObject);
-            var field = privateObject.GetField("_environments", BindingFlags.Instance | BindingFlags.NonPublic) as ConcurrentStack<IExecutionEnvironment>;
+            var privateObject = new Warewolf.Testing.PrivateObject(dataObject);
+            var field = privateObject.GetField("_environments") as ConcurrentStack<IExecutionEnvironment>;
             //---------------Assert Precondition----------------
             Assert.IsNotNull(dataObject.Environment);
             Assert.IsNotNull(field);
@@ -78,8 +78,8 @@ namespace Dev2.Tests
             mock.SetupAllProperties();
             IDSFDataObject dataObject = new DsfDataObject(string.Empty, Guid.NewGuid());
             dataObject.Environment = mock.Object;
-            var privateObject = new PrivateObject(dataObject);
-            var field = privateObject.GetField("_environments", BindingFlags.Instance | BindingFlags.NonPublic) as ConcurrentStack<IExecutionEnvironment>;
+            var privateObject = new Warewolf.Testing.PrivateObject(dataObject);
+            var field = privateObject.GetField("_environments") as ConcurrentStack<IExecutionEnvironment>;
             //---------------Assert Precondition----------------
             Assert.IsNotNull(dataObject.Environment);
             Assert.IsNotNull(field);

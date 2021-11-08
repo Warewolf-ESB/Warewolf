@@ -335,6 +335,7 @@ namespace Dev2.Tests.Runtime.WebServer
             StringAssert.Contains(executePayload, "\"TestResults\": [\r\n    {\r\n      \"ResourceID\": \"fbda8700-2717-4879-88cd-6abdea4560da\",\r\n  ");
             StringAssert.Contains(executePayload, "\r\n  \"CoverageSummary\": {\r\n    \"TotalCoverage\": 100.0\r\n  },");
             StringAssert.Contains(executePayload, "\r\n  \"TestSummary\": {\r\n    \"TestsTotalCount\": 1,\r\n    \"TestsFailed\": 0,\r\n    \"TestsPassed\": 0,\r\n    \"TestsInvalid\": 1\r\n  }");
+            StringAssert.Contains(executePayload, "\"NodesSummary\": {\r\n            \"TotalNodesCount\": 0,\r\n            \"NotCoveredNodes\": 0,\r\n            \"CoveredNodes\": 1,\r\n            \"CoveredNodesDetails\": [\r\n              {\r\n                \"Assert\": 1,\r\n                \"Mocked\": 0\r\n              }\r\n            ]\r\n          }");
         }
 
         [TestMethod]

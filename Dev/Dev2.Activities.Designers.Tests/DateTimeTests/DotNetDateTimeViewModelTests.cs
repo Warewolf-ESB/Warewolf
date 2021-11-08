@@ -41,7 +41,7 @@ namespace Dev2.Activities.Designers.Tests.DateTimeTests
             var modelItem = CreateModelItem();
             var viewModel = new Dev2.Activities.Designers2.DateTimStandard.DateTimeDesignerViewModel(modelItem);
             var expectedDefaultFormat = GlobalConstants.Dev2DotNetDefaultDateTimeFormat;
-            var po = new PrivateObject(viewModel);
+            var po = new Warewolf.Testing.PrivateObject(viewModel);
             Assert.AreEqual(expectedDefaultFormat, po.GetProperty("InputFormat"));
         }
 
@@ -51,7 +51,7 @@ namespace Dev2.Activities.Designers.Tests.DateTimeTests
             var modelItem = CreateModelItemWithInputFormat("yyyy-mm-dd");
             var viewModel = new Dev2.Activities.Designers2.DateTimStandard.DateTimeDesignerViewModel(modelItem);
             var expectedDefaultFormat = GlobalConstants.Dev2DotNetDefaultDateTimeFormat;
-            var po = new PrivateObject(viewModel);
+            var po = new Warewolf.Testing.PrivateObject(viewModel);
             Assert.AreNotEqual(expectedDefaultFormat, po.GetProperty("InputFormat"));
             Assert.AreEqual("yyyy-mm-dd", po.GetProperty("InputFormat"));
         }
@@ -62,7 +62,7 @@ namespace Dev2.Activities.Designers.Tests.DateTimeTests
             var modelItem = CreateModelItem();
             var viewModel = new Dev2.Activities.Designers2.DateTimStandard.DateTimeDesignerViewModel(modelItem);
             var expectedDefaultFormat = GlobalConstants.Dev2DotNetDefaultDateTimeFormat;
-            var po = new PrivateObject(viewModel);
+            var po = new Warewolf.Testing.PrivateObject(viewModel);
             Assert.AreEqual(expectedDefaultFormat, po.GetProperty("OutputFormat"));
         }
 
@@ -72,7 +72,7 @@ namespace Dev2.Activities.Designers.Tests.DateTimeTests
             var modelItem = CreateModelItemWithOutputFormat("yyyy-mm-dd");
             var viewModel = new Dev2.Activities.Designers2.DateTimStandard.DateTimeDesignerViewModel(modelItem);
             var expectedDefaultFormat = GlobalConstants.Dev2DotNetDefaultDateTimeFormat;
-            var po = new PrivateObject(viewModel);
+            var po = new Warewolf.Testing.PrivateObject(viewModel);
             Assert.AreNotEqual(expectedDefaultFormat, po.GetProperty("OutputFormat"));
             Assert.AreEqual("yyyy-mm-dd", po.GetProperty("OutputFormat"));
         }
@@ -83,7 +83,7 @@ namespace Dev2.Activities.Designers.Tests.DateTimeTests
             var modelItem = CreateModelItemWithInputOutputFormat("yyyy-mm-dd", "MM/dd/yyyy");
             var viewModel = new Dev2.Activities.Designers2.DateTimStandard.DateTimeDesignerViewModel(modelItem);
             var expectedDefaultFormat = GlobalConstants.Dev2DotNetDefaultDateTimeFormat;
-            var po = new PrivateObject(viewModel);
+            var po = new Warewolf.Testing.PrivateObject(viewModel);
             Assert.AreNotEqual(expectedDefaultFormat, po.GetProperty("InputFormat"));
             Assert.AreEqual("yyyy-mm-dd", po.GetProperty("InputFormat"));
             Assert.AreNotEqual(expectedDefaultFormat, po.GetProperty("OutputFormat"));

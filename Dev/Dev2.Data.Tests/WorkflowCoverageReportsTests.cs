@@ -139,7 +139,7 @@ namespace Dev2.Data.Tests
 
             Assert.IsNotNull(sut.Resource);
             Assert.IsTrue(sut.HasTestReports);
-            Assert.AreEqual(0, sut.TotalCoverage);
+            Assert.AreEqual(1, sut.TotalCoverage, "design change: mocked nodes should now included with the test coverage calculation");
         }
 
 
@@ -246,7 +246,7 @@ namespace Dev2.Data.Tests
 
             Assert.IsNotNull(sut.Resource);
             Assert.IsTrue(sut.HasTestReports);
-            Assert.AreEqual(0.67, sut.TotalCoverage);
+            Assert.AreEqual(1, sut.TotalCoverage, "design change: mocked nodes should now included with the test coverage calculation");
         }
     }
 }

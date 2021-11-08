@@ -22,7 +22,7 @@ namespace Warewolf.Auditing
         public string Type { get; set; }
         public Audit Audit { get; set; }
         public Dictionary<string, StringBuilder> Query { get; set; }
-        public IExecutionHistory ExecutionHistory { get; set; }
+        public ExecutionHistory ExecutionHistory { get; set; }
         public LogEntry LogEntry { get; set; }
     }
 

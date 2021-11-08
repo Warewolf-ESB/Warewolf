@@ -196,7 +196,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var mockAutorizationService = new Mock<IAuthorizationService>();
             mockAutorizationService.Setup(service => service.IsAuthorized(It.IsAny<IPrincipal>(), AuthorizationContext.Execute, resourceID)).Returns(true);
 
-            var p = new PrivateObject(act);
+            var p = new Warewolf.Testing.PrivateObject(act);
             p.SetProperty("AuthorizationService", mockAutorizationService.Object);
             //------------Execute Test---------------------------
             CheckPathOperationActivityDebugInputOutput(act, @"<ADL><scalar></scalar><Numeric><num></num></Numeric><CompanyName></CompanyName><Customer><FirstName></FirstName></Customer></ADL>",
@@ -224,7 +224,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var mockAutorizationService = new Mock<IAuthorizationService>();
             mockAutorizationService.Setup(service => service.IsAuthorized(It.IsAny<IPrincipal>(), AuthorizationContext.Execute, resourceID)).Returns(true);
 
-            var p = new PrivateObject(act);
+            var p = new Warewolf.Testing.PrivateObject(act);
             p.SetProperty("AuthorizationService", mockAutorizationService.Object);
 
             //------------Execute Test---------------------------
@@ -560,7 +560,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var mockAutorizationService = new Mock<IAuthorizationService>();
             mockAutorizationService.Setup(service => service.IsAuthorized(It.IsAny<IPrincipal>(), AuthorizationContext.Execute, resourceID)).Returns(true);
 
-            var p = new PrivateObject(act);
+            var p = new Warewolf.Testing.PrivateObject(act);
             p.SetProperty("AuthorizationService", mockAutorizationService.Object);
 
             //------------Execute Test---------------------------

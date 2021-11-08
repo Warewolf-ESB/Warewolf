@@ -47,7 +47,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.RabbitMQ.Consum
             var model = new Mock<IRabbitMQSourceModel>();
 
             var viewModel = new RabbitMQConsumeDesignerViewModel(modelItem, model.Object);
-            var privateObject = new PrivateObject(consumeActivity);
+            var privateObject = new Warewolf.Testing.PrivateObject(consumeActivity);
 
             scenarioContext.Add("ViewModel", viewModel);
             scenarioContext.Add("Model", model);
@@ -184,7 +184,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.RabbitMQ.Consum
          
 
             var consumeRabbitMQActivity = scenarioContext.Get<DsfConsumeRabbitMQActivity>("Activity");
-            var _privateObject = scenarioContext.Get<PrivateObject>("PrivateObj");
+            var _privateObject = scenarioContext.Get<Warewolf.Testing.PrivateObject>("PrivateObj");
             var executeResults = _privateObject.Invoke("PerformExecution", new Dictionary<string, string>());
         }
 
@@ -194,8 +194,9 @@ namespace Warewolf.ToolsSpecs.Toolbox.RabbitMQ.Consum
             var resourceCatalog = new Mock<IResourceCatalog>();
             resourceCatalog.Setup(catalog => catalog.GetResource<RabbitMQSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(default(RabbitMQSource));
 
-            var _privateObject = scenarioContext.Get<PrivateObject>("PrivateObj");
-            _privateObject.SetProperty("ResourceCatalog", resourceCatalog.Object);
+            var _privateObject = scenarioContext.Get<Warewolf.Testing.PrivateObject>("PrivateObj");
+            var consumeRabbitMQActivity = scenarioContext.Get<DsfConsumeRabbitMQActivity>("Activity");
+            consumeRabbitMQActivity.ResourceCatalog = resourceCatalog.Object;
             var executeResults = _privateObject.Invoke("PerformExecution", new Dictionary<string, string>()) as List<string>;
             Assert.IsTrue(executeResults != null && string.Equals("Failure: Source has been deleted.", executeResults[0]));
         }
@@ -203,13 +204,11 @@ namespace Warewolf.ToolsSpecs.Toolbox.RabbitMQ.Consum
         [Then(@"No queue error is Returned")]
         public void ThenNoQueueErrorIsReturned()
         {
-            var consumeRabbitMQActivity = scenarioContext.Get<DsfConsumeRabbitMQActivity>("Activity");
-
             var resourceCatalog = new Mock<IResourceCatalog>();
             var rabbitMQSource = new Mock<RabbitMQSource>();
             resourceCatalog.Setup(r => r.GetResource<RabbitMQSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(rabbitMQSource.Object);
 
-            var _privateObject = scenarioContext.Get<PrivateObject>("PrivateObj");
+            var _privateObject = scenarioContext.Get<Warewolf.Testing.PrivateObject>("PrivateObj");
             _privateObject.SetProperty("ResourceCatalog", resourceCatalog.Object);
             _privateObject.SetProperty("RabbitSource", rabbitMQSource.Object);
 
@@ -229,7 +228,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.RabbitMQ.Consum
         {
             var consumeRabbitMQActivity = scenarioContext.Get<DsfConsumeRabbitMQActivity>("Activity");
             consumeRabbitMQActivity.RabbitMQSourceResourceId = new Guid();
-            var _privateObject = scenarioContext.Get<PrivateObject>("PrivateObj");
+            var _privateObject = scenarioContext.Get<Warewolf.Testing.PrivateObject>("PrivateObj");
             var executeResults = _privateObject.Invoke("PerformExecution", new Dictionary<string, string>());
             Assert.IsTrue(Equals(string.Format("Nothing in the Queue : {0}", consumeRabbitMQActivity.QueueName), executeResults));
         }

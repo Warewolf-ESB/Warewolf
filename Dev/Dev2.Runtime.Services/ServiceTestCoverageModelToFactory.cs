@@ -43,6 +43,8 @@ namespace Dev2.Runtime
             coverageReports.Add(coverageModelTo);
 
             coverageModelTo.TotalCoverage = coverageReports.TotalCoverage;
+            coverageModelTo.AllWorkflowNodes = coverageReports.WorkflowNodes;
+            coverageModelTo.NotCoveredNodesCount = coverageReports.NotCoveredNodesCount;
 
             return coverageModelTo;
         }

@@ -189,7 +189,7 @@ namespace WarewolfParsingTest
             env.AssignJson(new AssignValue("[[array(1)]]", "bob"), 0);
             env.AssignJson(new AssignValue("[[arrayObj(1).Name]]", "bob"), 0);
             env.AssignJson(new AssignValue("[[arrayObj(2).Name]]", "bobe"), 0);
-            var p = new PrivateObject(env);
+            var p = new Warewolf.Testing.PrivateObject(env);
             return (DataStorage.WarewolfEnvironment)p.GetFieldOrProperty("_env");
         }
 
@@ -284,7 +284,7 @@ namespace WarewolfParsingTest
         {
             //------------Setup for test--------------------------
             var e = new ExecutionEnvironment();
-            var p = new PrivateObject(e);
+            var p = new Warewolf.Testing.PrivateObject(e);
             var env = (DataStorage.WarewolfEnvironment)p.GetFieldOrProperty("_env");
 
             //------------Execute Test---------------------------

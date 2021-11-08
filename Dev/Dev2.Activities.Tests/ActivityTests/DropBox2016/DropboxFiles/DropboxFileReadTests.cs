@@ -83,8 +83,8 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
         {
             //---------------Set up test pack-------------------
             var dropboxFileRead = new DropboxFileRead(true, null, false, false);
-            var type = new PrivateObject(dropboxFileRead);
-            var staticField = type.GetField("_path", BindingFlags.Instance | BindingFlags.NonPublic);
+            var type = new Warewolf.Testing.PrivateObject(dropboxFileRead);
+            var staticField = type.GetField("_path");
             //---------------Assert Precondition----------------
             Assert.IsNotNull(dropboxFileRead);
             Assert.IsNotNull(staticField);

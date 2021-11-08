@@ -3893,7 +3893,7 @@ namespace Dev2.Tests.Runtime.Hosting
         {
             //------------Setup for test--------------------------
             var rcBuilder = new ResourceCatalogBuilder();
-            var privateObject = new PrivateObject(rcBuilder);
+            var privateObject = new Warewolf.Testing.PrivateObject(rcBuilder);
             var fileHelperObject = new Mock<IFile>();
             var serverReleaseResources = Path.Combine(EnvironmentVariables.ApplicationPath, "Resources");
             fileHelperObject.Setup(o => o.Copy(serverReleaseResources +"\\asdf\\asdf2.xml",
@@ -3954,7 +3954,7 @@ namespace Dev2.Tests.Runtime.Hosting
         {
             //------------Setup for test--------------------------
             var rcBuilder = new ResourceCatalogBuilder();
-            var privateObject = new PrivateObject(rcBuilder);
+            var privateObject = new Warewolf.Testing.PrivateObject(rcBuilder);
             var xml = XmlResource.Fetch("fileThatsNotWarewolfResource");
             var results = privateObject.Invoke("IsWarewolfResource", xml);
             //------------Assert Precondition-----------------            
@@ -3972,7 +3972,7 @@ namespace Dev2.Tests.Runtime.Hosting
         {
             //------------Setup for test--------------------------
             var rcBuilder = new ResourceCatalogBuilder();
-            var privateObject = new PrivateObject(rcBuilder);
+            var privateObject = new Warewolf.Testing.PrivateObject(rcBuilder);
             var workspaceID = GlobalConstants.ServerWorkspaceID;
             var path = EnvironmentVariables.ResourcePath;
             Directory.CreateDirectory(path);
@@ -3996,7 +3996,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Setup for test--------------------------
             var sourcesPath = EnvironmentVariables.GetWorkspacePath(GlobalConstants.ServerWorkspaceID);
             var rcBuilder = new ResourceCatalogBuilder();
-            var privateObject = new PrivateObject(rcBuilder);
+            var privateObject = new Warewolf.Testing.PrivateObject(rcBuilder);
             var xml = XmlResource.Fetch("fileThatsNotWarewolfResource");
             var filePath = sourcesPath + "\\" + "fileThatsNotWarewolfResource.xml";
             var filePathToUpdate = new List<string> { sourcesPath + "\\" + "fileThatsNotWarewolfResource.xml" };

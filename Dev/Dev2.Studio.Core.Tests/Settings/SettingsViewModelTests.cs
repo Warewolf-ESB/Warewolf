@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.ObjectModel;
+using System.Reflection;
 using System.Text;
 using System.Windows;
 using System.Windows.Forms;
@@ -265,8 +266,9 @@ namespace Dev2.Core.Tests.Settings
             var repo = new Mock<IResourceRepository>();
             environment.Setup(a => a.ResourceRepository).Returns(repo.Object);
             viewModel.CurrentEnvironment = environment.Object;
-            var p = new PrivateObject(viewModel, new PrivateType(typeof(SettingsViewModel)));
-            p.SetProperty("SecurityViewModel", securityViewModel);
+            var propertyInfo = typeof(SettingsViewModel).GetProperty("SecurityViewModel", BindingFlags.Public | BindingFlags.Instance);
+            Assert.IsNotNull(propertyInfo, "Cannot get private property.");
+            propertyInfo.SetValue(viewModel, securityViewModel);
             //------------Execute Test---------------------------
             viewModel.SaveCommand.Execute(null);
 
@@ -366,8 +368,7 @@ You need Administrator permission.", viewModel.Errors);
             environment.Setup(c => c.AuthorizationService).Returns(authService.Object);
             viewModel.CurrentEnvironment = environment.Object;
             viewModel.IsDirty = true;
-            var p = new PrivateObject(viewModel.SecurityViewModel);
-            p.SetProperty("ServerPermissions", new ObservableCollection<WindowsGroupPermission>()
+            viewModel.SecurityViewModel.GetType().GetProperty("ServerPermissions", BindingFlags.Public | BindingFlags.Instance)?.SetValue(viewModel.SecurityViewModel,new ObservableCollection<WindowsGroupPermission>()
             {
                 new WindowsGroupPermission
                 {
@@ -426,8 +427,7 @@ You need Administrator permission.", viewModel.Errors);
             environment.Setup(c => c.AuthorizationService).Returns(authService.Object);
             //viewModel.CurrentEnvironment = environment.Object;
             viewModel.IsDirty = true;
-            var p = new PrivateObject(viewModel.SecurityViewModel);
-            p.SetProperty("ResourcePermissions", new ObservableCollection<WindowsGroupPermission>()
+            viewModel.SecurityViewModel.GetType().GetProperty("ResourcePermissions", BindingFlags.Public | BindingFlags.Instance)?.SetValue(viewModel.SecurityViewModel,new ObservableCollection<WindowsGroupPermission>()
             {
                 new WindowsGroupPermission
                 {
@@ -450,9 +450,7 @@ You need Administrator permission.", viewModel.Errors);
             Assert.IsTrue(viewModel.IsDirty);
             Assert.IsFalse(viewModel.IsSaved);
             Assert.IsTrue(viewModel.HasErrors);
-            Assert.AreEqual(@"There are duplicate permissions for a resource, 
-    i.e. one resource has permissions set twice with the same group. 
-    Please clear the duplicates before saving.", viewModel.Errors);
+            Assert.AreEqual(StringResources.SaveSettingsDuplicateResourcePermissions, viewModel.Errors);
             popupController.Verify(controller => controller.ShowHasDuplicateResourcePermissions(), Times.Once);
         }
 
