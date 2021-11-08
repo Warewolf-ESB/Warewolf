@@ -505,7 +505,7 @@ namespace Warewolf.Studio.ViewModels
                 throw new ArgumentNullException(nameof(serviceTestOutputs));
             }
 
-            var testStep = new ServiceTestStep(Guid.Parse(activityUniqueId), activityTypeName, serviceTestOutputs, stepType) { StepDescription = activityDisplayName };
+            var testStep = new ServiceTestStep(Guid.Parse(activityUniqueId), activityTypeName, serviceTestOutputs, stepType) { StepDescription = activityDisplayName, Children = new ObservableCollection<IServiceTestStep>() };
             TestSteps.Add(testStep);
             return testStep;
         }

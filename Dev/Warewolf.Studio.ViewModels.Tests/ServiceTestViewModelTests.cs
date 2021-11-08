@@ -180,8 +180,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         [Timeout(250)]
         [Owner("Hagashen Naidu")]
         [TestCategory(nameof(ServiceTestViewModel))]
-        public void
-            ServiceTestViewModel_Constructor_NotNullResourceModel_ShouldSetDisplayNameIncludingResourceDisplayName()
+        public void ServiceTestViewModel_Constructor_NotNullResourceModel_ShouldSetDisplayNameIncludingResourceDisplayName()
         {
             //------------Setup for test--------------------------
             var mockResourceModel = new Mock<IContextualResourceModel>();
@@ -368,8 +367,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         [Timeout(250)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory(nameof(ServiceTestViewModel))]
-        public void
-            ServiceTestViewModel_OnCreation_GivenIsNewNotConnected_ShouldSetRunSelectedTestCommandCanExecuteFalse()
+        public void ServiceTestViewModel_OnCreation_GivenIsNewNotConnected_ShouldSetRunSelectedTestCommandCanExecuteFalse()
         {
             //---------------Set up test pack-------------------
             var mock = new Mock<IEventAggregator>();
@@ -388,8 +386,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         [Timeout(250)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory(nameof(ServiceTestViewModel))]
-        public void
-            ServiceTestViewModel_OnCreation_GivenIsNewNotConnected_ShouldSetRunAllTestsInBrowserCommandCanExecuteFalse()
+        public void ServiceTestViewModel_OnCreation_GivenIsNewNotConnected_ShouldSetRunAllTestsInBrowserCommandCanExecuteFalse()
         {
             //---------------Set up test pack-------------------
             var mock = new Mock<IEventAggregator>();
@@ -837,8 +834,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         [Timeout(250)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory(nameof(ServiceTestViewModel))]
-        public void
-            ServiceTestViewModel_DeleteTestCommand_GivenResourceModelIsConnectedAndTestIsDisabled_ShouldSetCanExecuteTrue()
+        public void ServiceTestViewModel_DeleteTestCommand_GivenResourceModelIsConnectedAndTestIsDisabled_ShouldSetCanExecuteTrue()
         {
             //---------------Set up test pack-------------------
             var vm = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(),
@@ -863,8 +859,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         [Timeout(250)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory(nameof(ServiceTestViewModel))]
-        public void
-            ServiceTestViewModel_DeleteTestCommand_GivenResourceModelIsNotConnectedAndTestIsDisabled_ShouldSetCanExecuteTrue()
+        public void ServiceTestViewModel_DeleteTestCommand_GivenResourceModelIsNotConnectedAndTestIsDisabled_ShouldSetCanExecuteTrue()
         {
             //---------------Set up test pack-------------------
             var vm = new ServiceTestViewModel(CreateResourceModel(false), new SynchronousAsyncWorker(),
@@ -1399,8 +1394,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         [Timeout(250)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory(nameof(ServiceTestViewModel))]
-        public void
-            ServiceTestViewModel_DuplicateCommand_GivenIsDirtyFalseAndSelectedIsNotNull_ShouldSetCanExecuteTrue()
+        public void ServiceTestViewModel_DuplicateCommand_GivenIsDirtyFalseAndSelectedIsNotNull_ShouldSetCanExecuteTrue()
         {
             //---------------Set up test pack-------------------
             var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(),
@@ -1665,8 +1659,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         [Timeout(250)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory(nameof(ServiceTestViewModel))]
-        public void
-            ServiceTestViewModel_DuplicateTestCommand_GivenSelectedTesIsNotNull_ShouldAddNewTestToTestCollection()
+        public void ServiceTestViewModel_DuplicateTestCommand_GivenSelectedTesIsNotNull_ShouldAddNewTestToTestCollection()
         {
             //---------------Set up test pack-------------------
             var testFrameworkViewModel = new ServiceTestViewModel(CreateMockResourceModelWithSingleScalarOutput(),
@@ -1693,8 +1686,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         [Timeout(250)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory(nameof(ServiceTestViewModel))]
-        public void
-            ServiceTestViewModel_DuplicateTestCommand_GivenSelectedTesIsNotNull_ShouldSetSelectedTestToNewlyDuplicatedTest()
+        public void ServiceTestViewModel_DuplicateTestCommand_GivenSelectedTesIsNotNull_ShouldSetSelectedTestToNewlyDuplicatedTest()
         {
             //---------------Set up test pack-------------------
             var testFrameworkViewModel = new ServiceTestViewModel(CreateMockResourceModelWithSingleScalarOutput(),
@@ -2045,8 +2037,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         [Timeout(250)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory(nameof(ServiceTestViewModel))]
-        public void
-            ServiceTestViewModel_NeverRunStringVisibility_GivenSelectedTestIsNew_ShouldHaveDateVisibilityVisible()
+        public void ServiceTestViewModel_NeverRunStringVisibility_GivenSelectedTestIsNew_ShouldHaveDateVisibilityVisible()
         {
             //---------------Set up test pack-------------------
             var popupController = new Mock<IPopupController>();
@@ -2073,8 +2064,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         [Timeout(5000)]
         [Owner("Hagashen Naidu")]
         [TestCategory(nameof(ServiceTestViewModel))]
-        public void
-            ServiceTestViewModel_ItemSelected_GivenSelectedItemDecision_ShouldHaveAddServiceTestStepShouldHaveArmOptions()
+        public void ServiceTestViewModel_ItemSelected_GivenSelectedItemDecision_ShouldHaveAddServiceTestStepShouldHaveArmOptions()
         {
             //---------------Set up test pack-------------------
             var popupController = new Mock<IPopupController>();
@@ -2482,8 +2472,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         [Timeout(500)]
         [Owner("Hagashen Naidu")]
         [TestCategory(nameof(ServiceTestViewModel))]
-        public void
-            ServiceTestViewModel_ItemSelected_GivenSelectedItemSwitch_Default_ShouldHaveAddServiceTestStepShouldHaveCaseOptionsWithDefaultAtTop()
+        public void ServiceTestViewModel_ItemSelected_GivenSelectedItemSwitch_Default_ShouldHaveAddServiceTestStepShouldHaveCaseOptionsWithDefaultAtTop()
         {
             //---------------Set up test pack-------------------
             var popupController = new Mock<IPopupController>();
@@ -2538,8 +2527,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         [Timeout(250)]
         [Owner("Hagashen Naidu")]
         [TestCategory(nameof(ServiceTestViewModel))]
-        public void
-            ServiceTestViewModel_ItemSelected_GivenSelectedItemFlowSwitch_Default_ShouldHaveAddServiceTestStepShouldHaveCaseOptionsWithDefaultAtTop()
+        public void ServiceTestViewModel_ItemSelected_GivenSelectedItemFlowSwitch_Default_ShouldHaveAddServiceTestStepShouldHaveCaseOptionsWithDefaultAtTop()
         {
             //---------------Set up test pack-------------------
             var popupController = new Mock<IPopupController>();
@@ -2593,8 +2581,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         [Timeout(250)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory(nameof(ServiceTestViewModel))]
-        public void
-            ServiceTestViewModel_ItemSelected_GivenSelectedItemSelectAndApply_Default_ShouldHaveAddServiceTestStepShouldHaveCaseOptionsWithDefaultAtTop()
+        public void ServiceTestViewModel_ItemSelected_GivenSelectedItemSelectAndApply_Default_ShouldHaveAddServiceTestStepShouldHaveCaseOptionsWithDefaultAtTop()
         {
             //---------------Set up test pack-------------------
             var popupController = new Mock<IPopupController>();
@@ -2633,8 +2620,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         [Timeout(250)]
         [Owner("Hagashen Naidu")]
         [TestCategory(nameof(ServiceTestViewModel))]
-        public void
-            ServiceTestViewModel_ItemSelected_GivenSelectedItemMultiAssign_ShouldHaveAddServiceTestStepShouldHaveOutputs()
+        public void ServiceTestViewModel_ItemSelected_GivenSelectedItemMultiAssign_ShouldHaveAddServiceTestStepShouldHaveOutputs()
         {
             //---------------Set up test pack-------------------
             var popupController = new Mock<IPopupController>();
@@ -2742,8 +2728,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         [Timeout(250)]
         [Owner("Hagashen Naidu")]
         [TestCategory(nameof(ServiceTestViewModel))]
-        public void
-            ServiceTestViewModel_ItemSelected_GivenSelectedItemForEach_ShouldHaveAddServiceTestStepShouldHaveOutputs()
+        public void ServiceTestViewModel_ItemSelected_GivenSelectedItemForEach_ShouldHaveAddServiceTestStepShouldHaveOutputs()
         {
             //---------------Set up test pack-------------------
             var popupController = new Mock<IPopupController>();

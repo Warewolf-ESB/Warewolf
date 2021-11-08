@@ -909,7 +909,7 @@ namespace Warewolf.Studio.ViewModels
             var testStep = BuildParentsFromModelItem(modelItem);
             if (testStep != null)
             {
-                //AddSequence(sequence, testStep, testStep.Children);
+                AddSequence(sequence, testStep, SelectedServiceTest.TestSteps);
                 if (FindExistingStep(testStep.ActivityID.ToString()) == null)
                 {
                     SelectedServiceTest.TestSteps.Add(testStep);
@@ -924,14 +924,26 @@ namespace Warewolf.Studio.ViewModels
         void ProcessGate(ModelItem modelItem)
         {
             var gateActivity = GetCurrentActivity<GateActivity>(modelItem);
-            AddGate(gateActivity);
+            var testStep = BuildParentsFromModelItem(modelItem); 
+            if (testStep != null)
+            {
+                AddGate(gateActivity, testStep, SelectedServiceTest.TestSteps);
+                if (FindExistingStep(testStep.ActivityID.ToString()) == null)
+                {
+                    SelectedServiceTest.TestSteps.Add(testStep);
+                }
+            }
+            else
+            {
+                AddGate(gateActivity, null, SelectedServiceTest.TestSteps);
+            }
         }
 
-        void AddGate(GateActivity gate)
+        ObservableCollection<IServiceTestOutput> GetGateOutputs(GateActivity gate)
         {
             if (gate == null)
             {
-                return;
+                return default;
             }
 
             var uniqueId = gate.UniqueID;
@@ -940,56 +952,39 @@ namespace Warewolf.Studio.ViewModels
             var conditionExpressionList = gate.Conditions;
             var conditions = conditionExpressionList.ToConditions();
 
-            if (exists == null && SelectedServiceTest != null)
+            if (conditions != null)
             {
-                if (conditions != null)
+                var serviceTestOutputs = new ObservableCollection<IServiceTestOutput>();
+                foreach (var condition in conditions)
                 {
-                    var serviceTestOutputs = new ObservableCollection<IServiceTestOutput>();
-                    foreach (var condition in conditions)
+                    if (condition is ConditionMatch conditionMatch)
                     {
-                        if (condition is ConditionMatch conditionMatch)
+                        var sb = new StringBuilder();
+                        conditionMatch.MatchType.RenderDescription(sb);
+                        var serviceTestOutput = new ServiceTestOutput(conditionMatch.Left, conditionMatch.Right, "", "")
                         {
-                            var sb = new StringBuilder();
-                            conditionMatch.MatchType.RenderDescription(sb);
-                            var serviceTestOutput = new ServiceTestOutput(conditionMatch.Left, conditionMatch.Right, "", "")
-                            {
-                                AssertOp = sb.ToString()?? "=",
-                                Result = new TestRunResult { RunTestResult = RunResult.TestPending }
-                            };
+                            AssertOp = sb.ToString() ?? "=",
+                            Result = new TestRunResult { RunTestResult = RunResult.TestPending }
+                        };
 
-                            serviceTestOutputs.Add(serviceTestOutput);
-                        }
-                        if (condition is ConditionBetween conditionBetween)
-                        {
-                            var sb = new StringBuilder();
-                            conditionBetween.MatchType.RenderDescription(sb);
-                            var serviceTestOutput = new ServiceTestOutput(conditionBetween.Left, "", conditionBetween.From, conditionBetween.To)
-                            {
-                                AssertOp = sb.ToString() ?? "=",
-                                Result = new TestRunResult { RunTestResult = RunResult.TestPending }
-                            };
-                            serviceTestOutputs.Add(serviceTestOutput);
-                        }
+                        serviceTestOutputs.Add(serviceTestOutput);
                     }
-
-                    var parentType = gate.GetType();
-                    var childActivity = gate.DataFunc.Handler;
-                    var childNativeActivity = childActivity as DsfNativeActivity<string>;
-                    var parentActicityDisplayName = gate.DisplayName;
-                    var parentTestStep = CreateServiceTestStep(Guid.Parse(uniqueId), parentActicityDisplayName, parentType, serviceTestOutputs.ToList());
-
-                    if (childActivity != null)
+                    if (condition is ConditionBetween conditionBetween)
                     {
-                        //child is the innerAcvitity
-                        //PBI: disable this logic until the changes to the view controller accommodating the child activity are done.
-                        //AddChildActivity(childNativeActivity, parentTestStep);
+                        var sb = new StringBuilder();
+                        conditionBetween.MatchType.RenderDescription(sb);
+                        var serviceTestOutput = new ServiceTestOutput(conditionBetween.Left, "", conditionBetween.From, conditionBetween.To)
+                        {
+                            AssertOp = sb.ToString() ?? "=",
+                            Result = new TestRunResult { RunTestResult = RunResult.TestPending }
+                        };
+                        serviceTestOutputs.Add(serviceTestOutput);
                     }
-                    //put it all together
-                    SelectedServiceTest.TestSteps.Add(parentTestStep);
                 }
 
+                return serviceTestOutputs;
             }
-
+            return default;
         }
 
         void ProcessEnhancedDotNetDll(ModelItem modelItem)
@@ -1171,11 +1166,20 @@ namespace Warewolf.Studio.ViewModels
 
         void AddSequenceActivity(IServiceTestStep testStep, Activity activity)
         {
+            CheckForAndAddSpecialNodes(testStep, activity);
+        }
+
+        private void CheckForAndAddSpecialNodes(IServiceTestStep testStep, Activity activity)
+        {
             if (activity is DsfNativeActivity<string> act)
             {
                 if (act.GetType() == typeof(DsfSequenceActivity))
                 {
                     AddSequence(act as DsfSequenceActivity, testStep, testStep.Children);
+                }
+                if (act.GetType() == typeof(GateActivity))
+                {
+                    AddGate(act as GateActivity, testStep, testStep.Children);
                 }
                 else
                 {
@@ -1200,6 +1204,41 @@ namespace Warewolf.Studio.ViewModels
                     }
                 }
             }
+        }
+
+        private void AddGate(GateActivity gateActivity, IServiceTestStep parent, ObservableCollection<IServiceTestStep> children)
+        {
+            if (gateActivity is null)
+            {
+                return;
+            }
+            var uniqueId = gateActivity.UniqueID;
+
+            var type = gateActivity.GetType();
+            var testStep = CreateMockChildStep(Guid.Parse(uniqueId), parent, type.Name, gateActivity.DisplayName);
+            SetStepIcon(type, testStep);
+
+            var childActivity = gateActivity.DataFunc.Handler;
+            var act = childActivity as DsfNativeActivity<string>;
+
+            if (childActivity != null)
+            {
+                AddGateActivity(testStep, childActivity);
+            }
+            var exists = FindExistingStep(uniqueId);
+            if (exists == null)
+            {
+                children.Add(testStep);
+            }
+            else
+            {
+                AddMissingChild(children, testStep);
+            }
+        }
+
+        private void AddGateActivity(IServiceTestStep testStep, Activity childActivity)
+        {
+            CheckForAndAddSpecialNodes(testStep, childActivity);
         }
 
         void AddSuspendExecution(SuspendExecutionActivity suspendExecutionActivity, IServiceTestStep parent, ICollection<IServiceTestStep> serviceTestSteps)
@@ -1497,7 +1536,7 @@ namespace Warewolf.Studio.ViewModels
                 var activityDisplayName = boolAct?.DisplayName;
                 var type = computedValue.GetType();
                 var serviceTestOutputs = new ObservableCollection<IServiceTestOutput>();
-                var alreadyAdded = CheckForExists(activityUniqueId, new List<string>(), activityDisplayName, type);
+                var alreadyAdded = AddStepForNotExist(activityUniqueId, new List<string>(), activityDisplayName, type);
                 if (alreadyAdded == null && activityUniqueId != null && type == typeof(DsfActivity))
                 {
                     var testStep = CreateMockChildStep(Guid.Parse(activityUniqueId), null, type.Name, activityDisplayName);
@@ -1585,7 +1624,7 @@ namespace Warewolf.Studio.ViewModels
                     }
                     if (parentActivityUniqueId == activityUniqueId)
                     {
-                        return CheckForExists(activityUniqueId, outputs, activityDisplayName, type);
+                        return AddStepForNotExist(activityUniqueId, outputs, activityDisplayName, computedValue);
                     }
                 }
 
@@ -1600,7 +1639,7 @@ namespace Warewolf.Studio.ViewModels
                 }
                 return BuildParentsFromModelItem(item);
             }
-            return CheckForExists(activityUniqueId, outputs, activityDisplayName, type);
+            return AddStepForNotExist(activityUniqueId, outputs, activityDisplayName, computedValue);
         }
 
         static string GetParentFlowStepUniqueId(object computedValue, ModelItem item, ref object parentComputedValue)
@@ -1620,9 +1659,9 @@ namespace Warewolf.Studio.ViewModels
             return parentActivityUniqueId;
         }
 
-        //PBI: This name might not be intent revealing enough
-        IServiceTestStep CheckForExists(string activityUniqueId, List<string> outputs, string activityDisplayName, Type type)
+        IServiceTestStep AddStepForNotExist(string activityUniqueId, List<string> outputs, string activityDisplayName, object computedValue)
         {
+            var type = computedValue.GetType();
             var exists = FindExistingStep(activityUniqueId);
             if (exists == null)
             {
@@ -1630,7 +1669,6 @@ namespace Warewolf.Studio.ViewModels
                 
                 if (outputs != null && outputs.Count > 0)
                 {
-
                     var serviceTestOutputs = outputs.Select(output =>
                     {
                         return new ServiceTestOutput(output ?? "", "", "", "")
@@ -1644,6 +1682,18 @@ namespace Warewolf.Studio.ViewModels
                         serviceTestStep.StepOutputs = serviceTestOutputs.ToObservableCollection();
                         SetStepIcon(type, serviceTestStep);
 
+                        return serviceTestStep;
+                    }
+                }
+                else
+                {
+                    if (type == typeof(GateActivity))
+                    {
+                         serviceTestStep.StepOutputs = GetGateOutputs(computedValue as GateActivity);
+                        return serviceTestStep;
+                    }
+                    if (type == typeof(DsfSequenceActivity))
+                    {
                         return serviceTestStep;
                     }
                 }

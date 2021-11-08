@@ -1247,9 +1247,9 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
         //private void AddEnhancedDotNetDll(DsfEnhancedDotNetDllActivity dotNetDllActivity, ServiceTestStep parent, ObservableCollection<IServiceTestStep> serviceTestSteps)
         [TestMethod]
-        [Timeout(500)]
+        //[Timeout(500)]
         [Owner("Nkosinathi Sangweni")]
-        public void AddEnhancedDotNetDll_GivenActions_ShouldAddChildrens()
+        public void ServiceTestViewModel_AddEnhancedDotNetDll_GivenActions_ShouldAddChildrens()
         {
             //---------------Set up test pack-------------------
             var popupController = new Mock<IPopupController>();
