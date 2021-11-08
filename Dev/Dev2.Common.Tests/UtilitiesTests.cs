@@ -158,29 +158,6 @@ namespace Dev2.Common.Tests
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(Utilities))]
-        public void Utilities_PerformActionInsideImpersonatedContext_GivenPrincipalAlreadyImpersonated_ShouldExecuteWithImpersonation()
-        {
-            var executed = false;
-            var mockPrincipal = new Mock<IPrincipal>();
-            var identity = MyWindowsIdentity.New(WindowsIdentity.GetCurrent());
-            mockPrincipal.Setup(o => o.Identity).Returns(identity);
-
-            Thread.CurrentPrincipal = mockPrincipal.Object;
-
-            Utilities.OrginalExecutingUser = mockPrincipal.Object;
-
-            Utilities.PerformActionInsideImpersonatedContext(mockPrincipal.Object, () => { executed = true; });
-
-            mockPrincipal.Verify(o => o.Identity, Times.Exactly(1));
-            Assert.IsTrue(executed);
-            Assert.AreEqual(1, identity.ImpersonateCallCount);
-
-            Assert.AreEqual(mockPrincipal.Object, Utilities.OrginalExecutingUser);
-        }
-
-        [TestMethod]
-        [Owner("Rory McGuire")]
-        [TestCategory(nameof(Utilities))]
         public void Utilities_PerformActionInsideImpersonatedContext_GivenPrincipal_NullActionDoesNotThrow()
         {
             var mockPrincipal = new Mock<IPrincipal>();
