@@ -1598,7 +1598,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(250)]
+        [Timeout(500)]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(ServiceTestViewModel))]
         public void ServiceTestViewModel_DeleteSelectedTestCommand_GivenTestNameExists_ShouldDeleteSelectedTest()
@@ -1755,7 +1755,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(250)]
+        [Timeout(500)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory(nameof(ServiceTestViewModel))]
         public void ServiceTestViewModel_DeleteTestCommand_GivenTests_ShouldShowConfirmation()
@@ -1794,7 +1794,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(250)]
+        [Timeout(500)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory(nameof(ServiceTestViewModel))]
         public void ServiceTestViewModel_DeleteTestCommand_GivenTests_ShouldUpdateTestsCollection()
