@@ -258,7 +258,7 @@ namespace Dev2.Integration.Tests.Services.Sql
             var result = false;
             using (var impersonator = new Impersonator())
             {
-                if (impersonator.Impersonate(userName, domain, password))
+                if (impersonator.RunImpersonated(userName, domain, password, action))
                 {
                     action?.Invoke();
                     result = true;
@@ -270,7 +270,7 @@ namespace Dev2.Integration.Tests.Services.Sql
 
         public interface IImpersonator
         {
-            bool Impersonate(string userName, string domain, string password);
+            bool RunImpersonated(string userName, string domain, string password, Action action);
             void Undo();
         }
 
@@ -298,26 +298,26 @@ namespace Dev2.Integration.Tests.Services.Sql
 
             #endregion
 
-            WindowsImpersonationContext _impersonationContext;
+            WindowsIdentity _impersonationContext;
 
             #region Impersonate
 
-            public bool Impersonate(string username, string domain, string password)
+            public bool RunImpersonated(string username, string domain, string password, Action action)
             {
                 var token = IntPtr.Zero;
                 var tokenDuplicate = IntPtr.Zero;
                 if (RevertToSelf() && LogonUser(username, domain, password, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, out token) && DuplicateToken(token, 2, out tokenDuplicate) != 0)
                 {
-                    var tempWindowsIdentity = new WindowsIdentity(tokenDuplicate);
-                    _impersonationContext = tempWindowsIdentity.Impersonate();
+                    _impersonationContext = new WindowsIdentity(tokenDuplicate);
                     if (_impersonationContext != null)
                     {
-                        ClaimsPrincipal principal = new WindowsPrincipal(tempWindowsIdentity);
+                        ClaimsPrincipal principal = new WindowsPrincipal(_impersonationContext);
                         Thread.CurrentPrincipal = principal;
                         CloseHandle(token);
                         CloseHandle(tokenDuplicate);
                         return true;
                     }
+                    WindowsIdentity.RunImpersonated(_impersonationContext.AccessToken, action);
                 }
                 if (token != IntPtr.Zero)
                 {
@@ -334,14 +334,7 @@ namespace Dev2.Integration.Tests.Services.Sql
 
             #region Undo
 
-            public void Undo()
-            {
-                if (_impersonationContext != null)
-                {
-                    _impersonationContext.Undo();
-                    _impersonationContext.Dispose();
-                }
-            }
+            public void Undo() => _impersonationContext?.Dispose();
 
             #endregion
 

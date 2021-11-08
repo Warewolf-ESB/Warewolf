@@ -9,6 +9,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
 using System.Net;
 using System.Net.Http;
 using System.Security.Principal;
@@ -28,52 +29,55 @@ namespace Dev2.Runtime.ServiceModel
             var principle = serverUser;
 
             var identity = principle.Identity as WindowsIdentity;
-            WindowsImpersonationContext context = null;
 
             try
             {
-                if (identity != null && connection.AuthenticationType == AuthenticationType.Windows)
-                {
-                    context = identity.Impersonate();
-                }
-
-                using (var client = new WebClient())
-                {
-                    if (connection.AuthenticationType == AuthenticationType.Windows)
+                var createHubConnectionAction = new Func<IHubProxy>(()=> {
+                    using (var client = new WebClient())
                     {
-                        client.UseDefaultCredentials = true;
-                    }
-                    else
-                    {
-                        client.UseDefaultCredentials = false;
-
-                        //// we to default to the hidden public user name of \, silly know but that is how to get around ntlm auth ;)
-                        if (connection.AuthenticationType == AuthenticationType.Public)
+                        if (connection.AuthenticationType == AuthenticationType.Windows)
                         {
-                            connection.UserName = GlobalConstants.PublicUsername;
-                            connection.Password = string.Empty;
+                            client.UseDefaultCredentials = true;
+                        }
+                        else
+                        {
+                            client.UseDefaultCredentials = false;
+
+                            //// we to default to the hidden public user name of \, silly know but that is how to get around ntlm auth ;)
+                            if (connection.AuthenticationType == AuthenticationType.Public)
+                            {
+                                connection.UserName = GlobalConstants.PublicUsername;
+                                connection.Password = string.Empty;
+                            }
+
+                            client.Credentials = new NetworkCredential(connection.UserName, connection.Password);
                         }
 
-                        client.Credentials = new NetworkCredential(connection.UserName, connection.Password);
+                        var connectionAddress = connection.FetchTestConnectionAddress();
+                        var hub = new HubConnection(connectionAddress) { Credentials = client.Credentials };
+                        hub.Error += exception => { };
+                        ServicePointManager.ServerCertificateValidationCallback = (sender, certificate, chain, errors) => true;
+                        var proxy = hub.CreateHubProxy("esb");
+                        if (!hub.Start().Wait(GlobalConstants.NetworkTimeOut))
+                        {
+                            throw new HttpClientException(new HttpResponseMessage(HttpStatusCode.GatewayTimeout));
+                        }
+                        return proxy;
                     }
-
-                    var connectionAddress = connection.FetchTestConnectionAddress();
-                    var hub = new HubConnection(connectionAddress) { Credentials = client.Credentials };
-                    hub.Error += exception => { };
-                    ServicePointManager.ServerCertificateValidationCallback = (sender, certificate, chain, errors) => true;
-                    var proxy = hub.CreateHubProxy("esb");
-                    if (!hub.Start().Wait(GlobalConstants.NetworkTimeOut))
-                    {
-                        throw new HttpClientException(new HttpResponseMessage(HttpStatusCode.GatewayTimeout));
-                    }
-                    return proxy;
+                });
+                if (identity != null && connection.AuthenticationType == AuthenticationType.Windows)
+                {
+                    return WindowsIdentity.RunImpersonated(identity.AccessToken, createHubConnectionAction);
+                } else
+                {
+                    return createHubConnectionAction.Invoke();
                 }
             }
             finally
             {
-                if (context != null && connection.AuthenticationType == AuthenticationType.Windows)
+                if (identity != null && connection.AuthenticationType == AuthenticationType.Windows)
                 {
-                    context.Undo();
+                    identity.Dispose();
                 }
             }
         }

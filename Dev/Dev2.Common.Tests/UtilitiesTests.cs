@@ -132,12 +132,6 @@ namespace Dev2.Common.Tests
             {
                 return new MyWindowsIdentity(identity);
             }
-
-            public override WindowsImpersonationContext Impersonate()
-            {
-                ImpersonateCallCount++;
-                return base.Impersonate();
-            }
         }
 
         [TestMethod]

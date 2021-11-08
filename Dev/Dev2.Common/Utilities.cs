@@ -46,40 +46,32 @@ namespace Dev2.Common
                 var impersonationContext = Impersonate(userPrinciple);
                 try
                 {
-                    actionToBePerformed?.Invoke();
+                    WindowsIdentity.RunImpersonated(impersonationContext.AccessToken, actionToBePerformed);
                 }
                 catch (Exception e)
                 {
-                    impersonationContext?.Undo();
+                    impersonationContext?.Dispose();
                     if (ServerUser.Identity is WindowsIdentity identity)
                     {
-                        impersonationContext = identity.Impersonate();
+                        WindowsIdentity.RunImpersonated(identity.AccessToken, actionToBePerformed);
                     }
-                    actionToBePerformed?.Invoke();
                 }
                 finally
                 {
-                    impersonationContext?.Undo();
+                    impersonationContext?.Dispose();
                 }
             }
         }
 
-        private static WindowsImpersonationContext Impersonate(IPrincipal userPrinciple)
+        private static WindowsIdentity Impersonate(IPrincipal userPrinciple)
         {
-            WindowsImpersonationContext impersonationContext = null;
-            if (userPrinciple.Identity is WindowsIdentity identity)
+            if(!(userPrinciple.Identity is WindowsIdentity identity))
+                return null;
+            if (identity.IsAnonymous)
             {
-                if (identity.IsAnonymous)
-                {
-                    identity = ServerUser.Identity as WindowsIdentity;
-                }
-                if (identity != null)
-                {
-                    impersonationContext = identity.Impersonate();
-                }
+                identity = ServerUser.Identity as WindowsIdentity;
             }
-
-            return impersonationContext;
+            return identity;
         }
 
         public static IPrincipal OrginalExecutingUser { get; set; }
