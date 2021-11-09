@@ -952,7 +952,7 @@ namespace Warewolf.Studio.ViewModels
             var conditionExpressionList = gate.Conditions;
             var conditions = conditionExpressionList.ToConditions();
 
-            if (conditions != null)
+            if (conditions != null && conditions.Count() > 0)
             {
                 var serviceTestOutputs = new ObservableCollection<IServiceTestOutput>();
                 foreach (var condition in conditions)
@@ -984,7 +984,7 @@ namespace Warewolf.Studio.ViewModels
 
                 return serviceTestOutputs;
             }
-            return default;
+            return GetDefaultOutputs();
         }
 
         void ProcessEnhancedDotNetDll(ModelItem modelItem)
@@ -1072,10 +1072,11 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        static IServiceTestStep CreateMockChildStep(Guid uniqueId, IServiceTestStep parent, string typeName, string displayName) => new ServiceTestStep(uniqueId, typeName, new ObservableCollection<IServiceTestOutput>(), StepType.Mock)
+        private IServiceTestStep CreateMockChildStep(Guid uniqueId, IServiceTestStep parent, string typeName, string displayName) => new ServiceTestStep(uniqueId, typeName, new ObservableCollection<IServiceTestOutput>(), StepType.Mock)
         {
             StepDescription = displayName,
-            Parent = parent
+            Parent = parent,
+            StepOutputs = GetDefaultOutputs()
         };
 
         void ProcessSelectAndApply(ModelItem modelItem)
@@ -1216,6 +1217,8 @@ namespace Warewolf.Studio.ViewModels
 
             var type = gateActivity.GetType();
             var testStep = CreateMockChildStep(Guid.Parse(uniqueId), parent, type.Name, gateActivity.DisplayName);
+            var gateOutputs = GetGateOutputs(gateActivity);
+            testStep.StepOutputs = gateOutputs.Count() > 0 ? gateOutputs : GetDefaultOutputs();
             SetStepIcon(type, testStep);
 
             var childActivity = gateActivity.DataFunc.Handler;
@@ -1404,6 +1407,10 @@ namespace Warewolf.Studio.ViewModels
                 
                 SetStepIcon(act.GetType(), serviceTestStep);
                 parentTestStep.Children.Add(serviceTestStep); 
+            }
+            else
+            {
+                CheckForAndAddSpecialNodes(parentTestStep, act as Activity);
             }
         }
 
@@ -1689,17 +1696,29 @@ namespace Warewolf.Studio.ViewModels
                 {
                     if (type == typeof(GateActivity))
                     {
-                         serviceTestStep.StepOutputs = GetGateOutputs(computedValue as GateActivity);
+                        serviceTestStep.StepOutputs = GetGateOutputs(computedValue as GateActivity);
                         return serviceTestStep;
                     }
                     if (type == typeof(DsfSequenceActivity))
                     {
+                        serviceTestStep.StepOutputs = GetDefaultOutputs();
                         return serviceTestStep;
                     }
                 }
             }
 
             return exists;
+        }
+
+        private ObservableCollection<IServiceTestOutput> GetDefaultOutputs()
+        {
+            return new ObservableCollection<IServiceTestOutput>
+            {
+                new ServiceTestOutput(string.Empty, string.Empty, string.Empty, string.Empty)
+                {   
+                    Result = new TestRunResult { RunTestResult = RunResult.TestPending }
+                }
+            };
         }
 
         IServiceTestStep ServiceTestStepWithOutputs(string uniqueId, string displayName, List<string> outputs, Type type, ModelItem item)
