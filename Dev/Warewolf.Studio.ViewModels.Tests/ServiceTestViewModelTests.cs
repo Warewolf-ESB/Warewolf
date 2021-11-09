@@ -2725,6 +2725,51 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
+        [Timeout(500)]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ServiceTestViewModel))]
+        public void ServiceTestViewModel_ItemSelected_GivenSelectedItemEnhancedDotNetDll_AND_CTORIsNull_ShouldNotFallover()
+        {
+            //---------------Set up test pack-------------------
+            var popupController = new Mock<IPopupController>();
+            popupController.Setup(controller => controller.ShowDeleteConfirmation(It.IsAny<string>()))
+                .Returns(MessageBoxResult.Yes);
+            var mockResourceModel = CreateMockResourceModel();
+            var resourceId = Guid.NewGuid();
+            var dotNetDllActivity = new DsfEnhancedDotNetDllActivity();
+            var uniqueId = Guid.NewGuid();
+            dotNetDllActivity.UniqueID = uniqueId.ToString();
+            dotNetDllActivity.Constructor = null;
+            dotNetDllActivity.Namespace = new Mock<INamespaceItem>().Object;
+            var modelItem = ModelItemUtils.CreateModelItem(dotNetDllActivity);
+            mockResourceModel.Setup(model =>
+                    model.Environment.ResourceRepository.DeleteResourceTest(It.IsAny<Guid>(), It.IsAny<string>()))
+                .Verifiable();
+            var mock = new Mock<IEnvironmentConnection>();
+            mock.SetupAllProperties();
+            mockResourceModel.Setup(model => model.Environment.Connection).Returns(mock.Object);
+            mockResourceModel.Setup(model => model.ID).Returns(resourceId);
+            var mockWorkflowDesignerViewModel = new Mock<IWorkflowDesignerViewModel>();
+            mockWorkflowDesignerViewModel.SetupProperty(model => model.ItemSelectedAction);
+            var testFrameworkViewModel = new ServiceTestViewModel(mockResourceModel.Object,
+                new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object,
+                new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object,
+                popupController.Object);
+            var testModel = new ServiceTestModel(Guid.NewGuid()) { TestName = "Test 2", NameForDisplay = "Test 2" };
+            testFrameworkViewModel.Tests = new ObservableCollection<IServiceTestModel> { testModel };
+            testFrameworkViewModel.SelectedServiceTest = testModel;
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            mockWorkflowDesignerViewModel.Object.ItemSelectedAction(modelItem);
+            //---------------Test Result -----------------------
+            Assert.AreEqual(1, testFrameworkViewModel.SelectedServiceTest.TestSteps.Count);
+            Assert.AreEqual(StepType.Assert, testFrameworkViewModel.SelectedServiceTest.TestSteps[0].Type);
+            Assert.AreEqual(dotNetDllActivity.GetType().Name,
+                testFrameworkViewModel.SelectedServiceTest.TestSteps[0].ActivityType);
+            Assert.AreEqual(1, testFrameworkViewModel.SelectedServiceTest.TestSteps[0].StepOutputs.Count, "This should add the test step rather then system fallover");
+        }
+
+        [TestMethod]
         [Timeout(250)]
         [Owner("Hagashen Naidu")]
         [TestCategory(nameof(ServiceTestViewModel))]

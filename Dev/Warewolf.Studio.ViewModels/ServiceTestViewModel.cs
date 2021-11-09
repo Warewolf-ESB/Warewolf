@@ -1217,8 +1217,7 @@ namespace Warewolf.Studio.ViewModels
 
             var type = gateActivity.GetType();
             var testStep = CreateMockChildStep(Guid.Parse(uniqueId), parent, type.Name, gateActivity.DisplayName);
-            var gateOutputs = GetGateOutputs(gateActivity);
-            testStep.StepOutputs = gateOutputs.Count() > 0 ? gateOutputs : GetDefaultOutputs();
+            testStep.StepOutputs = GetGateOutputs(gateActivity);
             SetStepIcon(type, testStep);
 
             var childActivity = gateActivity.DataFunc.Handler;
@@ -1416,14 +1415,18 @@ namespace Warewolf.Studio.ViewModels
 
         void AddEnhancedDotNetDllConstructor(DsfEnhancedDotNetDllActivity dotNetConstructor, IServiceTestStep testStep)
         {
-            var serviceTestStep = CreateMockChildStep(dotNetConstructor.Constructor.ID, testStep, testStep.ActivityType, dotNetConstructor.Constructor.ConstructorName);
-            var serviceOutputs = new ObservableCollection<IServiceTestOutput>
+            var constructor = dotNetConstructor.Constructor;
+            if (constructor != null)
             {
-                new ServiceTestOutput(dotNetConstructor.ObjectName ?? "", "", "", "")
-            };
-            serviceTestStep.StepOutputs = serviceOutputs;
-            SetStepIcon(testStep.ActivityType, serviceTestStep);
-            testStep.Children.Insert(0, serviceTestStep);
+                var serviceTestStep = CreateMockChildStep(constructor.ID, testStep, testStep.ActivityType, constructor.ConstructorName);
+                var serviceOutputs = new ObservableCollection<IServiceTestOutput>
+                {
+                    new ServiceTestOutput(dotNetConstructor.ObjectName ?? "", "", "", "")
+                };
+                serviceTestStep.StepOutputs = serviceOutputs;
+                SetStepIcon(testStep.ActivityType, serviceTestStep);
+                testStep.Children.Insert(0, serviceTestStep);
+            }
         }
 
         void AddEnhancedDotNetDllMethod(IPluginAction pluginAction, IServiceTestStep testStep)
@@ -1699,11 +1702,9 @@ namespace Warewolf.Studio.ViewModels
                         serviceTestStep.StepOutputs = GetGateOutputs(computedValue as GateActivity);
                         return serviceTestStep;
                     }
-                    if (type == typeof(DsfSequenceActivity))
-                    {
-                        serviceTestStep.StepOutputs = GetDefaultOutputs();
-                        return serviceTestStep;
-                    }
+                    
+                    serviceTestStep.StepOutputs = GetDefaultOutputs();
+                    return serviceTestStep;
                 }
             }
 
