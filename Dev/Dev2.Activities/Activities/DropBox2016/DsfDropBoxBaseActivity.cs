@@ -12,6 +12,7 @@
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
 using System;
+using System.Net;
 using System.Net.Http;
 
 namespace Dev2.Activities.DropBox2016
@@ -37,7 +38,7 @@ namespace Dev2.Activities.DropBox2016
             {
                 return;
             }
-            var httpClient = new HttpClient(new WebRequestHandler { ReadWriteTimeout = 10 * 1000 })
+            var httpClient = new HttpClient
             {
                 Timeout = TimeSpan.FromMinutes(20)
             };
