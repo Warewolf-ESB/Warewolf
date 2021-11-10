@@ -1676,7 +1676,7 @@ namespace Warewolf.Studio.ViewModels
             if (exists == null)
             {
                 var serviceTestStep = SelectedServiceTest.AddTestStep(activityUniqueId, activityDisplayName, type.Name, new ObservableCollection<IServiceTestOutput>());
-                
+
                 if (outputs != null && outputs.Count > 0)
                 {
                     var serviceTestOutputs = outputs.Select(output =>
@@ -1690,7 +1690,7 @@ namespace Warewolf.Studio.ViewModels
                     if (serviceTestStep != null)
                     {
                         serviceTestStep.StepOutputs = serviceTestOutputs.ToObservableCollection();
-                        SetStepIcon(type, serviceTestStep);
+                        SetStepIcon(serviceTestStep.ActivityType, serviceTestStep);
 
                         return serviceTestStep;
                     }
@@ -1700,17 +1700,18 @@ namespace Warewolf.Studio.ViewModels
                     if (type == typeof(GateActivity))
                     {
                         serviceTestStep.StepOutputs = GetGateOutputs(computedValue as GateActivity);
+                        SetStepIcon(serviceTestStep.ActivityType, serviceTestStep);
                         return serviceTestStep;
                     }
-                    
+
                     serviceTestStep.StepOutputs = GetDefaultOutputs();
+                    SetStepIcon(serviceTestStep.ActivityType, serviceTestStep);
                     return serviceTestStep;
                 }
             }
 
             return exists;
         }
-
         private ObservableCollection<IServiceTestOutput> GetDefaultOutputs()
         {
             return new ObservableCollection<IServiceTestOutput>
