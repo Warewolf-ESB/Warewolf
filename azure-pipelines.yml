@@ -1811,14 +1811,14 @@ jobs:
       PathtoPublish: '$(Agent.BuildDirectory)\\s\\Dev\\Dev2.Server\\bin\\Release\\net48\\win'
       ArtifactName: 'Release Server'
       publishLocation: 'Container'
-      StoreAsTar: true
+      StoreAsTar: false
 
   - task: PublishBuildArtifacts@1
     inputs:
       PathtoPublish: '$(Agent.BuildDirectory)\\s\\Dev\\Dev2.Studio\\bin\\Release\\net48\\win'
       ArtifactName: 'Release Studio'
       publishLocation: 'Container'
-      StoreAsTar: true
+      StoreAsTar: false
 
 - job: Compile_Installer
   displayName: 'Compile Installer'
