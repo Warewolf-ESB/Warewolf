@@ -982,7 +982,7 @@ namespace Warewolf.Studio.ViewModels
                     {
                         //child is the innerAcvitity
                         //PBI: disable this logic until the changes to the view controller accommodating the child activity are done.
-                        //AddChildActivity(childNativeActivity, parentTestStep);
+                        AddChildActivity(childNativeActivity, parentTestStep);
                     }
                     //put it all together
                     SelectedServiceTest.TestSteps.Add(parentTestStep);
