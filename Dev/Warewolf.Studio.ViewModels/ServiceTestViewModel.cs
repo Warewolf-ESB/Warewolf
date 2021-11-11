@@ -246,9 +246,57 @@ namespace Warewolf.Studio.ViewModels
             {
                 EnhancedDotNetDllFromDebug(debugState, debugItemContent);
             }
+            else if (actualType == nameof(GateActivity))
+            {
+                SequenceFromDebug(debugState, debugItemContent);
+            }
+            else if (actualType == nameof(GateActivity))
+            {
+                GateFromDebug(debugState, debugItemContent);
+            }
             else
             {
                 AddStepFromDebug(debugState, debugItemContent);
+            }
+        }
+
+        private void SequenceFromDebug(IDebugTreeViewItemViewModel debugState, IDebugState debugItemContent)
+        {
+            var exists = FindExistingStep(debugItemContent.ID.ToString());
+            IServiceTestStep serviceTestStep = null;
+            if (exists == null)
+            {
+                serviceTestStep = ProcessSequence(WorkflowDesignerViewModel.GetModelItem(debugItemContent.WorkSurfaceMappingId, debugItemContent.ParentID.GetValueOrDefault()));
+
+                if (serviceTestStep != null)
+                {
+                    SetStepIcon(serviceTestStep.ActivityType, serviceTestStep);
+                }
+            }
+
+            if (debugState.Children != null && debugState.Children.Count > 0)
+            {
+                AddChildren(debugState, serviceTestStep);
+            }
+        }
+
+        private void GateFromDebug(IDebugTreeViewItemViewModel debugState, IDebugState debugItemContent)
+        {
+            var exists = FindExistingStep(debugItemContent.ID.ToString());
+            IServiceTestStep serviceTestStep = null;
+            if (exists == null)
+            {
+                serviceTestStep = ProcessGate(WorkflowDesignerViewModel.GetModelItem(debugItemContent.WorkSurfaceMappingId, debugItemContent.ParentID.GetValueOrDefault()));
+
+                if (serviceTestStep != null)
+                {
+                    SetStepIcon(serviceTestStep.ActivityType, serviceTestStep);
+                }
+            }
+
+            if (debugState.Children != null && debugState.Children.Count > 0)
+            {
+                AddChildren(debugState, serviceTestStep);
             }
         }
 
@@ -385,193 +433,8 @@ namespace Warewolf.Studio.ViewModels
 
         void AddChildDebugItems(IDebugState debugItemContent, IDebugTreeViewItemViewModel debugState, IServiceTestStep parent)
         {
-            if (NullParent(debugItemContent, ref parent))
-            {
-                return;
-            }
-
-            if (parent.ActivityType == nameof(DsfForEachActivity))
-            {
-                ForEachParent(debugItemContent, debugState, parent);
-            }
-            else if (parent.ActivityType == nameof(GateActivity))
-            {
-                GateParent(debugItemContent, debugState, parent);
-            }
-            else if (parent.ActivityType == nameof(SuspendExecutionActivity))
-            {
-                SuspendExecutionParent(debugItemContent, debugState, parent);
-            }
-            else if (parent.ActivityType == nameof(DsfSequenceActivity))
-            {
-                var model = WorkflowDesignerViewModel.GetModelItem(debugItemContent.WorkSurfaceMappingId, debugItemContent.ID);
-                if (model?.GetCurrentValue() is DsfSequenceActivity sequence)
-                {
-                    parent.ActivityID = Guid.Parse(sequence.UniqueID);
-                    AddChildren(debugState, parent);
-                }
-            }
-            else
-            {
-                AddNotContainerActivityType(debugState, parent);
-            }
-            while (parent != null)
-            {
-                var child = parent;
-                if (child.Parent == null)
-                {
-                    var exists = FindExistingStep(child.ActivityID.ToString());
-                    if (exists == null)
-                    {
-                        SelectedServiceTest.TestSteps.Add(child);
-                    }
-                }
-                parent = child.Parent;
-            }
-        }
-
-        void AddNotContainerActivityType(IDebugTreeViewItemViewModel debugState, IServiceTestStep parent)
-        {
-            if (parent.ActivityType == nameof(DsfActivity))
-            {
-                if (debugState is DebugStateTreeViewItemViewModel childItem)
-                {
-                    var content = childItem.Content;
-                    var outputs = content.Outputs;
-                    AddOutputs(outputs, parent);
-                    SetStepIcon(parent.ActivityType, parent);
-                }
-            }
-            else
-            {
-                AddChildren(debugState, parent);
-            }
-        }
-
-        void GateParent(IDebugState debugItemContent, IDebugTreeViewItemViewModel debugState, IServiceTestStep parent)
-        {
             var model = WorkflowDesignerViewModel?.GetModelItem(debugItemContent.WorkSurfaceMappingId, debugItemContent.ID);
-            if (model?.GetCurrentValue() is GateActivity gateActivity && debugState.Children.LastOrDefault() is DebugStateTreeViewItemViewModel childItem)
-            {
-                var act = gateActivity.DataFunc.Handler as IDev2Activity;
-                if (act != null)
-                {
-                    var guid = Guid.Parse(act.UniqueID);
-                    childItem.Content.ID = guid;
-                }
-
-                var childItemContent = childItem.Content;
-                var outputs = childItemContent.Outputs;
-
-                var exists = parent.Children.FirstOrDefault(a => a.ActivityID == childItemContent.ID);
-                if (exists == null)
-                {
-                    AddGateChildStep(parent, childItem, act, childItemContent, outputs);
-                }
-            }
-        }
-
-        void AddGateChildStep(IServiceTestStep parent, DebugStateTreeViewItemViewModel childItem, IDev2Activity act, IDebugState childItemContent, List<IDebugItem> outputs)
-        {
-            var childStep = CreateAssertChildStep(parent, childItemContent, childItemContent.ID);
-            if (outputs.Count > 0)
-            {
-                AddOutputs(outputs, childStep);
-            }
-            else
-            {
-                AddOutputs(act?.GetOutputs(), childStep);
-            }
-            SetStepIcon(childStep.ActivityType, childStep);
-            parent.Children.Add(childStep);
-            if (childItem.Children?.Count > 0)
-            {
-                AddChildDebugItems(childItemContent, childItem, childStep);
-            }
-        }
-
-        void SuspendExecutionParent(IDebugState debugItemContent, IDebugTreeViewItemViewModel debugState, IServiceTestStep parent)
-        {
-            var model = WorkflowDesignerViewModel?.GetModelItem(debugItemContent.WorkSurfaceMappingId, debugItemContent.ID);
-            if (model?.GetCurrentValue() is SuspendExecutionActivity suspendExecutionActivity && debugState.Children.LastOrDefault() is DebugStateTreeViewItemViewModel childItem)
-            {
-                var act = suspendExecutionActivity.SaveDataFunc.Handler as IDev2Activity;
-                if (act != null)
-                {
-                    var guid = Guid.Parse(act.UniqueID);
-                    childItem.Content.ID = guid;
-                }
-
-                var childItemContent = childItem.Content;
-                var outputs = childItemContent.Outputs;
-
-                var exists = parent.Children.FirstOrDefault(a => a.ActivityID == childItemContent.ID);
-                if (exists == null)
-                {
-                    AddSuspendExecutionChildStep(parent, childItem, act, childItemContent, outputs);
-                }
-            }
-        }
-
-        void AddSuspendExecutionChildStep(IServiceTestStep parent, IDebugTreeViewItemViewModel childItem, IDev2Activity act, IDebugState childItemContent, List<IDebugItem> outputs)
-        {
-            var childStep = CreateAssertChildStep(parent, childItemContent, childItemContent.ID);
-            if (outputs.Count > 0)
-            {
-                AddOutputs(outputs, childStep);
-            }
-            else
-            {
-                AddOutputs(act?.GetOutputs(), childStep);
-            }
-            SetStepIcon(childStep.ActivityType, childStep);
-            parent.Children.Add(childStep);
-            if (childItem.Children?.Count > 0)
-            {
-                AddChildDebugItems(childItemContent, childItem, childStep);
-            }
-        }
-
-        void ForEachParent(IDebugState debugItemContent, IDebugTreeViewItemViewModel debugState, IServiceTestStep parent)
-        {
-            var model = WorkflowDesignerViewModel?.GetModelItem(debugItemContent.WorkSurfaceMappingId, debugItemContent.ID);
-            if (model?.GetCurrentValue() is DsfForEachActivity forEach && debugState.Children.LastOrDefault() is DebugStateTreeViewItemViewModel childItem)
-            {
-                var act = forEach.DataFunc.Handler as IDev2Activity;
-                if (act != null)
-                {
-                    var guid = Guid.Parse(act.UniqueID);
-                    childItem.Content.ID = guid;
-                }
-
-                var childItemContent = childItem.Content;
-                var outputs = childItemContent.Outputs;
-
-                var exists = parent.Children.FirstOrDefault(a => a.ActivityID == childItemContent.ID);
-                if (exists == null)
-                {
-                    AddForEachChildStep(parent, childItem, act, childItemContent, outputs);
-                }
-            }
-        }
-
-        void AddForEachChildStep(IServiceTestStep parent, DebugStateTreeViewItemViewModel childItem, IDev2Activity act, IDebugState childItemContent, List<IDebugItem> outputs)
-        {
-            var childStep = CreateAssertChildStep(parent, childItemContent, childItemContent.ID);
-            if (outputs.Count > 0)
-            {
-                AddOutputs(outputs, childStep);
-            }
-            else
-            {
-                AddOutputs(act?.GetOutputs(), childStep);
-            }
-            SetStepIcon(childStep.ActivityType, childStep);
-            parent.Children.Add(childStep);
-            if (childItem.Children?.Count > 0)
-            {
-                AddChildDebugItems(childItemContent, childItem, childStep);
-            }
+            ProcessActivitySwitch(model);
         }
 
         static IServiceTestStep CreateAssertChildStep(IServiceTestStep parent, IDebugState childItemContent, Guid childItemContentId)
@@ -584,64 +447,6 @@ namespace Warewolf.Studio.ViewModels
                 Type = StepType.Assert
             };
             return childStep;
-        }
-
-        bool NullParent(IDebugState debugItemContent, ref IServiceTestStep parent)
-        {
-            if (parent == null)
-            {
-                var testStep = new ServiceTestStep(debugItemContent.ID, "", new ObservableCollection<IServiceTestOutput>(), StepType.Assert)
-                {
-                    StepDescription = debugItemContent.DisplayName,
-                    Parent = null
-                };
-
-                var seqTypeName = nameof(DsfSequenceActivity);
-                var forEachTypeName = nameof(DsfForEachActivity);
-                var selectApplyTypeName = nameof(DsfSelectAndApplyActivity);
-                var suspendTypeName = nameof(SuspendExecutionActivity);
-                var serviceName = nameof(DsfActivity);
-                var actualType = debugItemContent.ActualType;
-                if (actualType == seqTypeName)
-                {
-                    SetStepIcon(typeof(DsfSequenceActivity), testStep);
-                    testStep.ActivityType = seqTypeName;
-                    testStep.ActivityID = debugItemContent.WorkSurfaceMappingId;
-                    parent = testStep;
-                }
-                else if (actualType == forEachTypeName)
-                {
-                    SetStepIcon(typeof(DsfForEachActivity), testStep);
-                    testStep.ActivityType = forEachTypeName;
-                    testStep.ActivityID = debugItemContent.WorkSurfaceMappingId;
-                    parent = testStep;
-                }
-                else if (actualType == selectApplyTypeName)
-                {
-                    SetStepIcon(typeof(DsfSelectAndApplyActivity), testStep);
-                    testStep.ActivityType = selectApplyTypeName;
-                    testStep.ActivityID = debugItemContent.WorkSurfaceMappingId;
-                    parent = testStep;
-                }
-                else if (actualType == suspendTypeName)
-                {
-                    SetStepIcon(typeof(SuspendExecutionActivity), testStep);
-                    testStep.ActivityType = selectApplyTypeName;
-                    testStep.ActivityID = debugItemContent.WorkSurfaceMappingId;
-                    parent = testStep;
-                }
-                else if (actualType == serviceName)
-                {
-                    SetStepIcon(typeof(DsfActivity), testStep);
-                    testStep.ActivityType = serviceName;
-                    parent = testStep;
-                }
-                else
-                {
-                    return true;
-                }
-            }
-            return false;
         }
 
         void AddChildren(IDebugTreeViewItemViewModel debugState, IServiceTestStep parent)
@@ -841,56 +646,55 @@ namespace Warewolf.Studio.ViewModels
 
         void ItemSelectedAction(ModelItem modelItem)
         {
+            ProcessActivitySwitch(modelItem);
+        }
+
+        private void ProcessActivitySwitch(ModelItem modelItem)
+        {
             if (modelItem == null)
             {
                 return;
             }
 
             var itemType = GetInnerItemType(modelItem);
-            if (itemType == typeof(Flowchart) || itemType == typeof(ActivityBuilder))
+            switch (itemType.Name)
             {
-                return;
-            }
-            if (itemType == typeof(DsfForEachActivity))
-            {
-                ProcessForEach(modelItem);
-            }
-            else if (itemType == typeof(DsfSelectAndApplyActivity))
-            {
-                ProcessSelectAndApply(modelItem);
-            }
-            else if (itemType == typeof(DsfSequenceActivity))
-            {
-                ProcessSequence(modelItem);
-            }
-            else if (itemType == typeof(DsfEnhancedDotNetDllActivity))
-            {
-                ProcessEnhancedDotNetDll(modelItem);
-            }
-            else if (itemType == typeof(FlowSwitch<string>))
-            {
-                ProcessFlowSwitch(modelItem);
-            }
-            else if (itemType == typeof(DsfSwitch))
-            {
-                ProcessSwitch(modelItem);
-            }
-            else if (itemType == typeof(FlowDecision))
-            {
-                ProcessFlowDecision(modelItem);
-            }
-            else if (itemType == typeof(DsfDecision))
-            {
-                ProcessDecision(modelItem);
-            }
-            else if (itemType == typeof(GateActivity))
-            {
-                ProcessGate(modelItem);
-            }
-            else
-            {
-                ProcessActivity(modelItem);
-            }
+                case nameof(Flowchart):
+                    break;
+                case nameof(ActivityBuilder):
+                    break;
+
+                case nameof(DsfForEachActivity):
+                    ProcessForEach(modelItem);
+                    break;
+                case nameof(DsfSelectAndApplyActivity):
+                    ProcessSelectAndApply(modelItem);
+                    break;
+                case nameof(DsfSequenceActivity):
+                    ProcessSequence(modelItem);
+                    break;
+                case nameof(DsfEnhancedDotNetDllActivity):
+                    ProcessEnhancedDotNetDll(modelItem);
+                    break;
+                case "FlowSwitch`1":
+                    ProcessFlowSwitch(modelItem);
+                    break;
+                case nameof(DsfSwitch):
+                    ProcessSwitch(modelItem);
+                    break;
+                case nameof(FlowDecision):
+                    ProcessFlowDecision(modelItem);
+                    break;
+                case nameof(DsfDecision):
+                    ProcessDecision(modelItem);
+                    break;
+                case nameof(GateActivity):
+                    ProcessGate(modelItem);
+                    break;
+                default:
+                    ProcessActivity(modelItem);
+                    break;
+            };
         }
 
         static Type GetInnerItemType(ModelItem modelItem)
@@ -903,7 +707,7 @@ namespace Warewolf.Studio.ViewModels
             return itemType;
         }
 
-        void ProcessSequence(ModelItem modelItem)
+        IServiceTestStep ProcessSequence(ModelItem modelItem)
         {
             var sequence = GetCurrentActivity<DsfSequenceActivity>(modelItem);
             var testStep = BuildParentsFromModelItem(modelItem);
@@ -919,9 +723,11 @@ namespace Warewolf.Studio.ViewModels
             {
                 AddSequence(sequence, null, SelectedServiceTest.TestSteps);
             }
+
+            return testStep;
         }
 
-        void ProcessGate(ModelItem modelItem)
+        IServiceTestStep ProcessGate(ModelItem modelItem)
         {
             var gateActivity = GetCurrentActivity<GateActivity>(modelItem);
             var testStep = BuildParentsFromModelItem(modelItem); 
@@ -937,6 +743,8 @@ namespace Warewolf.Studio.ViewModels
             {
                 AddGate(gateActivity, null, SelectedServiceTest.TestSteps);
             }
+
+            return testStep;
         }
 
         ObservableCollection<IServiceTestOutput> GetGateOutputs(GateActivity gate)
@@ -1712,6 +1520,7 @@ namespace Warewolf.Studio.ViewModels
 
             return exists;
         }
+
         private ObservableCollection<IServiceTestOutput> GetDefaultOutputs()
         {
             return new ObservableCollection<IServiceTestOutput>
