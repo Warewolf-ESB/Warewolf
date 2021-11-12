@@ -33,7 +33,7 @@ jobs:
       failTaskOnFailedTests: true
       testRunTitle: 'Unit Tests'
       
-  - script: 'if not exist \"$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx\" exit 1'
+  - script: 'if not exist \"$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx\" echo \"$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx\" does not exist && exit 1'
       
 - job: Zip_Tool_Specs
   displayName: 'Zip Tool Specs'
