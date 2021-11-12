@@ -1933,10 +1933,6 @@ jobs:
   displayName: 'Compile for Release'
   dependsOn: [Zip_Tool_Specs,Email_Tools_Specs,Resource_Tools_Specs,File_And_Folder_Copy_Tool_Specs,Data_Tools_Specs,Request_Service_Name_View_Models_Unit_Tests,Unzip_Tool_Specs_Validation,Recordset_Tools_Specs,File_And_Folder_Rename_Tool_Specs,Other_Tools_Specs,File_And_Folder_Move_Tool_Specs,File_Read_Tool_Specs,Infrastructure_Unit_Tests,New_Folder_Read_Tool_Specs,Write_File_Tool_Specs,Loop_Construct_Tools_Specs,Utility_Tools_Specs,Folder_Read_Tool_Specs,SQL_Bulk_Insert_Tool_Specs,Control_Flow_Tools_Specs,Studio_View_Models_Unit_Tests,File_And_Folder_Create_Tool_Specs,Storage_Unit_Tests,Storage_Tools_Specs,File_And_Folder_Delete_Tool_Specs,Scripting_Tools_Specs,Database_Tools_Specs,Auditing_Unit_Tests,Workflow_Execution_Specs,Studio_Test_Framework_With_Hello_World_Workflow_Specs,Studio_Test_Framework_With_Utility_Tools_Specs,MS_SQL_Server_Specs,Studio_Test_Framework_With_Data_Tools_Specs,Assign_Workflow_Execution_Specs,Integration_Tests,Studio_Test_Framework_With_Scripting_Tools_Specs,Other_Activities_Specs,Studio_Test_Framework_With_File_And_Folder_Tools_Specs,Studio_Test_Framework_With_HTTP_Web_Tools_Specs,Studio_Test_Framework_With_Subworkflow_Specs,Workflow_Merging_Specs,Example_Workflow_Execution_Specs,Studio_Test_Framework_Specs,Subworkflow_Execution_Specs,Other_Specs,Studio_Test_Framework_With_Deleted_Resources_Specs,SQL_Integration_Tests,For_Each_Workflow_Execution_Specs,Copy_Tool_Specs_From_Local,Move_Tool_Specs_From_Local,Rename_Tool_Specs_From_Local,Unzip_Tool_Specs_From_Local,Zip_Tool_Specs_From_Local,Copy_Tool_Specs_From_FTP,Move_Tool_Specs_From_FTP,Rename_Tool_Specs_From_FTP,Unzip_Tool_Specs_From_FTP,Zip_Tool_Specs_From_FTP,Copy_Tool_Specs_From_FTPS,Move_Tool_Specs_From_FTPS,Rename_Tool_Specs_From_FTPS,Unzip_Tool_Specs_From_FTPS,Zip_Tool_Specs_From_FTPS,Copy_Tool_Specs_From_SFTP,Move_Tool_Specs_From_SFTP,Rename_Tool_Specs_From_SFTP,Unzip_Tool_Specs_From_SFTP,Zip_Tool_Specs_From_SFTP,Copy_Tool_Specs_From_UNC,Move_Tool_Specs_From_UNC,Studio_Core_Unit_Tests,Elasticsearch_View_Models_Unit_Tests,Search_Specs,Logger_Unit_Tests,Rename_Tool_Specs_From_UNC,Not_Parallelizable_Unit_Tests,Database_Workflow_Execution_Specs,RabbitMQ_Workflow_Execution_Specs,Studio_Test_Framework_With_HTTP_Web_Get_Tools_Specs,Studio_Test_Framework_With_HTTP_Web_Delete_Tools_Specs,Studio_Test_Framework_With_HTTP_Web_Post_Tools_Specs,Studio_Test_Framework_With_HTTP_Web_Put_Tools_Specs,Studio_Test_Framework_With_RabbitMQ_Tools_Specs,Database_Subworkflow_Execution_Specs,Intellisense_Textbox_Visual_Tree_Unit_Tests,Workflow_Execution_Logging_Specs]
 
-  variables:
-  - name: FullVersionString
-    value: 0.0.0.0
-
   steps:
   - checkout: self
     clean: true
@@ -1977,205 +1973,18 @@ jobs:
       Out-File -LiteralPath "$(Agent.BuildDirectory)\s\Dev\Dev2.Server\bin\Release\net48\win\FullVersionString" -InputObject $HighestReadVersion -Encoding default -Force
       Out-File -LiteralPath "$(Agent.BuildDirectory)\s\Dev\Dev2.Studio\bin\Release\net48\win\FullVersionString" -InputObject $HighestReadVersion -Encoding default -Force
       git -C "$(Build.SourcesDirectory)" tag $HighestReadVersion
-      git -C "$(Build.SourcesDirectory)" push https://$env:GitLabTagsAccount@gitlab.com/warewolf/warewolf $HighestReadVersion
-    env:
-      GitLabTagsAccount: $(GitLabTagsAccountPassword)
+      git -C "$(Build.SourcesDirectory)" push https://gitlab.com/warewolf/warewolf $HighestReadVersion
 
-  - script: "(robocopy \"$(Agent.BuildDirectory)\\s\\Dev\\Dev2.Server\\bin\\Release\\net48\\win\" \"\\\\opswolf\\Azure Devops\\Release Server $(Build.BuildId)\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
-    displayName: 'Upload Server Artifacts'
+  - task: PublishBuildArtifacts@1
+    inputs:
+      PathtoPublish: '$(Agent.BuildDirectory)\\s\\Dev\\Dev2.Server\\bin\\Release\\net48\\win'
+      ArtifactName: 'Release Server'
+      publishLocation: 'Container'
+      StoreAsTar: false
 
-  - script: "(robocopy \"$(Agent.BuildDirectory)\\s\\Dev\\Dev2.Studio\\bin\\Release\\net48\\win\" \"\\\\opswolf\\Azure Devops\\Release Studio $(Build.BuildId)\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
-    displayName: 'Upload Studio Artifacts'
-
-- job: Compile_Installer
-  displayName: 'Compile Installer'
-  dependsOn: build_release
-
-  steps:
-  - checkout: none
-
-  - powershell: |
-      if (Test-Path "$(Agent.BuildDirectory)\InstallerSource") {
-        git -C "$(Agent.BuildDirectory)\InstallerSource" pull
-      } else {
-        git -C "$(Agent.BuildDirectory)" clone https://gitlab.com/warewolf/installer InstallerSource
-      }
-      $InstallerBranch = git -C "$(Agent.BuildDirectory)\InstallerSource" rev-parse --abbrev-ref HEAD
-      $ThisBranch = git -C "$(Agent.BuildDirectory)\s" rev-parse --abbrev-ref HEAD
-      if ($InstallerBranch -ne $ThisBranch) {
-        git -C "$(Agent.BuildDirectory)\InstallerSource" fetch
-        $TryGetThisBranchOnTheInstaller = git -C "$(Agent.BuildDirectory)\InstallerSource" ls-remote --heads "https://gitlab.com/warewolf/installer" $ThisBranch
-        if ("$TryGetThisBranchOnTheInstaller" -ne "") {
-          git -C "$(Agent.BuildDirectory)\InstallerSource" checkout $ThisBranch
-          git -C "$(Agent.BuildDirectory)\InstallerSource" pull
-        }
-      }
-
-  - script: "(robocopy \"\\\\opswolf\\Azure Devops\\Release Server $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\InstallerSource\\WarewolfInstaller\\ProductBuild\\Server\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
-    displayName: 'Download Server Artifacts'
-
-  - script: "(robocopy \"\\\\opswolf\\Azure Devops\\Release Studio $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\InstallerSource\\WarewolfInstaller\\ProductBuild\\Studio\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
-    displayName: 'Download Studio Artifacts'
-    
-  - powershell: |
-      $Installers = Get-ChildItem -Path "$(Agent.BuildDirectory)" -File -Filter Warewolf-*.exe
-      foreach ($Installer in $Installers) {
-        Write-Host Found extra installer in working directory: $Installer.FullName
-        Remove-Item $Installer.FullName
-      }
-      Set-Location "$(Agent.BuildDirectory)\InstallerSource"
-      docker build -t registry.gitlab.com/warewolf/installer .
-      docker rm -f installerbuild
-      docker create --name=installerbuild registry.gitlab.com/warewolf/installer
-      $VersionString = Get-Content "$(Agent.BuildDirectory)\InstallerSource\WarewolfInstaller\ProductBuild\Server\FullVersionString"
-      docker cp installerbuild:app/WixWPF/bin/Debug/Warewolf-$VersionString.exe ./Warewolf-$VersionString.exe
-      if (!(Test-Path "\\opswolf\Azure Devops\Installer $(Build.BuildId)")) {
-        New-Item -ItemType Directory "\\opswolf\Azure Devops\Installer $(Build.BuildId)"
-      }
-      Copy-Item ./Warewolf-$VersionString.exe "\\opswolf\Azure Devops\Installer $(Build.BuildId)\Warewolf-$VersionString.exe"
-      if ($VersionString.EndsWith(".0")) {
-        $TrimmedVersionString = $VersionString.TrimEnd(".0")
-        Copy-Item ./Warewolf-$VersionString.exe "\\opswolf\Azure Devops\Installer $(Build.BuildId)\Warewolf-$TrimmedVersionString.exe"
-      }
-
-- job: Docker_Hub
-  displayName: 'Docker Hub'
-  dependsOn: build_release
-
-  steps:
-  - checkout: none
-
-  - script: "(robocopy \"\\\\opswolf\\Azure Devops\\Release Server $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\Server\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
-    displayName: 'Download Server Artifacts'
-  
-  - powershell: |
-      Set-Location "$(Agent.BuildDirectory)\Server"
-      $VersionString = Get-Content "$(Agent.BuildDirectory)\Server\FullVersionString"
-      if ("$VersionString" -ne "") {
-        docker build --isolation=hyperv -t warewolfserver/warewolfserver:latest .
-        docker login
-        
-        $BranchName = git -C "$(Agent.BuildDirectory)\s" rev-parse --abbrev-ref HEAD
-        if ("$BranchName" -eq "develop") {
-          Write-Host Pushing...
-          docker push warewolfserver/warewolfserver:latest
-          Write-Host Pushed.
-        } else {
-          $cleanBranchName = "$BranchName".Replace("/","-")
-          Write-Host Tagging with $cleanBranchName
-          docker tag warewolfserver/warewolfserver:latest warewolfserver/warewolfserver:$cleanBranchName
-          Write-Host Pushing...
-          docker push warewolfserver/warewolfserver:$cleanBranchName
-          Write-Host Pushed.
-          docker rmi warewolfserver/warewolfserver:$cleanBranchName
-        }
-        
-        Write-Host Tagging with $VersionString
-        docker tag warewolfserver/warewolfserver:latest warewolfserver/warewolfserver:$VersionString
-        Write-Host Pushing...
-        docker push warewolfserver/warewolfserver:$VersionString
-        Write-Host Pushed.
-        docker rmi warewolfserver/warewolfserver:$VersionString
-
-        if ($VersionString.EndsWith(".0")) {
-          $TrimmedVersionString = "$VersionString".TrimEnd(".0")
-          Write-Host Tagging with $TrimmedVersionString
-          docker tag warewolfserver/warewolfserver:latest warewolfserver/warewolfserver:$TrimmedVersionString
-          Write-Host Pushing...
-          docker push warewolfserver/warewolfserver:$TrimmedVersionString
-          Write-Host Pushed.
-          docker rmi warewolfserver/warewolfserver:$TrimmedVersionString
-        }
-      }
-
-- job: GitLab_Registry
-  displayName: 'GitLab Registry'
-  dependsOn: build_release
-
-  steps:
-  - script: "(robocopy \"\\\\opswolf\\Azure Devops\\Release Server $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\Server\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
-    displayName: 'Download Server Artifacts'
-  
-  - powershell: |
-      Set-Location "$(Agent.BuildDirectory)\Server"
-      $VersionString = Get-Content "$(Agent.BuildDirectory)\Server\FullVersionString"
-      if ("$VersionString" -ne "") {    
-        docker build --isolation=hyperv -t registry.gitlab.com/warewolf/warewolf .
-        docker login registry.gitlab.com/warewolf/warewolf
-        
-        $BranchName = git -C "$(Agent.BuildDirectory)\s" rev-parse --abbrev-ref HEAD
-        if ("$BranchName" -eq "develop") {
-          Write-Host Pushing...
-          docker push registry.gitlab.com/warewolf/warewolf
-          Write-Host Pushed.
-        } else {
-          $cleanBranchName = "$BranchName".Replace("/","-")
-          Write-Host Tagging with $cleanBranchName
-          docker tag registry.gitlab.com/warewolf/warewolf registry.gitlab.com/warewolf/warewolf:$cleanBranchName
-          Write-Host Pushing...
-          docker push registry.gitlab.com/warewolf/warewolf:$cleanBranchName
-          Write-Host Pushed.
-          docker rmi registry.gitlab.com/warewolf/warewolf:$cleanBranchName
-        }
-        
-        Write-Host Tagging with $VersionString
-        docker tag registry.gitlab.com/warewolf/warewolf:latest registry.gitlab.com/warewolf/warewolf:$VersionString
-        Write-Host Pushing...
-        docker push registry.gitlab.com/warewolf/warewolf:$VersionString
-        Write-Host Pushed.
-        docker rmi registry.gitlab.com/warewolf/warewolf:$VersionString
-
-        if ($VersionString.EndsWith(".0")) {
-          $TrimmedVersionString = "$VersionString".TrimEnd(".0")
-          Write-Host Tagging with $VersionString
-          docker tag registry.gitlab.com/warewolf/warewolf:latest registry.gitlab.com/warewolf/warewolf:$TrimmedVersionString
-          Write-Host Pushing...
-          docker push registry.gitlab.com/warewolf/warewolf:$TrimmedVersionString
-          Write-Host Pushed.
-          docker rmi registry.gitlab.com/warewolf/warewolf:$TrimmedVersionString
-        }
-      }
-
-- job: Upload_To_AWS_S3
-  displayName: 'Upload To AWS S3'
-  dependsOn: Compile_Installer
-
-  steps:
-  - checkout: none
-
-  - script: "(robocopy \"\\\\opswolf\\Azure Devops\\Release Server $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\Server\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
-    displayName: 'Download Server Artifacts'
-
-  - powershell: |
-      $Installers = Get-ChildItem -Path "$(Agent.BuildDirectory)" -File -Filter Warewolf-*.exe
-      foreach ($Installer in $Installers) {
-        Write-Host Found extra installer in working directory: $Installer.FullName
-        Remove-Item $Installer.FullName
-      }
-
-  - script: "(robocopy \"\\\\opswolf\\Azure Devops\\Installer $(Build.BuildId)\" \"$(Agent.BuildDirectory)\") ^& IF %ERRORLEVEL% LEQ 1 exit 0"
-    displayName: 'Download Installer'
-
-  - powershell: |
-      $Installers = Get-ChildItem -Path "$(Agent.BuildDirectory)" -File -Filter Warewolf-*.exe
-      foreach ($Installer in $Installers) {
-        Write-Host Uploading installer to AWS S3: $Installer.FullName
-        Write-S3Object -BucketName warewolfreleases -File $Installer.FullName -Key $Installer.Name -CannedACLName public-read -PublicReadOnly -StoredCredentials warewolfreleases -AccessKey $env:AccessKey -SecretKey $env:SecretKey
-      }
-      $VersionString = Get-Content "$(Agent.BuildDirectory)\Server\FullVersionString"
-      $AllAssemblies = Get-ChildItem "$(Agent.BuildDirectory)\Server" | Foreach {$_.FullName}
-      $ServerZips = Get-ChildItem -Path "$(Agent.BuildDirectory)" -File -Filter Server-*.zip
-      foreach ($ServerZip in $ServerZips) {
-        Write-Host Found extra zipped server in working directory: $ServerZip.FullName
-        Remove-Item $ServerZip.FullName
-      }
-      Compress-Archive $AllAssemblies "$(Agent.BuildDirectory)\Server-$VersionString.zip" -Update
-      Write-S3Object -BucketName warewolfreleases -File "$(Agent.BuildDirectory)\Server-$VersionString.zip" -Key Server-$VersionString.zip -CannedACLName public-read -PublicReadOnly -StoredCredentials warewolfreleases -AccessKey $env:AccessKey -SecretKey $env:SecretKey
-      if ($VersionString.EndsWith(".0")) {
-        $TrimmedVersionString = "$VersionString".TrimEnd(".0")
-        Copy-Item ./Server-$VersionString.zip ./Server-$TrimmedVersionString.zip
-        Write-S3Object -BucketName warewolfreleases -File .\Server-$TrimmedVersionString.zip -Key Server-$TrimmedVersionString.zip -CannedACLName public-read -PublicReadOnly -StoredCredentials warewolfreleases -AccessKey $env:AccessKey -SecretKey $env:SecretKey
-      }
-    env:
-      AccessKey: $(AccessKeyPassword)
-      SecretKey: $(SecretKeyPassword)
+  - task: PublishBuildArtifacts@1
+    inputs:
+      PathtoPublish: '$(Agent.BuildDirectory)\\s\\Dev\\Dev2.Studio\\bin\\Release\\net48\\win'
+      ArtifactName: 'Release Studio'
+      publishLocation: 'Container'
+      StoreAsTar: false
