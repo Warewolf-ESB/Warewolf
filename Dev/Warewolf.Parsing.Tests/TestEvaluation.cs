@@ -876,7 +876,7 @@ namespace WarewolfParsingTest
             env.AssignJson(new AssignValue("[[@Person.Score(1)]]", "2"), 0);
             env.AssignJson(new AssignValue("[[@Person.Score(2)]]", "3"), 0);
             env.AssignJson(new AssignValue("[[array(1)]]", "bob"), 0);
-            var p = new PrivateObject(env);
+            var p = new Warewolf.Testing.PrivateObject(env);
             return (DataStorage.WarewolfEnvironment)p.GetFieldOrProperty("_env");
         }
 

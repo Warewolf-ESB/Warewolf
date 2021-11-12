@@ -29,7 +29,7 @@ namespace WarewolfParsingTest
 
         DataStorage.WarewolfEnvironment ExtractEnvironment(ExecutionEnvironment env)
         {
-            var p = new PrivateObject(env);
+            var p = new Warewolf.Testing.PrivateObject(env);
             return (DataStorage.WarewolfEnvironment)p.GetFieldOrProperty("_env");
         }
         [TestMethod]
@@ -346,7 +346,7 @@ namespace WarewolfParsingTest
             env.AssignJson(new AssignValue("[[@a.d]]", "[[@a2]]"), 0);
 
 
-            var p = new PrivateObject(env);
+            var p = new Warewolf.Testing.PrivateObject(env);
             return (DataStorage.WarewolfEnvironment)p.GetFieldOrProperty("_env");
         }
     }

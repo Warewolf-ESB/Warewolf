@@ -86,7 +86,7 @@ namespace Dev2.Tests.Runtime.Services
             //------------Execute Test---------------------------
 
             //------------Assert Results-------------------------
-            var p = new PrivateObject(fetchPerformanceCounters);
+            var p = new Warewolf.Testing.PrivateObject(fetchPerformanceCounters);
             var nll =   p.GetProperty("Manager");
             Assert.IsNull(nll);
         }
@@ -108,7 +108,7 @@ namespace Dev2.Tests.Runtime.Services
             //------------Execute Test---------------------------
 
             //------------Assert Results-------------------------
-            var p = new PrivateObject(fetchPerformanceCounters);
+            var p = new Warewolf.Testing.PrivateObject(fetchPerformanceCounters);
             Assert.IsNotNull( p.GetProperty("Manager"));
            Assert.IsTrue(ReferenceEquals( mng.Object, p.GetProperty("Manager")));
         }

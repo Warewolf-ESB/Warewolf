@@ -173,7 +173,7 @@ namespace Dev2.Integration.Tests
             var pulseTracker = new PulseTracker(2000);
 
             Assert.AreEqual(2000, pulseTracker.Interval);
-            var pvt = new PrivateObject(pulseTracker);
+            var pvt = new Warewolf.Testing.PrivateObject(pulseTracker);
             var timer = (System.Timers.Timer)pvt.GetField("_timer");
             timer.Elapsed += (sender, e) =>
             {

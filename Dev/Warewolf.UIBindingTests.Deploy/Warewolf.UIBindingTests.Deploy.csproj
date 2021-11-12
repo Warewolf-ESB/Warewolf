@@ -112,6 +112,7 @@
       <Project>{62247A80-2266-4295-A8F6-A05507E2796E}</Project>
       <Name>Dev2.Studio</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Testing\Warewolf.Testing.csproj" />
     <ProjectReference Include="..\Warewolf.UIBindingTests.Core\Warewolf.UIBindingTests.Core.csproj">
       <Project>{CB0F5535-5E1D-41F9-A23C-F59FDC816B75}</Project>
       <Name>Warewolf.UIBindingTests.Core</Name>
