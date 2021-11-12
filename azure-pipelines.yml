@@ -2013,7 +2013,6 @@ jobs:
         git -C "$(Agent.BuildDirectory)\InstallerSource" fetch
         $TryGetThisBranchOnTheInstaller = git -C "$(Agent.BuildDirectory)\InstallerSource" ls-remote --heads "https://gitlab.com/warewolf/installer" $ThisBranch
         if ("$TryGetThisBranchOnTheInstaller" -ne "") {
-          Write-Host Checking out $ThisBranch in $(Agent.BuildDirectory)\InstallerSource
           git -C "$(Agent.BuildDirectory)\InstallerSource" checkout $ThisBranch
           git -C "$(Agent.BuildDirectory)\InstallerSource" pull
         }
