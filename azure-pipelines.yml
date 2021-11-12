@@ -2018,8 +2018,6 @@ jobs:
           git -C "$(Agent.BuildDirectory)\InstallerSource" checkout $ThisBranch
           git -C "$(Agent.BuildDirectory)\InstallerSource" pull
         }
-      } else {
-        git -C "$(Agent.BuildDirectory)\InstallerSource" checkout develop
       }
 
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\Release Server $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\InstallerSource\\WarewolfInstaller\\ProductBuild\\Server\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
