@@ -2008,7 +2008,8 @@ jobs:
         git -C "$(Agent.BuildDirectory)" clone https://gitlab.com/warewolf/installer InstallerSource
       }
       $InstallerBranch = git -C "$(Agent.BuildDirectory)\InstallerSource" rev-parse --abbrev-ref HEAD
-      $ThisBranch = git -C "$(Agent.BuildDirectory)\s" rev-parse --abbrev-ref HEAD
+      $branchSource = "$(Build.SourceBranch)"
+      $ThisBranch = $branchSource -replace "refs/heads/", ""
       if ($InstallerBranch -ne $ThisBranch) {
         git -C "$(Agent.BuildDirectory)\InstallerSource" fetch
         $TryGetThisBranchOnTheInstaller = git -C "$(Agent.BuildDirectory)\InstallerSource" ls-remote --heads "https://gitlab.com/warewolf/installer" $ThisBranch
