@@ -7,8 +7,6 @@ pool:
   name: Default
 
 jobs:
-      
-  - script: 'if not exist \"$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx\" exit 1'
 
 - job: build
   displayName: 'Compile'
