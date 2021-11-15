@@ -34,7 +34,6 @@ using Warewolf.Data.Options;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 using Warewolf.UnitTestAttributes;
-#pragma warning disable 618
 
 namespace Dev2.Tests.Activities.ActivityTests.Web
 {
@@ -972,7 +971,6 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
                 var envirVariable = environment.Eval(recordSet, 0);
                 var ress = envirVariable as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
                 Assert.IsNotNull(envirVariable);
-                Assert.IsNotNull(ress);
                 Assert.IsFalse(ress.Item.IsNothing, "Item should contain the recset mapped to the messanger key");
             }
         }
@@ -990,7 +988,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             var mockDSFDataObject = new Mock<IDSFDataObject>();
             var mockExecutionEnvironment = new Mock<IExecutionEnvironment>();
 
-            ErrorResultTO errorResultTO;
+            var errorResultTO = new ErrorResultTO();
 
             using (var service = new WebService(XmlResource.Fetch("WebService")))
             {
@@ -1030,7 +1028,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             var mockExecutionEnvironment = new Mock<IExecutionEnvironment>();
             var mockResourceCatalog = new Mock<IResourceCatalog>();
 
-            ErrorResultTO errorResultTO;
+            var errorResultTO = new ErrorResultTO();
 
             using (var service = new WebService(XmlResource.Fetch("WebService")) { RequestResponse = string.Empty })
             {

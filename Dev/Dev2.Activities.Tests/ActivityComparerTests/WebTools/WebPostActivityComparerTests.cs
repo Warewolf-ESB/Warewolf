@@ -15,7 +15,6 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.Graph;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Framework.Converters.Graph.Ouput;
-#pragma warning disable 618
 
 namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
 {
