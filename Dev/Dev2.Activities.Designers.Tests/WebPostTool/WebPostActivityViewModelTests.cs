@@ -33,6 +33,7 @@ using Warewolf.Data;
 using Warewolf.Data.Options;
 using Warewolf.Options;
 using Warewolf.Studio.ViewModels;
+#pragma warning disable 618
 
 namespace Dev2.Activities.Designers.Tests.WebPostTool
 {
@@ -590,6 +591,7 @@ namespace Dev2.Activities.Designers.Tests.WebPostTool
             Assert.AreEqual(1, conditions.Count);
 
             var emptyCondition = conditions[0] as FormDataOptionConditionExpression;
+            Assert.IsNotNull(emptyCondition);
             Assert.IsNull(emptyCondition.Key);
             Assert.AreEqual(enFormDataTableType.Text, emptyCondition.TableType);
         }

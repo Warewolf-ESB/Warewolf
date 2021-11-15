@@ -15,6 +15,7 @@ using System.Linq;
 using Dev2.Activities.Designers.Tests.WebGetTool;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Web_Post;
+using Dev2.Activities.Designers2.Web_Post_New;
 using Dev2.Activities.Designers2.Web_Service_Get;
 using Dev2.Activities.Designers2.WebGet;
 using Dev2.Common.Interfaces;
@@ -490,7 +491,9 @@ namespace Dev2.Activities.Designers.Tests.Core
                 ServiceName = "dsfBob"
             };
 
+#pragma warning disable 618
             var webPostActivityViewModel = new WebPostActivityViewModel(ModelItemUtils.CreateModelItem(webGetActivity), myWebModel);
+#pragma warning restore 618
             webPostActivityViewModel.SourceRegion.SelectedSource = webPostActivityViewModel.SourceRegion.Sources.First();
             webPostActivityViewModel.TestInputCommand.Execute();
             webPostActivityViewModel.ManageServiceInputViewModel.TestCommand.Execute(null);
@@ -541,7 +544,7 @@ namespace Dev2.Activities.Designers.Tests.Core
                 ServiceName = "dsfBob"
             };
 
-            var webPostActivityViewModel = new WebPostActivityViewModel(ModelItemUtils.CreateModelItem(webGetActivity), myWebModel);
+            var webPostActivityViewModel = new WebPostActivityViewModelNew(ModelItemUtils.CreateModelItem(webGetActivity), myWebModel);
             webPostActivityViewModel.SourceRegion.SelectedSource = webPostActivityViewModel.SourceRegion.Sources.First();
             webPostActivityViewModel.TestInputCommand.Execute();
             webPostActivityViewModel.ManageServiceInputViewModel.TestCommand.Execute(null);
