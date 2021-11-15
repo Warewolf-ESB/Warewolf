@@ -85,13 +85,14 @@ namespace Dev2.Activities.Designers.Tests.Core
         public void WebPostInputRegion_TestClone_UsingWebPostInputRegion()
         {
             var id = Guid.NewGuid();
-            var actMock = new Mock<WebPostActivityNew>();
-            actMock.SetupProperty(sourceId=>id);
+#pragma warning disable 618
+            var act = new WebPostActivity { SourceId = id };
+#pragma warning restore 618
 
             var mod = new Mock<IWebServiceModel>();
             mod.Setup(a => a.RetrieveSources()).Returns(new List<IWebServiceSource>());
-            var webSourceRegion = new WebSourceRegion(mod.Object, ModelItemUtils.CreateModelItem(new WebPostActivityNew()));
-            var region = new WebPostInputRegion(ModelItemUtils.CreateModelItem(actMock.Object), webSourceRegion) { PostData = "bob", IsFormDataChecked = true };
+            var webSourceRegion = new WebSourceRegion(mod.Object, ModelItemUtils.CreateModelItem(new WebPostActivity()));
+            var region = new WebPostInputRegion(ModelItemUtils.CreateModelItem(act), webSourceRegion) { PostData = "bob", IsFormDataChecked = true };
             Assert.IsFalse(region.IsEnabled);
             Assert.AreEqual(region.Errors.Count, 0);
             if (region.CloneRegion() is WebPostInputRegion clone)
@@ -221,10 +222,13 @@ namespace Dev2.Activities.Designers.Tests.Core
         {
             //------------Setup for test--------------------------
             var id = Guid.NewGuid();
-            
-            var webPostActivity = new Mock<WebPostActivityNew>();
-            webPostActivity.Setup(activity => activity.SourceId).Returns(id);
-            webPostActivity.Setup(activity => activity.Headers).Returns(new ObservableCollection<INameValue> { new NameValue("a", "b") });
+#pragma warning disable 618
+            var webPostActivity = new WebPostActivity()
+#pragma warning restore 618
+            {
+                SourceId = id,
+                Headers = new ObservableCollection<INameValue> { new NameValue("a", "b") },
+            };
 
             var mod = new Mock<IWebServiceModel>();
             mod.Setup(a => a.RetrieveSources()).Returns(new List<IWebServiceSource>());
@@ -238,9 +242,9 @@ namespace Dev2.Activities.Designers.Tests.Core
 
             //------------Assert Results-------------------------
 
-            Assert.IsNull(region.Settings?.FirstOrDefault(s => s.Name == "IsUrlEncodedChecked")?.Value);
-            Assert.IsNull(region.Settings?.FirstOrDefault(s => s.Name == "IsFormDataChecked")?.Value);
-            Assert.IsNull(region.Settings?.FirstOrDefault(s => s.Name == "IsManualChecked")?.Value);
+            Assert.IsNull(region?.Settings?.FirstOrDefault(s => s.Name == "IsUrlEncodedChecked")?.Value);
+            Assert.IsNull(region?.Settings?.FirstOrDefault(s => s.Name == "IsFormDataChecked")?.Value);
+            Assert.IsNull(region?.Settings?.FirstOrDefault(s => s.Name == "IsManualChecked")?.Value);
         }
         
         WebPostActivityViewModelNew GetWebPostActivityViewModel()
