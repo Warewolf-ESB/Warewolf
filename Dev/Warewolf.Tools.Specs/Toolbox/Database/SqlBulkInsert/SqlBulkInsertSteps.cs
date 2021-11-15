@@ -142,7 +142,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.SqlBulkInsert
         {
             if (scenarioContext.ScenarioInfo.Title.Replace(' ', '_') == "Import_data_into_Table_Batch_size_is_1")
             {
-                var tableNameUniqueNameGuid = ScenarioContext.Current.Get<string>("tableNameUniqueNameGuid");
+                var tableNameUniqueNameGuid = scenarioContext.Get<string>("tableNameUniqueNameGuid");
                 DeleteIsolatedSQLTable(tableNameUniqueNameGuid);
             }
         }
