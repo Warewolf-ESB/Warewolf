@@ -1974,6 +1974,7 @@ jobs:
       Out-File -LiteralPath "$(Agent.BuildDirectory)\s\Dev\Dev2.Studio\bin\Release\net48\win\FullVersionString" -InputObject $HighestReadVersion -Encoding default -Force
       git -C "$(Build.SourcesDirectory)" tag $HighestReadVersion
       git -C "$(Build.SourcesDirectory)" push https://gitlab.com/warewolf/warewolf $HighestReadVersion
+      Write-Host "##vso[build.updatebuildnumber]Build.BuildNumber ($HighestReadVersion)"
 
   - task: PublishBuildArtifacts@1
     inputs:
