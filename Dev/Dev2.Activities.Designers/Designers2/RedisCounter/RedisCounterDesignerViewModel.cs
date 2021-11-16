@@ -29,7 +29,9 @@ namespace Dev2.Activities.Designers2.RedisCounter
     {
         readonly IServer _server;
         IShellViewModel _shellViewModel;
+#pragma warning disable 169
         bool _addType;
+#pragma warning restore 169
 
         [ExcludeFromCodeCoverage]
         public RedisCounterDesignerViewModel(ModelItem modelItem)
