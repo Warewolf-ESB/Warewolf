@@ -30,6 +30,7 @@ using Moq;
 using Warewolf.Core;
 using Warewolf.Data.Options;
 using Warewolf.Options;
+#pragma warning disable 618
 
 
 namespace Dev2.Activities.Designers.Tests.Core

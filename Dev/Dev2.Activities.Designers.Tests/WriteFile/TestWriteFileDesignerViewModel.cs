@@ -13,7 +13,9 @@ using Dev2.Activities.Designers2.WriteFile;
 
 namespace Dev2.Activities.Designers.Tests.WriteFile
 {
+#pragma warning disable 618
     public class TestWriteFileDesignerViewModel : WriteFileDesignerViewModel
+#pragma warning restore 618
     {
         public TestWriteFileDesignerViewModel(ModelItem modelItem)
             : base(modelItem)
