@@ -30,6 +30,7 @@ namespace Dev2.Activities.Specs.Permissions
     public class SettingsPermissionsSteps
     {
         readonly ScenarioContext _scenarioContext;
+        static FeatureContext _featureContext;
 
         public SettingsPermissionsSteps(ScenarioContext scenarioContext)
         {
@@ -43,8 +44,9 @@ namespace Dev2.Activities.Specs.Permissions
 
 
         [BeforeFeature("@Security")]
-        public static void InitializeFeature()
+        public static void InitializeFeature(FeatureContext featureContext)
         {
+            _featureContext = featureContext;
             SetupUser();
             var securitySpecsUser = GetSecuritySpecsUser();
             var securitySpecsPassword = GetSecuritySpecsPassword();
@@ -58,7 +60,7 @@ namespace Dev2.Activities.Specs.Permissions
             }
 
             var currentSettings = environmentModel.ResourceRepository.ReadSettings(environmentModel);
-            FeatureContext.Current.Add("initialSettings", currentSettings);
+            _featureContext.Add("initialSettings", currentSettings);
             var settings = new Data.Settings.Settings
             {
                 Security = new SecuritySettingsTO(new List<WindowsGroupPermission>())
@@ -66,7 +68,7 @@ namespace Dev2.Activities.Specs.Permissions
 
             environmentModel.ResourceRepository.WriteSettings(environmentModel, settings);
             environmentModel.Disconnect();
-            FeatureContext.Current.Add("environment", environmentModel);
+            _featureContext.Add("environment", environmentModel);
 
             var reconnectModel = new Server(Guid.NewGuid(), new ServerProxy(AppUsageStats.LocalHost, securitySpecsUser, securitySpecsPassword)) { Name = "Other Connection" };
             try
@@ -77,8 +79,7 @@ namespace Dev2.Activities.Specs.Permissions
             {
                 Assert.Fail("Connection unauthorized when connecting to local Warewolf server as user who is part of '" + userGroup + "' user group.");
             }
-            FeatureContext.Current.Add("currentEnvironment", reconnectModel);
-
+            _featureContext.Add("currentEnvironment", reconnectModel);
         }
 
         static string GetUserGroup() => ConfigurationManager.AppSettings["userGroup"];
