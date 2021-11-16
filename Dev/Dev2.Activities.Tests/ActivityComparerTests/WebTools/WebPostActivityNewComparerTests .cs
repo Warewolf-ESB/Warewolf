@@ -321,7 +321,9 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
             var settings = new List<INameValue>();
             settings.Add(new NameValue("IsFormDataChecked", "false"));
             var webPostActivity = new WebPostActivityNew {UniqueID = uniqueId, Settings = settings};
+#pragma warning disable 618
             WebPostActivity webPostActivity1 = null;
+#pragma warning restore 618
             //---------------Assert Precondition----------------
             Assert.IsNotNull(webPostActivity);
             //---------------Execute Test ----------------------
