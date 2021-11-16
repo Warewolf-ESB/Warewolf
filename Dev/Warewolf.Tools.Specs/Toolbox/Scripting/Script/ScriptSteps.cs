@@ -45,22 +45,22 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Script
         }
 
         [BeforeFeature("PythonFeature")]
-        public static void SetupPython()
+        public static void SetupPython(FeatureContext featureContext)
         {
-            FeatureContext.Current.Add("pythonActivity", new DsfPythonActivity());
+            featureContext.Add("pythonActivity", new DsfPythonActivity());
         }
 
         [BeforeFeature("JavascriptFeature")]
-        public static void SetupJavascript()
+        public static void SetupJavascript(FeatureContext featureContext)
         {
-            FeatureContext.Current.Add("javascript", new DsfJavascriptActivity());
-        }
-        [BeforeFeature("RubyFeature")]
-        public static void SetupRuby()
-        {
-            FeatureContext.Current.Add("rubyActivity", new DsfRubyActivity());
+            featureContext.Add("javascript", new DsfJavascriptActivity());
         }
         
+        [BeforeFeature("RubyFeature")]
+        public static void SetupRuby(FeatureContext featureContext)
+        {
+            featureContext.Add("rubyActivity", new DsfRubyActivity());
+        }
 
         protected override void BuildDataList()
         {
@@ -92,7 +92,7 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Script
                 return;
             }
 
-            FeatureContext.Current.TryGetValue("pythonActivity", out DsfPythonActivity pythonActivity);
+            _featureContext.TryGetValue("pythonActivity", out DsfPythonActivity pythonActivity);
 
             if (pythonActivity != null)
             {
@@ -107,7 +107,7 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Script
                 return;
             }
 
-            FeatureContext.Current.TryGetValue("rubyActivity", out DsfRubyActivity rubyActivity);
+            _featureContext.TryGetValue("rubyActivity", out DsfRubyActivity rubyActivity);
 
             if (rubyActivity != null)
             {
