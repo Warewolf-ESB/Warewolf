@@ -36,10 +36,11 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Script
 
             this.scenarioContext = scenarioContext;
         }
-        private FeatureContext _featureContext;
+        
+        static FeatureContext _featureContext;
 
-        public ScriptSteps(FeatureContext featureContext)
-            : base(featureContext)
+        [BeforeFeature]
+        public static void SetupFeatureContext(FeatureContext featureContext)
         {
             _featureContext = featureContext;
         }
@@ -47,19 +48,19 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Script
         [BeforeFeature("PythonFeature")]
         public static void SetupPython(FeatureContext featureContext)
         {
-            featureContext.Add("pythonActivity", new DsfPythonActivity());
+            _featureContext.Add("pythonActivity", new DsfPythonActivity());
         }
 
         [BeforeFeature("JavascriptFeature")]
         public static void SetupJavascript(FeatureContext featureContext)
         {
-            featureContext.Add("javascript", new DsfJavascriptActivity());
+            _featureContext.Add("javascript", new DsfJavascriptActivity());
         }
         
         [BeforeFeature("RubyFeature")]
         public static void SetupRuby(FeatureContext featureContext)
         {
-            featureContext.Add("rubyActivity", new DsfRubyActivity());
+            _featureContext.Add("rubyActivity", new DsfRubyActivity());
         }
 
         protected override void BuildDataList()
