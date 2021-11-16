@@ -54,6 +54,13 @@ namespace Dev2.Activities.Specs.BaseTypes
         {
             _scenarioContext = scenarioContext ?? throw new ArgumentNullException("scenarioContext");
         }
+        
+        readonly FeatureContext _featureContext;
+
+        public CommonSteps(FeatureContext featureContext)
+        {
+            _featureContext = featureContext ?? throw new ArgumentNullException("featureContext");
+        }
 
         public const string DestinationHolder = "destination";
         public const string ActualDestinationHolder = "actualDestination";

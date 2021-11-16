@@ -36,6 +36,13 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Script
 
             this.scenarioContext = scenarioContext;
         }
+        private FeatureContext _featureContext;
+
+        public ScriptSteps(FeatureContext featureContext)
+            : base(featureContext)
+        {
+            _featureContext = featureContext;
+        }
 
         [BeforeFeature("PythonFeature")]
         public static void SetupPython()
