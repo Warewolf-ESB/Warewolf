@@ -44,19 +44,6 @@ namespace Warewolf.Tools.Specs.BaseTypes
             this.scenarioContext = scenarioContext;
             _commonSteps = new CommonSteps(this.scenarioContext);
         }
-        
-        readonly FeatureContext featureContext;
-
-        public RecordSetBases(FeatureContext featureContext)
-        {
-            if (featureContext == null)
-            {
-                throw new ArgumentNullException("featureContext");
-            }
-
-            this.featureContext = featureContext;
-            _commonSteps = new CommonSteps(this.featureContext);
-        }
 
         protected const string ResultVariable = "[[result]]";
         readonly CommonSteps _commonSteps;
