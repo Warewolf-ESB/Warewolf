@@ -23,17 +23,9 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Read_File
     [Binding]
     public class ReadFileSteps : FileToolsBase
     {
-        readonly ScenarioContext scenarioContext;
-
         public ReadFileSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
         {
-            if (scenarioContext == null)
-            {
-                throw new ArgumentNullException("scenarioContext");
-            }
-
-            this.scenarioContext = scenarioContext;
         }
 
         [When(@"the read file tool is executed")]
