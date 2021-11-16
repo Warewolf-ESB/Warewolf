@@ -55,11 +55,12 @@ namespace Dev2.Activities.Specs.BaseTypes
             _scenarioContext = scenarioContext ?? throw new ArgumentNullException("scenarioContext");
         }
         
-        readonly FeatureContext _featureContext;
+        static FeatureContext _featureContext;
 
-        public CommonSteps(FeatureContext featureContext)
+        [BeforeFeature]
+        public static void SetupFeatureContext(FeatureContext featureContext)
         {
-            _featureContext = featureContext ?? throw new ArgumentNullException("featureContext");
+            _featureContext = featureContext;
         }
 
         public const string DestinationHolder = "destination";
