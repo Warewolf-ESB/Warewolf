@@ -89,7 +89,7 @@ namespace Dev2.Activities.Specs.Hooks
         private static void Cleanup(FeatureContext featureContext)
         {
             featureContext.Keys.ToList()
-                .ForEach(key => FeatureContext.Current.Remove(key));
+                .ForEach(key => featureContext.Remove(key));
         }
     }
 }
