@@ -37,7 +37,6 @@ Scenario: Variables adding in variable list and removing unused
     | [[a]]       |                   |       |        |        |
     | [[lr().a]]  |                   |       |        |        |
 	Then "Variables" is "Enabled"
-	And variables filter box is "Visible"
 	And "Filter Clear" is "Disabled"
 	And "Delete Variables" is "Enabled"
 	And "Sort Variables" is "Enabled" 

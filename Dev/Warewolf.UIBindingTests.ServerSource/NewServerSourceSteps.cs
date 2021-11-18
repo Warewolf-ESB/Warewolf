@@ -83,7 +83,7 @@ namespace Warewolf.UIBindingTests.ServerSource
         [Then(@"selected protocol is ""(.*)""")]
         public void ThenSelectedProtocolIs(string protocol)
         {
-            var view = Core.Utils.GetView<ManageServerControl>();
+            var view = Core.Utils.GetView<ManageServerControl>(_scenarioContext);
             view.SetProtocol(protocol);
             var viewModel = GetViewModel(view);
             Assert.AreEqual(protocol, viewModel.Protocol);
@@ -148,7 +148,7 @@ namespace Warewolf.UIBindingTests.ServerSource
         [Given(@"I select protocol as ""(.*)""")]
         public void GivenISelectProtocolAs(string protocol)
         {
-            var view = Core.Utils.GetView<ManageServerControl>();
+            var view = Core.Utils.GetView<ManageServerControl>(_scenarioContext);
             view.SetProtocol(protocol);
             var viewModel = GetViewModel(view);
             Assert.AreEqual(protocol, viewModel.Protocol);
@@ -157,7 +157,7 @@ namespace Warewolf.UIBindingTests.ServerSource
         [Given(@"I enter server port as ""(.*)""")]
         public void GivenIEnterServerPortAs(int port)
         {
-            var view = Core.Utils.GetView<ManageServerControl>();
+            var view = Core.Utils.GetView<ManageServerControl>(_scenarioContext);
             view.SetPort(port.ToString());
             var viewModel = GetViewModel(view);
             Assert.AreEqual(port.ToString(), viewModel.SelectedPort);
@@ -273,7 +273,7 @@ namespace Warewolf.UIBindingTests.ServerSource
         [When(@"I Test Connection to remote server")]
         public void WhenITestConnectionToRemoteServer()
         {
-            var view = Core.Utils.GetView<ManageServerControl>();
+            var view = Core.Utils.GetView<ManageServerControl>(_scenarioContext);
             view.TestAction();
         }
 

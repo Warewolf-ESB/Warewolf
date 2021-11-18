@@ -54,7 +54,7 @@ namespace Warewolf.UIBindingTests.Variables
         [Given(@"I have variables as")]
         public void GivenIHaveVariablesAs(Table table)
         {
-            var variableListViewModel = Utils.GetViewModel<DataListViewModel>();
+            var variableListViewModel = Utils.GetViewModel<DataListViewModel>(_scenarioContext);
             var rows = table.Rows;
             foreach (var tableRow in rows)
             {
@@ -185,7 +185,7 @@ namespace Warewolf.UIBindingTests.Variables
         [When(@"I clear the filter")]
         public void WhenIClearTheFilter()
         {
-            var variableListViewModel = Utils.GetView<DataListViewModel>();
+            var variableListViewModel = Utils.GetView<DataListViewModel>(_scenarioContext);
             var sourceControl = _scenarioContext.Get<DataListViewModel>(Utils.ViewModelNameKey);
             sourceControl.SearchText = "";
             variableListViewModel.SearchText = string.Empty;
@@ -203,14 +203,6 @@ namespace Warewolf.UIBindingTests.Variables
         {
             var sourceControl = _scenarioContext.Get<DataListViewModel>(Utils.ViewModelNameKey);
             Assert.IsTrue(sourceControl.SortCommand.CanExecute(sourceControl.CanSortItems));
-        }
-
-        [Then(@"variables filter box is ""(.*)""")]
-        public void ThenVariablesFilterBoxIs(string visibleString)
-        {
-            var view = Utils.GetView<DataListView>();
-            //var visibility = view.GetFilterBoxVisibility();
-            //Assert.AreEqual(visibleString.ToLowerInvariant() == "visible" ? Visibility.Visible : Visibility.Collapsed, visibility);
         }
 
         [Then(@"the Variable Names are")]
@@ -343,14 +335,13 @@ namespace Warewolf.UIBindingTests.Variables
         public void WhenTheDebugInputWindowIsOpened()
         {
             var sourceControl = _scenarioContext.Get<DataListViewModel>(Utils.ViewModelNameKey);
-            //sourceControl.DebugInputWindowsIsVisible
             _scenarioContext.Pending();
         }
 
         [When(@"I save workflow as ""(.*)""")]
         public void WhenISaveWorkflowAs(string p0)
         {
-            var variableListViewModel = Utils.GetViewModel<DataListViewModel>();
+            var variableListViewModel = Utils.GetViewModel<DataListViewModel>(_scenarioContext);
             _scenarioContext.Pending();
         }
 
