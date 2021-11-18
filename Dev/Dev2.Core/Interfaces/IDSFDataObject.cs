@@ -34,6 +34,8 @@ namespace Dev2.Interfaces
         bool IsMultipleWorkflowReport { get; }
         string GetTestUrl(string resourcePath);
         string GetAllTestsUrl();
+        string ReportName { get; set; }        
+
     }
 
     public class RetryState

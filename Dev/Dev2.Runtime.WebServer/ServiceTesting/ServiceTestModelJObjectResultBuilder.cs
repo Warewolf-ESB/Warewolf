@@ -79,9 +79,10 @@ namespace Dev2.Runtime.WebServer
         {
             var totalWorkflowNodesCount = report.AllWorkflowNodes;
             int notCoveredNodesCount = report.NotCoveredNodesCount;
-            var nodesCoveredCount = report.AllTestNodesCovered.Select(o => o.TestNodesCovered);
-            var assertedNodes = nodesCoveredCount.Where(o => o.Any(oo => oo.MockSelected == false));
-            var mockedNodes = nodesCoveredCount.Where(o => o.Any(oo => oo.MockSelected == true));
+            var nodesCoveredCount = report.AllTestNodesCovered.SelectMany(o => o.TestNodesCovered);
+             
+            var assertedNodes = nodesCoveredCount.Where(oo => oo.MockSelected == false);
+            var mockedNodes = nodesCoveredCount.Where(oo => oo.MockSelected == true);
             var resObj = new JObject
             {
                 { "Report Name", report.ReportName},
@@ -92,7 +93,7 @@ namespace Dev2.Runtime.WebServer
                     {
                         { "TotalNodesCount", totalWorkflowNodesCount.Count() },
                         { "NotCoveredNodes", notCoveredNodesCount },
-                        { "CoveredNodes", nodesCoveredCount.Count() },
+                        { "CoveredNodes",  nodesCoveredCount.Count() },
                         { "CoveredNodesDetails", new JArray
                         (
                             new JObject 

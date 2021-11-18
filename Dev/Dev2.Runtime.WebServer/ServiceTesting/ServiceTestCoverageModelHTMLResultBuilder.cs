@@ -47,7 +47,7 @@ namespace Dev2.Runtime.WebServer
             writer.RenderBeginTag(HtmlTextWriterTag.Div);
             writer.Write(Math.Round(totalReportsCoverage, 0) +" %");
             writer.RenderEndTag();
-
+            writer.RenderBeginTag(HtmlTextWriterTag.Br);
         }
 
         private static void AddColorCoding(this HtmlTextWriter writer, double totalReportsCoverage)
@@ -91,7 +91,7 @@ namespace Dev2.Runtime.WebServer
             writer.AddStyleAttribute(HtmlTextWriterStyle.Padding, "8px 16px 16px 8px");
             writer.AddStyleAttribute(HtmlTextWriterStyle.Display, "inline-block");
             writer.RenderBeginTag(HtmlTextWriterTag.Div);
-            writer.Write(resourcePath);
+            writer.Write(resourcePath + "\\" + coverageData.ReportName.Replace("*", ""));
             writer.RenderEndTag();
 
             writer.AddAttribute(HtmlTextWriterAttribute.Class, "SetupWorkflowPathHtml-link");
@@ -113,7 +113,7 @@ namespace Dev2.Runtime.WebServer
             writer.AddStyleAttribute(HtmlTextWriterStyle.FontWeight, "500");
             writer.AddStyleAttribute(HtmlTextWriterStyle.Margin, "0 0 0 35px");
             writer.AddAttribute(HtmlTextWriterAttribute.Class, "workflow-nodes-row");
-           
+
             writer.RenderBeginTag(HtmlTextWriterTag.Div);
             SetupCoverageCountSummaryHtml(writer, coverageReports);
             writer.RenderEndTag();
@@ -362,7 +362,7 @@ namespace Dev2.Runtime.WebServer
             writer.Write("Covered Nodes: " + coveredNodesCount + "<br> (Assert : " + assertCount + " / <font color='#9ACD32'> Mocked : " + mockedCount + "</font>)");
             writer.RenderEndTag();
 
-            var notCoveredNodesCount = coverageReports.NotCoveredNodesCount; 
+            var notCoveredNodesCount = coverageReports.NotCoveredNodesCount;
             writer.AddStyleAttribute(HtmlTextWriterStyle.Width, "200px");
             writer.AddStyleAttribute(HtmlTextWriterStyle.FontWeight, "bold");
             writer.AddStyleAttribute(HtmlTextWriterStyle.FontSize, "14px");
@@ -379,11 +379,11 @@ namespace Dev2.Runtime.WebServer
             writer.RenderBeginTag(HtmlTextWriterTag.Td);
             writer.Write("Not Covered Nodes: " + notCoveredNodesCount);
             writer.RenderEndTag();
-            writer.RenderBeginTag(HtmlTextWriterTag.Td);  
+            writer.RenderBeginTag(HtmlTextWriterTag.Td);
             writer.RenderEndTag();
             writer.RenderEndTag();
             writer.RenderEndTag();
-           
+
         }
 
         private static bool IsNodeCovered(IWorkflowNode[] coveredNodes, IWorkflowNode node)
