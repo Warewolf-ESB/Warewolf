@@ -92,6 +92,12 @@ namespace Warewolf.Data
             }
             return Equals((NamedGuid)obj);
         }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+        
         public NamedGuid Clone()
         {
             return new NamedGuid
