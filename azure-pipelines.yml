@@ -12,8 +12,10 @@ jobs:
   displayName: 'Compile'
 
   steps:
-  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)/s/Compile.ps1\" -AcceptanceTesting"
-    displayName: 'Compile'
+  - task: PowerShell@2
+    inputs:
+      filePath: '$(Agent.BuildDirectory)/s/Compile.ps1'
+      arguments: '-AcceptanceTesting'
 
   - task: DeleteFiles@1
     inputs:
