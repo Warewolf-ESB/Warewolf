@@ -15,8 +15,10 @@ jobs:
   displayName: 'Compile'
 
   steps:
-  - script: "powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File \"$(Agent.BuildDirectory)/s/Compile.ps1\" -AcceptanceTesting"
-    displayName: 'Compile'
+  - task: PowerShell@2
+    inputs:
+      filePath: '$(Agent.BuildDirectory)/s/Compile.ps1'
+      arguments: '-AcceptanceTesting'
 
   - task: DeleteFiles@1
     inputs:
@@ -1977,6 +1979,7 @@ jobs:
       Out-File -LiteralPath "$(Agent.BuildDirectory)\s\Dev\Dev2.Studio\bin\Release\net48\win\FullVersionString" -InputObject $HighestReadVersion -Encoding default -Force
       git -C "$(Build.SourcesDirectory)" tag $HighestReadVersion
       git -C "$(Build.SourcesDirectory)" push https://gitlab.com/warewolf/warewolf $HighestReadVersion
+      Write-Host "##vso[build.updatebuildnumber]$(Build.BuildNumber) ($HighestReadVersion)"
 
   - task: PublishBuildArtifacts@1
     inputs:
