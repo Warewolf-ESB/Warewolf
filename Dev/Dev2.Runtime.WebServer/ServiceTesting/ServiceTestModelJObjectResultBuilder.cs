@@ -126,7 +126,8 @@ namespace Dev2.Runtime.WebServer
                 {"Node Name", report.StepDescription},
                 {"ActivityID", report.ActivityID},
                 {"UniqueID", report.UniqueID},
-                {"MockSelected", report.MockSelected}
+                {"MockSelected", report.MockSelected},
+                {"ChildNodes", new JArray{  report.ChildNodes.Select(o => o.BuildTestResultJSONForWebRequest()) } } 
             };
 
             return resObj;

@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -21,6 +21,7 @@ namespace Warewolf.Data
         string StepDescription { get; }
         bool MockSelected { get; }
         List<IWorkflowNode> NextNodes { get; }
+        List<IWorkflowNode> ChildNodes { get; }
         void Add(IWorkflowNode workflowNode);
     }
 }
