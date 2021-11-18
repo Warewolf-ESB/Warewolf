@@ -74,7 +74,6 @@ namespace Dev2.Common.Tests
             Assert.AreEqual(true, settings.EnableDetailedLogging);
             Assert.AreEqual(LogLevel.DEBUG.ToString(), settings.ExecutionLogLevel);
             Assert.AreEqual(200, settings.LogFlushInterval);
-            Assert.AreEqual("C:\\ProgramData\\Warewolf\\Audits", settings.AuditFilePath);
             Assert.AreEqual(nameof(LegacySettingsData), settings.Sink);
         }
 
@@ -97,7 +96,6 @@ namespace Dev2.Common.Tests
             Assert.AreEqual(true, settings.EnableDetailedLogging);
             Assert.AreEqual(LogLevel.DEBUG.ToString(), settings.ExecutionLogLevel);
             Assert.AreEqual(200, settings.LogFlushInterval);
-            Assert.AreEqual("C:\\ProgramData\\Warewolf\\Audits", settings.AuditFilePath);
             Assert.AreEqual(nameof(LegacySettingsData), settings.Sink);
         }
 
@@ -146,12 +144,11 @@ namespace Dev2.Common.Tests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ServerSettings))]
-        public void ServerSettingsData_SinkNotInFile_AuditFilePathIsNotNull_SetSinkEqualLegacySettingsData()
+        public void ServerSettingsData_SinkNotInFile_SetSinkEqualLegacySettingsData()
         {
             Config.Server.Sink = null;
             var serverSettings = Config.Server.Get();
             Assert.AreEqual(nameof(LegacySettingsData), serverSettings.Sink);
-            Assert.AreEqual(LegacySettings.DefaultAuditPath, serverSettings.AuditFilePath);
         }
     }
 }
