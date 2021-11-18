@@ -294,6 +294,68 @@ namespace Dev2.Tests.Runtime.WebServer
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DataObjectExtensions))]
+        public void DataObjectExtensions_RunCoverageAndReturnJSON_Given_CoverageReport_HasChildNodes_ShouldReturnResults()
+        {
+            var serializer = new Dev2JsonSerializer();
+
+            var mockTestCoverageCatalog = new Mock<ITestCoverageCatalog>();
+            mockTestCoverageCatalog.Setup(o => o.Fetch(_workflowOne))
+            .Returns(new List<IServiceTestCoverageModelTo> { new ServiceTestCoverageModelTo
+            {
+                WorkflowId = _workflowOne,
+                OldReportName = "test 1",
+                ReportName =  _reportName,
+                TotalCoverage = 0.1,
+                AllTestNodesCovered = new ISingleTestNodesCovered[]
+                {
+                    new SingleTestNodesCovered(_reportName, new List<IServiceTestStep>
+                    {
+                        new ServiceTestStepTO
+                        {
+                            ActivityID = _testStepOne,
+                            UniqueID = _testStepOne,
+                            Type = StepType.Assert,
+                            StepDescription = "StepType Assert",
+                            Children = new ObservableCollection<IServiceTestStep>
+                            {
+                                new ServiceTestStepTO
+                                {
+                                    ActivityID = Guid.Empty,
+                                    Children = new ObservableCollection<IServiceTestStep>
+                                    {
+                                        new ServiceTestStepTO
+                                        {
+                                            ActivityID = Guid.Parse("85d142b4-9db9-4d8e-bb8c-5900aad9588c")
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    })
+                }
+            }});
+
+            var mockTestCatalog = new Mock<ITestCatalog>();
+            mockTestCatalog.Setup(o => o.Fetch(_workflowOne))
+                .Returns(new List<IServiceTestModelTO> { new ServiceTestModelTO { } });
+
+            MockSetup(out Mock<ICoverageDataObject> mockCoverageDataObject,
+                      out Mock<IResourceCatalog> mockResourceCatalog);
+
+            var sut = DataObjectExtensions.RunCoverageAndReturnJSON(mockCoverageDataObject.Object, mockTestCoverageCatalog.Object, mockTestCatalog.Object, mockResourceCatalog.Object, _workspaceGuid, serializer, out string executePayload);
+
+            Assert.IsNotNull(executePayload);
+            Assert.AreEqual("application/json", sut.ContentType);
+            StringAssert.Contains(executePayload, "\"TestResults\": [\r\n    {\r\n      \"ResourceID\": \"fbda8700-2717-4879-88cd-6abdea4560da\",\r\n  ");
+            StringAssert.Contains(executePayload, "\r\n  \"CoverageSummary\": {\r\n    \"TotalCoverage\": 100.0\r\n  },");
+            StringAssert.Contains(executePayload, "\r\n  \"TestSummary\": {\r\n    \"TestsTotalCount\": 1,\r\n    \"TestsFailed\": 0,\r\n    \"TestsPassed\": 0,\r\n    \"TestsInvalid\": 1\r\n  }");
+            StringAssert.Contains(executePayload, "\"NodesSummary\": {\r\n            \"TotalNodesCount\": 0,\r\n            \"NotCoveredNodes\": 0,\r\n            \"CoveredNodes\": 1,\r\n            \"CoveredNodesDetails\": [\r\n              {\r\n                \"Assert\": 1,\r\n                \"Mocked\": 0\r\n              }\r\n            ]\r\n          }");
+            StringAssert.Contains(executePayload, "\"ChildNodes\": [\r\n                        {\r\n                          \"Node Name\": null,\r\n                          \"ActivityID\": \"85d142b4-9db9-4d8e-bb8c-5900aad9588c\",\r\n                          \"UniqueID\": \"00000000-0000-0000-0000-000000000000\",\r\n                          \"MockSelected\": true,\r\n                          \"ChildNodes\": []\r\n                        }\r\n                      ]\r\n");
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(DataObjectExtensions))]
         public void DataObjectExtensions_RunCoverageAndReturnJSON_Given_CoverageReport_HasTestReports_True_ShouldReturnNotEmpty_Results()
         {
             var serializer = new Dev2JsonSerializer();
