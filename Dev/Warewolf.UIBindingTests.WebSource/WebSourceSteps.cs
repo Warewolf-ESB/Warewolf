@@ -333,7 +333,7 @@ namespace Warewolf.UIBindingTests.WebSource
             errorMessage = "Exception: " + illegalCharactersInPath + Environment.NewLine + Environment.NewLine +
                            "Inner Exception: " + illegalCharactersInPath;
 
-            scenarioContext.Get<ManageWebserviceSourceViewModel>("viewModel");
+            var viewModel = scenarioContext.Get<ManageWebserviceSourceViewModel>("viewModel");
             Assert.AreEqual(errorMessage, viewModel.TestMessage);
         }
 
