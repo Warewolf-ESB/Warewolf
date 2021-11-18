@@ -110,7 +110,7 @@ namespace Dev2.Activities.Specs.Permissions
                 Security = new SecuritySettingsTO(new List<WindowsGroupPermission> { groupPermssions })
             };
 
-            var environmentModel = FeatureContext.Current.Get<IServer>("environment");
+            var environmentModel = _featureContext.Get<IServer>("environment");
             EnsureEnvironmentConnected(environmentModel);
             environmentModel.ResourceRepository.WriteSettings(environmentModel, settings);
             environmentModel.Disconnect();
@@ -138,7 +138,7 @@ namespace Dev2.Activities.Specs.Permissions
                 Security = new SecuritySettingsTO(new List<WindowsGroupPermission> { groupPermssions })
             };
 
-            var environmentModel = FeatureContext.Current.Get<IServer>("environment");
+            var environmentModel = _featureContext.Get<IServer>("environment");
             EnsureEnvironmentConnected(environmentModel);
             environmentModel.ResourceRepository.WriteSettings(environmentModel, settings);
             environmentModel.Disconnect();
@@ -166,7 +166,7 @@ namespace Dev2.Activities.Specs.Permissions
                 Security = new SecuritySettingsTO(new List<WindowsGroupPermission> { groupPermssions })
             };
 
-            var environmentModel = FeatureContext.Current.Get<IServer>("environment");
+            var environmentModel = _featureContext.Get<IServer>("environment");
             EnsureEnvironmentConnected(environmentModel);
             environmentModel.ResourceRepository.WriteSettings(environmentModel, settings);
             environmentModel.Disconnect();
@@ -213,12 +213,12 @@ namespace Dev2.Activities.Specs.Permissions
             {
                 Assert.Fail("Connection unauthorized when connecting to local Warewolf server as user who is part of '" + userGroup + "' user group.");
             }
-            FeatureContext.Current["currentEnvironment"] = reconnectModel;
+            _featureContext["currentEnvironment"] = reconnectModel;
         }
 
         static IServer LoadResources()
         {
-            var environmentModel = FeatureContext.Current.Get<IServer>("currentEnvironment");
+            var environmentModel = _featureContext.Get<IServer>("currentEnvironment");
             EnsureEnvironmentConnected(environmentModel);
             if (environmentModel.IsConnected && !environmentModel.HasLoadedResources)
             {
@@ -276,7 +276,7 @@ namespace Dev2.Activities.Specs.Permissions
         [Given(@"Resource ""(.*)"" has rights ""(.*)"" for ""(.*)""")]
         public void GivenResourceHasRights(string resourceName, string resourceRights, string groupName)
         {
-            var environmentModel = FeatureContext.Current.Get<IServer>("environment");
+            var environmentModel = _featureContext.Get<IServer>("environment");
             EnsureEnvironmentConnected(environmentModel);
             var resourceRepository = environmentModel.ResourceRepository;
             var settings = resourceRepository.ReadSettings(environmentModel);
@@ -303,7 +303,7 @@ namespace Dev2.Activities.Specs.Permissions
         [Then(@"""(.*)"" should have ""(.*)""")]
         public void ThenShouldHave(string resourceName, string resourcePerms)
         {
-            var environmentModel = FeatureContext.Current.Get<IServer>("environment");
+            var environmentModel = _featureContext.Get<IServer>("environment");
             EnsureEnvironmentConnected(environmentModel);
             var resourceRepository = environmentModel.ResourceRepository;
             environmentModel.ForceLoadResources();
@@ -326,9 +326,9 @@ namespace Dev2.Activities.Specs.Permissions
         [AfterScenario("Security")]
         public void DoCleanUp()
         {
-            FeatureContext.Current.TryGetValue("currentEnvironment", out IServer currentEnvironment);
-            FeatureContext.Current.TryGetValue("environment", out IServer server);
-            FeatureContext.Current.TryGetValue("initialSettings", out Data.Settings.Settings currentSettings);
+            _featureContext.TryGetValue("currentEnvironment", out IServer currentEnvironment);
+            _featureContext.TryGetValue("environment", out IServer server);
+            _featureContext.TryGetValue("initialSettings", out Data.Settings.Settings currentSettings);
 
             if (server != null)
             {

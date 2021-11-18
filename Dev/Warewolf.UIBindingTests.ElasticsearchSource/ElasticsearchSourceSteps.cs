@@ -36,6 +36,7 @@ namespace Warewolf.UIBindingTests.ElasticsearchSource
         readonly ScenarioContext _scenarioContext;
         string _illegalCharactersInPath = "Illegal characters in path.";
         public static Depends _containerOps;
+        static FeatureContext _featureContext;
 
         public ElasticsearchSourceSteps(ScenarioContext scenarioContext)
         {
@@ -56,8 +57,9 @@ namespace Warewolf.UIBindingTests.ElasticsearchSource
         }
 
         [BeforeFeature(@"ElasticsearchSource")]
-        public static void SetupForSystem()
+        public static void SetupForSystem(FeatureContext featureContext)
         {
+            _featureContext = featureContext;
             Utils.SetupResourceDictionary();
             var ElasticsearchSourceControl = new ElasticsearchSourceControl();
             var mockStudioUpdateManager = new Mock<IElasticsearchSourceModel>();
@@ -71,21 +73,21 @@ namespace Warewolf.UIBindingTests.ElasticsearchSource
             var ElasticsearchSourceViewModel = new ElasticsearchSourceViewModel(mockStudioUpdateManager.Object, task, mockEventAggregator.Object, new SynchronousAsyncWorker(), mockExecutor.Object, mockServer.Object);
             ElasticsearchSourceControl.DataContext = ElasticsearchSourceViewModel;
             Utils.ShowTheViewForTesting(ElasticsearchSourceControl);
-            FeatureContext.Current.Add(Utils.ViewNameKey, ElasticsearchSourceControl);
-            FeatureContext.Current.Add(Utils.ViewModelNameKey, ElasticsearchSourceViewModel);
-            FeatureContext.Current.Add("updateManager", mockStudioUpdateManager);
-            FeatureContext.Current.Add("requestServiceNameViewModel", mockRequestServiceNameViewModel);
-            FeatureContext.Current.Add("externalProcessExecutor", mockExecutor);
+            _featureContext.Add(Utils.ViewNameKey, ElasticsearchSourceControl);
+            _featureContext.Add(Utils.ViewModelNameKey, ElasticsearchSourceViewModel);
+            _featureContext.Add("updateManager", mockStudioUpdateManager);
+            _featureContext.Add("requestServiceNameViewModel", mockRequestServiceNameViewModel);
+            _featureContext.Add("externalProcessExecutor", mockExecutor);
         }
 
         [BeforeScenario(@"ElasticsearchSource")]
         public void SetupForElasticsearchSource()
         {
-            _scenarioContext.Add(Utils.ViewNameKey, FeatureContext.Current.Get<ElasticsearchSourceControl>(Utils.ViewNameKey));
-            _scenarioContext.Add("updateManager", FeatureContext.Current.Get<Mock<IElasticsearchSourceModel>>("updateManager"));
-            _scenarioContext.Add("requestServiceNameViewModel", FeatureContext.Current.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel"));
-            _scenarioContext.Add("externalProcessExecutor", FeatureContext.Current.Get<Mock<IExternalProcessExecutor>>("externalProcessExecutor"));
-            _scenarioContext.Add(Utils.ViewModelNameKey, FeatureContext.Current.Get<ElasticsearchSourceViewModel>(Utils.ViewModelNameKey));
+            _scenarioContext.Add(Utils.ViewNameKey, _featureContext.Get<ElasticsearchSourceControl>(Utils.ViewNameKey));
+            _scenarioContext.Add("updateManager", _featureContext.Get<Mock<IElasticsearchSourceModel>>("updateManager"));
+            _scenarioContext.Add("requestServiceNameViewModel", _featureContext.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel"));
+            _scenarioContext.Add("externalProcessExecutor", _featureContext.Get<Mock<IExternalProcessExecutor>>("externalProcessExecutor"));
+            _scenarioContext.Add(Utils.ViewModelNameKey, _featureContext.Get<ElasticsearchSourceViewModel>(Utils.ViewModelNameKey));
         }
 
         [Given(@"I open New Elasticsearch Source")]
@@ -343,10 +345,10 @@ namespace Warewolf.UIBindingTests.ElasticsearchSource
             var viewModel = new ElasticsearchSourceViewModel(mockUpdateManager.Object, task, mockEventAggregator.Object, new SynchronousAsyncWorker(), mockExecutor.Object,new Mock<IServer>().Object);
             var elasticsearchSourceControl = _scenarioContext.Get<ElasticsearchSourceControl>(Utils.ViewNameKey);
             elasticsearchSourceControl.DataContext = viewModel;
-            FeatureContext.Current.Remove("viewModel");
-            FeatureContext.Current.Add("viewModel", viewModel);
-            FeatureContext.Current.Remove("externalProcessExecutor");
-            FeatureContext.Current.Add("externalProcessExecutor", mockExecutor);
+            _featureContext.Remove("viewModel");
+            _featureContext.Add("viewModel", viewModel);
+            _featureContext.Remove("externalProcessExecutor");
+            _featureContext.Add("externalProcessExecutor", mockExecutor);
         }
     }
 }
