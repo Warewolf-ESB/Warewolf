@@ -163,7 +163,7 @@ namespace Dev2.Runtime.ServiceModel
         
         public static string Execute(IWebSource source, WebRequestMethod method, IEnumerable<string> headers, string relativeUrl,
             bool isNoneChecked, bool isFormDataChecked, string data, bool throwError, out ErrorResultTO errors,
-            IEnumerable<IFormDataParameters> formDataParameters = null, IWebRequestFactory webRequestFactory = null)
+            IEnumerable<IFormDataParameters> formDataParameters = null)
         {
             var settings = new List<INameValue>();
             settings.Add(new NameValue("IsManualChecked", isNoneChecked.ToString()));
@@ -251,72 +251,75 @@ namespace Dev2.Runtime.ServiceModel
         private static byte[] GetMultipartFormData(IEnumerable<IFormDataParameters> postParameters, string boundary)
         {
             var encoding = Encoding.UTF8;
-            Stream formDataStream = new MemoryStream();
-            var needsClrf = false;
-
-            var dds = postParameters.GetEnumerator();
-            while (dds.MoveNext())
+            using (Stream formDataStream = new MemoryStream())
             {
-                var conditionExpression = dds.Current;
+                var needsClrf = false;
 
-                if (needsClrf)
+                var dds = postParameters.GetEnumerator();
+                while (dds.MoveNext())
                 {
-                    formDataStream.Write(encoding.GetBytes("\r\n"), 0, encoding.GetByteCount("\r\n"));
+                    var conditionExpression = dds.Current;
+
+                    if (needsClrf)
+                    {
+                        formDataStream.Write(encoding.GetBytes("\r\n"), 0, encoding.GetByteCount("\r\n"));
+                    }
+
+                    needsClrf = true;
+
+                    if (conditionExpression is FileParameter fileToUpload)
+                    {
+                        var fileKey = fileToUpload.Key;
+                        var header = $"--{boundary}\r\nContent-Disposition: form-data; name=\"{fileKey}\"; filename=\"{fileToUpload.FileName ?? fileKey}\"\r\nContent-Type: {fileToUpload.ContentType ?? "application/octet-stream"}\r\n\r\n";
+
+                        var fileBytes = fileToUpload.FileBytes;
+
+                        formDataStream.Write(encoding.GetBytes(header), 0, encoding.GetByteCount(header));
+
+                        formDataStream.Write(fileBytes, 0, fileBytes.Length);
+                    }
+                    else if (conditionExpression is TextParameter textToUpload)
+                    {
+                        var postData = $"--{boundary}\r\nContent-Disposition: form-data; name=\"{textToUpload.Key}\"\r\n\r\n{textToUpload.Value}";
+                        formDataStream.Write(encoding.GetBytes(postData), 0, encoding.GetByteCount(postData));
+                    }
                 }
 
-                needsClrf = true;
+                var footer = "\r\n--" + boundary + "--\r\n";
+                formDataStream.Write(encoding.GetBytes(footer), 0, encoding.GetByteCount(footer));
 
-                if (conditionExpression is FileParameter fileToUpload)
-                {
-                    var fileKey = fileToUpload.Key;
-                    var header = $"--{boundary}\r\nContent-Disposition: form-data; name=\"{fileKey}\"; filename=\"{fileToUpload.FileName ?? fileKey}\"\r\nContent-Type: {fileToUpload.ContentType ?? "application/octet-stream"}\r\n\r\n";
+                formDataStream.Position = 0;
+                var formData = new byte[formDataStream.Length];
+                formDataStream.Read(formData, 0, formData.Length);
+                formDataStream.Close();
 
-                    var fileBytes = fileToUpload.FileBytes;
-
-                    formDataStream.Write(encoding.GetBytes(header), 0, encoding.GetByteCount(header));
-                    
-                    formDataStream.Write(fileBytes, 0, fileBytes.Length);
-                }
-                else if (conditionExpression is TextParameter textToUpload)
-                {
-                    var postData = $"--{boundary}\r\nContent-Disposition: form-data; name=\"{textToUpload.Key}\"\r\n\r\n{textToUpload.Value}";
-                    formDataStream.Write(encoding.GetBytes(postData), 0, encoding.GetByteCount(postData));
-                }
+                return formData;
             }
-
-            var footer = "\r\n--" + boundary + "--\r\n";
-            formDataStream.Write(encoding.GetBytes(footer), 0, encoding.GetByteCount(footer));
-
-            formDataStream.Position = 0;
-            var formData = new byte[formDataStream.Length];
-            formDataStream.Read(formData, 0, formData.Length);
-            formDataStream.Close();
-
-            return formData;
         }
         
         private static byte[] GetFormUrlEncodedData(IEnumerable<IFormDataParameters> postParameters, string boundary)
         {
             var encoding = Encoding.UTF8;
-            Stream formDataStream = new MemoryStream();
-
-            var dds = postParameters.GetEnumerator();
-            while (dds.MoveNext())
+            using (Stream formDataStream = new MemoryStream())
             {
-                var conditionExpression = dds.Current;
-                var formValueType = conditionExpression;
+                var dds = postParameters.GetEnumerator();
+                while (dds.MoveNext())
+                {
+                    var conditionExpression = dds.Current;
+                    var formValueType = conditionExpression;
 
-                var textToUpload = formValueType as TextParameter;
-                var postData = $"{textToUpload.Key}={textToUpload.Value}&";
-                formDataStream.Write(encoding.GetBytes(postData), 0, encoding.GetByteCount(postData));
+                    var textToUpload = formValueType as TextParameter;
+                    var postData = $"{textToUpload.Key}={textToUpload.Value}&";
+                    formDataStream.Write(encoding.GetBytes(postData), 0, encoding.GetByteCount(postData));
+                }
+
+                formDataStream.Position = 0;
+                var formData = new byte[formDataStream.Length];
+                formDataStream.Read(formData, 0, formData.Length);
+                formDataStream.Close();
+
+                return formData;
             }
-            
-            formDataStream.Position = 0;
-            var formData = new byte[formDataStream.Length];
-            formDataStream.Read(formData, 0, formData.Length);
-            formDataStream.Close();
-
-            return formData;
         }
 
         private static void ValidateSource(IWebSource source)
