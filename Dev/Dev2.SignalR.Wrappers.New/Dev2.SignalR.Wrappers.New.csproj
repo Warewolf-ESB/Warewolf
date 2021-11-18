@@ -4,14 +4,14 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{335E9126-30E1-4D23-B642-5D6BF82E2C09}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <TargetFramework>net48</TargetFramework>
+    <TargetFramework>net5.0-windows</TargetFramework>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <EnableDefaultItems>false</EnableDefaultItems>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Dev2.SignalR.Wrappers.New</RootNamespace>
     <AssemblyName>Dev2.SignalR.Wrappers.New</AssemblyName>
-    <RuntimeIdentifier>win</RuntimeIdentifier>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>

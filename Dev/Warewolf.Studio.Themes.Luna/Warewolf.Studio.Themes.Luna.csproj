@@ -4,14 +4,14 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{18717E42-DF21-45A4-9527-F0BB95D7135D}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <TargetFramework>net48</TargetFramework>
+    <TargetFramework>net5.0-windows</TargetFramework>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <EnableDefaultItems>false</EnableDefaultItems>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Warewolf.Studio.Themes.Luna</RootNamespace>
     <AssemblyName>Warewolf.Studio.Themes.Luna</AssemblyName>
-    <RuntimeIdentifier>win</RuntimeIdentifier>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>

@@ -4,14 +4,14 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{615EAE6D-040C-4364-B708-63DC8755CD4F}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <TargetFramework>net48</TargetFramework>
+    <TargetFramework>net5.0-windows</TargetFramework>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <EnableDefaultItems>false</EnableDefaultItems>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Dev2</RootNamespace>
     <AssemblyName>Dev2.Infrastructure</AssemblyName>
-    <RuntimeIdentifier>win</RuntimeIdentifier>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>
     </SccProjectName>

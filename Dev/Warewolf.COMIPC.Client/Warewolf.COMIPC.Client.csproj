@@ -4,14 +4,14 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{BCA6F2B3-C102-45B5-8F64-F0CCE2533F1F}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <TargetFramework>net48</TargetFramework>
+    <TargetFramework>net5.0-windows</TargetFramework>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <EnableDefaultItems>false</EnableDefaultItems>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Warewolf.COMIPC.Client</RootNamespace>
     <AssemblyName>Warewolf.COMIPC.Client</AssemblyName>
-    <RuntimeIdentifier>win</RuntimeIdentifier>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>

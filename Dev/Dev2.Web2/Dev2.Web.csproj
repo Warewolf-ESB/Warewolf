@@ -8,14 +8,14 @@
     <ProjectGuid>{76467C57-4F15-4FD6-90BD-68443ADB838D}</ProjectGuid>
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
-    <TargetFramework>net48</TargetFramework>
+    <TargetFramework>net5.0-windows</TargetFramework>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <EnableDefaultItems>false</EnableDefaultItems>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Dev2.Web2</RootNamespace>
     <AssemblyName>Dev2.Web2</AssemblyName>
-    <RuntimeIdentifier>win</RuntimeIdentifier>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
@@ -528,7 +528,7 @@
 	<PackageReference Include="System.Diagnostics.DiagnosticSource" Version="4.6.0" />
 	<PackageReference Include="System.Memory" Version="4.5.4" />
 	<PackageReference Include="System.Numerics.Vectors" Version="4.5.0" />
-	<PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="4.7.1" />
+	<PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="5.0.0" />
 	<PackageReference Include="bootstrap" Version="4.5.0" />
 	<PackageReference Include="codecracker.CSharp" Version="1.1.0" />
 	<PackageReference Include="FontAwesome" Version="4.7.0" />
