@@ -67,16 +67,18 @@ namespace Dev2.Runtime.ESB.Management.Services
                     };
                     try
                     {
-                        var ewh = new EventWaitHandle(false, EventResetMode.ManualReset);                      
-                        client.OnMessage((msgResponse, socket) =>
+                        using (var ewh = new EventWaitHandle(false, EventResetMode.ManualReset))
                         {
-                            response = msgResponse;
-                            result.AddRange(serializer.Deserialize<List<ExecutionHistory>>(response));
-                            ewh.Set();
-                        });
-                        client.SendMessage(serializer.Serialize(message));
-                        ewh.WaitOne(_waitTimeOut);
-                        return serializer.SerializeToBuilder(result);
+                            client.OnMessage((msgResponse, socket) =>
+{
+response = msgResponse;
+result.AddRange(serializer.Deserialize<List<ExecutionHistory>>(response));
+ewh.Set();
+});
+                            client.SendMessage(serializer.Serialize(message));
+                            ewh.WaitOne(_waitTimeOut);
+                            return serializer.SerializeToBuilder(result);
+                        }
                     }
                     catch (Exception e)
                     {

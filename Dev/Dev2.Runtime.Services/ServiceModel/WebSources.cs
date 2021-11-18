@@ -226,8 +226,10 @@ namespace Dev2.Runtime.ServiceModel
                 errors.AddError(webex.Message);
                 using (var responseStream = httpResponse.GetResponseStream())
                 {
-                    var reader = new StreamReader(responseStream);
-                    return reader.ReadToEnd();
+                    using (var reader = new StreamReader(responseStream))
+                    {
+                        return reader.ReadToEnd();
+                    }
                 }
             }
             catch (Exception e)
