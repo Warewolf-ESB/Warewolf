@@ -86,9 +86,7 @@ namespace Dev2.Activities.Designers.Tests.Core
         public void WebPostInputRegion_TestClone_UsingWebPostInputRegion()
         {
             var id = Guid.NewGuid();
-#pragma warning disable 618
             var act = new WebPostActivity { SourceId = id };
-#pragma warning restore 618
 
             var mod = new Mock<IWebServiceModel>();
             mod.Setup(a => a.RetrieveSources()).Returns(new List<IWebServiceSource>());
