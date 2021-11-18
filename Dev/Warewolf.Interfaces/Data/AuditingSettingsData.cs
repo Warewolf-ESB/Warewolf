@@ -53,5 +53,10 @@ namespace Warewolf.Configuration
         {
             return Equals(obj as AuditingSettingsData);
         }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
     }
 }
