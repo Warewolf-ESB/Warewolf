@@ -32,7 +32,9 @@ jobs:
       testResultsFiles: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx'
       failTaskOnFailedTests: true
       testRunTitle: 'Unit Tests'
-
+      
+  - script: 'if not exist "$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx" exit 1'
+      
 - job: Zip_Tool_Specs
   displayName: 'Zip Tool Specs'
   dependsOn: build
@@ -52,6 +54,8 @@ jobs:
       testResultsFiles: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx'
       failTaskOnFailedTests: true
       testRunTitle: 'Zip Tool Specs'
+      
+  - script: 'if not exist "$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx" exit 1'
 
 - job: Email_Tools_Specs
   displayName: 'Email Tools Specs'
@@ -72,6 +76,8 @@ jobs:
       testResultsFiles: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx'
       failTaskOnFailedTests: true
       testRunTitle: 'Email Tools Specs'
+      
+  - script: 'if not exist "$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx" exit 1'
 
 - job: Resource_Tools_Specs
   displayName: 'Resource Tools Specs'
@@ -92,6 +98,8 @@ jobs:
       testResultsFiles: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx'
       failTaskOnFailedTests: true
       testRunTitle: 'Resource Tools Specs'
+      
+  - script: 'if not exist "$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx" exit 1'
 
 - job: File_And_Folder_Copy_Tool_Specs
   displayName: 'File And Folder Copy Tool Specs'
@@ -112,6 +120,8 @@ jobs:
       testResultsFiles: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx'
       failTaskOnFailedTests: true
       testRunTitle: 'File And Folder Copy Tool Specs'
+      
+  - script: 'if not exist "$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx" exit 1'
 
 - job: Data_Tools_Specs
   displayName: 'Data Tools Specs'
@@ -132,6 +142,8 @@ jobs:
       testResultsFiles: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx'
       failTaskOnFailedTests: true
       testRunTitle: 'Data Tools Specs'
+      
+  - script: 'if not exist "$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx" exit 1'
 
 - job: Request_Service_Name_View_Models_Unit_Tests
   displayName: 'Request Service Name View Models Unit Tests'
@@ -152,6 +164,8 @@ jobs:
       testResultsFiles: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx'
       failTaskOnFailedTests: true
       testRunTitle: 'Request Service Name View Models Unit Tests'
+      
+  - script: 'if not exist "$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx" exit 1'
 
 - job: Unzip_Tool_Specs_Validation
   displayName: 'Unzip Tool Specs Validation'
@@ -172,6 +186,8 @@ jobs:
       testResultsFiles: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx'
       failTaskOnFailedTests: true
       testRunTitle: 'Unzip Tool Specs Validation'
+      
+  - script: 'if not exist "$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx" exit 1'
 
 - job: Recordset_Tools_Specs
   displayName: 'Recordset Tools Specs'
@@ -192,6 +208,8 @@ jobs:
       testResultsFiles: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx'
       failTaskOnFailedTests: true
       testRunTitle: 'Recordset Tools Specs'
+      
+  - script: 'if not exist "$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx" exit 1'
 
 - job: File_And_Folder_Rename_Tool_Specs
   displayName: 'File And Folder Rename Tool Specs'
@@ -212,6 +230,8 @@ jobs:
       testResultsFiles: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx'
       failTaskOnFailedTests: true
       testRunTitle: 'File And Folder Rename Tool Specs'
+      
+  - script: 'if not exist "$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx" exit 1'
 
 - job: Other_Tools_Specs
   displayName: 'Other Tools Specs'
@@ -232,6 +252,8 @@ jobs:
       testResultsFiles: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx'
       failTaskOnFailedTests: true
       testRunTitle: 'Other Tools Specs'
+      
+  - script: 'if not exist "$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx" exit 1'
 
 - job: File_And_Folder_Move_Tool_Specs
   displayName: 'File And Folder Move Tool Specs'
@@ -252,6 +274,8 @@ jobs:
       testResultsFiles: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx'
       failTaskOnFailedTests: true
       testRunTitle: 'File And Folder Move Tool Specs'
+      
+  - script: 'if not exist "$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx" exit 1'
 
 - job: File_Read_Tool_Specs
   displayName: 'File Read Tool Specs'
@@ -272,6 +296,8 @@ jobs:
       testResultsFiles: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx'
       failTaskOnFailedTests: true
       testRunTitle: 'File Read Tool Specs'
+      
+  - script: 'if not exist "$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx" exit 1'
 
 - job: Infrastructure_Unit_Tests
   displayName: 'Infrastructure Unit Tests'
@@ -292,6 +318,8 @@ jobs:
       testResultsFiles: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx'
       failTaskOnFailedTests: true
       testRunTitle: 'Infrastructure Unit Tests'
+      
+  - script: 'if not exist "$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx" exit 1'
 
 - job: New_Folder_Read_Tool_Specs
   displayName: 'New Folder Read Tool Specs'
@@ -312,6 +340,8 @@ jobs:
       testResultsFiles: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx'
       failTaskOnFailedTests: true
       testRunTitle: 'New Folder Read Tool Specs'
+      
+  - script: 'if not exist "$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx" exit 1'
 
 - job: Write_File_Tool_Specs
   displayName: 'Write File Tool Specs'
@@ -332,6 +362,8 @@ jobs:
       testResultsFiles: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx'
       failTaskOnFailedTests: true
       testRunTitle: 'Write File Tool Specs'
+      
+  - script: 'if not exist "$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx" exit 1'
 
 - job: Loop_Construct_Tools_Specs
   displayName: 'Loop Construct Tools Specs'
@@ -352,6 +384,8 @@ jobs:
       testResultsFiles: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx'
       failTaskOnFailedTests: true
       testRunTitle: 'Loop Construct Tools Specs'
+      
+  - script: 'if not exist "$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx" exit 1'
 
 - job: Utility_Tools_Specs
   displayName: 'Utility Tools Specs'
@@ -372,6 +406,8 @@ jobs:
       testResultsFiles: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx'
       failTaskOnFailedTests: true
       testRunTitle: 'Utility Tools Specs'
+      
+  - script: 'if not exist "$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx" exit 1'
 
 - job: Folder_Read_Tool_Specs
   displayName: 'Folder Read Tool Specs'
@@ -392,6 +428,8 @@ jobs:
       testResultsFiles: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx'
       failTaskOnFailedTests: true
       testRunTitle: 'Folder Read Tool Specs'
+      
+  - script: 'if not exist "$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx" exit 1'
 
 - job: SQL_Bulk_Insert_Tool_Specs
   displayName: 'SQL Bulk Insert Tool Specs'
@@ -412,6 +450,8 @@ jobs:
       testResultsFiles: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx'
       failTaskOnFailedTests: true
       testRunTitle: 'SQL Bulk Insert Tool Specs'
+      
+  - script: 'if not exist "$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx" exit 1'
 
 - job: Control_Flow_Tools_Specs
   displayName: 'Control Flow Tools Specs'
@@ -432,6 +472,8 @@ jobs:
       testResultsFiles: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx'
       failTaskOnFailedTests: true
       testRunTitle: 'Control Flow Tools Specs'
+      
+  - script: 'if not exist "$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx" exit 1'
 
 - job: Studio_View_Models_Unit_Tests
   displayName: 'Studio View Models Unit Tests'
@@ -452,6 +494,8 @@ jobs:
       testResultsFiles: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx'
       failTaskOnFailedTests: true
       testRunTitle: 'Studio View Models Unit Tests'
+      
+  - script: 'if not exist "$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx" exit 1'
 
 - job: File_And_Folder_Create_Tool_Specs
   displayName: 'File And Folder Create Tool Specs'
@@ -472,6 +516,8 @@ jobs:
       testResultsFiles: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx'
       failTaskOnFailedTests: true
       testRunTitle: 'File And Folder Create Tool Specs'
+      
+  - script: 'if not exist "$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx" exit 1'
 
 - job: Storage_Unit_Tests
   displayName: 'Storage Unit Tests'
@@ -492,6 +538,8 @@ jobs:
       testResultsFiles: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx'
       failTaskOnFailedTests: true
       testRunTitle: 'Storage Unit Tests'
+      
+  - script: 'if not exist "$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx" exit 1'
 
 - job: Storage_Tools_Specs
   displayName: 'Storage Tools Specs'
@@ -512,6 +560,8 @@ jobs:
       testResultsFiles: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx'
       failTaskOnFailedTests: true
       testRunTitle: 'Storage Tools Specs'
+      
+  - script: 'if not exist "$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx" exit 1'
 
 - job: File_And_Folder_Delete_Tool_Specs
   displayName: 'File And Folder Delete Tool Specs'
@@ -532,6 +582,8 @@ jobs:
       testResultsFiles: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx'
       failTaskOnFailedTests: true
       testRunTitle: 'File And Folder Delete Tool Specs'
+      
+  - script: 'if not exist "$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx" exit 1'
 
 - job: Scripting_Tools_Specs
   displayName: 'Scripting Tools Specs'
@@ -552,6 +604,8 @@ jobs:
       testResultsFiles: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx'
       failTaskOnFailedTests: true
       testRunTitle: 'Scripting Tools Specs'
+      
+  - script: 'if not exist "$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx" exit 1'
 
 - job: Database_Tools_Specs
   displayName: 'Database Tools Specs'
@@ -572,6 +626,8 @@ jobs:
       testResultsFiles: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx'
       failTaskOnFailedTests: true
       testRunTitle: 'Database Tools Specs'
+      
+  - script: 'if not exist "$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx" exit 1'
 
 - job: Auditing_Unit_Tests
   displayName: 'Auditing Unit Tests'
@@ -592,6 +648,8 @@ jobs:
       testResultsFiles: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx'
       failTaskOnFailedTests: true
       testRunTitle: 'Auditing Unit Tests'
+      
+  - script: 'if not exist "$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx" exit 1'
 
 - job: Workflow_Execution_Specs
   displayName: 'Workflow Execution Specs'
@@ -612,6 +670,8 @@ jobs:
       testResultsFiles: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx'
       failTaskOnFailedTests: true
       testRunTitle: 'Workflow Execution Specs'
+      
+  - script: 'if not exist "$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx" exit 1'
 
 - job: Studio_Test_Framework_With_Hello_World_Workflow_Specs
   displayName: 'Studio Test Framework With Hello World Workflow Specs'
@@ -632,6 +692,8 @@ jobs:
       testResultsFiles: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx'
       failTaskOnFailedTests: true
       testRunTitle: 'Studio Test Framework With Hello World Workflow Specs'
+      
+  - script: 'if not exist "$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx" exit 1'
 
 - job: Studio_Test_Framework_With_Utility_Tools_Specs
   displayName: 'Studio Test Framework With Utility Tools Specs'
@@ -652,6 +714,8 @@ jobs:
       testResultsFiles: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx'
       failTaskOnFailedTests: true
       testRunTitle: 'Studio Test Framework With Utility Tools Specs'
+      
+  - script: 'if not exist "$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx" exit 1'
 
 - job: MS_SQL_Server_Specs
   displayName: 'MS SQL Server Specs'
@@ -672,6 +736,8 @@ jobs:
       testResultsFiles: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx'
       failTaskOnFailedTests: true
       testRunTitle: 'MS SQL Server Specs'
+      
+  - script: 'if not exist "$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx" exit 1'
 
 - job: Studio_Test_Framework_With_Data_Tools_Specs
   displayName: 'Studio Test Framework With Data Tools Specs'
@@ -692,6 +758,8 @@ jobs:
       testResultsFiles: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx'
       failTaskOnFailedTests: true
       testRunTitle: 'Studio Test Framework With Data Tools Specs'
+      
+  - script: 'if not exist "$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx" exit 1'
 
 - job: Assign_Workflow_Execution_Specs
   displayName: 'Assign Workflow Execution Specs'
@@ -712,6 +780,8 @@ jobs:
       testResultsFiles: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx'
       failTaskOnFailedTests: true
       testRunTitle: 'Assign Workflow Execution Specs'
+      
+  - script: 'if not exist "$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx" exit 1'
 
 - job: Integration_Tests
   displayName: 'Integration Tests'
@@ -732,6 +802,8 @@ jobs:
       testResultsFiles: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx'
       failTaskOnFailedTests: true
       testRunTitle: 'Integration Tests'
+      
+  - script: 'if not exist "$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx" exit 1'
 
 - job: Studio_Test_Framework_With_Scripting_Tools_Specs
   displayName: 'Studio Test Framework With Scripting Tools Specs'
@@ -752,6 +824,8 @@ jobs:
       testResultsFiles: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx'
       failTaskOnFailedTests: true
       testRunTitle: 'Studio Test Framework With Scripting Tools Specs'
+      
+  - script: 'if not exist "$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx" exit 1'
 
 - job: Other_Activities_Specs
   displayName: 'Other Activities Specs'
@@ -772,6 +846,8 @@ jobs:
       testResultsFiles: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx'
       failTaskOnFailedTests: true
       testRunTitle: 'Other Activities Specs'
+      
+  - script: 'if not exist "$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx" exit 1'
 
 - job: Studio_Test_Framework_With_File_And_Folder_Tools_Specs
   displayName: 'Studio Test Framework With File And Folder Tools Specs'
@@ -792,6 +868,8 @@ jobs:
       testResultsFiles: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx'
       failTaskOnFailedTests: true
       testRunTitle: 'Studio Test Framework With File And Folder Tools Specs'
+      
+  - script: 'if not exist "$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx" exit 1'
 
 - job: Studio_Test_Framework_With_HTTP_Web_Tools_Specs
   displayName: 'Studio Test Framework With HTTP Web Tools Specs'
@@ -812,6 +890,8 @@ jobs:
       testResultsFiles: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx'
       failTaskOnFailedTests: true
       testRunTitle: 'Studio Test Framework With HTTP Web Tools Specs'
+      
+  - script: 'if not exist "$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx" exit 1'
 
 - job: Studio_Test_Framework_With_Subworkflow_Specs
   displayName: 'Studio Test Framework With Subworkflow Specs'
@@ -832,6 +912,8 @@ jobs:
       testResultsFiles: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx'
       failTaskOnFailedTests: true
       testRunTitle: 'Studio Test Framework With Subworkflow Specs'
+      
+  - script: 'if not exist "$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx" exit 1'
 
 - job: Workflow_Merging_Specs
   displayName: 'Workflow Merging Specs'
@@ -852,6 +934,8 @@ jobs:
       testResultsFiles: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx'
       failTaskOnFailedTests: true
       testRunTitle: 'Workflow Merging Specs'
+      
+  - script: 'if not exist "$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx" exit 1'
 
 - job: Example_Workflow_Execution_Specs
   displayName: 'Example Workflow Execution Specs'
@@ -872,6 +956,8 @@ jobs:
       testResultsFiles: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx'
       failTaskOnFailedTests: true
       testRunTitle: 'Example Workflow Execution Specs'
+      
+  - script: 'if not exist "$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx" exit 1'
 
 - job: Studio_Test_Framework_Specs
   displayName: 'Studio Test Framework Specs'
@@ -892,6 +978,8 @@ jobs:
       testResultsFiles: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx'
       failTaskOnFailedTests: true
       testRunTitle: 'Studio Test Framework Specs'
+      
+  - script: 'if not exist "$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx" exit 1'
 
 - job: Subworkflow_Execution_Specs
   displayName: 'Subworkflow Execution Specs'
@@ -912,6 +1000,8 @@ jobs:
       testResultsFiles: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx'
       failTaskOnFailedTests: true
       testRunTitle: 'Subworkflow Execution Specs'
+      
+  - script: 'if not exist "$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx" exit 1'
 
 - job: Other_Specs
   displayName: 'Other Specs'
@@ -932,6 +1022,8 @@ jobs:
       testResultsFiles: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx'
       failTaskOnFailedTests: true
       testRunTitle: 'Other Specs'
+      
+  - script: 'if not exist "$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx" exit 1'
 
 - job: Studio_Test_Framework_With_Deleted_Resources_Specs
   displayName: 'Studio Test Framework With Deleted Resources Specs'
@@ -952,6 +1044,8 @@ jobs:
       testResultsFiles: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx'
       failTaskOnFailedTests: true
       testRunTitle: 'Studio Test Framework With Deleted Resources Specs'
+      
+  - script: 'if not exist "$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx" exit 1'
 
 - job: SQL_Integration_Tests
   displayName: 'SQL Integration Tests'
@@ -972,6 +1066,8 @@ jobs:
       testResultsFiles: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx'
       failTaskOnFailedTests: true
       testRunTitle: 'SQL Integration Tests'
+      
+  - script: 'if not exist "$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx" exit 1'
 
 - job: For_Each_Workflow_Execution_Specs
   displayName: 'For Each Workflow Execution Specs'
@@ -992,6 +1088,8 @@ jobs:
       testResultsFiles: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx'
       failTaskOnFailedTests: true
       testRunTitle: 'For Each Workflow Execution Specs'
+      
+  - script: 'if not exist "$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx" exit 1'
 
 - job: Copy_Tool_Specs_From_Local
   displayName: 'Copy Tool Specs From Local'
@@ -1012,6 +1110,8 @@ jobs:
       testResultsFiles: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx'
       failTaskOnFailedTests: true
       testRunTitle: 'Copy Tool Specs From Local'
+      
+  - script: 'if not exist "$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx" exit 1'
 
 - job: Move_Tool_Specs_From_Local
   displayName: 'Move Tool Specs From Local'
@@ -1032,6 +1132,8 @@ jobs:
       testResultsFiles: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx'
       failTaskOnFailedTests: true
       testRunTitle: 'Move Tool Specs From Local'
+      
+  - script: 'if not exist "$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx" exit 1'
 
 - job: Rename_Tool_Specs_From_Local
   displayName: 'Rename Tool Specs From Local'
@@ -1052,6 +1154,8 @@ jobs:
       testResultsFiles: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx'
       failTaskOnFailedTests: true
       testRunTitle: 'Rename Tool Specs From Local'
+      
+  - script: 'if not exist "$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx" exit 1'
 
 - job: Unzip_Tool_Specs_From_Local
   displayName: 'Unzip Tool Specs From Local'
@@ -1072,6 +1176,8 @@ jobs:
       testResultsFiles: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx'
       failTaskOnFailedTests: true
       testRunTitle: 'Unzip Tool Specs From Local'
+      
+  - script: 'if not exist "$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx" exit 1'
 
 - job: Zip_Tool_Specs_From_Local
   displayName: 'Zip Tool Specs From Local'
@@ -1092,6 +1198,8 @@ jobs:
       testResultsFiles: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx'
       failTaskOnFailedTests: true
       testRunTitle: 'Zip Tool Specs From Local'
+      
+  - script: 'if not exist "$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx" exit 1'
 
 - job: Copy_Tool_Specs_From_FTP
   displayName: 'Copy Tool Specs From FTP'
@@ -1112,6 +1220,8 @@ jobs:
       testResultsFiles: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx'
       failTaskOnFailedTests: true
       testRunTitle: 'Zip Tool Specs'
+      
+  - script: 'if not exist "$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx" exit 1'
 
 - job: Move_Tool_Specs_From_FTP
   displayName: 'Move Tool Specs From FTP'
@@ -1132,6 +1242,8 @@ jobs:
       testResultsFiles: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx'
       failTaskOnFailedTests: true
       testRunTitle: 'Move Tool Specs From FTP'
+      
+  - script: 'if not exist "$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx" exit 1'
 
 - job: Rename_Tool_Specs_From_FTP
   displayName: 'Rename Tool Specs From FTP'
@@ -1152,6 +1264,8 @@ jobs:
       testResultsFiles: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx'
       failTaskOnFailedTests: true
       testRunTitle: 'Rename Tool Specs From FTP'
+      
+  - script: 'if not exist "$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx" exit 1'
 
 - job: Unzip_Tool_Specs_From_FTP
   displayName: 'Unzip Tool Specs From FTP'
@@ -1172,6 +1286,8 @@ jobs:
       testResultsFiles: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx'
       failTaskOnFailedTests: true
       testRunTitle: 'Unzip Tool Specs From FTP'
+      
+  - script: 'if not exist "$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx" exit 1'
 
 - job: Zip_Tool_Specs_From_FTP
   displayName: 'Zip Tool Specs From FTP'
@@ -1192,6 +1308,8 @@ jobs:
       testResultsFiles: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx'
       failTaskOnFailedTests: true
       testRunTitle: 'Zip Tool Specs From FTP'
+      
+  - script: 'if not exist "$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx" exit 1'
 
 - job: Copy_Tool_Specs_From_FTPS
   displayName: 'Copy Tool Specs From FTPS'
@@ -1212,6 +1330,8 @@ jobs:
       testResultsFiles: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx'
       failTaskOnFailedTests: true
       testRunTitle: 'Copy Tool Specs From FTPS'
+      
+  - script: 'if not exist "$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx" exit 1'
 
 - job: Move_Tool_Specs_From_FTPS
   displayName: 'Move Tool Specs From FTPS'
@@ -1232,6 +1352,8 @@ jobs:
       testResultsFiles: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx'
       failTaskOnFailedTests: true
       testRunTitle: 'Move Tool Specs From FTPS'
+      
+  - script: 'if not exist "$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx" exit 1'
 
 - job: Rename_Tool_Specs_From_FTPS
   displayName: 'Rename Tool Specs From FTPS'
@@ -1252,6 +1374,8 @@ jobs:
       testResultsFiles: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx'
       failTaskOnFailedTests: true
       testRunTitle: 'Rename Tool Specs From FTPS'
+      
+  - script: 'if not exist "$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx" exit 1'
 
 - job: Unzip_Tool_Specs_From_FTPS
   displayName: 'Unzip Tool Specs From FTPS'
@@ -1272,6 +1396,8 @@ jobs:
       testResultsFiles: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx'
       failTaskOnFailedTests: true
       testRunTitle: 'Unzip Tool Specs From FTPS'
+      
+  - script: 'if not exist "$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx" exit 1'
 
 - job: Zip_Tool_Specs_From_FTPS
   displayName: 'Zip Tool Specs From FTPS'
@@ -1292,6 +1418,8 @@ jobs:
       testResultsFiles: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx'
       failTaskOnFailedTests: true
       testRunTitle: 'Zip Tool Specs From FTPS'
+      
+  - script: 'if not exist "$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx" exit 1'
 
 - job: Copy_Tool_Specs_From_SFTP
   displayName: 'Copy Tool Specs From SFTP'
@@ -1312,6 +1440,8 @@ jobs:
       testResultsFiles: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx'
       failTaskOnFailedTests: true
       testRunTitle: 'Copy Tool Specs From SFTP'
+      
+  - script: 'if not exist "$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx" exit 1'
 
 - job: Move_Tool_Specs_From_SFTP
   displayName: 'Move Tool Specs From SFTP'
@@ -1332,6 +1462,8 @@ jobs:
       testResultsFiles: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx'
       failTaskOnFailedTests: true
       testRunTitle: 'Move Tool Specs From SFTP'
+      
+  - script: 'if not exist "$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx" exit 1'
 
 - job: Rename_Tool_Specs_From_SFTP
   displayName: 'Rename Tool Specs From SFTP'
@@ -1352,6 +1484,8 @@ jobs:
       testResultsFiles: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx'
       failTaskOnFailedTests: true
       testRunTitle: 'Rename Tool Specs From SFTP'
+      
+  - script: 'if not exist "$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx" exit 1'
 
 - job: Unzip_Tool_Specs_From_SFTP
   displayName: 'Unzip Tool Specs From SFTP'
@@ -1372,6 +1506,8 @@ jobs:
       testResultsFiles: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx'
       failTaskOnFailedTests: true
       testRunTitle: 'Unzip Tool Specs From SFTP'
+      
+  - script: 'if not exist "$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx" exit 1'
 
 - job: Zip_Tool_Specs_From_SFTP
   displayName: 'Zip Tool Specs From SFTP'
@@ -1392,6 +1528,8 @@ jobs:
       testResultsFiles: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx'
       failTaskOnFailedTests: true
       testRunTitle: 'Zip Tool Specs From SFTP'
+      
+  - script: 'if not exist "$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx" exit 1'
 
 - job: Copy_Tool_Specs_From_UNC
   displayName: 'Copy Tool Specs From UNC'
@@ -1412,6 +1550,8 @@ jobs:
       testResultsFiles: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx'
       failTaskOnFailedTests: true
       testRunTitle: 'Copy Tool Specs From UNC'
+      
+  - script: 'if not exist "$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx" exit 1'
 
 - job: Move_Tool_Specs_From_UNC
   displayName: 'Move Tool Specs From UNC'
@@ -1432,6 +1572,8 @@ jobs:
       testResultsFiles: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx'
       failTaskOnFailedTests: true
       testRunTitle: 'Move Tool Specs From UNC'
+      
+  - script: 'if not exist "$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx" exit 1'
 
 - job: Studio_Core_Unit_Tests
   displayName: 'Studio Core Unit Tests'
@@ -1453,6 +1595,8 @@ jobs:
       testResultsFiles: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx'
       failTaskOnFailedTests: true
       testRunTitle: 'Studio Core Unit Tests'
+      
+  - script: 'if not exist "$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx" exit 1'
 
 - job: Elasticsearch_View_Models_Unit_Tests
   displayName: 'Elasticsearch View Models Unit Tests'
@@ -1473,6 +1617,8 @@ jobs:
       testResultsFiles: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx'
       failTaskOnFailedTests: true
       testRunTitle: 'Elasticsearch View Models Unit Tests'
+      
+  - script: 'if not exist "$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx" exit 1'
 
 - job: Search_Specs
   displayName: 'Search Specs'
@@ -1493,6 +1639,8 @@ jobs:
       testResultsFiles: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx'
       failTaskOnFailedTests: true
       testRunTitle: 'Search Specs'
+      
+  - script: 'if not exist "$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx" exit 1'
 
 - job: Logger_Unit_Tests
   displayName: 'Logger Unit Tests'
@@ -1513,6 +1661,8 @@ jobs:
       testResultsFiles: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx'
       failTaskOnFailedTests: true
       testRunTitle: 'Logger Unit Tests'
+      
+  - script: 'if not exist "$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx" exit 1'
 
 - job: Rename_Tool_Specs_From_UNC
   displayName: 'Rename Tool Specs From UNC'
@@ -1533,6 +1683,8 @@ jobs:
       testResultsFiles: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx'
       failTaskOnFailedTests: true
       testRunTitle: 'Rename Tool Specs From UNC'
+      
+  - script: 'if not exist "$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx" exit 1'
 
 - job: Not_Parallelizable_Unit_Tests
   displayName: 'Not Parallelizable Unit Tests'
@@ -1553,6 +1705,8 @@ jobs:
       testResultsFiles: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx'
       failTaskOnFailedTests: true
       testRunTitle: 'Not Parallelizable Unit Tests'
+      
+  - script: 'if not exist "$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx" exit 1'
 
 - job: Database_Workflow_Execution_Specs
   displayName: 'Database Workflow Execution Specs'
@@ -1573,6 +1727,8 @@ jobs:
       testResultsFiles: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx'
       failTaskOnFailedTests: true
       testRunTitle: 'Database Workflow Execution Specs'
+      
+  - script: 'if not exist "$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx" exit 1'
 
 - job: RabbitMQ_Workflow_Execution_Specs
   displayName: 'RabbitMQ Workflow Execution Specs'
@@ -1593,6 +1749,8 @@ jobs:
       testResultsFiles: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx'
       failTaskOnFailedTests: true
       testRunTitle: 'RabbitMQ Workflow Execution Specs'
+      
+  - script: 'if not exist "$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx" exit 1'
 
 - job: Studio_Test_Framework_With_HTTP_Web_Get_Tools_Specs
   displayName: 'Studio Test Framework With HTTP Web Get Tools Specs'
@@ -1613,6 +1771,8 @@ jobs:
       testResultsFiles: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx'
       failTaskOnFailedTests: true
       testRunTitle: 'Studio Test Framework With HTTP Web Get Tools Specs'
+      
+  - script: 'if not exist "$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx" exit 1'
 
 - job: Studio_Test_Framework_With_HTTP_Web_Delete_Tools_Specs
   displayName: 'Studio Test Framework With HTTP Web Delete Tools Specs'
@@ -1633,6 +1793,8 @@ jobs:
       testResultsFiles: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx'
       failTaskOnFailedTests: true
       testRunTitle: 'Studio Test Framework With HTTP Web Delete Tools Specs'
+      
+  - script: 'if not exist "$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx" exit 1'
 
 - job: Studio_Test_Framework_With_HTTP_Web_Post_Tools_Specs
   displayName: 'Studio Test Framework With HTTP Web Post Tools Specs'
@@ -1653,6 +1815,8 @@ jobs:
       testResultsFiles: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx'
       failTaskOnFailedTests: true
       testRunTitle: 'Studio Test Framework With HTTP Web Post Tools Specs'
+      
+  - script: 'if not exist "$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx" exit 1'
 
 - job: Studio_Test_Framework_With_HTTP_Web_Put_Tools_Specs
   displayName: 'Studio Test Framework With HTTP Web Put Tools Specs'
@@ -1673,6 +1837,8 @@ jobs:
       testResultsFiles: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx'
       failTaskOnFailedTests: true
       testRunTitle: 'Studio Test Framework With HTTP Web Put Tools Specs'
+      
+  - script: 'if not exist "$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx" exit 1'
 
 - job: Studio_Test_Framework_With_RabbitMQ_Tools_Specs
   displayName: 'Studio Test Framework With RabbitMQ Tools Specs'
@@ -1693,6 +1859,8 @@ jobs:
       testResultsFiles: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx'
       failTaskOnFailedTests: true
       testRunTitle: 'Studio Test Framework With RabbitMQ Tools Specs'
+      
+  - script: 'if not exist "$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx" exit 1'
 
 - job: Database_Subworkflow_Execution_Specs
   displayName: 'Database Subworkflow Execution Specs'
@@ -1713,6 +1881,8 @@ jobs:
       testResultsFiles: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx'
       failTaskOnFailedTests: true
       testRunTitle: 'Database Subworkflow Execution Specs'
+      
+  - script: 'if not exist "$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx" exit 1'
 
 - job: Intellisense_Textbox_Visual_Tree_Unit_Tests
   displayName: 'Intellisense Textbox Visual Tree Unit Tests'
@@ -1733,6 +1903,8 @@ jobs:
       testResultsFiles: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx'
       failTaskOnFailedTests: true
       testRunTitle: 'Intellisense Textbox Visual Tree Unit Tests'
+      
+  - script: 'if not exist "$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx" exit 1'
 
 - job: Workflow_Execution_Logging_Specs
   displayName: 'Workflow Execution Logging Specs'
@@ -1754,14 +1926,12 @@ jobs:
       testResultsFiles: '$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx'
       failTaskOnFailedTests: true
       testRunTitle: 'Workflow Execution Logging Specs'
+      
+  - script: 'if not exist "$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/TestResults/*.trx" exit 1'
 
 - job: build_release
   displayName: 'Compile for Release'
   dependsOn: [Zip_Tool_Specs,Email_Tools_Specs,Resource_Tools_Specs,File_And_Folder_Copy_Tool_Specs,Data_Tools_Specs,Request_Service_Name_View_Models_Unit_Tests,Unzip_Tool_Specs_Validation,Recordset_Tools_Specs,File_And_Folder_Rename_Tool_Specs,Other_Tools_Specs,File_And_Folder_Move_Tool_Specs,File_Read_Tool_Specs,Infrastructure_Unit_Tests,New_Folder_Read_Tool_Specs,Write_File_Tool_Specs,Loop_Construct_Tools_Specs,Utility_Tools_Specs,Folder_Read_Tool_Specs,SQL_Bulk_Insert_Tool_Specs,Control_Flow_Tools_Specs,Studio_View_Models_Unit_Tests,File_And_Folder_Create_Tool_Specs,Storage_Unit_Tests,Storage_Tools_Specs,File_And_Folder_Delete_Tool_Specs,Scripting_Tools_Specs,Database_Tools_Specs,Auditing_Unit_Tests,Workflow_Execution_Specs,Studio_Test_Framework_With_Hello_World_Workflow_Specs,Studio_Test_Framework_With_Utility_Tools_Specs,MS_SQL_Server_Specs,Studio_Test_Framework_With_Data_Tools_Specs,Assign_Workflow_Execution_Specs,Integration_Tests,Studio_Test_Framework_With_Scripting_Tools_Specs,Other_Activities_Specs,Studio_Test_Framework_With_File_And_Folder_Tools_Specs,Studio_Test_Framework_With_HTTP_Web_Tools_Specs,Studio_Test_Framework_With_Subworkflow_Specs,Workflow_Merging_Specs,Example_Workflow_Execution_Specs,Studio_Test_Framework_Specs,Subworkflow_Execution_Specs,Other_Specs,Studio_Test_Framework_With_Deleted_Resources_Specs,SQL_Integration_Tests,For_Each_Workflow_Execution_Specs,Copy_Tool_Specs_From_Local,Move_Tool_Specs_From_Local,Rename_Tool_Specs_From_Local,Unzip_Tool_Specs_From_Local,Zip_Tool_Specs_From_Local,Copy_Tool_Specs_From_FTP,Move_Tool_Specs_From_FTP,Rename_Tool_Specs_From_FTP,Unzip_Tool_Specs_From_FTP,Zip_Tool_Specs_From_FTP,Copy_Tool_Specs_From_FTPS,Move_Tool_Specs_From_FTPS,Rename_Tool_Specs_From_FTPS,Unzip_Tool_Specs_From_FTPS,Zip_Tool_Specs_From_FTPS,Copy_Tool_Specs_From_SFTP,Move_Tool_Specs_From_SFTP,Rename_Tool_Specs_From_SFTP,Unzip_Tool_Specs_From_SFTP,Zip_Tool_Specs_From_SFTP,Copy_Tool_Specs_From_UNC,Move_Tool_Specs_From_UNC,Studio_Core_Unit_Tests,Elasticsearch_View_Models_Unit_Tests,Search_Specs,Logger_Unit_Tests,Rename_Tool_Specs_From_UNC,Not_Parallelizable_Unit_Tests,Database_Workflow_Execution_Specs,RabbitMQ_Workflow_Execution_Specs,Studio_Test_Framework_With_HTTP_Web_Get_Tools_Specs,Studio_Test_Framework_With_HTTP_Web_Delete_Tools_Specs,Studio_Test_Framework_With_HTTP_Web_Post_Tools_Specs,Studio_Test_Framework_With_HTTP_Web_Put_Tools_Specs,Studio_Test_Framework_With_RabbitMQ_Tools_Specs,Database_Subworkflow_Execution_Specs,Intellisense_Textbox_Visual_Tree_Unit_Tests,Workflow_Execution_Logging_Specs]
-
-  variables:
-  - name: FullVersionString
-    value: 0.0.0.0
 
   steps:
   - checkout: self
@@ -1803,207 +1973,19 @@ jobs:
       Out-File -LiteralPath "$(Agent.BuildDirectory)\s\Dev\Dev2.Server\bin\Release\net48\win\FullVersionString" -InputObject $HighestReadVersion -Encoding default -Force
       Out-File -LiteralPath "$(Agent.BuildDirectory)\s\Dev\Dev2.Studio\bin\Release\net48\win\FullVersionString" -InputObject $HighestReadVersion -Encoding default -Force
       git -C "$(Build.SourcesDirectory)" tag $HighestReadVersion
-      git -C "$(Build.SourcesDirectory)" push https://$env:GitLabTagsAccount@gitlab.com/warewolf/warewolf $HighestReadVersion
-    env:
-      GitLabTagsAccount: $(GitLabTagsAccountPassword)
+      git -C "$(Build.SourcesDirectory)" push https://gitlab.com/warewolf/warewolf $HighestReadVersion
+      Write-Host "##vso[build.updatebuildnumber]$(Build.BuildNumber) ($HighestReadVersion)"
 
-  - script: "(robocopy \"$(Agent.BuildDirectory)\\s\\Dev\\Dev2.Server\\bin\\Release\\net48\\win\" \"\\\\opswolf\\Azure Devops\\Release Server $(Build.BuildId)\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
-    displayName: 'Upload Server Artifacts'
+  - task: PublishBuildArtifacts@1
+    inputs:
+      PathtoPublish: '$(Agent.BuildDirectory)\\s\\Dev\\Dev2.Server\\bin\\Release\\net48\\win'
+      ArtifactName: 'Release Server'
+      publishLocation: 'Container'
+      StoreAsTar: false
 
-  - script: "(robocopy \"$(Agent.BuildDirectory)\\s\\Dev\\Dev2.Studio\\bin\\Release\\net48\\win\" \"\\\\opswolf\\Azure Devops\\Release Studio $(Build.BuildId)\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
-    displayName: 'Upload Studio Artifacts'
-
-- job: Compile_Installer
-  displayName: 'Compile Installer'
-  dependsOn: build_release
-
-  steps:
-  - checkout: none
-
-  - powershell: |
-      if (Test-Path "$(Agent.BuildDirectory)\InstallerSource") {
-        git -C "$(Agent.BuildDirectory)\InstallerSource" pull
-      } else {
-        git -C "$(Agent.BuildDirectory)" clone https://gitlab.com/warewolf/installer InstallerSource
-      }
-      $InstallerBranch = git -C "$(Agent.BuildDirectory)\InstallerSource" rev-parse --abbrev-ref HEAD
-      $ThisBranch = git -C "$(Agent.BuildDirectory)\s" rev-parse --abbrev-ref HEAD
-      if ($InstallerBranch -ne $ThisBranch) {
-        git -C "$(Agent.BuildDirectory)\InstallerSource" fetch
-        $TryGetThisBranchOnTheInstaller = git -C "$(Agent.BuildDirectory)\InstallerSource" ls-remote --heads "https://gitlab.com/warewolf/installer" $ThisBranch
-        if ("$TryGetThisBranchOnTheInstaller" -ne "") {
-          git -C "$(Agent.BuildDirectory)\InstallerSource" checkout $ThisBranch
-          git -C "$(Agent.BuildDirectory)\InstallerSource" pull
-        }
-      } else {
-        git -C "$(Agent.BuildDirectory)\InstallerSource" checkout develop
-      }
-
-  - script: "(robocopy \"\\\\opswolf\\Azure Devops\\Release Server $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\InstallerSource\\WarewolfInstaller\\ProductBuild\\Server\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
-    displayName: 'Download Server Artifacts'
-
-  - script: "(robocopy \"\\\\opswolf\\Azure Devops\\Release Studio $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\InstallerSource\\WarewolfInstaller\\ProductBuild\\Studio\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
-    displayName: 'Download Studio Artifacts'
-    
-  - powershell: |
-      $Installers = Get-ChildItem -Path "$(Agent.BuildDirectory)" -File -Filter Warewolf-*.exe
-      foreach ($Installer in $Installers) {
-        Write-Host Found extra installer in working directory: $Installer.FullName
-        Remove-Item $Installer.FullName
-      }
-      Set-Location "$(Agent.BuildDirectory)\InstallerSource"
-      docker build -t registry.gitlab.com/warewolf/installer .
-      docker rm -f installerbuild
-      docker create --name=installerbuild registry.gitlab.com/warewolf/installer
-      $VersionString = Get-Content "$(Agent.BuildDirectory)\InstallerSource\WarewolfInstaller\ProductBuild\Server\FullVersionString"
-      docker cp installerbuild:app/WixWPF/bin/Debug/Warewolf-$VersionString.exe ./Warewolf-$VersionString.exe
-      if (!(Test-Path "\\opswolf\Azure Devops\Installer $(Build.BuildId)")) {
-        New-Item -ItemType Directory "\\opswolf\Azure Devops\Installer $(Build.BuildId)"
-      }
-      Copy-Item ./Warewolf-$VersionString.exe "\\opswolf\Azure Devops\Installer $(Build.BuildId)\Warewolf-$VersionString.exe"
-      if ($VersionString.EndsWith(".0")) {
-        $TrimmedVersionString = $VersionString.TrimEnd(".0")
-        Copy-Item ./Warewolf-$VersionString.exe "\\opswolf\Azure Devops\Installer $(Build.BuildId)\Warewolf-$TrimmedVersionString.exe"
-      }
-
-- job: Docker_Hub
-  displayName: 'Docker Hub'
-  dependsOn: build_release
-
-  steps:
-  - checkout: none
-
-  - script: "(robocopy \"\\\\opswolf\\Azure Devops\\Release Server $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\Server\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
-    displayName: 'Download Server Artifacts'
-  
-  - powershell: |
-      Set-Location "$(Agent.BuildDirectory)\Server"
-      $VersionString = Get-Content "$(Agent.BuildDirectory)\Server\FullVersionString"
-      if ("$VersionString" -ne "") {
-        docker build --isolation=hyperv -t warewolfserver/warewolfserver:latest .
-        docker login
-        
-        $BranchName = git -C "$(Agent.BuildDirectory)\s" rev-parse --abbrev-ref HEAD
-        if ("$BranchName" -eq "develop") {
-          Write-Host Pushing...
-          docker push warewolfserver/warewolfserver:latest
-          Write-Host Pushed.
-        } else {
-          $cleanBranchName = "$BranchName".Replace("/","-")
-          Write-Host Tagging with $cleanBranchName
-          docker tag warewolfserver/warewolfserver:latest warewolfserver/warewolfserver:$cleanBranchName
-          Write-Host Pushing...
-          docker push warewolfserver/warewolfserver:$cleanBranchName
-          Write-Host Pushed.
-          docker rmi warewolfserver/warewolfserver:$cleanBranchName
-        }
-        
-        Write-Host Tagging with $VersionString
-        docker tag warewolfserver/warewolfserver:latest warewolfserver/warewolfserver:$VersionString
-        Write-Host Pushing...
-        docker push warewolfserver/warewolfserver:$VersionString
-        Write-Host Pushed.
-        docker rmi warewolfserver/warewolfserver:$VersionString
-
-        if ($VersionString.EndsWith(".0")) {
-          $TrimmedVersionString = "$VersionString".TrimEnd(".0")
-          Write-Host Tagging with $TrimmedVersionString
-          docker tag warewolfserver/warewolfserver:latest warewolfserver/warewolfserver:$TrimmedVersionString
-          Write-Host Pushing...
-          docker push warewolfserver/warewolfserver:$TrimmedVersionString
-          Write-Host Pushed.
-          docker rmi warewolfserver/warewolfserver:$TrimmedVersionString
-        }
-      }
-
-- job: GitLab_Registry
-  displayName: 'GitLab Registry'
-  dependsOn: build_release
-
-  steps:
-  - script: "(robocopy \"\\\\opswolf\\Azure Devops\\Release Server $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\Server\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
-    displayName: 'Download Server Artifacts'
-  
-  - powershell: |
-      Set-Location "$(Agent.BuildDirectory)\Server"
-      $VersionString = Get-Content "$(Agent.BuildDirectory)\Server\FullVersionString"
-      if ("$VersionString" -ne "") {    
-        docker build --isolation=hyperv -t registry.gitlab.com/warewolf/warewolf .
-        docker login registry.gitlab.com/warewolf/warewolf
-        
-        $BranchName = git -C "$(Agent.BuildDirectory)\s" rev-parse --abbrev-ref HEAD
-        if ("$BranchName" -eq "develop") {
-          Write-Host Pushing...
-          docker push registry.gitlab.com/warewolf/warewolf
-          Write-Host Pushed.
-        } else {
-          $cleanBranchName = "$BranchName".Replace("/","-")
-          Write-Host Tagging with $cleanBranchName
-          docker tag registry.gitlab.com/warewolf/warewolf registry.gitlab.com/warewolf/warewolf:$cleanBranchName
-          Write-Host Pushing...
-          docker push registry.gitlab.com/warewolf/warewolf:$cleanBranchName
-          Write-Host Pushed.
-          docker rmi registry.gitlab.com/warewolf/warewolf:$cleanBranchName
-        }
-        
-        Write-Host Tagging with $VersionString
-        docker tag registry.gitlab.com/warewolf/warewolf:latest registry.gitlab.com/warewolf/warewolf:$VersionString
-        Write-Host Pushing...
-        docker push registry.gitlab.com/warewolf/warewolf:$VersionString
-        Write-Host Pushed.
-        docker rmi registry.gitlab.com/warewolf/warewolf:$VersionString
-
-        if ($VersionString.EndsWith(".0")) {
-          $TrimmedVersionString = "$VersionString".TrimEnd(".0")
-          Write-Host Tagging with $VersionString
-          docker tag registry.gitlab.com/warewolf/warewolf:latest registry.gitlab.com/warewolf/warewolf:$TrimmedVersionString
-          Write-Host Pushing...
-          docker push registry.gitlab.com/warewolf/warewolf:$TrimmedVersionString
-          Write-Host Pushed.
-          docker rmi registry.gitlab.com/warewolf/warewolf:$TrimmedVersionString
-        }
-      }
-
-- job: Upload_To_AWS_S3
-  displayName: 'Upload To AWS S3'
-  dependsOn: Compile_Installer
-
-  steps:
-  - checkout: none
-
-  - script: "(robocopy \"\\\\opswolf\\Azure Devops\\Release Server $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\Server\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
-    displayName: 'Download Server Artifacts'
-
-  - powershell: |
-      $Installers = Get-ChildItem -Path "$(Agent.BuildDirectory)" -File -Filter Warewolf-*.exe
-      foreach ($Installer in $Installers) {
-        Write-Host Found extra installer in working directory: $Installer.FullName
-        Remove-Item $Installer.FullName
-      }
-
-  - script: "(robocopy \"\\\\opswolf\\Azure Devops\\Installer $(Build.BuildId)\" \"$(Agent.BuildDirectory)\") ^& IF %ERRORLEVEL% LEQ 1 exit 0"
-    displayName: 'Download Installer'
-
-  - powershell: |
-      $Installers = Get-ChildItem -Path "$(Agent.BuildDirectory)" -File -Filter Warewolf-*.exe
-      foreach ($Installer in $Installers) {
-        Write-Host Uploading installer to AWS S3: $Installer.FullName
-        Write-S3Object -BucketName warewolfreleases -File $Installer.FullName -Key $Installer.Name -CannedACLName public-read -PublicReadOnly -StoredCredentials warewolfreleases -AccessKey $env:AccessKey -SecretKey $env:SecretKey
-      }
-      $VersionString = Get-Content "$(Agent.BuildDirectory)\Server\FullVersionString"
-      $AllAssemblies = Get-ChildItem "$(Agent.BuildDirectory)\Server" | Foreach {$_.FullName}
-      $ServerZips = Get-ChildItem -Path "$(Agent.BuildDirectory)" -File -Filter Server-*.zip
-      foreach ($ServerZip in $ServerZips) {
-        Write-Host Found extra zipped server in working directory: $ServerZip.FullName
-        Remove-Item $ServerZip.FullName
-      }
-      Compress-Archive $AllAssemblies "$(Agent.BuildDirectory)\Server-$VersionString.zip" -Update
-      Write-S3Object -BucketName warewolfreleases -File "$(Agent.BuildDirectory)\Server-$VersionString.zip" -Key Server-$VersionString.zip -CannedACLName public-read -PublicReadOnly -StoredCredentials warewolfreleases -AccessKey $env:AccessKey -SecretKey $env:SecretKey
-      if ($VersionString.EndsWith(".0")) {
-        $TrimmedVersionString = "$VersionString".TrimEnd(".0")
-        Copy-Item ./Server-$VersionString.zip ./Server-$TrimmedVersionString.zip
-        Write-S3Object -BucketName warewolfreleases -File .\Server-$TrimmedVersionString.zip -Key Server-$TrimmedVersionString.zip -CannedACLName public-read -PublicReadOnly -StoredCredentials warewolfreleases -AccessKey $env:AccessKey -SecretKey $env:SecretKey
-      }
-    env:
-      AccessKey: $(AccessKeyPassword)
-      SecretKey: $(SecretKeyPassword)
+  - task: PublishBuildArtifacts@1
+    inputs:
+      PathtoPublish: '$(Agent.BuildDirectory)\\s\\Dev\\Dev2.Studio\\bin\\Release\\net48\\win'
+      ArtifactName: 'Release Studio'
+      publishLocation: 'Container'
+      StoreAsTar: false
