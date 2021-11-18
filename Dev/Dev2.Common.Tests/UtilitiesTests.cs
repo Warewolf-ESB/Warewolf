@@ -122,68 +122,6 @@ namespace Dev2.Common.Tests
             Assert.IsTrue(executed);
         }
 
-        class MyWindowsIdentity : WindowsIdentity
-        {
-            public int ImpersonateCallCount { get; private set; }
-            protected MyWindowsIdentity(WindowsIdentity identity) : base(identity)
-            {
-            }
-            public static MyWindowsIdentity New(WindowsIdentity identity)
-            {
-                return new MyWindowsIdentity(identity);
-            }
-
-            public override WindowsImpersonationContext Impersonate()
-            {
-                ImpersonateCallCount++;
-                return base.Impersonate();
-            }
-        }
-
-        [TestMethod]
-        [Owner("Rory McGuire")]
-        [TestCategory(nameof(Utilities))]
-        public void Utilities_PerformActionInsideImpersonatedContext_GivenPrincipal_ShouldExecuteWithImpersonation()
-        {
-            var executed = false;
-            var mockPrincipal = new Mock<IPrincipal>();
-            var identity = MyWindowsIdentity.New(WindowsIdentity.GetCurrent());
-            mockPrincipal.Setup(o => o.Identity).Returns(identity);
-
-            Utilities.OrginalExecutingUser = mockPrincipal.Object;
-
-            Utilities.PerformActionInsideImpersonatedContext(mockPrincipal.Object, () => { executed = true; });
-
-            mockPrincipal.Verify(o => o.Identity, Times.Exactly(1));
-            Assert.IsTrue(executed);
-
-            Assert.AreEqual(1, identity.ImpersonateCallCount);
-            Assert.AreEqual(mockPrincipal.Object, Utilities.OrginalExecutingUser);
-        }
-
-        [TestMethod]
-        [Owner("Rory McGuire")]
-        [TestCategory(nameof(Utilities))]
-        public void Utilities_PerformActionInsideImpersonatedContext_GivenPrincipalAlreadyImpersonated_ShouldExecuteWithImpersonation()
-        {
-            var executed = false;
-            var mockPrincipal = new Mock<IPrincipal>();
-            var identity = MyWindowsIdentity.New(WindowsIdentity.GetCurrent());
-            mockPrincipal.Setup(o => o.Identity).Returns(identity);
-
-            Thread.CurrentPrincipal = mockPrincipal.Object;
-
-            Utilities.OrginalExecutingUser = mockPrincipal.Object;
-
-            Utilities.PerformActionInsideImpersonatedContext(mockPrincipal.Object, () => { executed = true; });
-
-            mockPrincipal.Verify(o => o.Identity, Times.Exactly(1));
-            Assert.IsTrue(executed);
-            Assert.AreEqual(1, identity.ImpersonateCallCount);
-
-            Assert.AreEqual(mockPrincipal.Object, Utilities.OrginalExecutingUser);
-        }
-
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(Utilities))]
@@ -209,26 +147,15 @@ namespace Dev2.Common.Tests
             var mockPrincipal = new Mock<IPrincipal>();
             var mockServerUserPrincipal = new Mock<IPrincipal>();
 
-
             mockPrincipal.Setup(o => o.Identity).Returns(WindowsIdentity.GetAnonymous());
-
             mockServerUserPrincipal.Setup(o => o.Identity).Returns(WindowsIdentity.GetAnonymous());
             Utilities.ServerUser = mockServerUserPrincipal.Object;
 
-            try
-            {
-                Utilities.PerformActionInsideImpersonatedContext(mockPrincipal.Object, () => { executed = true; });
-                Assert.Fail("Expected exception");
-            }
-            catch (Exception e)
-            {
-                Assert.AreEqual("An anonymous identity cannot perform an impersonation.", e.Message);
-            }
+            Utilities.PerformActionInsideImpersonatedContext(mockPrincipal.Object, () => { executed = true; });
 
             mockPrincipal.Verify(o => o.Identity, Times.Exactly(1));
             mockServerUserPrincipal.Verify(o => o.Identity, Times.Once);
-
-            Assert.IsFalse(executed);
+            Assert.IsTrue(executed);
         }
 
         [TestMethod]
@@ -240,9 +167,7 @@ namespace Dev2.Common.Tests
             var mockPrincipal = new Mock<IPrincipal>();
             var mockServerUserPrincipal = new Mock<IPrincipal>();
 
-
             mockPrincipal.Setup(o => o.Identity).Returns(WindowsIdentity.GetCurrent());
-
             mockServerUserPrincipal.Setup(o => o.Identity).Returns(WindowsIdentity.GetCurrent());
             Utilities.ServerUser = mockServerUserPrincipal.Object;
 
