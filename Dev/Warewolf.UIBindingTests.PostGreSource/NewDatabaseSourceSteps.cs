@@ -30,7 +30,7 @@ namespace Warewolf.UIBindingTests.PostGreSource
     {
         string loginFailedForUserTest = "Login failed for user 'test'";
         static FeatureContext _featureContext;
-        readonly ScenarioContext _scenarioContext;
+        static ScenarioContext _scenarioContext;
 
         public NewDatabaseSourceSteps(ScenarioContext scenarioContext) => _scenarioContext = scenarioContext;
 
