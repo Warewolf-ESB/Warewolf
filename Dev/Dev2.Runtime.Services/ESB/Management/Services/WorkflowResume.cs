@@ -68,8 +68,10 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             
             //Get latest version of service by removing it from cache
-            var resourceObject = ResourceCatalogInstance.GetResource(GlobalConstants.ServerWorkspaceID, resourceId);
-            ResourceCatalogInstance.RemoveFromResourceActivityCache(GlobalConstants.ServerWorkspaceID, resourceObject);
+            ResourceCatalogInstance.Reload();
+            //var resourceObject = ResourceCatalogInstance.GetResource(GlobalConstants.ServerWorkspaceID, resourceId);
+            //ResourceCatalogInstance.RemoveFromResourceActivityCache(GlobalConstants.ServerWorkspaceID, resourceObject);
+            //ResourceCatalogInstance.GetResource(GlobalConstants.ServerWorkspaceID, resourceId);
             
             var dynamicService = ResourceCatalogInstance.GetService(GlobalConstants.ServerWorkspaceID, resourceId, "");
             if (dynamicService is null)

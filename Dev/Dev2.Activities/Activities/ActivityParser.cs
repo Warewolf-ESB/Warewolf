@@ -122,11 +122,11 @@ namespace Dev2.Activities
                 var dev2Activity = (f.DataFunc.Handler as IDev2Activity);
                 return dev2Activity?.NextNodes ?? new List<IDev2Activity>();
             }
-            if (topLevelActivity is DsfSelectAndApplyActivity s)
-            {
-                var dev2Activity = (s.ApplyActivityFunc.Handler as IDev2Activity);
-                return dev2Activity?.NextNodes ?? new List<IDev2Activity>();
-            }
+            // if (topLevelActivity is DsfSelectAndApplyActivity s)
+            // {
+            //     var dev2Activity = (s.ApplyActivityFunc.Handler as IDev2Activity);
+            //     return dev2Activity?.NextNodes ?? new List<IDev2Activity>();
+            // }
             var dev2Activities = topLevelActivity.NextNodes?.Flatten(activity =>
             {
                 var uniqueId = Guid.Parse(activity.UniqueID);
