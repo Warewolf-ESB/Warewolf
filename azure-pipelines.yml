@@ -1975,22 +1975,22 @@ jobs:
               $LastReadVersion = $ReadVersion
           }
       }
-      Out-File -LiteralPath "$(Agent.BuildDirectory)\s\Dev\Dev2.Server\bin\Release\net48\win\FullVersionString" -InputObject $HighestReadVersion -Encoding default -Force
-      Out-File -LiteralPath "$(Agent.BuildDirectory)\s\Dev\Dev2.Studio\bin\Release\net48\win\FullVersionString" -InputObject $HighestReadVersion -Encoding default -Force
+      Out-File -LiteralPath "$(Agent.BuildDirectory)\s\Dev\Dev2.Server\bin\Release\net5.0-windows\win-x64\FullVersionString" -InputObject $HighestReadVersion -Encoding default -Force
+      Out-File -LiteralPath "$(Agent.BuildDirectory)\s\Dev\Dev2.Studio\bin\Release\net5.0-windows\win-x64\FullVersionString" -InputObject $HighestReadVersion -Encoding default -Force
       git -C "$(Build.SourcesDirectory)" tag $HighestReadVersion
       git -C "$(Build.SourcesDirectory)" push https://gitlab.com/warewolf/warewolf $HighestReadVersion
       Write-Host "##vso[build.updatebuildnumber]$(Build.BuildNumber) ($HighestReadVersion)"
 
   - task: PublishBuildArtifacts@1
     inputs:
-      PathtoPublish: '$(Agent.BuildDirectory)\\s\\Dev\\Dev2.Server\\bin\\Release\\net48\\win'
+      PathtoPublish: '$(Agent.BuildDirectory)\\s\\Dev\\Dev2.Server\\bin\\Release\\net5.0-windows\\win-x64'
       ArtifactName: 'Release Server'
       publishLocation: 'Container'
       StoreAsTar: false
 
   - task: PublishBuildArtifacts@1
     inputs:
-      PathtoPublish: '$(Agent.BuildDirectory)\\s\\Dev\\Dev2.Studio\\bin\\Release\\net48\\win'
+      PathtoPublish: '$(Agent.BuildDirectory)\\s\\Dev\\Dev2.Studio\\bin\\Release\\net5.0-windows\\win-x64'
       ArtifactName: 'Release Studio'
       publishLocation: 'Container'
       StoreAsTar: false
