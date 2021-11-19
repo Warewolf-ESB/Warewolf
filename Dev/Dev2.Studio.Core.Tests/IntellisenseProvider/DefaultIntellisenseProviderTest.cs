@@ -43,6 +43,7 @@ namespace Dev2.Core.Tests.IntellisenseProvider
         [TestInitialize]
         public void Init()
         {
+#if NETFRAMEWORK
             var p = new PrivateType(typeof(Dev2DataLanguageParser));
             var cache = p.GetStaticField("_expressionCache") as ConcurrentDictionary<string, IList<IIntellisenseResult>>;
             Assert.IsNotNull(cache);
@@ -50,6 +51,7 @@ namespace Dev2.Core.Tests.IntellisenseProvider
             var cache2 = p.GetStaticField("_payloadCache") as ConcurrentDictionary<Tuple<string, string>, IList<IIntellisenseResult>>;
             Assert.IsNotNull(cache2);
             cache2.Clear();
+#endif
 
             var testEnvironmentModel = ResourceModelTest.CreateMockEnvironment();
 

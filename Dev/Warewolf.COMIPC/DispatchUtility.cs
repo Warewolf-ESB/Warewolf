@@ -137,7 +137,11 @@ namespace WarewolfCOMIPC
                 // Type info isn't usually culture-aware for IDispatch, so we might as well pass
                 // the default locale instead of looking up the current thread's LCID each time
                 // (via CultureInfo.CurrentCulture.LCID).
+#if NETFRAMEWORK
                 dispatch.GetTypeInfo(0, LocaleSystemDefault, out result);
+#else
+	            throw new Exception("This code needs to be refactored after the upgrade to .NET 5.0");
+#endif
             }
 
             if (result == null && throwIfNotFound)
@@ -224,6 +228,7 @@ namespace WarewolfCOMIPC
             [PreserveSig]
             int GetTypeInfoCount(out int typeInfoCount);
 
+#if NETFRAMEWORK
             /// <summary>
             /// Gets the Type information for an object if <see cref="GetTypeInfoCount"/> returned 1.
             /// </summary>
@@ -235,7 +240,8 @@ namespace WarewolfCOMIPC
             /// </remarks>
             void GetTypeInfo(int typeInfoIndex, int lcid, [MarshalAs(UnmanagedType.CustomMarshaler,
                 MarshalTypeRef = typeof(System.Runtime.InteropServices.CustomMarshalers.TypeToTypeInfoMarshaler))] out Type typeInfo);
-
+#endif
+            
             /// <summary>
             /// Gets the DISPID of the specified member name.
             /// </summary>

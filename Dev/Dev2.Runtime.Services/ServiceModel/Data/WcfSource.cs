@@ -1,4 +1,4 @@
-﻿#pragma warning disable
+﻿﻿#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
@@ -39,8 +39,9 @@ namespace Dev2.Runtime.ServiceModel.Data
         {
             ResourceID = Guid.Empty;
             ResourceType = "WcfSource";
-
+#if NETFRAMEWORK//WCF tool needs to be converted to grpc
             ProxyService = new WcfProxyService();
+#endif
         }
 
         public WcfSource(IWcfProxyService service)
@@ -55,7 +56,9 @@ namespace Dev2.Runtime.ServiceModel.Data
             : base(xml)
         {
             ResourceType = "WcfSource";
+#if NETFRAMEWORK//WCF tool needs to be converted to grpc
             ProxyService = new WcfProxyService();
+#endif
             var properties = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
             {
                 { "EndpointUrl", string.Empty },

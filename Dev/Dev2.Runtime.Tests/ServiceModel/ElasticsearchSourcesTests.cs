@@ -9,7 +9,6 @@
 */
 
 using System;
-using Castle.Components.DictionaryAdapter.Xml;
 using Dev2.Data.ServiceModel;
 using Dev2.Runtime.ServiceModel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

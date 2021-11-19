@@ -20,8 +20,11 @@ namespace Dev2.Runtime
 
         public Isolated()
         {
-           _domain = AppDomain.CreateDomain("Isolated:" + Guid.NewGuid(),
-                null, AppDomain.CurrentDomain.SetupInformation);
+            _domain = AppDomain.CreateDomain("Isolated:" + Guid.NewGuid()
+#if NETFRAMEWORK//WCF tool needs to be converted to grpc
+                ,null, AppDomain.CurrentDomain.SetupInformation
+#endif
+            );
 
             var type = typeof(T);
 

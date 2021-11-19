@@ -825,6 +825,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
 
         }
 
+#if NETFRAMEWORK
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void GetPropertiesJObject_GivenOracleCommand_ShouldRetunWithTwoProperties()
@@ -869,6 +870,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             var s = jObject.ToString(Formatting.None);
             Assert.AreEqual(str, s);
         }
+#endif
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]

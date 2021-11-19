@@ -27,6 +27,7 @@ namespace Dev2.Web2.Controllers
 {
     public class AllowCrossSiteJsonAttribute : ActionFilterAttribute
     {
+#if NETFRAMEWORK
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             var ctx = filterContext.RequestContext.HttpContext;
@@ -37,6 +38,7 @@ namespace Dev2.Web2.Controllers
             ctx.Response.AddHeader("Access-Control-Allow-Credentials", "true");
             base.OnActionExecuting(filterContext);
         }
+#endif
     }
 
     [EnableCors("*", "*", "*", PreflightMaxAge = 10000, SupportsCredentials = true)]
@@ -97,6 +99,7 @@ namespace Dev2.Web2.Controllers
             }
         }
 
+#if NETFRAMEWORK
         [HttpPost]
         public ActionResult PerformResume(string resourceID, string environment, string startActivityId, string wareWolfResumeUrl)
         {
@@ -126,7 +129,8 @@ namespace Dev2.Web2.Controllers
 
             return Json("Success");
         }
-
+#endif
+        
         internal ActionResult UploadValues(string resourceID, string environment, string startActivityId, string wareWolfResumeUrl, string userName, string password)
         {
             using (var client = _clientFactory.New(userName, password))

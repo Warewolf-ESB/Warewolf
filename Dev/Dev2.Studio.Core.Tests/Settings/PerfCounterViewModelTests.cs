@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -61,13 +61,17 @@ namespace Dev2.Core.Tests.Settings
             _mockEnvironment.Setup(model => model.AuthorizationService).Returns(authorizationService.Object);
             var activeServer = new Server(Guid.NewGuid(), _mockConnection.Object);
             ServerRepository.Instance.ActiveServer = activeServer;
+#if NETFRAMEWORK
             var counters = new PrivateType(typeof(PerfcounterViewModel));
+#endif
             CustomContainer.Register(new Mock<IExplorerTooltips>().Object);
             //------------Setup for test------------------------
             //------------Execute Test--------------------------
+#if NETFRAMEWORK
             var invokeStatic = counters.InvokeStatic("GetEnvironment");
             //------------Assert Results-------------------------
             Assert.IsNotNull(invokeStatic);
+#endif
         }
 
         [TestMethod]
@@ -80,13 +84,17 @@ namespace Dev2.Core.Tests.Settings
             perfCounterTo.Setup(to => to.ResourceCounters).Returns(new List<IResourcePerformanceCounter>());
             perfCounterTo.Setup(to => to.NativeCounters).Returns(new List<IPerformanceCounter>());
             var perfcounterViewModel = new PerfcounterViewModel(perfCounterTo.Object, new Mock<IServer>().Object);
-            var counters = new Warewolf.Testing.PrivateObject(perfcounterViewModel);
+#if NETFRAMEWORK
+            var counters = new PrivateObject(perfcounterViewModel);
+#endif
             //------------Setup for test--------------------------
             var ItemServerCounters = perfcounterViewModel.ServerCounters = null;
             //------------Execute Test---------------------------
-            var areEqual = counters.Invoke("Equals", new object[] { null, ItemServerCounters });
+#if NETFRAMEWORK
+            var areEqual = counters.Invoke("Equals", args: new object[] { null, ItemServerCounters });
             //------------Assert Results-------------------------
             Assert.IsFalse(areEqual.Equals(true));
+#endif
         }
 
         [TestMethod]
@@ -99,15 +107,18 @@ namespace Dev2.Core.Tests.Settings
             perfCounterTo.Setup(to => to.ResourceCounters).Returns(new List<IResourcePerformanceCounter>());
             perfCounterTo.Setup(to => to.NativeCounters).Returns(new List<IPerformanceCounter>());
             var perfcounterViewModel = new PerfcounterViewModel(perfCounterTo.Object, new Mock<IServer>().Object);
-            var counters = new Warewolf.Testing.PrivateObject(perfcounterViewModel);
-
+#if NETFRAMEWORK
+            var counters = new PrivateObject(perfcounterViewModel);
+#endif
             var ItemServerCounters = new List<IPerformanceCountersByMachine>();
             var ItemResourceCounters = perfcounterViewModel.ResourceCounters = null;
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            var areEqual = counters.Invoke("Equals", new object[] { ItemServerCounters, ItemResourceCounters });
+#if NETFRAMEWORK
+            var areEqual = counters.Invoke("Equals", args: new object[] { ItemServerCounters, ItemResourceCounters });
             //------------Assert Results-------------------------
             Assert.IsFalse(areEqual.Equals(true));
+#endif
         }
 
         [TestMethod]

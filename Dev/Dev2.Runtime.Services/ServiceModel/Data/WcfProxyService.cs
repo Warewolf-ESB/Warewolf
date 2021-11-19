@@ -1,4 +1,5 @@
 #pragma warning disable
+#if NETFRAMEWORK//WCF tool needs to be converted to grpc
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
@@ -147,3 +148,4 @@ namespace Dev2.Runtime.ServiceModel.Data
         }
     }
 }
+#endif

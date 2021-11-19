@@ -48,6 +48,7 @@
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <BootstrapperComponentsLocation>Relative</BootstrapperComponentsLocation>
+    <ValidateExecutableReferencesMatchSelfContained>false</ValidateExecutableReferencesMatchSelfContained>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestCertificateThumbprint>E0E1E9A356E095CC89E4164299ED65ED12690217</ManifestCertificateThumbprint>

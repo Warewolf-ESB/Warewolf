@@ -1,5 +1,6 @@
 #pragma warning disable
-
+//WCF tool needs to be converted to grpc
+#if NETFRAMEWORK
 using System;
 using System.CodeDom;
 using System.CodeDom.Compiler;
@@ -543,3 +544,4 @@ namespace Dev2.Runtime.DynamicProxy
         }
     }
 }
+#endif

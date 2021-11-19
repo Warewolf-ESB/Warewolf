@@ -307,6 +307,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             Assert.IsTrue(execute);
         }
 
+#if NETFRAMEWORK
         [TestMethod]
         [Owner("Sanele Mthembu")]
         [TestCategory(nameof(ServiceTestExecutionContainer))]
@@ -365,6 +366,7 @@ Test Failed because of some reasons
                 to.FailureMessage = expectedMessage.ToString();
             }, Times.AtLeastOnce);
         }
+#endif
 
         [TestMethod]
         [Owner("Sanele Mthembu")]

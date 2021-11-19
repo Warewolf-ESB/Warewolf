@@ -305,6 +305,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.AreEqual(Guid.Empty, result.ResourceID);
         }
 
+#if NETFRAMEWORK
         [TestMethod]
         [Owner("Sanele Mthembu")]
         [TestCategory(nameof(WebSources))]
@@ -338,6 +339,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.IsNotNull(results);
             Assert.AreEqual("some url", results);
         }
+#endif
 
         [TestMethod]
         [Owner("Siphamandla Dube")]

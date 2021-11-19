@@ -1,5 +1,4 @@
-﻿#pragma warning disable
-/*
+﻿/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
@@ -10,7 +9,9 @@
 */
 
 using System.Web.Mvc;
+#if NETFRAMEWORK
 using System.Web.Routing;
+#endif
 
 namespace Dev2.Web2
 {
@@ -20,6 +21,7 @@ namespace Dev2.Web2
         {
         }
 
+#if NETFRAMEWORK
         public static void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
@@ -30,5 +32,6 @@ namespace Dev2.Web2
                 defaults: new { controller = "Audit", action = "Index", id = UrlParameter.Optional }
             );
         }
+#endif
     }
 }

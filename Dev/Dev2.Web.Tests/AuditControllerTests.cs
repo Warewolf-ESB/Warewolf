@@ -1,4 +1,4 @@
-﻿/*
+﻿﻿/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
@@ -18,7 +18,9 @@ using System.Collections.Specialized;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+#if NETFRAMEWORK
 using System.Web.Routing;
+#endif
 using Warewolf.Auditing;
 
 namespace Dev2.Web.Tests
@@ -26,6 +28,7 @@ namespace Dev2.Web.Tests
     [TestClass]
     public class AuditControllerTests
     {
+#if NETFRAMEWORK
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(AuditController))]
@@ -145,5 +148,6 @@ namespace Dev2.Web.Tests
             };
         }
 
+#endif
     }
 }

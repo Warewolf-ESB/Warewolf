@@ -46,7 +46,6 @@ using Moq;
 using Moq.Protected;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
-
 namespace Dev2.Activities.Designers.Tests.Service
 {
     [TestClass]
@@ -501,6 +500,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             };
             var modelItem = CreateModelItem(activity);
             var viewModel = new ServiceDesignerViewModel(modelItem, rootModel.Object, envRepository.Object, new Mock<IEventAggregator>().Object, new SynchronousAsyncWorker());
+#if NETFRAMEWORK
             var privateType = new PrivateType(typeof(ServiceDesignerViewModel));
             //---------------Precondition------------------------
             Assert.IsNotNull(viewModel);
@@ -509,6 +509,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             var invokeStatic = (bool)privateType.InvokeStatic("CanViewComplexObjects", itemModel);
             //---------------Test Result -----------------------
             Assert.IsTrue(invokeStatic);
+#endif
         }
 
         [TestMethod]
@@ -548,6 +549,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             };
             var modelItem = CreateModelItem(activity);
             var viewModel = new ServiceDesignerViewModel(modelItem, rootModel.Object, envRepository.Object, new Mock<IEventAggregator>().Object, new SynchronousAsyncWorker());
+#if NETFRAMEWORK
             var privateType = new PrivateType(typeof(ServiceDesignerViewModel));
             //---------------Precondition------------------------
             Assert.IsNotNull(viewModel);
@@ -556,6 +558,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             var invokeStatic = (bool)privateType.InvokeStatic("CanViewComplexObjects", itemModel);
             //---------------Test Result -----------------------
             Assert.IsTrue(invokeStatic);
+#endif
         }
 
         [TestMethod]
@@ -595,6 +598,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             };
             var modelItem = CreateModelItem(activity);
             var viewModel = new ServiceDesignerViewModel(modelItem, rootModel.Object, envRepository.Object, new Mock<IEventAggregator>().Object, new SynchronousAsyncWorker());
+#if NETFRAMEWORK
             var privateType = new PrivateType(typeof(ServiceDesignerViewModel));
             //---------------Precondition------------------------
             Assert.IsNotNull(viewModel);
@@ -603,6 +607,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             var invokeStatic = (bool)privateType.InvokeStatic("CanViewComplexObjects", itemModel);
             //---------------Test Result -----------------------
             Assert.IsTrue(invokeStatic);
+#endif
         }
 
         [TestMethod]
@@ -642,6 +647,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             };
             var modelItem = CreateModelItem(activity);
             var viewModel = new ServiceDesignerViewModel(modelItem, rootModel.Object, envRepository.Object, new Mock<IEventAggregator>().Object, new SynchronousAsyncWorker());
+#if NETFRAMEWORK
             var privateType = new PrivateType(typeof(ServiceDesignerViewModel));
             var mock = new Mock<IComplexObjectItemModel>();
             mock.Setup(model => model.GetJson()).Returns("");
@@ -649,6 +655,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             Assert.IsNotNull(viewModel);
             //------------Execute Test---------------------------
             privateType.InvokeStatic("ViewJsonObjects", mock.Object, null);
+#endif
         }
 
         [TestMethod]
@@ -690,15 +697,16 @@ namespace Dev2.Activities.Designers.Tests.Service
             var viewModel = new ServiceDesignerViewModel(modelItem, rootModel.Object, envRepository.Object,
                 new Mock<IEventAggregator>().Object, new SynchronousAsyncWorker())
             { IsWorstErrorReadOnly = false };
-            var privateType = new Warewolf.Testing.PrivateObject(viewModel);
+#if NETFRAMEWORK
+            var privateType = new PrivateObject(viewModel);
             var mock = new Mock<IComplexObjectItemModel>();
             mock.Setup(model => model.GetJson()).Returns("");
             //---------------Precondition------------------------
             Assert.IsNotNull(viewModel);
             //------------Execute Test---------------------------
-            privateType.Invoke("Done");
+            privateType.Invoke("Done", BindingFlags.Instance | BindingFlags.NonPublic);
             //---------------Test Result -----------------------
-
+#endif
         }
 
         [TestMethod]

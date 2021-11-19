@@ -41,8 +41,13 @@ namespace Dev2.Runtime.DynamicProxy
             var ctor = _objType.GetConstructor(paramTypes);
             if (ctor == null)
             {
+#if NETFRAMEWORK//WCF tool needs to be converted to grpc
                 throw new DynamicProxyException(
-                        Constants.ErrorMessages.ProxyCtorNotFound);            
+                        Constants.ErrorMessages.ProxyCtorNotFound);   
+#else
+                throw new Exception(
+                    Constants.ErrorMessages.ProxyCtorNotFound); 
+#endif
             }
 
             _obj = ctor.Invoke(paramValues);

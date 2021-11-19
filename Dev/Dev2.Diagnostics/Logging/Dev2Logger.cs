@@ -115,7 +115,12 @@ namespace Dev2.Common
             var h = (Hierarchy)LogManager.GetRepository();
             var rootLogger = h.Root;
 
+#if NETFRAMEWORK
             if (rootLogger?.GetAppender("EventLogLogger") is EventLogAppender appender && appender.Threshold != null)
+#else
+            if (rootLogger?.GetAppender("FileAppender") is FileAppender appender && appender.Threshold != null)
+#endif
+
             {
                 return appender.Threshold.DisplayName;
             }
