@@ -581,6 +581,12 @@ namespace Dev2.Runtime.WebServer
                     .ToList()
                     .SetupCountSummaryHtml(writer, coverageData);
 
+                allTestResults.Results
+                    .SelectMany(o => o.Results)
+                    .ToList()
+                    .SetupLinesCountSummaryHtml(writer, coverageData);
+
+                
                 allCoverageReports.WithTestReports
                     .ToList()
                     .ForEach(oo =>

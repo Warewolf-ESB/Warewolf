@@ -242,6 +242,85 @@ namespace Dev2.Runtime.WebServer
             writer.RenderEndTag();
         }
 
+        internal static void SetupLinesCountSummaryHtml(this List<IServiceTestModelTO> allTests, HtmlTextWriter writer, ICoverageDataObject coverageData)
+        {
+            writer.AddStyleAttribute(HtmlTextWriterStyle.Padding, "10px 10px 20px 10px");
+            writer.AddStyleAttribute(HtmlTextWriterStyle.Margin, "5px");
+            writer.AddAttribute(HtmlTextWriterAttribute.Class, "count-summary row");
+            writer.RenderBeginTag(HtmlTextWriterTag.Div);
+
+            writer.AddStyleAttribute(HtmlTextWriterStyle.Margin, "0 -15px 0 -15px");
+            writer.RenderBeginTag(HtmlTextWriterTag.Table);
+            writer.RenderBeginTag(HtmlTextWriterTag.Tr);
+
+            writer.AddStyleAttribute(HtmlTextWriterStyle.Width, "200px");
+            writer.AddStyleAttribute(HtmlTextWriterStyle.FontWeight, "bold");
+            writer.AddStyleAttribute(HtmlTextWriterStyle.FontSize, "14px");
+            writer.AddStyleAttribute(HtmlTextWriterStyle.FontFamily, "roboto sans-serif");
+            writer.AddStyleAttribute(HtmlTextWriterStyle.Color, "black");
+            writer.AddAttribute(HtmlTextWriterAttribute.Class, "table-td-black");
+            writer.RenderBeginTag(HtmlTextWriterTag.Td);
+            writer.Write("Total Nodes: " + allTests.Count);
+            writer.RenderEndTag();
+
+            writer.AddStyleAttribute(HtmlTextWriterStyle.Width, "200px");
+            writer.AddStyleAttribute(HtmlTextWriterStyle.FontWeight, "bold");
+            writer.AddStyleAttribute(HtmlTextWriterStyle.FontSize, "14px");
+            writer.AddStyleAttribute(HtmlTextWriterStyle.FontFamily, "roboto sans-serif");
+            writer.AddStyleAttribute(HtmlTextWriterStyle.Color, "green");
+            writer.AddAttribute(HtmlTextWriterAttribute.Class, "table-td-green");
+            writer.RenderBeginTag(HtmlTextWriterTag.Td);
+            writer.Write("Covered Nodes: " + allTests.Count(o => o.TestPassed));
+            writer.RenderEndTag();
+
+            var failedCount = allTests.Count(o => o.TestFailing);
+            writer.AddStyleAttribute(HtmlTextWriterStyle.Width, "200px");
+            writer.AddStyleAttribute(HtmlTextWriterStyle.FontWeight, "bold");
+            writer.AddStyleAttribute(HtmlTextWriterStyle.FontSize, "14px");
+            writer.AddStyleAttribute(HtmlTextWriterStyle.FontFamily, "roboto sans-serif");           
+            writer.AddStyleAttribute(HtmlTextWriterStyle.Color, "red");
+            writer.AddAttribute(HtmlTextWriterAttribute.Class, "table-td-red");
+            writer.RenderBeginTag(HtmlTextWriterTag.Td);
+            writer.Write("Not Covered Nodes: " + failedCount);
+            writer.RenderEndTag();
+
+            var coveragePer = allTests.Count(o => o.TestInvalid);
+            writer.AddStyleAttribute(HtmlTextWriterStyle.Width, "200px");
+            writer.AddStyleAttribute(HtmlTextWriterStyle.FontWeight, "bold");
+            writer.AddStyleAttribute(HtmlTextWriterStyle.FontSize, "14px");
+            writer.AddStyleAttribute(HtmlTextWriterStyle.FontFamily, "roboto sans-serif");
+            if (coveragePer <= 65)
+            {
+                writer.AddStyleAttribute(HtmlTextWriterStyle.Color, "red");
+            }
+            else if ((coveragePer > 65) && (coveragePer <= 85))
+            {
+                writer.AddStyleAttribute(HtmlTextWriterStyle.Color, "yellow");
+            }
+            else
+            {
+                writer.AddStyleAttribute(HtmlTextWriterStyle.Color, "green");
+            }
+            writer.AddAttribute(HtmlTextWriterAttribute.Class, "table-td-red");
+            writer.RenderBeginTag(HtmlTextWriterTag.Td);
+            writer.Write("Coverage (%): " + coveragePer);
+            writer.RenderEndTag();
+
+            writer.RenderBeginTag(HtmlTextWriterTag.Td);
+            if (coverageData.IsMultipleWorkflowReport)
+            {
+                writer.AddAttribute(HtmlTextWriterAttribute.Target, "_new");
+                writer.AddAttribute(HtmlTextWriterAttribute.Href, coverageData.GetAllTestsUrl());
+                writer.RenderBeginTag(HtmlTextWriterTag.A);
+                writer.Write("Run All Tests");
+                writer.RenderEndTag();
+            }
+            writer.RenderEndTag();
+
+            writer.RenderEndTag();
+            writer.RenderEndTag();
+            writer.RenderEndTag();
+        }
 
         internal static void SetupCountSummaryHtml(this List<IServiceTestModelTO> allTests, HtmlTextWriter writer, ICoverageDataObject coverageData)
         {
