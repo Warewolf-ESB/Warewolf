@@ -25,7 +25,10 @@ namespace Warewolf.Data
         
         public void Add(IWorkflowNode node)
         {
-            NextNodes.Add(node);
+            if (node != null)
+            {
+                NextNodes.Add(node);
+            }
         }
     }
 }
