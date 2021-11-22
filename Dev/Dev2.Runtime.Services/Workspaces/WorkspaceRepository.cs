@@ -360,7 +360,14 @@ namespace Dev2.Workspaces
                     }
 
                     var result = new ConcurrentDictionary<string, Guid>();
-                    formatter.Serialize(stream, result);
+                    try
+                    {
+                        formatter.Serialize(stream, result);
+                    }
+                    catch (System.Runtime.Serialization.SerializationException e)
+                    {
+                        //.NET 5 Compatability contrivance
+                    }
                     return result;
                 }
             }
