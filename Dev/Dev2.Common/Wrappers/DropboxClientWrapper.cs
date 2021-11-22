@@ -38,7 +38,7 @@ namespace Dev2.Common.Wrappers
 
         IDropboxClient IDropboxClientFactory.CreateWithSecret(string accessToken)
         {
-            var httpClient = new HttpClient(new WebRequestHandler { ReadWriteTimeout = 10 * 1000 })
+            var httpClient = new HttpClient
             {
                 Timeout = TimeSpan.FromMinutes(20)
             };
