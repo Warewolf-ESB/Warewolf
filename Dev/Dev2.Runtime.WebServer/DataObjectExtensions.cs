@@ -121,10 +121,29 @@ namespace Dev2.Runtime.WebServer
                 }
             }
 
+
+           
+           
             var isCover = typeOf.StartsWith("coverage", StringComparison.InvariantCultureIgnoreCase);
             var isCoverJson = typeOf.StartsWith("json", StringComparison.InvariantCultureIgnoreCase) && originalServiceName.EndsWith("coverage.json", StringComparison.InvariantCultureIgnoreCase);
-            if (isCoverJson || isCover)
+
+            var isCoverJsonTest = typeOf.StartsWith("json", StringComparison.InvariantCultureIgnoreCase) && originalServiceName.EndsWith(".json", StringComparison.InvariantCultureIgnoreCase) && originalServiceName.ToLower().Contains(".coverage");
+            
+            if (isCoverJson || isCover || isCoverJsonTest)
             {
+
+                dataObject.IsServiceTestExecution = true;
+                dataObject.TestName = "*";
+                var idx = originalServiceName.LastIndexOf("/", StringComparison.InvariantCultureIgnoreCase);
+                if (idx > loc)
+                {
+                    var testName = originalServiceName.Substring(idx + 1).ToUpper();
+                    if (!string.IsNullOrEmpty(testName))
+                    {
+                        dataObject.TestName = testName;
+                    }
+                }
+
                 if (isCover)
                 {
                     dataObject.ReturnType = EmitionTypes.Cover;
@@ -134,6 +153,19 @@ namespace Dev2.Runtime.WebServer
                 {
                     dataObject.ReturnType = EmitionTypes.CoverJson;
                     serviceName = originalServiceName.Substring(0, originalServiceName.LastIndexOf(".coverage.json", StringComparison.Ordinal));
+                }
+                else if (isCoverJsonTest)
+                {                     
+                    var testName = originalServiceName.Substring(idx + 1).ToUpper().Replace(".JSON", "");
+
+                    if (!string.IsNullOrEmpty(testName))
+                    {
+                        dataObject.TestName = testName;
+                    }
+
+                    dataObject.ReturnType = EmitionTypes.CoverJson;
+                    serviceName = originalServiceName.Substring(0, originalServiceName.ToLower().LastIndexOf(".coverage/", StringComparison.Ordinal));
+                    
                 }
             }
 
@@ -542,16 +574,28 @@ namespace Dev2.Runtime.WebServer
                 writer.WriteValueAsync(allCoverageReports.TotalReportsCoverage);
                 writer.WriteEndObject();
             }
-            
-            var resultSummaryWriter = new StringWriter();
-            using (var writer = new JsonTextWriter(resultSummaryWriter))
-            {
-                allTestResults.Results
-                    .SelectMany(o => o.Results)
-                    .ToList()
-                    .SetupResultSummaryJSON(writer);
-            }
 
+            var resultSummaryWriter = new StringWriter();
+            if (coverageData.ReportName != "*")
+            {             
+                using (var writer = new JsonTextWriter(resultSummaryWriter))
+                {
+                    allTestResults.Results
+                        .SelectMany(x => x.Results).Where(x => x.TestName.ToUpper() == coverageData.ReportName.ToUpper())
+                        .ToList()
+                        .SetupResultSummaryJSON(writer);
+                }
+            }
+            else
+            {
+                using (var writer = new JsonTextWriter(resultSummaryWriter))
+                {
+                    allTestResults.Results
+                        .SelectMany(o => o.Results)
+                        .ToList()
+                        .SetupResultSummaryJSON(writer);
+                }
+            }
             var obj = new JObject
             {
                 {"StartTime", allCoverageReports.StartTime},
@@ -566,7 +610,7 @@ namespace Dev2.Runtime.WebServer
 
         public static DataListFormat RunCoverageAndReturnHTML(this ICoverageDataObject coverageData, ITestCoverageCatalog testCoverageCatalog, ITestCatalog testCatalog, IResourceCatalog catalog, Guid workspaceGuid, out string executePayload)
         {
-            var (allCoverageReports, allTestResults) = RunListOfCoverage(coverageData, testCoverageCatalog, testCatalog, workspaceGuid, catalog);
+            var (allCoverageReports, allTestResults) = RunListOfCoverage(coverageData, testCoverageCatalog, testCatalog, workspaceGuid, catalog);           
 
             var formatter = DataListFormat.CreateFormat("HTML", EmitionTypes.Cover, "text/html; charset=utf-8");
 
@@ -575,12 +619,22 @@ namespace Dev2.Runtime.WebServer
             using (var writer = new HtmlTextWriter(stringWriter))
             {
                 writer.SetupNavBarHtml(allCoverageReports.TotalReportsCoverage);
-                
-                allTestResults.Results
-                    .SelectMany(o => o.Results)
-                    .ToList()
-                    .SetupCountSummaryHtml(writer, coverageData);
 
+                if (coverageData.ReportName != "*")
+                {
+                    allTestResults.Results
+                        .SelectMany(o => o.Results).Where(x => x.TestName.ToUpper() == coverageData.ReportName.ToUpper())
+                        .ToList()
+                        .SetupCountSummaryHtml(writer, coverageData);
+                }
+                else
+                {
+                    allTestResults.Results
+                            .SelectMany(o => o.Results)
+                            .ToList()
+                            .SetupCountSummaryHtml(writer, coverageData);
+                }
+              
                 allCoverageReports.WithTestReports
                     .ToList()
                     .ForEach(oo =>
@@ -623,16 +677,31 @@ namespace Dev2.Runtime.WebServer
                 }
 
                 var workflowTestResults = new WorkflowTestResults();
+ 
                 testCatalog.Fetch(coverageResourceId)
                     ?.ForEach(o => workflowTestResults.Add(o));
 
                 testResultsTemp.Add(workflowTestResults);
 
                 var coverageReports = new WorkflowCoverageReports(res);
-                testCoverageCatalog.Fetch(coverageResourceId)
-                    ?.ForEach(o => coverageReports.Add(o));
 
+                
+                if  (coverageData.ReportName != "*")
+                {
+                    var tempcoverageReport = testCoverageCatalog.Fetch(coverageResourceId).Find(oo=>oo.ReportName.ToUpper()== coverageData.ReportName.ToUpper());
+                    if (tempcoverageReport != null)
+                    {
+                        coverageReports.Add(tempcoverageReport);
+                    }
+                }
+                else
+                {
+                    testCoverageCatalog.Fetch(coverageResourceId)
+                     ?.ForEach(o => coverageReports.Add(o));
+                }
+                
                 coverageReportsTemp.Add(coverageReports);
+
             }
 
             testResultsTemp.ForEach(o => allTestResults.Add(o));

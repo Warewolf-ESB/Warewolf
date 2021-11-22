@@ -94,7 +94,7 @@ namespace Dev2.Runtime.WebServer
                     {
                         { "TotalNodesCount", totalWorkflowNodesCount.Count() },
                         { "NotCoveredNodes", notCoveredNodesCount },
-                        { "CoveredNodes", nodesCoveredCount.Count() },
+                        { "CoveredNodes",  nodesCoveredCount.Count() },
                         { "CoveredNodesDetails", new JArray
                         (
                             new JObject 
