@@ -22,17 +22,29 @@ namespace Dev2.Data
         public SingleTestNodesCovered(string testName, IEnumerable<IServiceTestStep> testSteps)
         {
             TestName = testName;
-            TestNodesCovered = testSteps?.Select(step => new WorkflowNode
-            {
-                ActivityID = step.ActivityID != Guid.Empty ? step.ActivityID : step.UniqueID,
-                UniqueID = step.UniqueID,
-                StepDescription = step.StepDescription,
-                MockSelected = step.MockSelected
-            }).ToList<IWorkflowNode>() ?? new List<IWorkflowNode>();
+            TestNodesCovered = testSteps?
+                            .Select(step => step.ToWorkflowNode())
+                            .ToList()
+                            ?? new List<IWorkflowNode>();
         }
 
         public string TestName { get; }
         public List<IWorkflowNode> TestNodesCovered { get; }
 
+    }
+
+    public static class SingleTestNodesCoveredExtention
+    {
+        public static IWorkflowNode ToWorkflowNode(this IServiceTestStep step)
+        {
+            return new WorkflowNode
+            {
+                ActivityID = step.ActivityID != Guid.Empty ? step.ActivityID : step.UniqueID,
+                UniqueID = step.UniqueID,
+                StepDescription = step.StepDescription,
+                MockSelected = step.MockSelected,
+                ChildNodes = step.Children?.Select(o => ToWorkflowNode(o)).ToList() ?? new List<IWorkflowNode>()
+            };
+        }
     }
 }
