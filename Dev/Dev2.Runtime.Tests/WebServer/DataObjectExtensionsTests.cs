@@ -1800,8 +1800,8 @@ namespace Dev2.Tests.Runtime.WebServer
             var result = DataObjectExtensions.SetEmissionType(sut, new Uri("http://localhost:3110/secure/workflowFolder.tests"), "/.coverage", new NameValueCollection { { "Content-Type", "xml" } });
 
             Assert.AreEqual("o", result);
-            Assert.IsFalse(sut.IsServiceTestExecution);
-            Assert.IsNull(sut.TestName);
+            Assert.IsTrue(sut.IsServiceTestExecution);
+            Assert.AreEqual("SERVICENAME.COVERAGE", sut.TestName);
             Assert.AreEqual(Web.EmitionTypes.Cover, sut.ReturnType);
         }
 
@@ -1818,8 +1818,8 @@ namespace Dev2.Tests.Runtime.WebServer
             var result = DataObjectExtensions.SetEmissionType(sut, new Uri("http://localhost:3110/secure/workflowFolder.tests"), "/.coverage.json", new NameValueCollection { { "Content-Type", "xml" } });
 
             Assert.AreEqual("original/servicename", result);
-            Assert.IsFalse(sut.IsServiceTestExecution);
-            Assert.IsNull(sut.TestName);
+            Assert.IsTrue(sut.IsServiceTestExecution);
+            Assert.AreEqual("*",sut.TestName);
             Assert.AreEqual(Web.EmitionTypes.CoverJson, sut.ReturnType);
         }
 
