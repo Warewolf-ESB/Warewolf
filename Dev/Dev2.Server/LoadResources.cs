@@ -108,7 +108,16 @@ namespace Dev2
                 if (!inspected.Contains(toLoad.Name))
                 {
                     inspected.Add(toLoad.Name);
-                    LoadReferences(assemblyLoader.LoadAndReturn(toLoad), inspected, assemblyLoader);
+                    if (toLoad.Name != "System.Web.Services" && 
+                        toLoad.Name != "System.Data.OleDb" && 
+                        toLoad.Name != "System.Data.Linq" && 
+                        toLoad.Name != "System.Configuration.Install" && 
+                        toLoad.Name != "System.Data.Entity" && 
+                        toLoad.Name != "System.EnterpriseServices" && 
+                        toLoad.Name != "System.Runtime.Remoting") 
+                    {
+                        LoadReferences(assemblyLoader.LoadAndReturn(toLoad), inspected, assemblyLoader);
+                    }
                 }
             }
         }
