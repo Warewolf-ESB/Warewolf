@@ -91,9 +91,7 @@ namespace Dev2
                 SecurityIdentityFactory = new SecurityIdentityFactoryForWindows(),
                 QueueWorkerMonitor = new QueueWorkerMonitor(processFactory, new QueueWorkerConfigLoader(), TriggersCatalog.Instance, childProcessTracker),
                 LoggingServiceMonitor = new LoggingServiceMonitorWithRestart(childProcessTracker, processFactory),
-                //#if !DEBUG
                 HangfireServerMonitor = new HangfireServerMonitorWithRestart(childProcessTracker, processFactory),
-                //#endif
                 WebSocketPool = new WebSocketPool(),
                 LoggerFactory = new ExecutionLogger.ExecutionLoggerFactory(),
                 SystemInformationHelper = new GetSystemInformationHelper()
