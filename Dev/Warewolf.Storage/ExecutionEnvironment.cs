@@ -876,7 +876,7 @@ namespace Warewolf.Storage
                 for(var i = 0; i < list.Length; i++)
                 {
                     var @string = list[i];
-                    if(i > 0 && list[i - 1].EndsWith(":") && !@string.StartsWith("\"") && !@string.StartsWith("{") && !@string.StartsWith("[") && !IsNumeric(@string))
+                    if(i > 0 && list[i - 1].EndsWith(":") && !@string.StartsWith("\"") && !@string.StartsWith("{") && !@string.StartsWith("[") && !IsNumeric(@string) && @string != "null")
                     {
                         sb.Append("\"" + @string + "\"");
                         
