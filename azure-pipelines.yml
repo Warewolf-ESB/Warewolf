@@ -1976,8 +1976,8 @@ jobs:
       Out-File -LiteralPath "$(Agent.BuildDirectory)\s\Dev\Dev2.Studio\bin\Release\net48\win\FullVersionString" -InputObject $HighestReadVersion -Encoding default -Force
       git -C "$(Build.SourcesDirectory)" tag $HighestReadVersion
       git -C "$(Build.SourcesDirectory)" push https://gitlab.com/warewolf/warewolf $HighestReadVersion
-      if ($VersionString.EndsWith(".0")) {
-        $TrimmedVersionString = "$VersionString".TrimEnd(".0")
+      if ($HighestReadVersion.EndsWith(".0")) {
+        $TrimmedVersionString = "$HighestReadVersion".TrimEnd(".0")
         Write-Host "##vso[build.updatebuildnumber]$(Build.BuildNumber) ($TrimmedVersionString)"
       } else {
         Write-Host "##vso[build.updatebuildnumber]$(Build.BuildNumber) ($HighestReadVersion)"
@@ -2003,6 +2003,7 @@ jobs:
 
   steps:
   - powershell: |
+      Sleep 30
       if (!(Test-Path "$(Agent.SourcesDirectory)\Dev\AcceptanceTesting.sln")) {
       	Write-Host File not found: "$(Agent.SourcesDirectory)\Dev\AcceptanceTesting.sln"
       	exit 1
