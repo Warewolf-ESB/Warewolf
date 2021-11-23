@@ -10,6 +10,8 @@ Enhancements
 Test Coverage
 - Child nodes are now include with our coverage percentage and denoted similarily to Decision tool on our HTML render .coverage
 - Can now run coverage for a single test
+- Mocked node now show as covered nodes
+- Coverage report shows total mocked nodes count
 
 05 November 2021
 ======================
