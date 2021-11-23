@@ -1976,7 +1976,12 @@ jobs:
       Out-File -LiteralPath "$(Agent.BuildDirectory)\s\Dev\Dev2.Studio\bin\Release\net48\win\FullVersionString" -InputObject $HighestReadVersion -Encoding default -Force
       git -C "$(Build.SourcesDirectory)" tag $HighestReadVersion
       git -C "$(Build.SourcesDirectory)" push https://gitlab.com/warewolf/warewolf $HighestReadVersion
-      Write-Host "##vso[build.updatebuildnumber]$(Build.BuildNumber) ($HighestReadVersion)"
+      if ($VersionString.EndsWith(".0")) {
+        $TrimmedVersionString = "$VersionString".TrimEnd(".0")
+        Write-Host "##vso[build.updatebuildnumber]$(Build.BuildNumber) ($TrimmedVersionString)"
+      } else {
+        Write-Host "##vso[build.updatebuildnumber]$(Build.BuildNumber) ($HighestReadVersion)"
+      }
 
   - task: PublishBuildArtifacts@1
     inputs:
@@ -1989,5 +1994,198 @@ jobs:
     inputs:
       PathtoPublish: '$(Agent.BuildDirectory)\\s\\Dev\\Dev2.Studio\\bin\\Release\\net48\\win'
       ArtifactName: 'Release Studio'
+      publishLocation: 'Container'
+      StoreAsTar: false
+
+- job: rider_report
+  displayName: 'Rider Report'
+  dependsOn: [Zip_Tool_Specs,Email_Tools_Specs,Resource_Tools_Specs,File_And_Folder_Copy_Tool_Specs,Data_Tools_Specs,Request_Service_Name_View_Models_Unit_Tests,Unzip_Tool_Specs_Validation,Recordset_Tools_Specs,File_And_Folder_Rename_Tool_Specs,Other_Tools_Specs,File_And_Folder_Move_Tool_Specs,File_Read_Tool_Specs,Infrastructure_Unit_Tests,New_Folder_Read_Tool_Specs,Write_File_Tool_Specs,Loop_Construct_Tools_Specs,Utility_Tools_Specs,Folder_Read_Tool_Specs,SQL_Bulk_Insert_Tool_Specs,Control_Flow_Tools_Specs,Studio_View_Models_Unit_Tests,File_And_Folder_Create_Tool_Specs,Storage_Unit_Tests,Storage_Tools_Specs,File_And_Folder_Delete_Tool_Specs,Scripting_Tools_Specs,Database_Tools_Specs,Auditing_Unit_Tests,Workflow_Execution_Specs,Studio_Test_Framework_With_Hello_World_Workflow_Specs,Studio_Test_Framework_With_Utility_Tools_Specs,MS_SQL_Server_Specs,Studio_Test_Framework_With_Data_Tools_Specs,Assign_Workflow_Execution_Specs,Integration_Tests,Studio_Test_Framework_With_Scripting_Tools_Specs,Other_Activities_Specs,Studio_Test_Framework_With_File_And_Folder_Tools_Specs,Studio_Test_Framework_With_HTTP_Web_Tools_Specs,Studio_Test_Framework_With_Subworkflow_Specs,Workflow_Merging_Specs,Example_Workflow_Execution_Specs,Studio_Test_Framework_Specs,Subworkflow_Execution_Specs,Other_Specs,Studio_Test_Framework_With_Deleted_Resources_Specs,SQL_Integration_Tests,For_Each_Workflow_Execution_Specs,Copy_Tool_Specs_From_Local,Move_Tool_Specs_From_Local,Rename_Tool_Specs_From_Local,Unzip_Tool_Specs_From_Local,Zip_Tool_Specs_From_Local,Copy_Tool_Specs_From_FTP,Move_Tool_Specs_From_FTP,Rename_Tool_Specs_From_FTP,Unzip_Tool_Specs_From_FTP,Zip_Tool_Specs_From_FTP,Copy_Tool_Specs_From_FTPS,Move_Tool_Specs_From_FTPS,Rename_Tool_Specs_From_FTPS,Unzip_Tool_Specs_From_FTPS,Zip_Tool_Specs_From_FTPS,Copy_Tool_Specs_From_SFTP,Move_Tool_Specs_From_SFTP,Rename_Tool_Specs_From_SFTP,Unzip_Tool_Specs_From_SFTP,Zip_Tool_Specs_From_SFTP,Copy_Tool_Specs_From_UNC,Move_Tool_Specs_From_UNC,Studio_Core_Unit_Tests,Elasticsearch_View_Models_Unit_Tests,Search_Specs,Logger_Unit_Tests,Rename_Tool_Specs_From_UNC,Not_Parallelizable_Unit_Tests,Database_Workflow_Execution_Specs,RabbitMQ_Workflow_Execution_Specs,Studio_Test_Framework_With_HTTP_Web_Get_Tools_Specs,Studio_Test_Framework_With_HTTP_Web_Delete_Tools_Specs,Studio_Test_Framework_With_HTTP_Web_Post_Tools_Specs,Studio_Test_Framework_With_HTTP_Web_Put_Tools_Specs,Studio_Test_Framework_With_RabbitMQ_Tools_Specs,Database_Subworkflow_Execution_Specs,Intellisense_Textbox_Visual_Tree_Unit_Tests,Workflow_Execution_Logging_Specs]
+
+  steps:
+  - powershell: |
+      if (!(Test-Path "$(Agent.SourcesDirectory)\Dev\AcceptanceTesting.sln")) {
+      	Write-Host File not found: "$(Agent.SourcesDirectory)\Dev\AcceptanceTesting.sln"
+      	exit 1
+      }
+      if (Test-Path "$(Agent.BuildDirectory)\RiderReport\*Report.xml") {
+      	Remove-Item "$(Agent.BuildDirectory)\RiderReport\*Report.xml"
+      }
+      if (Test-Path "$(Agent.BuildDirectory)\RiderReport\*-RiderReport-ProjectGrouped.html") {
+      	Remove-Item "$(Agent.BuildDirectory)\RiderReport\*-RiderReport-ProjectGrouped.html"
+      }
+      if (Test-Path "$(Agent.BuildDirectory)\RiderReport\*-RiderReport-RuleGrouped.html") {
+      	Remove-Item "$(Agent.BuildDirectory)\RiderReport\*-RiderReport-RuleGrouped.html"
+      }
+      @([System.Tuple]::Create("ChangedInThisBranch",@(git -C "$(Agent.SourcesDirectory)" diff --name-status origin/develop).Where({ -not $_.StartsWith("D`t") -and $_.EndsWith(".cs"); })),
+      [System.Tuple]::Create("ChangedIn2Weeks",@(git -C "$(Agent.SourcesDirectory)" diff --name-status "@{2 weeks ago}" HEAD).Where({ -not $_.StartsWith("D`t") -and $_.EndsWith(".cs"); })),
+      [System.Tuple]::Create("ChangedInAMonth",@(git -C "$(Agent.SourcesDirectory)" diff --name-status "@{1 month ago}" HEAD).Where({ -not $_.StartsWith("D`t") -and $_.EndsWith(".cs"); }))) | %{
+          if ($_.Item1 -ne "ChangedInThisBranch" -and $_.Item2.length -eq 0) {
+              break
+          }
+          $IncludeXMLNode = ""
+          if ($_.Item2.length -gt 0) {
+      	    $IncludeXMLNode = @"
+          <IncludedFiles>
+      
+      "@
+      	    foreach ($ChangedFile in $_.Item2) {
+      		    if ($ChangedFile.StartsWith("M`t")) {
+      			    $ChangedFile = $ChangedFile.TrimStart("M`t")
+      		    }
+      		    if ($ChangedFile.StartsWith("A`t")) {
+      			    $ChangedFile = $ChangedFile.TrimStart("A`t")
+      		    }
+      		    if ($ChangedFile.StartsWith("R`t")) {
+      			    $ChangedFile = $ChangedFile.TrimStart("R`t")
+      		    }
+      		    if ($ChangedFile.StartsWith("C`t")) {
+      			    $ChangedFile = $ChangedFile.TrimStart("C`t")
+      		    }
+      		    if ($ChangedFile.StartsWith("U`t")) {
+      			    $ChangedFile = $ChangedFile.TrimStart("U`t")
+      		    }
+      		    if ($ChangedFile.StartsWith("?`t")) {
+      			    $ChangedFile = $ChangedFile.TrimStart("?`t")
+      		    }
+      		    if ($ChangedFile.StartsWith("??`t")) {
+      			    $ChangedFile = $ChangedFile.TrimStart("??`t")
+      		    }
+      		    if ($ChangedFile.StartsWith("!`t")) {
+      			    $ChangedFile = $ChangedFile.TrimStart("!`t")
+      		    }
+      		    if ($ChangedFile.StartsWith("Dev/")) {
+      			    $IncludeXMLNode += "        <IncludedFiles>" + $ChangedFile.TrimStart("Dev").TrimStart("/").Replace("/","\") + @"
+      </IncludedFiles>
+      
+      "@
+      		    }
+      	    }
+      	    $IncludeXMLNode += @"
+          </IncludedFiles>
+      
+      "@
+          }
+          $ConfigFileName = "$(Agent.BuildDirectory)\RiderReport\" + $_.Item1 + "Config.xml"
+          $ReportFileName = "$(Agent.BuildDirectory)\RiderReport\" + $_.Item1 + "Report.xml"
+          $ProjectGroupedHtmlFileName = "$(Agent.BuildDirectory)\RiderReport\" + $_.Item1 + "-RiderReport-ProjectGrouped.html"
+          $RuleGroupedHtmlFileName = "$(Agent.BuildDirectory)\RiderReport\" + $_.Item1 + "-RiderReport-RuleGrouped.html"
+      @"
+      <?xml version="1.0" encoding="utf-8"?>
+      <InspectCodeOptions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <Debug>false</Debug>
+          <Verbosity>INFO</Verbosity>
+          <SolutionFile>dev\AcceptanceTesting.sln</SolutionFile>
+          <DisabledSettingsLayers />
+          <SuppressBuildInSettings>false</SuppressBuildInSettings>
+          <Properties />
+          <TargetsForReferences />
+          <TargetsForItems />
+          <Extensions />
+          <ExtensionSources />
+          <CustomSettingsProfiles />
+          <OutputFile>
+      "@ + $ReportFileName + @"
+      </OutputFile>
+          <OutputFileFormat>Xml</OutputFileFormat>
+          <ParallelJobs>0</ParallelJobs>
+          <UseAbsolutePaths>false</UseAbsolutePaths>
+          <NoSolutionWideAnalysis>false</NoSolutionWideAnalysis>
+          <SolutionWideAnalysis>true</SolutionWideAnalysis>
+          <IncludedProjects />
+      
+      "@ + $IncludeXMLNode + @"
+          <ExcludedFiles>
+          <ExcludedFiles>*tests\**</ExcludedFiles>
+          <ExcludedFiles>*specs\**</ExcludedFiles>
+          <ExcludedFiles>**\*.xaml</ExcludedFiles>
+          <ExcludedFiles>**\*.xaml.cs</ExcludedFiles>
+          <ExcludedFiles>Warewolf.UnitTestAttributes\**</ExcludedFiles>
+          <ExcludedFiles>**\*.xml</ExcludedFiles>
+          <ExcludedFiles>**\*.css</ExcludedFiles>
+          <ExcludedFiles>**\*.js</ExcludedFiles>
+          <ExcludedFiles>TestBase\**</ExcludedFiles>
+          <ExcludedFiles>Warewolf.UIBindingTests.*\**</ExcludedFiles>
+          </ExcludedFiles>
+          <DumpIssuesTypes>false</DumpIssuesTypes>
+          <MinSeverity>SUGGESTION</MinSeverity>
+          <Measure>None</Measure>
+      </InspectCodeOptions>
+          "@ | Out-File -FilePath "$ConfigFileName"
+          if (!(Test-Path "$(Agent.BuildDirectory)\JetBrains.ReSharper.CommandLineTools\tools\inspectcode.exe")) {
+           nuget install JetBrains.ReSharper.CommandLineTools -ExcludeVersion -NonInteractive -OutputDirectory "$(Agent.BuildDirectory)"
+          }
+          #TODO impliment this when inspectcode supports roslyn analysers
+          #if (!(Test-Path "$(Agent.BuildDirectory)\codecracker.CSharp\analyzers\dotnet\cs\CodeCracker.CSharp.dll")) {
+              nuget install codecracker.CSharp -ExcludeVersion -NonInteractive -OutputDirectory "$(Agent.BuildDirectory)"
+          #}
+          Write-Host $(Get-Content "$ConfigFileName" -Raw)
+          &"$(Agent.BuildDirectory)\JetBrains.ReSharper.CommandLineTools\tools\inspectcode.exe" --build --config="$ConfigFileName" dev\AcceptanceTesting.sln
+          &"$(Agent.BuildDirectory)\JetBrains.ReSharper.CommandLineTools\tools\inspectcode.exe" --build --config="$ConfigFileName" --format=Html --output=$ProjectGroupedHtmlFileName dev\AcceptanceTesting.sln
+          if (!(Test-Path $ReportFileName)) {
+           exit 1
+          }
+          if (!(Test-Path "$(Agent.BuildDirectory)\RiderReport\transform.xsl")) {
+      @"
+      <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="msxsl">
+          <xsl:key name="ISSUETYPES" match="/Report/Issues/Project/Issue" use="@TypeId"/>
+          <xsl:output method="html" indent="yes"/>
+      
+          <xsl:template match="/" name="TopLevelReport">
+          <html>
+      	    <head>
+      		<title>Rider Report</title>
+      		
+      		<style>
+      		body { font-family: Arial; }
+      		th, td { text-align: left; }
+      		.severity { font-weight: bold; }
+      		</style>
+      	    </head>
+              <body>
+              <h1>Rider Report</h1>
+      
+              <xsl:for-each select="/Report/IssueTypes/IssueType">
+                  <h2>
+                  <span class="severity"><xsl:value-of select="@Severity"/></span>: <xsl:value-of select="@Description"/>
+                  </h2>
+                  <table style="width:100%">
+                  <tr>
+                      <th>File</th>
+                      <th>Line Number</th>
+                      <th>Message</th>
+                  </tr>
+                  <xsl:for-each select="key('ISSUETYPES',@Id)">
+                      <tr>
+                      <td>
+                          <xsl:value-of select="@File"/>
+                      </td>
+                      <td>
+                          <xsl:value-of select="@Line"/>
+                      </td>
+                      <td>
+                          <xsl:value-of select="@Message"/>
+                      </td>
+                      </tr>
+                  </xsl:for-each>
+                  </table>
+                  <br />
+                  <hr />
+                  <br />
+              </xsl:for-each>
+              </body>
+          </html>
+          </xsl:template>
+      </xsl:stylesheet>
+      "@ | Out-File -FilePath "$(Agent.BuildDirectory)\RiderReport\transform.xsl"
+          }
+          $xslt = New-Object System.Xml.Xsl.XslCompiledTransform;
+          $xslt.Load("$(Agent.BuildDirectory)\RiderReport\transform.xsl");
+          $xslt.Transform("$(Agent.BuildDirectory)\RiderReport\" + $ReportFileName, "$(Agent.BuildDirectory)\RiderReport\" + $RuleGroupedHtmlFileName);
+      }
+
+  - task: PublishBuildArtifacts@1
+    inputs:
+      PathtoPublish: '$(Agent.BuildDirectory)\RiderReport'
+      ArtifactName: 'Rider Report'
       publishLocation: 'Container'
       StoreAsTar: false
