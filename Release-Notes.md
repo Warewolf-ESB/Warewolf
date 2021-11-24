@@ -1,3 +1,11 @@
+24 November 2021
+======================
+
+Bug fixes
+----------
+- Fixed issue where new workflow were not being picked up by suspend tool
+- Fix suspend tool issue when using SelectAndApplyTool, ForEach and Switch activities
+
 23 November 2021
 ======================
 
