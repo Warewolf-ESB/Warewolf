@@ -2113,7 +2113,7 @@ jobs:
           <MinSeverity>SUGGESTION</MinSeverity>
           <Measure>None</Measure>
       </InspectCodeOptions>
-          "@ | Out-File -FilePath "$ConfigFileName"
+      "@ | Out-File -FilePath "$ConfigFileName"
           if (!(Test-Path "$(Agent.BuildDirectory)\JetBrains.ReSharper.CommandLineTools\tools\inspectcode.exe")) {
            nuget install JetBrains.ReSharper.CommandLineTools -ExcludeVersion -NonInteractive -OutputDirectory "$(Agent.BuildDirectory)"
           }
@@ -2121,7 +2121,6 @@ jobs:
           #if (!(Test-Path "$(Agent.BuildDirectory)\codecracker.CSharp\analyzers\dotnet\cs\CodeCracker.CSharp.dll")) {
               nuget install codecracker.CSharp -ExcludeVersion -NonInteractive -OutputDirectory "$(Agent.BuildDirectory)"
           #}
-          Sleep 30
           Write-Host $(Get-Content "$ConfigFileName" -Raw)
           &"$(Agent.BuildDirectory)\JetBrains.ReSharper.CommandLineTools\tools\inspectcode.exe" --build --config="$ConfigFileName" dev\AcceptanceTesting.sln
           &"$(Agent.BuildDirectory)\JetBrains.ReSharper.CommandLineTools\tools\inspectcode.exe" --build --config="$ConfigFileName" --format=Html --output=$ProjectGroupedHtmlFileName dev\AcceptanceTesting.sln
@@ -2185,7 +2184,7 @@ jobs:
           $xslt = New-Object System.Xml.Xsl.XslCompiledTransform;
           $xslt.Load("$(Agent.BuildDirectory)\RiderReport\transform.xsl");
           $xslt.Transform("$(Agent.BuildDirectory)\RiderReport\" + $ReportFileName, "$(Agent.BuildDirectory)\RiderReport\" + $RuleGroupedHtmlFileName);
-#      }
+      }
 
   - task: PublishBuildArtifacts@1
     inputs:
