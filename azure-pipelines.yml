@@ -2069,6 +2069,9 @@ jobs:
           $ReportFileName = "$(Agent.BuildDirectory)\RiderReport\" + $_.Item1 + "Report.xml"
           $ProjectGroupedHtmlFileName = "$(Agent.BuildDirectory)\RiderReport\" + $_.Item1 + "-RiderReport-ProjectGrouped.html"
           $RuleGroupedHtmlFileName = "$(Agent.BuildDirectory)\RiderReport\" + $_.Item1 + "-RiderReport-RuleGrouped.html"
+          if (!(Test-Path "$(Agent.BuildDirectory)\RiderReport")) {
+              New-Item -ItemType Directory "$(Agent.BuildDirectory)\RiderReport"
+          }
       @"
       <?xml version="1.0" encoding="utf-8"?>
       <InspectCodeOptions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
