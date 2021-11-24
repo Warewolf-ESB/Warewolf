@@ -2185,7 +2185,7 @@ jobs:
           }
           $xslt = New-Object System.Xml.Xsl.XslCompiledTransform;
           $xslt.Load("$(Agent.BuildDirectory)\RiderReport\transform.xsl");
-          $xslt.Transform("$ReportFileName, $RuleGroupedHtmlFileName);
+          $xslt.Transform($ReportFileName, $RuleGroupedHtmlFileName);
       }
 
   - task: PublishBuildArtifacts@1
