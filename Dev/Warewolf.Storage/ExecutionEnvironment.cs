@@ -876,7 +876,8 @@ namespace Warewolf.Storage
                 for(var i = 0; i < list.Length; i++)
                 {
                     var @string = list[i];
-                    if(i > 0 && list[i - 1].EndsWith(":") && !@string.StartsWith("\"") && !@string.StartsWith("{") && !@string.StartsWith("[") && !IsNumeric(@string) && @string != "null")
+                    if(i > 0 && list[i - 1].EndsWith(":") && !@string.StartsWith("\"") && !@string.StartsWith("{") && !@string.StartsWith("[")
+                       && !IsNumeric(@string) && !IsBool(@string) && @string != "null")
                     {
                         sb.Append("\"" + @string + "\"");
                         
@@ -891,8 +892,14 @@ namespace Warewolf.Storage
             
             private static bool IsNumeric(string val)
             {
-                var result = 0;
-                return Int32.TryParse(val, out result);
+                decimal result = 0;
+                return Decimal.TryParse(val, out result);
+            }
+            
+            private static bool IsBool(string val)
+            {
+                var result = false;
+                return Boolean.TryParse(val, out result);
             }
 
             internal void WriteErrors(HashSet<string> errors, HashSet<string> allErrors)
