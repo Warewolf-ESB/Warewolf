@@ -2121,6 +2121,7 @@ jobs:
           #if (!(Test-Path "$(Agent.BuildDirectory)\codecracker.CSharp\analyzers\dotnet\cs\CodeCracker.CSharp.dll")) {
               nuget install codecracker.CSharp -ExcludeVersion -NonInteractive -OutputDirectory "$(Agent.BuildDirectory)"
           #}
+          Sleep 30
           Write-Host $(Get-Content "$ConfigFileName" -Raw)
           &"$(Agent.BuildDirectory)\JetBrains.ReSharper.CommandLineTools\tools\inspectcode.exe" --build --config="$ConfigFileName" dev\AcceptanceTesting.sln
           &"$(Agent.BuildDirectory)\JetBrains.ReSharper.CommandLineTools\tools\inspectcode.exe" --build --config="$ConfigFileName" --format=Html --output=$ProjectGroupedHtmlFileName dev\AcceptanceTesting.sln
