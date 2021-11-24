@@ -872,20 +872,9 @@ namespace Warewolf.Storage
             {
                 var stringList = PublicFunctions.EvalEnv(_env);
                 var sb = new StringBuilder(4096);
-                var list = stringList.ToArray();
-                for(var i = 0; i < list.Length; i++)
+                foreach (var @string in stringList)
                 {
-                    var @string = list[i];
-                    if(i > 0 && list[i - 1].EndsWith(":") && !@string.StartsWith("\"") && !@string.StartsWith("{") && !@string.StartsWith("[")
-                       && !IsNumeric(@string) && !IsBool(@string) && @string != "null")
-                    {
-                        sb.Append("\"" + @string + "\"");
-                        
-                    }
-                    else
-                    {
-                        sb.Append(@string);
-                    }
+                    sb.Append(@string);
                 }
                 return sb.ToString();
             }
