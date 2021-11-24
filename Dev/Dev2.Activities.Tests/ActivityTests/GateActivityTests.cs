@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -13,12 +13,11 @@ using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
+using System.Activities;
 using System.Collections.Generic;
 using System.Linq;
 using Warewolf.Auditing;
-using Warewolf.Data;
 using Warewolf.Data.Options;
-using Warewolf.Data.Options.Enums;
 using Warewolf.Options;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
@@ -138,7 +137,42 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             Assert.AreEqual(expectedNextActivity.Object, result);
         }
-        
+
+        [TestMethod]
+        [Timeout(60000)]
+        [Owner("Siphamandla Dube")]
+        public void GateActivity_GetChildrenNodes_Given_Activities_ActivityTools()
+        {
+            //---------------Set up test pack-------------------
+            var uniqueId = Guid.NewGuid().ToString();
+            var childNode = new GateActivity
+            {
+                DisplayName = "Gate inside a Gate",
+                DataFunc = new ActivityFunc<string, bool>
+                {
+                    DisplayName = "test inner inner activity",
+                    Handler = new DsfSwitch { }
+                }
+            };
+
+            var activity = new GateActivity() 
+            {
+                UniqueID = uniqueId, 
+                DataFunc = new ActivityFunc<string, bool> 
+                {
+                    DisplayName = "test display name",
+                    Handler = childNode
+                } 
+            };
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(activity.GetChildrenNodes());
+            //---------------Execute Test ----------------------
+            var nodes = activity.GetChildrenNodes();
+            //---------------Test Result -----------------------
+            Assert.AreEqual(1, nodes.Count());
+            Assert.AreEqual("Gate inside a Gate", childNode.DisplayName);
+        }
+
         [TestMethod]
         [Timeout(60000)]
         [Owner("Pieter Terblanche")]
