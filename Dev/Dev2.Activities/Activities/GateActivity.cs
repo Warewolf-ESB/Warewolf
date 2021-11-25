@@ -641,6 +641,17 @@ namespace Dev2.Activities
         public Guid RetryEntryPointId { get; set; }
 
         public GateOptions GateOptions { get; set; }
+
+        public override IEnumerable<IDev2Activity> GetChildrenNodes()
+        {
+            var act = DataFunc.Handler as IDev2ActivityIOMapping;
+            if (act == null)
+            {
+                return new List<IDev2Activity>();
+            }
+            var childNodes = new List<IDev2Activity> { act };
+            return childNodes;
+        }
     }
 
     public class GateException : Exception

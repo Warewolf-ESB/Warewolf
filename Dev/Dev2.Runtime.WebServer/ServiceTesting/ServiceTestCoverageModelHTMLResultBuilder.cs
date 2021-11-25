@@ -219,6 +219,18 @@ namespace Dev2.Runtime.WebServer
                 workflowNode.NextNodes.ForEach(node => SetupNextNodeHTML(writer, coveredNodes, node));
                 writer.RenderEndTag();
             }
+
+            if (workflowNode.ChildNodes.ToList()?.Count > 0)
+            {
+                writer.AddStyleAttribute(HtmlTextWriterStyle.FontSize, "12px");
+                writer.AddAttribute(HtmlTextWriterAttribute.Class, "next-nodes");
+                writer.RenderBeginTag(HtmlTextWriterTag.Div);
+
+                workflowNode.ChildNodes
+                    .ToList()
+                    .ForEach(node => SetupNextNodeHTML(writer, coveredNodes, node)); //Should add SetupChildNodeHTML
+                writer.RenderEndTag();
+            }
         }
 
         public static void SetupNextNodeHTML(HtmlTextWriter writer, IWorkflowNode[] coveredNodes, IWorkflowNode node)

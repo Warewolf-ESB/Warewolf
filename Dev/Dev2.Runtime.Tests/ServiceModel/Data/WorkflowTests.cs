@@ -71,6 +71,34 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
         }
 
         [TestMethod]
+        [Timeout(500)]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(Workflow))]
+        public void Workflow_WorkflowNodes_FlowStep_WITH_ChildNode_ShouldAddChildNode()
+        {
+            var flowNodes = new Collection<FlowNode>
+            {
+               new FlowStep
+               {
+                   Action = new GateActivity
+                   {
+                       DisplayName = "Gate One (this activity does not set ActivityId and will not be part of the coverage)",
+                       DataFunc = new System.Activities.ActivityFunc<string, bool>
+                       {
+                           DisplayName = "I am a child node to Gate",
+                           Handler = new DsfSwitch{ }
+                       }
+                   }
+               }
+            };
+
+            var sut = new Workflow(flowNodes);
+            var nodes = sut.WorkflowNodes;
+
+            Assert.AreEqual(2, nodes.Count);
+        }
+
+        [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(Workflow))]
         public void Workflow_WorkflowNodesForHtml_FlowDecision_ContainingNoActivity_ShouldNotAddedAsWorkflowNode()

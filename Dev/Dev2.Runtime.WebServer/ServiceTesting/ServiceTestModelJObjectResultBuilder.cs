@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -79,8 +80,8 @@ namespace Dev2.Runtime.WebServer
         {
             var totalWorkflowNodesCount = report.AllWorkflowNodes;
             int notCoveredNodesCount = report.NotCoveredNodesCount;
-            var nodesCoveredCount = report.AllTestNodesCovered.SelectMany(o => o.TestNodesCovered);
-             
+            var nodesCoveredCount = report.AllTestNodesCovered.SelectMany(o => o.TestNodesCovered).Distinct().Flatten(o => o.ChildNodes);
+
             var assertedNodes = nodesCoveredCount.Where(oo => oo.MockSelected == false);
             var mockedNodes = nodesCoveredCount.Where(oo => oo.MockSelected == true);
             var resObj = new JObject
@@ -127,7 +128,8 @@ namespace Dev2.Runtime.WebServer
                 {"Node Name", report.StepDescription},
                 {"ActivityID", report.ActivityID},
                 {"UniqueID", report.UniqueID},
-                {"MockSelected", report.MockSelected}
+                {"MockSelected", report.MockSelected},
+                {"ChildNodes", new JArray{  report.ChildNodes.Select(o => o.BuildTestResultJSONForWebRequest()) } } 
             };
 
             return resObj;

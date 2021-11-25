@@ -67,10 +67,8 @@ namespace Dev2.Runtime.ESB.Management.Services
                 return new ExecuteMessage { HasError = true, Message = new StringBuilder(errorMessage) };
             }
             
-            //Get latest version of service by removing it from cache
-            var resourceObject = ResourceCatalogInstance.GetResource(GlobalConstants.ServerWorkspaceID, resourceId);
-            ResourceCatalogInstance.RemoveFromResourceActivityCache(GlobalConstants.ServerWorkspaceID, resourceObject);
-            
+            ResourceCatalogInstance.Reload();
+
             var dynamicService = ResourceCatalogInstance.GetService(GlobalConstants.ServerWorkspaceID, resourceId, "");
             if (dynamicService is null)
             {
