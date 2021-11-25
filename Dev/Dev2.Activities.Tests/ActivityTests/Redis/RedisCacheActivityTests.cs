@@ -10,6 +10,8 @@
 
 using Dev2.Activities.RedisCache;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Linq;
+using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Tests.Activities.ActivityTests.Redis
 {
@@ -46,6 +48,25 @@ namespace Dev2.Tests.Activities.ActivityTests.Redis
             var debugInputs = redisActivity.GetDebugInputs(null, 0);
             //---------------Test Result -----------------------
             Assert.AreEqual(0, debugInputs.Count);
+        }
+
+        [TestMethod]
+        [Timeout(60000)]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(RedisCacheActivity))]
+        public void RedisCacheActivity_GetChildrenNodes_ShouldReturnChildNodes()
+        {
+            //---------------Set up test pack-------------------
+            var redisActivity = CreateRedisActivity();
+            redisActivity.ActivityFunc = new System.Activities.ActivityFunc<string, bool>
+            {
+                Handler = new DsfFlowDecisionActivity { }
+            };
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            var debugInputs = redisActivity.GetChildrenNodes();
+            //---------------Test Result -----------------------
+            Assert.AreEqual(1, debugInputs.ToList().Count);
         }
 
     }

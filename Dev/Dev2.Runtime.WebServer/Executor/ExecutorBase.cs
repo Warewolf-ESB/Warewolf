@@ -205,7 +205,7 @@ namespace Dev2.Runtime.WebServer.Executor
             {
                 try
                 {
-                    var coverageDataContext = new CoverageDataContext(_dataObject.ResourceID, _dataObject.ReturnType, webRequest.WebServerUrl);
+                    var coverageDataContext = new CoverageDataContext(_dataObject.ResourceID, _dataObject.ReturnType, webRequest.WebServerUrl, _dataObject.TestName);
                     coverageDataContext.SetTestCoverageResourceIds(_resourceCatalog.NewContextualResourceCatalog(_authorizationService, _workspaceGuid), webRequest, serviceName, resource);
                     var formatter = ServiceTestCoverageExecutor.GetTestCoverageReports(coverageDataContext, _workspaceGuid, _serializer, _testCoverageCatalog, _testCatalog, _resourceCatalog, out _executePayload);
                     return new StringResponseWriter(_executePayload ?? string.Empty, formatter.ContentType);
