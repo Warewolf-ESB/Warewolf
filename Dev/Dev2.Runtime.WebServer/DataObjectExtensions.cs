@@ -576,6 +576,7 @@ namespace Dev2.Runtime.WebServer
             }
 
             var resultSummaryWriter = new StringWriter();
+            var resultCoverageNodesSummaryWriter = new StringWriter();
             if (coverageData.ReportName != "*")
             {             
                 using (var writer = new JsonTextWriter(resultSummaryWriter))
@@ -585,6 +586,16 @@ namespace Dev2.Runtime.WebServer
                         .ToList()
                         .SetupResultSummaryJSON(writer);
                 }
+
+                using (var writer = new JsonTextWriter(resultCoverageNodesSummaryWriter))
+                {
+                    allTestResults.Results
+                        .SelectMany(x => x.Results).Where(x => x.TestName.ToUpper() == coverageData.ReportName.ToUpper())
+                        .ToList()
+                        .SetupCoverageNodesSummaryJSON(writer);
+                }
+
+
             }
             else
             {
@@ -595,6 +606,17 @@ namespace Dev2.Runtime.WebServer
                         .ToList()
                         .SetupResultSummaryJSON(writer);
                 }
+
+                using (var writer = new JsonTextWriter(resultCoverageNodesSummaryWriter))
+                {
+                    allTestResults.Results
+                        .SelectMany(o => o.Results)
+                        .ToList()
+                        .SetupCoverageNodesSummaryJSON(writer);
+                }
+
+
+
             }
             var obj = new JObject
             {
@@ -602,6 +624,7 @@ namespace Dev2.Runtime.WebServer
                 {"EndTime", allCoverageReports.EndTime},
                 {"CoverageSummary", JToken.Parse(resultCoverageSummaryWriter.ToString()) },
                 {"TestSummary", JToken.Parse(resultSummaryWriter.ToString()) },
+                 {"CoverageNodesSummary", JToken.Parse(resultCoverageNodesSummaryWriter.ToString()) },
                 {"TestResults", new JArray(objArray)},
             };
             executePayload = serializer.Serialize(obj);
@@ -618,15 +641,20 @@ namespace Dev2.Runtime.WebServer
 
             using (var writer = new HtmlTextWriter(stringWriter))
             {
-                writer.SetupNavBarHtml(allCoverageReports.TotalReportsCoverage);             
-                
-                
+                writer.SetupNavBarHtml(allCoverageReports.TotalReportsCoverage);
+
                 if (coverageData.ReportName != "*")
                 {
                     allTestResults.Results
                         .SelectMany(o => o.Results).Where(x => x.TestName.ToUpper() == coverageData.ReportName.ToUpper())
                         .ToList()
-                        .SetupCountSummaryHtml(writer, coverageData);                 
+                        .SetupCountSummaryHtml(writer, coverageData);
+
+                    allTestResults.Results
+                       .SelectMany(o => o.Results).Where(x => x.TestName.ToUpper() == coverageData.ReportName.ToUpper())
+                       .ToList()
+                       .SetupLinesCountSummaryHtml(writer, coverageData);
+
                 }
                 else
                 {
@@ -634,6 +662,11 @@ namespace Dev2.Runtime.WebServer
                             .SelectMany(o => o.Results)
                             .ToList()
                             .SetupCountSummaryHtml(writer, coverageData);
+
+                    allTestResults.Results
+                    .SelectMany(o => o.Results)
+                    .ToList()
+                    .SetupLinesCountSummaryHtml(writer, coverageData);
                 }
               
                 allCoverageReports.WithTestReports

@@ -33,6 +33,25 @@ namespace Dev2.Runtime.WebServer
             writer.WriteValueAsync(serviceTestModelTOs.Count(o => o.TestPassed));
             writer.WritePropertyName("TestsInvalid");
             writer.WriteValueAsync(serviceTestModelTOs.Count(o => o.TestInvalid));
+
+            writer.WriteEndObject();
+        }
+
+
+        public static void SetupCoverageNodesSummaryJSON(this List<IServiceTestModelTO> serviceTestModelTOs, JsonTextWriter writer)
+        {
+            writer.WriteStartObject();        
+
+
+            writer.WritePropertyName("Total Nodes");
+            writer.WriteValueAsync("3");
+            writer.WritePropertyName("Covered Nodes");
+            writer.WriteValueAsync("2");
+            writer.WritePropertyName("Not Covered Nodes");
+            writer.WriteValueAsync("1");
+            writer.WritePropertyName("Coverage (%)");
+            writer.WriteValueAsync("50%");
+
             writer.WriteEndObject();
         }
 
