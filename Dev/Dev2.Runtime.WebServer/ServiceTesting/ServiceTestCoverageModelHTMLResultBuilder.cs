@@ -88,7 +88,7 @@ namespace Dev2.Runtime.WebServer
             writer.AddStyleAttribute(HtmlTextWriterStyle.FontWeight, "bold");
             writer.AddStyleAttribute(HtmlTextWriterStyle.FontSize, "16px");
             writer.AddStyleAttribute(HtmlTextWriterStyle.Width, "20%");
-            writer.AddStyleAttribute(HtmlTextWriterStyle.Padding, "8px 16px 16px 8px");
+            writer.AddStyleAttribute(HtmlTextWriterStyle.Padding, "8px 16px 5px 8px");
             writer.AddStyleAttribute(HtmlTextWriterStyle.Display, "inline-block");
             writer.RenderBeginTag(HtmlTextWriterTag.Div);
             writer.Write(resourcePath + "\\" + coverageData.ReportName.Replace("*", ""));
@@ -256,7 +256,7 @@ namespace Dev2.Runtime.WebServer
 
         internal static void SetupLinesCountSummaryHtml(this List<IServiceTestModelTO> allTests, HtmlTextWriter writer, ICoverageDataObject coverageData)
         {             
-            writer.AddStyleAttribute(HtmlTextWriterStyle.Padding, "10px 10px 20px 10px");
+            writer.AddStyleAttribute(HtmlTextWriterStyle.Padding, "10px 10px 5px 10px");
             writer.AddStyleAttribute(HtmlTextWriterStyle.Margin, "5px");
             writer.AddAttribute(HtmlTextWriterAttribute.Class, "count-summary row");
             writer.RenderBeginTag(HtmlTextWriterTag.Div);
@@ -310,7 +310,7 @@ namespace Dev2.Runtime.WebServer
             }
             else if ((coveragePer > 65) && (coveragePer <= 85))
             {
-                writer.AddStyleAttribute(HtmlTextWriterStyle.Color, "yellow");
+                writer.AddStyleAttribute(HtmlTextWriterStyle.Color, "orange");
             }           
             else if(coveragePer > 85)  
             {
@@ -318,7 +318,7 @@ namespace Dev2.Runtime.WebServer
             }
             writer.AddAttribute(HtmlTextWriterAttribute.Class, "table-td-red");
             writer.RenderBeginTag(HtmlTextWriterTag.Td);
-            writer.Write("Coverage (%): " + coveragePer);
+            writer.Write("Coverage : " + coveragePer + "%");
             writer.RenderEndTag();
 
             writer.RenderBeginTag(HtmlTextWriterTag.Td);
@@ -339,7 +339,7 @@ namespace Dev2.Runtime.WebServer
 
         internal static void SetupCountSummaryHtml(this List<IServiceTestModelTO> allTests, HtmlTextWriter writer, ICoverageDataObject coverageData)
         {
-            writer.AddStyleAttribute(HtmlTextWriterStyle.Padding, "10px 10px 20px 10px");
+            writer.AddStyleAttribute(HtmlTextWriterStyle.Padding, "10px 10px 0px 10px");
             writer.AddStyleAttribute(HtmlTextWriterStyle.Margin, "5px");
             writer.AddAttribute(HtmlTextWriterAttribute.Class, "count-summary row");
             writer.RenderBeginTag(HtmlTextWriterTag.Div);
@@ -405,7 +405,7 @@ namespace Dev2.Runtime.WebServer
             writer.RenderEndTag();
 
             writer.RenderBeginTag(HtmlTextWriterTag.Td);
-            if (coverageData.IsMultipleWorkflowReport)
+            if ((coverageData.IsMultipleWorkflowReport) || (coverageData.ReportName=="*"))
             {
                 writer.AddAttribute(HtmlTextWriterAttribute.Target, "_new");
                 writer.AddAttribute(HtmlTextWriterAttribute.Href, coverageData.GetAllTestsUrl());
@@ -422,7 +422,7 @@ namespace Dev2.Runtime.WebServer
 
         internal static void SetupCoverageCountSummaryHtml(this HtmlTextWriter writer,IWorkflowCoverageReports coverageReports)
         {
-            writer.AddStyleAttribute(HtmlTextWriterStyle.Padding, "10px 10px 20px 10px");
+            writer.AddStyleAttribute(HtmlTextWriterStyle.Padding, "10px 10px 5px 10px");
             writer.AddStyleAttribute(HtmlTextWriterStyle.Margin, "5px");
             writer.AddAttribute(HtmlTextWriterAttribute.Class, "count-summary row");
             writer.RenderBeginTag(HtmlTextWriterTag.Div);

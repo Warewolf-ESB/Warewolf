@@ -890,6 +890,101 @@ namespace Dev2.Tests.Runtime.WebServer
 
         }
 
+
+
+        [TestMethod]
+        [Owner("Yogesh Rajpurohit")]
+        [TestCategory(nameof(DataObjectExtensions))]
+        public void DataObjectExtensions_RunCoverageAndReturnHTML_CheckSingleTest_IfTestNameHasNoSpace_ShouldReturnEmptyForCoveredNodes_Results()
+        {
+            var serializer = new Dev2JsonSerializer();
+
+            var mockTestCoverageCatalog = new Mock<ITestCoverageCatalog>();
+            mockTestCoverageCatalog.Setup(o => o.Fetch(_workflowOne))
+            .Returns(new List<IServiceTestCoverageModelTo>
+            {
+                new ServiceTestCoverageModelTo
+            {
+                WorkflowId = _workflowOne,
+                OldReportName = "test 1",
+                ReportName =  _reportName,
+                TotalCoverage = 0.3,
+                AllTestNodesCovered = new ISingleTestNodesCovered[]
+                {
+                    new SingleTestNodesCovered(_reportName, new List<IServiceTestStep>
+                    {
+                        new ServiceTestStepTO
+                        {
+                            ActivityID = _testStepOne,
+                            UniqueID = _testStepOne,
+                            Type = StepType.Assert,
+                            StepDescription = "StepType Assert",
+                        }
+                    })
+                }
+            },
+                new ServiceTestCoverageModelTo
+            {
+
+                WorkflowId = _workflowOne,
+                OldReportName = "test 2",
+                ReportName =  _reportName2,
+                TotalCoverage = 0.67,
+                AllTestNodesCovered = new ISingleTestNodesCovered[]
+                {
+                    new SingleTestNodesCovered(_reportName2, new List<IServiceTestStep>
+                    {
+                        new ServiceTestStepTO
+                        {
+                            ActivityID = _testStepOne,
+                            UniqueID = _testStepOne,
+                            Type = StepType.Assert,
+                            StepDescription = "StepType Assert",
+                        }
+                    })
+                }
+                }
+            });
+
+
+            var mockTestCatalog = new Mock<ITestCatalog>();
+            mockTestCatalog.Setup(o => o.Fetch(_workflowOne))
+                .Returns(new List<IServiceTestModelTO> { new ServiceTestModelTO
+                {
+                    TestName = "test 2",
+                    TestPassed = true,
+                    TestSteps = new List<IServiceTestStep>
+                    {
+                        new ServiceTestStepTO(_testStepOne, "Activity", new ObservableCollection<IServiceTestOutput>(), StepType.Assert){ }
+                    },
+                    Result = new TestRunResult
+                    {
+                        RunTestResult = RunResult.TestPassed
+                    }
+                }});
+
+            MockSetup(out Mock<ICoverageDataObject> mockCoverageDataObject,
+                      out Mock<IResourceCatalog> mockResourceCatalog);
+
+            mockCoverageDataObject.Setup(o => o.ReportName)
+                .Returns("test1");
+
+            var sut = DataObjectExtensions.RunCoverageAndReturnHTML(mockCoverageDataObject.Object, mockTestCoverageCatalog.Object, mockTestCatalog.Object, mockResourceCatalog.Object, _workspaceGuid, out string executePayload);
+
+            Assert.IsNotNull(executePayload);
+            Assert.AreEqual("text/html; charset=utf-8", sut.ContentType);
+            StringAssert.Contains(executePayload, "Total Test Count: 0");
+            StringAssert.Contains(executePayload, "Tests Passed: 0");
+            StringAssert.Contains(executePayload, "Tests Failed: 0");
+            StringAssert.Contains(executePayload, "Tests Invalid: 0");
+            StringAssert.Contains(executePayload, "Total Nodes: 0");
+            StringAssert.Contains(executePayload, "Covered Nodes: 2");
+            StringAssert.Contains(executePayload, "Not Covered Nodes: 1");
+            StringAssert.Contains(executePayload, "Coverage : 80%");
+
+        }
+
+
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DataObjectExtensions))]
