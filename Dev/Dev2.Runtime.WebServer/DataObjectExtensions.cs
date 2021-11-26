@@ -296,11 +296,12 @@ namespace Dev2.Runtime.WebServer
                 }
 
                 var resources = catalog.GetExecutableResources(path);
-                coverageData.CoverageReportResourceIds = resources.Where(o => o is IWarewolfWorkflow).Select(p => p.ResourceID).GroupBy(o => o).Select(o => o.Key).ToArray();
+                coverageData.CoverageReportResources = resources.Where(o => o is IWarewolfWorkflow).Select(o => o as IWarewolfWorkflow).ToArray();
+
             }
             else if (resource != null)
             {
-                coverageData.CoverageReportResourceIds = new[] { resource.ResourceID };
+                coverageData.CoverageReportResources = new[] { resource as IWarewolfWorkflow };
             }
         }
 
@@ -662,51 +663,11 @@ namespace Dev2.Runtime.WebServer
                 StartTime = DateTime.Now
             };
 
-            var resources = catalog.GetResources<IWarewolfWorkflow>(workspaceGuid);
-            var selectedResources = resources.Where(resource => coverageData.CoverageReportResourceIds.Contains(resource.ResourceID)).ToArray();
+            var resourceReportTemp = new WarewolfWorkflowReports(coverageData.CoverageReportResources, coverageData.ReportName);
+            var (TestResults, WorkflowCoverageReports) = resourceReportTemp.Calculte(testCoverageCatalog, testCatalog);
 
-            var testResultsTemp = new List<WorkflowTestResults>();
-            var coverageReportsTemp = new List<WorkflowCoverageReports>();
-
-            foreach (var coverageResourceId in coverageData.CoverageReportResourceIds)
-            {
-                var res = selectedResources.FirstOrDefault(o => o.ResourceID == coverageResourceId);
-                if (res is null)
-                {
-                    continue;
-                }
-
-                var workflowTestResults = new WorkflowTestResults();
- 
-                testCatalog.Fetch(coverageResourceId)
-                    ?.ForEach(o => workflowTestResults.Add(o));
-
-                testResultsTemp.Add(workflowTestResults);
-
-                var coverageReports = new WorkflowCoverageReports(res);
-
-                
-                if  (coverageData.ReportName != "*")
-                {
-                    var tempcoverageReport = testCoverageCatalog.Fetch(coverageResourceId).Find(oo=>oo.ReportName.ToUpper()== coverageData.ReportName.ToUpper());
-                    if (tempcoverageReport != null)
-                    {
-                        coverageReports.Add(tempcoverageReport);
-                    }
-                }
-                else
-                {
-                    testCoverageCatalog.Fetch(coverageResourceId)
-                     ?.ForEach(o => coverageReports.Add(o));
-                }
-                
-                coverageReportsTemp.Add(coverageReports);
-
-            }
-
-            testResultsTemp.ForEach(o => allTestResults.Add(o));
-
-            coverageReportsTemp.ForEach(o => allCoverageReports.Add(o));
+            TestResults.ToList().ForEach(o => allTestResults.Add(o));
+            WorkflowCoverageReports.ToList().ForEach(o => allCoverageReports.Add(o));
 
             allTestResults.EndTime = DateTime.Now;
             allCoverageReports.EndTime = DateTime.Now;

@@ -1670,7 +1670,7 @@ namespace Dev2.Tests.Runtime.WebServer
 
             DataObjectExtensions.SetTestCoverageResourceIds(sut, new Mock<IContextualResourceCatalog>().Object, null, string.Empty, mockWarewolfResource.Object);
 
-            Assert.AreEqual(resourceId, sut.CoverageReportResourceIds.First());
+            Assert.AreEqual(resourceId, sut.CoverageReportResources.First());
         }
 
 
@@ -1700,7 +1700,7 @@ namespace Dev2.Tests.Runtime.WebServer
 
             DataObjectExtensions.SetTestCoverageResourceIds(sut, mockContextualResourceCatalog.Object, new WebRequestTO { WebServerUrl = uri }, "*", mockWarewolfResource.Object);
 
-            Assert.AreEqual(resourceId, sut.CoverageReportResourceIds.First());
+            Assert.AreEqual(resourceId, sut.CoverageReportResources.First());
         }
 
         [TestMethod]
@@ -1888,8 +1888,8 @@ namespace Dev2.Tests.Runtime.WebServer
         private static void MockSetup(out Mock<ICoverageDataObject> mockCoverageDataObject, out Mock<IResourceCatalog> mockResourceCatalog)
         {
             mockCoverageDataObject = new Mock<ICoverageDataObject>();
-            mockCoverageDataObject.Setup(o => o.CoverageReportResourceIds)
-                .Returns(new[] { _workflowOne, _workflowTwo });
+            mockCoverageDataObject.Setup(o => o.CoverageReportResources)
+                .Returns(new[] { new Workflow { ResourceID = _workflowOne }, new Workflow { ResourceID = _workflowTwo } });
             mockCoverageDataObject.Setup(o => o.ReportName)
                 .Returns("*");
 
