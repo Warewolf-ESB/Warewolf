@@ -255,7 +255,7 @@ namespace Dev2.Runtime.WebServer
         }
 
         internal static void SetupLinesCountSummaryHtml(this List<IServiceTestModelTO> allTests, HtmlTextWriter writer, ICoverageDataObject coverageData)
-        {
+        {             
             writer.AddStyleAttribute(HtmlTextWriterStyle.Padding, "10px 10px 20px 10px");
             writer.AddStyleAttribute(HtmlTextWriterStyle.Margin, "5px");
             writer.AddAttribute(HtmlTextWriterAttribute.Class, "count-summary row");
@@ -272,7 +272,7 @@ namespace Dev2.Runtime.WebServer
             writer.AddStyleAttribute(HtmlTextWriterStyle.Color, "black");
             writer.AddAttribute(HtmlTextWriterAttribute.Class, "table-td-black");
             writer.RenderBeginTag(HtmlTextWriterTag.Td);
-            writer.Write("Total Nodes: " + "3");
+            writer.Write("Total Nodes: " + allTests.Count);
             writer.RenderEndTag();
 
             writer.AddStyleAttribute(HtmlTextWriterStyle.Width, "200px");
@@ -296,9 +296,9 @@ namespace Dev2.Runtime.WebServer
             writer.Write("Not Covered Nodes: " + "1");
             writer.RenderEndTag();
 
-            int coveragePer;
-            coveragePer = 80;
+            int coveragePer = 0;
 
+            coveragePer = 80;
             writer.AddStyleAttribute(HtmlTextWriterStyle.Width, "200px");
             writer.AddStyleAttribute(HtmlTextWriterStyle.FontWeight, "bold");
             writer.AddStyleAttribute(HtmlTextWriterStyle.FontSize, "14px");

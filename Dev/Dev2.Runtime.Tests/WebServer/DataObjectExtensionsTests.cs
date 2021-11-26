@@ -413,7 +413,7 @@ namespace Dev2.Tests.Runtime.WebServer
             StringAssert.Contains(executePayload, "\"TestResults\": [\r\n    {\r\n      \"ResourceID\": \"fbda8700-2717-4879-88cd-6abdea4560da\",\r\n  ");
             StringAssert.Contains(executePayload, "\r\n  \"CoverageSummary\": {\r\n    \"TotalCoverage\": 100.0\r\n  },");
             StringAssert.Contains(executePayload, "\r\n  \"TestSummary\": {\r\n    \"TestsTotalCount\": 1,\r\n    \"TestsFailed\": 0,\r\n    \"TestsPassed\": 0,\r\n    \"TestsInvalid\": 1\r\n  },");
-            StringAssert.Contains(executePayload, "\r\n  \"CoverageNodesSummary\": {\r\n    \"Total Nodes\": \"3\",\r\n    \"Covered Nodes\": \"2\",\r\n    \"Not Covered Nodes\": \"1\",\r\n    \"Coverage (%)\": \"50%\"\r\n  }");   
+            StringAssert.Contains(executePayload, "\r\n  \"CoverageNodesSummary\": {\r\n    \"Total Nodes\": 1,\r\n    \"Covered Nodes\": \"2\",\r\n    \"Not Covered Nodes\": \"1\",\r\n    \"Coverage (%)\": \"50%\"\r\n  },");   
             StringAssert.Contains(executePayload, "\"NodesSummary\": {\r\n            \"TotalNodesCount\": 0,\r\n            \"NotCoveredNodes\": 0,\r\n            \"CoveredNodes\": 3,\r\n            \"CoveredNodesDetails\": [\r\n              {\r\n                \"Assert\": 1,\r\n                \"Mocked\": 2\r\n              }\r\n            ]\r\n          }");
             StringAssert.Contains(executePayload, "\"ChildNodes\": [\r\n                        {\r\n                          \"Node Name\": null,\r\n                          \"ActivityID\": \"85d142b4-9db9-4d8e-bb8c-5900aad9588c\",\r\n                          \"UniqueID\": \"00000000-0000-0000-0000-000000000000\",\r\n                          \"MockSelected\": true,\r\n                          \"ChildNodes\": []\r\n                        }\r\n                      ]\r\n");
         }
@@ -704,7 +704,7 @@ namespace Dev2.Tests.Runtime.WebServer
             StringAssert.Contains(executePayload, "Tests Passed: 1");
             StringAssert.Contains(executePayload, "Tests Failed: 0");
             StringAssert.Contains(executePayload, "Tests Invalid: 0");
-            StringAssert.Contains(executePayload, "Total Nodes: 3");
+            StringAssert.Contains(executePayload, "Total Nodes: 1");
             StringAssert.Contains(executePayload, "Covered Nodes: 2");
             StringAssert.Contains(executePayload, "Not Covered Nodes: 1");
             StringAssert.Contains(executePayload, "Coverage (%): 80");

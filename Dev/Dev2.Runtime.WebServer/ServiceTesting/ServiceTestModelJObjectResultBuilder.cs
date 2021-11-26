@@ -44,7 +44,7 @@ namespace Dev2.Runtime.WebServer
 
 
             writer.WritePropertyName("Total Nodes");
-            writer.WriteValueAsync("3");
+            writer.WriteValueAsync(serviceTestModelTOs.Count);
             writer.WritePropertyName("Covered Nodes");
             writer.WriteValueAsync("2");
             writer.WritePropertyName("Not Covered Nodes");
