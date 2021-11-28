@@ -876,8 +876,19 @@ namespace Warewolf.Storage
                 {
                     sb.Append(@string);
                 }
-
                 return sb.ToString();
+            }
+            
+            private static bool IsNumeric(string val)
+            {
+                decimal result = 0;
+                return Decimal.TryParse(val, out result);
+            }
+            
+            private static bool IsBool(string val)
+            {
+                var result = false;
+                return Boolean.TryParse(val, out result);
             }
 
             internal void WriteErrors(HashSet<string> errors, HashSet<string> allErrors)
