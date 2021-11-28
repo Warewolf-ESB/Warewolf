@@ -16,10 +16,18 @@ namespace Warewolf.Testing
     public class PrivateObject
     {
         Object _privateObject;
+        Type _privateType;
 
         public PrivateObject(object privateObject)
         {
             _privateObject = privateObject;
+            _privateType = null;
+        }
+
+        public PrivateObject(Type privateType)
+        {
+            _privateObject = null;
+            _privateType = privateType;
         }
         
         public object Invoke(string memberName) => Invoke(memberName, false, new object[]{});
@@ -27,7 +35,7 @@ namespace Warewolf.Testing
         public object Invoke(string memberName, bool isStaticMember) => Invoke(memberName, isStaticMember, new object[]{});
         public object Invoke(string memberName, bool isStaticMember, params object[] inputParameters)
         {
-            var getType = _privateObject.GetType();
+            var getType = _privateObject == null ? _privateType : _privateObject.GetType();
             while (getType.GetMethod(memberName, (isStaticMember ? BindingFlags.Static : BindingFlags.Instance) | BindingFlags.NonPublic) == null && getType.BaseType != null)
             {
                 getType = getType.BaseType;
@@ -39,7 +47,7 @@ namespace Warewolf.Testing
         public object GetFieldOrProperty(string fieldName) => GetFieldOrProperty(fieldName, false);
         public object GetFieldOrProperty(string fieldName, bool isStaticField)
         {
-            var getType = _privateObject.GetType();
+            var getType = _privateObject == null ? _privateType : _privateObject.GetType();
             while (getType.GetField(fieldName, (isStaticField ? BindingFlags.Static : BindingFlags.Instance) | BindingFlags.NonPublic) == null && getType.BaseType != null)
             {
                 getType = getType.BaseType;
@@ -49,12 +57,13 @@ namespace Warewolf.Testing
         }
         
         public object GetField(string fieldName) => GetField(fieldName, false);
+        public object GetStaticField(string fieldName) => GetField(fieldName, true);
         public object GetField(string fieldName, bool isStaticField) => GetFieldOrProperty(fieldName, isStaticField);
         
         public void SetField(string fieldName, object setValue) => SetField(fieldName, setValue, false);
         public void SetField(string fieldName, object setValue, bool isStaticField)
         {
-            var getType = _privateObject.GetType();
+            var getType = _privateObject == null ? _privateType : _privateObject.GetType();
             while (getType.GetField(fieldName, (isStaticField ? BindingFlags.Static : BindingFlags.Instance) | BindingFlags.NonPublic) == null && getType.BaseType != null)
             {
                 getType = getType.BaseType;
@@ -69,7 +78,7 @@ namespace Warewolf.Testing
         public object GetProperty(string propertyName) => GetProperty(propertyName, false);
         public object GetProperty(string propertyName, bool isStaticProperty)
         {
-            var getType = _privateObject.GetType();
+            var getType = _privateObject == null ? _privateType : _privateObject.GetType();
             while (getType.GetProperty(propertyName, (isStaticProperty ? BindingFlags.Static : BindingFlags.Instance) | BindingFlags.NonPublic) == null && getType.BaseType != null)
             {
                 getType = getType.BaseType;
@@ -81,7 +90,7 @@ namespace Warewolf.Testing
         public void SetProperty(string propertyName, object setValue) => SetProperty(propertyName, setValue, false);
         public void SetProperty(string propertyName, object setValue, bool isStaticProperty)
         {
-            var getType = _privateObject.GetType();
+            var getType = _privateObject == null ? _privateType : _privateObject.GetType();
             while (getType.GetProperty(propertyName, (isStaticProperty ? BindingFlags.Static : BindingFlags.Instance) | BindingFlags.NonPublic) == null && getType.BaseType != null)
             {
                 getType = getType.BaseType;
