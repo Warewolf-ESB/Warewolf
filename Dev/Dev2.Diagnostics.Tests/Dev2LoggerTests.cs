@@ -45,7 +45,7 @@ namespace Dev2.Diagnostics.Test
         public void GetMappingElement_Scenerio_Result()
         {
             //------------Setup for test-------------------------
-            var pr = new Warewolf.Testing.PrivateObject(typeof(Dev2Logger));
+            var pr = new Warewolf.Testing.PrivateType(typeof(Dev2Logger));
             var value = pr.Invoke("GetMappingElement", true, "Level0", "ERROR");
             //------------Execute Test---------------------------
             //------------Assert Results-------------------------
