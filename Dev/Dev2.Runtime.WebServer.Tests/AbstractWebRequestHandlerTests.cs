@@ -1658,7 +1658,7 @@ namespace Dev2.Tests.Runtime.WebServer
             {
                 RunTestResult = RunResult.TestPassed
             };
-            var privateObject = new PrivateType(typeof(ServiceTestModelJObjectResultBuilder));
+            var privateObject = new Warewolf.Testing.PrivateObject(typeof(ServiceTestModelJObjectResultBuilder));
             //------------Execute Test---------------------------
             var result = privateObject.InvokeStatic("BuildTestResultJSONForWebRequest", to);
             //------------Assert Results-------------------------
@@ -1677,7 +1677,7 @@ namespace Dev2.Tests.Runtime.WebServer
                 RunTestResult = RunResult.TestFailed,
                 Message = ""
             };
-            var privateObject = new PrivateType(typeof(ServiceTestModelJObjectResultBuilder));
+            var privateObject = new Warewolf.Testing.PrivateObject(typeof(ServiceTestModelJObjectResultBuilder));
             //------------Execute Test---------------------------
             var result = privateObject.InvokeStatic("BuildTestResultJSONForWebRequest", to);
             //------------Assert Results-------------------------
@@ -1696,7 +1696,7 @@ namespace Dev2.Tests.Runtime.WebServer
                 RunTestResult = RunResult.TestInvalid,
                 Message = ""
             };
-            var privateObject = new PrivateType(typeof(ServiceTestModelJObjectResultBuilder));
+            var privateObject = new Warewolf.Testing.PrivateObject(typeof(ServiceTestModelJObjectResultBuilder));
             //------------Execute Test---------------------------
             var result = privateObject.InvokeStatic("BuildTestResultJSONForWebRequest", to);
             //------------Assert Results-------------------------
@@ -1715,7 +1715,7 @@ namespace Dev2.Tests.Runtime.WebServer
                 RunTestResult = RunResult.TestResourceDeleted,
                 Message = ""
             };
-            var privateObject = new PrivateType(typeof(ServiceTestModelJObjectResultBuilder));
+            var privateObject = new Warewolf.Testing.PrivateObject(typeof(ServiceTestModelJObjectResultBuilder));
             //------------Execute Test---------------------------
             var result = privateObject.InvokeStatic("BuildTestResultJSONForWebRequest", to);
             //------------Assert Results-------------------------
@@ -1734,7 +1734,7 @@ namespace Dev2.Tests.Runtime.WebServer
                 RunTestResult = RunResult.TestResourcePathUpdated,
                 Message = ""
             };
-            var privateObject = new PrivateType(typeof(ServiceTestModelJObjectResultBuilder));
+            var privateObject = new Warewolf.Testing.PrivateObject(typeof(ServiceTestModelJObjectResultBuilder));
             //------------Execute Test---------------------------
             var result = privateObject.InvokeStatic("BuildTestResultJSONForWebRequest", to);
             //------------Assert Results-------------------------
@@ -1753,7 +1753,7 @@ namespace Dev2.Tests.Runtime.WebServer
                 RunTestResult = RunResult.TestPending,
                 Message = ""
             };
-            var privateObject = new PrivateType(typeof(ServiceTestModelJObjectResultBuilder));
+            var privateObject = new Warewolf.Testing.PrivateObject(typeof(ServiceTestModelJObjectResultBuilder));
             //------------Execute Test---------------------------
             var result = privateObject.InvokeStatic("BuildTestResultJSONForWebRequest", to);
             //------------Assert Results-------------------------
@@ -1775,7 +1775,7 @@ namespace Dev2.Tests.Runtime.WebServer
                 RunTestResult = RunResult.TestPassed
             };
             toList.Add(to);
-            var privateObject = new PrivateType(typeof(ServiceTestModelTRXResultBuilder));
+            var privateObject = new Warewolf.Testing.PrivateObject(typeof(ServiceTestModelTRXResultBuilder));
             //------------Execute Test---------------------------
             var result = privateObject.InvokeStatic("BuildTestResultTRX", "Hello World", toList);
             //------------Assert Results-------------------------
@@ -1797,7 +1797,7 @@ namespace Dev2.Tests.Runtime.WebServer
                 Message = ""
             };
             toList.Add(to);
-            var privateObject = new PrivateType(typeof(ServiceTestModelTRXResultBuilder));
+            var privateObject = new Warewolf.Testing.PrivateObject(typeof(ServiceTestModelTRXResultBuilder));
             //------------Execute Test---------------------------
             var result = privateObject.InvokeStatic("BuildTestResultTRX", "Hello World", toList);
             //------------Assert Results-------------------------
@@ -1819,7 +1819,7 @@ namespace Dev2.Tests.Runtime.WebServer
                 Message = ""
             };
             toList.Add(to);
-            var privateObject = new PrivateType(typeof(ServiceTestModelTRXResultBuilder));
+            var privateObject = new Warewolf.Testing.PrivateObject(typeof(ServiceTestModelTRXResultBuilder));
             //------------Execute Test---------------------------
             var result = privateObject.InvokeStatic("BuildTestResultTRX", "Hello World", toList);
             //------------Assert Results-------------------------
@@ -1841,7 +1841,7 @@ namespace Dev2.Tests.Runtime.WebServer
                 Message = ""
             };
             toList.Add(to);
-            var privateObject = new PrivateType(typeof(ServiceTestModelTRXResultBuilder));
+            var privateObject = new Warewolf.Testing.PrivateObject(typeof(ServiceTestModelTRXResultBuilder));
             //------------Execute Test---------------------------
             var result = privateObject.InvokeStatic("BuildTestResultTRX", "Hello World", toList);
             //------------Assert Results-------------------------
@@ -1863,7 +1863,7 @@ namespace Dev2.Tests.Runtime.WebServer
                 Message = ""
             };
             toList.Add(to);
-            var privateObject = new PrivateType(typeof(ServiceTestModelTRXResultBuilder));
+            var privateObject = new Warewolf.Testing.PrivateObject(typeof(ServiceTestModelTRXResultBuilder));
             //------------Execute Test---------------------------
             var result = privateObject.InvokeStatic("BuildTestResultTRX", "Hello World", toList);
             //------------Assert Results-------------------------
@@ -1885,7 +1885,7 @@ namespace Dev2.Tests.Runtime.WebServer
                 Message = ""
             };
             toList.Add(to);
-            var privateObject = new PrivateType(typeof(ServiceTestModelTRXResultBuilder));
+            var privateObject = new Warewolf.Testing.PrivateObject(typeof(ServiceTestModelTRXResultBuilder));
             //------------Execute Test---------------------------
             var result = privateObject.InvokeStatic("BuildTestResultTRX", "Hello World", toList);
             //------------Assert Results-------------------------
@@ -1911,7 +1911,7 @@ namespace Dev2.Tests.Runtime.WebServer
         public void AbstractWebRequestHandler_CleanupXml_GivenXml_ShouldAppendXmlCorrectly()
         {
             //------------Setup for test-------------------------
-            var privateObject = new PrivateType(typeof(AbstractWebRequestHandler));
+            var privateObject = new Warewolf.Testing.PrivateObject(typeof(AbstractWebRequestHandler));
             const string BaseStr = "www.examlple.com?home=<Datalist>DatalistPayload</Datalist>";
             //------------Execute Test---------------------------
             var value = SubmittedData.CleanupXml(BaseStr);
@@ -1928,7 +1928,7 @@ namespace Dev2.Tests.Runtime.WebServer
         public void AbstractWebRequestHandler_CleanupXml_GivenXml_EscapeSequence()
         {
             //------------Setup for test-------------------------
-            var privateObject = new PrivateType(typeof(AbstractWebRequestHandler));
+            var privateObject = new Warewolf.Testing.PrivateObject(typeof(AbstractWebRequestHandler));
             string baseStr = "www.examlple.com?home=<Datalist><objResponse><BusinessEvent><Customer><Mandate json:Array=\"true\" xmlns:json=\"http://james.newtonking.com/projects/json\"><MandateId></MandateId></Mandate></Customer></BusinessEvent></objResponse></Datalist>";
             string baseStrEscaped = "www.examlple.com?home=<Datalist><objResponse><BusinessEvent><Customer><Mandate json:Array=\\\"true\\\" xmlns:json=\\\"http://james.newtonking.com/projects/json\\\"><MandateId></MandateId></Mandate></Customer></BusinessEvent></objResponse></Datalist>";
             //------------Execute Test---------------------------
@@ -1947,7 +1947,7 @@ namespace Dev2.Tests.Runtime.WebServer
         public void AbstractWebRequestHandler_ExtractKeyValuePairForGetMethod_GivenEmptyPayload_ShouldUseContextQueryString()
         {
             //------------Setup for test-------------------------
-            var privateObject = new PrivateType(typeof(AbstractWebRequestHandler));
+            var privateObject = new Warewolf.Testing.PrivateObject(typeof(AbstractWebRequestHandler));
             var mock = new Mock<ICommunicationContext>();
             mock.Setup(communicationContext => communicationContext.Request.QueryString)
                 .Returns(new NameValueCollection());

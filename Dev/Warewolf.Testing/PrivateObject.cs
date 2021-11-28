@@ -32,6 +32,7 @@ namespace Warewolf.Testing
         
         public object Invoke(string memberName) => Invoke(memberName, false, new object[]{});
         public object Invoke(string memberName, params object[] inputParameters) => Invoke(memberName, false, inputParameters);
+        public object InvokeStatic(string memberName, params object[] inputParameters) => Invoke(memberName, true, inputParameters);
         public object Invoke(string memberName, bool isStaticMember) => Invoke(memberName, isStaticMember, new object[]{});
         public object Invoke(string memberName, bool isStaticMember, params object[] inputParameters)
         {
