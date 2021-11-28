@@ -60,7 +60,11 @@ namespace Dev2.Core.Tests.Settings
             _mockEnvironment.Setup(model => model.AuthorizationService).Returns(authorizationService.Object);
             var activeServer = new Server(Guid.NewGuid(), _mockConnection.Object);
             ServerRepository.Instance.ActiveServer = activeServer;
-            var privateCounters = new PerfcounterViewModel(new Mock<IPerformanceCounterTo>().Object, new Mock<IServer>().Object);
+            CustomContainer.Register<IExplorerTooltips>(new ExplorerTooltips());
+            var mockPerformanceCounters = new Mock<IPerformanceCounterTo>();
+            mockPerformanceCounters.Setup(counter=>counter.NativeCounters).Returns(new List<IPerformanceCounter>());
+            mockPerformanceCounters.Setup(counter=>counter.ResourceCounters).Returns(new List<IResourcePerformanceCounter>());
+            var privateCounters = new PerfcounterViewModel(mockPerformanceCounters.Object, new Mock<IServer>().Object);
             var counters = new Warewolf.Testing.PrivateObject(privateCounters);
             CustomContainer.Register(new Mock<IExplorerTooltips>().Object);
             //------------Setup for test------------------------
