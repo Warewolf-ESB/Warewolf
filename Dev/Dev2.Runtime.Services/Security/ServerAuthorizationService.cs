@@ -144,7 +144,7 @@ namespace Dev2.Runtime.Security
                     break;
 
                 case WebServerRequestType.WebInvokeService:
-                    var authorizationContext = IsWebInvokeServiceSave(request.Url.AbsolutePath) ? Dev2.Common.Interfaces.Enums.AuthorizationContext.Contribute : AuthorizationContext.View;
+                    var authorizationContext = IsWebInvokeServiceSave(request.Url.AbsolutePath) ? Dev2.Common.Interfaces.Enums.AuthorizationContext.Contribute : Dev2.Common.Interfaces.Enums.AuthorizationContext.View;
                     result = IsAuthorized(request.User, authorizationContext, GetResource(request));
                     break;
 
