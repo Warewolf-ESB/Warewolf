@@ -707,7 +707,7 @@ namespace Dev2.Tests.Runtime.WebServer
             StringAssert.Contains(executePayload, "Total Nodes: 1");
             StringAssert.Contains(executePayload, "Covered Nodes: 2");
             StringAssert.Contains(executePayload, "Not Covered Nodes: 1");
-            StringAssert.Contains(executePayload, "Coverage (%): 80");
+            StringAssert.Contains(executePayload, "Coverage : 80%");
         }
 
 
@@ -796,10 +796,11 @@ namespace Dev2.Tests.Runtime.WebServer
             StringAssert.Contains(executePayload, "Tests Passed: 1");
             StringAssert.Contains(executePayload, "Tests Failed: 0");
             StringAssert.Contains(executePayload, "Tests Invalid: 0");
-            StringAssert.Contains(executePayload, "Total Nodes Count: 1");
-            StringAssert.Contains(executePayload, "Covered Nodes: 1");
-            StringAssert.Contains(executePayload, "Not Covered Nodes: 0");
-          
+            StringAssert.Contains(executePayload, "Total Nodes: 1");
+            StringAssert.Contains(executePayload, "Covered Nodes: 2");
+            StringAssert.Contains(executePayload, "Not Covered Nodes: 1");
+            StringAssert.Contains(executePayload, "Coverage : 80%");
+
         }
 
         [TestMethod]
