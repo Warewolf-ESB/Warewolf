@@ -465,7 +465,7 @@ namespace Dev2.Studio.ViewModels
 
         public IAuthorizeCommand<string> NewSqlServerSourceCommand
         {
-            get => _newSqlServerSourceCommand ?? (_newSqlServerSourceCommand = new AuthorizeCommand<string>(Dev2.Common.Interfaces.Enums.Dev2.Common.Interfaces.Enums.AuthorizationContext.Contribute, param => NewSqlServerSource(@""), param => IsActiveServerConnected()));
+            get => _newSqlServerSourceCommand ?? (_newSqlServerSourceCommand = new AuthorizeCommand<string>(Dev2.Common.Interfaces.Enums.AuthorizationContext.Contribute, param => NewSqlServerSource(@""), param => IsActiveServerConnected()));
         }
 
         public IAuthorizeCommand<string> NewMySqlSourceCommand
