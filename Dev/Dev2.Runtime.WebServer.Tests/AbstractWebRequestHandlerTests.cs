@@ -1851,7 +1851,7 @@ namespace Dev2.Tests.Runtime.WebServer
                 Message = ""
             };
             toList.Add(to);
-            var getMethod = typeof(ServiceTestModelJObjectResultBuilder).GetMethod("BuildTestResultTRX", new[]{typeof(string), typeof(List<IServiceTestModelTO>)});
+            var getMethod = typeof(ServiceTestModelTRXResultBuilder).GetMethod("BuildTestResultTRX", new[]{typeof(string), typeof(List<IServiceTestModelTO>)});
             Assert.IsNotNull(getMethod);
             //------------Execute Test---------------------------
             var result = getMethod.Invoke(typeof(ServiceTestModelTRXResultBuilder), new object[] {"Hello World", toList});
