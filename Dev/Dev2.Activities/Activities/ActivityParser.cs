@@ -111,23 +111,9 @@ namespace Dev2.Activities
                 }
                 return bbb.ToList();
             }
-            if (topLevelActivity is DsfSwitch @switch)
-            {
-                var vv = @switch.Switches.ToDictionary(k => k.Key);
-                var activities = vv.Values.Select(k => k.Value);
-                return activities;
-            }
-            if (topLevelActivity is DsfForEachActivity f)
-            {
-                var dev2Activity = (f.DataFunc.Handler as IDev2Activity);
-                return dev2Activity?.NextNodes ?? new List<IDev2Activity>();
-            }
-            if (topLevelActivity is DsfSelectAndApplyActivity s)
-            {
-                var dev2Activity = (s.ApplyActivityFunc.Handler as IDev2Activity);
-                return dev2Activity?.NextNodes ?? new List<IDev2Activity>();
-            }
-            var dev2Activities = topLevelActivity.NextNodes?.Flatten(activity =>
+            var nextNodes = (topLevelActivity.GetType() == typeof(DsfSwitch)) ? ((DsfSwitch)topLevelActivity).GetNextNodes() : topLevelActivity.NextNodes;
+
+            var dev2Activities = nextNodes?.Flatten(activity =>
             {
                 var uniqueId = Guid.Parse(activity.UniqueID);
                 var displayName = activity.GetDisplayName();

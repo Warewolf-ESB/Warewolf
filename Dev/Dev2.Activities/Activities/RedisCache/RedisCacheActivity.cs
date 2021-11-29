@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -39,6 +39,7 @@ using System.Globalization;
 using Dev2.Data.Interfaces.Enums;
 using Warewolf.Data;
 using Warewolf.Exceptions;
+using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Activities.RedisCache
 {
@@ -111,6 +112,17 @@ namespace Dev2.Activities.RedisCache
         public static bool ShouldSerializeConnection() => false;
 
         public ActivityFunc<string, bool> ActivityFunc { get; set; }
+
+        public override IEnumerable<IDev2Activity> GetChildrenNodes()
+        {
+            var act = ActivityFunc.Handler as IDev2ActivityIOMapping;
+            if (act == null)
+            {
+                return new List<IDev2Activity>();
+            }
+            var childNodes = new List<IDev2Activity> { act };
+            return childNodes;
+        }
 
         public override IEnumerable<StateVariable> GetState()
         {

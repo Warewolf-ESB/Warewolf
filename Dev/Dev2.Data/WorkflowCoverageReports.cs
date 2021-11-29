@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Runtime.WebServer;
 using Warewolf.Data;
@@ -27,7 +28,7 @@ namespace Dev2.Data
         public List<IServiceTestCoverageModelTo> Reports { get; private set; } = new List<IServiceTestCoverageModelTo>();
         public bool HasTestReports => Reports.ToList().Count > 0;
         public IWarewolfWorkflow Resource { get; }
-        public IEnumerable<IWorkflowNode> WorkflowNodes => Resource.WorkflowNodes;
+        public IEnumerable<IWorkflowNode> WorkflowNodes => CalculateWorkflowNodes();
         public IWorkflowNode[] CoveredWorkflowNodes => CalculateCoveredWorkflowNodes();
         public IEnumerable<Guid> CoveredWorkflowNodesNotMockedIds => CalculateCoveredWorkflowNodesNotMockedIds();
         public IEnumerable<Guid> CoveredWorkflowNodesMockedIds => CalculateCoveredWorkflowNodesMockedIds();
@@ -69,9 +70,18 @@ namespace Dev2.Data
         {
             return Reports
                 .SelectMany(o => o.AllTestNodesCovered)
-                .SelectMany(o => o.TestNodesCovered)
-                .GroupBy(n => n.ActivityID)
-                .Select(o => o.First()).ToArray();
+                .SelectMany(oo => oo.TestNodesCovered)
+                .Flatten(ooo => ooo.ChildNodes)
+                .Distinct()
+                .ToArray();
+        }
+
+        private IWorkflowNode[] CalculateWorkflowNodes()
+        {
+            return Resource.WorkflowNodes
+                .Flatten(o => o.ChildNodes)
+                .Distinct()
+                .ToArray();
         }
 
         private double GetTotalCoverage()
