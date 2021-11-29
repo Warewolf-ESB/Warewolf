@@ -1658,9 +1658,10 @@ namespace Dev2.Tests.Runtime.WebServer
             {
                 RunTestResult = RunResult.TestPassed
             };
-            var privateObject = new Warewolf.Testing.PrivateObject(typeof(ServiceTestModelJObjectResultBuilder));
+            var getMethod = typeof(ServiceTestModelJObjectResultBuilder).GetMethod("BuildTestResultJSONForWebRequest", new[]{typeof(IServiceTestModelTO)});
+            Assert.IsNotNull(getMethod);
             //------------Execute Test---------------------------
-            var result = privateObject.InvokeStatic("BuildTestResultJSONForWebRequest", to);
+            var result = getMethod.Invoke(typeof(ServiceTestModelJObjectResultBuilder), new object[] {to});
             //------------Assert Results-------------------------
             Assert.IsTrue(result.ToString().Contains("\"Result\": \"Passed\""));
         }
@@ -1677,10 +1678,12 @@ namespace Dev2.Tests.Runtime.WebServer
                 RunTestResult = RunResult.TestFailed,
                 Message = ""
             };
-            var privateObject = new Warewolf.Testing.PrivateObject(typeof(ServiceTestModelJObjectResultBuilder));
+            var getMethod = typeof(ServiceTestModelJObjectResultBuilder).GetMethod("BuildTestResultJSONForWebRequest", new[]{typeof(IServiceTestModelTO)});
+            Assert.IsNotNull(getMethod);
             //------------Execute Test---------------------------
-            var result = privateObject.InvokeStatic("BuildTestResultJSONForWebRequest", to);
+            var result = getMethod.Invoke(typeof(ServiceTestModelTRXResultBuilder), new object[] {to});
             //------------Assert Results-------------------------
+            Assert.IsNotNull(result);
             Assert.IsTrue(result.ToString().Contains("\"Result\": \"Failed\""));
         }
 
@@ -1696,9 +1699,10 @@ namespace Dev2.Tests.Runtime.WebServer
                 RunTestResult = RunResult.TestInvalid,
                 Message = ""
             };
-            var privateObject = new Warewolf.Testing.PrivateObject(typeof(ServiceTestModelJObjectResultBuilder));
+            var getMethod = typeof(ServiceTestModelJObjectResultBuilder).GetMethod("BuildTestResultJSONForWebRequest", new[]{typeof(IServiceTestModelTO)});
+            Assert.IsNotNull(getMethod);
             //------------Execute Test---------------------------
-            var result = privateObject.InvokeStatic("BuildTestResultJSONForWebRequest", to);
+            var result = getMethod.Invoke(typeof(ServiceTestModelJObjectResultBuilder), new object[] {to});
             //------------Assert Results-------------------------
             Assert.IsTrue(result.ToString().Contains("\"Result\": \"Invalid\""));
         }
@@ -1715,9 +1719,10 @@ namespace Dev2.Tests.Runtime.WebServer
                 RunTestResult = RunResult.TestResourceDeleted,
                 Message = ""
             };
-            var privateObject = new Warewolf.Testing.PrivateObject(typeof(ServiceTestModelJObjectResultBuilder));
+            var getMethod = typeof(ServiceTestModelJObjectResultBuilder).GetMethod("BuildTestResultJSONForWebRequest", new[]{typeof(IServiceTestModelTO)});
+            Assert.IsNotNull(getMethod);
             //------------Execute Test---------------------------
-            var result = privateObject.InvokeStatic("BuildTestResultJSONForWebRequest", to);
+            var result = getMethod.Invoke(typeof(ServiceTestModelJObjectResultBuilder), new object[] {to});
             //------------Assert Results-------------------------
             Assert.IsTrue(result.ToString().Contains("\"Result\": \"ResourceDelete\""));
         }
@@ -1734,9 +1739,10 @@ namespace Dev2.Tests.Runtime.WebServer
                 RunTestResult = RunResult.TestResourcePathUpdated,
                 Message = ""
             };
-            var privateObject = new Warewolf.Testing.PrivateObject(typeof(ServiceTestModelJObjectResultBuilder));
+            var getMethod = typeof(ServiceTestModelJObjectResultBuilder).GetMethod("BuildTestResultJSONForWebRequest", new[]{typeof(IServiceTestModelTO)});
+            Assert.IsNotNull(getMethod);
             //------------Execute Test---------------------------
-            var result = privateObject.InvokeStatic("BuildTestResultJSONForWebRequest", to);
+            var result = getMethod.Invoke(typeof(ServiceTestModelJObjectResultBuilder), new object[] {to});
             //------------Assert Results-------------------------
             Assert.IsTrue(result.ToString().Contains("\"Result\": \"ResourcpathUpdated\""));
         }
@@ -1753,9 +1759,10 @@ namespace Dev2.Tests.Runtime.WebServer
                 RunTestResult = RunResult.TestPending,
                 Message = ""
             };
-            var privateObject = new Warewolf.Testing.PrivateObject(typeof(ServiceTestModelJObjectResultBuilder));
+            var getMethod = typeof(ServiceTestModelJObjectResultBuilder).GetMethod("BuildTestResultJSONForWebRequest", new[]{typeof(IServiceTestModelTO)});
+            Assert.IsNotNull(getMethod);
             //------------Execute Test---------------------------
-            var result = privateObject.InvokeStatic("BuildTestResultJSONForWebRequest", to);
+            var result = getMethod.Invoke(typeof(ServiceTestModelJObjectResultBuilder), new object[] {to});
             //------------Assert Results-------------------------
             Assert.IsTrue(result.ToString().Contains("\"Result\": \"Pending\""));
         }
@@ -1775,9 +1782,10 @@ namespace Dev2.Tests.Runtime.WebServer
                 RunTestResult = RunResult.TestPassed
             };
             toList.Add(to);
-            var privateObject = new Warewolf.Testing.PrivateObject(typeof(ServiceTestModelTRXResultBuilder));
+            var getMethod = typeof(ServiceTestModelTRXResultBuilder).GetMethod("BuildTestResultTRX", new[]{typeof(string), typeof(List<IServiceTestModelTO>)});
+            Assert.IsNotNull(getMethod);
             //------------Execute Test---------------------------
-            var result = privateObject.InvokeStatic("BuildTestResultTRX", "Hello World", toList);
+            var result = getMethod.Invoke(typeof(ServiceTestModelTRXResultBuilder), new object[] {"Hello World", toList});
             //------------Assert Results-------------------------
             Assert.IsTrue(result.ToString().Contains("outcome=\"Passed\""));
         }
@@ -1797,9 +1805,10 @@ namespace Dev2.Tests.Runtime.WebServer
                 Message = ""
             };
             toList.Add(to);
-            var privateObject = new Warewolf.Testing.PrivateObject(typeof(ServiceTestModelTRXResultBuilder));
+            var getMethod = typeof(ServiceTestModelTRXResultBuilder).GetMethod("BuildTestResultTRX", new[]{typeof(string), typeof(List<IServiceTestModelTO>)});
+            Assert.IsNotNull(getMethod);
             //------------Execute Test---------------------------
-            var result = privateObject.InvokeStatic("BuildTestResultTRX", "Hello World", toList);
+            var result = getMethod.Invoke(typeof(ServiceTestModelTRXResultBuilder), new object[] {"Hello World", toList});
             //------------Assert Results-------------------------
             Assert.IsTrue(result.ToString().Contains("outcome=\"Failed\""));
         }
@@ -1819,9 +1828,10 @@ namespace Dev2.Tests.Runtime.WebServer
                 Message = ""
             };
             toList.Add(to);
-            var privateObject = new Warewolf.Testing.PrivateObject(typeof(ServiceTestModelTRXResultBuilder));
+            var getMethod = typeof(ServiceTestModelTRXResultBuilder).GetMethod("BuildTestResultTRX", new[]{typeof(string), typeof(List<IServiceTestModelTO>)});
+            Assert.IsNotNull(getMethod);
             //------------Execute Test---------------------------
-            var result = privateObject.InvokeStatic("BuildTestResultTRX", "Hello World", toList);
+            var result = getMethod.Invoke(typeof(ServiceTestModelTRXResultBuilder), new object[] {"Hello World", toList});
             //------------Assert Results-------------------------
             Assert.IsTrue(result.ToString().Contains("outcome=\"Invalid\""));
         }
@@ -1841,9 +1851,10 @@ namespace Dev2.Tests.Runtime.WebServer
                 Message = ""
             };
             toList.Add(to);
-            var privateObject = new Warewolf.Testing.PrivateObject(typeof(ServiceTestModelTRXResultBuilder));
+            var getMethod = typeof(ServiceTestModelJObjectResultBuilder).GetMethod("BuildTestResultTRX", new[]{typeof(string), typeof(List<IServiceTestModelTO>)});
+            Assert.IsNotNull(getMethod);
             //------------Execute Test---------------------------
-            var result = privateObject.InvokeStatic("BuildTestResultTRX", "Hello World", toList);
+            var result = getMethod.Invoke(typeof(ServiceTestModelTRXResultBuilder), new object[] {"Hello World", toList});
             //------------Assert Results-------------------------
             Assert.IsTrue(result.ToString().Contains("outcome=\"ResourceDeleted\""));
         }
@@ -1863,9 +1874,10 @@ namespace Dev2.Tests.Runtime.WebServer
                 Message = ""
             };
             toList.Add(to);
-            var privateObject = new Warewolf.Testing.PrivateObject(typeof(ServiceTestModelTRXResultBuilder));
+            var getMethod = typeof(ServiceTestModelTRXResultBuilder).GetMethod("BuildTestResultTRX", new[]{typeof(string), typeof(List<IServiceTestModelTO>)});
+            Assert.IsNotNull(getMethod);
             //------------Execute Test---------------------------
-            var result = privateObject.InvokeStatic("BuildTestResultTRX", "Hello World", toList);
+            var result = getMethod.Invoke(typeof(ServiceTestModelTRXResultBuilder), new object[] {"Hello World", toList});
             //------------Assert Results-------------------------
             Assert.IsTrue(result.ToString().Contains("outcome=\"ResourcePathUpdated\""));
         }
@@ -1885,9 +1897,10 @@ namespace Dev2.Tests.Runtime.WebServer
                 Message = ""
             };
             toList.Add(to);
-            var privateObject = new Warewolf.Testing.PrivateObject(typeof(ServiceTestModelTRXResultBuilder));
+            var getMethod = typeof(ServiceTestModelTRXResultBuilder).GetMethod("BuildTestResultTRX", new[]{typeof(string), typeof(List<IServiceTestModelTO>)});
+            Assert.IsNotNull(getMethod);
             //------------Execute Test---------------------------
-            var result = privateObject.InvokeStatic("BuildTestResultTRX", "Hello World", toList);
+            var result = getMethod.Invoke(typeof(ServiceTestModelTRXResultBuilder), new object[] {"Hello World", toList});
             //------------Assert Results-------------------------
             Assert.IsTrue(result.ToString().Contains("outcome=\"Pending\""));
         }
