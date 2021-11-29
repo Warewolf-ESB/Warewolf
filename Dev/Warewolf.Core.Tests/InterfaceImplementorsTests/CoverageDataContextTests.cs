@@ -35,7 +35,7 @@ namespace Dev2.Tests.InterfaceImplementorsTests
             Assert.AreEqual(Guid.Empty, sut.ResourceID);
             Assert.IsTrue(sut.IsMultipleWorkflowReport);
             Assert.AreEqual(Web.EmitionTypes.Cover, sut.ReturnType);
-            Assert.AreEqual(_resourceId, sut.CoverageReportResources.First());
+            Assert.AreEqual(_resourceId, sut.CoverageReportResources.First().ResourceID);
         }
 
         [TestMethod]

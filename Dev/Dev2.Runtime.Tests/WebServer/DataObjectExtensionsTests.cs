@@ -34,7 +34,6 @@ using Dev2.Services.Security;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Warewolf.Data;
-using Warewolf.Execution;
 using Warewolf.Services;
 
 namespace Dev2.Tests.Runtime.WebServer
@@ -1662,7 +1661,7 @@ namespace Dev2.Tests.Runtime.WebServer
         {
             var resourceId = Guid.NewGuid();
 
-            var mockWarewolfResource = new Mock<IWarewolfResource>();
+            var mockWarewolfResource = new Mock<IWarewolfWorkflow>();
             mockWarewolfResource.Setup(o => o.ResourceID)
                 .Returns(resourceId);
 
@@ -1670,7 +1669,7 @@ namespace Dev2.Tests.Runtime.WebServer
 
             DataObjectExtensions.SetTestCoverageResourceIds(sut, new Mock<IContextualResourceCatalog>().Object, null, string.Empty, mockWarewolfResource.Object);
 
-            Assert.AreEqual(resourceId, sut.CoverageReportResources.First());
+            Assert.AreEqual(resourceId, sut.CoverageReportResources.First().ResourceID);
         }
 
 
@@ -1688,7 +1687,7 @@ namespace Dev2.Tests.Runtime.WebServer
 
             var mockContextualResourceCatalog = new Mock<IContextualResourceCatalog>();
             mockContextualResourceCatalog.Setup(o => o.GetExecutableResources("/"))
-                .Returns(new List<IWarewolfResource>
+                .Returns(new List<IWarewolfWorkflow>
                 {
                     new Workflow
                     {
@@ -1700,7 +1699,7 @@ namespace Dev2.Tests.Runtime.WebServer
 
             DataObjectExtensions.SetTestCoverageResourceIds(sut, mockContextualResourceCatalog.Object, new WebRequestTO { WebServerUrl = uri }, "*", mockWarewolfResource.Object);
 
-            Assert.AreEqual(resourceId, sut.CoverageReportResources.First());
+            Assert.AreEqual(resourceId, sut.CoverageReportResources.First().ResourceID);
         }
 
         [TestMethod]
