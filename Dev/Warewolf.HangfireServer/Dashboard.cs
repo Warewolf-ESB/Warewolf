@@ -11,8 +11,8 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using Hangfire;
 using Microsoft.Owin;
-using Owin;
 using HangfireServer;
+using Microsoft.AspNetCore.Builder;
 
 [assembly: OwinStartup(typeof(Dashboard))]
 namespace HangfireServer
@@ -20,7 +20,7 @@ namespace HangfireServer
     public class Dashboard
     {
         [ExcludeFromCodeCoverage]
-        public void Configuration(IAppBuilder app)
+        public void Configuration(IApplicationBuilder app)
         {
             app.UseHangfireDashboard("/" + Dev2.Common.Config.Persistence.DashboardName, new DashboardOptions()
             {
