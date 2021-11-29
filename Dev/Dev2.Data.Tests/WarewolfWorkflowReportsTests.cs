@@ -37,6 +37,16 @@ namespace Dev2.Data.Tests
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(WarewolfWorkflowReports))]
+        public void WarewolfWorkflowReports_Add_GIVEN_Null_ShouldNotAddNull1()
+        {
+            var sut = new WarewolfWorkflowReports(new List<IWarewolfWorkflow> { null }, null);
+
+            Assert.AreEqual(0, sut.TotalWorkflowNodesCoveredPercentage);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(WarewolfWorkflowReports))]
         public void WarewolfWorkflowReports_Add_GIVEN_NotNull_ShouldAddWorkflow()
         {
             var sut = new WarewolfWorkflowReports(new List<IWarewolfWorkflow> { new Workflow() }, default);
@@ -96,6 +106,39 @@ namespace Dev2.Data.Tests
             _ = sut.Calculte(mockTestCoverageCatalog.Object, new Mock<ITestCatalog>().Object);
 
             Assert.AreEqual(3, sut.TotalWorkflowsNodesCount);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(WarewolfWorkflowReports))]
+        public void WarewolfWorkflowReports_Calculte_TotalWorkflowNodesCoveredPercentage_GIVEN_ResourceNotFound_ShouldReturnReport1()
+        {
+            var workflowID = Guid.NewGuid();
+
+            var mockWarewolfWorkflow = new Mock<IWarewolfWorkflow>();
+            mockWarewolfWorkflow.Setup(o => o.ResourceID)
+                .Returns(workflowID);
+            mockWarewolfWorkflow.Setup(o => o.WorkflowNodes)
+                .Returns(new List<IWorkflowNode>());
+
+            var mockTestCoverageCatalog = new Mock<ITestCoverageCatalog>();
+            mockTestCoverageCatalog.Setup(o => o.Fetch(Guid.Empty))
+                .Returns(new List<IServiceTestCoverageModelTo> {
+                    new ServiceTestCoverageModelTo
+                    {
+                        AllTestNodesCovered = new ISingleTestNodesCovered[]
+                        {
+                        }
+                    }
+                });
+
+            var sut = new WarewolfWorkflowReports(new List<IWarewolfWorkflow> { mockWarewolfWorkflow.Object }, string.Empty);
+            _ = sut.Calculte(mockTestCoverageCatalog.Object, new Mock<ITestCatalog>().Object);
+
+            Assert.AreEqual(0, sut.TotalWorkflowsNodesCount);
+            Assert.AreEqual(0, sut.TotalWorkflowNodesCoveredCount);
+            Assert.AreEqual(0, sut.TotalNotCoveredNodesCount);
+            Assert.AreEqual(0, sut.TotalWorkflowNodesCoveredPercentage, "NaN my not be Ideal to print to user, should rather returning zero");
         }
 
         [TestMethod]

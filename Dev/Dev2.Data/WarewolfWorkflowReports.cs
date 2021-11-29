@@ -54,7 +54,7 @@ namespace Dev2.Data
                     continue;
                 }
 
-                SetWarewolfTestResults(testCatalog, coverageResource);
+                SetWarewolfTestResults(testCatalog, coverageResource.ResourceID);
                 SetWarewolfCoverageReports(testCoverageCatalog, coverageResource);
 
                 TotalWorkflowsNodesCount = GetTotalWorkflowsNodesCount();
@@ -69,10 +69,11 @@ namespace Dev2.Data
 
         private void SetWarewolfCoverageReports(ITestCoverageCatalog testCoverageCatalog, IWarewolfWorkflow coverageResource)
         {
+            var resourceId = coverageResource.ResourceID;
             var coverageReports = new WorkflowCoverageReports(coverageResource);
             if (!string.IsNullOrEmpty(_reportName) && _reportName != "*")
             {
-                var report = testCoverageCatalog.Fetch(coverageResource.ResourceID);
+                var report = testCoverageCatalog.Fetch(resourceId);
                 var tempcoverageReport = report?.Find(oo => oo.ReportName?.ToUpper() == _reportName.ToUpper());
                 if (tempcoverageReport != null)
                 {
@@ -81,18 +82,18 @@ namespace Dev2.Data
             }
             else
             {
-                testCoverageCatalog.Fetch(coverageResource.ResourceID)
+                testCoverageCatalog.Fetch(resourceId)
                  ?.ForEach(o => coverageReports.Add(o));
             }
 
             _workflowCoverageReports.Add(coverageReports);
         }
 
-        private void SetWarewolfTestResults(ITestCatalog testCatalog, IWarewolfWorkflow coverageResource)
+        private void SetWarewolfTestResults(ITestCatalog testCatalog, Guid coverageResourceId)
         {
             var workflowTestResults = new WorkflowTestResults();
 
-            testCatalog.Fetch(coverageResource.ResourceID)
+            testCatalog.Fetch(coverageResourceId)
                 ?.ForEach(o => workflowTestResults.Add(o));
 
             _workflowTestResults.Add(workflowTestResults);
@@ -105,9 +106,16 @@ namespace Dev2.Data
 
         private double GetTotalWorkflowNodesCoveredPercentage()
         {
-            var calc = (double)TotalWorkflowNodesCoveredCount / (double)TotalWorkflowsNodesCount;
+            var calc = (double)TotalWorkflowNodesCoveredCount / GetOneOnZero();
             var retult = Math.Round(calc, 2);
             return retult;
+        }
+
+        private double GetOneOnZero()
+        {
+            var wNodesCount = (double)TotalWorkflowsNodesCount;
+            var total = wNodesCount == 0 ? 1 : wNodesCount;
+            return total;
         }
 
         private int GetTotalWorkflowNodesCoveredCount()
