@@ -322,14 +322,7 @@ namespace Dev2.Runtime.WebServer
             writer.RenderEndTag();
 
             writer.RenderBeginTag(HtmlTextWriterTag.Td);
-            if (coverageData.IsMultipleWorkflowReport)
-            {
-                writer.AddAttribute(HtmlTextWriterAttribute.Target, "_new");
-                writer.AddAttribute(HtmlTextWriterAttribute.Href, coverageData.GetAllTestsUrl());
-                writer.RenderBeginTag(HtmlTextWriterTag.A);
-                writer.Write("Run All Tests");
-                writer.RenderEndTag();
-            }
+             
             writer.RenderEndTag();
 
             writer.RenderEndTag();
