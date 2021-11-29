@@ -67,7 +67,33 @@ namespace Dev2.Data.Tests
                     },
                 });
 
+            var mockTestCoverageCatalog = new Mock<ITestCoverageCatalog>();
+            mockTestCoverageCatalog.Setup(o => o.Fetch(Guid.Empty))
+                .Returns(new List<IServiceTestCoverageModelTo> {
+                    new ServiceTestCoverageModelTo
+                    {
+                        AllTestNodesCovered = new ISingleTestNodesCovered[]
+                        {
+                            new SingleTestNodesCovered(string.Empty, new List<IServiceTestStep>
+                            {
+                               new ServiceTestStepTO
+                               {
+                                   ActivityID = Guid.NewGuid(),
+                                   Children = new System.Collections.ObjectModel.ObservableCollection<IServiceTestStep>
+                                   {
+                                       new ServiceTestStepTO
+                                       {
+                                           ActivityID = Guid.NewGuid()
+                                       }
+                                   }
+                               }
+                            })
+                        }
+                    }
+                });
+
             var sut = new WarewolfWorkflowReports(new List<IWarewolfWorkflow> { mockWarewolfWorkflow.Object }, default);
+            _ = sut.Calculte(mockTestCoverageCatalog.Object, new Mock<ITestCatalog>().Object);
 
             Assert.AreEqual(3, sut.TotalWorkflowsNodesCount);
         }
@@ -189,9 +215,9 @@ namespace Dev2.Data.Tests
             _ = sut.Calculte(mockTestCoverageCatalog.Object, new Mock<ITestCatalog>().Object);
 
             Assert.AreEqual(3, sut.TotalWorkflowsNodesCount);
-            Assert.AreEqual(0, sut.TotalWorkflowNodesCoveredCount);
-            Assert.AreEqual(3, sut.TotalNotCoveredNodesCount);
-            Assert.AreEqual(0, sut.TotalWorkflowNodesCoveredPercentage);
+            Assert.AreEqual(2, sut.TotalWorkflowNodesCoveredCount);
+            Assert.AreEqual(1, sut.TotalNotCoveredNodesCount);
+            Assert.AreEqual(0.67, sut.TotalWorkflowNodesCoveredPercentage);
         }
 
         [TestMethod]

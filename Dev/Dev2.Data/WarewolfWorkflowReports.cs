@@ -33,13 +33,13 @@ namespace Dev2.Data
 
         public IEnumerable<IWarewolfWorkflow> Workflows => _workflows;
 
-        public int TotalWorkflowsNodesCount => GetTotalWorkflowsNodesCount();
+        public int TotalWorkflowsNodesCount { get; private set; }
 
-        public int TotalWorkflowNodesCoveredCount => GetTotalWorkflowNodesCoveredCount();
+        public int TotalWorkflowNodesCoveredCount { get; private set; }
 
-        public double TotalWorkflowNodesCoveredPercentage => GetTotalWorkflowNodesCoveredPercentage();
+        public double TotalWorkflowNodesCoveredPercentage { get; private set; }
 
-        public int TotalNotCoveredNodesCount => GetTotalNotCoveredNodesCount();
+        public int TotalNotCoveredNodesCount { get; private set; }
 
 
         public (IEnumerable<WorkflowTestResults> TestResults, IEnumerable<WorkflowCoverageReports> WorkflowCoverageReports) Calculte(ITestCoverageCatalog testCoverageCatalog, ITestCatalog testCatalog)
@@ -56,6 +56,11 @@ namespace Dev2.Data
 
                 SetWarewolfTestResults(testCatalog, coverageResource);
                 SetWarewolfCoverageReports(testCoverageCatalog, coverageResource);
+
+                TotalWorkflowsNodesCount = GetTotalWorkflowsNodesCount();
+                TotalNotCoveredNodesCount = GetTotalNotCoveredNodesCount();
+                TotalWorkflowNodesCoveredCount = GetTotalWorkflowNodesCoveredCount();
+                TotalWorkflowNodesCoveredPercentage = GetTotalWorkflowNodesCoveredPercentage();
             }
 
             return (_workflowTestResults, _workflowCoverageReports);
@@ -65,7 +70,7 @@ namespace Dev2.Data
         private void SetWarewolfCoverageReports(ITestCoverageCatalog testCoverageCatalog, IWarewolfWorkflow coverageResource)
         {
             var coverageReports = new WorkflowCoverageReports(coverageResource);
-            if (_reportName != "*")
+            if (!string.IsNullOrEmpty(_reportName) && _reportName != "*")
             {
                 var report = testCoverageCatalog.Fetch(coverageResource.ResourceID);
                 var tempcoverageReport = report?.Find(oo => oo.ReportName?.ToUpper() == _reportName.ToUpper());
