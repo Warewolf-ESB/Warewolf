@@ -111,7 +111,7 @@ namespace Dev2.Data.Tests
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(WarewolfWorkflowReports))]
-        public void WarewolfWorkflowReports_Calculte_TotalWorkflowNodesCoveredPercentage_GIVEN_ResourceNotFound_ShouldReturnReport1()
+        public void WarewolfWorkflowReports_Calculte_TotalWorkflowNodesCoveredPercentage_GIVEN_ResourceNotFound_ShouldNotReturnNaN()
         {
             var workflowID = Guid.NewGuid();
 
@@ -390,6 +390,64 @@ namespace Dev2.Data.Tests
             Assert.AreEqual(2, sut.TotalWorkflowNodesCoveredCount);
             Assert.AreEqual(1, sut.TotalNotCoveredNodesCount);
             Assert.AreEqual(0.67, sut.TotalWorkflowNodesCoveredPercentage);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(WarewolfWorkflowReports))]
+        public void WarewolfWorkflowReports_Calculte_TotalWorkflowNodesCoveredPercentage_GIVEN_RecordNameIsAsterick_ShouldReturnReport100()
+        {
+            var workflowID = Guid.NewGuid();
+            var testName = "Test 1";
+            var reportName = "*";
+            var coveredNode_one = Guid.NewGuid();
+
+            var mockWarewolfWorkflow = new Mock<IWarewolfWorkflow>();
+            mockWarewolfWorkflow.Setup(o => o.ResourceID)
+                .Returns(workflowID);
+            mockWarewolfWorkflow.Setup(o => o.WorkflowNodes)
+                .Returns(new List<IWorkflowNode>
+                {
+                    new WorkflowNode
+                    {
+                        UniqueID = Guid.NewGuid()
+                    },
+                    new WorkflowNode
+                    {
+                        UniqueID = Guid.NewGuid()
+                    }
+                });
+
+            var mockTestCoverageCatalog = new Mock<ITestCoverageCatalog>();
+            mockTestCoverageCatalog.Setup(o => o.Fetch(workflowID))
+                .Returns(new List<IServiceTestCoverageModelTo> {
+                    new ServiceTestCoverageModelTo
+                    {
+                        ReportName = reportName,
+                        AllTestNodesCovered = new ISingleTestNodesCovered[]
+                        {
+                            new SingleTestNodesCovered(testName, new List<IServiceTestStep>
+                            {
+                               new ServiceTestStepTO
+                               {
+                                   ActivityID = coveredNode_one,
+                                   Children = new System.Collections.ObjectModel.ObservableCollection<IServiceTestStep>
+                                   {
+                                       new ServiceTestStepTO()
+                                   }
+                               }
+                            })
+                        }
+                    }
+                });
+
+            var sut = new WarewolfWorkflowReports(new List<IWarewolfWorkflow> { mockWarewolfWorkflow.Object }, reportName);
+            _ = sut.Calculte(mockTestCoverageCatalog.Object, new Mock<ITestCatalog>().Object);
+
+            Assert.AreEqual(2, sut.TotalWorkflowsNodesCount);
+            Assert.AreEqual(2, sut.TotalWorkflowNodesCoveredCount);
+            Assert.AreEqual(0, sut.TotalNotCoveredNodesCount);
+            Assert.AreEqual(1, sut.TotalWorkflowNodesCoveredPercentage);
         }
 
     }

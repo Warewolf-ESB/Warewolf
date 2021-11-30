@@ -36,7 +36,17 @@ namespace Dev2.Data
         public double TotalCoverage => GetTotalCoverage();
 
         //PBI: at this point we only need the count, later change this to a list of objects
-        public int NotCoveredNodesCount => WorkflowNodes.Count() - CoveredWorkflowNodesIds.Count();
+        public int NotCoveredNodesCount => CalculateNotCoveredNodes();
+
+        private int CalculateNotCoveredNodes()
+        {
+            return GetOneOnZero(WorkflowNodes.Count()) - CoveredWorkflowNodesIds.Count();
+        }
+
+        private int GetOneOnZero(int count)
+        {
+            return count == 0 ? 1 : count;
+        }
 
         public void Add(IServiceTestCoverageModelTo coverage)
         {
@@ -88,7 +98,7 @@ namespace Dev2.Data
         {
             var accum2 = WorkflowNodes.Select(o => o.UniqueID).ToList();
             var activitiesExistingInTests = accum2.Intersect(CoveredWorkflowNodesIds).ToList();
-            var total = Math.Round(activitiesExistingInTests.Count / (double)accum2.Count, 2);
+            var total = Math.Round(activitiesExistingInTests.Count / (double)GetOneOnZero(accum2.Count), 2);
             return total;
         }
     }

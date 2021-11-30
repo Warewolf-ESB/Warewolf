@@ -60,6 +60,43 @@ namespace Dev2.Data.Tests
             Assert.AreEqual(1, sut.TotalCoverage);
         }
 
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(WorkflowCoverageReports))]
+        public void WorkflowCoverageReports_GetTotalCoverage_Given_TestNodesCovered_ShouldFailSafe()
+        {
+            var sdf = Guid.NewGuid();
+            var mockWarewolfWorkflow = new Mock<IWarewolfWorkflow>();
+            mockWarewolfWorkflow.Setup(o => o.WorkflowNodes).Returns(new List<IWorkflowNode>
+            {
+                //Should the undesirable happen
+            });
+
+            var sut = new WorkflowCoverageReports(mockWarewolfWorkflow.Object);
+
+            sut.Add(new ServiceTestCoverageModelTo
+            {
+                WorkflowId = Guid.NewGuid(),
+                LastRunDate = DateTime.Now,
+                OldReportName = "old name",
+                ReportName = "new name",
+                AllTestNodesCovered = new ISingleTestNodesCovered[] { new SingleTestNodesCovered("Test", new List<IServiceTestStep>
+                {
+                    new ServiceTestStepTO
+                    {
+                        ActivityID = Guid.Parse("7ed4ab9c-d227-409a-acc3-18330fe6b84e"),
+                        UniqueID = Guid.Parse("7ed4ab9c-d227-409a-acc3-18330fe6b84e"),
+                        Type = StepType.Assert
+                    }
+                })}
+            });
+
+            Assert.IsNotNull(sut.Resource);
+            Assert.IsTrue(sut.HasTestReports);
+            Assert.AreEqual(0, sut.NotCoveredNodesCount);
+            Assert.AreEqual(0, sut.TotalCoverage);
+        }
+
 
         [TestMethod]
         [Owner("Siphamandla Dube")]
