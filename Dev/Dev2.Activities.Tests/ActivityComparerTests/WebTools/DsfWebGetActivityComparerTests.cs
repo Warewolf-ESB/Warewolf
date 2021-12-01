@@ -16,6 +16,7 @@ using Unlimited.Framework.Converters.Graph.Ouput;
 using Dev2.Common.Interfaces.Core.Graph;
 using System.Collections.Generic;
 using Dev2.Common.Interfaces;
+#pragma warning disable 618
 
 namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
 {

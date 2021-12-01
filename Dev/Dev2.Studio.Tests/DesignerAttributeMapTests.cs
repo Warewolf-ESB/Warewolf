@@ -173,11 +173,13 @@ namespace Dev2.Studio.Tests.AppResources.Converters
 
         private readonly Dictionary<Type, Type> _expectedDeprecated = new Dictionary<Type, Type>
         {
+#pragma warning disable 618
             {typeof(DsfFileWrite), typeof(WriteFileDesignerViewModel)},
             {typeof(DsfWebGetActivity), typeof(WebServiceGetViewModel)},
             {typeof(DsfWebPutActivity), typeof(WebServicePutViewModel)},
             {typeof(DsfWebPostActivity), typeof(WebServicePostViewModel)},
             {typeof(WebPostActivity), typeof(WebPostActivityViewModel)},
+#pragma warning restore 618
         };
 
         private readonly Dictionary<Type, Type> _expectedExisting = new Dictionary<Type, Type>

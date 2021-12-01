@@ -31,17 +31,9 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Unzip
     [Binding]
     public class UnzipSteps : FileToolsBase
     {
-        readonly ScenarioContext scenarioContext;
-
         public UnzipSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
         {
-            if (scenarioContext == null)
-            {
-                throw new ArgumentNullException("scenarioContext");
-            }
-
-            this.scenarioContext = scenarioContext;
         }
 
         [Given(@"zip credentials as ""(.*)"" and ""(.*)""")]
