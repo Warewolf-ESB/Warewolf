@@ -546,7 +546,7 @@ namespace Dev2.Runtime.WebServer
 
         public static DataListFormat RunCoverageAndReturnJSON(this ICoverageDataObject coverageData, ITestCoverageCatalog testCoverageCatalog, ITestCatalog testCatalog, IResourceCatalog catalog, Guid workspaceGuid, Dev2JsonSerializer serializer, out string executePayload)
         {
-            var (allCoverageReports, allTestResults) = RunListOfCoverage(coverageData, testCoverageCatalog, testCatalog, workspaceGuid, catalog);
+            var (allCoverageReports, allTestResults, warewolfWorkflowReports) = RunListOfCoverage(coverageData, testCoverageCatalog, testCatalog, workspaceGuid, catalog);
 
             var formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
 
@@ -570,14 +570,25 @@ namespace Dev2.Runtime.WebServer
             var resultCoverageSummaryWriter = new StringWriter();
             using (var writer = new JsonTextWriter(resultCoverageSummaryWriter))
             {
+                var totalNodes = warewolfWorkflowReports.TotalWorkflowNodesCount;
+                var coveredNodes = warewolfWorkflowReports.TotalWorkflowNodesCoveredCount;
+                var notCoveredNodes = totalNodes - coveredNodes;
+
                 writer.WriteStartObject();
+                writer.WritePropertyName("TotalNodes");
+                writer.WriteValue(totalNodes);
+                writer.WritePropertyName("CoveredNodes");
+                writer.WriteValue(coveredNodes);
+                writer.WritePropertyName("NotCoveredNodes");
+                writer.WriteValue(notCoveredNodes);
                 writer.WritePropertyName("TotalCoverage");
-                writer.WriteValueAsync(allCoverageReports.TotalReportsCoverage);
+                writer.WriteValueAsync(warewolfWorkflowReports.TotalWorkflowNodesCoveredPercentage * 100);
                 writer.WriteEndObject();
             }
 
             var resultSummaryWriter = new StringWriter();
-            if (coverageData.ReportName != "*")
+            var reportName = coverageData.ReportName;
+            if (!string.IsNullOrEmpty(reportName) && reportName != "*" )
             {             
                 using (var writer = new JsonTextWriter(resultSummaryWriter))
                 {
@@ -611,7 +622,7 @@ namespace Dev2.Runtime.WebServer
 
         public static DataListFormat RunCoverageAndReturnHTML(this ICoverageDataObject coverageData, ITestCoverageCatalog testCoverageCatalog, ITestCatalog testCatalog, IResourceCatalog catalog, Guid workspaceGuid, out string executePayload)
         {
-            var (allCoverageReports, allTestResults) = RunListOfCoverage(coverageData, testCoverageCatalog, testCatalog, workspaceGuid, catalog);           
+            var (allCoverageReports, allTestResults, warewolfWorkflowReports) = RunListOfCoverage(coverageData, testCoverageCatalog, testCatalog, workspaceGuid, catalog);           
 
             var formatter = DataListFormat.CreateFormat("HTML", EmitionTypes.Cover, "text/html; charset=utf-8");
 
@@ -654,7 +665,7 @@ namespace Dev2.Runtime.WebServer
             return formatter;
         }
 
-        private static (AllCoverageReports AllCoverageReports, TestResults AllTestResults) RunListOfCoverage(ICoverageDataObject coverageData, ITestCoverageCatalog testCoverageCatalog, ITestCatalog testCatalog, Guid workspaceGuid, IResourceCatalog catalog)
+        private static (AllCoverageReports AllCoverageReports, TestResults AllTestResults, WarewolfWorkflowReports WarewolfWorkflowReports) RunListOfCoverage(ICoverageDataObject coverageData, ITestCoverageCatalog testCoverageCatalog, ITestCatalog testCatalog, Guid workspaceGuid, IResourceCatalog catalog)
         {
             var allTestResults = new TestResults();
 
@@ -672,7 +683,7 @@ namespace Dev2.Runtime.WebServer
             allTestResults.EndTime = DateTime.Now;
             allCoverageReports.EndTime = DateTime.Now;
 
-            return (allCoverageReports, allTestResults);
+            return (allCoverageReports, allTestResults, resourceReportTemp);
         }
 
         public interface IServiceTestExecutorWrapper

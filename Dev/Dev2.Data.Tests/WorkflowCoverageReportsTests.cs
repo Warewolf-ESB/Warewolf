@@ -93,7 +93,7 @@ namespace Dev2.Data.Tests
 
             Assert.IsNotNull(sut.Resource);
             Assert.IsTrue(sut.HasTestReports);
-            Assert.AreEqual(0, sut.NotCoveredNodesCount);
+            Assert.AreEqual(-1, sut.NotCoveredNodesCount, "We might need a deferent approach for handling this matter, with the previous version the one return for safety add on to the count, thus inaccurate count yields");
             Assert.AreEqual(0, sut.TotalCoverage);
         }
 
