@@ -431,16 +431,39 @@ namespace Dev2.Tests.Runtime.WebServer
             MockSetup(out Mock<ICoverageDataObject> mockCoverageDataObject,
                       out Mock<IResourceCatalog> mockResourceCatalog);
 
-            var sut = DataObjectExtensions.RunCoverageAndReturnJSON(mockCoverageDataObject.Object, mockTestCoverageCatalog.Object, mockTestCatalog.Object, mockResourceCatalog.Object, _workspaceGuid, serializer, out string executePayload);
+            var mockWarewolfWorkflow = new Mock<IWarewolfWorkflow>();
+            mockWarewolfWorkflow.Setup(o => o.ResourceID)
+                .Returns(_workflowOne);
+            mockWarewolfWorkflow.Setup(o => o.WorkflowNodes)
+                .Returns(new List<IWorkflowNode>
+                {
+                    new WorkflowNode
+                    {
+                    },
+                    new WorkflowNode
+                    { 
+                    },
+                    new WorkflowNode
+                    { 
+                    }
+                });
+
+            var mockCoverageDataObject1 = new Mock<ICoverageDataObject>();
+            mockCoverageDataObject1.Setup(o => o.CoverageReportResources)
+                .Returns(new IWarewolfWorkflow[]
+                {
+                    mockWarewolfWorkflow.Object
+                });
+
+
+            var sut = DataObjectExtensions.RunCoverageAndReturnJSON(mockCoverageDataObject1.Object, mockTestCoverageCatalog.Object, mockTestCatalog.Object, mockResourceCatalog.Object, _workspaceGuid, serializer, out string executePayload);
 
             Assert.IsNotNull(executePayload);
             Assert.AreEqual("application/json", sut.ContentType);
             StringAssert.Contains(executePayload, "\"TestResults\": [\r\n    {\r\n      \"ResourceID\": \"fbda8700-2717-4879-88cd-6abdea4560da\",\r\n  ");
-            StringAssert.Contains(executePayload, "\r\n  \"CoverageSummary\": {\r\n    \"TotalCoverage\": 100.0\r\n  },");
+            StringAssert.Contains(executePayload, "\r\n  \"CoverageSummary\": {\r\n    \"TotalNodes\": 3,\r\n    \"CoveredNodes\": 3,\r\n    \"NotCoveredNodes\": 0,\r\n    \"TotalCoverage\": 100.0\r\n  },");
             StringAssert.Contains(executePayload, "\r\n  \"TestSummary\": {\r\n    \"TestsTotalCount\": 1,\r\n    \"TestsFailed\": 0,\r\n    \"TestsPassed\": 0,\r\n    \"TestsInvalid\": 1\r\n  },");
-            StringAssert.Contains(executePayload, "\r\n  \"CoverageNodesSummary\": {\r\n    \"Total Nodes\": 1,\r\n    \"Covered Nodes\": \"2\",\r\n    \"Not Covered Nodes\": \"1\",\r\n    \"Coverage (%)\": \"50%\"\r\n  },");   
-            StringAssert.Contains(executePayload, "\"NodesSummary\": {\r\n            \"TotalNodesCount\": 0,\r\n            \"NotCoveredNodes\": 0,\r\n            \"CoveredNodes\": 3,\r\n            \"CoveredNodesDetails\": [\r\n              {\r\n                \"Assert\": 1,\r\n                \"Mocked\": 2\r\n              }\r\n            ]\r\n          }");
-            StringAssert.Contains(executePayload, "\"ChildNodes\": [\r\n                        {\r\n                          \"Node Name\": null,\r\n                          \"ActivityID\": \"85d142b4-9db9-4d8e-bb8c-5900aad9588c\",\r\n                          \"UniqueID\": \"00000000-0000-0000-0000-000000000000\",\r\n                          \"MockSelected\": true,\r\n                          \"ChildNodes\": []\r\n                        }\r\n                      ]\r\n");
+            StringAssert.Contains(executePayload, "\r\n          \"NodesSummary\": {\r\n            \"TotalNodesCount\": 0,\r\n            \"NotCoveredNodes\": 0,\r\n            \"CoveredNodes\": 3,\r\n            \"CoveredNodesDetails\": [\r\n              {\r\n                \"Assert\": 1,\r\n                \"Mocked\": 2\r\n              }\r\n            ]\r\n          },");
         }
 
         [TestMethod]
@@ -782,7 +805,35 @@ namespace Dev2.Tests.Runtime.WebServer
             MockSetup(out Mock<ICoverageDataObject> mockCoverageDataObject,
                       out Mock<IResourceCatalog> mockResourceCatalog);
 
-            var sut = DataObjectExtensions.RunCoverageAndReturnHTML(mockCoverageDataObject.Object, mockTestCoverageCatalog.Object, mockTestCatalog.Object, mockResourceCatalog.Object, _workspaceGuid, out string executePayload);
+            var mockWarewolfWorkflow = new Mock<IWarewolfWorkflow>();
+            mockWarewolfWorkflow.Setup(o => o.ResourceID)
+                .Returns(_workflowOne);
+            mockWarewolfWorkflow.Setup(o => o.WorkflowNodes)
+                .Returns(new List<IWorkflowNode>
+                {
+                    new WorkflowNode
+                    {
+                    },
+                    new WorkflowNode
+                    {
+                    },
+                    new WorkflowNode
+                    {
+                    },
+                    new WorkflowNode
+                    { 
+                    }
+                });
+
+            var mockCoverageDataObject1 = new Mock<ICoverageDataObject>();
+            mockCoverageDataObject1.Setup(o => o.CoverageReportResources)
+                .Returns(new IWarewolfWorkflow[]
+                {
+                    mockWarewolfWorkflow.Object
+                });
+
+
+            var sut = DataObjectExtensions.RunCoverageAndReturnHTML(mockCoverageDataObject1.Object, mockTestCoverageCatalog.Object, mockTestCatalog.Object, mockResourceCatalog.Object, _workspaceGuid, out string executePayload);
 
             Assert.IsNotNull(executePayload);
             Assert.AreEqual("text/html; charset=utf-8", sut.ContentType);
@@ -790,10 +841,10 @@ namespace Dev2.Tests.Runtime.WebServer
             StringAssert.Contains(executePayload, "Tests Passed: 1");
             StringAssert.Contains(executePayload, "Tests Failed: 0");
             StringAssert.Contains(executePayload, "Tests Invalid: 0");
-            StringAssert.Contains(executePayload, "Total Nodes: 1");
-            StringAssert.Contains(executePayload, "Covered Nodes: 2");
-            StringAssert.Contains(executePayload, "Not Covered Nodes: 1");
-            StringAssert.Contains(executePayload, "Coverage : 80%");
+            StringAssert.Contains(executePayload, "Total Nodes: 4");
+            StringAssert.Contains(executePayload, "Covered Nodes: 1");
+            StringAssert.Contains(executePayload, "Not Covered Nodes: 3");
+            StringAssert.Contains(executePayload, "Coverage : 25 %");
         }
 
         [TestMethod]
@@ -871,10 +922,37 @@ namespace Dev2.Tests.Runtime.WebServer
             MockSetup(out Mock<ICoverageDataObject> mockCoverageDataObject,
                       out Mock<IResourceCatalog> mockResourceCatalog);
 
+            var mockWarewolfWorkflow = new Mock<IWarewolfWorkflow>();
+            mockWarewolfWorkflow.Setup(o => o.ResourceID)
+                .Returns(_workflowOne);
+            mockWarewolfWorkflow.Setup(o => o.WorkflowNodes)
+                .Returns(new List<IWorkflowNode>
+                {
+                    new WorkflowNode
+                    {
+                    },
+                    new WorkflowNode
+                    {
+                    },
+                    new WorkflowNode
+                    {
+                    },
+                    new WorkflowNode
+                    {
+                    }
+                });
+
+            var mockCoverageDataObject1 = new Mock<ICoverageDataObject>();
+            mockCoverageDataObject1.Setup(o => o.CoverageReportResources)
+                .Returns(new IWarewolfWorkflow[]
+                {
+                    mockWarewolfWorkflow.Object
+                });
+
             mockCoverageDataObject.Setup(o => o.ReportName)
                 .Returns("test 2");
 
-            var sut = DataObjectExtensions.RunCoverageAndReturnHTML(mockCoverageDataObject.Object, mockTestCoverageCatalog.Object, mockTestCatalog.Object, mockResourceCatalog.Object, _workspaceGuid, out string executePayload);
+            var sut = DataObjectExtensions.RunCoverageAndReturnHTML(mockCoverageDataObject1.Object, mockTestCoverageCatalog.Object, mockTestCatalog.Object, mockResourceCatalog.Object, _workspaceGuid, out string executePayload);
 
             Assert.IsNotNull(executePayload);
             Assert.AreEqual("text/html; charset=utf-8", sut.ContentType);
@@ -882,10 +960,10 @@ namespace Dev2.Tests.Runtime.WebServer
             StringAssert.Contains(executePayload, "Tests Passed: 1");
             StringAssert.Contains(executePayload, "Tests Failed: 0");
             StringAssert.Contains(executePayload, "Tests Invalid: 0");
-            StringAssert.Contains(executePayload, "Total Nodes: 1");
-            StringAssert.Contains(executePayload, "Covered Nodes: 2");
-            StringAssert.Contains(executePayload, "Not Covered Nodes: 1");
-            StringAssert.Contains(executePayload, "Coverage : 80%");
+            StringAssert.Contains(executePayload, "Total Nodes: 4");
+            StringAssert.Contains(executePayload, "Covered Nodes: 1");
+            StringAssert.Contains(executePayload, "Not Covered Nodes: 3");
+            StringAssert.Contains(executePayload, "Coverage : 25 %");
 
         }
 
@@ -1053,10 +1131,36 @@ namespace Dev2.Tests.Runtime.WebServer
             MockSetup(out Mock<ICoverageDataObject> mockCoverageDataObject,
                       out Mock<IResourceCatalog> mockResourceCatalog);
 
-            mockCoverageDataObject.Setup(o => o.ReportName)
-                .Returns("test1");
+            var mockWarewolfWorkflow = new Mock<IWarewolfWorkflow>();
+            mockWarewolfWorkflow.Setup(o => o.ResourceID)
+                .Returns(_workflowOne);
+            mockWarewolfWorkflow.Setup(o => o.WorkflowNodes)
+                .Returns(new List<IWorkflowNode>
+                {
+                    new WorkflowNode
+                    {
+                    },
+                    new WorkflowNode
+                    {
+                    },
+                    new WorkflowNode
+                    {
+                    },
+                    new WorkflowNode
+                    {
+                    }
+                });
 
-            var sut = DataObjectExtensions.RunCoverageAndReturnHTML(mockCoverageDataObject.Object, mockTestCoverageCatalog.Object, mockTestCatalog.Object, mockResourceCatalog.Object, _workspaceGuid, out string executePayload);
+            var mockCoverageDataObject1 = new Mock<ICoverageDataObject>();
+            mockCoverageDataObject1.Setup(o => o.ReportName)
+              .Returns("test1");
+            mockCoverageDataObject1.Setup(o => o.CoverageReportResources)
+                .Returns(new IWarewolfWorkflow[]
+                {
+                    mockWarewolfWorkflow.Object
+                });
+
+            var sut = DataObjectExtensions.RunCoverageAndReturnHTML(mockCoverageDataObject1.Object, mockTestCoverageCatalog.Object, mockTestCatalog.Object, mockResourceCatalog.Object, _workspaceGuid, out string executePayload);
 
             Assert.IsNotNull(executePayload);
             Assert.AreEqual("text/html; charset=utf-8", sut.ContentType);
@@ -1064,10 +1168,10 @@ namespace Dev2.Tests.Runtime.WebServer
             StringAssert.Contains(executePayload, "Tests Passed: 0");
             StringAssert.Contains(executePayload, "Tests Failed: 0");
             StringAssert.Contains(executePayload, "Tests Invalid: 0");
-            StringAssert.Contains(executePayload, "Total Nodes: 0");
-            StringAssert.Contains(executePayload, "Covered Nodes: 2");
-            StringAssert.Contains(executePayload, "Not Covered Nodes: 1");
-            StringAssert.Contains(executePayload, "Coverage : 80%");
+            StringAssert.Contains(executePayload, "Total Nodes: 4");
+            StringAssert.Contains(executePayload, "Covered Nodes: 0");
+            StringAssert.Contains(executePayload, "Not Covered Nodes: 4");
+            StringAssert.Contains(executePayload, "Coverage : 0 %");
 
         }
 

@@ -101,7 +101,7 @@ namespace Dev2.Data
         private double GetTotalWorkflowNodesCoveredPercentage()
         {
             var calc = (double)TotalWorkflowNodesCoveredCount / GetOneOnZero(TotalWorkflowNodesCount);
-            var retult = Math.Round(calc, 2);
+            var retult = Math.Round(calc * 100, 2);
             return retult;
         }
 

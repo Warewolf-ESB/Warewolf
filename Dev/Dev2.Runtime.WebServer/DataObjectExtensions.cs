@@ -582,7 +582,7 @@ namespace Dev2.Runtime.WebServer
                 writer.WritePropertyName("NotCoveredNodes");
                 writer.WriteValue(notCoveredNodes);
                 writer.WritePropertyName("TotalCoverage");
-                writer.WriteValueAsync(warewolfWorkflowReports.TotalWorkflowNodesCoveredPercentage * 100);
+                writer.WriteValueAsync(warewolfWorkflowReports.TotalWorkflowNodesCoveredPercentage);
                 writer.WriteEndObject();
             }
 
@@ -632,18 +632,12 @@ namespace Dev2.Runtime.WebServer
             {
                 writer.SetupNavBarHtml(allCoverageReports.TotalReportsCoverage);
 
-                if (coverageData.ReportName != "*")
+                if (!string.IsNullOrEmpty(coverageData.ReportName) && coverageData.ReportName != "*")
                 {
                     allTestResults.Results
                         .SelectMany(o => o.Results).Where(x => x.TestName.ToUpper() == coverageData.ReportName.ToUpper())
                         .ToList()
                         .SetupCountSummaryHtml(writer, coverageData);
-
-                    allTestResults.Results
-                       .SelectMany(o => o.Results).Where(x => x.TestName.ToUpper() == coverageData.ReportName.ToUpper())
-                       .ToList()
-                       .SetupLinesCountSummaryHtml(writer, coverageData);
-
                 }
                 else
                 {
@@ -651,13 +645,11 @@ namespace Dev2.Runtime.WebServer
                             .SelectMany(o => o.Results)
                             .ToList()
                             .SetupCountSummaryHtml(writer, coverageData);
-
-                    allTestResults.Results
-                    .SelectMany(o => o.Results)
-                    .ToList()
-                    .SetupLinesCountSummaryHtml(writer, coverageData);
                 }
-              
+
+                warewolfWorkflowReports
+                   .SetupLinesCountSummaryHtml(writer);
+
                 allCoverageReports.WithTestReports
                     .ToList()
                     .ForEach(oo =>

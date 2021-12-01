@@ -257,7 +257,7 @@ namespace Dev2.Data.Tests
 
             Assert.AreEqual(3, sut.TotalWorkflowNodesCount);
             Assert.AreEqual(2, sut.TotalWorkflowNodesCoveredCount);
-            Assert.AreEqual(0.67, sut.TotalWorkflowNodesCoveredPercentage);
+            Assert.AreEqual(67,67, sut.TotalWorkflowNodesCoveredPercentage);
         }
 
         [TestMethod]
@@ -323,7 +323,7 @@ namespace Dev2.Data.Tests
 
             Assert.AreEqual(3, sut.TotalWorkflowNodesCount);
             Assert.AreEqual(2, sut.TotalWorkflowNodesCoveredCount);
-            Assert.AreEqual(0.67, sut.TotalWorkflowNodesCoveredPercentage);
+            Assert.AreEqual(67,67, sut.TotalWorkflowNodesCoveredPercentage);
         }
 
         [TestMethod]
@@ -384,7 +384,7 @@ namespace Dev2.Data.Tests
 
             Assert.AreEqual(3, sut.TotalWorkflowNodesCount);
             Assert.AreEqual(2, sut.TotalWorkflowNodesCoveredCount);
-            Assert.AreEqual(0.67, sut.TotalWorkflowNodesCoveredPercentage);
+            Assert.AreEqual(67,67, sut.TotalWorkflowNodesCoveredPercentage);
         }
 
         [TestMethod]
@@ -441,7 +441,7 @@ namespace Dev2.Data.Tests
 
             Assert.AreEqual(2, sut.TotalWorkflowNodesCount);
             Assert.AreEqual(2, sut.TotalWorkflowNodesCoveredCount);
-            Assert.AreEqual(1, sut.TotalWorkflowNodesCoveredPercentage);
+            Assert.AreEqual(100, sut.TotalWorkflowNodesCoveredPercentage);
         }
 
     }
