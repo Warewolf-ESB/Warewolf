@@ -18,7 +18,9 @@ using System;
 using System.Activities;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Serializers;
 using Dev2.Comparer;
 using Dev2.Data.TO;
 using Dev2.Diagnostics.Debug;
@@ -30,6 +32,7 @@ using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 using Dev2.Common.State;
+using Newtonsoft.Json.Linq;
 using Warewolf.Resource.Messages;
 
 namespace Dev2.Activities.SelectAndApply
@@ -233,6 +236,8 @@ namespace Dev2.Activities.SelectAndApply
                         exeAct.Execute(dataObject, 0);
                     }
                 }
+                
+                CheckScalarVariables(dataObject);
             }
             catch (NullDataSource e)
             {
@@ -278,6 +283,61 @@ namespace Dev2.Activities.SelectAndApply
                 }
                 OnCompleted(dataObject);
             }
+        }
+
+        private static void CheckScalarVariables(IDSFDataObject dataObject)
+        {
+            try
+            {
+                var env = ((ScopedEnvironment)dataObject.Environment).GetInner();
+                var warewolfEnv = ((ExecutionEnvironment)env).WarewolfEnvironment;
+
+                var variables = VariablesToJson(warewolfEnv);
+                var serializer = new Dev2JsonSerializer();
+                var jsonEnv = serializer.Deserialize<JObject>(variables);
+                var scalars = (JObject)jsonEnv.Property("scalars")?.Value;
+
+                //update scalar variables to fix any formatting issues from F# layer
+                ExecutionEnvironment.EnvironmentToJsonHelper.AssignScalarData((ExecutionEnvironment)env, scalars);
+            }
+            catch(Exception e)
+            {
+                Dev2Logger.Error(e, GlobalConstants.WarewolfError);
+            }
+        }
+
+        static protected string VariablesToJson(DataStorage.WarewolfEnvironment _env)
+        {
+            var stringList = PublicFunctions.EvalEnv(_env);
+            var sb = new StringBuilder(4096);
+            var list = stringList.ToArray();
+            for(var i = 0; i < list.Length; i++)
+            {
+                var @string = list[i];
+                if(i > 0 && list[i - 1].EndsWith(":") && !@string.StartsWith("\"") && !@string.StartsWith("{") && !@string.StartsWith("[")
+                   && !IsNumeric(@string) && !IsBool(@string) && @string != "null")
+                {
+                    sb.Append("\"" + @string + "\"");
+                        
+                }
+                else
+                {
+                    sb.Append(@string);
+                }
+            }
+            return sb.ToString();
+        }
+            
+        private static bool IsNumeric(string val)
+        {
+            decimal result = 0;
+            return Decimal.TryParse(val, out result);
+        }
+            
+        private static bool IsBool(string val)
+        {
+            var result = false;
+            return Boolean.TryParse(val, out result);
         }
 
         void AddExpresionEvalOutputItem(IDSFDataObject dataObject, int update, string expression)

@@ -236,6 +236,8 @@ namespace Warewolf.Storage
         {
             return "";
         }
+        
+        public IExecutionEnvironment GetInner() => _inner;
 
         public IExecutionEnvironment Snapshot()
         {

@@ -35,7 +35,7 @@ namespace Warewolf.Storage
 {
     public class ExecutionEnvironment : IExecutionEnvironment
     {
-        protected DataStorage.WarewolfEnvironment _env;
+        private DataStorage.WarewolfEnvironment _env;
         readonly IBuildIndexMap _buildIndexMap;
 
         public ExecutionEnvironment()
@@ -844,8 +844,10 @@ namespace Warewolf.Storage
 
             return null;
         }
+        
+        public WarewolfEnvironment WarewolfEnvironment { get => _env; }
 
-        private class EnvironmentToJsonHelper : IDisposable
+        public class EnvironmentToJsonHelper : IDisposable
         {
             readonly MemoryStream _stream = new MemoryStream();
             readonly JsonTextWriter _jsonWriter;
@@ -879,18 +881,6 @@ namespace Warewolf.Storage
                 return sb.ToString();
             }
             
-            private static bool IsNumeric(string val)
-            {
-                decimal result = 0;
-                return Decimal.TryParse(val, out result);
-            }
-            
-            private static bool IsBool(string val)
-            {
-                var result = false;
-                return Boolean.TryParse(val, out result);
-            }
-
             internal void WriteErrors(HashSet<string> errors, HashSet<string> allErrors)
             {
                 var serializer = new JsonSerializer();
@@ -999,7 +989,7 @@ namespace Warewolf.Storage
                 }
             }
 
-            private static void AssignScalarData(ExecutionEnvironment environment, JObject jsonScalars)
+            public static void AssignScalarData(ExecutionEnvironment environment, JObject jsonScalars)
             {
                 if (jsonScalars is null)
                 {
