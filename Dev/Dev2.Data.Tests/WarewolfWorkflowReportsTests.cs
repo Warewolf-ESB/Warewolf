@@ -31,7 +31,7 @@ namespace Dev2.Data.Tests
         {
             var sut = new WarewolfWorkflowReports(new List<IWarewolfWorkflow> { null } , null);
 
-            Assert.AreEqual(0, sut.TotalWorkflowsNodesCount);
+            Assert.AreEqual(0, sut.TotalWorkflowNodesCount);
         }
 
         [TestMethod]
@@ -105,7 +105,7 @@ namespace Dev2.Data.Tests
             var sut = new WarewolfWorkflowReports(new List<IWarewolfWorkflow> { mockWarewolfWorkflow.Object }, default);
             _ = sut.Calculte(mockTestCoverageCatalog.Object, new Mock<ITestCatalog>().Object);
 
-            Assert.AreEqual(3, sut.TotalWorkflowsNodesCount);
+            Assert.AreEqual(3, sut.TotalWorkflowNodesCount);
         }
 
         [TestMethod]
@@ -135,9 +135,8 @@ namespace Dev2.Data.Tests
             var sut = new WarewolfWorkflowReports(new List<IWarewolfWorkflow> { mockWarewolfWorkflow.Object }, string.Empty);
             _ = sut.Calculte(mockTestCoverageCatalog.Object, new Mock<ITestCatalog>().Object);
 
-            Assert.AreEqual(0, sut.TotalWorkflowsNodesCount);
+            Assert.AreEqual(0, sut.TotalWorkflowNodesCount);
             Assert.AreEqual(0, sut.TotalWorkflowNodesCoveredCount);
-            Assert.AreEqual(0, sut.TotalNotCoveredNodesCount);
             Assert.AreEqual(0, sut.TotalWorkflowNodesCoveredPercentage, "NaN my not be Ideal to print to user, should rather returning zero");
         }
 
@@ -196,9 +195,8 @@ namespace Dev2.Data.Tests
             var sut = new WarewolfWorkflowReports(new List<IWarewolfWorkflow> { mockWarewolfWorkflow.Object }, string.Empty);
             _ = sut.Calculte(mockTestCoverageCatalog.Object, new Mock<ITestCatalog>().Object);
 
-            Assert.AreEqual(3, sut.TotalWorkflowsNodesCount);
+            Assert.AreEqual(3, sut.TotalWorkflowNodesCount);
             Assert.AreEqual(0, sut.TotalWorkflowNodesCoveredCount);
-            Assert.AreEqual(3, sut.TotalNotCoveredNodesCount);
             Assert.AreEqual(0, sut.TotalWorkflowNodesCoveredPercentage);
         }
 
@@ -257,9 +255,8 @@ namespace Dev2.Data.Tests
             var sut = new WarewolfWorkflowReports(new List<IWarewolfWorkflow> { mockWarewolfWorkflow.Object }, string.Empty);
             _ = sut.Calculte(mockTestCoverageCatalog.Object, new Mock<ITestCatalog>().Object);
 
-            Assert.AreEqual(3, sut.TotalWorkflowsNodesCount);
+            Assert.AreEqual(3, sut.TotalWorkflowNodesCount);
             Assert.AreEqual(2, sut.TotalWorkflowNodesCoveredCount);
-            Assert.AreEqual(1, sut.TotalNotCoveredNodesCount);
             Assert.AreEqual(0.67, sut.TotalWorkflowNodesCoveredPercentage);
         }
 
@@ -324,9 +321,8 @@ namespace Dev2.Data.Tests
             var sut = new WarewolfWorkflowReports(new List<IWarewolfWorkflow> { mockWarewolfWorkflow.Object }, reportName);
             _ = sut.Calculte(mockTestCoverageCatalog.Object, new Mock<ITestCatalog>().Object);
 
-            Assert.AreEqual(3, sut.TotalWorkflowsNodesCount);
+            Assert.AreEqual(3, sut.TotalWorkflowNodesCount);
             Assert.AreEqual(2, sut.TotalWorkflowNodesCoveredCount);
-            Assert.AreEqual(1, sut.TotalNotCoveredNodesCount);
             Assert.AreEqual(0.67, sut.TotalWorkflowNodesCoveredPercentage);
         }
 
@@ -386,9 +382,8 @@ namespace Dev2.Data.Tests
             var sut = new WarewolfWorkflowReports(new List<IWarewolfWorkflow> { mockWarewolfWorkflow.Object }, reportName);
             _ = sut.Calculte(mockTestCoverageCatalog.Object, new Mock<ITestCatalog>().Object);
 
-            Assert.AreEqual(3, sut.TotalWorkflowsNodesCount);
+            Assert.AreEqual(3, sut.TotalWorkflowNodesCount);
             Assert.AreEqual(2, sut.TotalWorkflowNodesCoveredCount);
-            Assert.AreEqual(1, sut.TotalNotCoveredNodesCount);
             Assert.AreEqual(0.67, sut.TotalWorkflowNodesCoveredPercentage);
         }
 
@@ -444,9 +439,8 @@ namespace Dev2.Data.Tests
             var sut = new WarewolfWorkflowReports(new List<IWarewolfWorkflow> { mockWarewolfWorkflow.Object }, reportName);
             _ = sut.Calculte(mockTestCoverageCatalog.Object, new Mock<ITestCatalog>().Object);
 
-            Assert.AreEqual(2, sut.TotalWorkflowsNodesCount);
+            Assert.AreEqual(2, sut.TotalWorkflowNodesCount);
             Assert.AreEqual(2, sut.TotalWorkflowNodesCoveredCount);
-            Assert.AreEqual(0, sut.TotalNotCoveredNodesCount);
             Assert.AreEqual(1, sut.TotalWorkflowNodesCoveredPercentage);
         }
 

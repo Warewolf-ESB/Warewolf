@@ -18,6 +18,29 @@ using Warewolf.Data;
 
 namespace Dev2.Data
 {
+    public class WorkflowCoverageReportsTO : IWorkflowCoverageReportsTO
+    {
+        public IWorkflowNode[] CoveredWorkflowNodes { get; set; }
+
+        public IEnumerable<Guid> CoveredWorkflowNodesIds { get; set; }
+
+        public IEnumerable<Guid> CoveredWorkflowNodesMockedIds { get; set; }
+
+        public IEnumerable<Guid> CoveredWorkflowNodesNotMockedIds { get; set; }
+
+        public bool HasTestReports { get; set; }
+
+        public int NotCoveredNodesCount { get; set; }
+
+        public List<IServiceTestCoverageModelTo> Reports { get; set; }
+
+        public IWarewolfWorkflow Resource { get; set; }
+
+        public double TotalCoverage { get; set; }
+
+        public IEnumerable<IWorkflowNode> WorkflowNodes { get; set; }
+    }
+
     public class WorkflowCoverageReports : IWorkflowCoverageReports
     {
         public WorkflowCoverageReports(IWarewolfWorkflow resource)
@@ -40,7 +63,7 @@ namespace Dev2.Data
 
         private int CalculateNotCoveredNodes()
         {
-            return GetOneOnZero(WorkflowNodes.Count()) - CoveredWorkflowNodesIds.Count();
+            return WorkflowNodes.Count() - CoveredWorkflowNodesIds.Count();
         }
 
         private int GetOneOnZero(int count)
@@ -84,6 +107,31 @@ namespace Dev2.Data
                 .Flatten(ooo => ooo.ChildNodes)
                 .Distinct()
                 .ToArray();
+        }
+
+        public IWorkflowCoverageReportsTO TryExecute()
+        {
+            try
+            {
+                return new WorkflowCoverageReportsTO
+                {
+                    CoveredWorkflowNodes = CoveredWorkflowNodes,
+                    CoveredWorkflowNodesIds = CoveredWorkflowNodesIds,
+                    CoveredWorkflowNodesMockedIds = CoveredWorkflowNodesMockedIds,
+                    CoveredWorkflowNodesNotMockedIds = CoveredWorkflowNodesNotMockedIds,
+                    HasTestReports = HasTestReports,
+                    NotCoveredNodesCount = NotCoveredNodesCount,
+                    Reports = Reports,
+                    Resource = Resource,
+                    TotalCoverage = TotalCoverage,
+                    WorkflowNodes = WorkflowNodes
+                };
+            }
+            catch (Exception)
+            {
+                Dev2Logger.Error("[Coverage] - Resource: "+Resource.ResourceName + " Failed. Details - ResourceId: " + Resource.ResourceID + " ResourcePath: "+ Resource.FilePath, GlobalConstants.WarewolfError);
+                return default;
+            }
         }
 
         private IWorkflowNode[] CalculateWorkflowNodes()

@@ -33,13 +33,11 @@ namespace Dev2.Data
 
         public IEnumerable<IWarewolfWorkflow> Workflows => _workflows;
 
-        public int TotalWorkflowsNodesCount { get; private set; }
+        public int TotalWorkflowNodesCount { get; private set; }
 
         public int TotalWorkflowNodesCoveredCount { get; private set; }
 
         public double TotalWorkflowNodesCoveredPercentage { get; private set; }
-
-        public int TotalNotCoveredNodesCount { get; private set; }
 
 
         public (IEnumerable<WorkflowTestResults> TestResults, IEnumerable<WorkflowCoverageReports> WorkflowCoverageReports) Calculte(ITestCoverageCatalog testCoverageCatalog, ITestCatalog testCatalog)
@@ -57,11 +55,12 @@ namespace Dev2.Data
                 SetWarewolfTestResults(testCatalog, coverageResource.ResourceID);
                 SetWarewolfCoverageReports(testCoverageCatalog, coverageResource);
 
-                TotalWorkflowsNodesCount = GetTotalWorkflowsNodesCount();
-                TotalNotCoveredNodesCount = GetTotalNotCoveredNodesCount();
-                TotalWorkflowNodesCoveredCount = GetTotalWorkflowNodesCoveredCount();
-                TotalWorkflowNodesCoveredPercentage = GetTotalWorkflowNodesCoveredPercentage();
             }
+
+
+            TotalWorkflowNodesCount = GetTotalWorkflowsNodesCount();
+            TotalWorkflowNodesCoveredCount = GetTotalWorkflowNodesCoveredCount();
+            TotalWorkflowNodesCoveredPercentage = GetTotalWorkflowNodesCoveredPercentage();
 
             return (_workflowTestResults, _workflowCoverageReports);
 
@@ -99,21 +98,16 @@ namespace Dev2.Data
             _workflowTestResults.Add(workflowTestResults);
         }
 
-        private int GetTotalNotCoveredNodesCount()
-        {
-            return _workflowCoverageReports.Sum(o => o.NotCoveredNodesCount);
-        }
-
         private double GetTotalWorkflowNodesCoveredPercentage()
         {
-            var calc = (double)TotalWorkflowNodesCoveredCount / GetOneOnZero();
+            var calc = (double)TotalWorkflowNodesCoveredCount / GetOneOnZero(TotalWorkflowNodesCount);
             var retult = Math.Round(calc, 2);
             return retult;
         }
 
-        private double GetOneOnZero()
+        private double GetOneOnZero(int count)
         {
-            var wNodesCount = (double)TotalWorkflowsNodesCount;
+            var wNodesCount = (double)count;
             var total = wNodesCount == 0 ? 1 : wNodesCount;
             return total;
         }
