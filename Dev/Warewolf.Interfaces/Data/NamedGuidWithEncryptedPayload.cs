@@ -51,7 +51,10 @@ namespace Warewolf.Data
 
         public override int GetHashCode()
         {
-            return base.GetHashCode();
+            unchecked
+            {
+                return (base.GetHashCode() * 397) ^ (_payload != null ? _payload.GetHashCode() : 0);
+            }
         }
 
         public new NamedGuidWithEncryptedPayload Clone()

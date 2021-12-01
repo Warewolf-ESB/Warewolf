@@ -7,6 +7,7 @@
         <AssemblyName>HangfireServer</AssemblyName>
         <ApplicationIcon />
         <StartupObject />
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     </PropertyGroup>
 
     <PropertyGroup>

@@ -56,7 +56,10 @@ namespace Warewolf.Configuration
 
         public override int GetHashCode()
         {
-            return base.GetHashCode();
+            unchecked
+            {
+                return ((_loggingDataSource != null ? _loggingDataSource.GetHashCode() : 0) * 397) ^ _encryptDataSource.GetHashCode();
+            }
         }
     }
 }

@@ -16,6 +16,7 @@
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
     <UseWpf>true</UseWpf>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
