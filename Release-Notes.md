@@ -1,3 +1,31 @@
+24 November 2021
+======================
+
+Bug fixes
+----------
+- Fixed issue where new workflow were not being picked up by suspend tool
+- Fix suspend tool issue when using SelectAndApplyTool, ForEach and Switch activities
+
+23 November 2021
+======================
+
+Bug fixes
+----------
+- Patched UI for inner activities for workflow tests not rendering
+- The error 500 on .coverage run has been resolved for tests containing Switch and Decision nodes
+- The manual selection of nodes into test node list and debug output generated tests are now sharing constant behavior
+- The Gate tool can be added to a Sequence tool
+
+Enhancements
+----------------
+Test Coverage
+- Child nodes are now include with our coverage percentage and denoted similarly to Decision tool on our HTML render .coverage
+- Coverage report shows total mocked nodes count
+- Can now run coverage for a single test
+- Mocked node now show as covered nodes
+- Gate tool can now be added as child node with tools like the Sequence tool, etc. 7
+- All tools have been adjusted to toggle the Mock and Assert option.
+
 05 November 2021
 ======================
 
