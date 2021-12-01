@@ -11,7 +11,6 @@
 using System;
 using System.Activities;
 using System.Collections.Generic;
-using System.Text;
 using Dev2.Activities.Debug;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Toolbox;
@@ -20,6 +19,7 @@ using Dev2.Comparer;
 using Dev2.Data.TO;
 using Dev2.Interfaces;
 using Dev2.Util;
+using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Auditing;
 using Warewolf.Common.NetStandard20;
 using Warewolf.Core;
@@ -240,6 +240,17 @@ namespace Dev2.Activities
                     }
                 }
             }
+        }
+
+        public override IEnumerable<IDev2Activity> GetChildrenNodes()
+        {
+            var act = OverrideDataFunc.Handler as IDev2ActivityIOMapping;
+            if (act == null)
+            {
+                return new List<IDev2Activity>();
+            }
+            var childNodes = new List<IDev2Activity> { act };
+            return childNodes;
         }
 
         private static void ExecuteActivity(IDSFDataObject dataObject, int update, IDev2Activity act)
