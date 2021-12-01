@@ -638,6 +638,12 @@ namespace Dev2.Runtime.WebServer
                         .SelectMany(o => o.Results).Where(x => x.TestName.ToUpper() == coverageData.ReportName.ToUpper())
                         .ToList()
                         .SetupCountSummaryHtml(writer, coverageData);
+
+                    allTestResults.Results
+                       .SelectMany(o => o.Results).Where(x => x.TestName.ToUpper() == coverageData.ReportName.ToUpper())
+                       .ToList()
+                       .SetupLinesCountSummaryHtml(writer, coverageData);
+
                 }
                 else
                 {
@@ -645,6 +651,11 @@ namespace Dev2.Runtime.WebServer
                             .SelectMany(o => o.Results)
                             .ToList()
                             .SetupCountSummaryHtml(writer, coverageData);
+
+                    allTestResults.Results
+                    .SelectMany(o => o.Results)
+                    .ToList()
+                    .SetupLinesCountSummaryHtml(writer, coverageData);
                 }
               
                 allCoverageReports.WithTestReports

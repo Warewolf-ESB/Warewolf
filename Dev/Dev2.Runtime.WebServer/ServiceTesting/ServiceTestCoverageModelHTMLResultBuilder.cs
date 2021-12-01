@@ -88,7 +88,7 @@ namespace Dev2.Runtime.WebServer
             writer.AddStyleAttribute(HtmlTextWriterStyle.FontWeight, "bold");
             writer.AddStyleAttribute(HtmlTextWriterStyle.FontSize, "16px");
             writer.AddStyleAttribute(HtmlTextWriterStyle.Width, "20%");
-            writer.AddStyleAttribute(HtmlTextWriterStyle.Padding, "8px 16px 16px 8px");
+            writer.AddStyleAttribute(HtmlTextWriterStyle.Padding, "8px 16px 5px 8px");
             writer.AddStyleAttribute(HtmlTextWriterStyle.Display, "inline-block");
             writer.RenderBeginTag(HtmlTextWriterTag.Div);
             writer.Write(resourcePath + "\\" + coverageData.ReportName.Replace("*", ""));
@@ -254,10 +254,85 @@ namespace Dev2.Runtime.WebServer
             writer.RenderEndTag();
         }
 
+        internal static void SetupLinesCountSummaryHtml(this List<IServiceTestModelTO> allTests, HtmlTextWriter writer, ICoverageDataObject coverageData)
+        {             
+            writer.AddStyleAttribute(HtmlTextWriterStyle.Padding, "10px 10px 5px 10px");
+            writer.AddStyleAttribute(HtmlTextWriterStyle.Margin, "5px");
+            writer.AddAttribute(HtmlTextWriterAttribute.Class, "count-summary row");
+            writer.RenderBeginTag(HtmlTextWriterTag.Div);
+
+            writer.AddStyleAttribute(HtmlTextWriterStyle.Margin, "0 -15px 0 -15px");
+            writer.RenderBeginTag(HtmlTextWriterTag.Table);
+            writer.RenderBeginTag(HtmlTextWriterTag.Tr);
+
+            writer.AddStyleAttribute(HtmlTextWriterStyle.Width, "200px");
+            writer.AddStyleAttribute(HtmlTextWriterStyle.FontWeight, "bold");
+            writer.AddStyleAttribute(HtmlTextWriterStyle.FontSize, "14px");
+            writer.AddStyleAttribute(HtmlTextWriterStyle.FontFamily, "roboto sans-serif");
+            writer.AddStyleAttribute(HtmlTextWriterStyle.Color, "black");
+            writer.AddAttribute(HtmlTextWriterAttribute.Class, "table-td-black");
+            writer.RenderBeginTag(HtmlTextWriterTag.Td);
+            writer.Write("Total Nodes: " + allTests.Count);
+            writer.RenderEndTag();
+
+            writer.AddStyleAttribute(HtmlTextWriterStyle.Width, "200px");
+            writer.AddStyleAttribute(HtmlTextWriterStyle.FontWeight, "bold");
+            writer.AddStyleAttribute(HtmlTextWriterStyle.FontSize, "14px");
+            writer.AddStyleAttribute(HtmlTextWriterStyle.FontFamily, "roboto sans-serif");
+            writer.AddStyleAttribute(HtmlTextWriterStyle.Color, "green");
+            writer.AddAttribute(HtmlTextWriterAttribute.Class, "table-td-green");
+            writer.RenderBeginTag(HtmlTextWriterTag.Td);
+            writer.Write("Covered Nodes: " + "2");
+            writer.RenderEndTag();
+
+             
+            writer.AddStyleAttribute(HtmlTextWriterStyle.Width, "200px");
+            writer.AddStyleAttribute(HtmlTextWriterStyle.FontWeight, "bold");
+            writer.AddStyleAttribute(HtmlTextWriterStyle.FontSize, "14px");
+            writer.AddStyleAttribute(HtmlTextWriterStyle.FontFamily, "roboto sans-serif");
+            writer.AddStyleAttribute(HtmlTextWriterStyle.Color, "red");
+            writer.AddAttribute(HtmlTextWriterAttribute.Class, "table-td-red");
+            writer.RenderBeginTag(HtmlTextWriterTag.Td);
+            writer.Write("Not Covered Nodes: " + "1");
+            writer.RenderEndTag();
+
+            int coveragePer = 0;
+
+            coveragePer = 80;
+            writer.AddStyleAttribute(HtmlTextWriterStyle.Width, "200px");
+            writer.AddStyleAttribute(HtmlTextWriterStyle.FontWeight, "bold");
+            writer.AddStyleAttribute(HtmlTextWriterStyle.FontSize, "14px");
+            writer.AddStyleAttribute(HtmlTextWriterStyle.FontFamily, "roboto sans-serif");
+
+            if (coveragePer <= 65)
+            {
+                writer.AddStyleAttribute(HtmlTextWriterStyle.Color, "red");
+            }
+            else if ((coveragePer > 65) && (coveragePer <= 85))
+            {
+                writer.AddStyleAttribute(HtmlTextWriterStyle.Color, "orange");
+            }           
+            else if(coveragePer > 85)  
+            {
+                writer.AddStyleAttribute(HtmlTextWriterStyle.Color, "green");
+            }
+            writer.AddAttribute(HtmlTextWriterAttribute.Class, "table-td-red");
+            writer.RenderBeginTag(HtmlTextWriterTag.Td);
+            writer.Write("Coverage : " + coveragePer + "%");
+            writer.RenderEndTag();
+
+            writer.RenderBeginTag(HtmlTextWriterTag.Td);
+             
+            writer.RenderEndTag();
+
+            writer.RenderEndTag();
+            writer.RenderEndTag();
+            writer.RenderEndTag();
+        }
 
         internal static void SetupCountSummaryHtml(this List<IServiceTestModelTO> allTests, HtmlTextWriter writer, ICoverageDataObject coverageData)
         {
-            writer.AddStyleAttribute(HtmlTextWriterStyle.Padding, "10px 10px 20px 10px");
+            writer.AddStyleAttribute(HtmlTextWriterStyle.Padding, "10px 10px 0px 10px");
             writer.AddStyleAttribute(HtmlTextWriterStyle.Margin, "5px");
             writer.AddAttribute(HtmlTextWriterAttribute.Class, "count-summary row");
             writer.RenderBeginTag(HtmlTextWriterTag.Div);
@@ -323,7 +398,7 @@ namespace Dev2.Runtime.WebServer
             writer.RenderEndTag();
 
             writer.RenderBeginTag(HtmlTextWriterTag.Td);
-            if (coverageData.IsMultipleWorkflowReport)
+            if ((coverageData.IsMultipleWorkflowReport) || (coverageData.ReportName=="*"))
             {
                 writer.AddAttribute(HtmlTextWriterAttribute.Target, "_new");
                 writer.AddAttribute(HtmlTextWriterAttribute.Href, coverageData.GetAllTestsUrl());
@@ -340,7 +415,7 @@ namespace Dev2.Runtime.WebServer
 
         internal static void SetupCoverageCountSummaryHtml(this HtmlTextWriter writer,IWorkflowCoverageReports coverageReports)
         {
-            writer.AddStyleAttribute(HtmlTextWriterStyle.Padding, "10px 10px 20px 10px");
+            writer.AddStyleAttribute(HtmlTextWriterStyle.Padding, "10px 10px 5px 10px");
             writer.AddStyleAttribute(HtmlTextWriterStyle.Margin, "5px");
             writer.AddAttribute(HtmlTextWriterAttribute.Class, "count-summary row");
             writer.RenderBeginTag(HtmlTextWriterTag.Div);
