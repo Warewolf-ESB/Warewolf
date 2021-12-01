@@ -630,7 +630,7 @@ namespace Dev2.Runtime.WebServer
 
             using (var writer = new HtmlTextWriter(stringWriter))
             {
-                writer.SetupNavBarHtml(allCoverageReports.TotalReportsCoverage);
+                writer.SetupNavBarHtml(warewolfWorkflowReports.TotalWorkflowNodesCoveredPercentage);
 
                 if (!string.IsNullOrEmpty(coverageData.ReportName) && coverageData.ReportName != "*")
                 {
