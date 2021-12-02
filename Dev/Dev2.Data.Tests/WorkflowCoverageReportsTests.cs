@@ -59,6 +59,48 @@ namespace Dev2.Data.Tests
             Assert.IsTrue(sut.HasTestReports);
             Assert.AreEqual(1, sut.TotalCoverage);
         }
+
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(WorkflowCoverageReports))]
+        public void WorkflowCoverageReports_GetTotalCoverage_Given_TestNodesCovered_TestStepType_Is_Assert_AND_ActivityIDIsEmpty()
+        {
+            var testUniqueID = Guid.Parse("7ed4ab9c-d227-409a-acc3-18330fe6b84e");
+            var mockWarewolfWorkflow = new Mock<IWarewolfWorkflow>();
+            mockWarewolfWorkflow.Setup(o => o.WorkflowNodes).Returns(new List<IWorkflowNode>
+            {
+                new WorkflowNode
+                {
+                    ActivityID = Guid.Empty,
+                    UniqueID = testUniqueID, //most of our activities are still using the ActivityID,
+                                             //tools like the Gate and newer have started moving towards UniqueID
+                }
+            });
+
+            var sut = new WorkflowCoverageReports(mockWarewolfWorkflow.Object);
+
+            sut.Add(new ServiceTestCoverageModelTo
+            {
+                WorkflowId = Guid.NewGuid(),
+                LastRunDate = DateTime.Now,
+                OldReportName = "old name",
+                ReportName = "new name",
+                AllTestNodesCovered = new ISingleTestNodesCovered[] { new SingleTestNodesCovered("Test", new List<IServiceTestStep>
+                {
+                    new ServiceTestStepTO
+                    {
+                        ActivityID = Guid.Parse("7ed4ab9c-d227-409a-acc3-18330fe6b84e"),
+                        UniqueID = Guid.Parse("7ed4ab9c-d227-409a-acc3-18330fe6b84e"),
+                        Type = StepType.Assert
+                    }
+                })}
+            });
+
+            Assert.IsNotNull(sut.Resource);
+            Assert.IsTrue(sut.HasTestReports);
+            Assert.AreEqual(1, sut.TotalCoverage);
+        }
         
         [TestMethod]
         [Owner("Siphamandla Dube")]
@@ -97,9 +139,80 @@ namespace Dev2.Data.Tests
 
             Assert.IsNotNull(sut.Resource);
             Assert.IsTrue(sut.HasTestReports);
-            Assert.AreEqual(0, sut.TotalCoverage);
+            Assert.AreEqual(1, sut.TotalCoverage, "design change: mocked nodes should now included with the test coverage calculation");
         }
 
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(WorkflowCoverageReports))]
+        public void WorkflowCoverageReports_GetTotalCoverage_Given_ChildNodes_ShouldInheritParentCoverageStatus()
+        {
+            var mockWarewolfWorkflow = new Mock<IWarewolfWorkflow>();
+            mockWarewolfWorkflow.Setup(o => o.WorkflowNodes).Returns(new List<IWorkflowNode>
+            {
+                new WorkflowNode
+                {
+                    ActivityID = Guid.Parse("7ed4ab9c-d227-409a-acc3-18330fe6b84e"),
+                    UniqueID = Guid.Parse("7ed4ab9c-d227-409a-acc3-18330fe6b84e"),
+                    ChildNodes = new List<IWorkflowNode>
+                    {
+                        new WorkflowNode
+                        {
+                            ActivityID = Guid.Parse("37f61bbe-c77b-4066-be7e-e91706382e82"),
+                            UniqueID = Guid.Parse("37f61bbe-c77b-4066-be7e-e91706382e82"),
+                            MockSelected = false
+                        }
+                    }
+                },
+                new WorkflowNode
+                {
+                    ActivityID = Guid.Parse("fc647f71-9879-4823-8b2c-04b63e395ba2"),
+                    UniqueID = Guid.Parse("fc647f71-9879-4823-8b2c-04b63e395ba2"),
+                    ChildNodes = new List<IWorkflowNode>
+                    {
+                        new WorkflowNode
+                        {
+                            ActivityID = Guid.Parse("7615414c-8f33-4175-96a7-3f961918c4d4"),
+                            UniqueID = Guid.Parse("7615414c-8f33-4175-96a7-3f961918c4d4"),
+                            MockSelected = false
+                        }
+                    }
+                }
+            });
+
+            var sut = new WorkflowCoverageReports(mockWarewolfWorkflow.Object);
+
+            sut.Add(new ServiceTestCoverageModelTo
+            {
+                WorkflowId = Guid.NewGuid(),
+                LastRunDate = DateTime.Now,
+                OldReportName = "old name",
+                ReportName = "new name",
+                AllTestNodesCovered = new ISingleTestNodesCovered[] { new SingleTestNodesCovered("Test", new List<IServiceTestStep>
+                {
+                    new ServiceTestStepTO
+                    {
+                        ActivityID = Guid.Parse("7ed4ab9c-d227-409a-acc3-18330fe6b84e"),
+                        UniqueID = Guid.Parse("7ed4ab9c-d227-409a-acc3-18330fe6b84e"),
+                        Type = StepType.Mock,
+                        Children = new System.Collections.ObjectModel.ObservableCollection<IServiceTestStep>
+                        {
+                           new ServiceTestStepTO
+                           {
+                                ActivityID = Guid.Parse("37f61bbe-c77b-4066-be7e-e91706382e82"),
+                                UniqueID = Guid.Parse("37f61bbe-c77b-4066-be7e-e91706382e82"),
+                                MockSelected = false
+                           }
+                        }
+                    },
+
+                })}
+            });
+
+            Assert.IsNotNull(sut.Resource);
+            Assert.IsTrue(sut.HasTestReports);
+            Assert.AreEqual(.5, sut.TotalCoverage, "design change: child nodes should now included with the test coverage calculation");
+        }
 
         [TestMethod]
         [Owner("Siphamandla Dube")]
@@ -204,7 +317,7 @@ namespace Dev2.Data.Tests
 
             Assert.IsNotNull(sut.Resource);
             Assert.IsTrue(sut.HasTestReports);
-            Assert.AreEqual(0.67, sut.TotalCoverage);
+            Assert.AreEqual(1, sut.TotalCoverage, "design change: mocked nodes should now included with the test coverage calculation");
         }
     }
 }

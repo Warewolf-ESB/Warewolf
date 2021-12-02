@@ -20,7 +20,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             CustomContainer.Register(serverRepo.Object);
             var vm = new RequestServiceNameViewModel();
             var x = new Mock<IExplorerViewModel>();
-            var p = new PrivateObject(vm);
+            var p = new Warewolf.Testing.PrivateObject(vm);
             var env = new Mock<IEnvironmentViewModel>();
             p.SetField("_environmentViewModel", env.Object);
             vm.SingleEnvironmentExplorerViewModel = x.Object;

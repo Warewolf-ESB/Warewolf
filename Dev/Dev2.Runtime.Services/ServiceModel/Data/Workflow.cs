@@ -186,9 +186,12 @@ namespace Dev2.Runtime.ServiceModel.Data
             {
                 var workflowNode = new WorkflowNode
                 {
-                    ActivityID = activity.ActivityId,
+                    ActivityID = activity.ActivityId != Guid.Empty ? activity.ActivityId : Guid.Parse(activity.UniqueID),
                     UniqueID = Guid.Parse(activity.UniqueID),
                     StepDescription = activity.GetDisplayName(),
+                    ChildNodes = activity.GetChildrenNodes()
+                    .Select(o => WorkflowNodeFrom(o))
+                    .ToList()
                 };
 
                 if (!_workflowNodes.Any(o => o.UniqueID == workflowNode.UniqueID))

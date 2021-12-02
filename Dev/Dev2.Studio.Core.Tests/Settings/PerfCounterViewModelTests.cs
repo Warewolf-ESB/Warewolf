@@ -83,11 +83,11 @@ namespace Dev2.Core.Tests.Settings
             perfCounterTo.Setup(to => to.ResourceCounters).Returns(new List<IResourcePerformanceCounter>());
             perfCounterTo.Setup(to => to.NativeCounters).Returns(new List<IPerformanceCounter>());
             var perfcounterViewModel = new PerfcounterViewModel(perfCounterTo.Object, new Mock<IServer>().Object);
-            var counters = new PrivateObject(perfcounterViewModel);
+            var counters = new Warewolf.Testing.PrivateObject(perfcounterViewModel);
             //------------Setup for test--------------------------
             var ItemServerCounters = perfcounterViewModel.ServerCounters = null;
             //------------Execute Test---------------------------
-            var areEqual = counters.Invoke("Equals", args: new object[] { null, ItemServerCounters });
+            var areEqual = counters.Invoke("Equals", new object[] { null, ItemServerCounters });
             //------------Assert Results-------------------------
             Assert.IsFalse(areEqual.Equals(true));
         }
@@ -102,13 +102,13 @@ namespace Dev2.Core.Tests.Settings
             perfCounterTo.Setup(to => to.ResourceCounters).Returns(new List<IResourcePerformanceCounter>());
             perfCounterTo.Setup(to => to.NativeCounters).Returns(new List<IPerformanceCounter>());
             var perfcounterViewModel = new PerfcounterViewModel(perfCounterTo.Object, new Mock<IServer>().Object);
-            var counters = new PrivateObject(perfcounterViewModel);
+            var counters = new Warewolf.Testing.PrivateObject(perfcounterViewModel);
 
             var ItemServerCounters = new List<IPerformanceCountersByMachine>();
             var ItemResourceCounters = perfcounterViewModel.ResourceCounters = null;
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            var areEqual = counters.Invoke("Equals", args: new object[] { ItemServerCounters, ItemResourceCounters });
+            var areEqual = counters.Invoke("Equals", new object[] { ItemServerCounters, ItemResourceCounters });
             //------------Assert Results-------------------------
             Assert.IsFalse(areEqual.Equals(true));
         }

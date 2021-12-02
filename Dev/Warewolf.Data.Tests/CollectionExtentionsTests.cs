@@ -13,6 +13,8 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Linq;
+using Warewolf.Data.Options;
+using enDecisionType = Warewolf.Options.enDecisionType;
 
 namespace Warewolf.Data.Tests
 {
@@ -21,18 +23,20 @@ namespace Warewolf.Data.Tests
     public class CollectionExtentionsTests
     {
         [TestMethod]
+        [Timeout(100)]
         [Owner("Siphamandla Dube")]
         public void CollectionExtentions_IsItemDuplicate_ExpectTrue()
         {
             var testItem = "item one";
             var testList = new List<string> { { "item one" } };
-            
+
             var sut = testList.IsItemDuplicate(testItem);
 
             Assert.IsTrue(sut);
         }
 
         [TestMethod]
+        [Timeout(100)]
         [Owner("Siphamandla Dube")]
         public void CollectionExtentions_IsItemDuplicate_False_ExpectNoDuplicates()
         {
@@ -45,6 +49,7 @@ namespace Warewolf.Data.Tests
         }
 
         [TestMethod]
+        [Timeout(100)]
         [Owner("Siphamandla Dube")]
         public void CollectionExtentions_IsItemDuplicate_False_ExpectDuplicates()
         {
@@ -54,6 +59,58 @@ namespace Warewolf.Data.Tests
             testList.AddItem(testItem, false);
 
             Assert.AreEqual(2, testList.Count());
+        }
+
+        [TestMethod]
+        [Timeout(100)]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(CollectionExtentions))]
+        public void ConditionExpression_ToConditions()
+        {
+
+            var conditions = new List<ConditionExpression>
+            {
+                new ConditionExpression
+                {
+                    Left = "[[a]]",
+                    Cond = new ConditionBetween()
+                    {
+                        MatchType = enDecisionType.IsBetween,
+                        From = "2",
+                        To = "10",
+                    }
+                },
+                new ConditionExpression
+                {
+                    Left = "[[b]]",
+                    Cond = new ConditionMatch()
+                    {
+                        MatchType = enDecisionType.NotBetween,
+                        Right = "22",
+                    }
+                },
+                new ConditionExpression
+                {
+                    Cond = new ConditionMatch()
+                    {
+                        MatchType = enDecisionType.Choose
+                    }
+                }
+            };
+
+            var result = conditions.ToConditions().ToList();
+
+            Assert.AreEqual(2, result.Count);
+
+            Assert.AreEqual(typeof(ConditionBetween), result[0].GetType());
+
+            var conditionBetween = result[0] as ConditionBetween;
+
+            Assert.IsNotNull(conditionBetween);
+            Assert.AreEqual("[[a]]", conditionBetween.Left);
+            Assert.AreEqual(enDecisionType.IsBetween, conditionBetween.MatchType);
+            Assert.AreEqual("2", conditionBetween.From);
+            Assert.AreEqual("10", conditionBetween.To);
         }
     }
 }

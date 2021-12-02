@@ -61,7 +61,7 @@ namespace Warewolf.UIBindingTests.ComDll
             pluginServiceModel.Setup(serviceModel => serviceModel.RetrieveSources())
                 .Returns(plugInSources.Object);
             var viewModel = new ComDllViewModel(modelItem, pluginServiceModel.Object);
-            var privateObject = new PrivateObject(comDllActivity);
+            var privateObject = new Warewolf.Testing.PrivateObject(comDllActivity);
 
             _scenarioContext.Add("ViewModel", viewModel);
             _scenarioContext.Add("DataObject", dataObject.Object);

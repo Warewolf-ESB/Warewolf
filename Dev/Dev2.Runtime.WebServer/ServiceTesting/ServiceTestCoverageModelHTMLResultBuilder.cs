@@ -47,7 +47,7 @@ namespace Dev2.Runtime.WebServer
             writer.RenderBeginTag(HtmlTextWriterTag.Div);
             writer.Write(Math.Round(totalReportsCoverage, 0) +" %");
             writer.RenderEndTag();
-
+            writer.RenderBeginTag(HtmlTextWriterTag.Br);
         }
 
         private static void AddColorCoding(this HtmlTextWriter writer, double totalReportsCoverage)
@@ -91,7 +91,7 @@ namespace Dev2.Runtime.WebServer
             writer.AddStyleAttribute(HtmlTextWriterStyle.Padding, "8px 16px 16px 8px");
             writer.AddStyleAttribute(HtmlTextWriterStyle.Display, "inline-block");
             writer.RenderBeginTag(HtmlTextWriterTag.Div);
-            writer.Write(resourcePath);
+            writer.Write(resourcePath + "\\" + coverageData.ReportName.Replace("*", ""));
             writer.RenderEndTag();
 
             writer.AddAttribute(HtmlTextWriterAttribute.Class, "SetupWorkflowPathHtml-link");
@@ -113,12 +113,19 @@ namespace Dev2.Runtime.WebServer
             writer.AddStyleAttribute(HtmlTextWriterStyle.FontWeight, "500");
             writer.AddStyleAttribute(HtmlTextWriterStyle.Margin, "0 0 0 35px");
             writer.AddAttribute(HtmlTextWriterAttribute.Class, "workflow-nodes-row");
+
+            writer.RenderBeginTag(HtmlTextWriterTag.Div);
+            SetupCoverageCountSummaryHtml(writer, coverageReports);
+            writer.RenderEndTag();
+
             writer.RenderBeginTag(HtmlTextWriterTag.Div);
 
             coverageReports.WorkflowNodes.ToList()
                 .ForEach(node => node.SetupWorkflowNodeHtml(writer, coverageReports.CoveredWorkflowNodes));
 
             writer.RenderEndTag();
+            writer.RenderEndTag();
+            writer.RenderBeginTag(HtmlTextWriterTag.Br);
         }
 
         public static void SetupWorkflowReportsHtml(this HtmlTextWriter writer, double CoveragePercentage , string classValue)
@@ -184,6 +191,15 @@ namespace Dev2.Runtime.WebServer
                 writer.Write(workflowNode.StepDescription);
                 writer.RenderEndTag();
             }
+            else if(IsNodeMocked(coveredNodes, workflowNode))
+            {
+                writer.AddStyleAttribute(HtmlTextWriterStyle.Color, "#9ACD32");
+                writer.AddStyleAttribute(HtmlTextWriterStyle.FontSize, "12px");
+                writer.AddAttribute(HtmlTextWriterAttribute.Class, "step-description-green");
+                writer.RenderBeginTag(HtmlTextWriterTag.Div);
+                writer.Write(workflowNode.StepDescription);
+                writer.RenderEndTag();
+            }
             else
             {
                 writer.AddStyleAttribute(HtmlTextWriterStyle.Color, "red");
@@ -201,6 +217,18 @@ namespace Dev2.Runtime.WebServer
                 writer.RenderBeginTag(HtmlTextWriterTag.Div);
 
                 workflowNode.NextNodes.ForEach(node => SetupNextNodeHTML(writer, coveredNodes, node));
+                writer.RenderEndTag();
+            }
+
+            if (workflowNode.ChildNodes.ToList()?.Count > 0)
+            {
+                writer.AddStyleAttribute(HtmlTextWriterStyle.FontSize, "12px");
+                writer.AddAttribute(HtmlTextWriterAttribute.Class, "next-nodes");
+                writer.RenderBeginTag(HtmlTextWriterTag.Div);
+
+                workflowNode.ChildNodes
+                    .ToList()
+                    .ForEach(node => SetupNextNodeHTML(writer, coveredNodes, node)); //Should add SetupChildNodeHTML
                 writer.RenderEndTag();
             }
         }
@@ -310,9 +338,74 @@ namespace Dev2.Runtime.WebServer
             writer.RenderEndTag();
         }
 
+        internal static void SetupCoverageCountSummaryHtml(this HtmlTextWriter writer,IWorkflowCoverageReports coverageReports)
+        {
+            writer.AddStyleAttribute(HtmlTextWriterStyle.Padding, "10px 10px 20px 10px");
+            writer.AddStyleAttribute(HtmlTextWriterStyle.Margin, "5px");
+            writer.AddAttribute(HtmlTextWriterAttribute.Class, "count-summary row");
+            writer.RenderBeginTag(HtmlTextWriterTag.Div);
+
+            writer.AddStyleAttribute(HtmlTextWriterStyle.Margin, "0 -15px 0 -15px");
+            writer.RenderBeginTag(HtmlTextWriterTag.Table);
+            writer.RenderBeginTag(HtmlTextWriterTag.Tr);
+
+            writer.AddStyleAttribute(HtmlTextWriterStyle.Width, "200px");
+            writer.AddStyleAttribute(HtmlTextWriterStyle.FontWeight, "bold");
+            writer.AddStyleAttribute(HtmlTextWriterStyle.FontSize, "14px");
+            writer.AddStyleAttribute(HtmlTextWriterStyle.FontFamily, "roboto sans-serif");
+            writer.AddStyleAttribute(HtmlTextWriterStyle.Color, "black");
+            writer.AddAttribute(HtmlTextWriterAttribute.Class, "table-td-black");
+            writer.RenderBeginTag(HtmlTextWriterTag.Td);
+            writer.Write("Total Nodes Count: " + coverageReports.WorkflowNodes.Count());
+            writer.RenderEndTag();
+
+            writer.AddStyleAttribute(HtmlTextWriterStyle.Width, "200px");
+            writer.AddStyleAttribute(HtmlTextWriterStyle.FontWeight, "bold");
+            writer.AddStyleAttribute(HtmlTextWriterStyle.FontSize, "14px");
+            writer.AddStyleAttribute(HtmlTextWriterStyle.FontFamily, "roboto sans-serif");
+            writer.AddStyleAttribute(HtmlTextWriterStyle.Color, "green");
+            writer.AddAttribute(HtmlTextWriterAttribute.Class, "table-td-green");
+            writer.RenderBeginTag(HtmlTextWriterTag.Td);
+
+            var coveredNodesCount = coverageReports.CoveredWorkflowNodesIds.Count();
+            var assertCount = coverageReports.CoveredWorkflowNodesNotMockedIds.Count();
+            var mockedCount = coverageReports.CoveredWorkflowNodesMockedIds.Count();
+
+            writer.Write("Covered Nodes: " + coveredNodesCount + "<br> (Assert : " + assertCount + " / <font color='#9ACD32'> Mocked : " + mockedCount + "</font>)");
+            writer.RenderEndTag();
+
+            var notCoveredNodesCount = coverageReports.NotCoveredNodesCount;
+            writer.AddStyleAttribute(HtmlTextWriterStyle.Width, "200px");
+            writer.AddStyleAttribute(HtmlTextWriterStyle.FontWeight, "bold");
+            writer.AddStyleAttribute(HtmlTextWriterStyle.FontSize, "14px");
+            writer.AddStyleAttribute(HtmlTextWriterStyle.FontFamily, "roboto sans-serif");
+            if (notCoveredNodesCount > 0)
+            {
+                writer.AddStyleAttribute(HtmlTextWriterStyle.Color, "red");
+            }
+            else
+            {
+                writer.AddStyleAttribute(HtmlTextWriterStyle.Color, "black");
+            }
+            writer.AddAttribute(HtmlTextWriterAttribute.Class, "table-td-red");
+            writer.RenderBeginTag(HtmlTextWriterTag.Td);
+            writer.Write("Not Covered Nodes: " + notCoveredNodesCount);
+            writer.RenderEndTag();
+            writer.RenderBeginTag(HtmlTextWriterTag.Td);
+            writer.RenderEndTag();
+            writer.RenderEndTag();
+            writer.RenderEndTag();
+
+        }
+
         private static bool IsNodeCovered(IWorkflowNode[] coveredNodes, IWorkflowNode node)
         {
             return coveredNodes.Any(o => o.ActivityID == node.UniqueID && o.MockSelected is false);
+        }
+
+        private static bool IsNodeMocked(IWorkflowNode[] coveredNodes, IWorkflowNode node)
+        {
+            return coveredNodes.Any(o => o.ActivityID == node.UniqueID && o.MockSelected is true);
         }
     }
 }

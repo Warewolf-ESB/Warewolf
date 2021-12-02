@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -43,6 +43,7 @@
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <UseWpf>true</UseWpf>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>Warewolf.ico</ApplicationIcon>
@@ -811,6 +812,9 @@
     <Content Include="Help\PageNotAvailable.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="InstallWebView2FixedVersion.ps1">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ViewModels\Administration\" />
@@ -864,17 +868,19 @@
     </PackageReference>
   </ItemGroup>
   <PropertyGroup>
-    <PostBuildEvent>
-		if exist "$(SolutionDir)Dev2.Studio\bin\Debug\net48\win\Warewolf Studio.exe" (
-		if not exist "$(SolutionDir)Dev2.Studio\bin\Debug\net48\win\Trackerbird.x64.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.x64.dll" "$(SolutionDir)Dev2.Studio\bin\Debug\net48\win\Trackerbird.x64.dll"
-		if not exist "$(SolutionDir)Dev2.Studio\bin\Debug\net48\win\Trackerbird.x86.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.x86.dll" "$(SolutionDir)Dev2.Studio\bin\Debug\net48\win"
-		if not exist "$(SolutionDir)Dev2.Studio\bin\Debug\net48\win\Trackerbird.Tracker.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.Tracker.dll" "$(SolutionDir)Dev2.Studio\bin\Debug\net48\win"
-		)
-		if exist "$(SolutionDir)Dev2.Studio\bin\Release\net48\win\Warewolf Studio.exe" (
-		if not exist "$(SolutionDir)Dev2.Studio\bin\Release\net48\win\Trackerbird.x64.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.x64.dll" "$(SolutionDir)Dev2.Studio\bin\Release\net48\win\Trackerbird.x64.dll"
-		if not exist "$(SolutionDir)Dev2.Studio\bin\Release\net48\win\Trackerbird.x86.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.x86.dll" "$(SolutionDir)Dev2.Studio\bin\Release\net48\win"
-		if not exist "$(SolutionDir)Dev2.Studio\bin\Release\net48\win\Trackerbird.Tracker.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.Tracker.dll" "$(SolutionDir)Dev2.Studio\bin\Release\net48\win"
-		)
-	</PostBuildEvent>
+    <PostBuildEvent>if exist "$(SolutionDir)Dev2.Studio\bin\Debug\net48\win\Warewolf Studio.exe" (
+  if not exist "$(SolutionDir)Dev2.Studio\bin\Debug\net48\win\Trackerbird.x64.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.x64.dll" "$(SolutionDir)Dev2.Studio\bin\Debug\net48\win\Trackerbird.x64.dll"
+  if not exist "$(SolutionDir)Dev2.Studio\bin\Debug\net48\win\Trackerbird.x86.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.x86.dll" "$(SolutionDir)Dev2.Studio\bin\Debug\net48\win"
+  if not exist "$(SolutionDir)Dev2.Studio\bin\Debug\net48\win\Trackerbird.Tracker.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.Tracker.dll" "$(SolutionDir)Dev2.Studio\bin\Debug\net48\win"
+)
+if exist "$(SolutionDir)Dev2.Studio\bin\Release\net48\win\Warewolf Studio.exe" (
+  if not exist "$(SolutionDir)Dev2.Studio\bin\Release\net48\win\Trackerbird.x64.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.x64.dll" "$(SolutionDir)Dev2.Studio\bin\Release\net48\win\Trackerbird.x64.dll"
+  if not exist "$(SolutionDir)Dev2.Studio\bin\Release\net48\win\Trackerbird.x86.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.x86.dll" "$(SolutionDir)Dev2.Studio\bin\Release\net48\win"
+  if not exist "$(SolutionDir)Dev2.Studio\bin\Release\net48\win\Trackerbird.Tracker.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.Tracker.dll" "$(SolutionDir)Dev2.Studio\bin\Release\net48\win"
+)
+    </PostBuildEvent>
   </PropertyGroup>
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="if not exist &quot;$(TargetDir)WebView2.FixedVersionRuntime.cab&quot; powershell.exe -ExecutionPolicy RemoteSigned -nologo -noprofile -file &quot;$(TargetDir)InstallWebView2FixedVersion.ps1&quot;" />
+  </Target>
 </Project>

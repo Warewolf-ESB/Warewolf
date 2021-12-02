@@ -48,6 +48,7 @@
       <Visible>False</Visible>
     </AdditionalFiles>
     <Compile Include="EnvironmentVariablesForTesting.cs" />
+    <Compile Include="PrivateObject.cs" />
     <Compile Include="ServerForTesting.cs" />
   </ItemGroup>
   <ItemGroup>

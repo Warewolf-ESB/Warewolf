@@ -919,7 +919,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _target.DllListings = new ObservableCollection<IDllListingModel> { listingMock.Object,listingMock1.Object,listingMock2.Object };
             _changedProperties.Clear();
 
-            var p = new PrivateObject(_target);
+            var p = new Warewolf.Testing.PrivateObject(_target);
             p.SetField("_originalDllListings", originalList);
             //act
             _target.SearchTerm = expectedValue;
