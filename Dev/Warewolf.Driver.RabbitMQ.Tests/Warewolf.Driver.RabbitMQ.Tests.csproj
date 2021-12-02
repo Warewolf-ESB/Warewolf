@@ -5,7 +5,7 @@
     <AssemblyName>Warewolf.Driver.RabbitMQ.Tests</AssemblyName>
     <Configurations>Debug</Configurations>
     <TargetFramework>net48</TargetFramework>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
   </PropertyGroup>
 
   <ItemGroup>

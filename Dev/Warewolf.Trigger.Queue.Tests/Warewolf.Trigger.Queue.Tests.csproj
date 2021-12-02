@@ -5,7 +5,7 @@
     <IsPackable>false</IsPackable>
     <Configurations>Debug</Configurations>
     <Platforms>AnyCPU</Platforms>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
   </PropertyGroup>
 
   <ItemGroup>
