@@ -29,6 +29,17 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(Workflow))]
+        public void Workflow_WorkflowNodes_IsNull_ShouldNotAddedAsWorkflowNode()
+        {
+            var sut = new Workflow();
+            var nodes = sut.WorkflowNodes;
+
+            Assert.AreEqual(0, nodes.Count);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(Workflow))]
         public void Workflow_WorkflowNodesForHtml_FlowStep_ContainingNoActivity_ShouldNotAddedAsWorkflowNode()
         {
             var flowNodes = new Collection<FlowNode>

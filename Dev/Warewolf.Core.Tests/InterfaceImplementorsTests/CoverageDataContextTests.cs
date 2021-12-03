@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -10,6 +10,7 @@
 
 
 using Dev2.InterfaceImplementors;
+using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
@@ -28,13 +29,13 @@ namespace Dev2.Tests.InterfaceImplementorsTests
         {
             var sut = new CoverageDataContext(Guid.Empty, Web.EmitionTypes.Cover, "http://127.0.0.0.1:3142")
             {
-                CoverageReportResourceIds = new[] { _resourceId },
+                CoverageReportResources = new[] { new Workflow { ResourceID = _resourceId } },
             };
 
             Assert.AreEqual(Guid.Empty, sut.ResourceID);
             Assert.IsTrue(sut.IsMultipleWorkflowReport);
             Assert.AreEqual(Web.EmitionTypes.Cover, sut.ReturnType);
-            Assert.AreEqual(_resourceId, sut.CoverageReportResourceIds.First());
+            Assert.AreEqual(_resourceId, sut.CoverageReportResources.First().ResourceID);
         }
 
         [TestMethod]

@@ -41,10 +41,11 @@ namespace Dev2.Runtime
                 .ToArray()
             };
             coverageReports.Add(coverageModelTo);
+            var coverageReportsTO = coverageReports.TryExecute();
 
-            coverageModelTo.TotalCoverage = coverageReports.TotalCoverage;
-            coverageModelTo.AllWorkflowNodes = coverageReports.WorkflowNodes;
-            coverageModelTo.NotCoveredNodesCount = coverageReports.NotCoveredNodesCount;
+            coverageModelTo.TotalCoverage = coverageReportsTO.TotalCoverage;
+            coverageModelTo.AllWorkflowNodes = coverageReportsTO.WorkflowNodes;
+            coverageModelTo.NotCoveredNodesCount = coverageReportsTO.NotCoveredNodesCount;
 
             return coverageModelTo;
         }

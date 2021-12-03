@@ -140,7 +140,6 @@
     <Compile Include="ServiceTesting\ServiceTestModelJObjectResultBuilder.cs" />
     <Compile Include="ServiceTesting\ServiceTestModelTRXResultBuilder.cs" />
     <Compile Include="ServiceTesting\TestResults.cs" />
-    <Compile Include="ServiceTesting\WorkflowTestResults.cs" />
     <Compile Include="TransferObjects\WebRequestTO.cs" />
     <Compile Include="WebRequestExtentions.cs" />
     <Compile Include="WebServerContext.cs" />

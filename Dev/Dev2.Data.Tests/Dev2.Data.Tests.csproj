@@ -202,6 +202,7 @@
     <Compile Include="WarewolfIteratorTests.cs" />
     <Compile Include="WarewolfListIteratorTests.cs" />
     <Compile Include="ExtensionClassesTests.cs" />
+    <Compile Include="WarewolfWorkflowReportsTests.cs" />
     <Compile Include="WorkflowCoverageReportsTests.cs" />
     <Compile Include="XPathParserTests.cs" />
   </ItemGroup>
