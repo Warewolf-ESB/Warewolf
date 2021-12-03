@@ -115,6 +115,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var destFile = Path.Combine(destDir, ExeName);
 
             Directory.CreateDirectory(destDir);
+            Assert.IsTrue(Directory.Exists(destDir), "Cannot create directory \"" + destDir + "\"");
             File.Copy(sourceFile, destFile, true);
 
             var activity = new DsfExecuteCommandLineActivity { CommandFileName = destFile, CommandResult = "[[OutVar1]]" };
