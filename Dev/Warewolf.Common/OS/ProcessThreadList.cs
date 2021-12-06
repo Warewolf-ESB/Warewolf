@@ -21,6 +21,7 @@ namespace Warewolf.OS
 
         readonly List<IProcessThread> _processThreads = new List<IProcessThread>();
         private bool _running;
+        private bool _disableMonitor = false;
         protected ProcessThreadList(IJobConfig config)
         {
             UpdateConfig(config);
@@ -61,17 +62,21 @@ namespace Warewolf.OS
 
         public bool NeedUpdate { get => _expectedNumProcesses < 1 || _processThreads.Count != _expectedNumProcesses || _processThreads.Any(o => !o.IsAlive); }
         public IEnumerator<IProcessThread> GetEnumerator() => _processThreads.GetEnumerator();
-        public void Kill() => _processThreads.ForEach(o => { o.Kill(); });
+        public void Kill()
+        {
+            _disableMonitor = true;
+            _processThreads.ForEach(o => { o.Kill(); });
+            _disableMonitor = false;
+        }
 
         // check that each process in list is running otherwise start it
         // check that the number of processes matches Concurrency
         public void Monitor()
         {
-            if (!_running || !NeedUpdate)
+            if (_disableMonitor|| !_running || !NeedUpdate)
             {
                 return;
             }
-
 
             var numProcesses = _processThreads.Count;
             if (numProcesses > _expectedNumProcesses)
