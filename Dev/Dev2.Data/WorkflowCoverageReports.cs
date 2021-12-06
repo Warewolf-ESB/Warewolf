@@ -18,6 +18,29 @@ using Warewolf.Data;
 
 namespace Dev2.Data
 {
+    public class WorkflowCoverageReportsTO : IWorkflowCoverageReportsTO
+    {
+        public IWorkflowNode[] CoveredWorkflowNodes { get; set; }
+
+        public IEnumerable<Guid> CoveredWorkflowNodesIds { get; set; }
+
+        public IEnumerable<Guid> CoveredWorkflowNodesMockedIds { get; set; }
+
+        public IEnumerable<Guid> CoveredWorkflowNodesNotMockedIds { get; set; }
+
+        public bool HasTestReports { get; set; }
+
+        public int NotCoveredNodesCount { get; set; }
+
+        public List<IServiceTestCoverageModelTo> Reports { get; set; }
+
+        public IWarewolfWorkflow Resource { get; set; }
+
+        public double TotalCoverage { get; set; }
+
+        public IEnumerable<IWorkflowNode> WorkflowNodes { get; set; }
+    }
+
     public class WorkflowCoverageReports : IWorkflowCoverageReports
     {
         public WorkflowCoverageReports(IWarewolfWorkflow resource)
@@ -36,7 +59,17 @@ namespace Dev2.Data
         public double TotalCoverage => GetTotalCoverage();
 
         //PBI: at this point we only need the count, later change this to a list of objects
-        public int NotCoveredNodesCount => WorkflowNodes.Count() - CoveredWorkflowNodesIds.Count();
+        public int NotCoveredNodesCount => CalculateNotCoveredNodes();
+
+        private int CalculateNotCoveredNodes()
+        {
+            return WorkflowNodes.Count() - CoveredWorkflowNodesIds.Count();
+        }
+
+        private int GetOneOnZero(int count)
+        {
+            return count == 0 ? 1 : count;
+        }
 
         public void Add(IServiceTestCoverageModelTo coverage)
         {
@@ -76,6 +109,31 @@ namespace Dev2.Data
                 .ToArray();
         }
 
+        public IWorkflowCoverageReportsTO TryExecute()
+        {
+            try
+            {
+                return new WorkflowCoverageReportsTO
+                {
+                    CoveredWorkflowNodes = CoveredWorkflowNodes,
+                    CoveredWorkflowNodesIds = CoveredWorkflowNodesIds,
+                    CoveredWorkflowNodesMockedIds = CoveredWorkflowNodesMockedIds,
+                    CoveredWorkflowNodesNotMockedIds = CoveredWorkflowNodesNotMockedIds,
+                    HasTestReports = HasTestReports,
+                    NotCoveredNodesCount = NotCoveredNodesCount,
+                    Reports = Reports,
+                    Resource = Resource,
+                    TotalCoverage = TotalCoverage,
+                    WorkflowNodes = WorkflowNodes
+                };
+            }
+            catch (Exception)
+            {
+                Dev2Logger.Error("[Coverage] - Resource: "+Resource.ResourceName + " Failed. Details - ResourceId: " + Resource.ResourceID + " ResourcePath: "+ Resource.FilePath, GlobalConstants.WarewolfError);
+                return default;
+            }
+        }
+
         private IWorkflowNode[] CalculateWorkflowNodes()
         {
             return Resource.WorkflowNodes
@@ -88,7 +146,7 @@ namespace Dev2.Data
         {
             var accum2 = WorkflowNodes.Select(o => o.UniqueID).ToList();
             var activitiesExistingInTests = accum2.Intersect(CoveredWorkflowNodesIds).ToList();
-            var total = Math.Round(activitiesExistingInTests.Count / (double)accum2.Count, 2);
+            var total = Math.Round(activitiesExistingInTests.Count / (double)GetOneOnZero(accum2.Count), 2);
             return total;
         }
     }

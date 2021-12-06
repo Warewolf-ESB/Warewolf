@@ -132,6 +132,7 @@
     <Compile Include="Dev2Column.cs" />
     <Compile Include="Dev2DecisionComparer.cs" />
     <Compile Include="Dev2WorkflowSettingsTO.cs" />
+    <Compile Include="IWorkflowCoverageReportsTO.cs" />
     <Compile Include="PathOperations\ActivityIOBrokerMainDriver.cs" />
     <Compile Include="PathOperations\ActivityIOBrokerBaseDriver.cs" />
     <Compile Include="PathOperations\ActivityIOBrokerValidatorDriver.cs" />
@@ -296,7 +297,9 @@
     <Compile Include="Util\ScrubType.cs" />
     <Compile Include="WarewolfAtomComparer.cs" />
     <Compile Include="WarewolfIterator.cs" />
+    <Compile Include="WarewolfWorkflowReports.cs" />
     <Compile Include="WorkflowCoverageReports.cs" />
+    <Compile Include="WorkflowTestResults.cs" />
   </ItemGroup>
   <ItemGroup>
     <AdditionalFiles Include="..\.sonarlint\warewolf_dotnet_framework\CSharp\SonarLint.xml" Link="SonarLint.xml" />
