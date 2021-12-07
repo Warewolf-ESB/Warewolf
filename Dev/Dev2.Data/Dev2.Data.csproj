@@ -120,6 +120,8 @@
     <AdditionalFiles Include="..\SonarQube\SonarLint.xml">
       <Visible>False</Visible>
     </AdditionalFiles>
+    <Compile Include="AllCoverageReports.cs" />
+    <Compile Include="AllTestResults.cs" />
     <Compile Include="DataListConversionUtils.cs" />
     <Compile Include="DataListItem.cs" />
     <Compile Include="DataListModel.cs" />

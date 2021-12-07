@@ -460,9 +460,9 @@ namespace Dev2.Runtime.WebServer
             return formatter;
         }
 
-        static TestResults RunListOfTests(IDSFDataObject dataObject, IPrincipal userPrinciple, Guid workspaceGuid, Dev2JsonSerializer serializer, IResourceCatalog catalog, ITestCatalog testCatalog, ITestCoverageCatalog testCoverageCatalog, IServiceTestExecutorWrapper serviceTestExecutorWrapper)
+        static AllTestResults RunListOfTests(IDSFDataObject dataObject, IPrincipal userPrinciple, Guid workspaceGuid, Dev2JsonSerializer serializer, IResourceCatalog catalog, ITestCatalog testCatalog, ITestCoverageCatalog testCoverageCatalog, IServiceTestExecutorWrapper serviceTestExecutorWrapper)
         {
-            var result = new TestResults();
+            var result = new AllTestResults();
 
             var selectedResources = catalog.GetResources(workspaceGuid)
                 ?.Where(resource => dataObject.TestsResourceIds.Contains(resource.ResourceID)).ToArray();
@@ -668,25 +668,15 @@ namespace Dev2.Runtime.WebServer
             return formatter;
         }
 
-        private static (AllCoverageReports AllCoverageReports, TestResults AllTestResults, WarewolfWorkflowReports WarewolfWorkflowReports) RunListOfCoverage(ICoverageDataObject coverageData, ITestCoverageCatalog testCoverageCatalog, ITestCatalog testCatalog, Guid workspaceGuid, IResourceCatalog catalog)
+        private static (AllCoverageReports AllCoverageReports, AllTestResults AllTestResults, WarewolfWorkflowReports WarewolfWorkflowReports) RunListOfCoverage(ICoverageDataObject coverageData, ITestCoverageCatalog testCoverageCatalog, ITestCatalog testCatalog, Guid workspaceGuid, IResourceCatalog catalog)
         {
-            var allTestResults = new TestResults();
-
-            var allCoverageReports = new AllCoverageReports
-            {
-                StartTime = DateTime.Now
-            };
-
             var resourceReportTemp = new WarewolfWorkflowReports(coverageData.CoverageReportResources, coverageData.ReportName);
-            var (TestResults, WorkflowCoverageReports) = resourceReportTemp.Calculte(testCoverageCatalog, testCatalog);
+            resourceReportTemp.Calculte(testCoverageCatalog, testCatalog);
 
-            TestResults.ToList().ForEach(o => allTestResults.Add(o));
-            WorkflowCoverageReports.ToList().ForEach(o => allCoverageReports.Add(o));
+            resourceReportTemp.AllTestResults.EndTime = DateTime.Now;
+            resourceReportTemp.AllCoverageReports.EndTime = DateTime.Now;
 
-            allTestResults.EndTime = DateTime.Now;
-            allCoverageReports.EndTime = DateTime.Now;
-
-            return (allCoverageReports, allTestResults, resourceReportTemp);
+            return (resourceReportTemp.AllCoverageReports, resourceReportTemp.AllTestResults, resourceReportTemp);
         }
 
         public interface IServiceTestExecutorWrapper

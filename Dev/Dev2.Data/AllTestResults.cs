@@ -10,14 +10,13 @@
 
 
 using System;
-using Dev2.Data;
 using System.Collections.Generic;
 
-namespace Dev2.Runtime.WebServer
+namespace Dev2.Data
 {
-    internal class TestResults
+    public class AllTestResults
     {
-        public TestResults()
+        public AllTestResults()
         {
             StartTime = DateTime.Now;
         }

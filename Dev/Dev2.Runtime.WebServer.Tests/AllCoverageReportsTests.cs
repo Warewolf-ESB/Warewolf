@@ -30,7 +30,7 @@ namespace Dev2.Runtime.WebServer.Tests
         {
             var sut = new AllCoverageReports();
 
-            Assert.IsNull(sut.StartTime);
+            Assert.IsNotNull(sut.StartTime, "should stamp start time");
             Assert.IsNull(sut.EndTime);
             Assert.AreEqual(0, sut.TotalReportsCoverage);
             Assert.AreEqual(0, sut.WithTestReports.ToList().Count, "should be initialized");
@@ -45,7 +45,6 @@ namespace Dev2.Runtime.WebServer.Tests
 
             var sut = new AllCoverageReports
             {
-                StartTime = DateTime.Now,
                 EndTime = DateTime.Now
             };
 
@@ -72,7 +71,6 @@ namespace Dev2.Runtime.WebServer.Tests
 
             var sut = new AllCoverageReports
             {
-                StartTime = DateTime.Now,
                 EndTime = DateTime.Now
             };
 
@@ -98,7 +96,6 @@ namespace Dev2.Runtime.WebServer.Tests
 
             var sut = new AllCoverageReports
             {
-                StartTime = DateTime.Now,
                 EndTime = DateTime.Now
             };
 
