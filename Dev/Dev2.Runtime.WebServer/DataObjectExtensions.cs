@@ -634,26 +634,15 @@ namespace Dev2.Runtime.WebServer
 
             using (var writer = new HtmlTextWriter(stringWriter))
             {
+                var testResults = warewolfWorkflowReports.AllTestResults
+                    .Results
+                    .SelectMany(o => o.Results)
+                    .ToList(); //This can still be done better
+
                 writer.SetupNavBarHtml(warewolfWorkflowReports.TotalWorkflowNodesCoveredPercentage);
-
-                if (!string.IsNullOrEmpty(coverageData.ReportName) && coverageData.ReportName != "*")
-                {
-                    allTestResults.Results
-                        .SelectMany(o => o.Results).Where(x => x.TestName.ToUpper() == coverageData.ReportName.ToUpper())
-                        .ToList()
-                        .SetupCountSummaryHtml(writer, coverageData);
-                }
-                else
-                {
-                    allTestResults.Results
-                            .SelectMany(o => o.Results)
-                            .ToList()
-                            .SetupCountSummaryHtml(writer, coverageData);
-                }
-
-                warewolfWorkflowReports
-                   .SetupLinesCountSummaryHtml(writer);
-
+                writer.SetupCountSummaryHtml(testResults, coverageData);
+                writer.SetupLinesCountSummaryHtml(warewolfWorkflowReports);
+                
                 allCoverageReports.WithTestReports
                     .ToList()
                     .ForEach(oo =>

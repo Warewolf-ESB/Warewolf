@@ -255,7 +255,7 @@ namespace Dev2.Runtime.WebServer
             writer.RenderEndTag();
         }
 
-        internal static void SetupLinesCountSummaryHtml(this WarewolfWorkflowReports workflowReports, HtmlTextWriter writer)
+        internal static void SetupLinesCountSummaryHtml(this HtmlTextWriter writer, WarewolfWorkflowReports workflowReports)
         {
             var totalNodes = workflowReports.TotalWorkflowNodesCount;
             var coveredNodes = workflowReports.TotalWorkflowNodesCoveredCount;
@@ -334,7 +334,7 @@ namespace Dev2.Runtime.WebServer
             writer.RenderEndTag();
         }
 
-        internal static void SetupCountSummaryHtml(this List<IServiceTestModelTO> allTests, HtmlTextWriter writer, ICoverageDataObject coverageData)
+        internal static void SetupCountSummaryHtml(this HtmlTextWriter writer, List<IServiceTestModelTO> allTests, ICoverageDataObject coverageData)
         {
             writer.AddStyleAttribute(HtmlTextWriterStyle.Padding, "10px 10px 0px 10px");
             writer.AddStyleAttribute(HtmlTextWriterStyle.Margin, "5px");
@@ -402,7 +402,7 @@ namespace Dev2.Runtime.WebServer
             writer.RenderEndTag();
 
             writer.RenderBeginTag(HtmlTextWriterTag.Td);
-            if ((coverageData.IsMultipleWorkflowReport) || (coverageData.ReportName=="*"))
+            if ((coverageData.IsMultipleWorkflowReport) || (coverageData.ReportName == "*"))
             {
                 writer.AddAttribute(HtmlTextWriterAttribute.Target, "_new");
                 writer.AddAttribute(HtmlTextWriterAttribute.Href, coverageData.GetAllTestsUrl());
