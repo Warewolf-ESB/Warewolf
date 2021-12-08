@@ -95,8 +95,21 @@ namespace Dev2.Data
         private void SetWarewolfTestResults(ITestCatalog testCatalog, IWarewolfResource coverageResource)
         {
             var workflowTestResults = new WorkflowTestResults(testCatalog, coverageResource);
-            workflowTestResults.Results
-                .ForEach(o => AllTestResults.Add(o));
+
+            if (!string.IsNullOrEmpty(_reportName) && _reportName != "*")
+            {
+                var report = testCatalog.Fetch(coverageResource.ResourceID);
+                var tempcoverageReport = report?.Find(oo => oo.TestName?.ToUpper() == _reportName.ToUpper());
+                if (tempcoverageReport != null)
+                {
+                    AllTestResults.Add(tempcoverageReport);
+                }
+            }
+            else
+            {
+                workflowTestResults.Results
+                ?.ForEach(o => AllTestResults.Add(o));
+            }
         }
 
         private double GetTotalWorkflowNodesCoveredPercentage()
