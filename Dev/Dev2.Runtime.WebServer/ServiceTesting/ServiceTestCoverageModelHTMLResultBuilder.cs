@@ -82,7 +82,7 @@ namespace Dev2.Runtime.WebServer
             return totalReportsCoverage >= 0 && totalReportsCoverage <= 65;
         }
 
-        public static void SetupWorkflowRowHtml(this HtmlTextWriter writer, string resourcePath, ICoverageDataObject coverageData, IWorkflowCoverageReports coverageReports)
+        public static void SetupWorkflowRowHtml(this HtmlTextWriter writer, string resourcePath, ICoverageDataObject coverageData, IWorkflowCoverageReportsTO coverageReports)
         {
             writer.AddAttribute(HtmlTextWriterAttribute.Class, "SetupWorkflowPathHtml");
             writer.AddStyleAttribute(HtmlTextWriterStyle.Color, "#333");
@@ -417,7 +417,7 @@ namespace Dev2.Runtime.WebServer
             writer.RenderEndTag();
         }
 
-        internal static void SetupCoverageCountSummaryHtml(this HtmlTextWriter writer,IWorkflowCoverageReports coverageReports)
+        internal static void SetupCoverageCountSummaryHtml(this HtmlTextWriter writer, IWorkflowCoverageReportsTO coverageReports)
         {
             writer.AddStyleAttribute(HtmlTextWriterStyle.Padding, "10px 10px 5px 10px");
             writer.AddStyleAttribute(HtmlTextWriterStyle.Margin, "5px");

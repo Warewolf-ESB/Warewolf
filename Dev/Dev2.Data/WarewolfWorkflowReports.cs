@@ -11,6 +11,7 @@
 
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Runtime.Services;
+using Dev2.Common.Interfaces.Runtime.WebServer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +26,7 @@ namespace Dev2.Data
 
         public WarewolfWorkflowReports(IEnumerable<IWarewolfWorkflow> coverageReportResources, string reportName)
         {
+            StartTime = DateTime.Now;
             _workflows = coverageReportResources;
             _reportName = reportName;
         }
@@ -36,14 +38,16 @@ namespace Dev2.Data
         public int TotalWorkflowNodesCoveredCount { get; private set; }
 
         public double TotalWorkflowNodesCoveredPercentage { get; private set; }
-        public AllCoverageReports AllCoverageReports { get; private set; }
+        public AllCoverageReports _allCoverageReports { get; private set; }
+        public IEnumerable<IWorkflowCoverageReportsTO> AllCoverageReports { get; private set; }
         public List<IServiceTestModelTO> AllTestResults { get; private set; }
         public DateTime EndTime { get; set; }
+        public DateTime StartTime { get; set; }
 
         public void Calculte(ITestCoverageCatalog testCoverageCatalog, ITestCatalog testCatalog)
         {
             AllTestResults = new List<IServiceTestModelTO>();
-            AllCoverageReports = new AllCoverageReports();
+            _allCoverageReports = new AllCoverageReports();
 
             foreach (var coverageResource in _workflows)
             {
@@ -56,13 +60,14 @@ namespace Dev2.Data
                 SetWarewolfCoverageReports(testCoverageCatalog, coverageResource);
             }
 
-            var workflowCoverageReportsTOs = AllCoverageReports.Calcute();
+            var workflowCoverageReportsTOs = _allCoverageReports.Calcute();
 
+            AllCoverageReports = workflowCoverageReportsTOs;
             TotalWorkflowNodesCoveredCount = workflowCoverageReportsTOs.Sum(o => o.CoveredWorkflowNodesIds.Count());
             TotalWorkflowNodesCount = GetTotalWorkflowsNodesCount();
             TotalWorkflowNodesCoveredPercentage = GetTotalWorkflowNodesCoveredPercentage();
             
-            AllCoverageReports.EndTime = DateTime.Now;
+            _allCoverageReports.EndTime = DateTime.Now;
         }
 
         private void SetWarewolfCoverageReports(ITestCoverageCatalog testCoverageCatalog, IWarewolfWorkflow coverageResource)
@@ -83,8 +88,8 @@ namespace Dev2.Data
                 testCoverageCatalog.Fetch(resourceId)
                  ?.ForEach(o => coverageReports.Add(o));
             }
-            
-            AllCoverageReports.Add(coverageReports);
+
+            _allCoverageReports.Add(coverageReports);
         }
 
         private void SetWarewolfTestResults(ITestCatalog testCatalog, IWarewolfResource coverageResource)

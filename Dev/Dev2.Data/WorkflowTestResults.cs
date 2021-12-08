@@ -33,7 +33,7 @@ namespace Dev2.Data
         private void Initialize()
         {
             var tests = _testCatalog.Fetch(Resource.ResourceID);
-            tests.ForEach(o => Add(o));
+            tests?.ForEach(o => Add(o));
         }
 
         public IWarewolfResource Resource { get; }

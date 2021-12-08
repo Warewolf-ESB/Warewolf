@@ -552,7 +552,7 @@ namespace Dev2.Runtime.WebServer
             var allCoverageReports = warewolfWorkflowReports.AllCoverageReports;
             var formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
 
-            var objArray = allCoverageReports.WithTestReports
+            var objArray = allCoverageReports
                 .Select(o =>
                 {
                     var name = o.Resource.ResourceName;
@@ -606,8 +606,8 @@ namespace Dev2.Runtime.WebServer
             }
             var obj = new JObject
             {
-                {"StartTime", allCoverageReports.StartTime},
-                {"EndTime", allCoverageReports.EndTime},
+                {"StartTime", warewolfWorkflowReports.StartTime},
+                {"EndTime", warewolfWorkflowReports.EndTime},
                 {"CoverageSummary", JToken.Parse(resultCoverageSummaryWriter.ToString()) },
                 {"TestSummary", JToken.Parse(resultSummaryWriter.ToString()) },
                 {"TestResults", new JArray(objArray)},
@@ -634,7 +634,7 @@ namespace Dev2.Runtime.WebServer
                 writer.SetupCountSummaryHtml(testResults, coverageData);
                 writer.SetupLinesCountSummaryHtml(warewolfWorkflowReports);
                 
-                allCoverageReports.WithTestReports
+                allCoverageReports
                     .ToList()
                     .ForEach(oo =>
                     {
