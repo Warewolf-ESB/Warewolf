@@ -17,13 +17,23 @@ namespace Dev2.Data
 {
     public class WorkflowTestResults
     {
+        private readonly ITestCatalog _testCatalog;
+
         public WorkflowTestResults()
         {
         }
 
-        public WorkflowTestResults(IWarewolfResource res)
+        public WorkflowTestResults(ITestCatalog testCatalog, IWarewolfResource res)
         {
+            _testCatalog = testCatalog;
             Resource = res;
+            Initialize();
+        }
+
+        private void Initialize()
+        {
+            var tests = _testCatalog.Fetch(Resource.ResourceID);
+            tests.ForEach(o => Add(o));
         }
 
         public IWarewolfResource Resource { get; }

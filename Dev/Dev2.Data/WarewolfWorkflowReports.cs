@@ -37,11 +37,12 @@ namespace Dev2.Data
 
         public double TotalWorkflowNodesCoveredPercentage { get; private set; }
         public AllCoverageReports AllCoverageReports { get; private set; }
-        public AllTestResults AllTestResults { get; private set; }
+        public List<IServiceTestModelTO> AllTestResults { get; private set; }
+        public DateTime EndTime { get; set; }
 
         public void Calculte(ITestCoverageCatalog testCoverageCatalog, ITestCatalog testCatalog)
         {
-            AllTestResults = new AllTestResults();
+            AllTestResults = new List<IServiceTestModelTO>();
             AllCoverageReports = new AllCoverageReports();
 
             foreach (var coverageResource in _workflows)
@@ -51,7 +52,7 @@ namespace Dev2.Data
                     continue;
                 }
 
-                SetWarewolfTestResults(testCatalog, coverageResource.ResourceID);
+                SetWarewolfTestResults(testCatalog, coverageResource);
                 SetWarewolfCoverageReports(testCoverageCatalog, coverageResource);
             }
 
@@ -62,6 +63,8 @@ namespace Dev2.Data
             TotalWorkflowNodesCoveredCount = workflowCoverageReportsTOs.Sum(o => o.CoveredWorkflowNodesIds.Count()); //This can still be done better
             TotalWorkflowNodesCount = GetTotalWorkflowsNodesCount();
             TotalWorkflowNodesCoveredPercentage = GetTotalWorkflowNodesCoveredPercentage();
+            
+            AllCoverageReports.EndTime = DateTime.Now;
         }
 
         private void SetWarewolfCoverageReports(ITestCoverageCatalog testCoverageCatalog, IWarewolfWorkflow coverageResource)
@@ -86,14 +89,11 @@ namespace Dev2.Data
             AllCoverageReports.Add(coverageReports);
         }
 
-        private void SetWarewolfTestResults(ITestCatalog testCatalog, Guid coverageResourceId)
+        private void SetWarewolfTestResults(ITestCatalog testCatalog, IWarewolfResource coverageResource)
         {
-            var workflowTestResults = new WorkflowTestResults();
-
-            testCatalog.Fetch(coverageResourceId)
-                ?.ForEach(o => workflowTestResults.Add(o));
-
-            AllTestResults.Add(workflowTestResults);
+            var workflowTestResults = new WorkflowTestResults(testCatalog, coverageResource);
+            workflowTestResults.Results
+                .ForEach(o => AllTestResults.Add(o));
         }
 
         private double GetTotalWorkflowNodesCoveredPercentage()

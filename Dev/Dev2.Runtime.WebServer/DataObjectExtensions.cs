@@ -483,7 +483,7 @@ namespace Dev2.Runtime.WebServer
                         else
                         {
                             var resourcePath = res.GetResourcePath(workspaceGuid).Replace("\\", "/");
-                            var workflowTestResults = new WorkflowTestResults(res);
+                            var workflowTestResults = new WorkflowTestResults(testCatalog, res);
 
                             var allTests = testCatalog.Fetch(testsResourceId);
                             foreach (var (test, dataObjectClone) in from test in allTests
@@ -594,20 +594,14 @@ namespace Dev2.Runtime.WebServer
             {             
                 using (var writer = new JsonTextWriter(resultSummaryWriter))
                 {
-                    allTestResults.Results
-                        .SelectMany(x => x.Results).Where(x => x.TestName.ToUpper() == coverageData.ReportName.ToUpper())
-                        .ToList()
-                        .SetupResultSummaryJSON(writer);
+                    allTestResults.SetupResultSummaryJSON(writer);
                 }
             }
             else
             {
                 using (var writer = new JsonTextWriter(resultSummaryWriter))
                 {
-                    allTestResults.Results
-                        .SelectMany(o => o.Results)
-                        .ToList()
-                        .SetupResultSummaryJSON(writer);
+                    allTestResults.SetupResultSummaryJSON(writer);
                 }
             }
             var obj = new JObject
@@ -634,10 +628,7 @@ namespace Dev2.Runtime.WebServer
 
             using (var writer = new HtmlTextWriter(stringWriter))
             {
-                var testResults = warewolfWorkflowReports.AllTestResults
-                    .Results
-                    .SelectMany(o => o.Results)
-                    .ToList(); //This can still be done better
+                var testResults = warewolfWorkflowReports.AllTestResults;
 
                 writer.SetupNavBarHtml(warewolfWorkflowReports.TotalWorkflowNodesCoveredPercentage);
                 writer.SetupCountSummaryHtml(testResults, coverageData);
@@ -666,8 +657,7 @@ namespace Dev2.Runtime.WebServer
             var resourceReportTemp = new WarewolfWorkflowReports(coverageData.CoverageReportResources, coverageData.ReportName);
             resourceReportTemp.Calculte(testCoverageCatalog, testCatalog);
 
-            resourceReportTemp.AllTestResults.EndTime = DateTime.Now;
-            resourceReportTemp.AllCoverageReports.EndTime = DateTime.Now;
+            resourceReportTemp.EndTime = DateTime.Now;
 
             return resourceReportTemp;
         }
