@@ -56,11 +56,9 @@ namespace Dev2.Data
                 SetWarewolfCoverageReports(testCoverageCatalog, coverageResource);
             }
 
-            var workflowCoverageReportsTOs = AllCoverageReports
-                .WithTestReports
-                .Select(o => o.TryExecute()); //This can still be done better
+            var workflowCoverageReportsTOs = AllCoverageReports.Calcute();
 
-            TotalWorkflowNodesCoveredCount = workflowCoverageReportsTOs.Sum(o => o.CoveredWorkflowNodesIds.Count()); //This can still be done better
+            TotalWorkflowNodesCoveredCount = workflowCoverageReportsTOs.Sum(o => o.CoveredWorkflowNodesIds.Count());
             TotalWorkflowNodesCount = GetTotalWorkflowsNodesCount();
             TotalWorkflowNodesCoveredPercentage = GetTotalWorkflowNodesCoveredPercentage();
             

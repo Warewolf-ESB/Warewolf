@@ -55,6 +55,12 @@ namespace Dev2.Data
             var totalReportCount = CalculateTotalReportCount();
             return (sumAllOfReports / (totalReportCount == 1 ? totalReportCount * 100 : totalReportCount)) * 100;
         }
+
+        public IEnumerable<IWorkflowCoverageReportsTO> Calcute()
+        {
+            return WithTestReports
+                   .Select(o => o.TryExecute());
+        }
     }
 
 }

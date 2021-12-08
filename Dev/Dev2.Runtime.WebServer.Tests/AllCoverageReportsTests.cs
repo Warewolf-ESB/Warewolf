@@ -10,6 +10,7 @@
 
 
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Runtime.WebServer;
 using Dev2.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -115,7 +116,41 @@ namespace Dev2.Runtime.WebServer.Tests
             Assert.AreEqual(33, sut.TotalReportsCoverage, "code for safety; this should return zero not NaN");
             Assert.AreEqual(2, sut.WithTestReports.ToList().Count, "should be initialized");
         }
-        
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(AllCoverageReports))]
+        public void AllCoverageReports_Execute_Given_WithTestReports_IsNotNull_AND_HasALotOfReports_ShouldSuccess()
+        {
+            var mockWarewolfWorkflow = new Mock<IWarewolfWorkflow>();
+
+            mockWarewolfWorkflow.Setup(o => o.WorkflowNodes)
+               .Returns(_workflow_Three_Nodes);
+
+            var sut = new AllCoverageReports
+            {
+                EndTime = DateTime.Now
+            };
+
+            var coverageReports = new WorkflowCoverageReports(mockWarewolfWorkflow.Object);
+            coverageReports.Add(_test_One_CoverageModelTo);
+            coverageReports.Add(_test_One_CoverageModelTo);
+            sut.Add(coverageReports);
+
+            var coverageReports_1 = new WorkflowCoverageReports(mockWarewolfWorkflow.Object);
+            coverageReports_1.Add(_test_One_CoverageModelTo);
+            coverageReports_1.Add(_test_One_CoverageModelTo);
+            sut.Add(coverageReports_1);
+
+            var warewolfCoverageReportsTO = sut.Calcute();
+
+            Assert.IsNotNull(sut.StartTime);
+            Assert.IsNotNull(sut.EndTime);
+            Assert.AreEqual(33, sut.TotalReportsCoverage, "code for safety; this should return zero not NaN");
+            Assert.AreEqual(2, sut.WithTestReports.ToList().Count, "should be initialized");
+            Assert.IsInstanceOfType(warewolfCoverageReportsTO, typeof(IEnumerable<IWorkflowCoverageReportsTO>));
+        }
+
         private List<IWorkflowNode> _workflow_Three_Nodes =>
             new List<IWorkflowNode>
             {
