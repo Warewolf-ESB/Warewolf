@@ -66,12 +66,12 @@ namespace Dev2.Runtime.Security
             _cachedRequests = new ConcurrentDictionary<AuthorizationRequestKey, Tuple<bool, DateTime>>();
         }
 
-        public override bool IsAuthorized(AuthorizationContext context, IWarewolfResource resource)
+        public override bool IsAuthorized(Dev2.Common.Interfaces.Enums.AuthorizationContext context, IWarewolfResource resource)
         {
             return IsAuthorized(context, resource?.ResourceID ?? Guid.Empty);
         }
 
-        public sealed override bool IsAuthorized(AuthorizationContext context, Guid resourceId)
+        public sealed override bool IsAuthorized(Dev2.Common.Interfaces.Enums.AuthorizationContext context, Guid resourceId)
         {
             bool authorized;
 
@@ -132,7 +132,7 @@ namespace Dev2.Runtime.Security
                 case WebServerRequestType.WebGetServices:
                 case WebServerRequestType.WebGetSources:
                 case WebServerRequestType.WebGetSwitch:
-                    result = IsAuthorized(request.User, AuthorizationContext.View, GetResource(request));
+                    result = IsAuthorized(request.User, Dev2.Common.Interfaces.Enums.AuthorizationContext.View, GetResource(request));
                     break;
 
                 case WebServerRequestType.WebGet:
@@ -140,30 +140,30 @@ namespace Dev2.Runtime.Security
                 case WebServerRequestType.WebGetImage:
                 case WebServerRequestType.WebGetScript:
                 case WebServerRequestType.WebGetView:
-                    result = IsAuthorized(request.User, AuthorizationContext.Any, GetResource(request));
+                    result = IsAuthorized(request.User, Dev2.Common.Interfaces.Enums.AuthorizationContext.Any, GetResource(request));
                     break;
 
                 case WebServerRequestType.WebInvokeService:
-                    var authorizationContext = IsWebInvokeServiceSave(request.Url.AbsolutePath) ? AuthorizationContext.Contribute : AuthorizationContext.View;
+                    var authorizationContext = IsWebInvokeServiceSave(request.Url.AbsolutePath) ? Dev2.Common.Interfaces.Enums.AuthorizationContext.Contribute : Dev2.Common.Interfaces.Enums.AuthorizationContext.View;
                     result = IsAuthorized(request.User, authorizationContext, GetResource(request));
                     break;
 
                 case WebServerRequestType.WebExecuteLoginWorkflow:
                 case WebServerRequestType.WebExecutePublicTokenWorkflow:
-                    result = IsAuthorized(request.User, AuthorizationContext.Execute, GetResource(request));
+                    result = IsAuthorized(request.User, Dev2.Common.Interfaces.Enums.AuthorizationContext.Execute, GetResource(request));
                     break;
 
                 case WebServerRequestType.WebExecuteSecureWorkflow:
                 case WebServerRequestType.WebExecutePublicWorkflow:
-                    result = IsAuthorized(request.User, AuthorizationContext.Execute, request);
+                    result = IsAuthorized(request.User, Dev2.Common.Interfaces.Enums.AuthorizationContext.Execute, request);
                     break;
                 case WebServerRequestType.WebExecuteService:
                 case WebServerRequestType.WebBookmarkWorkflow:
-                    result = IsAuthorized(request.User, AuthorizationContext.Execute, GetResource(request));
+                    result = IsAuthorized(request.User, Dev2.Common.Interfaces.Enums.AuthorizationContext.Execute, GetResource(request));
                     break;
                 
                 case WebServerRequestType.WebExecuteInternalService:
-                    result = IsAuthorized(request.User, AuthorizationContext.Any, GetResource(request));
+                    result = IsAuthorized(request.User, Dev2.Common.Interfaces.Enums.AuthorizationContext.Any, GetResource(request));
                     break;
 
                 case WebServerRequestType.HubConnect:

@@ -102,6 +102,7 @@
       <Project>{61A15557-1D18-4C69-88EB-31BF49B7FB50}</Project>
       <Name>Warewolf.Storage.Interfaces</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Testing\Warewolf.Testing.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Castle.Core">

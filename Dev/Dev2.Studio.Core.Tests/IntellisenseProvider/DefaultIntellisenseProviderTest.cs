@@ -35,7 +35,6 @@ namespace Dev2.Core.Tests.IntellisenseProvider
     [TestCategory("Intellisense Provider Core")]
     public class DefaultIntellisenseProviderTest
     {
-
         IResourceModel _resourceModel;
 
         #region Test Initialization
@@ -43,7 +42,7 @@ namespace Dev2.Core.Tests.IntellisenseProvider
         [TestInitialize]
         public void Init()
         {
-            var p = new PrivateType(typeof(Dev2DataLanguageParser));
+            var p = new Warewolf.Testing.PrivateObject(typeof(Dev2DataLanguageParser));
             var cache = p.GetStaticField("_expressionCache") as ConcurrentDictionary<string, IList<IIntellisenseResult>>;
             Assert.IsNotNull(cache);
             cache.Clear();
