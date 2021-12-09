@@ -1,10 +1,18 @@
-24 November 2021
+8 December 2021
 ======================
 
 Bug fixes
 ----------
-- Fixed issue where new workflow were not being picked up by suspend tool
-- Fix suspend tool issue when using SelectAndApplyTool, ForEach and Switch activities
+- Hotfix for RabbitMQ connections dropping due to incorrect number concurrent connections being openned
+
+6 December 2021
+======================
+
+Enhancements
+----------------
+Test Coverage
+- Coverage summary can now show all the nodes contained by each workflow on a folder path selected on .coverage and .coverage.json
+- Child nodes are now included with our coverage percentage and denoted similarly to the Decision tool on our HTML render .coverage
 
 23 November 2021
 ======================
