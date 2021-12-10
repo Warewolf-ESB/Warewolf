@@ -1,3 +1,10 @@
+8 December 2021
+======================
+
+Bug fixes
+----------
+- Hotfix for RabbitMQ connections dropping due to incorrect number concurrent connections being openned
+
 6 December 2021
 ======================
 

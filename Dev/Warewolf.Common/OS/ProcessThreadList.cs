@@ -21,6 +21,7 @@ namespace Warewolf.OS
 
         readonly List<IProcessThread> _processThreads = new List<IProcessThread>();
         private bool _running;
+        
         protected ProcessThreadList(IJobConfig config)
         {
             UpdateConfig(config);
@@ -71,7 +72,6 @@ namespace Warewolf.OS
             {
                 return;
             }
-
 
             var numProcesses = _processThreads.Count;
             if (numProcesses > _expectedNumProcesses)
