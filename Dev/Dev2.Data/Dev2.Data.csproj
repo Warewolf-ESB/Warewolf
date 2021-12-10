@@ -117,6 +117,8 @@
     <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
+    <Compile Include="AllCoverageReports.cs" />
+    <Compile Include="AllTestResults.cs" />
     <Compile Include="DataListConversionUtils.cs" />
     <Compile Include="DataListItem.cs" />
     <Compile Include="DataListModel.cs" />
@@ -132,7 +134,6 @@
     <Compile Include="Dev2Column.cs" />
     <Compile Include="Dev2DecisionComparer.cs" />
     <Compile Include="Dev2WorkflowSettingsTO.cs" />
-    <Compile Include="IWorkflowCoverageReportsTO.cs" />
     <Compile Include="PathOperations\ActivityIOBrokerMainDriver.cs" />
     <Compile Include="PathOperations\ActivityIOBrokerBaseDriver.cs" />
     <Compile Include="PathOperations\ActivityIOBrokerValidatorDriver.cs" />
