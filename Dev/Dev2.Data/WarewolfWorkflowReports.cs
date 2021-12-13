@@ -11,6 +11,7 @@
 
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Runtime.Services;
+using Dev2.Common.Interfaces.Runtime.WebServer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,12 +22,11 @@ namespace Dev2.Data
     public class WarewolfWorkflowReports
     {
         private readonly IEnumerable<IWarewolfWorkflow> _workflows;
-        private List<WorkflowCoverageReports> _workflowCoverageReports;
-        private List<WorkflowTestResults> _workflowTestResults;
         private readonly string _reportName;
 
         public WarewolfWorkflowReports(IEnumerable<IWarewolfWorkflow> coverageReportResources, string reportName)
         {
+            StartTime = DateTime.Now;
             _workflows = coverageReportResources;
             _reportName = reportName;
         }
@@ -38,12 +38,16 @@ namespace Dev2.Data
         public int TotalWorkflowNodesCoveredCount { get; private set; }
 
         public double TotalWorkflowNodesCoveredPercentage { get; private set; }
+        public AllCoverageReports _allCoverageReports { get; private set; }
+        public IEnumerable<IWorkflowCoverageReportsTO> AllCoverageReports { get; private set; }
+        public List<IServiceTestModelTO> AllTestResults { get; private set; }
+        public DateTime EndTime { get; set; }
+        public DateTime StartTime { get; set; }
 
-
-        public (IEnumerable<WorkflowTestResults> TestResults, IEnumerable<WorkflowCoverageReports> WorkflowCoverageReports) Calculte(ITestCoverageCatalog testCoverageCatalog, ITestCatalog testCatalog)
+        public void Calculte(ITestCoverageCatalog testCoverageCatalog, ITestCatalog testCatalog)
         {
-            _workflowTestResults = new List<WorkflowTestResults>();
-            _workflowCoverageReports = new List<WorkflowCoverageReports>();
+            AllTestResults = new List<IServiceTestModelTO>();
+            _allCoverageReports = new AllCoverageReports();
 
             foreach (var coverageResource in _workflows)
             {
@@ -52,18 +56,18 @@ namespace Dev2.Data
                     continue;
                 }
 
-                SetWarewolfTestResults(testCatalog, coverageResource.ResourceID);
+                SetWarewolfTestResults(testCatalog, coverageResource);
                 SetWarewolfCoverageReports(testCoverageCatalog, coverageResource);
-
             }
 
+            var workflowCoverageReportsTOs = _allCoverageReports.Calcute();
 
+            AllCoverageReports = workflowCoverageReportsTOs;
+            TotalWorkflowNodesCoveredCount = workflowCoverageReportsTOs.Sum(o => o.CoveredWorkflowNodesIds.Count());
             TotalWorkflowNodesCount = GetTotalWorkflowsNodesCount();
-            TotalWorkflowNodesCoveredCount = GetTotalWorkflowNodesCoveredCount();
             TotalWorkflowNodesCoveredPercentage = GetTotalWorkflowNodesCoveredPercentage();
-
-            return (_workflowTestResults, _workflowCoverageReports);
-
+            
+            _allCoverageReports.EndTime = DateTime.Now;
         }
 
         private void SetWarewolfCoverageReports(ITestCoverageCatalog testCoverageCatalog, IWarewolfWorkflow coverageResource)
@@ -85,17 +89,27 @@ namespace Dev2.Data
                  ?.ForEach(o => coverageReports.Add(o));
             }
 
-            _workflowCoverageReports.Add(coverageReports);
+            _allCoverageReports.Add(coverageReports);
         }
 
-        private void SetWarewolfTestResults(ITestCatalog testCatalog, Guid coverageResourceId)
+        private void SetWarewolfTestResults(ITestCatalog testCatalog, IWarewolfResource coverageResource)
         {
-            var workflowTestResults = new WorkflowTestResults();
+            var workflowTestResults = new WorkflowTestResults(testCatalog, coverageResource);
 
-            testCatalog.Fetch(coverageResourceId)
-                ?.ForEach(o => workflowTestResults.Add(o));
-
-            _workflowTestResults.Add(workflowTestResults);
+            if (!string.IsNullOrEmpty(_reportName) && _reportName != "*")
+            {
+                var report = testCatalog.Fetch(coverageResource.ResourceID);
+                var tempcoverageReport = report?.Find(oo => oo.TestName?.ToUpper() == _reportName.ToUpper());
+                if (tempcoverageReport != null)
+                {
+                    AllTestResults.Add(tempcoverageReport);
+                }
+            }
+            else
+            {
+                workflowTestResults.Results
+                ?.ForEach(o => AllTestResults.Add(o));
+            }
         }
 
         private double GetTotalWorkflowNodesCoveredPercentage()
@@ -112,14 +126,10 @@ namespace Dev2.Data
             return total;
         }
 
-        private int GetTotalWorkflowNodesCoveredCount()
-        {
-            return _workflowCoverageReports.Sum(o => o.CoveredWorkflowNodesIds.Count());
-        }
-
         private int GetTotalWorkflowsNodesCount()
         {
             return _workflows.Where(o => o != null).Sum(o => o.WorkflowNodes.Count());
         }
+
     }
 }

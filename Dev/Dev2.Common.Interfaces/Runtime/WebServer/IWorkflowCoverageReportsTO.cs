@@ -8,12 +8,13 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using Dev2.Common.Interfaces;
+
+
 using System;
 using System.Collections.Generic;
 using Warewolf.Data;
 
-namespace Dev2.Data
+namespace Dev2.Common.Interfaces.Runtime.WebServer
 {
     public interface IWorkflowCoverageReportsTO
     {

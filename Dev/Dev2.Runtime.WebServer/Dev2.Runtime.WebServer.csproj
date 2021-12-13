@@ -90,7 +90,6 @@
     <AdditionalFiles Include="..\SonarQube\SonarLint.xml">
       <Visible>False</Visible>
     </AdditionalFiles>
-    <Compile Include="AllCoverageReports.cs" />
     <Compile Include="ApisJsonBuilder.cs" />
     <Compile Include="CommunicationContextExtensions.cs" />
     <Compile Include="Controllers\AbstractController.cs" />
@@ -139,7 +138,6 @@
     <Compile Include="ServiceTesting\ServiceTestExecutor.cs" />
     <Compile Include="ServiceTesting\ServiceTestModelJObjectResultBuilder.cs" />
     <Compile Include="ServiceTesting\ServiceTestModelTRXResultBuilder.cs" />
-    <Compile Include="ServiceTesting\TestResults.cs" />
     <Compile Include="TransferObjects\WebRequestTO.cs" />
     <Compile Include="WebRequestExtentions.cs" />
     <Compile Include="WebServerContext.cs" />
