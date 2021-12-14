@@ -20,6 +20,8 @@ namespace Dev2.Activities.Designers2.Web_Service_Put
             InitializeComponent();
         }
 
+#pragma warning disable 618
         protected override WebServicePutViewModel CreateViewModel() => new WebServicePutViewModel(ModelItem);
+#pragma warning restore 618
     }
 }

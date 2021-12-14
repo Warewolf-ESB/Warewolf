@@ -29,5 +29,6 @@ namespace Dev2.Common.Interfaces.Runtime.WebServer
         int NotCoveredNodesCount { get; }
 
         void Add(IServiceTestCoverageModelTo coverage);
+        IWorkflowCoverageReportsTO TryExecute();
     }
 }

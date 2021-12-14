@@ -2578,7 +2578,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(250)]
+        [Timeout(500)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory(nameof(ServiceTestViewModel))]
         public void ServiceTestViewModel_ItemSelected_GivenSelectedItemSelectAndApply_Default_ShouldHaveAddServiceTestStepShouldHaveCaseOptionsWithDefaultAtTop()

@@ -345,6 +345,7 @@
     <Compile Include="Runtime\Services\IStreamWriterFactory.cs" />
     <Compile Include="Runtime\Services\ITestCoverageCatalog.cs" />
     <Compile Include="Runtime\WebServer\IWorkflowCoverageReports.cs" />
+    <Compile Include="Runtime\WebServer\IWorkflowCoverageReportsTO.cs" />
     <Compile Include="Scheduler\Interfaces\IClientSchedulerFactory.cs" />
     <Compile Include="Scheduler\Interfaces\IEventInfo.cs" />
     <Compile Include="Scheduler\Interfaces\IResourceHistory.cs" />

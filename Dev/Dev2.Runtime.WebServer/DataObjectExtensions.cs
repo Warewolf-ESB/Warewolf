@@ -460,9 +460,9 @@ namespace Dev2.Runtime.WebServer
             return formatter;
         }
 
-        static TestResults RunListOfTests(IDSFDataObject dataObject, IPrincipal userPrinciple, Guid workspaceGuid, Dev2JsonSerializer serializer, IResourceCatalog catalog, ITestCatalog testCatalog, ITestCoverageCatalog testCoverageCatalog, IServiceTestExecutorWrapper serviceTestExecutorWrapper)
+        static AllTestResults RunListOfTests(IDSFDataObject dataObject, IPrincipal userPrinciple, Guid workspaceGuid, Dev2JsonSerializer serializer, IResourceCatalog catalog, ITestCatalog testCatalog, ITestCoverageCatalog testCoverageCatalog, IServiceTestExecutorWrapper serviceTestExecutorWrapper)
         {
-            var result = new TestResults();
+            var result = new AllTestResults();
 
             var selectedResources = catalog.GetResources(workspaceGuid)
                 ?.Where(resource => dataObject.TestsResourceIds.Contains(resource.ResourceID)).ToArray();
@@ -483,7 +483,7 @@ namespace Dev2.Runtime.WebServer
                         else
                         {
                             var resourcePath = res.GetResourcePath(workspaceGuid).Replace("\\", "/");
-                            var workflowTestResults = new WorkflowTestResults(res);
+                            var workflowTestResults = new WorkflowTestResults(testCatalog, res);
 
                             var allTests = testCatalog.Fetch(testsResourceId);
                             foreach (var (test, dataObjectClone) in from test in allTests
@@ -546,11 +546,13 @@ namespace Dev2.Runtime.WebServer
 
         public static DataListFormat RunCoverageAndReturnJSON(this ICoverageDataObject coverageData, ITestCoverageCatalog testCoverageCatalog, ITestCatalog testCatalog, IResourceCatalog catalog, Guid workspaceGuid, Dev2JsonSerializer serializer, out string executePayload)
         {
-            var (allCoverageReports, allTestResults, warewolfWorkflowReports) = RunListOfCoverage(coverageData, testCoverageCatalog, testCatalog, workspaceGuid, catalog);
+            var warewolfWorkflowReports = RunListOfCoverage(coverageData, testCoverageCatalog, testCatalog, workspaceGuid, catalog);
 
+            var allTestResults = warewolfWorkflowReports.AllTestResults;
+            var allCoverageReports = warewolfWorkflowReports.AllCoverageReports;
             var formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
 
-            var objArray = allCoverageReports.WithTestReports
+            var objArray = allCoverageReports
                 .Select(o =>
                 {
                     var name = o.Resource.ResourceName;
@@ -592,26 +594,20 @@ namespace Dev2.Runtime.WebServer
             {             
                 using (var writer = new JsonTextWriter(resultSummaryWriter))
                 {
-                    allTestResults.Results
-                        .SelectMany(x => x.Results).Where(x => x.TestName.ToUpper() == coverageData.ReportName.ToUpper())
-                        .ToList()
-                        .SetupResultSummaryJSON(writer);
+                    allTestResults.SetupResultSummaryJSON(writer);
                 }
             }
             else
             {
                 using (var writer = new JsonTextWriter(resultSummaryWriter))
                 {
-                    allTestResults.Results
-                        .SelectMany(o => o.Results)
-                        .ToList()
-                        .SetupResultSummaryJSON(writer);
+                    allTestResults.SetupResultSummaryJSON(writer);
                 }
             }
             var obj = new JObject
             {
-                {"StartTime", allCoverageReports.StartTime},
-                {"EndTime", allCoverageReports.EndTime},
+                {"StartTime", warewolfWorkflowReports.StartTime},
+                {"EndTime", warewolfWorkflowReports.EndTime},
                 {"CoverageSummary", JToken.Parse(resultCoverageSummaryWriter.ToString()) },
                 {"TestSummary", JToken.Parse(resultSummaryWriter.ToString()) },
                 {"TestResults", new JArray(objArray)},
@@ -622,35 +618,23 @@ namespace Dev2.Runtime.WebServer
 
         public static DataListFormat RunCoverageAndReturnHTML(this ICoverageDataObject coverageData, ITestCoverageCatalog testCoverageCatalog, ITestCatalog testCatalog, IResourceCatalog catalog, Guid workspaceGuid, out string executePayload)
         {
-            var (allCoverageReports, allTestResults, warewolfWorkflowReports) = RunListOfCoverage(coverageData, testCoverageCatalog, testCatalog, workspaceGuid, catalog);           
+            var  warewolfWorkflowReports = RunListOfCoverage(coverageData, testCoverageCatalog, testCatalog, workspaceGuid, catalog);
 
+            var allTestResults = warewolfWorkflowReports.AllTestResults;
+            var allCoverageReports = warewolfWorkflowReports.AllCoverageReports;
             var formatter = DataListFormat.CreateFormat("HTML", EmitionTypes.Cover, "text/html; charset=utf-8");
 
             var stringWriter = new StringWriter();
 
             using (var writer = new HtmlTextWriter(stringWriter))
             {
+                var testResults = warewolfWorkflowReports.AllTestResults;
+
                 writer.SetupNavBarHtml(warewolfWorkflowReports.TotalWorkflowNodesCoveredPercentage);
-
-                if (!string.IsNullOrEmpty(coverageData.ReportName) && coverageData.ReportName != "*")
-                {
-                    allTestResults.Results
-                        .SelectMany(o => o.Results).Where(x => x.TestName.ToUpper() == coverageData.ReportName.ToUpper())
-                        .ToList()
-                        .SetupCountSummaryHtml(writer, coverageData);
-                }
-                else
-                {
-                    allTestResults.Results
-                            .SelectMany(o => o.Results)
-                            .ToList()
-                            .SetupCountSummaryHtml(writer, coverageData);
-                }
-
-                warewolfWorkflowReports
-                   .SetupLinesCountSummaryHtml(writer);
-
-                allCoverageReports.WithTestReports
+                writer.SetupCountSummaryHtml(testResults, coverageData);
+                writer.SetupLinesCountSummaryHtml(warewolfWorkflowReports);
+                
+                allCoverageReports
                     .ToList()
                     .ForEach(oo =>
                     {
@@ -668,25 +652,14 @@ namespace Dev2.Runtime.WebServer
             return formatter;
         }
 
-        private static (AllCoverageReports AllCoverageReports, TestResults AllTestResults, WarewolfWorkflowReports WarewolfWorkflowReports) RunListOfCoverage(ICoverageDataObject coverageData, ITestCoverageCatalog testCoverageCatalog, ITestCatalog testCatalog, Guid workspaceGuid, IResourceCatalog catalog)
+        private static WarewolfWorkflowReports RunListOfCoverage(ICoverageDataObject coverageData, ITestCoverageCatalog testCoverageCatalog, ITestCatalog testCatalog, Guid workspaceGuid, IResourceCatalog catalog)
         {
-            var allTestResults = new TestResults();
-
-            var allCoverageReports = new AllCoverageReports
-            {
-                StartTime = DateTime.Now
-            };
-
             var resourceReportTemp = new WarewolfWorkflowReports(coverageData.CoverageReportResources, coverageData.ReportName);
-            var (TestResults, WorkflowCoverageReports) = resourceReportTemp.Calculte(testCoverageCatalog, testCatalog);
+            resourceReportTemp.Calculte(testCoverageCatalog, testCatalog);
 
-            TestResults.ToList().ForEach(o => allTestResults.Add(o));
-            WorkflowCoverageReports.ToList().ForEach(o => allCoverageReports.Add(o));
+            resourceReportTemp.EndTime = DateTime.Now;
 
-            allTestResults.EndTime = DateTime.Now;
-            allCoverageReports.EndTime = DateTime.Now;
-
-            return (allCoverageReports, allTestResults, resourceReportTemp);
+            return resourceReportTemp;
         }
 
         public interface IServiceTestExecutorWrapper

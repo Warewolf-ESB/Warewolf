@@ -24,6 +24,7 @@ using Dev2.Common.Interfaces.WebService;
 using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+#pragma warning disable 618
 
 namespace Dev2.Activities.Designers.Tests.Core
 {
@@ -208,9 +209,9 @@ namespace Dev2.Activities.Designers.Tests.Core
 
             //------------Assert Results-------------------------
 
-            Assert.AreEqual(true, Convert.ToBoolean(region?.Settings?.FirstOrDefault(s => s.Name == "IsUrlEncodedChecked")?.Value));
-            Assert.AreEqual(false, Convert.ToBoolean(region?.Settings?.FirstOrDefault(s => s.Name == "IsFormDataChecked")?.Value));
-            Assert.AreEqual(false, Convert.ToBoolean(region?.Settings?.FirstOrDefault(s => s.Name == "IsManualChecked")?.Value));
+            Assert.AreEqual(true, Convert.ToBoolean(region.Settings?.FirstOrDefault(s => s.Name == "IsUrlEncodedChecked")?.Value));
+            Assert.AreEqual(false, Convert.ToBoolean(region.Settings?.FirstOrDefault(s => s.Name == "IsFormDataChecked")?.Value));
+            Assert.AreEqual(false, Convert.ToBoolean(region.Settings?.FirstOrDefault(s => s.Name == "IsManualChecked")?.Value));
         }
         
         [TestMethod]
@@ -220,7 +221,9 @@ namespace Dev2.Activities.Designers.Tests.Core
         {
             //------------Setup for test--------------------------
             var id = Guid.NewGuid();
+#pragma warning disable 618
             var webPostActivity = new WebPostActivity()
+#pragma warning restore 618
             {
                 SourceId = id,
                 Headers = new ObservableCollection<INameValue> { new NameValue("a", "b") },

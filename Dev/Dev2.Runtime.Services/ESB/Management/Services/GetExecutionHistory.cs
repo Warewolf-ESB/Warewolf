@@ -1,4 +1,4 @@
-﻿/*
+﻿﻿/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
@@ -58,8 +58,8 @@ namespace Dev2.Runtime.ESB.Management.Services
                     client = _webSocketPool.Acquire(Config.Auditing.Endpoint).Connect();
 
                     Dev2Logger.Info("Get Execution History Data from Logger Service. " + triggerID, GlobalConstants.WarewolfInfo);
-                   
-                    var response = "";
+
+                    string response;
                     var message = new AuditCommand
                     {
                         Type = "TriggerQuery",
@@ -67,7 +67,9 @@ namespace Dev2.Runtime.ESB.Management.Services
                     };
                     try
                     {
-                        var ewh = new EventWaitHandle(false, EventResetMode.ManualReset);                      
+#pragma warning disable CC0022
+                        var ewh = new EventWaitHandle(false, EventResetMode.ManualReset);
+#pragma warning restore CC0022
                         client.OnMessage((msgResponse, socket) =>
                         {
                             response = msgResponse;

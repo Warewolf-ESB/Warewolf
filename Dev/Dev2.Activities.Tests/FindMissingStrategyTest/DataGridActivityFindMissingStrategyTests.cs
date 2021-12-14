@@ -20,6 +20,7 @@ using Dev2.FindMissingStrategies;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Core;
+#pragma warning disable 618
 
 namespace Dev2.Tests.Activities.FindMissingStrategyTest
 {

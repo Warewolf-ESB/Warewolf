@@ -27,17 +27,20 @@ namespace Warewolf.Configuration
         public string AuditFilePath { get; set; }
         public bool Equals(ServerSettingsData other)
         {
+            if(other == null)
+            {
+                return false;
+            }
             var equals = WebServerPort == other.WebServerPort;
-            equals &= WebServerSslPort == other.WebServerSslPort;
-            equals &= string.Equals(SslCertificateName, other.SslCertificateName, StringComparison.InvariantCultureIgnoreCase);
-            equals &= CollectUsageStats == other.CollectUsageStats;
-            equals &= DaysToKeepTempFiles == other.DaysToKeepTempFiles;
-            equals &= EnableDetailedLogging == other.EnableDetailedLogging;
-            equals &= ExecutionLogLevel == other.ExecutionLogLevel;
-            equals &= LogFlushInterval == other.LogFlushInterval;
-            equals &= AuditFilePath == other.AuditFilePath;
-            equals &= Sink == other.Sink;
-            return equals;
+            @equals &= WebServerSslPort == other.WebServerSslPort;
+            @equals &= string.Equals(SslCertificateName, other.SslCertificateName, StringComparison.InvariantCultureIgnoreCase);
+            @equals &= CollectUsageStats == other.CollectUsageStats;
+            @equals &= DaysToKeepTempFiles == other.DaysToKeepTempFiles;
+            @equals &= EnableDetailedLogging == other.EnableDetailedLogging;
+            @equals &= ExecutionLogLevel == other.ExecutionLogLevel;
+            @equals &= LogFlushInterval == other.LogFlushInterval;
+            @equals &= Sink == other.Sink;
+            return @equals;
         }
     }
 }
