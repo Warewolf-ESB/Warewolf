@@ -313,4 +313,5 @@ if ($Coverage.IsPresent) {
 	$MergedSnapshotPath = "$TestResultsPath\MergedDotCover.dcvr"
 	&".\JetBrains.dotCover.CommandLineTools\tools\dotCover.exe" merge --Sources="$TestResultsPath\DotCover*.dcvr" --Output=$MergedSnapshotPath
 	&".\JetBrains.dotCover.CommandLineTools\tools\dotCover.exe" report --Source=$MergedSnapshotPath --Output="$TestResultsPath\DotCover-Coverage-Report.html" --ReportType=HTML
+	&".\JetBrains.dotCover.CommandLineTools\tools\dotCover.exe" report --Source=$MergedSnapshotPath --Output="$TestResultsPath\DotCover-Coverage-Report.xml" --ReportType=DetailedXML
 }
