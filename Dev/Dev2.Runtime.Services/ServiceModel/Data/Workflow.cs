@@ -207,13 +207,21 @@ namespace Dev2.Runtime.ServiceModel.Data
         private Collection<FlowNode> GetFlowNodes()
         {
             var builder = ReadXamlDefinition();
+            if (builder is null)
+            {
+                return new Collection<FlowNode>();
+            }
 
             return ((Flowchart)builder.Implementation).Nodes;
         }
 
         private ActivityBuilder ReadXamlDefinition()
         {
-            var xamlStr = RootActivity.ToString();
+            var xamlStr = RootActivity?.ToString();
+            if (string.IsNullOrEmpty(xamlStr))
+            {
+                return null;
+            }
             try
             {
                 if (xamlStr.Length != 0)

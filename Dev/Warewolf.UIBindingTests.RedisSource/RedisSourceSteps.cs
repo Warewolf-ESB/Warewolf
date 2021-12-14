@@ -37,6 +37,7 @@ namespace Warewolf.UIBindingTests
         readonly ScenarioContext _scenarioContext;
         string _illegalCharactersInPath = "Illegal characters in path.";
         public static Depends _containerOps;
+        static FeatureContext _featureContext;
 
 
         public RedisSourceSteps(ScenarioContext scenarioContext)
@@ -50,8 +51,9 @@ namespace Warewolf.UIBindingTests
         }
 
         [BeforeFeature(@"RedisSource")]
-        public static void SetupForSystem()
+        public static void SetupForSystem(FeatureContext featureContext)
         {
+            _featureContext = featureContext;
             Utils.SetupResourceDictionary();
             var redisSourceControl = new RedisSourceControl();
             var mockStudioUpdateManager = new Mock<IRedisSourceModel>();
@@ -64,21 +66,21 @@ namespace Warewolf.UIBindingTests
             var redisSourceViewModel = new RedisSourceViewModel(mockStudioUpdateManager.Object, task, mockEventAggregator.Object, new SynchronousAsyncWorker(), mockExecutor.Object);
             redisSourceControl.DataContext = redisSourceViewModel;
             Utils.ShowTheViewForTesting(redisSourceControl);
-            FeatureContext.Current.Add(Utils.ViewNameKey, redisSourceControl);
-            FeatureContext.Current.Add(Utils.ViewModelNameKey, redisSourceViewModel);
-            FeatureContext.Current.Add("updateManager", mockStudioUpdateManager);
-            FeatureContext.Current.Add("requestServiceNameViewModel", mockRequestServiceNameViewModel);
-            FeatureContext.Current.Add("externalProcessExecutor", mockExecutor);
+            _featureContext.Add(Utils.ViewNameKey, redisSourceControl);
+            _featureContext.Add(Utils.ViewModelNameKey, redisSourceViewModel);
+            _featureContext.Add("updateManager", mockStudioUpdateManager);
+            _featureContext.Add("requestServiceNameViewModel", mockRequestServiceNameViewModel);
+            _featureContext.Add("externalProcessExecutor", mockExecutor);
         }
 
         [BeforeScenario(@"RedisSource")]
         public void SetupForRedisSource()
         {
-            _scenarioContext.Add(Utils.ViewNameKey, FeatureContext.Current.Get<RedisSourceControl>(Utils.ViewNameKey));
-            _scenarioContext.Add("updateManager", FeatureContext.Current.Get<Mock<IRedisSourceModel>>("updateManager"));
-            _scenarioContext.Add("requestServiceNameViewModel", FeatureContext.Current.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel"));
-            _scenarioContext.Add("externalProcessExecutor", FeatureContext.Current.Get<Mock<IExternalProcessExecutor>>("externalProcessExecutor"));
-            _scenarioContext.Add(Utils.ViewModelNameKey, FeatureContext.Current.Get<RedisSourceViewModel>(Utils.ViewModelNameKey));
+            _scenarioContext.Add(Utils.ViewNameKey, _featureContext.Get<RedisSourceControl>(Utils.ViewNameKey));
+            _scenarioContext.Add("updateManager", _featureContext.Get<Mock<IRedisSourceModel>>("updateManager"));
+            _scenarioContext.Add("requestServiceNameViewModel", _featureContext.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel"));
+            _scenarioContext.Add("externalProcessExecutor", _featureContext.Get<Mock<IExternalProcessExecutor>>("externalProcessExecutor"));
+            _scenarioContext.Add(Utils.ViewModelNameKey, _featureContext.Get<RedisSourceViewModel>(Utils.ViewModelNameKey));
         }
 
         [Then(@"""(.*)"" tab is opened")]
@@ -283,7 +285,7 @@ namespace Warewolf.UIBindingTests
             errorMessage = "Exception: " + _illegalCharactersInPath + Environment.NewLine + Environment.NewLine +
                            "Inner Exception: " + _illegalCharactersInPath;
 
-            var viewModel = ScenarioContext.Current.Get<RedisSourceViewModel>("viewModel");
+            var viewModel = _scenarioContext.Get<RedisSourceViewModel>("viewModel");
             Assert.AreEqual(errorMessage, viewModel.TestMessage);
         }
 
@@ -378,10 +380,10 @@ namespace Warewolf.UIBindingTests
             var viewModel = new RedisSourceViewModel(mockUpdateManager.Object, task, mockEventAggregator.Object, new SynchronousAsyncWorker(), mockExecutor.Object);
             var redisSourceControl = _scenarioContext.Get<RedisSourceControl>(Utils.ViewNameKey);
             redisSourceControl.DataContext = viewModel;
-            FeatureContext.Current.Remove("viewModel");
-            FeatureContext.Current.Add("viewModel", viewModel);
-            FeatureContext.Current.Remove("externalProcessExecutor");
-            FeatureContext.Current.Add("externalProcessExecutor", mockExecutor);
+            _featureContext.Remove("viewModel");
+            _featureContext.Add("viewModel", viewModel);
+            _featureContext.Remove("externalProcessExecutor");
+            _featureContext.Add("externalProcessExecutor", mockExecutor);
         }
     }
 }

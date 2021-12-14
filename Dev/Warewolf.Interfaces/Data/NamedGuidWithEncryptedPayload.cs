@@ -49,6 +49,11 @@ namespace Warewolf.Data
             return Equals(other as NamedGuidWithEncryptedPayload);
         }
 
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
         public new NamedGuidWithEncryptedPayload Clone()
         {
             return (NamedGuidWithEncryptedPayload)MemberwiseClone();

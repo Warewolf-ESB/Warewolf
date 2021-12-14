@@ -33,6 +33,7 @@ using Warewolf.Data;
 using Warewolf.Data.Options;
 using Warewolf.Options;
 using Warewolf.Studio.ViewModels;
+#pragma warning disable 618
 
 namespace Dev2.Activities.Designers.Tests.WebPostTool
 {
@@ -44,9 +45,9 @@ namespace Dev2.Activities.Designers.Tests.WebPostTool
             return new MyWebModel();
         }
 
-        static WebPostActivity GetPostActivityWithOutPuts(MyWebModel mod)
+        static WebPostActivityNew GetPostActivityWithOutPuts(MyWebModel mod)
         {
-            return new WebPostActivity()
+            return new WebPostActivityNew()
             {
                 DisplayName = "test displayName",
                 SourceId = mod.Sources[0].Id,
@@ -62,9 +63,9 @@ namespace Dev2.Activities.Designers.Tests.WebPostTool
             };
         }
 
-        static WebPostActivity GetEmptyPostActivity()
+        static WebPostActivityNew GetEmptyPostActivity()
         {
-            return new WebPostActivity();
+            return new WebPostActivityNew();
         }
 
         WebPostActivityViewModel GetWebPostActivityViewModel()
@@ -531,12 +532,13 @@ namespace Dev2.Activities.Designers.Tests.WebPostTool
             Assert.AreEqual(2, conditions.Count);
 
             var condition = conditions[0] as FormDataOptionConditionExpression;
+            Assert.IsNotNull(condition);
             Assert.AreEqual("[[a]]", condition.Key);
             Assert.AreEqual(enFormDataTableType.Text, condition.TableType);
             Assert.AreEqual("this can be any text message", condition.Value);
 
             var emptyCondition = conditions[1] as FormDataOptionConditionExpression;
-            Assert.IsNull(emptyCondition.Key);
+            Assert.IsNotNull(emptyCondition?.Key);
             Assert.AreEqual(enFormDataTableType.Text, emptyCondition.TableType);
         }
 
@@ -580,6 +582,7 @@ namespace Dev2.Activities.Designers.Tests.WebPostTool
             Assert.AreEqual(2, conditions.Count);
 
             var optionConditionExpression = conditions[0] as FormDataOptionConditionExpression;
+            Assert.IsNotNull(optionConditionExpression);
             optionConditionExpression.SelectedTableType = new NamedInt { Name = "Text", Value = 1 };
             optionConditionExpression.DeleteCommand.Execute(optionConditionExpression);
 
@@ -588,6 +591,7 @@ namespace Dev2.Activities.Designers.Tests.WebPostTool
             Assert.AreEqual(1, conditions.Count);
 
             var emptyCondition = conditions[0] as FormDataOptionConditionExpression;
+            Assert.IsNotNull(emptyCondition);
             Assert.IsNull(emptyCondition.Key);
             Assert.AreEqual(enFormDataTableType.Text, emptyCondition.TableType);
         }
@@ -639,10 +643,11 @@ namespace Dev2.Activities.Designers.Tests.WebPostTool
             var options = postViewModel.ManageServiceInputViewModel.ConditionExpressionOptions.Options;
             Assert.IsTrue(options.Count == 2);
             var item1 = options.First() as FormDataOptionConditionExpression;
+            Assert.IsNotNull(item1);
             Assert.AreEqual("l", item1.Key);
             Assert.AreEqual("r", item1.Value);
             Assert.AreEqual(enFormDataTableType.Text, item1.Cond.TableType);
-            Assert.AreEqual("this can be any text message", (item1.Cond as FormDataConditionText).Value);
+            Assert.AreEqual("this can be any text message", (item1.Cond as FormDataConditionText)?.Value);
         }
 
         [TestMethod]

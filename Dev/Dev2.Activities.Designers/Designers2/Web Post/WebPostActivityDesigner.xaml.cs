@@ -16,6 +16,8 @@ namespace Dev2.Activities.Designers2.Web_Post
         {
             InitializeComponent();
         }
+#pragma warning disable 618
         protected override WebPostActivityViewModel CreateViewModel() => new WebPostActivityViewModel(ModelItem);
+#pragma warning restore 618
     }
 }

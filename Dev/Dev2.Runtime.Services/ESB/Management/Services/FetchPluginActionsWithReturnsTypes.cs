@@ -56,7 +56,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     var svc = new PluginService { Namespace = ns.FullName, Source = src };
 
-                    var serviceMethodList = services.MethodsWithReturns(svc, Guid.Empty, Guid.Empty);
+                    var serviceMethodList = services.MethodsWithReturns(svc);
                     var methods = serviceMethodList.Select(a => new PluginAction
                     {
                         FullName = ns.FullName,

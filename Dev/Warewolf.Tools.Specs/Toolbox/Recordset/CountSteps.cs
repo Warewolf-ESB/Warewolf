@@ -23,17 +23,9 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset
     [Binding]
     public class CountSteps : RecordSetBases
     {
-        readonly ScenarioContext scenarioContext;
-
         public CountSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
         {
-            if (scenarioContext == null)
-            {
-                throw new ArgumentNullException(nameof(scenarioContext));
-            }
-
-            this.scenarioContext = scenarioContext;
         }
 
         protected override void BuildDataList()

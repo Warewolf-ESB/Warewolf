@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -10,21 +10,30 @@
 
 
 using Dev2.Common.Interfaces;
-using Dev2.Data;
 using System.Collections.Generic;
 using Warewolf.Data;
 
-namespace Dev2.Runtime.WebServer
+namespace Dev2.Data
 {
     public class WorkflowTestResults
     {
+        private readonly ITestCatalog _testCatalog;
+
         public WorkflowTestResults()
         {
         }
 
-        public WorkflowTestResults(IWarewolfResource res)
+        public WorkflowTestResults(ITestCatalog testCatalog, IWarewolfResource res)
         {
+            _testCatalog = testCatalog;
             Resource = res;
+            Initialize();
+        }
+
+        private void Initialize()
+        {
+            var tests = _testCatalog.Fetch(Resource.ResourceID);
+            tests?.ForEach(o => Add(o));
         }
 
         public IWarewolfResource Resource { get; }

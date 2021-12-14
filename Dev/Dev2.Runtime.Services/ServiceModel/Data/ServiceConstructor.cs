@@ -10,11 +10,11 @@ namespace Dev2.Runtime.ServiceModel.Data
     public class ServiceConstructor
     {
         public ServiceConstructor()
-            : this(string.Empty, null, null)
+            : this(string.Empty, null)
         {
         }
 
-        public ServiceConstructor(string name, IEnumerable<ConstructorParameter> parameters, IOutputDescription outputDescription)
+        public ServiceConstructor(string name, IEnumerable<ConstructorParameter> parameters)
         {
             Name = name;
             Parameters = new List<ConstructorParameter>();

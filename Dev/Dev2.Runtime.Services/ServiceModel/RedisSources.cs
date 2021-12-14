@@ -83,9 +83,9 @@ namespace Dev2.Runtime.ServiceModel
 
         static ValidationResult CanConnectServer(RedisSource redisSource)
         {
+            RedisClient clientAnon = null;
             try
             {
-                RedisClient clientAnon;
                 if (redisSource.AuthenticationType == AuthenticationType.Anonymous)
                 {
                     clientAnon = new RedisClient(redisSource.HostName, int.Parse(redisSource.Port));
@@ -118,6 +118,10 @@ namespace Dev2.Runtime.ServiceModel
                     IsValid = false,
                     ErrorMessage = e.InnerException != null ? string.Join(Environment.NewLine, e.Message, e.InnerException.Message) : e.Message
                 };
+            }
+            finally
+            {
+                clientAnon?.Dispose();
             }
         }
     }

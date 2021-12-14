@@ -120,6 +120,8 @@
     <AdditionalFiles Include="..\SonarQube\SonarLint.xml">
       <Visible>False</Visible>
     </AdditionalFiles>
+    <Compile Include="AllCoverageReports.cs" />
+    <Compile Include="AllTestResults.cs" />
     <Compile Include="DataListConversionUtils.cs" />
     <Compile Include="DataListItem.cs" />
     <Compile Include="DataListModel.cs" />
@@ -299,7 +301,9 @@
     <Compile Include="Util\ScrubType.cs" />
     <Compile Include="WarewolfAtomComparer.cs" />
     <Compile Include="WarewolfIterator.cs" />
+    <Compile Include="WarewolfWorkflowReports.cs" />
     <Compile Include="WorkflowCoverageReports.cs" />
+    <Compile Include="WorkflowTestResults.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">

@@ -9,26 +9,24 @@
 */
 
 
+
 using System;
 using System.Collections.Generic;
 using Warewolf.Data;
 
 namespace Dev2.Common.Interfaces.Runtime.WebServer
 {
-    public interface IWorkflowCoverageReports
+    public interface IWorkflowCoverageReportsTO
     {
         IWorkflowNode[] CoveredWorkflowNodes { get; }
-        IEnumerable<Guid> CoveredWorkflowNodesNotMockedIds { get; }
-        IEnumerable<Guid> CoveredWorkflowNodesMockedIds { get; }
         IEnumerable<Guid> CoveredWorkflowNodesIds { get; }
+        IEnumerable<Guid> CoveredWorkflowNodesMockedIds { get; }
+        IEnumerable<Guid> CoveredWorkflowNodesNotMockedIds { get; }
         bool HasTestReports { get; }
+        int NotCoveredNodesCount { get; }
         List<IServiceTestCoverageModelTo> Reports { get; }
         IWarewolfWorkflow Resource { get; }
         double TotalCoverage { get; }
         IEnumerable<IWorkflowNode> WorkflowNodes { get; }
-        int NotCoveredNodesCount { get; }
-
-        void Add(IServiceTestCoverageModelTo coverage);
-        IWorkflowCoverageReportsTO TryExecute();
     }
 }
