@@ -40,6 +40,7 @@ namespace Dev2.Core.Tests.Workflows
         readonly Guid _resourceID = Guid.Parse("2b975c6d-670e-49bb-ac4d-fb1ce578f66a");
         readonly Guid _serverID = Guid.Parse("51a58300-7e9d-4927-a57b-e5d700b11b55");
         const string ResourceName = "TestWorkflow";
+        const string Category = "New Folder/TestWorkflow";
 
         public TestContext TestContext { get; set; }
 
@@ -853,6 +854,19 @@ namespace Dev2.Core.Tests.Workflows
                 Assert.AreEqual(DebugStatus.Finished, debugVM.DebugStatus);
             }
         }
+        
+        [TestMethod]
+        [Owner("Njabulo Nxele")]
+        [TestCategory(nameof(WorkflowInputDataViewModel))]
+        public void WorkflowInputDataViewModel_ValidateWorkflowID()
+        {
+            var debugVM = CreateDebugOutputViewModel();
+            var mockResouce = GetMockResource();
+            var serviceDebugInfo = GetMockServiceDebugInfo(mockResouce);
+
+            var workflowInputDataviewModel = new WorkflowInputDataViewModelMock(serviceDebugInfo.Object, debugVM);
+            Assert.AreEqual(Category, workflowInputDataviewModel.DebugTo.WorkflowID);
+        }
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
@@ -1273,6 +1287,7 @@ namespace Dev2.Core.Tests.Workflows
             var mockResource = new Mock<IContextualResourceModel>();
             mockResource.SetupGet(r => r.ServerID).Returns(_serverID);
             mockResource.SetupGet(r => r.ResourceName).Returns(ResourceName);
+            mockResource.SetupGet(r => r.Category).Returns(Category);
             mockResource.SetupGet(r => r.WorkflowXaml).Returns(new StringBuilder(StringResourcesTest.DebugInputWindow_WorkflowXaml));
             mockResource.SetupGet(r => r.ID).Returns(_resourceID);
             mockResource.SetupGet(r => r.DataList).Returns(StringResourcesTest.DebugInputWindow_NoInputs_XMLData);
