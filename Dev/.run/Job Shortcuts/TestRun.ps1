@@ -299,10 +299,12 @@ for ($LoopCounter=0; $LoopCounter -le $RetryCount; $LoopCounter++) {
 		} else {
 			$getBaseXML = [xml](Get-Content $getXMLFiles[0].FullName)
 		}
-		if ($getBaseXML.TestRun.ResultSummary.Counters.passed -ne $getBaseXML.TestRun.ResultSummary.Counters.executed) {
-			$TestsToRun = ($getBaseXML.TestRun.Results.UnitTestResult | Where-Object {$_.outcome -ne "Passed"}).testName -join ","
-		} else {
-			break
+		if (!($Coverage.IsPresent -and !(Test-Path "$TestResultsPath\DotCover*.dcvr"))) {
+			if ($getBaseXML.TestRun.ResultSummary.Counters.passed -ne $getBaseXML.TestRun.ResultSummary.Counters.executed) {
+				$TestsToRun = ($getBaseXML.TestRun.Results.UnitTestResult | Where-Object {$_.outcome -ne "Passed"}).testName -join ","
+			} else {
+				break
+			}
 		}
 	} else {
 		Write-Error "No test results found."
