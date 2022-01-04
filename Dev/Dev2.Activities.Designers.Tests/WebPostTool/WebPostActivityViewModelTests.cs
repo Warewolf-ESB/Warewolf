@@ -661,6 +661,7 @@ namespace Dev2.Activities.Designers.Tests.WebPostTool
             postViewModel.SourceRegion.SelectedSource = postViewModel.SourceRegion.Sources.First();
             postViewModel.InputArea.Headers.Add(new NameValue("a", "asa"));
             postViewModel.InputArea.PostData = "this is a test body with a [[VariableToExpose]]";
+            postViewModel.InputArea.ViewModel = new WebPostActivityViewModelNew(ModelItemUtils.CreateModelItem(postActivity), mockModel);
             postViewModel.InputArea.IsManualChecked = true;
             postViewModel.InputArea.IsFormDataChecked = false;
             postViewModel.ConditionExpressionOptions.Options = new List<IOption>
