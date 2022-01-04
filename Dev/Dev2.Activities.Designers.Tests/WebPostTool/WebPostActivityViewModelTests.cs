@@ -606,6 +606,7 @@ namespace Dev2.Activities.Designers.Tests.WebPostTool
             postViewModel.ManageServiceInputViewModel = new InputViewForWebPostTest(postViewModel, mockModel);
             postViewModel.SourceRegion.SelectedSource = postViewModel.SourceRegion.Sources.First();
             postViewModel.InputArea.Headers.Add(new NameValue("[[a]]", "asa"));
+            postViewModel.InputArea.ViewModel = new WebPostActivityViewModelNew(ModelItemUtils.CreateModelItem(postActivity), mockModel);
             postViewModel.InputArea.IsFormDataChecked = true;
             postViewModel.ConditionExpressionOptions.Options = new List<IOption>
             {
