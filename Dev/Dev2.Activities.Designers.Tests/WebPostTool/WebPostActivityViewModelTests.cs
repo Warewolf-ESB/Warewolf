@@ -505,8 +505,7 @@ namespace Dev2.Activities.Designers.Tests.WebPostTool
                     {
                         TableType = enFormDataTableType.Text,
                         Value = "this can be any text message"
-                    },
-
+                    }
                 }
             };
 
@@ -536,8 +535,8 @@ namespace Dev2.Activities.Designers.Tests.WebPostTool
             Assert.AreEqual("this can be any text message", condition.Value);
 
             var emptyCondition = conditions[1] as FormDataOptionConditionExpression;
-            Assert.IsNotNull(emptyCondition?.Key);
-            Assert.AreEqual(enFormDataTableType.Text, emptyCondition.TableType);
+            Assert.IsNull(emptyCondition?.Key);
+            Assert.AreEqual(enFormDataTableType.Text, emptyCondition?.TableType);
         }
 
         [TestMethod]
