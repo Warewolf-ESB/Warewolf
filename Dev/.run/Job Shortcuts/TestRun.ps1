@@ -305,6 +305,8 @@ for ($LoopCounter=0; $LoopCounter -le $RetryCount; $LoopCounter++) {
 			} else {
 				break
 			}
+		} else {
+			Write-Host No coverage snapshot found at $TestResultsPath\DotCover*.dcvr. Retrying...
 		}
 	} else {
 		Write-Error "No test results found."
