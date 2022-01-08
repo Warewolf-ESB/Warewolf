@@ -222,6 +222,7 @@
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
     <Compile Include="AssemblyLoader.cs" />
+    <Compile Include="CoverageEntryPoint.cs" />
     <Compile Include="HangfireServerMonitor.cs" />
     <Compile Include="NullProcessMonitor.cs" />
     <Compile Include="IQueueConfigLoader.cs" />
@@ -241,7 +242,6 @@
     <Compile Include="WebServerConfiguration.cs" />
     <Compile Include="TempFileDeleter.cs" />
     <Compile Include="ServerLifeCycleWorkers\RegisterDependenciesWorker.cs" />
-    <None Include="Dev2.Server.ruleset" />
     <None Include="Dockerfile">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -436,6 +436,9 @@
     <PackageReference Include="FsLexYacc">
       <Version>10.2.0</Version>
     </PackageReference>
+    <PackageReference Include="IKVM.OpenJDK.XML.WebServices">
+      <Version>7.2.4630.5</Version>
+    </PackageReference>
     <PackageReference Include="log4net">
       <Version>2.0.12</Version>
     </PackageReference>
@@ -466,6 +469,9 @@
     <PackageReference Include="Microsoft.Owin.SelfHost">
       <Version>4.1.0</Version>
     </PackageReference>
+    <PackageReference Include="MSTest.TestFramework">
+      <Version>2.1.2</Version>
+    </PackageReference>
     <PackageReference Include="MySql.Data">
       <Version>6.9.9</Version>
     </PackageReference>
@@ -489,6 +495,9 @@
     </PackageReference>
     <PackageReference Include="TxFileManager">
       <Version>1.3.0</Version>
+    </PackageReference>
+	<PackageReference Include="Microsoft.NET.Test.Sdk">
+      <Version>16.8.3</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
