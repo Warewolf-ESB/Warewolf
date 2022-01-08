@@ -98,7 +98,7 @@ if ($WarewolfServerProcess) {
 		if (!(Test-Path "$PSScriptRoot\TestResults")) {
 			New-Item -ItemType Directory "$PSScriptRoot\TestResults"
 		}
-		if (!(Test-Path ".\Microsoft.TestPlatform\tools\net451\Team Tools\Dynamic Code Coverage Tools\CodeCoverage.exe")) {
+		if (!(Test-Path "$PSScriptRoot\Microsoft.TestPlatform\tools\net451\Team Tools\Dynamic Code Coverage Tools\CodeCoverage.exe")) {
 			#Find NuGet
 			if ("$NuGet" -eq "" -or !(Test-Path "$NuGet" -ErrorAction SilentlyContinue)) {
 				$NuGetCommand = Get-Command NuGet -ErrorAction SilentlyContinue
@@ -116,7 +116,7 @@ if ($WarewolfServerProcess) {
 				exit 1
 			}
 			&"nuget.exe" "install" "Microsoft.TestPlatform" "-ExcludeVersion" "-NonInteractive" "-OutputDirectory" "."
-			if (!(Test-Path ".\Microsoft.TestPlatform\tools\net451\Team Tools\Dynamic Code Coverage Tools\CodeCoverage.exe")) {
+			if (!(Test-Path "$PSScriptRoot\Microsoft.TestPlatform\tools\net451\Team Tools\Dynamic Code Coverage Tools\CodeCoverage.exe")) {
 				Write-Error "Cannot coverage runner using nuget."
 				exit 1
 			}
@@ -124,7 +124,7 @@ if ($WarewolfServerProcess) {
 		if (Test-Path "$PSScriptRoot\TestResults\Snapshot.coverage") {
 			Remove-Item "$PSScriptRoot\TestResults\Snapshot.coverage"
 		}
-		$BinPath = "\`".\Microsoft.TestPlatform\tools\net451\Team Tools\Dynamic Code Coverage Tools\CodeCoverage.exe\`" collect /output:\`"$PSScriptRoot\TestResults\Snapshot.coverage\`" \`"$BinPath\`"";
+		$BinPath = "\`"$PSScriptRoot\Microsoft.TestPlatform\tools\net451\Team Tools\Dynamic Code Coverage Tools\CodeCoverage.exe\`" collect /output:\`"$PSScriptRoot\TestResults\Snapshot.coverage\`" \`"$BinPath\`"";
 	}
 	if (!($IsAnonymous)) {
 		Write-Host Starting Warewolf server as $Username
