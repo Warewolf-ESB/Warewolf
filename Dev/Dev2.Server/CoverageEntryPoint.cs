@@ -1,4 +1,5 @@
-﻿using com.sun.tools.javadoc;
+﻿#if DEBUG
+using com.sun.tools.javadoc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2
@@ -10,3 +11,4 @@ namespace Dev2
         public void CoverageEntrypoint()=>Main.main();
     }
 }
+#endif
