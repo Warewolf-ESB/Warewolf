@@ -304,6 +304,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("PluginRuntimeHandler_ListMethodsWithReturns")]
+        [Timeout(30000)]
         public void PluginRuntimeHandler_ListMethodsWithReturns_WhenValidLocation_ExpectResults()
         {
             //------------Setup for test--------------------------
