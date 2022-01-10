@@ -160,7 +160,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("PluginServiceExecutionFactory_InvokePlugin")]
-        [Timeout(5000)]
+        [Timeout(30000)]
         public void PluginRuntimeHandler_InvokePlugin_WhenValidDll_ExpectValidResults()
         {
             //------------Setup for test--------------------------
