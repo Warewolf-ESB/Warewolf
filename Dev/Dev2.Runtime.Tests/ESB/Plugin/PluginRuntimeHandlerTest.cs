@@ -39,6 +39,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("PluginRuntimeHandler_FetchNamespaceListObject")]
+        [Timeout(30000)]
         public void PluginRuntimeHandler_FetchNamespaceListObject_WhenValidDll_ExpectNamespaces()
         {
             //------------Setup for test--------------------------
