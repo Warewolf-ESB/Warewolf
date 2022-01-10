@@ -1190,7 +1190,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(500)]
+        [Timeout(2000)]
         public void TestCreateExplorerItemsSetsPermissions()
         {
             //arrange
