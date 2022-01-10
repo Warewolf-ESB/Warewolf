@@ -273,6 +273,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("PluginRuntimeHandler_ListMethods")]
+        [Timeout(30000)]
         public void PluginRuntimeHandler_ListMethods_WhenValidLocation_ExpectResults()
         {
             //------------Setup for test--------------------------
@@ -289,6 +290,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("PluginRuntimeHandler_ListMethods")]
+        [Timeout(30000)]
         public void PluginRuntimeHandler_ListConstructors_WhenValidLocation_ExpectResults()
         {
             //------------Setup for test--------------------------
