@@ -142,6 +142,12 @@ for ($LoopCounter=0; $LoopCounter -le $RetryCount; $LoopCounter++) {
 	if (Test-Path "$TestResultsPath\warewolf-server.log") {
 		Move-Item "$TestResultsPath\warewolf-server.log" "$TestResultsPath\warewolf-server($LoopCounter).ps1"
 	}
+	if (Test-Path "$TestResultsPath\Snapshot.coverage") {
+		Move-Item "$TestResultsPath\Snapshot.coverage" "$TestResultsPath\Snapshot($LoopCounter).coverage"
+	}
+	if (Test-Path "$TestResultsPath\Snapshot_Backup.coverage") {
+		Move-Item "$TestResultsPath\Snapshot_Backup.coverage" "$TestResultsPath\Snapshot_Backup($LoopCounter).coverage"
+	}
 	$AssembliesArg = ".\" + ($AssembliesList -join " .\")
 	if ($UNCPassword) {
 		"net use \\DEVOPSPDC.premier.local\FileSystemShareTestingSite /user:Administrator $UNCPassword" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append

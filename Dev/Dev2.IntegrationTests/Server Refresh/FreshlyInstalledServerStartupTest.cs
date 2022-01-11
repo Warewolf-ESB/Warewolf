@@ -84,8 +84,22 @@ namespace Dev2.Integration.Tests.Server_Refresh
         {
             ServiceController service = new ServiceController("Warewolf Server");
 
+            var exeName = Process.GetProcessesByName("Warewolf Server");
+            var TestResultsPath = Path.Combine(Path.GetDirectoryName(exeName[0].MainModule.FileName), "TestResults");
+            var ServerCoverageSnapshotPath = Path.Combine(TestResultsPath, "Snapshot.coverage");
+            var ServerCoverageSnapshotBackupPath = Path.Combine(TestResultsPath, "Snapshot_Backup.coverage");
+
             service.Stop();
             service.WaitForStatus(ServiceControllerStatus.Stopped, TimeSpan.FromMilliseconds(30000));
+
+            if (File.Exists(ServerCoverageSnapshotBackupPath))
+            {
+                File.Delete(ServerCoverageSnapshotBackupPath);
+            }
+            if (File.Exists(ServerCoverageSnapshotPath))
+            {
+                File.Move(ServerCoverageSnapshotPath, ServerCoverageSnapshotBackupPath);
+            }
 
             service.Start();
             service.WaitForStatus(ServiceControllerStatus.Running, TimeSpan.FromMilliseconds(30000));
