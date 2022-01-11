@@ -67,6 +67,7 @@ namespace Dev2.Integration.Tests.Server_Refresh
 
         [TestMethod]
         [Owner("Ashley Lewis")]
+        [TestCategory("Server Startup")]
         public void Run_a_workflow_to_test_server_startup_when_programdata_resources_directory_does_not_exist()
         {
             Assert.IsFalse(Directory.Exists(EnvironmentVariables.ResourcePath), "Cannot prepare for integration test.");
