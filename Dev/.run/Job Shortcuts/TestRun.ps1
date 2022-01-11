@@ -253,6 +253,13 @@ if ($Coverage.IsPresent) {
 	$MergedSnapshotPath = "$TestResultsPath\Merged.coveragexml"
 	$CoverageToolPath = ".\Microsoft.TestPlatform\tools\net451\Team Tools\Dynamic Code Coverage Tools\CodeCoverage.exe"
 	$GetSnapshots = Get-ChildItem "$TestResultsPath\**\*.coverage"
+	if ($GetSnapshots.count -le 0) {
+		$GetSnapshots = Get-ChildItem "$TestResultsPath\*.coverage"
+	}
+	if ($GetSnapshots.count -le 0) {
+		Write-Host Cannot find snapshots in $TestResultsPath
+		exit 1
+	}
 	Write-Host `&`"$CoverageToolPath`" analyze /output:`"$MergedSnapshotPath`" @GetSnapshots
 	&"$CoverageToolPath" analyze /output:"$MergedSnapshotPath" @GetSnapshots
 	$reportGeneratorExecutable = ".\reportgenerator.exe"
