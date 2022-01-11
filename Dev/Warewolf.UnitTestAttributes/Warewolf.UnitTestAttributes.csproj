@@ -3,6 +3,7 @@
     <PropertyGroup>
         <TargetFramework>net48</TargetFramework>
         <Configurations>Debug</Configurations>
+        <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     </PropertyGroup>
 
     <ItemGroup>

@@ -115,9 +115,6 @@
     <Compile Include="Wrappers\TimerWrapperTests.cs" />
     <Compile Include="Wrappers\FileInfoWrapperTests.cs" />
     <Compile Include="Wrappers\FilePathWrapperTests.cs" />
-    <AdditionalFiles Include="..\SonarQube\SonarLint.xml">
-      <Visible>False</Visible>
-    </AdditionalFiles>
     <Compile Include="ExtensionMethodsTest.cs" />
     <Compile Include="MapperTests.cs" />
     <Compile Include="DistinctByTests.cs" />

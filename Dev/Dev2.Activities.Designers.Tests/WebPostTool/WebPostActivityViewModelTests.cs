@@ -9,14 +9,11 @@
 */
 
 using Dev2.Activities.Designers.Tests.WebGetTool;
-using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Web_Post;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Help;
-using Dev2.Common.Interfaces.ToolBase;
-using Dev2.Common.Interfaces.WebService;
 using Dev2.Common.Serializers;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Interfaces;
@@ -27,6 +24,7 @@ using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Linq;
+using Dev2.Activities.Designers2.Web_Post_New;
 using TestingDotnetDllCascading;
 using Warewolf.Core;
 using Warewolf.Data;
@@ -507,8 +505,7 @@ namespace Dev2.Activities.Designers.Tests.WebPostTool
                     {
                         TableType = enFormDataTableType.Text,
                         Value = "this can be any text message"
-                    },
-
+                    }
                 }
             };
 
@@ -538,8 +535,8 @@ namespace Dev2.Activities.Designers.Tests.WebPostTool
             Assert.AreEqual("this can be any text message", condition.Value);
 
             var emptyCondition = conditions[1] as FormDataOptionConditionExpression;
-            Assert.IsNotNull(emptyCondition?.Key);
-            Assert.AreEqual(enFormDataTableType.Text, emptyCondition.TableType);
+            Assert.IsNull(emptyCondition?.Key);
+            Assert.AreEqual(enFormDataTableType.Text, emptyCondition?.TableType);
         }
 
         [TestMethod]
@@ -609,6 +606,7 @@ namespace Dev2.Activities.Designers.Tests.WebPostTool
             postViewModel.ManageServiceInputViewModel = new InputViewForWebPostTest(postViewModel, mockModel);
             postViewModel.SourceRegion.SelectedSource = postViewModel.SourceRegion.Sources.First();
             postViewModel.InputArea.Headers.Add(new NameValue("[[a]]", "asa"));
+            postViewModel.InputArea.ViewModel = new WebPostActivityViewModelNew(ModelItemUtils.CreateModelItem(postActivity), mockModel);
             postViewModel.InputArea.IsFormDataChecked = true;
             postViewModel.ConditionExpressionOptions.Options = new List<IOption>
             {
@@ -664,6 +662,7 @@ namespace Dev2.Activities.Designers.Tests.WebPostTool
             postViewModel.SourceRegion.SelectedSource = postViewModel.SourceRegion.Sources.First();
             postViewModel.InputArea.Headers.Add(new NameValue("a", "asa"));
             postViewModel.InputArea.PostData = "this is a test body with a [[VariableToExpose]]";
+            postViewModel.InputArea.ViewModel = new WebPostActivityViewModelNew(ModelItemUtils.CreateModelItem(postActivity), mockModel);
             postViewModel.InputArea.IsManualChecked = true;
             postViewModel.InputArea.IsFormDataChecked = false;
             postViewModel.ConditionExpressionOptions.Options = new List<IOption>
@@ -698,6 +697,7 @@ namespace Dev2.Activities.Designers.Tests.WebPostTool
             postViewModel.InputArea.Headers.Add(new NameValue("a", "asa"));
             postViewModel.InputArea.PostData = "this is a test body with a [[VariableNotToExpose]]";
             postViewModel.InputArea.IsManualChecked = false;
+            postViewModel.InputArea.ViewModel = new WebPostActivityViewModelNew(ModelItemUtils.CreateModelItem(postActivity), mockModel);
             postViewModel.InputArea.IsFormDataChecked = true;
             postViewModel.ConditionExpressionOptions.Options = new List<IOption>
             {

@@ -32,15 +32,18 @@ namespace Warewolf.Configuration
                 return false;
             }
             var equals = WebServerPort == other.WebServerPort;
-            @equals &= WebServerSslPort == other.WebServerSslPort;
-            @equals &= string.Equals(SslCertificateName, other.SslCertificateName, StringComparison.InvariantCultureIgnoreCase);
-            @equals &= CollectUsageStats == other.CollectUsageStats;
-            @equals &= DaysToKeepTempFiles == other.DaysToKeepTempFiles;
-            @equals &= EnableDetailedLogging == other.EnableDetailedLogging;
-            @equals &= ExecutionLogLevel == other.ExecutionLogLevel;
-            @equals &= LogFlushInterval == other.LogFlushInterval;
-            @equals &= Sink == other.Sink;
-            return @equals;
+            equals &= WebServerSslPort == other.WebServerSslPort;
+            equals &= string.Equals(SslCertificateName, other.SslCertificateName, StringComparison.InvariantCultureIgnoreCase);
+            equals &= CollectUsageStats == other.CollectUsageStats;
+            equals &= DaysToKeepTempFiles == other.DaysToKeepTempFiles;
+            equals &= EnableDetailedLogging == other.EnableDetailedLogging;
+            equals &= ExecutionLogLevel == other.ExecutionLogLevel;
+            equals &= LogFlushInterval == other.LogFlushInterval;
+#pragma warning disable 618
+            equals &= AuditFilePath == other.AuditFilePath;
+#pragma warning restore 618
+            equals &= Sink == other.Sink;
+            return equals;
         }
     }
 }

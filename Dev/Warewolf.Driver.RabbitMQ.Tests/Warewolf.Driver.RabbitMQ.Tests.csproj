@@ -1,14 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-
     <IsPackable>false</IsPackable>
-
     <AssemblyName>Warewolf.Driver.RabbitMQ.Tests</AssemblyName>
-
     <Configurations>Debug</Configurations>
-
     <TargetFramework>net48</TargetFramework>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
   </PropertyGroup>
 
   <ItemGroup>

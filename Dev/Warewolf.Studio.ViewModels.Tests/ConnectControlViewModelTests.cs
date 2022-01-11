@@ -333,7 +333,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(1000)]
+        [Timeout(2000)]
         [TestCategory(nameof(ConnectControlViewModel))]
         [Owner("Sipohamandla Dube")]
         public void ConnectControlViewModel_TestConnectSuccessful()

@@ -1,4 +1,4 @@
-﻿/*
+/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
@@ -494,7 +494,7 @@ namespace Dev2.Activities.Designers.Tests.WebPostTool
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(WebPostActivityViewModelNew))]
-        public void WebPostActivityViewModel_LoadConditions()
+        public void WebPostActivityViewModelNew_LoadConditions()
         {
             //------------Setup for test--------------------------
             var mod = GetMockModel();
@@ -596,7 +596,7 @@ namespace Dev2.Activities.Designers.Tests.WebPostTool
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(WebPostActivityViewModelNew))]
-        public void WebPostActivityViewModel_TestInputCommand_IsFormDataChecked()
+        public void WebPostActivityViewModelNew_TestInputCommand_IsFormDataChecked()
         {
             //---------------Set up test pack-------------------
             var mockModel = GetMockModel();
@@ -649,7 +649,7 @@ namespace Dev2.Activities.Designers.Tests.WebPostTool
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(WebPostActivityViewModelNew))]
-        public void WebPostActivityViewModel_ToModel_Given_IsManualChecked_True_ExpectFromPostDataVariableInputs()
+        public void WebPostActivityViewModelNew_ToModel_Given_IsManualChecked_True_ExpectFromPostDataVariableInputs()
         {
             //---------------Set up test pack-------------------
             var mockModel = GetMockModel();
@@ -682,7 +682,7 @@ namespace Dev2.Activities.Designers.Tests.WebPostTool
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(WebPostActivityViewModelNew))]
-        public void WebPostActivityViewModel_ToModel_Given_IsFormDataChecked_True_ExpectFromFormDataVariableInputs()
+        public void WebPostActivityViewModelNew_ToModel_Given_IsFormDataChecked_True_ExpectFromFormDataVariableInputs()
         {
             //---------------Set up test pack-------------------
             var mockModel = GetMockModel();

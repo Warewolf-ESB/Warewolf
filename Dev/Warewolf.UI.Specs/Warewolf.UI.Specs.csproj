@@ -94,9 +94,6 @@
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
-    <AdditionalFiles Include="..\SonarQube\SonarLint.xml">
-      <Visible>False</Visible>
-    </AdditionalFiles>
     <Compile Include="DBConnector.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

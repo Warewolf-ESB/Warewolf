@@ -4,6 +4,7 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <EnableDefaultItems>false</EnableDefaultItems>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <CodeAnalysisRuleSet>..\.sonarlint\warewolf_dotnet_frameworkcsharp.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -110,9 +111,6 @@
     <Compile Include="IDbSources.cs" />
     <Compile Include="Interfaces\IConnections.cs" />
     <Compile Include="Interfaces\IHubFactory.cs" />
-    <AdditionalFiles Include="..\SonarQube\SonarLint.xml">
-      <Visible>False</Visible>
-    </AdditionalFiles>
     <Compile Include="DynamicProxy\Constants.cs" />
     <Compile Include="DynamicProxy\DynamicObject.cs" />
     <Compile Include="DynamicProxy\DynamicProxy.cs" />
@@ -489,6 +487,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <AdditionalFiles Include="..\.sonarlint\warewolf_dotnet_framework\CSharp\SonarLint.xml" Link="SonarLint.xml" />
     <Content Include="SSL Generation\makecert.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
