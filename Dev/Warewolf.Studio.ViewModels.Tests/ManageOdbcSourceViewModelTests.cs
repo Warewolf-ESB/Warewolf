@@ -150,7 +150,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         [TestMethod]
         [Timeout(100)]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void TestManageDatabaseSourceViewModelRequestServiceNameViewModelNull()
+        public void TestManageOdbcDatabaseSourceViewModelRequestServiceNameViewModelNull()
         {
             new ManageOdbcSourceViewModel(
                  _updateManagerMock.Object,
@@ -162,7 +162,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         [TestMethod]
         [Timeout(100)]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void TestManageDatabaseSourceViewModelDbSourceNull()
+        public void TestManageOdbcDatabaseSourceViewModelDbSourceNull()
         {
             new ManageOdbcSourceViewModel(
                  _updateManagerMock.Object,
