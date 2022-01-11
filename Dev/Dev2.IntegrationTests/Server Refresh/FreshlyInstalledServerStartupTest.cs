@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
+using System.Management;
 using System.Net;
 using System.ServiceProcess;
 using System.Threading.Tasks;
@@ -83,22 +85,35 @@ namespace Dev2.Integration.Tests.Server_Refresh
         void RestartServer()
         {
             ServiceController service = new ServiceController("Warewolf Server");
-
-            var exeName = Process.GetProcessesByName("Warewolf Server");
-            var TestResultsPath = Path.Combine(Path.GetDirectoryName(exeName[0].MainModule.FileName), "TestResults");
-            var ServerCoverageSnapshotPath = Path.Combine(TestResultsPath, "Snapshot.coverage");
-            var ServerCoverageSnapshotBackupPath = Path.Combine(TestResultsPath, "Snapshot_Backup.coverage");
-
-            service.Stop();
-            service.WaitForStatus(ServiceControllerStatus.Stopped, TimeSpan.FromMilliseconds(30000));
-
-            if (File.Exists(ServerCoverageSnapshotBackupPath))
+            ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT * FROM Win32_Service");
+            ManagementObject ServerService = searcher.Get().OfType<ManagementObject>().FirstOrDefault((obj) => { return (string)obj["Name"] == "Warewolf Server"; });
+            var fullServicePath = ServerService["PathName"] as string;
+            var startingString = "CodeCoverage.exe\" collect /output:\"";
+            var endingString = "TestResults\\Snapshot.coverage";
+            if (fullServicePath.Contains(startingString) && fullServicePath.Contains(endingString))
             {
-                File.Delete(ServerCoverageSnapshotBackupPath);
+                var startingIndex = fullServicePath.IndexOf(startingString) + startingString.Length;
+                var findLength = fullServicePath.IndexOf(endingString) + endingString.Length - startingIndex;
+                var snapshotPath = fullServicePath.Substring(startingIndex, findLength);
+                var TestResultsPath = Path.GetDirectoryName(snapshotPath);
+                var ServerCoverageSnapshotBackupPath = Path.Combine(TestResultsPath, "Snapshot_Backup.coverage");
+
+                service.Stop();
+                service.WaitForStatus(ServiceControllerStatus.Stopped, TimeSpan.FromMilliseconds(30000));
+
+                if (File.Exists(ServerCoverageSnapshotBackupPath))
+                {
+                    File.Delete(ServerCoverageSnapshotBackupPath);
+                }
+                if (File.Exists(snapshotPath))
+                {
+                    File.Move(snapshotPath, ServerCoverageSnapshotBackupPath);
+                }
             }
-            if (File.Exists(ServerCoverageSnapshotPath))
+            else
             {
-                File.Move(ServerCoverageSnapshotPath, ServerCoverageSnapshotBackupPath);
+                service.Stop();
+                service.WaitForStatus(ServiceControllerStatus.Stopped, TimeSpan.FromMilliseconds(30000));
             }
 
             service.Start();
