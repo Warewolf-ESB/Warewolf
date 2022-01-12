@@ -144,7 +144,7 @@ namespace Dev2.Integration.Tests.Server_Refresh
 
         bool WaitForFile (string fullPath)
         {
-            for (int numTries = 0; numTries < 10; numTries++) {
+            for (int numTries = 0; numTries < 30; numTries++) {
                 FileStream fs = null;
                 try {
                     fs = new FileStream (fullPath, FileMode.Open, FileAccess.Write, FileShare.Delete);
@@ -156,7 +156,7 @@ namespace Dev2.Integration.Tests.Server_Refresh
                     if (fs != null) {
                         fs.Dispose ();
                     }
-                    Thread.Sleep (50);
+                    Thread.Sleep (1000);
                 }
             }
 
