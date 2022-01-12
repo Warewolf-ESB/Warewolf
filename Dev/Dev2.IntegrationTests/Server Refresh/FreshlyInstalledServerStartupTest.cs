@@ -112,6 +112,10 @@ namespace Dev2.Integration.Tests.Server_Refresh
                     {
                         File.Move(snapshotPath, ServerCoverageSnapshotBackupPath);
                     }
+                    else
+                    {
+                        throw new Exception("Cannot backup existing coverage snapshot.");
+                    }
                 }
             }
             else
