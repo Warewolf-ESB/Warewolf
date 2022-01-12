@@ -148,6 +148,8 @@ namespace Dev2.Integration.Tests.Server_Refresh
                 FileStream fs = null;
                 try {
                     fs = new FileStream (fullPath, FileMode.Open, FileAccess.Write, FileShare.Delete);
+                    fs.Close();
+                    fs.Dispose();
                     return true;
                 }
                 catch (IOException) {
