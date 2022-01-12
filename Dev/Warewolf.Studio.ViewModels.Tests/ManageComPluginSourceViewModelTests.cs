@@ -157,9 +157,9 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void TestManagePluginSourceViewModelAggregatorNull()
+        public void TestManageCOMPluginSourceViewModelAggregatorNull()
         {
             //act
             new ManageComPluginSourceViewModel(_updateManagerMock.Object, null, _asyncWorkerMock.Object);
@@ -175,9 +175,9 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void TestManagePluginSourceViewModePluginSourceNull()
+        public void TestManageCOMPluginSourceViewModePluginSourceNull()
         {
             //act
             new ManageComPluginSourceViewModel(_updateManagerMock.Object, _aggregatorMock.Object, null, _asyncWorkerMock.Object);
