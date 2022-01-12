@@ -7,6 +7,7 @@ using System.Linq;
 using System.Management;
 using System.Net;
 using System.ServiceProcess;
+using System.Threading;
 using System.Threading.Tasks;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Security;
@@ -86,7 +87,7 @@ namespace Dev2.Integration.Tests.Server_Refresh
         {
             ServiceController service = new ServiceController("Warewolf Server");
             ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT * FROM Win32_Service");
-            ManagementObject ServerService = searcher.Get().OfType<ManagementObject>().FirstOrDefault((obj) => { return (string)obj["Name"] == "Warewolf Server"; });
+            ManagementObject ServerService = searcher.Get().OfType<ManagementObject>().FirstOrDefault(obj => { return (string)obj["Name"] == "Warewolf Server"; });
             var fullServicePath = ServerService["PathName"] as string;
             var startingString = "CodeCoverage.exe\" collect /output:\"";
             var endingString = "TestResults\\Snapshot.coverage";
@@ -107,7 +108,10 @@ namespace Dev2.Integration.Tests.Server_Refresh
                 }
                 if (File.Exists(snapshotPath))
                 {
-                    File.Move(snapshotPath, ServerCoverageSnapshotBackupPath);
+                    if (WaitForFile(snapshotPath))
+                    {
+                        File.Move(snapshotPath, ServerCoverageSnapshotBackupPath);
+                    }
                 }
             }
             else
@@ -134,9 +138,23 @@ namespace Dev2.Integration.Tests.Server_Refresh
             }
         }
 
-        void MoveFileTemporarily(string fileName)
+        bool WaitForFile (string fullPath)
         {
-            File.Move(fileName, $"{fileName}.Moved");
+            for (int numTries = 0; numTries < 10; numTries++) {
+                FileStream fs = null;
+                try {
+                    fs = new FileStream (fullPath, FileMode.Open, FileAccess.Write, FileShare.Delete);
+                    return true;
+                }
+                catch (IOException) {
+                    if (fs != null) {
+                        fs.Dispose ();
+                    }
+                    Thread.Sleep (50);
+                }
+            }
+
+            return false;
         }
 
         string ExecuteRequest(Uri url)
