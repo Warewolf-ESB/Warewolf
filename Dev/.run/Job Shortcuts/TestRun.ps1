@@ -258,7 +258,7 @@ for ($LoopCounter=0; $LoopCounter -le $RetryCount; $LoopCounter++) {
 	if (!($InContainer.IsPresent)) {
 		&"$TestResultsPath\RunTests.ps1"
 	} else {
-		docker run -i --rm -v "${PWD}:C:\BuildUnderTest" vstest powershell -Command Set-Location .\BuildUnderTest`;`&.\TestResults\RunTests.ps1
+		docker run -i --rm -v "${PWD}:C:\BuildUnderTest" registry.gitlab.com/warewolf/vstest powershell -Command Set-Location .\BuildUnderTest`;`&.\TestResults\RunTests.ps1
 	}
     if (Test-Path "$VSTestPath\Extensions\TestPlatform\TestResults\*.trx") {
         Copy-Item "$VSTestPath\Extensions\TestPlatform\TestResults\*.trx" "$TestResultsPath" -Force -Recurse
