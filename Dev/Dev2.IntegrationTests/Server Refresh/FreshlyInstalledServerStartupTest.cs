@@ -100,7 +100,7 @@ namespace Dev2.Integration.Tests.Server_Refresh
                 var ServerCoverageSnapshotBackupPath = Path.Combine(TestResultsPath, "Snapshot_Backup.coverage");
 
                 service.Stop();
-                service.WaitForStatus(ServiceControllerStatus.Stopped, TimeSpan.FromMilliseconds(30000));
+                service.WaitForStatus(ServiceControllerStatus.Stopped, TimeSpan.FromMilliseconds(300000));
 
                 if (File.Exists(ServerCoverageSnapshotBackupPath))
                 {
@@ -121,11 +121,11 @@ namespace Dev2.Integration.Tests.Server_Refresh
             else
             {
                 service.Stop();
-                service.WaitForStatus(ServiceControllerStatus.Stopped, TimeSpan.FromMilliseconds(30000));
+                service.WaitForStatus(ServiceControllerStatus.Stopped, TimeSpan.FromMilliseconds(300000));
             }
 
             service.Start();
-            service.WaitForStatus(ServiceControllerStatus.Running, TimeSpan.FromMilliseconds(30000));
+            service.WaitForStatus(ServiceControllerStatus.Running, TimeSpan.FromMilliseconds(300000));
         }
 
         class PatientWebClient : WebClient
