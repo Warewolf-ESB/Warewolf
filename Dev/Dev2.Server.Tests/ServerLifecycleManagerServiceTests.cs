@@ -1160,6 +1160,11 @@ namespace Dev2.Server.Tests
                 OnStop();
             }
         }
+<<<<<<< Updated upstream
+=======
+<<<<<<< Updated upstream
+=======
+>>>>>>> Stashed changes
         
         private class UsageLoggerForTests : UsageLogger
         {
@@ -1176,13 +1181,34 @@ namespace Dev2.Server.Tests
             public static int GetNumberOfCores()
             {
                 var coreCount = 0;
+<<<<<<< Updated upstream
                 foreach (var item in new ManagementObjectSearcher("Select * from Win32_Processor  ").Get())
                 {
                     coreCount += int.Parse(item["NumberOfCores"].ToString());
+=======
+
+                try
+                {
+                    using (ManagementObjectCollection managementObjectSearcher = new ManagementObjectSearcher("Select * from Win32_Processor").Get())
+                    {
+                        foreach (var item in managementObjectSearcher)
+                        {
+                            coreCount += int.Parse(item["NumberOfCores"].ToString());
+                        }
+                    }
+                }
+                catch (Exception err)
+                {
+                    Dev2Logger.Warn(err.Message, GlobalConstants.WarewolfWarn);
+>>>>>>> Stashed changes
                 }
 
                 return coreCount;
             }
         }
+<<<<<<< Updated upstream
+=======
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
     }
 }

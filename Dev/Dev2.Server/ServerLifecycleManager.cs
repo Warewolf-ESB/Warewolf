@@ -40,12 +40,24 @@ using Warewolf.Auditing;
 using Warewolf.Common.NetStandard20;
 using Warewolf.Interfaces.Auditing;
 using Dev2.Services.Security.MoqInstallerActions;
+<<<<<<< Updated upstream
+=======
+<<<<<<< Updated upstream
+using Warewolf.Streams;
+=======
+>>>>>>> Stashed changes
 using Newtonsoft.Json;
 using Warewolf.Usage;
 using JsonSerializer = Warewolf.Streams.JsonSerializer;
 using System.Diagnostics;
 using Dev2.Runtime.Subscription;
 using Warewolf.Execution;
+<<<<<<< Updated upstream
+=======
+using Dev2.Runtime.Services.Interfaces;
+using Dev2.Runtime.Services.ESB.Management.Services;
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
 
 namespace Dev2
 {
@@ -75,8 +87,17 @@ namespace Dev2
         public IWebSocketPool WebSocketPool { get; set; }
         public IGetSystemInformation SystemInformationHelper { get; set; }
         public ExecutionLogger.IExecutionLoggerFactory LoggerFactory { get; set; }
+<<<<<<< Updated upstream
         public IUsageTrackerWrapper UsageTracker { get; set; }
         public UsageLogger UsageLogger { get; set; }
+=======
+<<<<<<< Updated upstream
+=======
+        public IUsageTrackerWrapper UsageTracker { get; set; }
+        public UsageLogger UsageLogger { get; set; }
+        public IGetSystemManagementInformation GetSystemManagementInformation { get; set; }
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
 
         public static StartupConfiguration GetStartupConfiguration(IServerEnvironmentPreparer serverEnvironmentPreparer)
         {
@@ -101,9 +122,20 @@ namespace Dev2
                 HangfireServerMonitor = new HangfireServerMonitorWithRestart(childProcessTracker, processFactory),
                 WebSocketPool = new WebSocketPool(),
                 LoggerFactory = new ExecutionLogger.ExecutionLoggerFactory(),
+<<<<<<< Updated upstream
                 SystemInformationHelper = new GetSystemInformationHelper(),
                 UsageTracker = usageTracker,
                 UsageLogger = new UsageLogger(TimeSpan.FromHours(2).TotalMilliseconds, usageTracker, EnvironmentVariables.PersistencePath)
+=======
+<<<<<<< Updated upstream
+                SystemInformationHelper = new GetSystemInformationHelper()
+=======
+                SystemInformationHelper = new GetSystemInformationHelper(),
+                UsageTracker = usageTracker,
+                UsageLogger = new UsageLogger(TimeSpan.FromHours(2).TotalMilliseconds, usageTracker, EnvironmentVariables.PersistencePath),
+                GetSystemManagementInformation = new GetSystemManagementInformation()
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
             };
         }
     }
@@ -134,8 +166,18 @@ namespace Dev2
         private readonly IProcessMonitor _hangfireServerMonitor;
         private readonly ExecutionLogger.IExecutionLoggerFactory _loggerFactory;
         private readonly IGetSystemInformation _systemInformationHelper;
+<<<<<<< Updated upstream
         private ISubscriptionProvider _subscriptionDataInstance;
         private readonly IUsageTrackerWrapper _usageTrackerWrapper;
+=======
+<<<<<<< Updated upstream
+=======
+        private ISubscriptionProvider _subscriptionDataInstance;
+        private readonly IUsageTrackerWrapper _usageTrackerWrapper;
+        private readonly IGetSystemManagementInformation _getSystemManagementInformation;
+
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
 
         
         public ServerLifecycleManager(IServerEnvironmentPreparer serverEnvironmentPreparer)
@@ -174,9 +216,17 @@ namespace Dev2
             _webSocketPool = startupConfiguration.WebSocketPool;
             _loggerFactory = startupConfiguration.LoggerFactory;
             _systemInformationHelper = startupConfiguration.SystemInformationHelper;
+            _getSystemManagementInformation = startupConfiguration.GetSystemManagementInformation;
 
             SecurityIdentityFactory.Set(startupConfiguration.SecurityIdentityFactory);
+<<<<<<< Updated upstream
             
+=======
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
         }
 
         private static void SetApplicationDirectory()
@@ -317,6 +367,7 @@ namespace Dev2
             _writer.WriteLine("done.");
         }
 
+<<<<<<< Updated upstream
         int GetNumberOfCores()
         {
             var coreCount = 0;
@@ -326,6 +377,14 @@ namespace Dev2
             }
 
             return coreCount;
+=======
+<<<<<<< Updated upstream
+=======
+        static int GetNumberOfCores()
+        {
+            var countOfCores = new GetSystemManagementInformation();
+            return countOfCores.GetNumberOfCores();
+>>>>>>> Stashed changes
         }
 
         public void TrackUsage(UsageType usageType, IExecutionLogPublisher logger)
@@ -376,6 +435,10 @@ namespace Dev2
             }
         }
 
+<<<<<<< Updated upstream
+=======
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
         public void Stop(bool didBreak, int result, bool mute)
         {
             if(!didBreak)

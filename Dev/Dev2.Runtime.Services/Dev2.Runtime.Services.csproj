@@ -93,6 +93,7 @@
     <Compile Include="ESB\Management\Services\GetExecutionHistory.cs" />
     <Compile Include="ESB\Management\Services\FindOptions.cs" />
     <Compile Include="ESB\Management\Services\FetchTriggerQueues.cs" />
+    <Compile Include="ESB\Management\Services\GetSystemManagementInformation.cs" />
     <Compile Include="ESB\Management\Services\PersistenceSettingsRead.cs" />
     <Compile Include="ESB\Management\Services\SaveAuditingSettings.cs" />
     <Compile Include="ESB\Management\Services\SaveSubscriptionData.cs" />
@@ -115,6 +116,7 @@
     <Compile Include="Hosting\TriggersCatalog.cs" />
     <Compile Include="IDbSources.cs" />
     <Compile Include="Interfaces\IConnections.cs" />
+    <Compile Include="Interfaces\IGetSystemManagementInformation.cs" />
     <Compile Include="Interfaces\IHubFactory.cs" />
     <AdditionalFiles Include="..\SonarQube\SonarLint.xml">
       <Visible>False</Visible>
