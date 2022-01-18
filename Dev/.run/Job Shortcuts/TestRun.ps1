@@ -15,7 +15,8 @@ param(
   [switch] $InContainer,
   [switch] $Coverage,
   [switch] $RetryRebuild,
-  [String] $UNCPassword
+  [String] $UNCPassword,
+  [String] $ContainerID="latest"
 )
 if (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
 	Write-Error "This script expects to be run as Administrator. (Right click run as administrator)"
@@ -62,8 +63,8 @@ if (Test-Path "$TestResultsPath") {
 if ($VSTestPath -eq $null -or $VSTestPath -eq "" -or !(Test-Path "$VSTestPath\Extensions\TestPlatform\vstest.console.exe")) {
 	$VSTestPath = ".\Microsoft.TestPlatform\tools\net451\common7\ide"
 } else {
-	if ($InContainer.IsPresent) {
-		Write-Warning -Message "Ignoring VSTestPath parameter because it cannot be used with the -InContainer parameter."
+	if ($InContainer.IsPresent -or $ContainerID -ne "latest") {
+		Write-Warning -Message "Ignoring VSTestPath parameter because it cannot be used with the -InContainer or -ContainerID parameters."
 		$VSTestPath = ".\Microsoft.TestPlatform\tools\net451\Common7\IDE"
 	}
 }
@@ -255,10 +256,14 @@ for ($LoopCounter=0; $LoopCounter -le $RetryCount; $LoopCounter++) {
 		"net use \\DEVOPSPDC.premier.local\FileSystemShareTestingSite /delete" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
 	}
 	Get-Content "$TestResultsPath\RunTests.ps1"
-	if (!($InContainer.IsPresent)) {
+	if (!($InContainer.IsPresent) -and $ContainerID -eq "latest") {
 		&"$TestResultsPath\RunTests.ps1"
 	} else {
-		docker run -i --rm -v "${PWD}:C:\BuildUnderTest" --entrypoint="powershell -Command Set-Location .\BuildUnderTest;&.\TestResults\RunTests.ps1" registry.gitlab.com/warewolf/vstest
+		if ($ContainerID -eq "latest") {
+			docker run -i --rm -v "${PWD}:C:\BuildUnderTest" --entrypoint="powershell -Command Set-Location .\BuildUnderTest;&.\TestResults\RunTests.ps1" registry.gitlab.com/warewolf/vstest
+		} else {
+			docker run -i --rm -v "${PWD}\TestResults:C:\BuildUnderTest\TestResults" registry.gitlab.com/warewolf/vstest:$ContainerID powershell -Command Set-Location .\BuildUnderTest`;`&.\TestResults\RunTests.ps1
+		}
 	}
     if (Test-Path "$VSTestPath\Extensions\TestPlatform\TestResults\*.trx") {
         Copy-Item "$VSTestPath\Extensions\TestPlatform\TestResults\*.trx" "$TestResultsPath" -Force -Recurse
