@@ -83,7 +83,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(500)]
+        [Timeout(1000)]
         public void TestManageOAuthSourceViewModelConstructor2()
         {
             var requestServiceNameViewModel = new Mock<IRequestServiceNameViewModel>();
