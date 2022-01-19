@@ -113,7 +113,7 @@ for ($LoopCounter=0; $LoopCounter -le $RetryCount; $LoopCounter++) {
 			}
 		}
 	} else {
-		if (!(Test-Path "$PWD\*tests.dll")) {
+		if (!(Test-Path "$PWD\*tests.dll") -and $ContainerID -eq "latest") {
 			Write-Error "This script expects to be run from a directory containing test assemblies. (Files with names that end in tests.dll)"
 			exit 1
 		}
