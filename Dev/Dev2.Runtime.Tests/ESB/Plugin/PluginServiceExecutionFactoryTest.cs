@@ -87,7 +87,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
 
         [TestMethod]
         [Owner("Travis Frisinger")]
-        [TestCategory("PluginServiceExecutionFactory_GetMethods")]
+        [TestCategory("PluginRuntimeHandler")]
         [Timeout(30000)]
         public void PluginRuntimeHandler_GetMethods_WhenValidDll_ExpectValidResults()
         {
@@ -105,7 +105,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        [TestCategory("PluginServiceExecutionFactory_GetMethods")]
+        [TestCategory("PluginRuntimeHandler")]
         [Timeout(30000)]
         public void PluginRuntimeHandler_GetConstructors_WhenValidDll_ExpectValidResults()
         {
@@ -123,7 +123,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        [TestCategory("PluginServiceExecutionFactory_GetMethods")]
+        [TestCategory("PluginRuntimeHandler")]
         [Timeout(30000)]
         public void PluginRuntimeHandler_GetMethodsWithReturns_WhenValidDll_ExpectValidResults()
         {
@@ -141,7 +141,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        [TestCategory("PluginServiceExecutionFactory_GetMethods")]
+        [TestCategory("PluginRuntimeHandler")]
         [Timeout(30000)]
         public void PluginRuntimeHandler_GetMethodsWithReturns_WhenValidDllMethodIsVoid_ExpectValidResultsWithVoidMethod()
         {
@@ -160,7 +160,8 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
 
         [TestMethod]
         [Owner("Travis Frisinger")]
-        [TestCategory("PluginServiceExecutionFactory_InvokePlugin")]
+        [TestCategory("PluginRuntimeHandler")]
+        [Timeout(30000)]
         public void PluginRuntimeHandler_InvokePlugin_WhenValidDll_ExpectValidResults()
         {
             //------------Setup for test--------------------------
