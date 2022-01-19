@@ -53,9 +53,6 @@
     <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
-    <AdditionalFiles Include="..\SonarQube\SonarLint.xml">
-      <Visible>False</Visible>
-    </AdditionalFiles>
     <Compile Include="Dev2ActionCollectionTest.cs" />
     <Compile Include="Dev2ActionTest.cs" />
     <Compile Include="Dev2RepetitiionPatternTest.cs" />

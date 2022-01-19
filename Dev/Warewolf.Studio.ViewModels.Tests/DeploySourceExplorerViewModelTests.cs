@@ -340,7 +340,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(150)]
+        [Timeout(500)]
         public void TestCalculateOnNullExplorerItems()
         {
             //arrange

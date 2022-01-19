@@ -36,7 +36,6 @@ namespace Dev2.Core.Tests.Settings
         [TestInitialize]
         public void Setup()
         {
-
             AppUsageStats.LocalHost = "http://localhost:3142";
             _mockEnvironment = new Mock<IServer>();
             _mockConnection = new Mock<IEnvironmentConnection>();
@@ -64,11 +63,16 @@ namespace Dev2.Core.Tests.Settings
             _mockEnvironment.Setup(model => model.AuthorizationService).Returns(authorizationService.Object);
             var activeServer = new Server(Guid.NewGuid(), _mockConnection.Object);
             ServerRepository.Instance.ActiveServer = activeServer;
-            var counters = new PrivateType(typeof(PerfcounterViewModel));
+            CustomContainer.Register<IExplorerTooltips>(new ExplorerTooltips());
+            var mockPerformanceCounters = new Mock<IPerformanceCounterTo>();
+            mockPerformanceCounters.Setup(counter=>counter.NativeCounters).Returns(new List<IPerformanceCounter>());
+            mockPerformanceCounters.Setup(counter=>counter.ResourceCounters).Returns(new List<IResourcePerformanceCounter>());
+            var privateCounters = new PerfcounterViewModel(mockPerformanceCounters.Object, new Mock<IServer>().Object);
+            var counters = new Warewolf.Testing.PrivateObject(privateCounters);
             CustomContainer.Register(new Mock<IExplorerTooltips>().Object);
             //------------Setup for test------------------------
             //------------Execute Test--------------------------
-            var invokeStatic = counters.InvokeStatic("GetEnvironment");
+            var invokeStatic = counters.Invoke("GetEnvironment", true);
             //------------Assert Results-------------------------
             Assert.IsNotNull(invokeStatic);
         }

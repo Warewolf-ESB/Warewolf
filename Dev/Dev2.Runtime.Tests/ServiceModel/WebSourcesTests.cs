@@ -311,10 +311,11 @@ namespace Dev2.Tests.Runtime.ServiceModel
         public void WebSources_GetAddress_Given_Null_Source_And_NoRelativeUri_Should_Return_relativeUri()
         {
             //------------Setup for test-------------------------
-            var webSource = new PrivateType(typeof(WebSources));
+            var webSource = new WebSources();
+            var privateWebSource = new Warewolf.Testing.PrivateObject(webSource);
             //------------Execute Test---------------------------
             object[] args = { null, string.Empty };
-            var invokeStaticResults = webSource.InvokeStatic("GetAddress", args);
+            var invokeStaticResults = privateWebSource.Invoke("GetAddress", true, args);
             //------------Assert Results-------------------------
             Assert.IsNotNull(invokeStaticResults);
             var results = invokeStaticResults as string;
@@ -328,10 +329,11 @@ namespace Dev2.Tests.Runtime.ServiceModel
         public void WebSources_GetAddress_Given_Null_Source_And_relativeUri_Should_Return_relativeUri()
         {
             //------------Setup for test-------------------------
-            var webSource = new PrivateType(typeof(WebSources));
+            var webSource = new WebSources();
+            var privateWebSource = new Warewolf.Testing.PrivateObject(webSource);
             //------------Execute Test---------------------------
             object[] args = { null, "some url" };
-            var invokeStaticResults = webSource.InvokeStatic("GetAddress", args);
+            var invokeStaticResults = privateWebSource.Invoke("GetAddress", true, args);
             //------------Assert Results-------------------------
             Assert.IsNotNull(invokeStaticResults);
             var results = invokeStaticResults as string;

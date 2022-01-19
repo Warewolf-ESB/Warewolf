@@ -25,17 +25,9 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
     [Binding]
     public class UploadDropboxSteps : RecordSetBases
     {
-        readonly ScenarioContext scenarioContext;
-
         public UploadDropboxSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
         {
-            if (scenarioContext == null)
-            {
-                throw new ArgumentNullException("scenarioContext");
-            }
-
-            this.scenarioContext = scenarioContext;
         }
 
         [Given(@"I drag Upload Dropbox Tool onto the design surface")]

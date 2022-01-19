@@ -88,7 +88,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         [ExpectedException(typeof(ArgumentNullException))]
         public void TestConnectControlViewModelEventAggregatorNull()
         {
@@ -98,7 +98,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         [ExpectedException(typeof(ArgumentNullException))]
         public void TestConnectControlViewModelExpectedProperties()
         {
@@ -333,7 +333,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(1000)]
+        [Timeout(2000)]
         [TestCategory(nameof(ConnectControlViewModel))]
         [Owner("Sipohamandla Dube")]
         public void ConnectControlViewModel_TestConnectSuccessful()

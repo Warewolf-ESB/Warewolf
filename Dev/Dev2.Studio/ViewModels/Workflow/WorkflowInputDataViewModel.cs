@@ -86,7 +86,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                     ? input.ResourceModel.DataList
                     : @"<DataList></DataList>",
                 ServiceName = input.ResourceModel.ResourceName,
-                WorkflowID = input.ResourceModel.ResourceName,
+                WorkflowID = input.ResourceModel.Category ?? input.ResourceModel.ResourceName,
                 WorkflowXaml = string.Empty,
                 XmlData = input.ServiceInputData,
                 ResourceID = input.ResourceModel.ID,

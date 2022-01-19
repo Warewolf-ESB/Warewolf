@@ -74,7 +74,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         [ExpectedException(typeof(ArgumentNullException))]
         public void TestManageOAuthSourceViewModelConstructorNullIOAuthSource()
         {
@@ -83,7 +83,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(250)]
+        [Timeout(500)]
         public void TestManageOAuthSourceViewModelConstructor2()
         {
             var requestServiceNameViewModel = new Mock<IRequestServiceNameViewModel>();

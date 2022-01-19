@@ -11,6 +11,7 @@
     <FsLexToolExe>fslex.dll</FsLexToolExe>
     <FsYaccToolExe>fsyacc.dll</FsYaccToolExe>
     <FsLexYaccToolRunner>dotnet </FsLexYaccToolRunner>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\AssemblyCommonInfo.fs" Condition="Exists('..\AssemblyCommonInfo.fs')">

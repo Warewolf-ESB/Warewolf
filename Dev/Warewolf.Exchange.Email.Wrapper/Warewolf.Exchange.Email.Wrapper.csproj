@@ -54,9 +54,6 @@
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
-    <AdditionalFiles Include="..\SonarQube\SonarLint.xml">
-      <Visible>False</Visible>
-    </AdditionalFiles>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">

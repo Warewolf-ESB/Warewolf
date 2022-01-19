@@ -1810,7 +1810,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         [TestMethod]
         [Timeout(100)]
-        public void TestRemoveChild()
+        public void ExplorerItemViewModel_RemoveChild()
         {
             //arrange
             var child = new Mock<IExplorerItemViewModel>().Object;

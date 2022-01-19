@@ -33,26 +33,26 @@ namespace Dev2.Activities.Specs.Hooks
         private static IPrincipal _principal;
 
         [BeforeFeature(tags: "WorkflowExecutionLogging")]
-        private static void Setup()
+        private static void Setup(FeatureContext featureContext)
         {
-            ConnectAndLoadServer();
+            ConnectAndLoadServer(featureContext);
             Assert.IsTrue(_environmentModel.ResourceRepository.All().Count >= EXPECTED_NUMBER_OF_RESOURCES, $"This test expects {EXPECTED_NUMBER_OF_RESOURCES} resources on localhost but there are only {_environmentModel.ResourceRepository.All().Count}.");
             
             _performanceCounterLocater = BuildPerfomanceCounter();
-            FeatureContext.Current.Add("performanceCounterLocater", _performanceCounterLocater);
+            featureContext.Add("performanceCounterLocater", _performanceCounterLocater);
             
             _principal = BuildPrincipal();
-            FeatureContext.Current.Add("principal", _principal);
+            featureContext.Add("principal", _principal);
         }
 
-        private static void ConnectAndLoadServer()
+        private static void ConnectAndLoadServer(FeatureContext featureContext)
         {
             _environmentModel = ServerRepository.Instance.Source;
             _environmentModel.ConnectAsync().Wait(60000);
             if (_environmentModel.IsConnected)
             {
                 _environmentModel.ResourceRepository.Load(true);
-                FeatureContext.Current.Add("environmentModel", _environmentModel);
+                featureContext.Add("environmentModel", _environmentModel);
             }
             else
             {
@@ -86,10 +86,10 @@ namespace Dev2.Activities.Specs.Hooks
         }
 
         [AfterFeature(tags: "ConnectAndLoadServer")]
-        private static void Cleanup()
+        private static void Cleanup(FeatureContext featureContext)
         {
-            FeatureContext.Current.Keys.ToList()
-                .ForEach(key => FeatureContext.Current.Remove(key));
+            featureContext.Keys.ToList()
+                .ForEach(key => featureContext.Remove(key));
         }
     }
 }

@@ -3,6 +3,9 @@
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
 
+trigger:
+  batch: true
+
 pool:
   name: Default
 
@@ -25,7 +28,7 @@ jobs:
   - script: "(robocopy \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Upload Artifacts'
 
-  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Bare Metal/Other Unit Tests.bat\""
+  - script: "\"$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/Job Shortcuts/Bare Metal/Other Unit Tests.bat\""
     displayName: 'Run Tests'
 
   - task: PublishTestResults@2
@@ -47,7 +50,7 @@ jobs:
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
-  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Zip Tool Specs.bat\""
+  - script: "\"$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/Job Shortcuts/Container/Zip Tool Specs.bat\""
     displayName: 'Run Tests'
 
   - task: PublishTestResults@2
@@ -69,7 +72,7 @@ jobs:
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
-  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Email Tools Specs.bat\""
+  - script: "\"$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/Job Shortcuts/Container/Email Tools Specs.bat\""
     displayName: 'Run Tests'
 
   - task: PublishTestResults@2
@@ -91,7 +94,7 @@ jobs:
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
-  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Resource Tools Specs.bat\""
+  - script: "\"$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/Job Shortcuts/Container/Resource Tools Specs.bat\""
     displayName: 'Run Tests'
 
   - task: PublishTestResults@2
@@ -113,7 +116,7 @@ jobs:
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
-  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/File And Folder Copy Tool Specs.bat\""
+  - script: "\"$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/Job Shortcuts/Container/File And Folder Copy Tool Specs.bat\""
     displayName: 'Run Tests'
 
   - task: PublishTestResults@2
@@ -135,7 +138,7 @@ jobs:
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
-  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Data Tools Specs.bat\""
+  - script: "\"$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/Job Shortcuts/Container/Data Tools Specs.bat\""
     displayName: 'Run Tests'
 
   - task: PublishTestResults@2
@@ -157,7 +160,7 @@ jobs:
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
-  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Request Service Name View Models Unit Tests.bat\""
+  - script: "\"$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/Job Shortcuts/Container/Request Service Name View Models Unit Tests.bat\""
     displayName: 'Run Tests'
 
   - task: PublishTestResults@2
@@ -179,7 +182,7 @@ jobs:
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
-  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Unzip Tool Specs Validation.bat\""
+  - script: "\"$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/Job Shortcuts/Container/Unzip Tool Specs Validation.bat\""
     displayName: 'Run Tests'
 
   - task: PublishTestResults@2
@@ -201,7 +204,7 @@ jobs:
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
-  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Recordset Tools Specs.bat\""
+  - script: "\"$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/Job Shortcuts/Container/Recordset Tools Specs.bat\""
     displayName: 'Run Tests'
 
   - task: PublishTestResults@2
@@ -223,7 +226,7 @@ jobs:
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
-  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/File And Folder Rename Tool Specs.bat\""
+  - script: "\"$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/Job Shortcuts/Container/File And Folder Rename Tool Specs.bat\""
     displayName: 'Run Tests'
 
   - task: PublishTestResults@2
@@ -245,7 +248,7 @@ jobs:
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
-  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Other Tools Specs.bat\""
+  - script: "\"$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/Job Shortcuts/Container/Other Tools Specs.bat\""
     displayName: 'Run Tests'
 
   - task: PublishTestResults@2
@@ -267,7 +270,7 @@ jobs:
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
-  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/File And Folder Move Tool Specs.bat\""
+  - script: "\"$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/Job Shortcuts/Container/File And Folder Move Tool Specs.bat\""
     displayName: 'Run Tests'
 
   - task: PublishTestResults@2
@@ -289,7 +292,7 @@ jobs:
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
-  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/File Read Tool Specs.bat\""
+  - script: "\"$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/Job Shortcuts/Container/File Read Tool Specs.bat\""
     displayName: 'Run Tests'
 
   - task: PublishTestResults@2
@@ -311,7 +314,7 @@ jobs:
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
-  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Infrastructure Unit Tests.bat\""
+  - script: "\"$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/Job Shortcuts/Container/Infrastructure Unit Tests.bat\""
     displayName: 'Run Tests'
 
   - task: PublishTestResults@2
@@ -333,7 +336,7 @@ jobs:
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
-  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/New Folder Read Tool Specs.bat\""
+  - script: "\"$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/Job Shortcuts/Container/New Folder Read Tool Specs.bat\""
     displayName: 'Run Tests'
 
   - task: PublishTestResults@2
@@ -355,7 +358,7 @@ jobs:
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
-  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Write File Tool Specs.bat\""
+  - script: "\"$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/Job Shortcuts/Container/Write File Tool Specs.bat\""
     displayName: 'Run Tests'
 
   - task: PublishTestResults@2
@@ -377,7 +380,7 @@ jobs:
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
-  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Loop Construct Tools Specs.bat\""
+  - script: "\"$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/Job Shortcuts/Container/Loop Construct Tools Specs.bat\""
     displayName: 'Run Tests'
 
   - task: PublishTestResults@2
@@ -399,7 +402,7 @@ jobs:
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
-  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Utility Tools Specs.bat\""
+  - script: "\"$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/Job Shortcuts/Container/Utility Tools Specs.bat\""
     displayName: 'Run Tests'
 
   - task: PublishTestResults@2
@@ -421,7 +424,7 @@ jobs:
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
-  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Folder Read Tool Specs.bat\""
+  - script: "\"$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/Job Shortcuts/Container/Folder Read Tool Specs.bat\""
     displayName: 'Run Tests'
 
   - task: PublishTestResults@2
@@ -443,7 +446,7 @@ jobs:
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
-  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/SQL Bulk Insert Tool Specs.bat\""
+  - script: "\"$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/Job Shortcuts/Container/SQL Bulk Insert Tool Specs.bat\""
     displayName: 'Run Tests'
 
   - task: PublishTestResults@2
@@ -465,7 +468,7 @@ jobs:
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
-  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Control Flow Tools Specs.bat\""
+  - script: "\"$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/Job Shortcuts/Container/Control Flow Tools Specs.bat\""
     displayName: 'Run Tests'
 
   - task: PublishTestResults@2
@@ -487,7 +490,7 @@ jobs:
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
-  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Studio View Models Unit Tests.bat\""
+  - script: "\"$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/Job Shortcuts/Container/Studio View Models Unit Tests.bat\""
     displayName: 'Run Tests'
 
   - task: PublishTestResults@2
@@ -509,7 +512,7 @@ jobs:
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
-  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/File And Folder Create Tool Specs.bat\""
+  - script: "\"$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/Job Shortcuts/Container/File And Folder Create Tool Specs.bat\""
     displayName: 'Run Tests'
 
   - task: PublishTestResults@2
@@ -531,7 +534,7 @@ jobs:
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
-  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Storage Unit Tests.bat\""
+  - script: "\"$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/Job Shortcuts/Container/Storage Unit Tests.bat\""
     displayName: 'Run Tests'
 
   - task: PublishTestResults@2
@@ -553,7 +556,7 @@ jobs:
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
-  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Storage Tools Specs.bat\""
+  - script: "\"$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/Job Shortcuts/Container/Storage Tools Specs.bat\""
     displayName: 'Run Tests'
 
   - task: PublishTestResults@2
@@ -575,7 +578,7 @@ jobs:
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
-  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/File And Folder Delete Tool Specs.bat\""
+  - script: "\"$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/Job Shortcuts/Container/File And Folder Delete Tool Specs.bat\""
     displayName: 'Run Tests'
 
   - task: PublishTestResults@2
@@ -597,7 +600,7 @@ jobs:
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
-  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Scripting Tools Specs.bat\""
+  - script: "\"$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/Job Shortcuts/Container/Scripting Tools Specs.bat\""
     displayName: 'Run Tests'
 
   - task: PublishTestResults@2
@@ -619,7 +622,7 @@ jobs:
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
-  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Database Tools Specs.bat\""
+  - script: "\"$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/Job Shortcuts/Container/Database Tools Specs.bat\""
     displayName: 'Run Tests'
 
   - task: PublishTestResults@2
@@ -641,7 +644,7 @@ jobs:
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
-  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Auditing Unit Tests.bat\""
+  - script: "\"$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/Job Shortcuts/Container/Auditing Unit Tests.bat\""
     displayName: 'Run Tests'
 
   - task: PublishTestResults@2
@@ -663,7 +666,7 @@ jobs:
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
-  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Workflow Execution Specs.bat\""
+  - script: "\"$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/Job Shortcuts/Container/Workflow Execution Specs.bat\""
     displayName: 'Run Tests'
 
   - task: PublishTestResults@2
@@ -685,7 +688,7 @@ jobs:
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
-  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Studio Test Framework With Hello World Workflow Specs.bat\""
+  - script: "\"$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/Job Shortcuts/Container/Studio Test Framework With Hello World Workflow Specs.bat\""
     displayName: 'Run Tests'
 
   - task: PublishTestResults@2
@@ -707,7 +710,7 @@ jobs:
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
-  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Studio Test Framework With Utility Tools Specs.bat\""
+  - script: "\"$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/Job Shortcuts/Container/Studio Test Framework With Utility Tools Specs.bat\""
     displayName: 'Run Tests'
 
   - task: PublishTestResults@2
@@ -729,7 +732,7 @@ jobs:
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
-  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/MS SQL Server Specs.bat\""
+  - script: "\"$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/Job Shortcuts/Container/MS SQL Server Specs.bat\""
     displayName: 'Run Tests'
 
   - task: PublishTestResults@2
@@ -751,7 +754,7 @@ jobs:
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
-  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Studio Test Framework With Data Tools Specs.bat\""
+  - script: "\"$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/Job Shortcuts/Container/Studio Test Framework With Data Tools Specs.bat\""
     displayName: 'Run Tests'
 
   - task: PublishTestResults@2
@@ -773,7 +776,7 @@ jobs:
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
-  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Assign Workflow Execution Specs.bat\""
+  - script: "\"$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/Job Shortcuts/Container/Assign Workflow Execution Specs.bat\""
     displayName: 'Run Tests'
 
   - task: PublishTestResults@2
@@ -795,7 +798,7 @@ jobs:
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
-  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Integration Tests.bat\""
+  - script: "\"$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/Job Shortcuts/Container/Integration Tests.bat\""
     displayName: 'Run Tests'
 
   - task: PublishTestResults@2
@@ -817,7 +820,7 @@ jobs:
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
-  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Studio Test Framework With Scripting Tools Specs.bat\""
+  - script: "\"$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/Job Shortcuts/Container/Studio Test Framework With Scripting Tools Specs.bat\""
     displayName: 'Run Tests'
 
   - task: PublishTestResults@2
@@ -839,7 +842,7 @@ jobs:
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
-  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Other Activities Specs.bat\""
+  - script: "\"$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/Job Shortcuts/Container/Other Activities Specs.bat\""
     displayName: 'Run Tests'
 
   - task: PublishTestResults@2
@@ -861,7 +864,7 @@ jobs:
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
-  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Studio Test Framework With File And Folder Tools Specs.bat\""
+  - script: "\"$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/Job Shortcuts/Container/Studio Test Framework With File And Folder Tools Specs.bat\""
     displayName: 'Run Tests'
 
   - task: PublishTestResults@2
@@ -883,7 +886,7 @@ jobs:
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
-  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Studio Test Framework With HTTP Web Tools Specs.bat\""
+  - script: "\"$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/Job Shortcuts/Container/Studio Test Framework With HTTP Web Tools Specs.bat\""
     displayName: 'Run Tests'
 
   - task: PublishTestResults@2
@@ -905,7 +908,7 @@ jobs:
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
-  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Studio Test Framework With Subworkflow Specs.bat\""
+  - script: "\"$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/Job Shortcuts/Container/Studio Test Framework With Subworkflow Specs.bat\""
     displayName: 'Run Tests'
 
   - task: PublishTestResults@2
@@ -927,7 +930,7 @@ jobs:
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
-  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Workflow Merging Specs.bat\""
+  - script: "\"$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/Job Shortcuts/Container/Workflow Merging Specs.bat\""
     displayName: 'Run Tests'
 
   - task: PublishTestResults@2
@@ -949,7 +952,7 @@ jobs:
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
-  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Example Workflow Execution Specs.bat\""
+  - script: "\"$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/Job Shortcuts/Container/Example Workflow Execution Specs.bat\""
     displayName: 'Run Tests'
 
   - task: PublishTestResults@2
@@ -971,7 +974,7 @@ jobs:
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
-  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Studio Test Framework Specs.bat\""
+  - script: "\"$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/Job Shortcuts/Container/Studio Test Framework Specs.bat\""
     displayName: 'Run Tests'
 
   - task: PublishTestResults@2
@@ -993,7 +996,7 @@ jobs:
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
-  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Subworkflow Execution Specs.bat\""
+  - script: "\"$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/Job Shortcuts/Container/Subworkflow Execution Specs.bat\""
     displayName: 'Run Tests'
 
   - task: PublishTestResults@2
@@ -1015,7 +1018,7 @@ jobs:
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
-  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Other Specs.bat\""
+  - script: "\"$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/Job Shortcuts/Container/Other Specs.bat\""
     displayName: 'Run Tests'
 
   - task: PublishTestResults@2
@@ -1037,7 +1040,7 @@ jobs:
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
-  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Studio Test Framework With Deleted Resources Specs.bat\""
+  - script: "\"$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/Job Shortcuts/Container/Studio Test Framework With Deleted Resources Specs.bat\""
     displayName: 'Run Tests'
 
   - task: PublishTestResults@2
@@ -1059,7 +1062,7 @@ jobs:
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
-  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/SQL Integration Tests.bat\""
+  - script: "\"$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/Job Shortcuts/Container/SQL Integration Tests.bat\""
     displayName: 'Run Tests'
 
   - task: PublishTestResults@2
@@ -1081,7 +1084,7 @@ jobs:
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
-  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/For Each Workflow Execution Specs.bat\""
+  - script: "\"$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/Job Shortcuts/Container/For Each Workflow Execution Specs.bat\""
     displayName: 'Run Tests'
 
   - task: PublishTestResults@2
@@ -1103,7 +1106,7 @@ jobs:
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
-  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Copy Tool Specs From Local.bat\""
+  - script: "\"$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/Job Shortcuts/Container/Copy Tool Specs From Local.bat\""
     displayName: 'Run Tests'
 
   - task: PublishTestResults@2
@@ -1125,7 +1128,7 @@ jobs:
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
-  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Move Tool Specs From Local.bat\""
+  - script: "\"$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/Job Shortcuts/Container/Move Tool Specs From Local.bat\""
     displayName: 'Run Tests'
 
   - task: PublishTestResults@2
@@ -1147,7 +1150,7 @@ jobs:
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
-  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Rename Tool Specs From Local.bat\""
+  - script: "\"$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/Job Shortcuts/Container/Rename Tool Specs From Local.bat\""
     displayName: 'Run Tests'
 
   - task: PublishTestResults@2
@@ -1169,7 +1172,7 @@ jobs:
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
-  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Unzip Tool Specs From Local.bat\""
+  - script: "\"$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/Job Shortcuts/Container/Unzip Tool Specs From Local.bat\""
     displayName: 'Run Tests'
 
   - task: PublishTestResults@2
@@ -1191,7 +1194,7 @@ jobs:
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
-  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Zip Tool Specs From Local.bat\""
+  - script: "\"$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/Job Shortcuts/Container/Zip Tool Specs From Local.bat\""
     displayName: 'Run Tests'
 
   - task: PublishTestResults@2
@@ -1213,7 +1216,7 @@ jobs:
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
-  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Copy Tool Specs From FTP.bat\""
+  - script: "\"$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/Job Shortcuts/Container/Copy Tool Specs From FTP.bat\""
     displayName: 'Run Tests'
 
   - task: PublishTestResults@2
@@ -1235,7 +1238,7 @@ jobs:
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
-  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Move Tool Specs From FTP.bat\""
+  - script: "\"$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/Job Shortcuts/Container/Move Tool Specs From FTP.bat\""
     displayName: 'Run Tests'
 
   - task: PublishTestResults@2
@@ -1257,7 +1260,7 @@ jobs:
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
-  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Rename Tool Specs From FTP.bat\""
+  - script: "\"$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/Job Shortcuts/Container/Rename Tool Specs From FTP.bat\""
     displayName: 'Run Tests'
 
   - task: PublishTestResults@2
@@ -1279,7 +1282,7 @@ jobs:
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
-  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Unzip Tool Specs From FTP.bat\""
+  - script: "\"$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/Job Shortcuts/Container/Unzip Tool Specs From FTP.bat\""
     displayName: 'Run Tests'
 
   - task: PublishTestResults@2
@@ -1301,7 +1304,7 @@ jobs:
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
-  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Zip Tool Specs From FTP.bat\""
+  - script: "\"$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/Job Shortcuts/Container/Zip Tool Specs From FTP.bat\""
     displayName: 'Run Tests'
 
   - task: PublishTestResults@2
@@ -1323,7 +1326,7 @@ jobs:
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
-  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Copy Tool Specs From FTPS.bat\""
+  - script: "\"$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/Job Shortcuts/Container/Copy Tool Specs From FTPS.bat\""
     displayName: 'Run Tests'
 
   - task: PublishTestResults@2
@@ -1345,7 +1348,7 @@ jobs:
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
-  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Move Tool Specs From FTPS.bat\""
+  - script: "\"$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/Job Shortcuts/Container/Move Tool Specs From FTPS.bat\""
     displayName: 'Run Tests'
 
   - task: PublishTestResults@2
@@ -1367,7 +1370,7 @@ jobs:
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
-  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Rename Tool Specs From FTPS.bat\""
+  - script: "\"$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/Job Shortcuts/Container/Rename Tool Specs From FTPS.bat\""
     displayName: 'Run Tests'
 
   - task: PublishTestResults@2
@@ -1389,7 +1392,7 @@ jobs:
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
-  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Unzip Tool Specs From FTPS.bat\""
+  - script: "\"$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/Job Shortcuts/Container/Unzip Tool Specs From FTPS.bat\""
     displayName: 'Run Tests'
 
   - task: PublishTestResults@2
@@ -1411,7 +1414,7 @@ jobs:
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
-  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Zip Tool Specs From FTPS.bat\""
+  - script: "\"$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/Job Shortcuts/Container/Zip Tool Specs From FTPS.bat\""
     displayName: 'Run Tests'
 
   - task: PublishTestResults@2
@@ -1433,7 +1436,7 @@ jobs:
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
-  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Copy Tool Specs From SFTP.bat\""
+  - script: "\"$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/Job Shortcuts/Container/Copy Tool Specs From SFTP.bat\""
     displayName: 'Run Tests'
 
   - task: PublishTestResults@2
@@ -1455,7 +1458,7 @@ jobs:
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
-  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Move Tool Specs From SFTP.bat\""
+  - script: "\"$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/Job Shortcuts/Container/Move Tool Specs From SFTP.bat\""
     displayName: 'Run Tests'
 
   - task: PublishTestResults@2
@@ -1477,7 +1480,7 @@ jobs:
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
-  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Rename Tool Specs From SFTP.bat\""
+  - script: "\"$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/Job Shortcuts/Container/Rename Tool Specs From SFTP.bat\""
     displayName: 'Run Tests'
 
   - task: PublishTestResults@2
@@ -1499,7 +1502,7 @@ jobs:
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
-  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Unzip Tool Specs From SFTP.bat\""
+  - script: "\"$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/Job Shortcuts/Container/Unzip Tool Specs From SFTP.bat\""
     displayName: 'Run Tests'
 
   - task: PublishTestResults@2
@@ -1521,7 +1524,7 @@ jobs:
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
-  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Zip Tool Specs From SFTP.bat\""
+  - script: "\"$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/Job Shortcuts/Container/Zip Tool Specs From SFTP.bat\""
     displayName: 'Run Tests'
 
   - task: PublishTestResults@2
@@ -1543,7 +1546,7 @@ jobs:
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
-  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Copy Tool Specs From UNC.bat\""
+  - script: "\"$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/Job Shortcuts/Container/Copy Tool Specs From UNC.bat\""
     displayName: 'Run Tests'
 
   - task: PublishTestResults@2
@@ -1565,7 +1568,7 @@ jobs:
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
-  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Move Tool Specs From UNC.bat\""
+  - script: "\"$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/Job Shortcuts/Container/Move Tool Specs From UNC.bat\""
     displayName: 'Run Tests'
 
   - task: PublishTestResults@2
@@ -1588,7 +1591,7 @@ jobs:
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
-  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Bare Metal/Studio Core Unit Tests.bat\""
+  - script: "\"$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/Job Shortcuts/Bare Metal/Studio Core Unit Tests.bat\""
     displayName: 'Run Tests'
 
   - task: PublishTestResults@2
@@ -1610,7 +1613,7 @@ jobs:
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
-  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Elasticsearch View Models Unit Tests.bat\""
+  - script: "\"$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/Job Shortcuts/Container/Elasticsearch View Models Unit Tests.bat\""
     displayName: 'Run Tests'
 
   - task: PublishTestResults@2
@@ -1632,7 +1635,7 @@ jobs:
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
-  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Search Specs.bat\""
+  - script: "\"$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/Job Shortcuts/Container/Search Specs.bat\""
     displayName: 'Run Tests'
 
   - task: PublishTestResults@2
@@ -1654,7 +1657,7 @@ jobs:
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
-  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Logger Unit Tests.bat\""
+  - script: "\"$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/Job Shortcuts/Container/Logger Unit Tests.bat\""
     displayName: 'Run Tests'
 
   - task: PublishTestResults@2
@@ -1676,7 +1679,7 @@ jobs:
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
-  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Rename Tool Specs From UNC.bat\""
+  - script: "\"$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/Job Shortcuts/Container/Rename Tool Specs From UNC.bat\""
     displayName: 'Run Tests'
 
   - task: PublishTestResults@2
@@ -1698,7 +1701,7 @@ jobs:
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
-  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Bare Metal/Not Parallelizable Unit Tests.bat\""
+  - script: "\"$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/Job Shortcuts/Bare Metal/Not Parallelizable Unit Tests.bat\""
     displayName: 'Run Tests'
 
   - task: PublishTestResults@2
@@ -1720,7 +1723,7 @@ jobs:
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
-  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Database Workflow Execution Specs.bat\""
+  - script: "\"$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/Job Shortcuts/Container/Database Workflow Execution Specs.bat\""
     displayName: 'Run Tests'
 
   - task: PublishTestResults@2
@@ -1742,7 +1745,7 @@ jobs:
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
-  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/RabbitMQ Workflow Execution Specs.bat\""
+  - script: "\"$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/Job Shortcuts/Container/RabbitMQ Workflow Execution Specs.bat\""
     displayName: 'Run Tests'
 
   - task: PublishTestResults@2
@@ -1764,7 +1767,7 @@ jobs:
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
-  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Studio Test Framework With HTTP Web Get Tools Specs.bat\""
+  - script: "\"$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/Job Shortcuts/Container/Studio Test Framework With HTTP Web Get Tools Specs.bat\""
     displayName: 'Run Tests'
 
   - task: PublishTestResults@2
@@ -1786,7 +1789,7 @@ jobs:
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
-  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Studio Test Framework With HTTP Web Delete Tools Specs.bat\""
+  - script: "\"$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/Job Shortcuts/Container/Studio Test Framework With HTTP Web Delete Tools Specs.bat\""
     displayName: 'Run Tests'
 
   - task: PublishTestResults@2
@@ -1808,7 +1811,7 @@ jobs:
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
-  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Studio Test Framework With HTTP Web Post Tools Specs.bat\""
+  - script: "\"$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/Job Shortcuts/Container/Studio Test Framework With HTTP Web Post Tools Specs.bat\""
     displayName: 'Run Tests'
 
   - task: PublishTestResults@2
@@ -1830,7 +1833,7 @@ jobs:
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
-  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Studio Test Framework With HTTP Web Put Tools Specs.bat\""
+  - script: "\"$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/Job Shortcuts/Container/Studio Test Framework With HTTP Web Put Tools Specs.bat\""
     displayName: 'Run Tests'
 
   - task: PublishTestResults@2
@@ -1852,7 +1855,7 @@ jobs:
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
-  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Studio Test Framework With RabbitMQ Tools Specs.bat\""
+  - script: "\"$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/Job Shortcuts/Container/Studio Test Framework With RabbitMQ Tools Specs.bat\""
     displayName: 'Run Tests'
 
   - task: PublishTestResults@2
@@ -1874,7 +1877,7 @@ jobs:
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
-  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Container/Database Subworkflow Execution Specs.bat\""
+  - script: "\"$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/Job Shortcuts/Container/Database Subworkflow Execution Specs.bat\""
     displayName: 'Run Tests'
 
   - task: PublishTestResults@2
@@ -1896,7 +1899,7 @@ jobs:
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
-  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Bare Metal/Intellisense Textbox Visual Tree Unit Tests.bat\""
+  - script: "\"$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/Job Shortcuts/Bare Metal/Intellisense Textbox Visual Tree Unit Tests.bat\""
     displayName: 'Run Tests'
 
   - task: PublishTestResults@2
@@ -1919,7 +1922,7 @@ jobs:
   - script: "(robocopy \"\\\\opswolf\\Azure Devops\\AcceptanceTesting $(Build.BuildId)\" \"$(Agent.BuildDirectory)\\s\\bin\\AcceptanceTesting\" /E /PURGE) ^& IF %ERRORLEVEL% LEQ 1 exit 0"
     displayName: 'Download Artifacts'
 
-  - script: "\"$(Agent.BuildDirectory)/s/Dev/.run/Job Shortcuts/Bare Metal/Workflow Execution Logging Specs.bat\""
+  - script: "\"$(Agent.BuildDirectory)/s/bin/AcceptanceTesting/Job Shortcuts/Bare Metal/Workflow Execution Logging Specs.bat\""
     displayName: 'Run Tests'
 
   - task: PublishTestResults@2

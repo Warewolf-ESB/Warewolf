@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -13,6 +13,7 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Runtime.Services;
 using Dev2.Interfaces;
 using Dev2.Runtime.Interfaces;
+using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Web;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -48,7 +49,7 @@ namespace Dev2.Runtime.WebServer.Tests
         public void ServiceTestCoverageExecutor_RunCoverageAndReturnJSON_ShouldReturnBlank()
         {
             var mockCoverageDataObject = new Mock<ICoverageDataObject>();
-            mockCoverageDataObject.Setup(o => o.CoverageReportResourceIds).Returns(new[] { Guid.NewGuid() });
+            mockCoverageDataObject.Setup(o => o.CoverageReportResources).Returns(new[] { new Workflow { ResourceID = Guid.NewGuid() } });
             mockCoverageDataObject.Setup(o => o.ReturnType).Returns(EmitionTypes.CoverJson);
 
             var sut = ServiceTestCoverageExecutor.GetTestCoverageReports(mockCoverageDataObject.Object, Guid.NewGuid(),
@@ -70,7 +71,7 @@ namespace Dev2.Runtime.WebServer.Tests
         public void ServiceTestCoverageExecutor_RunCoverageAndReturnHTML_ShouldReturnBlank()
         {
             var mockCoverageDataObject = new Mock<ICoverageDataObject>();
-            mockCoverageDataObject.Setup(o => o.CoverageReportResourceIds).Returns(new[] { Guid.NewGuid() });
+            mockCoverageDataObject.Setup(o => o.CoverageReportResources).Returns(new[] { new Workflow { ResourceID = Guid.NewGuid() } });
             mockCoverageDataObject.Setup(o => o.ReturnType).Returns(EmitionTypes.Cover);
 
             var sut = ServiceTestCoverageExecutor.GetTestCoverageReports(mockCoverageDataObject.Object, Guid.NewGuid(),
@@ -92,7 +93,7 @@ namespace Dev2.Runtime.WebServer.Tests
         public void ServiceTestCoverageExecutor_EmitionTypesCoverJson_With_CoverageReportResourceIds_ShouldReturnBlank()
         {
             var mockCoverageDataObject = new Mock<ICoverageDataObject>();
-            mockCoverageDataObject.Setup(o => o.CoverageReportResourceIds).Returns(new[] { Guid.NewGuid() });
+            mockCoverageDataObject.Setup(o => o.CoverageReportResources).Returns(new[] { new Workflow { ResourceID = Guid.NewGuid() } });
 
             var sut = ServiceTestCoverageExecutor.GetTestCoverageReports(mockCoverageDataObject.Object, Guid.NewGuid(),
                                                                          new Communication.Dev2JsonSerializer(),

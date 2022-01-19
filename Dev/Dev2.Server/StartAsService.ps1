@@ -184,8 +184,12 @@ if ($NoExit.IsPresent) {
 	}
 } else {
 	$LoopCounter = 0
-	while (!(Test-Path "$PSScriptRoot\serverstarted" -ErrorAction SilentlyContinue) -and $LoopCounter++ -lt 30) {
+	$LoopCounterMax = 30
+	if ($Coverage) {
+		$LoopCounterMax = 60
+	}
+	while (!(Test-Path "$PSScriptRoot\serverstarted" -ErrorAction SilentlyContinue) -and $LoopCounter++ -lt $LoopCounterMax) {
 		Write-Host Still waiting for server to start...
-		Start-Sleep 6
+		Start-Sleep 5
 	}
 }

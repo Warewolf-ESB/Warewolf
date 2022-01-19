@@ -299,10 +299,14 @@ for ($LoopCounter=0; $LoopCounter -le $RetryCount; $LoopCounter++) {
 		} else {
 			$getBaseXML = [xml](Get-Content $getXMLFiles[0].FullName)
 		}
-		if ($getBaseXML.TestRun.ResultSummary.Counters.passed -ne $getBaseXML.TestRun.ResultSummary.Counters.executed) {
-			$TestsToRun = ($getBaseXML.TestRun.Results.UnitTestResult | Where-Object {$_.outcome -ne "Passed"}).testName -join ","
+		if (!($Coverage.IsPresent -and !(Test-Path "$TestResultsPath\DotCover*.dcvr"))) {
+			if ($getBaseXML.TestRun.ResultSummary.Counters.passed -ne $getBaseXML.TestRun.ResultSummary.Counters.executed) {
+				$TestsToRun = ($getBaseXML.TestRun.Results.UnitTestResult | Where-Object {$_.outcome -ne "Passed"}).testName -join ","
+			} else {
+				break
+			}
 		} else {
-			break
+			Write-Host No coverage snapshot found at $TestResultsPath\DotCover*.dcvr. Retrying...
 		}
 	} else {
 		Write-Error "No test results found."
@@ -313,4 +317,5 @@ if ($Coverage.IsPresent) {
 	$MergedSnapshotPath = "$TestResultsPath\MergedDotCover.dcvr"
 	&".\JetBrains.dotCover.CommandLineTools\tools\dotCover.exe" merge --Sources="$TestResultsPath\DotCover*.dcvr" --Output=$MergedSnapshotPath
 	&".\JetBrains.dotCover.CommandLineTools\tools\dotCover.exe" report --Source=$MergedSnapshotPath --Output="$TestResultsPath\DotCover-Coverage-Report.html" --ReportType=HTML
+	&".\JetBrains.dotCover.CommandLineTools\tools\dotCover.exe" report --Source=$MergedSnapshotPath --Output="$TestResultsPath\DotCover-Coverage-Report.xml" --ReportType=DetailedXML
 }

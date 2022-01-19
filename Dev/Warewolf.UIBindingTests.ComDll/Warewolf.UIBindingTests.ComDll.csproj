@@ -50,9 +50,6 @@
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
     <Compile Include="GlobalSuppressions.cs" />
-    <AdditionalFiles Include="..\SonarQube\SonarLint.xml">
-      <Visible>False</Visible>
-    </AdditionalFiles>
     <Compile Include="ComDll.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

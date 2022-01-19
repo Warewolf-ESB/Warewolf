@@ -105,17 +105,25 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //------------Setup for test--------------------------
             const string ExeName = "ConsoleAppToTestExecuteCommandLineActivity.exe";
-            var destDir = Path.Combine(TestContext.DeploymentDirectory, Guid.NewGuid() + " Temp");
-
-            var sourceFile = Path.Combine(TestContext.DeploymentDirectory, ExeName);
-            if (!File.Exists(sourceFile))
+            string destFile;
+            if (!TestContext.DeploymentDirectory.Contains(" "))
             {
-                sourceFile = Path.Combine(Environment.CurrentDirectory, ExeName);
-            }
-            var destFile = Path.Combine(destDir, ExeName);
+                var destDir = Path.Combine(TestContext.DeploymentDirectory, Guid.NewGuid() + " Temp");
 
-            Directory.CreateDirectory(destDir);
-            File.Copy(sourceFile, destFile, true);
+                var sourceFile = Path.Combine(TestContext.DeploymentDirectory, ExeName);
+                if (!File.Exists(sourceFile))
+                {
+                    sourceFile = Path.Combine(Environment.CurrentDirectory, ExeName);
+                }
+                destFile = Path.Combine(destDir, ExeName);
+
+                Directory.CreateDirectory(destDir);
+                File.Copy(sourceFile, destFile, true);
+            }
+            else
+            {
+                destFile = TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
+            }
 
             var activity = new DsfExecuteCommandLineActivity { CommandFileName = destFile, CommandResult = "[[OutVar1]]" };
 
@@ -126,11 +134,14 @@ namespace Dev2.Tests.Activities.ActivityTests
             TestData = "<root><OutVar1 /></root>";
             //------------Execute Test---------------------------
             var result = ExecuteProcess();
-            var res = result.Environment.HasErrors();
+            var hasErrors = result.Environment.HasErrors();
+            var res = result.Environment.Errors.FirstOrDefault();
 
             // remove test datalist ;)
             //------------Assert Results-------------------------
-            Assert.IsTrue(res);
+            Assert.IsTrue(hasErrors);
+            Assert.IsTrue(res.StartsWith("'" + TestContext.DeploymentDirectory.Substring(0, TestContext.DeploymentDirectory.IndexOf(" ")) + "' is not recognized as an internal or external command,"));
+            Assert.IsTrue(res.Contains("operable program or batch file."));
         }
 
         [TestMethod]

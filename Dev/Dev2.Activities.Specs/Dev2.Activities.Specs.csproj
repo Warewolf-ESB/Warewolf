@@ -59,9 +59,6 @@
     <LangVersion>7.3</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <AdditionalFiles Include="..\SonarQube\SonarLint.xml">
-      <Visible>False</Visible>
-    </AdditionalFiles>
     <Compile Include="ActivityUtils.cs" />
     <Compile Include="BrowserDebug\BrowserDebugSteps.cs" />
     <Compile Include="BrowserDebug\BrowserDebug.feature.cs">
