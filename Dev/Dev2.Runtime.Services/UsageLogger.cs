@@ -19,11 +19,8 @@ using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
-<<<<<<< Updated upstream
-=======
 using Dev2.Runtime.Services.ESB.Management.Services;
 using Dev2.Runtime.Services.Interfaces;
->>>>>>> Stashed changes
 using Dev2.Runtime.Subscription;
 using Newtonsoft.Json;
 using Warewolf.Usage;
@@ -43,10 +40,7 @@ namespace Dev2.Runtime
         readonly IDirectory _directoryWrapper;
         readonly IFile _fileWrapper;
         readonly IUsageTrackerWrapper _usageTrackerWrapper;
-<<<<<<< Updated upstream
-=======
-        readonly IGetSystemManagementInformation _getSystemManagementInformation; 
->>>>>>> Stashed changes
+        private static IGetSystemManagementInformation _getSystemManagementInformation; 
 
         public UsageLogger(double intervalMs) 
             : this(intervalMs, new UsageTrackerWrapper(), EnvironmentVariables.PersistencePath)
@@ -62,26 +56,12 @@ namespace Dev2.Runtime
             _persistencePath = persistencePath;
             _timer = new Timer(Interval);
             _timer.Elapsed += (sender, e) => Timer_Elapsed(this, e);
-<<<<<<< Updated upstream
+            _getSystemManagementInformation = new GetSystemManagementInformation();
         }
 
         static int GetNumberOfCores()
         {
-            var coreCount = 0;
-            foreach(var item in new ManagementObjectSearcher("Select * from Win32_Processor").Get())
-            {
-                coreCount += int.Parse(item["NumberOfCores"].ToString());
-            }
-
-            return coreCount;
-=======
-            _getSystemManagementInformation = new GetSystemManagementInformation();
-        }
-
-        int GetNumberOfCores()
-        {
             return _getSystemManagementInformation.GetNumberOfCores();
->>>>>>> Stashed changes
         }
 
         public void TrackUsage(UsageType usageType, Guid sessionId)

@@ -50,6 +50,7 @@
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
+    <Compile Include="GetSystemManagementInformationTest.cs" />
     <Compile Include="HangfireProcessorMonitorTests.cs" />
     <Compile Include="LoadResourcesTests.cs" />
     <Compile Include="QueueProcessorMonitorTests.cs" />

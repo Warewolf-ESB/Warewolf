@@ -27,7 +27,7 @@ namespace Dev2.Runtime.Services.ESB.Management.Services
             }
             catch(Exception err)
             {
-                Dev2Logger.Warn(err.Message, GlobalConstants.WarewolfWarn);
+                Dev2Logger.Error(err.Message, GlobalConstants.WarewolfWarn);
             }
 
             return coreCount;
