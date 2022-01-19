@@ -260,9 +260,9 @@ for ($LoopCounter=0; $LoopCounter -le $RetryCount; $LoopCounter++) {
 		&"$TestResultsPath\RunTests.ps1"
 	} else {
 		if ($ContainerID -eq "latest") {
-			docker run -i --rm -v "${PWD}:C:\BuildUnderTest" --entrypoint="powershell -Command Set-Location .\BuildUnderTest;&.\TestResults\RunTests.ps1" registry.gitlab.com/warewolf/vstest
+			docker run -i --rm --memory 4g -v "${PWD}:C:\BuildUnderTest" --entrypoint="powershell -Command Set-Location .\BuildUnderTest;&.\TestResults\RunTests.ps1" registry.gitlab.com/warewolf/vstest
 		} else {
-			docker run -i --rm -v "${PWD}\TestResults:C:\BuildUnderTest\TestResults" registry.gitlab.com/warewolf/vstest:$ContainerID powershell -Command Set-Location .\BuildUnderTest`;`&.\TestResults\RunTests.ps1
+			docker run -i --rm --memory 4g -v "${PWD}\TestResults:C:\BuildUnderTest\TestResults" registry.gitlab.com/warewolf/vstest:$ContainerID powershell -Command Set-Location .\BuildUnderTest`;`&.\TestResults\RunTests.ps1
 		}
 	}
     if (Test-Path "$VSTestPath\Extensions\TestPlatform\TestResults\*.trx") {
