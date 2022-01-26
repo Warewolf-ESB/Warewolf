@@ -11,7 +11,6 @@
 using Dev2.Common;
 using Dev2.Runtime.Services.Interfaces;
 using System;
-using System.Management;
 using System.Runtime.InteropServices;
 
 namespace Dev2.Runtime.Services.ESB.Management.Services
