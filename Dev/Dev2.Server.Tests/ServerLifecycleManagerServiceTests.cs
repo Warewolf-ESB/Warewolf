@@ -162,7 +162,9 @@ namespace Dev2.Server.Tests
             var mockExecutionLoggerFactory = new Mock<ExecutionLogger.IExecutionLoggerFactory>();
             var mockExecutionLogPublisher = new Mock<IExecutionLogPublisher>();
             var mockGetSystemManagementInformation = new Mock<IGetSystemManagementInformation>();
-
+            var mockSystemManagementInformationWrapper = new Mock<ISystemManagementInformationWrapper>();
+            var mockSystemManagementInformationFactory = new Mock<ISystemManagementInformationFactory>();
+            
             var items = new List<IServerLifecycleWorker> {mockServerLifeCycleWorker.Object};
 
             EnvironmentVariables.IsServerOnline = true;
@@ -187,7 +189,8 @@ namespace Dev2.Server.Tests
             mockUsageTracker.Setup(o => o.TrackEvent(It.IsAny<string>(), It.IsAny<UsageType>(), It.IsAny<string>())).Returns(UsageDataResult.internalError);
             var persistencePath = EnvironmentVariablesForTesting.PersistencePathForTests;
 
-            mockGetSystemManagementInformation.Setup(o => o.GetNumberOfCores()).Returns(6);
+            mockSystemManagementInformationWrapper.Setup(o => o.GetNumberOfCores()).Returns(mockGetSystemManagementInformation.Object);
+            mockSystemManagementInformationFactory.Setup(o => o.GetNumberOfCores()).Returns(mockSystemManagementInformationWrapper.Object);
 
             //------------------------Act----------------------------
             var config = new StartupConfiguration
@@ -208,7 +211,7 @@ namespace Dev2.Server.Tests
                 LoggerFactory = mockExecutionLoggerFactory.Object,
                 UsageTracker = mockUsageTracker.Object,
                 UsageLogger = new UsageLoggerForTests(20000, mockUsageTracker.Object, EnvironmentVariablesForTesting.PersistencePathForTests),
-                GetSystemManagementInformation = mockGetSystemManagementInformation.Object
+                SystemManagementInformationFactory = mockSystemManagementInformationFactory.Object
             };
             using (var serverLifeCycleManager = new ServerLifecycleManager(config))
             {

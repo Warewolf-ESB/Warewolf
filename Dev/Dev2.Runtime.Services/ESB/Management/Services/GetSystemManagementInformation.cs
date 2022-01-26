@@ -1,33 +1,51 @@
-﻿using Dev2.Common;
+﻿/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+using Dev2.Common;
 using Dev2.Runtime.Services.Interfaces;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Management;
-using System.Text;
-using System.Threading.Tasks;
+using System.Runtime.InteropServices;
 
 namespace Dev2.Runtime.Services.ESB.Management.Services
 {
     public class GetSystemManagementInformation : IGetSystemManagementInformation
     {
+        private ManagementObject _managementObject;
+
+        public GetSystemManagementInformation(ManagementObject managementObject)
+        {
+            _managementObject = managementObject;
+        }
+
         public int GetNumberOfCores()
         {
             var coreCount = 0;
 
-            try
+            if (_managementObject.OSPlatform == OSPlatform.Windows)
             {
-                using (ManagementObjectCollection managementObjectSearcher = new ManagementObjectSearcher("Select * from Win32_Processor").Get())
+                try
                 {
-                    foreach (var item in managementObjectSearcher)
+                    using (_managementObject.ManagementObjectSearcher)
                     {
-                        coreCount += int.Parse(item["NumberOfCores"].ToString());
+                        using (_managementObject.ManagementObjectCollection = _managementObject.ManagementObjectSearcher.Get())
+                            foreach (var item in _managementObject.ManagementObjectCollection)
+                            {
+                                coreCount += int.Parse(item["NumberOfCores"].ToString());
+                            }
                     }
                 }
-            }
-            catch(Exception err)
-            {
-                Dev2Logger.Error(err.Message, GlobalConstants.WarewolfWarn);
+                catch (Exception err)
+                {
+                    Dev2Logger.Error(err.Message, GlobalConstants.WarewolfError);
+                }
             }
 
             return coreCount;

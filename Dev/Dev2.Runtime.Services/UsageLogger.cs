@@ -12,7 +12,6 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Management;
 using System.Threading.Tasks;
 using System.Timers;
 using Dev2.Common;
@@ -40,7 +39,7 @@ namespace Dev2.Runtime
         readonly IDirectory _directoryWrapper;
         readonly IFile _fileWrapper;
         readonly IUsageTrackerWrapper _usageTrackerWrapper;
-        private static IGetSystemManagementInformation _getSystemManagementInformation; 
+        private static ISystemManagementInformationFactory _systemManagementInformationFactory;
 
         public UsageLogger(double intervalMs) 
             : this(intervalMs, new UsageTrackerWrapper(), EnvironmentVariables.PersistencePath)
@@ -56,12 +55,16 @@ namespace Dev2.Runtime
             _persistencePath = persistencePath;
             _timer = new Timer(Interval);
             _timer.Elapsed += (sender, e) => Timer_Elapsed(this, e);
-            _getSystemManagementInformation = new GetSystemManagementInformation();
+             
+            _systemManagementInformationFactory = new SystemManagementInformationFactory();
         }
 
         static int GetNumberOfCores()
         {
-            return _getSystemManagementInformation.GetNumberOfCores();
+            var systemManagementInformationWrapper = _systemManagementInformationFactory.GetNumberOfCores();
+            var getSystemManagementInformation = systemManagementInformationWrapper.GetNumberOfCores();
+
+            return getSystemManagementInformation.GetNumberOfCores();
         }
 
         public void TrackUsage(UsageType usageType, Guid sessionId)

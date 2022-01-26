@@ -80,7 +80,7 @@ namespace Dev2
         public ExecutionLogger.IExecutionLoggerFactory LoggerFactory { get; set; }
         public IUsageTrackerWrapper UsageTracker { get; set; }
         public UsageLogger UsageLogger { get; set; }
-        public IGetSystemManagementInformation GetSystemManagementInformation { get; set; }
+        public ISystemManagementInformationFactory  SystemManagementInformationFactory { get; set; }
 
 
         public static StartupConfiguration GetStartupConfiguration(IServerEnvironmentPreparer serverEnvironmentPreparer)
@@ -90,6 +90,7 @@ namespace Dev2
             var childProcessTracker = new ChildProcessTrackerWrapper();
             var processFactory = new ProcessWrapperFactory();
             var usageTracker = new UsageTrackerWrapper();
+
             return new StartupConfiguration
             {
                 ServerEnvironmentPreparer = serverEnvironmentPreparer,
@@ -109,9 +110,8 @@ namespace Dev2
                 SystemInformationHelper = new GetSystemInformationHelper(),
                 UsageTracker = usageTracker,
                 UsageLogger = new UsageLogger(TimeSpan.FromHours(2).TotalMilliseconds, usageTracker, EnvironmentVariables.PersistencePath),
-                GetSystemManagementInformation = new GetSystemManagementInformation()
-
-            };
+                SystemManagementInformationFactory = new SystemManagementInformationFactory()
+        };
         }
     }
 
@@ -143,7 +143,7 @@ namespace Dev2
         private readonly IGetSystemInformation _systemInformationHelper;
         private ISubscriptionProvider _subscriptionDataInstance;
         private readonly IUsageTrackerWrapper _usageTrackerWrapper;
-        private readonly IGetSystemManagementInformation _getSystemManagementInformation;
+        private readonly ISystemManagementInformationFactory _systemManagementInformationFactory;
         
         public ServerLifecycleManager(IServerEnvironmentPreparer serverEnvironmentPreparer)
             : this(StartupConfiguration.GetStartupConfiguration(serverEnvironmentPreparer))
@@ -181,7 +181,7 @@ namespace Dev2
             _webSocketPool = startupConfiguration.WebSocketPool;
             _loggerFactory = startupConfiguration.LoggerFactory;
             _systemInformationHelper = startupConfiguration.SystemInformationHelper;
-            _getSystemManagementInformation = startupConfiguration.GetSystemManagementInformation;
+            _systemManagementInformationFactory = startupConfiguration.SystemManagementInformationFactory;
 
             SecurityIdentityFactory.Set(startupConfiguration.SecurityIdentityFactory);
 
@@ -327,7 +327,10 @@ namespace Dev2
 
         int GetNumberOfCores()
         {
-            return _getSystemManagementInformation.GetNumberOfCores();
+            var systemManagementInformationWrapper = _systemManagementInformationFactory.GetNumberOfCores();
+            var getSystemManagementInformation = systemManagementInformationWrapper.GetNumberOfCores();
+
+            return getSystemManagementInformation.GetNumberOfCores();
         }
 
         public void TrackUsage(UsageType usageType, IExecutionLogPublisher logger)

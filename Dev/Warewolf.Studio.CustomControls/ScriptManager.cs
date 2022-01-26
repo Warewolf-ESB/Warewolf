@@ -36,13 +36,13 @@ namespace Warewolf.Studio.CustomControls
         private IView mForm;
         private IShellViewModel _shellViewModel;
         private bool _isLicensed;
-        private readonly IGetSystemManagementInformation _getSystemManagementInformation;
+        private readonly ISystemManagementInformationFactory _systemManagementInformationFactory;
 
         public ScriptManager(IView form)
         {
             mForm = form;
             _shellViewModel = CustomContainer.Get<IShellViewModel>();
-            _getSystemManagementInformation = new GetSystemManagementInformation();
+            _systemManagementInformationFactory = new SystemManagementInformationFactory();
         }
 
         public static Uri GetSourceUri(string licenseType)
@@ -147,7 +147,10 @@ namespace Warewolf.Studio.CustomControls
 
         private int GetNumberOfCores()
         {
-            return _getSystemManagementInformation.GetNumberOfCores();
+            var systemManagementInformationWrapper = _systemManagementInformationFactory.GetNumberOfCores();
+            var getSystemManagementInformation = systemManagementInformationWrapper.GetNumberOfCores();
+
+            return getSystemManagementInformation.GetNumberOfCores();
         }
 
         public void CloseBrowser()
