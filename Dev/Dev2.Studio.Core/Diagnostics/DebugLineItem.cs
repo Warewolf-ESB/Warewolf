@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2022 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -23,6 +23,7 @@ namespace Dev2.Studio.Diagnostics
         {
             Type = result.Type;
             Value = result.Value;
+            TruncatedValue = result.TruncatedValue;
             MoreLink = result.MoreLink;
             Label = result.Label;
             Variable = result.Variable;
@@ -33,6 +34,7 @@ namespace Dev2.Studio.Diagnostics
         public string MoreLink { get; set; }
         public DebugItemResultType Type { get; set; }
         public string Value { get; set; }
+        public string TruncatedValue { get; set; }
         public string Label { get; set; }
         public string Variable { get; set; }
         public string Operator { get; set; }
