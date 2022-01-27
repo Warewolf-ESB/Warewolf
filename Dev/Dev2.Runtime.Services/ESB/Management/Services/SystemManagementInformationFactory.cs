@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2022 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -9,7 +9,6 @@
 */
 
 using Dev2.Runtime.Services.Interfaces;
-using System;
 using System.Runtime.InteropServices;
 
 namespace Dev2.Runtime.Services.ESB.Management.Services
@@ -27,18 +26,18 @@ namespace Dev2.Runtime.Services.ESB.Management.Services
             {
                 return OSPlatform.OSX;
             }
-
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
                 return OSPlatform.Linux;
             }
-
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
                 return OSPlatform.Windows;
             }
-
-            throw new Exception("Cannot determine operating system!");
+            else
+            {
+                return new OSPlatform();
+            }
         }
 
     }

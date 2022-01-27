@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2022 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -17,11 +17,18 @@ namespace Dev2.Runtime.Services.ESB.Management.Services
 {
     public class GetSystemManagementInformation : IGetSystemManagementInformation
     {
-        private ManagementObject _managementObject;
+        private WarewolfManagementObject _managementObject;
+        private IManagementObjectSearcherFactory _managementObjectSearcherFactory;
 
-        public GetSystemManagementInformation(ManagementObject managementObject)
+        public GetSystemManagementInformation()
+        {
+            _managementObjectSearcherFactory = new ManagementObjectSearcherFactory();
+        }
+
+        public GetSystemManagementInformation(WarewolfManagementObject managementObject)
         {
             _managementObject = managementObject;
+            _managementObjectSearcherFactory = new ManagementObjectSearcherFactory();
         }
 
         public int GetNumberOfCores()
@@ -32,13 +39,12 @@ namespace Dev2.Runtime.Services.ESB.Management.Services
             {
                 try
                 {
-                    using (_managementObject.ManagementObjectSearcher)
+                    using (var managementObjectSearcherWrapper = _managementObjectSearcherFactory.New(_managementObject.OSPlatform, _managementObject.ObjectQuery))
                     {
-                        using (_managementObject.ManagementObjectCollection = _managementObject.ManagementObjectSearcher.Get())
-                            foreach (var item in _managementObject.ManagementObjectCollection)
-                            {
-                                coreCount += int.Parse(item["NumberOfCores"].ToString());
-                            }
+                        foreach (var item in managementObjectSearcherWrapper.Get())
+                        {
+                            coreCount += int.Parse(item[_managementObject.OperationObject].ToString());
+                        }
                     }
                 }
                 catch (Exception err)

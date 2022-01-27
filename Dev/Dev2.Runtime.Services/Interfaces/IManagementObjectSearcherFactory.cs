@@ -8,10 +8,13 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System.Management;
+using System.Runtime.InteropServices;
+
 namespace Dev2.Runtime.Services.Interfaces
 {
-    public interface ISystemManagementInformationWrapper
+    public interface IManagementObjectSearcherFactory
     {
-        IGetSystemManagementInformation GetNumberOfCores();
+        ManagementObjectSearcher New(OSPlatform osPlatform, ObjectQuery objectQuery);
     }
 }

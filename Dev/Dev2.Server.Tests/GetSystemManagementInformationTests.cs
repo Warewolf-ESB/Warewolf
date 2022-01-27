@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2022 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -11,7 +11,6 @@
 using Dev2.Runtime.Services.ESB.Management.Services;
 using Dev2.Runtime.Services.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 using System.Management;
 using System.Runtime.InteropServices;
 
@@ -22,8 +21,8 @@ namespace Dev2.Server.Tests
     public class GetSystemManagementInformationTests
     {
         private ISystemManagementInformationFactory _systemManagementInformationFactory = new SystemManagementInformationFactory();
-        private Runtime.Services.ESB.Management.Services.ManagementObject _managementObject = new Runtime.Services.ESB.Management.Services.ManagementObject();
-
+        private IManagementObjectSearcherFactory _managementObjectSearcherFactory = new ManagementObjectSearcherFactory();
+     
         [TestMethod]
         [Owner("Tsumbo Mbedzi")]
         public void GetSystemManagementInformation_GetNumberOfCores_Should_Success()
@@ -32,14 +31,21 @@ namespace Dev2.Server.Tests
             var getSystemManagementInformation = systemManagementInformationWrapper.GetNumberOfCores();
 
             var numOfCores = getSystemManagementInformation.GetNumberOfCores();
-            var actualNumOfCores = GetActualNumberOfCores();
+            var actualNumOfCores = GetActualNumberOfCores(getSystemManagementInformation);
             Assert.AreEqual(numOfCores, actualNumOfCores);
         }
 
         [TestMethod]
         [Owner("Tsumbo Mbedzi")]
-        public void GetSystemManagementInformation_GetNumberOfCores_Should_Throw()
+        public void GetSystemManagementInformation_GetNumberOfCores_Failed_Incorrect_ObjectQuery()
         {
+            var _managementObject = new WarewolfManagementObject
+            {
+                OSPlatform = OSPlatform.Windows,
+                ObjectQuery = new ObjectQuery("SELECT * FROM Win32_Processors"),
+                OperationObject = "NumberOfCores"
+            };
+
             _managementObject.OSPlatform = GetOperatingSystem();
             var getSystemManagementInformation = new GetSystemManagementInformation(_managementObject);
 
@@ -47,21 +53,43 @@ namespace Dev2.Server.Tests
             Assert.AreEqual(numOfCores, 0);
         }
 
-        private int GetActualNumberOfCores()
+        [TestMethod]
+        [Owner("Tsumbo Mbedzi")]
+        public void GetSystemManagementInformation_GetNumberOfCores_Failed_Incorrect_Oparetion()
+        {
+            var _managementObject = new WarewolfManagementObject
+            {
+                OSPlatform = OSPlatform.Windows,
+                ObjectQuery = new ObjectQuery("SELECT * FROM Win32_Processor"),
+                OperationObject = "NumberOfProcessors"
+            };
+
+            _managementObject.OSPlatform = GetOperatingSystem();
+            var getSystemManagementInformation = new GetSystemManagementInformation(_managementObject);
+
+            var numOfCores = getSystemManagementInformation.GetNumberOfCores();
+            Assert.AreEqual(numOfCores, 0);
+        }
+
+        private int GetActualNumberOfCores(IGetSystemManagementInformation getSystemManagementInformation)
         {
             var coreCount = 0;
 
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
-                _managementObject.ManagementObjectSearcher = new ManagementObjectSearcher("Select * from Win32_Processor");
-
-                using (_managementObject.ManagementObjectSearcher)
+                var _managementObject = new WarewolfManagementObject
                 {
-                    using (_managementObject.ManagementObjectCollection = _managementObject.ManagementObjectSearcher.Get())
-                        foreach (var item in _managementObject.ManagementObjectCollection)
-                        {
-                            coreCount += int.Parse(item["NumberOfCores"].ToString());
-                        }
+                    OSPlatform = OSPlatform.Windows,
+                    ObjectQuery = new ObjectQuery("SELECT * FROM Win32_Processor"),
+                    OperationObject = "NumberOfCores"
+                };
+
+                using (var managementObjectSearcherWrapper = _managementObjectSearcherFactory.New(_managementObject.OSPlatform, _managementObject.ObjectQuery))
+                {
+                    foreach (var item in managementObjectSearcherWrapper.Get())
+                    {
+                        coreCount += int.Parse(item[_managementObject.OperationObject].ToString());
+                    }
                 }
             }
 
@@ -74,18 +102,18 @@ namespace Dev2.Server.Tests
             {
                 return OSPlatform.OSX;
             }
-
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
                 return OSPlatform.Linux;
             }
-
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
                 return OSPlatform.Windows;
             }
-
-            throw new Exception("Cannot determine operating system!");
+            else
+            {
+                return new OSPlatform();
+            }
         }
     }
 }

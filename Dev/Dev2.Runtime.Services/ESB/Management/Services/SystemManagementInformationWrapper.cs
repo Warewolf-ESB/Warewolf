@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2022 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -9,7 +9,6 @@
 */
 
 using Dev2.Runtime.Services.Interfaces;
-using System;
 using System.Management;
 using System.Runtime.InteropServices;
 
@@ -25,25 +24,27 @@ namespace Dev2.Runtime.Services.ESB.Management.Services
         }
         public IGetSystemManagementInformation GetNumberOfCores()
         {
-            var managementObject = new ManagementObject();
+            var managementObject = new WarewolfManagementObject();
 
             if(_osPlatform == OSPlatform.Windows)
             {
-                managementObject.ManagementObjectSearcher = new ManagementObjectSearcher("Select * from Win32_Processor");
                 managementObject.OSPlatform = _osPlatform;
+                managementObject.ObjectQuery = new ObjectQuery("SELECT * FROM Win32_Processor");
+                managementObject.OperationObject = "NumberOfCores";
 
                 return new GetSystemManagementInformation(managementObject);
             }
 
-            throw new Exception("Cannot determine operating system!");
-
+            return new GetSystemManagementInformation();
         }
     }
 
-    public class ManagementObject
+    public class WarewolfManagementObject
     {
         public ManagementObjectSearcher ManagementObjectSearcher { get; set;}
-        public ManagementObjectCollection ManagementObjectCollection { get; set; }
+        public IManagementObjectSearcherFactory ManagementObjectSearcherFactory { get; set; }
         public OSPlatform OSPlatform { get; set; }
+        public ObjectQuery ObjectQuery { get; set; }
+        public string OperationObject { get; set; }
     }
 }

@@ -94,6 +94,7 @@
     <Compile Include="ESB\Management\Services\FindOptions.cs" />
     <Compile Include="ESB\Management\Services\FetchTriggerQueues.cs" />
     <Compile Include="ESB\Management\Services\GetSystemManagementInformation.cs" />
+    <Compile Include="ESB\Management\Services\ManagementObjectSearcherFactory.cs" />
     <Compile Include="ESB\Management\Services\SystemManagementInformationWrapper.cs" />
     <Compile Include="ESB\Management\Services\PersistenceSettingsRead.cs" />
     <Compile Include="ESB\Management\Services\SaveAuditingSettings.cs" />
@@ -256,6 +257,7 @@
     <Compile Include="IEsbExecutionContainer.cs" />
     <Compile Include="IExecutionManager.cs" />
     <Compile Include="Interfaces\IEsbManagementServiceLocator.cs" />
+    <Compile Include="Interfaces\IManagementObjectSearcherFactory.cs" />
     <Compile Include="Interfaces\IPluginBroker.cs" />
     <Compile Include="Interfaces\IResourceCatalog.cs" />
     <Compile Include="Interfaces\IResourceCopyProvider.cs" />
