@@ -1,3 +1,10 @@
+2.7 (21 January 2022)
+======================
+
+Bug fixes
+----------
+- Studio is persistenting the correct input values for workflow with the same name
+
 8 December 2021
 ======================
 
