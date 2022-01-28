@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Dev2.Activities;
 using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -150,6 +150,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         [TestMethod]
         [Timeout(60000)]
+        [TestCategory("CannotParallelize")]
         public void GetCorrectSystemInformation_WarewolfCPU_GatherShouldHaveValues()
         {
             var ob = new DsfDotNetGatherSystemInformationActivity
