@@ -308,7 +308,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
 
             var oldResourceId = dataObject.ResourceID;
-            InitializeDebug(dataObject);
+            var debugState = InitializeDebug(dataObject);
 
             try
             {
@@ -346,7 +346,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     BeforeExecutionStart(dataObject, allErrors);
                     if (dataObject.IsDebugMode() || dataObject.RunWorkflowAsync && !dataObject.IsFromWebServer)
                     {
-                        DispatchDebugStateAndUpdateRemoteServer(dataObject, StateType.Before, update);
+                        DispatchDebugStateAndUpdateRemoteServer(dataObject, StateType.Before, update, debugState);
 
                     }
                     allErrors.MergeErrors(tmpErrors);

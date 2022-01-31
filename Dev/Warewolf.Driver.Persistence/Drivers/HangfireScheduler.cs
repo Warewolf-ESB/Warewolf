@@ -381,7 +381,6 @@ namespace Warewolf.Driver.Persistence.Drivers
 
 
         [AutomaticRetry(Attempts = 0)]
-        [DisableConcurrentExecution(timeoutInSeconds: 10 * 60)]
         public string ResumeWorkflow(Dictionary<string, StringBuilder> values, PerformContext context)
         {
             var jobId = context.BackgroundJob.Id;

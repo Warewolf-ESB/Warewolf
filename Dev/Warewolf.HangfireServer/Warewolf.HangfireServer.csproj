@@ -23,8 +23,8 @@
 
     <ItemGroup>
         <PackageReference Include="CommandLineParser" Version="2.6.0" />
-        <PackageReference Include="Hangfire.Core" Version="1.7.13" />
-        <PackageReference Include="Hangfire.SqlServer" Version="1.7.13" />
+        <PackageReference Include="Hangfire.Core" Version="1.7.28" />
+        <PackageReference Include="Hangfire.SqlServer" Version="1.7.28" />
         <PackageReference Include="Microsoft.Owin.Hosting" Version="4.1.0" />
     </ItemGroup>
 

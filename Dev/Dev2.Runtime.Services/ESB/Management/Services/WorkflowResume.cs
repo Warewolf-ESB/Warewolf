@@ -67,7 +67,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 return new ExecuteMessage { HasError = true, Message = new StringBuilder(errorMessage) };
             }
             
-            ResourceCatalogInstance.Reload();
+            //ResourceCatalogInstance.Reload();
 
             var dynamicService = ResourceCatalogInstance.GetService(GlobalConstants.ServerWorkspaceID, resourceId, "");
             if (dynamicService is null)
