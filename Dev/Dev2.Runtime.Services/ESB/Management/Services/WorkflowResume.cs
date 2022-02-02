@@ -26,6 +26,7 @@ using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.Security;
 using Dev2.Services.Security;
+using Dev2.Workspaces;
 using Warewolf.Resource.Errors;
 using Warewolf.Security.Encryption;
 using Warewolf.Storage;
@@ -69,24 +70,28 @@ namespace Dev2.Runtime.ESB.Management.Services
             
             //ResourceCatalogInstance.Reload();
 
-            var dynamicService = ResourceCatalogInstance.GetService(GlobalConstants.ServerWorkspaceID, resourceId, "");
-            if (dynamicService is null)
+            using(var catalog = new ResourceCatalog())
             {
-                return new ExecuteMessage {HasError = true, Message = new StringBuilder($"Error resuming. ServiceAction is null for Resource ID:{resourceId}")};
-            }
+                var dynamicService = catalog.GetService(GlobalConstants.ServerWorkspaceID, resourceId, "");
+                if (dynamicService is null)
+                {
+                    return new ExecuteMessage {HasError = true, Message = new StringBuilder($"Error resuming. ServiceAction is null for Resource ID:{resourceId}")};
+                }
 
-            var sa = dynamicService.Actions.FirstOrDefault();
-            if (sa is null)
-            {
-                return new ExecuteMessage {HasError = true, Message = new StringBuilder($"Error resuming. ServiceAction is null for Resource ID:{resourceId}")};
-            }
+                var sa = dynamicService.Actions.FirstOrDefault();
+                if (sa is null)
+                {
+                    return new ExecuteMessage {HasError = true, Message = new StringBuilder($"Error resuming. ServiceAction is null for Resource ID:{resourceId}")};
+                }
 
-            var container = CustomContainer.Get<IResumableExecutionContainerFactory>()?.New(startActivityId, sa, dataObject) ?? CustomContainer.CreateInstance<IResumableExecutionContainer>(startActivityId, sa, dataObject);
-            container.Execute(out ErrorResultTO errors, 0);
-            
-            if (errors.HasErrors())
-            {
-                return new ExecuteMessage {HasError = true, Message = new StringBuilder(errors.MakeDisplayReady())};
+                var container = CustomContainer.CreateInstance<IResumableExecutionContainer>(startActivityId, sa, dataObject, new Workspace(Guid.Empty));
+                //CustomContainer.Get<IResumableExecutionContainerFactory>()?.New(startActivityId, sa, dataObject, new Workspace(Guid.Empty)) ?? 
+                container.Execute(out ErrorResultTO errors, 0);
+
+                if (errors.HasErrors())
+                {
+                    return new ExecuteMessage {HasError = true, Message = new StringBuilder(errors.MakeDisplayReady())};
+                }
             }
 
             return new ExecuteMessage {HasError = false, Message = new StringBuilder("Execution Completed.")};

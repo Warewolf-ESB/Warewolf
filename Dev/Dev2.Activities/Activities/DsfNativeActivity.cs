@@ -11,7 +11,6 @@
 
 using System;
 using System.Activities;
-using System.Activities.Expressions;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -396,13 +395,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 errorMessage = string.Join(Environment.NewLine, dataObject.Environment.Errors.Distinct());
             }
 
-            DebugState newDebugState = null;
             if (_debugState == null)
             {
-                newDebugState = InitializeDebugState(stateType, dataObject, remoteID, hasError, errorMessage);
+                InitializeDebugState(stateType, dataObject, remoteID, hasError, errorMessage);
             }
 
-            if (newDebugState != null)
+            if (_debugState != null)
             {
                 if (stateType != StateType.Before)
                 {
@@ -411,16 +409,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         endTime = DateTime.Now;
                     }
 
-                    newDebugState.EndTime = endTime.Value;
+                    _debugState.EndTime = endTime.Value;
                 }
 
-                newDebugState.NumberOfSteps = IsWorkflow ? dataObject.NumberOfSteps : 0;
-                newDebugState.StateType = stateType;
-                newDebugState.HasError = hasError;
-                newDebugState.ErrorMessage = errorMessage;
+                _debugState.NumberOfSteps = IsWorkflow ? dataObject.NumberOfSteps : 0;
+                _debugState.StateType = stateType;
+                _debugState.HasError = hasError;
+                _debugState.ErrorMessage = errorMessage;
                 try
                 {
-                    TryDispatchDebugOutput(dataObject, update, newDebugState);
+                    TryDispatchDebugOutput(dataObject, update);
                 }
                 catch (Exception e)
                 {
@@ -442,15 +440,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return clearErrors;
         }
 
-        private void TryDispatchDebugOutput(IDSFDataObject dataObject, int update, DebugState debugState)
+        private void TryDispatchDebugOutput(IDSFDataObject dataObject, int update)
         {
             if (dataObject.RunWorkflowAsync && !_debugState.HasError)
             {
                 var debugItem = new DebugItem();
                 var debugItemResult = new DebugItemResult {Type = DebugItemResultType.Value, Value = "Asynchronous execution started"};
                 debugItem.Add(debugItemResult);
-                debugState.Outputs.Add(debugItem);
-                debugState.NumberOfSteps = 0;
+                _debugState.Outputs.Add(debugItem);
+                _debugState.NumberOfSteps = 0;
             }
             else
             {
@@ -460,7 +458,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
 
                 var debugOutputs = GetDebugOutputs(dataObject.Environment, update);
-                Copy(debugOutputs, debugState?.Outputs);
+                Copy(debugOutputs, _debugState?.Outputs);
             }
         }
 
@@ -470,10 +468,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 #pragma warning restore S3776 // Cognitive Complexity of methods should not be too high
 #pragma warning restore S1541 // Methods and properties should not be too complex
         {
-            DebugState newDebugState = null;
             if (_debugState == null)
             {
-                newDebugState = InitializeDebugState(stateType, dataObject, remoteID, false, "");
+                InitializeDebugState(stateType, dataObject, remoteID, false, "");
             }
             else
             {
@@ -481,7 +478,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 Dev2Logger.Info("Debug Already Started", dataObject.ExecutionID.ToString());
             }
 
-            if (newDebugState != null)
+            if (_debugState != null)
             {
                 if (stateType == StateType.Before)
                 {
@@ -490,39 +487,38 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         startTime = DateTime.Now;
                     }
 
-                    if (newDebugState.StartTime == DateTime.MinValue)
+                    if (_debugState.StartTime == DateTime.MinValue)
                     {
-                        newDebugState.StartTime = startTime.Value;
+                        _debugState.StartTime = startTime.Value;
                     }
                 }
 
-                newDebugState.Name = IsWorkflow ? ActivityType.Workflow.GetDescription() : IsService ? ActivityType.Service.GetDescription() : ActivityType.Step.GetDescription();
+                _debugState.Name = IsWorkflow ? ActivityType.Workflow.GetDescription() : IsService ? ActivityType.Service.GetDescription() : ActivityType.Step.GetDescription();
                 try
                 {
                     var debugInputs = GetDebugInputs(dataObject.Environment, update);
-                    Copy(debugInputs, newDebugState.Inputs);
+                    Copy(debugInputs, _debugState.Inputs);
                 }
                 catch (Exception err)
                 {
                     AddErrorToDataList(err, dataObject);
                     var errorMessage = dataObject.Environment.FetchErrors();
-                    newDebugState.ErrorMessage = errorMessage;
-                    newDebugState.HasError = true;
+                    _debugState.ErrorMessage = errorMessage;
+                    _debugState.HasError = true;
                     var debugError = err as DebugCopyException;
                     if (debugError != null)
                     {
-                        newDebugState.Inputs.Add(debugError.Item);
+                        _debugState.Inputs.Add(debugError.Item);
                     }
                 }
 
-                if (dataObject.RemoteServiceType == "Workflow" && !newDebugState.HasError)
+                if (dataObject.RemoteServiceType == "Workflow" && !_debugState.HasError)
                 {
                     var debugItem = new DebugItem();
                     var debugItemResult = new DebugItemResult {Type = DebugItemResultType.Value, Label = "Execute workflow asynchronously: ", Value = dataObject.RunWorkflowAsync ? "True" : "False"};
                     debugItem.Add(debugItemResult);
-                    newDebugState.Inputs.Add(debugItem);
+                    _debugState.Inputs.Add(debugItem);
                 }
-                _debugState = newDebugState;
             }
         }
 
@@ -934,27 +930,24 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             dataObject.Environment.Errors.Add(errorString);
         }
 
-        protected DebugState InitializeDebug(IDSFDataObject dataObject)
+        protected void InitializeDebug(IDSFDataObject dataObject)
         {
-            DebugState debugState = null;
             if (dataObject.IsDebugMode())
             {
                 var errorMessage = string.Empty;
                 Guid.TryParse(dataObject.RemoteInvokerID, out Guid remoteID);
-                debugState = InitializeDebugState(StateType.Before, dataObject, remoteID, false, errorMessage);
+                InitializeDebugState(StateType.Before, dataObject, remoteID, false, errorMessage);
             }
-
-            return debugState;
         }
 
-        protected void DispatchDebugStateAndUpdateRemoteServer(IDSFDataObject dataObject, StateType before, int update, DebugState debugState)
+        protected void DispatchDebugStateAndUpdateRemoteServer(IDSFDataObject dataObject, StateType before, int update)
         {
-            if (debugState != null)
+            if (_debugState != null)
             {
                 Guid.TryParse(dataObject.RemoteInvokerID, out Guid remoteID);
                 var res = ResourceCatalog.GetResource(GlobalConstants.ServerWorkspaceID, remoteID);
                 var name = remoteID != Guid.Empty ? res != null ? res.ResourceName : "localhost" : "localhost";
-                debugState.Server = name;
+                _debugState.Server = name;
             }
 
             DispatchDebugState(dataObject, before, update);
@@ -963,10 +956,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         protected string GetServerName() => _debugState?.Server;
 
 #pragma warning disable S1541 // Methods and properties should not be too complex
-        protected DebugState InitializeDebugState(StateType stateType, IDSFDataObject dataObject, Guid remoteID, bool hasError, string errorMessage)
+        protected void InitializeDebugState(StateType stateType, IDSFDataObject dataObject, Guid remoteID, bool hasError, string errorMessage)
 #pragma warning restore S1541 // Methods and properties should not be too complex
         {
-            DebugState debugState = null;
             Guid.TryParse(dataObject.ParentInstanceID, out Guid parentInstanceID);
             if (stateType != StateType.Duration)
             {
@@ -1002,7 +994,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             var type = GetType();
             var typeName = type.Name;
-            debugState = new DebugState
+            _debugState = new DebugState
             {
                 ID = Guid.Parse(UniqueID),
                 ParentID = parentInstanceID,
@@ -1025,9 +1017,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 EnvironmentID = dataObject.DebugEnvironmentId,
                 SessionID = dataObject.DebugSessionID
             };
-
-            _debugState = debugState;
-            return debugState;
         }
 
         public virtual void UpdateDebugParentID(IDSFDataObject dataObject)

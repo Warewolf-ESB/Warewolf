@@ -358,6 +358,11 @@ namespace Dev2.Runtime.ESB.Execution
         {
             return new ResumableExecutionContainer(startActivityId, sa, dataObject);
         }
+        
+        public IResumableExecutionContainer New(Guid startActivityId, ServiceAction sa, DsfDataObject dataObject, IWorkspace workspace)
+        {
+            return new ResumableExecutionContainer(startActivityId, sa, dataObject, workspace);
+        }
     }
 
     public class ResumableExecutionContainer : WfExecutionContainer, IResumableExecutionContainer
@@ -367,6 +372,11 @@ namespace Dev2.Runtime.ESB.Execution
 
         public ResumableExecutionContainer(Guid resumeActivityId, ServiceAction sa, IDSFDataObject dataObject)
             : this(resumeActivityId, dataObject.Environment, sa, dataObject, WorkspaceRepository.Instance.ServerWorkspace, new EsbServicesEndpoint())
+        {
+        }
+        
+        public ResumableExecutionContainer(Guid resumeActivityId, ServiceAction sa, IDSFDataObject dataObject, IWorkspace workspace)
+            : this(resumeActivityId, dataObject.Environment, sa, dataObject, workspace, new EsbServicesEndpoint())
         {
         }
 
