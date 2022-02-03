@@ -38,7 +38,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
 
         [TestMethod]
         [Owner("Travis Frisinger")]
-        [TestCategory("PluginRuntimeHandler_FetchNamespaceListObject")]
+        [TestCategory("PluginRuntimeHandler")]
         [Timeout(30000)]
         public void PluginRuntimeHandler_FetchNamespaceListObject_WhenValidDll_ExpectNamespaces()
         {
@@ -272,7 +272,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        [TestCategory("PluginRuntimeHandler_ListMethods")]
+        [TestCategory("PluginRuntimeHandler")]
         [Timeout(30000)]
         public void PluginRuntimeHandler_ListMethods_WhenValidLocation_ExpectResults()
         {
@@ -289,7 +289,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        [TestCategory("PluginRuntimeHandler_ListMethods")]
+        [TestCategory("PluginRuntimeHandler")]
         [Timeout(30000)]
         public void PluginRuntimeHandler_ListConstructors_WhenValidLocation_ExpectResults()
         {
@@ -306,7 +306,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        [TestCategory("PluginRuntimeHandler_ListMethodsWithReturns")]
+        [TestCategory("PluginRuntimeHandler")]
         [Timeout(30000)]
         public void PluginRuntimeHandler_ListMethodsWithReturns_WhenValidLocation_ExpectResults()
         {
@@ -323,7 +323,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        [TestCategory("PluginRuntimeHandler_ListMethodsWithReturns")]
+        [TestCategory("PluginRuntimeHandler")]
         [Timeout(30000)]
         public void PluginRuntimeHandler_ListMethodsWithReturns_WhenValidLocationAndVoid_ExpectResultsWithVoidMethod()
         {
@@ -341,7 +341,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        [TestCategory("PluginRuntimeHandler_ListMethodsWithReturns")]
+        [TestCategory("PluginRuntimeHandler")]
         [Timeout(30000)]
         public void PluginRuntimeHandler_ListMethodsWithReturns_WhenValidLocationAndIsProperty_ExpectResultsWithPropertyMethod()
         {
@@ -359,7 +359,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        [TestCategory("PluginRuntimeHandler_ListMethodsWithReturns")]
+        [TestCategory("PluginRuntimeHandler")]
         [Timeout(30000)]
         public void PluginRuntimeHandler_ListMethodsWithReturns_WhenListFoods_ExpectJSonArrayReturnType()
         {

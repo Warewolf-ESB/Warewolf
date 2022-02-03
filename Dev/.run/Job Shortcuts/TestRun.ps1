@@ -15,7 +15,8 @@ param(
   [switch] $InContainer,
   [switch] $Coverage,
   [switch] $RetryRebuild,
-  [String] $UNCPassword
+  [String] $UNCPassword,
+  [String] $ContainerID="latest"
 )
 if (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
 	Write-Error "This script expects to be run as Administrator. (Right click run as administrator)"
@@ -62,12 +63,12 @@ if (Test-Path "$TestResultsPath") {
 if ($VSTestPath -eq $null -or $VSTestPath -eq "" -or !(Test-Path "$VSTestPath\Extensions\TestPlatform\vstest.console.exe")) {
 	$VSTestPath = ".\Microsoft.TestPlatform\tools\net451\common7\ide"
 } else {
-	if ($InContainer.IsPresent) {
-		Write-Warning -Message "Ignoring VSTestPath parameter because it cannot be used with the -InContainer parameter."
+	if ($InContainer.IsPresent -or $ContainerID -ne "latest") {
+		Write-Warning -Message "Ignoring VSTestPath parameter because it cannot be used with the -InContainer or -ContainerID parameters."
 		$VSTestPath = ".\Microsoft.TestPlatform\tools\net451\Common7\IDE"
 	}
 }
-if (!(Test-Path "$VSTestPath\Extensions\TestPlatform\vstest.console.exe") -or ($Coverage.IsPresent -and !(Test-Path ".\JetBrains.dotCover.CommandLineTools\tools\dotCover.exe"))) {
+if (!(Test-Path "$VSTestPath\Extensions\TestPlatform\vstest.console.exe")) {
 	#Find NuGet
 	if ("$NuGet" -eq "" -or !(Test-Path "$NuGet" -ErrorAction SilentlyContinue)) {
 		$NuGetCommand = Get-Command NuGet -ErrorAction SilentlyContinue
@@ -92,23 +93,13 @@ if (!(Test-Path "$VSTestPath\Extensions\TestPlatform\vstest.console.exe")) {
 		exit 1
 	}
 }
-if ($Coverage.IsPresent -and !(Test-Path ".\JetBrains.dotCover.CommandLineTools\tools\dotCover.exe")) {
-	&"nuget.exe" "install" "JetBrains.dotCover.CommandLineTools" "-ExcludeVersion" "-NonInteractive" "-OutputDirectory" "."
-	if (!(Test-Path ".\JetBrains.dotCover.CommandLineTools\tools\dotCover.exe")) {
-		Write-Error "Cannot install coverage runner using nuget."
-		exit 1
-	}
-}
 if ($Coverage.IsPresent) {
-	Write-Host Removing existing DotCover Coverage Report
-	if (Test-Path "$TestResultsPath\MergedDotCover.dcvr") {
-		Remove-Item "$TestResultsPath\MergedDotCover.dcvr"
+	Write-Host Removing existing Coverage Reports
+	if (Test-Path "$TestResultsPath\Merged.coveragexml") {
+		Remove-Item "$TestResultsPath\Merged.coveragexml"
 	}
-	if (Test-Path "$TestResultsPath\DotCover-Coverage-Report.html") {
-		Remove-Item "$TestResultsPath\DotCover-Coverage-Report.html"
-	}
-	if (Test-Path "$TestResultsPath\DotCover-Coverage-Report") {
-		Remove-Item "$TestResultsPath\DotCover-Coverage-Report"
+	if (Test-Path "$TestResultsPath\Cobertura.xml") {
+		Remove-Item "$TestResultsPath\Cobertura.xml"
 	}
 }
 for ($LoopCounter=0; $LoopCounter -le $RetryCount; $LoopCounter++) {
@@ -122,7 +113,7 @@ for ($LoopCounter=0; $LoopCounter -le $RetryCount; $LoopCounter++) {
 			}
 		}
 	} else {
-		if (!(Test-Path "$PWD\*tests.dll")) {
+		if (!(Test-Path "$PWD\*tests.dll") -and $ContainerID -eq "latest") {
 			Write-Error "This script expects to be run from a directory containing test assemblies. (Files with names that end in tests.dll)"
 			exit 1
 		}
@@ -152,38 +143,25 @@ for ($LoopCounter=0; $LoopCounter -le $RetryCount; $LoopCounter++) {
 	if (Test-Path "$TestResultsPath\warewolf-server.log") {
 		Move-Item "$TestResultsPath\warewolf-server.log" "$TestResultsPath\warewolf-server($LoopCounter).ps1"
 	}
-	if ($Coverage.IsPresent -and !($PreTestRunScript)) {
-		if (Test-Path "$TestResultsPath\DotCover Runner.xml") {
-			Move-Item "$TestResultsPath\DotCover Runner.xml" "$TestResultsPath\DotCover Runner($LoopCounter).xml"
-		}
-		if (Test-Path "$TestResultsPath\DotCover.dcvr") {
-			Move-Item "$TestResultsPath\DotCover.dcvr" "$TestResultsPath\DotCover($LoopCounter).dcvr"
-		}
-		if (Test-Path "$TestResultsPath\DotCover.log") {
-			Move-Item "$TestResultsPath\DotCover.log" "$TestResultsPath\DotCover($LoopCounter).log"
-		}
-		"<AnalyseParams>" | Out-File "$TestResultsPath\DotCover Runner.xml"
-		$HandleRelativePath = $VSTestPath
-		if ($VSTestPath.StartsWith(".\")) {
-			$HandleRelativePath = "." + $VSTestPath
-		}
-		"  <TargetExecutable>$HandleRelativePath\Extensions\TestPlatform\vstest.console.exe</TargetExecutable>" | Out-File "$TestResultsPath\DotCover Runner.xml" -Append
-		$AssembliesArg = "..\" + ($AssembliesList -join " ..\")
-	} else {
-		$AssembliesArg = ".\" + ($AssembliesList -join " .\")
+	if (Test-Path "$TestResultsPath\Snapshot.coverage") {
+		Move-Item "$TestResultsPath\Snapshot.coverage" "$TestResultsPath\Snapshot($LoopCounter).coverage"
 	}
+	if (Test-Path "$TestResultsPath\Snapshot_Backup.coverage") {
+		Move-Item "$TestResultsPath\Snapshot_Backup.coverage" "$TestResultsPath\Snapshot_Backup($LoopCounter).coverage"
+	}
+	$AssembliesArg = ".\" + ($AssembliesList -join " .\")
 	if ($UNCPassword) {
 		"net use \\DEVOPSPDC.premier.local\FileSystemShareTestingSite /user:Administrator $UNCPassword" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
 	}
 	if ($TestsToRun) {
 		if ($PreTestRunScript) {
 			"&.\$PreTestRunScript" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
-			"&`"$VSTestPath\Extensions\TestPlatform\vstest.console.exe`" /Parallel /logger:trx $AssembliesArg /Tests:`"$TestsToRun`"" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
+			"&`"$VSTestPath\Extensions\TestPlatform\vstest.console.exe`" /logger:trx $AssembliesArg /Tests:`"$TestsToRun`"" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
 		} else {
 			if ($Coverage.IsPresent -and !($PreTestRunScript)) {
-				"  <TargetArguments>/logger:trx $AssembliesArg /Tests:`"$TestsToRun`"</TargetArguments>" | Out-File "$TestResultsPath\DotCover Runner.xml" -Append
+				"&`"$VSTestPath\Extensions\TestPlatform\vstest.console.exe`" /logger:trx $AssembliesArg /Tests:`"$TestsToRun`" /EnableCodeCoverage" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
 			} else {
-				"&`"$VSTestPath\Extensions\TestPlatform\vstest.console.exe`" /Parallel /logger:trx $AssembliesArg /Tests:`"$TestsToRun`"" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
+				"&`"$VSTestPath\Extensions\TestPlatform\vstest.console.exe`" /logger:trx $AssembliesArg /Tests:`"$TestsToRun`"" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
 			}
 		}
 	} else {
@@ -210,55 +188,28 @@ for ($LoopCounter=0; $LoopCounter -le $RetryCount; $LoopCounter++) {
 			"&.\$PreTestRunScript" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
 			"&`"$VSTestPath\Extensions\TestPlatform\vstest.console.exe`" /logger:trx $AssembliesArg $CategoryArg" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
 		} else {
-			if ($Coverage.IsPresent) {
-				$XmlSafeCategory = $CategoryArg -replace "`&","`&amp;"
-				"  <TargetArguments>/Parallel /logger:trx $AssembliesArg $XmlSafeCategory</TargetArguments>" | Out-File "$TestResultsPath\DotCover Runner.xml" -Append
+			if ($Coverage.IsPresent -and !($PreTestRunScript)) {
+				"&`"$VSTestPath\Extensions\TestPlatform\vstest.console.exe`" /logger:trx $AssembliesArg $CategoryArg /EnableCodeCoverage" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
 			} else {
-				"&`"$VSTestPath\Extensions\TestPlatform\vstest.console.exe`" /Parallel /logger:trx $AssembliesArg $CategoryArg" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
+				"&`"$VSTestPath\Extensions\TestPlatform\vstest.console.exe`" /logger:trx $AssembliesArg $CategoryArg" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
 			}
 		}
 	}
 	if ($PostTestRunScript) {
 		"&.\$PostTestRunScript" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
 	}
-	if ($Coverage.IsPresent -and !($PreTestRunScript)) {
-		"  <Output>.$TestResultsPath\DotCover.dcvr</Output>" | Out-File "$TestResultsPath\DotCover Runner.xml" -Append
-		"  <Scope>" | Out-File "$TestResultsPath\DotCover Runner.xml" -Append
-		"    <ScopeEntry>..\Warewolf*.dll</ScopeEntry>" | Out-File "$TestResultsPath\DotCover Runner.xml" -Append
-		"    <ScopeEntry>..\Warewolf*.exe</ScopeEntry>" | Out-File "$TestResultsPath\DotCover Runner.xml" -Append
-		"    <ScopeEntry>..\Dev2.*.dll</ScopeEntry>" | Out-File "$TestResultsPath\DotCover Runner.xml" -Append
-		"  </Scope>" | Out-File "$TestResultsPath\DotCover Runner.xml" -Append
-		"  <Filters>" | Out-File "$TestResultsPath\DotCover Runner.xml" -Append
-		"    <ExcludeFilters>" | Out-File "$TestResultsPath\DotCover Runner.xml" -Append
-		"      <FilterEntry>" | Out-File "$TestResultsPath\DotCover Runner.xml" -Append
-		"        <ModuleMask>*tests</ModuleMask>" | Out-File "$TestResultsPath\DotCover Runner.xml" -Append
-		"        <ModuleMask>*specs</ModuleMask>" | Out-File "$TestResultsPath\DotCover Runner.xml" -Append
-		"        <ModuleMask>*Tests</ModuleMask>" | Out-File "$TestResultsPath\DotCover Runner.xml" -Append
-		"        <ModuleMask>*Specs</ModuleMask>" | Out-File "$TestResultsPath\DotCover Runner.xml" -Append
-		"        <ModuleMask>Warewolf.UIBindingTests*</ModuleMask>" | Out-File "$TestResultsPath\DotCover Runner.xml" -Append
-		"      </FilterEntry>" | Out-File "$TestResultsPath\DotCover Runner.xml" -Append
-		"    </ExcludeFilters>" | Out-File "$TestResultsPath\DotCover Runner.xml" -Append
-		"    <AttributeFilters>" | Out-File "$TestResultsPath\DotCover Runner.xml" -Append
-		"      <AttributeFilterEntry>" | Out-File "$TestResultsPath\DotCover Runner.xml" -Append
-		"        <ClassMask>System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute</ClassMask>" | Out-File "$TestResultsPath\DotCover Runner.xml" -Append
-		"      </AttributeFilterEntry>" | Out-File "$TestResultsPath\DotCover Runner.xml" -Append
-		"    </AttributeFilters>" | Out-File "$TestResultsPath\DotCover Runner.xml" -Append
-		"  </Filters>" | Out-File "$TestResultsPath\DotCover Runner.xml" -Append
-		"</AnalyseParams>" | Out-File "$TestResultsPath\DotCover Runner.xml" -Append
-		Get-Content "$TestResultsPath\DotCover Runner.xml"
-		"&`".\JetBrains.dotCover.CommandLineTools\tools\dotCover.exe`" cover `"$TestResultsPath\DotCover Runner.xml`" /LogFile=`"$TestResultsPath\DotCover.log`" --DisableNGen" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
-	}
-	if ($Coverage.IsPresent) {
-		"Wait-Process -Name `"DotCover`" -ErrorAction SilentlyContinue" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
-	}
 	if ($UNCPassword) {
 		"net use \\DEVOPSPDC.premier.local\FileSystemShareTestingSite /delete" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
 	}
 	Get-Content "$TestResultsPath\RunTests.ps1"
-	if (!($InContainer.IsPresent)) {
+	if (!($InContainer.IsPresent) -and $ContainerID -eq "latest") {
 		&"$TestResultsPath\RunTests.ps1"
 	} else {
-		docker run -i --rm -v "${PWD}:C:\BuildUnderTest" --entrypoint="powershell -Command Set-Location .\BuildUnderTest;&.\TestResults\RunTests.ps1" registry.gitlab.com/warewolf/vstest
+		if ($ContainerID -eq "latest") {
+			docker run -i --rm --memory 4g -v "${PWD}:C:\BuildUnderTest" registry.gitlab.com/warewolf/vstest powershell -Command Set-Location .\BuildUnderTest`;`&.\TestResults\RunTests.ps1
+		} else {
+			docker run -i --rm --memory 4g -v "${PWD}\TestResults:C:\BuildUnderTest\TestResults" registry.gitlab.com/warewolf/vstest:$ContainerID powershell -Command Set-Location .\BuildUnderTest`;`&.\TestResults\RunTests.ps1
+		}
 	}
     if (Test-Path "$VSTestPath\Extensions\TestPlatform\TestResults\*.trx") {
         Copy-Item "$VSTestPath\Extensions\TestPlatform\TestResults\*.trx" "$TestResultsPath" -Force -Recurse
@@ -299,14 +250,10 @@ for ($LoopCounter=0; $LoopCounter -le $RetryCount; $LoopCounter++) {
 		} else {
 			$getBaseXML = [xml](Get-Content $getXMLFiles[0].FullName)
 		}
-		if (!($Coverage.IsPresent -and !(Test-Path "$TestResultsPath\DotCover*.dcvr"))) {
-			if ($getBaseXML.TestRun.ResultSummary.Counters.passed -ne $getBaseXML.TestRun.ResultSummary.Counters.executed) {
-				$TestsToRun = ($getBaseXML.TestRun.Results.UnitTestResult | Where-Object {$_.outcome -ne "Passed"}).testName -join ","
-			} else {
-				break
-			}
+		if ($getBaseXML.TestRun.ResultSummary.Counters.passed -ne $getBaseXML.TestRun.ResultSummary.Counters.executed) {
+			$TestsToRun = ($getBaseXML.TestRun.Results.UnitTestResult | Where-Object {$_.outcome -ne "Passed"}).testName -join ","
 		} else {
-			Write-Host No coverage snapshot found at $TestResultsPath\DotCover*.dcvr. Retrying...
+			break
 		}
 	} else {
 		Write-Error "No test results found."
@@ -314,8 +261,30 @@ for ($LoopCounter=0; $LoopCounter -le $RetryCount; $LoopCounter++) {
 	}
 }
 if ($Coverage.IsPresent) {
-	$MergedSnapshotPath = "$TestResultsPath\MergedDotCover.dcvr"
-	&".\JetBrains.dotCover.CommandLineTools\tools\dotCover.exe" merge --Sources="$TestResultsPath\DotCover*.dcvr" --Output=$MergedSnapshotPath
-	&".\JetBrains.dotCover.CommandLineTools\tools\dotCover.exe" report --Source=$MergedSnapshotPath --Output="$TestResultsPath\DotCover-Coverage-Report.html" --ReportType=HTML
-	&".\JetBrains.dotCover.CommandLineTools\tools\dotCover.exe" report --Source=$MergedSnapshotPath --Output="$TestResultsPath\DotCover-Coverage-Report.xml" --ReportType=DetailedXML
+	$MergedSnapshotPath = "$TestResultsPath\Merged.coveragexml"
+	$CoverageToolPath = ".\Microsoft.TestPlatform\tools\net451\Team Tools\Dynamic Code Coverage Tools\CodeCoverage.exe"
+	$GetSnapshots = Get-ChildItem "$TestResultsPath\**\*.coverage"
+	if ($GetSnapshots.count -le 0) {
+		$GetSnapshots = Get-ChildItem "$TestResultsPath\*.coverage"
+	}
+	if ($GetSnapshots.count -le 0) {
+		Write-Host Cannot find snapshots in $TestResultsPath
+		exit 1
+	}
+	Write-Host `&`"$CoverageToolPath`" analyze /output:`"$MergedSnapshotPath`" @GetSnapshots
+	&"$CoverageToolPath" analyze /output:"$MergedSnapshotPath" @GetSnapshots
+	$reportGeneratorExecutable = ".\reportgenerator.exe"
+
+    if (!(Test-Path "$reportGeneratorExecutable")) {
+        dotnet tool install dotnet-reportgenerator-globaltool --tool-path "."
+    }
+    
+    $reportGeneratorCoberturaParams = @(
+        "-reports:$MergedSnapshotPath",
+        "-targetdir:$TestResultsPath",
+        "-reporttypes:Cobertura"
+    )
+    
+    Write-Output "Executing Report Generator with following parameters: $reportGeneratorCoberturaParams."
+    &"$reportGeneratorExecutable" @reportGeneratorCoberturaParams
 }
