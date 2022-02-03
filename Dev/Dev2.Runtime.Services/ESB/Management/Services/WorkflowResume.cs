@@ -84,8 +84,8 @@ namespace Dev2.Runtime.ESB.Management.Services
                     return new ExecuteMessage {HasError = true, Message = new StringBuilder($"Error resuming. ServiceAction is null for Resource ID:{resourceId}")};
                 }
 
-                var container = CustomContainer.CreateInstance<IResumableExecutionContainer>(startActivityId, sa, dataObject, new Workspace(Guid.Empty));
-                //CustomContainer.Get<IResumableExecutionContainerFactory>()?.New(startActivityId, sa, dataObject, new Workspace(Guid.Empty)) ?? 
+                //create new container and new workspace in order to ensure that multiple asynchronous resumptions do not clash
+                var container = CustomContainer.CreateInstance<IResumableExecutionContainer>(startActivityId, sa, dataObject, new Workspace(Guid.NewGuid()));
                 container.Execute(out ErrorResultTO errors, 0);
 
                 if (errors.HasErrors())

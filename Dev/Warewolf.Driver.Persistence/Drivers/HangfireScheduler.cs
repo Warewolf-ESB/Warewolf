@@ -379,7 +379,20 @@ namespace Warewolf.Driver.Persistence.Drivers
             return jobId;
         }
 
-
+        private void LoadAndRegisterTypes()
+        {
+            var activityParserType = Type.GetType(ActivityParserTypeString);
+            var resumableExecutionContainerType = Type.GetType(ResumableExecutionContainerTypeString);
+            
+            CustomContainer.LoadedTypes = new List<Type>();
+            if(!CustomContainer.LoadedTypes.Contains(activityParserType)) CustomContainer.AddToLoadedTypes(activityParserType);
+            if(!CustomContainer.LoadedTypes.Contains(resumableExecutionContainerType)) CustomContainer.AddToLoadedTypes(resumableExecutionContainerType);
+            
+            var activityParserInstance = CustomContainer.CreateInstance<IActivityParser>("just_to_get_a_CTOR_match_DO_NOT_REMOVE");
+            if(CustomContainer.Get<IActivityParser>() == null) CustomContainer.Register(activityParserInstance);
+            if(CustomContainer.Get<IWarewolfPerformanceCounterLocater>() == null) CustomContainer.Register<IWarewolfPerformanceCounterLocater>(GetPerformanceCounter());
+        }
+        
         [AutomaticRetry(Attempts = 0)]
         public string ResumeWorkflow(Dictionary<string, StringBuilder> values, PerformContext context)
         {
@@ -392,20 +405,15 @@ namespace Warewolf.Driver.Persistence.Drivers
                     var activityParserType = Type.GetType(ActivityParserTypeString);
                     var resumableExecutionContainerType = Type.GetType(ResumableExecutionContainerTypeString);
 
-                    CustomContainer.LoadedTypes = new List<Type>();
-                    CustomContainer.AddToLoadedTypes(activityParserType);
-                    CustomContainer.AddToLoadedTypes(resumableExecutionContainerType);
+                    LoadAndRegisterTypes();
 
                     if (resumableExecutionContainerType == null || activityParserType == null)
                     {
                         Throw(jobId, message: "job {" + jobId + "} failed, one of Warewolf's dependencies were missing", reason: "Execution not run");
                     }
 
-                    var activityParserInstance = CustomContainer.CreateInstance<IActivityParser>("just_to_get_a_CTOR_match_DO_NOT_REMOVE");
-                    CustomContainer.Register(activityParserInstance);
-                    CustomContainer.Register<IWarewolfPerformanceCounterLocater>(GetPerformanceCounter());
-
-                    var result = WorkflowResume.Execute(values, null);
+                    var workflow = new WorkflowResume();
+                    var result = workflow.Execute(values, null);
                     if (result == null)
                     {
                         Throw(jobId: jobId, message: "job {" + jobId + "} failed to execute in Warewolf, requeue this job manually.", reason: "Execution returned null");
