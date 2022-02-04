@@ -48,6 +48,7 @@ namespace Dev2.TaskScheduler.Wrappers.Test
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("TaskShedulerWrapper_Dev2Task_Construct")]
+        [TestCategory("CannotParallelize")]
         public void Dev2Task_ConstructTest()
         {
             var task = _taskService.GetTask("UnitTestTask");
@@ -60,6 +61,7 @@ namespace Dev2.TaskScheduler.Wrappers.Test
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("TaskShedulerWrapper_Dev2Task_Properties")]
+        [TestCategory("CannotParallelize")]
         public void Dev2Task_Properties()
         {
             var task = _taskService.GetTask("UnitTestTask");
@@ -79,6 +81,7 @@ namespace Dev2.TaskScheduler.Wrappers.Test
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("TaskShedulerWrapper_Dev2Task_Properties")]
+        [TestCategory("CannotParallelize")]
         public void Dev2Task_IsValidDev2Task()
         {
             var task = _taskService.GetTask("UnitTestTask");
