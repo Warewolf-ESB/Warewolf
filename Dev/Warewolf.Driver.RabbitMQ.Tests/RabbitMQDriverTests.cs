@@ -37,7 +37,6 @@ namespace Warewolf.Driver.RabbitMQ.Tests
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(RabbitMQDriverTests))]
-        [TestCategory("CannotParallelize")]
         public void RabbitMQSource_GivenSourceCreateNewConnection_Success()
         {
             //----------------------Arrange----------------------
@@ -77,7 +76,6 @@ namespace Warewolf.Driver.RabbitMQ.Tests
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(RabbitMQDriverTests))]
-        [TestCategory("CannotParallelize")]
         public void RabbitMQSource_Publish_Success()
         {
             //----------------------Arrange----------------------
