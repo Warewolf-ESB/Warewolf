@@ -1,4 +1,4 @@
-/*
+﻿/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
@@ -411,7 +411,6 @@ namespace Dev2.Tests.Activities.DsfWebGetRequestWithTimeoutActivityTests
         [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfWebGetRequestWithTimeoutActivity))]
-        [TestCategory("CannotParallelize")]
         public void DsfWebGetRequestWithTimeoutActivity_Execute_WithHeaders()
         {
             //------------Setup for test--------------------------
