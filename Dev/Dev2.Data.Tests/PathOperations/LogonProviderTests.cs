@@ -1,4 +1,4 @@
-﻿/*
+/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
@@ -25,10 +25,10 @@ namespace Dev2.Data.Tests.PathOperations
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory("LogonProvider")]
+        [TestCategory("CannotParallelize")]
         public void LogonProvider_Construct()
         {
             var provider = new LogonProvider();
-
             var ioPath = new Dev2ActivityIOPath(Interfaces.Enums.enActivityIOPathType.FileSystem, @"C:\", @".\LocalSchedulerAdmin", "987Sched#@!", false, null);
             provider.DoLogon(ioPath);
         }
