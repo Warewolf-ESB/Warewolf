@@ -599,7 +599,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         [ExpectedException(typeof(ArgumentNullException))]
         public void TestConstructorServerNull()
         {
@@ -818,7 +818,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         [TestMethod]
         [Timeout(100)]
-        public void TestRemoveChild()
+        public void EnvironmentViewModel_RemoveChild()
         {
             //arrange
             var child = new Mock<IExplorerItemViewModel>();
@@ -1198,7 +1198,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(500)]
+        [Timeout(2000)]
         public void TestCreateExplorerItemsSetsPermissions()
         {
             //arrange

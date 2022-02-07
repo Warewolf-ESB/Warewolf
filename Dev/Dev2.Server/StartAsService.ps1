@@ -95,42 +95,36 @@ if ($WarewolfServerProcess) {
 		}
 	}
 	if ($Coverage) {
-		$ServerBinFolderPath = Split-Path -Path "$BinPath" -Parent
-		if (!(Test-Path "$ServerBinFolderPath\JetBrains.dotCover.CommandLineTools\tools\dotCover.exe")) {
-			&"nuget.exe" install JetBrains.dotCover.CommandLineTools -ExcludeVersion -NonInteractive -OutputDirectory "$ServerBinFolderPath."
-		}
 		if (!(Test-Path "$PSScriptRoot\TestResults")) {
 			New-Item -ItemType Directory "$PSScriptRoot\TestResults"
 		}
-		$CoverageConfigPath = "$PSScriptRoot\TestResults\DotCover Runner.xml"
-		@"
-<AnalyseParams>
-    <TargetExecutable>$BinPath</TargetExecutable>
-    <Output>$PSScriptRoot\TestResults\DotCover.dcvr</Output>
-    <Scope>
-        <ScopeEntry>$ServerBinFolderPath\Warewolf*.dll</ScopeEntry>
-        <ScopeEntry>$ServerBinFolderPath\Warewolf*.exe</ScopeEntry>
-        <ScopeEntry>$ServerBinFolderPath\Dev2.*.dll</ScopeEntry>
-    </Scope>
-    <Filters>
-        <ExcludeFilters>
-            <FilterEntry>
-                <ModuleMask>*tests</ModuleMask>
-                <ModuleMask>*specs</ModuleMask>
-                <ModuleMask>*Tests</ModuleMask>
-                <ModuleMask>*Specs</ModuleMask>
-                <ModuleMask>Warewolf.UIBindingTests*</ModuleMask>
-            </FilterEntry>
-        </ExcludeFilters>
-        <AttributeFilters>
-            <AttributeFilterEntry>
-                <ClassMask>System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute</ClassMask>
-            </AttributeFilterEntry>
-        </AttributeFilters>
-    </Filters>
-</AnalyseParams>
-"@ | Out-File -FilePath $CoverageConfigPath
-		$BinPath = "\`"$ServerBinFolderPath\JetBrains.dotCover.CommandLineTools\tools\dotCover.exe\`" cover \`"$CoverageConfigPath\`" /LogFile=\`"$ServerBinFolderPath\TestResults\DotCover.log\`" --DisableNGen";
+		if (!(Test-Path "$PSScriptRoot\Microsoft.TestPlatform\tools\net451\Team Tools\Dynamic Code Coverage Tools\CodeCoverage.exe")) {
+			#Find NuGet
+			if ("$NuGet" -eq "" -or !(Test-Path "$NuGet" -ErrorAction SilentlyContinue)) {
+				$NuGetCommand = Get-Command NuGet -ErrorAction SilentlyContinue
+				if ($NuGetCommand) {
+					$NuGet = $NuGetCommand.Path
+				}
+			}
+			if (("$NuGet" -eq "" -or !(Test-Path "$NuGet" -ErrorAction SilentlyContinue)) -and (Test-Path "$env:windir")) {
+				wget "https://dist.nuget.org/win-x86-commandline/latest/nuget.exe" -OutFile "$env:windir\nuget.exe"
+				$NuGet = "$env:windir\nuget.exe"
+			}
+			if ("$NuGet" -eq "" -or !(Test-Path "$NuGet" -ErrorAction SilentlyContinue)) {
+				Write-Host NuGet not found. Download from: https://dist.nuget.org/win-x86-commandline/latest/nuget.exe to a directory in the PATH environment variable like c:\windows\nuget.exe. Or use the -NuGet switch.
+				sleep 10
+				exit 1
+			}
+			&"nuget.exe" "install" "Microsoft.TestPlatform" "-ExcludeVersion" "-NonInteractive" "-OutputDirectory" "."
+			if (!(Test-Path "$PSScriptRoot\Microsoft.TestPlatform\tools\net451\Team Tools\Dynamic Code Coverage Tools\CodeCoverage.exe")) {
+				Write-Error "Cannot coverage runner using nuget."
+				exit 1
+			}
+		}
+		if (Test-Path "$PSScriptRoot\TestResults\Snapshot.coverage") {
+			Remove-Item "$PSScriptRoot\TestResults\Snapshot.coverage"
+		}
+		$BinPath = "\`"$PSScriptRoot\Microsoft.TestPlatform\tools\net451\Team Tools\Dynamic Code Coverage Tools\CodeCoverage.exe\`" collect /output:\`"$PSScriptRoot\TestResults\Snapshot.coverage\`" \`"$BinPath\`"";
 	}
 	if (!($IsAnonymous)) {
 		Write-Host Starting Warewolf server as $Username
@@ -184,8 +178,12 @@ if ($NoExit.IsPresent) {
 	}
 } else {
 	$LoopCounter = 0
-	while (!(Test-Path "$PSScriptRoot\serverstarted" -ErrorAction SilentlyContinue) -and $LoopCounter++ -lt 30) {
+	$LoopCounterMax = 30
+	if ($Coverage) {
+		$LoopCounterMax = 60
+	}
+	while (!(Test-Path "$PSScriptRoot\serverstarted" -ErrorAction SilentlyContinue) -and $LoopCounter++ -lt $LoopCounterMax) {
 		Write-Host Still waiting for server to start...
-		Start-Sleep 6
+		Start-Sleep 5
 	}
 }

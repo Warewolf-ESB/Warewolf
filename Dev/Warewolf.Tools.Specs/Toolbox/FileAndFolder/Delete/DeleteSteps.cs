@@ -23,17 +23,9 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Delete
     [Binding]
     public class DeleteSteps : FileToolsBase
     {
-        readonly ScenarioContext scenarioContext;
-
         public DeleteSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
         {
-            if (scenarioContext == null)
-            {
-                throw new ArgumentNullException("scenarioContext");
-            }
-
-            this.scenarioContext = scenarioContext;
         }
 
         [When(@"the delete file tool is executed")]

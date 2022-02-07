@@ -59,7 +59,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 var constructorParams = serviceDef.Constructor.Inputs.Select(input => new ConstructorParameter() { Name = input.Name, Value = input.Value, TypeName = input.TypeName, EmptyToNull = input.EmptyToNull, IsRequired = input.IsRequired, ShortTypeName = Type.GetType(input.TypeName)?.FullName });
                 var res = new PluginService
                 {
-                    Constructor = new ServiceConstructor(serviceDef.Constructor.ConstructorName, constructorParams, null),
+                    Constructor = new ServiceConstructor(serviceDef.Constructor.ConstructorName, constructorParams),
                     Method = new ServiceMethod(serviceDef.Name, serviceDef.Name, parameters, null, output, serviceDef.Action.Method),
                     ResourceName = serviceDef.Name,
                     ResourceID = serviceDef.Id,

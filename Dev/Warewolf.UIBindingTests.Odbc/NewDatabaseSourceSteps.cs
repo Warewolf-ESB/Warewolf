@@ -28,9 +28,15 @@ namespace Warewolf.UIBindingTests.Odbc
     public class NewDatabaseSourceSteps
     {
         string loginFailedForUserTest = "Login failed for user 'test'";
+        static FeatureContext _featureContext;
+        static ScenarioContext _scenarioContext;
+
+        public NewDatabaseSourceSteps(ScenarioContext scenarioContext) => _scenarioContext = scenarioContext;
+        
         [BeforeFeature("DbSource")]
-        public static void SetupForSystem()
+        public static void SetupForSystem(FeatureContext featureContext)
         {
+            _featureContext = featureContext;
             Utils.SetupResourceDictionary();
             var manageDatabaseSourceControl = new ManageDatabaseSourceControl();
             var mockStudioUpdateManager = new Mock<IManageDatabaseSourceModel>();
@@ -44,56 +50,56 @@ namespace Warewolf.UIBindingTests.Odbc
             var manageDatabaseSourceViewModel = new ManageOdbcSourceViewModel(mockStudioUpdateManager.Object, task, mockEventAggregator.Object, new SynchronousAsyncWorker());
             manageDatabaseSourceControl.DataContext = manageDatabaseSourceViewModel;
             Utils.ShowTheViewForTesting(manageDatabaseSourceControl);
-            FeatureContext.Current.Add(Utils.ViewNameKey, manageDatabaseSourceControl);
-            FeatureContext.Current.Add(Utils.ViewModelNameKey, manageDatabaseSourceViewModel);
-            FeatureContext.Current.Add("updateManager", mockStudioUpdateManager);
-            FeatureContext.Current.Add("requestServiceNameViewModel", mockRequestServiceNameViewModel);
-            FeatureContext.Current.Add("externalProcessExecutor", mockExecutor);
+            _featureContext.Add(Utils.ViewNameKey, manageDatabaseSourceControl);
+            _featureContext.Add(Utils.ViewModelNameKey, manageDatabaseSourceViewModel);
+            _featureContext.Add("updateManager", mockStudioUpdateManager);
+            _featureContext.Add("requestServiceNameViewModel", mockRequestServiceNameViewModel);
+            _featureContext.Add("externalProcessExecutor", mockExecutor);
         }
 
         [BeforeScenario("ODBCSource")]
         public void SetupForDatabaseSource()
         {
-            var manageDatabaseSourceControl = FeatureContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
+            var manageDatabaseSourceControl = _featureContext.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             manageDatabaseSourceControl.SetDatabaseComboxBindingVisibility(Visibility.Collapsed);
-            ScenarioContext.Current.Add(Utils.ViewNameKey, manageDatabaseSourceControl);
-            ScenarioContext.Current.Add("updateManager", FeatureContext.Current.Get<Mock<IManageDatabaseSourceModel>>("updateManager"));
-            ScenarioContext.Current.Add("requestServiceNameViewModel", FeatureContext.Current.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel"));
-            ScenarioContext.Current.Add(Utils.ViewModelNameKey, FeatureContext.Current.Get<ManageOdbcSourceViewModel>(Utils.ViewModelNameKey));
+            _scenarioContext.Add(Utils.ViewNameKey, manageDatabaseSourceControl);
+            _scenarioContext.Add("updateManager", _featureContext.Get<Mock<IManageDatabaseSourceModel>>("updateManager"));
+            _scenarioContext.Add("requestServiceNameViewModel", _featureContext.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel"));
+            _scenarioContext.Add(Utils.ViewModelNameKey, _featureContext.Get<ManageOdbcSourceViewModel>(Utils.ViewModelNameKey));
         }
 
         [When(@"I click ""(.*)""")]
         public void WhenIClick(string ConectTo)
         {
-            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
+            var manageDatabaseSourceControl = _scenarioContext.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             manageDatabaseSourceControl.Test();
         }
 
         [Then(@"""(.*)"" tab is opened")]
         public void ThenTabIsOpened(string headerText)
         {
-            var viewModel = ScenarioContext.Current.Get<IDockAware>("viewModel");
+            var viewModel = _scenarioContext.Get<IDockAware>("viewModel");
             Assert.AreEqual(headerText, viewModel.Header);
         }
 
         [Then(@"title is ""(.*)""")]
         public void ThenTitleIs(string p0)
         {
-            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
+            var manageDatabaseSourceControl = _scenarioContext.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             Assert.AreEqual(manageDatabaseSourceControl.GetHeader(), p0);
         }
 
         [Then(@"""(.*)"" is the tab Header")]
         public void ThenIsTheTabHeader(string p0)
         {
-            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
+            var manageDatabaseSourceControl = _scenarioContext.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             Assert.AreEqual(manageDatabaseSourceControl.GetTabHeader(), p0);
         }
 
         [Given(@"I open New Database Source")]
         public void GivenIOpenNewDatabaseSource()
         {
-            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
+            var manageDatabaseSourceControl = _scenarioContext.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             Assert.IsNotNull(manageDatabaseSourceControl);
         }
 
@@ -101,8 +107,8 @@ namespace Warewolf.UIBindingTests.Odbc
         [When(@"I open ""(.*)""")]
         public void GivenIOpen(string name)
         {
-            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
-            var mock = FeatureContext.Current.Get<Mock<IManageDatabaseSourceModel>>("updateManager");
+            var manageDatabaseSourceControl = _scenarioContext.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
+            var mock = _featureContext.Get<Mock<IManageDatabaseSourceModel>>("updateManager");
             var upd = mock.Object;
             var dbsrc = new DbSourceDefinition
             {
@@ -113,7 +119,7 @@ namespace Warewolf.UIBindingTests.Odbc
             };
 
             mock.Setup(mo => mo.FetchDbSource(It.IsAny<Guid>())).Returns(dbsrc);
-            FeatureContext.Current["dbsrc"] = dbsrc;
+            _featureContext["dbsrc"] = dbsrc;
             var mockEventAggregator = new Mock<IEventAggregator>();
             var viewModel = new ManageOdbcSourceViewModel(upd, mockEventAggregator.Object, dbsrc, new SynchronousAsyncWorker());
             if (manageDatabaseSourceControl.DataContext is ManageOdbcSourceViewModel manageDatabaseSourceViewModel)
@@ -125,18 +131,18 @@ namespace Warewolf.UIBindingTests.Odbc
         [Given(@"Database ""(.*)"" is selected")]
         public void GivenDatabaseIsSelected(string dbName)
         {
-            var db = FeatureContext.Current.Get<IDbSource>("dbsrc");
+            var db = _featureContext.Get<IDbSource>("dbsrc");
             db.DbName = dbName;
-            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
+            var manageDatabaseSourceControl = _scenarioContext.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             manageDatabaseSourceControl.SelectDatabase(dbName);
         }
 
         [Then(@"Database ""(.*)"" is selected")]
         public void ThenDatabaseIsSelected(string dbName)
         {
-            var db = FeatureContext.Current.Get<IDbSource>("dbsrc");
+            var db = _featureContext.Get<IDbSource>("dbsrc");
             db.DbName = dbName;
-            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
+            var manageDatabaseSourceControl = _scenarioContext.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             manageDatabaseSourceControl.SelectDatabase(dbName);
         }
         
@@ -148,7 +154,7 @@ namespace Warewolf.UIBindingTests.Odbc
         {
             var expectedVisibility = String.Equals(visibility, "Collapsed", StringComparison.InvariantCultureIgnoreCase) ? Visibility.Collapsed : Visibility.Visible;
 
-            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
+            var manageDatabaseSourceControl = _scenarioContext.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             var databaseDropDownVisibility = manageDatabaseSourceControl.GetDatabaseDropDownVisibility();
             Assert.AreEqual(expectedVisibility, databaseDropDownVisibility);
         }
@@ -158,7 +164,7 @@ namespace Warewolf.UIBindingTests.Odbc
         [Then(@"""(.*)"" is ""(.*)""")]
         public void GivenIs(string controlName, string enabledString)
         {
-            Utils.CheckControlEnabled(controlName, enabledString, ScenarioContext.Current.Get<ICheckControlEnabledView>(Utils.ViewNameKey), Utils.ViewNameKey);
+            Utils.CheckControlEnabled(controlName, enabledString, _scenarioContext.Get<ICheckControlEnabledView>(Utils.ViewNameKey), Utils.ViewNameKey);
         }
 
         [Given(@"I select ""(.*)"" as Database")]
@@ -166,7 +172,7 @@ namespace Warewolf.UIBindingTests.Odbc
         [Then(@"I select ""(.*)"" as Database")]
         public void WhenISelectAsDatabase(string databaseName)
         {
-            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
+            var manageDatabaseSourceControl = _scenarioContext.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             manageDatabaseSourceControl.SelectDatabase(databaseName);
             var viewModel = (ManageOdbcSourceViewModel)manageDatabaseSourceControl.DataContext;
             Assert.AreEqual(databaseName, viewModel.DatabaseName);
@@ -175,19 +181,19 @@ namespace Warewolf.UIBindingTests.Odbc
         [When(@"I save the source")]
         public void WhenISaveTheSource()
         {
-            var mockRequestServiceNameViewModel = ScenarioContext.Current.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel");
+            var mockRequestServiceNameViewModel = _scenarioContext.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel");
             mockRequestServiceNameViewModel.Setup(model => model.ShowSaveDialog()).Verifiable();
-            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
+            var manageDatabaseSourceControl = _scenarioContext.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             manageDatabaseSourceControl.PerformSave();
         }
 
         [When(@"I save the source as ""(.*)""")]
         public void WhenISaveTheSourceAs(string name)
         {
-            var mockRequestServiceNameViewModel = ScenarioContext.Current.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel");
+            var mockRequestServiceNameViewModel = _scenarioContext.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel");
             mockRequestServiceNameViewModel.Setup(model => model.ShowSaveDialog()).Returns(MessageBoxResult.OK).Verifiable();
             mockRequestServiceNameViewModel.Setup(a => a.ResourceName).Returns(new ResourceName("", name));
-            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
+            var manageDatabaseSourceControl = _scenarioContext.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             manageDatabaseSourceControl.PerformSave();
         }
         
@@ -197,7 +203,7 @@ namespace Warewolf.UIBindingTests.Odbc
         {
             errorMessage = "Exception: " + loginFailedForUserTest + Environment.NewLine + Environment.NewLine +
                            "Inner Exception: " + loginFailedForUserTest;
-            var viewModel = ScenarioContext.Current.Get<ManageOdbcSourceViewModel>("viewModel");
+            var viewModel = _scenarioContext.Get<ManageOdbcSourceViewModel>("viewModel");
             Assert.AreEqual(errorMessage, viewModel.TestMessage);
         }
 
@@ -206,22 +212,22 @@ namespace Warewolf.UIBindingTests.Odbc
         [When(@"Test Connecton is ""(.*)""")]
         public void ThenTestConnectonIs(string successString)
         {
-            var mockUpdateManager = ScenarioContext.Current.Get<Mock<IManageDatabaseSourceModel>>("updateManager");
+            var mockUpdateManager = _scenarioContext.Get<Mock<IManageDatabaseSourceModel>>("updateManager");
             var isSuccess = String.Equals(successString, "Successful", StringComparison.InvariantCultureIgnoreCase);
             var isLongRunning = String.Equals(successString, "Long Running", StringComparison.InvariantCultureIgnoreCase);
             if (isSuccess)
             {
                 mockUpdateManager.Setup(manager => manager.TestDbConnection(It.IsAny<IDbSource>()))
                     .Returns(new List<string> { "Dev2TestingDB" });
-                var databaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
+                var databaseSourceControl = _scenarioContext.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
                 databaseSourceControl.SetDatabaseComboxBindingVisibility(Visibility.Visible);
             }
             else if (isLongRunning)
             {
-                var viewModel = ScenarioContext.Current.Get<ManageOdbcSourceViewModel>("viewModel");
+                var viewModel = _scenarioContext.Get<ManageOdbcSourceViewModel>("viewModel");
                 mockUpdateManager.Setup(manager => manager.TestDbConnection(It.IsAny<IDbSource>()));
                 viewModel.AsyncWorker = new AsyncWorker();
-                var databaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
+                var databaseSourceControl = _scenarioContext.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
                 databaseSourceControl.SetDatabaseComboxBindingVisibility(Visibility.Hidden);
             }
             else
@@ -229,7 +235,7 @@ namespace Warewolf.UIBindingTests.Odbc
                 mockUpdateManager.Setup(manager => manager.TestDbConnection(It.IsAny<IDbSource>()))
                     .Throws(new WarewolfTestException(loginFailedForUserTest, new Exception(loginFailedForUserTest)));
             }
-            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
+            var manageDatabaseSourceControl = _scenarioContext.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             manageDatabaseSourceControl.PerformTestConnection();
             Thread.Sleep(1000);
         }
@@ -237,15 +243,15 @@ namespace Warewolf.UIBindingTests.Odbc
         [When(@"I Cancel the Test")]
         public void WhenICancelTheTest()
         {
-            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
+            var manageDatabaseSourceControl = _scenarioContext.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             manageDatabaseSourceControl.CancelTest();
         }
 
         [Then(@"the validation message as ""(.*)""")]
         public void ThenTheValidationMessageAs(string message)
         {
-            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
-            var viewModel = ScenarioContext.Current.Get<ManageOdbcSourceViewModel>("viewModel");
+            var manageDatabaseSourceControl = _scenarioContext.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
+            var viewModel = _scenarioContext.Get<ManageOdbcSourceViewModel>("viewModel");
             var errorMessageFromControl = manageDatabaseSourceControl.GetErrorMessage();
             var errorMessageOnViewModel = viewModel.TestMessage;
             var isErrorMessageOnControl = errorMessageFromControl.Equals(message, StringComparison.OrdinalIgnoreCase);
@@ -257,7 +263,7 @@ namespace Warewolf.UIBindingTests.Odbc
         [Then(@"the save dialog is opened")]
         public void ThenTheSaveDialogIsOpened()
         {
-            var mockRequestServiceNameViewModel = ScenarioContext.Current.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel");
+            var mockRequestServiceNameViewModel = _scenarioContext.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel");
             mockRequestServiceNameViewModel.Verify();
         }
 
@@ -269,15 +275,15 @@ namespace Warewolf.UIBindingTests.Odbc
 
         static void DisposeResources()
         {
-            var mockUpdateManager = ScenarioContext.Current.Get<Mock<IManageDatabaseSourceModel>>("updateManager");
-            var mockRequestServiceNameViewModel = ScenarioContext.Current.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel");
+            var mockUpdateManager = _scenarioContext.Get<Mock<IManageDatabaseSourceModel>>("updateManager");
+            var mockRequestServiceNameViewModel = _scenarioContext.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel");
             var mockEventAggregator = new Mock<IEventAggregator>();
             if (mockRequestServiceNameViewModel != null && mockUpdateManager != null)
             {
                 var task = new Task<IRequestServiceNameViewModel>(() => mockRequestServiceNameViewModel.Object);
                 task.Start();
                 var viewModel = new ManageOdbcSourceViewModel(mockUpdateManager.Object, task, mockEventAggregator.Object, new SynchronousAsyncWorker());
-                var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
+                var manageDatabaseSourceControl = _scenarioContext.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
                 if (manageDatabaseSourceControl != null)
                 {
                     if (manageDatabaseSourceControl.DataContext is ManageOdbcSourceViewModel manageDatabaseSourceViewModel)
@@ -293,7 +299,7 @@ namespace Warewolf.UIBindingTests.Odbc
         public static void FeaureCleanup()
         {
             DisposeResources();
-            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
+            var manageDatabaseSourceControl = _scenarioContext.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             Utils.CloseViewAfterTesting(manageDatabaseSourceControl);
         }
 
@@ -301,7 +307,7 @@ namespace Warewolf.UIBindingTests.Odbc
         public void ThenDatabaseDropdownIs(string p0)
         {
             var expectedVisibility = String.Equals(p0, "Collapsed", StringComparison.InvariantCultureIgnoreCase) ? Visibility.Collapsed : Visibility.Visible;
-            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
+            var manageDatabaseSourceControl = _scenarioContext.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             var databaseDropDownVisibility = manageDatabaseSourceControl.GetDatabaseDropDownVisibility();
             Assert.AreEqual(expectedVisibility, databaseDropDownVisibility);
         }

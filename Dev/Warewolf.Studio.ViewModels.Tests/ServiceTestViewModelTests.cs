@@ -2262,7 +2262,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(5000)]
+        [Timeout(30000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(ServiceTestViewModel))]
         public void ServiceTestViewModel_ItemSelectedAction_GivenDebugStateGate_With_ChildActivity_ShouldHaveAddServiceTestStep_AND_HaveVariableAndValue()
@@ -2578,7 +2578,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(250)]
+        [Timeout(1000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory(nameof(ServiceTestViewModel))]
         public void ServiceTestViewModel_ItemSelected_GivenSelectedItemSelectAndApply_Default_ShouldHaveAddServiceTestStepShouldHaveCaseOptionsWithDefaultAtTop()

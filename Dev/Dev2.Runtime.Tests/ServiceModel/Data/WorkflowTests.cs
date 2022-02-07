@@ -1,4 +1,4 @@
-﻿/*
+/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
@@ -26,6 +26,17 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
     [TestClass]
     public class WorkflowTests
     {
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(Workflow))]
+        public void Workflow_WorkflowNodes_IsNull_ShouldNotAddedAsWorkflowNode()
+        {
+            var sut = new Workflow();
+            var nodes = sut.WorkflowNodes;
+
+            Assert.AreEqual(0, nodes.Count);
+        }
+
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(Workflow))]
@@ -71,7 +82,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
         }
 
         [TestMethod]
-        [Timeout(500)]
+        [Timeout(1000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(Workflow))]
         public void Workflow_WorkflowNodes_FlowStep_WITH_ChildNode_ShouldAddChildNode()

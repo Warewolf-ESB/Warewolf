@@ -128,7 +128,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         [TestMethod]
         [Timeout(100)]
-        public void TestManageDatabaseSourceViewModelUpdateManagerThrowsExceptionWithInnerException()
+        public void TestManageSqlServerDatabaseSourceViewModelUpdateManagerThrowsExceptionWithInnerException()
         {
             //arrange
             var expectedExceptionMessage = "someExceptionMessage";
@@ -150,7 +150,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         [TestMethod]
         [Timeout(100)]
-        public void TestManageDatabaseSourceViewModelUpdateManagerThrowsException()
+        public void TestManageSqlServerDatabaseSourceViewModelUpdateManagerThrowsException()
         {
             //arrange
             var expectedExceptionMessage = "someExceptionMessage";
@@ -196,7 +196,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         [TestMethod]
         [Timeout(100)]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void TestManageDatabaseSourceViewModelRequestServiceNameViewModelNull()
+        public void TestManageSqlServerDatabaseSourceViewModelRequestServiceNameViewModelNull()
         {
             new ManageSqlServerSourceViewModel(
                  _updateManagerMock.Object,
@@ -206,9 +206,9 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void TestManageDatabaseSourceViewModelDbSourceNull()
+        public void TestManageSqlServerDatabaseSourceViewModelDbSourceNull()
         {
             new ManageSqlServerSourceViewModel(
                  _updateManagerMock.Object,

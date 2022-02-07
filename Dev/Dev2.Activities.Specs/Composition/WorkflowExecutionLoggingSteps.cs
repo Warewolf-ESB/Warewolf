@@ -93,8 +93,8 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"workflow execution entry point detailed logs are created and logged")]
         public void GivenWorkflowExecutionEntryPointDetailedLogsAreCreatedAndLogged()
         {
-            Given(@"an existing workflow ""Hello World""");
-            When(@"a ""Hello World"" workflow request is received");
+            GivenAnExistingWorkflow("Hello World");
+            WhenAWorkflowRequestIsReceived("Hello World");
 
             _scenarioContext.TryGetValue<bool>("expectException", out bool expectException);
             var table = new Table("key", "value");
@@ -107,7 +107,7 @@ namespace Dev2.Activities.Specs.Composition
                 table.AddRow("DsfDecision", "If [[Name]] <> (Not Equal)");
             }
 
-            Then(@"a detailed entry log is created", table);
+            ThenADetailedLogEntryIsCreated(table);
         }
 
         [Given(@"a workflow stops on error has no logs")]

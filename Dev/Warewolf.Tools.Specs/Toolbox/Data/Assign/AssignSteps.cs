@@ -24,17 +24,9 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Assign
     [Binding]
     public class AssignSteps : RecordSetBases
     {
-        readonly ScenarioContext scenarioContext;
-
         public AssignSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
         {
-            if (scenarioContext == null)
-            {
-                throw new ArgumentNullException("scenarioContext");
-            }
-
-            this.scenarioContext = scenarioContext;
         }
 
         protected override void BuildDataList()

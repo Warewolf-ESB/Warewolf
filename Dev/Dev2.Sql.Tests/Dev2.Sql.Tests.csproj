@@ -60,9 +60,6 @@
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
-    <AdditionalFiles Include="..\SonarQube\SonarLint.xml">
-      <Visible>False</Visible>
-    </AdditionalFiles>
     <Compile Include="ExtensiosnTests.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="OracleServerTests.cs" />

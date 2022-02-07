@@ -27,6 +27,7 @@ namespace Warewolf.UIBindingTests.WebSource
     {
         readonly ScenarioContext scenarioContext;
         string illegalCharactersInPath = "Illegal characters in path.";
+        static FeatureContext _featureContext;
 
         public WebSourceSteps(ScenarioContext scenarioContext)
         {
@@ -39,8 +40,9 @@ namespace Warewolf.UIBindingTests.WebSource
         }
 
         [BeforeFeature("WebSource")]
-        public static void SetupForSystem()
+        public static void SetupForSystem(FeatureContext featureContext)
         {
+            _featureContext = featureContext;
             Utils.SetupResourceDictionary();
             var manageWebserviceSourceControl = new ManageWebserviceSourceControl();
             var mockStudioUpdateManager = new Mock<IManageWebServiceSourceModel>();
@@ -53,21 +55,21 @@ namespace Warewolf.UIBindingTests.WebSource
             var manageWebserviceSourceViewModel = new ManageWebserviceSourceViewModel(mockStudioUpdateManager.Object, task, mockEventAggregator.Object, new SynchronousAsyncWorker(), mockExecutor.Object);
             manageWebserviceSourceControl.DataContext = manageWebserviceSourceViewModel;
             Utils.ShowTheViewForTesting(manageWebserviceSourceControl);
-            FeatureContext.Current.Add(Utils.ViewNameKey, manageWebserviceSourceControl);
-            FeatureContext.Current.Add(Utils.ViewModelNameKey, manageWebserviceSourceViewModel);
-            FeatureContext.Current.Add("updateManager", mockStudioUpdateManager);
-            FeatureContext.Current.Add("requestServiceNameViewModel", mockRequestServiceNameViewModel);
-            FeatureContext.Current.Add("externalProcessExecutor", mockExecutor);
+            _featureContext.Add(Utils.ViewNameKey, manageWebserviceSourceControl);
+            _featureContext.Add(Utils.ViewModelNameKey, manageWebserviceSourceViewModel);
+            _featureContext.Add("updateManager", mockStudioUpdateManager);
+            _featureContext.Add("requestServiceNameViewModel", mockRequestServiceNameViewModel);
+            _featureContext.Add("externalProcessExecutor", mockExecutor);
         }
 
         [BeforeScenario("WebSource")]
         public void SetupForWebSource()
         {
-            scenarioContext.Add(Utils.ViewNameKey, FeatureContext.Current.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey));
-            scenarioContext.Add("updateManager", FeatureContext.Current.Get<Mock<IManageWebServiceSourceModel>>("updateManager"));
-            scenarioContext.Add("requestServiceNameViewModel", FeatureContext.Current.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel"));
-            scenarioContext.Add("externalProcessExecutor", FeatureContext.Current.Get<Mock<IExternalProcessExecutor>>("externalProcessExecutor"));
-            scenarioContext.Add(Utils.ViewModelNameKey, FeatureContext.Current.Get<ManageWebserviceSourceViewModel>(Utils.ViewModelNameKey));
+            scenarioContext.Add(Utils.ViewNameKey, _featureContext.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey));
+            scenarioContext.Add("updateManager", _featureContext.Get<Mock<IManageWebServiceSourceModel>>("updateManager"));
+            scenarioContext.Add("requestServiceNameViewModel", _featureContext.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel"));
+            scenarioContext.Add("externalProcessExecutor", _featureContext.Get<Mock<IExternalProcessExecutor>>("externalProcessExecutor"));
+            scenarioContext.Add(Utils.ViewModelNameKey, _featureContext.Get<ManageWebserviceSourceViewModel>(Utils.ViewModelNameKey));
         }
 
         [Then(@"""(.*)"" tab is opened")]
@@ -331,7 +333,7 @@ namespace Warewolf.UIBindingTests.WebSource
             errorMessage = "Exception: " + illegalCharactersInPath + Environment.NewLine + Environment.NewLine +
                            "Inner Exception: " + illegalCharactersInPath;
 
-            var viewModel = ScenarioContext.Current.Get<ManageWebserviceSourceViewModel>("viewModel");
+            var viewModel = scenarioContext.Get<ManageWebserviceSourceViewModel>("viewModel");
             Assert.AreEqual(errorMessage, viewModel.TestMessage);
         }
 
@@ -428,10 +430,10 @@ namespace Warewolf.UIBindingTests.WebSource
             var viewModel = new ManageWebserviceSourceViewModel(mockUpdateManager.Object, task, mockEventAggregator.Object, new SynchronousAsyncWorker(), mockExecutor.Object);
             var manageWebserviceSourceControl = scenarioContext.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
             manageWebserviceSourceControl.DataContext = viewModel;
-            FeatureContext.Current.Remove("viewModel");
-            FeatureContext.Current.Add("viewModel", viewModel);
-            FeatureContext.Current.Remove("externalProcessExecutor");
-            FeatureContext.Current.Add("externalProcessExecutor", mockExecutor);
+            _featureContext.Remove("viewModel");
+            _featureContext.Add("viewModel", viewModel);
+            _featureContext.Remove("externalProcessExecutor");
+            _featureContext.Add("externalProcessExecutor", mockExecutor);
         }
     }
 }

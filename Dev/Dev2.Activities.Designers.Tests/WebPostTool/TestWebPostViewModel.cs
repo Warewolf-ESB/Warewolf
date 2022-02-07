@@ -18,7 +18,7 @@ using Moq;
 using TestingDotnetDllCascading;
 using Warewolf.Core;
 using Warewolf.Studio.ViewModels;
-
+#pragma warning disable 618
 
 namespace Dev2.Activities.Designers.Tests.WebPostTool
 {
