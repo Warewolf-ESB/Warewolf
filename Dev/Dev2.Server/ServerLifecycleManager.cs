@@ -40,12 +40,15 @@ using Warewolf.Auditing;
 using Warewolf.Common.NetStandard20;
 using Warewolf.Interfaces.Auditing;
 using Dev2.Services.Security.MoqInstallerActions;
+using Warewolf.Streams;
 using Newtonsoft.Json;
 using Warewolf.Usage;
 using JsonSerializer = Warewolf.Streams.JsonSerializer;
 using System.Diagnostics;
 using Dev2.Runtime.Subscription;
 using Warewolf.Execution;
+using Dev2.Runtime.Services.Interfaces;
+using Dev2.Runtime.Services.ESB.Management.Services;
 
 namespace Dev2
 {
@@ -77,6 +80,8 @@ namespace Dev2
         public ExecutionLogger.IExecutionLoggerFactory LoggerFactory { get; set; }
         public IUsageTrackerWrapper UsageTracker { get; set; }
         public UsageLogger UsageLogger { get; set; }
+        public ISystemManagementInformationFactory  SystemManagementInformationFactory { get; set; }
+
 
         public static StartupConfiguration GetStartupConfiguration(IServerEnvironmentPreparer serverEnvironmentPreparer)
         {
@@ -85,6 +90,7 @@ namespace Dev2
             var childProcessTracker = new ChildProcessTrackerWrapper();
             var processFactory = new ProcessWrapperFactory();
             var usageTracker = new UsageTrackerWrapper();
+
             return new StartupConfiguration
             {
                 ServerEnvironmentPreparer = serverEnvironmentPreparer,
@@ -103,8 +109,9 @@ namespace Dev2
                 LoggerFactory = new ExecutionLogger.ExecutionLoggerFactory(),
                 SystemInformationHelper = new GetSystemInformationHelper(),
                 UsageTracker = usageTracker,
-                UsageLogger = new UsageLogger(TimeSpan.FromHours(2).TotalMilliseconds, usageTracker, EnvironmentVariables.PersistencePath)
-            };
+                UsageLogger = new UsageLogger(TimeSpan.FromHours(2).TotalMilliseconds, usageTracker, EnvironmentVariables.PersistencePath),
+                SystemManagementInformationFactory = new SystemManagementInformationFactory()
+        };
         }
     }
 
@@ -136,7 +143,7 @@ namespace Dev2
         private readonly IGetSystemInformation _systemInformationHelper;
         private ISubscriptionProvider _subscriptionDataInstance;
         private readonly IUsageTrackerWrapper _usageTrackerWrapper;
-
+        private readonly ISystemManagementInformationFactory _systemManagementInformationFactory;
         
         public ServerLifecycleManager(IServerEnvironmentPreparer serverEnvironmentPreparer)
             : this(StartupConfiguration.GetStartupConfiguration(serverEnvironmentPreparer))
@@ -174,9 +181,10 @@ namespace Dev2
             _webSocketPool = startupConfiguration.WebSocketPool;
             _loggerFactory = startupConfiguration.LoggerFactory;
             _systemInformationHelper = startupConfiguration.SystemInformationHelper;
+            _systemManagementInformationFactory = startupConfiguration.SystemManagementInformationFactory;
 
             SecurityIdentityFactory.Set(startupConfiguration.SecurityIdentityFactory);
-            
+
         }
 
         private static void SetApplicationDirectory()
@@ -319,13 +327,10 @@ namespace Dev2
 
         int GetNumberOfCores()
         {
-            var coreCount = 0;
-            foreach(var item in new ManagementObjectSearcher("Select * from Win32_Processor").Get())
-            {
-                coreCount += int.Parse(item["NumberOfCores"].ToString());
-            }
+            var systemManagementInformationWrapper = _systemManagementInformationFactory.GetNumberOfCores();
+            var getSystemManagementInformation = systemManagementInformationWrapper.GetNumberOfCores();
 
-            return coreCount;
+            return getSystemManagementInformation.GetNumberOfCores();
         }
 
         public void TrackUsage(UsageType usageType, IExecutionLogPublisher logger)
