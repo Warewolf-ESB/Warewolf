@@ -133,9 +133,9 @@
                                   Content="Include Environment Variables"
                                   Margin="-6,0,0,0"
                                   IsChecked="{Binding IncludeEnvironmentVariable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                  ToolTip="{x:Static languages:Tooltips.LoggingViewAuditsFilePathToolTip}">
+                                  ToolTip="{x:Static languages:Tooltips.IncludeEnvironmentVariableToolTip}">
                             <i:Interaction.Behaviors>
-                                <core:HelpSetter Text="{x:Static languages:HelpText.LoggingViewAuditsFilePathHelpText}"
+                                <core:HelpSetter Text="{x:Static languages:HelpText.IncludeEnvironmentVariableHelpText}"
                                                  DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                             </i:Interaction.Behaviors>
                         </CheckBox>
