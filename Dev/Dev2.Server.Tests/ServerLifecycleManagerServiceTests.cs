@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2022 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -35,6 +35,7 @@ using Warewolf.Usage;
 using WarewolfCOMIPC.Client;
 using Warewolf.Testing;
 using System.Management;
+using Dev2.Runtime.Services.Interfaces;
 
 namespace Dev2.Server.Tests
 {
@@ -160,7 +161,10 @@ namespace Dev2.Server.Tests
             var mockSystemInformation = new Mock<IGetSystemInformation>();
             var mockExecutionLoggerFactory = new Mock<ExecutionLogger.IExecutionLoggerFactory>();
             var mockExecutionLogPublisher = new Mock<IExecutionLogPublisher>();
-
+            var mockGetSystemManagementInformation = new Mock<IGetSystemManagementInformation>();
+            var mockSystemManagementInformationWrapper = new Mock<ISystemManagementInformationWrapper>();
+            var mockSystemManagementInformationFactory = new Mock<ISystemManagementInformationFactory>();
+            
             var items = new List<IServerLifecycleWorker> {mockServerLifeCycleWorker.Object};
 
             EnvironmentVariables.IsServerOnline = true;
@@ -185,6 +189,9 @@ namespace Dev2.Server.Tests
             mockUsageTracker.Setup(o => o.TrackEvent(It.IsAny<string>(), It.IsAny<UsageType>(), It.IsAny<string>())).Returns(UsageDataResult.internalError);
             var persistencePath = EnvironmentVariablesForTesting.PersistencePathForTests;
 
+            mockSystemManagementInformationWrapper.Setup(o => o.GetNumberOfCores()).Returns(mockGetSystemManagementInformation.Object);
+            mockSystemManagementInformationFactory.Setup(o => o.GetNumberOfCores()).Returns(mockSystemManagementInformationWrapper.Object);
+
             //------------------------Act----------------------------
             var config = new StartupConfiguration
             {
@@ -203,7 +210,8 @@ namespace Dev2.Server.Tests
                 SystemInformationHelper = mockSystemInformation.Object,
                 LoggerFactory = mockExecutionLoggerFactory.Object,
                 UsageTracker = mockUsageTracker.Object,
-                UsageLogger = new UsageLoggerForTests(20000, mockUsageTracker.Object, EnvironmentVariablesForTesting.PersistencePathForTests)
+                UsageLogger = new UsageLoggerForTests(20000, mockUsageTracker.Object, EnvironmentVariablesForTesting.PersistencePathForTests),
+                SystemManagementInformationFactory = mockSystemManagementInformationFactory.Object
             };
             using (var serverLifeCycleManager = new ServerLifecycleManager(config))
             {
@@ -222,6 +230,8 @@ namespace Dev2.Server.Tests
             //this test will fail when the number of cores are not equal to 6
             //thus, it could be a better approach to calculate this each time
             var numOfCores = SystemInfomationForTesting.GetNumberOfCores();
+            Assert.AreEqual(numOfCores, 6);
+
             var processorCount = Environment.ProcessorCount;
             var subscriptionDataInstance = SubscriptionProvider.Instance;
             var usageInfo = $@"{{'SessionId':'{ServerStats.SessionId}','SubscriptionId':null,'PlanId':null,'Status':0,'VersionNo':'1.1.1.1','IPAddress':null,'ProcessorCount':{processorCount},'NumberOfCores':{numOfCores},'OSType':null,'MachineName':null,'Region':null,'Executions':0".Replace("'", "\"");
@@ -1173,15 +1183,13 @@ namespace Dev2.Server.Tests
         //or this object can be added to the Warewolf.Testing Project and further extended for testing any user system related information for testing
         public static class SystemInfomationForTesting
         {
+            private static readonly Mock<IGetSystemManagementInformation> mockGetSystemManagementInformation = new Mock<IGetSystemManagementInformation>();
+
             public static int GetNumberOfCores()
             {
-                var coreCount = 0;
-                foreach (var item in new ManagementObjectSearcher("Select * from Win32_Processor  ").Get())
-                {
-                    coreCount += int.Parse(item["NumberOfCores"].ToString());
-                }
+                mockGetSystemManagementInformation.Setup(o => o.GetNumberOfCores()).Returns(6);
 
-                return coreCount;
+                return mockGetSystemManagementInformation.Object.GetNumberOfCores();
             }
         }
     }

@@ -93,6 +93,9 @@
     <Compile Include="ESB\Management\Services\GetExecutionHistory.cs" />
     <Compile Include="ESB\Management\Services\FindOptions.cs" />
     <Compile Include="ESB\Management\Services\FetchTriggerQueues.cs" />
+    <Compile Include="ESB\Management\Services\GetSystemManagementInformation.cs" />
+    <Compile Include="ESB\Management\Services\ManagementObjectSearcherFactory.cs" />
+    <Compile Include="ESB\Management\Services\SystemManagementInformationWrapper.cs" />
     <Compile Include="ESB\Management\Services\PersistenceSettingsRead.cs" />
     <Compile Include="ESB\Management\Services\SaveAuditingSettings.cs" />
     <Compile Include="ESB\Management\Services\SaveSubscriptionData.cs" />
@@ -101,6 +104,7 @@
     <Compile Include="ESB\Management\Services\SaveElasticsearchSource.cs" />
     <Compile Include="ESB\Management\Services\SaveTriggerQueueService.cs" />
     <Compile Include="ESB\Management\Services\SaveTriggers.cs" />
+    <Compile Include="ESB\Management\Services\SystemManagementInformationFactory.cs" />
     <Compile Include="ESB\Management\Services\TestElasticsearchSource.cs" />
     <Compile Include="ESB\Management\Services\TestRedisSource.cs" />
     <Compile Include="ESB\Management\Services\WorkflowResume.cs" />
@@ -115,6 +119,7 @@
     <Compile Include="Hosting\TriggersCatalog.cs" />
     <Compile Include="IDbSources.cs" />
     <Compile Include="Interfaces\IConnections.cs" />
+    <Compile Include="Interfaces\IGetSystemManagementInformation.cs" />
     <Compile Include="Interfaces\IHubFactory.cs" />
     <AdditionalFiles Include="..\SonarQube\SonarLint.xml">
       <Visible>False</Visible>
@@ -252,6 +257,7 @@
     <Compile Include="IEsbExecutionContainer.cs" />
     <Compile Include="IExecutionManager.cs" />
     <Compile Include="Interfaces\IEsbManagementServiceLocator.cs" />
+    <Compile Include="Interfaces\IManagementObjectSearcherFactory.cs" />
     <Compile Include="Interfaces\IPluginBroker.cs" />
     <Compile Include="Interfaces\IResourceCatalog.cs" />
     <Compile Include="Interfaces\IResourceCopyProvider.cs" />
@@ -262,6 +268,8 @@
     <Compile Include="Interfaces\IResourceSaveProvider.cs" />
     <Compile Include="Interfaces\IResourceSyncProvider.cs" />
     <Compile Include="Interfaces\IResourceWorkspaceProvider.cs" />
+    <Compile Include="Interfaces\ISystemManagementInformationFactory.cs" />
+    <Compile Include="Interfaces\ISystemManagementInformationWrapper.cs" />
     <Compile Include="Interfaces\IWcfProxyService.cs" />
     <Compile Include="Diagnostics\DatabaseValidationResult.cs" />
     <Compile Include="Diagnostics\ExceptionManager.cs" />
