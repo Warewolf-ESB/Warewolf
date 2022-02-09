@@ -21,7 +21,7 @@ namespace Warewolf.Data
         {
             var equals = base.Equals(other);
             equals &= string.Equals(Endpoint, other.Endpoint, StringComparison.InvariantCultureIgnoreCase);
-            equals &= Equals(IncludeEnvironmentVariable, other.IncludeEnvironmentVariable);
+            equals &= IncludeEnvironmentVariable.Equals(other.IncludeEnvironmentVariable);
             return equals;
         }
     }
