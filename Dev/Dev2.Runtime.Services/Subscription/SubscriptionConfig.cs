@@ -13,6 +13,7 @@ using System;
 using System.Collections.Specialized;
 using System.Configuration;
 using System.IO;
+using System.Security.Cryptography;
 using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Services.Security;
@@ -63,13 +64,83 @@ namespace Dev2.Runtime.Subscription
 
             if(settings["SubscriptionSiteName"] != "" || settings["SubscriptionKey"] != "")
             {
-                SubscriptionKey = DecryptKey(settings["SubscriptionKey"]);
-                SubscriptionSiteName = DecryptKey(settings["SubscriptionSiteName"]);
-                CustomerId = DecryptKey(settings["CustomerId"]);
-                PlanId = DecryptKey(settings["PlanId"]);
-                SubscriptionId = DecryptKey(settings["SubscriptionId"]);
-                Status = DecryptKey(settings["Status"]);
-                StopExecutions = bool.Parse(DecryptKey(settings["StopExecutions"]));
+                var encryptionRequired = false;
+                if (IsEncrypted(settings["SubscriptionKey"]))
+                {
+                    SubscriptionKey = DecryptKey(settings["SubscriptionKey"]);
+                }
+                else
+                {
+                    SubscriptionKey = settings["SubscriptionKey"];
+                    encryptionRequired = true;
+                }
+                if (IsEncrypted(settings["SubscriptionSiteName"]))
+                {
+                    SubscriptionSiteName = DecryptKey(settings["SubscriptionSiteName"]);
+                }
+                else
+                {
+                    SubscriptionSiteName = settings["SubscriptionSiteName"];
+                    encryptionRequired = true;
+                }
+                if (IsEncrypted(settings["CustomerId"]))
+                {
+                    CustomerId = DecryptKey(settings["CustomerId"]);
+                }
+                else
+                {
+                    CustomerId = settings["CustomerId"];
+                    encryptionRequired = true;
+                }
+                if (IsEncrypted(settings["PlanId"]))
+                {
+                    PlanId = DecryptKey(settings["PlanId"]);
+                }
+                else
+                {
+                    PlanId = settings["PlanId"];
+                    encryptionRequired = true;
+                }
+                if (IsEncrypted(settings["SubscriptionId"]))
+                {
+                    SubscriptionId = DecryptKey(settings["SubscriptionId"]);
+                }
+                else
+                {
+                    SubscriptionId = settings["SubscriptionId"];
+                    encryptionRequired = true;
+                }
+                if (IsEncrypted(settings["Status"]))
+                {
+                    Status = DecryptKey(settings["Status"]);
+                }
+                else
+                {
+                    Status = settings["Status"];
+                    encryptionRequired = true;
+                }
+                if (IsEncrypted(settings["StopExecutions"]))
+                {
+                    StopExecutions = bool.Parse(DecryptKey(settings["StopExecutions"]));
+                }
+                else
+                {
+                    StopExecutions = bool.Parse(settings["StopExecutions"]);
+                    encryptionRequired = true;
+                }
+                if (encryptionRequired)
+                {
+                    SaveConfig(new NameValueCollection
+                    {
+                        ["CustomerId"] = SecurityEncryption.Encrypt(CustomerId),
+                        ["SubscriptionId"] = SecurityEncryption.Encrypt(SubscriptionId),
+                        ["Status"] = SecurityEncryption.Encrypt(Status),
+                        ["PlanId"] = SecurityEncryption.Encrypt(PlanId),
+                        ["SubscriptionKey"] = SecurityEncryption.Encrypt(SubscriptionKey),
+                        ["SubscriptionSiteName"] = SecurityEncryption.Encrypt(SubscriptionSiteName),
+                        ["StopExecutions"] = SecurityEncryption.Encrypt(StopExecutions.ToString())
+                    });
+                }
             }
             else
             {
@@ -174,6 +245,20 @@ namespace Dev2.Runtime.Subscription
         public static string DecryptKey(string base64String)
         {
             return SecurityEncryption.Decrypt(base64String).TrimEnd('\0');
+        }
+        
+        public static bool IsEncrypted(string base64String) {
+            try{
+                DecryptKey(base64String);
+                return true;
+            }
+            catch(FormatException exception){
+                // Handle the exception
+            }
+            catch(CryptographicException exception){
+                // Handle the exception
+            }
+            return false;
         }
 
         public static NameValueCollection CreateSettings(
