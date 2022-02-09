@@ -987,7 +987,7 @@ namespace Warewolf.Studio.ViewModels
                 {
                     AddSequence(act as DsfSequenceActivity, testStep, testStep.Children);
                 }
-                if (act.GetType() == typeof(GateActivity))
+                else if (act.GetType() == typeof(GateActivity))
                 {
                     AddGate(act as GateActivity, testStep, testStep.Children);
                 }
@@ -1002,7 +1002,7 @@ namespace Warewolf.Studio.ViewModels
                 {
                     AddChildActivity(act2, testStep);
                 }
-                if (activity.GetType() == typeof(DsfForEachActivity))
+                else if (activity.GetType() == typeof(DsfForEachActivity))
                 {
                     AddForEach(activity as DsfForEachActivity, testStep, testStep.Children);
                 }
