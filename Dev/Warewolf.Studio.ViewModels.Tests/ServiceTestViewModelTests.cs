@@ -964,7 +964,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(500)]
+        [Timeout(1000)]
         [Owner("Hagashen Naidu")]
         [TestCategory(nameof(ServiceTestViewModel))]
         public void ServiceTestViewModel_Save_WithTests_ShouldCallSaveTestOnResourceModel()
