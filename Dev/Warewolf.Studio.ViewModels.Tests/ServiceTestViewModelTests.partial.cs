@@ -1302,9 +1302,10 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             
             var parameters = new object[] { dotNetDllActivity, serviceTestStep, collection };
-            methodInfo.Invoke(testFrameworkViewModel, parameters);
+            var sdf = methodInfo.Invoke(testFrameworkViewModel, parameters);
             //---------------Test Result -----------------------
-            Assert.AreEqual(3, serviceTestStep.Children.Count);
+            Assert.IsNotNull(collection);
+            Assert.AreEqual(3, collection[1].Children.Count);
 
         }
 
