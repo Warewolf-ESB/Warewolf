@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2022 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -122,13 +122,13 @@ namespace Dev2.Common.Tests
             var data1 = new AuditingSettingsData();
             var data2 = new AuditingSettingsData();
 
-            //Assert.IsTrue(data1.Equals(data2)); //PBI: this is illegal, revert the check 
+            Assert.IsTrue(data1.Equals(data2));
 
             data1.LoggingDataSource.Payload = "foo";
             data1.EncryptDataSource = true;
             data2.LoggingDataSource.Payload = "foo";
             data2.EncryptDataSource = true;
-            //Assert.IsTrue(data1.Equals(data2));
+            Assert.IsTrue(data1.Equals(data2));
         }
 
         [TestMethod]
@@ -159,12 +159,12 @@ namespace Dev2.Common.Tests
             Assert.IsFalse(ReferenceEquals(data1, data2));
             Assert.IsFalse(ReferenceEquals(data1.LoggingDataSource, data2.LoggingDataSource));
 
-           // Assert.IsTrue(data1.Equals(data2)); //PBI: this is illegal, revert the check
+            Assert.IsTrue(data1.Equals(data2));
 
             data1.LoggingDataSource.Payload = "foo2";
             data1.EncryptDataSource = true;
             data1.IncludeEnvironmentVariable = false;
-            //Assert.IsFalse(data1.Equals(data2)); //PBI: this is illegal, revert the check
+            Assert.IsFalse(data1.Equals(data2));
         }
 
     }

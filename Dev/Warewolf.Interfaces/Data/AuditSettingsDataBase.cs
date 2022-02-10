@@ -8,8 +8,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
-
 namespace Warewolf.Data
 {
     public class AuditSettingsDataBase: BindableBase
@@ -19,8 +17,7 @@ namespace Warewolf.Data
 
         public bool Equals(AuditSettingsDataBase other)
         {
-            var equals = base.Equals(other);
-            equals &= string.Equals(Endpoint, other.Endpoint, StringComparison.InvariantCultureIgnoreCase);
+            var equals = Endpoint == other.Endpoint;
             equals &= IncludeEnvironmentVariable.Equals(other.IncludeEnvironmentVariable);
             return equals;
         }
