@@ -877,4 +877,7 @@ if exist "$(SolutionDir)Dev2.Studio\bin\Release\net48\win\Warewolf Studio.exe" (
       powershell.exe -ExecutionPolicy RemoteSigned -nologo -noprofile -file "$(SolutionDir)Dev2.Studio\InstallWebView2FixedVersion.ps1"
     </PostBuildEvent>
   </PropertyGroup>
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="if not exist &quot;$(TargetDir)Microsoft.WebView2.FixedVersionRuntime.95.0.1020.44.x64&quot; powershell.exe -ExecutionPolicy RemoteSigned -nologo -noprofile -file &quot;$(TargetDir)InstallWebView2FixedVersion.ps1&quot;" />
+  </Target>
 </Project>
