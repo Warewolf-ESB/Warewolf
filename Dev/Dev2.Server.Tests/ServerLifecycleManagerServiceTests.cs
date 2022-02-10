@@ -191,7 +191,8 @@ namespace Dev2.Server.Tests
             var mockUsageTracker = new Mock<IUsageTrackerWrapper>();
             mockUsageTracker.Setup(o => o.TrackEvent(It.IsAny<string>(), It.IsAny<UsageType>(), It.IsAny<string>())).Returns(UsageDataResult.internalError);
             var persistencePath = EnvironmentVariablesForTesting.PersistencePathForTests;
-
+            
+            mockGetSystemManagementInformation.Setup(o => o.GetNumberOfCores()).Returns(6);
             mockSystemManagementInformationWrapper.Setup(o => o.GetNumberOfCores()).Returns(mockGetSystemManagementInformation.Object);
             mockSystemManagementInformationFactory.Setup(o => o.GetNumberOfCores()).Returns(mockSystemManagementInformationWrapper.Object);
 
