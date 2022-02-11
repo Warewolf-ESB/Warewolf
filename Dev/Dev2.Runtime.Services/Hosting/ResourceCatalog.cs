@@ -499,7 +499,10 @@ namespace Dev2.Runtime.Hosting
             {
                 var sa = service.Actions.FirstOrDefault();
                 MapServiceActionDependencies(workspaceID, sa);
-                ServiceActionRepo.Instance.AddToCache(resourceID, service);
+                
+                if(ServiceActionRepo.Instance.ReadCache(resourceID) == null)
+                    ServiceActionRepo.Instance.AddToCache(resourceID, service);
+                
                 var activity = GetActivity(sa);
                 if (parser != null)
                 {
