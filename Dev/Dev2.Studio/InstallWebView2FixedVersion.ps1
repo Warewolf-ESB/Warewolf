@@ -1,8 +1,8 @@
 if (!(Test-Path "$env:UserProfile\.nuget\packages\Microsoft.WebView2.FixedVersionRuntime.cab")) {
     Set-Location "HKCU:\Software\Microsoft\Windows\CurrentVersion\Internet Settings"
     Set-Location ZoneMap\Domains
-    New-Item example.com
-    Set-Location example.com
+    New-Item msedge.sf.dl.delivery.mp.microsoft.com
+    Set-Location msedge.sf.dl.delivery.mp.microsoft.com
     New-Item www
     Set-Location www
     New-ItemProperty . -Name http -Value 2 -Type DWORD
