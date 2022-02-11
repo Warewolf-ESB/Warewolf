@@ -68,8 +68,6 @@ namespace Dev2.Runtime.ESB.Management.Services
                 return new ExecuteMessage { HasError = true, Message = new StringBuilder(errorMessage) };
             }
             
-            //ResourceCatalogInstance.Reload();
-
             using(var catalog = new ResourceCatalog())
             {
                 var dynamicService = catalog.GetService(GlobalConstants.ServerWorkspaceID, resourceId, "");

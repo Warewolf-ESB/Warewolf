@@ -61,6 +61,10 @@ namespace Warewolf.Driver.Persistence.Drivers
         private const string ACTIVITY_PARSER = "Dev2.Activities.ActivityParser, Dev2.Activities, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null";
         private const string RESUMABLE_EXECUTION_CONTAINER = "Dev2.Runtime.ESB.Execution.ResumableExecutionContainer, Dev2.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null";
 
+        private Type _activityParserType;
+        private Type _resumableExecutionContainerType;
+        private WarewolfPerformanceCounterManager _performanceCounter;
+
 
         [ExcludeFromCodeCoverage]
         public HangfireScheduler()
@@ -68,6 +72,10 @@ namespace Warewolf.Driver.Persistence.Drivers
             _jobStorage = SqlServerStorage();
             _client = new BackgroundJobClient(_jobStorage);
             _persistedValues = new PersistedValues();
+            
+            _activityParserType = Type.GetType(ActivityParserTypeString);
+            _resumableExecutionContainerType = Type.GetType(ResumableExecutionContainerTypeString);
+            _performanceCounter = GetPerformanceCounter();
         }
 
         public WorkflowResume WorkflowResume
@@ -381,16 +389,13 @@ namespace Warewolf.Driver.Persistence.Drivers
 
         private void LoadAndRegisterTypes()
         {
-            var activityParserType = Type.GetType(ActivityParserTypeString);
-            var resumableExecutionContainerType = Type.GetType(ResumableExecutionContainerTypeString);
-            
             CustomContainer.LoadedTypes = new List<Type>();
-            if(!CustomContainer.LoadedTypes.Contains(activityParserType)) CustomContainer.AddToLoadedTypes(activityParserType);
-            if(!CustomContainer.LoadedTypes.Contains(resumableExecutionContainerType)) CustomContainer.AddToLoadedTypes(resumableExecutionContainerType);
+            if(!CustomContainer.LoadedTypes.Contains(_activityParserType)) CustomContainer.AddToLoadedTypes(_activityParserType);
+            if(!CustomContainer.LoadedTypes.Contains(_resumableExecutionContainerType)) CustomContainer.AddToLoadedTypes(_resumableExecutionContainerType);
             
             var activityParserInstance = CustomContainer.CreateInstance<IActivityParser>("just_to_get_a_CTOR_match_DO_NOT_REMOVE");
             if(CustomContainer.Get<IActivityParser>() == null) CustomContainer.Register(activityParserInstance);
-            if(CustomContainer.Get<IWarewolfPerformanceCounterLocater>() == null) CustomContainer.Register<IWarewolfPerformanceCounterLocater>(GetPerformanceCounter());
+            if(CustomContainer.Get<IWarewolfPerformanceCounterLocater>() == null) CustomContainer.Register<IWarewolfPerformanceCounterLocater>(_performanceCounter);
         }
         
         [AutomaticRetry(Attempts = 0)]
@@ -411,9 +416,9 @@ namespace Warewolf.Driver.Persistence.Drivers
                     {
                         Throw(jobId, message: "job {" + jobId + "} failed, one of Warewolf's dependencies were missing", reason: "Execution not run");
                     }
-
-                    var workflow = new WorkflowResume();
-                    var result = workflow.Execute(values, null);
+                    
+                    //var workflow = new WorkflowResume();
+                    var result = WorkflowResume.Execute(values, null);
                     if (result == null)
                     {
                         Throw(jobId: jobId, message: "job {" + jobId + "} failed to execute in Warewolf, requeue this job manually.", reason: "Execution returned null");
