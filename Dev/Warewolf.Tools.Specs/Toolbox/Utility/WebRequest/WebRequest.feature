@@ -15,8 +15,8 @@ Feature: WebRequest
 			| URL                                               | Header |
 			| http://TFSBLD.premier.local:9810/api/products/Get |        |
 		And the debug output as
-			|                                                                                                                   |
-			| [[result]] = [{{ Id :1, Name : Television , Category : Electronic , Price :82000.0}},{{ Id :2, Name : Refrigerator , Category : Electronic , Price :23000.0}},{{ Id :3, Name : Mobiles , Category : Electronic , Price :20000.0}},{{ Id :4, Name : Laptops , Category : Electronic , Price :45000.0}},{{ Id :5, Name : iPads , Category : Electronic , Price :67000.0}},{{ Id :6, Name : Toys , Category : Gift Items , Price :15000.0}}] |
+			|                                                                                                                                                                                                                                                                                                                                                                                                                               |
+			| [[result]] = [{ Id :1, Name : Television , Category : Electronic , Price :82000.0},{ Id :2, Name : Refrigerator , Category : Electronic , Price :23000.0},{ Id :3, Name : Mobiles , Category : Electronic , Price :20000.0},{ Id :4, Name : Laptops , Category : Electronic , Price :45000.0},{ Id :5, Name : iPads , Category : Electronic , Price :67000.0},{ Id :6, Name : Toys , Category : Gift Items , Price :15000.0}] |
 
 	Scenario: Enter a badly formed URL
 		Given I depend on a valid HTTP verbs server
@@ -60,8 +60,8 @@ Feature: WebRequest
 			| URL                                            | Header                                                      |
 			| http://TFSBLD.premier.local:9810/api/products/Get | [[ContentType]]: [[Type]] = Content-Type: application/json" |
 		And the debug output as
-			|                                                                                                                   |
-			| [[result]] = [{{ Id :1, Name :Television , Category :Electronic , Price :82000.0}},{{ Id :2, Name :Refrigerator , Category :Electronic , Price :23000.0}},{{ Id :3, Name :Mobiles , Category :Electronic , Price :20000.0}},{{ Id :4, Name :Laptops , Category :Electronic , Price :45000.0}},{{ Id :5, Name :iPads , Category :Electronic , Price :67000.0}},{{ Id :6, Name :Toys , Category :Gift Items , Price :15000.0}}] |
+			|                                                                                                                                                                                                                                                                                                                                                                                                                               |
+			| [[result]] = [{ Id :1, Name : Television , Category : Electronic , Price :82000.0},{ Id :2, Name : Refrigerator , Category : Electronic , Price :23000.0},{ Id :3, Name : Mobiles , Category : Electronic , Price :20000.0},{ Id :4, Name : Laptops , Category : Electronic , Price :45000.0},{ Id :5, Name : iPads , Category : Electronic , Price :67000.0},{ Id :6, Name : Toys , Category : Gift Items , Price :15000.0}] |
 
 	Scenario: Enter a URL and 2 variables each with a header parameter (xml)
 		Given I depend on a valid HTTP verbs server
@@ -89,8 +89,8 @@ Feature: WebRequest
 			| URL                                            | Header |
 			| http://TFSBLD.premier.local:9810/api/products/Get |        |
 		And the debug output as
-			|                                                                                                                   |
-			| [[result]] = [{{ Id :1, Name : Television , Category : Electronic , Price :82000.0}},{{ Id :2, Name : Refrigerator , Category : Electronic , Price :23000.0}},{{ Id :3, Name : Mobiles , Category : Electronic , Price :20000.0}},{{ Id :4, Name : Laptops , Category : Electronic , Price :45000.0}},{{ Id :5, Name : iPads , Category : Electronic , Price :67000.0}},{{ Id :6, Name : Toys , Category : Gift Items , Price :15000.0}}] |
+			|                                                                                                                                                                                                                                                                                                                                                                                                                               |
+			| [[result]] = [{ Id :1, Name : Television , Category : Electronic , Price :82000.0},{ Id :2, Name : Refrigerator , Category : Electronic , Price :23000.0},{ Id :3, Name : Mobiles , Category : Electronic , Price :20000.0},{ Id :4, Name : Laptops , Category : Electronic , Price :45000.0},{ Id :5, Name : iPads , Category : Electronic , Price :67000.0},{ Id :6, Name : Toys , Category : Gift Items , Price :15000.0}] |
 
 	Scenario: Enter a URL that returns xml
 		Given I depend on a valid HTTP verbs server
