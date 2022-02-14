@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2022 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -9,6 +9,7 @@
 */
 
 using Dev2;
+using Dev2.Common;
 using Dev2.Common.Serializers;
 using Dev2.Interfaces;
 using Newtonsoft.Json;
@@ -17,6 +18,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Data.Linq.Mapping;
 using System.Linq.Expressions;
 using System.Runtime.Serialization;
+using Warewolf.Configuration;
 using Warewolf.Interfaces.Auditing;
 using LogLevel = Warewolf.Logging.LogLevel;
 
@@ -198,6 +200,7 @@ namespace Warewolf.Auditing
         {
 
             var dsfDataObject = dataObject as IDSFDataObject;
+            var env = dsfDataObject.Environment;
             var dev2Serializer = new Dev2JsonSerializer();
             if(dsfDataObject != null)
             {
@@ -221,12 +224,26 @@ namespace Warewolf.Auditing
                     LogLevel = LogLevel.Debug;
                 }
 
-                if(dsfDataObject.Environment.HasErrors() || exception != null)
+                if(env.HasErrors() || exception != null)
                 {
                     LogLevel = LogLevel.Error;
                 }
             }
-            Environment = string.Empty;
+ 
+            if (Config.Server.Sink == nameof(AuditingSettingsData))
+            {
+                Environment = Config.Auditing.IncludeEnvironmentVariable ? env.ToJson() : string.Empty;
+            }
+            else if (Config.Server.Sink == nameof(LegacySettingsData))
+            {
+                Environment = Config.Legacy.IncludeEnvironmentVariable ? env.ToJson() : string.Empty;
+            }
+            else
+            {
+                //NOTE: setting this value should be deliberate to avoid POPPI
+                Environment = string.Empty;
+            }
+
             AuditDate = DateTime.Now;
             StartDateTime = DateTime.Now;
             CompletedDateTime = DateTime.Now;
