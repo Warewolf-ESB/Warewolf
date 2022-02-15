@@ -425,6 +425,15 @@ namespace Dev2.Runtime.Hosting
             return result;
         }
 
+        public void RemoveFromResourceActivityCache(Guid workspaceID, Guid resourceId)
+        {
+            if (resourceId != Guid.Empty)
+            {
+                var resource =  GetResource(GlobalConstants.ServerWorkspaceID, resourceId);
+                RemoveFromResourceActivityCache(workspaceID, resource);
+            }
+        }
+
         public void RemoveFromResourceActivityCache(Guid workspaceID, IResource resource)
         {
             if (_parsers != null && _parsers.TryGetValue(workspaceID, out IResourceActivityCache parser) && resource != null)
@@ -513,11 +522,30 @@ namespace Dev2.Runtime.Hosting
             return null;
         }
 
+        private bool _isReloading = false;
         public void Reload()
         {
-            LoadWorkspace(GlobalConstants.ServerWorkspaceID);
-            _parsers.TryRemove(GlobalConstants.ServerWorkspaceID, out IResourceActivityCache removedCache);
-            LoadServerActivityCache();
+            while (_isReloading)
+            {
+                Thread.Sleep(100);
+            }
+            
+            try
+            {
+                _isReloading = true;
+                LoadWorkspace(GlobalConstants.ServerWorkspaceID);
+                _parsers.TryRemove(GlobalConstants.ServerWorkspaceID, out IResourceActivityCache removedCache);
+                LoadServerActivityCache();
+            }
+            finally
+            {
+                _isReloading = false;
+            }
+        }
+
+        public void ReloadResource()
+        {
+            
         }
 
         public ResourceCatalogDuplicateResult DuplicateResource(Guid resourceId, string sourcePath, string destinationPath) => _catalogPluginContainer.DuplicateProvider.DuplicateResource(resourceId, sourcePath, destinationPath);

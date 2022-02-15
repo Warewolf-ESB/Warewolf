@@ -89,7 +89,7 @@ namespace Dev2
         public static T CreateInstance<T>(params object[] constructorParameters)
         {
             var typeToCreate = typeof(T);
-            var assemblyTypes = LoadedTypes;
+            var assemblyTypes = LoadedTypes ?? new List<Type>();
             object createdObject = null;
             foreach (var assemblyType in assemblyTypes.Where(a => a != null))
             {
