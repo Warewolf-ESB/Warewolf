@@ -272,6 +272,29 @@ namespace Dev2.Activities.RedisCache
             {
                 return null;
             }
+            else if (cachedData.Contains("\\r\\n    \\\"Value\\\": null\\r\\n"))
+            {
+                try
+                {
+                    var isRemoved = _redisCache.Remove(keyValue);
+                    if (isRemoved)
+                    {
+                        return null;
+                    }
+                    else
+                    {
+                        Dev2Logger.Error(nameof(RedisCacheActivity), new Exception("Redis Cache not removing KeyValue { " + KeyValue + " }"), GlobalConstants.WarewolfError);
+
+                    }
+                }
+                catch (Exception ex)
+                {
+
+                    Dev2Logger.Error(nameof(RedisCacheActivity), ex, GlobalConstants.WarewolfError);
+                    throw;
+                }
+
+            }
 
             var outputs = _serializer.Deserialize<IDictionary<string, string>>(cachedData);
             return outputs;
