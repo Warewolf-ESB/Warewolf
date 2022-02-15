@@ -14,6 +14,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Security.Principal;
 using System.Text;
+using System.Threading;
 using System.Transactions;
 using Dev2;
 using Dev2.Common;
@@ -64,6 +65,7 @@ namespace Warewolf.Driver.Persistence.Drivers
         private Type _activityParserType;
         private Type _resumableExecutionContainerType;
         private WarewolfPerformanceCounterManager _performanceCounter;
+        private IActivityParser _activityParserInstance;
 
 
         [ExcludeFromCodeCoverage]
@@ -124,8 +126,9 @@ namespace Warewolf.Driver.Persistence.Drivers
             {
                 return new SqlServerStorage(ConnectionString);
             }
-            catch
+            catch (Exception ex)
             {
+                Dev2Logger.Error(ex.Message , ex, GlobalConstants.WarewolfError);
                 throw new Exception(ErrorResource.HangfireSqlServerStorageConnectionError);
             }
         }
@@ -387,15 +390,29 @@ namespace Warewolf.Driver.Persistence.Drivers
             return jobId;
         }
 
+        private bool _isLoadingTypes = false;
         private void LoadAndRegisterTypes()
         {
-            CustomContainer.LoadedTypes = new List<Type>();
-            if(!CustomContainer.LoadedTypes.Contains(_activityParserType)) CustomContainer.AddToLoadedTypes(_activityParserType);
-            if(!CustomContainer.LoadedTypes.Contains(_resumableExecutionContainerType)) CustomContainer.AddToLoadedTypes(_resumableExecutionContainerType);
+            while (_isLoadingTypes)
+            {
+                Thread.Sleep(100);
+            }
             
-            var activityParserInstance = CustomContainer.CreateInstance<IActivityParser>("just_to_get_a_CTOR_match_DO_NOT_REMOVE");
-            if(CustomContainer.Get<IActivityParser>() == null) CustomContainer.Register(activityParserInstance);
-            if(CustomContainer.Get<IWarewolfPerformanceCounterLocater>() == null) CustomContainer.Register<IWarewolfPerformanceCounterLocater>(_performanceCounter);
+            try
+            {
+                _isLoadingTypes = true;
+                CustomContainer.LoadedTypes = new List<Type>();
+                if(!CustomContainer.LoadedTypes.Contains(_activityParserType)) CustomContainer.AddToLoadedTypes(_activityParserType);
+                if(!CustomContainer.LoadedTypes.Contains(_resumableExecutionContainerType)) CustomContainer.AddToLoadedTypes(_resumableExecutionContainerType);
+            
+                _activityParserInstance = CustomContainer.CreateInstance<IActivityParser>("just_to_get_a_CTOR_match_DO_NOT_REMOVE");
+                if(CustomContainer.Get<IActivityParser>() == null) CustomContainer.Register(_activityParserInstance);
+                if(CustomContainer.Get<IWarewolfPerformanceCounterLocater>() == null) CustomContainer.Register<IWarewolfPerformanceCounterLocater>(_performanceCounter);
+            }
+            finally
+            {
+                _isLoadingTypes = false;
+            }
         }
         
         [AutomaticRetry(Attempts = 0)]
@@ -417,7 +434,6 @@ namespace Warewolf.Driver.Persistence.Drivers
                         Throw(jobId, message: "job {" + jobId + "} failed, one of Warewolf's dependencies were missing", reason: "Execution not run");
                     }
                     
-                    //var workflow = new WorkflowResume();
                     var result = WorkflowResume.Execute(values, null);
                     if (result == null)
                     {
@@ -430,7 +446,7 @@ namespace Warewolf.Driver.Persistence.Drivers
                     {
                         Throw(jobId: jobId, message: executeMessage.Message?.ToString(), reason: "Execution return exception");
                     }
-
+                    
                     ts.Complete();
                     return GlobalConstants.Success;
                 }

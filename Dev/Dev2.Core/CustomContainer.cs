@@ -11,6 +11,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
 
 namespace Dev2
 {
@@ -23,7 +25,7 @@ namespace Dev2
 
         public static int EntiresCount => RegisterdTypes.Count;
 
-    
+
         public static void Clear()
         {
             RegisterdTypes.Clear();
@@ -31,49 +33,53 @@ namespace Dev2
 
         public static void Register<T>(T concrete)
         {
-            if(RegisterdTypes.ContainsKey(typeof(T)))
+            if (RegisterdTypes.ContainsKey(typeof(T)))
             {
                 DeRegister<T>();
             }
+
             RegisterdTypes.Add(typeof(T), concrete);
         }
 
         public static T Get<T>() where T : class
         {
             var requestedType = typeof(T);
-            if(RegisterdTypes.ContainsKey(requestedType))
+            if (RegisterdTypes.ContainsKey(requestedType))
             {
                 var registerdType = RegisterdTypes[requestedType];
                 return registerdType as T;
             }
+
             return null;
         }
 
         public static object Get(Type type)
         {
             var requestedType = type;
-            if(RegisterdTypes.ContainsKey(requestedType))
+            if (RegisterdTypes.ContainsKey(requestedType))
             {
                 var registerdType = RegisterdTypes[requestedType];
                 return registerdType;
             }
+
             return null;
         }
 
         public static void DeRegister<T>()
         {
-            if(RegisterdTypes.ContainsKey(typeof(T)))
+            if (RegisterdTypes.ContainsKey(typeof(T)))
             {
                 RegisterdTypes.Remove(typeof(T));
             }
-        }
-
+        } 
+        
         public static void AddToLoadedTypes(Type type)
         {
-            if(LoadedTypes is null)
+            if (LoadedTypes is null)
             {
                 LoadedTypes = new List<Type>();
             }
+
             if (!LoadedTypes.Contains(type))
             {
                 LoadedTypes.Add(type);
@@ -85,17 +91,20 @@ namespace Dev2
             var typeToCreate = typeof(T);
             var assemblyTypes = LoadedTypes;
             object createdObject = null;
-            foreach (var assemblyType in assemblyTypes)
+            foreach (var assemblyType in assemblyTypes.Where(a => a != null))
             {
-                if(assemblyType.IsPublic && !assemblyType.IsAbstract && assemblyType.IsClass && !assemblyType.IsGenericType && typeToCreate.IsAssignableFrom(assemblyType))
+                if (assemblyType.IsPublic && !assemblyType.IsAbstract && assemblyType.IsClass &&
+                    !assemblyType.IsGenericType && typeToCreate.IsAssignableFrom(assemblyType))
                 {
                     createdObject = TryInvokeConstructor(assemblyType, constructorParameters);
                 }
             }
+
             if (createdObject != null)
             {
                 return (T)createdObject;
             }
+
             return default(T);
         }
 
@@ -125,7 +134,8 @@ namespace Dev2
                 {
                     var constructorParameterType = parameterInfos[i].ParameterType;
                     var givenParameterType = constructorParameters[i].GetType();
-                    if ((givenParameterType == constructorParameterType) || constructorParameterType.IsAssignableFrom(givenParameterType))
+                    if ((givenParameterType == constructorParameterType) ||
+                        constructorParameterType.IsAssignableFrom(givenParameterType))
                     {
                         constructorMatch = true;
                     }
@@ -146,6 +156,7 @@ namespace Dev2
             {
                 DeRegisterInstancePerRequestType<T>();
             }
+
             RegisterdPerRequestTypes.Add(typeof(T), constructorFunc);
         }
 
@@ -157,6 +168,7 @@ namespace Dev2
                 var registerdType = RegisterdPerRequestTypes[requestedType];
                 return registerdType.Invoke() as T;
             }
+
             return null;
         }
 
