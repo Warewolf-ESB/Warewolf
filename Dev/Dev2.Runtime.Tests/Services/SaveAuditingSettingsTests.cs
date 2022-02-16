@@ -95,7 +95,7 @@ namespace Dev2.Tests.Runtime.Services
                 AuditFilePath = @"C:\ProgramData\Warewolf\Audits",
             };
             var requestArgs = new Dictionary<string, StringBuilder>();
-            requestArgs.Add("AuditingSettings", new StringBuilder(serializer.SerializeToBuilder(settingsData).ToString()));
+            requestArgs.Add(nameof(LegacySettings), new StringBuilder(serializer.SerializeToBuilder(settingsData).ToString()));
             requestArgs.Add("SinkType", new StringBuilder("LegacySettingsData"));
 
             var saveAuditingSettings = new SaveAuditingSettings();
