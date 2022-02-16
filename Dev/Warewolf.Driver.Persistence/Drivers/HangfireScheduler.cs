@@ -432,6 +432,7 @@ namespace Warewolf.Driver.Persistence.Drivers
                     if (resumableExecutionContainerType == null || activityParserType == null)
                     {
                         Throw(jobId, message: "job {" + jobId + "} failed, one of Warewolf's dependencies were missing", reason: "Execution not run");
+                        throw new Exception( "job {" + jobId + "} failed, one of Warewolf's dependencies were missing");
                     }
                     
                     var result = WorkflowResume.Execute(values, null);
