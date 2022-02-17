@@ -50,7 +50,7 @@ namespace Dev2.Activities.RedisCache
         private readonly ISerializer _serializer;
         private string _key;
         private IDSFDataObject _dataObject;
-        private RedisCacheBase _redisCache;
+        private IRedisCache _redisCache;
         internal readonly List<string> _messages = new List<string>();
 
 
@@ -59,12 +59,12 @@ namespace Dev2.Activities.RedisCache
         {
         }
 
-        public RedisCacheActivity(IResourceCatalog resourceCatalog, RedisCacheBase redisCache)
+        public RedisCacheActivity(IResourceCatalog resourceCatalog, IRedisCache redisCache)
             : this(resourceCatalog, new ResponseManager(), redisCache)
         {
         }
 
-        public RedisCacheActivity(IResourceCatalog resourceCatalog, ResponseManager responseManager, RedisCacheBase redisCache)
+        public RedisCacheActivity(IResourceCatalog resourceCatalog, ResponseManager responseManager, IRedisCache redisCache)
         {
             ResponseManager = responseManager;
             _redisCache = redisCache;
@@ -205,10 +205,32 @@ namespace Dev2.Activities.RedisCache
                     _debugOutputs.Clear();
 
                     var debugItem = new DebugItem();
-                    AddDebugItem(new DebugItemStaticDataParams("", "Redis key { " + keyValue + " } found"), debugItem);
-                    _debugOutputs.Add(debugItem);
+                    var isKeyExists = LoadCacheIntoEnvironment(cachedData);
+                    if (isKeyExists)
+                    {
+                        AddDebugItem(new DebugItemStaticDataParams("", "Redis key { " + keyValue + " } found"), debugItem);
+                    }
+                    else
+                    {
+                        AddDebugItem(new DebugItemStaticDataParams("", "Redis key { " + keyValue + " } found but object is empty"), debugItem);
+                        try
+                        {
+                            var isRemoved = _redisCache.Remove(keyValue);
+                            if (!isRemoved)                            
+                            {
+                                Dev2Logger.Error(nameof(RedisCacheActivity), new Exception("Redis Cache not removing KeyValue { " + KeyValue + " }"), GlobalConstants.WarewolfError);
 
-                    LoadCacheIntoEnvironment(cachedData);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+
+                            Dev2Logger.Error(nameof(RedisCacheActivity), ex, GlobalConstants.WarewolfError);
+                            throw;
+                        }
+                    }
+
+                    _debugOutputs.Add(debugItem);
                 }
                 else
                 {
@@ -240,7 +262,7 @@ namespace Dev2.Activities.RedisCache
             }
         }
 
-        private void LoadCacheIntoEnvironment(IDictionary<string, string> cachedData)
+        private bool LoadCacheIntoEnvironment(IDictionary<string, string> cachedData)
         {
             var outputs = _innerActivity.GetOutputs();
             foreach (var outputVar in outputs)
@@ -249,7 +271,11 @@ namespace Dev2.Activities.RedisCache
                 {
                     var key = outputVar;
                     var value = cachedData.Where(kvp => kvp.Key == key).Select(kvp => kvp.Value).FirstOrDefault();
-                    var assignValuesList = _serializer.Deserialize<List<AssignValue>>(value);
+                    if (value == null)
+                    {                    
+                        return false;
+                    }
+                    var assignValuesList = _serializer.Deserialize<List<AssignValue>>(value);// string.IsNullOrEmpty(value)?new List<AssignValue>:value);
                     var counter = 1;
                     foreach (var assignValue in assignValuesList)
                     {
@@ -263,6 +289,7 @@ namespace Dev2.Activities.RedisCache
                     }
                 }
             }
+            return true;
         }
 
         private IDictionary<string, string> GetCachedOutputs(string keyValue)
@@ -271,8 +298,7 @@ namespace Dev2.Activities.RedisCache
             if (cachedData is null)
             {
                 return null;
-            }
-
+            }           
             var outputs = _serializer.Deserialize<IDictionary<string, string>>(cachedData);
             return outputs;
         }

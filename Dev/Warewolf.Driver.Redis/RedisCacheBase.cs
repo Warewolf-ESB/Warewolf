@@ -13,7 +13,7 @@ using Warewolf.Interfaces;
 
 namespace Warewolf.Driver.Redis
 {
-    public abstract class RedisCacheBase
+    public abstract class RedisCacheBase : IRedisCache
     {
         readonly Lazy<IRedisConnection> _connection;
 
