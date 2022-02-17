@@ -74,7 +74,21 @@ namespace Warewolf.Driver.Persistence.Drivers
             _jobStorage = SqlServerStorage();
             _client = new BackgroundJobClient(_jobStorage);
             _persistedValues = new PersistedValues();
-            
+
+            ConfigureTypes();
+        }
+        
+        public HangfireScheduler(IBackgroundJobClient client, JobStorage jobStorage, IPersistedValues persistedValues)
+        {
+            _jobStorage = jobStorage;
+            _client = client;
+            _persistedValues = persistedValues;
+
+            ConfigureTypes();
+        }
+
+        private void ConfigureTypes()
+        {
             _activityParserType = Type.GetType(ActivityParserTypeString);
             _resumableExecutionContainerType = Type.GetType(ResumableExecutionContainerTypeString);
             _performanceCounter = GetPerformanceCounter();
@@ -131,13 +145,6 @@ namespace Warewolf.Driver.Persistence.Drivers
                 Dev2Logger.Error(ex.Message , ex, GlobalConstants.WarewolfError);
                 throw new Exception(ErrorResource.HangfireSqlServerStorageConnectionError);
             }
-        }
-
-        public HangfireScheduler(IBackgroundJobClient client, JobStorage jobStorage, IPersistedValues persistedValues)
-        {
-            _jobStorage = jobStorage;
-            _client = client;
-            _persistedValues = persistedValues;
         }
 
         public IPersistedValues GetPersistedValues(string jobId)
@@ -229,6 +236,8 @@ namespace Warewolf.Driver.Persistence.Drivers
                 {
                     throw new Exception(errMsg + ErrorResource.ManualResumptionSuspensionEnvBlank);
                 }
+                
+                LoadAndRegisterTypes();
 
                 var currentState = jobDetails.History.OrderBy(s => s.CreatedAt).LastOrDefault();
 
@@ -432,7 +441,7 @@ namespace Warewolf.Driver.Persistence.Drivers
                     if (resumableExecutionContainerType == null || activityParserType == null)
                     {
                         Throw(jobId, message: "job {" + jobId + "} failed, one of Warewolf's dependencies were missing", reason: "Execution not run");
-                        throw new Exception( "job {" + jobId + "} failed, one of Warewolf's dependencies were missing");
+                        return GlobalConstants.Failed;
                     }
                     
                     var result = WorkflowResume.Execute(values, null);
