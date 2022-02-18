@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2022 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -36,13 +36,15 @@ namespace Dev2.Common.Tests
             var expectedSettingsData = new LegacySettingsData
             {
                 Endpoint = "ws://127.0.0.1:5000/ws",
-                AuditFilePath = @"C:\ProgramData\Warewolf\Audits"
+                AuditFilePath = @"C:\ProgramData\Warewolf\Audits",
+                IncludeEnvironmentVariable = true
             };
 
             var settingsData = new LegacySettingsData()
             {
                 Endpoint = "ws://127.0.0.1:5000/ws",
-                AuditFilePath = @"C:\ProgramData\Warewolf\Audits"
+                AuditFilePath = @"C:\ProgramData\Warewolf\Audits",
+                IncludeEnvironmentVariable = true
             };
 
             Assert.IsTrue(settingsData.Equals(expectedSettingsData));
