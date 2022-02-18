@@ -152,8 +152,7 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.WebRequest
                 TechTalk.SpecFlow.Table table2856 = new TechTalk.SpecFlow.Table(new string[] {
                             ""});
                 table2856.AddRow(new string[] {
-                            "[[result]] = [{ Id :1, Name : Television , Category : Electronic , Price :82000.0" +
-                                "},{ Id :2, Name : Refrigerator ,"});
+                            @"[[result]] = [{ Id :1, Name : Television , Category : Electronic , Price :82000.0},{ Id :2, Name : Refrigerator , Category : Electronic , Price :23000.0},{ Id :3, Name : Mobiles , Category : Electronic , Price :20000.0},{ Id :4, Name : Laptops , Category : Electronic , Price :45000.0},{ Id :5, Name : iPads , Category : Electronic , Price :67000.0},{ Id :6, Name : Toys , Category : Gift Items , Price :15000.0}]"});
 #line 17
   testRunner.And("the debug output as", ((string)(null)), table2856, "And ");
 #line hidden
@@ -364,8 +363,7 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.WebRequest
                 TechTalk.SpecFlow.Table table2862 = new TechTalk.SpecFlow.Table(new string[] {
                             ""});
                 table2862.AddRow(new string[] {
-                            "[[result]] = [{ Id :1, Name : Television , Category : Electronic , Price :82000.0" +
-                                "},{ Id :2, Name : Refrigerator ,"});
+                            @"[[result]] = [{ Id :1, Name : Television , Category : Electronic , Price :82000.0},{ Id :2, Name : Refrigerator , Category : Electronic , Price :23000.0},{ Id :3, Name : Mobiles , Category : Electronic , Price :20000.0},{ Id :4, Name : Laptops , Category : Electronic , Price :45000.0},{ Id :5, Name : iPads , Category : Electronic , Price :67000.0},{ Id :6, Name : Toys , Category : Gift Items , Price :15000.0}]"});
 #line 62
   testRunner.And("the debug output as", ((string)(null)), table2862, "And ");
 #line hidden
@@ -440,8 +438,7 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.WebRequest
                 TechTalk.SpecFlow.Table table2864 = new TechTalk.SpecFlow.Table(new string[] {
                             ""});
                 table2864.AddRow(new string[] {
-                            "[[result]] = <ArrayOfProduct xmlns:i= http://www.w3.org/2001/XMLSchema-instance  " +
-                                "xmlns= http://schemas.datacontra"});
+                            @"[[result]] = <ArrayOfProduct xmlns:i= http://www.w3.org/2001/XMLSchema-instance  xmlns= http://schemas.datacontract.org/2004/07/WebApplication1.Controllers ><Product><Category>Electronic</Category><Id>1</Id><Name>Television</Name><Price>82000</Price></Product><Product><Category>Electronic</Category><Id>2</Id><Name>Refrigerator</Name><Price>23000</Price></Product><Product><Category>Electronic</Category><Id>3</Id><Name>Mobiles</Name><Price>20000</Price></Product><Product><Category>Electronic</Category><Id>4</Id><Name>Laptops</Name><Price>45000</Price></Product><Product><Category>Electronic</Category><Id>5</Id><Name>iPads</Name><Price>67000</Price></Product><Product><Category>Gift Items</Category><Id>6</Id><Name>Toys</Name><Price>15000</Price></Product></ArrayOfProduct>"});
 #line 78
   testRunner.And("the debug output as", ((string)(null)), table2864, "And ");
 #line hidden
@@ -507,8 +504,7 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.WebRequest
                 TechTalk.SpecFlow.Table table2866 = new TechTalk.SpecFlow.Table(new string[] {
                             ""});
                 table2866.AddRow(new string[] {
-                            "[[result]] = [{ Id :1, Name : Television , Category : Electronic , Price :82000.0" +
-                                "},{ Id :2, Name : Refrigerator ,"});
+                            @"[[result]] = [{ Id :1, Name : Television , Category : Electronic , Price :82000.0},{ Id :2, Name : Refrigerator , Category : Electronic , Price :23000.0},{ Id :3, Name : Mobiles , Category : Electronic , Price :20000.0},{ Id :4, Name : Laptops , Category : Electronic , Price :45000.0},{ Id :5, Name : iPads , Category : Electronic , Price :67000.0},{ Id :6, Name : Toys , Category : Gift Items , Price :15000.0}]"});
 #line 91
   testRunner.And("the debug output as", ((string)(null)), table2866, "And ");
 #line hidden
@@ -577,8 +573,7 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.WebRequest
                 TechTalk.SpecFlow.Table table2868 = new TechTalk.SpecFlow.Table(new string[] {
                             ""});
                 table2868.AddRow(new string[] {
-                            "[[result]] = <ArrayOfProduct xmlns:i= http://www.w3.org/2001/XMLSchema-instance  " +
-                                "xmlns= http://schemas.datacontra"});
+                            @"[[result]] = <ArrayOfProduct xmlns:i= http://www.w3.org/2001/XMLSchema-instance  xmlns= http://schemas.datacontract.org/2004/07/WebApplication1.Controllers ><Product><Category>Electronic</Category><Id>1</Id><Name>Television</Name><Price>82000</Price></Product><Product><Category>Electronic</Category><Id>2</Id><Name>Refrigerator</Name><Price>23000</Price></Product><Product><Category>Electronic</Category><Id>3</Id><Name>Mobiles</Name><Price>20000</Price></Product><Product><Category>Electronic</Category><Id>4</Id><Name>Laptops</Name><Price>45000</Price></Product><Product><Category>Electronic</Category><Id>5</Id><Name>iPads</Name><Price>67000</Price></Product><Product><Category>Gift Items</Category><Id>6</Id><Name>Toys</Name><Price>15000</Price></Product></ArrayOfProduct>"});
 #line 105
   testRunner.And("the debug output as", ((string)(null)), table2868, "And ");
 #line hidden
