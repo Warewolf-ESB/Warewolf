@@ -203,20 +203,22 @@ namespace Dev2.Activities.RedisCache
                 if (cachedData != null)
                 {
                     _debugOutputs.Clear();
+                    var debugItemFound = new DebugItem();
+                    AddDebugItem(new DebugItemStaticDataParams("", "Redis key { " + keyValue + " } found"), debugItemFound);
+                    _debugOutputs.Add(debugItemFound);
 
-                    var debugItem = new DebugItem();
                     var isKeyExists = LoadCacheIntoEnvironment(cachedData);
-                    if (isKeyExists)
+                    if (!isKeyExists)
                     {
-                        AddDebugItem(new DebugItemStaticDataParams("", "Redis key { " + keyValue + " } found"), debugItem);
-                    }
-                    else
-                    {
-                        AddDebugItem(new DebugItemStaticDataParams("", "Redis key { " + keyValue + " } found but object is empty"), debugItem);
+                        _debugOutputs.Clear();
+                        var debugItemNotFound = new DebugItem();
+                        AddDebugItem(new DebugItemStaticDataParams("", "Redis key { " + keyValue + " } found but object is empty"), debugItemNotFound);
+                        _debugOutputs.Add(debugItemNotFound);
+
                         try
                         {
                             var isRemoved = _redisCache.Remove(keyValue);
-                            if (!isRemoved)                            
+                            if (!isRemoved)
                             {
                                 Dev2Logger.Error(nameof(RedisCacheActivity), new Exception("Redis Cache not removing KeyValue { " + KeyValue + " }"), GlobalConstants.WarewolfError);
                             }
@@ -225,11 +227,9 @@ namespace Dev2.Activities.RedisCache
                         {
 
                             Dev2Logger.Error(nameof(RedisCacheActivity), ex, GlobalConstants.WarewolfError);
-                            throw;
                         }
                     }
 
-                    _debugOutputs.Add(debugItem);
                 }
                 else
                 {
@@ -271,7 +271,7 @@ namespace Dev2.Activities.RedisCache
                     var key = outputVar;
                     var value = cachedData.Where(kvp => kvp.Key == key).Select(kvp => kvp.Value).FirstOrDefault();
                     if (value == null)
-                    {                    
+                    {
                         return false;
                     }
                     var assignValuesList = _serializer.Deserialize<List<AssignValue>>(value);
@@ -297,7 +297,7 @@ namespace Dev2.Activities.RedisCache
             if (cachedData is null)
             {
                 return null;
-            }           
+            }
             var outputs = _serializer.Deserialize<IDictionary<string, string>>(cachedData);
             return outputs;
         }
