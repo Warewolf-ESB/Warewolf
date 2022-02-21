@@ -15,6 +15,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Security.Principal;
 using System.Text;
+using System.Threading;
 using System.Web;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Enums;
@@ -40,6 +41,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public override string HandlesType() => nameof(WorkflowResume);
 
+        SemaphoreSlim _executionThrottler = new SemaphoreSlim(1, 1);
         protected override ExecuteMessage ExecuteImpl(Dev2JsonSerializer serializer, Guid resourceId,
             Dictionary<string, StringBuilder> values)
         {
@@ -69,31 +71,40 @@ namespace Dev2.Runtime.ESB.Management.Services
                 Dev2Logger.Error(errorMessage, GlobalConstants.WarewolfError);
                 return new ExecuteMessage { HasError = true, Message = new StringBuilder(errorMessage) };
             }
-            
-            ResourceCatalogInstance.RemoveFromResourceActivityCache(GlobalConstants.ServerWorkspaceID, resourceId);
-            
-            var dynamicService = ResourceCatalogInstance.GetService(GlobalConstants.ServerWorkspaceID, resourceId, "");
 
-            if (dynamicService is null)
+            _executionThrottler.Wait();
+            IResumableExecutionContainer container;
+            try
             {
-                return new ExecuteMessage
-                {
-                    HasError = true,
-                    Message = new StringBuilder($"Error resuming. ServiceAction is null for Resource ID:{resourceId}")
-                };
-            }
-
-            var sa = dynamicService.Actions.FirstOrDefault();
-            if (sa is null)
-            {
-                return new ExecuteMessage
-                {
-                    HasError = true,
-                    Message = new StringBuilder($"Error resuming. ServiceAction is null for Resource ID:{resourceId}")
-                };
-            }
+                ResourceCatalogInstance.RemoveFromResourceActivityCache(GlobalConstants.ServerWorkspaceID, resourceId);
             
-            var container = CustomContainer.Get<IResumableExecutionContainerFactory>()?.New(startActivityId, sa, dataObject, new Workspace(Guid.NewGuid())) ?? CustomContainer.CreateInstance<IResumableExecutionContainer>(startActivityId, sa, dataObject, new Workspace(Guid.NewGuid()));
+                var dynamicService = ResourceCatalogInstance.GetService(GlobalConstants.ServerWorkspaceID, resourceId, "");
+
+                if (dynamicService is null)
+                {
+                    return new ExecuteMessage
+                    {
+                        HasError = true,
+                        Message = new StringBuilder($"Error resuming. ServiceAction is null for Resource ID:{resourceId}")
+                    };
+                }
+
+                var sa = dynamicService.Actions.FirstOrDefault();
+                if (sa is null)
+                {
+                    return new ExecuteMessage
+                    {
+                        HasError = true,
+                        Message = new StringBuilder($"Error resuming. ServiceAction is null for Resource ID:{resourceId}")
+                    };
+                }
+            
+                container = CustomContainer.Get<IResumableExecutionContainerFactory>()?.New(startActivityId, sa, dataObject, new Workspace(Guid.NewGuid())) ?? CustomContainer.CreateInstance<IResumableExecutionContainer>(startActivityId, sa, dataObject, new Workspace(Guid.NewGuid()));
+            }
+            finally
+            {
+                _executionThrottler.Release();
+            }
             container.Execute(out ErrorResultTO errors, 0);
 
             if (errors.HasErrors())
