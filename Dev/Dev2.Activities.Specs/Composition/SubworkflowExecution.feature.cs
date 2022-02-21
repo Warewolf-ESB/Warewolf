@@ -2203,7 +2203,8 @@ this.FeatureBackground();
                             "[[Result]] = Fail"});
                 table693.AddRow(new string[] {
                             "[[Error]] = Could not parse input datetime with given input format (if you left t" +
-                                "he input format blank then even"});
+                                "he input format blank then even after trying default datetime formats from other" +
+                                " cultures)"});
 #line 371
  testRunner.And("the \"ErrorHandled\" in Workflow \"Wolf-1212_Test\" debug outputs as", ((string)(null)), table693, "And ");
 #line hidden

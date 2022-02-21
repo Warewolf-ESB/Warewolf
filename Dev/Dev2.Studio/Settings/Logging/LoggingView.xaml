@@ -48,6 +48,7 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <StackPanel Grid.Row="0"
                                 Width="{Binding ElementName=GridContainer, Path=ActualWidth}"
@@ -121,6 +122,25 @@
                             </i:Interaction.Behaviors>
                         </ui:IntellisenseTextBox>
                     </Grid>
+                    <Grid Grid.Row="4" Margin="0"
+                          >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="{Binding ElementName=LoggingDataSourceTextBlock, Path=ActualWidth}" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <CheckBox Grid.Row="0"
+                                  Grid.Column="1"
+                                  Content="Include Environment Variables"
+                                  Margin="-6,0,0,0"
+                                  IsChecked="{Binding IncludeEnvironmentVariable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                  ToolTip="{x:Static languages:Tooltips.IncludeEnvironmentVariableToolTip}">
+                            <i:Interaction.Behaviors>
+                                <core:HelpSetter Text="{x:Static languages:HelpText.IncludeEnvironmentVariableHelpText}"
+                                                 DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                            </i:Interaction.Behaviors>
+                        </CheckBox>
+                    </Grid>
+
                 </Grid>
             </StackPanel>
         </ScrollViewer>

@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2022 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -246,7 +246,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 EnhancedDotNetDllFromDebug(debugState, debugItemContent);
             }
-            else if (actualType == nameof(GateActivity))
+            else if (actualType == nameof(Sequence))
             {
                 SequenceFromDebug(debugState, debugItemContent);
             }
@@ -987,7 +987,7 @@ namespace Warewolf.Studio.ViewModels
                 {
                     AddSequence(act as DsfSequenceActivity, testStep, testStep.Children);
                 }
-                if (act.GetType() == typeof(GateActivity))
+                else if (act.GetType() == typeof(GateActivity))
                 {
                     AddGate(act as GateActivity, testStep, testStep.Children);
                 }
@@ -1002,7 +1002,7 @@ namespace Warewolf.Studio.ViewModels
                 {
                     AddChildActivity(act2, testStep);
                 }
-                if (activity.GetType() == typeof(DsfForEachActivity))
+                else if (activity.GetType() == typeof(DsfForEachActivity))
                 {
                     AddForEach(activity as DsfForEachActivity, testStep, testStep.Children);
                 }
@@ -2293,9 +2293,11 @@ namespace Warewolf.Studio.ViewModels
 
         void MarkTestsAsNotNew()
         {
-            foreach (var model in _tests.Where(model => model.NewTest))
+            //There might be a problem here, 
+            foreach (var model in _tests.Where(model => model.NewTest || model.IsNewTest))
             {
                 model.NewTest = false;
+                model.IsNewTest = false;
             }
             foreach (var model in RealTests())
             {
@@ -2318,23 +2320,20 @@ namespace Warewolf.Studio.ViewModels
             {
                 if (value == null)
                 {
-                    if (_selectedServiceTest != null)
-                    {
-                        _selectedServiceTest.PropertyChanged -= ActionsForPropChanges;
-                    }
-
                     _selectedServiceTest = null;
                     EventPublisher.Publish(new DebugOutputMessage(new List<IDebugState>()));
                     OnPropertyChanged(() => SelectedServiceTest);
                     return;
                 }
-                if (Equals(_selectedServiceTest, value) || value.IsNewTest)
+
+                if (value is DummyServiceTest && (value.IsNewTest || value.NewTest))
                 {
                     return;
                 }
-                if (_selectedServiceTest != null)
+
+                if (Equals(_selectedServiceTest, value))
                 {
-                    _selectedServiceTest.PropertyChanged -= ActionsForPropChanges;
+                    return;
                 }
 
                 _selectedServiceTest = value;

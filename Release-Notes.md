@@ -1,3 +1,14 @@
+2.7.1 (11 February 2022)
+======================
+
+Enhancements
+----------
+- Execution variables can now be included with our execution logs when this fearure is enabled.
+
+Bug fixes
+----------
+- New Test added will now alway be the selected test 
+
 2.7 (21 January 2022)
 ======================
 
