@@ -9,7 +9,7 @@
 */
 
 using System;
-using ServiceStack.Redis;
+using StackExchange.Redis;
 using Warewolf.Interfaces;
 
 namespace Warewolf.Driver.Redis
@@ -18,8 +18,28 @@ namespace Warewolf.Driver.Redis
     {
         public RedisConnection(string hostName, int port, string password)
         {
-            var client = !string.IsNullOrWhiteSpace(password) ? new RedisClient(hostName, port, password) : new RedisClient(hostName, port);
+            var client = GetClient(hostName, port, password);
             Cache = new RedisCache(client);
+        }
+
+        private static IDatabase GetClient(string hostName, int port, string password)
+        {
+            var config = new ConfigurationOptions
+            {
+                ClientName = hostName,
+                Password = password,
+                AbortOnConnectFail = false,
+                ConnectRetry = 3,
+                SyncTimeout = 50000,
+                EndPoints =
+                {
+                    { hostName, port }
+                }
+            };
+
+            var redis = ConnectionMultiplexer.Connect(config);
+            var db = redis.GetDatabase();
+            return db;
         }
 
         public IRedisCache Cache { get; private set; }
@@ -27,55 +47,41 @@ namespace Warewolf.Driver.Redis
 
     internal class RedisCache : IRedisCache
     {
-        private readonly IRedisClient _client;
-        public RedisCache(IRedisClient client)
+        private readonly IDatabase _database;
+
+        public RedisCache(IDatabase database)
         {
-            _client = client;
+            _database = database;
         }
 
         public string Get(string key)
         {
-            using (var client = _client)
-            {
-                return client.Get<string>(key);
-            }
+            return _database.StringGet(key);
         }
 
         public bool Set(string key, string value, TimeSpan timeSpan)
         {
-            using (var client = _client)
+            if (timeSpan.TotalSeconds == 0)
             {
-                if (timeSpan.TotalSeconds == 0)
-                {
-                    return client.Set(key, value);
-                }
-
-                return client.Set(key, value, timeSpan);
+                return _database.StringSet(key, value);
             }
+
+            return _database.StringSet(key, value, timeSpan);
         }
 
         public bool Remove(string key)
         {
-            using (var client = _client)
-            {
-                return client.Remove(key);
-            }
+            return _database.KeyDelete(key);
         }
 
         public long Increment(string key, string value)
         {
-            using (var client = _client)
-            {
-                return client.Increment(key, uint.Parse(value));
-            }
+            return _database.StringIncrement(key, uint.Parse(value));
         }
 
         public long Decrement(string key, string value)
         {
-            using (var client = _client)
-            {
-                return client.Decrement(key, uint.Parse(value));
-            }
+            return _database.StringDecrement(key, uint.Parse(value));
         }
     }
 }

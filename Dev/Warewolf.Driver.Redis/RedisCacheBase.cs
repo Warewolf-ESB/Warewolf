@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2022 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -13,7 +13,8 @@ using Warewolf.Interfaces;
 
 namespace Warewolf.Driver.Redis
 {
-    public abstract class RedisCacheBase
+
+    public abstract class RedisCacheBase : IRedisCache
     {
         readonly Lazy<IRedisConnection> _connection;
 
@@ -50,7 +51,7 @@ namespace Warewolf.Driver.Redis
         public long Increment(string key, string value)
         {
             if (string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
-            return Cache.Increment(key,value);
+            return Cache.Increment(key, value);
         }
         public long Decrement(string key, string value)
         {
