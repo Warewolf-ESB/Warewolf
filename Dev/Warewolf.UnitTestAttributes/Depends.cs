@@ -145,15 +145,15 @@ namespace Warewolf.UnitTestAttributes
         {
             _containerType = type;
             Container = new Container(_containerType);
-            var retryCount = 0;
             string foundPort;
             do
             {
-                SelectedHost = RigOpsHosts.ElementAt(retryCount);
-                var portRetryCount = 0;
+                var retryCount = 0;
+                foundPort = Container.PossiblePorts.ElementAt(portRetryCount);
                 do
                 {
-                    foundPort = Container.PossiblePorts.ElementAt(portRetryCount);
+                    SelectedHost = RigOpsHosts.ElementAt(retryCount);
+                    var portRetryCount = 0;
                     using (var client = new TcpClient())
                     {
                         try
@@ -171,8 +171,8 @@ namespace Warewolf.UnitTestAttributes
                             portRetryCount++;
                         }
                     }
-                } while(portRetryCount < Container.PossiblePorts.Length);
-            } while (retryCount < RigOpsHosts.Count);
+                } while(retryCount < RigOpsHosts.Count);
+            } while (portRetryCount < Container.PossiblePorts.Length);
 
             Container.IP = SelectedHost;
             Container.Port = foundPort;
@@ -212,7 +212,7 @@ namespace Warewolf.UnitTestAttributes
                 case ContainerType.MSSQL:
                     return new[] {"1433"};
                 case ContainerType.CIRemote:
-                    return new[] {"3144"};
+                    return new[] {"3144","3142"};
                 case ContainerType.MySQL:
                     return new[] {"3306", "3307"};
                 case ContainerType.PostGreSQL:
