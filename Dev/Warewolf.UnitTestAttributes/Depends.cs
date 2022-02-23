@@ -18,7 +18,7 @@ namespace Warewolf.UnitTestAttributes
             "RSAKLFSVRHST1.premier.local",
             "t004121.premier.local",
             "opswolf.com",
-            "51.145.176.255",
+            "20.71.86.202",
             "localhost"
         };
         private string SelectedHost = "";
