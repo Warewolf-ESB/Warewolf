@@ -14,12 +14,9 @@ namespace Warewolf.UnitTestAttributes
     {
         public static readonly List<string> RigOpsHosts =  new List<string>
         {
-            "localhost",
             "RSAKLFSVRHST1.premier.local",
             "t004121.premier.local",
-            "opswolf.com",
             "20.31.216.132",
-            "localhost"
         };
         private string SelectedHost = "";
         
@@ -164,11 +161,10 @@ namespace Warewolf.UnitTestAttributes
                         }
                         catch (SocketException)
                         {
-                            if (retryCount == RigOpsHosts.Count) 
+                            if (++retryCount == RigOpsHosts.Count) 
                             {
                                 portRetryCount++;
                             }
-                            retryCount++;
                         }
                     }
                 } while(retryCount < RigOpsHosts.Count);
