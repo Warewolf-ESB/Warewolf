@@ -164,11 +164,11 @@ namespace Warewolf.UnitTestAttributes
                         }
                         catch (SocketException)
                         {
-                            if (foundPort == Container.PossiblePorts.Last()) 
+                            if (retryCount == RigOpsHosts.Count) 
                             {
-                                retryCount++;
+                                portRetryCount++;
                             }
-                            portRetryCount++;
+                            retryCount++;
                         }
                     }
                 } while(retryCount < RigOpsHosts.Count);
