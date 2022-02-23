@@ -18,7 +18,8 @@ namespace Warewolf.UnitTestAttributes
             "RSAKLFSVRHST1.premier.local",
             "t004121.premier.local",
             "opswolf.com",
-            "20.71.86.202",
+            "20.71.86.202",//remote-warewolf-connector-testing in the cloud
+            "20.103.188.228",//http-verbs-connector-testing in the cloud
             "localhost"
         };
         private string SelectedHost = "";
@@ -233,7 +234,7 @@ namespace Warewolf.UnitTestAttributes
                 case ContainerType.WebApi:
                     return new[] {"8080"};
                 case ContainerType.HTTPVerbsApi:
-                    return new[] {"9810"};
+                    return new[] {"9810", "80"};
                 case ContainerType.FTP:
                     return new[] {"21", "1004"};
                 case ContainerType.FTPS:
