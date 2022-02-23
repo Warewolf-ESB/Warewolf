@@ -146,6 +146,7 @@ namespace Warewolf.UnitTestAttributes
             _containerType = type;
             Container = new Container(_containerType);
             string foundPort;
+            var portRetryCount = 0;
             do
             {
                 var retryCount = 0;
@@ -153,7 +154,6 @@ namespace Warewolf.UnitTestAttributes
                 do
                 {
                     SelectedHost = RigOpsHosts.ElementAt(retryCount);
-                    var portRetryCount = 0;
                     using (var client = new TcpClient())
                     {
                         try
