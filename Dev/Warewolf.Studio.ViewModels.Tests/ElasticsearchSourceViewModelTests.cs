@@ -340,7 +340,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(60000)]
         public void ElasticsearchSourceViewModel_TestCancelTestCommand_Execute()
         {
             _elasticsearchourceViewModelWithTask.CancelTestCommand.Execute(null);
@@ -862,7 +861,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(60000)]
         public void ElasticsearchSourceViewModel_TestCanTestFalseHostNameEmpty()
         {
             _elasticsearchourceViewModelWithTask.HostName = "";
