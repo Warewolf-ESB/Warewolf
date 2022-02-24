@@ -21,6 +21,7 @@ namespace Warewolf.UnitTestAttributes
             "20.71.86.202",//remote-warewolf-connector-testing in the cloud
             "20.103.188.228",//http-verbs-connector-testing in the cloud
             "20.86.219.166",//anonymous-redis-connector-testing in the cloud
+            "20.54.155.120",//rabbitmq-connector-testing in the cloud
             "localhost"
         };
         private string SelectedHost = "";
