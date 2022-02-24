@@ -150,8 +150,8 @@ namespace Warewolf.UnitTestAttributes
             Container = new Container(_containerType);
             if (_containerType == ContainerType.Redis)
             {
-                Container.IP = "20.101.23.190"
-                Container.Port = "6379"
+                Container.IP = "20.101.23.190";
+                Container.Port = "6379";
             }
             else
             {
