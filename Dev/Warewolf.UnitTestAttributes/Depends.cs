@@ -20,6 +20,7 @@ namespace Warewolf.UnitTestAttributes
             "opswolf.com",
             "20.71.86.202",//remote-warewolf-connector-testing in the cloud
             "20.103.188.228",//http-verbs-connector-testing in the cloud
+            "20.86.219.166",//anonymous-redis-connector-testing in the cloud
             "localhost"
         };
         private string SelectedHost = "";
@@ -222,7 +223,7 @@ namespace Warewolf.UnitTestAttributes
                 case ContainerType.Redis:
                     return new[] {"6379", "56438"};
                 case ContainerType.AnonymousRedis:
-                    return new[] {"6380", "6381"};
+                    return new[] {"6380", "6381", "6379"};
                 case ContainerType.AnonymousWarewolf:
                     return new[] {"3148"};
                 case ContainerType.Warewolf:
