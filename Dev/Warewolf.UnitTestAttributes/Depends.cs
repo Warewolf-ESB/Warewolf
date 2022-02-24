@@ -148,36 +148,44 @@ namespace Warewolf.UnitTestAttributes
         {
             _containerType = type;
             Container = new Container(_containerType);
-            string foundPort;
-            var portRetryCount = 0;
-            do
+            if (_containerType == ContainerType.Redis)
             {
-                var retryCount = 0;
-                foundPort = Container.PossiblePorts.ElementAt(portRetryCount);
+                Container.IP = "20.101.23.190"
+                Container.Port = "6379"
+            }
+            else
+            {
+                string foundPort;
+                var portRetryCount = 0;
                 do
                 {
-                    SelectedHost = RigOpsHosts.ElementAt(retryCount);
-                    using (var client = new TcpClient())
+                    var retryCount = 0;
+                    foundPort = Container.PossiblePorts.ElementAt(portRetryCount);
+                    do
                     {
-                        try
+                        SelectedHost = RigOpsHosts.ElementAt(retryCount);
+                        using (var client = new TcpClient())
                         {
-                            client.Connect(SelectedHost, int.Parse(foundPort));
-                            retryCount = RigOpsHosts.Count;
-                            portRetryCount = Container.PossiblePorts.Length;
-                        }
-                        catch (SocketException)
-                        {
-                            if (++retryCount == RigOpsHosts.Count) 
+                            try
                             {
-                                portRetryCount++;
+                                client.Connect(SelectedHost, int.Parse(foundPort));
+                                retryCount = RigOpsHosts.Count;
+                                portRetryCount = Container.PossiblePorts.Length;
+                            }
+                            catch (SocketException)
+                            {
+                                if (++retryCount == RigOpsHosts.Count) 
+                                {
+                                    portRetryCount++;
+                                }
                             }
                         }
-                    }
-                } while(retryCount < RigOpsHosts.Count);
-            } while (portRetryCount < Container.PossiblePorts.Length);
+                    } while(retryCount < RigOpsHosts.Count);
+                } while (portRetryCount < Container.PossiblePorts.Length);
 
-            Container.IP = SelectedHost;
-            Container.Port = foundPort;
+                Container.IP = SelectedHost;
+                Container.Port = foundPort;
+            }
 
             if (!performSourceInjection) return;
             switch (_containerType)
