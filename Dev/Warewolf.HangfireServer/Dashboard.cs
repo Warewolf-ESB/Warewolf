@@ -31,7 +31,7 @@ namespace HangfireServer
             {
                 ServerName = Dev2.Common.Config.Persistence.ServerName,
                 ServerTimeout = TimeSpan.FromMinutes(10),
-                WorkerCount = Environment.ProcessorCount * 2
+                WorkerCount = Environment.ProcessorCount
             });
         }
     }

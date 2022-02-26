@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2022 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -30,6 +30,7 @@ using Moq;
 using Warewolf.Security.Encryption;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
+using Dev2.Workspaces;
 
 namespace Dev2.Tests.Runtime.Services
 {
@@ -81,7 +82,7 @@ namespace Dev2.Tests.Runtime.Services
             mockResumableExecutionContainer.Setup(o => o.Execute(out errors, 0)).Verifiable();
 
             var mockResumableExecutionContainerFactory = new Mock<IResumableExecutionContainerFactory>();
-            mockResumableExecutionContainerFactory.Setup(o => o.New(It.IsAny<Guid>(), It.IsAny<ServiceAction>(), It.IsAny<DsfDataObject>()))
+            mockResumableExecutionContainerFactory.Setup(o => o.New(It.IsAny<Guid>(), It.IsAny<ServiceAction>(), It.IsAny<DsfDataObject>(), It.IsAny<IWorkspace>()))
                 .Returns(mockResumableExecutionContainer.Object);
             CustomContainer.Register(mockResumableExecutionContainerFactory.Object);
             //------------Execute Test---------------------------
@@ -139,7 +140,7 @@ namespace Dev2.Tests.Runtime.Services
             mockResumableExecutionContainer.Setup(o => o.Execute(out errors, 0)).Verifiable();
 
             var mockResumableExecutionContainerFactory = new Mock<IResumableExecutionContainerFactory>();
-            mockResumableExecutionContainerFactory.Setup(o => o.New(It.IsAny<Guid>(), It.IsAny<ServiceAction>(), It.IsAny<DsfDataObject>()))
+            mockResumableExecutionContainerFactory.Setup(o => o.New(It.IsAny<Guid>(), It.IsAny<ServiceAction>(), It.IsAny<DsfDataObject>(), It.IsAny<IWorkspace>()))
                 .Returns(mockResumableExecutionContainer.Object);
             CustomContainer.Register(mockResumableExecutionContainerFactory.Object);
             //------------Execute Test---------------------------
@@ -440,7 +441,7 @@ namespace Dev2.Tests.Runtime.Services
             mockResumableExecutionContainer.Setup(o => o.Execute(out errors, 0)).Verifiable();
 
             var mockResumableExecutionContainerFactory = new Mock<IResumableExecutionContainerFactory>();
-            mockResumableExecutionContainerFactory.Setup(o => o.New(It.IsAny<Guid>(), It.IsAny<ServiceAction>(), It.IsAny<DsfDataObject>()))
+            mockResumableExecutionContainerFactory.Setup(o => o.New(It.IsAny<Guid>(), It.IsAny<ServiceAction>(), It.IsAny<DsfDataObject>(), It.IsAny<IWorkspace>()))
                 .Returns(mockResumableExecutionContainer.Object);
             CustomContainer.Register(mockResumableExecutionContainerFactory.Object);
             //------------Execute Test---------------------------
