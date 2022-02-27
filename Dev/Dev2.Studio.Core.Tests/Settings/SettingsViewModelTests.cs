@@ -625,6 +625,7 @@ You need Administrator permission.", viewModel.Errors);
             //------------Assert Results-------------------------
             Assert.AreEqual("LOGGING", viewModel.LogHeader);
         }
+
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(SettingsViewModel))]
@@ -640,6 +641,7 @@ You need Administrator permission.", viewModel.Errors);
             //------------Assert Results-------------------------
             Assert.AreEqual("PERSISTENCE", viewModel.PersistenceHeader);
         }
+
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory(nameof(SettingsViewModel))]
@@ -654,6 +656,7 @@ You need Administrator permission.", viewModel.Errors);
             //------------Assert Results-------------------------
             Assert.AreEqual("LOGGING *", viewModel.LogHeader);
         }
+
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(SettingsViewModel))]
@@ -668,9 +671,11 @@ You need Administrator permission.", viewModel.Errors);
             //------------Assert Results-------------------------
             Assert.AreEqual("PERSISTENCE *", viewModel.PersistenceHeader);
         }
+
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory(nameof(SettingsViewModel))]
+        [Timeout(300000)]
         public void SettingsViewModel_IsPerfCounterDirty_FalsePerfCounterNameHasNoStar()
         {
             //------------Setup for test--------------------------
