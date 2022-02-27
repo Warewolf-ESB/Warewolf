@@ -1,4 +1,4 @@
-﻿/*
+/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
@@ -39,6 +39,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(LogSettingsViewModel))]
+        [Timeout(300000)]
         public void LogSettingsViewModel_Constructor_Equals_Null_ReturnFalse()
         {
             //------------Setup for test--------------------------
@@ -55,6 +56,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(LogSettingsViewModel))]
+        [Timeout(300000)]
         public void LogSettingsViewModel_Constructor_Equals_NotNull_ReturnTrue()
         {
             //------------Setup for test--------------------------
@@ -73,6 +75,7 @@ namespace Dev2.Core.Tests.Settings
         [Owner("Hagashen Naidu")]
         [TestCategory(nameof(LogSettingsViewModel))]
         [ExpectedException(typeof(ArgumentNullException))]
+        [Timeout(300000)]
         public void LogSettingsViewModel_Constructor_NullValueLoggingSettingTo_ExceptionThrown()
         {
             //------------Setup for test--------------------------
@@ -87,6 +90,7 @@ namespace Dev2.Core.Tests.Settings
         [Owner("Hagashen Naidu")]
         [TestCategory(nameof(LogSettingsViewModel))]
         [ExpectedException(typeof(ArgumentNullException))]
+        [Timeout(300000)]
         public void LogSettingsViewModel_Constructor_NullValueEnvironment_ExceptionThrown()
         {
             //------------Setup for test--------------------------
@@ -100,6 +104,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory(nameof(LogSettingsViewModel))]
+        [Timeout(300000)]
         public void LogSettingsViewModel_ServerLogLevel_Set_PropertyChangeFired()
         {
             //------------Setup for test--------------------------
@@ -125,6 +130,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(LogSettingsViewModel))]
+        [Timeout(300000)]
         public void LogSettingsViewModel_UpdateHelp_ShouldCallToHelpViewMode()
         {
             //------------Setup for test--------------------------
@@ -145,6 +151,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(LogSettingsViewModel))]
+        [Timeout(300000)]
         public void LogSettingsViewModel_SelectedLoggingType_ShouldSelectLoggingType()
         {
             //------------Setup for test--------------------------
@@ -162,6 +169,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(LogSettingsViewModel))]
+        [Timeout(300000)]
         public void LogSettingsViewModel_GetServerLogFileCommand_CanExecute()
         {
             //------------Setup for test--------------------------
@@ -177,6 +185,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(LogSettingsViewModel))]
+        [Timeout(300000)]
         public void LogSettingsViewModel_GetStudioLogFileCommand_CanExecute()
         {
             //------------Setup for test--------------------------
@@ -192,6 +201,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory(nameof(LogSettingsViewModel))]
+        [Timeout(300000)]
         public void LogSettingsViewModel_StudioLogLevel_Set_PropertyChangeFired()
         {
             //------------Setup for test--------------------------
@@ -217,6 +227,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory(nameof(LogSettingsViewModel))]
+        [Timeout(300000)]
         public void LogSettingsViewModel_ServerLogMaxSize_SetInt_PropertyChangeFired()
         {
             //------------Setup for test--------------------------
@@ -241,6 +252,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory(nameof(LogSettingsViewModel))]
+        [Timeout(300000)]
         public void LogSettingsViewModel_ServerLogMaxSize_SetNonInt_PropertyChangeNotFired()
         {
             //------------Setup for test--------------------------
@@ -265,6 +277,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory(nameof(LogSettingsViewModel))]
+        [Timeout(300000)]
         public void LogSettingsViewModel_StudioLogMaxSize_SetInt_PropertyChangeFired()
         {
             //------------Setup for test--------------------------
@@ -289,6 +302,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(LogSettingsViewModel))]
+        [Timeout(300000)]
         public void LogSettingsViewModel_StudioFileLogLevel_Construct_IsDebug()
         {
             //------------Setup for test--------------------------
@@ -303,6 +317,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(LogSettingsViewModel))]
+        [Timeout(300000)]
         public void LogSettingsViewModel_StudioFileLogLevel_SetLevel_IsInfo()
         {
             //------------Setup for test--------------------------
@@ -318,6 +333,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(LogSettingsViewModel))]
+        [Timeout(300000)]
         public void LogSettingsViewModel_CanEdit_Construct_IsFalse()
         {
             //------------Setup for test--------------------------
@@ -333,6 +349,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(LogSettingsViewModel))]
+        [Timeout(300000)]
         public void LogSettingsViewModel_IsLegacy_Construct_IsTrue()
         {
             //------------Setup for test--------------------------
@@ -348,6 +365,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(LogSettingsViewModel))]
+        [Timeout(300000)]
         public void LogSettingsViewModel_IsLegacy_Construct_IsFalse()
         {
             //------------Setup for test--------------------------
@@ -362,6 +380,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(LogSettingsViewModel))]
+        [Timeout(300000)]
         public void LogSettingsViewModel_CanEdit_Construct_IsTrue()
         {
             //------------Setup for test--------------------------
@@ -381,6 +400,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory(nameof(LogSettingsViewModel))]
+        [Timeout(300000)]
         public void LogSettingsViewModel_StudioLogMaxSize_SetNonInt_PropertyChangeNotFired()
         {
             //------------Setup for test--------------------------
@@ -405,6 +425,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(LogSettingsViewModel))]
+        [Timeout(300000)]
         public void LogSettingsViewModel_AuditsFilePath_PropertyChangeFired()
         {
             //------------Setup for test--------------------------
@@ -430,6 +451,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(LogSettingsViewModel))]
+        [Timeout(300000)]
         public void LogSettingsViewModel_Save_LegacySettingsData()
         {
             var _resourceRepo = new Mock<IResourceRepository>();
@@ -447,9 +469,11 @@ namespace Dev2.Core.Tests.Settings
             logSettingsViewModel.Save(loggingSettingsTo);
             _resourceRepo.Verify(o => o.SaveAuditingSettings(It.IsAny<IServer>(), It.IsAny<LegacySettingsData>()), Times.Once);
         }
+
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(LogSettingsViewModel))]
+        [Timeout(300000)]
         public void LogSettingsViewModel_Save_ChangeSink()
         {
             var _resourceRepo = new Mock<IResourceRepository>();
@@ -470,6 +494,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(LogSettingsViewModel))]
+        [Timeout(300000)]
         public void LogSettingsViewModel_Save_AuditingSettingsData()
         {
             var _resourceRepo = new Mock<IResourceRepository>();
