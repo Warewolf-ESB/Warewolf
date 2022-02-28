@@ -36,7 +36,6 @@ using Moq;
 namespace Dev2.Core.Tests.Settings
 {
     [TestClass]
-    [TestCategory("Studio Settings Core")]
     public class SettingsViewModelTests
     {
         [TestInitialize]
@@ -54,7 +53,7 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory(nameof(SettingsViewModel))]
+        [TestCategory("Studio Settings Core")]
         [ExpectedException(typeof(ArgumentNullException))]
         [Timeout(300000)]
         public void SettingsViewModel_Constructor_NullPopupController_ThrowsArgumentNullException()
@@ -70,7 +69,7 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory(nameof(SettingsViewModel))]
+        [TestCategory("Studio Settings Core")]
         [ExpectedException(typeof(ArgumentNullException))]
         [Timeout(300000)]
         public void SettingsViewModel_Constructor_NullAsyncWorker_ThrowsArgumentNullException()
@@ -86,7 +85,7 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory(nameof(SettingsViewModel))]
+        [TestCategory("Studio Settings Core")]
         [ExpectedException(typeof(ArgumentNullException))]
         [Timeout(300000)]
         public void SettingsViewModel_Constructor_NullParentWindow_ThrowsArgumentNullException()
@@ -102,7 +101,7 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory(nameof(SettingsViewModel))]
+        [TestCategory("Studio Settings Core")]
         [Timeout(300000)]
         public void SettingsViewModel_Constructor_Properties_Initialized()
         {
@@ -119,7 +118,7 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory(nameof(SettingsViewModel))]
+        [TestCategory("Studio Settings Core")]
         [Timeout(300000)]
         public void SettingsViewModel_ShowLogging_True_OtherShowPropertiesAreFalse()
         {
@@ -134,7 +133,7 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory(nameof(SettingsViewModel))]
+        [TestCategory("Studio Settings Core")]
         [Timeout(300000)]
         public void SettingsViewModel_ShowLogging_SameValue_DoesNotRaisePropertyChanged()
         {
@@ -153,7 +152,7 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory(nameof(SettingsViewModel))]
+        [TestCategory("Studio Settings Core")]
         [Timeout(300000)]
         public void SettingsViewModel_ShowLogging_DifferentValue_DoesRaisePropertyChanged()
         {
@@ -172,7 +171,7 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Candice Daniel")]
-        [TestCategory(nameof(SettingsViewModel))]
+        [TestCategory("Studio Settings Core")]
         [Timeout(300000)]
         public void SettingsViewModel_ShowPersistence_SameValue_DoesNotRaisePropertyChanged()
         {
@@ -191,7 +190,7 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Candice Daniel")]
-        [TestCategory(nameof(SettingsViewModel))]
+        [TestCategory("Studio Settings Core")]
         [Timeout(300000)]
         public void SettingsViewModel_ShowPersistence_DifferentValue_DoesRaisePropertyChanged()
         {
@@ -210,7 +209,7 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory(nameof(SettingsViewModel))]
+        [TestCategory("Studio Settings Core")]
         [Timeout(300000)]
         public void SettingsViewModel_ShowSecurity_True_OtherShowPropertiesAreFalse()
         {
@@ -226,7 +225,7 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory(nameof(SettingsViewModel))]
+        [TestCategory("Studio Settings Core")]
         [Timeout(300000)]
         public void SettingsViewModel_ShowSecurity_SameValue_DoesNotRaisePropertyChanged()
         {
@@ -245,7 +244,7 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory(nameof(SettingsViewModel))]
+        [TestCategory("Studio Settings Core")]
         [Timeout(300000)]
         public void SettingsViewModel_ShowSecurity_DifferentValue_DoesRaisePropertyChanged()
         {
@@ -505,7 +504,7 @@ You need Administrator permission.", viewModel.Errors);
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory(nameof(SettingsViewModel))]
+        [TestCategory("Studio Settings Core")]
         [Timeout(300000)]
         public void SettingsViewModel_SaveCommand_ResultIsError_HasErrorsIsTrue()
         {
@@ -736,7 +735,7 @@ You need Administrator permission.", viewModel.Errors);
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory(nameof(SettingsViewModel))]
+        [TestCategory("Studio Settings Core")]
         [Timeout(300000)]
         public void SettingsViewModel_OnDeactivate_DirtyFalse_ShouldShowPopup()
         {
@@ -754,7 +753,7 @@ You need Administrator permission.", viewModel.Errors);
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory(nameof(SettingsViewModel))]
+        [TestCategory("Studio Settings Core")]
         [Timeout(300000)]
         public void SettingsViewModel_OnDeactivate_DirtyFalse_PopResultYes()
         {
@@ -774,7 +773,7 @@ You need Administrator permission.", viewModel.Errors);
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory(nameof(SettingsViewModel))]
+        [TestCategory("Studio Settings Core")]
         [Timeout(300000)]
         public void SettingsViewModel_OnDeactivate_RequestCloseFalse_NoPopup()
         {
@@ -795,7 +794,7 @@ You need Administrator permission.", viewModel.Errors);
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(SettingsViewModel))]
+        [TestCategory("Studio Settings Core")]
         [Timeout(300000)]
         public void SettingsViewModel_HasVariables_ReturnsFalse()
         {
@@ -812,7 +811,7 @@ You need Administrator permission.", viewModel.Errors);
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(SettingsViewModel))]
+        [TestCategory("Studio Settings Core")]
         [Timeout(300000)]
         public void SettingsViewModel_HasDebugOutput_ReturnsFalse()
         {
@@ -829,7 +828,7 @@ You need Administrator permission.", viewModel.Errors);
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory(nameof(SettingsViewModel))]
+        [TestCategory("Studio Settings Core")]
         [Timeout(300000)]
         public void SettingsViewModel_OnDeactivate_DirtyFalse_PopResultNo()
         {
@@ -982,7 +981,7 @@ You need Administrator permission.", viewModel.Errors);
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory(nameof(SettingsViewModel))]
+        [TestCategory("Studio Settings Core")]
         public void SettingsViewModel_IsSavedSuccessVisible_HasErrorsFalseAndIsDirtyFalseAndIsSavedTrue_True()
         {
             //------------Setup for test--------------------------
@@ -999,7 +998,7 @@ You need Administrator permission.", viewModel.Errors);
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory(nameof(SettingsViewModel))]
+        [TestCategory("Studio Settings Core")]
         public void SettingsViewModel_IsSavedSuccessVisible_HasErrorsTrueAndIsDirtyTrueAndIsSavedFalse_False()
         {
             //------------Setup for test--------------------------
@@ -1016,7 +1015,7 @@ You need Administrator permission.", viewModel.Errors);
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory(nameof(SettingsViewModel))]
+        [TestCategory("Studio Settings Core")]
         public void SettingsViewModel_DoDeactivate_YesSavesChanges()
         {
             //------------Setup for test--------------------------
@@ -1037,7 +1036,7 @@ You need Administrator permission.", viewModel.Errors);
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
-        [TestCategory(nameof(SettingsViewModel))]
+        [TestCategory("Studio Settings Core")]
         public void SettingsViewModel_DoDeactivate_NoSavesChanges()
         {
             //------------Setup for test--------------------------
@@ -1070,7 +1069,7 @@ You need Administrator permission.", viewModel.Errors);
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory(nameof(SettingsViewModel))]
+        [TestCategory("Studio Settings Core")]
         public void SettingsViewModel_DoDeactivate_CancelNoReturnsTrue()
         {
             //------------Setup for test--------------------------
@@ -1090,7 +1089,7 @@ You need Administrator permission.", viewModel.Errors);
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory(nameof(SettingsViewModel))]
+        [TestCategory("Studio Settings Core")]
         public void SettingsViewModel_IsErrorsVisible_HasErrorsTrue_True()
         {
             //------------Setup for test--------------------------
@@ -1107,7 +1106,7 @@ You need Administrator permission.", viewModel.Errors);
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory(nameof(SettingsViewModel))]
+        [TestCategory("Studio Settings Core")]
         public void SettingsViewModel_IsErrorsVisible_HasErrorsFalseAndAndIsDirtyTrueAndIsSavedFalse_True()
         {
             //------------Setup for test--------------------------
@@ -1124,7 +1123,7 @@ You need Administrator permission.", viewModel.Errors);
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory(nameof(SettingsViewModel))]
+        [TestCategory("Studio Settings Core")]
         public void SettingsViewModel_IsErrorsVisible_HasErrorsFalseAndAndIsDirtyFalseAndIsSavedTrue_False()
         {
             //------------Setup for test--------------------------
@@ -1141,7 +1140,7 @@ You need Administrator permission.", viewModel.Errors);
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory(nameof(SettingsViewModel))]
+        [TestCategory("Studio Settings Core")]
         public void SettingsViewModel_IsErrorsVisible_PropertyChangedFired()
         {
             Verify_PropertyChangedFired("IsErrorsVisible", SettingsProperty.HasErrors);
@@ -1151,7 +1150,7 @@ You need Administrator permission.", viewModel.Errors);
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory(nameof(SettingsViewModel))]
+        [TestCategory("Studio Settings Core")]
         public void SettingsViewModel_IsSavedSuccessVisible_PropertyChangedFired()
         {
             Verify_PropertyChangedFired("IsSavedSuccessVisible", SettingsProperty.HasErrors);
