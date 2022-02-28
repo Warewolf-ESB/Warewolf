@@ -35,6 +35,7 @@ using Dev2.Common.Interfaces.Threading;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Communication;
 using Dev2.Data;
+using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.ServiceModel.Messages;
 using Dev2.Data.SystemTemplates.Models;
 using Dev2.Runtime.ServiceModel.Data;
@@ -691,6 +692,9 @@ namespace Warewolf.Studio.ViewModels
                 case nameof(GateActivity):
                     ProcessGate(modelItem);
                     break;
+                case nameof(SuspendExecutionActivity):
+                    ProcessSuspend(modelItem);
+                    break;
                 default:
                     ProcessActivity(modelItem);
                     break;
@@ -728,10 +732,86 @@ namespace Warewolf.Studio.ViewModels
             return testStep;
         }
 
+
+        private void ProcessSuspend(ModelItem modelItem)
+        {
+            var suspendActivity = GetCurrentActivity<SuspendExecutionActivity>(modelItem);
+            AddSuspend(suspendActivity, null, SelectedServiceTest.TestSteps);
+        }
+
+        private void AddSuspend(SuspendExecutionActivity suspendActivity, IServiceTestStep parent, ObservableCollection<IServiceTestStep> children)
+        {
+            if (suspendActivity is null)
+            {
+                return;
+            }
+            var uniqueId = suspendActivity.UniqueID;
+
+            var type = suspendActivity.GetType();
+            var testStep = CreateMockChildStep(Guid.Parse(uniqueId), parent, type.Name, suspendActivity.DisplayName);
+            testStep.StepOutputs = GetSuspendOutputs(suspendActivity);
+            SetStepIcon(type, testStep);
+
+            var childActivity = suspendActivity.SaveDataFunc.Handler;
+
+            if (childActivity != null)
+            {
+                AddSuspendActivity(testStep, childActivity);
+            }
+            var exists = FindExistingStep(uniqueId);
+            if (exists == null)
+            {
+                children.Add(testStep);
+            }
+            else
+            {
+                AddMissingChild(children, testStep);
+            }
+        }
+
+        private ObservableCollection<IServiceTestOutput> GetSuspendOutputs(SuspendExecutionActivity suspendActivity)
+        {
+            if (suspendActivity == null)
+            {
+                return default;
+            }
+
+            var uniqueId = suspendActivity.UniqueID;
+            var exists = FindExistingStep(uniqueId);
+
+            var outputs = suspendActivity.GetOutputs();
+            var serviceTestOutputs = new ObservableCollection<IServiceTestOutput>();
+
+            if (outputs.Count > 1)
+            {
+                foreach (var output in outputs)
+                {
+                    serviceTestOutputs.Add(new ServiceTestOutput(variable: output, value: string.Empty, from: string.Empty, to: string.Empty)
+                    {
+                        AssertOp = "=",
+                        CanEditVariable = false,
+                        Result = new TestRunResult { RunTestResult = RunResult.TestPending }
+                    });
+                }
+                return serviceTestOutputs;
+            }
+            else
+            {
+                return GetDefaultOutputs();
+            }
+
+
+        }
+
+        private void AddSuspendActivity(IServiceTestStep testStep, Activity childActivity)
+        {
+            CheckForAndAddSpecialNodes(testStep, childActivity);
+        }
+
         IServiceTestStep ProcessGate(ModelItem modelItem)
         {
             var gateActivity = GetCurrentActivity<GateActivity>(modelItem);
-            var testStep = BuildParentsFromModelItem(modelItem); 
+            var testStep = BuildParentsFromModelItem(modelItem);
             if (testStep != null)
             {
                 AddGate(gateActivity, testStep, SelectedServiceTest.TestSteps);
@@ -983,13 +1063,18 @@ namespace Warewolf.Studio.ViewModels
         {
             if (activity is DsfNativeActivity<string> act)
             {
-                if (act.GetType() == typeof(DsfSequenceActivity))
+                var activityType = act.GetType();
+                if (activityType == typeof(DsfSequenceActivity))
                 {
                     AddSequence(act as DsfSequenceActivity, testStep, testStep.Children);
                 }
-                else if (act.GetType() == typeof(GateActivity))
+                else if (activityType == typeof(GateActivity))
                 {
                     AddGate(act as GateActivity, testStep, testStep.Children);
+                }
+                else if (activityType == typeof(SuspendExecutionActivity))
+                {
+                    AddSuspend(act as SuspendExecutionActivity, testStep, testStep.Children);
                 }
                 else
                 {
@@ -1030,7 +1115,6 @@ namespace Warewolf.Studio.ViewModels
             SetStepIcon(type, testStep);
 
             var childActivity = gateActivity.DataFunc.Handler;
-            var act = childActivity as DsfNativeActivity<string>;
 
             if (childActivity != null)
             {
@@ -1212,9 +1296,9 @@ namespace Warewolf.Studio.ViewModels
                                                 })
                                                 .Cast<IServiceTestOutput>()
                                                 .ToObservableCollection();
-                
+
                 SetStepIcon(act.GetType(), serviceTestStep);
-                parentTestStep.Children.Add(serviceTestStep); 
+                parentTestStep.Children.Add(serviceTestStep);
             }
             else
             {
@@ -1527,7 +1611,7 @@ namespace Warewolf.Studio.ViewModels
             return new ObservableCollection<IServiceTestOutput>
             {
                 new ServiceTestOutput(string.Empty, string.Empty, string.Empty, string.Empty)
-                {   
+                {
                     Result = new TestRunResult { RunTestResult = RunResult.TestPending }
                 }
             };
