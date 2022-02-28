@@ -102,7 +102,7 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("Studio Settings Core")]
+        [TestCategory("LogSettingsViewModel_ServerLogLevel")]
         [Timeout(300000)]
         public void LogSettingsViewModel_ServerLogLevel_Set_PropertyChangeFired()
         {
@@ -128,9 +128,9 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        [TestCategory("Studio Settings Core")]
+        [TestCategory("LogSettingsViewModel_UpdateHelp")]
         [Timeout(300000)]
-        public void LogSettingsViewModel_UpdateHelp_ShouldCallToHelpViewMode()
+        public void LogSettingsViewModel_UpdateHelp_ShouldCallToHelpViewModel()
         {
             //------------Setup for test--------------------------
             var mockMainViewModel = new Mock<IShellViewModel>();
@@ -149,7 +149,7 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        [TestCategory("Studio Settings Core")]
+        [TestCategory("LogSettingsViewModel_SelectedLoggingType")]
         [Timeout(300000)]
         public void LogSettingsViewModel_SelectedLoggingType_ShouldSelectLoggingType()
         {
@@ -167,7 +167,7 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        [TestCategory("Studio Settings Core")]
+        [TestCategory("LogSettingsViewModel_GetLogFileCommand")]
         [Timeout(300000)]
         public void LogSettingsViewModel_GetServerLogFileCommand_CanExecute()
         {
@@ -183,7 +183,7 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        [TestCategory("Studio Settings Core")]
+        [TestCategory("LogSettingsViewModel_GetLogFileCommand")]
         [Timeout(300000)]
         public void LogSettingsViewModel_GetStudioLogFileCommand_CanExecute()
         {

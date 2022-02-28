@@ -504,7 +504,7 @@ You need Administrator permission.", viewModel.Errors);
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory("Studio Settings Core")]
+        [TestCategory("SettingsViewModel_SaveCommand")]
         [Timeout(300000)]
         public void SettingsViewModel_SaveCommand_ResultIsError_HasErrorsIsTrue()
         {
@@ -735,7 +735,7 @@ You need Administrator permission.", viewModel.Errors);
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("Studio Settings Core")]
+        [TestCategory("SettingsViewModel_OnDeactivate")]
         [Timeout(300000)]
         public void SettingsViewModel_OnDeactivate_DirtyFalse_ShouldShowPopup()
         {
@@ -753,7 +753,7 @@ You need Administrator permission.", viewModel.Errors);
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("Studio Settings Core")]
+        [TestCategory("SettingsViewModel_OnDeactivate")]
         [Timeout(300000)]
         public void SettingsViewModel_OnDeactivate_DirtyFalse_PopResultYes()
         {
@@ -773,7 +773,7 @@ You need Administrator permission.", viewModel.Errors);
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("Studio Settings Core")]
+        [TestCategory("SettingsViewModel_OnDeactivate")]
         [Timeout(300000)]
         public void SettingsViewModel_OnDeactivate_RequestCloseFalse_NoPopup()
         {
@@ -794,7 +794,7 @@ You need Administrator permission.", viewModel.Errors);
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        [TestCategory("Studio Settings Core")]
+        [TestCategory("SettingsViewModel_ReturnsFalse")]
         [Timeout(300000)]
         public void SettingsViewModel_HasVariables_ReturnsFalse()
         {
@@ -811,7 +811,7 @@ You need Administrator permission.", viewModel.Errors);
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        [TestCategory("Studio Settings Core")]
+        [TestCategory("SettingsViewModel_ReturnsFalse")]
         [Timeout(300000)]
         public void SettingsViewModel_HasDebugOutput_ReturnsFalse()
         {
@@ -828,7 +828,7 @@ You need Administrator permission.", viewModel.Errors);
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("Studio Settings Core")]
+        [TestCategory("SettingsViewModel_OnDeactivate")]
         [Timeout(300000)]
         public void SettingsViewModel_OnDeactivate_DirtyFalse_PopResultNo()
         {
@@ -1015,7 +1015,7 @@ You need Administrator permission.", viewModel.Errors);
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("Studio Settings Core")]
+        [TestCategory("SettingsViewModel_DoDeactivate")]
         public void SettingsViewModel_DoDeactivate_YesSavesChanges()
         {
             //------------Setup for test--------------------------
@@ -1036,7 +1036,7 @@ You need Administrator permission.", viewModel.Errors);
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("Studio Settings Core")]
+        [TestCategory("SettingsViewModel_DoDeactivate")]
         public void SettingsViewModel_DoDeactivate_NoSavesChanges()
         {
             //------------Setup for test--------------------------
@@ -1069,7 +1069,7 @@ You need Administrator permission.", viewModel.Errors);
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("Studio Settings Core")]
+        [TestCategory("SettingsViewModel_DoDeactivate")]
         public void SettingsViewModel_DoDeactivate_CancelNoReturnsTrue()
         {
             //------------Setup for test--------------------------
