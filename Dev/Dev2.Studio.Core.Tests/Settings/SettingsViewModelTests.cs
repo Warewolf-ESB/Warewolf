@@ -37,6 +37,7 @@ namespace Dev2.Core.Tests.Settings
 {
     [TestClass]
     [TestCategory("Studio Settings Core")]
+    [Ignore]
     public class SettingsViewModelTests
     {
         [TestInitialize]
