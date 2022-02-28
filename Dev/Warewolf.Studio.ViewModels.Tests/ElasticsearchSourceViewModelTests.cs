@@ -110,7 +110,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         [TestMethod]
         [Timeout(300000)]
         [Owner("Candice Daniel")]
-        [TestCategory(nameof(ElasticsearchSourceViewModel))]
+        [TestCategory("ElasticsearchSourceViewModel_Constructor")]
         [ExpectedException(typeof(ArgumentNullException))]
         public void ElasticsearchSourceViewModel_Constructor_Null_IElasticsearchSourceModel_ThrowsException()
         {
@@ -120,7 +120,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         [TestMethod]
         [Timeout(300000)]
         [Owner("Candice Daniel")]
-        [TestCategory(nameof(ElasticsearchSourceViewModel))]
+        [TestCategory("ElasticsearchSourceViewModel_Constructor")]
         [ExpectedException(typeof(ArgumentNullException))]
         public void ElasticsearchSourceViewModel_Constructor_Null_IRequestServiceNameViewModelTask_ThrowsException()
         {
@@ -131,7 +131,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         [TestMethod]
         [Timeout(300000)]
         [Owner("Candice Daniel")]
-        [TestCategory(nameof(ElasticsearchSourceViewModel))]
+        [TestCategory("ElasticsearchSourceViewModel_Constructor")]
         [ExpectedException(typeof(ArgumentNullException))]
         public void ElasticsearchSourceViewModel_Constructor_Null_ElasticsearchSourceDefinition_ThrowsException()
         {
@@ -141,7 +141,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         [TestMethod]
         [Timeout(300000)]
         [Owner("Candice Daniel")]
-        [TestCategory(nameof(ElasticsearchSourceViewModel))]
+        [TestCategory("ElasticsearchSourceViewModel_Constructor")]
         public void ElasticsearchSourceViewModel_Constructor_IElasticsearchSourceModel_IRequestServiceNameViewModel_IsNotNull()
         {
             var source = new ElasticsearchSourceViewModel(_elasticsearchSourceModel.Object, _requestServiceNameViewModelTask, new Mock<IServer>().Object);
@@ -151,7 +151,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         [TestMethod]
         [Timeout(300000)]
         [Owner("Candice Daniel")]
-        [TestCategory(nameof(ElasticsearchSourceViewModel))]
+        [TestCategory("ElasticsearchSourceViewModel_Constructor")]
         public void ElasticsearchSourceViewModel_Constructor_IElasticsearchSourceModel_ElasticsearchSourceDefinition_IAsyncWorker_IsNotNull()
         {
             var source = new ElasticsearchSourceViewModel(_elasticsearchSourceModel.Object, _elasticsearchSourceDefinition.Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object);
@@ -161,7 +161,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         [TestMethod]
         [Timeout(300000)]
         [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(ElasticsearchSourceViewModel))]
+        [TestCategory("ElasticsearchSourceViewModel_Constructor")]
         public void ElasticsearchSourceViewModel_Constructor_OnNew()
         {
             var mockElasticSourceModel = new Mock<IElasticsearchSourceModel>();
@@ -183,7 +183,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         [TestMethod]
         [Timeout(300000)]
         [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(ElasticsearchSourceViewModel))]
+        [TestCategory("ElasticsearchSourceViewModel_Constructor")]
         public void ElasticsearchSourceViewModel_Constructor_OnExisting()
         {
             var mockEventAggregator = new Mock<IEventAggregator>();
