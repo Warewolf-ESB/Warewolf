@@ -264,7 +264,7 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory(nameof(SettingsViewModel))]
+        [TestCategory("SettingsViewModel_SaveCommand")]
         [Timeout(300000)]
         public void SettingsViewModel_SaveCommand_InvokesSaveOnSecurityViewModel_Done()
         {
@@ -292,7 +292,7 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory(nameof(SettingsViewModel))]
+        [TestCategory("SettingsViewModel_SaveCommand")]
         [Timeout(300000)]
         public void SettingsViewModel_SaveCommand_ResultIsNull_HasErrorsIsTrue()
         {
@@ -323,7 +323,7 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Massimo Guerrera")]
-        [TestCategory(nameof(SettingsViewModel))]
+        [TestCategory("SettingsViewModel_SaveCommand")]
         [Timeout(300000)]
         public void SettingsViewModel_SaveCommand_NoAuth_HasErrorsIsTrueCorrectErrorMessage()
         {
@@ -355,7 +355,7 @@ You need Administrator permission.", viewModel.Errors);
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory(nameof(SettingsViewModel))]
+        [TestCategory("SettingsViewModel_SaveCommand")]
         [Timeout(300000)]
         public void SettingsViewModel_SaveCommand_DuplicateServerPermissions_HasErrorsIsTrueCorrectErrorMessage()
         {
@@ -415,7 +415,7 @@ You need Administrator permission.", viewModel.Errors);
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory(nameof(SettingsViewModel))]
+        [TestCategory("SettingsViewModel_SaveCommand")]
         [Timeout(300000)]
         public void SettingsViewModel_SaveCommand_DuplicateResourcePermissions_HasErrorsIsTrueCorrectErrorMessage()
         {
@@ -474,7 +474,7 @@ You need Administrator permission.", viewModel.Errors);
 
         [TestMethod]
         [Owner("Massimo Guerrera")]
-        [TestCategory(nameof(SettingsViewModel))]
+        [TestCategory("SettingsViewModel_SaveCommand")]
         [Timeout(300000)]
         public void SettingsViewModel_SaveCommand_NotConnected_HasErrorsIsTrueCorrectErrorMessage()
         {
@@ -538,7 +538,7 @@ You need Administrator permission.", viewModel.Errors);
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory(nameof(SettingsViewModel))]
+        [TestCategory("SettingsViewModel_IsDirty")]
         [Timeout(300000)]
         public void SettingsViewModel_IsDirty_SecurityViewModelIsDirtyPropertyChanged_IsDirtyIsTrue()
         {
@@ -555,7 +555,7 @@ You need Administrator permission.", viewModel.Errors);
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory(nameof(SettingsViewModel))]
+        [TestCategory("SettingsViewModel_IsDirty")]
         [Timeout(300000)]
         public void SettingsViewModel_IsDirty_TrueSecurityNameHasStar()
         {
@@ -572,7 +572,7 @@ You need Administrator permission.", viewModel.Errors);
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory(nameof(SettingsViewModel))]
+        [TestCategory("SettingsViewModel_IsDirty")]
         [Timeout(300000)]
         public void SettingsViewModel_WhenIsDirtySecurityModelFiresPropertyChange_SetsSettingsViewModelIsDirty()
         {
@@ -596,7 +596,7 @@ You need Administrator permission.", viewModel.Errors);
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory(nameof(SettingsViewModel))]
+        [TestCategory("SettingsViewModel_IsDirty")]
         [Timeout(300000)]
         public void SettingsViewModel_WhenIsDirtyPerfCounterModelFiresPropertyChange_SetsSettingsViewModelIsDirty()
         {
@@ -620,7 +620,7 @@ You need Administrator permission.", viewModel.Errors);
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory(nameof(SettingsViewModel))]
+        [TestCategory("SettingsViewModel_IsDirty")]
         [Timeout(300000)]
         public void SettingsViewModel_IsSecurityDirty_FalseSecurityNameHasNoStar()
         {
@@ -637,7 +637,7 @@ You need Administrator permission.", viewModel.Errors);
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory(nameof(SettingsViewModel))]
+        [TestCategory("SettingsViewModel_IsDirty")]
         [Timeout(300000)]
         public void SettingsViewModel_IsLoggingDirty_FalseLoggingNameHasNoStar()
         {
@@ -654,7 +654,7 @@ You need Administrator permission.", viewModel.Errors);
 
         [TestMethod]
         [Owner("Candice Daniel")]
-        [TestCategory(nameof(SettingsViewModel))]
+        [TestCategory("SettingsViewModel_IsDirty")]
         [Timeout(300000)]
         public void SettingsViewModel_IsPersistenceDirty_FalsePersistenceNameHasNoStar()
         {
@@ -671,9 +671,8 @@ You need Administrator permission.", viewModel.Errors);
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory(nameof(SettingsViewModel))]
+        [TestCategory("SettingsViewModel_IsDirty")]
         [Timeout(300000)]
-        [Ignore]
         public void SettingsViewModel_IsLoggingDirty_TrueLoggingNameHasStar()
         {
             //------------Setup for test--------------------------
@@ -688,9 +687,8 @@ You need Administrator permission.", viewModel.Errors);
 
         [TestMethod]
         [Owner("Candice Daniel")]
-        [TestCategory(nameof(SettingsViewModel))]
+        [TestCategory("SettingsViewModel_IsDirty")]
         [Timeout(300000)]
-        [Ignore]
         public void SettingsViewModel_IsPersistenceDirty_TruePersistenceNameHasStar()
         {
             //------------Setup for test--------------------------
@@ -705,9 +703,8 @@ You need Administrator permission.", viewModel.Errors);
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory(nameof(SettingsViewModel))]
+        [TestCategory("SettingsViewModel_IsDirty")]
         [Timeout(300000)]
-        [Ignore]
         public void SettingsViewModel_IsPerfCounterDirty_FalsePerfCounterNameHasNoStar()
         {
             //------------Setup for test--------------------------
@@ -723,9 +720,8 @@ You need Administrator permission.", viewModel.Errors);
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory(nameof(SettingsViewModel))]
+        [TestCategory("SettingsViewModel_IsDirty")]
         [Timeout(300000)]
-        [Ignore]
         public void SettingsViewModel_IsPerfCounterDirty_TruePerfCounterNameHasStar()
         {
             //------------Setup for test--------------------------
@@ -742,7 +738,6 @@ You need Administrator permission.", viewModel.Errors);
         [Owner("Hagashen Naidu")]
         [TestCategory(nameof(SettingsViewModel))]
         [Timeout(300000)]
-        [Ignore]
         public void SettingsViewModel_OnDeactivate_DirtyFalse_ShouldShowPopup()
         {
             //------------Setup for test--------------------------
@@ -761,7 +756,6 @@ You need Administrator permission.", viewModel.Errors);
         [Owner("Hagashen Naidu")]
         [TestCategory(nameof(SettingsViewModel))]
         [Timeout(300000)]
-        [Ignore]
         public void SettingsViewModel_OnDeactivate_DirtyFalse_PopResultYes()
         {
             //------------Setup for test--------------------------
@@ -782,7 +776,6 @@ You need Administrator permission.", viewModel.Errors);
         [Owner("Hagashen Naidu")]
         [TestCategory(nameof(SettingsViewModel))]
         [Timeout(300000)]
-        [Ignore]
         public void SettingsViewModel_OnDeactivate_RequestCloseFalse_NoPopup()
         {
             //------------Setup for test--------------------------
@@ -804,7 +797,6 @@ You need Administrator permission.", viewModel.Errors);
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(SettingsViewModel))]
         [Timeout(300000)]
-        [Ignore]
         public void SettingsViewModel_HasVariables_ReturnsFalse()
         {
             //------------Setup for test--------------------------
@@ -822,7 +814,6 @@ You need Administrator permission.", viewModel.Errors);
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(SettingsViewModel))]
         [Timeout(300000)]
-        [Ignore]
         public void SettingsViewModel_HasDebugOutput_ReturnsFalse()
         {
             //------------Setup for test--------------------------
@@ -840,7 +831,6 @@ You need Administrator permission.", viewModel.Errors);
         [Owner("Hagashen Naidu")]
         [TestCategory(nameof(SettingsViewModel))]
         [Timeout(300000)]
-        [Ignore]
         public void SettingsViewModel_OnDeactivate_DirtyFalse_PopResultNo()
         {
             //------------Setup for test--------------------------
