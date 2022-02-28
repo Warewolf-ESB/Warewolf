@@ -32,14 +32,12 @@ using Warewolf.UnitTestAttributes;
 
 namespace Dev2.Core.Tests.Settings
 {
-    [TestClass]
-    [TestCategory("Studio Settings Core")]
-    [Ignore]
+    [TestClass]    
     public class LogSettingsViewModelTests
     {
         [TestMethod]
         [Owner("Candice Daniel")]
-        [TestCategory(nameof(LogSettingsViewModel))]
+        [TestCategory("Studio Settings Core")]
         [Timeout(300000)]
         public void LogSettingsViewModel_Constructor_Equals_Null_ReturnFalse()
         {
@@ -56,7 +54,7 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Candice Daniel")]
-        [TestCategory(nameof(LogSettingsViewModel))]
+        [TestCategory("LogSettingsViewModel_Constructor")]
         [Timeout(300000)]
         public void LogSettingsViewModel_Constructor_Equals_NotNull_ReturnTrue()
         {
@@ -74,7 +72,7 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory(nameof(LogSettingsViewModel))]
+        [TestCategory("LogSettingsViewModel_Constructor")]
         [ExpectedException(typeof(ArgumentNullException))]
         [Timeout(300000)]
         public void LogSettingsViewModel_Constructor_NullValueLoggingSettingTo_ExceptionThrown()
@@ -89,7 +87,7 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory(nameof(LogSettingsViewModel))]
+        [TestCategory("LogSettingsViewModel_Constructor")]
         [ExpectedException(typeof(ArgumentNullException))]
         [Timeout(300000)]
         public void LogSettingsViewModel_Constructor_NullValueEnvironment_ExceptionThrown()
@@ -104,7 +102,7 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory(nameof(LogSettingsViewModel))]
+        [TestCategory("Studio Settings Core")]
         [Timeout(300000)]
         public void LogSettingsViewModel_ServerLogLevel_Set_PropertyChangeFired()
         {
@@ -130,7 +128,7 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(LogSettingsViewModel))]
+        [TestCategory("Studio Settings Core")]
         [Timeout(300000)]
         public void LogSettingsViewModel_UpdateHelp_ShouldCallToHelpViewMode()
         {
@@ -151,7 +149,7 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(LogSettingsViewModel))]
+        [TestCategory("Studio Settings Core")]
         [Timeout(300000)]
         public void LogSettingsViewModel_SelectedLoggingType_ShouldSelectLoggingType()
         {
@@ -169,7 +167,7 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(LogSettingsViewModel))]
+        [TestCategory("Studio Settings Core")]
         [Timeout(300000)]
         public void LogSettingsViewModel_GetServerLogFileCommand_CanExecute()
         {
@@ -185,7 +183,7 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(LogSettingsViewModel))]
+        [TestCategory("Studio Settings Core")]
         [Timeout(300000)]
         public void LogSettingsViewModel_GetStudioLogFileCommand_CanExecute()
         {
@@ -201,7 +199,7 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory(nameof(LogSettingsViewModel))]
+        [TestCategory("Studio Settings Core")]
         [Timeout(300000)]
         public void LogSettingsViewModel_StudioLogLevel_Set_PropertyChangeFired()
         {
@@ -227,7 +225,7 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory(nameof(LogSettingsViewModel))]
+        [TestCategory("Studio Settings Core")]
         [Timeout(300000)]
         public void LogSettingsViewModel_ServerLogMaxSize_SetInt_PropertyChangeFired()
         {
@@ -252,7 +250,7 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory(nameof(LogSettingsViewModel))]
+        [TestCategory("Studio Settings Core")]
         [Timeout(300000)]
         public void LogSettingsViewModel_ServerLogMaxSize_SetNonInt_PropertyChangeNotFired()
         {
@@ -277,7 +275,7 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory(nameof(LogSettingsViewModel))]
+        [TestCategory("Studio Settings Core")]
         [Timeout(300000)]
         public void LogSettingsViewModel_StudioLogMaxSize_SetInt_PropertyChangeFired()
         {
@@ -302,7 +300,7 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(LogSettingsViewModel))]
+        [TestCategory("Studio Settings Core")]
         [Timeout(300000)]
         public void LogSettingsViewModel_StudioFileLogLevel_Construct_IsDebug()
         {
@@ -317,7 +315,7 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(LogSettingsViewModel))]
+        [TestCategory("Studio Settings Core")]
         [Timeout(300000)]
         public void LogSettingsViewModel_StudioFileLogLevel_SetLevel_IsInfo()
         {
@@ -333,7 +331,7 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(LogSettingsViewModel))]
+        [TestCategory("Studio Settings Core")]
         [Timeout(300000)]
         public void LogSettingsViewModel_CanEdit_Construct_IsFalse()
         {
@@ -349,7 +347,7 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Candice Daniel")]
-        [TestCategory(nameof(LogSettingsViewModel))]
+        [TestCategory("Studio Settings Core")]
         [Timeout(300000)]
         public void LogSettingsViewModel_IsLegacy_Construct_IsTrue()
         {
@@ -365,7 +363,7 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Candice Daniel")]
-        [TestCategory(nameof(LogSettingsViewModel))]
+        [TestCategory("Studio Settings Core")]
         [Timeout(300000)]
         public void LogSettingsViewModel_IsLegacy_Construct_IsFalse()
         {
@@ -380,7 +378,7 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(LogSettingsViewModel))]
+        [TestCategory("Studio Settings Core")]
         [Timeout(300000)]
         public void LogSettingsViewModel_CanEdit_Construct_IsTrue()
         {
@@ -400,7 +398,7 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory(nameof(LogSettingsViewModel))]
+        [TestCategory("Studio Settings Core")]
         [Timeout(300000)]
         public void LogSettingsViewModel_StudioLogMaxSize_SetNonInt_PropertyChangeNotFired()
         {
@@ -425,7 +423,7 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(LogSettingsViewModel))]
+        [TestCategory("Studio Settings Core")]
         [Timeout(300000)]
         public void LogSettingsViewModel_AuditsFilePath_PropertyChangeFired()
         {
@@ -451,7 +449,7 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Candice Daniel")]
-        [TestCategory(nameof(LogSettingsViewModel))]
+        [TestCategory("Studio Settings Core")]
         [Timeout(300000)]
         public void LogSettingsViewModel_Save_LegacySettingsData()
         {
@@ -473,7 +471,7 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Candice Daniel")]
-        [TestCategory(nameof(LogSettingsViewModel))]
+        [TestCategory("Studio Settings Core")]
         [Timeout(300000)]
         public void LogSettingsViewModel_Save_ChangeSink()
         {
@@ -494,7 +492,7 @@ namespace Dev2.Core.Tests.Settings
         
         [TestMethod]
         [Owner("Candice Daniel")]
-        [TestCategory(nameof(LogSettingsViewModel))]
+        [TestCategory("Studio Settings Core")]
         [Timeout(300000)]
         public void LogSettingsViewModel_Save_AuditingSettingsData()
         {
