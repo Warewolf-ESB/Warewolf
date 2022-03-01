@@ -38,6 +38,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory("Studio Settings Core")]
+        [Timeout(600000)]
         public void LogSettingsViewModel_Constructor_Equals_Null_ReturnFalse()
         {
             //------------Setup for test--------------------------
@@ -54,7 +55,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory("LogSettingsViewModel_Constructor")]
-        [Timeout(300000)]
+        [Timeout(600000)]
         public void LogSettingsViewModel_Constructor_Equals_NotNull_ReturnTrue()
         {
             //------------Setup for test--------------------------
