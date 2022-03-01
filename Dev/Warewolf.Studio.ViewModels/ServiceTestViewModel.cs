@@ -255,9 +255,57 @@ namespace Warewolf.Studio.ViewModels
             {
                 GateFromDebug(debugState, debugItemContent);
             }
+            else if (actualType == nameof(SuspendExecutionActivity))
+            {
+                SuspendFromDebug(debugState, debugItemContent);
+            }
+            else if (actualType == nameof(ManualResumptionActivity))
+            {
+                ManualResumeFromDebug(debugState, debugItemContent);
+            }
             else
             {
                 AddStepFromDebug(debugState, debugItemContent);
+            }
+        }
+
+        private void ManualResumeFromDebug(IDebugTreeViewItemViewModel debugState, IDebugState debugItemContent)
+        {
+            var exists = FindExistingStep(debugItemContent.ID.ToString());
+            IServiceTestStep serviceTestStep = null;
+            if (exists == null)
+            {
+                serviceTestStep = ProcessManualResumption(WorkflowDesignerViewModel.GetModelItem(debugItemContent.WorkSurfaceMappingId, debugItemContent.ParentID.GetValueOrDefault()));
+
+                if (serviceTestStep != null)
+                {
+                    SetStepIcon(serviceTestStep.ActivityType, serviceTestStep);
+                }
+            }
+
+            if (debugState.Children != null && debugState.Children.Count > 0)
+            {
+                AddChildren(debugState, serviceTestStep);
+            }
+        }
+
+        private void SuspendFromDebug(IDebugTreeViewItemViewModel debugState, IDebugState debugItemContent)
+        {
+            var exists = FindExistingStep(debugItemContent.ID.ToString());
+            IServiceTestStep serviceTestStep = null;
+            if (exists == null)
+            {
+                serviceTestStep = ProcessSuspend(WorkflowDesignerViewModel.GetModelItem(debugItemContent.WorkSurfaceMappingId, debugItemContent.ParentID.GetValueOrDefault()));
+
+                if (serviceTestStep != null)
+                {
+                    SetStepIcon(serviceTestStep.ActivityType, serviceTestStep);
+                }
+            }
+
+            if (debugState.Children != null && debugState.Children.Count > 0)
+            {
+                AddChildren(debugState, serviceTestStep);
             }
         }
 
@@ -695,10 +743,128 @@ namespace Warewolf.Studio.ViewModels
                 case nameof(SuspendExecutionActivity):
                     ProcessSuspend(modelItem);
                     break;
+                case nameof(ManualResumptionActivity):
+                    ProcessManualResumption(modelItem);
+                    break;
                 default:
                     ProcessActivity(modelItem);
                     break;
             };
+        }
+
+        private IServiceTestStep ProcessManualResumption(ModelItem modelItem)
+        {
+            var manualResumeActivity = GetCurrentActivity<ManualResumptionActivity>(modelItem);
+            var testStep = BuildParentsFromModelItem(modelItem);
+            testStep.MockSelected = true;
+            if (testStep != null)
+            {
+                AddManualResume(manualResumeActivity, testStep, SelectedServiceTest.TestSteps);
+                if (FindExistingStep(testStep.ActivityID.ToString()) == null)
+                {
+                    SelectedServiceTest.TestSteps.Add(testStep);
+                }
+            }
+            else
+            {
+                AddManualResume(manualResumeActivity, null, SelectedServiceTest.TestSteps);
+            }
+
+            return testStep;
+        }
+
+        private void AddManualResume(ManualResumptionActivity manualResumeActivity, IServiceTestStep parent, ObservableCollection<IServiceTestStep> children)
+        {
+            if (manualResumeActivity is null)
+            {
+                return;
+            }
+            var uniqueId = manualResumeActivity.UniqueID;
+
+            var type = manualResumeActivity.GetType();
+            var testStep = CreateMockChildStep(Guid.Parse(uniqueId), parent, type.Name, manualResumeActivity.DisplayName);
+            testStep.StepOutputs = GetManualResumeOutputs(manualResumeActivity);
+            SetStepIcon(type, testStep);
+
+            var childActivity = manualResumeActivity.OverrideDataFunc.Handler;
+
+            if (childActivity != null)
+            {
+                AddInnerActivity(testStep, childActivity);
+            }
+            var exists = FindExistingStep(uniqueId);
+            if (exists == null)
+            {
+                children.Add(testStep);
+            }
+            else
+            {
+                AddMissingChild(children, testStep);
+            }
+        }
+
+        private ObservableCollection<IServiceTestOutput> GetManualResumeOutputs(ManualResumptionActivity manualResumeActivity)
+        {
+            if (manualResumeActivity == null)
+            {
+                return default;
+            }
+
+            var uniqueId = manualResumeActivity.UniqueID;
+            var exists = FindExistingStep(uniqueId);
+
+            var outputs = manualResumeActivity.GetOutputs();
+            var serviceTestOutputs = new ObservableCollection<IServiceTestOutput>();
+
+            if (outputs.Count > 1)
+            {
+                foreach (var output in outputs)
+                {
+                    serviceTestOutputs.Add(new ServiceTestOutput(variable: output, value: string.Empty, from: string.Empty, to: string.Empty)
+                    {
+                        AssertOp = "=",
+                        CanEditVariable = false,
+                        Result = new TestRunResult { RunTestResult = RunResult.TestPending }
+                    });
+                }
+                return serviceTestOutputs;
+            }
+            else
+            {
+                return GetDefaultOutputs();
+            }
+        }
+
+        private ObservableCollection<IServiceTestOutput> GetSuspendOutputs(ManualResumptionActivity manualResumeActivity)
+        {
+            if (manualResumeActivity == null)
+            {
+                return default;
+            }
+
+            var uniqueId = manualResumeActivity.UniqueID;
+            var exists = FindExistingStep(uniqueId);
+
+            var outputs = manualResumeActivity.GetOutputs();
+            var serviceTestOutputs = new ObservableCollection<IServiceTestOutput>();
+
+            if (outputs.Count > 1)
+            {
+                foreach (var output in outputs)
+                {
+                    serviceTestOutputs.Add(new ServiceTestOutput(variable: output, value: string.Empty, from: string.Empty, to: string.Empty)
+                    {
+                        AssertOp = "=",
+                        CanEditVariable = false,
+                        Result = new TestRunResult { RunTestResult = RunResult.TestPending }
+                    });
+                }
+                return serviceTestOutputs;
+            }
+            else
+            {
+                return GetDefaultOutputs();
+            }
         }
 
         static Type GetInnerItemType(ModelItem modelItem)
@@ -733,10 +899,24 @@ namespace Warewolf.Studio.ViewModels
         }
 
 
-        private void ProcessSuspend(ModelItem modelItem)
+        private IServiceTestStep ProcessSuspend(ModelItem modelItem)
         {
             var suspendActivity = GetCurrentActivity<SuspendExecutionActivity>(modelItem);
-            AddSuspend(suspendActivity, null, SelectedServiceTest.TestSteps);
+            var testStep = BuildParentsFromModelItem(modelItem);
+            testStep.MockSelected = true;
+            if (testStep != null)
+            {
+                AddSuspend(suspendActivity, testStep, SelectedServiceTest.TestSteps);
+                if (FindExistingStep(testStep.ActivityID.ToString()) == null)
+                {
+                    SelectedServiceTest.TestSteps.Add(testStep);
+                }
+            }
+            else
+            {
+                AddSuspend(suspendActivity, null, SelectedServiceTest.TestSteps);
+            }
+            return testStep;
         }
 
         private void AddSuspend(SuspendExecutionActivity suspendActivity, IServiceTestStep parent, ObservableCollection<IServiceTestStep> children)
@@ -756,7 +936,7 @@ namespace Warewolf.Studio.ViewModels
 
             if (childActivity != null)
             {
-                AddSuspendActivity(testStep, childActivity);
+                AddInnerActivity(testStep, childActivity);
             }
             var exists = FindExistingStep(uniqueId);
             if (exists == null)
@@ -803,7 +983,7 @@ namespace Warewolf.Studio.ViewModels
 
         }
 
-        private void AddSuspendActivity(IServiceTestStep testStep, Activity childActivity)
+        private void AddInnerActivity(IServiceTestStep testStep, Activity childActivity)
         {
             CheckForAndAddSpecialNodes(testStep, childActivity);
         }
@@ -1041,7 +1221,7 @@ namespace Warewolf.Studio.ViewModels
             SetStepIcon(type, testStep);
             foreach (var activity in sequence.Activities)
             {
-                AddSequenceActivity(testStep, activity);
+                AddInnerActivity(testStep, activity);
             }
             var exists = FindExistingStep(uniqueId);
             if (exists == null)
@@ -1052,11 +1232,6 @@ namespace Warewolf.Studio.ViewModels
             {
                 AddMissingChild(serviceTestSteps, testStep);
             }
-        }
-
-        void AddSequenceActivity(IServiceTestStep testStep, Activity activity)
-        {
-            CheckForAndAddSpecialNodes(testStep, activity);
         }
 
         private void CheckForAndAddSpecialNodes(IServiceTestStep testStep, Activity activity)
@@ -1075,6 +1250,10 @@ namespace Warewolf.Studio.ViewModels
                 else if (activityType == typeof(SuspendExecutionActivity))
                 {
                     AddSuspend(act as SuspendExecutionActivity, testStep, testStep.Children);
+                }
+                else if (activityType == typeof(ManualResumptionActivity))
+                {
+                    AddManualResume(act as ManualResumptionActivity, testStep, testStep.Children);
                 }
                 else
                 {
@@ -1118,7 +1297,7 @@ namespace Warewolf.Studio.ViewModels
 
             if (childActivity != null)
             {
-                AddGateActivity(testStep, childActivity);
+                AddInnerActivity(testStep, childActivity);
             }
             var exists = FindExistingStep(uniqueId);
             if (exists == null)
@@ -1129,11 +1308,6 @@ namespace Warewolf.Studio.ViewModels
             {
                 AddMissingChild(children, testStep);
             }
-        }
-
-        private void AddGateActivity(IServiceTestStep testStep, Activity childActivity)
-        {
-            CheckForAndAddSpecialNodes(testStep, childActivity);
         }
 
         void AddSuspendExecution(SuspendExecutionActivity suspendExecutionActivity, IServiceTestStep parent, ICollection<IServiceTestStep> serviceTestSteps)
@@ -1302,7 +1476,12 @@ namespace Warewolf.Studio.ViewModels
             }
             else
             {
-                CheckForAndAddSpecialNodes(parentTestStep, act as Activity);
+                var serviceTestStep = CreateMockChildStep(Guid.Parse(act.UniqueID), parentTestStep, act.GetType().Name, act.DisplayName);
+                serviceTestStep.StepOutputs = GetDefaultOutputs();
+
+                SetStepIcon(act.GetType(), serviceTestStep);
+                parentTestStep.Children.Add(serviceTestStep);
+                
             }
         }
 
