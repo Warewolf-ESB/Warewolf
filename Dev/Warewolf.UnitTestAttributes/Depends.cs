@@ -18,7 +18,10 @@ namespace Warewolf.UnitTestAttributes
             "RSAKLFSVRHST1.premier.local",
             "t004121.premier.local",
             "opswolf.com",
+            "20.71.86.202",//remote-warewolf-connector-testing in the cloud
+            "20.103.188.228",//http-verbs-connector-testing in the cloud
             "20.86.219.166",//anonymous-redis-connector-testing in the cloud
+            "20.54.155.120",//rabbitmq-connector-testing in the cloud
             "localhost"
         };
         private string SelectedHost = "";
@@ -150,25 +153,10 @@ namespace Warewolf.UnitTestAttributes
                 Container.IP = "20.101.23.190";
                 Container.Port = "6379";
             }
-            else if (_containerType == ContainerType.RabbitMQ)
+            else if (_containerType == ContainerType.FTP)
             {
-                Container.IP = "warewolf-rabbitmq-connector-testing.westeurope.azurecontainer.io";
-                Container.Port = "5672";
-            }
-            else if (_containerType == ContainerType.HTTPVerbsApi)
-            {
-                Container.IP = "http-verbs-connector-testing.westeurope.azurecontainer.io";
-                Container.Port = "80";
-            }
-            else if (_containerType == ContainerType.CIRemote || _containerType == ContainerType.AnonymousWarewolf)
-            {
-                Container.IP = "remote-warewolf-connector-testing.westeurope.azurecontainer.io";
-                Container.Port = "3142";
-            }
-            else if (_containerType == ContainerType.WebApi)
-            {
-                Container.IP = "http-web-connector-testing.westeurope.azurecontainer.io";
-                Container.Port = "80";
+            	Container.IP = "warewolf-ftp-connector-testing.westeurope.azurecontainer.io";
+            	Container.Port = "21";
             }
             else
             {
