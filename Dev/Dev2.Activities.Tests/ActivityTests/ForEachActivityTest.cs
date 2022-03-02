@@ -204,6 +204,31 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+
+        public void NumberOfExecutionsWithCsvExpectedTotalExecutions3()
+        {
+            SetupArgumentsReplace(
+                            ActivityStrings.IndexDataListWithData
+                          , ActivityStrings.IndexDataListWithData
+                          , enForEachType.InCSV
+                           , false
+                          , null
+                          , null
+                          , null
+                          , "1,3,5"                         
+                          );
+
+            var res = ExecuteProcess();
+
+            var actual = RetrieveAllRecordSetFieldValues(res.Environment, "recset1", "field1", out string error);
+
+            // remove test datalist ;)
+            Assert.AreEqual("X", actual[0]);
+            Assert.AreEqual("X", actual[2]);
+            Assert.AreEqual("X", actual[4]);
+        }
+
+        [TestMethod]
         [Timeout(60000)]
         public void NumberOfExecutionsWithCsvExpectedTotalExecutions4()
         {
@@ -253,7 +278,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [Timeout(60000)]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("DsfForEach_UpdateDebugParentID")]
-        
+
         public void DsfForEach_UpdateDebugParentID_UniqueIdNotSameIfNestingLevelNotChanged()
 
         {
@@ -279,7 +304,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [Timeout(60000)]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("DsfForEach_UpdateDebugParentID")]
-        
+
         public void DsfForEach_UpdateDebugParentID_UniqueIdNotSameIfNestingLevelIncreased()
 
         {
@@ -306,7 +331,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [Timeout(60000)]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("DsfForEach_UpdateDebugParentID")]
-        
+
         public void DsfForEach_Execute_IncrementsAndChangesId_IdNotChangedIfNestingLevelIsZero()
 
         {
@@ -381,6 +406,23 @@ namespace Dev2.Tests.Activities.ActivityTests
             return activity;
         }
 
+        DsfReplaceActivity CreateWorkflowReplace()
+        {
+            var activity = new DsfReplaceActivity
+            {
+                ParentServiceName = "MyTestService",
+                FieldsToSearch = "[[recset1(*).field1]]",
+                Find = "Barney",
+                ReplaceWith = "X"
+
+            };
+
+            TestData = "<ADL><innerrecset><innerrec></innerrec><innerrec2></innerrec2><innerdate></innerdate></innerrecset><innertesting><innertest></innertest></innertesting><innerScalar></innerScalar></ADL>";
+
+            return activity;
+        }
+
+       
         DsfActivity CreateWorkflow(string mapping, bool isInputMapping)
         {
             var activity = new DsfActivity();
@@ -405,7 +447,6 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             var activityFunction = new ActivityFunc<string, bool>();
             var activity = inputMapping != null ? CreateWorkflow(inputMapping, isInputMapping) : CreateWorkflow();
-
             activityFunction.Handler = activity;
             var id = Guid.NewGuid().ToString();
             var dsfForEachActivity = new DsfForEachActivity
@@ -416,7 +457,35 @@ namespace Dev2.Tests.Activities.ActivityTests
                 From = @from,
                 To = to,
                 CsvIndexes = csvIndexes,
-                UniqueID = id
+                UniqueID = id,
+                Recordset = testData
+
+            };
+            TestStartNode = new FlowStep
+            {
+                Action = dsfForEachActivity
+            };
+
+            CurrentDl = testData;
+            TestData = currentDl;
+            return dsfForEachActivity;
+        }
+
+        DsfForEachActivity SetupArgumentsReplace(string currentDl, string testData, enForEachType type, bool isInputMapping = false, string inputMapping = null, string from = null, string to = null, string csvIndexes = null, string numberExecutions = null)
+        {
+            var activityFunction = new ActivityFunc<string, bool>();
+            var activity = CreateWorkflowReplace();
+            activityFunction.Handler = activity;
+            var id = Guid.NewGuid().ToString();
+            var dsfForEachActivity = new DsfForEachActivity
+            {
+                DataFunc = activityFunction,
+                ForEachType = type,
+                NumOfExections = numberExecutions,
+                From = @from,
+                To = to,
+                CsvIndexes = csvIndexes,
+                UniqueID = id              
             };
             TestStartNode = new FlowStep
             {

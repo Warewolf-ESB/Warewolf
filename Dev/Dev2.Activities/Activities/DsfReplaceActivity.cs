@@ -239,7 +239,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     dataObject.Environment.ApplyUpdate(s, a =>
                     {
                         var replacementCountInner = 0;
-                        var replace = replaceOperation.Replace(a.ToString(), findValue, replaceWithValue, CaseMatch, out errorsInner, ref replacementCountInner);
+                        var replace = (dynamic)null;
+                        if (update == counterInner)
+                        {
+                            replace = replaceOperation.Replace(a.ToString(), findValue, replaceWithValue, CaseMatch, out errorsInner, ref replacementCountInner);
+                        }
+                        else
+                        {
+                            replace = a.ToString();
+                        }
                         if (!string.IsNullOrEmpty(Result) && !DataListUtil.IsValueScalar(Result))
                         {
                             dataObject.Environment.Assign(Result, replacementCountInner.ToString(CultureInfo.InvariantCulture), update == 0 ? counterInner : update);
