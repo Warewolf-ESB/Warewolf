@@ -139,7 +139,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         #region Test construction
 
         [TestMethod]
-        [Timeout(500)]
+        [Timeout(1000)]
         [ExpectedException(typeof(ArgumentNullException))]
         public void TestManagePluginSourceViewModelAsyncWorkerNull()
         {
@@ -157,9 +157,9 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void TestManagePluginSourceViewModelAggregatorNull()
+        public void TestManageCOMPluginSourceViewModelAggregatorNull()
         {
             //act
             new ManageComPluginSourceViewModel(_updateManagerMock.Object, null, _asyncWorkerMock.Object);
@@ -175,9 +175,9 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void TestManagePluginSourceViewModePluginSourceNull()
+        public void TestManageCOMPluginSourceViewModePluginSourceNull()
         {
             //act
             new ManageComPluginSourceViewModel(_updateManagerMock.Object, _aggregatorMock.Object, null, _asyncWorkerMock.Object);
@@ -919,7 +919,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _target.DllListings = new ObservableCollection<IDllListingModel> { listingMock.Object,listingMock1.Object,listingMock2.Object };
             _changedProperties.Clear();
 
-            var p = new PrivateObject(_target);
+            var p = new Warewolf.Testing.PrivateObject(_target);
             p.SetField("_originalDllListings", originalList);
             //act
             _target.SearchTerm = expectedValue;

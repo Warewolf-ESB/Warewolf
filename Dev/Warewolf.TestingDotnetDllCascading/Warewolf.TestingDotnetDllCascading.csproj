@@ -47,9 +47,6 @@
     </Compile>
     <Compile Include="Person.cs" />
     <Compile Include="Human.cs" />
-    <AdditionalFiles Include="..\SonarQube\SonarLint.xml">
-      <Visible>False</Visible>
-    </AdditionalFiles>
     <Compile Include="HelloWolrd.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -18,9 +18,15 @@ namespace Warewolf.UIBindingTests.WcfSource
     [Binding]
     public class WcfSourceSteps
     {
+        static FeatureContext _featureContext;
+        readonly ScenarioContext _scenarioContext;
+
+        public WcfSourceSteps(ScenarioContext scenarioContext) => _scenarioContext = scenarioContext;
+        
         [BeforeFeature("WcfSource")]
-        public static void SetupForSystem()
+        public static void SetupForSystem(FeatureContext featureContext)
         {
+            _featureContext = featureContext;
             Utils.SetupResourceDictionary();
             var manageWcfSourceControl = new ManageWcfSourceControl();
             var mockStudioUpdateManager = new Mock<IWcfSourceModel>();
@@ -32,42 +38,42 @@ namespace Warewolf.UIBindingTests.WcfSource
             var manageWcfSourceViewModel = new ManageWcfSourceViewModel(mockStudioUpdateManager.Object, task, mockEventAggregator.Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object);
             manageWcfSourceControl.DataContext = manageWcfSourceViewModel;
             Utils.ShowTheViewForTesting(manageWcfSourceControl);
-            FeatureContext.Current.Add(Utils.ViewNameKey, manageWcfSourceControl);
-            FeatureContext.Current.Add(Utils.ViewModelNameKey, manageWcfSourceViewModel);
-            FeatureContext.Current.Add("updateManager", mockStudioUpdateManager);
-            FeatureContext.Current.Add("requestServiceNameViewModel", mockRequestServiceNameViewModel);
-            FeatureContext.Current.Add("externalProcessExecutor", mockExecutor);
+            _featureContext.Add(Utils.ViewNameKey, manageWcfSourceControl);
+            _featureContext.Add(Utils.ViewModelNameKey, manageWcfSourceViewModel);
+            _featureContext.Add("updateManager", mockStudioUpdateManager);
+            _featureContext.Add("requestServiceNameViewModel", mockRequestServiceNameViewModel);
+            _featureContext.Add("externalProcessExecutor", mockExecutor);
         }
 
         [BeforeScenario("WcfSource")]
         public void SetupForWcfSource()
         {
-            ScenarioContext.Current.Add(Utils.ViewNameKey, FeatureContext.Current.Get<ManageWcfSourceControl>(Utils.ViewNameKey));
-            ScenarioContext.Current.Add("updateManager", FeatureContext.Current.Get<Mock<IWcfSourceModel>>("updateManager"));
-            ScenarioContext.Current.Add("requestServiceNameViewModel", FeatureContext.Current.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel"));
-            ScenarioContext.Current.Add("externalProcessExecutor", FeatureContext.Current.Get<Mock<IExternalProcessExecutor>>("externalProcessExecutor"));
-            ScenarioContext.Current.Add(Utils.ViewModelNameKey, FeatureContext.Current.Get<ManageWcfSourceViewModel>(Utils.ViewModelNameKey));
+            _scenarioContext.Add(Utils.ViewNameKey, _featureContext.Get<ManageWcfSourceControl>(Utils.ViewNameKey));
+            _scenarioContext.Add("updateManager", _featureContext.Get<Mock<IWcfSourceModel>>("updateManager"));
+            _scenarioContext.Add("requestServiceNameViewModel", _featureContext.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel"));
+            _scenarioContext.Add("externalProcessExecutor", _featureContext.Get<Mock<IExternalProcessExecutor>>("externalProcessExecutor"));
+            _scenarioContext.Add(Utils.ViewModelNameKey, _featureContext.Get<ManageWcfSourceViewModel>(Utils.ViewModelNameKey));
         }
 
         [Given(@"I open New Wcf Source")]
         public void GivenIOpenNewWcfSource()
         {
-            var manageWcfSourceControl = ScenarioContext.Current.Get<ManageWcfSourceControl>(Utils.ViewNameKey);
+            var manageWcfSourceControl = _scenarioContext.Get<ManageWcfSourceControl>(Utils.ViewNameKey);
             Assert.IsNotNull(manageWcfSourceControl);
         }
 
         [Then(@"""(.*)"" tab is opened")]
         public void ThenTabIsOpened(string headerText)
         {
-            var viewModel = ScenarioContext.Current.Get<IDockAware>("viewModel");
+            var viewModel = _scenarioContext.Get<IDockAware>("viewModel");
             Assert.AreEqual(headerText, viewModel.Header);
         }
 
         [Then(@"the title is ""(.*)""")]
         public void ThenTheTitleIs(string title)
         {
-            var manageWcfSourceControl = ScenarioContext.Current.Get<ManageWcfSourceControl>(Utils.ViewNameKey);
-            var viewModel = ScenarioContext.Current.Get<ManageWcfSourceViewModel>("viewModel");
+            var manageWcfSourceControl = _scenarioContext.Get<ManageWcfSourceControl>(Utils.ViewNameKey);
+            var viewModel = _scenarioContext.Get<ManageWcfSourceViewModel>("viewModel");
             Assert.AreEqual(title, viewModel.HeaderText);
             Assert.AreEqual(title, manageWcfSourceControl.GetHeaderText());
         }
@@ -75,29 +81,29 @@ namespace Warewolf.UIBindingTests.WcfSource
         [Then(@"""(.*)"" input is ""(.*)""")]
         public void ThenInputIs(string controlName, string value)
         {
-            var manageWcfSourceControl = ScenarioContext.Current.Get<ManageWcfSourceControl>(Utils.ViewNameKey);
+            var manageWcfSourceControl = _scenarioContext.Get<ManageWcfSourceControl>(Utils.ViewNameKey);
             Assert.AreEqual(value, manageWcfSourceControl.GetInputValue(controlName));
         }
 
         [Then(@"""(.*)"" is ""(.*)""")]
         public void ThenIs(string controlName, string enabledString)
         {
-            Utils.CheckControlEnabled(controlName, enabledString, ScenarioContext.Current.Get<ICheckControlEnabledView>(Utils.ViewNameKey), Utils.ViewNameKey);
+            Utils.CheckControlEnabled(controlName, enabledString, _scenarioContext.Get<ICheckControlEnabledView>(Utils.ViewNameKey), Utils.ViewNameKey);
         }
 
         [Then(@"I type WCF Endpoint Url as ""(.*)""")]
         public void ThenITypeWCFEndpointUrlAs(string endpointUrl)
         {
-            var manageWcfSourceControl = ScenarioContext.Current.Get<ManageWcfSourceControl>(Utils.ViewNameKey);
+            var manageWcfSourceControl = _scenarioContext.Get<ManageWcfSourceControl>(Utils.ViewNameKey);
             manageWcfSourceControl.EnterEndpointUrl(endpointUrl);
-            var viewModel = ScenarioContext.Current.Get<ManageWcfSourceViewModel>("viewModel");
+            var viewModel = _scenarioContext.Get<ManageWcfSourceViewModel>("viewModel");
             Assert.AreEqual(endpointUrl, viewModel.EndpointUrl);
         }
 
         [Then(@"Send is ""(.*)""")]
         public void ThenSendIs(string successString)
         {
-            var mockUpdateManager = ScenarioContext.Current.Get<Mock<IWcfSourceModel>>("updateManager");
+            var mockUpdateManager = _scenarioContext.Get<Mock<IWcfSourceModel>>("updateManager");
             var isSuccess = String.Equals(successString, "Successful", StringComparison.InvariantCultureIgnoreCase);
             if (isSuccess)
             {
@@ -108,14 +114,14 @@ namespace Warewolf.UIBindingTests.WcfSource
                 mockUpdateManager.Setup(model => model.TestConnection(It.IsAny<IWcfServerSource>()))
                     .Throws(new WarewolfTestException("Invalid URI: The format of the URI could not be determined.", null));
             }
-            var manageWcfSourceControl = ScenarioContext.Current.Get<ManageWcfSourceControl>(Utils.ViewNameKey);
+            var manageWcfSourceControl = _scenarioContext.Get<ManageWcfSourceControl>(Utils.ViewNameKey);
             manageWcfSourceControl.TestSend();
         }
 
         [Then(@"the error message is ""(.*)""")]
         public void ThenTheErrorMessageIs(string errorMessage)
         {
-            var viewModel = ScenarioContext.Current.Get<ManageWcfSourceViewModel>("viewModel");
+            var viewModel = _scenarioContext.Get<ManageWcfSourceViewModel>("viewModel");
             Assert.AreEqual(errorMessage, viewModel.TestMessage);
         }
     }

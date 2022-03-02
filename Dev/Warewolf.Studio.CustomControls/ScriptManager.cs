@@ -18,6 +18,8 @@ using System.Security.Permissions;
 using Dev2;
 using Dev2.Common;
 using Dev2.Communication;
+using Dev2.Runtime.Services.ESB.Management.Services;
+using Dev2.Runtime.Services.Interfaces;
 using Dev2.Studio.Interfaces;
 using Microsoft.Practices.Prism.Mvvm;
 using Warewolf.Licensing;
@@ -34,11 +36,13 @@ namespace Warewolf.Studio.CustomControls
         private IView mForm;
         private IShellViewModel _shellViewModel;
         private bool _isLicensed;
+        private readonly ISystemManagementInformationFactory _systemManagementInformationFactory;
 
         public ScriptManager(IView form)
         {
             mForm = form;
             _shellViewModel = CustomContainer.Get<IShellViewModel>();
+            _systemManagementInformationFactory = new SystemManagementInformationFactory();
         }
 
         public static Uri GetSourceUri(string licenseType)
@@ -143,13 +147,10 @@ namespace Warewolf.Studio.CustomControls
 
         private int GetNumberOfCores()
         {
-            var coreCount = 0;
-            foreach(var item in new ManagementObjectSearcher("Select * from Win32_Processor  ").Get())
-            {
-                coreCount += int.Parse(item["NumberOfCores"].ToString());
-            }
+            var systemManagementInformationWrapper = _systemManagementInformationFactory.GetNumberOfCores();
+            var getSystemManagementInformation = systemManagementInformationWrapper.GetNumberOfCores();
 
-            return coreCount;
+            return getSystemManagementInformation.GetNumberOfCores();
         }
 
         public void CloseBrowser()

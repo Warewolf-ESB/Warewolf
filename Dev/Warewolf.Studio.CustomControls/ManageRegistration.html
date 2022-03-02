@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+﻿﻿<!DOCTYPE html>
 <!-- saved from url=(0014)about:internet -->
 <html lang="en">
 <head>
@@ -24,10 +24,10 @@
         const monthNames = ["January", "February", "March", "April", "May", "June",
             "July", "August", "September", "October", "November", "December"
         ];
+        let helper = chrome.webview.hostObjects.helper;
 
-        jQuery(document).ready(function () {
-
-            let result = window.external.RetrieveSubscription();
+        jQuery(document).ready(async function () {
+            let result = await helper.RetrieveSubscription();
             let objData = jQuery.parseJSON(result);
 
             let planId = objData.PlanId.toUpperCase();
@@ -37,7 +37,7 @@
             $("#planStatus").text(getStatus(planStatus));
             $(".close-btn").click(function (e) {
                 e.preventDefault();
-                window.external.CloseBrowser();
+                helper.CloseBrowser();
             });
 
             function getStatus(key) {
@@ -53,7 +53,7 @@
                         m += 1;  // JavaScript months are 0-11
                         let y = formattedDate.getFullYear();
                         let endDate = d + " " + monthNames[m] + " " + y;
-                        return "In Trial (Expires " + endDate + ")";
+                        return  "In Trial (Expires " + endDate + ")";
                     case 3:
                         return "Active";
                     case 4:
@@ -69,62 +69,59 @@
     </script>
 </head>
 <body>
-    <div class="navbar navbar-static-top">
-        <div class="container">
-            <div class="navbar-header">
-                <a href="https://www.warewolf.io"><img src="images/logo.png" height="auto" width="240px" /></a>
-            </div>
+<div class="navbar navbar-static-top">
+    <div class="container">
+        <div class="navbar-header">
+            <a href="https://www.warewolf.io"><img src="images/logo.png" height="auto" width="240px"/></a>
         </div>
     </div>
-    <div id="container" class="container">
-        <div id="customer-info" class="row">
-            <div class="col-sm-12">
-                <div class="row">
-                    <div class="col-sm-12">
-                        <div class="card">
-                            <div class="card-header text-center">
-                                <h4>Manage Your Subscription</h4>
+</div>
+<div id="container" class="container">
+    <div id="customer-info" class="row">
+        <div class="col-sm-12">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card">
+                        <div class="card-header text-center">
+                            <h4>Manage Your Subscription</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-borderless table-sm">
+                                    <tbody>
+                                    <tr>
+                                        <th class="th-sm">Plan</th>
+                                        <td id="planId" class="card-title planId"></td>
+                                    </tr>
+                                    <tr>
+                                        <th class="th-sm">Status
+                                        </th>
+                                        <td id="planStatus" class="card-title planStatus"></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
                             </div>
-                            <div class="card-body">
-                                <div class="table-responsive">
-                                    <table class="table table-borderless table-sm">
-                                        <tbody>
-                                            <tr>
-                                                <th class="th-sm">Plan</th>
-                                                <td id="planId" class="card-title planId"></td>
-                                            </tr>
-                                            <tr>
-                                                <th class="th-sm">
-                                                    Status
-                                                </th>
-                                                <td id="planStatus" class="card-title planStatus"></td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <p class="form-text text-muted text-left">
-                                    On clicking <b>Open Subscription Portal</b> you
-                                    will be
-                                    asked to enter the email address you registered with. <br />An OTP will be sent this
-                                    account. Use this OTP to login and be taken to our Customer Portal. <br />This is where
-                                    you can
-                                    update your details and make changes to your Subscription.
-                                </p>
-                                <a href="javascript:void(0)" data-cb-type="portal" id="OpenPortal" name="OpenPortal"
-                                   class="text-center submit-btn btn btn-register btn-md">Open Subscription Portal</a>
-                                <a href="javascript:CloseBrowser()" id="CloseBrowser" name="CloseBrowser"
-                                   class="text-center submit-btn btn close-btn btn-md">Close</a>
-                            </div>
+                            <p class="form-text text-muted text-left">On clicking <b>Open Subscription Portal</b> you
+                                will be
+                                asked to enter the email address you registered with. <br/>An OTP will be sent this
+                                account. Use this OTP to login and be taken to our Customer Portal. <br/>This is where
+                                you can
+                                update your details and make changes to your Subscription.</p>
+                            <a href="javascript:void(0)" data-cb-type="portal" id="OpenPortal" name="OpenPortal"
+                               class="text-center submit-btn btn btn-register btn-md">Open Subscription Portal</a>
+                            <a href="javascript:CloseBrowser()" id="CloseBrowser" name="CloseBrowser"
+                               class="text-center submit-btn btn close-btn btn-md">Close</a>
                         </div>
                     </div>
                 </div>
-
             </div>
+
         </div>
     </div>
-    <br />
-    <div class="footer text-center">
-        <span class="form-text text-muted rights">&copy; Warewolf. All Rights Reserved.</span>
-    </div>
+</div>
+<br/>
+<div class="footer text-center">
+    <span class="form-text text-muted rights">&copy; Warewolf. All Rights Reserved.</span>
+</div>
 </body>
 </html>

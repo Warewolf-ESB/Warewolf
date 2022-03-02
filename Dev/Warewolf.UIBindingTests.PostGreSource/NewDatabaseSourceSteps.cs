@@ -29,10 +29,15 @@ namespace Warewolf.UIBindingTests.PostGreSource
     public class NewDatabaseSourceSteps
     {
         string loginFailedForUserTest = "Login failed for user 'test'";
+        static FeatureContext _featureContext;
+        static ScenarioContext _scenarioContext;
+
+        public NewDatabaseSourceSteps(ScenarioContext scenarioContext) => _scenarioContext = scenarioContext;
 
         [BeforeFeature("DbSource")]
-        public static void SetupForSystem()
+        public static void SetupForSystem(FeatureContext featureContext)
         {
+            _featureContext = featureContext;
             Utils.SetupResourceDictionary();
             var manageDatabaseSourceControl = new ManageDatabaseSourceControl();
             var mockStudioUpdateManager = new Mock<IManageDatabaseSourceModel>();
@@ -46,47 +51,47 @@ namespace Warewolf.UIBindingTests.PostGreSource
             var manageDatabaseSourceViewModel = new ManagePostgreSqlSourceViewModel(mockStudioUpdateManager.Object, task, mockEventAggregator.Object, new SynchronousAsyncWorker());
             manageDatabaseSourceControl.DataContext = manageDatabaseSourceViewModel;
             Utils.ShowTheViewForTesting(manageDatabaseSourceControl);
-            FeatureContext.Current.Add(Utils.ViewNameKey, manageDatabaseSourceControl);
-            FeatureContext.Current.Add(Utils.ViewModelNameKey, manageDatabaseSourceViewModel);
-            FeatureContext.Current.Add("updateManager", mockStudioUpdateManager);
-            FeatureContext.Current.Add("requestServiceNameViewModel", mockRequestServiceNameViewModel);
-            FeatureContext.Current.Add("externalProcessExecutor", mockExecutor);
+            _featureContext.Add(Utils.ViewNameKey, manageDatabaseSourceControl);
+            _featureContext.Add(Utils.ViewModelNameKey, manageDatabaseSourceViewModel);
+            _featureContext.Add("updateManager", mockStudioUpdateManager);
+            _featureContext.Add("requestServiceNameViewModel", mockRequestServiceNameViewModel);
+            _featureContext.Add("externalProcessExecutor", mockExecutor);
         }
 
         [BeforeScenario("DbSource")]
         public void SetupForDatabaseSource()
         {
-            ScenarioContext.Current.Add(Utils.ViewNameKey, FeatureContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey));
-            ScenarioContext.Current.Add("updateManager", FeatureContext.Current.Get<Mock<IManageDatabaseSourceModel>>("updateManager"));
-            ScenarioContext.Current.Add("requestServiceNameViewModel", FeatureContext.Current.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel"));
-            ScenarioContext.Current.Add(Utils.ViewModelNameKey, FeatureContext.Current.Get<ManagePostgreSqlSourceViewModel>(Utils.ViewModelNameKey));
+            _scenarioContext.Add(Utils.ViewNameKey, _featureContext.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey));
+            _scenarioContext.Add("updateManager", _featureContext.Get<Mock<IManageDatabaseSourceModel>>("updateManager"));
+            _scenarioContext.Add("requestServiceNameViewModel", _featureContext.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel"));
+            _scenarioContext.Add(Utils.ViewModelNameKey, _featureContext.Get<ManagePostgreSqlSourceViewModel>(Utils.ViewModelNameKey));
         }
 
         [Then(@"""(.*)"" tab is opened")]
         public void ThenTabIsOpened(string headerText)
         {
-            var viewModel = ScenarioContext.Current.Get<IDockAware>("viewModel");
+            var viewModel = _scenarioContext.Get<IDockAware>("viewModel");
             Assert.AreEqual(headerText, viewModel.Header);
         }
 
         [Then(@"title is ""(.*)""")]
         public void ThenTitleIs(string p0)
         {
-            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
+            var manageDatabaseSourceControl = _scenarioContext.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             Assert.AreEqual(manageDatabaseSourceControl.GetHeader(), p0);
         }
 
         [Then(@"""(.*)"" is the tab Header")]
         public void ThenIsTheTabHeader(string p0)
         {
-            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
+            var manageDatabaseSourceControl = _scenarioContext.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             Assert.AreEqual(manageDatabaseSourceControl.GetTabHeader(), p0);
         }
 
         [Given(@"I open New Database Source")]
         public void GivenIOpenNewDatabaseSource()
         {
-            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
+            var manageDatabaseSourceControl = _scenarioContext.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             Assert.IsNotNull(manageDatabaseSourceControl);
         }
 
@@ -94,8 +99,8 @@ namespace Warewolf.UIBindingTests.PostGreSource
         [When(@"I open ""(.*)""")]
         public void GivenIOpen(string name)
         {
-            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
-            var upd = FeatureContext.Current.Get<Mock<IManageDatabaseSourceModel>>("updateManager").Object;
+            var manageDatabaseSourceControl = _scenarioContext.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
+            var upd = _featureContext.Get<Mock<IManageDatabaseSourceModel>>("updateManager").Object;
             var dbsrc = new DbSourceDefinition
             {
                 Name = name,
@@ -103,7 +108,7 @@ namespace Warewolf.UIBindingTests.PostGreSource
                 ServerName = "RSAKLFSVRDEV",
                 AuthenticationType = AuthenticationType.Windows
             };
-            FeatureContext.Current["dbsrc"] = dbsrc;
+            _featureContext["dbsrc"] = dbsrc;
             var mockEventAggregator = new Mock<IEventAggregator>();
             var viewModel = new ManagePostgreSqlSourceViewModel(upd, mockEventAggregator.Object, dbsrc, new SynchronousAsyncWorker());
             if (manageDatabaseSourceControl.DataContext is ManagePostgreSqlSourceViewModel manageDatabaseSourceViewModel)
@@ -115,29 +120,29 @@ namespace Warewolf.UIBindingTests.PostGreSource
         [Given(@"Server as ""(.*)""")]
         public void GivenServerAs(string server)
         {
-            var db = FeatureContext.Current.Get<IDbSource>("dbsrc");
+            var db = _featureContext.Get<IDbSource>("dbsrc");
             db.ServerName = server;
-            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
+            var manageDatabaseSourceControl = _scenarioContext.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             manageDatabaseSourceControl.SelectServer("server");
         }
 
         [When(@"I Edit Server as ""(.*)""")]
         public void WhenIEditServerAs(string server)
         {
-            var db = FeatureContext.Current.Get<IDbSource>("dbsrc");
+            var db = _featureContext.Get<IDbSource>("dbsrc");
             db.ServerName = server;
-            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
+            var manageDatabaseSourceControl = _scenarioContext.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             manageDatabaseSourceControl.SelectServer("server");
         }
 
         [Given(@"Authentication Type is selected as ""(.*)""")]
         public void GivenAuthenticationTypeIsSelectedAs(string authstr)
         {
-            var db = FeatureContext.Current.Get<IDbSource>("dbsrc");
+            var db = _featureContext.Get<IDbSource>("dbsrc");
             var authp = Enum.Parse(typeof(AuthenticationType), authstr);
             db.AuthenticationType = (AuthenticationType)authp;
 
-            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
+            var manageDatabaseSourceControl = _scenarioContext.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             manageDatabaseSourceControl.SetAuthenticationType((AuthenticationType)authp);
             
             (manageDatabaseSourceControl.DataContext as ManagePostgreSqlSourceViewModel).AuthenticationType = (AuthenticationType)authp;
@@ -147,11 +152,11 @@ namespace Warewolf.UIBindingTests.PostGreSource
         [Then(@"Authentication Type is selected as ""(.*)""")]
         public void ThenAuthenticationTypeIsSelectedAs(string authstr)
         {
-            var db = FeatureContext.Current.Get<IDbSource>("dbsrc");
+            var db = _featureContext.Get<IDbSource>("dbsrc");
             var authp = Enum.Parse(typeof(AuthenticationType), authstr);
             db.AuthenticationType = (AuthenticationType)authp;
 
-            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
+            var manageDatabaseSourceControl = _scenarioContext.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
 
             if (manageDatabaseSourceControl.DataContext is ManagePostgreSqlSourceViewModel manageDatabaseSourceViewModel)
             {
@@ -162,57 +167,57 @@ namespace Warewolf.UIBindingTests.PostGreSource
         [Given(@"Username field is ""(.*)""")]
         public void GivenUsernameFieldIs(string user)
         {
-            var db = FeatureContext.Current.Get<IDbSource>("dbsrc");
+            var db = _featureContext.Get<IDbSource>("dbsrc");
             db.UserName = user;
-            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
+            var manageDatabaseSourceControl = _scenarioContext.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             manageDatabaseSourceControl.EnterUserName(user);
         }
 
         [Given(@"Password field is ""(.*)""")]
         public void GivenPasswordFieldIs(string pwd)
         {
-            var db = FeatureContext.Current.Get<IDbSource>("dbsrc");
+            var db = _featureContext.Get<IDbSource>("dbsrc");
             db.Password = pwd;
-            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
+            var manageDatabaseSourceControl = _scenarioContext.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             manageDatabaseSourceControl.EnterPassword(pwd);
         }
 
         [Given(@"Database ""(.*)"" is selected")]
         public void GivenDatabaseIsSelected(string dbName)
         {
-            var db = FeatureContext.Current.Get<IDbSource>("dbsrc");
+            var db = _featureContext.Get<IDbSource>("dbsrc");
             db.DbName = dbName;
-            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
+            var manageDatabaseSourceControl = _scenarioContext.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             manageDatabaseSourceControl.SelectDatabase(dbName);
         }
 
         [Then(@"Database ""(.*)"" is selected")]
         public void ThenDatabaseIsSelected(string dbName)
         {
-            var db = FeatureContext.Current.Get<IDbSource>("dbsrc");
+            var db = _featureContext.Get<IDbSource>("dbsrc");
             db.DbName = dbName;
-            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
+            var manageDatabaseSourceControl = _scenarioContext.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             manageDatabaseSourceControl.SelectDatabase(dbName);
         }
 
         [When(@"I type Server as ""(.*)""")]
         public void WhenITypeServerAs(string p0)
         {
-            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
+            var manageDatabaseSourceControl = _scenarioContext.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             manageDatabaseSourceControl.SelectServer(p0);
         }
 
         [Then(@"I type Select The Server as ""(.*)""")]
         public void ThenITypeSelectTheServerAs(string p0)
         {
-            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
+            var manageDatabaseSourceControl = _scenarioContext.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             manageDatabaseSourceControl.SelectServer(p0);
         }
 
         [Then(@"the intellisense contains these options")]
         public void ThenTheIntellisenseContainsTheseOptions(Table table)
         {
-            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
+            var manageDatabaseSourceControl = _scenarioContext.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
 
             var rows = table.Rows[0].Values;
             foreach (var server in rows)
@@ -224,7 +229,7 @@ namespace Warewolf.UIBindingTests.PostGreSource
         [Then(@"type options contains")]
         public void ThenTypeOptionsContains(Table table)
         {
-            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
+            var manageDatabaseSourceControl = _scenarioContext.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
 
             var rows = table.Rows[0].Values;
 
@@ -235,10 +240,10 @@ namespace Warewolf.UIBindingTests.PostGreSource
         [Given(@"I type Server as ""(.*)""")]
         public void GivenITypeServerAs(string serverName)
         {
-            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
+            var manageDatabaseSourceControl = _scenarioContext.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             manageDatabaseSourceControl.SelectServer(serverName);
             //manageDatabaseSourceControl.EnterServerName(serverName);
-            var viewModel = ScenarioContext.Current.Get<ManagePostgreSqlSourceViewModel>("viewModel");
+            var viewModel = _scenarioContext.Get<ManagePostgreSqlSourceViewModel>("viewModel");
             Assert.AreEqual(serverName, viewModel.ServerName.Name);
         }
 
@@ -249,7 +254,7 @@ namespace Warewolf.UIBindingTests.PostGreSource
         {
             var expectedVisibility = String.Equals(visibility, "Collapsed", StringComparison.InvariantCultureIgnoreCase) ? Visibility.Collapsed : Visibility.Visible;
 
-            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
+            var manageDatabaseSourceControl = _scenarioContext.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             var databaseDropDownVisibility = manageDatabaseSourceControl.GetDatabaseDropDownVisibility();
             Assert.AreEqual(expectedVisibility, databaseDropDownVisibility);
         }
@@ -259,7 +264,7 @@ namespace Warewolf.UIBindingTests.PostGreSource
         [Then(@"""(.*)"" is ""(.*)""")]
         public void GivenIs(string controlName, string enabledString)
         {
-            Utils.CheckControlEnabled(controlName, enabledString, ScenarioContext.Current.Get<ICheckControlEnabledView>(Utils.ViewNameKey), Utils.ViewNameKey);
+            Utils.CheckControlEnabled(controlName, enabledString, _scenarioContext.Get<ICheckControlEnabledView>(Utils.ViewNameKey), Utils.ViewNameKey);
         }
 
         [Given(@"I Select Authentication Type as ""(.*)""")]
@@ -272,7 +277,7 @@ namespace Warewolf.UIBindingTests.PostGreSource
                 ? AuthenticationType.Windows
                 : AuthenticationType.User;
 
-            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
+            var manageDatabaseSourceControl = _scenarioContext.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             manageDatabaseSourceControl.SetAuthenticationType(authenticationType);
         }
 
@@ -281,7 +286,7 @@ namespace Warewolf.UIBindingTests.PostGreSource
         [Then(@"I select ""(.*)"" as Database")]
         public void WhenISelectAsDatabase(string databaseName)
         {
-            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
+            var manageDatabaseSourceControl = _scenarioContext.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             manageDatabaseSourceControl.SelectDatabase(databaseName);
             var viewModel = (ManagePostgreSqlSourceViewModel)manageDatabaseSourceControl.DataContext;
             Assert.AreEqual(databaseName, viewModel.DatabaseName);
@@ -290,19 +295,19 @@ namespace Warewolf.UIBindingTests.PostGreSource
         [When(@"I save the source")]
         public void WhenISaveTheSource()
         {
-            var mockRequestServiceNameViewModel = ScenarioContext.Current.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel");
+            var mockRequestServiceNameViewModel = _scenarioContext.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel");
             mockRequestServiceNameViewModel.Setup(model => model.ShowSaveDialog()).Verifiable();
-            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
+            var manageDatabaseSourceControl = _scenarioContext.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             manageDatabaseSourceControl.PerformSave();
         }
 
         [When(@"I save the source as ""(.*)""")]
         public void WhenISaveTheSourceAs(string name)
         {
-            var mockRequestServiceNameViewModel = ScenarioContext.Current.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel");
+            var mockRequestServiceNameViewModel = _scenarioContext.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel");
             mockRequestServiceNameViewModel.Setup(model => model.ShowSaveDialog()).Returns(MessageBoxResult.OK).Verifiable();
             mockRequestServiceNameViewModel.Setup(a => a.ResourceName).Returns(new ResourceName("", name));
-            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
+            var manageDatabaseSourceControl = _scenarioContext.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             manageDatabaseSourceControl.PerformSave();
         }
 
@@ -311,7 +316,7 @@ namespace Warewolf.UIBindingTests.PostGreSource
         {
             var expectedVisibility = String.Equals(visibility, "Collapsed", StringComparison.InvariantCultureIgnoreCase) ? Visibility.Collapsed : Visibility.Visible;
 
-            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
+            var manageDatabaseSourceControl = _scenarioContext.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             var databaseDropDownVisibility = manageDatabaseSourceControl.GetUsernameVisibility();
             Assert.AreEqual(expectedVisibility, databaseDropDownVisibility);
         }
@@ -319,7 +324,7 @@ namespace Warewolf.UIBindingTests.PostGreSource
         [Then(@"Username is ""(.*)""")]
         public void ThenUsernameIs(string userName)
         {
-            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
+            var manageDatabaseSourceControl = _scenarioContext.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
 
             Assert.AreEqual(userName, manageDatabaseSourceControl.GetUsername());
         }
@@ -327,7 +332,7 @@ namespace Warewolf.UIBindingTests.PostGreSource
         [Then(@"Password  is ""(.*)""")]
         public void ThenPasswordIs(string password)
         {
-            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
+            var manageDatabaseSourceControl = _scenarioContext.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
 
             Assert.AreEqual(password, manageDatabaseSourceControl.GetPassword());
         }
@@ -337,7 +342,7 @@ namespace Warewolf.UIBindingTests.PostGreSource
         {
             var expectedVisibility = String.Equals(visibility, "Collapsed", StringComparison.InvariantCultureIgnoreCase) ? Visibility.Collapsed : Visibility.Visible;
 
-            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
+            var manageDatabaseSourceControl = _scenarioContext.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             var databaseDropDownVisibility = manageDatabaseSourceControl.GetPasswordVisibility();
             Assert.AreEqual(expectedVisibility, databaseDropDownVisibility);
         }
@@ -347,9 +352,9 @@ namespace Warewolf.UIBindingTests.PostGreSource
         [Then(@"I type Username as ""(.*)""")]
         public void WhenITypeUsernameAs(string userName)
         {
-            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
+            var manageDatabaseSourceControl = _scenarioContext.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             manageDatabaseSourceControl.EnterUserName(userName);
-            var viewModel = ScenarioContext.Current.Get<ManagePostgreSqlSourceViewModel>("viewModel");
+            var viewModel = _scenarioContext.Get<ManagePostgreSqlSourceViewModel>("viewModel");
             Assert.AreEqual(userName, viewModel.UserName);
         }
 
@@ -358,9 +363,9 @@ namespace Warewolf.UIBindingTests.PostGreSource
         [Then(@"I type Password as ""(.*)""")]
         public void WhenITypePasswordAs(string password)
         {
-            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
+            var manageDatabaseSourceControl = _scenarioContext.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             manageDatabaseSourceControl.EnterPassword(password);
-            var viewModel = ScenarioContext.Current.Get<ManagePostgreSqlSourceViewModel>("viewModel");
+            var viewModel = _scenarioContext.Get<ManagePostgreSqlSourceViewModel>("viewModel");
             Assert.AreEqual(password, viewModel.Password);
         }
 
@@ -369,7 +374,7 @@ namespace Warewolf.UIBindingTests.PostGreSource
         {
             errorMessage = "Exception: " + loginFailedForUserTest + Environment.NewLine + Environment.NewLine +
                            "Inner Exception: " + loginFailedForUserTest;
-            var viewModel = ScenarioContext.Current.Get<ManagePostgreSqlSourceViewModel>("viewModel");
+            var viewModel = _scenarioContext.Get<ManagePostgreSqlSourceViewModel>("viewModel");
             var contains = viewModel.TestMessage.Contains(loginFailedForUserTest);
             Assert.IsTrue(contains);
         }
@@ -379,7 +384,7 @@ namespace Warewolf.UIBindingTests.PostGreSource
         [When(@"Test Connecton is ""(.*)""")]
         public void ThenTestConnectonIs(string successString)
         {
-            var mockUpdateManager = ScenarioContext.Current.Get<Mock<IManageDatabaseSourceModel>>("updateManager");
+            var mockUpdateManager = _scenarioContext.Get<Mock<IManageDatabaseSourceModel>>("updateManager");
             var isSuccess = String.Equals(successString, "Successful", StringComparison.InvariantCultureIgnoreCase);
             var isLongRunning = String.Equals(successString, "Long Running", StringComparison.InvariantCultureIgnoreCase);
             if (isSuccess)
@@ -389,7 +394,7 @@ namespace Warewolf.UIBindingTests.PostGreSource
             }
             else if (isLongRunning)
             {
-                var viewModel = ScenarioContext.Current.Get<ManagePostgreSqlSourceViewModel>("viewModel");
+                var viewModel = _scenarioContext.Get<ManagePostgreSqlSourceViewModel>("viewModel");
                 mockUpdateManager.Setup(manager => manager.TestDbConnection(It.IsAny<IDbSource>()));
                 viewModel.AsyncWorker = new AsyncWorker();
             }
@@ -398,7 +403,7 @@ namespace Warewolf.UIBindingTests.PostGreSource
                 mockUpdateManager.Setup(manager => manager.TestDbConnection(It.IsAny<IDbSource>()))
                     .Throws(new WarewolfTestException(loginFailedForUserTest, new Exception(loginFailedForUserTest)));
             }
-            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
+            var manageDatabaseSourceControl = _scenarioContext.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             manageDatabaseSourceControl.PerformTestConnection();
             Thread.Sleep(1000);
         }
@@ -406,15 +411,15 @@ namespace Warewolf.UIBindingTests.PostGreSource
         [When(@"I Cancel the Test")]
         public void WhenICancelTheTest()
         {
-            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
+            var manageDatabaseSourceControl = _scenarioContext.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             manageDatabaseSourceControl.CancelTest();
         }
 
         [Then(@"the validation message as ""(.*)""")]
         public void ThenTheValidationMessageAs(string message)
         {
-            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
-            var viewModel = ScenarioContext.Current.Get<ManagePostgreSqlSourceViewModel>("viewModel");
+            var manageDatabaseSourceControl = _scenarioContext.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
+            var viewModel = _scenarioContext.Get<ManagePostgreSqlSourceViewModel>("viewModel");
             var errorMessageFromControl = manageDatabaseSourceControl.GetErrorMessage();
             var errorMessageOnViewModel = viewModel.TestMessage;
             var isErrorMessageOnControl = errorMessageFromControl.Equals(message, StringComparison.OrdinalIgnoreCase);
@@ -426,7 +431,7 @@ namespace Warewolf.UIBindingTests.PostGreSource
         [Then(@"the save dialog is opened")]
         public void ThenTheSaveDialogIsOpened()
         {
-            var mockRequestServiceNameViewModel = ScenarioContext.Current.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel");
+            var mockRequestServiceNameViewModel = _scenarioContext.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel");
             mockRequestServiceNameViewModel.Verify();
         }
 
@@ -440,21 +445,21 @@ namespace Warewolf.UIBindingTests.PostGreSource
         public static void FeaureCleanup()
         {
             CleanupResource();
-            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
+            var manageDatabaseSourceControl = _scenarioContext.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             Utils.CloseViewAfterTesting(manageDatabaseSourceControl);
         }
 
         static void CleanupResource()
         {
-            var mockUpdateManager = ScenarioContext.Current.Get<Mock<IManageDatabaseSourceModel>>("updateManager");
+            var mockUpdateManager = _scenarioContext.Get<Mock<IManageDatabaseSourceModel>>("updateManager");
             var mockRequestServiceNameViewModel =
-                ScenarioContext.Current.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel");
+                _scenarioContext.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel");
             var mockEventAggregator = new Mock<IEventAggregator>();
             var task = new Task<IRequestServiceNameViewModel>(() => mockRequestServiceNameViewModel.Object);
             task.Start();
             var viewModel = new ManagePostgreSqlSourceViewModel(mockUpdateManager.Object, task, mockEventAggregator.Object,
                 new SynchronousAsyncWorker());
-            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
+            var manageDatabaseSourceControl = _scenarioContext.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             if (manageDatabaseSourceControl.DataContext is ManagePostgreSqlSourceViewModel manageDatabaseSourceViewModel)
             {
                 Utils.ResetViewModel<ManagePostgreSqlSourceViewModel, IDbSource>(viewModel, manageDatabaseSourceViewModel);
@@ -466,7 +471,7 @@ namespace Warewolf.UIBindingTests.PostGreSource
         [When(@"I click ""(.*)""")]
         public void WhenIClick(string ConectTo)
         {
-            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
+            var manageDatabaseSourceControl = _scenarioContext.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             manageDatabaseSourceControl.Test();
         }
 
@@ -475,7 +480,7 @@ namespace Warewolf.UIBindingTests.PostGreSource
         [Then(@"Authentication type ""(.*)"" is ""(.*)""")]
         public void ThenAuthenticationTypeIs(string p0, string p1)
         {
-            Utils.CheckControlEnabled(p0, p1, ScenarioContext.Current.Get<ICheckControlEnabledView>(Utils.ViewNameKey), Utils.ViewNameKey);
+            Utils.CheckControlEnabled(p0, p1, _scenarioContext.Get<ICheckControlEnabledView>(Utils.ViewNameKey), Utils.ViewNameKey);
         }
 
 
@@ -483,7 +488,7 @@ namespace Warewolf.UIBindingTests.PostGreSource
         public void ThenDatabaseDropdownIs(string p0)
         {
             var expectedVisibility = String.Equals(p0, "Collapsed", StringComparison.InvariantCultureIgnoreCase) ? Visibility.Collapsed : Visibility.Visible;
-            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
+            var manageDatabaseSourceControl = _scenarioContext.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             var databaseDropDownVisibility = manageDatabaseSourceControl.GetDatabaseDropDownVisibility();
             Assert.AreEqual(expectedVisibility, databaseDropDownVisibility);
         }
@@ -491,16 +496,16 @@ namespace Warewolf.UIBindingTests.PostGreSource
         [Then(@"Connection Timeout is set to ""(.*)""")]
         public void ThenConnectionTimeoutIsSetTo(int timeout)
         {
-            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
+            var manageDatabaseSourceControl = _scenarioContext.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             manageDatabaseSourceControl.EnterTimeout(timeout);
-            var viewModel = ScenarioContext.Current.Get<ManagePostgreSqlSourceViewModel>("viewModel");
+            var viewModel = _scenarioContext.Get<ManagePostgreSqlSourceViewModel>("viewModel");
             Assert.AreEqual(timeout, viewModel.ConnectionTimeout, viewModel.ConnectionTimeout + "is not Equal to " + timeout);
         }
 
         [Then(@"the timeout error message is ""(.*)""")]
         public void ThenTheTimeoutErrorMessageIs(string errorMessage)
         {
-            var viewModel = ScenarioContext.Current.Get<ManagePostgreSqlSourceViewModel>("viewModel");
+            var viewModel = _scenarioContext.Get<ManagePostgreSqlSourceViewModel>("viewModel");
             Assert.IsTrue(viewModel.TestMessage.Contains(errorMessage), viewModel.TestMessage + " does not contiain '" + errorMessage + "'");
         }
     }

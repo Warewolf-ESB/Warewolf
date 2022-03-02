@@ -86,7 +86,7 @@ namespace Dev2.Tests.DataList
             broker.InitDebugSession(to);
             to = broker.PersistDebugSession(to);
             to.BaseSaveDirectory = null;
-            var p = new PrivateObject(broker);
+            var p = new Warewolf.Testing.PrivateObject(broker);
             var field = p.GetField("_debugPersistSettings") as IDictionary<string, DebugTO>;
             Assert.IsNotNull(field);
             field.Add("bob", new DebugTO());

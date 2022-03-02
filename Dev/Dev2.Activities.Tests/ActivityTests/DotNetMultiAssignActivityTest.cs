@@ -1079,7 +1079,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             };
             ob.Execute(data.Object, 0);
             
-            var privateObject = new PrivateObject(env);
+            var privateObject = new Warewolf.Testing.PrivateObject(env);
             var warewolfEnvironment = privateObject.GetField("_env") as DataStorage.WarewolfEnvironment;
 
             Assert.AreEqual(1, warewolfEnvironment?.RecordSets["Errors"].Data["Message"].Count);

@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -32,6 +33,25 @@ namespace Dev2.Runtime.WebServer
             writer.WriteValueAsync(serviceTestModelTOs.Count(o => o.TestPassed));
             writer.WritePropertyName("TestsInvalid");
             writer.WriteValueAsync(serviceTestModelTOs.Count(o => o.TestInvalid));
+
+            writer.WriteEndObject();
+        }
+
+
+        public static void SetupCoverageNodesSummaryJSON(this List<IServiceTestModelTO> serviceTestModelTOs, JsonTextWriter writer)
+        {
+            writer.WriteStartObject();        
+
+
+            writer.WritePropertyName("Total Nodes");
+            writer.WriteValueAsync(serviceTestModelTOs.Count);
+            writer.WritePropertyName("Covered Nodes");
+            writer.WriteValueAsync("2");
+            writer.WritePropertyName("Not Covered Nodes");
+            writer.WriteValueAsync("1");
+            writer.WritePropertyName("Coverage (%)");
+            writer.WriteValueAsync("50%");
+
             writer.WriteEndObject();
         }
 
@@ -77,12 +97,33 @@ namespace Dev2.Runtime.WebServer
 
         public static JObject BuildTestResultJSONForWebRequest(this IServiceTestCoverageModelTo report)
         {
+            var totalWorkflowNodesCount = report.AllWorkflowNodes;
+            int notCoveredNodesCount = report.NotCoveredNodesCount;
+            var nodesCoveredCount = report.AllTestNodesCovered.SelectMany(o => o.TestNodesCovered).Distinct().Flatten(o => o.ChildNodes);
+
+            var assertedNodes = nodesCoveredCount.Where(oo => oo.MockSelected == false);
+            var mockedNodes = nodesCoveredCount.Where(oo => oo.MockSelected == true);
             var resObj = new JObject
             {
-                {"Report Name", report.ReportName},
-                {"OldReportName", report.OldReportName},
-                {"WorkflowId", report.WorkflowId},
-                {"CoveragePercentage", Math.Round(report.TotalCoverage * 100)},
+                { "Report Name", report.ReportName},
+                { "OldReportName", report.OldReportName},
+                { "WorkflowId", report.WorkflowId},
+                { "CoveragePercentage", Math.Round(report.TotalCoverage * 100)},
+                { "NodesSummary", new JObject
+                    {
+                        { "TotalNodesCount", totalWorkflowNodesCount.Count() },
+                        { "NotCoveredNodes", notCoveredNodesCount },
+                        { "CoveredNodes",  nodesCoveredCount.Count() },
+                        { "CoveredNodesDetails", new JArray
+                        (
+                            new JObject 
+                            {
+                                { "Assert", assertedNodes.Count() },
+                                { "Mocked", mockedNodes.Count() }
+                            }) 
+                        } 
+                    } 
+                },
                 {
                     "AllTestNodesCovered",
                     new JArray(report.AllTestNodesCovered.Select(node => node.BuildTestResultJSONForWebRequest()))
@@ -106,7 +147,8 @@ namespace Dev2.Runtime.WebServer
                 {"Node Name", report.StepDescription},
                 {"ActivityID", report.ActivityID},
                 {"UniqueID", report.UniqueID},
-                {"MockSelected", report.MockSelected}
+                {"MockSelected", report.MockSelected},
+                {"ChildNodes", new JArray{  report.ChildNodes.Select(o => o.BuildTestResultJSONForWebRequest()) } } 
             };
 
             return resObj;

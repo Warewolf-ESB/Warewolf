@@ -1468,7 +1468,7 @@ namespace WarewolfParsingTest
             Assert.AreEqual(items[0], "26");
             Assert.AreEqual(items[1], "28");
             Assert.AreEqual(items[2], "25");
-            var p = new PrivateObject(env);
+            var p = new Warewolf.Testing.PrivateObject(env);
             var inner = p.GetField("_env") as DataStorage.WarewolfEnvironment;
             var recset = inner.RecordSets["rec"];
             Assert.AreEqual(recset.Optimisations, DataStorage.WarewolfAttribute.Fragmented);
@@ -1498,7 +1498,7 @@ namespace WarewolfParsingTest
             Assert.AreEqual(items[0], "25");
             Assert.AreEqual(items[1], "25");
             Assert.AreEqual(items[2], "28");
-            var p = new PrivateObject(env);
+            var p = new Warewolf.Testing.PrivateObject(env);
             var inner = p.GetField("_env") as DataStorage.WarewolfEnvironment;
             var recset = inner.RecordSets["rec"];
             Assert.AreEqual(recset.Optimisations, DataStorage.WarewolfAttribute.Sorted);
@@ -1530,7 +1530,7 @@ namespace WarewolfParsingTest
 
 
             Assert.AreEqual(items[0], "26");
-            var p = new PrivateObject(env);
+            var p = new Warewolf.Testing.PrivateObject(env);
             var inner = p.GetField("_env") as DataStorage.WarewolfEnvironment;
             var recset = inner.RecordSets["rec"];
             Assert.AreEqual(recset.Optimisations, DataStorage.WarewolfAttribute.Sorted);
@@ -1573,7 +1573,7 @@ namespace WarewolfParsingTest
             Assert.AreEqual(items[1], "22");
             Assert.AreEqual(items[2], "27");
             Assert.AreEqual(items[3], "uuu");
-            var p = new PrivateObject(env);
+            var p = new Warewolf.Testing.PrivateObject(env);
             var inner = p.GetField("_env") as DataStorage.WarewolfEnvironment;
             var recset = inner.RecordSets["rec"];
             Assert.AreEqual(recset.Optimisations, DataStorage.WarewolfAttribute.Sorted);
@@ -1622,7 +1622,7 @@ namespace WarewolfParsingTest
             Assert.AreEqual(items[2], "27");
             Assert.AreEqual(items[3], "444");
             Assert.AreEqual(items[4], "uuu");
-            var p = new PrivateObject(env);
+            var p = new Warewolf.Testing.PrivateObject(env);
             var inner = p.GetField("_env") as DataStorage.WarewolfEnvironment;
             var recset = inner.RecordSets["rec"];
             Assert.AreEqual(recset.Optimisations, DataStorage.WarewolfAttribute.Fragmented);
@@ -1671,7 +1671,7 @@ namespace WarewolfParsingTest
 
             Assert.AreEqual(items[3], "uuu");
 
-            var p = new PrivateObject(env);
+            var p = new Warewolf.Testing.PrivateObject(env);
             var inner = p.GetField("_env") as DataStorage.WarewolfEnvironment;
             var recset = inner.RecordSets["rec"];
             Assert.AreEqual(recset.Optimisations, DataStorage.WarewolfAttribute.Fragmented);
@@ -1722,7 +1722,7 @@ namespace WarewolfParsingTest
 
 
 
-            var p = new PrivateObject(env);
+            var p = new Warewolf.Testing.PrivateObject(env);
             var inner = p.GetField("_env") as DataStorage.WarewolfEnvironment;
             var recset = inner.RecordSets["rec"];
             Assert.AreEqual(recset.Optimisations, DataStorage.WarewolfAttribute.Fragmented);
@@ -1750,7 +1750,7 @@ namespace WarewolfParsingTest
             Assert.AreEqual(items[1], "24");
             Assert.AreEqual(items[2], "1");
 
-            var p = new PrivateObject(env);
+            var p = new Warewolf.Testing.PrivateObject(env);
             var inner = p.GetField("_env") as DataStorage.WarewolfEnvironment;
             var recset = inner.RecordSets["rec"];
             Assert.AreEqual(recset.LastIndex, 4);
@@ -1792,7 +1792,7 @@ namespace WarewolfParsingTest
 
 
 
-            var p = new PrivateObject(env);
+            var p = new Warewolf.Testing.PrivateObject(env);
             var inner = p.GetField("_env") as DataStorage.WarewolfEnvironment;
             var recset = inner.RecordSets["rec"];
             Assert.AreEqual(recset.Optimisations, DataStorage.WarewolfAttribute.Fragmented);
@@ -1824,7 +1824,7 @@ namespace WarewolfParsingTest
             Assert.AreEqual(items[0], "25");
             Assert.AreEqual(items[1], "25");
             Assert.AreEqual(items[2], "28");
-            var p = new PrivateObject(env);
+            var p = new Warewolf.Testing.PrivateObject(env);
             var inner = p.GetField("_env") as DataStorage.WarewolfEnvironment;
             var recset = inner.RecordSets["rec"];
             Assert.AreEqual(recset.Optimisations, DataStorage.WarewolfAttribute.Sorted);

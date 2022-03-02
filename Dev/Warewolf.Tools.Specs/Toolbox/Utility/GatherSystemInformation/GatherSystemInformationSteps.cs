@@ -26,17 +26,9 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.GatherSystemInformation
     [Binding]
     public class GatherSystemInformationSteps : RecordSetBases
     {
-        readonly ScenarioContext scenarioContext;
-
         public GatherSystemInformationSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
         {
-            if (scenarioContext == null)
-            {
-                throw new ArgumentNullException("scenarioContext");
-            }
-
-            this.scenarioContext = scenarioContext;
         }
 
         protected override void BuildDataList()

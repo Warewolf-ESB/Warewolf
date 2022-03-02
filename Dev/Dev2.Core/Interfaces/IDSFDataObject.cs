@@ -30,10 +30,12 @@ namespace Dev2.Interfaces
     {
         EmitionTypes ReturnType { get; }
         Guid ResourceID { get; }
-        Guid[] CoverageReportResourceIds { get; set; }
+        IWarewolfWorkflow[] CoverageReportResources { get; set; }
         bool IsMultipleWorkflowReport { get; }
         string GetTestUrl(string resourcePath);
         string GetAllTestsUrl();
+        string ReportName { get; set; }
+
     }
 
     public class RetryState

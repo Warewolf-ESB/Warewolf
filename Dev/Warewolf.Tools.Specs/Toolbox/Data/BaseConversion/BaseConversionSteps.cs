@@ -22,17 +22,9 @@ namespace Dev2.Activities.Specs.Toolbox.Data.BaseConversion
     [Binding]
     public class BaseConversionSteps : RecordSetBases
     {
-        readonly ScenarioContext scenarioContext;
-
         public BaseConversionSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
         {
-            if (scenarioContext == null)
-            {
-                throw new ArgumentNullException("scenarioContext");
-            }
-
-            this.scenarioContext = scenarioContext;
         }
 
         protected override void BuildDataList()

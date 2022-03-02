@@ -103,9 +103,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>UILoad.feature</DependentUpon>
     </Compile>
-    <AdditionalFiles Include="..\SonarQube\SonarLint.xml">
-      <Visible>False</Visible>
-    </AdditionalFiles>
     <Compile Include="LoadSteps.cs" />
     <Compile Include="SetDefaultPlaybackSettings.cs" />
     <None Include="App.config" />

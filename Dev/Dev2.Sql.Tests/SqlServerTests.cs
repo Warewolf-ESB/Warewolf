@@ -719,7 +719,7 @@ namespace Dev2.Sql.Tests
             //var sqlServer = new SqlServer();
             //try
             //{
-            //    PrivateObject pvt = new PrivateObject(sqlServer);
+            //    Warewolf.Testing.PrivateObject pvt = new Warewolf.Testing.PrivateObject(sqlServer);
             //    pvt.SetField("_connection", conn.Object);
             //    pvt.SetField("_command",mockCommand.Object);
             //    //------------Execute Test---------------------------
@@ -840,7 +840,7 @@ namespace Dev2.Sql.Tests
             {
                 //------------Execute Test---------------------------
                 sqlServer.Connect("bob", CommandType.StoredProcedure, "select * from ");
-                var privateObject = new PrivateObject(sqlServer);
+                var privateObject = new Warewolf.Testing.PrivateObject(sqlServer);
                 var commandText = (string)privateObject.GetField("_commantText");
                 var commandType = (CommandType)privateObject.GetField("_commandType");
                 Assert.AreEqual(commandType, CommandType.Text);
@@ -924,7 +924,7 @@ namespace Dev2.Sql.Tests
             //try
             //{
 
-            //    PrivateObject pvt = new PrivateObject(sqlServer);
+            //    Warewolf.Testing.PrivateObject pvt = new Warewolf.Testing.PrivateObject(sqlServer);
             //    pvt.SetField("_connection", conn.Object);
             //    //------------Execute Test---------------------------
             //    sqlServer.FetchDataSet(mockCommand.Object, new SqlParameter[] { });
@@ -968,7 +968,7 @@ namespace Dev2.Sql.Tests
             //try
             //{
 
-            //    PrivateObject pvt = new PrivateObject(sqlServer);
+            //    Warewolf.Testing.PrivateObject pvt = new Warewolf.Testing.PrivateObject(sqlServer);
             //    pvt.SetField("_connection", conn.Object);
             //    pvt.SetField("_command", mockCommand.Object);
             //    //------------Execute Test---------------------------

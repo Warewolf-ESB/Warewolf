@@ -115,7 +115,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var destEncrypt = DpapiWrapper.Encrypt(destPassword);
             var act = new MockAbstractMultipleFilesActivity("MockActivity") { Password = encrypt, DestinationPassword = destEncrypt};
             
-            var privateObject = new PrivateObject(act);
+            var privateObject = new Warewolf.Testing.PrivateObject(act);
             var decryptedPassword = privateObject.GetProperty("DecryptedPassword");
             var decryptedDestinationPassword = privateObject.GetProperty("DecryptedDestinationPassword");
 
@@ -135,7 +135,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             const string destPassword = "654321";
             var act = new MockAbstractMultipleFilesActivity("MockActivity") { Password = password, DestinationPassword = destPassword};
 
-            var privateObject = new PrivateObject(act);
+            var privateObject = new Warewolf.Testing.PrivateObject(act);
             var decryptedPassword = privateObject.GetProperty("DecryptedPassword");
             var decryptedDestinationPassword = privateObject.GetProperty("DecryptedDestinationPassword");
 

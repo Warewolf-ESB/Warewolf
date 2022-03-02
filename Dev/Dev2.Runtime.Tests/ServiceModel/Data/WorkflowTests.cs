@@ -1,4 +1,4 @@
-﻿/*
+/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
@@ -26,6 +26,17 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
     [TestClass]
     public class WorkflowTests
     {
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(Workflow))]
+        public void Workflow_WorkflowNodes_IsNull_ShouldNotAddedAsWorkflowNode()
+        {
+            var sut = new Workflow();
+            var nodes = sut.WorkflowNodes;
+
+            Assert.AreEqual(0, nodes.Count);
+        }
+
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(Workflow))]
@@ -68,6 +79,34 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
 
             Assert.AreEqual(1, nodes.Count);
             Assert.IsTrue(nodes[0].ActivityID == testUniqeID);
+        }
+
+        [TestMethod]
+        [Timeout(1000)]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(Workflow))]
+        public void Workflow_WorkflowNodes_FlowStep_WITH_ChildNode_ShouldAddChildNode()
+        {
+            var flowNodes = new Collection<FlowNode>
+            {
+               new FlowStep
+               {
+                   Action = new GateActivity
+                   {
+                       DisplayName = "Gate One (this activity does not set ActivityId and will not be part of the coverage)",
+                       DataFunc = new System.Activities.ActivityFunc<string, bool>
+                       {
+                           DisplayName = "I am a child node to Gate",
+                           Handler = new DsfSwitch{ }
+                       }
+                   }
+               }
+            };
+
+            var sut = new Workflow(flowNodes);
+            var nodes = sut.WorkflowNodes;
+
+            Assert.AreEqual(2, nodes.Count);
         }
 
         [TestMethod]

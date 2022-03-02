@@ -27,6 +27,10 @@ namespace Warewolf.Configuration
         public string AuditFilePath { get; set; }
         public bool Equals(ServerSettingsData other)
         {
+            if(other == null)
+            {
+                return false;
+            }
             var equals = WebServerPort == other.WebServerPort;
             equals &= WebServerSslPort == other.WebServerSslPort;
             equals &= string.Equals(SslCertificateName, other.SslCertificateName, StringComparison.InvariantCultureIgnoreCase);
@@ -35,7 +39,9 @@ namespace Warewolf.Configuration
             equals &= EnableDetailedLogging == other.EnableDetailedLogging;
             equals &= ExecutionLogLevel == other.ExecutionLogLevel;
             equals &= LogFlushInterval == other.LogFlushInterval;
+#pragma warning disable 618
             equals &= AuditFilePath == other.AuditFilePath;
+#pragma warning restore 618
             equals &= Sink == other.Sink;
             return equals;
         }

@@ -103,9 +103,6 @@
     <Compile Include="ActivityComparerTests\WebTools\WebPostActivityNewComparerTests .cs" />
     <Compile Include="ActivityTests\AdvancedRecordsetActivityTests.cs" />
     <Compile Include="ActivityTests\DsfRecordsetNullhandlerLengthActivityTest.cs" />
-    <AdditionalFiles Include="..\SonarQube\SonarLint.xml">
-      <Visible>False</Visible>
-    </AdditionalFiles>
     <Compile Include="ActivityComparerTests\PathOperations\DsfFolderReadNewComparerTests.cs" />
     <Compile Include="ActivityComparerTests\Exchange\DsfExchangeNewEmailActivityComparerTests.cs" />
     <Compile Include="ActivityComparerTests\Sequence\DsfSequenceActivityComparerTest.cs" />

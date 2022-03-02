@@ -189,6 +189,9 @@ namespace Dev2.Runtime.ServiceModel.Data
                     ActivityID = activity.ActivityId != Guid.Empty ? activity.ActivityId : Guid.Parse(activity.UniqueID),
                     UniqueID = Guid.Parse(activity.UniqueID),
                     StepDescription = activity.GetDisplayName(),
+                    ChildNodes = activity.GetChildrenNodes()
+                    .Select(o => WorkflowNodeFrom(o))
+                    .ToList()
                 };
 
                 if (!_workflowNodes.Any(o => o.UniqueID == workflowNode.UniqueID))
@@ -204,13 +207,21 @@ namespace Dev2.Runtime.ServiceModel.Data
         private Collection<FlowNode> GetFlowNodes()
         {
             var builder = ReadXamlDefinition();
+            if (builder is null)
+            {
+                return new Collection<FlowNode>();
+            }
 
             return ((Flowchart)builder.Implementation).Nodes;
         }
 
         private ActivityBuilder ReadXamlDefinition()
         {
-            var xamlStr = RootActivity.ToString();
+            var xamlStr = RootActivity?.ToString();
+            if (string.IsNullOrEmpty(xamlStr))
+            {
+                return null;
+            }
             try
             {
                 if (xamlStr.Length != 0)

@@ -20,11 +20,15 @@ namespace Warewolf.Data
         public Guid UniqueID { get; set; }
         public string StepDescription { get; set; }
         public bool MockSelected { get; set; }
-        public List<IWorkflowNode> NextNodes { get; set; } = new List<IWorkflowNode>();
-
+        public List<IWorkflowNode> NextNodes { get; private set; } = new List<IWorkflowNode>();
+        public List<IWorkflowNode> ChildNodes { get; set; } = new List<IWorkflowNode>();
+        
         public void Add(IWorkflowNode node)
         {
-            NextNodes.Add(node);
+            if (node != null)
+            {
+                NextNodes.Add(node);
+            }
         }
     }
 }

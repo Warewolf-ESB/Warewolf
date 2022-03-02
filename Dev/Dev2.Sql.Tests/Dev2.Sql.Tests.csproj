@@ -60,9 +60,6 @@
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
-    <AdditionalFiles Include="..\SonarQube\SonarLint.xml">
-      <Visible>False</Visible>
-    </AdditionalFiles>
     <Compile Include="ExtensiosnTests.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="OracleServerTests.cs" />
@@ -91,6 +88,7 @@
       <Project>{2b734597-c85d-4295-9782-c722f4645ed9}</Project>
       <Name>Dev2.Sql</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Testing\Warewolf.Testing.csproj" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\WorkflowResult.xml" />

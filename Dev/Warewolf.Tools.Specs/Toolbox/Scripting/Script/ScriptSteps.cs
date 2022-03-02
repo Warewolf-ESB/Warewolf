@@ -24,36 +24,36 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Script
     [Binding]
     public class ScriptSteps : RecordSetBases
     {
-        readonly ScenarioContext scenarioContext;
-
         public ScriptSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
         {
-            if (scenarioContext == null)
-            {
-                throw new ArgumentNullException(nameof(scenarioContext));
-            }
+        }
+        
+        static FeatureContext _featureContext;
 
-            this.scenarioContext = scenarioContext;
+        [BeforeFeature]
+        public static void SetupFeatureContext(FeatureContext featureContext)
+        {
+            _featureContext = featureContext;
         }
 
         [BeforeFeature("PythonFeature")]
-        public static void SetupPython()
+        public static void SetupPython(FeatureContext featureContext)
         {
-            FeatureContext.Current.Add("pythonActivity", new DsfPythonActivity());
+            _featureContext.Add("pythonActivity", new DsfPythonActivity());
         }
 
         [BeforeFeature("JavascriptFeature")]
-        public static void SetupJavascript()
+        public static void SetupJavascript(FeatureContext featureContext)
         {
-            FeatureContext.Current.Add("javascript", new DsfJavascriptActivity());
-        }
-        [BeforeFeature("RubyFeature")]
-        public static void SetupRuby()
-        {
-            FeatureContext.Current.Add("rubyActivity", new DsfRubyActivity());
+            _featureContext.Add("javascript", new DsfJavascriptActivity());
         }
         
+        [BeforeFeature("RubyFeature")]
+        public static void SetupRuby(FeatureContext featureContext)
+        {
+            _featureContext.Add("rubyActivity", new DsfRubyActivity());
+        }
 
         protected override void BuildDataList()
         {
@@ -85,7 +85,7 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Script
                 return;
             }
 
-            FeatureContext.Current.TryGetValue("pythonActivity", out DsfPythonActivity pythonActivity);
+            _featureContext.TryGetValue("pythonActivity", out DsfPythonActivity pythonActivity);
 
             if (pythonActivity != null)
             {
@@ -100,7 +100,7 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Script
                 return;
             }
 
-            FeatureContext.Current.TryGetValue("rubyActivity", out DsfRubyActivity rubyActivity);
+            _featureContext.TryGetValue("rubyActivity", out DsfRubyActivity rubyActivity);
 
             if (rubyActivity != null)
             {

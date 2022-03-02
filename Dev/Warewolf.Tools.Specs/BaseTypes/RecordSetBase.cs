@@ -32,7 +32,7 @@ namespace Warewolf.Tools.Specs.BaseTypes
     [Binding]
     public abstract class RecordSetBases : BaseActivityUnitTest
     {
-        readonly ScenarioContext scenarioContext;
+        internal readonly ScenarioContext scenarioContext;
 
         public RecordSetBases(ScenarioContext scenarioContext)
         {

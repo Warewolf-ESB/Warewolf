@@ -1,3 +1,58 @@
+2.7 (21 January 2022)
+======================
+
+Bug fixes
+----------
+- Studio is persistenting the correct input values for workflow with the same name
+
+8 December 2021
+======================
+
+Bug fixes
+----------
+- Hotfix for RabbitMQ connections dropping due to incorrect number concurrent connections being openned
+
+6 December 2021
+======================
+
+Enhancements
+----------------
+Test Coverage
+- Coverage summary can now show all the nodes contained by each workflow on a folder path selected on .coverage and .coverage.json
+- Child nodes are now included with our coverage percentage and denoted similarly to the Decision tool on our HTML render .coverage
+
+23 November 2021
+======================
+
+Bug fixes
+----------
+- Patched UI for inner activities for workflow tests not rendering
+- The error 500 on .coverage run has been resolved for tests containing Switch and Decision nodes
+- The manual selection of nodes into test node list and debug output generated tests are now sharing constant behavior
+- The Gate tool can be added to a Sequence tool
+
+Enhancements
+----------------
+Test Coverage
+- Child nodes are now include with our coverage percentage and denoted similarly to Decision tool on our HTML render .coverage
+- Coverage report shows total mocked nodes count
+- Can now run coverage for a single test
+- Mocked node now show as covered nodes
+- Gate tool can now be added as child node with tools like the Sequence tool, etc. 7
+- All tools have been adjusted to toggle the Mock and Assert option.
+
+05 November 2021
+======================
+
+Bug fixes
+----------
+- Deleted workflow tests no longer contribute to overall test coverage
+- Fixed a crash that happenned in RabbitMQ queue workers when changing the number of concurrent RabbitMQ queues
+
+Enhancements
+------------
+- Coverage shows not covered node count
+
 25 October 2021
 ======================
 
