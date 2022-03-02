@@ -153,16 +153,6 @@ namespace Warewolf.UnitTestAttributes
                 Container.IP = "20.101.23.190";
                 Container.Port = "6379";
             }
-            else if (_containerType == ContainerType.FTP)
-            {
-            	Container.IP = "warewolf-ftp-connector-testing.westeurope.azurecontainer.io";
-            	Container.Port = "21";
-            }
-            else if (_containerType == ContainerType.FTPS)
-            {
-            	Container.IP = "warewolf-ftps-connector-testing.westeurope.azurecontainer.io";
-            	Container.Port = "21";
-            }
             else
             {
                 string foundPort;
