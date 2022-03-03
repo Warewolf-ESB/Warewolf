@@ -203,19 +203,23 @@ namespace Dev2.Tests.Activities.ActivityTests
             coms.Verify(c => c.ExecuteSubRequest(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>(), out errors, It.IsAny<int>(), false), Times.Exactly(2));
         }
 
-        [TestMethod]
-
-        public void NumberOfExecutionsWithCsvExpectedTotalExecutions3()
+        [TestMethod]        
+        [Timeout(60000)]
+        [Owner("Yogesh Rajpurohit")]
+        [TestCategory("ForEach,IterativeExecution,UnitTest")]
+        public void DsfReplaceActivity_ExecuteEachField_NumberOfExecutionsWithCsvExpectedTotalExecutions3__ShouldReturnResults()
         {
             SetupArgumentsReplace(
-                            ActivityStrings.IndexDataListWithData
+                           find:"Barney"
+                          , replaceWith: "X"
+                          , ActivityStrings.IndexDataListWithData
                           , ActivityStrings.IndexDataListWithData
                           , enForEachType.InCSV
                            , false
                           , null
                           , null
                           , null
-                          , "1,3,5"                         
+                          , "1,3,5"                        
                           );
 
             var res = ExecuteProcess();
@@ -406,14 +410,14 @@ namespace Dev2.Tests.Activities.ActivityTests
             return activity;
         }
 
-        DsfReplaceActivity CreateWorkflowReplace()
+        DsfReplaceActivity CreateWorkflowReplace(string find, string replaceWith)
         {
             var activity = new DsfReplaceActivity
             {
                 ParentServiceName = "MyTestService",
                 FieldsToSearch = "[[recset1(*).field1]]",
-                Find = "Barney",
-                ReplaceWith = "X"
+                Find = find,
+                ReplaceWith = replaceWith
 
             };
 
@@ -471,10 +475,10 @@ namespace Dev2.Tests.Activities.ActivityTests
             return dsfForEachActivity;
         }
 
-        DsfForEachActivity SetupArgumentsReplace(string currentDl, string testData, enForEachType type, bool isInputMapping = false, string inputMapping = null, string from = null, string to = null, string csvIndexes = null, string numberExecutions = null)
+        DsfForEachActivity SetupArgumentsReplace(string find, string replaceWith,string currentDl, string testData, enForEachType type, bool isInputMapping = false, string inputMapping = null, string from = null, string to = null, string csvIndexes = null, string numberExecutions = null)
         {
             var activityFunction = new ActivityFunc<string, bool>();
-            var activity = CreateWorkflowReplace();
+            var activity = CreateWorkflowReplace(find,replaceWith);
             activityFunction.Handler = activity;
             var id = Guid.NewGuid().ToString();
             var dsfForEachActivity = new DsfForEachActivity
