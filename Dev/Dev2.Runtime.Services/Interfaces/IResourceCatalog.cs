@@ -44,6 +44,7 @@ namespace Dev2.Runtime.Interfaces
         void CleanUpOldVersionControlStructure();
         IResourceActivityCache GetResourceActivityCache(Guid workspaceID);
         void RemoveFromResourceActivityCache(Guid workspaceID, IResource resource);
+        void RemoveFromResourceActivityCache(Guid workspaceID, Guid resourceId);
         string SetResourceFilePath(Guid workspaceID, IResource resource, ref string savedPath);
         ResourceCatalogResult SaveImpl(Guid workspaceID, IResource resource, StringBuilder contents);
         ResourceCatalogResult SaveImpl(Guid workspaceID, IResource resource, StringBuilder contents, string savedPath);
