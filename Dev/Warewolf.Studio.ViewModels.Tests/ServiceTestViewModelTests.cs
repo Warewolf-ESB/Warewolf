@@ -900,7 +900,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(250)]
+        [Timeout(1500)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory(nameof(ServiceTestViewModel))]
         public void ServiceTestViewModel_DeleteTestCommand_GivenResourceModelIsNotConnectedAndTestIsDisabled_ShouldSetCanExecuteTrue()
