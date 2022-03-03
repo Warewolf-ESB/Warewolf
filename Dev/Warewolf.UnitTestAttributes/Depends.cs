@@ -156,7 +156,7 @@ namespace Warewolf.UnitTestAttributes
                 Container.IP = "warewolf-rabbitmq-connector-testing.westeurope.azurecontainer.io";
                 Container.Port = "5672";
             }
-            else if (_containerType == ContainerType.RabbitMQ)
+            else if (_containerType == ContainerType.HTTPVerbsApi)
             {
                 Container.IP = "http-verbs-connector-testing.westeurope.azurecontainer.io";
                 Container.Port = "80";
