@@ -1264,19 +1264,21 @@ namespace Warewolf.Studio.ViewModels
             {
                 if (activity is DsfNativeActivity<bool> act2)
                 {
-                    AddChildActivity(act2, testStep);
-                }
-                else if (activity.GetType() == typeof(DsfForEachActivity))
-                {
-                    AddForEach(activity as DsfForEachActivity, testStep, testStep.Children);
-                }
-                else
-                {
-                    if (activity.GetType() == typeof(DsfSelectAndApplyActivity))
+                    var activityType = activity.GetType();
+                    if (activityType == typeof(DsfForEachActivity))
+                    {
+                        AddForEach(activity as DsfForEachActivity, testStep, testStep.Children);
+                    }
+                    else if (activityType == typeof(DsfSelectAndApplyActivity))
                     {
                         AddSelectAndApply(activity as DsfSelectAndApplyActivity, testStep, testStep.Children);
                     }
+                    else
+                    {
+                        AddChildActivity(act2, testStep);
+                    }
                 }
+                
             }
         }
 
@@ -1476,12 +1478,7 @@ namespace Warewolf.Studio.ViewModels
             }
             else
             {
-                var serviceTestStep = CreateMockChildStep(Guid.Parse(act.UniqueID), parentTestStep, act.GetType().Name, act.DisplayName);
-                serviceTestStep.StepOutputs = GetDefaultOutputs();
-
-                SetStepIcon(act.GetType(), serviceTestStep);
-                parentTestStep.Children.Add(serviceTestStep);
-                
+                CheckForAndAddSpecialNodes(parentTestStep, act as Activity);
             }
         }
 
