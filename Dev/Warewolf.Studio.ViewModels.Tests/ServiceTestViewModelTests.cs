@@ -944,7 +944,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(500)]
+        [Timeout(1000)]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(ServiceTestViewModel))]
         public void ServiceTestViewModel_OnCreation_GivenIsEnabled_DeleteTestCommandShouldBeDisabled()
