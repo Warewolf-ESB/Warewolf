@@ -236,18 +236,26 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     var replacementTotalInner = replacementTotal;
                     var errorsInner = errors;
                     var counterInner = counter;
+                    var totalIndexes = dataObject.Environment.GetIndexes(s).Count;
                     dataObject.Environment.ApplyUpdate(s, a =>
                     {
                         var replacementCountInner = 0;
                         var replace = (dynamic)null;
-                        if (update == counterInner)
+                        if (totalIndexes > 0 && update > 0)
                         {
-                            replace = replaceOperation.Replace(a.ToString(), findValue, replaceWithValue, CaseMatch, out errorsInner, ref replacementCountInner);
+                            if (update == counterInner)
+                            {
+                                replace = replaceOperation.Replace(a.ToString(), findValue, replaceWithValue, CaseMatch, out errorsInner, ref replacementCountInner);
+                            }
+                            else
+                            {
+                                replace = a.ToString();
+                            }
                         }
                         else
                         {
-                            replace = a.ToString();
-                        }
+                            replace = replaceOperation.Replace(a.ToString(), findValue, replaceWithValue, CaseMatch, out errorsInner, ref replacementCountInner);
+                        }                        
                         if (!string.IsNullOrEmpty(Result) && !DataListUtil.IsValueScalar(Result))
                         {
                             dataObject.Environment.Assign(Result, replacementCountInner.ToString(CultureInfo.InvariantCulture), update == 0 ? counterInner : update);
@@ -260,7 +268,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     errors = errorsInner;
                     counter = counterInner;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                     replacementCount = 0;
                     var toReplaceIn = dataObject.Environment.Eval(s, update);
