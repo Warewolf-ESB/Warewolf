@@ -136,8 +136,8 @@ def main():
 	
 if __name__ == '__main__':
 	main()
-"@ | Out-File -LiteralPath "$(Agent.BuildDirectory)\ftp_entrypoint.py" -Encoding utf8 -Force
-    pythonw -u "$(Agent.BuildDirectory)\ftp_entrypoint.py"
+"@ | Out-File -LiteralPath "C:\ftp_entrypoint.py" -Encoding utf8 -Force
+    pythonw -u "C:\ftp_entrypoint.py"
 }
 if ($StartFTPSServer.IsPresent) {
     mkdir "C:\ftps_home\dev2"
@@ -229,8 +229,8 @@ def main():
 	
 if __name__ == '__main__':
 	main()
-"@ | Out-File -LiteralPath "$(Agent.BuildDirectory)\ftps_entrypoint.py" -Encoding utf8 -Force
-    pythonw -u "$(Agent.BuildDirectory)\ftps_entrypoint.py"
+"@ | Out-File -LiteralPath "C:\ftps_entrypoint.py" -Encoding utf8 -Force
+    pythonw -u "C:\ftps_entrypoint.py"
 }
 if ($CreateUNCPath.IsPresent) {	
     mkdir C:\FileSystemShareTestingSite\ReadFileSharedTestingSite
