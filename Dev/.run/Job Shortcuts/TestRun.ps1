@@ -19,9 +19,7 @@ param(
   [String] $ContainerID="latest",
   [switch] $StartFTPServer,
   [switch] $StartFTPSServer,
-  [switch] $CreateUNCPath,
-  [switch] $UseRegionalSettings,
-  [switch] $CreateLocalSchedulerAdmin
+  [switch] $CreateUNCPath
 )
 if (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
 	Write-Error "This script expects to be run as Administrator. (Right click run as administrator)"
@@ -109,7 +107,7 @@ if ($Coverage.IsPresent) {
 }
 if ($StartFTPServer.IsPresent) {
 	pip install pyftpdlib
-    mkdir "C:\ftp_home\dev2\FORUNZIPTESTING"
+    mkdir "C:\ftp_home\dev2"
 @"
 import os, random, string
 
@@ -138,12 +136,11 @@ def main():
 	
 if __name__ == '__main__':
 	main()
-"@ | Out-File -LiteralPath "C:\ftp_entrypoint.py" -Encoding utf8 -Force
-    pythonw -u "C:\ftp_entrypoint.py"
+"@ | Out-File -LiteralPath "$(Agent.BuildDirectory)\ftp_entrypoint.py" -Encoding utf8 -Force
+    pythonw -u "$(Agent.BuildDirectory)\ftp_entrypoint.py"
 }
 if ($StartFTPSServer.IsPresent) {
-    mkdir "C:\ftps_home\dev2\FORFILERENAMETESTING"
-    mkdir "C:\ftps_home\dev2\FORUNZIPTESTING"
+    mkdir "C:\ftps_home\dev2"
 @"
 -----BEGIN CERTIFICATE-----
 MIID+TCCAuGgAwIBAgIUMjnF+Uh4NhKoRO425/Sgjbs7xs0wDQYJKoZIhvcNAQEL
@@ -232,35 +229,8 @@ def main():
 	
 if __name__ == '__main__':
 	main()
-"@ | Out-File -LiteralPath "C:\ftps_entrypoint.py" -Encoding utf8 -Force
-    pythonw -u "C:\ftps_entrypoint.py"
-}
-if ($CreateLocalSchedulerAdmin.IsPresent) {
-	cmd /c NET user "LocalSchedulerAdmin" "987Sched#@!" /ADD /Y
-	Add-LocalGroupMember -Group 'Administrators' -Member ('LocalSchedulerAdmin') -Verbose
-	Add-LocalGroupMember -Group 'Warewolf Administrators' -Member ('LocalSchedulerAdmin') -Verbose
-}
-if ($UseRegionalSettings.IsPresent) {
-	$culture = [System.Globalization.CultureInfo]::CreateSpecificCulture("en-ZA")      
-    $assembly = [System.Reflection.Assembly]::Load("System.Management.Automation")
-    $type = $assembly.GetType("Microsoft.PowerShell.NativeCultureResolver")
-    $field = $type.GetField("m_uiCulture", [Reflection.BindingFlags]::NonPublic -bor [Reflection.BindingFlags]::Static)
-    $field.SetValue($null, $culture)      
-    Set-Culture en-ZA
-    Get-ChildItem -Path 'Microsoft.PowerShell.Core\Registry::HKEY_USERS' | % { $SubKeyName = $_.Name;if (!($SubKeyName.EndsWith('-500_Classes'))) { Set-ItemProperty -Path "Microsoft.PowerShell.Core\Registry::$SubKeyName\Control Panel\International" -Name sTimeFormat -Value 'hh:mm:ss tt' } }
-    Get-ChildItem -Path 'Microsoft.PowerShell.Core\Registry::HKEY_USERS' | % { $SubKeyName = $_.Name;if (!($SubKeyName.EndsWith('-500_Classes'))) { Set-ItemProperty -Path "Microsoft.PowerShell.Core\Registry::$SubKeyName\Control Panel\International" -Name sShortTime -Value 'hh:mm tt' } }
-    Get-ChildItem -Path 'Microsoft.PowerShell.Core\Registry::HKEY_USERS' | % { $SubKeyName = $_.Name;if (!($SubKeyName.EndsWith('-500_Classes'))) { Set-ItemProperty -Path "Microsoft.PowerShell.Core\Registry::$SubKeyName\Control Panel\International" -Name sLongDate -Value 'dddd, dd MMMM yyyy' } }
-    Get-ChildItem -Path 'Microsoft.PowerShell.Core\Registry::HKEY_USERS' | % { $SubKeyName = $_.Name;if (!($SubKeyName.EndsWith('-500_Classes'))) { Set-ItemProperty -Path "Microsoft.PowerShell.Core\Registry::$SubKeyName\Control Panel\International" -Name sShortDate -Value 'yyyy/MM/dd' } }
-    Get-ChildItem -Path 'Microsoft.PowerShell.Core\Registry::HKEY_USERS' | % { $SubKeyName = $_.Name;if (!($SubKeyName.EndsWith('-500_Classes'))) { Set-ItemProperty -Path "Microsoft.PowerShell.Core\Registry::$SubKeyName\Control Panel\International" -Name sDecimal -Value '.' } }
-    Get-ChildItem -Path 'Microsoft.PowerShell.Core\Registry::HKEY_USERS' | % { $SubKeyName = $_.Name;if (!($SubKeyName.EndsWith('-500_Classes'))) { Set-ItemProperty -Path "Microsoft.PowerShell.Core\Registry::$SubKeyName\Control Panel\International" -Name s1159 -Value 'AM' } }
-    Get-ChildItem -Path 'Microsoft.PowerShell.Core\Registry::HKEY_USERS' | % { $SubKeyName = $_.Name;if (!($SubKeyName.EndsWith('-500_Classes'))) { Set-ItemProperty -Path "Microsoft.PowerShell.Core\Registry::$SubKeyName\Control Panel\International" -Name s2359 -Value 'PM' } }
-    Set-ItemProperty -Path 'Microsoft.PowerShell.Core\Registry::HKEY_CURRENT_USER\Control Panel\International' -Name sTimeFormat -Value 'hh:mm:ss tt'
-    Set-ItemProperty -Path 'Microsoft.PowerShell.Core\Registry::HKEY_CURRENT_USER\Control Panel\International' -Name sShortTime -Value 'hh:mm tt'
-    Set-ItemProperty -Path 'Microsoft.PowerShell.Core\Registry::HKEY_CURRENT_USER\Control Panel\International' -Name sLongDate -Value 'dddd, dd MMMM yyyy'
-    Set-ItemProperty -Path 'Microsoft.PowerShell.Core\Registry::HKEY_CURRENT_USER\Control Panel\International' -Name sShortDate -Value 'yyyy/MM/dd'
-    Set-ItemProperty -Path 'Microsoft.PowerShell.Core\Registry::HKEY_CURRENT_USER\Control Panel\International' -Name sDecimal -Value '.'
-    Set-ItemProperty -Path 'Microsoft.PowerShell.Core\Registry::HKEY_CURRENT_USER\Control Panel\International' -Name s1159 -Value 'AM'
-    Set-ItemProperty -Path 'Microsoft.PowerShell.Core\Registry::HKEY_CURRENT_USER\Control Panel\International' -Name s2359 -Value 'PM'
+"@ | Out-File -LiteralPath "$(Agent.BuildDirectory)\ftps_entrypoint.py" -Encoding utf8 -Force
+    pythonw -u "$(Agent.BuildDirectory)\ftps_entrypoint.py"
 }
 if ($CreateUNCPath.IsPresent) {	
     mkdir C:\FileSystemShareTestingSite\ReadFileSharedTestingSite
@@ -453,4 +423,3 @@ if ($Coverage.IsPresent) {
     Write-Output "Executing Report Generator with following parameters: $reportGeneratorCoberturaParams."
     &"$reportGeneratorExecutable" @reportGeneratorCoberturaParams
 }
-exit 0
