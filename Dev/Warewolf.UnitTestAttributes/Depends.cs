@@ -158,6 +158,11 @@ namespace Warewolf.UnitTestAttributes
                 Container.IP = "localhost";
                 Container.Port = "1010";
             }
+            else if (_containerType == ContainerType.SFTP)
+            {
+                Container.IP = "l7o3rc4dbg2ze.westeurope.azurecontainer.io";
+                Container.Port = "22";
+            }
             else
             {
                 string foundPort;
