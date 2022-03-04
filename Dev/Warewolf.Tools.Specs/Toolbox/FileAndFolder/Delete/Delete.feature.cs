@@ -201,8 +201,8 @@ namespace Warewolf.Tools.Specs.Toolbox.FileAndFolder.Delete
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "UNC")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "UNC")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\DEVOPSPDC.premier.local\\FileSystemShareTestingSite\\FileDeleteSharedTestingSite\\" +
-            "filetodelete.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\localhost\\FileSystemShareTestingSite\\FileDeleteSharedTestingSite\\filetodelete.t" +
+            "xt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
@@ -212,8 +212,8 @@ namespace Warewolf.Tools.Specs.Toolbox.FileAndFolder.Delete
         public virtual void DeleteFileAtLocation_UNC()
         {
 #line 7
- this.DeleteFileAtLocation("UNC", "[[path]]", "\\\\DEVOPSPDC.premier.local\\FileSystemShareTestingSite\\FileDeleteSharedTestingSite\\" +
-                    "filetodelete.txt", "\"\"", "\"\"", "[[result]]", "\"Success\"", "NO", "", ((string[])(null)));
+ this.DeleteFileAtLocation("UNC", "[[path]]", "\\\\localhost\\FileSystemShareTestingSite\\FileDeleteSharedTestingSite\\filetodelete.t" +
+                    "xt", "\"\"", "\"\"", "[[result]]", "\"Success\"", "NO", "", ((string[])(null)));
 #line hidden
         }
         
@@ -266,7 +266,7 @@ namespace Warewolf.Tools.Specs.Toolbox.FileAndFolder.Delete
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "SFTP")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "SFTP")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "sftp://SVRDEV.premier.local/filetodelete.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "sftp://l7o3rc4dbg2ze.westeurope.azurecontainer.io/upload/filetodelete.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
@@ -276,7 +276,7 @@ namespace Warewolf.Tools.Specs.Toolbox.FileAndFolder.Delete
         public virtual void DeleteFileAtLocation_SFTP()
         {
 #line 7
- this.DeleteFileAtLocation("SFTP", "[[path]]", "sftp://SVRDEV.premier.local/filetodelete.txt", "dev2", "Q/ulw&]", "[[result]]", "\"Success\"", "NO", "", ((string[])(null)));
+ this.DeleteFileAtLocation("SFTP", "[[path]]", "sftp://l7o3rc4dbg2ze.westeurope.azurecontainer.io/upload/filetodelete.txt", "dev2", "Q/ulw&]", "[[result]]", "\"Success\"", "NO", "", ((string[])(null)));
 #line hidden
         }
         
@@ -287,7 +287,7 @@ namespace Warewolf.Tools.Specs.Toolbox.FileAndFolder.Delete
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "SFTP PK")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "SFTP PK")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "sftp://SVRDEV.premier.local/filetodelete1.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "sftp://l7o3rc4dbg2ze.westeurope.azurecontainer.io/upload/filetodelete1.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
@@ -297,7 +297,7 @@ namespace Warewolf.Tools.Specs.Toolbox.FileAndFolder.Delete
         public virtual void DeleteFileAtLocation_SFTPPK()
         {
 #line 7
- this.DeleteFileAtLocation("SFTP PK", "[[path]]", "sftp://SVRDEV.premier.local/filetodelete1.txt", "dev2", "Q/ulw&]", "[[result]]", "\"Success\"", "NO", "C:\\Temp\\key.opk", ((string[])(null)));
+ this.DeleteFileAtLocation("SFTP PK", "[[path]]", "sftp://l7o3rc4dbg2ze.westeurope.azurecontainer.io/upload/filetodelete1.txt", "dev2", "Q/ulw&]", "[[result]]", "\"Success\"", "NO", "C:\\Temp\\key.opk", ((string[])(null)));
 #line hidden
         }
         
@@ -409,8 +409,7 @@ namespace Warewolf.Tools.Specs.Toolbox.FileAndFolder.Delete
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "UNC")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\DEVOPSPDC.premier.local\\FileSystemShareTestingSite\\FileDeleteSharedTestingSite\\" +
-            "Memo.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\localhost\\FileSystemShareTestingSite\\FileDeleteSharedTestingSite\\Memo.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
@@ -420,8 +419,7 @@ namespace Warewolf.Tools.Specs.Toolbox.FileAndFolder.Delete
         public virtual void DeleteFileAtLocationNull_Variant2()
         {
 #line 30
- this.DeleteFileAtLocationNull("UNC", "[[path]]", "\\\\DEVOPSPDC.premier.local\\FileSystemShareTestingSite\\FileDeleteSharedTestingSite\\" +
-                    "Memo.txt", "\"\"", "\"\"", "[[result]]", "\"Success\"", "NO", "", ((string[])(null)));
+ this.DeleteFileAtLocationNull("UNC", "[[path]]", "\\\\localhost\\FileSystemShareTestingSite\\FileDeleteSharedTestingSite\\Memo.txt", "\"\"", "\"\"", "[[result]]", "\"Success\"", "NO", "", ((string[])(null)));
 #line hidden
         }
         
@@ -474,7 +472,7 @@ namespace Warewolf.Tools.Specs.Toolbox.FileAndFolder.Delete
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "SFTP")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "sftp://SVRDEV.premier.local/Memo.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "sftp://l7o3rc4dbg2ze.westeurope.azurecontainer.io/upload/Memo.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2.local")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
@@ -484,7 +482,7 @@ namespace Warewolf.Tools.Specs.Toolbox.FileAndFolder.Delete
         public virtual void DeleteFileAtLocationNull_Variant5()
         {
 #line 30
- this.DeleteFileAtLocationNull("SFTP", "[[path]]", "sftp://SVRDEV.premier.local/Memo.txt", "dev2.local", "Q/ulw&]", "[[result]]", "\"\"", "NO", "", ((string[])(null)));
+ this.DeleteFileAtLocationNull("SFTP", "[[path]]", "sftp://l7o3rc4dbg2ze.westeurope.azurecontainer.io/upload/Memo.txt", "dev2.local", "Q/ulw&]", "[[result]]", "\"\"", "NO", "", ((string[])(null)));
 #line hidden
         }
         
