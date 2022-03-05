@@ -168,11 +168,6 @@ namespace Warewolf.UnitTestAttributes
                 Container.IP = "warewolf-mysql-connector-testing.westeurope.azurecontainer.io";
                 Container.Port = "3306";
             }
-            else if (_containerType == ContainerType.PostGreSQL)
-            {
-                Container.IP = "warewolf-postgres-connector-testing.westeurope.azurecontainer.io";
-                Container.Port = "5432";
-            }
             else
             {
                 string foundPort;
