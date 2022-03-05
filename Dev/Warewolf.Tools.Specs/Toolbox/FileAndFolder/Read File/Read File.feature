@@ -38,7 +38,7 @@ Scenario Outline: Read File at locationNull
 	Examples: 
 	| NO | Name       | source   | sourceLocation                                                                                  | username      | password     | resultVar  | result | errorOccured | sourcePrivateKeyFile |
 	| 1  | Local      | [[path]] | NULL                                                                                            | ""            | ""           | [[result]] | Error  | AN           |                      |
-	| 2  | UNC        | [[path]] | \\\\localhost\FileSystemShareTestingSite\ReadFileSharedTestingSite\filetoread.txt | ""            | ""           | [[result]] | Guid   | NO           |                      |
+	| 2  | UNC        | [[path]] | \\\\DEVOPSPDC.premier.local\FileSystemShareTestingSite\ReadFileSharedTestingSite\filetoread.txt | ""            | ""           | [[result]] | Guid   | NO           |                      |
 	| 3  | FTP        | [[path]] | ftp://DEVOPSPDC.premier.local:1001/FORREADFILETESTING/filetoread.txt                            | dev2              | Q/ulw&]      | [[result]] | Guid   | NO           |                      |
 	| 4  | FTPS       | [[path]] | ftps://DEVOPSPDC.premier.local:1002/FORREADFILETESTING/filetodele.txt                           | dev2              | Q/ulw&]      | [[result]] | Guid   | NO           |                      |
 	| 5  | SFTP       | [[path]] | sftp://l7o3rc4dbg2ze.westeurope.azurecontainer.io/upload/filetoread.txt                         | dev2              | Q/ulw&]      | [[result]] | Guid   | NO           |                      |
