@@ -423,3 +423,4 @@ if ($Coverage.IsPresent) {
     Write-Output "Executing Report Generator with following parameters: $reportGeneratorCoberturaParams."
     &"$reportGeneratorExecutable" @reportGeneratorCoberturaParams
 }
+exit 0
