@@ -165,6 +165,11 @@ namespace Warewolf.UnitTestAttributes
                 Container.IP = "remote-warewolf-connector-testing.westeurope.azurecontainer.io";
                 Container.Port = "3142";
             }
+            else if (_containerType == ContainerType.WebApi)
+            {
+                Container.IP = "http-web-connector-testing.westeurope.azurecontainer.io";
+                Container.Port = "80";
+            }
             else
             {
                 string foundPort;
