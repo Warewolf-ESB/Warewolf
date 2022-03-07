@@ -141,7 +141,7 @@ if __name__ == '__main__':
     pythonw -u "C:\ftp_entrypoint.py"
 }
 if ($StartFTPSServer.IsPresent) {
-    mkdir "C:\ftps_home\dev2"
+    mkdir "C:\ftps_home\dev2\FORFILERENAMETESTING"
 @"
 -----BEGIN CERTIFICATE-----
 MIID+TCCAuGgAwIBAgIUMjnF+Uh4NhKoRO425/Sgjbs7xs0wDQYJKoZIhvcNAQEL
