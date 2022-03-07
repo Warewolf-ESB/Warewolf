@@ -18,8 +18,7 @@ namespace Warewolf.UnitTestAttributes
             "RSAKLFSVRHST1.premier.local",
             "t004121.premier.local",
             "opswolf.com",
-            "rsaklfwynand.premier.local",
-            "PIETER.premier.local",
+            "20.86.219.166",//anonymous-redis-connector-testing in the cloud
             "localhost"
         };
         private string SelectedHost = "";
@@ -146,37 +145,59 @@ namespace Warewolf.UnitTestAttributes
         {
             _containerType = type;
             Container = new Container(_containerType);
-            var retryCount = 0;
-            string foundPort;
-            do
+            if (_containerType == ContainerType.Redis)
             {
-                SelectedHost = RigOpsHosts.ElementAt(retryCount);
+                Container.IP = "20.101.23.190";
+                Container.Port = "6379";
+            }
+            else if (_containerType == ContainerType.RabbitMQ)
+            {
+                Container.IP = "warewolf-rabbitmq-connector-testing.westeurope.azurecontainer.io";
+                Container.Port = "5672";
+            }
+            else if (_containerType == ContainerType.HTTPVerbsApi)
+            {
+                Container.IP = "http-verbs-connector-testing.westeurope.azurecontainer.io";
+                Container.Port = "80";
+            }
+            else if (_containerType == ContainerType.CIRemote || _containerType == ContainerType.AnonymousWarewolf)
+            {
+                Container.IP = "remote-warewolf-connector-testing.westeurope.azurecontainer.io";
+                Container.Port = "3142";
+            }
+            else
+            {
+                string foundPort;
                 var portRetryCount = 0;
                 do
                 {
+                    var retryCount = 0;
                     foundPort = Container.PossiblePorts.ElementAt(portRetryCount);
-                    using (var client = new TcpClient())
+                    do
                     {
-                        try
+                        SelectedHost = RigOpsHosts.ElementAt(retryCount);
+                        using (var client = new TcpClient())
                         {
-                            client.Connect(SelectedHost, int.Parse(foundPort));
-                            retryCount = RigOpsHosts.Count;
-                            portRetryCount = Container.PossiblePorts.Length;
-                        }
-                        catch (SocketException)
-                        {
-                            if (foundPort == Container.PossiblePorts.Last()) 
+                            try
                             {
-                                retryCount++;
+                                client.Connect(SelectedHost, int.Parse(foundPort));
+                                retryCount = RigOpsHosts.Count;
+                                portRetryCount = Container.PossiblePorts.Length;
                             }
-                            portRetryCount++;
+                            catch (SocketException)
+                            {
+                                if (++retryCount == RigOpsHosts.Count) 
+                                {
+                                    portRetryCount++;
+                                }
+                            }
                         }
-                    }
-                } while(portRetryCount < Container.PossiblePorts.Length);
-            } while (retryCount < RigOpsHosts.Count);
+                    } while(retryCount < RigOpsHosts.Count);
+                } while (portRetryCount < Container.PossiblePorts.Length);
 
-            Container.IP = SelectedHost;
-            Container.Port = foundPort;
+                Container.IP = SelectedHost;
+                Container.Port = foundPort;
+            }
 
             if (!performSourceInjection) return;
             switch (_containerType)
@@ -213,7 +234,7 @@ namespace Warewolf.UnitTestAttributes
                 case ContainerType.MSSQL:
                     return new[] {"1433"};
                 case ContainerType.CIRemote:
-                    return new[] {"3144"};
+                    return new[] {"3144","3142"};
                 case ContainerType.MySQL:
                     return new[] {"3306", "3307"};
                 case ContainerType.PostGreSQL:
@@ -223,7 +244,7 @@ namespace Warewolf.UnitTestAttributes
                 case ContainerType.Redis:
                     return new[] {"6379", "56438"};
                 case ContainerType.AnonymousRedis:
-                    return new[] {"6380", "6381"};
+                    return new[] {"6380", "6381", "6379"};
                 case ContainerType.AnonymousWarewolf:
                     return new[] {"3148"};
                 case ContainerType.Warewolf:
@@ -235,7 +256,7 @@ namespace Warewolf.UnitTestAttributes
                 case ContainerType.WebApi:
                     return new[] {"8080"};
                 case ContainerType.HTTPVerbsApi:
-                    return new[] {"9810"};
+                    return new[] {"9810", "80"};
                 case ContainerType.FTP:
                     return new[] {"21", "1004"};
                 case ContainerType.FTPS:
