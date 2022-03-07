@@ -165,11 +165,6 @@ namespace Warewolf.UnitTestAttributes
                 Container.IP = "http-verbs-connector-testing.westeurope.azurecontainer.io";
                 Container.Port = "80";
             }
-            else if (_containerType == ContainerType.MySQL)
-            {
-                Container.IP = "warewolf-mysql-connector-testing.westeurope.azurecontainer.io";
-                Container.Port = "3306";
-            }
             else if (_containerType == ContainerType.WebApi)
             {
                 Container.IP = "http-web-connector-testing.westeurope.azurecontainer.io";
