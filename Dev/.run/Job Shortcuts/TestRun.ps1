@@ -142,7 +142,6 @@ if __name__ == '__main__':
 }
 if ($StartFTPSServer.IsPresent) {
     mkdir "C:\ftps_home\dev2\FORFILERENAMETESTING"
-    mkdir "C:\ftps_home\dev2\FORTESTING"
 @"
 -----BEGIN CERTIFICATE-----
 MIID+TCCAuGgAwIBAgIUMjnF+Uh4NhKoRO425/Sgjbs7xs0wDQYJKoZIhvcNAQEL
