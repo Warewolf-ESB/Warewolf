@@ -175,7 +175,7 @@ namespace Warewolf.UnitTestAttributes
                 Container.IP = "http-web-connector-testing.westeurope.azurecontainer.io";
                 Container.Port = "80";
             }
-            else if (_containerType == ContainerType.CIRemote)
+            else if (_containerType == ContainerType.CIRemote || _containerType == ContainerType.AnonymousWarewolf)
             {
                 Container.IP = "remote-warewolf-connector-testing.westeurope.azurecontainer.io";
                 Container.Port = "3142";
