@@ -13,7 +13,8 @@ Param(
   [switch]$Release,
   [switch]$Web,
   [switch]$RegenerateSpecFlowFeatureFiles,
-  [switch]$InContainer
+  [switch]$InContainer,
+  [string]$GitCredential
 )
 $KnownSolutionFiles = "Dev\AcceptanceTesting.sln",
                       "Dev\UITesting.sln",
@@ -105,6 +106,9 @@ $GitCommitID = git -C "$PSScriptRoot" rev-parse HEAD
 if ($AutoVersion.IsPresent -or $CustomVersion -ne "") {
     Write-Host Writing C# and F# versioning files...
 
+    if ($GitCredential -ne "") {
+		git -C "$PSScriptRoot" remote set-url origin https://$GitCredential@gitlab.com/warewolf/warewolf
+	}
     # Get all the latest version tags from server repo.
     git -C "$PSScriptRoot" fetch --all --tags -f
 
