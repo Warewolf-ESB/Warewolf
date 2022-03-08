@@ -20,7 +20,8 @@ param(
   [switch] $StartFTPServer,
   [switch] $StartFTPSServer,
   [switch] $CreateUNCPath,
-  [switch] $UseRegionalSettings
+  [switch] $UseRegionalSettings,
+  [switch] $CreateLocalSchedulerAdmin
 )
 if (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
 	Write-Error "This script expects to be run as Administrator. (Right click run as administrator)"
@@ -233,6 +234,11 @@ if __name__ == '__main__':
 	main()
 "@ | Out-File -LiteralPath "C:\ftps_entrypoint.py" -Encoding utf8 -Force
     pythonw -u "C:\ftps_entrypoint.py"
+}
+if ($CreateLocalSchedulerAdmin.IsPresent) {
+	cmd /c NET user "LocalSchedulerAdmin" "987Sched#@!" /ADD /Y
+	Add-LocalGroupMember -Group 'Administrators' -Member ('LocalSchedulerAdmin') -Verbose
+	Add-LocalGroupMember -Group 'Warewolf Administrators' -Member ('LocalSchedulerAdmin') -Verbose
 }
 if ($UseRegionalSettings.IsPresent) {
 	$culture = [System.Globalization.CultureInfo]::CreateSpecificCulture("en-ZA")      
