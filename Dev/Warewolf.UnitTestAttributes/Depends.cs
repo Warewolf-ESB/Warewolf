@@ -173,6 +173,21 @@ namespace Warewolf.UnitTestAttributes
                 Container.IP = "warewolf-connector-dependency-containers.westeurope.cloudapp.azure.com";
                 Container.Port = "1433";
             }
+            else if (_containerType == ContainerType.Elasticsearch)
+            {
+                Container.IP = "warewolf-connector-dependency-containers.westeurope.cloudapp.azure.com";
+                Container.Port = "9400";
+            }
+            else if (_containerType == ContainerType.AnonymousElasticsearch)
+            {
+                Container.IP = "warewolf-connector-dependency-containers.westeurope.cloudapp.azure.com";
+                Container.Port = "9200";
+            }
+            else if (_containerType == ContainerType.PostGreSQL)
+            {
+                Container.IP = "warewolf-connector-dependency-containers.westeurope.cloudapp.azure.com";
+                Container.Port = "5433";
+            }
             else
             {
                 string foundPort;
