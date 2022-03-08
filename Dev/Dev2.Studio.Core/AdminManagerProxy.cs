@@ -57,7 +57,11 @@ namespace Dev2.Studio.Core
             var serializer = new Dev2JsonSerializer();
             var controller = CommunicationControllerFactory.CreateController(nameof(GetSubscriptionData));
             var resultData = await controller.ExecuteCommandAsync<ExecuteMessage>(Connection, Guid.Empty);
-            return serializer.Deserialize<ISubscriptionData>(resultData.Message);
+
+            if (resultData == null)
+                return new SubscriptionData { IsLicensed = false };
+            else
+                return serializer.Deserialize<ISubscriptionData>(resultData.Message);
         }
     }
 }
