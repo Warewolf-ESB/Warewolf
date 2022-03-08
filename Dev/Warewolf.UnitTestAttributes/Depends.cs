@@ -180,6 +180,11 @@ namespace Warewolf.UnitTestAttributes
                 Container.IP = "http-web-connector-testing.westeurope.azurecontainer.io";
                 Container.Port = "80";
             }
+            else if (_containerType == ContainerType.MSSQL)
+            {
+                Container.IP = "warewolf-connector-dependency-containers.westeurope.cloudapp.azure.com";
+                Container.Port = "1433";
+            }
             else
             {
                 string foundPort;
