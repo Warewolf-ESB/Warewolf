@@ -184,7 +184,7 @@ namespace Warewolf.OS.Tests
         public void ProcessThreadList_GivenInvalidConfig_ExpectThreadListStopMonitoring()
         {
             var mockConfig = new Mock<IJobConfig>();
-            mockConfig.Setup(o => o.Concurrency).Returns(3);
+            mockConfig.Setup(o => o.Concurrency).Returns(2);
             var mockProcessFactory = new Mock<ITestProcessFactory>();
 
             var mockProcessThread1 = CreateMockProcessThread();
