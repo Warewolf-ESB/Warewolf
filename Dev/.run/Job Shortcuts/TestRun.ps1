@@ -108,7 +108,7 @@ if ($Coverage.IsPresent) {
 }
 if ($StartFTPServer.IsPresent) {
 	pip install pyftpdlib
-    mkdir "C:\ftp_home\dev2"
+    mkdir "C:\ftp_home\dev2\FORUNZIPTESTING"
 @"
 import os, random, string
 
@@ -142,6 +142,7 @@ if __name__ == '__main__':
 }
 if ($StartFTPSServer.IsPresent) {
     mkdir "C:\ftps_home\dev2\FORFILERENAMETESTING"
+    mkdir "C:\ftps_home\dev2\FORUNZIPTESTING"
 @"
 -----BEGIN CERTIFICATE-----
 MIID+TCCAuGgAwIBAgIUMjnF+Uh4NhKoRO425/Sgjbs7xs0wDQYJKoZIhvcNAQEL
