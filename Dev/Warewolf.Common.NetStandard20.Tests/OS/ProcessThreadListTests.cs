@@ -108,7 +108,6 @@ namespace Warewolf.OS.Tests
         [Owner("Rory McGuire")]
         [TestCategory(nameof(MessageToInputsMapper))]
         [DoNotParallelize]
-        [TestCategory("CannotParallelize")]
         [TestCategory("Multithread")]
         public void ProcessThreadList_GivenConfigConcurrent3_ExpectThreeWorkers()
         {
@@ -146,7 +145,6 @@ namespace Warewolf.OS.Tests
         [Owner("Rory McGuire")]
         [TestCategory(nameof(MessageToInputsMapper))]
         [DoNotParallelize]
-        [TestCategory("CannotParallelize")]
         [TestCategory("Multithread")]
         public void ProcessThreadList_GivenKillCalled_ExpectAllWorkersKilled()
         {
@@ -229,7 +227,6 @@ namespace Warewolf.OS.Tests
         [Owner("Rory McGuire")]
         [TestCategory(nameof(MessageToInputsMapper))]
         [DoNotParallelize]
-        [TestCategory("CannotParallelize")]
         [TestCategory("Multithread")]
         public void ProcessThreadList_GivenConfigConcurrentChanges_ExpectWorkerCountChanges()
         {
