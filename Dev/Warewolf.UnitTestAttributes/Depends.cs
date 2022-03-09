@@ -206,7 +206,7 @@ namespace Warewolf.UnitTestAttributes
             }
             else if (_containerType == ContainerType.AnonymousRedis)
             {
-                Container.IP = "warewolf-anonymous-redis--connector-testing.westeurope.azurecontainer.io";
+                Container.IP = "warewolf-anonymous-redis-connector-testing.westeurope.azurecontainer.io";
                 Container.Port = "6379";
             }
             else
