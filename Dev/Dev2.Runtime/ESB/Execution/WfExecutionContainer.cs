@@ -178,12 +178,14 @@ namespace Dev2.Runtime.ESB.Execution
         ErrorResultTO AddErrors()
         {
             var errors = new ErrorResultTO();
-            foreach (var err in DataObject.Environment.Errors)
+            var errorsList = DataObject.Environment.Errors.ToList();
+            foreach (var err in errorsList)
             {
                 errors.AddError(err, true);
             }
 
-            foreach (var err in DataObject.Environment.AllErrors)
+            var allErrorsList = DataObject.Environment.AllErrors.ToList();
+            foreach (var err in allErrorsList)
             {
                 errors.AddError(err, true);
             }
@@ -371,6 +373,11 @@ namespace Dev2.Runtime.ESB.Execution
         {
             return new ResumableExecutionContainer(startActivityId, sa, dataObject);
         }
+        
+        public IResumableExecutionContainer New(Guid startActivityId, ServiceAction sa, DsfDataObject dataObject, IWorkspace workspace)
+        {
+            return new ResumableExecutionContainer(startActivityId, sa, dataObject, workspace);
+        }
     }
 
     public class ResumableExecutionContainer : WfExecutionContainer, IResumableExecutionContainer
@@ -380,6 +387,11 @@ namespace Dev2.Runtime.ESB.Execution
 
         public ResumableExecutionContainer(Guid resumeActivityId, ServiceAction sa, IDSFDataObject dataObject)
             : this(resumeActivityId, dataObject.Environment, sa, dataObject, WorkspaceRepository.Instance.ServerWorkspace, new EsbServicesEndpoint(), SubscriptionProvider.Instance)
+        {
+        }
+        
+        public ResumableExecutionContainer(Guid resumeActivityId, ServiceAction sa, IDSFDataObject dataObject, IWorkspace workspace)
+            : this(resumeActivityId, dataObject.Environment, sa, dataObject, workspace, new EsbServicesEndpoint())
         {
         }
 

@@ -292,6 +292,43 @@ namespace Dev2.Integration.Tests.Redis
             }
         }
 
+
+
+        [TestMethod]
+        [Timeout(120000)]
+        [Owner("Yogesh Rajpurohit")]
+        [TestCategory(nameof(RedisCacheActivity))]
+        public void RedisCacheActivity_PerformExecution_RedisKeyNotFound()
+        {
+            TestAnonymousAuth(out var hostName, out var password, out var port);
+            var redisSource = new RedisSource { HostName = hostName, Password = password, Port = port.ToString() };
+            var key = "3";
+
+            var innerActivity = new DsfMultiAssignActivity()
+            {
+                FieldsCollection = new List<ActivityDTO>
+                    {
+                        new ActivityDTO("[[customer(1).id]]", "1", 1),
+                        new ActivityDTO("[[customer(2).id]]", "2", 2),
+                        new ActivityDTO("[[customer(3).id]]", "3", 3),
+                        new ActivityDTO("[[customer(1).name]]", "name1", 1),
+                        new ActivityDTO("[[customer(2).name]]", "name2", 2),
+                        new ActivityDTO("[[customer(3).name]]", "name3", 3),
+                    }
+            };
+
+            GenerateMocks(key, redisSource, out Mock<IResourceCatalog> mockResourceCatalog, out Mock<IDSFDataObject> mockDataObject);
+            CreateRedisActivity(key, hostName, port, password, mockResourceCatalog, out TestRedisActivity sut, innerActivity);
+
+            sut.TestExecuteTool(mockDataObject.Object);
+            var debugOutputs = sut.GetDebugOutputs(mockDataObject.Object.Environment, 0);
+
+            //----------------------Assert-----------------------
+            Assert.AreEqual(7, debugOutputs.Count);
+            Assert.AreEqual("Redis key { " + sut.Key + " } not found", debugOutputs[0].ResultsList[0].Label);
+        }
+
+
         static void TestAnonymousAuth(out string hostName, out string password, out int port)
         {
             var dependency = new Depends(Depends.ContainerType.AnonymousRedis, true);

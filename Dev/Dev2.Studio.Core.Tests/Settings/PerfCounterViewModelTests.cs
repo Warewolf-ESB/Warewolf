@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -49,7 +49,8 @@ namespace Dev2.Core.Tests.Settings
         }
 
         [TestMethod]
-        [TestCategory("PerfcounterViewModel_Constructor")]
+        [TestCategory("PerfcounterViewModel")]
+        [Timeout(300000)]
         public void PerfcounterViewModel_ServerCountersCompare_Given_Null_Server_Counters_Returns_False()
         {
             CommonSetupHelper.RegisterServerRepository();
@@ -78,7 +79,8 @@ namespace Dev2.Core.Tests.Settings
         }
 
         [TestMethod]
-        [TestCategory("PerfcounterViewModel_Constructor")]
+        [TestCategory("PerfcounterViewModel")]
+        [Timeout(300000)]
         public void PerfcounterViewModel_Equals_Given_Null_Server_Counters_Returns_False()
         {
             CommonSetupHelper.RegisterServerRepository();
@@ -97,7 +99,8 @@ namespace Dev2.Core.Tests.Settings
         }
 
         [TestMethod]
-        [TestCategory("PerfcounterViewModel_Constructor")]
+        [TestCategory("PerfcounterViewModel")]
+        [Timeout(300000)]
         public void PerfcounterViewModel_Equals_Given_Null_Resource_Counters_Returns_False()
         {
             CommonSetupHelper.RegisterServerRepository();
@@ -119,8 +122,9 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("PerfcounterViewModel_Constructor")]
+        [TestCategory("PerfcounterViewModel")]
         [ExpectedException(typeof(ArgumentNullException))]
+        [Timeout(300000)]
         public void PerfcounterViewModel_Constructor_NullPerfCounters_ThrowsException()
         {
             //------------Setup for test--------------------------
@@ -133,8 +137,9 @@ namespace Dev2.Core.Tests.Settings
         
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("PerfcounterViewModel_Constructor")]
+        [TestCategory("PerfcounterViewModel")]
         [ExpectedException(typeof(ArgumentNullException))]
+        [Timeout(300000)]
         public void PerfcounterViewModel_Constructor_NullEnvironment_ThrowsException()
         {
             //------------Setup for test--------------------------
@@ -147,7 +152,8 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("PerfcounterViewModel_Constructor")]
+        [TestCategory("PerfcounterViewModel")]
+        [Timeout(300000)]
         public void PerfcounterViewModel_Constructor_ResourcePickerFunction_ShouldCreateResourcePicker()
         {
             //------------Setup for test--------------------------
@@ -161,7 +167,8 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("PerfcounterViewModel_Constructor")]
+        [TestCategory("PerfcounterViewModel")]
+        [Timeout(300000)]
         public void PerfcounterViewModel_Constructor_WithPerfCounters_ShouldSetupCollections()
         {
             //------------Setup for test--------------------------
@@ -200,7 +207,8 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("PerfcounterViewModel_Constructor")]
+        [TestCategory("PerfcounterViewModel")]
+        [Timeout(300000)]
         public void PerfcounterViewModel_UpdatePerfCounter_ShouldFirePropertyChange()
         {
             //------------Setup for test--------------------------
@@ -236,7 +244,8 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("PerfcounterViewModel_Constructor")]
+        [TestCategory("PerfcounterViewModel")]
+        [Timeout(300000)]
         public void PerfcounterViewModel_UpdatePerfCounter_ResourceCounterSetCounterNameEmpty_ShouldRemoveCounter()
         {
             //------------Setup for test--------------------------
@@ -267,7 +276,8 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("PerfcounterViewModel_Constructor")]
+        [TestCategory("PerfcounterViewModel")]
+        [Timeout(300000)]
         public void PerfcounterViewModel_UpdatePerfCounter_ResourceCounterSetCounterNameNull_ShouldRemoveCounter()
         {
             //------------Setup for test--------------------------
@@ -298,7 +308,8 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        [TestCategory("PerfcounterViewModel_Constructor")]
+        [TestCategory("PerfcounterViewModel")]
+        [Timeout(300000)]
         public void PerfcounterViewModel_UpdatePerfCounter_ResourceCounterSetCounterNameNull_IsDirtyFalse()
         {
             //------------Setup for test--------------------------
@@ -331,7 +342,8 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("PerfcounterViewModel_Constructor")]
+        [TestCategory("PerfcounterViewModel")]
+        [Timeout(300000)]
         public void PerfcounterViewModel_Save_ShouldUpdatePerfCounterTo()
         {
             //------------Setup for test--------------------------
@@ -391,7 +403,8 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("PerfcounterViewModel_Constructor")]
+        [TestCategory("PerfcounterViewModel")]
+        [Timeout(300000)]
         public void PerfcounterViewModel_UpdatePerfCounter_ResourceCounterSetDeleted_ShouldNotSaveCounter()
         {
             //------------Setup for test--------------------------
@@ -424,7 +437,8 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("PerfcounterViewModel_ResetCounters")]
+        [TestCategory("PerfcounterViewModel")]
+        [Timeout(300000)]
         public void PerfcounterViewModel_ResetCounters_Command_NoError_ShouldCallCommunicationsController()
         {
             //------------Setup for test--------------------------
@@ -453,7 +467,8 @@ namespace Dev2.Core.Tests.Settings
         
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("PerfcounterViewModel_ResetCounters")]
+        [TestCategory("PerfcounterViewModel")]
+        [Timeout(300000)]
         public void PerfcounterViewModel_ResetCounters_Command_Error_ShouldCallCommunicationsController()
         {
             //------------Setup for test--------------------------
@@ -482,7 +497,8 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("PerfcounterViewModel_PickResource")]
+        [TestCategory("PerfcounterViewModel")]
+        [Timeout(300000)]
         public void PerfcounterViewModel_PickResource_WhenCounterNull_DoesNothing()
         {
             //------------Setup for test--------------------------
@@ -501,7 +517,8 @@ namespace Dev2.Core.Tests.Settings
         
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("PerfcounterViewModel_PickResource")]
+        [TestCategory("PerfcounterViewModel")]
+        [Timeout(300000)]
         public void PerfcounterViewModel_PickResource_WhenNotCounterPassed_DoesNothing()
         {
             //------------Setup for test--------------------------
@@ -520,7 +537,8 @@ namespace Dev2.Core.Tests.Settings
         
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("PerfcounterViewModel_PickResource")]
+        [TestCategory("PerfcounterViewModel")]
+        [Timeout(300000)]
         public void PerfcounterViewModel_PickResource_WhenCounterPassed_SetsBasedOnResource()
         {
             //------------Setup for test--------------------------
@@ -550,7 +568,8 @@ namespace Dev2.Core.Tests.Settings
         
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("PerfcounterViewModel_PickResource")]
+        [TestCategory("PerfcounterViewModel")]
+        [Timeout(300000)]
         public void PerfcounterViewModel_PickResource_WhenNoResource_DoesNothing()
         {
             //------------Setup for test--------------------------
@@ -579,7 +598,8 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("PerfcounterViewModel_UpdateHelpDescriptor")]
+        [TestCategory("PerfcounterViewModel")]
+        [Timeout(300000)]
         public void PerfcounterViewModel_UpdateHelpDescriptor_HelpText_ShouldCallUpdateHelpText()
         {
             //------------Setup for test--------------------------
