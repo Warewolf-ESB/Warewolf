@@ -18,7 +18,6 @@ namespace Warewolf.UnitTestAttributes
             "RSAKLFSVRHST1.premier.local",
             "t004121.premier.local",
             "opswolf.com",
-            "20.86.219.166",//anonymous-redis-connector-testing in the cloud
             "localhost"
         };
         private string SelectedHost = "";
@@ -147,7 +146,7 @@ namespace Warewolf.UnitTestAttributes
             Container = new Container(_containerType);
             if (_containerType == ContainerType.Redis)
             {
-                Container.IP = "20.101.23.190";
+                Container.IP = "warewolf-redis-connector-testing.westeurope.azurecontainer.io";
                 Container.Port = "6379";
             }
             else if(_containerType == ContainerType.FTPS)
@@ -204,6 +203,11 @@ namespace Warewolf.UnitTestAttributes
             {
                 Container.IP = "warewolf-mysql-connector-testing.westeurope.azurecontainer.io";
                 Container.Port = "3306";
+            }
+            else if (_containerType == ContainerType.AnonymousRedis)
+            {
+                Container.IP = "warewolf-anonymous-redis--connector-testing.westeurope.azurecontainer.io";
+                Container.Port = "6379";
             }
             else
             {
