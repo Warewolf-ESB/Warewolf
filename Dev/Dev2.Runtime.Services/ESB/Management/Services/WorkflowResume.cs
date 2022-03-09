@@ -15,6 +15,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Security.Principal;
 using System.Text;
+using System.Threading;
 using System.Web;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Enums;
@@ -26,6 +27,7 @@ using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.Security;
 using Dev2.Services.Security;
+using Dev2.Workspaces;
 using Warewolf.Resource.Errors;
 using Warewolf.Security.Encryption;
 using Warewolf.Storage;
@@ -36,12 +38,15 @@ namespace Dev2.Runtime.ESB.Management.Services
     {
         private IAuthorizationService _authorizationService;
         private IResourceCatalog _resourceCatalog;
-        
+
         public override string HandlesType() => nameof(WorkflowResume);
 
-        protected override ExecuteMessage ExecuteImpl(Dev2JsonSerializer serializer, Guid resourceId, Dictionary<string, StringBuilder> values)
+        SemaphoreSlim _executionThrottler = new SemaphoreSlim(1, 1);
+        protected override ExecuteMessage ExecuteImpl(Dev2JsonSerializer serializer, Guid resourceId,
+            Dictionary<string, StringBuilder> values)
         {
-            var versionNumber = IsValid(values, out var environmentString, out var startActivityId, out var currentUserPrincipal);
+            var versionNumber = IsValid(values, out var environmentString, out var startActivityId,
+                out var currentUserPrincipal);
             var executingUser = BuildClaimsPrincipal(DpapiWrapper.DecryptIfEncrypted(currentUserPrincipal.ToString()));
             var environment = DpapiWrapper.DecryptIfEncrypted(environmentString.ToString());
 
@@ -66,30 +71,48 @@ namespace Dev2.Runtime.ESB.Management.Services
                 Dev2Logger.Error(errorMessage, GlobalConstants.WarewolfError);
                 return new ExecuteMessage { HasError = true, Message = new StringBuilder(errorMessage) };
             }
+
+            _executionThrottler.Wait();
+            IResumableExecutionContainer container;
+            try
+            {
+                ResourceCatalogInstance.RemoveFromResourceActivityCache(GlobalConstants.ServerWorkspaceID, resourceId);
             
-            ResourceCatalogInstance.Reload();
+                var dynamicService = ResourceCatalogInstance.GetService(GlobalConstants.ServerWorkspaceID, resourceId, "");
 
-            var dynamicService = ResourceCatalogInstance.GetService(GlobalConstants.ServerWorkspaceID, resourceId, "");
-            if (dynamicService is null)
-            {
-                return new ExecuteMessage {HasError = true, Message = new StringBuilder($"Error resuming. ServiceAction is null for Resource ID:{resourceId}")};
+                if (dynamicService is null)
+                {
+                    return new ExecuteMessage
+                    {
+                        HasError = true,
+                        Message = new StringBuilder($"Error resuming. ServiceAction is null for Resource ID:{resourceId}")
+                    };
+                }
+
+                var sa = dynamicService.Actions.FirstOrDefault();
+                if (sa is null)
+                {
+                    return new ExecuteMessage
+                    {
+                        HasError = true,
+                        Message = new StringBuilder($"Error resuming. ServiceAction is null for Resource ID:{resourceId}")
+                    };
+                }
+            
+                container = CustomContainer.Get<IResumableExecutionContainerFactory>()?.New(startActivityId, sa, dataObject, new Workspace(Guid.NewGuid())) ?? CustomContainer.CreateInstance<IResumableExecutionContainer>(startActivityId, sa, dataObject, new Workspace(Guid.NewGuid()));
             }
-
-            var sa = dynamicService.Actions.FirstOrDefault();
-            if (sa is null)
+            finally
             {
-                return new ExecuteMessage {HasError = true, Message = new StringBuilder($"Error resuming. ServiceAction is null for Resource ID:{resourceId}")};
+                _executionThrottler.Release();
             }
-
-            var container = CustomContainer.Get<IResumableExecutionContainerFactory>()?.New(startActivityId, sa, dataObject) ?? CustomContainer.CreateInstance<IResumableExecutionContainer>(startActivityId, sa, dataObject);
             container.Execute(out ErrorResultTO errors, 0);
-            
+
             if (errors.HasErrors())
             {
-                return new ExecuteMessage {HasError = true, Message = new StringBuilder(errors.MakeDisplayReady())};
+                return new ExecuteMessage { HasError = true, Message = new StringBuilder(errors.MakeDisplayReady()) };
             }
 
-            return new ExecuteMessage {HasError = false, Message = new StringBuilder("Execution Completed.")};
+            return new ExecuteMessage { HasError = false, Message = new StringBuilder("Execution Completed.") };
         }
 
         public IResourceCatalog ResourceCatalogInstance
@@ -107,7 +130,9 @@ namespace Dev2.Runtime.ESB.Management.Services
         private bool CanExecute(DsfDataObject dataObject)
         {
             var key = (dataObject.ExecutingUser, AuthorizationContext.Execute, dataObject.ResourceID.ToString());
-            var isAuthorized = dataObject.AuthCache.GetOrAdd(key, (requestedKey) => AuthorizationService.IsAuthorized(dataObject.ExecutingUser, AuthorizationContext.Execute, dataObject.Resource));
+            var isAuthorized = dataObject.AuthCache.GetOrAdd(key,
+                (requestedKey) => AuthorizationService.IsAuthorized(dataObject.ExecutingUser,
+                    AuthorizationContext.Execute, dataObject.Resource));
             return isAuthorized;
         }
 
@@ -129,7 +154,8 @@ namespace Dev2.Runtime.ESB.Management.Services
         }
 
 
-        private static StringBuilder IsValid(Dictionary<string, StringBuilder> values, out StringBuilder environmentString, out Guid startActivityId, out StringBuilder currentuserprincipal)
+        private static StringBuilder IsValid(Dictionary<string, StringBuilder> values,
+            out StringBuilder environmentString, out Guid startActivityId, out StringBuilder currentuserprincipal)
         {
             values.TryGetValue("versionNumber", out StringBuilder versionNumber);
             if (versionNumber == null)

@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2022 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -25,6 +25,8 @@ namespace Warewolf.Configuration
         
         [Obsolete("AuditFilePath is deprecated. It will be deleted in future releases.")]
         public string AuditFilePath { get; set; }
+        public bool IncludeEnvironmentVariable { get; set; }
+
         public bool Equals(ServerSettingsData other)
         {
             if(other == null)
@@ -42,6 +44,7 @@ namespace Warewolf.Configuration
 #pragma warning disable 618
             equals &= AuditFilePath == other.AuditFilePath;
 #pragma warning restore 618
+            equals &= IncludeEnvironmentVariable == other.IncludeEnvironmentVariable;
             equals &= Sink == other.Sink;
             return equals;
         }

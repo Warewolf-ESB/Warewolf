@@ -602,7 +602,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
                 var item4First = item4.First();
                 Assert.AreEqual(1, item4.Count);
                 Assert.AreEqual("Parameters", item4First.Label);
-                Assert.AreEqual("\nKey: testTextKey Text: testTextValue\nKey: testFileKey File Content: this can be any file type conve", item4First.Value);
+                Assert.AreEqual("\nKey: testTextKey Text: testTextValue\nKey: testFileKey File Content: this can be any file type converted to base64 string, if it ware to be pasted into this textbox File Name: testFileName.ext", item4First.Value);
 
             } 
             

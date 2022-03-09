@@ -513,7 +513,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Rory McGuire")]
+        [Owner("Siphamandla Dube")]
         [TestCategory(nameof(GateActivity))]
         public void GateActivity_Execute_GivenPassingConditionsOnFirstGateAndFailingSecondGate_ExpectDetailedLog()
         {
@@ -525,8 +525,10 @@ namespace Dev2.Tests.Activities.ActivityTests
                 Left = "[[somebob]]",
                 Cond = new ConditionMatch { MatchType = enDecisionType.IsEqual, Right = "notbob" }
             };
-            var failingConditions = new List<ConditionExpression>();
-            failingConditions.Add(failingCondition);
+            var failingConditions = new List<ConditionExpression>
+            {
+                failingCondition
+            };
 
             var thirdNode = new Mock<IDev2Activity>().Object;
             var secondGate = new GateActivity
@@ -543,8 +545,10 @@ namespace Dev2.Tests.Activities.ActivityTests
                 Left = "[[a]]",
                 Cond = new ConditionMatch { MatchType = enDecisionType.IsEqual, Right = "bob" }
             };
-            var passingConditions = new List<ConditionExpression>();
-            passingConditions.Add(passingCondition);
+            var passingConditions = new List<ConditionExpression>
+            {
+                passingCondition
+            };
 
             //------------Setup for test--------------------------
             var firstGate = new GateActivity
@@ -578,7 +582,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             result = result.Execute(dataObject, 0);
 
-            Assert.AreEqual("bob", dataObject.Environment.EvalAsListOfStrings("[[a]]", 0)[0]);
+            Assert.AreEqual("ralph", dataObject.Environment.EvalAsListOfStrings("[[a]]", 0)[0], "should use the same environment to keep up with each execution enviroment variable changes");
             Assert.AreEqual(secondGate, result);
 
             dataObject.Environment.Assign("[[somebob]]", "notbob", 0);
