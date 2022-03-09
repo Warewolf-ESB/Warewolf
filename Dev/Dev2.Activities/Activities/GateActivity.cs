@@ -42,7 +42,7 @@ namespace Dev2.Activities
     [ToolDescriptorInfo("ControlFlow-Gate", nameof(Gate), ToolType.Native, "8999E58B-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Activities", "1.0.0.0", "Legacy", "Control Flow", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Flow_Gate")]
     public class GateActivity : DsfActivityAbstract<string>, IEquatable<GateActivity>, IStateNotifierRequired
     {
-        private IStateNotifier _stateNotifier = null;
+        private IStateNotifier _stateNotifier;
 
         public GateActivity()
             : base(nameof(Gate))
@@ -93,7 +93,6 @@ namespace Dev2.Activities
         private Guid _originalUniqueId;
         private string _previousParentId;
         private IDSFDataObject _dataObject;
-        private IExecutionEnvironment _originalExecutionEnvironment;
         public override IDev2Activity Execute(IDSFDataObject data, int update)
         {
             _previousParentId = data.ParentInstanceID;
@@ -122,7 +121,6 @@ namespace Dev2.Activities
                         retryState.Item2 = onResume.Strategy.Create().GetEnumerator();
                     }
                     _dataObject.Gates.Add(this, retryState);
-                    _originalExecutionEnvironment = data.Environment.Snapshot();
                 }
                 if (_dataObject.IsDebugMode())
                 {
@@ -264,7 +262,6 @@ namespace Dev2.Activities
                 ExecuteRetryWorkflowCompleted();
             }
 
-            _dataObject.Environment = _originalExecutionEnvironment;
             Dev2Logger.Debug("Gate: Reset Environment Snapshot", data.ExecutionID.ToString());
             
             if (_dataObject.IsDebugMode())

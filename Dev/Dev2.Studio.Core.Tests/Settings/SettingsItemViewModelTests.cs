@@ -19,6 +19,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("SettingsItemViewModel_Constructor")]
+        [Timeout(300000)]
         public void SettingsItemViewModel_Constructor_Properties_Initialized()
         {
             //------------Setup for test--------------------------
