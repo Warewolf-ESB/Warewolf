@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2022 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -38,7 +38,8 @@ namespace Warewolf.Configuration
                 _settings = JsonConvert.DeserializeObject<T>(text);
             }
         }
-        protected void Save()
+
+        public void Save()
         {
             _directoryWrapper.CreateIfNotExists(System.IO.Path.GetDirectoryName(_settingsPath));
             var text = JsonConvert.SerializeObject(this);

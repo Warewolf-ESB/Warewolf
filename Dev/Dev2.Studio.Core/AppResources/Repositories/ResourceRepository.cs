@@ -1099,8 +1099,15 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         public ExecuteMessage SaveAuditingSettings(IServer currentEnv, AuditSettingsDataBase auditingSettingsData)
         {
             var comController = new CommunicationController {ServiceName = nameof(Warewolf.Service.SaveAuditingSettings)};
-            comController.AddPayloadArgument(Warewolf.Service.SaveAuditingSettings.AuditingSettings, _serializer.Serialize(auditingSettingsData));
-            comController.AddPayloadArgument(Warewolf.Service.SaveAuditingSettings.SinkType,new StringBuilder(auditingSettingsData.GetType().Name));
+            if (auditingSettingsData is AuditingSettingsData)
+            {
+                comController.AddPayloadArgument(Warewolf.Service.SaveAuditingSettings.AuditingSettings, _serializer.Serialize(auditingSettingsData));
+            }
+            else
+            {
+                comController.AddPayloadArgument(Warewolf.Service.SaveAuditingSettings.LegacySettings, _serializer.Serialize(auditingSettingsData));
+            }
+            comController.AddPayloadArgument(Warewolf.Service.SaveAuditingSettings.SinkType, new StringBuilder(auditingSettingsData.GetType().Name));
             
             var output = comController.ExecuteCommand<ExecuteMessage>(currentEnv.Connection, GlobalConstants.ServerWorkspaceID);
             if (output == null)

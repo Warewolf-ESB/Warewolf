@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using Dev2.DynamicServices;
 
 namespace Dev2.Runtime.Hosting
 {
     public class ServiceActionRepo
     {
+        private static bool _isAddingToCache = false;
         static readonly Lazy<ServiceActionRepo> _instance = new Lazy<ServiceActionRepo>(()=>
         {
             return new ServiceActionRepo();
@@ -14,11 +16,24 @@ namespace Dev2.Runtime.Hosting
 
         public void AddToCache(Guid key, DynamicService value)
         {
-            if (_actionsCache.ContainsKey(key))
+            while(_isAddingToCache)
             {
-                _actionsCache.Remove(key);
+                Thread.Sleep(100);
             }
-            _actionsCache.Add(key,value);
+
+            try
+            {
+                _isAddingToCache = true;
+                if (_actionsCache.ContainsKey(key))
+                {
+                    _actionsCache.Remove(key);
+                }
+                _actionsCache.Add(key,value);
+            }
+            finally
+            {
+                _isAddingToCache = false;
+            }
         }
 
         public DynamicService ReadCache(Guid key)

@@ -12,10 +12,10 @@
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="Hangfire.Core">
-            <Version>1.7.13</Version>
+            <Version>1.7.28</Version>
         </PackageReference>
         <PackageReference Include="Hangfire.SqlServer">
-            <Version>1.7.13</Version>
+            <Version>1.7.28</Version>
         </PackageReference>
     </ItemGroup>
     <ItemGroup>
