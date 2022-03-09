@@ -1,7 +1,7 @@
 Feature: Rename
 	In order to be able to Rename File or Folder 
 	as a Warewolf user
-	I want a tool that will rename a File or Floder at a given location
+	I want a tool that will rename a File or Folder at a given location
 
 @FileRenameFromLocal
 @FileRenameFromLocalWithOverwrite

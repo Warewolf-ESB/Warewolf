@@ -391,7 +391,7 @@ namespace Dev2.Runtime.ESB.Execution
         }
         
         public ResumableExecutionContainer(Guid resumeActivityId, ServiceAction sa, IDSFDataObject dataObject, IWorkspace workspace)
-            : this(resumeActivityId, dataObject.Environment, sa, dataObject, workspace, new EsbServicesEndpoint())
+            : this(resumeActivityId, dataObject.Environment, sa, dataObject, workspace, new EsbServicesEndpoint(), SubscriptionProvider.Instance)
         {
         }
 
