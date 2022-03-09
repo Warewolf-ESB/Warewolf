@@ -18,10 +18,6 @@ namespace Warewolf.UnitTestAttributes
             "RSAKLFSVRHST1.premier.local",
             "t004121.premier.local",
             "opswolf.com",
-            "20.71.86.202",//remote-warewolf-connector-testing in the cloud
-            "20.103.188.228",//http-verbs-connector-testing in the cloud
-            "20.86.219.166",//anonymous-redis-connector-testing in the cloud
-            "20.54.155.120",//rabbitmq-connector-testing in the cloud
             "localhost"
         };
         private string SelectedHost = "";
@@ -150,7 +146,7 @@ namespace Warewolf.UnitTestAttributes
             Container = new Container(_containerType);
             if (_containerType == ContainerType.Redis)
             {
-                Container.IP = "20.101.23.190";
+                Container.IP = "warewolf-redis-connector-testing.westeurope.azurecontainer.io";
                 Container.Port = "6379";
             }
             else if(_containerType == ContainerType.FTPS)
@@ -158,10 +154,25 @@ namespace Warewolf.UnitTestAttributes
                 Container.IP = "localhost";
                 Container.Port = "1010";
             }
-            else if (_containerType == ContainerType.SFTP)
+            else if (_containerType == ContainerType.RabbitMQ)
             {
-                Container.IP = "l7o3rc4dbg2ze.westeurope.azurecontainer.io";
-                Container.Port = "22";
+                Container.IP = "warewolf-rabbitmq-connector-testing.westeurope.azurecontainer.io";
+                Container.Port = "5672";
+            }
+            else if (_containerType == ContainerType.HTTPVerbsApi)
+            {
+                Container.IP = "http-verbs-connector-testing.westeurope.azurecontainer.io";
+                Container.Port = "80";
+            }
+            else if (_containerType == ContainerType.WebApi)
+            {
+                Container.IP = "http-web-connector-testing.westeurope.azurecontainer.io";
+                Container.Port = "80";
+            }
+            else if (_containerType == ContainerType.CIRemote || _containerType == ContainerType.AnonymousWarewolf)
+            {
+                Container.IP = "remote-warewolf-connector-testing.westeurope.azurecontainer.io";
+                Container.Port = "3142";
             }
             else if (_containerType == ContainerType.WebApi)
             {
@@ -192,6 +203,11 @@ namespace Warewolf.UnitTestAttributes
             {
                 Container.IP = "warewolf-mysql-connector-testing.westeurope.azurecontainer.io";
                 Container.Port = "3306";
+            }
+            else if (_containerType == ContainerType.AnonymousRedis)
+            {
+                Container.IP = "warewolf-anonymous-redis--connector-testing.westeurope.azurecontainer.io";
+                Container.Port = "6379";
             }
             else
             {
