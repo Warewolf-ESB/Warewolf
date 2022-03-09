@@ -59,9 +59,13 @@ namespace Dev2.Studio.Core
             var resultData = await controller.ExecuteCommandAsync<ExecuteMessage>(Connection, Guid.Empty);
 
             if (resultData == null)
+            {
                 return new SubscriptionData { IsLicensed = false };
+            }
             else
+            {
                 return serializer.Deserialize<ISubscriptionData>(resultData.Message);
+            }    
         }
     }
 }
