@@ -356,6 +356,7 @@
                                                         ShowButtonSpinner="False"
                                                         ParsingNumberStyle="Integer"
                                                         PreviewTextInput="Concurrency_OnPreviewTextInput"
+                                                        KeyUp="Concurrency_OnKeyUp"
                                                         Text="{Binding Concurrency, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                         <i:Interaction.Behaviors>
                                             <core:HelpSetter Text="{x:Static languages:HelpText.QueueConcurrencyHelp}"
