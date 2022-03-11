@@ -9,6 +9,7 @@
 */
 
 using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Warewolf.Trigger.Queue;
@@ -53,12 +54,21 @@ namespace Dev2.Triggers.QueueEvents
             }
         }
         
-        private void Concurrency_OnKeyUp(object sender, KeyEventArgs e)
+        private void Concurrency_OnKeyDown(object sender, KeyEventArgs e)
         {
-            var control = (IntegerUpDown)sender;
-            if (string.IsNullOrEmpty(control.Text))
+            if (string.IsNullOrEmpty(ConcurrencyIntegerUpDown.Text) && (e.Key == Key.S && Keyboard.Modifiers == ModifierKeys.Control))
             {
-                control.Text = "0";
+                var queueEventsViewModel = DataContext as QueueEventsViewModel;
+                queueEventsViewModel.SelectedQueue.Concurrency = 0;
+            }
+        }
+        
+        private void Concurrency_OnLostFocus(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrEmpty(ConcurrencyIntegerUpDown.Text))
+            {
+                var queueEventsViewModel = DataContext as QueueEventsViewModel;
+                queueEventsViewModel.SelectedQueue.Concurrency = 0;
             } 
         }
 #pragma warning restore CC0091
