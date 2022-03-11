@@ -52,6 +52,15 @@ namespace Dev2.Triggers.QueueEvents
                 e.Handled = true;
             }
         }
+        
+        private void Concurrency_OnKeyUp(object sender, KeyEventArgs e)
+        {
+            var control = (IntegerUpDown)sender;
+            if (string.IsNullOrEmpty(control.Text))
+            {
+                control.Text = "0";
+            } 
+        }
 #pragma warning restore CC0091
     }
 }
