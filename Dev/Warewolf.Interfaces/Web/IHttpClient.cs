@@ -21,5 +21,6 @@ namespace Warewolf.Web
 
         Task<HttpResponseMessage> GetAsync(string url);
         Task<HttpResponseMessage> PostAsync(string url,string postBody);
+        Task<HttpResponseMessage> PostAsync(string url, HttpContent formData);
     }
 }

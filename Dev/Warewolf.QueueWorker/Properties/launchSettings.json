@@ -2,7 +2,7 @@
   "profiles": {
     "Warewolf.QueueWorker": {
       "commandName": "Project",
-      "commandLineArgs": "-c 2e8be969-c488-4cf6-9396-dc2983b7315d -v"
+      "commandLineArgs": "-c ebd732fe-749f-4b59-9890-d89915a377f1 -v"
     }
   }
 }
