@@ -28,6 +28,7 @@ using Dev2.Interfaces;
 using Dev2.Runtime;
 using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Runtime.Interfaces;
+using Dev2.Workspaces;
 using Hangfire;
 using Hangfire.MemoryStorage;
 using Hangfire.States;
@@ -154,6 +155,8 @@ namespace Warewolf.Driver.Drivers.HangfireScheduler.Tests
             var mockResumableExecutionContainerFactory = new Mock<IResumableExecutionContainerFactory>();
             mockResumableExecutionContainerFactory.Setup(o => o.New(It.IsAny<Guid>(), It.IsAny<ServiceAction>(), It.IsAny<DsfDataObject>()))
                 .Returns(mockResumableExecutionContainer.Object);
+            mockResumableExecutionContainerFactory.Setup(o => o.New(It.IsAny<Guid>(), It.IsAny<ServiceAction>(), It.IsAny<DsfDataObject>(), It.IsAny<IWorkspace>()))
+                .Returns(mockResumableExecutionContainer.Object);
             CustomContainer.Register(mockResumableExecutionContainerFactory.Object);
 
             var result = scheduler.ResumeJob(dataObjectMock.Object, jobId, false, "NewEnvironment");
@@ -220,6 +223,8 @@ namespace Warewolf.Driver.Drivers.HangfireScheduler.Tests
 
             var mockResumableExecutionContainerFactory = new Mock<IResumableExecutionContainerFactory>();
             mockResumableExecutionContainerFactory.Setup(o => o.New(It.IsAny<Guid>(), It.IsAny<ServiceAction>(), It.IsAny<DsfDataObject>()))
+                .Returns(mockResumableExecutionContainer.Object);
+            mockResumableExecutionContainerFactory.Setup(o => o.New(It.IsAny<Guid>(), It.IsAny<ServiceAction>(), It.IsAny<DsfDataObject>(), It.IsAny<IWorkspace>()))
                 .Returns(mockResumableExecutionContainer.Object);
             CustomContainer.Register(mockResumableExecutionContainerFactory.Object);
 
@@ -744,6 +749,8 @@ namespace Warewolf.Driver.Drivers.HangfireScheduler.Tests
 
             var mockResumableExecutionContainerFactory = new Mock<IResumableExecutionContainerFactory>();
             mockResumableExecutionContainerFactory.Setup(o => o.New(It.IsAny<Guid>(), It.IsAny<ServiceAction>(), It.IsAny<DsfDataObject>()))
+                .Returns(mockResumableExecutionContainer.Object);
+            mockResumableExecutionContainerFactory.Setup(o => o.New(It.IsAny<Guid>(), It.IsAny<ServiceAction>(), It.IsAny<DsfDataObject>(), It.IsAny<IWorkspace>()))
                 .Returns(mockResumableExecutionContainer.Object);
             CustomContainer.Register(mockResumableExecutionContainerFactory.Object);
 

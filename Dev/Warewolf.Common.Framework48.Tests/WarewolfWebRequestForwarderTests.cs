@@ -187,5 +187,30 @@ namespace Warewolf.Common.Tests
             Assert.AreEqual(ConsumerResult.Success, result);
             mockPublisher.Verify(p => p.Publish(It.IsAny<byte[]>()), Times.Never);
         }
+
+        [TestMethod]
+        [Owner("Njabulo Nxele")]
+        [TestCategory(nameof(WarewolfWebRequestForwarder))]
+        public void WarewolfWebRequestForwarder_Consume_MultipartFormData_Success()
+        {
+            //---------------------------------Arrange--------------------------------
+            var mockHttpClient = new Mock<IHttpClient>();
+            var mockHttpClientFactory = new Mock<IHttpClientFactory>();
+            var headers = new Headers();
+            headers["Warewolf-Custom-Transaction-Id"] = new[] { new Guid().ToString() };
+            mockHttpClient.Setup(c => c.PostAsync(It.IsAny<string>(), It.IsAny<MultipartFormDataContent>())).Returns(Task<HttpResponseMessage>.FromResult(new HttpResponseMessage(System.Net.HttpStatusCode.OK)));
+            mockHttpClientFactory.Setup(o => o.New(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), headers)).Returns(mockHttpClient.Object);
+
+            var testUrl = "http://warewolf.io:0420/test/url";
+            var inputs = new List<IServiceInputBase>();
+            inputs.Add(new ServiceInput() { Name = "@Obj" });
+            var WarewolfWebRequestForwarder = new WarewolfWebRequestForwarder(mockHttpClientFactory.Object, new Mock<IPublisher>().Object, testUrl, "", "", inputs, true);
+            //---------------------------------Act------------------------------------
+            var result = WarewolfWebRequestForwarder.Consume(Encoding.UTF8.GetBytes("{\"Name\": \"A\"}"), headers).Result;
+
+            //---------------------------------Assert---------------------------------
+            Assert.AreEqual(ConsumerResult.Success, result);
+            mockHttpClientFactory.Verify(o => o.New(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), headers), Times.Once);
+        }
     }
 }

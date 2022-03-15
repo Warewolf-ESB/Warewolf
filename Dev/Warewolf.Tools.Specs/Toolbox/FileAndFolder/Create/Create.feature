@@ -23,7 +23,7 @@ Scenario Outline: Create file at location
 	Examples: 
 		| No | Name       | destination | destinationLocation                                                                             | selected | username        | password     | resultVar  | result  | errorOccured | destinationPrivateKeyFile |
 		| 1  | Local      | [[path]]    | c:\myfile.txt                                                                                   | True     | ""              | ""           | [[result]] | Success | NO           |                           |
-		| 2  | UNC        | [[path]]    | \\\\DEVOPSPDC.premier.local\FileSystemShareTestingSite\FileCreateSharedTestingSite\test.txt     | True     | ""              | ""           | [[result]] | Success | NO           |                           |
+		| 2  | UNC        | [[path]]    | \\\\localhost\FileSystemShareTestingSite\FileCreateSharedTestingSite\test.txt     | True     | ""              | ""           | [[result]] | Success | NO           |                           |
 		| 3  | FTP        | [[path]]    | ftp://DEVOPSPDC.premier.local:1001/FORCREATEFILETESTING/test.txt                                | True     | dev2            | Q/ulw&]      | [[result]] | Success | NO           |                           |
 		| 4  | FTPS       | [[path]]    | ftp://DEVOPSPDC.premier.local:1002/FORCREATEFILETESTING/test.txt                                | True     | dev2            | Q/ulw&]      | [[result]] | Success | NO           |                           |
 		| 5  | SFTP       | [[path]]    | sftp://SVRDEV.premier.local/test.txt                                                            | True     | dev2            | Q/ulw&]      | [[result]] | Success | NO           |                           |
@@ -47,7 +47,7 @@ Scenario Outline: Create file at location with overwrite disabled
 	Examples: 
 		| No | Name       | destination | destinationLocation                                                                         | selected | username        | password     | resultVar  | result  | errorOccured | destinationPrivateKeyFile |
 		| 1  | Local      | [[path]]    | c:\myfile.txt                                                                               | False    | ""              | ""           | [[result]] | Success | NO           |                           |
-		| 2  | UNC        | [[path]]    | \\\\DEVOPSPDC.premier.local\FileSystemShareTestingSite\FileCreateSharedTestingSite\test.txt | False    | ""              | ""           | [[result]] | Success | NO           |                           |
+		| 2  | UNC        | [[path]]    | \\\\localhost\FileSystemShareTestingSite\FileCreateSharedTestingSite\test.txt | False    | ""              | ""           | [[result]] | Success | NO           |                           |
 		| 3  | FTP        | [[path]]    | ftp://DEVOPSPDC.premier.local:1001/FORCREATEFILETESTING/test.txt                            | False    | dev2            | Q/ulw&]      | [[result]] | Success | NO           |                           |
 		| 4  | FTPS       | [[path]]    | ftp://DEVOPSPDC.premier.local:1002/FORCREATEFILETESTING/test.txt                            | False    | dev2            | Q/ulw&]      | [[result]] | Success | NO           |                           |
 		| 5  | SFTP       | [[path]]    | sftp://SVRDEV.premier.local/test.txt                                                        | False    | dev2            | Q/ulw&]      | [[result]] | Success | NO           |                           |

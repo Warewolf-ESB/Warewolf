@@ -24,7 +24,7 @@ namespace Dev2.Data.Tests.PathOperations
     {
         [TestMethod]
         [Owner("Rory McGuire")]
-        [TestCategory("LogonProvider")]
+        [TestCategory("LocalSchedulerAdmin")]
         public void LogonProvider_Construct()
         {
             var provider = new LogonProvider();

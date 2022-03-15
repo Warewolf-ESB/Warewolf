@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2022 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -153,6 +153,7 @@ namespace Dev2.Common.Tests
             var data1 = new AuditingSettingsData();
             data1.LoggingDataSource.Payload = "foo";
             data1.EncryptDataSource = true;
+            data1.IncludeEnvironmentVariable = true;
             var data2 = data1.Clone();
             Assert.AreNotEqual(data1.GetHashCode(), data2.GetHashCode());
             Assert.IsFalse(ReferenceEquals(data1, data2));
@@ -162,6 +163,7 @@ namespace Dev2.Common.Tests
 
             data1.LoggingDataSource.Payload = "foo2";
             data1.EncryptDataSource = true;
+            data1.IncludeEnvironmentVariable = false;
             Assert.IsFalse(data1.Equals(data2));
         }
 
