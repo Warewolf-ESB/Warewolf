@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2022 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -29,6 +29,7 @@ using Warewolf.Configuration;
 using Warewolf.Data;
 using Warewolf.Security.Encryption;
 using Warewolf.UnitTestAttributes;
+using static BusinessDesignStudio.Unit.Tests.ResourceRepositoryTests;
 
 namespace Dev2.Core.Tests.Settings
 {
@@ -98,6 +99,116 @@ namespace Dev2.Core.Tests.Settings
             //------------Execute Test---------------------------
             new LogSettingsViewModel(new LoggingSettingsTo(), null);
             //------------Assert Results-------------------------
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory("LogSettingsViewModel_Constructor")]
+        [Timeout(500)]
+        public void LogSettingsViewModel_Constructor_GIVEN_ServerSettingsDataSink_IsUnknown_ShouldLogError()
+        {
+            //------------Setup for test--------------------------
+            var mockServer = new Mock<IServer>();
+            var mockResourceRepository = new Mock<IResourceRepository>();
+            mockResourceRepository.Setup(o => o.GetServerSettings(mockServer.Object))
+                .Returns(new ServerSettingsData
+                { 
+                    IncludeEnvironmentVariable = true, //this is rather a server level switch than a driver level switch
+                    Sink = nameof(TestAuditSettingsDataUnknown)
+                });
+            mockServer.Setup(o => o.ResourceRepository)
+                .Returns(mockResourceRepository.Object);
+
+            //------------Execute Test---------------------------
+            var result = new LogSettingsViewModel(new LoggingSettingsTo(), mockServer.Object);
+            //------------Assert Results-------------------------
+            Assert.IsFalse(result.IsDirty);
+            Assert.IsFalse(result.IsLegacy);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory("LogSettingsViewModel_Constructor")]
+        [Timeout(500)]
+        public void LogSettingsViewModel_Constructor_GIVEN_ServerSettingsDataSink_LegacySettingsData_ShouldSuccess()
+        {
+            //------------Setup for test--------------------------
+            var mockServer = new Mock<IServer>();
+            var mockResourceRepository = new Mock<IResourceRepository>();
+            mockResourceRepository.Setup(o => o.GetServerSettings(mockServer.Object))
+                .Returns(new ServerSettingsData
+                {
+                    IncludeEnvironmentVariable = true, //this is rather a server level switch than a driver level switch
+                    Sink = nameof(LegacySettingsData)
+                });
+            mockResourceRepository.Setup(o => o.GetAuditingSettings<LegacySettingsData>(mockServer.Object))
+                .Returns(new LegacySettingsData
+                {
+                    AuditFilePath = "test/path",
+                    Endpoint = "test_endpoint",
+                    IncludeEnvironmentVariable = false
+                });
+            mockResourceRepository.Setup(o => o.FindResourcesByType<IAuditingSource>(mockServer.Object))
+                .Returns(new List<IResource>
+                {
+                    { new Mock<IResource>().Object }
+                });
+            mockServer.Setup(o => o.ResourceRepository)
+                .Returns(mockResourceRepository.Object);
+
+
+            //------------Execute Test---------------------------
+            var result = new LogSettingsViewModel(new LoggingSettingsTo(), mockServer.Object);
+            //------------Assert Results-------------------------
+            Assert.IsFalse(result.IsDirty);
+            Assert.IsTrue(result.IsLegacy);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory("LogSettingsViewModel_Constructor")]
+        [Timeout(500)]
+        public void LogSettingsViewModel_Constructor_GIVEN_ServerSettingsDataSink_AuditingSettingsData_ShouldSuccess()
+        {
+            //------------Setup for test--------------------------
+            var mockServer = new Mock<IServer>();
+            var mockResourceRepository = new Mock<IResourceRepository>();
+            mockResourceRepository.Setup(o => o.GetServerSettings(mockServer.Object))
+                .Returns(new ServerSettingsData
+                {
+                    IncludeEnvironmentVariable = true, //this is rather a server level switch than a driver level switch
+                    Sink = nameof(AuditingSettingsData)
+                });
+            mockResourceRepository.Setup(o => o.GetAuditingSettings<AuditingSettingsData>(mockServer.Object))
+                .Returns(new AuditingSettingsData
+                {
+                    EncryptDataSource = true,
+                    Endpoint = "test_endpoint",
+                    IncludeEnvironmentVariable = false,
+                    LoggingDataSource = new NamedGuidWithEncryptedPayload
+                    {
+                        Name = "test name",
+                        Payload = "test payload",
+                        Value = Guid.Empty
+                    }
+                });
+            var mockResource = new Mock<IResource>();
+            mockResource.Setup(o => o.ResourceID)
+                .Returns(Guid.NewGuid());
+            mockResourceRepository.Setup(o => o.FindResourcesByType<IAuditingSource>(mockServer.Object))
+                .Returns(new List<IResource>
+                {
+                    { mockResource.Object }
+                });
+            mockServer.Setup(o => o.ResourceRepository)
+                .Returns(mockResourceRepository.Object);
+
+
+            //------------Execute Test---------------------------
+            var result = new LogSettingsViewModel(new LoggingSettingsTo(), mockServer.Object);
+            //------------Assert Results-------------------------
+            Assert.IsFalse(result.IsDirty);
+            Assert.IsTrue(result.IsLegacy); //PBI: not sure how this should work
         }
 
         [TestMethod]

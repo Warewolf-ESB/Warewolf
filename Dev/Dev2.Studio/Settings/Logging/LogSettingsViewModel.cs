@@ -117,30 +117,37 @@ namespace Dev2.Settings.Logging
             }
 
             _studioLogMaxSize = Dev2Logger.GetLogMaxSize().ToString(CultureInfo.InvariantCulture);
-            var serverSettingsData = CurrentEnvironment.ResourceRepository.GetServerSettings(CurrentEnvironment);
+            var serverSettingsData = _resourceRepository.GetServerSettings(CurrentEnvironment);
 
             if (Enum.TryParse(serverSettingsData.ExecutionLogLevel, out LogLevel executionLogLevel))
             {
                 _executionLogLevel = executionLogLevel;
             }
 
-            if (serverSettingsData.Sink == nameof(LegacySettingsData))
+            IResource selectedAuditingSource;
+            switch (serverSettingsData.Sink)
             {
-                var legacySettingsData = CurrentEnvironment.ResourceRepository.GetAuditingSettings<LegacySettingsData>(CurrentEnvironment);
-                AuditFilePath = legacySettingsData.AuditFilePath;
-                IncludeEnvironmentVariable = legacySettingsData.IncludeEnvironmentVariable;
-                var selectedAuditingSource = AuditingSources.FirstOrDefault(o => o.ResourceID == Guid.Empty);
-                SelectedAuditingSource = selectedAuditingSource;
+                case nameof(LegacySettingsData):
+                    var legacySettingsData = _resourceRepository.GetAuditingSettings<LegacySettingsData>(CurrentEnvironment);
+                    AuditFilePath = legacySettingsData.AuditFilePath;
+                    IncludeEnvironmentVariable = serverSettingsData.IncludeEnvironmentVariable; 
+                    selectedAuditingSource = AuditingSources.FirstOrDefault(o => o.ResourceID == Guid.Empty);
+                    SelectedAuditingSource = selectedAuditingSource;
+                    break;
+
+                case nameof(AuditingSettingsData):
+                    var auditingSettingsData = _resourceRepository.GetAuditingSettings<AuditingSettingsData>(CurrentEnvironment);
+                    IncludeEnvironmentVariable = serverSettingsData.IncludeEnvironmentVariable;
+                    selectedAuditingSource = AuditingSources.FirstOrDefault(o => o.ResourceID == auditingSettingsData.LoggingDataSource.Value);
+                    SelectedAuditingSource = selectedAuditingSource;
+                    _encryptDataSource = auditingSettingsData.EncryptDataSource;
+                    break;
+
+                default:
+                    Dev2Logger.Error($"Settings Data Sink: {serverSettingsData.Sink} unknown", GlobalConstants.WarewolfError);
+                    break;
             }
 
-            if (serverSettingsData.Sink == nameof(AuditingSettingsData))
-            {
-                var auditingSettingsData = CurrentEnvironment.ResourceRepository.GetAuditingSettings<AuditingSettingsData>(CurrentEnvironment);
-                IncludeEnvironmentVariable = auditingSettingsData.IncludeEnvironmentVariable;
-                var selectedAuditingSource = AuditingSources.FirstOrDefault(o => o.ResourceID == auditingSettingsData.LoggingDataSource.Value);
-                SelectedAuditingSource = selectedAuditingSource;
-                _encryptDataSource = auditingSettingsData.EncryptDataSource;
-            }
 
             IsDirty = false;
         }
@@ -215,7 +222,7 @@ namespace Dev2.Settings.Logging
 
             try
             {
-                var serverSettingsData = CurrentEnvironment.ResourceRepository.GetServerSettings(CurrentEnvironment);
+                var serverSettingsData = _resourceRepository.GetServerSettings(CurrentEnvironment);
                 var savedResourceId = Guid.Empty;
                 var savedSink = serverSettingsData.Sink;
                 var includeEnvironmentVariable = serverSettingsData.IncludeEnvironmentVariable;
@@ -223,7 +230,7 @@ namespace Dev2.Settings.Logging
                 var savedEncryptDataSource = true;
                 if (savedSink == nameof(AuditingSettingsData))
                 {
-                    var auditingSettingsData = CurrentEnvironment.ResourceRepository.GetAuditingSettings<AuditingSettingsData>(CurrentEnvironment);
+                    var auditingSettingsData = _resourceRepository.GetAuditingSettings<AuditingSettingsData>(CurrentEnvironment);
                     savedResourceId = auditingSettingsData.LoggingDataSource.Value;
                     savedEncryptDataSource = auditingSettingsData.EncryptDataSource;
                     includeEnvironmentVariable = auditingSettingsData.IncludeEnvironmentVariable;
@@ -249,7 +256,7 @@ namespace Dev2.Settings.Logging
                 if (_executionLogLevel != savedExecutionLogLevel)
                 {
                     serverSettingsData.ExecutionLogLevel = _executionLogLevel.ToString();
-                    CurrentEnvironment.ResourceRepository.SaveServerSettings(CurrentEnvironment, serverSettingsData);
+                    _resourceRepository.SaveServerSettings(CurrentEnvironment, serverSettingsData);
                 }
 
                 if (_selectedAuditingSource.ResourceID == Guid.Empty)
@@ -259,7 +266,7 @@ namespace Dev2.Settings.Logging
                         AuditFilePath = AuditFilePath,
                         IncludeEnvironmentVariable = _includeEnvironmentVariable
                     };
-                    CurrentEnvironment.ResourceRepository.SaveAuditingSettings(CurrentEnvironment, data);
+                    _resourceRepository.SaveAuditingSettings(CurrentEnvironment, data);
                 }
                 else
                 {
@@ -282,7 +289,7 @@ namespace Dev2.Settings.Logging
                             Payload = payload
                         }
                     };
-                    CurrentEnvironment.ResourceRepository.SaveAuditingSettings(CurrentEnvironment, data);
+                    _resourceRepository.SaveAuditingSettings(CurrentEnvironment, data);
                 }
             }
             catch (Exception ex)

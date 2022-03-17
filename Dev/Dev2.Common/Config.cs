@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2022 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -180,11 +180,6 @@ namespace Dev2.Common
 
         private string GetSink()
         {
-            if (_settings.Sink == null && _settings.AuditFilePath != null)
-            {
-                return nameof(LegacySettingsData);
-            }
-
             if (_settings.Sink != null )
             {
                 {
@@ -194,8 +189,6 @@ namespace Dev2.Common
             return DefaultSink;
         }
 
-        [Obsolete("AuditFilePath is deprecated. It will be deleted in future releases.")]
-        public string AuditFilePath => _settings.AuditFilePath ?? LegacySettings.DefaultAuditPath;
         public bool IncludeEnvironmentVariable => _settings.IncludeEnvironmentVariable;
 
         public ushort WebServerPort => _settings.WebServerPort ?? 0;
@@ -300,11 +293,6 @@ namespace Dev2.Common
 
         private string GetAuditFilePath()
         {
-            if (_settings.AuditFilePath == null && Config.Server.AuditFilePath != null)
-            {
-                return Config.Server.AuditFilePath;
-            }
-
             if (_settings.AuditFilePath != null )
             {
                 {
