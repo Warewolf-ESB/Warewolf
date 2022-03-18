@@ -110,6 +110,18 @@ namespace Dev2.Core.Tests.Settings
             //------------Setup for test--------------------------
             var mockServer = new Mock<IServer>();
             var mockResourceRepository = new Mock<IResourceRepository>();
+            mockResourceRepository.Setup(o => o.GetAuditingSettings<LegacySettingsData>(mockServer.Object))
+                .Returns(new LegacySettingsData
+                {
+                    AuditFilePath = "test/path",
+                    Endpoint = "test_endpoint",
+                    IncludeEnvironmentVariable = false
+                });
+            mockResourceRepository.Setup(o => o.FindResourcesByType<IAuditingSource>(mockServer.Object))
+                .Returns(new List<IResource>
+                {
+                    { new Mock<IResource>().Object }
+                });
             mockResourceRepository.Setup(o => o.GetServerSettings(mockServer.Object))
                 .Returns(new ServerSettingsData
                 { 
@@ -123,7 +135,7 @@ namespace Dev2.Core.Tests.Settings
             var result = new LogSettingsViewModel(new LoggingSettingsTo(), mockServer.Object);
             //------------Assert Results-------------------------
             Assert.IsFalse(result.IsDirty);
-            Assert.IsFalse(result.IsLegacy);
+            Assert.IsTrue(result.IsLegacy);
         }
 
         [TestMethod]
@@ -214,7 +226,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory("LogSettingsViewModel_Constructor")]
-        [Timeout(250)]
+        [Timeout(1000)]
         public void LogSettingsViewModel_Save_GIVEN_ServerSettingsDataSink_AuditingSettingsData_ShouldSuccess()
         {
             //------------Setup for test--------------------------
