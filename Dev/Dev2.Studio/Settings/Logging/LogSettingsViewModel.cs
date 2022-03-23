@@ -308,6 +308,7 @@ namespace Dev2.Settings.Logging
                         else
                         {
                             SaveLegacySettingsData();
+                            IsLegacy = true;
                         }
                     }
                     else
@@ -565,6 +566,7 @@ namespace Dev2.Settings.Logging
 
                 OnPropertyChanged();
                 IsLegacy = SelectedAuditingSource?.ResourceID == Guid.Empty;
+                _sink = !_isLegacy ? nameof(AuditingSettingsData) : nameof(LegacySettingsData);
             }
         }
 

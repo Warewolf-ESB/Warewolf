@@ -189,7 +189,14 @@ namespace Dev2.Common
             return DefaultSink;
         }
 
-        public bool IncludeEnvironmentVariable => _settings.IncludeEnvironmentVariable;
+        public bool IncludeEnvironmentVariable
+        {
+            get => _settings.IncludeEnvironmentVariable;
+            set
+            {
+                _settings.IncludeEnvironmentVariable = value;
+            }
+        }
 
         public ushort WebServerPort => _settings.WebServerPort ?? 0;
         public ushort WebServerSslPort => _settings.WebServerSslPort ?? 0;

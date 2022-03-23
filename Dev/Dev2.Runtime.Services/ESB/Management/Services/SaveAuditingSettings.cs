@@ -44,6 +44,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                         Config.Auditing.Save();
 
                         Config.Server.Sink = nameof(AuditingSettingsData);
+                        Config.Server.IncludeEnvironmentVariable = updatedAuditingSettings.IncludeEnvironmentVariable;
                         Config.Server.Save();
                         break;
 
@@ -54,6 +55,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                         Config.Legacy.Save();
 
                         Config.Server.Sink = nameof(LegacySettingsData);
+                        Config.Server.IncludeEnvironmentVariable = updatedLegacySettings.IncludeEnvironmentVariable;
                         Config.Server.Save();
                         break;
 
