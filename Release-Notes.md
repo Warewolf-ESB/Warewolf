@@ -1,3 +1,12 @@
+2.7.4 (23 March 2022)
+======================
+
+Bug Fixes
+----------
+- Patch bug when using recordset indexes in a ForEach on CSV.
+- RabbitMQ trigger can now pass object type variables to Warewolf workflows.
+- Trigger queues default concurrency to 0 when saved with a blank concurrency.
+
 2.7.3 (04 March 2022)
 ======================
 
