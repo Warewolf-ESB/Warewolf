@@ -207,8 +207,25 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         IAuthorizationService _authorizationService;
         public override void UpdateDebugParentID(IDSFDataObject dataObject)
         {
+            IDev2Activity currentGate;
+            RetryState retryState;
+            var gates = dataObject.Gates;
+
+            if (this is GateActivity)
+            {
+                currentGate = gates.Keys.FirstOrDefault(o => o.UniqueID == UniqueID);
+
+                if (currentGate != null)
+                {
+                    retryState = gates[currentGate].Item1;
+                    UniqueID = retryState != null ? retryState.GateToRetry.UniqueID : UniqueID;
+                }
+            }
+            else
+            {
+                UniqueID = dataObject.ForEachNestingLevel > 0 ? Guid.NewGuid().ToString() : UniqueID;
+            }
             WorkSurfaceMappingId = Guid.Parse(UniqueID);
-            UniqueID = dataObject.ForEachNestingLevel > 0 ? Guid.NewGuid().ToString() : UniqueID;
         }
 
        internal IAuthorizationService AuthorizationService
