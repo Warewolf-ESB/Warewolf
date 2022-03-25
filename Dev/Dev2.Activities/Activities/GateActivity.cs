@@ -43,6 +43,8 @@ namespace Dev2.Activities
     public class GateActivity : DsfActivityAbstract<string>, IEquatable<GateActivity>, IStateNotifierRequired
     {
         private IStateNotifier _stateNotifier;
+        private bool isSecTry = false;
+        private string prevGateUniID;
 
         public GateActivity()
             : base(nameof(Gate))
@@ -104,7 +106,7 @@ namespace Dev2.Activities
             {
                 _stateNotifier?.LogActivityExecuteState(this);
 
-                var firstExecution = true;
+                bool firstExecution = true;
                 if (_dataObject.Gates.TryGetValue(this, out (RetryState, IEnumerator<bool>) retryState))
                 {
                     firstExecution = false;
@@ -124,7 +126,7 @@ namespace Dev2.Activities
                 }
                 if (_dataObject.IsDebugMode())
                 {
-                    var debugItemStaticDataParams = new DebugItemStaticDataParams("Retry: " + retryState.Item1.NumberOfRetries, "", true);
+                    var debugItemStaticDataParams = new DebugItemStaticDataParams("Retry: " + retryState.Item1.NumberOfRetries.ToString(), "", true);
                     AddDebugOutputItem(debugItemStaticDataParams);
 
                 }
@@ -148,7 +150,8 @@ namespace Dev2.Activities
                     return ExecuteNormal(data, update, allErrors);
                 }
 
-                return ExecuteRetry(data, update, allErrors, retryState);
+                return PrintChildnodeOutputUnderCorrectParentNode(data, update, allErrors, retryState.Item2);            
+
             }
             catch (Exception e)
             {
@@ -158,12 +161,25 @@ namespace Dev2.Activities
             finally
             {
                 HandleErrors(data, allErrors);
-                if (data.IsDebugMode())
+                if ((data.IsDebugMode()) && (!isSecTry))
                 {
                     DispatchDebugState(data, StateType.Before, update);
                     DispatchDebugState(data, StateType.After, update);
                 }
+                isSecTry = false;
             }
+        }
+
+        public IDev2Activity PrintChildnodeOutputUnderCorrectParentNode(IDSFDataObject data, int update, IErrorResultTO allErrors, IEnumerator<bool> _algo)
+        {
+            prevGateUniID = UniqueID;
+            UniqueID = Guid.NewGuid().ToString();
+            DispatchDebugState(data, StateType.Before, update);
+            DispatchDebugState(data, StateType.After, update);
+            isSecTry = true;
+            var nextGateAct = ExecuteRetry(data, update, allErrors, _algo);
+            UniqueID = prevGateUniID;
+            return nextGateAct;
         }
 
         private static void GetFinalTestRunResult(IServiceTestStep serviceTestStep, TestRunResult testRunResult)
@@ -223,14 +239,14 @@ namespace Dev2.Activities
             DisplayAndWriteError(data,DisplayName, allErrors);
         }
 
-        private void BeforeExecuteRetryWorkflow(string uniqueID)
+        private void BeforeExecuteRetryWorkflow()
         {
             _dataObject.ForEachNestingLevel++;
-            _dataObject.ParentInstanceID = uniqueID;
+            _dataObject.ParentInstanceID = UniqueID;
             _dataObject.IsDebugNested = true;
         }
 
-        private void ExecuteRetryWorkflow(string uniqueID)
+        private void ExecuteRetryWorkflow()
         {
             if (DataFunc.Handler is IDev2Activity act)
             {
@@ -253,20 +269,17 @@ namespace Dev2.Activities
         /// <param name="data"></param>
         /// <param name="update"></param>
         /// <returns></returns>
-        private IDev2Activity ExecuteRetry(IDSFDataObject data, int update, IErrorResultTO allErrors, (RetryState, IEnumerator<bool>) retryState)
+        private IDev2Activity ExecuteRetry(IDSFDataObject data, int update, IErrorResultTO allErrors, IEnumerator<bool> _algo)
         {
-            var _retryState = retryState.Item1;
-            var _algo = retryState.Item2;
             if (GateOptions.GateOpts is Continue)
             {
-                var uniqueId = _retryState.GateToRetry?.UniqueID;
-                BeforeExecuteRetryWorkflow(uniqueId);
-                ExecuteRetryWorkflow(uniqueId);
+                BeforeExecuteRetryWorkflow();
+                ExecuteRetryWorkflow();
                 ExecuteRetryWorkflowCompleted();
             }
 
             Dev2Logger.Debug("Gate: Reset Environment Snapshot", data.ExecutionID.ToString());
-            
+
             if (_dataObject.IsDebugMode())
             {
                 var debugItemStaticDataParams = new DebugItemStaticDataParams(nameof(ExecuteRetry), "", true);
@@ -317,9 +330,9 @@ namespace Dev2.Activities
                     {
                         var debugItemStaticDataParams = new DebugItemStaticDataParams("Conditions passed", "", true);
                         AddDebugOutputItem(debugItemStaticDataParams);
-                    }
+                    }                    
                 }
-                else 
+                else
                 {
                     if (_dataObject.IsDebugMode())
                     {
@@ -345,7 +358,7 @@ namespace Dev2.Activities
                             if (canRetry)
                             {
                                 var goBackToActivity = GetRetryEntryPoint().As<GateActivity>();
-                                goBackToActivity.UpdateRetryState(this, _dataObject.Gates[goBackToActivity].Item1);
+                                goBackToActivity.UpdateRetryState(this, _dataObject.Gates[goBackToActivity].Item1);                               
                                 next = goBackToActivity;
                             }
                             else
@@ -428,10 +441,7 @@ namespace Dev2.Activities
         {
             if (GateOptions.GateOpts is Continue)
             {
-                _retryState.NumberOfRetries++;
-                _retryState.GateToRetry = gateActivity;
-                var clonedActivity = _retryState.GateToRetry;
-                clonedActivity.UniqueID = Guid.NewGuid().ToString(); //clone to have its own UniqueID
+                _retryState.NumberOfRetries++;              
             }
             else
             {
