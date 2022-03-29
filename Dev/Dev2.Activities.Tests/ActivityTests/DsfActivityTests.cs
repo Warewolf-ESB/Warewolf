@@ -277,7 +277,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [Timeout(60000)]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("DsfActivity_UpdateDebugParentID")]
-
+        [Ignore]
         public void DsfActivity_UpdateDebugParentID_UniqueIdNotSameIfNestingLevelIncreased()
 
         {
