@@ -17,12 +17,14 @@
              xmlns:attachedProperties="clr-namespace:Dev2.Activities.AttachedProperties;assembly=Dev2.Activities.Designers"
              xmlns:ui1="clr-namespace:Warewolf.UI;assembly=Warewolf.UI"
              xmlns:customControls1="clr-namespace:Warewolf.Studio.CustomControls;assembly=Warewolf.Studio.CustomControls"
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              d:DesignHeight="300"
              d:DesignWidth="300"
              mc:Ignorable="d" 
              x:Name="QueuesUserControl"
              d:DataContext="{d:DesignInstance queueEvents:QueueEventsViewModel}"
-             AutomationProperties.AutomationId="UI_QueueEventsView_AutoID">
+             AutomationProperties.AutomationId="UI_QueueEventsView_AutoID"
+             LostFocus="Concurrency_OnLostFocus">
 
     <UserControl.Resources>
         <ui1:OptionViewDataTemplateSelector x:Key="OptionViewDataTemplateSelector"/>
@@ -344,16 +346,26 @@
                                     </TextBlock>
 
                                     <TextBlock Text="Concurrency" Grid.Row="4" Grid.Column="0" Margin="{StaticResource ControlBorderTop}" />
-                                    <TextBox Grid.Row="4" 
-                                         Grid.Column="1"
-                                         Margin="{StaticResource ControlBorderTop}"
-                                         ToolTip="{x:Static languages:Tooltips.QueueConcurrencyTooltip}"
-                                         Text="{Binding Concurrency, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                    <xctk:IntegerUpDown Grid.Row="4" 
+                                                        Grid.Column="1"
+                                                        Name="ConcurrencyIntegerUpDown"
+                                                        Margin="{StaticResource ControlBorderTop}"
+                                                        ToolTip="{x:Static languages:Tooltips.QueueConcurrencyTooltip}"
+                                                        TextAlignment="Left"
+                                                        Minimum="0"
+                                                        DefaultValue="0"
+                                                        DisplayDefaultValueOnEmptyText="True"
+                                                        ShowButtonSpinner="False"
+                                                        ParsingNumberStyle="Integer"
+                                                        PreviewTextInput="Concurrency_OnPreviewTextInput"
+                                                        KeyDown="Concurrency_OnKeyDown"
+                                                        LostFocus="Concurrency_OnLostFocus"
+                                                        Text="{Binding Concurrency, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }">
                                         <i:Interaction.Behaviors>
                                             <core:HelpSetter Text="{x:Static languages:HelpText.QueueConcurrencyHelp}"
-                                                         DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                                             DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                         </i:Interaction.Behaviors>
-                                    </TextBox>
+                                    </xctk:IntegerUpDown>
 
                                     <StackPanel Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" Margin="{StaticResource ControlBorderTop}">
                                         <TextBlock Text="Run as the following user account " FontWeight="Bold"/>
