@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2022 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -32,11 +32,12 @@ using Warewolf.Data;
 using Warewolf.Services;
 using Enum = System.Enum;
 using System.IO;
-using System.Web.UI;
 using Dev2.Data;
 using Dev2.Common.Interfaces.Runtime.Services;
 using Newtonsoft.Json;
 using Dev2.Common.Interfaces.Runtime.WebServer;
+using Warewolf.Common.Interfaces.NetStandard20.Wrappers;
+using Warewolf.Common.NetStandard20.Wrappers;
 
 namespace Dev2.Runtime.WebServer
 {
@@ -626,7 +627,7 @@ namespace Dev2.Runtime.WebServer
 
             var stringWriter = new StringWriter();
 
-            using (var writer = new HtmlTextWriter(stringWriter))
+            using (var writer = new HtmlTextWriterWrapper(stringWriter))
             {
                 var testResults = warewolfWorkflowReports.AllTestResults;
 

@@ -11,59 +11,62 @@
 using Dev2.Common.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web.UI;
 using Dev2.Interfaces;
 using Warewolf.Data;
 using Dev2.Common.Interfaces.Runtime.WebServer;
 using System;
 using Dev2.Data;
+using Warewolf.Common.Interfaces.NetStandard20.Wrappers;
 
 namespace Dev2.Runtime.WebServer
 {
     public static class ServiceTestCoverageModelHTMLResultBuilder
     {
-        public static void SetupNavBarHtml(this HtmlTextWriter writer, double totalReportsCoverage)
+        public static void SetupNavBarHtml(this IHtmlTextWriterWrapper writer, double totalReportsCoverage)
         {
-            writer.AddStyleAttribute(HtmlTextWriterStyle.Padding, "10px 10px 20px 10px");
-            writer.AddStyleAttribute(HtmlTextWriterStyle.Margin, "5px");
-            writer.AddStyleAttribute(HtmlTextWriterStyle.FontFamily, "Roboto sans-serif");
-            writer.AddStyleAttribute(HtmlTextWriterStyle.FontSize, "28px");
-            writer.AddStyleAttribute(HtmlTextWriterStyle.FontWeight, "500");
-            writer.AddStyleAttribute(HtmlTextWriterStyle.Display, "inline-block");
-            writer.AddAttribute(HtmlTextWriterAttribute.Class, "nav-bar-row");
+            writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.Padding, "10px 10px 20px 10px");
+            writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.Margin, "5px");
+            writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.FontFamily, "Roboto sans-serif");
+            writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.FontSize, "28px");
+            writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.FontWeight, "500");
+            writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.Display, "inline-block");
+            writer.AddAttribute(WarewolfHtmlTextWriterAttribute.Class.ToString(), "nav-bar-row");
 
-            writer.RenderBeginTag(HtmlTextWriterTag.Div);
+            writer.RenderBeginTag(WarewolfHtmlTextWriterTag.Div.ToString());
+            writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.FontFamily, "Roboto sans-serif");
+            writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.FontSize, "28px");
+            writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.FontWeight, "500");
             writer.Write("Coverage Summary:");
             writer.RenderEndTag();
 
-            writer.AddStyleAttribute(HtmlTextWriterStyle.Margin, "5px");
-            writer.AddStyleAttribute(HtmlTextWriterStyle.FontFamily, "Roboto sans-serif");
-            writer.AddStyleAttribute(HtmlTextWriterStyle.FontSize, "28px");
-            writer.AddStyleAttribute(HtmlTextWriterStyle.FontWeight, "500");
-            writer.AddStyleAttribute(HtmlTextWriterStyle.Display, "inline-block");
-            writer.AddAttribute(HtmlTextWriterAttribute.Class, "nav-bar-row");
+            writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.Margin, "5px");
+            writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.FontFamily, "Roboto sans-serif");
+            writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.FontSize, "28px");
+            writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.FontWeight, "500");
+            writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.Display, "inline-block");
+            writer.AddAttribute(WarewolfHtmlTextWriterAttribute.Class.ToString(), "nav-bar-row");
 
             writer.AddColorCoding(totalReportsCoverage);
 
-            writer.RenderBeginTag(HtmlTextWriterTag.Div);
+            writer.RenderBeginTag(WarewolfHtmlTextWriterTag.Div.ToString());
             writer.Write(Math.Round(totalReportsCoverage, 0) +" %");
             writer.RenderEndTag();
-            writer.RenderBeginTag(HtmlTextWriterTag.Br);
+            writer.RenderBeginTag(WarewolfHtmlTextWriterTag.Br.ToString());
         }
 
-        private static void AddColorCoding(this HtmlTextWriter writer, double totalReportsCoverage)
+        private static void AddColorCoding(this IHtmlTextWriterWrapper writer, double totalReportsCoverage)
         {
             if (IsCoverageRed(totalReportsCoverage))
             {
-                writer.AddStyleAttribute(HtmlTextWriterStyle.Color, "red");
+                writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.Color, "red");
             }
             if (IsCoverageYellow(totalReportsCoverage))
             {
-                writer.AddStyleAttribute(HtmlTextWriterStyle.Color, "orange");
+                writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.Color, "orange");
             }
             if (IsCoverageGreen(totalReportsCoverage))
             {
-                writer.AddStyleAttribute(HtmlTextWriterStyle.Color, "green");
+                writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.Color, "green");
             }
         }
 
@@ -82,97 +85,97 @@ namespace Dev2.Runtime.WebServer
             return totalReportsCoverage >= 0 && totalReportsCoverage <= 65;
         }
 
-        public static void SetupWorkflowRowHtml(this HtmlTextWriter writer, string resourcePath, ICoverageDataObject coverageData, IWorkflowCoverageReportsTO coverageReports)
+        public static void SetupWorkflowRowHtml(this IHtmlTextWriterWrapper writer, string resourcePath, ICoverageDataObject coverageData, IWorkflowCoverageReportsTO coverageReports)
         {
-            writer.AddAttribute(HtmlTextWriterAttribute.Class, "SetupWorkflowPathHtml");
-            writer.AddStyleAttribute(HtmlTextWriterStyle.Color, "#333");
-            writer.AddStyleAttribute(HtmlTextWriterStyle.FontWeight, "bold");
-            writer.AddStyleAttribute(HtmlTextWriterStyle.FontSize, "16px");
-            writer.AddStyleAttribute(HtmlTextWriterStyle.Width, "20%");
-            writer.AddStyleAttribute(HtmlTextWriterStyle.Padding, "8px 16px 5px 8px");
-            writer.AddStyleAttribute(HtmlTextWriterStyle.Display, "inline-block");
-            writer.RenderBeginTag(HtmlTextWriterTag.Div);
+            writer.AddAttribute(WarewolfHtmlTextWriterAttribute.Class.ToString(), "SetupWorkflowPathHtml");
+            writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.Color, "#333");
+            writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.FontWeight, "bold");
+            writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.FontSize, "16px");
+            writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.Width, "20%");
+            writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.Padding, "8px 16px 5px 8px");
+            writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.Display, "inline-block");
+            writer.RenderBeginTag(WarewolfHtmlTextWriterTag.Div.ToString());
             writer.Write(resourcePath + "\\" + coverageData.ReportName?.Replace("*", ""));
             writer.RenderEndTag();
 
-            writer.AddAttribute(HtmlTextWriterAttribute.Class, "SetupWorkflowPathHtml-link");
-            writer.AddStyleAttribute(HtmlTextWriterStyle.Width, "100px");
-            writer.AddStyleAttribute(HtmlTextWriterStyle.FontWeight, "bold");
-            writer.AddStyleAttribute(HtmlTextWriterStyle.FontSize, "12px");
-            writer.AddStyleAttribute(HtmlTextWriterStyle.Display, "inline-block");
-            writer.RenderBeginTag(HtmlTextWriterTag.Div);
-            writer.AddAttribute(HtmlTextWriterAttribute.Target, "_new");
+            writer.AddAttribute(WarewolfHtmlTextWriterAttribute.Class.ToString(), "SetupWorkflowPathHtml-link");
+            writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.Width, "100px");
+            writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.FontWeight, "bold");
+            writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.FontSize, "12px");
+            writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.Display, "inline-block");
+            writer.RenderBeginTag(WarewolfHtmlTextWriterTag.Div.ToString());
+            writer.AddAttribute(WarewolfHtmlTextWriterAttribute.Target.ToString(), "_new");
             var testUrl = coverageData.GetTestUrl(resourcePath);
-            writer.AddAttribute(HtmlTextWriterAttribute.Href, testUrl);
-            writer.RenderBeginTag(HtmlTextWriterTag.A);
+            writer.AddAttribute(WarewolfHtmlTextWriterAttribute.Href.ToString(), testUrl);
+            writer.RenderBeginTag(WarewolfHtmlTextWriterTag.A.ToString());
             writer.Write("Run Tests");
             writer.RenderEndTag();
             writer.RenderEndTag();
 
             writer.SetupWorkflowReportsHtml(coverageReports.TotalCoverage, nameof(SetupWorkflowReportsHtml));
-            writer.AddStyleAttribute(HtmlTextWriterStyle.FontSize, "16px");
-            writer.AddStyleAttribute(HtmlTextWriterStyle.FontWeight, "500");
-            writer.AddStyleAttribute(HtmlTextWriterStyle.Margin, "0 0 0 35px");
-            writer.AddAttribute(HtmlTextWriterAttribute.Class, "workflow-nodes-row");
+            writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.FontSize, "16px");
+            writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.FontWeight, "500");
+            writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.Margin, "0 0 0 35px");
+            writer.AddAttribute(WarewolfHtmlTextWriterAttribute.Class.ToString(), "workflow-nodes-row");
 
-            writer.RenderBeginTag(HtmlTextWriterTag.Div);
+            writer.RenderBeginTag(WarewolfHtmlTextWriterTag.Div.ToString());
             SetupCoverageCountSummaryHtml(writer, coverageReports);
             writer.RenderEndTag();
 
-            writer.RenderBeginTag(HtmlTextWriterTag.Div);
+            writer.RenderBeginTag(WarewolfHtmlTextWriterTag.Div.ToString());
 
             coverageReports.WorkflowNodes.ToList()
                 .ForEach(node => node.SetupWorkflowNodeHtml(writer, coverageReports.CoveredWorkflowNodes));
 
             writer.RenderEndTag();
             writer.RenderEndTag();
-            writer.RenderBeginTag(HtmlTextWriterTag.Br);
+            writer.RenderBeginTag(WarewolfHtmlTextWriterTag.Br.ToString());
         }
 
-        public static void SetupWorkflowReportsHtml(this HtmlTextWriter writer, double CoveragePercentage , string classValue)
+        public static void SetupWorkflowReportsHtml(this IHtmlTextWriterWrapper writer, double CoveragePercentage , string classValue)
         {
-            writer.AddStyleAttribute(HtmlTextWriterStyle.Display, "inline-block");
-            writer.AddAttribute(HtmlTextWriterAttribute.Class, classValue);
-            writer.RenderBeginTag(HtmlTextWriterTag.Div);
+            writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.Display, "inline-block");
+            writer.AddAttribute(WarewolfHtmlTextWriterAttribute.Class.ToString(), classValue);
+            writer.RenderBeginTag(WarewolfHtmlTextWriterTag.Div.ToString());
 
             double testFailing = 1 - CoveragePercentage;
             double testPassed = CoveragePercentage;
 
-            writer.AddStyleAttribute(HtmlTextWriterStyle.Display, "inline-block");
-            writer.AddAttribute(HtmlTextWriterAttribute.Class, "progress-bar-width");
-            writer.AddStyleAttribute(HtmlTextWriterStyle.Width, "80px");
-            writer.RenderBeginTag(HtmlTextWriterTag.Div);
+            writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.Display, "inline-block");
+            writer.AddAttribute(WarewolfHtmlTextWriterAttribute.Class.ToString(), "progress-bar-width");
+            writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.Width, "80px");
+            writer.RenderBeginTag(WarewolfHtmlTextWriterTag.Div.ToString());
 
             if (testPassed > 0)
             {
-                writer.AddAttribute(HtmlTextWriterAttribute.Class, "progress-bar-passed");
-                writer.AddStyleAttribute(HtmlTextWriterStyle.BackgroundColor, "green");
-                writer.AddStyleAttribute(HtmlTextWriterStyle.Display, "inline-block");
-                writer.AddStyleAttribute(HtmlTextWriterStyle.FontWeight, "bold");
-                writer.AddStyleAttribute(HtmlTextWriterStyle.FontSize, "10px");
-                writer.AddStyleAttribute(HtmlTextWriterStyle.Color, "white");
-                writer.AddStyleAttribute(HtmlTextWriterStyle.TextAlign, "center");
-                writer.AddStyleAttribute(HtmlTextWriterStyle.Padding, "5px 0px");
-                writer.AddStyleAttribute(HtmlTextWriterStyle.Height, "12px");
-                writer.AddStyleAttribute(HtmlTextWriterStyle.Width, testPassed.ToString("0%"));
-                writer.RenderBeginTag(HtmlTextWriterTag.Div);
+                writer.AddAttribute(WarewolfHtmlTextWriterAttribute.Class.ToString(), "progress-bar-passed");
+                writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.BackgroundColor, "green");
+                writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.Display, "inline-block");
+                writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.FontWeight, "bold");
+                writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.FontSize, "10px");
+                writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.Color, "white");
+                writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.TextAlign, "center");
+                writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.Padding, "5px 0px");
+                writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.Height, "12px");
+                writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.Width, testPassed.ToString("0%"));
+                writer.RenderBeginTag(WarewolfHtmlTextWriterTag.Div.ToString());
                 writer.Write(testPassed.ToString("0%"));
                 writer.RenderEndTag();
             }
 
             if (testFailing > 0)
             {
-                writer.AddAttribute(HtmlTextWriterAttribute.Class, "progress-bar-failed");
-                writer.AddStyleAttribute(HtmlTextWriterStyle.Color, testFailing.ToString("0%") == "100%" ? "white" : "red");
-                writer.AddStyleAttribute(HtmlTextWriterStyle.BackgroundColor, "red");
-                writer.AddStyleAttribute(HtmlTextWriterStyle.FontWeight, "bold");
-                writer.AddStyleAttribute(HtmlTextWriterStyle.Display, "inline-block");
-                writer.AddStyleAttribute(HtmlTextWriterStyle.TextAlign, "center");
-                writer.AddStyleAttribute(HtmlTextWriterStyle.FontSize, "10px");
-                writer.AddStyleAttribute(HtmlTextWriterStyle.Padding, "5px 0px");
-                writer.AddStyleAttribute(HtmlTextWriterStyle.Height, "12px");
-                writer.AddStyleAttribute(HtmlTextWriterStyle.Width, testFailing.ToString("0%"));
-                writer.RenderBeginTag(HtmlTextWriterTag.Div);
+                writer.AddAttribute(WarewolfHtmlTextWriterAttribute.Class.ToString(), "progress-bar-failed");
+                writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.Color, testFailing.ToString("0%") == "100%" ? "white" : "red");
+                writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.BackgroundColor, "red");
+                writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.FontWeight, "bold");
+                writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.Display, "inline-block");
+                writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.TextAlign, "center");
+                writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.FontSize, "10px");
+                writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.Padding, "5px 0px");
+                writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.Height, "12px");
+                writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.Width, testFailing.ToString("0%"));
+                writer.RenderBeginTag(WarewolfHtmlTextWriterTag.Div.ToString());
                 writer.Write(testFailing.ToString("0%") == "100%" ? "0%" : "-");
                 writer.RenderEndTag();
             }
@@ -181,41 +184,41 @@ namespace Dev2.Runtime.WebServer
         }
 
 
-        public static void SetupWorkflowNodeHtml(this IWorkflowNode workflowNode, HtmlTextWriter writer, IWorkflowNode[] coveredNodes)
+        public static void SetupWorkflowNodeHtml(this IWorkflowNode workflowNode, IHtmlTextWriterWrapper writer, IWorkflowNode[] coveredNodes)
         {
             if (IsNodeCovered(coveredNodes, workflowNode))
             {
-                writer.AddStyleAttribute(HtmlTextWriterStyle.Color, "green");
-                writer.AddStyleAttribute(HtmlTextWriterStyle.FontSize, "12px");
-                writer.AddAttribute(HtmlTextWriterAttribute.Class, "step-description-green");
-                writer.RenderBeginTag(HtmlTextWriterTag.Div);
+                writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.Color, "green");
+                writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.FontSize, "12px");
+                writer.AddAttribute(WarewolfHtmlTextWriterAttribute.Class.ToString(), "step-description-green");
+                writer.RenderBeginTag(WarewolfHtmlTextWriterTag.Div.ToString());
                 writer.Write(workflowNode.StepDescription);
                 writer.RenderEndTag();
             }
             else if(IsNodeMocked(coveredNodes, workflowNode))
             {
-                writer.AddStyleAttribute(HtmlTextWriterStyle.Color, "#9ACD32");
-                writer.AddStyleAttribute(HtmlTextWriterStyle.FontSize, "12px");
-                writer.AddAttribute(HtmlTextWriterAttribute.Class, "step-description-green");
-                writer.RenderBeginTag(HtmlTextWriterTag.Div);
+                writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.Color, "#9ACD32");
+                writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.FontSize, "12px");
+                writer.AddAttribute(WarewolfHtmlTextWriterAttribute.Class.ToString(), "step-description-green");
+                writer.RenderBeginTag(WarewolfHtmlTextWriterTag.Div.ToString());
                 writer.Write(workflowNode.StepDescription);
                 writer.RenderEndTag();
             }
             else
             {
-                writer.AddStyleAttribute(HtmlTextWriterStyle.Color, "red");
-                writer.AddStyleAttribute(HtmlTextWriterStyle.FontSize, "12px");
-                writer.AddAttribute(HtmlTextWriterAttribute.Class, "step-description-red");
-                writer.RenderBeginTag(HtmlTextWriterTag.Div);
+                writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.Color, "red");
+                writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.FontSize, "12px");
+                writer.AddAttribute(WarewolfHtmlTextWriterAttribute.Class.ToString(), "step-description-red");
+                writer.RenderBeginTag(WarewolfHtmlTextWriterTag.Div.ToString());
                 writer.Write(workflowNode.StepDescription);
                 writer.RenderEndTag();
             }
 
             if (workflowNode.NextNodes?.Count > 0)
             {
-                writer.AddStyleAttribute(HtmlTextWriterStyle.FontSize, "12px");
-                writer.AddAttribute(HtmlTextWriterAttribute.Class, "next-nodes");
-                writer.RenderBeginTag(HtmlTextWriterTag.Div);
+                writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.FontSize, "12px");
+                writer.AddAttribute(WarewolfHtmlTextWriterAttribute.Class.ToString(), "next-nodes");
+                writer.RenderBeginTag(WarewolfHtmlTextWriterTag.Div.ToString());
 
                 workflowNode.NextNodes.ForEach(node => SetupNextNodeHTML(writer, coveredNodes, node));
                 writer.RenderEndTag();
@@ -223,9 +226,9 @@ namespace Dev2.Runtime.WebServer
 
             if (workflowNode.ChildNodes.ToList()?.Count > 0)
             {
-                writer.AddStyleAttribute(HtmlTextWriterStyle.FontSize, "12px");
-                writer.AddAttribute(HtmlTextWriterAttribute.Class, "next-nodes");
-                writer.RenderBeginTag(HtmlTextWriterTag.Div);
+                writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.FontSize, "12px");
+                writer.AddAttribute(WarewolfHtmlTextWriterAttribute.Class.ToString(), "next-nodes");
+                writer.RenderBeginTag(WarewolfHtmlTextWriterTag.Div.ToString());
 
                 workflowNode.ChildNodes
                     .ToList()
@@ -234,98 +237,98 @@ namespace Dev2.Runtime.WebServer
             }
         }
 
-        public static void SetupNextNodeHTML(HtmlTextWriter writer, IWorkflowNode[] coveredNodes, IWorkflowNode node)
+        public static void SetupNextNodeHTML(IHtmlTextWriterWrapper writer, IWorkflowNode[] coveredNodes, IWorkflowNode node)
         {
-            writer.AddAttribute(HtmlTextWriterAttribute.Class, "next-node");
+            writer.AddAttribute(WarewolfHtmlTextWriterAttribute.Class.ToString(), "next-node");
 
             if (IsNodeCovered(coveredNodes, node))
             {
-                writer.AddStyleAttribute(HtmlTextWriterStyle.Color, "green");
-                writer.AddStyleAttribute(HtmlTextWriterStyle.FontSize, "12px");
-                writer.RenderBeginTag(HtmlTextWriterTag.Li);
+                writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.Color, "green");
+                writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.FontSize, "12px");
+                writer.RenderBeginTag(WarewolfHtmlTextWriterTag.Li.ToString());
             }
             else
             {
-                writer.AddStyleAttribute(HtmlTextWriterStyle.Color, "red");
-                writer.AddStyleAttribute(HtmlTextWriterStyle.FontSize, "12px");
-                writer.RenderBeginTag(HtmlTextWriterTag.Li);
+                writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.Color, "red");
+                writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.FontSize, "12px");
+                writer.RenderBeginTag(WarewolfHtmlTextWriterTag.Li.ToString());
             }
 
             writer.Write(node.StepDescription);
             writer.RenderEndTag();
         }
 
-        internal static void SetupLinesCountSummaryHtml(this HtmlTextWriter writer, WarewolfWorkflowReports workflowReports)
+        internal static void SetupLinesCountSummaryHtml(this IHtmlTextWriterWrapper writer, WarewolfWorkflowReports workflowReports)
         {
             var totalNodes = workflowReports.TotalWorkflowNodesCount;
             var coveredNodes = workflowReports.TotalWorkflowNodesCoveredCount;
             var notCoveredNodes = totalNodes - coveredNodes;
 
-            writer.AddStyleAttribute(HtmlTextWriterStyle.Padding, "10px 10px 5px 10px");
-            writer.AddStyleAttribute(HtmlTextWriterStyle.Margin, "5px");
-            writer.AddAttribute(HtmlTextWriterAttribute.Class, "count-summary row");
-            writer.RenderBeginTag(HtmlTextWriterTag.Div);
+            writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.Padding, "10px 10px 5px 10px");
+            writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.Margin, "5px");
+            writer.AddAttribute(WarewolfHtmlTextWriterAttribute.Class.ToString(), "count-summary row");
+            writer.RenderBeginTag(WarewolfHtmlTextWriterTag.Div.ToString());
 
-            writer.AddStyleAttribute(HtmlTextWriterStyle.Margin, "0 -15px 0 -15px");
-            writer.RenderBeginTag(HtmlTextWriterTag.Table);
-            writer.RenderBeginTag(HtmlTextWriterTag.Tr);
+            writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.Margin, "0 -15px 0 -15px");
+            writer.RenderBeginTag(WarewolfHtmlTextWriterTag.Table.ToString());
+            writer.RenderBeginTag(WarewolfHtmlTextWriterTag.Tr.ToString());
 
-            writer.AddStyleAttribute(HtmlTextWriterStyle.Width, "200px");
-            writer.AddStyleAttribute(HtmlTextWriterStyle.FontWeight, "bold");
-            writer.AddStyleAttribute(HtmlTextWriterStyle.FontSize, "14px");
-            writer.AddStyleAttribute(HtmlTextWriterStyle.FontFamily, "roboto sans-serif");
-            writer.AddStyleAttribute(HtmlTextWriterStyle.Color, "black");
-            writer.AddAttribute(HtmlTextWriterAttribute.Class, "table-td-black");
-            writer.RenderBeginTag(HtmlTextWriterTag.Td);
+            writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.Width, "200px");
+            writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.FontWeight, "bold");
+            writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.FontSize, "14px");
+            writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.FontFamily, "roboto sans-serif");
+            writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.Color, "black");
+            writer.AddAttribute(WarewolfHtmlTextWriterAttribute.Class.ToString(), "table-td-black");
+            writer.RenderBeginTag(WarewolfHtmlTextWriterTag.Td.ToString());
             writer.Write("Total Nodes: " + totalNodes);
             writer.RenderEndTag();
 
-            writer.AddStyleAttribute(HtmlTextWriterStyle.Width, "200px");
-            writer.AddStyleAttribute(HtmlTextWriterStyle.FontWeight, "bold");
-            writer.AddStyleAttribute(HtmlTextWriterStyle.FontSize, "14px");
-            writer.AddStyleAttribute(HtmlTextWriterStyle.FontFamily, "roboto sans-serif");
-            writer.AddStyleAttribute(HtmlTextWriterStyle.Color, "green");
-            writer.AddAttribute(HtmlTextWriterAttribute.Class, "table-td-green");
-            writer.RenderBeginTag(HtmlTextWriterTag.Td);
+            writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.Width, "200px");
+            writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.FontWeight, "bold");
+            writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.FontSize, "14px");
+            writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.FontFamily, "roboto sans-serif");
+            writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.Color, "green");
+            writer.AddAttribute(WarewolfHtmlTextWriterAttribute.Class.ToString(), "table-td-green");
+            writer.RenderBeginTag(WarewolfHtmlTextWriterTag.Td.ToString());
             writer.Write("Covered Nodes: " + coveredNodes);
             writer.RenderEndTag();
 
              
-            writer.AddStyleAttribute(HtmlTextWriterStyle.Width, "200px");
-            writer.AddStyleAttribute(HtmlTextWriterStyle.FontWeight, "bold");
-            writer.AddStyleAttribute(HtmlTextWriterStyle.FontSize, "14px");
-            writer.AddStyleAttribute(HtmlTextWriterStyle.FontFamily, "roboto sans-serif");
-            writer.AddStyleAttribute(HtmlTextWriterStyle.Color, "red");
-            writer.AddAttribute(HtmlTextWriterAttribute.Class, "table-td-red");
-            writer.RenderBeginTag(HtmlTextWriterTag.Td);
+            writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.Width, "200px");
+            writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.FontWeight, "bold");
+            writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.FontSize, "14px");
+            writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.FontFamily, "roboto sans-serif");
+            writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.Color, "red");
+            writer.AddAttribute(WarewolfHtmlTextWriterAttribute.Class.ToString(), "table-td-red");
+            writer.RenderBeginTag(WarewolfHtmlTextWriterTag.Td.ToString());
             writer.Write("Not Covered Nodes: " + notCoveredNodes);
             writer.RenderEndTag();
 
             var coveragePer = workflowReports.TotalWorkflowNodesCoveredPercentage;
 
-            writer.AddStyleAttribute(HtmlTextWriterStyle.Width, "200px");
-            writer.AddStyleAttribute(HtmlTextWriterStyle.FontWeight, "bold");
-            writer.AddStyleAttribute(HtmlTextWriterStyle.FontSize, "14px");
-            writer.AddStyleAttribute(HtmlTextWriterStyle.FontFamily, "roboto sans-serif");
+            writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.Width, "200px");
+            writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.FontWeight, "bold");
+            writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.FontSize, "14px");
+            writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.FontFamily, "roboto san.ToString()s-serif");
 
             if (coveragePer <= 65)
             {
-                writer.AddStyleAttribute(HtmlTextWriterStyle.Color, "red");
+                writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.Color, "red");
             }
             else if ((coveragePer > 65) && (coveragePer <= 85))
             {
-                writer.AddStyleAttribute(HtmlTextWriterStyle.Color, "orange");
+                writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.Color, "orange");
             }           
             else if(coveragePer > 85)  
             {
-                writer.AddStyleAttribute(HtmlTextWriterStyle.Color, "green");
+                writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.Color, "green");
             }
-            writer.AddAttribute(HtmlTextWriterAttribute.Class, "table-td-red");
-            writer.RenderBeginTag(HtmlTextWriterTag.Td);
+            writer.AddAttribute(WarewolfHtmlTextWriterAttribute.Class.ToString(), "table-td-red");
+            writer.RenderBeginTag(WarewolfHtmlTextWriterTag.Td.ToString());
             writer.Write("Coverage : " + coveragePer + " %");
             writer.RenderEndTag();
 
-            writer.RenderBeginTag(HtmlTextWriterTag.Td);
+            writer.RenderBeginTag(WarewolfHtmlTextWriterTag.Td.ToString());
              
             writer.RenderEndTag();
 
@@ -334,79 +337,79 @@ namespace Dev2.Runtime.WebServer
             writer.RenderEndTag();
         }
 
-        internal static void SetupCountSummaryHtml(this HtmlTextWriter writer, List<IServiceTestModelTO> allTests, ICoverageDataObject coverageData)
+        internal static void SetupCountSummaryHtml(this IHtmlTextWriterWrapper writer, List<IServiceTestModelTO> allTests, ICoverageDataObject coverageData)
         {
-            writer.AddStyleAttribute(HtmlTextWriterStyle.Padding, "10px 10px 0px 10px");
-            writer.AddStyleAttribute(HtmlTextWriterStyle.Margin, "5px");
-            writer.AddAttribute(HtmlTextWriterAttribute.Class, "count-summary row");
-            writer.RenderBeginTag(HtmlTextWriterTag.Div);
+            writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.Padding, "10px 10px 0px 10px");
+            writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.Margin, "5px");
+            writer.AddAttribute(WarewolfHtmlTextWriterAttribute.Class.ToString(), "count-summary row");
+            writer.RenderBeginTag(WarewolfHtmlTextWriterTag.Div.ToString());
 
-            writer.AddStyleAttribute(HtmlTextWriterStyle.Margin, "0 -15px 0 -15px");
-            writer.RenderBeginTag(HtmlTextWriterTag.Table);
-            writer.RenderBeginTag(HtmlTextWriterTag.Tr);
+            writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.Margin, "0 -15px 0 -15px");
+            writer.RenderBeginTag(WarewolfHtmlTextWriterTag.Table.ToString());
+            writer.RenderBeginTag(WarewolfHtmlTextWriterTag.Tr.ToString());
 
-            writer.AddStyleAttribute(HtmlTextWriterStyle.Width, "200px");
-            writer.AddStyleAttribute(HtmlTextWriterStyle.FontWeight, "bold");
-            writer.AddStyleAttribute(HtmlTextWriterStyle.FontSize, "14px");
-            writer.AddStyleAttribute(HtmlTextWriterStyle.FontFamily, "roboto sans-serif");
-            writer.AddStyleAttribute(HtmlTextWriterStyle.Color, "black");
-            writer.AddAttribute(HtmlTextWriterAttribute.Class, "table-td-black");
-            writer.RenderBeginTag(HtmlTextWriterTag.Td);
+            writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.Width, "200px");
+            writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.FontWeight, "bold");
+            writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.FontSize, "14px");
+            writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.FontFamily, "roboto sans-serif");
+            writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.Color, "black");
+            writer.AddAttribute(WarewolfHtmlTextWriterAttribute.Class.ToString(), "table-td-black");
+            writer.RenderBeginTag(WarewolfHtmlTextWriterTag.Td.ToString());
             writer.Write("Total Test Count: " + allTests.Count);
             writer.RenderEndTag();
 
-            writer.AddStyleAttribute(HtmlTextWriterStyle.Width, "200px");
-            writer.AddStyleAttribute(HtmlTextWriterStyle.FontWeight, "bold");
-            writer.AddStyleAttribute(HtmlTextWriterStyle.FontSize, "14px");
-            writer.AddStyleAttribute(HtmlTextWriterStyle.FontFamily, "roboto sans-serif");
-            writer.AddStyleAttribute(HtmlTextWriterStyle.Color, "green");
-            writer.AddAttribute(HtmlTextWriterAttribute.Class, "table-td-green");
-            writer.RenderBeginTag(HtmlTextWriterTag.Td);
+            writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.Width, "200px");
+            writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.FontWeight, "bold");
+            writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.FontSize, "14px");
+            writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.FontFamily, "roboto sans-serif");
+            writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.Color, "green");
+            writer.AddAttribute(WarewolfHtmlTextWriterAttribute.Class.ToString(), "table-td-green");
+            writer.RenderBeginTag(WarewolfHtmlTextWriterTag.Td.ToString());
             writer.Write("Tests Passed: " + allTests.Count(o => o.TestPassed));
             writer.RenderEndTag();
 
             var failedCount = allTests.Count(o => o.TestFailing);
-            writer.AddStyleAttribute(HtmlTextWriterStyle.Width, "200px");
-            writer.AddStyleAttribute(HtmlTextWriterStyle.FontWeight, "bold");
-            writer.AddStyleAttribute(HtmlTextWriterStyle.FontSize, "14px");
-            writer.AddStyleAttribute(HtmlTextWriterStyle.FontFamily, "roboto sans-serif");
+            writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.Width, "200px");
+            writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.FontWeight, "bold");
+            writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.FontSize, "14px");
+            writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.FontFamily, "roboto sans-serif");
             if (failedCount > 0)
             {
-                writer.AddStyleAttribute(HtmlTextWriterStyle.Color, "red");
+                writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.Color, "red");
             }
             else
             {
-                writer.AddStyleAttribute(HtmlTextWriterStyle.Color, "black");
+                writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.Color, "black");
             }
-            writer.AddAttribute(HtmlTextWriterAttribute.Class, "table-td-red");
-            writer.RenderBeginTag(HtmlTextWriterTag.Td);
+            writer.AddAttribute(WarewolfHtmlTextWriterAttribute.Class.ToString(), "table-td-red");
+            writer.RenderBeginTag(WarewolfHtmlTextWriterTag.Td.ToString());
             writer.Write("Tests Failed: " + failedCount);
             writer.RenderEndTag();
 
             var invalidCount = allTests.Count(o => o.TestInvalid);
-            writer.AddStyleAttribute(HtmlTextWriterStyle.Width, "200px");
-            writer.AddStyleAttribute(HtmlTextWriterStyle.FontWeight, "bold");
-            writer.AddStyleAttribute(HtmlTextWriterStyle.FontSize, "14px");
-            writer.AddStyleAttribute(HtmlTextWriterStyle.FontFamily, "roboto sans-serif");
+            writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.Width, "200px");
+            writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.FontWeight, "bold");
+            writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.FontSize, "14px");
+            writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.FontFamily, "roboto sans-serif");
             if (invalidCount > 0)
             {
-                writer.AddStyleAttribute(HtmlTextWriterStyle.Color, "orange");
+                writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.Color, "orange");
             }
             else
             {
-                writer.AddStyleAttribute(HtmlTextWriterStyle.Color, "black");
+                writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.Color, "black");
             }
-            writer.AddAttribute(HtmlTextWriterAttribute.Class, "table-td-red");
-            writer.RenderBeginTag(HtmlTextWriterTag.Td);
+            writer.AddAttribute(WarewolfHtmlTextWriterAttribute.Class.ToString(), "table-td-red");
+            writer.RenderBeginTag(WarewolfHtmlTextWriterTag.Td.ToString());
             writer.Write("Tests Invalid: " + invalidCount);
             writer.RenderEndTag();
 
-            writer.RenderBeginTag(HtmlTextWriterTag.Td);
+            writer.RenderBeginTag(WarewolfHtmlTextWriterTag.Td.ToString());
             if ((coverageData.IsMultipleWorkflowReport) || (coverageData.ReportName == "*"))
             {
-                writer.AddAttribute(HtmlTextWriterAttribute.Target, "_new");
-                writer.AddAttribute(HtmlTextWriterAttribute.Href, coverageData.GetAllTestsUrl());
-                writer.RenderBeginTag(HtmlTextWriterTag.A);
+                writer.AddAttribute(WarewolfHtmlTextWriterAttribute.Target.ToString(), "_new");
+                writer.AddAttribute(WarewolfHtmlTextWriterAttribute.Href.ToString(), coverageData.GetAllTestsUrl());
+                writer.RenderBeginTag(WarewolfHtmlTextWriterTag.A.ToString());
                 writer.Write("Run All Tests");
                 writer.RenderEndTag();
             }
@@ -417,34 +420,34 @@ namespace Dev2.Runtime.WebServer
             writer.RenderEndTag();
         }
 
-        internal static void SetupCoverageCountSummaryHtml(this HtmlTextWriter writer, IWorkflowCoverageReportsTO coverageReports)
+        internal static void SetupCoverageCountSummaryHtml(this IHtmlTextWriterWrapper writer, IWorkflowCoverageReportsTO coverageReports)
         {
-            writer.AddStyleAttribute(HtmlTextWriterStyle.Padding, "10px 10px 5px 10px");
-            writer.AddStyleAttribute(HtmlTextWriterStyle.Margin, "5px");
-            writer.AddAttribute(HtmlTextWriterAttribute.Class, "count-summary row");
-            writer.RenderBeginTag(HtmlTextWriterTag.Div);
+            writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.Padding, "10px 10px 5px 10px");
+            writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.Margin, "5px");
+            writer.AddAttribute(WarewolfHtmlTextWriterAttribute.Class.ToString(), "count-summary row");
+            writer.RenderBeginTag(WarewolfHtmlTextWriterTag.Div.ToString());
 
-            writer.AddStyleAttribute(HtmlTextWriterStyle.Margin, "0 -15px 0 -15px");
-            writer.RenderBeginTag(HtmlTextWriterTag.Table);
-            writer.RenderBeginTag(HtmlTextWriterTag.Tr);
+            writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.Margin, "0 -15px 0 -15px");
+            writer.RenderBeginTag(WarewolfHtmlTextWriterTag.Table.ToString());
+            writer.RenderBeginTag(WarewolfHtmlTextWriterTag.Tr.ToString());
 
-            writer.AddStyleAttribute(HtmlTextWriterStyle.Width, "200px");
-            writer.AddStyleAttribute(HtmlTextWriterStyle.FontWeight, "bold");
-            writer.AddStyleAttribute(HtmlTextWriterStyle.FontSize, "14px");
-            writer.AddStyleAttribute(HtmlTextWriterStyle.FontFamily, "roboto sans-serif");
-            writer.AddStyleAttribute(HtmlTextWriterStyle.Color, "black");
-            writer.AddAttribute(HtmlTextWriterAttribute.Class, "table-td-black");
-            writer.RenderBeginTag(HtmlTextWriterTag.Td);
+            writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.Width, "200px");
+            writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.FontWeight, "bold");
+            writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.FontSize, "14px");
+            writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.FontFamily, "roboto sans-serif");
+            writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.Color, "black");
+            writer.AddAttribute(WarewolfHtmlTextWriterAttribute.Class.ToString(), "table-td-black");
+            writer.RenderBeginTag(WarewolfHtmlTextWriterTag.Td.ToString());
             writer.Write("Total Nodes Count: " + coverageReports.WorkflowNodes.Count());
             writer.RenderEndTag();
 
-            writer.AddStyleAttribute(HtmlTextWriterStyle.Width, "200px");
-            writer.AddStyleAttribute(HtmlTextWriterStyle.FontWeight, "bold");
-            writer.AddStyleAttribute(HtmlTextWriterStyle.FontSize, "14px");
-            writer.AddStyleAttribute(HtmlTextWriterStyle.FontFamily, "roboto sans-serif");
-            writer.AddStyleAttribute(HtmlTextWriterStyle.Color, "green");
-            writer.AddAttribute(HtmlTextWriterAttribute.Class, "table-td-green");
-            writer.RenderBeginTag(HtmlTextWriterTag.Td);
+            writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.Width, "200px");
+            writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.FontWeight, "bold");
+            writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.FontSize, "14px");
+            writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.FontFamily, "roboto sans-serif");
+            writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.Color, "green");
+            writer.AddAttribute(WarewolfHtmlTextWriterAttribute.Class.ToString(), "table-td-green");
+            writer.RenderBeginTag(WarewolfHtmlTextWriterTag.Td.ToString());
 
             var coveredNodesCount = coverageReports.CoveredWorkflowNodesIds.Count();
             var assertCount = coverageReports.CoveredWorkflowNodesNotMockedIds.Count();
@@ -454,23 +457,23 @@ namespace Dev2.Runtime.WebServer
             writer.RenderEndTag();
 
             var notCoveredNodesCount = coverageReports.NotCoveredNodesCount;
-            writer.AddStyleAttribute(HtmlTextWriterStyle.Width, "200px");
-            writer.AddStyleAttribute(HtmlTextWriterStyle.FontWeight, "bold");
-            writer.AddStyleAttribute(HtmlTextWriterStyle.FontSize, "14px");
-            writer.AddStyleAttribute(HtmlTextWriterStyle.FontFamily, "roboto sans-serif");
+            writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.Width, "200px");
+            writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.FontWeight, "bold");
+            writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.FontSize, "14px");
+            writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.FontFamily, "roboto sans-serif");
             if (notCoveredNodesCount > 0)
             {
-                writer.AddStyleAttribute(HtmlTextWriterStyle.Color, "red");
+                writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.Color, "red");
             }
             else
             {
-                writer.AddStyleAttribute(HtmlTextWriterStyle.Color, "black");
+                writer.AddStyleAttribute(WarewolfHtmlTextWriterStyle.Color, "black");
             }
-            writer.AddAttribute(HtmlTextWriterAttribute.Class, "table-td-red");
-            writer.RenderBeginTag(HtmlTextWriterTag.Td);
+            writer.AddAttribute(WarewolfHtmlTextWriterAttribute.Class.ToString(), "table-td-red");
+            writer.RenderBeginTag(WarewolfHtmlTextWriterTag.Td.ToString());
             writer.Write("Not Covered Nodes: " + notCoveredNodesCount);
             writer.RenderEndTag();
-            writer.RenderBeginTag(HtmlTextWriterTag.Td);
+            writer.RenderBeginTag(WarewolfHtmlTextWriterTag.Td.ToString());
             writer.RenderEndTag();
             writer.RenderEndTag();
             writer.RenderEndTag();
