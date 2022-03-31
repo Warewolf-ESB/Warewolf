@@ -239,14 +239,14 @@ namespace Dev2.Activities
             DisplayAndWriteError(data,DisplayName, allErrors);
         }
 
-        private void BeforeExecuteRetryWorkflow(string uniqueID)
+        private void BeforeExecuteRetryWorkflow()
         {
             _dataObject.ForEachNestingLevel++;
-            _dataObject.ParentInstanceID = uniqueID;
+            _dataObject.ParentInstanceID = UniqueID;
             _dataObject.IsDebugNested = true;
         }
 
-        private void ExecuteRetryWorkflow(string uniqueID)
+        private void ExecuteRetryWorkflow()
         {
             if (DataFunc.Handler is IDev2Activity act)
             {
@@ -269,15 +269,12 @@ namespace Dev2.Activities
         /// <param name="data"></param>
         /// <param name="update"></param>
         /// <returns></returns>
-        private IDev2Activity ExecuteRetry(IDSFDataObject data, int update, IErrorResultTO allErrors, (RetryState, IEnumerator<bool>) retryState)
+        private IDev2Activity ExecuteRetry(IDSFDataObject data, int update, IErrorResultTO allErrors, IEnumerator<bool> _algo)
         {
-            var _retryState = retryState.Item1;
-            var _algo = retryState.Item2;
             if (GateOptions.GateOpts is Continue)
             {
-                var uniqueId = _retryState.GateToRetry?.UniqueID;
-                BeforeExecuteRetryWorkflow(uniqueId);
-                ExecuteRetryWorkflow(uniqueId);
+                BeforeExecuteRetryWorkflow();
+                ExecuteRetryWorkflow();
                 ExecuteRetryWorkflowCompleted();
             }
 
