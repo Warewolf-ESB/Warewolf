@@ -166,16 +166,15 @@ namespace Dev2.Common
             set
             {
                 _settings.ExecutionLogLevel = value;
-                Save();
             }
         }
+
         public string Sink
         {
             get => GetSink();
             set
             {
                 _settings.Sink = value;
-                Save();
             }
         }
 
@@ -197,6 +196,7 @@ namespace Dev2.Common
 
         [Obsolete("AuditFilePath is deprecated. It will be deleted in future releases.")]
         public string AuditFilePath => _settings.AuditFilePath ?? LegacySettings.DefaultAuditPath;
+        public bool IncludeEnvironmentVariable => _settings.IncludeEnvironmentVariable;
 
         public ushort WebServerPort => _settings.WebServerPort ?? 0;
         public ushort WebServerSslPort => _settings.WebServerSslPort ?? 0;
@@ -295,7 +295,6 @@ namespace Dev2.Common
             set
             {
                 _settings.AuditFilePath = value;
-                Save();
             }
         }
 
@@ -314,9 +313,19 @@ namespace Dev2.Common
             }
             return DefaultAuditPath;
         }
+        
         public string Endpoint
         {
             get => _settings.Endpoint ?? DefaultEndpoint;
+        }
+
+        public bool IncludeEnvironmentVariable
+        {
+            get => _settings.IncludeEnvironmentVariable;
+            set
+            {
+                _settings.IncludeEnvironmentVariable = value;
+            }
         }
 
         public bool SaveLoggingPath(string auditsFilePath)
@@ -422,7 +431,7 @@ namespace Dev2.Common
             set
             {
                 _settings.EncryptDataSource = value;
-                Save();
+                //Save();
             }
         }
         public NamedGuidWithEncryptedPayload LoggingDataSource
@@ -431,10 +440,19 @@ namespace Dev2.Common
             set
             {
                 _settings.LoggingDataSource = value;
-                Save();
+                //Save();
             }
         }
 
         public string Endpoint => _settings.Endpoint ?? DefaultEndpoint;
+
+        public bool IncludeEnvironmentVariable 
+        { 
+            get => _settings.IncludeEnvironmentVariable;
+            set
+            {
+                _settings.IncludeEnvironmentVariable = value;
+            }
+        }
     }
 }

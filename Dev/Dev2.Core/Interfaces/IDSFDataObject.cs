@@ -41,6 +41,7 @@ namespace Dev2.Interfaces
     public class RetryState
     {
         public int NumberOfRetries { get; set; }
+        public IDev2Activity GateToRetry { get; set; }
     }
 
     public interface IDSFDataObject : IExecutionContext

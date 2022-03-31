@@ -1,3 +1,49 @@
+2.7.4 (23 March 2022)
+======================
+
+Bug Fixes
+----------
+- Patch bug when using recordset indexes in a ForEach on CSV.
+- RabbitMQ trigger can now pass object type variables to Warewolf workflows.
+- Trigger queues default concurrency to 0 when saved with a blank concurrency.
+
+2.7.3 (04 March 2022)
+======================
+
+Enhancements
+----------
+- Tests can now be written that manually resume workflows under tests that suspend their execution.
+
+Bug Fixes
+----------
+Gate Tool
+- Number of executions are now in line with the number of retries on failure.
+
+2.7.2.1 (28 February 2022)
+======================
+
+Bug Fixes
+----------
+- Low level performance and stability improvements to the suspend tool.
+
+2.7.1 (11 February 2022)
+======================
+
+Enhancements
+----------
+- Execution variables can now be included with our execution logs when this fearure is enabled.
+
+Bug fixes
+----------
+- New Test added will now alway be the selected test 
+
+2.7 (21 January 2022)
+======================
+
+Bug fixes
+----------
+- Studio is persistenting the correct input values for workflow with the same name
+
 8 December 2021
 ======================
 

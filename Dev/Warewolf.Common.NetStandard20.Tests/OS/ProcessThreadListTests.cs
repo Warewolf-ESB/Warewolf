@@ -108,25 +108,21 @@ namespace Warewolf.OS.Tests
         [Owner("Rory McGuire")]
         [TestCategory(nameof(MessageToInputsMapper))]
         [DoNotParallelize]
-        [TestCategory("CannotParallelize")]
         [TestCategory("Multithread")]
-        public void ProcessThreadList_GivenConfigConcurrent3_ExpectThreeWorkers()
+        public void ProcessThreadList_GivenConfigConcurrent2_ExpectTwoWorkers()
         {
             var mockConfig = new Mock<IJobConfig>();
-            mockConfig.Setup(o => o.Concurrency).Returns(3);
+            mockConfig.Setup(o => o.Concurrency).Returns(2);
             var mockProcessFactory = new Mock<ITestProcessFactory>();
 
             var mockProcessThread1 = CreateMockProcessThread();
             var mockProcessThread2 = CreateMockProcessThread();
-            var mockProcessThread3 = CreateMockProcessThread();
 
             var processThread1 = mockProcessThread1.Object;
             var processThread2 = mockProcessThread2.Object;
-            var processThread3 = mockProcessThread3.Object;
             mockProcessFactory.SetupSequence(o => o.New())
                 .Returns(mockProcessThread1.Object)
-                .Returns(mockProcessThread2.Object)
-                .Returns(mockProcessThread3.Object);
+                .Returns(mockProcessThread2.Object);
 
             var expectedConfig = mockConfig.Object;
             var list = new ProcessThreadListForTesting(expectedConfig, mockProcessFactory.Object);
@@ -136,10 +132,8 @@ namespace Warewolf.OS.Tests
             Assert.IsFalse(list.NeedUpdate);
             Assert.IsTrue(processThread1.IsAlive);
             Assert.IsTrue(processThread2.IsAlive);
-            Assert.IsTrue(processThread3.IsAlive);
             mockProcessThread1.Verify(o => o.Start(), Times.Once);
             mockProcessThread2.Verify(o => o.Start(), Times.Once);
-            mockProcessThread3.Verify(o => o.Start(), Times.Once);
 
             foreach (var process in list)
             {
@@ -151,25 +145,21 @@ namespace Warewolf.OS.Tests
         [Owner("Rory McGuire")]
         [TestCategory(nameof(MessageToInputsMapper))]
         [DoNotParallelize]
-        [TestCategory("CannotParallelize")]
         [TestCategory("Multithread")]
         public void ProcessThreadList_GivenKillCalled_ExpectAllWorkersKilled()
         {
             var mockConfig = new Mock<IJobConfig>();
-            mockConfig.Setup(o => o.Concurrency).Returns(3);
+            mockConfig.Setup(o => o.Concurrency).Returns(2);
             var mockProcessFactory = new Mock<ITestProcessFactory>();
 
             var mockProcessThread1 = CreateMockProcessThread();
             var mockProcessThread2 = CreateMockProcessThread();
-            var mockProcessThread3 = CreateMockProcessThread();
 
             var processThread1 = mockProcessThread1.Object;
             var processThread2 = mockProcessThread2.Object;
-            var processThread3 = mockProcessThread3.Object;
             mockProcessFactory.SetupSequence(o => o.New())
                 .Returns(mockProcessThread1.Object)
-                .Returns(mockProcessThread2.Object)
-                .Returns(mockProcessThread3.Object);
+                .Returns(mockProcessThread2.Object);
 
             var expectedConfig = mockConfig.Object;
             var list = new ProcessThreadListForTesting(expectedConfig, mockProcessFactory.Object);
@@ -179,16 +169,13 @@ namespace Warewolf.OS.Tests
             Assert.IsFalse(list.NeedUpdate);
             Assert.IsTrue(processThread1.IsAlive);
             Assert.IsTrue(processThread2.IsAlive);
-            Assert.IsTrue(processThread3.IsAlive);
             mockProcessThread1.Verify(o => o.Start(), Times.Once);
             mockProcessThread2.Verify(o => o.Start(), Times.Once);
-            mockProcessThread3.Verify(o => o.Start(), Times.Once);
 
             list.Kill();
 
             mockProcessThread1.Verify(o => o.Kill(), Times.Once);
             mockProcessThread2.Verify(o => o.Kill(), Times.Once);
-            mockProcessThread3.Verify(o => o.Kill(), Times.Once);
         }
 
         [TestMethod]
@@ -240,25 +227,21 @@ namespace Warewolf.OS.Tests
         [Owner("Rory McGuire")]
         [TestCategory(nameof(MessageToInputsMapper))]
         [DoNotParallelize]
-        [TestCategory("CannotParallelize")]
         [TestCategory("Multithread")]
         public void ProcessThreadList_GivenConfigConcurrentChanges_ExpectWorkerCountChanges()
         {
             var mockConfig = new Mock<IJobConfig>();
-            mockConfig.Setup(o => o.Concurrency).Returns(3);
+            mockConfig.Setup(o => o.Concurrency).Returns(2);
             var mockProcessFactory = new Mock<ITestProcessFactory>();
 
             var mockProcessThread1 = CreateMockProcessThread();
             var mockProcessThread2 = CreateMockProcessThread();
-            var mockProcessThread3 = CreateMockProcessThread();
 
             var processThread1 = mockProcessThread1.Object;
             var processThread2 = mockProcessThread2.Object;
-            var processThread3 = mockProcessThread3.Object;
             mockProcessFactory.SetupSequence(o => o.New())
                 .Returns(mockProcessThread1.Object)
-                .Returns(mockProcessThread2.Object)
-                .Returns(mockProcessThread3.Object);
+                .Returns(mockProcessThread2.Object);
 
             var expectedConfig = mockConfig.Object;
             var list = new ProcessThreadListForTesting(expectedConfig, mockProcessFactory.Object);
@@ -268,17 +251,15 @@ namespace Warewolf.OS.Tests
             Assert.IsFalse(list.NeedUpdate);
             Assert.IsTrue(processThread1.IsAlive);
             Assert.IsTrue(processThread2.IsAlive);
-            Assert.IsTrue(processThread3.IsAlive);
             mockProcessThread1.Verify(o => o.Start(), Times.Once);
             mockProcessThread2.Verify(o => o.Start(), Times.Once);
-            mockProcessThread3.Verify(o => o.Start(), Times.Once);
 
-            mockConfig.Setup(o => o.Concurrency).Returns(2);
+            mockConfig.Setup(o => o.Concurrency).Returns(1);
             list.UpdateConfig(mockConfig.Object);
 
             Assert.IsTrue(list.NeedUpdate);
             list.Monitor();
-            mockProcessThread3.Verify(o => o.Kill(), Times.Once);
+            mockProcessThread2.Verify(o => o.Kill(), Times.Once);
         }
 
 

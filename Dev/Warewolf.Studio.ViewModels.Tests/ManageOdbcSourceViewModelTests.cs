@@ -124,7 +124,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         #region Test construction
 
         [TestMethod]
-        [Timeout(250)]
+        [Timeout(500)]
         [ExpectedException(typeof(ArgumentNullException))]
         public void TestManageOdbcDatabaseSourceViewModelUpdateManagerNull()
         {
@@ -148,7 +148,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         [ExpectedException(typeof(ArgumentNullException))]
         public void TestManageOdbcDatabaseSourceViewModelRequestServiceNameViewModelNull()
         {
@@ -160,7 +160,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         [ExpectedException(typeof(ArgumentNullException))]
         public void TestManageOdbcDatabaseSourceViewModelDbSourceNull()
         {

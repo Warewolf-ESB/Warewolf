@@ -32,11 +32,16 @@ namespace Warewolf
             return _httpClient.GetAsync(url);
         }
 
-        public Task<HttpResponseMessage> PostAsync(string url,string postData)
+        public Task<HttpResponseMessage> PostAsync(string url, string postData)
         {
-            return _httpClient.PostAsync(url,new StringContent(postData));
+            return _httpClient.PostAsync(url, new StringContent(postData));
         }
-
+        
+        public Task<HttpResponseMessage> PostAsync(string url, HttpContent formData)
+        {
+            return _httpClient.PostAsync(url, formData);
+        }
+        
         public bool HasCredentials { get; private set; }
     }
 }

@@ -1,4 +1,4 @@
-﻿/*
+/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
@@ -35,6 +35,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(PersistenceSettingsViewModel))]
+        [Timeout(300000)]
         public void PersistenceSettingsViewModel_Constructor_Equals_Null_ReturnFalse()
         {
             //------------Setup for test--------------------------
@@ -51,6 +52,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(PersistenceSettingsViewModel))]
+        [Timeout(300000)]
         public void PersistenceSettingsViewModel_Constructor_Equals_NotNull_ReturnTrue()
         {
             //------------Setup for test--------------------------
@@ -68,6 +70,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(PersistenceSettingsViewModel))]
+        [Timeout(300000)]
         public void PersistenceSettingsViewModel_EncryptDataSource_Set_PropertyChangeFired()
         {
             //------------Setup for test--------------------------
@@ -92,6 +95,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(PersistenceSettingsViewModel))]
+        [Timeout(300000)]
         public void PersistenceSettingsViewModel_Enable_Set_PropertyChangeFired()
         {
             //------------Setup for test--------------------------
@@ -116,6 +120,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(PersistenceSettingsViewModel))]
+        [Timeout(300000)]
         public void PersistenceSettingsViewModel_PrepareSchemaIfNecessary_Set_PropertyChangeFired()
         {
             //------------Setup for test--------------------------
@@ -140,6 +145,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(PersistenceSettingsViewModel))]
+        [Timeout(300000)]
         public void PersistenceSettingsViewModel_ServerName_Set_PropertyChangeFired()
         {
             //------------Setup for test--------------------------
@@ -164,6 +170,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(PersistenceSettingsViewModel))]
+        [Timeout(300000)]
         public void PersistenceSettingsViewModel_DashboardName_Set_PropertyChangeFired()
         {
             //------------Setup for test--------------------------
@@ -188,6 +195,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(PersistenceSettingsViewModel))]
+        [Timeout(300000)]
         public void PersistenceSettingsViewModel_DashboardHostname_Set_PropertyChangeFired()
         {
             //------------Setup for test--------------------------
@@ -212,6 +220,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(PersistenceSettingsViewModel))]
+        [Timeout(300000)]
         public void PersistenceSettingsViewModel_DashboardPort_Set_PropertyChangeFired()
         {
             //------------Setup for test--------------------------
@@ -236,6 +245,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(PersistenceSettingsViewModel))]
+        [Timeout(300000)]
         public void PersistenceSettingsViewModel_HangfireDashboardUrl_Set_PropertyChangeFired()
         {
             //------------Setup for test--------------------------
@@ -270,6 +280,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(PersistenceSettingsViewModel))]
+        [Timeout(300000)]
         public void PersistenceSettingsViewModel_PersistenceScheduler_Set_PropertyChangeFired()
         {
             //------------Setup for test--------------------------
@@ -294,6 +305,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(PersistenceSettingsViewModel))]
+        [Timeout(300000)]
         public void PersistenceSettingsViewModel_ResourceSourceId_Set_PropertyChangeFired()
         {
             //------------Setup for test--------------------------
@@ -319,6 +331,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(PersistenceSettingsViewModel))]
+        [Timeout(300000)]
         public void PersistenceSettingsViewModel_Save()
         {
             CustomContainer.Register(new Mock<IPopupController>().Object);
@@ -340,6 +353,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(PersistenceSettingsViewModel))]
+        [Timeout(300000)]
         public void PersistenceSettingsViewModel_Save_ConfirmEnableIsTrue()
         {
             var resourceRepo = new Mock<IResourceRepository>();
@@ -362,6 +376,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(PersistenceSettingsViewModel))]
+        [Timeout(300000)]
         public void PersistenceSettingsViewModel_UpdateHelp_ShouldCallToHelpViewMode()
         {
             //------------Setup for test--------------------------
@@ -382,6 +397,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(PersistenceSettingsViewModel))]
+        [Timeout(300000)]
         public void PersistenceSettingsViewModel_HangfireDashboardBrowser_OpenInBrowser()
         {
             const string expectedUrl = "http://localhost:5001/hangfire";
@@ -401,6 +417,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(PersistenceSettingsViewModel))]
+        [Timeout(300000)]
         public void PersistenceSettingsViewModel_IsPageComplete_SchedulerErrorMsg()
         {
             var mockPopupController = new Mock<IPopupController>();
@@ -428,6 +445,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(PersistenceSettingsViewModel))]
+        [Timeout(300000)]
         public void PersistenceSettingsViewModel_IsPageComplete_ServerErrorMsg()
         {
             var mockPopupController = new Mock<IPopupController>();
@@ -456,6 +474,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(PersistenceSettingsViewModel))]
+        [Timeout(300000)]
         public void PersistenceSettingsViewModel_IsPageComplete_DataSourceErrorMsg()
         {
             var mockPopupController = new Mock<IPopupController>();
@@ -483,6 +502,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(PersistenceSettingsViewModel))]
+        [Timeout(300000)]
         public void PersistenceSettingsViewModel_IsPageComplete_SettingsChanged()
         {
             var mockPopupController = new Mock<IPopupController>();
