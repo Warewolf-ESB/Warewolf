@@ -116,11 +116,13 @@
     <PackageReference Include="log4net">
       <Version>2.0.12</Version>
     </PackageReference>
-    <PackageReference Include="Log4Net.Appenders.NetCore">
-      <Version>1.0.0.6</Version>
-    </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>12.0.3</Version>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework'">
+    <PackageReference Include="Log4Net.Appenders.NetCore">
+      <Version>1.0.0.6</Version>
     </PackageReference>
   </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
