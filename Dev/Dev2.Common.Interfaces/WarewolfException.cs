@@ -10,7 +10,9 @@
 
 using System;
 using System.Web;
+#if !NETFRAMEWORK
 using Boxed.AspNetCore;
+#endif
 using Warewolf.Exceptions;
 
 namespace Dev2.Common.Interfaces
