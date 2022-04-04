@@ -33,12 +33,15 @@ namespace Dev2
 
         public static void Register<T>(T concrete)
         {
-            if (RegisterdTypes.ContainsKey(typeof(T)))
+            lock (RegisterdTypes)
             {
-                DeRegister<T>();
-            }
+                if (RegisterdTypes.ContainsKey(typeof(T)))
+                {
+                    DeRegister<T>();
+                }
 
-            RegisterdTypes.Add(typeof(T), concrete);
+                RegisterdTypes.Add(typeof(T), concrete);
+            }
         }
 
         public static T Get<T>() where T : class
@@ -71,8 +74,8 @@ namespace Dev2
             {
                 RegisterdTypes.Remove(typeof(T));
             }
-        } 
-        
+        }
+
         public static void AddToLoadedTypes(Type type)
         {
             if (LoadedTypes is null)
@@ -80,18 +83,31 @@ namespace Dev2
                 LoadedTypes = new List<Type>();
             }
 
-            if (!LoadedTypes.Contains(type))
+            lock (LoadedTypes)
             {
-                LoadedTypes.Add(type);
+                if (!LoadedTypes.Contains(type))
+                {
+                    LoadedTypes.Add(type);
+                }
             }
         }
 
         public static T CreateInstance<T>(params object[] constructorParameters)
         {
             var typeToCreate = typeof(T);
-            var assemblyTypes = LoadedTypes ?? new List<Type>();
+
+            var assemblyTypes = new List<Type>();
+            if (LoadedTypes != null)
+            {
+                lock (LoadedTypes)
+                {
+                    assemblyTypes = LoadedTypes.ToList();
+                    assemblyTypes = assemblyTypes.Where(a => a != null).ToList();
+                }
+            }
+
             object createdObject = null;
-            foreach (var assemblyType in assemblyTypes.Where(a => a != null))
+            foreach (var assemblyType in assemblyTypes)
             {
                 if (assemblyType.IsPublic && !assemblyType.IsAbstract && assemblyType.IsClass &&
                     !assemblyType.IsGenericType && typeToCreate.IsAssignableFrom(assemblyType))

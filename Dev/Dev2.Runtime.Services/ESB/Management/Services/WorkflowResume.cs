@@ -42,9 +42,12 @@ namespace Dev2.Runtime.ESB.Management.Services
         public override string HandlesType() => nameof(WorkflowResume);
 
         SemaphoreSlim _executionThrottler = new SemaphoreSlim(1, 1);
+        private bool _isReloadingResourceCatalog = false;
         protected override ExecuteMessage ExecuteImpl(Dev2JsonSerializer serializer, Guid resourceId,
             Dictionary<string, StringBuilder> values)
         {
+            _executionThrottler.Wait();
+            
             var versionNumber = IsValid(values, out var environmentString, out var startActivityId,
                 out var currentUserPrincipal);
             var executingUser = BuildClaimsPrincipal(DpapiWrapper.DecryptIfEncrypted(currentUserPrincipal.ToString()));
@@ -71,14 +74,28 @@ namespace Dev2.Runtime.ESB.Management.Services
                 Dev2Logger.Error(errorMessage, GlobalConstants.WarewolfError);
                 return new ExecuteMessage { HasError = true, Message = new StringBuilder(errorMessage) };
             }
-
-            _executionThrottler.Wait();
+            
             IResumableExecutionContainer container;
             try
             {
-                ResourceCatalogInstance.RemoveFromResourceActivityCache(GlobalConstants.ServerWorkspaceID, resourceId);
-            
-                var dynamicService = ResourceCatalogInstance.GetService(GlobalConstants.ServerWorkspaceID, resourceId, "");
+                if (_isReloadingResourceCatalog)
+                {
+                    Thread.Sleep(100);
+                }
+
+                DynamicService dynamicService = null;
+                try
+                {
+                    _isReloadingResourceCatalog = true;
+                    ResourceCatalogInstance.RemoveFromResourceActivityCache(GlobalConstants.ServerWorkspaceID, resourceId);     
+                    dynamicService = ResourceCatalogInstance.GetService(GlobalConstants.ServerWorkspaceID, resourceId, "");
+                }
+                finally
+                {
+                    _isReloadingResourceCatalog = false;
+                }
+                
+                
 
                 if (dynamicService is null)
                 {
@@ -103,6 +120,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             finally
             {
+                _isReloadingResourceCatalog = false;
                 _executionThrottler.Release();
             }
             container.Execute(out ErrorResultTO errors, 0);

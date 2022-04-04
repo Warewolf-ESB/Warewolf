@@ -1,3 +1,11 @@
+2.7.5 (31 March 2022)
+======================
+
+Bug Fixes
+----------
+- Patched the debug output for workflows with multiple gate tools. The output appends to the correct gate tool now.
+- Suspend tool shouldn't throw a colleciton modified error when processing large amounts of transactions.
+
 2.7.4 (23 March 2022)
 ======================
 
