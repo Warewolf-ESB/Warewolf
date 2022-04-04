@@ -12,6 +12,7 @@ using System;
 using System.Net;
 using System.Runtime;
 using System.Web;
+using Boxed.AspNetCore;
 using Dev2.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.Communication;

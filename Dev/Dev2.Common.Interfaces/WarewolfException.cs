@@ -10,6 +10,7 @@
 
 using System;
 using System.Web;
+using Boxed.AspNetCore;
 using Warewolf.Exceptions;
 
 namespace Dev2.Common.Interfaces
@@ -17,7 +18,7 @@ namespace Dev2.Common.Interfaces
     public class AccessDeniedException : HttpException, IWarewolfException
     {
         public AccessDeniedException(string message)
-            : base(message)
+            : base(401, message)
         {
         }
     }

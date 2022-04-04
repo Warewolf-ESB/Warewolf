@@ -11,8 +11,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Dev2.Diagnostics</RootNamespace>
     <AssemblyName>Dev2.Diagnostics</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <RuntimeIdentifier>win</RuntimeIdentifier>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>
     </SccProjectName>
@@ -116,6 +115,9 @@
     </PackageReference>
     <PackageReference Include="log4net">
       <Version>2.0.12</Version>
+    </PackageReference>
+    <PackageReference Include="Log4Net.Appenders.NetCore">
+      <Version>1.0.0.6</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>12.0.3</Version>
