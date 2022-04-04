@@ -45,6 +45,8 @@
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <UseWpf>true</UseWpf>
 	<CodeAnalysisRuleSet>..\.sonarlint\warewolf_dotnet_frameworkcsharp.ruleset</CodeAnalysisRuleSet>
+	<RestoreAdditionalProjectSource>https://www.myget.org/F/uipath-dev/api/v3/index.json</RestoreAdditionalProjectSource>
+	<RestoreAdditionalProjectSource>https://www.myget.org/F/uipath-dev/api/v3/index.json</RestoreAdditionalProjectSource>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>Warewolf.ico</ApplicationIcon>
@@ -862,6 +864,14 @@
     </PackageReference>
     <PackageReference Include="WPFTextBoxAutoComplete">
       <Version>1.0.0</Version>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework'">
+    <PackageReference Include="UiPath.Workflow">
+      <Version>5.0.0-20211103-03</Version>
+    </PackageReference>
+    <PackageReference Include="System.Activities.Core.Presentation">
+      <Version>1.0.0-alpha003</Version>
     </PackageReference>
   </ItemGroup>
   <PropertyGroup>
