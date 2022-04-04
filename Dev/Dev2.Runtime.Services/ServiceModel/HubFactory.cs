@@ -9,6 +9,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
 using System.Net;
 using System.Net.Http;
 using System.Security.Principal;
@@ -24,19 +25,7 @@ namespace Dev2.Runtime.ServiceModel
     {
         public IHubProxy CreateHubProxy(Connection connection)
         {
-            var serverUser = Common.Utilities.OrginalExecutingUser;
-            var principle = serverUser;
-
-            var identity = principle.Identity as WindowsIdentity;
-            WindowsImpersonationContext context = null;
-
-            try
-            {
-                if (identity != null && connection.AuthenticationType == AuthenticationType.Windows)
-                {
-                    context = identity.Impersonate();
-                }
-
+            var createHubConnectionAction = new Func<IHubProxy>(()=> {
                 using (var client = new WebClient())
                 {
                     if (connection.AuthenticationType == AuthenticationType.Windows)
@@ -68,14 +57,12 @@ namespace Dev2.Runtime.ServiceModel
                     }
                     return proxy;
                 }
-            }
-            finally
+            });
+            if (Common.Utilities.OrginalExecutingUser != null && connection.AuthenticationType == AuthenticationType.Windows)
             {
-                if (context != null && connection.AuthenticationType == AuthenticationType.Windows)
-                {
-                    context.Undo();
-                }
+                return Dev2.Common.Utilities.PerformActionInsideImpersonatedContext(Common.Utilities.OrginalExecutingUser, createHubConnectionAction);
             }
+            return createHubConnectionAction.Invoke();
         }
     }
 }
