@@ -12,7 +12,9 @@ using System;
 using System.Net;
 using System.Runtime;
 using System.Web;
+#if !NETFRAMEWORK
 using Boxed.AspNetCore;
+#endif
 using Dev2.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.Communication;
