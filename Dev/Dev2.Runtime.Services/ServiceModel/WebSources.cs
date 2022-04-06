@@ -155,10 +155,10 @@ namespace Dev2.Runtime.ServiceModel
             return Execute(source, method, headers, relativeUri, data, throwError, out errors, webExecuteStringArgs.FormDataParameters, webExecuteStringArgs.WebRequestFactory, settings: settings);
         }
         
-        public static string Execute(IWebPostOptions options)
+        public static string Execute(IWebPostOptions options, out ErrorResultTO errors)
         {
             return Execute(source: options.Source, method: options.Method, headers: options.Headers, relativeUrl: options.Query,
-                data: options.PostData, throwError: true, errors: out ErrorResultTO errors, formDataParameters: options.Parameters, settings: options.Settings);
+                data: options.PostData, throwError: true, errors: out errors, formDataParameters: options.Parameters, settings: options.Settings);
         }
         
         public static string Execute(IWebSource source, WebRequestMethod method, IEnumerable<string> headers, string relativeUrl,
