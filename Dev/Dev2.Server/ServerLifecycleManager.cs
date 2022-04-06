@@ -252,7 +252,6 @@ namespace Dev2
                             var webServerConfig = _webServerConfiguration;
                             webServerConfig.Execute();
                             new LoadRuntimeConfigurations(_writer).Execute();
-                            OpenCOMStream(null);
                             _loadResources.LoadResourceCatalog();
                             _timer = new Timer((state) => GetComputerNames.GetComputerNamesList(), null, 1000, GlobalConstants.NetworkComputerNameQueryFreq);
                             _loadResources.LoadServerWorkspace();
