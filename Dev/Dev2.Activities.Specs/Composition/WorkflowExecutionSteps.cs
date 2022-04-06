@@ -2347,7 +2347,7 @@ namespace Dev2.Activities.Specs.Composition
 
             var serializer = new Dev2JsonSerializer();
 
-            var dsfWebPostActivity = new DsfWebPostActivity
+            var dsfWebPostActivity = new WebPostActivity
             {
                 DisplayName = activityName,
                 PostData = string.Empty,
