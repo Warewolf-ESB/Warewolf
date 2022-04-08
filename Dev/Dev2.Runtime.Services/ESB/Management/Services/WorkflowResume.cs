@@ -25,6 +25,7 @@ using Dev2.DynamicServices;
 using Dev2.Runtime.ESB.Management;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
+using Dev2.Runtime.ResourceCatalogImpl;
 using Dev2.Runtime.Security;
 using Dev2.Services.Security;
 using Dev2.Workspaces;
@@ -40,14 +41,10 @@ namespace Dev2.Runtime.ESB.Management.Services
         private IResourceCatalog _resourceCatalog;
 
         public override string HandlesType() => nameof(WorkflowResume);
-
-        SemaphoreSlim _executionThrottler = new SemaphoreSlim(1, 1);
-        private bool _isReloadingResourceCatalog = false;
+        
         protected override ExecuteMessage ExecuteImpl(Dev2JsonSerializer serializer, Guid resourceId,
             Dictionary<string, StringBuilder> values)
         {
-            _executionThrottler.Wait();
-            
             var versionNumber = IsValid(values, out var environmentString, out var startActivityId,
                 out var currentUserPrincipal);
             var executingUser = BuildClaimsPrincipal(DpapiWrapper.DecryptIfEncrypted(currentUserPrincipal.ToString()));
@@ -75,28 +72,11 @@ namespace Dev2.Runtime.ESB.Management.Services
                 return new ExecuteMessage { HasError = true, Message = new StringBuilder(errorMessage) };
             }
             
-            IResumableExecutionContainer container;
             try
             {
-                if (_isReloadingResourceCatalog)
-                {
-                    Thread.Sleep(100);
-                }
-
-                DynamicService dynamicService = null;
-                try
-                {
-                    _isReloadingResourceCatalog = true;
-                    ResourceCatalogInstance.RemoveFromResourceActivityCache(GlobalConstants.ServerWorkspaceID, resourceId);     
-                    dynamicService = ResourceCatalogInstance.GetService(GlobalConstants.ServerWorkspaceID, resourceId, "");
-                }
-                finally
-                {
-                    _isReloadingResourceCatalog = false;
-                }
+                ResourceCatalogInstance.RemoveFromResourceActivityCache(GlobalConstants.ServerWorkspaceID, resourceId);     
+                var dynamicService = ResourceCatalogInstance.GetService(GlobalConstants.ServerWorkspaceID, resourceId, "");
                 
-                
-
                 if (dynamicService is null)
                 {
                     return new ExecuteMessage
@@ -115,22 +95,24 @@ namespace Dev2.Runtime.ESB.Management.Services
                         Message = new StringBuilder($"Error resuming. ServiceAction is null for Resource ID:{resourceId}")
                     };
                 }
-            
-                container = CustomContainer.Get<IResumableExecutionContainerFactory>()?.New(startActivityId, sa, dataObject, new Workspace(Guid.NewGuid())) ?? CustomContainer.CreateInstance<IResumableExecutionContainer>(startActivityId, sa, dataObject, new Workspace(Guid.NewGuid()));
+                
+                var container = CustomContainer.CreateInstance<IResumableExecutionContainer>(startActivityId, sa, dataObject, new Workspace(Guid.NewGuid()));
+
+                container.Execute(out ErrorResultTO errors, 0);
+
+                if (errors.HasErrors())
+                {
+                    return new ExecuteMessage { HasError = true, Message = new StringBuilder(errors.MakeDisplayReady()) };
+                }
+                                                                                                                                                         
+                return new ExecuteMessage { HasError = false, Message = new StringBuilder("Execution Completed.") };
             }
             finally
             {
-                _isReloadingResourceCatalog = false;
-                _executionThrottler.Release();
-            }
-            container.Execute(out ErrorResultTO errors, 0);
+                _resourceCatalog = null;
 
-            if (errors.HasErrors())
-            {
-                return new ExecuteMessage { HasError = true, Message = new StringBuilder(errors.MakeDisplayReady()) };
+                GC.Collect();
             }
-
-            return new ExecuteMessage { HasError = false, Message = new StringBuilder("Execution Completed.") };
         }
 
         public IResourceCatalog ResourceCatalogInstance
