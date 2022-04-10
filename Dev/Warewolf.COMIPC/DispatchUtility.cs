@@ -234,7 +234,7 @@ namespace WarewolfCOMIPC
             /// http://msdn.microsoft.com/en-us/library/cc1ec9aa-6c40-4e70-819c-a7c6dd6b8c99(VS.85)
             /// </remarks>
             void GetTypeInfo(int typeInfoIndex, int lcid, [MarshalAs(UnmanagedType.CustomMarshaler,
-                MarshalTypeRef = typeof(ICustomTypeToTypeMarshaler))] out Type typeInfo);
+                MarshalTypeRef = typeof(CustomTypeToTypeMarshaler))] out Type typeInfo);
 
             /// <summary>
             /// Gets the DISPID of the specified member name.

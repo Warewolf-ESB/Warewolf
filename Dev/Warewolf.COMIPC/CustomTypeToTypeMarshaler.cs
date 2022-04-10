@@ -3,8 +3,10 @@ using System.Runtime.InteropServices;
 
 namespace WarewolfCOMIPC
 {
-    public class ICustomTypeToTypeMarshaler : ICustomMarshaler
+    public class CustomTypeToTypeMarshaler : ICustomMarshaler
     {
+        public static ICustomMarshaler GetInstance(string pstrCookie) => new CustomTypeToTypeMarshaler();
+
         public object MarshalNativeToManaged(IntPtr pNativeData)
         {
             Console.WriteLine("An attempt was made to marshal native object to managed.");
