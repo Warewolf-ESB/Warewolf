@@ -96,7 +96,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     };
                 }
                 
-                var container = CustomContainer.CreateInstance<IResumableExecutionContainer>(startActivityId, sa, dataObject, new Workspace(Guid.NewGuid()));
+                var container = CustomContainer.Get<IResumableExecutionContainerFactory>()?.New(startActivityId, sa, dataObject, new Workspace(Guid.NewGuid())) ?? CustomContainer.CreateInstance<IResumableExecutionContainer>(startActivityId, sa, dataObject, new Workspace(Guid.NewGuid()));
 
                 container.Execute(out ErrorResultTO errors, 0);
 
