@@ -17,15 +17,9 @@ namespace WarewolfCOMIPC
                 ? Marshal.GetITypeInfoForType(ManagedObj as Type)
                 : throw new ArgumentNullException(nameof(ManagedObj));
 
-        public void CleanUpNativeData(IntPtr pNativeData)
-        {
-            Console.WriteLine("An attempt was made to cleanup native data.");
-        }
+        public void CleanUpNativeData(IntPtr pNativeData) => Console.WriteLine("An attempt was made to cleanup native data.");
 
-        public void CleanUpManagedData(object ManagedObj)
-        {
-            Console.WriteLine("An attempt was made to cleanup manged data.");
-        }
+        public void CleanUpManagedData(object ManagedObj) => Console.WriteLine("An attempt was made to cleanup manged data.");
 
         public int GetNativeDataSize() => -1;
     }
