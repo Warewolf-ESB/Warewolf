@@ -9,15 +9,14 @@ namespace WarewolfCOMIPC
 
         public object MarshalNativeToManaged(IntPtr pNativeData)
         {
-            Console.WriteLine("An attempt was made to marshal native object to managed.");
-            return null;
+            IntPtr num = (IntPtr) 0L;
+            return !(pNativeData == num) ? (object) Marshal.GetTypeForITypeInfo(pNativeData) : throw new ArgumentNullException(nameof (pNativeData));
         }
 
-        public IntPtr MarshalManagedToNative(object ManagedObj)
-        {
-            Console.WriteLine("An attempt was made to marshal managed object to native.");
-            return new IntPtr();
-        }
+        public IntPtr MarshalManagedToNative(object ManagedObj) =>
+            ManagedObj != null
+                ? Marshal.GetITypeInfoForType(ManagedObj as Type)
+                : throw new ArgumentNullException(nameof(ManagedObj));
 
         public void CleanUpNativeData(IntPtr pNativeData)
         {
@@ -29,10 +28,6 @@ namespace WarewolfCOMIPC
             Console.WriteLine("An attempt was made to cleanup manged data.");
         }
 
-        public int GetNativeDataSize()
-        {
-            Console.WriteLine("An attempt was made to get native data size.");
-            return 0;
-        }
+        public int GetNativeDataSize() => -1;
     }
 }
