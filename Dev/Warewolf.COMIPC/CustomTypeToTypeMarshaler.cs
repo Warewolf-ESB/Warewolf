@@ -7,11 +7,10 @@ namespace WarewolfCOMIPC
     {
         public static ICustomMarshaler GetInstance(string pstrCookie) => new CustomTypeToTypeMarshaler();
 
-        public object MarshalNativeToManaged(IntPtr pNativeData)
-        {
-            IntPtr num = (IntPtr) 0L;
-            return !(pNativeData == num) ? (object) Marshal.GetTypeForITypeInfo(pNativeData) : throw new ArgumentNullException(nameof (pNativeData));
-        }
+        public object MarshalNativeToManaged(IntPtr pNativeData) => 
+            !(pNativeData == (IntPtr) 0L)
+                ? (object) Marshal.GetTypeForITypeInfo(pNativeData)
+                : throw new ArgumentNullException(nameof (pNativeData));
 
         public IntPtr MarshalManagedToNative(object ManagedObj) =>
             ManagedObj != null
