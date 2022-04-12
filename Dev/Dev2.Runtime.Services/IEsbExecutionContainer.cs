@@ -20,7 +20,7 @@ namespace Dev2.Runtime
         IDSFDataObject GetDataObject();
     }
 
-    public interface IResumableExecutionContainer : IEsbExecutionContainer
+    public interface IResumableExecutionContainer : IEsbExecutionContainer, IDisposable
     {
     }
 

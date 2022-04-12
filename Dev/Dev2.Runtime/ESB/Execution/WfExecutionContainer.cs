@@ -428,6 +428,11 @@ namespace Dev2.Runtime.ESB.Execution
 
         ~ResumableExecutionContainer()
         {
+            ReleaseUnmanagedResources();
+        }
+    
+        private void ReleaseUnmanagedResources()
+        {
             _resumeEnvironment = null;
             base.Request = null;
             base.DataObject = null;
@@ -435,6 +440,12 @@ namespace Dev2.Runtime.ESB.Execution
             base.TheWorkspace = null;
             base.InstanceInputDefinition = null;
             base.InstanceOutputDefinition = null;
+            
+        }
+    
+        public void Dispose()
+        {
+            ReleaseUnmanagedResources();
         }
     }
 
