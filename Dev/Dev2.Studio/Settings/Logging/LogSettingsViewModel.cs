@@ -126,13 +126,12 @@ namespace Dev2.Settings.Logging
             {
                 _executionLogLevel = executionLogLevel;
             }
-
-            var legacySettingsData = _resourceRepository.GetAuditingSettings<LegacySettingsData>(CurrentEnvironment);
-            
+ 
             IResource selectedAuditingSource;
             switch (serverSettingsData.Sink)
             {
-                case DEFAULT_SINK:
+                case nameof(LegacySettingsData):
+                    var legacySettingsData = _resourceRepository.GetAuditingSettings<LegacySettingsData>(CurrentEnvironment);
                     AuditFilePath = legacySettingsData.AuditFilePath;
                     IncludeEnvironmentVariable = serverSettingsData.IncludeEnvironmentVariable;
                     selectedAuditingSource = AuditingSources.FirstOrDefault(o => o.ResourceID == Guid.Empty);
@@ -151,7 +150,8 @@ namespace Dev2.Settings.Logging
 
                 default:
                     Dev2Logger.Error($"Settings Data Sink: {serverSettingsData.Sink} unknown", GlobalConstants.WarewolfError);
-                    AuditFilePath = legacySettingsData.AuditFilePath;
+                    var legacySettingsDataN = _resourceRepository.GetAuditingSettings<LegacySettingsData>(CurrentEnvironment);
+                    AuditFilePath = legacySettingsDataN.AuditFilePath;
                     IncludeEnvironmentVariable = serverSettingsData.IncludeEnvironmentVariable;
                     selectedAuditingSource = AuditingSources.FirstOrDefault(o => o.ResourceID == Guid.Empty);
                     SelectedAuditingSource = selectedAuditingSource;
