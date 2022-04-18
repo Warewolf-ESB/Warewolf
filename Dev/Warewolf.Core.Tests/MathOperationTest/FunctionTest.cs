@@ -11,9 +11,7 @@
 using System;
 using System.Collections.Generic;
 using Dev2.Data.MathOperations;
-using Dev2.MathOperations;
 using Infragistics.Calculations.CalcManager;
-using Infragistics.Calculations.Engine;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 

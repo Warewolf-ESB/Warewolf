@@ -49,7 +49,7 @@ namespace Warewolf.Tools.Specs.Toolbox.FileAndFolder.Rename
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Toolbox/FileAndFolder/Rename", "Rename", "\tIn order to be able to Rename File or Folder \r\n\tas a Warewolf user\r\n\tI want a to" +
-                    "ol that will rename a File or Floder at a given location", ProgrammingLanguage.CSharp, ((string[])(null)));
+                    "ol that will rename a File or Folder at a given location", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -4174,7 +4174,7 @@ this.RenameFileValidation("30", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local
         public virtual void RenameFileValidation_Variant32()
         {
 #line 293
-this.RenameFileValidation("31", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local", "1010/FORFILERENAMETESTING/renamed28.txt", "C:\\renamefile36.txt", "\"\"", "\"\"", "[[a]]:[[b]]", "ftp://DEVOPSPDC.premier.local:1002/FORFILERENAMETESTING/renamed28.txt", "dev2", "Q/ulw&]", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
+this.RenameFileValidation("31", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local", "1002/FORFILERENAMETESTING/renamed28.txt", "C:\\renamefile36.txt", "\"\"", "\"\"", "[[a]]:[[b]]", "ftp://DEVOPSPDC.premier.local:1002/FORFILERENAMETESTING/renamed28.txt", "dev2", "Q/ulw&]", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
         
