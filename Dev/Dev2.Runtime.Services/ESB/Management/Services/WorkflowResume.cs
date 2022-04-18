@@ -11,14 +11,17 @@
 
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Security.Principal;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Transactions;
 using System.Web;
 using Dev2.Common;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Communication;
 using Dev2.Data.TO;
@@ -72,25 +75,18 @@ namespace Dev2.Runtime.ESB.Management.Services
                 Dev2Logger.Error(errorMessage, GlobalConstants.WarewolfError);
                 return new ExecuteMessage { HasError = true, Message = new StringBuilder(errorMessage) };
             }
-            
-            var workspace = new Workspace(Guid.NewGuid());
-            try
+
+            using (var catalog = new ResourceCatalog(EsbManagementServiceLocator.GetServices()))
             {
-                ResourceCatalogInstance.RemoveFromResourceActivityCache(GlobalConstants.ServerWorkspaceID, resourceId);
-                var dynamicService = ResourceCatalogInstance.GetService(GlobalConstants.ServerWorkspaceID, resourceId, "");
-                if (dynamicService == null)
-                {
-                    //try and reload resource catalog to find any newly added resources
-                    ResourceCatalogInstance.Reload();
-                    dynamicService = ResourceCatalogInstance.GetService(GlobalConstants.ServerWorkspaceID, resourceId, "");
-                }
+                var dynamicService = catalog.GetService(GlobalConstants.ServerWorkspaceID, resourceId, "");
 
                 if (dynamicService is null)
                 {
                     return new ExecuteMessage
                     {
                         HasError = true,
-                        Message = new StringBuilder($"Error resuming. ServiceAction is null for Resource ID:{resourceId}")
+                        Message = new StringBuilder(
+                            $"Error resuming. ServiceAction is null for Resource ID:{resourceId}")
                     };
                 }
 
@@ -100,26 +96,29 @@ namespace Dev2.Runtime.ESB.Management.Services
                     return new ExecuteMessage
                     {
                         HasError = true,
-                        Message = new StringBuilder($"Error resuming. ServiceAction is null for Resource ID:{resourceId}")
+                        Message = new StringBuilder(
+                            $"Error resuming. ServiceAction is null for Resource ID:{resourceId}")
                     };
                 }
 
-                var container = CustomContainer.Get<IResumableExecutionContainerFactory>()?.New(startActivityId, sa, dataObject, workspace) ?? CustomContainer.CreateInstance<IResumableExecutionContainer>(startActivityId, sa, dataObject, workspace);
-                
+                var workspace = new Workspace(Guid.NewGuid());
+                var container =
+                    CustomContainer.Get<IResumableExecutionContainerFactory>()
+                        ?.New(startActivityId, sa, dataObject, workspace) ??
+                    CustomContainer.CreateInstance<IResumableExecutionContainer>(startActivityId, sa, dataObject,
+                        workspace);
+
                 using (container)
                 {
                     container.Execute(out ErrorResultTO errors, 0);
                     if (errors.HasErrors())
                     {
-                        return new ExecuteMessage { HasError = true, Message = new StringBuilder(errors.MakeDisplayReady()) };
+                        return new ExecuteMessage
+                            { HasError = true, Message = new StringBuilder(errors.MakeDisplayReady()) };
                     }
                 }
-                
+
                 return new ExecuteMessage { HasError = false, Message = new StringBuilder("Execution Completed.") };
-            }
-            finally
-            {
-                workspace = null;
             }
         }
 

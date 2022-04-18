@@ -26,6 +26,7 @@ using Dev2.Runtime.Security;
 using Dev2.Workspaces;
 using System;
 using System.Activities;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading;
 using Warewolf.Auditing;
@@ -434,13 +435,12 @@ namespace Dev2.Runtime.ESB.Execution
         private void ReleaseUnmanagedResources()
         {
             _resumeEnvironment = null;
-            base.Request = null;
-            base.DataObject = null;
-            base.ServiceAction = null;
-            base.TheWorkspace = null;
-            base.InstanceInputDefinition = null;
-            base.InstanceOutputDefinition = null;
-            
+            this.Request = null;
+            this.DataObject = null;
+            this.ServiceAction = null;
+            this.TheWorkspace = null;
+            this.InstanceInputDefinition = null;
+            this.InstanceOutputDefinition = null;
         }
     
         public void Dispose()
