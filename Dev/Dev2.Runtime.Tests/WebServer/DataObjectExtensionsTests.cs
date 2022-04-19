@@ -1235,8 +1235,6 @@ namespace Dev2.Tests.Runtime.WebServer
             StringAssert.Contains(executePayload, "Tests Invalid: 0");
         }
 
-
-
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DataObjectExtensions))]
@@ -1290,7 +1288,7 @@ namespace Dev2.Tests.Runtime.WebServer
                     }
                 } as IServiceTestModelTO));
 
-            var sut = DataObjectExtensions.RunMultipleTestBatchesAndReturnJSON(mockDSFDataObject.Object, new Mock<IPrincipal>().Object, _workspaceGuid, serializer, mockResourceCatalog.Object, mockTestCatalog.Object, out string executePayload, mockTestCoverageCatalog.Object, new DataObjectExtensions.ServiceTestExecutorWrapper());
+            var sut = DataObjectExtensions.RunMultipleTestBatchesAndReturnJSON(mockDSFDataObject.Object, null, _workspaceGuid, serializer, mockResourceCatalog.Object, mockTestCatalog.Object, out string executePayload, mockTestCoverageCatalog.Object, new DataObjectExtensions.ServiceTestExecutorWrapper());
 
             Assert.IsNotNull(executePayload);
             Assert.AreEqual("application/json", sut.ContentType);
@@ -1298,7 +1296,6 @@ namespace Dev2.Tests.Runtime.WebServer
             StringAssert.Contains(executePayload, "\"Result\": \"Invalid\",\r\n");
             StringAssert.Contains(executePayload, "\"Message\": \"Test has no selected nodes\"\r\n");
         }
-
 
         [TestMethod]
         [Owner("Siphamandla Dube")]

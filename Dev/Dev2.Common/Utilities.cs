@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
 using System.Threading;
+using Microsoft.AspNet.SignalR.Client;
 
 namespace Dev2.Common
 {
@@ -35,9 +36,33 @@ namespace Dev2.Common
             return source.Where(element => seenKeys.Add(keySelector(element)));
         }
 
+        public static IHubProxy PerformActionInsideImpersonatedContext(IPrincipal userPrinciple, Func<IHubProxy> actionToBePerformed)
+        {
+            if (userPrinciple == null || userPrinciple is GenericPrincipal)
+            {
+                return actionToBePerformed?.Invoke();
+            }
+            var impersonationContext = Impersonate(userPrinciple);
+            try
+            {
+                if (actionToBePerformed != null) 
+                {
+                    return WindowsIdentity.RunImpersonated(impersonationContext.AccessToken, actionToBePerformed);
+                }
+            }
+            catch (Exception e)
+            {
+                if (ServerUser.Identity is WindowsIdentity identity)
+                {
+                    return WindowsIdentity.RunImpersonated(identity.AccessToken, actionToBePerformed);
+                }
+            }
+            return null;
+        }
+        
         public static void PerformActionInsideImpersonatedContext(IPrincipal userPrinciple, Action actionToBePerformed)
         {
-            if (userPrinciple == null)
+            if (userPrinciple == null || userPrinciple is GenericPrincipal)
             {
                 actionToBePerformed?.Invoke();
             }
@@ -46,40 +71,30 @@ namespace Dev2.Common
                 var impersonationContext = Impersonate(userPrinciple);
                 try
                 {
-                    actionToBePerformed?.Invoke();
+                    if (actionToBePerformed != null) 
+                    {
+                        WindowsIdentity.RunImpersonated(impersonationContext.AccessToken, actionToBePerformed);
+                    }
                 }
                 catch (Exception e)
                 {
-                    impersonationContext?.Undo();
                     if (ServerUser.Identity is WindowsIdentity identity)
                     {
-                        impersonationContext = identity.Impersonate();
+                        WindowsIdentity.RunImpersonated(identity.AccessToken, actionToBePerformed);
                     }
-                    actionToBePerformed?.Invoke();
-                }
-                finally
-                {
-                    impersonationContext?.Undo();
                 }
             }
         }
 
-        private static WindowsImpersonationContext Impersonate(IPrincipal userPrinciple)
+        private static WindowsIdentity Impersonate(IPrincipal userPrinciple)
         {
-            WindowsImpersonationContext impersonationContext = null;
-            if (userPrinciple.Identity is WindowsIdentity identity)
+            if(!(userPrinciple.Identity is WindowsIdentity identity))
+                return null;
+            if (identity.IsAnonymous)
             {
-                if (identity.IsAnonymous)
-                {
-                    identity = ServerUser.Identity as WindowsIdentity;
-                }
-                if (identity != null)
-                {
-                    impersonationContext = identity.Impersonate();
-                }
+                identity = ServerUser.Identity as WindowsIdentity;
             }
-
-            return impersonationContext;
+            return identity;
         }
 
         public static IPrincipal OrginalExecutingUser { get; set; }

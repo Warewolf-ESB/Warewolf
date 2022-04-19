@@ -19,6 +19,9 @@ using log4net;
 using log4net.Appender;
 using log4net.Repository.Hierarchy;
 using Dev2.Common.Interfaces.Logging;
+#if !NETFRAMEWORK
+using Log4Net.Appenders.NetCore;
+#endif
 
 namespace Dev2.Common
 {

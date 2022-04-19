@@ -22,9 +22,9 @@ namespace Dev2.Data.PathOperations
 
     class WindowsImpersonationContextImpl : IWindowsImpersonationContext
     {
-        private readonly WindowsImpersonationContext _context;
+        private readonly WindowsIdentity _context;
 
-        public WindowsImpersonationContextImpl(WindowsImpersonationContext context)
+        public WindowsImpersonationContextImpl(WindowsIdentity context)
         {
             _context = context;
         }
@@ -36,7 +36,7 @@ namespace Dev2.Data.PathOperations
 
         public void Undo()
         {
-            _context.Undo();
+            _context.Dispose();
         }
     }
 
@@ -51,7 +51,7 @@ namespace Dev2.Data.PathOperations
                 using (safeToken)
                 {
                     var newID = new WindowsIdentity(safeToken.DangerousGetHandle());
-                    return new WindowsImpersonationContextImpl(newID.Impersonate());
+                    return new WindowsImpersonationContextImpl(newID);
                 }
             }
             return null;
