@@ -11,13 +11,17 @@
 
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Security.Principal;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
+using System.Transactions;
 using System.Web;
 using Dev2.Common;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Communication;
 using Dev2.Data.TO;
@@ -25,6 +29,7 @@ using Dev2.DynamicServices;
 using Dev2.Runtime.ESB.Management;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
+using Dev2.Runtime.ResourceCatalogImpl;
 using Dev2.Runtime.Security;
 using Dev2.Services.Security;
 using Dev2.Workspaces;
@@ -40,8 +45,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         private IResourceCatalog _resourceCatalog;
 
         public override string HandlesType() => nameof(WorkflowResume);
-
-        SemaphoreSlim _executionThrottler = new SemaphoreSlim(1, 1);
+        
         protected override ExecuteMessage ExecuteImpl(Dev2JsonSerializer serializer, Guid resourceId,
             Dictionary<string, StringBuilder> values)
         {
@@ -72,20 +76,17 @@ namespace Dev2.Runtime.ESB.Management.Services
                 return new ExecuteMessage { HasError = true, Message = new StringBuilder(errorMessage) };
             }
 
-            _executionThrottler.Wait();
-            IResumableExecutionContainer container;
-            try
+            using (var catalog = new ResourceCatalog(EsbManagementServiceLocator.GetServices()))
             {
-                ResourceCatalogInstance.RemoveFromResourceActivityCache(GlobalConstants.ServerWorkspaceID, resourceId);
-            
-                var dynamicService = ResourceCatalogInstance.GetService(GlobalConstants.ServerWorkspaceID, resourceId, "");
+                var dynamicService = catalog.GetService(GlobalConstants.ServerWorkspaceID, resourceId, "");
 
                 if (dynamicService is null)
                 {
                     return new ExecuteMessage
                     {
                         HasError = true,
-                        Message = new StringBuilder($"Error resuming. ServiceAction is null for Resource ID:{resourceId}")
+                        Message = new StringBuilder(
+                            $"Error resuming. ServiceAction is null for Resource ID:{resourceId}")
                     };
                 }
 
@@ -95,24 +96,30 @@ namespace Dev2.Runtime.ESB.Management.Services
                     return new ExecuteMessage
                     {
                         HasError = true,
-                        Message = new StringBuilder($"Error resuming. ServiceAction is null for Resource ID:{resourceId}")
+                        Message = new StringBuilder(
+                            $"Error resuming. ServiceAction is null for Resource ID:{resourceId}")
                     };
                 }
-            
-                container = CustomContainer.Get<IResumableExecutionContainerFactory>()?.New(startActivityId, sa, dataObject, new Workspace(Guid.NewGuid())) ?? CustomContainer.CreateInstance<IResumableExecutionContainer>(startActivityId, sa, dataObject, new Workspace(Guid.NewGuid()));
-            }
-            finally
-            {
-                _executionThrottler.Release();
-            }
-            container.Execute(out ErrorResultTO errors, 0);
 
-            if (errors.HasErrors())
-            {
-                return new ExecuteMessage { HasError = true, Message = new StringBuilder(errors.MakeDisplayReady()) };
-            }
+                var workspace = new Workspace(Guid.NewGuid());
+                var container =
+                    CustomContainer.Get<IResumableExecutionContainerFactory>()
+                        ?.New(startActivityId, sa, dataObject, workspace) ??
+                    CustomContainer.CreateInstance<IResumableExecutionContainer>(startActivityId, sa, dataObject,
+                        workspace);
 
-            return new ExecuteMessage { HasError = false, Message = new StringBuilder("Execution Completed.") };
+                using (container)
+                {
+                    container.Execute(out ErrorResultTO errors, 0);
+                    if (errors.HasErrors())
+                    {
+                        return new ExecuteMessage
+                            { HasError = true, Message = new StringBuilder(errors.MakeDisplayReady()) };
+                    }
+                }
+
+                return new ExecuteMessage { HasError = false, Message = new StringBuilder("Execution Completed.") };
+            }
         }
 
         public IResourceCatalog ResourceCatalogInstance

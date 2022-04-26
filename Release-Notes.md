@@ -1,3 +1,27 @@
+2.7.5.32 (21 April 2022)
+======================
+
+Bug Fixes
+----------
+- Changes to address Suspend tool memory spiking and general improvements to suspend tool
+
+2.7.5 (31 March 2022)
+======================
+
+Bug Fixes
+----------
+- Patched the debug output for workflows with multiple gate tools. The output appends to the correct gate tool now.
+- Suspend tool shouldn't throw a colleciton modified error when processing large amounts of transactions.
+
+2.7.4 (23 March 2022)
+======================
+
+Bug Fixes
+----------
+- Patch bug when using recordset indexes in a ForEach on CSV.
+- RabbitMQ trigger can now pass object type variables to Warewolf workflows.
+- Trigger queues default concurrency to 0 when saved with a blank concurrency.
+
 2.7.3 (04 March 2022)
 ======================
 

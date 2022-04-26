@@ -239,7 +239,8 @@ namespace Warewolf.Driver.Persistence.Drivers
                 
                 LoadAndRegisterTypes();
 
-                var currentState = jobDetails.History.OrderBy(s => s.CreatedAt).LastOrDefault();
+                var jdHistory = jobDetails.History.ToList();
+                var currentState = jdHistory.OrderBy(s => s.CreatedAt).LastOrDefault();
 
                 if (currentState?.StateName == "Succeeded" || currentState?.StateName == "ManuallyResumed")
                 {
@@ -470,7 +471,7 @@ namespace Warewolf.Driver.Persistence.Drivers
                 return GlobalConstants.Failed;
             }
             catch (Exception ex)
-            { 
+            {
                 //Note: these jobs may not be very safe to resume, but should be failed as they might be incomplete.
                 //It may not be safe to return the exception message from this exception to user, fix this with the final tool clean up
                 Throw(jobId: jobId, message: ex.Message?.ToString(), reason: "Execution return Exception: re-queue with caution.");

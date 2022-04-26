@@ -106,6 +106,8 @@ if ($Coverage.IsPresent) {
 	if (Test-Path "$TestResultsPath\Cobertura.xml") {
 		Remove-Item "$TestResultsPath\Cobertura.xml"
 	}
+	$CoverageConfigPath = ".\Microsoft.TestPlatform\tools\net451\Team Tools\Dynamic Code Coverage Tools\CodeCoverage.config"
+	(Get-Content $CoverageConfigPath).replace('<UseVerifiableInstrumentation>true</UseVerifiableInstrumentation>', '<UseVerifiableInstrumentation>false</UseVerifiableInstrumentation>') | Set-Content $CoverageConfigPath
 }
 if ($StartFTPServer.IsPresent) {
 	pip install pyftpdlib
