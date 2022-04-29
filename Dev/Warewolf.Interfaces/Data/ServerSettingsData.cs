@@ -23,8 +23,6 @@ namespace Warewolf.Configuration
         public string ExecutionLogLevel{ get; set; }
         public int? LogFlushInterval { get; set; }
         
-        [Obsolete("AuditFilePath is deprecated. It will be deleted in future releases.")]
-        public string AuditFilePath { get; set; }
         public bool IncludeEnvironmentVariable { get; set; }
 
         public bool Equals(ServerSettingsData other)
@@ -41,9 +39,6 @@ namespace Warewolf.Configuration
             equals &= EnableDetailedLogging == other.EnableDetailedLogging;
             equals &= ExecutionLogLevel == other.ExecutionLogLevel;
             equals &= LogFlushInterval == other.LogFlushInterval;
-#pragma warning disable 618
-            equals &= AuditFilePath == other.AuditFilePath;
-#pragma warning restore 618
             equals &= IncludeEnvironmentVariable == other.IncludeEnvironmentVariable;
             equals &= Sink == other.Sink;
             return equals;
