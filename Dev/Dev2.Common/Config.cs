@@ -188,6 +188,9 @@ namespace Dev2.Common
             }
             return DefaultSink;
         }
+        
+        [Obsolete("AuditFilePath is deprecated. It will be deleted in future releases.")]
+        public string AuditFilePath => LegacySettings.DefaultAuditPath;
 
         public bool IncludeEnvironmentVariable
         {
