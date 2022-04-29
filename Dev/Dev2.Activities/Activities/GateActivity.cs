@@ -106,7 +106,7 @@ namespace Dev2.Activities
             {
                 _stateNotifier?.LogActivityExecuteState(this);
 
-                bool firstExecution = true;
+                var firstExecution = true;
                 if (_dataObject.Gates.TryGetValue(this, out (RetryState, IEnumerator<bool>) retryState))
                 {
                     firstExecution = false;
@@ -126,7 +126,7 @@ namespace Dev2.Activities
                 }
                 if (_dataObject.IsDebugMode())
                 {
-                    var debugItemStaticDataParams = new DebugItemStaticDataParams("Retry: " + retryState.Item1.NumberOfRetries.ToString(), "", true);
+                    var debugItemStaticDataParams = new DebugItemStaticDataParams("Retry: " + retryState.Item1.NumberOfRetries, "", true);
                     AddDebugOutputItem(debugItemStaticDataParams);
 
                 }
@@ -150,7 +150,7 @@ namespace Dev2.Activities
                     return ExecuteNormal(data, update, allErrors);
                 }
 
-                return PrintChildnodeOutputUnderCorrectParentNode(data, update, allErrors, retryState.Item2);            
+                return PrintChildnodeOutputUnderCorrectParentNode(data, update, allErrors, retryState);            
 
             }
             catch (Exception e)
@@ -170,14 +170,14 @@ namespace Dev2.Activities
             }
         }
 
-        public IDev2Activity PrintChildnodeOutputUnderCorrectParentNode(IDSFDataObject data, int update, IErrorResultTO allErrors, IEnumerator<bool> _algo)
+        public IDev2Activity PrintChildnodeOutputUnderCorrectParentNode(IDSFDataObject data, int update, IErrorResultTO allErrors, (RetryState, IEnumerator<bool>) retryState)
         {
             prevGateUniID = UniqueID;
-            UniqueID = Guid.NewGuid().ToString();
+            UniqueID = Guid.NewGuid().ToString();                      
             DispatchDebugState(data, StateType.Before, update);
             DispatchDebugState(data, StateType.After, update);
             isSecTry = true;
-            var nextGateAct = ExecuteRetry(data, update, allErrors, _algo);
+            var nextGateAct = ExecuteRetry(data, update, allErrors, retryState.Item2);
             UniqueID = prevGateUniID;
             return nextGateAct;
         }
@@ -441,7 +441,7 @@ namespace Dev2.Activities
         {
             if (GateOptions.GateOpts is Continue)
             {
-                _retryState.NumberOfRetries++;              
+                _retryState.NumberOfRetries++;                
             }
             else
             {

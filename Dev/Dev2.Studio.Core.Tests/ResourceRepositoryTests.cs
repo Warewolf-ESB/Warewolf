@@ -2699,7 +2699,7 @@ namespace BusinessDesignStudio.Unit.Tests
 
         [TestMethod]
         [ExpectedException(typeof(WarewolfSaveException))]
-        public void SaveAuditingSettings_OutputNull()
+        public void ResourceRepository_SaveAuditingSettings_OutputNull()
         {
             //Arrange
             Setup();
@@ -2711,6 +2711,83 @@ namespace BusinessDesignStudio.Unit.Tests
             _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
             var auditingSettingsDataSettingsData = new LegacySettingsData() {AuditFilePath = "somePath"};
             _repo.SaveAuditingSettings(_environmentModel.Object, auditingSettingsDataSettingsData);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory("SaveAuditingSettings")]
+        public void ResourceRepository_SaveAuditingSettings_OutputNotNull_ShouldSuccess()
+        {
+            //Arrange
+            Setup();
+            var conn = SetupConnection();
+
+            var serializer = new Dev2JsonSerializer();
+            var returnedPayLoad = serializer.SerializeToBuilder(new ExecuteMessage
+            {
+                HasError = false,
+                Message = new StringBuilder("test_payload")
+            });
+
+            var sentPayLoad = new StringBuilder();
+            conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>()))
+                .Callback((StringBuilder o, Guid g1) => { sentPayLoad = o; })
+                .Returns(returnedPayLoad);
+
+            _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
+            var auditingSettingsDataSettingsData = new AuditingSettingsData
+            {
+                Endpoint = "someEndpoint",
+                IncludeEnvironmentVariable = true,
+                EncryptDataSource = true,
+                LoggingDataSource = new NamedGuidWithEncryptedPayload
+                {
+                    Name = "some-name",
+                    Payload = "some-payload",
+                    Value = Guid.NewGuid()
+                }
+            };
+            var result = _repo.SaveAuditingSettings(_environmentModel.Object, auditingSettingsDataSettingsData);
+
+            Assert.IsFalse(result.HasError);
+            Assert.AreEqual("test_payload", result.Message.ToString());
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory("SaveAuditingSettings")]
+        public void ResourceRepository_SaveAuditingSettings_OutputNotNull_ShouldSuccess1()
+        {
+            //Arrange
+            Setup();
+            var conn = SetupConnection();
+
+            var serializer = new Dev2JsonSerializer();
+            var returnedPayLoad = serializer.SerializeToBuilder(new ExecuteMessage
+            {
+                HasError = false,
+                Message = new StringBuilder("test_payload")
+            });
+
+            var sentPayLoad = new StringBuilder();
+            conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>()))
+                .Callback((StringBuilder o, Guid g1) => { sentPayLoad = o; })
+                .Returns(returnedPayLoad);
+
+            _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
+            var auditingSettingsDataSettingsData = new TestAuditSettingsDataUnknown
+            {
+                Endpoint = "someEndpoint",
+                IncludeEnvironmentVariable = true,
+            };
+            var result = _repo.SaveAuditingSettings(_environmentModel.Object, auditingSettingsDataSettingsData);
+
+            Assert.IsTrue(result.HasError);
+            Assert.AreEqual("SettingsDataType: TestAuditSettingsDataUnknown unknown.", result.Message.ToString());
+        }
+
+        internal class TestAuditSettingsDataUnknown : AuditSettingsDataBase
+        { 
         }
 
         [TestMethod]

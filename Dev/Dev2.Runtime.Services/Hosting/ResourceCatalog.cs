@@ -19,6 +19,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
@@ -34,6 +35,7 @@ using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using Warewolf.ResourceManagement;
 using Dev2.Common.Interfaces.Wrappers;
+using Dev2.Runtime.ResourceCatalogImpl;
 using Dev2.Services.Security;
 using Warewolf.Data;
 using Warewolf.Services;
@@ -127,7 +129,6 @@ namespace Dev2.Runtime.Hosting
             }
         }
         public ConcurrentDictionary<Guid, List<IResource>> WorkspaceResources { get; private set; }
-
         public int GetResourceCount(Guid workspaceID) => _catalogPluginContainer.LoadProvider.GetResourceCount(workspaceID);
         public IResource GetResource(Guid workspaceID, string resourceName) => _catalogPluginContainer.LoadProvider.GetResource(workspaceID, resourceName, "Unknown", null);
         public IResource GetResource(Guid workspaceID, string resourceName, string resourceType, string version)
@@ -445,6 +446,11 @@ namespace Dev2.Runtime.Hosting
 
         public void Dispose()
         {
+            DisposeAsync();
+        }
+
+        private async Task DisposeAsync()
+        {
             lock (_loadLock)
             {
                 WorkspaceLocks.Clear();
@@ -452,8 +458,11 @@ namespace Dev2.Runtime.Hosting
             lock (_loadLock)
             {
                 WorkspaceResources.Clear();
+                WorkspaceResources = new ConcurrentDictionary<Guid, List<IResource>>();
             }
             _parsers = new ConcurrentDictionary<Guid, IResourceActivityCache>();
+            
+            GC.SuppressFinalize(this);
         }
 
         static ConcurrentDictionary<Guid, IResourceActivityCache> _parsers = new ConcurrentDictionary<Guid, IResourceActivityCache>();
