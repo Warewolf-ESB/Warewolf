@@ -4,7 +4,6 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{6EB59EEE-4E16-4F29-B1B0-715E56E9139D}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <TargetFramework>net48</TargetFramework>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <EnableDefaultItems>false</EnableDefaultItems>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
@@ -15,6 +14,7 @@
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
 	<CodeAnalysisRuleSet>..\.sonarlint\warewolf_dotnet_frameworkcsharp.ruleset</CodeAnalysisRuleSet>
+	<TargetFramework>net48</TargetFramework>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>

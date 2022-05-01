@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>net48</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <CodeAnalysisRuleSet>..\.sonarlint\warewolf_dotnet_frameworkcsharp.ruleset</CodeAnalysisRuleSet>
@@ -15,9 +15,6 @@
   </ItemGroup>
   <ItemGroup>
     <AdditionalFiles Include="..\.sonarlint\warewolf_dotnet_framework\CSharp\SonarLint.xml" Link="SonarLint.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="HtmlTextWriter" Version="2.1.1" />
   </ItemGroup>
 
   <ItemGroup>

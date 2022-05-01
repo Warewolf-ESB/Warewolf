@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿#if NETFRAMEWORK
+using System.Net;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
@@ -17,3 +18,4 @@ namespace Dev2.Web2
         }
     }
 }
+#endif

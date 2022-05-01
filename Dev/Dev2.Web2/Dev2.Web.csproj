@@ -175,6 +175,8 @@
     </Compile>
     <Compile Include="Models\Auditing\AuditingViewModel.cs" />
     <Compile Include="..\AssemblyCommonInfo.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
     <AdditionalFiles Include="..\.sonarlint\warewolf_dotnet_framework\CSharp\SonarLint.xml" Link="SonarLint.xml" />
@@ -521,5 +523,9 @@
     <PackageReference Include="RestSharp" Version="106.11.4" />
     <PackageReference Include="WebGrease" Version="1.6.0" />
     <PackageReference Include="popper.js" Version="1.16.0" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework'">
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNet.WebApi.OwinSelfHost" />
   </ItemGroup>
 </Project>
