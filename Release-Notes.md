@@ -5,6 +5,7 @@ Bug Fixes
 ----------
 - Patch for logging source settings sometimes not saving.
 - Patch for workflow test input values blank sometimes.
+- Patch for RabbitMQ tool sometimes not loading password value.
 
 2.7.5.32 (21 April 2022)
 ======================
