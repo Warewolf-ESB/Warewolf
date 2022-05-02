@@ -1,9 +1,17 @@
+2.7.6 (2 May 2022)
+======================
+
+Bug Fixes
+----------
+- Patch for logging source settings sometimes not saving.
+- Patch for workflow test input values blank sometimes.
+
 2.7.5.32 (21 April 2022)
 ======================
 
 Bug Fixes
 ----------
-- Changes to address Suspend tool memory spiking and general improvements to suspend tool
+- Changes to address Suspend tool memory spiking and general improvements to suspend tool.
 
 2.7.5 (31 March 2022)
 ======================
