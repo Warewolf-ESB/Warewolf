@@ -24,6 +24,10 @@ namespace Warewolf.Tests
         {
             Config.Auditing.IncludeEnvironmentVariable = true;
             Config.Auditing.Save();
+            
+            Config.Legacy.IncludeEnvironmentVariable = true;
+            Config.Legacy.Save();
+            
             var executionID = Guid.NewGuid();
             var mockDataObject = SetupDataObjectWithAssignedInputs(executionID);
             var auditLog = new Audit(mockDataObject.Object, "LogAdditionalDetail", "Test", null, null);
@@ -38,6 +42,10 @@ namespace Warewolf.Tests
         {
             Config.Auditing.IncludeEnvironmentVariable = false;
             Config.Auditing.Save();
+            
+            Config.Legacy.IncludeEnvironmentVariable = false;
+            Config.Legacy.Save();
+            
             var executionID = Guid.NewGuid();
             var mockDataObject = SetupDataObjectWithAssignedInputs(executionID);
             var auditLog = new Audit(mockDataObject.Object, "LogAdditionalDetail", "Test", null, null);
