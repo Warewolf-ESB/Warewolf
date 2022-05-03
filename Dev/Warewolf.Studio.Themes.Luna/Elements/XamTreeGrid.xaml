@@ -10,6 +10,7 @@
                     xmlns:editors="http://infragistics.com/Editors"
                     xmlns:system="clr-namespace:System;assembly=mscorlib"
                     xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna"
+                    xmlns:igWPF="http://schemas.infragistics.com/xaml/wpf"
                     mc:Ignorable="d">
 
     <ResourceDictionary.MergedDictionaries>
@@ -21,7 +22,7 @@
     <!-- ____________________________Converters______________________________________ -->
     <igDp:TextAlignmentToHorizontalAlignmentConverter x:Key="TextAlignmentToHorizontalAlignmentConverter"/>
 
-    <controls:NotBoolToVisibilityConverter x:Key="NotBoolToVisConverter" />
+    <igWPF:NotBoolToVisibilityConverter x:Key="NotBoolToVisConverter" />
     <controls:StringFormatConverter x:Key="StringFormatConverter" />
     <controls:NullToFalseConverter x:Key="NullToFalseConverter" />
 

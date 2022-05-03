@@ -40,9 +40,6 @@
     <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1">
-      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Practices.Prism.PubSubEvents, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />

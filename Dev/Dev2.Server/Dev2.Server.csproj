@@ -181,6 +181,9 @@
     <Reference Include="IKVM.Runtime.JNI">
       <HintPath>..\Binaries\IKVM.Runtime.JNI.dll</HintPath>
     </Reference>
+    <Reference Include="InfragisticsWPF4.v15.1, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\Binaries\InfragisticsWPF4.v15.1.dll</HintPath>
+    </Reference>
     <Reference Include="IronPython.Modules, Version=2.7.0.40, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\IronPython.Modules.dll</HintPath>
