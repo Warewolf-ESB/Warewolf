@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if NETFRAMEWORK
+using System;
 using System.Windows.Input;
 
 namespace Dev2.Common.Interfaces
@@ -25,3 +26,4 @@ namespace Dev2.Common.Interfaces
         IWcfServerSource FetchSource(Guid resourceID);
     }
 }
+#endif

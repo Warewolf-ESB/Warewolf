@@ -102,7 +102,9 @@ namespace Dev2.Studio
             }
         }
 
+#if NETFRAMEWORK
         [PrincipalPermission(SecurityAction.Demand)] // Principal must be authenticated
+#endif
         protected override void OnStartup(System.Windows.StartupEventArgs e)
         {
             CustomContainer.Register<IFieldAndPropertyMapper>(new FieldAndPropertyMapper());

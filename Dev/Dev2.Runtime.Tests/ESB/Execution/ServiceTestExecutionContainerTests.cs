@@ -1092,7 +1092,8 @@ Test Failed because of some reasons
             mockTestCatalog.VerifyAll();
             mockDSFDataObject.VerifyAll();
         }
-
+        
+#if NETFRAMEWORK
         public class FakeWcfProxyService : IWcfProxyService
         {
             public IOutputDescription ExecuteWebService(WcfService src) => new OutputDescription();
@@ -1109,7 +1110,8 @@ Test Failed because of some reasons
                 throw new NotImplementedException();
             }
         }
-
+#endif
+        
         internal class ServiceTestExecutionContainerMock : ServiceTestExecutionContainer
         {
             public ServiceTestExecutionContainerMock(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel, EsbExecuteRequest request)

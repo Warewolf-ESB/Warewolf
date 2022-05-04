@@ -131,12 +131,14 @@ namespace Dev2.Studio.Core
         public string TestPluginService(IPluginService inputValues) => UpdateManagerProxy.TestPluginService(inputValues);
 
         public string TestPluginService(IComPluginService inputValues) => UpdateManagerProxy.TestComPluginService(inputValues);
+#if NETFRAMEWORK
 
         public void Save(IWcfServerSource wcfSource) => UpdateManagerProxy.SaveWcfSource(wcfSource, GlobalConstants.ServerWorkspaceID);
 
         public string TestWcfService(IWcfService inputValues) => UpdateManagerProxy.TestWcfService(inputValues);
 
         public string TestConnection(IWcfServerSource wcfServerSource) => UpdateManagerProxy.TestWcfServiceSource(wcfServerSource);
+#endif
 
         public Action<Guid, bool> ServerSaved { get; set; }
 

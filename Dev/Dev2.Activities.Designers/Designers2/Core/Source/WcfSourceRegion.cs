@@ -1,3 +1,4 @@
+#if NETFRAMEWORK
 #pragma warning disable
 ﻿using System;
 using System.Activities.Presentation.Model;
@@ -279,3 +280,4 @@ namespace Dev2.Activities.Designers2.Core.Source
         }
     }
 }
+#endif

@@ -8,8 +8,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
-using System.Collections.Generic;
 using Dev2.Activities;
 using Dev2.Activities.Designers2.AggregateCalculate;
 using Dev2.Activities.Designers2.BaseConvert;
@@ -97,7 +95,6 @@ using Dev2.Activities.RabbitMQ.Publish;
 using Dev2.Activities.Scripting;
 using Dev2.Activities.SelectAndApply;
 using Dev2.Activities.Sharepoint;
-using Dev2.Activities.WcfEndPoint;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Dev2.Activities.Designers2.Decision;
 using Dev2.Activities.Designers2.Switch;
@@ -122,12 +119,18 @@ using Dev2.Activities.Designers2.SuspendExecution;
 using Dev2.Activities.Designers2.Web_Post;
 using Dev2.Activities.Designers2.WebGet;
 using Dev2.Activities.Designers2.Web_Post_New;
+using System;
+using System.Collections.Generic;
+#if NETFRAMEWORK
+using Dev2.Annotations;
+using Dev2.Activities.WcfEndPoint;
+#endif
 
 namespace Dev2
 {
     public static class DesignerAttributeMap
     {
-        public static readonly Dictionary<Type, Type> DeprecatedDesignerAttributes = new Dictionary<Type, Type>
+        public static readonly System.Collections.Generic.Dictionary<Type, Type> DeprecatedDesignerAttributes = new Dictionary<Type, Type>
         {
             // DEPRECATED
 #pragma warning disable 618
@@ -228,7 +231,9 @@ namespace Dev2
             {typeof(SharepointCopyFileActivity), typeof(SharePointCopyFileDesignerViewModel)},
             {typeof(SharepointDeleteFileActivity), typeof(SharePointDeleteFileDesignerViewModel)},
             {typeof(SharepointMoveFileActivity), typeof(SharePointMoveFileDesignerViewModel)},
+#if NETFRAMEWORK
             {typeof(DsfWcfEndPointActivity), typeof(WcfEndPointViewModel)},
+#endif
             {typeof(PublishRabbitMQActivity), typeof(RabbitMQPublishDesignerViewModel2)},
             {typeof(DsfPublishRabbitMQActivity), typeof(RabbitMQPublishDesignerViewModel)},
             {typeof(DsfSelectAndApplyActivity), typeof(SelectAndApplyDesignerViewModel)},

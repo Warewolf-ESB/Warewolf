@@ -1,4 +1,4 @@
-
+#if NETFRAMEWORK
 
 using System;
 using System.ServiceModel;
@@ -28,3 +28,4 @@ namespace Dev2.Runtime.DynamicProxy
         public object Proxy => ObjectInstance;
     }
 }
+#endif

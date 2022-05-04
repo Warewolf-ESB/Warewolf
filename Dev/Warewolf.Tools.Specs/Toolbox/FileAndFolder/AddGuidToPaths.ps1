@@ -51,12 +51,13 @@
     Foreach-Object {
         (Get-Content $_) | 
             Foreach-Object {
-                $_
-                if ($_ -eq "                    `"FileRenameFromUNCWithoutOverwrite`"};") 
+                if ($_ -eq "            if ((exampleTags != null))" -and $PreviousLine -eq "                    `"FileRenameFromUNCWithoutOverwrite`"};") 
                 {
 					"            var getGuid = Dev2.Activities.Specs.BaseTypes.CommonSteps.GetGuid();"
 					"            sourceLocation = Dev2.Activities.Specs.BaseTypes.CommonSteps.AddGuidToPath(sourceLocation, getGuid);"
 					"            destinationLocation = Dev2.Activities.Specs.BaseTypes.CommonSteps.AddGuidToPath(destinationLocation, getGuid);"
                 }
+                $_
+                $PreviousLine = $_
     } | Set-Content $_
 }

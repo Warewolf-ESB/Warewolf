@@ -83,7 +83,9 @@ using Dev2.Activities.RabbitMQ.Consume;
 using Dev2.Activities.RabbitMQ.Publish;
 using Dev2.Activities.SelectAndApply;
 using Dev2.Activities.Sharepoint;
+#if NETFRAMEWORK
 using Dev2.Activities.WcfEndPoint;
+#endif
 using Dev2.Studio.ViewModels.Workflow;
 using System;
 using System.Activities.Presentation;
@@ -214,7 +216,9 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(SharepointCopyFileActivity), typeof(SharePointCopyFileDesigner) },
                 { typeof(SharepointDeleteFileActivity), typeof(SharePointDeleteFileDesigner) },
                 { typeof(SharepointMoveFileActivity), typeof(SharePointMoveFileDesigner) },
+#if NETFRAMEWORK
                 { typeof(DsfWcfEndPointActivity),typeof(WcfEndPointDesigner)},
+#endif
                 { typeof(PublishRabbitMQActivity), typeof(RabbitMQPublishDesigner2) },
                 { typeof(DsfPublishRabbitMQActivity), typeof(RabbitMQPublishDesigner) },
                 { typeof(DsfSelectAndApplyActivity), typeof(SelectAndApplyDesigner) },

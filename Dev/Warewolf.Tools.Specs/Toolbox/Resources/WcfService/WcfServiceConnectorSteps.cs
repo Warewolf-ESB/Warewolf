@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if NETFRAMEWORK
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -252,3 +253,4 @@ namespace Dev2.Activities.Specs.Toolbox.WcfService
 
     }
 }
+#endif

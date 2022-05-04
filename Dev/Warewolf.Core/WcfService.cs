@@ -1,4 +1,5 @@
-﻿using Dev2.Common.Interfaces;
+﻿#if NETFRAMEWORK
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.DB;
 using System;
 using System.Collections.Generic;
@@ -16,3 +17,4 @@ namespace Warewolf.Core
         public IWcfAction Action { get; set; }
     }
 }
+#endif

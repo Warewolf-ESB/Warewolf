@@ -26,12 +26,12 @@ namespace Warewolf.Web.Tests
     {
         [TestMethod]
         [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(IHttpClientFactory))]
+        [TestCategory("IHttpClientFactory")]
         public void HttpClientFactory_ProcessMessage_Success()
         {
             //-----------------------------Arrange------------------------------
             var mockHttpClient = new Mock<IHttpClient>();
-            var mockHttpClientFactory = new Mock<IHttpClientFactory>();
+            var mockHttpClientFactory = new Mock<Common.IHttpClientFactory>();
             var headers = new Headers();
             headers["Warewolf-Custom-Transaction-Id"] = new [] {"customTransactionID"};
             var response = new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent("Connected") };
@@ -52,11 +52,11 @@ namespace Warewolf.Web.Tests
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory(nameof(IHttpClientFactory))]
+        [TestCategory("IHttpClientFactory")]
         public void HttpClientFactory_New_String_With_Username_Password_Success()
         {
             //-----------------------------Arrange------------------------------
-            var mockHttpClientFactory = new Mock<IHttpClientFactory>();
+            var mockHttpClientFactory = new Mock<Common.IHttpClientFactory>();
             var headers = new Headers();
             headers["Warewolf-Custom-Transaction-Id"] = new [] {"customTransactionID"};
             mockHttpClientFactory.Setup(o => o.New(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(),headers));
@@ -70,11 +70,11 @@ namespace Warewolf.Web.Tests
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory(nameof(IHttpClientFactory))]
+        [TestCategory("IHttpClientFactory")]
         public void HttpClientFactory_New_Uri_With_Username_Password_Success()
         {
             //-----------------------------Arrange------------------------------
-            var mockHttpClientFactory = new Mock<IHttpClientFactory>();
+            var mockHttpClientFactory = new Mock<Common.IHttpClientFactory>();
             var headers = new Headers();
             headers["Warewolf-Custom-Transaction-Id"] = new [] {"customTransactionID"};
             mockHttpClientFactory.Setup(o => o.New(It.IsAny<Uri>(), It.IsAny<string>(), It.IsAny<string>(),headers));
@@ -89,7 +89,7 @@ namespace Warewolf.Web.Tests
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory(nameof(IHttpClientFactory))]
+        [TestCategory("IHttpClientFactory")]
         public void HttpClientFactory_New_String_With_Username_Password_HasCredentails_True()
         {
             //-----------------------------Arrange------------------------------
@@ -107,7 +107,7 @@ namespace Warewolf.Web.Tests
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory(nameof(IHttpClientFactory))]
+        [TestCategory("IHttpClientFactory")]
         public void HttpClientFactory_New_Uri_With_Username_Password_HasCredentails_True()
         {
             //-----------------------------Arrange------------------------------

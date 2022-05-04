@@ -2379,6 +2379,7 @@ namespace Dev2.Core.Tests
             mockWM.Verify(manager => manager.EditResource(It.IsAny<ISharepointServerSource>(), view.Object));
         }
 
+#if NETFRAMEWORK
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory("MainViewModel_EditWcfSource")]
@@ -2406,6 +2407,7 @@ namespace Dev2.Core.Tests
             mockWM.Verify(manager => manager.EditResource(It.IsAny<IWcfServerSource>(), view.Object));
             _shellViewModel.EditResource(source.Object);
         }
+#endif
 
         [TestMethod]
         [Owner("Pieter Terblanche")]

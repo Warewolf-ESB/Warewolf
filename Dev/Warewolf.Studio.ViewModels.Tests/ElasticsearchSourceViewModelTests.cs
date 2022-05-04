@@ -35,7 +35,7 @@ using Warewolf.UnitTestAttributes;
 namespace Warewolf.Studio.ViewModels.Tests
 {
     [TestClass]
-    public class ElasticsearchSourceViewModelTests
+    public class ElasticsearchSourceViewModelTests : IDisposable
     {
         Mock<IElasticsearchSourceModel> _elasticsearchSourceModel;
         Mock<IRequestServiceNameViewModel> _requestServiceNameViewModel;
@@ -1056,6 +1056,13 @@ namespace Warewolf.Studio.ViewModels.Tests
             viewModel.TestCommand.Execute(null);
             Assert.IsTrue(viewModel.TestFailed);
             _popupController.Verify(p => p.ShowInvalidElasticsearchIndexFormatMessage(expectedSearchIndex), Times.Once());
+        }
+
+        public void Dispose()
+        {
+            _requestServiceNameViewModelTask?.Dispose();
+            _elasticsearchourceViewModelWithTask?.Dispose();
+            _elasticsearchSourceViewModelWithElasticsearchServiceSourceDefinition?.Dispose();
         }
     }
 }

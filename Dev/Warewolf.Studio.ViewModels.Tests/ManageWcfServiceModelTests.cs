@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if NETFRAMEWORK
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Dev2.Common.Interfaces;
@@ -113,3 +114,4 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
     }
 }
+#endif

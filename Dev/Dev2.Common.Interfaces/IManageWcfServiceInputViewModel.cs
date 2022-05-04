@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿#if NETFRAMEWORK
+using System.Collections.Generic;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ToolBase;
@@ -20,3 +21,4 @@ namespace Dev2.Common.Interfaces
         bool IsGenerateInputsEmptyRows { get; set; }
     }
 }
+#endif

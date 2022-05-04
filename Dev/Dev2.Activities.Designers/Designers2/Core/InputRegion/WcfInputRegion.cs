@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if NETFRAMEWORK
+using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -257,3 +258,4 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
         #endregion
     }
 }
+#endif

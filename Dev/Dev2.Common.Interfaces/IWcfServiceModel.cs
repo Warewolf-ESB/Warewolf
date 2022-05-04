@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿#if NETFRAMEWORK
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 namespace Dev2.Common.Interfaces
@@ -13,3 +14,4 @@ namespace Dev2.Common.Interfaces
         IStudioUpdateManager UpdateRepository { get; }
     }
 }
+#endif

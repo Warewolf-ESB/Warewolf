@@ -635,6 +635,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Activity
             Assert.IsTrue(@equals);
         }
 
+#if NETFRAMEWORK
         [TestMethod]
         [Timeout(60000)]
         public void SavedSource_Null_Object_Is_NotEqual()
@@ -695,6 +696,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Activity
             var secondWcfServiceSourceDefinition = new WcfServiceSourceDefinition { EndpointUrl = "charlie" };
             Assert.IsTrue(firstWcfServiceSourceDefinition != secondWcfServiceSourceDefinition, "Not equals operator doesnt work.");
         }
+#endif
 
         [TestMethod]
         [Timeout(60000)]

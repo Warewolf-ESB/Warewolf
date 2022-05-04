@@ -1,3 +1,4 @@
+#if NETFRAMEWORK
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
@@ -84,3 +85,4 @@ namespace Dev2.Runtime.ESB.Management.Services
         public string HandlesType() => "TestWcfService";
     }
 }
+#endif

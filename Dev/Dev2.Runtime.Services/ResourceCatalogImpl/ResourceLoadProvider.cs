@@ -314,8 +314,10 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                         return typeof(RabbitMQSource);
                     case nameof(enSourceType.ExchangeSource):
                         return typeof(ExchangeSource);
+#if NETFRAMEWORK
                     case nameof(enSourceType.WcfSource):
                         return typeof(WcfSource);
+#endif
                     case nameof(enSourceType.ComPluginSource):
                         return typeof(ComPluginSource);
                     case nameof(enSourceType.ElasticsearchSource):

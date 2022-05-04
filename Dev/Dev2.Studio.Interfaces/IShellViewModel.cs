@@ -53,8 +53,10 @@ namespace Dev2.Studio.Interfaces
         void EditResource(IElasticsearchSourceDefinition selectedSource, IWorkSurfaceKey key);
         void EditResource(IRabbitMQServiceSourceDefinition selectedSource);
         void EditResource(IRabbitMQServiceSourceDefinition selectedSource, IWorkSurfaceKey key);
+#if NETFRAMEWORK
         void EditResource(IWcfServerSource selectedSource);
         void EditResource(IWcfServerSource selectedSource, IWorkSurfaceKey key);
+#endif
         void EditResource(IComPluginSource selectedSource);
         void EditResource(IComPluginSource selectedSource, IWorkSurfaceKey key);
     }
@@ -156,7 +158,9 @@ namespace Dev2.Studio.Interfaces
         IAuthorizeCommand<string> NewRabbitMQSourceCommand { get; }
         IAuthorizeCommand<string> NewSharepointSourceCommand { get; }
         IAuthorizeCommand<string> NewDropboxSourceCommand { get; }
+#if NETFRAMEWORK
         IAuthorizeCommand<string> NewWcfSourceCommand { get; }
+#endif
         IExplorerViewModel ExplorerViewModel { get; set; }
         IPopupController PopupProvider { get; set; }
         IServer LocalhostServer { get; }

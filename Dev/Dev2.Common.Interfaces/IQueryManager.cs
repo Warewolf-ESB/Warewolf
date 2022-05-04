@@ -49,8 +49,10 @@ namespace Dev2.Common.Interfaces
 
         IEnumerable<IRabbitMQServiceSourceDefinition> FetchRabbitMQServiceSources();
         IEnumerable<IElasticsearchSourceDefinition> FetchElasticsearchServiceSources();
+#if NETFRAMEWORK
         IList<IWcfServerSource> FetchWcfSources();
         IList<IWcfAction> WcfActions(IWcfServerSource source);
+#endif
 
         Task<List<string>> LoadDuplicates();
     }

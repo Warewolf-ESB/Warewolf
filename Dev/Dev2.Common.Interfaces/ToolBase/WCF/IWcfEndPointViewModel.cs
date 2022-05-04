@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if NETFRAMEWORK
+using System;
 using System.Collections.Generic;
 using Dev2.Common.Interfaces.DB;
 
@@ -21,3 +22,4 @@ namespace Dev2.Common.Interfaces.ToolBase.WCF
         ICollection<IServiceInput> Inputs { get; set; } 
     }
 }
+#endif

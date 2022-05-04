@@ -1,3 +1,4 @@
+#if NETFRAMEWORK
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
@@ -38,7 +39,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                 throw new DynamicProxyException(ErrorResource.NoContractFound);
             }
 
-            var proxy = factory.CreateProxy(contract.Name);
+            var proxy = factory.CreateProxy((string)contract.Name);
 
             var parameters = src.Method.Parameters?.Select(a => new MethodParameter { Name = a.Name, Value = a.Value, TypeName = a.TypeName })
                                  .ToList() ?? new List<MethodParameter>();
@@ -73,7 +74,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                 throw new DynamicProxyException(ErrorResource.NoContractFound);
             }
 
-            var proxy = factory.CreateProxy(contract.Name);
+            var proxy = factory.CreateProxy((string)contract.Name);
 
             var parameters = action.Inputs?.Select(
                                  a =>
@@ -147,3 +148,4 @@ namespace Dev2.Runtime.ServiceModel.Data
         }
     }
 }
+#endif

@@ -501,7 +501,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             };
             var modelItem = CreateModelItem(activity);
             var viewModel = new ServiceDesignerViewModel(modelItem, rootModel.Object, envRepository.Object, new Mock<IEventAggregator>().Object, new SynchronousAsyncWorker());
-            var privateType = new PrivateType(typeof(ServiceDesignerViewModel));
+            var privateType = new Warewolf.Testing.PrivateObject(typeof(ServiceDesignerViewModel));
             //---------------Precondition------------------------
             Assert.IsNotNull(viewModel);
             //------------Execute Test---------------------------
@@ -548,7 +548,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             };
             var modelItem = CreateModelItem(activity);
             var viewModel = new ServiceDesignerViewModel(modelItem, rootModel.Object, envRepository.Object, new Mock<IEventAggregator>().Object, new SynchronousAsyncWorker());
-            var privateType = new PrivateType(typeof(ServiceDesignerViewModel));
+            var privateType = new Warewolf.Testing.PrivateObject(typeof(ServiceDesignerViewModel));
             //---------------Precondition------------------------
             Assert.IsNotNull(viewModel);
             //------------Execute Test---------------------------
@@ -595,7 +595,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             };
             var modelItem = CreateModelItem(activity);
             var viewModel = new ServiceDesignerViewModel(modelItem, rootModel.Object, envRepository.Object, new Mock<IEventAggregator>().Object, new SynchronousAsyncWorker());
-            var privateType = new PrivateType(typeof(ServiceDesignerViewModel));
+            var privateType = new Warewolf.Testing.PrivateObject(typeof(ServiceDesignerViewModel));
             //---------------Precondition------------------------
             Assert.IsNotNull(viewModel);
             //------------Execute Test---------------------------
@@ -642,7 +642,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             };
             var modelItem = CreateModelItem(activity);
             var viewModel = new ServiceDesignerViewModel(modelItem, rootModel.Object, envRepository.Object, new Mock<IEventAggregator>().Object, new SynchronousAsyncWorker());
-            var privateType = new PrivateType(typeof(ServiceDesignerViewModel));
+            var privateType = new Warewolf.Testing.PrivateObject(typeof(ServiceDesignerViewModel));
             var mock = new Mock<IComplexObjectItemModel>();
             mock.Setup(model => model.GetJson()).Returns("");
             //---------------Precondition------------------------

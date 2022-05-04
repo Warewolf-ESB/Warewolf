@@ -10,7 +10,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Data.OracleClient;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -25,6 +24,11 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+#if NETFRAMEWORK
+using System.Data.OracleClient;
+#else
+using Oracle.ManagedDataAccess.Client;
+#endif
 using TestingDotnetDllCascading;
 
 namespace Dev2.Tests.Runtime.ESB.Plugin

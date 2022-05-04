@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿#if NETFRAMEWORK
+using System.Collections.Generic;
 using System.Reflection;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.Graph;
@@ -15,3 +16,4 @@ namespace Dev2.Runtime.Interfaces
         Dictionary<MethodInfo, ParameterInfo[]> GetMethods(string endpoint);
     }
 }
+#endif

@@ -16,6 +16,9 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Web;
+#if !NETFRAMEWORK
+using Boxed.AspNetCore;
+#endif
 
 namespace Dev2.Runtime.WebServer.Responses.Streams
 {

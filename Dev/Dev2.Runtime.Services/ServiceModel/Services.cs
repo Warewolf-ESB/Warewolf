@@ -413,6 +413,7 @@ namespace Dev2.Runtime.ServiceModel
             return outputDescription.ToRecordsetList(webService.Recordsets);
         }
 
+#if NETFRAMEWORK
         public virtual RecordsetList FetchRecordset(WcfService wcfService)
         {
             if (wcfService == null)
@@ -432,6 +433,7 @@ namespace Dev2.Runtime.ServiceModel
             }
             return recSet;
         }
+#endif
 
         private static void FetchRecordsetFields_WcfService(Common.Interfaces.Core.Graph.IDataSourceShape dataSourceShape, Recordset recordset)
         {
@@ -494,6 +496,7 @@ namespace Dev2.Runtime.ServiceModel
             }
         }
 
+#if NETFRAMEWORK
         public RecordsetList WcfTest(WcfService args, Guid workspaceId, Guid dataListId)
         {
             try
@@ -508,5 +511,6 @@ namespace Dev2.Runtime.ServiceModel
                 return new RecordsetList { new Recordset { HasErrors = true, ErrorMessage = ex.Message } };
             }
         }
+#endif
     }
 }

@@ -994,10 +994,12 @@ namespace Dev2.Studio.ViewModels
                         workSurfaceKey.WorkSurfaceContext = WorkSurfaceContext.RabbitMQSource;
                         _worksurfaceContextManager.DisplayResourceWizard(ProcessRabbitMQSource(_contextualResourceModel, workSurfaceKey));
                         break;
+#if NETFRAMEWORK
                     case "WcfSource":
                         workSurfaceKey.WorkSurfaceContext = WorkSurfaceContext.WcfSource;
                         _worksurfaceContextManager.DisplayResourceWizard(ProcessWcfSource(_contextualResourceModel, workSurfaceKey));
                         break;
+#endif
                     case "PluginSource":
                         workSurfaceKey.WorkSurfaceContext = WorkSurfaceContext.PluginSource;
                         _worksurfaceContextManager.DisplayResourceWizard(ProcessPluginSource(_contextualResourceModel, workSurfaceKey));
@@ -1025,6 +1027,7 @@ namespace Dev2.Studio.ViewModels
             return workSurfaceContextViewModel;
         }
 
+#if NETFRAMEWORK
         WorkSurfaceContextViewModel ProcessWcfSource(IContextualResourceModel contextualResourceModel, WorkSurfaceKey workSurfaceKey)
         {
             var def = new WcfServiceSourceDefinition {Id = contextualResourceModel.ID, Path = contextualResourceModel.GetSavePath()};
@@ -1037,6 +1040,7 @@ namespace Dev2.Studio.ViewModels
             var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, vm);
             return workSurfaceContextViewModel;
         }
+#endif
 
         WorkSurfaceContextViewModel ProcessRabbitMQSource(IContextualResourceModel contextualResourceModel, WorkSurfaceKey workSurfaceKey)
         {
@@ -1562,8 +1566,12 @@ namespace Dev2.Studio.ViewModels
 
         public void EditResource(IWcfServerSource selectedSource, IWorkSurfaceKey key)
         {
+#if NETFRAMEWORK
             var view = _factory.GetViewGivenServerResourceType("WcfSource");
             _worksurfaceContextManager.EditResource(selectedSource, view, key);
+#else
+           throw new Exception("Wcf tool is deprecated on this platform.");
+#endif
         }
 
         public void EditResource(IComPluginSource selectedSource) => EditResource(selectedSource, null);
@@ -2194,11 +2202,13 @@ namespace Dev2.Studio.ViewModels
                         break;
                     }
 
+#if NETFRAMEWORK
                     if (vm is SourceViewModel<IWcfServerSource> wcfServerSourceModel && (wcfServerSourceModel.IsDirty || wcfServerSourceModel.ViewModel.HasChanged))
                     {
                         closeStudio = CallSaveDialog(closeStudio);
                         break;
                     }
+#endif
 
                     if (vm is SourceViewModel<IRabbitMQServiceSourceDefinition> rabbitMqServiceSourceModel && (rabbitMqServiceSourceModel.IsDirty || rabbitMqServiceSourceModel.ViewModel.HasChanged))
                     {

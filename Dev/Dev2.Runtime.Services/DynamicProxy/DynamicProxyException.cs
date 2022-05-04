@@ -1,3 +1,4 @@
+#if NETFRAMEWORK
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
@@ -102,3 +103,4 @@ namespace Dev2.Runtime.DynamicProxy
         }
     }
 }
+#endif

@@ -97,7 +97,9 @@ using Dev2.Activities.RabbitMQ.Publish;
 using Dev2.Activities.Scripting;
 using Dev2.Activities.SelectAndApply;
 using Dev2.Activities.Sharepoint;
+#if NETFRAMEWORK
 using Dev2.Activities.WcfEndPoint;
+#endif
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Dev2.Activities.Designers2.Decision;
 using Dev2.Activities.Designers2.Switch;
@@ -270,7 +272,9 @@ namespace Dev2.Studio.Tests.AppResources.Converters
             {typeof(SharepointCopyFileActivity), typeof(SharePointCopyFileDesignerViewModel)},
             {typeof(SharepointDeleteFileActivity), typeof(SharePointDeleteFileDesignerViewModel)},
             {typeof(SharepointMoveFileActivity), typeof(SharePointMoveFileDesignerViewModel)},
+#if NETFRAMEWORK
             {typeof(DsfWcfEndPointActivity), typeof(WcfEndPointViewModel)},
+#endif
             {typeof(PublishRabbitMQActivity), typeof(RabbitMQPublishDesignerViewModel2)},
             {typeof(DsfPublishRabbitMQActivity), typeof(RabbitMQPublishDesignerViewModel)},
             {typeof(DsfSelectAndApplyActivity), typeof(SelectAndApplyDesignerViewModel)},

@@ -4,14 +4,14 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{B95B724A-B052-4E18-98A4-88072C8DF2C2}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <TargetFramework>net48</TargetFramework>
+    <TargetFrameworks>net48;net6.0-windows</TargetFrameworks>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <EnableDefaultItems>false</EnableDefaultItems>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Dev2.Activities</RootNamespace>
     <AssemblyName>Dev2.Activities.Designers</AssemblyName>
-    <RuntimeIdentifier>win</RuntimeIdentifier>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
@@ -1142,9 +1142,6 @@
     </Compile>
     <Compile Include="Designers2\WCFEndPoint\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Designers2\WCFEndPoint\WcfEndPointDesigner.xaml.cs">
-      <DependentUpon>WcfEndPointDesigner.xaml</DependentUpon>
     </Compile>
     <Compile Include="Designers2\WCFEndPoint\WcfEndPointViewModel.cs" />
     <Compile Include="Designers2\Core\IServiceInputBuilder.cs" />
@@ -2410,10 +2407,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Designers2\WCFEndPoint\WcfEndPointDesigner.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Designers2\Web Post New\Large.xaml" />
     <Page Include="Designers2\Web Post New\Small.xaml" />
     <Page Include="Designers2\Web Post New\WebPostActivityDesignerNew.xaml" />
@@ -2568,6 +2561,15 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Caliburn.Micro" Version="1.4.1" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
+    <Compile Include="Designers2\WCFEndPoint\WcfEndPointDesigner.xaml.cs">
+      <DependentUpon>WcfEndPointDesigner.xaml</DependentUpon>
+    </Compile>
+    <Page Include="Designers2\WCFEndPoint\WcfEndPointDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

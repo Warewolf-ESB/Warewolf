@@ -47,7 +47,9 @@ namespace Dev2
             CustomContainer.AddToLoadedTypes(typeof(ManageComPluginServiceModel));
             CustomContainer.AddToLoadedTypes(typeof(ManageDbServiceModel));
             CustomContainer.AddToLoadedTypes(typeof(ManageWebServiceModel));
+#if NETFRAMEWORK
             CustomContainer.AddToLoadedTypes(typeof(ManageWcfServiceModel));
+#endif
             CustomContainer.AddToLoadedTypes(typeof(ExchangeServiceModel));
             CustomContainer.AddToLoadedTypes(typeof(ManageRabbitMQSourceModel));
         }

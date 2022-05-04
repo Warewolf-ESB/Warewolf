@@ -2,8 +2,8 @@
 
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
-        <TargetFramework>net48</TargetFramework>
-        <RuntimeIdentifier>win</RuntimeIdentifier>
+        <TargetFrameworks>net48;net6.0-windows</TargetFrameworks>
+        <RuntimeIdentifier>win-x64</RuntimeIdentifier>
         <AssemblyName>HangfireServer</AssemblyName>
         <ApplicationIcon />
         <StartupObject />
@@ -23,6 +23,7 @@
 
     <ItemGroup>
         <PackageReference Include="CommandLineParser" Version="2.6.0" />
+        <PackageReference Include="Hangfire.AspNetCore" Version="1.7.28" />
         <PackageReference Include="Hangfire.Core" Version="1.7.28" />
         <PackageReference Include="Hangfire.SqlServer" Version="1.7.28" />
         <PackageReference Include="Microsoft.Owin.Hosting" Version="4.1.0" />

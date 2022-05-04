@@ -32,7 +32,7 @@ using Warewolf.Triggers;
 
 namespace Dev2.Triggers.QueueEvents
 {
-    public class QueueEventsViewModel : TasksItemViewModel, IUpdatesHelp
+    public class QueueEventsViewModel : TasksItemViewModel, IUpdatesHelp, IDisposable
     {
         ICommand _newCommand;
         ICommand _deleteCommand;
@@ -404,6 +404,13 @@ namespace Dev2.Triggers.QueueEvents
                 _connectionError = value;
                 OnPropertyChanged(nameof(ConnectionError));
             }
+        }
+
+        public void Dispose()
+        {
+            _source?.Dispose();
+            _resourceRepository?.Dispose();
+            GC.SuppressFinalize(this);
         }
     }
 }

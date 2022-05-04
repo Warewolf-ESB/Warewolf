@@ -513,6 +513,7 @@ namespace Dev2.Studio.Core
             return output.Message.ToString();
         }
 
+#if NETFRAMEWORK
         public void SaveWcfSource(IWcfServerSource wcfSource, Guid serverWorkspaceID)
         {
             var con = Connection;
@@ -565,6 +566,7 @@ namespace Dev2.Studio.Core
 
             return output.Message.ToString();
         }
+#endif
 
         #region Implementation of IUpdateManager
 

@@ -10,7 +10,9 @@
 
 using System.Collections.Generic;
 using Dev2.Activities;
+#if NETFRAMEWORK
 using Dev2.Activities.WcfEndPoint;
+#endif
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.Convertors.Case;
 using Dev2.Common.Interfaces.DB;
@@ -773,6 +775,7 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
             Assert.IsTrue(fields.Contains("TheObject"));
         }
 
+#if NETFRAMEWORK
         [TestMethod]
         [Timeout(60000)]
         [Owner("Rory McGuire")]
@@ -797,6 +800,7 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
             Assert.AreEqual(6, fields.Count);
             Assert.IsTrue(fields.Contains("TheObject"));
         }
+#endif
 
         [TestMethod]
         [Timeout(60000)]

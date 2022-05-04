@@ -1,3 +1,4 @@
+#if NETFRAMEWORK
 #pragma warning disable
 ﻿using System;
 using System.Threading;
@@ -400,3 +401,4 @@ namespace Warewolf.Studio.ViewModels
         }
     }
 }
+#endif

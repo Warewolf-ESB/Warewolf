@@ -29,7 +29,7 @@ using Warewolf.UnitTestAttributes;
 namespace Dev2.Activities.Specs.Sources
 {
     [Binding]
-    public sealed class ServerSourceSteps : RecordSetBases
+    public sealed class ServerSourceSteps : RecordSetBases, IDisposable
     {
         Depends declaredDependency;
         IServer environmentModel;
@@ -209,5 +209,7 @@ namespace Dev2.Activities.Specs.Sources
 
         [BeforeFeature("ServerSourceTests")]
         public static void StartRemoteContainer() => WorkflowExecutionSteps._containerOps = new Depends(Depends.ContainerType.Warewolf, true);
+
+        public void Dispose() => declaredDependency?.Dispose();
     }
 }

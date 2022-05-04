@@ -787,6 +787,7 @@ namespace Dev2.Core.Tests
             controller.Verify(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>()));
         }
 
+#if NETFRAMEWORK
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory("UpdateProxyTest_Save")]
@@ -868,6 +869,7 @@ namespace Dev2.Core.Tests
             //------------Assert Results-------------------------
             controller.Verify(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>()));
         }
+#endif
 
         [TestMethod]
         [Owner("Pieter Terblanche")]

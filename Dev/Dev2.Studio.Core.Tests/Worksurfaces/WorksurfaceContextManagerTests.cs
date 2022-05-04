@@ -117,6 +117,7 @@ namespace Dev2.Core.Tests
             Assert.IsTrue(afterCount > beforeCount);
         }
 
+#if NETFRAMEWORK
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void EditWcfSource_GivenResourceModel_ShouldPassThrough()
@@ -141,6 +142,7 @@ namespace Dev2.Core.Tests
             //---------------Test Result -----------------------
             Assert.IsTrue(afterCount > beforeCount);
         }
+#endif
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]

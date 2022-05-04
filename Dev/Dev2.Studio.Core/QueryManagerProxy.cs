@@ -644,6 +644,8 @@ namespace Dev2.Studio.Core
             var elasticsearchServiceSources = serializer.Deserialize<List<IElasticsearchSourceDefinition>>(result.Message.ToString());
             return elasticsearchServiceSources;
         }
+        
+#if NETFRAMEWORK
         public IList<IWcfServerSource> FetchWcfSources()
         {
             var comsController = CommunicationControllerFactory.CreateController(nameof(FetchWcfSources));
@@ -690,6 +692,7 @@ namespace Dev2.Studio.Core
 
             return serializer.Deserialize<IList<IWcfAction>>(payload.Message);
         }
+#endif
 
         public Task<List<string>> LoadDuplicates()
         {

@@ -24,7 +24,9 @@ namespace Dev2
             _viewMap.TryAdd("DropBoxSource", () => new ManageOAuthSourceControl());
             _viewMap.TryAdd("ExchangeSource", () => new ManageExchangeSourceControl());
             _viewMap.TryAdd("EmailSource", () => new ManageEmailSourceControl());
+#if NETFRAMEWORK
             _viewMap.TryAdd("WcfSource", () => new ManageWcfSourceControl());
+#endif
             _viewMap.TryAdd("ComPluginSource", () => new ManageComPluginSourceControl());
             _viewMap.TryAdd("PluginSource", () => new ManagePluginSourceControl());
             _viewMap.TryAdd("WebSource", () => new ManageWebserviceSourceControl());

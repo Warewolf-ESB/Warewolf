@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if NETFRAMEWORK
+using System;
 using System.Collections.Generic;
 using Dev2.Common.Interfaces.DB;
 
@@ -15,3 +16,4 @@ namespace Dev2.Common.Interfaces
         IWcfAction Action { get; set; }
     }
 }
+#endif

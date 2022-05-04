@@ -13,7 +13,9 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using Dev2.Activities;
+#if NETFRAMEWORK
 using Dev2.Activities.WcfEndPoint;
+#endif
 using Dev2.Interfaces;
 using Dev2.Util;
 using Dev2.Utilities;
@@ -118,10 +120,12 @@ namespace Dev2.FindMissingStrategies
             {
                 return GetDsfComDllActivityFields(activity);
             }
+#if NETFRAMEWORK
             else if (activityType == typeof(DsfWcfEndPointActivity))
             {
                 return GetDsfWcfEndPointActivityFields(activity);
             }
+#endif
             //DEPRICATED
             else if (activityType == typeof(WebPostActivity))
             {
@@ -145,6 +149,7 @@ namespace Dev2.FindMissingStrategies
             }
         }
 
+#if NETFRAMEWORK
         List<string> GetDsfWcfEndPointActivityFields(object activity)
         {
             var results = new List<string>();
@@ -181,6 +186,7 @@ namespace Dev2.FindMissingStrategies
             }
             return results;
         }
+#endif
 
         List<string> GetDsfComDllActivityFields(object activity)
         {

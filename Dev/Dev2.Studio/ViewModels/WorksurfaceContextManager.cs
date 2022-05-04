@@ -93,8 +93,10 @@ namespace Dev2.Studio.ViewModels
         void EditResource(IRabbitMQServiceSourceDefinition selectedSource, IView view);
         void EditResource(IRabbitMQServiceSourceDefinition selectedSource, IView view, IWorkSurfaceKey workSurfaceKey);
         void EditResource(IElasticsearchSourceDefinition selectedSource, IView view, IWorkSurfaceKey workSurfaceKey);
+#if NETFRAMEWORK
         void EditResource(IWcfServerSource selectedSource, IView view);
         void EditResource(IWcfServerSource selectedSource, IView view, IWorkSurfaceKey workSurfaceKey);
+#endif
         void NewService(string resourcePath);
         void NewSqlServerSource(string resourcePath);
         void NewMySqlSource(string resourcePath);
@@ -133,7 +135,9 @@ namespace Dev2.Studio.ViewModels
         void EditExchangeSource(IContextualResourceModel resourceModel, IView view);
         void EditDropBoxSource(IContextualResourceModel resourceModel, IView view);
         void EditRabbitMQSource(IContextualResourceModel resourceModel, IView view);
+#if NETFRAMEWORK
         void EditWcfSource(IContextualResourceModel resourceModel, IView view);
+#endif
         void EditServer(IContextualResourceModel resourceModel, IView view);
         void EditResource(IOAuthSource selectedSource, IView view);
         void EditResource(IOAuthSource selectedSource, IView view, IWorkSurfaceKey workSurfaceKey);
@@ -531,6 +535,7 @@ namespace Dev2.Studio.ViewModels
             AddAndActivateWorkSurface(workSurfaceContextViewModel);
         }
 
+#if NETFRAMEWORK
         public void EditResource(IWcfServerSource selectedSource, IView view) => EditResource(selectedSource, view, null);
 
         public void EditResource(IWcfServerSource selectedSource, IView view, IWorkSurfaceKey workSurfaceKey)
@@ -543,7 +548,7 @@ namespace Dev2.Studio.ViewModels
             OpeningWorkflowsHelper.AddWorkflow(workSurfaceKey);
             AddAndActivateWorkSurface(workSurfaceContextViewModel);
         }
-
+#endif
 
         IServer ActiveServer => _shellViewModel.ActiveServer;
 
@@ -693,9 +698,13 @@ namespace Dev2.Studio.ViewModels
 
         public void NewWcfSource(string resourcePath)
         {
+#if NETFRAMEWORK
             var saveViewModel = GetSaveViewModel(resourcePath, Warewolf.Studio.Resources.Languages.Core.WcfServiceNewHeaderLabel);
             var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.WcfSource), new SourceViewModel<IWcfServerSource>(_shellViewModel.EventPublisher, new ManageWcfSourceViewModel(new ManageWcfSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy), saveViewModel, new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), _shellViewModel.AsyncWorker, ActiveServer), _shellViewModel.PopupProvider, new ManageWcfSourceControl(), ActiveServer));
             AddAndActivateWorkSurface(workSurfaceContextViewModel);
+#else
+            throw new Exception("WCF tool has been deprecated on this platform.");
+#endif
         }
 
         public void NewDropboxSource(string resourcePath)
@@ -925,7 +934,9 @@ namespace Dev2.Studio.ViewModels
             _editHandler.TryAdd("DropBoxSource", EditDropBoxSource);
             _editHandler.TryAdd("ExchangeSource", EditExchangeSource);
             _editHandler.TryAdd("EmailSource", EditEmailSource);
+#if NETFRAMEWORK
             _editHandler.TryAdd("WcfSource", EditWcfSource);
+#endif
             _editHandler.TryAdd("ComPluginSource", EditComPluginSource);
             _editHandler.TryAdd("PluginSource", EditPluginSource);
             _editHandler.TryAdd("WebSource", EditWebSource);
@@ -1215,6 +1226,7 @@ namespace Dev2.Studio.ViewModels
             EditResource(def, view, workSurfaceKey);
         }
 
+#if NETFRAMEWORK
         public void EditWcfSource(IContextualResourceModel resourceModel, IView view)
         {
             var wcfsource = new WcfSource(resourceModel.WorkflowXaml.ToXElement());
@@ -1233,6 +1245,7 @@ namespace Dev2.Studio.ViewModels
             workSurfaceKey.ServerID = resourceModel.ServerID;
             EditResource(def, view, workSurfaceKey);
         }
+#endif
 
         public void EditServer(IContextualResourceModel resourceModel, IView view)
         {

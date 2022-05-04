@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if NETFRAMEWORK
+using System;
 using System.Threading.Tasks;
 using System.Windows;
 using Dev2.Common.Interfaces;
@@ -296,3 +297,4 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
     }
 }
+#endif

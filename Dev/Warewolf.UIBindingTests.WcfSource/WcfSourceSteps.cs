@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if NETFRAMEWORK
+using System;
 using System.Threading.Tasks;
 using Dev2.Common.Interfaces;
 using Dev2.Studio.Core;
@@ -126,3 +127,4 @@ namespace Warewolf.UIBindingTests.WcfSource
         }
     }
 }
+#endif

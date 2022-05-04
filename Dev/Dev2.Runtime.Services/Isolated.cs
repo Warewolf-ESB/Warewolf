@@ -20,9 +20,12 @@ namespace Dev2.Runtime
 
         public Isolated()
         {
+#if NETFRAMEWORK
            _domain = AppDomain.CreateDomain("Isolated:" + Guid.NewGuid(),
                 null, AppDomain.CurrentDomain.SetupInformation);
-
+#else
+            _domain = AppDomain.CreateDomain("Isolated:" + Guid.NewGuid());
+#endif
             var type = typeof(T);
 
             _value = (T)_domain.CreateInstanceAndUnwrap(type.Assembly.FullName, type.FullName);

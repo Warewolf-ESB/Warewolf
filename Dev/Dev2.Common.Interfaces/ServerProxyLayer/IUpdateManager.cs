@@ -36,7 +36,9 @@ namespace Dev2.Common.Interfaces.ServerProxyLayer
         void SaveExchangeSource(IExchangeSource exchangeSource, Guid serverWorkspaceID);
 
         void SaveRabbitMQServiceSource(IRabbitMQServiceSourceDefinition rabbitMqServiceSource, Guid serverWorkspaceID);
+#if NETFRAMEWORK
         void SaveWcfSource(IWcfServerSource wcfSource, Guid serverWorkspaceID);
+#endif
     }
 
     public interface IUpdateManagerTest
@@ -56,8 +58,10 @@ namespace Dev2.Common.Interfaces.ServerProxyLayer
         string TestExchangeServiceSource(IExchangeSource emailServiceSource);
 
         string TestRabbitMQServiceSource(IRabbitMQServiceSourceDefinition rabbitMqServiceSource);
+#if NETFRAMEWORK
         string TestWcfServiceSource(IWcfServerSource wcfServerSource);
         string TestWcfService(IWcfService service);
+#endif
     }
 
     /// <summary>

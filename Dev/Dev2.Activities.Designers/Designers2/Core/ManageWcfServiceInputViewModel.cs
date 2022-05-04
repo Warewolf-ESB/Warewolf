@@ -1,4 +1,5 @@
-﻿using Dev2.Common.Interfaces;
+﻿#if NETFRAMEWORK
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
@@ -417,3 +418,4 @@ namespace Dev2.Activities.Designers2.Core
         #endregion Implementation of INotifyPropertyChanged
     }
 }
+#endif

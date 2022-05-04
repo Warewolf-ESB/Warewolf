@@ -33,7 +33,9 @@ namespace Dev2.Common.Interfaces
         void Save(IExchangeSource emailServiceSource);
         void Save(ISharepointServerSource sharePointServiceSource);
         void Save(IRabbitMQServiceSourceDefinition rabbitMqServiceSource);
-        void Save(IWcfServerSource wcfSource);        
+#if NETFRAMEWORK
+        void Save(IWcfServerSource wcfSource);
+        #endif
         void Save(IOAuthSource sharePointServiceSource);
     }
 
@@ -53,12 +55,16 @@ namespace Dev2.Common.Interfaces
         string TestWebService(IWebService inputValues);
         string TestPluginService(IPluginService inputValues);
         string TestPluginService(IComPluginService inputValues);
+#if NETFRAMEWORK
         string TestWcfService(IWcfService inputValues);
+#endif
     }
 
     public interface IStudioUpdateManager : IStudioUpdateManagerSave, IStudioUpdateManagerTest
     {
+#if NETFRAMEWORK
         string TestConnection(IWcfServerSource wcfServerSource);
+#endif
         Action<Guid, bool> ServerSaved { get; set; }
         void FireServerSaved(Guid savedServerID);
         void FireServerSaved(Guid savedServerID, bool isDeleted);

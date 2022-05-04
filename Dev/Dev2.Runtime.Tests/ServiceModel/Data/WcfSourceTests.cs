@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if NETFRAMEWORK
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using Dev2.Common;
@@ -103,7 +104,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.IsNotNull(source.DataList);
         }
     }
-
+    
     public class FakeWcfProxyService : IWcfProxyService
     {
         public IOutputDescription ExecuteWebService(WcfService src)
@@ -122,3 +123,4 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
         }
     }
 }
+#endif

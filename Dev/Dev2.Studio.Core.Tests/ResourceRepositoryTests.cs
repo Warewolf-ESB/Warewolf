@@ -64,7 +64,7 @@ namespace BusinessDesignStudio.Unit.Tests
     /// Summary description for ResourceRepositoryTest
     /// </summary>
     [TestClass]
-    public class ResourceRepositoryTests
+    public class ResourceRepositoryTests : IDisposable
     {
         #region Variables
 
@@ -2947,6 +2947,8 @@ namespace BusinessDesignStudio.Unit.Tests
             var exePayload = JsonConvert.SerializeObject(executeMessage);
             return executeMessage;
         }
+
+        public void Dispose() => _repo?.Dispose();
     }
 
 
