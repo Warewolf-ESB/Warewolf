@@ -22,6 +22,7 @@ namespace Dev2.Settings.Persistence
         bool EncryptDataSource{ get; set; }
         bool Enable{ get; set; }
         bool PrepareSchemaIfNecessary{ get; set; }
+        bool UseAsServer { get; set; }
         string ServerName { get; set; }
         string DashboardHostname { get; set; }
         string DashboardPort { get; set; }
