@@ -22,11 +22,8 @@ namespace Warewolf.Tests
         [TestCategory(nameof(Audit))]
         public void Audit_Audit_CheckEnvironmentVariable_ShouldReturnEnvironment()
         {
-            Config.Auditing.IncludeEnvironmentVariable = true;
-            Config.Auditing.Save();
-            
-            Config.Legacy.IncludeEnvironmentVariable = true;
-            Config.Legacy.Save();
+            Config.Server.IncludeEnvironmentVariable = true;
+            Config.Server.Save();
             
             var executionID = Guid.NewGuid();
             var mockDataObject = SetupDataObjectWithAssignedInputs(executionID);
@@ -34,17 +31,14 @@ namespace Warewolf.Tests
             Assert.AreEqual("Not an empty string", auditLog.Environment);
             Assert.AreEqual("Test-Workflow", auditLog.WorkflowName);
         }
-
+        
         [TestMethod]
         [Owner("Yogesh Rajpurohit")]
         [TestCategory(nameof(Audit))]
         public void Audit_Audit_CheckEnvironmentVariable_EmptyEnvironment()
         {
-            Config.Auditing.IncludeEnvironmentVariable = false;
-            Config.Auditing.Save();
-            
-            Config.Legacy.IncludeEnvironmentVariable = false;
-            Config.Legacy.Save();
+            Config.Server.IncludeEnvironmentVariable = false;
+            Config.Server.Save();
             
             var executionID = Guid.NewGuid();
             var mockDataObject = SetupDataObjectWithAssignedInputs(executionID);
