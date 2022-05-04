@@ -3747,6 +3747,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Show the additional data to use hangfire as a server if checkbox is checked.
+        /// </summary>
+        public static string PersistenceViewUseAsServerToolTip {
+            get {
+                return ResourceManager.GetString("PersistenceViewUseAsServerToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select method to execute..
         /// </summary>
         public static string PluginServiceSelectActionToolTip {

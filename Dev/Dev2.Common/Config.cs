@@ -112,6 +112,16 @@ namespace Dev2.Common
             }
         }
 
+        public bool UseAsServer
+        {
+            get => _settings?.UseAsServer ?? false;
+            set
+            {
+                _settings.UseAsServer = value;
+                Save();
+            }
+        }
+
         public string DashboardHostname
         {
             get => _settings.DashboardHostname ?? DefaultDashboardHostname;
