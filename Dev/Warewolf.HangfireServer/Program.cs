@@ -132,6 +132,9 @@ namespace HangfireServer
                 {
                     _logger.Error($"Hangfire Server OnError, Error details:{ex.Message}");
                     _writer.WriteLine($"Hangfire Server OnError, Error details:{ex.Message}");
+                    
+                    _logger.Error($"Hangfire Server OnError, Error details:{ex.StackTrace}");
+                    _writer.WriteLine($"Hangfire Server OnError, Error details:{ex.StackTrace}");
                 }
             }
 
