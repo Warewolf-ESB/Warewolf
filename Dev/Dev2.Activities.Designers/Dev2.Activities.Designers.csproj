@@ -4,14 +4,14 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{B95B724A-B052-4E18-98A4-88072C8DF2C2}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <TargetFramework>net48</TargetFramework>
+    <TargetFramework>net6.0-windows</TargetFramework>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <EnableDefaultItems>false</EnableDefaultItems>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Dev2.Activities</RootNamespace>
     <AssemblyName>Dev2.Activities.Designers</AssemblyName>
-    <RuntimeIdentifier>win</RuntimeIdentifier>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
@@ -1143,9 +1143,13 @@
     <Compile Include="Designers2\WCFEndPoint\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
     <Compile Include="Designers2\WCFEndPoint\WcfEndPointDesigner.xaml.cs">
       <DependentUpon>WcfEndPointDesigner.xaml</DependentUpon>
     </Compile>
+  </ItemGroup>
+  <ItemGroup>
     <Compile Include="Designers2\WCFEndPoint\WcfEndPointViewModel.cs" />
     <Compile Include="Designers2\Core\IServiceInputBuilder.cs" />
     <Compile Include="Designers2\Web Put\Large.xaml.cs">
@@ -2410,10 +2414,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
     <Page Include="Designers2\WCFEndPoint\WcfEndPointDesigner.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+  </ItemGroup>
+  <ItemGroup>
     <Page Include="Designers2\Web Post New\Large.xaml" />
     <Page Include="Designers2\Web Post New\Small.xaml" />
     <Page Include="Designers2\Web Post New\WebPostActivityDesignerNew.xaml" />

@@ -11,9 +11,10 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using Hangfire;
 using Microsoft.Owin;
-using Owin;
 using HangfireServer;
-#if !NETFRAMEWORK
+#if NETFRAMEWORK
+using Owin;
+#else
 using Microsoft.AspNetCore.Builder;
 #endif
 
