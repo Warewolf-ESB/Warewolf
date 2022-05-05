@@ -4,7 +4,7 @@
         <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
         <ProjectGuid>{EEDC7A07-34BB-49B8-AB14-AD43613EC956}</ProjectGuid>
         <OutputType>Library</OutputType>
-        <TargetFrameworks>net48;net6.0-windows</TargetFrameworks>
+        <TargetFramework>net48</TargetFramework>
         <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
         <EnableDefaultItems>false</EnableDefaultItems>
         <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
@@ -12,7 +12,7 @@
         <RootNamespace>Warewolf.Studio.CustomControls.Tests</RootNamespace>
         <AssemblyName>Warewolf.Studio.CustomControls.Tests</AssemblyName>
         <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-        <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+        <RuntimeIdentifier>win</RuntimeIdentifier>
         <FileAlignment>512</FileAlignment>
         <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
         <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">15.0</VisualStudioVersion>

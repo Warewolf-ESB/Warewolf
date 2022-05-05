@@ -6,14 +6,14 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{4D0919C0-8FA4-480C-8629-00EB128DDEE9}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <TargetFrameworks>net48;net6.0-windows</TargetFrameworks>
+    <TargetFramework>net48</TargetFramework>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <EnableDefaultItems>false</EnableDefaultItems>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Dev2.Runtime.WebServer</RootNamespace>
     <AssemblyName>Dev2.Runtime.WebServer</AssemblyName>
-    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <RuntimeIdentifier>win</RuntimeIdentifier>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>
     </SccProjectName>

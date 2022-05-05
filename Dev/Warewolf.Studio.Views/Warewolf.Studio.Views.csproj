@@ -4,14 +4,14 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{F0D6A8C9-FF25-40C9-99DB-CCBC21ABDC36}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <TargetFrameworks>net48;net6.0-windows</TargetFrameworks>
+    <TargetFramework>net48</TargetFramework>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <EnableDefaultItems>false</EnableDefaultItems>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Warewolf.Studio.Views</RootNamespace>
     <AssemblyName>Warewolf.Studio.Views</AssemblyName>
-    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <RuntimeIdentifier>win</RuntimeIdentifier>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
@@ -178,13 +178,9 @@
     <Compile Include="ManageServerControl.xaml.cs">
       <DependentUpon>ManageServerControl.xaml</DependentUpon>
     </Compile>
-  </ItemGroup>
-  <ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
     <Compile Include="ManageWcfSourceControl.xaml.cs">
       <DependentUpon>ManageWcfSourceControl.xaml</DependentUpon>
     </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="ManageWebserviceSourceControl.xaml.cs">
       <DependentUpon>ManageWebserviceSourceControl.xaml</DependentUpon>
     </Compile>
@@ -295,14 +291,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-  </ItemGroup>
-  <ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
     <Page Include="ManageWcfSourceControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-  </ItemGroup>
-  <ItemGroup>
     <Page Include="ManageWebserviceSourceControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

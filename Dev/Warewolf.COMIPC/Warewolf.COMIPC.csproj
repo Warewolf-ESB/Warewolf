@@ -4,6 +4,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{D58AB24F-C45B-4DF1-9CDE-54AFF7995513}</ProjectGuid>
     <OutputType>Exe</OutputType>
+    <TargetFramework>net48</TargetFramework>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <EnableDefaultItems>false</EnableDefaultItems>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
@@ -16,7 +17,6 @@
     <SonarQubeExclude>true</SonarQubeExclude>
     <TargetFrameworkProfile />
 	<CodeAnalysisRuleSet>..\.sonarlint\warewolf_dotnet_frameworkcsharp.ruleset</CodeAnalysisRuleSet>
-	<TargetFramework>net48</TargetFramework>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
