@@ -871,9 +871,6 @@
     <PackageReference Include="System.Activities.Core.Presentation">
       <Version>1.0.0-alpha003</Version>
     </PackageReference>
-    <PackageReference Include="UiPath.Workflow.Runtime">
-      <Version>6.0.0-alpha-20220106-04</Version>
-    </PackageReference>
   </ItemGroup>
   <PropertyGroup>
     <PostBuildEvent>if exist "$(SolutionDir)Dev2.Studio\bin\Debug\net48\win\Warewolf Studio.exe" (
