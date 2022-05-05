@@ -4,7 +4,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{13C0C6E9-7DC3-4DC3-8535-031C263CEE0B}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <TargetFramework>net6.0-windows</TargetFramework>
+    <TargetFramework>net5.0-windows</TargetFramework>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <EnableDefaultItems>false</EnableDefaultItems>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
@@ -496,14 +496,11 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework'">
-    <PackageReference Include="UiPath.Workflow">
-      <Version>5.0.0-20210730-02</Version>
-    </PackageReference>
     <PackageReference Include="System.Activities.Core.Presentation">
       <Version>1.0.0-alpha003</Version>
     </PackageReference>
     <PackageReference Include="Boxed.AspNetCore">
-      <Version>8.0.0</Version>
+      <Version>7.0.0</Version>
     </PackageReference>
   </ItemGroup>
 </Project>

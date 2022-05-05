@@ -4,7 +4,7 @@
     <IsPackable>false</IsPackable>
     <AssemblyName>Warewolf.Driver.RabbitMQ.Tests</AssemblyName>
     <Configurations>Debug</Configurations>
-    <TargetFramework>net6.0-windows</TargetFramework>
+    <TargetFramework>net5.0-windows</TargetFramework>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
   </PropertyGroup>
 
