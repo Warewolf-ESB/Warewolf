@@ -134,7 +134,7 @@
         <ScrollViewer Grid.Row="1"
                       HorizontalScrollBarVisibility="Auto"
                       VerticalScrollBarVisibility="Auto">
-            <StackPanel CanHorizontallyScroll="True" CanVerticallyScroll="True" Visibility="{Binding Path=IsChecked, ElementName=UseAsServerCheckBox, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <StackPanel CanHorizontallyScroll="True" CanVerticallyScroll="True">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
