@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{2A8088A6-8F8D-42FD-B877-D809C494C561}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <TargetFramework>net5.0-windows</TargetFramework>
+    <TargetFramework>net48</TargetFramework>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <EnableDefaultItems>false</EnableDefaultItems>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>

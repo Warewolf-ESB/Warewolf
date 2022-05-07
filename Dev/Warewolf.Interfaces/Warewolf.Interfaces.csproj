@@ -2,7 +2,7 @@
 
   <PropertyGroup>
       <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-      <TargetFramework>net5.0-windows</TargetFramework>
+      <TargetFramework>net48</TargetFramework>
  </PropertyGroup>
 
   <PropertyGroup>

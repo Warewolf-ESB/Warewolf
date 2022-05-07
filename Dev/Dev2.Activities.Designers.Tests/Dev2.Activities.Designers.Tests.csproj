@@ -1,12 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
-    <TargetFramework>net5.0-windows</TargetFramework>
+    <TargetFramework>net48</TargetFramework>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{3C4AC14C-4134-48A6-A9EA-9D47218E05C5}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <TargetFramework>net5.0-windows</TargetFramework>
+    <TargetFramework>net48</TargetFramework>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <EnableDefaultItems>false</EnableDefaultItems>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>

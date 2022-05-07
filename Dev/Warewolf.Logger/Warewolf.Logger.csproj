@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net5.0-windows</TargetFramework>
+    <TargetFramework>net48</TargetFramework>
     <ApplicationIcon />
     <StartupObject>Warewolf.Logger.Program</StartupObject>
     <AssemblyName>WarewolfLogger</AssemblyName>
