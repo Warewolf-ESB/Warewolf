@@ -13,7 +13,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
-using System.Threading;
 using Microsoft.AspNet.SignalR.Client;
 
 namespace Dev2.Common
@@ -69,18 +68,25 @@ namespace Dev2.Common
             else
             {
                 var impersonationContext = Impersonate(userPrinciple);
-                try
+                using (impersonationContext)
                 {
-                    if (actionToBePerformed != null) 
+                    try
                     {
-                        WindowsIdentity.RunImpersonated(impersonationContext.AccessToken, actionToBePerformed);
+                        actionToBePerformed?.Invoke();
                     }
-                }
-                catch (Exception e)
-                {
-                    if (ServerUser.Identity is WindowsIdentity identity)
+                    catch (Exception e)
                     {
-                        WindowsIdentity.RunImpersonated(identity.AccessToken, actionToBePerformed);
+                        impersonationContext?.Undo();
+                        if (ServerUser.Identity is WindowsIdentity identity)
+                        {
+                            impersonationContext = identity.Impersonate();
+                        }
+
+                        actionToBePerformed?.Invoke();
+                    }
+                    finally
+                    {
+                        impersonationContext?.Undo();
                     }
                 }
             }
