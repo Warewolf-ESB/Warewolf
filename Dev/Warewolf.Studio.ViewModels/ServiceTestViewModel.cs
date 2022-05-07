@@ -625,7 +625,7 @@ namespace Warewolf.Studio.ViewModels
                 foreach (var debugItem in inputState.Inputs)
                 {
                     var variable = debugItem.ResultsList.First().Variable.Replace("[[", "").Replace("]]", "");
-                    var value = debugItem.ResultsList.First().Value;
+                    var value = debugItem.ResultsList.First().Value != null ? debugItem.ResultsList.First().Value : debugItem.ResultsList.First().TruncatedValue;
                     var serviceTestInput = SelectedServiceTest?.Inputs?.FirstOrDefault(input => input.Variable.Equals(variable));
                     if (serviceTestInput != null)
                     {

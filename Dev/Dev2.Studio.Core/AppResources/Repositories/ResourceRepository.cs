@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2022 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -1098,16 +1098,26 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         }
         public ExecuteMessage SaveAuditingSettings(IServer currentEnv, AuditSettingsDataBase auditingSettingsData)
         {
+            var settingsDataTypeName = auditingSettingsData.GetType().Name;
             var comController = new CommunicationController {ServiceName = nameof(Warewolf.Service.SaveAuditingSettings)};
             if (auditingSettingsData is AuditingSettingsData)
             {
                 comController.AddPayloadArgument(Warewolf.Service.SaveAuditingSettings.AuditingSettings, _serializer.Serialize(auditingSettingsData));
             }
-            else
+            else if (auditingSettingsData is LegacySettingsData)
             {
                 comController.AddPayloadArgument(Warewolf.Service.SaveAuditingSettings.LegacySettings, _serializer.Serialize(auditingSettingsData));
             }
-            comController.AddPayloadArgument(Warewolf.Service.SaveAuditingSettings.SinkType, new StringBuilder(auditingSettingsData.GetType().Name));
+            else
+            {
+                return new ExecuteMessage
+                {
+                    HasError = true,
+                    Message = new StringBuilder($"SettingsDataType: {settingsDataTypeName} unknown.")
+                };
+            }
+
+            comController.AddPayloadArgument(Warewolf.Service.SaveAuditingSettings.SinkType, new StringBuilder(settingsDataTypeName));
             
             var output = comController.ExecuteCommand<ExecuteMessage>(currentEnv.Connection, GlobalConstants.ServerWorkspaceID);
             if (output == null)
