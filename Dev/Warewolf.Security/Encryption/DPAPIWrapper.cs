@@ -10,14 +10,42 @@
 */
 
 using System;
-using System.Security.Cryptography;
 using System.Text;
+#if NETFRAMEWORK
+using System.Security.Cryptography;
+#else
+using Microsoft.AspNetCore.DataProtection;
+using Microsoft.Extensions.DependencyInjection;
+#endif
 
 namespace Warewolf.Security.Encryption
 {
     public static class DpapiWrapper
     {
+#if NETFRAMEWORK
         const DataProtectionScope DataProtectionScope = System.Security.Cryptography.DataProtectionScope.LocalMachine;
+#else        
+        static DataProtectionWrapper _protector;
+
+        static DataProtectionWrapper Protector
+        {
+            get
+            {
+                if (_protector == null)
+                {
+                    var serviceCollection = new Microsoft.Extensions.DependencyInjection.ServiceCollection();
+                    serviceCollection.AddDataProtection();
+                    var services = serviceCollection.BuildServiceProvider();
+                    var instance = ActivatorUtilities.CreateInstance<DataProtectionWrapper>(services);
+                }
+                return _protector;
+            }
+            set
+            {
+                _protector = value;
+            }
+        }
+#endif
 
         public static string DecryptIfEncrypted(string input)
         {
@@ -31,7 +59,7 @@ namespace Warewolf.Security.Encryption
 
         public static string EncryptIfDecrypted(string input)
         {
-            if(string.IsNullOrEmpty(input) || string.IsNullOrWhiteSpace(input))
+            if (string.IsNullOrEmpty(input) || string.IsNullOrWhiteSpace(input))
             {
                 return input;
             }
@@ -66,7 +94,11 @@ namespace Warewolf.Security.Encryption
 
             //encrypt data
             var data = Encoding.Unicode.GetBytes(plainText);
+#if NETFRAMEWORK
             var encrypted = ProtectedData.Protect(data, null, DataProtectionScope);
+#else
+            var encrypted = _protector.Protector.Protect(data);
+#endif
 
             //return as base64 string
             return Convert.ToBase64String(encrypted);
@@ -100,7 +132,11 @@ namespace Warewolf.Security.Encryption
             var data = Convert.FromBase64String(cipher);
 
             //decrypt data
+#if NETFRAMEWORK
             var decrypted = ProtectedData.Unprotect(data, null, DataProtectionScope);
+#else
+            var decrypted = _protector.Protector.Unprotect(data);
+#endif
             return Encoding.Unicode.GetString(decrypted);
         }
 
@@ -118,7 +154,7 @@ namespace Warewolf.Security.Encryption
         /// is a null reference.</exception>
         public static bool CanBeDecrypted(this string cipher)
         {
-            if(string.IsNullOrEmpty(cipher))
+            if (string.IsNullOrEmpty(cipher))
             {
                 return false;
             }
@@ -134,15 +170,19 @@ namespace Warewolf.Security.Encryption
             //decrypt data
             try
             {
+#if NETFRAMEWORK
                 ProtectedData.Unprotect(data, null, DataProtectionScope);
+#else
+                _protector.Protector.Unprotect(data);
+#endif
             }
-            catch(Exception)
+            catch (Exception)
             {
                 return false;
             }
             return true;
         }
-        
+
         public static bool IsBase64(this string base64String)
         {
             if (base64String.Contains(" ") || base64String.Contains("\t") || base64String.Contains("\r") || base64String.Contains("\n"))
@@ -155,7 +195,7 @@ namespace Warewolf.Security.Encryption
             }
 
             try
-            {                
+            {
                 Convert.FromBase64String(base64String);
                 return true;
             }
@@ -165,4 +205,13 @@ namespace Warewolf.Security.Encryption
             }
         }
     }
+
+#if !NETFRAMEWORK
+    public class DataProtectionWrapper
+    {
+        public IDataProtector Protector;
+
+        public DataProtectionWrapper(IDataProtectionProvider provider) => Protector = provider.CreateProtector("Warewolf.Security.Encryption.DpapiWrapper.v2");
+    }
+#endif
 }

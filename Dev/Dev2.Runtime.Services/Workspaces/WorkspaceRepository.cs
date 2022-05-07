@@ -34,8 +34,11 @@ namespace Dev2.Workspaces
         /// </summary>
         public static readonly Guid ServerWorkspaceID = Guid.Empty;
         public static readonly string ServerWorkspacePath = EnvironmentVariables.GetWorkspacePath(GlobalConstants.ServerWorkspaceID);
-
+#if NETFRAMEWORK
         readonly ConcurrentDictionary<string, Guid> _userMap;
+#else
+        readonly Dictionary<string, Guid> _userMap;
+#endif
         readonly ConcurrentDictionary<Guid, IWorkspace> _items = new ConcurrentDictionary<Guid, IWorkspace>();
         readonly IResourceCatalog _resourceCatalog;
 
@@ -336,7 +339,11 @@ namespace Dev2.Workspaces
 
         static string GetUserMapFileName() => Path.Combine(EnvironmentVariables.WorkspacePath, "workspaces.bite");
 
+#if NETFRAMEWORK
         static ConcurrentDictionary<string, Guid> ReadUserMap()
+#else
+        static Dictionary<string, Guid> ReadUserMap()
+#endif
         {
             // force a lock on the file system ;)
             lock(UserMapLock)
@@ -350,7 +357,11 @@ namespace Dev2.Workspaces
                     {
                         try
                         {
+#if NETFRAMEWORK
                             return (ConcurrentDictionary<string, Guid>)formatter.Deserialize(stream);
+#else
+                            return (Dictionary<string, Guid>)formatter.Deserialize(stream);
+#endif
                         }                         
                         catch(Exception ex)                        
                         {
@@ -359,14 +370,22 @@ namespace Dev2.Workspaces
                         }
                     }
 
+#if NETFRAMEWORK
                     var result = new ConcurrentDictionary<string, Guid>();
+#else
+                    var result = new Dictionary<string, Guid>();
+#endif
                     formatter.Serialize(stream, result);
                     return result;
                 }
             }
         }
 
+#if NETFRAMEWORK
         static void WriteUserMap(ConcurrentDictionary<string, Guid> userMap)
+#else
+        static void WriteUserMap(Dictionary<string, Guid> userMap)
+#endif
         {
             // force a lock on the file system ;)
             lock (UserMapLock)

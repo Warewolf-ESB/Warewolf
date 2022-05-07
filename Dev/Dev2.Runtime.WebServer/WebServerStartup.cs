@@ -50,8 +50,8 @@ namespace Dev2.Runtime.WebServer
             GlobalHost.Configuration.TransportConnectTimeout = TimeSpan.FromSeconds(10);
 
             var startOptions = new StartOptions();
-            
-            foreach(var endpoint in endpoints)
+
+            foreach (var endpoint in endpoints)
             {
                 startOptions.Urls.Add(endpoint.Url);
             }
@@ -59,7 +59,7 @@ namespace Dev2.Runtime.WebServer
             return WebApp.Start<WebServerStartup>(startOptions);
         }
 
-    
+
         public void Configuration(IAppBuilder app)
         {
             var listener = (HttpListener)app.Properties[typeof(HttpListener).FullName];
