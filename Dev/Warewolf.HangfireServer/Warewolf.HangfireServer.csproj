@@ -3,7 +3,7 @@
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
         <TargetFramework>net48</TargetFramework>
-        <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+        <RuntimeIdentifier>win</RuntimeIdentifier>
         <AssemblyName>HangfireServer</AssemblyName>
         <ApplicationIcon />
         <StartupObject />
