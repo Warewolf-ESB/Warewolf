@@ -180,7 +180,7 @@ namespace Dev2.Integration.Tests.TestCoverage
         [TestCategory(nameof(TestCoverageCatalog))]
         public void ExecutionWithCoverage_ExpectedValidHtml()
         {
-            const string ExpectedHtmlStarter = "<Div Class=\"nav-bar-row\" style=\"Padding:10px 10px 20px 10px; Margin:5px; Font-Family:Roboto sans-serif; Font-Size:28px; Font-Weight:500; Display:inline-block; \">\r\n\t";
+            const string ExpectedHtmlStarter = "<div Class=\"nav-bar-row\" style=\"Padding:10px 10px 20px 10px;Margin:5px;Font-Family:Roboto sans-serif;Font-Size:28px;Font-Weight:500;Display:inline-block;\">\r\n\t";
             TestHelper.PostDataToWebserver("http://localhost:3142/secure/.tests");
             var result = TestHelper.PostDataToWebserver("http://localhost:3142/secure/.coverage");
             Assert.IsTrue(result.StartsWith(ExpectedHtmlStarter + "Coverage Summary"), "Invalid html returned from coverage:\n" + result);
