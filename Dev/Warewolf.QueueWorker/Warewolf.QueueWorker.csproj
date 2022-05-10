@@ -2,8 +2,7 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net48</TargetFramework>
-    <RuntimeIdentifier>win</RuntimeIdentifier>
+    <TargetFramework>net6.0-windows</TargetFramework>
     <AssemblyName>QueueWorker</AssemblyName>
     <ApplicationIcon />
     <StartupObject />
