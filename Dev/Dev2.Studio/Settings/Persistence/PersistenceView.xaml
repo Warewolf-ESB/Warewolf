@@ -85,7 +85,7 @@
                             </i:Interaction.Behaviors>
                         </ComboBox>
 
-                        <TextBlock x:Name="ServerTextBlock" Text="Server" Grid.Column="0" Grid.Row="2" Margin="{StaticResource ControlBorderTop}" Visibility="{Binding Path=IsChecked, ElementName=UseAsServerCheckBox, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                        <TextBlock x:Name="ServerTextBlock" Text="Server" Grid.Column="0" Grid.Row="2" Margin="{StaticResource ControlBorderTop}" />
                         <TextBox x:Name="ServerTextBox"
                                  Grid.Column="1"
                                  Grid.Row="2"

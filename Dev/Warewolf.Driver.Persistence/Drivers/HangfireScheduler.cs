@@ -475,9 +475,6 @@ namespace Warewolf.Driver.Persistence.Drivers
                 //Note: these jobs may not be very safe to resume, but should be failed as they might be incomplete.
                 //It may not be safe to return the exception message from this exception to user, fix this with the final tool clean up
                 Throw(jobId: jobId, message: ex.Message?.ToString(), reason: "Execution return Exception: re-queue with caution.");
-                
-                Dev2Logger.Error(ex.Message, string.Empty);
-                Dev2Logger.Error(ex.StackTrace, string.Empty);
 
                 return GlobalConstants.Failed;
             }
