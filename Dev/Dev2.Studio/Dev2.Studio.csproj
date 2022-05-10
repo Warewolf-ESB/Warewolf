@@ -812,15 +812,15 @@
     </PackageReference>
   </ItemGroup>
   <PropertyGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
-    <PostBuildEvent>if exist "$(SolutionDir)Dev2.Studio\bin\Debug\net48\Warewolf Studio.exe" (
-  if not exist "$(SolutionDir)Dev2.Studio\bin\Debug\net48\Trackerbird.x64.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.x64.dll" "$(SolutionDir)Dev2.Studio\bin\Debug\net48\Trackerbird.x64.dll"
-  if not exist "$(SolutionDir)Dev2.Studio\bin\Debug\net48\Trackerbird.x86.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.x86.dll" "$(SolutionDir)Dev2.Studio\bin\Debug\net48"
-  if not exist "$(SolutionDir)Dev2.Studio\bin\Debug\net48\Trackerbird.Tracker.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.Tracker.dll" "$(SolutionDir)Dev2.Studio\bin\Debug\net48"
+    <PostBuildEvent>if exist "$(SolutionDir)Dev2.Studio\bin\Debug\net6.0-windows\Warewolf Studio.exe" (
+  if not exist "$(SolutionDir)Dev2.Studio\bin\Debug\net6.0-windows\Trackerbird.x64.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.x64.dll" "$(SolutionDir)Dev2.Studio\bin\Debug\net6.0-windows\Trackerbird.x64.dll"
+  if not exist "$(SolutionDir)Dev2.Studio\bin\Debug\net6.0-windows\Trackerbird.x86.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.x86.dll" "$(SolutionDir)Dev2.Studio\bin\Debug\net6.0-windows"
+  if not exist "$(SolutionDir)Dev2.Studio\bin\Debug\net6.0-windows\Trackerbird.Tracker.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.Tracker.dll" "$(SolutionDir)Dev2.Studio\bin\Debug\net6.0-windows"
 )
-if exist "$(SolutionDir)Dev2.Studio\bin\Release\net48\Warewolf Studio.exe" (
-  if not exist "$(SolutionDir)Dev2.Studio\bin\Release\net48\Trackerbird.x64.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.x64.dll" "$(SolutionDir)Dev2.Studio\bin\Release\net48\Trackerbird.x64.dll"
-  if not exist "$(SolutionDir)Dev2.Studio\bin\Release\net48\Trackerbird.x86.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.x86.dll" "$(SolutionDir)Dev2.Studio\bin\Release\net48"
-  if not exist "$(SolutionDir)Dev2.Studio\bin\Release\net48\Trackerbird.Tracker.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.Tracker.dll" "$(SolutionDir)Dev2.Studio\bin\Release\net48"
+if exist "$(SolutionDir)Dev2.Studio\bin\Release\net6.0-windows\Warewolf Studio.exe" (
+  if not exist "$(SolutionDir)Dev2.Studio\bin\Release\net6.0-windows\Trackerbird.x64.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.x64.dll" "$(SolutionDir)Dev2.Studio\bin\Release\net6.0-windows\Trackerbird.x64.dll"
+  if not exist "$(SolutionDir)Dev2.Studio\bin\Release\net6.0-windows\Trackerbird.x86.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.x86.dll" "$(SolutionDir)Dev2.Studio\bin\Release\net6.0-windows"
+  if not exist "$(SolutionDir)Dev2.Studio\bin\Release\net6.0-windows\Trackerbird.Tracker.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.Tracker.dll" "$(SolutionDir)Dev2.Studio\bin\Release\net6.0-windows"
 )
     </PostBuildEvent>
   </PropertyGroup>

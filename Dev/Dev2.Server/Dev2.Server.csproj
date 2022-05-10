@@ -538,37 +538,37 @@
   </ItemGroup>
   <PropertyGroup>
     <PostBuildEvent>
-      if exist "$(SolutionDir)Dev2.Server\bin\Debug\net48\Warewolf Server.exe" (
-      echo D | xcopy /Y /E /F /D "$(SolutionDir)Resources - Release\Resources" "$(SolutionDir)Dev2.Server\bin\Debug\net48\Resources"
-      echo D | xcopy /Y /E /F /D "$(SolutionDir)Resources - Release" "$(SolutionDir)Dev2.Server\bin\Debug\net48\Resources - Release"
-      echo D | xcopy /Y /E /F /D "$(SolutionDir)Resources - ServerTests" "$(SolutionDir)Dev2.Server\bin\Debug\net48\Resources - ServerTests"
-      echo D | xcopy /Y /E /F /D "$(SolutionDir)Resources - UITests" "$(SolutionDir)Dev2.Server\bin\Debug\net48\Resources - UITests"
-      echo D | xcopy /Y /E /F /D "$(SolutionDir)Resources - Load" "$(SolutionDir)Dev2.Server\bin\Debug\net48\Resources - Load"
+      if exist "$(SolutionDir)Dev2.Server\bin\Debug\net6.0-windows\Warewolf Server.exe" (
+      echo D | xcopy /Y /E /F /D "$(SolutionDir)Resources - Release\Resources" "$(SolutionDir)Dev2.Server\bin\Debug\net6.0-windows\Resources"
+      echo D | xcopy /Y /E /F /D "$(SolutionDir)Resources - Release" "$(SolutionDir)Dev2.Server\bin\Debug\net6.0-windows\Resources - Release"
+      echo D | xcopy /Y /E /F /D "$(SolutionDir)Resources - ServerTests" "$(SolutionDir)Dev2.Server\bin\Debug\net6.0-windows\Resources - ServerTests"
+      echo D | xcopy /Y /E /F /D "$(SolutionDir)Resources - UITests" "$(SolutionDir)Dev2.Server\bin\Debug\net6.0-windows\Resources - UITests"
+      echo D | xcopy /Y /E /F /D "$(SolutionDir)Resources - Load" "$(SolutionDir)Dev2.Server\bin\Debug\net6.0-windows\Resources - Load"
       )
-      if exist "$(SolutionDir)Dev2.Server\bin\Release\net48\Warewolf Server.exe" (
-      echo D | xcopy /Y /E /F /D "$(SolutionDir)Resources - Release\Resources" "$(SolutionDir)Dev2.Server\bin\Release\net48\Resources"
-      echo D | xcopy /Y /E /F /D "$(SolutionDir)Resources - Release" "$(SolutionDir)Dev2.Server\bin\Release\net48\Resources - Release"
+      if exist "$(SolutionDir)Dev2.Server\bin\Release\net6.0-windows\Warewolf Server.exe" (
+      echo D | xcopy /Y /E /F /D "$(SolutionDir)Resources - Release\Resources" "$(SolutionDir)Dev2.Server\bin\Release\net6.0-windows\Resources"
+      echo D | xcopy /Y /E /F /D "$(SolutionDir)Resources - Release" "$(SolutionDir)Dev2.Server\bin\Release\net6.0-windows\Resources - Release"
       )
   </PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
     <PostBuildEvent>
-      if exist "$(SolutionDir)Dev2.Server\bin\Debug\net48\Warewolf Server.exe" (
-      if not exist "$(SolutionDir)Dev2.Server\bin\Debug\net48\_PublishedWebsites\Dev2.Web" echo D | xcopy /Y /E /F /D "$(SolutionDir)Dev2.Web2" "$(SolutionDir)Dev2.Server\bin\Debug\net48\_PublishedWebsites\Dev2.Web"
-      if not exist "$(SolutionDir)Dev2.Server\bin\Debug\net48\Warewolf.COMIPC.exe" xcopy /Y "$(SolutionDir)Warewolf.COMIPC\bin\Debug\net48\win-x86\Warewolf.COMIPC.exe" "$(SolutionDir)Dev2.Server\bin\Debug\net48"
-      if not exist "$(SolutionDir)Dev2.Server\bin\Debug\net48\Warewolf.COMIPC.pdb" xcopy /Y "$(SolutionDir)Warewolf.COMIPC\bin\Debug\net48\win-x86\Warewolf.COMIPC.pdb" "$(SolutionDir)Dev2.Server\bin\Debug\net48"
-      if not exist "$(SolutionDir)Dev2.Server\bin\Debug\net48\Warewolf.COMIPC.config" xcopy /Y "$(SolutionDir)Warewolf.COMIPC\bin\Debug\net48\win-x86\Warewolf.COMIPC.config" "$(SolutionDir)Dev2.Server\bin\Debug\net48"
-      if not exist "$(SolutionDir)Dev2.Server\bin\Debug\net48\Trackerbird.x64.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.x64.dll" "$(SolutionDir)Dev2.Server\bin\Debug\net48"
-      if not exist "$(SolutionDir)Dev2.Server\bin\Debug\net48\Trackerbird.x86.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.x86.dll" "$(SolutionDir)Dev2.Server\bin\Debug\net48"
-      if not exist "$(SolutionDir)Dev2.Server\bin\Debug\net48\Trackerbird.Tracker.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.Tracker.dll" "$(SolutionDir)Dev2.Server\bin\Debug\net48"
+      if exist "$(SolutionDir)Dev2.Server\bin\Debug\net6.0-windows\Warewolf Server.exe" (
+      if not exist "$(SolutionDir)Dev2.Server\bin\Debug\net6.0-windows\_PublishedWebsites\Dev2.Web" echo D | xcopy /Y /E /F /D "$(SolutionDir)Dev2.Web2" "$(SolutionDir)Dev2.Server\bin\Debug\net6.0-windows\_PublishedWebsites\Dev2.Web"
+      if not exist "$(SolutionDir)Dev2.Server\bin\Debug\net6.0-windows\Warewolf.COMIPC.exe" xcopy /Y "$(SolutionDir)Warewolf.COMIPC\bin\Debug\net6.0-windows\win-x86\Warewolf.COMIPC.exe" "$(SolutionDir)Dev2.Server\bin\Debug\net6.0-windows"
+      if not exist "$(SolutionDir)Dev2.Server\bin\Debug\net6.0-windows\Warewolf.COMIPC.pdb" xcopy /Y "$(SolutionDir)Warewolf.COMIPC\bin\Debug\net6.0-windows\win-x86\Warewolf.COMIPC.pdb" "$(SolutionDir)Dev2.Server\bin\Debug\net6.0-windows"
+      if not exist "$(SolutionDir)Dev2.Server\bin\Debug\net6.0-windows\Warewolf.COMIPC.config" xcopy /Y "$(SolutionDir)Warewolf.COMIPC\bin\Debug\net6.0-windows\win-x86\Warewolf.COMIPC.config" "$(SolutionDir)Dev2.Server\bin\Debug\net6.0-windows"
+      if not exist "$(SolutionDir)Dev2.Server\bin\Debug\net6.0-windows\Trackerbird.x64.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.x64.dll" "$(SolutionDir)Dev2.Server\bin\Debug\net6.0-windows"
+      if not exist "$(SolutionDir)Dev2.Server\bin\Debug\net6.0-windows\Trackerbird.x86.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.x86.dll" "$(SolutionDir)Dev2.Server\bin\Debug\net6.0-windows"
+      if not exist "$(SolutionDir)Dev2.Server\bin\Debug\net6.0-windows\Trackerbird.Tracker.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.Tracker.dll" "$(SolutionDir)Dev2.Server\bin\Debug\net6.0-windows"
       )
-      if exist "$(SolutionDir)Dev2.Server\bin\Release\net48\Warewolf Server.exe" (
-      if not exist "$(SolutionDir)Dev2.Server\bin\Release\net48\Warewolf.COMIPC.exe" xcopy /Y "$(SolutionDir)Warewolf.COMIPC\bin\Release\net48\win-x86\Warewolf.COMIPC.exe" "$(SolutionDir)Dev2.Server\bin\Release\net48"
-      if not exist "$(SolutionDir)Dev2.Server\bin\Release\net48\Warewolf.COMIPC.pdb" xcopy /Y "$(SolutionDir)Warewolf.COMIPC\bin\Release\net48\win-x86\Warewolf.COMIPC.pdb" "$(SolutionDir)Dev2.Server\bin\Release\net48"
-      if not exist "$(SolutionDir)Dev2.Server\bin\Release\net48\Warewolf.COMIPC.config" xcopy /Y "$(SolutionDir)Warewolf.COMIPC\bin\Release\net48\win-x86\Warewolf.COMIPC.exe.config" "$(SolutionDir)Dev2.Server\bin\Release\net48"
-      if not exist "$(SolutionDir)Dev2.Server\bin\Release\net48\Trackerbird.x64.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.x64.dll" "$(SolutionDir)Dev2.Server\bin\Release\net48"
-      if not exist "$(SolutionDir)Dev2.Server\bin\Release\net48\Trackerbird.x86.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.x86.dll" "$(SolutionDir)Dev2.Server\bin\Release\net48"
-      if not exist "$(SolutionDir)Dev2.Server\bin\Release\net48\Trackerbird.Tracker.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.Tracker.dll" "$(SolutionDir)Dev2.Server\bin\Release\net48"
+      if exist "$(SolutionDir)Dev2.Server\bin\Release\net6.0-windows\Warewolf Server.exe" (
+      if not exist "$(SolutionDir)Dev2.Server\bin\Release\net6.0-windows\Warewolf.COMIPC.exe" xcopy /Y "$(SolutionDir)Warewolf.COMIPC\bin\Release\net6.0-windows\win-x86\Warewolf.COMIPC.exe" "$(SolutionDir)Dev2.Server\bin\Release\net6.0-windows"
+      if not exist "$(SolutionDir)Dev2.Server\bin\Release\net6.0-windows\Warewolf.COMIPC.pdb" xcopy /Y "$(SolutionDir)Warewolf.COMIPC\bin\Release\net6.0-windows\win-x86\Warewolf.COMIPC.pdb" "$(SolutionDir)Dev2.Server\bin\Release\net6.0-windows"
+      if not exist "$(SolutionDir)Dev2.Server\bin\Release\net6.0-windows\Warewolf.COMIPC.config" xcopy /Y "$(SolutionDir)Warewolf.COMIPC\bin\Release\net6.0-windows\win-x86\Warewolf.COMIPC.exe.config" "$(SolutionDir)Dev2.Server\bin\Release\net6.0-windows"
+      if not exist "$(SolutionDir)Dev2.Server\bin\Release\net6.0-windows\Trackerbird.x64.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.x64.dll" "$(SolutionDir)Dev2.Server\bin\Release\net6.0-windows"
+      if not exist "$(SolutionDir)Dev2.Server\bin\Release\net6.0-windows\Trackerbird.x86.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.x86.dll" "$(SolutionDir)Dev2.Server\bin\Release\net6.0-windows"
+      if not exist "$(SolutionDir)Dev2.Server\bin\Release\net6.0-windows\Trackerbird.Tracker.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.Tracker.dll" "$(SolutionDir)Dev2.Server\bin\Release\net6.0-windows"
       )
       taskkill /f /im Warewolf.COMIPC.exe /fi "STATUS eq RUNNING"
       taskkill /f /im Warewolf.COMIPC.vshost.exe /fi "STATUS eq RUNNING"
