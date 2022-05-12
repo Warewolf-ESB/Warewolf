@@ -27,7 +27,7 @@ namespace Warewolf.Security.Encryption
 #else        
         static DataProtectionWrapper _protector;
 
-        static DataProtectionWrapper Protector
+        static DataProtectionWrapper ProtectedData
         {
             get
             {
@@ -36,7 +36,7 @@ namespace Warewolf.Security.Encryption
                     var serviceCollection = new Microsoft.Extensions.DependencyInjection.ServiceCollection();
                     serviceCollection.AddDataProtection();
                     var services = serviceCollection.BuildServiceProvider();
-                    var instance = ActivatorUtilities.CreateInstance<DataProtectionWrapper>(services);
+                    _protector = ActivatorUtilities.CreateInstance<DataProtectionWrapper>(services);
                 }
                 return _protector;
             }
@@ -97,7 +97,7 @@ namespace Warewolf.Security.Encryption
 #if NETFRAMEWORK
             var encrypted = ProtectedData.Protect(data, null, DataProtectionScope);
 #else
-            var encrypted = _protector.Protector.Protect(data);
+            var encrypted = ProtectedData.Protector.Protect(data);
 #endif
 
             //return as base64 string
@@ -135,7 +135,7 @@ namespace Warewolf.Security.Encryption
 #if NETFRAMEWORK
             var decrypted = ProtectedData.Unprotect(data, null, DataProtectionScope);
 #else
-            var decrypted = _protector.Protector.Unprotect(data);
+            var decrypted = ProtectedData.Protector.Unprotect(data);
 #endif
             return Encoding.Unicode.GetString(decrypted);
         }
@@ -173,7 +173,7 @@ namespace Warewolf.Security.Encryption
 #if NETFRAMEWORK
                 ProtectedData.Unprotect(data, null, DataProtectionScope);
 #else
-                _protector.Protector.Unprotect(data);
+                ProtectedData.Protector.Unprotect(data);
 #endif
             }
             catch (Exception)

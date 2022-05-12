@@ -146,8 +146,7 @@ namespace Dev2.Diagnostics.Debug
                     var allDebugStates = DebugMessageRepo.Instance.FetchDebugItems(writeArgs.debugState.ClientID, writeArgs.debugState.SessionID);
                     foreach (var state in allDebugStates)
                     {
-                        var serializeObject = JsonConvert.SerializeObject(state, SerializerSettings);
-                        writer.Write(serializeObject);
+                        writer.Write(state);
                     }
                 }
             }

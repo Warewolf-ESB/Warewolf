@@ -16,7 +16,9 @@ using System.Net.Http;
 using System.Web.Http;
 using Dev2.Runtime.WebServer.Handlers;
 using Dev2.Runtime.WebServer.Security;
-
+#if !NETFRAMEWORK
+using Microsoft.AspNetCore.Http;
+#endif
 
 namespace Dev2.Runtime.WebServer.Controllers
 {

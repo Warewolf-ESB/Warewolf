@@ -13,7 +13,9 @@ using System.Collections.Specialized;
 using System.Net;
 using System.Net.Http;
 using System.Security.Principal;
+#if NETFRAMEWORK
 using System.Web.Http;
+#endif
 using Dev2.Common;
 using Dev2.Runtime.WebServer.Handlers;
 using Dev2.Services.Security;
@@ -22,7 +24,11 @@ using Warewolf.Security;
 
 namespace Dev2.Runtime.WebServer.Controllers
 {
+#if NETFRAMEWORK
     public abstract class AbstractController : ApiController
+#else
+    public abstract class AbstractController : System.Web.Mvc.Controller
+#endif
     {
         protected virtual HttpResponseMessage ProcessRequest<TRequestHandler>(NameValueCollection requestVariables, bool isUrlWithTokenPrefix)
             where TRequestHandler : class, IRequestHandler, new()

@@ -13,7 +13,14 @@ using System;
 using System.Net;
 using System.Web.Http;
 using Dev2.Common;
+using Dev2.Runtime.WebServer.Hubs;
 using Microsoft.AspNet.SignalR;
+#if !NETFRAMEWORK
+using Microsoft.AspNetCore;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.DependencyInjection;
+#endif
 using Microsoft.Owin.Cors;
 using Microsoft.Owin.Hosting;
 using Owin;
@@ -29,6 +36,7 @@ namespace Dev2.Runtime.WebServer
     {
         public const double SizeCapForDownload = 51200; // 50 KB size limit
 
+#if NETFRAMEWORK
         public static IDisposable Start(Dev2Endpoint[] endpoints)
         {
             // Make long polling connections wait a maximum of 110 seconds for a
@@ -104,5 +112,49 @@ namespace Dev2.Runtime.WebServer
             //DO NOT USE NEGOTIATE BREAKS SERVER to SERVER coms when using public authentication and hostname.
             return AuthenticationSchemes.Ntlm | AuthenticationSchemes.Basic;
         }
+#else
+        public static IWebHost Start(Dev2Endpoint[] endpoints)
+        {
+            var webHostBuilder = WebHost.CreateDefaultBuilder()
+                            .UseStartup<WebServerStartup>();
+            foreach (var endpoint in endpoints)
+            {
+                webHostBuilder.UseUrls(endpoint.Url);
+            }
+            var webHost = webHostBuilder.Build();
+            return webHost;
+        }
+
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddSignalR();
+            services.AddControllers();
+        }
+
+        public void Configure(IApplicationBuilder app)
+        {
+            // Enable cross-domain calls
+            app.UseCors((x => x
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .SetIsOriginAllowed(origin => true) // allow any origin
+                .AllowCredentials()));
+
+            //
+            // Sequence is important!
+            // ALWAYS MapSignalR first then UseWebApi
+            //
+
+            app.UseRouting();
+
+            app.UseEndpoints(endpoints =>
+            {
+                // Add SignalR routing...
+                endpoints.MapHub<EsbHub>("/dsf");
+                // Add web server routing...
+                endpoints.MapControllers();
+            });
+        }
+#endif
     }
 }

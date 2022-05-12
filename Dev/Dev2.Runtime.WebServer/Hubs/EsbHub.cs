@@ -69,12 +69,6 @@ namespace Dev2.Runtime.WebServer.Hubs
         {
             SendDebugState(debugState as DebugState);
         }
-        
-        public void Write(string serializeObject)
-        {
-            var debugState = _serializer.Deserialize<DebugState>(serializeObject);
-            SendDebugState(debugState);
-        }
 
         #endregion
 
@@ -86,7 +80,7 @@ namespace Dev2.Runtime.WebServer.Hubs
             {
                 addedItem.ServerId = HostSecurityProvider.Instance.ServerID;
                 var item = _serializer.Serialize(addedItem);
-                var hubCallerConnectionContext = Clients;
+                IHubCallerConnectionContext<dynamic> hubCallerConnectionContext = Clients;
                 hubCallerConnectionContext.All.ItemAddedMessage(item);
             }
         }
@@ -201,12 +195,12 @@ namespace Dev2.Runtime.WebServer.Hubs
             var hubCallerConnectionContext = Clients;
             try
             {
-                var user = hubCallerConnectionContext.User(Context.User.Identity.Name);
+                dynamic user = hubCallerConnectionContext.User(Context.User.Identity.Name);
                 user.SendDebugState(debugSerializated);
             }
             catch (Exception ex)
             {
-                var user = hubCallerConnectionContext.Caller;
+                dynamic user = hubCallerConnectionContext.Caller;
                 user.SendDebugState(debugSerializated);
             }
 
@@ -345,7 +339,8 @@ namespace Dev2.Runtime.WebServer.Hubs
         }
 
         #region Overrides of Hub
-        
+
+#if NETFRAMEWORK
         public override Task OnConnected()
         {
             
@@ -364,6 +359,14 @@ namespace Dev2.Runtime.WebServer.Hubs
             ConnectionActions();
             return base.OnReconnected();
         }
+#else
+        public override Task OnConnectedAsync()
+        {
+            
+            ConnectionActions();
+            return base.OnConnectedAsync();
+        }
+#endif
 
         void ConnectionActions()
         {

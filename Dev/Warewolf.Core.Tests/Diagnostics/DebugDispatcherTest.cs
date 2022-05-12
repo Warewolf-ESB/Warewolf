@@ -165,12 +165,6 @@ namespace Dev2.Tests.Diagnostics
             mockState.Setup(o => o.SessionID).Returns(sessionId);
             mockState.Setup(o => o.IsFinalStep()).Returns(true);
 
-            var expectedJson = JsonConvert.SerializeObject(mockState.Object, new JsonSerializerSettings
-            {
-                TypeNameHandling = TypeNameHandling.Objects,
-                TypeNameAssemblyFormatHandling = TypeNameAssemblyFormatHandling.Simple
-            });
-
             var writeArgs = new WriteArgs
             {
                 debugState = mockState.Object
@@ -181,7 +175,7 @@ namespace Dev2.Tests.Diagnostics
             debugDispatcher.Write(writeArgs);
 
             Thread.Sleep(50);
-            writer.Verify(s => s.Write(expectedJson), Times.Exactly(3));
+            writer.Verify(s => s.Write(mockState.Object), Times.Exactly(3));
         }
 
         [TestMethod]

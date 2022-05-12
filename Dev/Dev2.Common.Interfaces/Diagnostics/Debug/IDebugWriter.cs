@@ -14,6 +14,5 @@ namespace Dev2.Common.Interfaces.Diagnostics.Debug
     public interface IDebugWriter
     {
         void Write(IDebugState debugState);
-        void Write(string serializeObject);
     }
 }

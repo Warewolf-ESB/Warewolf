@@ -6,7 +6,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{4D0919C0-8FA4-480C-8629-00EB128DDEE9}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <TargetFramework>net6.0-windows</TargetFramework>
+    <TargetFramework>net48</TargetFramework>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <EnableDefaultItems>false</EnableDefaultItems>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
@@ -237,6 +237,7 @@
     <PackageReference Include="Microsoft.AspNet.Cors">
       <Version>5.2.7</Version>
     </PackageReference>
+    <PackageReference Include="Microsoft.AspNet.Mvc" Version="5.2.8" />
     <PackageReference Include="Microsoft.AspNet.SignalR.SelfHost">
       <Version>2.4.1</Version>
     </PackageReference>
