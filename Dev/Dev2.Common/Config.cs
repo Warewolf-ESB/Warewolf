@@ -114,7 +114,7 @@ namespace Dev2.Common
 
         public bool UseAsServer
         {
-            get => _settings?.UseAsServer ?? false;
+            get => _settings?.UseAsServer ?? true;
             set
             {
                 _settings.UseAsServer = value;

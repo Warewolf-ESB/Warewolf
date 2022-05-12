@@ -92,7 +92,7 @@
                                  Margin="{StaticResource ControlBorderTop}"
                                  Text="{Binding ServerName, UpdateSourceTrigger=PropertyChanged}"
                                  ToolTip="{x:Static languages:Tooltips.PersistenceServerNameTooltip}"
-                                 Focusable="True" Visibility="{Binding Path=IsChecked, ElementName=UseAsServerCheckBox, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                 Focusable="True">
 
                             <i:Interaction.Behaviors>
                                 <core:HelpSetter Text="{x:Static languages:HelpText.PersistenceServerNameHelp}"
