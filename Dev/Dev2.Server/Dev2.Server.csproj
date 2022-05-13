@@ -536,7 +536,7 @@
       <Version>2.1.2</Version>
     </PackageReference>
   </ItemGroup>
-  <PropertyGroup Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework'">
+  <PropertyGroup>
     <PostBuildEvent>
       if exist "$(SolutionDir)Dev2.Server\bin\Debug\net6.0-windows\Warewolf Server.exe" (
       echo D | xcopy /Y /E /F /D "$(SolutionDir)Resources - Release\Resources" "$(SolutionDir)Dev2.Server\bin\Debug\net6.0-windows\Resources"
@@ -551,7 +551,7 @@
       )
   </PostBuildEvent>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
+  <PropertyGroup>
     <PostBuildEvent>
       if exist "$(SolutionDir)Dev2.Server\bin\Debug\net48\Warewolf Server.exe" (
       echo D | xcopy /Y /E /F /D "$(SolutionDir)Resources - Release\Resources" "$(SolutionDir)Dev2.Server\bin\Debug\net48\Resources"
