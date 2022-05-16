@@ -9,16 +9,18 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
-using System.Collections.Specialized;
-using System.Linq;
-using System.Net.Http;
+#if NETFRAMEWORK
 using System.Web.Http;
+#else
+using Microsoft.AspNetCore.Mvc;
+#endif
 using Dev2.Runtime.WebServer.Handlers;
 using Dev2.Runtime.WebServer.Security;
-#if !NETFRAMEWORK
-using Microsoft.AspNetCore.Http;
-#endif
+using System;
+using System.Linq;
+using System.Net.Http;
+using System.Collections.Specialized;
+using Microsoft.AspNetCore.Http.Extensions;
 
 namespace Dev2.Runtime.WebServer.Controllers
 {
@@ -27,6 +29,9 @@ namespace Dev2.Runtime.WebServer.Controllers
      * request that comes from an HTTP, that includes REST and a user executing a workflow
      * from a web browser
      */
+#if NETFRAMEWORK
+    [ApiController]
+#endif
     [AuthorizeWeb]
     public class WebServerController : AbstractController
     {
@@ -80,7 +85,11 @@ namespace Dev2.Runtime.WebServer.Controllers
                 requestVariables.Add("IsDebug", true.ToString());
             }
 
+#if NETFRAMEWORK
             return Request.Method == HttpMethod.Post
+#else
+            return Request.Method == HttpMethod.Post.ToString()
+#endif
                 ? ProcessRequest<WebPostRequestHandler>(requestVariables, isUrlWithTokenPrefix)
                 : ProcessRequest<WebGetRequestHandler>(requestVariables, isUrlWithTokenPrefix);
         }
@@ -103,6 +112,7 @@ namespace Dev2.Runtime.WebServer.Controllers
         [Route("Secure/{*__name__}")]
         public HttpResponseMessage ExecuteSecureWorkflow(string __name__)
         {
+#if NETFRAMEWORK
             if (Request?.RequestUri != null)
             {
                 var requestUri = Request.RequestUri;
@@ -116,6 +126,21 @@ namespace Dev2.Runtime.WebServer.Controllers
                     return ExecuteFolderTests(requestUri.ToString(), false);
                 }
             }
+#else
+            if (Request?.GetDisplayUrl() != null)
+            {
+                var requestUri = Request.GetDisplayUrl();
+                if (requestUri.EndsWith("/.tests", StringComparison.InvariantCultureIgnoreCase) || requestUri.EndsWith("/.tests.trx", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    return ExecuteFolderTests(requestUri.ToString(), false);
+                }
+
+                if (requestUri.EndsWith("/.coverage", StringComparison.InvariantCultureIgnoreCase) || requestUri.EndsWith("/.coverage.json", StringComparison.InvariantCultureIgnoreCase) || requestUri.EndsWith("/.coverage.trx", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    return ExecuteFolderTests(requestUri.ToString(), false);
+                }
+            }
+#endif
 
             return ExecuteWorkflow(__name__, false, false);
         }
@@ -125,6 +150,7 @@ namespace Dev2.Runtime.WebServer.Controllers
         [Route("Public/{*__name__}")]
         public HttpResponseMessage ExecutePublicWorkflow(string __name__)
         {
+#if NETFRAMEWORK
             if (Request?.RequestUri != null)
             {
                 var requestUri = Request.RequestUri;
@@ -132,6 +158,16 @@ namespace Dev2.Runtime.WebServer.Controllers
                 {
                     return ExecuteFolderTests(requestUri.ToString(), true);
                 }
+            }
+#else
+            if (Request?.GetDisplayUrl() != null)
+            {
+                var requestUri = Request.GetDisplayUrl();
+                if (requestUri.EndsWith("/.tests", StringComparison.InvariantCultureIgnoreCase) || requestUri.EndsWith("/.tests.trx", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    return ExecuteFolderTests(requestUri, true);
+                }
+#endif
             }
 
             return ExecuteWorkflow(__name__, true, false);
@@ -151,11 +187,29 @@ namespace Dev2.Runtime.WebServer.Controllers
         public HttpResponseMessage ExecuteLoginWorkflow()
         {
             var requestVariables = new NameValueCollection();
+#if NETFRAMEWORK
             var context = new WebServerContext(Request, requestVariables) {Request = {User = User}};
+#else
+            var context = new WebServerContext(new HttpRequestMessage(ConvertStringToHttpMethod(Request.Method), Request.GetDisplayUrl()), requestVariables) {Request = {User = User}};
+#endif
             var handler = CreateHandler<TokenRequestHandler>();
             handler.ProcessRequest(context);
             return context.ResponseMessage;
         }
+
+#if !NETFRAMEWORK
+        internal static HttpMethod ConvertStringToHttpMethod(string methodString)
+        {
+            switch (methodString)
+            {
+                case "Get": return HttpMethod.Get;
+                case "Post": return HttpMethod.Post;
+                case "Delete": return HttpMethod.Delete;
+                case "Put": return HttpMethod.Put;
+                default: return null;
+            }
+        }
+#endif
 
         [HttpGet]
         [HttpPost]

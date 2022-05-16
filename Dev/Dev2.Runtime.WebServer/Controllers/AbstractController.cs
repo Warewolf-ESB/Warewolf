@@ -15,6 +15,11 @@ using System.Net.Http;
 using System.Security.Principal;
 #if NETFRAMEWORK
 using System.Web.Http;
+#else
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http.Extensions;
+using System.Security.Claims;
+using System.Linq;
 #endif
 using Dev2.Common;
 using Dev2.Runtime.WebServer.Handlers;
@@ -27,7 +32,7 @@ namespace Dev2.Runtime.WebServer.Controllers
 #if NETFRAMEWORK
     public abstract class AbstractController : ApiController
 #else
-    public abstract class AbstractController : System.Web.Mvc.Controller
+    public abstract class AbstractController : ControllerBase
 #endif
     {
         protected virtual HttpResponseMessage ProcessRequest<TRequestHandler>(NameValueCollection requestVariables, bool isUrlWithTokenPrefix)
@@ -52,7 +57,11 @@ namespace Dev2.Runtime.WebServer.Controllers
                     }
                 }
 
+#if NETFRAMEWORK
                 var context = new WebServerContext(Request, requestVariables) {Request = {User = user}};
+#else
+                var context = new WebServerContext(new HttpRequestMessage(WebServerController.ConvertStringToHttpMethod(Request.Method), Request.GetDisplayUrl()), requestVariables) {Request = {User = user}};
+#endif
                 var handler = CreateHandler<TRequestHandler>();
                 handler.ProcessRequest(context);
                 return context.ResponseMessage;
@@ -63,9 +72,15 @@ namespace Dev2.Runtime.WebServer.Controllers
             }
         }
 
+#if NETFRAMEWORK
         private bool TryOverrideByToken(ref IPrincipal user)
         {
             var token = Request.Headers.Authorization?.Parameter;
+#else
+        private bool TryOverrideByToken(ref ClaimsPrincipal user)
+        {
+            var token = Request.Headers.Authorization.FirstOrDefault();
+#endif
             try
             {
                 user = new JwtManager(new SecuritySettings()).BuildPrincipal(token);
@@ -90,7 +105,11 @@ namespace Dev2.Runtime.WebServer.Controllers
                 return Request.CreateWarewolfErrorResponse(new WarewolfErrorResponseArgs { StatusCode = HttpStatusCode.Unauthorized, Title = GlobalConstants.USER_UNAUTHORIZED, Message = ErrorResource.AuthorizationDeniedForThisUser });
             }
 
+#if NETFRAMEWORK
             var context = new WebServerContext(Request) {Request = {User = User}};
+#else
+            var context = new WebServerContext(new HttpRequestMessage(WebServerController.ConvertStringToHttpMethod(Request.Method), Request.GetDisplayUrl())) {Request = {User = User}};
+#endif
             var handler = CreateHandler<TRequestHandler>();
             handler.ProcessRequest(context);
 

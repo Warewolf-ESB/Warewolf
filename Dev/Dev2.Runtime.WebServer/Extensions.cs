@@ -17,7 +17,12 @@ using System.Net;
 using System.Net.Http;
 using System.Security.Principal;
 using System.Text;
+using Microsoft.AspNetCore.Http.Extensions;
+#if NETFRAMEWORK
 using System.Web.Http.Controllers;
+#else
+using Microsoft.AspNetCore.Http;
+#endif
 
 namespace Dev2.Runtime.WebServer
 {
@@ -65,20 +70,19 @@ namespace Dev2.Runtime.WebServer
         public static StringContent GetHttpStringContent(this EmitionTypes emitionType, string message)
         {
             return emitionType == EmitionTypes.XML || emitionType == EmitionTypes.TRX
-                          ? new StringContent(message, System.Text.Encoding.UTF8, "application/xml")
-                          : new StringContent(message, System.Text.Encoding.UTF8, "application/json");
+                          ? new StringContent(message, Encoding.UTF8, "application/xml")
+                          : new StringContent(message, Encoding.UTF8, "application/json");
         }
 
-        public static void CreateWarewolfErrorResponse(this HttpActionContext context, WarewolfErrorResponseArgs errorResponseArgs)
-        {
-            context.Response = CreateWarewolfErrorResponse(context.Request.RequestUri, errorResponseArgs);
-        }
-
+#if NETFRAMEWORK
         public static HttpResponseMessage CreateWarewolfErrorResponse(this HttpRequestMessage requestMessage, WarewolfErrorResponseArgs errorResponseArgs) => CreateWarewolfErrorResponse(requestMessage.RequestUri, errorResponseArgs);
+#else
+        public static HttpResponseMessage CreateWarewolfErrorResponse(this HttpRequest requestMessage, WarewolfErrorResponseArgs errorResponseArgs) => CreateWarewolfErrorResponse(new Uri(requestMessage.GetDisplayUrl()), errorResponseArgs);
+#endif
         public static HttpResponseMessage CreateWarewolfErrorResponse(Uri uri, WarewolfErrorResponseArgs errorResponseArgs) => CreateWarewolfErrorResponse(uri.GetEmitionType(), errorResponseArgs.StatusCode, errorResponseArgs.Title, errorResponseArgs.Message);
-        public static HttpResponseMessage CreateWarewolfErrorResponse(EmitionTypes emitionType, HttpStatusCode statusCode, string tittle, string message)
+        public static HttpResponseMessage CreateWarewolfErrorResponse(EmitionTypes emitionType, HttpStatusCode statusCode, string title, string message)
         {
-            var calculatedMessage = ExecuteExceptionPayload.CreateErrorResponse(emitionType, statusCode, tittle, message);
+            var calculatedMessage = ExecuteExceptionPayload.CreateErrorResponse(emitionType, statusCode, title, message);
             var content = emitionType.GetHttpStringContent(calculatedMessage);
             return new HttpResponseMessage(statusCode)
             {

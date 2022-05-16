@@ -9,21 +9,22 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using Dev2.Runtime.WebServer.Hubs;
+#if NETFRAMEWORK
 using System;
 using System.Net;
 using System.Web.Http;
 using Dev2.Common;
-using Dev2.Runtime.WebServer.Hubs;
 using Microsoft.AspNet.SignalR;
-#if !NETFRAMEWORK
+using Microsoft.Owin.Cors;
+using Microsoft.Owin.Hosting;
+using Owin;
+#else
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 #endif
-using Microsoft.Owin.Cors;
-using Microsoft.Owin.Hosting;
-using Owin;
 
 
 namespace Dev2.Runtime.WebServer

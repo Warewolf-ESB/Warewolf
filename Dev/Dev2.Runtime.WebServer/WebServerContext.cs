@@ -11,7 +11,11 @@
 
 using System;
 using System.Collections.Specialized;
+#if NETFRAMEWORK
+using System.Web.Http;
+#else
 using System.Net.Http;
+#endif
 using Dev2.Runtime.WebServer.Responses;
 
 namespace Dev2.Runtime.WebServer
