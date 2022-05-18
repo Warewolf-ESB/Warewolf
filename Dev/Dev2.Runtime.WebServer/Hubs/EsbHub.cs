@@ -357,12 +357,21 @@ namespace Dev2.Runtime.WebServer.Hubs
 
         #region Overrides of Hub
         
+#if NETFRAMEWORK
+        public override Task OnConnected()
+        {
+            
+            ConnectionActions();
+            return base.OnConnected();
+        }
+#else
         public override Task OnConnectedAsync()
         {
             
             ConnectionActions();
             return base.OnConnectedAsync();
         }
+#endif
 
         void ConnectionActions()
         {

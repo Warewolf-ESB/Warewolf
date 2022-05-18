@@ -17,9 +17,9 @@ using System.Net;
 using System.Net.Http;
 using System.Security.Principal;
 using System.Text;
+#if !NETFRAMEWORK
 using Microsoft.AspNetCore.Http.Extensions;
 using System.Web.Http.Controllers;
-#if !NETFRAMEWORK
 using Microsoft.AspNetCore.Http;
 #endif
 
