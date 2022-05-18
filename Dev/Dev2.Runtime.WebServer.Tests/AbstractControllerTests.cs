@@ -177,6 +177,13 @@ namespace Dev2.Runtime.WebServer.Tests
         [Owner("Siphamandla Dube")]
         public void AbstractController_ProcessRequest_GivenNotAuthenticated_ExpectUnauthorized1()
         {
+            var mockNameValue = new Mock<NameValueCollection>();
+            mockNameValue.Setup(o => o.Get(It.IsAny<string>()))
+                .Throws(new Exception("false exception for testing catch"));
+
+            var mock = new Mock<IPrincipal>();
+            mock.Setup(o => o.Identity.IsAuthenticated)
+                .Returns(true);
 #if NETFRAMEWORK
             var path = "https://localhost/token/Hello%20World.json?Name=";
             var request = new HttpRequestMessage(HttpMethod.Get, path)
@@ -204,13 +211,6 @@ namespace Dev2.Runtime.WebServer.Tests
             controller.ControllerContext.HttpContext.Request.Path = new PathString("/token/Hello%20World.json");
             controller.ControllerContext.HttpContext.Request.QueryString = new QueryString("Name=");
 #endif
-            var mockNameValue = new Mock<NameValueCollection>();
-            mockNameValue.Setup(o => o.Get(It.IsAny<string>()))
-                .Throws(new Exception("false exception for testing catch"));
-
-            var mock = new Mock<IPrincipal>();
-            mock.Setup(o => o.Identity.IsAuthenticated)
-                .Returns(true);
 
             var response = controller.TestProcessRequest<AssertNotExecutedRequestHandlerForTesting>(false, mockNameValue.Object);
 
