@@ -46,8 +46,13 @@ namespace Dev2.Runtime.WebServer.Security
         public override void OnAuthorization(HttpActionContext actionContext)
         {
             VerifyArgument.IsNotNull("actionContext", actionContext);
+#if NETFRAMEWORK
             var user = actionContext.ControllerContext.RequestContext.Principal;
             if (actionContext.ActionDescriptor.ActionName == "ExecutePublicTokenWorkflow" ||
+#else
+            var user = actionContext.RequestContext.Principal;
+            if (actionContext.Request.Content.ToString() == "ExecutePublicTokenWorkflow" ||
+#endif
                 actionContext.ActionDescriptor.ActionName == "ExecuteLoginWorkflow")
             {
                 return;

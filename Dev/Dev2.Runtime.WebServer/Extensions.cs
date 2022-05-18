@@ -18,9 +18,8 @@ using System.Net.Http;
 using System.Security.Principal;
 using System.Text;
 using Microsoft.AspNetCore.Http.Extensions;
-#if NETFRAMEWORK
 using System.Web.Http.Controllers;
-#else
+#if !NETFRAMEWORK
 using Microsoft.AspNetCore.Http;
 #endif
 
@@ -78,6 +77,7 @@ namespace Dev2.Runtime.WebServer
         public static HttpResponseMessage CreateWarewolfErrorResponse(this HttpRequestMessage requestMessage, WarewolfErrorResponseArgs errorResponseArgs) => CreateWarewolfErrorResponse(requestMessage.RequestUri, errorResponseArgs);
 #else
         public static HttpResponseMessage CreateWarewolfErrorResponse(this HttpRequest requestMessage, WarewolfErrorResponseArgs errorResponseArgs) => CreateWarewolfErrorResponse(new Uri(requestMessage.GetDisplayUrl()), errorResponseArgs);
+        public static HttpResponseMessage CreateWarewolfErrorResponse(this HttpActionContext requestMessage, WarewolfErrorResponseArgs errorResponseArgs) => CreateWarewolfErrorResponse(requestMessage.RequestContext.Url.Request.RequestUri, errorResponseArgs);
 #endif
         public static HttpResponseMessage CreateWarewolfErrorResponse(Uri uri, WarewolfErrorResponseArgs errorResponseArgs) => CreateWarewolfErrorResponse(uri.GetEmitionType(), errorResponseArgs.StatusCode, errorResponseArgs.Title, errorResponseArgs.Message);
         public static HttpResponseMessage CreateWarewolfErrorResponse(EmitionTypes emitionType, HttpStatusCode statusCode, string title, string message)

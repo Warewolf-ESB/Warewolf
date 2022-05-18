@@ -15,7 +15,11 @@ using Dev2.Common.Interfaces.Communication;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
 using Dev2.Explorer;
 using Dev2.Runtime.WebServer.Hubs;
+#if NETFRAMEWORK
 using Microsoft.AspNet.SignalR.Hubs;
+#else
+using Microsoft.AspNetCore.SignalR;
+#endif
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -23,7 +27,6 @@ namespace Dev2.Tests.Runtime.WebServer.Hubs
 {
     [TestClass]
     [TestCategory("Runtime WebServer")]
-    
     public class EsbHubTests
     {
         [TestMethod]
@@ -33,7 +36,11 @@ namespace Dev2.Tests.Runtime.WebServer.Hubs
         {
             //------------Setup for test--------------------------
             var hub = new MockEsbHub();
+#if NETFRAMEWORK
             var mockClients = new Mock<IHubCallerConnectionContext<dynamic>>();
+#else
+            var mockClients = new Mock<IHubCallerClients>();
+#endif
             hub.Clients = mockClients.Object;
             dynamic all = new ExpandoObject();
             var messagePublished = false;
@@ -41,7 +48,11 @@ namespace Dev2.Tests.Runtime.WebServer.Hubs
             {
                 messagePublished = true;
             });
+#if NETFRAMEWORK
             mockClients.Setup(m => m.All).Returns((ExpandoObject)all);
+#else
+            mockClients.Setup(m => m.All).Returns((IClientProxy)all);
+#endif
             //------------Execute Test---------------------------
             hub.AddItemMessage(new ServerExplorerItem
                 {
@@ -60,7 +71,11 @@ namespace Dev2.Tests.Runtime.WebServer.Hubs
         {
             //------------Setup for test--------------------------
             var hub = new MockEsbHub();
+#if NETFRAMEWORK
             var mockClients = new Mock<IHubCallerConnectionContext<dynamic>>();
+#else
+            var mockClients = new Mock<IHubCallerClients>();
+#endif
             hub.Clients = mockClients.Object;
             dynamic all = new ExpandoObject();
             var messagePublished = false;
@@ -68,7 +83,11 @@ namespace Dev2.Tests.Runtime.WebServer.Hubs
             {
                 messagePublished = true;
             });
+#if NETFRAMEWORK
             mockClients.Setup(m => m.All).Returns((ExpandoObject)all);
+#else
+            mockClients.Setup(m => m.All).Returns((IClientProxy)all);
+#endif
             //------------Execute Test---------------------------
             hub.AddItemMessage(null);
             //------------Assert Results-------------------------

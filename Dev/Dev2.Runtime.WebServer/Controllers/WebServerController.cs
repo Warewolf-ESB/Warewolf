@@ -127,17 +127,17 @@ namespace Dev2.Runtime.WebServer.Controllers
                 }
             }
 #else
-            if (Request?.GetDisplayUrl() != null)
+            if (Request.GetDisplayUrl() != null)
             {
                 var requestUri = Request.GetDisplayUrl();
                 if (requestUri.EndsWith("/.tests", StringComparison.InvariantCultureIgnoreCase) || requestUri.EndsWith("/.tests.trx", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    return ExecuteFolderTests(requestUri.ToString(), false);
+                    return ExecuteFolderTests(requestUri, false);
                 }
 
                 if (requestUri.EndsWith("/.coverage", StringComparison.InvariantCultureIgnoreCase) || requestUri.EndsWith("/.coverage.json", StringComparison.InvariantCultureIgnoreCase) || requestUri.EndsWith("/.coverage.trx", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    return ExecuteFolderTests(requestUri.ToString(), false);
+                    return ExecuteFolderTests(requestUri, false);
                 }
             }
 #endif

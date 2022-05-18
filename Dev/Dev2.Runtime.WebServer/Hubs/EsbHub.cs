@@ -31,9 +31,11 @@ using Dev2.Runtime.Security;
 using Dev2.Runtime.WebServer.Handlers;
 using Dev2.Runtime.WebServer.Security;
 using Dev2.Services.Security;
-using Microsoft.AspNet.SignalR.Hubs;
-using Nest;
 using Warewolf.Resource.Errors;
+#if NETFRAMEWORK
+using Nest;
+using Microsoft.AspNet.SignalR.Hubs;
+#endif
 
 
 
@@ -46,7 +48,9 @@ namespace Dev2.Runtime.WebServer.Hubs
      * one would use this hub by connecting using the JS SignalR client library with url "/esb".
      */
     [AuthorizeHub]
+#if NETFRAMEWORK
     [HubName("esb")]
+#endif
     public class EsbHub : ServerHub, IDebugWriter, IExplorerRepositorySync
     {
         static readonly ConcurrentDictionary<Guid, StringBuilder> MessageCache = new ConcurrentDictionary<Guid, StringBuilder>();
@@ -80,8 +84,12 @@ namespace Dev2.Runtime.WebServer.Hubs
             {
                 addedItem.ServerId = HostSecurityProvider.Instance.ServerID;
                 var item = _serializer.Serialize(addedItem);
-                IHubCallerConnectionContext<dynamic> hubCallerConnectionContext = Clients;
+                var hubCallerConnectionContext = Clients;
+#if NETFRAMEWORK
                 hubCallerConnectionContext.All.ItemAddedMessage(item);
+#else
+                hubCallerConnectionContext.All.SendCoreAsync("ItemAddedMessage", new object[] { item });
+#endif
             }
         }
 
@@ -113,7 +121,11 @@ namespace Dev2.Runtime.WebServer.Hubs
                     ServerID = HostSecurityProvider.Instance.ServerID
                 };
                 var serializedMemo = _serializer.Serialize(permissionsMemo);
+#if NETFRAMEWORK
                 Clients.Caller.SendPermissionsMemo(serializedMemo);
+#else
+                Clients.Caller.SendCoreAsync("SendPermissionsMemo", new object[] { serializedMemo });
+#endif
             }
             catch (Exception e)
             {
@@ -130,7 +142,6 @@ namespace Dev2.Runtime.WebServer.Hubs
         {
             WriteEventProviderClientMessage<DesignValidationMemo>(messages.Where(m => m.MessageType == CompileMessageType.MappingChange || m.MessageType == CompileMessageType.MappingIsRequiredChanged), CoalesceMappingChangedErrors);
             WriteEventProviderClientMessage<DesignValidationMemo>(messages.Where(m => m.MessageType == CompileMessageType.ResourceSaved), CoalesceResourceSavedErrors);
-
         }
 
         #region CoalesceMappingChangedErrors
@@ -156,7 +167,6 @@ namespace Dev2.Runtime.WebServer.Hubs
 
         void SendResourcesAffectedMemo(Guid resourceId, IList<ICompileMessageTO> messages)
         {
-            
             var msgs = new CompileMessageList { Dependants = new List<string>() };
             messages.ToList().ForEach(s => msgs.Dependants.Add(s.ServiceName));
             msgs.MessageList = messages;
@@ -195,15 +205,22 @@ namespace Dev2.Runtime.WebServer.Hubs
             var hubCallerConnectionContext = Clients;
             try
             {
-                dynamic user = hubCallerConnectionContext.User(Context.User.Identity.Name);
+                var user = hubCallerConnectionContext.User(Context.User.Identity.Name);
+#if NETFRAMEWORK
                 user.SendDebugState(debugSerializated);
+#else
+                user.SendCoreAsync("SendDebugState", new object[] { debugSerializated });
+#endif
             }
             catch (Exception ex)
             {
-                dynamic user = hubCallerConnectionContext.Caller;
+                var user = hubCallerConnectionContext.Caller;
+#if NETFRAMEWORK
                 user.SendDebugState(debugSerializated);
+#else
+                user.SendCoreAsync("SendDebugState", new object[] { debugSerializated });
+#endif
             }
-
         }
 
         void WriteEventProviderClientMessage<TMemo>(IEnumerable<ICompileMessageTO> messages, Action<TMemo, ICompileMessageTO> coalesceErrors)
@@ -339,34 +356,13 @@ namespace Dev2.Runtime.WebServer.Hubs
         }
 
         #region Overrides of Hub
-
-#if NETFRAMEWORK
-        public override Task OnConnected()
-        {
-            
-            ConnectionActions();
-            return base.OnConnected();
-        }
-
-        /// <summary>
-        ///     Called when the connection reconnects to this hub instance.
-        /// </summary>
-        /// <returns>
-        ///     A <see cref="T:System.Threading.Tasks.Task" />
-        /// </returns>
-        public override Task OnReconnected()
-        {
-            ConnectionActions();
-            return base.OnReconnected();
-        }
-#else
+        
         public override Task OnConnectedAsync()
         {
             
             ConnectionActions();
             return base.OnConnectedAsync();
         }
-#endif
 
         void ConnectionActions()
         {
@@ -379,8 +375,13 @@ namespace Dev2.Runtime.WebServer.Hubs
                 ResourceCatalog.Instance.LoadServerActivityCache();
                 var hubCallerConnectionContext = Clients;
                 var user = hubCallerConnectionContext.User(Context.User.Identity.Name);
+#if NETFRAMEWORK
                 user.SendWorkspaceID(workspaceId);
                 user.SendServerID(HostSecurityProvider.Instance.ServerID);
+#else
+                user.SendCoreAsync("SendWorkspaceID", new object[] { new[] { workspaceId } });
+                user.SendCoreAsync("SendServerID", new object[] { new[] { HostSecurityProvider.Instance.ServerID } });
+#endif
                 PermissionsHaveBeenModified(null, null);
             });
             t.Start();

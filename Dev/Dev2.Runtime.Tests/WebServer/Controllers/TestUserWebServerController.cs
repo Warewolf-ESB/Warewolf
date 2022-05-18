@@ -11,6 +11,7 @@
 using System.Collections.Specialized;
 using System.Net;
 using System.Net.Http;
+using System.Security.Claims;
 using System.Security.Principal;
 using Dev2.Runtime.WebServer;
 using Dev2.Runtime.WebServer.Controllers;
@@ -25,16 +26,24 @@ namespace Dev2.Tests.Runtime.WebServer.Controllers
         public TestUserWebServerController(HttpMethod method, IPrincipal user)
         {
             _user = user;
+#if NETFRAMEWORK
             Request = new HttpRequestMessage
             {
                 Method = method,
                 Content = new StringContent("")
             };
+#else
+            Request.Method = method.ToString();
+#endif
         }
 
         protected override HttpResponseMessage ProcessRequest<TRequestHandler>(NameValueCollection requestVariables, bool isUrlWithTokenPrefix)
         {
+#if NETFRAMEWORK
             User = _user;
+#else
+            HttpContext.User = (ClaimsPrincipal)_user;
+#endif
             var result = base.ProcessRequest<TRequestHandler>(requestVariables, isUrlWithTokenPrefix);
             return result;
         }

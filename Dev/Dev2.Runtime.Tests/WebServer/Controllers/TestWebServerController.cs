@@ -15,6 +15,9 @@ using Dev2.Runtime.WebServer;
 using Dev2.Runtime.WebServer.Controllers;
 using Dev2.Runtime.WebServer.Handlers;
 using Moq;
+#if !NETFRAMEWORK
+using Microsoft.AspNetCore.Http;
+#endif
 
 namespace Dev2.Tests.Runtime.WebServer.Controllers
 {
@@ -24,14 +27,22 @@ namespace Dev2.Tests.Runtime.WebServer.Controllers
 
         public TestWebServerController(HttpMethod method, string requestUrl)
         {
+#if NETFRAMEWORK
             Request = new HttpRequestMessage
             {
                 Method = method,
                 Content = new StringContent(""),
                 RequestUri = new Uri(requestUrl)
             };
+#else
+            Request.Method = method.ToString();
+            Request.Host = new HostString(new Uri(requestUrl).Host);
+            Request.Path = new PathString(new Uri(requestUrl).AbsolutePath);
+            Request.QueryString = QueryString.FromUriComponent(new Uri(requestUrl));
+#endif
         }
 
+#if NETFRAMEWORK
         public TestWebServerController(HttpMethod method)
         {
             Request = new HttpRequestMessage
@@ -40,6 +51,9 @@ namespace Dev2.Tests.Runtime.WebServer.Controllers
                 Content = new StringContent("")
             };
         }
+#else
+        public TestWebServerController(HttpMethod method) => Request.Method = method.ToString();
+#endif
 
         public TRequestHandler TestCreateHandler<TRequestHandler>()
             where TRequestHandler : class, IRequestHandler, new()

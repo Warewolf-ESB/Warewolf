@@ -17,6 +17,10 @@ using Dev2.Runtime.WebServer.Controllers;
 using Dev2.Runtime.WebServer.Handlers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+#if !NETFRAMEWORK
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+#endif
 
 namespace Dev2.Runtime.WebServer.Tests
 {
@@ -28,10 +32,24 @@ namespace Dev2.Runtime.WebServer.Tests
         [Owner("Rory McGuire")]
         public void AbstractController_ProcessRequest_GivenNotAuthenticated_ExpectUnauthorized()
         {
+#if NETFRAMEWORK
             var controller = new AbstractControllerForTesting
             {
                 Request = new HttpRequestMessage(HttpMethod.Get, "https://localhost:3241/token/Hello%20World.json?Name=")
             };
+#else
+            var controller = new AbstractControllerForTesting
+            {
+                ControllerContext = new ControllerContext
+                {
+                    HttpContext = new DefaultHttpContext()
+                }
+            };
+            controller.ControllerContext.HttpContext.Request.Method = HttpMethod.Get.ToString();
+            controller.ControllerContext.HttpContext.Request.Host = new HostString("localhost", 3241);
+            controller.ControllerContext.HttpContext.Request.Path = new PathString("/token/Hello%20World.json");
+            controller.ControllerContext.HttpContext.Request.QueryString = new QueryString("Name=");
+#endif
             var response = controller.TestProcessRequest<AssertNotExecutedRequestHandlerForTesting>(false);
 
             var result = response.Content.ReadAsStringAsync().Result;
@@ -45,6 +63,7 @@ namespace Dev2.Runtime.WebServer.Tests
         [Owner("Rory McGuire")]
         public void AbstractController_ProcessRequest_GivenTokenEmptyNotAuthenticated_ExpectUnauthorized()
         {
+#if NETFRAMEWORK
             var request = new HttpRequestMessage(HttpMethod.Get, "https://localhost/token/Hello%20World.json?Name=")
             {
                 Headers = { {"Authorization", "bearer "}},
@@ -54,7 +73,20 @@ namespace Dev2.Runtime.WebServer.Tests
             {
                 Request = request
             };
-
+#else
+            var controller = new AbstractControllerForTesting
+            {
+                ControllerContext = new ControllerContext
+                {
+                    HttpContext = new DefaultHttpContext()
+                }
+            };
+            controller.ControllerContext.HttpContext.Request.Headers["Authorization"] = "bearer ";
+            controller.ControllerContext.HttpContext.Request.Method = HttpMethod.Get.ToString();
+            controller.ControllerContext.HttpContext.Request.Host = new HostString("localhost", 80);
+            controller.ControllerContext.HttpContext.Request.Path = new PathString("/token/Hello%20World.json");
+            controller.ControllerContext.HttpContext.Request.QueryString = new QueryString("Name=");
+#endif
 
             var response = controller.TestProcessRequest<AssertNotExecutedRequestHandlerForTesting>(true);
 
@@ -69,6 +101,7 @@ namespace Dev2.Runtime.WebServer.Tests
         [Owner("Rory McGuire")]
         public void AbstractController_ProcessRequest_GivenTokenNotAuthenticated_ExpectUnauthorized()
         {
+#if NETFRAMEWORK
             var pathhh = "https://localhost/token/Hello%20World.json?Name=";
             var path = pathhh.Split(new[] { "/apis.json" }, StringSplitOptions.RemoveEmptyEntries);
             var request = new HttpRequestMessage(HttpMethod.Get, pathhh)
@@ -80,6 +113,20 @@ namespace Dev2.Runtime.WebServer.Tests
             {
                 Request = request
             };
+#else
+            var controller = new AbstractControllerForTesting
+            {
+                ControllerContext = new ControllerContext
+                {
+                    HttpContext = new DefaultHttpContext()
+                }
+            };
+            controller.ControllerContext.HttpContext.Request.Headers["Authorization"] = "bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9hdXRoZW50aWNhdGlvbiI6InsnVXNlckdyb3Vwcyc6IFt7J05hbWUnOiAncHVibGljJyB9XX0iLCJuYmYiOjE1OTExOTcyMDEsImV4cCI6MTU5MTE5ODQwMSwiaWF0IjoxNTkxMTk3MjAxfQ.1zo2d8Z7yxDvGZGVXbCf8zQKh7WZeyGx7BfWu4drt4g";
+            controller.ControllerContext.HttpContext.Request.Method = HttpMethod.Get.ToString();
+            controller.ControllerContext.HttpContext.Request.Host = new HostString("localhost", 80);
+            controller.ControllerContext.HttpContext.Request.Path = new PathString("/token/Hello%20World.json");
+            controller.ControllerContext.HttpContext.Request.QueryString = new QueryString("Name=");
+#endif
             var response = controller.TestProcessRequest<AssertNotExecutedRequestHandlerForTesting>(true);
             var result = response.Content.ReadAsStringAsync().Result;
             Assert.AreEqual(HttpStatusCode.Unauthorized.ToString(), response.ReasonPhrase);
@@ -94,7 +141,7 @@ namespace Dev2.Runtime.WebServer.Tests
             var mockNameValue = new Mock<NameValueCollection>();
             mockNameValue.Setup(o => o.Get(It.IsAny<string>()))
                 .Throws(new Exception("false exception for testing catch"));
-
+#if NETFRAMEWORK
             var pathhh = "https://localhost/token/Hello%20World.json?Name=";
             var request = new HttpRequestMessage(HttpMethod.Get, pathhh)
             {
@@ -105,6 +152,20 @@ namespace Dev2.Runtime.WebServer.Tests
             {
                 Request = request
             };
+#else
+            var controller = new AbstractControllerForTesting
+            {
+                ControllerContext = new ControllerContext
+                {
+                    HttpContext = new DefaultHttpContext()
+                }
+            };
+            controller.ControllerContext.HttpContext.Request.Headers["Authorization"] = "bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9hdXRoZW50aWNhdGlvbiI6InsnVXNlckdyb3Vwcyc6IFt7J05hbWUnOiAncHVibGljJyB9XX0iLCJuYmYiOjE1OTExOTcyMDEsImV4cCI6MTU5MTE5ODQwMSwiaWF0IjoxNTkxMTk3MjAxfQ.1zo2d8Z7yxDvGZGVXbCf8zQKh7WZeyGx7BfWu4drt4g";
+            controller.ControllerContext.HttpContext.Request.Method = HttpMethod.Get.ToString();
+            controller.ControllerContext.HttpContext.Request.Host = new HostString("localhost", 80);
+            controller.ControllerContext.HttpContext.Request.Path = new PathString("/token/Hello%20World.json");
+            controller.ControllerContext.HttpContext.Request.QueryString = new QueryString("Name=");
+#endif
             var response = controller.TestProcessRequest<AssertNotExecutedRequestHandlerForTesting>(true, mockNameValue.Object);
             var result = response.Content.ReadAsStringAsync().Result;
             Assert.AreEqual(HttpStatusCode.Unauthorized.ToString(), response.ReasonPhrase);
@@ -116,14 +177,7 @@ namespace Dev2.Runtime.WebServer.Tests
         [Owner("Siphamandla Dube")]
         public void AbstractController_ProcessRequest_GivenNotAuthenticated_ExpectUnauthorized1()
         {
-            var mockNameValue = new Mock<NameValueCollection>();
-            mockNameValue.Setup(o => o.Get(It.IsAny<string>()))
-                .Throws(new Exception("false exception for testing catch"));
-
-            var mock = new Mock<IPrincipal>();
-            mock.Setup(o => o.Identity.IsAuthenticated)
-                .Returns(true);
-
+#if NETFRAMEWORK
             var path = "https://localhost/token/Hello%20World.json?Name=";
             var request = new HttpRequestMessage(HttpMethod.Get, path)
             {
@@ -136,6 +190,28 @@ namespace Dev2.Runtime.WebServer.Tests
                 User = mock.Object, 
                 Request = request
             };
+#else
+            var controller = new AbstractControllerForTesting
+            {
+                ControllerContext = new ControllerContext
+                {
+                    HttpContext = new DefaultHttpContext()
+                }
+            };
+            controller.ControllerContext.HttpContext.Request.Headers["Authorization"] = "bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9hdXRoZW50aWNhdGlvbiI6InsnVXNlckdyb3Vwcyc6IFt7J05hbWUnOiAncHVibGljJyB9XX0iLCJuYmYiOjE1OTExOTcyMDEsImV4cCI6MTU5MTE5ODQwMSwiaWF0IjoxNTkxMTk3MjAxfQ.1zo2d8Z7yxDvGZGVXbCf8zQKh7WZeyGx7BfWu4drt4g";
+            controller.ControllerContext.HttpContext.Request.Method = HttpMethod.Get.ToString();
+            controller.ControllerContext.HttpContext.Request.Host = new HostString("localhost", 80);
+            controller.ControllerContext.HttpContext.Request.Path = new PathString("/token/Hello%20World.json");
+            controller.ControllerContext.HttpContext.Request.QueryString = new QueryString("Name=");
+#endif
+            var mockNameValue = new Mock<NameValueCollection>();
+            mockNameValue.Setup(o => o.Get(It.IsAny<string>()))
+                .Throws(new Exception("false exception for testing catch"));
+
+            var mock = new Mock<IPrincipal>();
+            mock.Setup(o => o.Identity.IsAuthenticated)
+                .Returns(true);
+
             var response = controller.TestProcessRequest<AssertNotExecutedRequestHandlerForTesting>(false, mockNameValue.Object);
 
             var result = response.Content.ReadAsStringAsync().Result;
@@ -160,14 +236,6 @@ namespace Dev2.Runtime.WebServer.Tests
         public void ProcessRequest(ICommunicationContext ctx)
         {
             throw new Exception("not expected to be executed");
-        }
-    }
-
-    internal class RequestHandlerForTesting : IRequestHandler
-    {
-        public void ProcessRequest(ICommunicationContext ctx)
-        {
-
         }
     }
 }

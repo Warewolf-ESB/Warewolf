@@ -15,6 +15,9 @@ using Dev2.Runtime.WebServer;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Warewolf;
+#if !NETFRAMEWORK
+using Microsoft.AspNetCore.Hosting;
+#endif
 
 namespace Dev2.Server.Tests
 {
@@ -67,11 +70,20 @@ namespace Dev2.Server.Tests
             mockServer.Verify(o => o.Dispose(), Times.Once);
         }
 
+#if NETFRAMEWORK
         Mock<IDisposable> mockServer = new Mock<IDisposable>();
         IDisposable StartAction(Dev2Endpoint[] endPoints) {
             Assert.IsNotNull(endPoints);
             return mockServer.Object;
         }
+#else
+        static Mock<IWebHost> mockServer = new Mock<IWebHost>();
+        private Func<Dev2Endpoint[], IWebHost> StartAction = endPoints =>
+        {
+            Assert.IsNotNull(endPoints);
+            return mockServer.Object;
+        };
+#endif
 
         [TestMethod]
         [Owner("Siphamandla Dube")]
@@ -99,9 +111,15 @@ namespace Dev2.Server.Tests
             mockWriter.Verify(a => a.WriteLine("Web server listening at Url"), Times.Once);
         }
 
+#if NETFRAMEWORK
         IDisposable StartAction1(Dev2Endpoint[] endPoints = null)
         {
             Mock<IDisposable> mockServer1 = new Mock<IDisposable>();
+#else
+        IWebHost StartAction1(Dev2Endpoint[] endPoints = null)
+        {
+            Mock<IWebHost> mockServer1 = new Mock<IWebHost>();
+#endif
             mockServer1.Setup(o => o.Dispose()).Callback(() => throw new Exception());
 
             return mockServer1.Object;
