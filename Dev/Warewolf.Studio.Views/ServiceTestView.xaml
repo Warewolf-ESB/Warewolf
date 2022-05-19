@@ -24,7 +24,8 @@
              mc:Ignorable="d"
              x:Name="ServiceTestUserControl"
              d:DataContext="{d:DesignInstance interfaces2:IServiceTestViewModel}"
-             AutomationProperties.AutomationId="UI_ServiceTestView_AutoID">
+             AutomationProperties.AutomationId="UI_ServiceTestView_AutoID"
+             AllowDrop="True">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -574,11 +575,22 @@
                                           VirtualizingStackPanel.CacheLength="2,1"
                                           VirtualizingStackPanel.CacheLengthUnit="Item"
                                           VirtualizingStackPanel.IsVirtualizingWhenGrouping="True"
-                                          VirtualizingStackPanel.IsContainerVirtualizable="True">
+                                          VirtualizingStackPanel.IsContainerVirtualizable="True"
+                                          AllowDrop="True"
+                                          Background="Transparent">
+                                    
+                                    <TreeView.ItemContainerStyle>
+                                        <Style TargetType="{x:Type TreeViewItem}">
+                                            <EventSetter Event="TreeViewItem.DragOver" Handler="TreeView_After_DragOver"/>
+                                            <EventSetter Event="TreeViewItem.Drop" Handler="TreeView_After_Drop"/>
+                                            <EventSetter Event="TreeViewItem.MouseMove" Handler="TreeView_After_MouseMove"/>
+                                        </Style>
+
+                                    </TreeView.ItemContainerStyle>
                                     <TreeView.ItemTemplate>
                                         <HierarchicalDataTemplate DataType="{x:Type interfaces:IServiceTestStep}"
                                                                   ItemsSource="{Binding Path=Children, IsAsync=True}">
-                                            <Grid>
+                                            <Grid MouseDown="TreeView_After_MouseDown">
                                                 <Grid.Width>
                                                     <MultiBinding
                                                         Converter="{StaticResource ServiceTestWidthConverter}">
@@ -595,10 +607,11 @@
                                                     <ColumnDefinition Width="*" />
                                                 </Grid.ColumnDefinitions>
 
-                                                <DockPanel Background="{StaticResource WarewolfPanelGreyBrush}"
+                                                <DockPanel Background="Transparent"
                                                            LastChildFill="False"
                                                            Visibility="{Binding IsTestStepExpanderEnabled, Converter={StaticResource BoolToVisibilityConverterNegative}}">
                                                     <StackPanel DockPanel.Dock="Left" Orientation="Horizontal"
+                                                                Background="Transparent"
                                                                 Margin="{StaticResource ControlBorderLeft}">
 
                                                         <fa:FontAwesome Icon="Check" Foreground="Green"
@@ -648,6 +661,7 @@
                                                     </Button>
                                                 </DockPanel>
                                                 <Expander x:Name="TestStepExpander"
+                                                          Background="Transparent"
                                                           Visibility="{Binding IsTestStepExpanderEnabled, Converter={StaticResource BoolToVisibilityConverterPositive}}"
                                                           Header="{Binding .}"
                                                           IsExpanded="{Binding IsTestStepExpanded}"
@@ -655,10 +669,12 @@
                                                           AutomationProperties.AutomationId="{Binding StringFormat=UI_ServiceTestTestStepExpander_{0}_AutoID, Path=StepDescription}">
                                                     <Expander.HeaderTemplate>
                                                         <DataTemplate>
-                                                            <DockPanel x:Name="TestStepDockPanel" LastChildFill="False">
+                                                            <DockPanel x:Name="TestStepDockPanel" LastChildFill="False" Background="Transparent">
                                                                 <StackPanel DockPanel.Dock="Left"
+                                                                            Background="Transparent"
                                                                             Orientation="Horizontal">
                                                                     <StackPanel VerticalAlignment="Center"
+                                                                        Background="Transparent"
                                                                         HorizontalAlignment="Center" Margin="2,0,0,0">
                                                                         <fa:FontAwesome Icon="Check" Foreground="Green"
                                                                             ToolTip="{x:Static languages:Tooltips.ServiceTestPassedTooltip}"
