@@ -241,6 +241,44 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         [TestMethod]
         [Timeout(60000)]
+        [Owner("Yogesh Rajpurohit")]
+        [TestCategory("DsfDateTimeActivity_GetOutputs")]
+        public void DsfDateTimeActivity_ExecuteTool_Called_ShouldReturnExpectedResult()
+        {
+            //------------Setup for test--------------------------
+            //------------Setup for test--------------------------
+            const string varName = "[[MyTestResult]]";
+            var act = new DsfDotNetDateTimeActivity
+            {
+                DateTime = "2022/06/19 05:45:00",
+                InputFormat = "yyyy/MM/dd hh:mm:ss",
+                OutputFormat = "yyyy/MM/dd hh:mm:ss",
+                TimeModifierType = "Minutes",
+                TimeModifierAmountDisplay = "10",
+                TimeModifierAmount = 10,
+                Result = "[[MyTestResult]]"
+
+            };
+            var dataMock = new Mock<IDSFDataObject>();
+            dataMock.Setup(o => o.IsDebugMode()).Returns(() => true);
+            var executionEnvironment = new ExecutionEnvironment();
+            dataMock.Setup(o => o.Environment).Returns(executionEnvironment);
+            var data = dataMock.Object;
+
+            //------------Execute Test---------------------------
+            var activity = act.Execute(data, 0);
+            //------------Assert Results-------------------------
+            var debugout = act.GetDebugOutputs(executionEnvironment, 0);
+           
+            Assert.AreEqual(false, debugout[0].ResultsList[0].HasError);
+            Assert.AreEqual(varName, debugout[0].ResultsList[0].Variable);
+            Assert.AreEqual(DebugItemResultType.Variable, debugout[0].ResultsList[0].Type);
+            Assert.AreEqual("2022/06/19 05:55:00", debugout[0].ResultsList[0].Value);
+
+        }
+
+        [TestMethod]
+        [Timeout(60000)]
         [Owner("Rory McGuire")]
         [TestCategory("DsfDateTimeActivity_GetOutputs")]
         public void DsfDateTimeActivity_Execute_Blank_ShouldHaveNoErrorWithDebugOutput()

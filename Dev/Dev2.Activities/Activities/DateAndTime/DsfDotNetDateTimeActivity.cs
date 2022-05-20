@@ -157,7 +157,7 @@ namespace Dev2.Activities.DateAndTime
         void UpdateEnvironmentAndDebugOutput(IDSFDataObject dataObject, int update, ErrorResultTO allErrors)
         {
             var colItr = new WarewolfListIterator();
-
+            DateTime = string.IsNullOrEmpty(DateTime) ? GlobalConstants.Dev2CustomCurrentDateTime : DateTime;
             var dtItr = CreateDataListEvaluateIterator(DateTime, dataObject.Environment, update);
             colItr.AddVariableToIterateOn(dtItr);
             var ifItr = CreateDataListEvaluateIterator(string.IsNullOrEmpty(InputFormat) ? GlobalConstants.Dev2DotNetDefaultDateTimeFormat : InputFormat, dataObject.Environment, update);
