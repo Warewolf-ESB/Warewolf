@@ -10,10 +10,14 @@
 */
 
 #if NETFRAMEWORK
-using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Specialized;
+using System.Linq;
+using System.Net.Http;
+using System.Web.Http;
+using Dev2.Runtime.WebServer.Handlers;
+using Dev2.Runtime.WebServer.Security;
 #else
-using Microsoft.AspNetCore.Mvc;
-#endif
 using Dev2.Runtime.WebServer.Handlers;
 using Dev2.Runtime.WebServer.Security;
 using System;
@@ -21,6 +25,9 @@ using System.Linq;
 using System.Net.Http;
 using System.Collections.Specialized;
 using Microsoft.AspNetCore.Http.Extensions;
+using Microsoft.AspNetCore.Mvc;
+#endif
+
 
 namespace Dev2.Runtime.WebServer.Controllers
 {
@@ -29,9 +36,6 @@ namespace Dev2.Runtime.WebServer.Controllers
      * request that comes from an HTTP, that includes REST and a user executing a workflow
      * from a web browser
      */
-#if NETFRAMEWORK
-    [ApiController]
-#endif
     [AuthorizeWeb]
     public class WebServerController : AbstractController
     {
