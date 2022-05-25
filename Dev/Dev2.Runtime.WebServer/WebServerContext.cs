@@ -15,6 +15,7 @@ using System.Net.Http;
 #if NETFRAMEWORK
 using Dev2.Runtime.WebServer.Responses;
 #else
+using Dev2.Runtime.WebServer.Responses;
 using System.Net.Http;
 #endif
 

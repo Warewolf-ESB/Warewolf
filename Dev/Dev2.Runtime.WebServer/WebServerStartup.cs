@@ -20,8 +20,12 @@ using Microsoft.Owin.Hosting;
 using Owin;
 #else
 using Dev2.Runtime.WebServer.Hubs;
-using Microsoft.AspNetCore.Cors.Infrastructure;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 #endif
+using Microsoft.AspNetCore.Http.Connections;
 
 
 namespace Dev2.Runtime.WebServer

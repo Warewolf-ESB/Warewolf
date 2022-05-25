@@ -31,6 +31,7 @@ using Dev2.Runtime.Security;
 using Dev2.Runtime.WebServer.Handlers;
 using Dev2.Runtime.WebServer.Security;
 using Dev2.Services.Security;
+using Microsoft.AspNetCore.SignalR;
 using Warewolf.Resource.Errors;
 #if NETFRAMEWORK
 using Nest;
@@ -88,7 +89,7 @@ namespace Dev2.Runtime.WebServer.Hubs
 #if NETFRAMEWORK
                 hubCallerConnectionContext.All.ItemAddedMessage(item);
 #else
-                hubCallerConnectionContext.All.SendCoreAsync("ItemAddedMessage", new object[] { item });
+                hubCallerConnectionContext.All.SendAsync("ItemAddedMessage", item);
 #endif
             }
         }
@@ -124,7 +125,7 @@ namespace Dev2.Runtime.WebServer.Hubs
 #if NETFRAMEWORK
                 Clients.Caller.SendPermissionsMemo(serializedMemo);
 #else
-                Clients.Caller.SendCoreAsync("SendPermissionsMemo", new object[] { serializedMemo });
+                Clients.Caller.SendAsync("SendPermissionsMemo", serializedMemo);
 #endif
             }
             catch (Exception e)
@@ -209,7 +210,7 @@ namespace Dev2.Runtime.WebServer.Hubs
 #if NETFRAMEWORK
                 user.SendDebugState(debugSerializated);
 #else
-                user.SendCoreAsync("SendDebugState", new object[] { debugSerializated });
+                user.SendAsync("SendDebugState", debugSerializated);
 #endif
             }
             catch (Exception ex)
@@ -218,7 +219,7 @@ namespace Dev2.Runtime.WebServer.Hubs
 #if NETFRAMEWORK
                 user.SendDebugState(debugSerializated);
 #else
-                user.SendCoreAsync("SendDebugState", new object[] { debugSerializated });
+                user.SendAsync("SendDebugState", debugSerializated);
 #endif
             }
         }
@@ -375,7 +376,6 @@ namespace Dev2.Runtime.WebServer.Hubs
 
         void ConnectionActions()
         {
-            
             SetupEvents();
 
             var t = new Task(() =>
@@ -388,8 +388,8 @@ namespace Dev2.Runtime.WebServer.Hubs
                 user.SendWorkspaceID(workspaceId);
                 user.SendServerID(HostSecurityProvider.Instance.ServerID);
 #else
-                user.SendCoreAsync("SendWorkspaceID", new object[] { new[] { workspaceId } });
-                user.SendCoreAsync("SendServerID", new object[] { new[] { HostSecurityProvider.Instance.ServerID } });
+                user.SendAsync("SendWorkspaceID", new[] { workspaceId });
+                user.SendAsync("SendServerID", new[] { HostSecurityProvider.Instance.ServerID });
 #endif
                 PermissionsHaveBeenModified(null, null);
             });
@@ -398,7 +398,7 @@ namespace Dev2.Runtime.WebServer.Hubs
 
         protected void SetupEvents()
         {
-            CompileMessageRepo.Instance.AllMessages.Subscribe(OnCompilerMessageReceived);
+            ObservableExtensions.Subscribe(CompileMessageRepo.Instance.AllMessages, OnCompilerMessageReceived);
             ServerAuthorizationService.Instance.PermissionsModified += PermissionsHaveBeenModified;
             ServerExplorerRepository.Instance.MessageSubscription(this);
             if (ResourceCatalog.Instance.ResourceSaved == null)
