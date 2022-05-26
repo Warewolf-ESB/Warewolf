@@ -31,10 +31,12 @@ using Dev2.Runtime.Security;
 using Dev2.Runtime.WebServer.Handlers;
 using Dev2.Runtime.WebServer.Security;
 using Dev2.Services.Security;
-using Microsoft.AspNetCore.SignalR;
 using Warewolf.Resource.Errors;
 #if NETFRAMEWORK
+using Microsoft.AspNet.SignalR;
 using Nest;
+#else
+using Microsoft.AspNetCore.SignalR;
 #endif
 
 
