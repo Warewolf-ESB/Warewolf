@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
@@ -27,14 +28,8 @@ namespace Warewolf.Driver.Serilog
             if (source != null)
             {
                 _config = new Settings(source as SerilogElasticsearchSource);
-                _logger = new LoggerConfiguration()
-                    .MinimumLevel.Verbose()
-                    .WriteTo.Sink(new ElasticsearchSink(new ElasticsearchSinkOptions(new Uri(_config.Url))
-                    {
-                        AutoRegisterTemplate = true,
-                        IndexDecider = (e, o) => _config.SearchIndex,
-                    }))
-                    .CreateLogger();
+
+                _logger = CreateLogger();
             }
             else
             {
@@ -43,13 +38,22 @@ namespace Warewolf.Driver.Serilog
         }
         private ILogger CreateLogger()
         {
+            var sinkOptions = new ElasticsearchSinkOptions(new Uri(_config.Url))
+            {
+                AutoRegisterTemplate = true,
+                DetectElasticsearchVersion = true,
+                RegisterTemplateFailure = RegisterTemplateRecovery.IndexAnyway,
+                IndexDecider = (e, o) => _config.SearchIndex,
+            };
+            
+            if(_config.AuthenticationType == AuthenticationType.Password)
+            {
+                sinkOptions.ModifyConnectionSettings = x => x.BasicAuthentication(_config.Username, _config.Password);
+            }  
+
             return new LoggerConfiguration()
                 .MinimumLevel.Verbose()
-                .WriteTo.Sink(new ElasticsearchSink(new ElasticsearchSinkOptions(new Uri(_config.Url))
-                {
-                    AutoRegisterTemplate = true,
-                    IndexDecider = (e, o) => _config.SearchIndex,
-                }))
+                .WriteTo.Sink(new ElasticsearchSink(sinkOptions))
                 .CreateLogger();
         }
         public ILogger Logger
