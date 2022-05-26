@@ -35,7 +35,6 @@ using Microsoft.AspNetCore.SignalR;
 using Warewolf.Resource.Errors;
 #if NETFRAMEWORK
 using Nest;
-using Microsoft.AspNet.SignalR.Hubs;
 #endif
 
 

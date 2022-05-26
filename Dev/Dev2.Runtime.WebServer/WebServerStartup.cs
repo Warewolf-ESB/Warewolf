@@ -24,8 +24,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-#endif
 using Microsoft.AspNetCore.Http.Connections;
+#endif
 
 
 namespace Dev2.Runtime.WebServer
