@@ -41,7 +41,6 @@ namespace Warewolf.Driver.Serilog
             var sinkOptions = new ElasticsearchSinkOptions(new Uri(_config.Url))
             {
                 AutoRegisterTemplate = true,
-                DetectElasticsearchVersion = true,
                 RegisterTemplateFailure = RegisterTemplateRecovery.IndexAnyway,
                 IndexDecider = (e, o) => _config.SearchIndex,
             };
