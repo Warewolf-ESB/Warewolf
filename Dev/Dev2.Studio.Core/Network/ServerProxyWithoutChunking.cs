@@ -27,7 +27,11 @@ using Dev2.SignalR.Wrappers;
 using Dev2.SignalR.Wrappers.New;
 using Dev2.Studio.Interfaces;
 using Dev2.Threading;
+#if NETFRAMEWORK
 using Microsoft.AspNet.SignalR.Client;
+#else
+using Microsoft.AspNetCore.SignalR.Client;
+#endif
 using ServiceStack.Messaging.Rcon;
 using System;
 using System.Collections.Generic;
@@ -76,12 +80,17 @@ namespace Dev2.Network
             Principal = ClaimsPrincipal.Current;
             AppServerUri = new Uri(uriString);
             WebServerUri = new Uri(uriString.Replace("/dsf", ""));
+#if NETFRAMEWORK
             Dev2Logger.Debug(credentials, "Warewolf Debug");
             Dev2Logger.Debug("***** Attempting Server Hub : " + uriString + " -> " + CredentialCache.DefaultNetworkCredentials.Domain + @"\" + Principal.Identity.Name, "Warewolf Debug");
             HubConnection = new HubConnectionWrapper(uriString) { Credentials = credentials };
             HubConnection.Error += OnHubConnectionError;
             HubConnection.Closed += HubConnectionOnClosed;
             HubConnection.StateChanged += HubConnectionStateChanged;
+#else
+            Dev2Logger.Debug("***** Attempting Server Hub : " + uriString + " -> " + CredentialCache.DefaultNetworkCredentials.Domain + @"\" + Principal.Identity.Name, "Warewolf Debug");
+            HubConnection = new HubConnectionWrapper(uriString);
+#endif
             InitializeProxyHubs();
             AsyncWorker = worker;
         }
@@ -261,7 +270,7 @@ namespace Dev2.Network
                     ex =>
                     {
                         Dev2Logger.Error(this, aex, "Warewolf Error");
-                        if(ex is HttpClientException hex && (hex.Response.StatusCode == HttpStatusCode.Unauthorized || hex.Response.StatusCode == HttpStatusCode.Forbidden))
+                        if(ex is Microsoft.AspNet.SignalR.Client.HttpClientException hex && (hex.Response.StatusCode == HttpStatusCode.Unauthorized || hex.Response.StatusCode == HttpStatusCode.Forbidden))
                         {
                             UpdateIsAuthorized(false);
                             throw new UnauthorizedAccessException();
@@ -311,7 +320,7 @@ namespace Dev2.Network
                     ex =>
                     {
                         Dev2Logger.Error(this, aex, "Warewolf Error");
-                        if(ex is HttpClientException hex)
+                        if(ex is Microsoft.AspNet.SignalR.Client.HttpClientException hex)
                         {
                             switch(hex.Response.StatusCode)
                             {
@@ -387,7 +396,7 @@ namespace Dev2.Network
             if(wait)
             {
                 callback?.Invoke(
-                    HubConnection.State == (ConnectionStateWrapped)ConnectionState.Connected
+                    HubConnection.State == (ConnectionStateWrapped)Microsoft.AspNet.SignalR.Client.ConnectionState.Connected
                         ? ConnectResult.Success
                         : ConnectResult.ConnectFailed);
             }
@@ -396,7 +405,7 @@ namespace Dev2.Network
                 AsyncWorker.Start(
                     () => Thread.Sleep(MillisecondsTimeout),
                     () => callback?.Invoke(
-                        HubConnection.State == (ConnectionStateWrapped)ConnectionState.Connected
+                        HubConnection.State == (ConnectionStateWrapped)Microsoft.AspNet.SignalR.Client.ConnectionState.Connected
                             ? ConnectResult.Success
                             : ConnectResult.ConnectFailed));
             }

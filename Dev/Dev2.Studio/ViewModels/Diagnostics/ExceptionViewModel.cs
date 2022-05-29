@@ -259,7 +259,11 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         public static async Task<string> GetServerLogFile()
         {
             var activeEnvironment = CustomContainer.Get<IShellViewModel>().ActiveServer;
+#if NETFRAMEWORK
             var client = new WebClient { Credentials = activeEnvironment.Connection.HubConnection.Credentials };
+#else
+            var client = new WebClient();
+#endif
             var managementServiceUri = WebServer.GetInternalServiceUri("getlogfile?numLines=10", activeEnvironment.Connection);
             var serverLogFile = await client.DownloadStringTaskAsync(managementServiceUri);
             client.Dispose();
@@ -303,6 +307,6 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             WindowNavigation.ShowDialog(this);
         }
 
-        #endregion public methods
+#endregion public methods
     }
 }

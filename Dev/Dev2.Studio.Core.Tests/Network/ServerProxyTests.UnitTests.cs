@@ -68,6 +68,7 @@ namespace Dev2.Core.Tests.Network
             //------------Assert Results-------------------------
         }
 
+#if NETFRAMEWORK
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("ServerProxy_Constructor")]
@@ -80,6 +81,20 @@ namespace Dev2.Core.Tests.Network
             var subscription = serverProxy.EsbProxy.Subscribe("SendMemo");
             Assert.IsNotNull(subscription);
         }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ServerProxy_Constructor")]
+        public void ServerProxy_Constructor_DefaultConstruction_ShouldHaveEsbProxyWithSendDebugStateSubscription()
+        {
+            //------------Setup for test--------------------------
+            //------------Execute Test---------------------------
+            var serverProxy = new TestServerProxy();
+            //------------Assert Results-------------------------
+            var subscription = serverProxy.EsbProxy.Subscribe("SendDebugState");
+            Assert.IsNotNull(subscription);
+        }
+#endif
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
@@ -101,19 +116,6 @@ namespace Dev2.Core.Tests.Network
             Assert.IsTrue(authorisedBeforeStateChange);
             Assert.IsFalse(serverProxy.IsAuthorized);
             Assert.IsTrue(_permissionsChangedFired);
-        }
-
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("ServerProxy_Constructor")]
-        public void ServerProxy_Constructor_DefaultConstruction_ShouldHaveEsbProxyWithSendDebugStateSubscription()
-        {
-            //------------Setup for test--------------------------
-            //------------Execute Test---------------------------
-            var serverProxy = new TestServerProxy();
-            //------------Assert Results-------------------------
-            var subscription = serverProxy.EsbProxy.Subscribe("SendDebugState");
-            Assert.IsNotNull(subscription);
         }
 
         [TestMethod]
@@ -270,7 +272,7 @@ namespace Dev2.Core.Tests.Network
         }
 
 
-        #region Overrides of ServerProxy
+#region Overrides of ServerProxy
 
 
         protected override void Wait(Task task)
@@ -278,6 +280,6 @@ namespace Dev2.Core.Tests.Network
             task.Start();
         }
 
-        #endregion
+#endregion
     }
 }

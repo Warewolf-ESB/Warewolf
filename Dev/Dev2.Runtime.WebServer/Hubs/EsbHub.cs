@@ -57,7 +57,9 @@ namespace Dev2.Runtime.WebServer.Hubs
     {
         static readonly ConcurrentDictionary<Guid, StringBuilder> MessageCache = new ConcurrentDictionary<Guid, StringBuilder>();
         readonly Dev2JsonSerializer _serializer = new Dev2JsonSerializer();
-        static readonly Dictionary<Guid, string>  ResourceAffectedMessagesCache = new Dictionary<Guid, string>();
+        static readonly Dictionary<Guid, string> ResourceAffectedMessagesCache = new Dictionary<Guid, string>();
+
+#if NETFRAMEWORK
         public EsbHub()
         {
             DebugDispatcher.Instance.Add(GlobalConstants.ServerWorkspaceID, this);
@@ -66,19 +68,20 @@ namespace Dev2.Runtime.WebServer.Hubs
         public EsbHub(Server server)
             : base(server)
         {
-            DebugDispatcher.Instance.Add(GlobalConstants.ServerWorkspaceID, this);
+            DebugDispatcher.Instance.Add(GlobalConstants.ServerWorkspaceID, this);        
         }
+# endif
 
-        #region Implementation of IDebugWriter
+#region Implementation of IDebugWriter
         
         public void Write(IDebugState debugState)
         {
             SendDebugState(debugState as DebugState);
         }
 
-        #endregion
+#endregion
 
-        #region Implementation of IExplorerRepositorySync
+#region Implementation of IExplorerRepositorySync
 
         public void AddItemMessage(IExplorerItem addedItem)
         {
@@ -95,7 +98,7 @@ namespace Dev2.Runtime.WebServer.Hubs
             }
         }
 
-        #endregion
+#endregion
 
         void ResourceSaved(IResource resource)
         {
@@ -146,7 +149,7 @@ namespace Dev2.Runtime.WebServer.Hubs
             WriteEventProviderClientMessage<DesignValidationMemo>(messages.Where(m => m.MessageType == CompileMessageType.ResourceSaved), CoalesceResourceSavedErrors);
         }
 
-        #region CoalesceMappingChangedErrors
+#region CoalesceMappingChangedErrors
 
         static void CoalesceMappingChangedErrors(DesignValidationMemo memo, ICompileMessageTO compilerMessage)
         {
@@ -155,9 +158,9 @@ namespace Dev2.Runtime.WebServer.Hubs
             memo.Errors.Add(compilerMessage.ToErrorInfo());
         }
 
-        #endregion
+#endregion
 
-        #region CoalesceResourceSavedErrors
+#region CoalesceResourceSavedErrors
 
         static void CoalesceResourceSavedErrors(DesignValidationMemo memo, ICompileMessageTO compilerMessage)
         {
@@ -165,7 +168,7 @@ namespace Dev2.Runtime.WebServer.Hubs
             memo.IsValid = true;
         }
 
-        #endregion
+#endregion
 
         void SendResourcesAffectedMemo(Guid resourceId, IList<ICompileMessageTO> messages)
         {
@@ -357,7 +360,7 @@ namespace Dev2.Runtime.WebServer.Hubs
             return null;
         }
 
-        #region Overrides of Hub
+#region Overrides of Hub
         
 #if NETFRAMEWORK
         public override Task OnConnected()
@@ -412,6 +415,6 @@ namespace Dev2.Runtime.WebServer.Hubs
             }
         }
 
-        #endregion
+#endregion
     }
 }

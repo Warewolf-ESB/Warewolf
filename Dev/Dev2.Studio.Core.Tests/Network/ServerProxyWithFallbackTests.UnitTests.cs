@@ -39,6 +39,7 @@ namespace Dev2.Core.Tests.Network
             //------------Assert Results-------------------------
         }
 
+#if NETFRAMEWORK
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("ServerProxy_Constructor")]
@@ -65,7 +66,7 @@ namespace Dev2.Core.Tests.Network
             var subscription = serverProxy.EsbProxy.Subscribe("SendDebugState");
             Assert.IsNotNull(subscription);
         }        
-        
+#endif
     }
 
     class TestServerProxyWithFallback : ServerProxy
@@ -85,10 +86,10 @@ namespace Dev2.Core.Tests.Network
 
 
 
-        #region Overrides of ServerProxy
+#region Overrides of ServerProxy
 
 
 
-        #endregion
+#endregion
     }
 }

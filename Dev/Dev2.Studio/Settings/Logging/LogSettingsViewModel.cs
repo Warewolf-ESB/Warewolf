@@ -166,7 +166,11 @@ namespace Dev2.Settings.Logging
         [ExcludeFromCodeCoverage]
         void OpenServerLogFile(object o)
         {
-            using (WebClient client = new WebClient {Credentials = CurrentEnvironment.Connection.HubConnection.Credentials})
+#if NETFRAMEWORK
+            using (WebClient client = new WebClient { Credentials = CurrentEnvironment.Connection.HubConnection.Credentials })
+#else
+            using (WebClient client = new WebClient())
+#endif
             {
                 var dialog = new ProgressDialog();
                 _progressDialogViewModel = new ProgressDialogViewModel(() => { dialog.Close(); }, delegate { dialog.Show(); }, delegate { dialog.Close(); });

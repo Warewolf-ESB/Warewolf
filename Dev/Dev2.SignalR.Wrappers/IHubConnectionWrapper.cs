@@ -29,11 +29,15 @@ namespace Dev2.SignalR.Wrappers
     public interface IHubConnectionWrapper 
     {        
         IHubProxyWrapper CreateHubProxy(string hubName);
+#if NETFRAMEWORK
         event Action<Exception> Error;
         event Action Closed;
-        event Action<IStateChangeWrapped> StateChanged;
-        ConnectionStateWrapped State { get;  }
         ICredentials Credentials { get;  }
+        event Action<IStateChangeWrapped> StateChanged;
+#else
+        event Func<Exception, Task> Closed;
+#endif
+        ConnectionStateWrapped State { get;  }
         IStateController StateController { get; }
         Task Start();
         void Stop(TimeSpan timeSpan);

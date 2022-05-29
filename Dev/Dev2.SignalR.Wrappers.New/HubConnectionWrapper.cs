@@ -12,8 +12,12 @@ using System;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+#if NETFRAMEWORK
 using Microsoft.AspNet.SignalR.Client;
 using Microsoft.AspNet.SignalR.Client.Transports;
+#else
+using Microsoft.AspNetCore.SignalR.Client;
+#endif
 using Warewolf.Data;
 
 namespace Dev2.SignalR.Wrappers.New
@@ -29,6 +33,7 @@ namespace Dev2.SignalR.Wrappers.New
         private HubConnectionWrapper(HubConnection wrapped)
         {
             _wrapped = wrapped;
+#if NETFRAMEWORK
             _wrapped.DeadlockErrorTimeout = TimeSpan.FromSeconds(30);
             _wrapped.StateChanged += change =>
             {
@@ -46,12 +51,24 @@ namespace Dev2.SignalR.Wrappers.New
                         throw new Exception("unknown ConnectionState");
                 }
             };
-
+#else
+            _wrapped.ServerTimeout = TimeSpan.FromSeconds(30);
+            _wrapped.Closed += change => { return new Task(() => { _connectNotify.Reset(); }); };
+            _wrapped.Reconnecting += change => { return new Task(() => { _connectNotify.Reset(); }); };
+            _wrapped.Reconnected += change => { return new Task(() => { _connectNotify.Set(); }); };
+#endif
             _stateController = new StateController(this);
         }
 
         public HubConnectionWrapper(string uriString)
+#if NETFRAMEWORK
             : this(new HubConnection(uriString))
+#else
+            : this(new HubConnectionBuilder()
+               .WithUrl(uriString)
+               .WithAutomaticReconnect()
+               .Build())
+#endif
         {
         }
 
@@ -81,7 +98,7 @@ namespace Dev2.SignalR.Wrappers.New
             });
         }
 
-
+#if NETFRAMEWORK
         public IHubProxyWrapper CreateHubProxy(string hubName) => new HubProxyWrapper(_wrapped.CreateHubProxy(hubName));
 
         public event Action<Exception> Error
@@ -100,13 +117,23 @@ namespace Dev2.SignalR.Wrappers.New
         {
             add
             {
-                _wrapped.StateChanged += change => value?.Invoke(new StateChangeWrapped(change));
+                _wrapped.Reconnecting += change => value?.Invoke(new StateChangeWrapped(change));
             }
             remove => throw new NotImplementedException();
         }
+#else
+        public IHubProxyWrapper CreateHubProxy(string hubName) => new HubProxyWrapper(_wrapped);
+
+        public event Func<Exception, Task> Closed
+        {
+            add => _wrapped.Closed += value;
+            remove => _wrapped.Closed -= value;
+        }
+#endif
 
         public ConnectionStateWrapped State => (ConnectionStateWrapped)_wrapped.State;
 
+#if NETFRAMEWORK
         public Task Start()
         {
             var serverSentEventsTransport = new ServerSentEventsTransport();
@@ -123,6 +150,11 @@ namespace Dev2.SignalR.Wrappers.New
             get => _wrapped.Credentials;
             set => _wrapped.Credentials=value;
         }
+#else
+        public Task Start() => _wrapped.StartAsync();
+
+        public void Stop(TimeSpan timeSpan) => _wrapped.StopAsync();
+#endif
 
         public void Dispose()
         {
@@ -136,6 +168,7 @@ namespace Dev2.SignalR.Wrappers.New
         {
             _watcher = new Watcher(hubConnection);
             PropertyChanged += (sender, e) => _watcher.NotifyStateChanged(Current, ExpectedState);
+#if NETFRAMEWORK
             hubConnection.StateChanged += (state) =>
             {
                 switch(state.NewState)
@@ -154,6 +187,12 @@ namespace Dev2.SignalR.Wrappers.New
                         throw new Exception("unknown ConnectionStateWrapped value");
                 }
             };
+#else
+            hubConnection.Closed += (exptn) =>
+            {
+                return new Task(()=> { Current = ConnState.Disconnected; });
+            };
+#endif
         }
 
         readonly ReaderWriterLock _currentStateLock = new ReaderWriterLock();
@@ -304,6 +343,7 @@ namespace Dev2.SignalR.Wrappers.New
                 var delay = 50;
                 bool stopped = HubConnection.State != ConnectionStateWrapped.Connected;
 
+#if NETFRAMEWORK
                 HubConnection.StateChanged += (stateChange) =>
                 {
                     if(stateChange.NewState == ConnectionStateWrapped.Disconnected)
@@ -311,7 +351,13 @@ namespace Dev2.SignalR.Wrappers.New
                         stopped = true;
                     }
                 };
-                while(true)
+#else
+                HubConnection.Closed += (exception) =>
+                {
+                    return new Task(() => { stopped = true; });
+                };
+#endif
+                while (true)
                 {
                     if(stopped)
                     {
@@ -325,14 +371,7 @@ namespace Dev2.SignalR.Wrappers.New
                         HubConnection.Start();
                     }
 
-                    if(HubConnection.State != ConnectionStateWrapped.Connected)
-                    {
-                        Thread.Sleep(delay);
-                    }
-                    else
-                    {
-                        Thread.Sleep(1000);
-                    }
+                    Thread.Sleep(HubConnection.State != ConnectionStateWrapped.Connected ? delay : 1000);
                 }
             }
 

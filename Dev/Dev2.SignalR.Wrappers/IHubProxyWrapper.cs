@@ -7,8 +7,6 @@ namespace Dev2.SignalR.Wrappers
 {
     public interface IHubProxyWrapper
     {
-
-
         /// <summary>
         /// Executes a method on the server side hub asynchronously.
         /// </summary>
@@ -29,14 +27,13 @@ namespace Dev2.SignalR.Wrappers
         object Object();
 
         IDisposable On<T>(string eventName, Action<T> onData);
-        
+#if NETFRAMEWORK
         ISubscriptionWrapper Subscribe(string sendmemo);
+#endif
     }
 
     public interface ISubscriptionWrapper
     {
         event Action<IList<JToken>> Received;
     }
-
-
 }
