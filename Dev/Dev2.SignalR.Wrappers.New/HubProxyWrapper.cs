@@ -39,6 +39,13 @@ namespace Dev2.SignalR.Wrappers.New
         #region Implementation of IHubProxyWrapper
 
 #if NETFRAMEWORK
+
+        public ISubscriptionWrapper Subscribe(string sendmemo)
+        {
+            var s = _hubProxy.Subscribe(sendmemo);
+            return new SubscriptionWrapper(s);
+        }
+
         /// <summary>
         /// Executes a method on the server side hub asynchronously.
         /// </summary>
