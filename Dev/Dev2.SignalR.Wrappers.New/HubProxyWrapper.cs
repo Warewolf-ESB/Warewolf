@@ -39,7 +39,6 @@ namespace Dev2.SignalR.Wrappers.New
         #region Implementation of IHubProxyWrapper
 
 #if NETFRAMEWORK
-
         public ISubscriptionWrapper Subscribe(string sendmemo)
         {
             var s = _hubProxy.Subscribe(sendmemo);
@@ -91,6 +90,25 @@ namespace Dev2.SignalR.Wrappers.New
 
         #endregion
     }
+
+#if NETFRAMEWORK
+    public class SubscriptionWrapper : ISubscriptionWrapper
+    {
+        public SubscriptionWrapper(Subscription s)
+        {
+            Wrapped = s;
+            Wrapped.Received += WrappedReceived;
+        }
+
+        void WrappedReceived(IList<JToken> obj)
+        {
+            Received?.Invoke(obj);
+        }
+
+        public event Action<IList<JToken>> Received;
+        public Subscription Wrapped { get; private set; }
+    }
+#endif
 
     public class StateChangeWrapped : IStateChangeWrapped
     {
