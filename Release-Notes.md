@@ -1,3 +1,11 @@
+2.7.8 (30 May 2022)
+======================
+
+Bug Fixes
+----------
+- Date/Time tool shows the correct date in the put field of the debug output view.
+- ElasticSearch always logs all of it's data to the audit log now.
+
 2.7.7 (16 May 2022)
 ======================
 
