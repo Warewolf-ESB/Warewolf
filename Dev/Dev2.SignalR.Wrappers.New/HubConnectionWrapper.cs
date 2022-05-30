@@ -117,7 +117,7 @@ namespace Dev2.SignalR.Wrappers.New
         {
             add
             {
-                _wrapped.Reconnecting += change => value?.Invoke(new StateChangeWrapped(change));
+                _wrapped.StateChanged += change => value?.Invoke(new StateChangeWrapped(change));
             }
             remove => throw new NotImplementedException();
         }
