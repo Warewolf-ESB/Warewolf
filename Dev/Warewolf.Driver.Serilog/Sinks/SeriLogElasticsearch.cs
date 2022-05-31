@@ -38,9 +38,12 @@ namespace Warewolf.Driver.Serilog
         }
         private ILogger CreateLogger()
         {
+            var detectElasticsearchVersion = !string.IsNullOrEmpty(_config.Url) && (_config.Url.StartsWith("http://") || _config.Url.StartsWith("https://"));
+
             var sinkOptions = new ElasticsearchSinkOptions(new Uri(_config.Url))
             {
                 AutoRegisterTemplate = true,
+                DetectElasticsearchVersion = detectElasticsearchVersion,
                 RegisterTemplateFailure = RegisterTemplateRecovery.IndexAnyway,
                 IndexDecider = (e, o) => _config.SearchIndex,
             };
@@ -48,13 +51,14 @@ namespace Warewolf.Driver.Serilog
             if(_config.AuthenticationType == AuthenticationType.Password)
             {
                 sinkOptions.ModifyConnectionSettings = x => x.BasicAuthentication(_config.Username, _config.Password);
-            }  
+            }
 
             return new LoggerConfiguration()
                 .MinimumLevel.Verbose()
                 .WriteTo.Sink(new ElasticsearchSink(sinkOptions))
                 .CreateLogger();
         }
+
         public ILogger Logger
         {
             get => _logger;
