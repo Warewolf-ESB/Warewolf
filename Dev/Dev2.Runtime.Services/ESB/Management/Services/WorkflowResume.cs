@@ -108,14 +108,11 @@ namespace Dev2.Runtime.ESB.Management.Services
                     CustomContainer.CreateInstance<IResumableExecutionContainer>(startActivityId, sa, dataObject,
                         workspace);
 
-                using (container)
+                container.Execute(out ErrorResultTO errors, 0);
+                if (errors.HasErrors())
                 {
-                    container.Execute(out ErrorResultTO errors, 0);
-                    if (errors.HasErrors())
-                    {
-                        return new ExecuteMessage
-                            { HasError = true, Message = new StringBuilder(errors.MakeDisplayReady()) };
-                    }
+                    return new ExecuteMessage
+                        { HasError = true, Message = new StringBuilder(errors.MakeDisplayReady()) };
                 }
 
                 return new ExecuteMessage { HasError = false, Message = new StringBuilder("Execution Completed.") };
