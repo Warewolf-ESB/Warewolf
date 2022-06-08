@@ -429,7 +429,7 @@ namespace Dev2.Runtime.ESB.Execution
 
         ~ResumableExecutionContainer()
         {
-            //ReleaseUnmanagedResources();
+            ReleaseUnmanagedResources();
         }
     
         private void ReleaseUnmanagedResources()
@@ -445,7 +445,7 @@ namespace Dev2.Runtime.ESB.Execution
     
         public void Dispose()
         {
-            //ReleaseUnmanagedResources();
+            
         }
     }
 
