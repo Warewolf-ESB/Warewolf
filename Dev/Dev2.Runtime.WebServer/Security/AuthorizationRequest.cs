@@ -9,6 +9,7 @@
 */
 
 using System;
+using System.Collections.Specialized;
 using System.Globalization;
 using System.Security.Principal;
 using Dev2.Common.Interfaces.Enums;
@@ -23,7 +24,11 @@ namespace Dev2.Runtime.WebServer.Security
         public WebServerRequestType RequestType { get; set; }
         public IPrincipal User { get; set; }
         public Uri Url { get; set; }
+#if NETFRAMEWORK
         public INameValueCollection QueryString { get; set; }
+#else
+        public NameValueCollection QueryString { get; set; }
+#endif
 
         public string ResourcePath
         {

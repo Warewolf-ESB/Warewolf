@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using Dev2.Runtime.WebServer;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Warewolf;
@@ -47,6 +48,7 @@ namespace Dev2.Server.Tests
             mockPauseHelper.Verify(o => o.Pause(), Times.Once);
         }
 
+#if NETFRAMEWORK
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(StartWebServer))]
@@ -69,6 +71,7 @@ namespace Dev2.Server.Tests
             //-------------------Assert----------------------
             mockServer.Verify(o => o.Dispose(), Times.Once);
         }
+#endif
 
 #if NETFRAMEWORK
         Mock<IDisposable> mockServer = new Mock<IDisposable>();
@@ -77,8 +80,8 @@ namespace Dev2.Server.Tests
             return mockServer.Object;
         }
 #else
-        static Mock<IWebHost> mockServer = new Mock<IWebHost>();
-        private Func<Dev2Endpoint[], IWebHost> StartAction = endPoints =>
+        static Mock<WebApplication> mockServer = new Mock<WebApplication>();
+        private Func<Dev2Endpoint[], WebApplication> StartAction = endPoints =>
         {
             Assert.IsNotNull(endPoints);
             return mockServer.Object;
@@ -115,13 +118,12 @@ namespace Dev2.Server.Tests
         IDisposable StartAction1(Dev2Endpoint[] endPoints = null)
         {
             Mock<IDisposable> mockServer1 = new Mock<IDisposable>();
-#else
-        IWebHost StartAction1(Dev2Endpoint[] endPoints = null)
-        {
-            Mock<IWebHost> mockServer1 = new Mock<IWebHost>();
-#endif
             mockServer1.Setup(o => o.Dispose()).Callback(() => throw new Exception());
-
+#else
+        WebApplication StartAction1(Dev2Endpoint[] endPoints = null)
+        {
+            Mock<WebApplication> mockServer1 = new Mock<WebApplication>();
+#endif
             return mockServer1.Object;
         }
 

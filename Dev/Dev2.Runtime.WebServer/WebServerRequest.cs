@@ -38,7 +38,7 @@ namespace Dev2.Runtime.WebServer
             InitializeContentLength();
             InitializeContentType();
             InitializeQueryString();
-        } 
+        }
         
         public WebServerRequest(HttpRequestMessage request)
         {
@@ -79,7 +79,7 @@ namespace Dev2.Runtime.WebServer
 
         private void InitializeContentType()
         {
-            ContentType = _request.Content.Headers.ContentType?.MediaType;
+            ContentType = _request.Content?.Headers?.ContentType?.MediaType;
         }
 
         private void InitializeQueryString()

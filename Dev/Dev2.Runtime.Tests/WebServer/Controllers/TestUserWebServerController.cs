@@ -13,6 +13,7 @@ using System.Net;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Security.Principal;
+using Dev2.Controller;
 using Dev2.Runtime.WebServer;
 using Dev2.Runtime.WebServer.Controllers;
 using Moq;

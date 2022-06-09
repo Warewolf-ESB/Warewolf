@@ -11,6 +11,7 @@
 using System;
 using System.Linq;
 using System.Security.Principal;
+using System.Web;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Runtime.WebServer.Security;
 using Dev2.Services.Security;
@@ -36,7 +37,11 @@ namespace Dev2.Tests.Runtime.Security
             Resource = resource;
             RequestType = requestType;
             Url = new Uri(url);
+#if NETFRAMEWORK
             QueryString = queryString;
+#else
+            QueryString = HttpUtility.ParseQueryString(queryString.ToString());
+#endif
 
             var principal = new Mock<IPrincipal>();
             principal.Setup(p => p.Identity.Name).Returns("User");

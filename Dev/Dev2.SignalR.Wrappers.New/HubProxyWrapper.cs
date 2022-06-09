@@ -9,15 +9,16 @@
 */
 
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 #if NETFRAMEWORK
 using Microsoft.AspNet.SignalR.Client;
 using Microsoft.AspNet.SignalR.Client.Hubs;
+using Dev2.SignalR.Wrappers;
+using System.Collections.Generic;
+using Newtonsoft.Json.Linq;
 #else
 using Microsoft.AspNetCore.SignalR.Client;
 #endif
-using Newtonsoft.Json.Linq;
 
 namespace Dev2.SignalR.Wrappers.New
 {

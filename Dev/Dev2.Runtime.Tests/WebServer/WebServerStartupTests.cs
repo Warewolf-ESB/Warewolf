@@ -24,6 +24,7 @@ namespace Dev2.Tests.Runtime.WebServer
     [TestCategory("Runtime WebServer")]
     public class WebServerStartupTests
     {
+#if NETFRAMEWORK
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("WebServerStartup_Configuration")]
@@ -35,25 +36,18 @@ namespace Dev2.Tests.Runtime.WebServer
             Assert.AreEqual(AuthenticationSchemes.Anonymous, listener.AuthenticationSchemes);
             Assert.IsFalse(listener.IgnoreWriteExceptions);
 
-#if NETFRAMEWORK
             var app = new AppBuilder();
-#else
-            var app = new ApplicationBuilder(new DefaultHttpContext().RequestServices);
-#endif
             app.Properties.Add(typeof(HttpListener).FullName, listener);
 
             var webServerStartup = new WebServerStartup();
 
             //------------Execute Test---------------------------
-#if NETFRAMEWORK
             webServerStartup.Configuration(app);
-#else
-            webServerStartup.Configure(app);
-#endif
 
             //------------Assert Results-------------------------
             Assert.AreEqual(AuthenticationSchemes.Anonymous, listener.AuthenticationSchemes);
             Assert.IsTrue(listener.IgnoreWriteExceptions);
         }
+#endif
     }
 }

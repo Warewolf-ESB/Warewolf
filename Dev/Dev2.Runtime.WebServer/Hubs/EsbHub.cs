@@ -33,8 +33,6 @@ using Dev2.Runtime.WebServer.Security;
 using Dev2.Services.Security;
 using Warewolf.Resource.Errors;
 #if NETFRAMEWORK
-using Microsoft.AspNet.SignalR;
-using Nest;
 using Microsoft.AspNet.SignalR.Hubs;
 #else
 using Microsoft.AspNetCore.SignalR;

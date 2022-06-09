@@ -60,7 +60,7 @@ namespace Dev2.Runtime.WebServer.Controllers
 #if NETFRAMEWORK
                 var context = new WebServerContext(Request, requestVariables) {Request = {User = user}};
 #else
-                var context = new WebServerContext(new HttpRequestMessage(WebServerController.ConvertStringToHttpMethod(Request.Method), Request.GetDisplayUrl()), requestVariables) {Request = {User = user}};
+                var context = new WebServerContext(new HttpRequestMessage(ConvertStringToHttpMethod(Request.Method), Request.GetDisplayUrl()), requestVariables) {Request = {User = user}};
 #endif
                 var handler = CreateHandler<TRequestHandler>();
                 handler.ProcessRequest(context);
@@ -108,7 +108,7 @@ namespace Dev2.Runtime.WebServer.Controllers
 #if NETFRAMEWORK
             var context = new WebServerContext(Request) {Request = {User = User}};
 #else
-            var context = new WebServerContext(new HttpRequestMessage(WebServerController.ConvertStringToHttpMethod(Request.Method), Request.GetDisplayUrl())) {Request = {User = User}};
+            var context = new WebServerContext(new HttpRequestMessage(ConvertStringToHttpMethod(Request.Method), Request.GetDisplayUrl())) {Request = {User = User}};
 #endif
             var handler = CreateHandler<TRequestHandler>();
             handler.ProcessRequest(context);
@@ -120,5 +120,20 @@ namespace Dev2.Runtime.WebServer.Controllers
 
         protected virtual TRequestHandler CreateHandler<TRequestHandler>()
             where TRequestHandler : class, IRequestHandler, new() => Activator.CreateInstance<TRequestHandler>();
+
+        internal static HttpMethod ConvertStringToHttpMethod(string methodString)
+        {
+            switch (methodString.ToUpper())
+            {
+                case "GET": return HttpMethod.Get;
+                case "POST": return HttpMethod.Post;
+                case "DELETE": return HttpMethod.Delete;
+                case "PUT": return HttpMethod.Put;
+                case "PATCH": return HttpMethod.Patch;
+                case "TRACE": return HttpMethod.Trace;
+                case "OPTIONS": return HttpMethod.Options;
+                default: return null;
+            }
+        }
     }
 }

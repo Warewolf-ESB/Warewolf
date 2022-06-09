@@ -12,6 +12,7 @@
 using System;
 using Dev2.Common;
 using Dev2.Runtime.WebServer;
+using Microsoft.AspNetCore.Builder;
 using Warewolf;
 using Microsoft.AspNetCore.Hosting;
 
@@ -33,11 +34,11 @@ namespace Dev2
         
         public StartWebServer(IWriter writer, Func<Dev2Endpoint[], IDisposable> startAction)
 #else
-        private readonly Func<Dev2Endpoint[], IWebHost> _startAction;
+        private readonly Func<Dev2Endpoint[], WebApplication> _startAction;
 
-        IWebHost _owinServer;
+        WebApplication _owinServer;
         
-        public StartWebServer(IWriter writer, Func<Dev2Endpoint[], IWebHost> startAction)
+        public StartWebServer(IWriter writer, Func<Dev2Endpoint[], WebApplication> startAction)
 #endif
         {
             _writer = writer;
@@ -67,7 +68,7 @@ namespace Dev2
             var endPoints = webServerConfig.EndPoints;
             _owinServer = _startAction(endPoints); // WebServerStartup.Start(endPoints)
 #if !NETFRAMEWORK
-            _owinServer.Run();
+            _owinServer.RunAsync();
 #endif
             EnvironmentVariables.IsServerOnline = true;
             _writer.WriteLine("\r\nWeb Server Started");
@@ -80,11 +81,7 @@ namespace Dev2
         {
             try
             {
-                if (_owinServer != null)
-                {
-                    _owinServer.Dispose();
-                    _owinServer = null;
-                }
+                _owinServer = null;
             }
             catch (Exception ex)
             {

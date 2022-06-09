@@ -41,8 +41,7 @@ namespace Dev2.Runtime.WebServer.Responses
 
         public void Write(IResponseMessageContext context)
         {
-            context.ResponseMessage.Content = new StringContent(_text);
-            context.ResponseMessage.Content.Headers.ContentType = _contentType;
+            context.ResponseMessage.Content = new StringContent(_text, Encoding.UTF8, "application/json");
 
             UpdateContentDisposition(context.ResponseMessage);
         }

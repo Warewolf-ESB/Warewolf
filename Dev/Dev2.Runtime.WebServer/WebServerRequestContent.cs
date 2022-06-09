@@ -19,7 +19,7 @@ namespace Dev2.Runtime.WebServer
         public WebServerRequestContent(HttpContent httpContent)
         {
             Content = httpContent;
-            Headers = new WebServerRequestContentHeaders(httpContent.Headers);
+            Headers = new WebServerRequestContentHeaders(httpContent?.Headers);
         }
 
         public HttpContent Content { get; }

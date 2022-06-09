@@ -24,7 +24,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http.Connections;
+using Microsoft.AspNetCore.Authentication.Negotiate;
+using Microsoft.AspNetCore.Http;
+using Dev2.Runtime.WebServer.Controllers;
 #endif
 
 
@@ -115,47 +117,47 @@ namespace Dev2.Runtime.WebServer
             return AuthenticationSchemes.Ntlm | AuthenticationSchemes.Basic;
         }
 #else
-        public static IWebHost Start(Dev2Endpoint[] endpoints)
+        public static WebApplication Start(Dev2Endpoint[] endpoints)
         {
-            var webHostBuilder = WebHost.CreateDefaultBuilder()
-                            .UseStartup<WebServerStartup>();
-            foreach (var endpoint in endpoints)
+            var builder = WebApplication.CreateBuilder();
+            var endpointUrls = new string[endpoints.Length];
+            for (var endpointCount = 0; endpointCount < endpoints.Length; endpointCount++)
             {
-                webHostBuilder.UseUrls(endpoint.Url);
+                endpointUrls[endpointCount] = endpoints[endpointCount].Url;
             }
-            var webHost = webHostBuilder.Build();
-            return webHost;
-        }
+            builder.WebHost.UseUrls(endpointUrls);
+            builder.Services.AddSignalR();
+            builder.Services.AddControllers();
+            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+            builder.Services.AddEndpointsApiExplorer();
+            builder.Services.AddSwaggerGen();
 
-        public void ConfigureServices(IServiceCollection services)
-        {
-            services.AddSignalR();
-            services.AddControllers();
-        }
+            builder.Services.AddAuthentication(NegotiateDefaults.AuthenticationScheme)
+                .AddNegotiate();
 
-        public void Configure(IApplicationBuilder app)
-        {
-            // Enable cross-domain calls
-            app.UseCors((x => x
+            builder.Services.AddAuthorization(options =>
+            {
+                // By default, all incoming requests will be authorized according to the default policy.
+                options.FallbackPolicy = options.DefaultPolicy;
+            });
+            var webHost = builder.Build();
+            webHost.UsePathBase("");
+            webHost.UseSwagger();
+            webHost.UseSwaggerUI();
+
+            webHost.UseCors(x => x
                 .AllowAnyMethod()
                 .AllowAnyHeader()
                 .SetIsOriginAllowed(origin => true) // allow any origin
-                .AllowCredentials()));
-
-            //
-            // Sequence is important!
-            // ALWAYS MapSignalR first then UseWebApi
-            //
-
-            app.UseRouting();
-
-            app.UseEndpoints(endpoints =>
-            {
-                // Add SignalR routing...
-                endpoints.MapHub<EsbHub>("/dsf");
-                // Add web server routing...
-                endpoints.MapControllers();
-            });
+                .AllowCredentials());
+            webHost.UseHttpsRedirection();
+            webHost.UseAuthentication();
+            webHost.UseAuthorization();
+            webHost.MapHub<EsbHub>("/dsf");
+            webHost.MapControllers();
+            //webHost.UseRouting();
+            //webHost.MapGet("/services/{*__name__}", (HttpContext name) => new System.Threading.Tasks.Task(() => { new WebServerController().ExecuteService(name.Request.Path); }));
+            return webHost;
         }
 #endif
     }

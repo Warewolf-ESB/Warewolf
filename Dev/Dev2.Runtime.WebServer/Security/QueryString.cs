@@ -14,11 +14,16 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNet.SignalR.Hosting;
+#if !NETFRAMEWORK
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Primitives;
+#endif
 
 namespace Dev2.Runtime.WebServer.Security
 {
     public class QueryString : INameValueCollection
     {
+#if NETFRAMEWORK
         readonly IEnumerable<KeyValuePair<string, string>> _items;
 
         public QueryString(IEnumerable<KeyValuePair<string, string>> items)
@@ -28,6 +33,17 @@ namespace Dev2.Runtime.WebServer.Security
         }
 
         public IEnumerator<KeyValuePair<string, string>> GetEnumerator() => _items.GetEnumerator();
+#else
+        readonly IEnumerable<KeyValuePair<string, string>> _items;
+
+        public QueryString(IEnumerable<KeyValuePair<string, string>> items)
+        {
+            VerifyArgument.IsNotNull("items", items);
+            _items = items;
+        }
+
+        public IEnumerator<KeyValuePair<string, string>> GetEnumerator() => _items.GetEnumerator();
+#endif
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
