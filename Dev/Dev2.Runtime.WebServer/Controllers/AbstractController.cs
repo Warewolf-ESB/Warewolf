@@ -129,7 +129,6 @@ namespace Dev2.Runtime.WebServer.Controllers
                 case "POST": return HttpMethod.Post;
                 case "DELETE": return HttpMethod.Delete;
                 case "PUT": return HttpMethod.Put;
-                case "PATCH": return HttpMethod.Patch;
                 case "TRACE": return HttpMethod.Trace;
                 case "OPTIONS": return HttpMethod.Options;
                 default: return null;
