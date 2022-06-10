@@ -30,13 +30,13 @@ namespace Dev2.Controller
      * request that comes from an HTTP, that includes REST and a user executing a workflow
      * from a web browser
      */
-    [Authorize]
+    [Microsoft.AspNetCore.Authorization.Authorize]
     [ApiController]
     public class WebServerController : AbstractController
     {
-        [HttpGet]
-        [HttpPost]
-        [Route("Services/{*__name__}")]
+        [Microsoft.AspNetCore.Mvc.HttpGet]
+        [Microsoft.AspNetCore.Mvc.HttpPost]
+        [Microsoft.AspNetCore.Mvc.Route("Services/{*__name__}")]
         public HttpResponseMessage ExecuteService(string __name__) => ExecuteWorkflow(__name__, false, false);
 
         HttpResponseMessage ExecuteWorkflow(string __name__, bool isPublic, bool isUrlWithTokenPrefix)
@@ -93,12 +93,12 @@ namespace Dev2.Controller
                 : ProcessRequest<WebGetRequestHandler>(requestVariables, isUrlWithTokenPrefix);
         }
 
-        [HttpGet]
-        [HttpPost]
-        [Route("Secure/{*__name__}")]
-        public string ExecuteSecureWorkflow(string __name__)
-        {
+        [Microsoft.AspNetCore.Mvc.HttpGet]
+        [Microsoft.AspNetCore.Mvc.HttpPost]
+        [Microsoft.AspNetCore.Mvc.Route("Secure/{*__name__}")]
 #if NETFRAMEWORK
+        public HttpResponseMessage ExecuteSecureWorkflow(string __name__)
+        {
             if (Request?.RequestUri != null)
             {
                 var requestUri = Request.RequestUri;
@@ -114,6 +114,8 @@ namespace Dev2.Controller
             }
             return ExecuteWorkflow(__name__, false, false);
 #else
+        public string ExecuteSecureWorkflow(string __name__)
+        {
             if (Request.GetDisplayUrl() != null)
             {
                 var requestUri = Request.GetDisplayUrl();
@@ -136,12 +138,12 @@ namespace Dev2.Controller
 #endif
         }
 
-        [HttpGet]
-        [HttpPost]
-        [Route("Public/{*__name__}")]
-        public string ExecutePublicWorkflow(string __name__)
-        {
+        [Microsoft.AspNetCore.Mvc.HttpGet]
+        [Microsoft.AspNetCore.Mvc.HttpPost]
+        [Microsoft.AspNetCore.Mvc.Route("Public/{*__name__}")]
 #if NETFRAMEWORK
+        public HttpResponseMessage ExecutePublicWorkflow(string __name__)
+        {
             if (Request?.RequestUri != null)
             {
                 var requestUri = Request.RequestUri;
@@ -152,6 +154,8 @@ namespace Dev2.Controller
             }
             return ExecuteWorkflow(__name__, true, false);
 #else
+        public string ExecutePublicWorkflow(string __name__)
+        {
             if (Request?.GetDisplayUrl() != null)
             {
                 var requestUri = Request.GetDisplayUrl();
@@ -169,17 +173,17 @@ namespace Dev2.Controller
 #endif
         }
 
-        [HttpGet]
-        [HttpPost]
-        [Route("Token/{*__name__}")]
+        [Microsoft.AspNetCore.Mvc.HttpGet]
+        [Microsoft.AspNetCore.Mvc.HttpPost]
+        [Microsoft.AspNetCore.Mvc.Route("Token/{*__name__}")]
         public HttpResponseMessage ExecutePublicTokenWorkflow(string __name__)
         {
             return ExecuteWorkflow(__name__, false, true);
         }
 
-        [HttpGet]
-        [HttpPost]
-        [Route("login")]
+        [Microsoft.AspNetCore.Mvc.HttpGet]
+        [Microsoft.AspNetCore.Mvc.HttpPost]
+        [Microsoft.AspNetCore.Mvc.Route("login")]
         public HttpResponseMessage ExecuteLoginWorkflow()
         {
             var requestVariables = new NameValueCollection();
@@ -207,14 +211,14 @@ namespace Dev2.Controller
         }
 #endif
 
-        [HttpGet]
-        [HttpPost]
-        [Route("internal/getlogfile")]
+        [Microsoft.AspNetCore.Mvc.HttpGet]
+        [Microsoft.AspNetCore.Mvc.HttpPost]
+        [Microsoft.AspNetCore.Mvc.Route("internal/getlogfile")]
         public HttpResponseMessage ExecuteGetLogFile() => ProcessRequest<GetLogFileServiceHandler>();
 
-        [HttpGet]
-        [HttpPost]
-        [Route("apis.json")]
+        [Microsoft.AspNetCore.Mvc.HttpGet]
+        [Microsoft.AspNetCore.Mvc.HttpPost]
+        [Microsoft.AspNetCore.Mvc.Route("apis.json")]
         public HttpResponseMessage ExecuteGetRootLevelApisJson()
         {
             var requestVariables = new NameValueCollection();
