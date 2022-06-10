@@ -128,9 +128,6 @@ namespace Dev2.Runtime.WebServer
             builder.WebHost.UseUrls(endpointUrls);
             builder.Services.AddSignalR();
             builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
 
             builder.Services.AddAuthentication(NegotiateDefaults.AuthenticationScheme)
                 .AddNegotiate();
@@ -142,8 +139,6 @@ namespace Dev2.Runtime.WebServer
             });
             var webHost = builder.Build();
             webHost.UsePathBase("");
-            webHost.UseSwagger();
-            webHost.UseSwaggerUI();
 
             webHost.UseCors(x => x
                 .AllowAnyMethod()
@@ -155,8 +150,6 @@ namespace Dev2.Runtime.WebServer
             webHost.UseAuthorization();
             webHost.MapHub<EsbHub>("/dsf");
             webHost.MapControllers();
-            //webHost.UseRouting();
-            //webHost.MapGet("/services/{*__name__}", (HttpContext name) => new System.Threading.Tasks.Task(() => { new WebServerController().ExecuteService(name.Request.Path); }));
             return webHost;
         }
 #endif
