@@ -37,11 +37,7 @@ namespace Dev2.Tests.Runtime.Security
             Resource = resource;
             RequestType = requestType;
             Url = new Uri(url);
-#if NETFRAMEWORK
             QueryString = queryString;
-#else
-            QueryString = HttpUtility.ParseQueryString(queryString.ToString());
-#endif
 
             var principal = new Mock<IPrincipal>();
             principal.Setup(p => p.Identity.Name).Returns("User");
