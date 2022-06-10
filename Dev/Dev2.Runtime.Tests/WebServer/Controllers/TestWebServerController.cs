@@ -13,7 +13,6 @@ using System.Collections.Specialized;
 using System.Net.Http;
 using Dev2.Controller;
 using Dev2.Runtime.WebServer;
-using Dev2.Runtime.WebServer.Controllers;
 using Dev2.Runtime.WebServer.Handlers;
 using Moq;
 #if !NETFRAMEWORK

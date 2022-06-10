@@ -229,6 +229,7 @@
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
     <Compile Include="AssemblyLoader.cs" />
+    <Compile Include="Controller\WebServerController.cs" />
     <Compile Include="CoverageEntryPoint.cs" />
     <Compile Include="HangfireServerMonitor.cs" />
     <Compile Include="NullProcessMonitor.cs" />

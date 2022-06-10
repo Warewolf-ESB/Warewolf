@@ -9,6 +9,7 @@
 */
 
 using System;
+using System.Collections.Specialized;
 using System.Security.Principal;
 using Dev2.Common.Interfaces.Enums;
 using Microsoft.AspNet.SignalR.Hosting;
