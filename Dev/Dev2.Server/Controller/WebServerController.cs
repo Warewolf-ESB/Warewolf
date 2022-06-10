@@ -157,7 +157,7 @@ namespace Dev2.Controller
                 var requestUri = Request.GetDisplayUrl();
                 if (requestUri.EndsWith("/.tests", StringComparison.InvariantCultureIgnoreCase) || requestUri.EndsWith("/.tests.trx", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    return ExecuteFolderTests(requestUri, true);
+                    return ExecuteFolderTests(requestUri, true).ToString();
                 }
             }
             var response = ExecuteWorkflow(__name__, true, false);
