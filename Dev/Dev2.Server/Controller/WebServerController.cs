@@ -139,7 +139,7 @@ namespace Dev2.Controller
         [HttpGet]
         [HttpPost]
         [Route("Public/{*__name__}")]
-        public HttpResponseMessage ExecutePublicWorkflow(string __name__)
+        public string ExecutePublicWorkflow(string __name__)
         {
 #if NETFRAMEWORK
             if (Request?.RequestUri != null)

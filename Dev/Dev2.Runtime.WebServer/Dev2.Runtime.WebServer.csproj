@@ -147,7 +147,6 @@
     <Compile Include="WebServerRequestContentHeaders.cs" />
     <Compile Include="WebServerResponse.cs" />
     <Compile Include="WebServerStartup.cs" />
-    <Compile Include="Controllers\WebServerController.cs" />
     <Compile Include="Handlers\AbstractWebRequestHandler.cs" />
   </ItemGroup>
   <ItemGroup>
