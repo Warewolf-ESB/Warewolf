@@ -230,13 +230,9 @@ namespace Warewolf.Auditing
                 }
             }
  
-            if (Config.Server.Sink == nameof(AuditingSettingsData))
+            if (Config.Server.IncludeEnvironmentVariable)
             {
-                Environment = Config.Auditing.IncludeEnvironmentVariable ? env.ToJson() : string.Empty;
-            }
-            else if (Config.Server.Sink == nameof(LegacySettingsData))
-            {
-                Environment = Config.Legacy.IncludeEnvironmentVariable ? env.ToJson() : string.Empty;
+                Environment = env.ToJson();
             }
             else
             {
