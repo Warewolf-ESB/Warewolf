@@ -11,12 +11,14 @@
 using System;
 using System.Collections.Specialized;
 using System.Net.Http;
-using Dev2.Controller;
 using Dev2.Runtime.WebServer;
 using Dev2.Runtime.WebServer.Handlers;
 using Moq;
-#if !NETFRAMEWORK
+#if NETFRAMEWORK
+using Dev2.Runtime.WebServer.Controllers;
+#else
 using Microsoft.AspNetCore.Http;
+using Dev2.Controller;
 #endif
 
 namespace Dev2.Tests.Runtime.WebServer.Controllers

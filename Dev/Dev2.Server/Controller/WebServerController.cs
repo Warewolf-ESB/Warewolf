@@ -9,9 +9,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-#if NETFRAMEWORK
-using System.Web.Http;
-#endif
+#if !NETFRAMEWORK
 using System.Collections.Specialized;
 using System.Linq;
 using System;
@@ -84,11 +82,7 @@ namespace Dev2.Controller
                 requestVariables.Add("IsDebug", true.ToString());
             }
 
-#if NETFRAMEWORK
-            return Request.Method == HttpMethod.Post
-#else
             return Request.Method == HttpMethod.Post.ToString()
-#endif
                 ? ProcessRequest<WebPostRequestHandler>(requestVariables, isUrlWithTokenPrefix)
                 : ProcessRequest<WebGetRequestHandler>(requestVariables, isUrlWithTokenPrefix);
         }
@@ -96,24 +90,6 @@ namespace Dev2.Controller
         [Microsoft.AspNetCore.Mvc.HttpGet]
         [Microsoft.AspNetCore.Mvc.HttpPost]
         [Microsoft.AspNetCore.Mvc.Route("Secure/{*__name__}")]
-#if NETFRAMEWORK
-        public HttpResponseMessage ExecuteSecureWorkflow(string __name__)
-        {
-            if (Request?.RequestUri != null)
-            {
-                var requestUri = Request.RequestUri;
-                if (requestUri.ToString().EndsWith("/.tests", StringComparison.InvariantCultureIgnoreCase) || requestUri.ToString().EndsWith("/.tests.trx", StringComparison.InvariantCultureIgnoreCase))
-                {
-                    return ExecuteFolderTests(requestUri.ToString(), false);
-                }
-
-                if (requestUri.ToString().EndsWith("/.coverage", StringComparison.InvariantCultureIgnoreCase) || requestUri.ToString().EndsWith("/.coverage.json", StringComparison.InvariantCultureIgnoreCase) || requestUri.ToString().EndsWith("/.coverage.trx", StringComparison.InvariantCultureIgnoreCase))
-                {
-                    return ExecuteFolderTests(requestUri.ToString(), false);
-                }
-            }
-            return ExecuteWorkflow(__name__, false, false);
-#else
         public string ExecuteSecureWorkflow(string __name__)
         {
             if (Request.GetDisplayUrl() != null)
@@ -135,25 +111,11 @@ namespace Dev2.Controller
                 return response.ToString();
             }
             return response.Content.ReadAsStringAsync().Result;
-#endif
         }
 
         [Microsoft.AspNetCore.Mvc.HttpGet]
         [Microsoft.AspNetCore.Mvc.HttpPost]
         [Microsoft.AspNetCore.Mvc.Route("Public/{*__name__}")]
-#if NETFRAMEWORK
-        public HttpResponseMessage ExecutePublicWorkflow(string __name__)
-        {
-            if (Request?.RequestUri != null)
-            {
-                var requestUri = Request.RequestUri;
-                if (requestUri.ToString().EndsWith("/.tests", StringComparison.InvariantCultureIgnoreCase) || requestUri.ToString().EndsWith("/.tests.trx", StringComparison.InvariantCultureIgnoreCase))
-                {
-                    return ExecuteFolderTests(requestUri.ToString(), true);
-                }
-            }
-            return ExecuteWorkflow(__name__, true, false);
-#else
         public string ExecutePublicWorkflow(string __name__)
         {
             if (Request?.GetDisplayUrl() != null)
@@ -170,7 +132,6 @@ namespace Dev2.Controller
                 return response.ToString();
             }
             return response.Content.ReadAsStringAsync().Result;
-#endif
         }
 
         [Microsoft.AspNetCore.Mvc.HttpGet]
@@ -187,17 +148,12 @@ namespace Dev2.Controller
         public HttpResponseMessage ExecuteLoginWorkflow()
         {
             var requestVariables = new NameValueCollection();
-#if NETFRAMEWORK
-            var context = new WebServerContext(Request, requestVariables) {Request = {User = User}};
-#else
             var context = new WebServerContext(new HttpRequestMessage(ConvertStringToHttpMethod(Request.Method), Request.GetDisplayUrl()), requestVariables) {Request = {User = User}};
-#endif
             var handler = CreateHandler<TokenRequestHandler>();
             handler.ProcessRequest(context);
             return context.ResponseMessage;
         }
 
-#if !NETFRAMEWORK
         internal static HttpMethod ConvertStringToHttpMethod(string methodString)
         {
             switch (methodString)
@@ -209,7 +165,6 @@ namespace Dev2.Controller
                 default: return null;
             }
         }
-#endif
 
         [Microsoft.AspNetCore.Mvc.HttpGet]
         [Microsoft.AspNetCore.Mvc.HttpPost]
@@ -239,3 +194,4 @@ namespace Dev2.Controller
         }
     }
 }
+#endif

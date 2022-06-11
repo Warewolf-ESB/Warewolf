@@ -87,6 +87,7 @@
     <Compile Include="ApisJsonBuilder.cs" />
     <Compile Include="CommunicationContextExtensions.cs" />
     <Compile Include="Controllers\AbstractController.cs" />
+    <Compile Include="Controllers\WebServerController.cs" />
     <Compile Include="DataObjectExtensions.cs" />
     <Compile Include="Executor\DataObjectFactory.cs" />
     <Compile Include="Executor\DefaultEsbChannelFactory.cs" />
