@@ -71,9 +71,7 @@ namespace Dev2.Server.Tests
             //-------------------Assert----------------------
             mockServer.Verify(o => o.Dispose(), Times.Once);
         }
-#endif
-
-#if NETFRAMEWORK
+        
         Mock<IDisposable> mockServer = new Mock<IDisposable>();
         IDisposable StartAction(Dev2Endpoint[] endPoints) {
             Assert.IsNotNull(endPoints);

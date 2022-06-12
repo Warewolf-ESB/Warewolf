@@ -81,6 +81,9 @@ namespace Dev2
         {
             try
             {
+#if NETFRAMEWORK
+                _owinServer.Dispose();
+#endif
                 _owinServer = null;
             }
             catch (Exception ex)
