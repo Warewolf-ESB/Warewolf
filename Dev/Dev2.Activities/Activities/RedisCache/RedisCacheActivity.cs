@@ -170,7 +170,7 @@ namespace Dev2.Activities.RedisCache
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
-            _execution.Wait();
+            ExecuteWait();
             _dataObject = dataObject;
             _update = update;
             base.ExecuteTool(_dataObject, update);
@@ -178,6 +178,7 @@ namespace Dev2.Activities.RedisCache
 
         protected override List<string> PerformExecution(Dictionary<string, string> evaluatedValues)
         {
+            ExecuteWait();         
             _errorsTo = new ErrorResultTO();
 
             try
@@ -573,6 +574,14 @@ namespace Dev2.Activities.RedisCache
         {
             _execution.Dispose();
             GC.SuppressFinalize(this);
+        }
+
+        public void ExecuteWait()
+        {
+            if (_execution.CurrentCount >= 1)
+            {
+                _execution.Wait();
+            }
         }
     }
 }
