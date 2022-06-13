@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2022 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -74,9 +74,6 @@ namespace Dev2.Common.Tests
             Assert.AreEqual(true, settings.EnableDetailedLogging);
             Assert.AreEqual(LogLevel.DEBUG.ToString(), settings.ExecutionLogLevel);
             Assert.AreEqual(200, settings.LogFlushInterval);
-#pragma warning disable 618
-            Assert.AreEqual("C:\\ProgramData\\Warewolf\\Audits", settings.AuditFilePath);
-#pragma warning restore 618
             Assert.AreEqual(nameof(LegacySettingsData), settings.Sink);
         }
 
@@ -99,9 +96,6 @@ namespace Dev2.Common.Tests
             Assert.AreEqual(true, settings.EnableDetailedLogging);
             Assert.AreEqual(LogLevel.DEBUG.ToString(), settings.ExecutionLogLevel);
             Assert.AreEqual(200, settings.LogFlushInterval);
-#pragma warning disable 618
-            Assert.AreEqual("C:\\ProgramData\\Warewolf\\Audits", settings.AuditFilePath);
-#pragma warning restore 618
             Assert.AreEqual(nameof(LegacySettingsData), settings.Sink);
         }
 
@@ -155,9 +149,6 @@ namespace Dev2.Common.Tests
             Config.Server.Sink = null;
             var serverSettings = Config.Server.Get();
             Assert.AreEqual(nameof(LegacySettingsData), serverSettings.Sink);
-#pragma warning disable 618
-            Assert.AreEqual(LegacySettings.DefaultAuditPath, serverSettings.AuditFilePath);
-#pragma warning restore 618
         }
     }
 }

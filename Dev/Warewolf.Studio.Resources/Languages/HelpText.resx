@@ -2517,6 +2517,9 @@ The conflicts on the left will show your current workflow changes and the confli
 	<data name="PersistenceViewPrepareSchemaIfNecessaryHelpText" xml:space="preserve">
     <value>Create the tables and index in the database if they dont already exist</value>
   </data>
+	<data name="PersistenceViewUseAsServerHelpText" xml:space="preserve">
+    <value>Show the additional data to use hangfire as a server if checkbox is checked</value>
+  </data>
 	<data name="SuspendExecutionSuspendOptionsHelpText" xml:space="preserve">
     <value>Select an option for when the suspended workflow should be resumed.</value>
   </data>

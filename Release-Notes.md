@@ -1,3 +1,38 @@
+2.7.8 (31 May 2022)
+======================
+
+Bug Fixes
+----------
+- Date/Time tool shows the correct date in the put field of the debug output view.
+- Fixed issue where elasticsearch logging wasn't working on source with credentials.
+
+2.7.7 (16 May 2022)
+======================
+
+Bug Fixes
+----------
+- Creating a test from debug defaults to the correct assert and mocks.
+
+Enhancements
+----------
+- Allow hangfire persistence server to be used as a client or server using a checkbox in the persistance settings.
+
+2.7.6 (2 May 2022)
+======================
+
+Bug Fixes
+----------
+- Patch for logging source settings sometimes not saving.
+- Patch for workflow test input values blank sometimes.
+- Patch for RabbitMQ tool sometimes not loading password value.
+
+2.7.5.32 (21 April 2022)
+======================
+
+Bug Fixes
+----------
+- Changes to address Suspend tool memory spiking and general improvements to suspend tool.
+
 2.7.5 (31 March 2022)
 ======================
 
