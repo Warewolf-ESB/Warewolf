@@ -36,6 +36,8 @@ namespace Dev2.Runtime.ESB.Management.Services
                 var updatedServerSettings = serializer.Deserialize<ServerSettingsData>(settings);
 
                 Config.Server.ExecutionLogLevel = updatedServerSettings.ExecutionLogLevel;
+                Config.Server.Save();
+
                 msg.Message = new StringBuilder();
                 msg.HasError = false;
             }

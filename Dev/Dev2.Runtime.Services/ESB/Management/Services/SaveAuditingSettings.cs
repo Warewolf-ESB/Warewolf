@@ -40,7 +40,8 @@ namespace Dev2.Runtime.ESB.Management.Services
                     Config.Auditing.LoggingDataSource = updatedAuditingSettings.LoggingDataSource;
                     Config.Auditing.EncryptDataSource = updatedAuditingSettings.EncryptDataSource;
                     Config.Auditing.IncludeEnvironmentVariable = updatedAuditingSettings.IncludeEnvironmentVariable;
-                    Config.Legacy.Save();
+                    //Config.Legacy.Save();
+                    Config.Auditing.Save();
                 }
                 else
                 {
