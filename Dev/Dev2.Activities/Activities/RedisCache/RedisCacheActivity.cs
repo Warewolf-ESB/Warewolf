@@ -170,17 +170,24 @@ namespace Dev2.Activities.RedisCache
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
-            ExecuteWait();
-            _dataObject = dataObject;
-            _update = update;
-            base.ExecuteTool(_dataObject, update);
+            try
+            {
+                _execution.Wait();
+                
+                _dataObject = dataObject;
+                _update = update;
+                base.ExecuteTool(_dataObject, update);
+            }
+            finally
+            {
+                _execution.Release();
+            }
         }
 
         protected override List<string> PerformExecution(Dictionary<string, string> evaluatedValues)
         {
-            ExecuteWait();         
+              
             _errorsTo = new ErrorResultTO();
-
             try
             {
                 RedisSource = ResourceCatalog.GetResource<RedisSource>(GlobalConstants.ServerWorkspaceID, SourceId);
@@ -262,8 +269,6 @@ namespace Dev2.Activities.RedisCache
                     var errorString = _errorsTo.MakeDisplayReady();
                     _dataObject.Environment.AddError(errorString);
                 }
-
-                _execution.Release();
             }
         }
 
