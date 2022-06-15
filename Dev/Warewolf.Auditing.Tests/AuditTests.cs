@@ -47,6 +47,17 @@ namespace Warewolf.Tests
             Assert.AreEqual("Test-Workflow", auditLog.WorkflowName);
         }
 
+        [TestMethod]
+        [Owner("Tsumbo Mbedzi")]
+        [TestCategory(nameof(Audit))]
+        public void Audit_Audit_CheckForException_ShouldReturnErroLogLEvel()
+        {
+            var executionID = Guid.NewGuid();
+            var mockDataObject = SetupDataObjectWithAssignedInputs(executionID);
+            var auditLog = new Audit(mockDataObject.Object, "LogAdditionalDetail", "Test", null, null, new Exception());
+            Assert.AreEqual(Logging.LogLevel.Error, auditLog.LogLevel);
+        }
+
 
         Mock<IDSFDataObject> SetupDataObjectWithAssignedInputs(Guid executionId)
         {
