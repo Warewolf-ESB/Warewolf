@@ -174,26 +174,26 @@ namespace Warewolf.UnitTestAttributes
 //                Container.IP = "remote-warewolf-connector-testing.southafricanorth.azurecontainer.io";
 //                Container.Port = "3142";
 //            }
-//            else if (_containerType == ContainerType.MSSQL)
-//            {
-//                Container.IP = "warewolf-connector-dependency-containers.southafricanorth.cloudapp.azure.com";
-//                Container.Port = "1433";
-//            }
-//            else if (_containerType == ContainerType.Elasticsearch)
-//            {
-//                Container.IP = "warewolf-connector-dependency-containers.southafricanorth.cloudapp.azure.com";
-//                Container.Port = "9400";
-//            }
-//            else if (_containerType == ContainerType.AnonymousElasticsearch)
-//            {
-//                Container.IP = "warewolf-connector-dependency-containers.southafricanorth.cloudapp.azure.com";
-//                Container.Port = "9200";
-//            }
-//            else if (_containerType == ContainerType.PostGreSQL)
-//            {
-//                Container.IP = "warewolf-connector-dependency-containers.southafricanorth.cloudapp.azure.com";
-//                Container.Port = "5433";
-//            }
+            else if (_containerType == ContainerType.MSSQL)
+            {
+                Container.IP = "102.37.115.89";
+                Container.Port = "1433";
+            }
+            else if (_containerType == ContainerType.Elasticsearch)
+            {
+                Container.IP = "102.37.115.89";
+                Container.Port = "9400";
+            }
+            else if (_containerType == ContainerType.AnonymousElasticsearch)
+            {
+                Container.IP = "102.37.115.89";
+                Container.Port = "9200";
+            }
+            else if (_containerType == ContainerType.PostGreSQL)
+            {
+                Container.IP = "102.37.115.89";
+                Container.Port = "5433";
+            }
             else if (_containerType == ContainerType.MySQL)
             {
                 Container.IP = "warewolf-mysql-connector-testing.southafricanorth.azurecontainer.io";
