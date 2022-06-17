@@ -1,3 +1,11 @@
+2.7.9 (17 June 2022)
+======================
+
+Bug Fixes
+----------
+- ElasticSearch logging errorlevel has changed to a more detailed level.
+- Performance and memory improvements to the suspend tool.
+
 2.7.8 (31 May 2022)
 ======================
 
