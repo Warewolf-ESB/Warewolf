@@ -225,8 +225,8 @@ namespace ActivityUnitTests
 
         public static string InjectFTPDependency(string location, bool sourcePath=true)
         {
-            var oldFTPDependency = "ftp://DEVOPSPDC.premier.local:1001/";
-			var oldFTPSDependency = "ftp://DEVOPSPDC.premier.local:1002/";
+            var oldFTPDependency = "ftp://localhost/";
+			var oldFTPSDependency = "ftp://localhost:1010/";
             if (location.StartsWith(oldFTPDependency) && sourcePath || location.StartsWith("[[sourcePath]] = " + oldFTPDependency))
             {
 				_sourceDependency = new Depends(Depends.ContainerType.FTP);

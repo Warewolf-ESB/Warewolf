@@ -149,11 +149,11 @@ namespace Warewolf.UnitTestAttributes
                 Container.IP = "warewolf-redis-connector-testing.southafricanorth.azurecontainer.io";
                 Container.Port = "6379";
             }
-//            else if(_containerType == ContainerType.FTPS)
-//            {
-//                Container.IP = "localhost";
-//                Container.Port = "1010";
-//            }
+            else if(_containerType == ContainerType.FTPS)
+            {
+                Container.IP = "localhost";
+                Container.Port = "1010";
+            }
             else if (_containerType == ContainerType.RabbitMQ)
             {
                 Container.IP = "warewolf-rabbitmq-connector-testing.southafricanorth.azurecontainer.io";
