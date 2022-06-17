@@ -169,11 +169,11 @@ namespace Warewolf.UnitTestAttributes
                 Container.IP = "http-web-connector-testing.southafricanorth.azurecontainer.io";
                 Container.Port = "80";
             }
-//            else if (_containerType == ContainerType.CIRemote || _containerType == ContainerType.AnonymousWarewolf)
-//            {
-//                Container.IP = "remote-warewolf-connector-testing.southafricanorth.azurecontainer.io";
-//                Container.Port = "3142";
-//            }
+            else if (_containerType == ContainerType.CIRemote || _containerType == ContainerType.AnonymousWarewolf)
+            {
+                Container.IP = "102.37.115.89";
+                Container.Port = "3142";
+            }
             else if (_containerType == ContainerType.MSSQL)
             {
                 Container.IP = "102.37.115.89";
