@@ -22,8 +22,8 @@ Feature: Delete
 			| Name    | source   | sourceLocation                                                                                      | username | password     | resultVar  | result    | errorOccured | sourcePrivateKeyFile |
 			| Local   | [[path]] | c:\filetodelete.txt                                                                                 | ""       | ""           | [[result]] | "Success" | NO           |                      |
 			| UNC     | [[path]] | \\\\localhost\FileSystemShareTestingSite\FileDeleteSharedTestingSite\filetodelete.txt | ""       | ""           | [[result]] | "Success" | NO           |                      |
-			| FTP     | [[path]] | ftp://localhost/FORDELETEFILETESTING/filetodelete.txt                            | dev2              | Q/ulw&]      | [[result]] | "Success" | NO           |                      |
-			| FTPS    | [[path]] | ftp://localhost:1010/FORDELETEFILETESTING/filetodelet.txt                             | dev2              | Q/ulw&]      | [[result]] | "Success" | NO           |                      |
+			| FTP     | [[path]] | ftp://DEVOPSPDC.premier.local:1001/FORDELETEFILETESTING/filetodelete.txt                            | dev2              | Q/ulw&]      | [[result]] | "Success" | NO           |                      |
+			| FTPS    | [[path]] | ftp://DEVOPSPDC.premier.local:1002/FORDELETEFILETESTING/filetodelet.txt                             | dev2              | Q/ulw&]      | [[result]] | "Success" | NO           |                      |
 			| SFTP    | [[path]] | sftp://3xhcmicj2djiu.southafricanorth.azurecontainer.io/upload/filetodelete.txt                                                        | dev2              | Q/ulw&]      | [[result]] | "Success" | NO           |                      |
 			| SFTP PK | [[path]] | sftp://3xhcmicj2djiu.southafricanorth.azurecontainer.io/upload/filetodelete1.txt                                                       | dev2              | Q/ulw&]      | [[result]] | "Success" | NO           | C:\\Temp\\key.opk    |
 
@@ -40,8 +40,8 @@ Feature: Delete
 			| Local | [[path]] | NULL                                                                                        | ""         | ""       | [[result]] | ""        | AN           |                      |
 			| Local | [[path]] | G:\filetodelete                                                                             | ""         | ""       | [[result]] | "Failure" | NO           |                      |
 			| UNC   | [[path]] | \\\\localhost\FileSystemShareTestingSite\FileDeleteSharedTestingSite\Memo.txt | ""         | ""       | [[result]] | "Success" | NO           |                      |
-			| FTP   | [[path]] | ftp://localhost/FORDELETEFILETESTING/filetodelete.xtx                    | dev2       | Q/ulw&]  | [[result]] | "Success" | NO           |                      |
-			| FTPS  | [[path]] | ftp://localhost:1010/FORDELETEFILETESTING/filetodelet.txt                     | dev2       | Q/ulw&]  | [[result]] | ""        | NO           |                      |
+			| FTP   | [[path]] | ftp://DEVOPSPDC.premier.local:1001/FORDELETEFILETESTING/filetodelete.xtx                    | dev2       | Q/ulw&]  | [[result]] | "Success" | NO           |                      |
+			| FTPS  | [[path]] | ftp://DEVOPSPDC.premier.local:1002/FORDELETEFILETESTING/filetodelet.txt                     | dev2       | Q/ulw&]  | [[result]] | ""        | NO           |                      |
 			| SFTP  | [[path]] | sftp://3xhcmicj2djiu.southafricanorth.azurecontainer.io/upload/Memo.txt                                                        | dev2.local | Q/ulw&]  | [[result]] | ""        | NO           |                      |
 
 	Scenario Outline: Delete file Validation
