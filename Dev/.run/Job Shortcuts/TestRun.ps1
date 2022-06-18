@@ -109,10 +109,8 @@ if ($Coverage.IsPresent) {
 	$CoverageConfigPath = ".\Microsoft.TestPlatform\tools\net451\Team Tools\Dynamic Code Coverage Tools\CodeCoverage.config"
 	(Get-Content $CoverageConfigPath).replace('<UseVerifiableInstrumentation>true</UseVerifiableInstrumentation>', '<UseVerifiableInstrumentation>false</UseVerifiableInstrumentation>') | Set-Content $CoverageConfigPath
 }
-if ($StartFTPServer.IsPresent -or $StartFTPSServer.IsPresent) {
-    mkdir "C:\ftp_home\dev2\FORUNZIPTESTING"
-}
 if ($StartFTPServer.IsPresent) {
+    mkdir "C:\ftp_home\dev2\FORUNZIPTESTING"
 	pip install pyftpdlib
 @"
 import os, random, string
