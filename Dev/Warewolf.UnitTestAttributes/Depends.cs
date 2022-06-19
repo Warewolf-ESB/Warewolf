@@ -151,8 +151,8 @@ namespace Warewolf.UnitTestAttributes
             }
             else if(_containerType == ContainerType.FTPS)
             {
-                Container.IP = "102.37.115.89";
-                Container.Port = "3143";
+                Container.IP = "localhost";
+                Container.Port = "1010";
             }
             else if (_containerType == ContainerType.RabbitMQ)
             {
@@ -196,8 +196,8 @@ namespace Warewolf.UnitTestAttributes
             }
             else if (_containerType == ContainerType.MySQL)
             {
-                Container.IP = "102.37.115.89";
-                Container.Port = "9300";
+                Container.IP = "warewolf-mysql-connector-testing.southafricanorth.azurecontainer.io";
+                Container.Port = "3306";
             }
             else if (_containerType == ContainerType.AnonymousRedis)
             {
