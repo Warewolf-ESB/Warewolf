@@ -149,7 +149,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             GetScalarValueFromEnvironment(result.Environment, "MyTestResult", out string actual, out string error);
             var actualdt = DateTime.Parse(actual, CultureInfo.InvariantCulture);
             var timeSpan = actualdt - now;
-            if (now.Hour >= 12 && now.Hour <= 24)
+            if (now.Hour > 12 && now.Hour <= 24)
             {
                 Assert.IsTrue(timeSpan.TotalMilliseconds + 43200000 >= 9000, timeSpan.TotalMilliseconds + 43200000 + " is not >= 9000");
             }
