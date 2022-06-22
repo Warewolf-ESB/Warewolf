@@ -4,7 +4,8 @@
         <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
         <ProjectGuid>{EEDC7A07-34BB-49B8-AB14-AD43613EC956}</ProjectGuid>
         <OutputType>Library</OutputType>
-        <TargetFramework>net48</TargetFramework>
+        <TargetFrameworks>net48;net6.0-windows</TargetFrameworks>
+    <OutputPath>$(BaseOutputPath)</OutputPath>
         <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
         <EnableDefaultItems>false</EnableDefaultItems>
         <GenerateAssemblyInfo>false</GenerateAssemblyInfo>

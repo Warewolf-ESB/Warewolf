@@ -7,15 +7,19 @@ namespace WarewolfCOMIPC
     {
         public static ICustomMarshaler GetInstance(string pstrCookie) => new CustomTypeToTypeMarshaler();
 
-        public object MarshalNativeToManaged(IntPtr pNativeData) => 
+        public object MarshalNativeToManaged(IntPtr pNativeData) =>
+#if NETFRAMEWORK
             !(pNativeData == (IntPtr) 0L)
-                ? (object) Marshal.GetTypeForITypeInfo(pNativeData)
-                : throw new ArgumentNullException(nameof (pNativeData));
+                ? (object) Marshal.GetTypeForITypeInfo(pNativeData) :
+#endif
+                throw new ArgumentNullException(nameof (pNativeData));
 
         public IntPtr MarshalManagedToNative(object ManagedObj) =>
+#if NETFRAMEWORK
             ManagedObj != null
-                ? Marshal.GetITypeInfoForType(ManagedObj as Type)
-                : throw new ArgumentNullException(nameof(ManagedObj));
+                ? Marshal.GetITypeInfoForType(ManagedObj as Type) :
+#endif
+                throw new ArgumentNullException(nameof(ManagedObj));
 
         public void CleanUpNativeData(IntPtr pNativeData) => Console.WriteLine("An attempt was made to cleanup native data.");
 

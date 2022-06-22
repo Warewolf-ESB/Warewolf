@@ -2,7 +2,8 @@
 
   <PropertyGroup>
       <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-      <TargetFramework>net48</TargetFramework>
+      <TargetFrameworks>net48;net6.0-windows</TargetFrameworks>
+    <OutputPath>$(BaseOutputPath)</OutputPath>
  </PropertyGroup>
 
   <PropertyGroup>

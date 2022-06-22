@@ -4,7 +4,8 @@
         <IsPackable>false</IsPackable>
         <AssemblyName>Warewolf.Driver.Persistence.Tests</AssemblyName>
         <Configurations>Debug</Configurations>
-        <TargetFramework>net48</TargetFramework>
+        <TargetFrameworks>net48;net6.0-windows</TargetFrameworks>
+    <OutputPath>$(BaseOutputPath)</OutputPath>
         <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     </PropertyGroup>
 
