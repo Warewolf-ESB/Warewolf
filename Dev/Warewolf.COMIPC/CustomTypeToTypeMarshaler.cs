@@ -10,16 +10,20 @@ namespace WarewolfCOMIPC
         public object MarshalNativeToManaged(IntPtr pNativeData) =>
 #if NETFRAMEWORK
             !(pNativeData == (IntPtr) 0L)
-                ? (object) Marshal.GetTypeForITypeInfo(pNativeData) :
+                ? (object) Marshal.GetTypeForITypeInfo(pNativeData)
+                : throw new ArgumentNullException(nameof (pNativeData));
+#else
+            throw new NotImplementedException();
 #endif
-                throw new ArgumentNullException(nameof (pNativeData));
 
         public IntPtr MarshalManagedToNative(object ManagedObj) =>
 #if NETFRAMEWORK
             ManagedObj != null
-                ? Marshal.GetITypeInfoForType(ManagedObj as Type) :
+                ? Marshal.GetITypeInfoForType(ManagedObj as Type)
+                : throw new ArgumentNullException(nameof(ManagedObj));
+#else
+            throw new NotImplementedException();
 #endif
-                throw new ArgumentNullException(nameof(ManagedObj));
 
         public void CleanUpNativeData(IntPtr pNativeData) => Console.WriteLine("An attempt was made to cleanup native data.");
 
