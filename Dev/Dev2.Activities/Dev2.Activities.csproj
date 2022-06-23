@@ -5,14 +5,13 @@
     <ProjectGuid>{0A369A8B-0906-47EB-8EEE-CA20E9D4F151}</ProjectGuid>
     <OutputType>Library</OutputType>
     <TargetFramework>net48</TargetFramework>
+    <OutputPath>$(BaseOutputPath)</OutputPath>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <EnableDefaultItems>false</EnableDefaultItems>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Dev2</RootNamespace>
     <AssemblyName>Dev2.Activities</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <RuntimeIdentifier>win</RuntimeIdentifier>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>
     </SccProjectName>
@@ -28,6 +27,7 @@
     <SonarQubeTestProject>False</SonarQubeTestProject>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+	<RestoreAdditionalProjectSource>https://www.myget.org/F/uipath-dev/api/v3/index.json</RestoreAdditionalProjectSource>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -533,7 +533,7 @@
       <Version>6.9.9</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
-      <Version>12.0.3</Version>
+      <Version>13.0.1</Version>
     </PackageReference>
     <PackageReference Include="RabbitMQ.Client">
       <Version>5.1.2</Version>
