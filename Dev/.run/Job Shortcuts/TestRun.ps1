@@ -240,6 +240,7 @@ if __name__ == '__main__':
 if ($CreateLocalSchedulerAdmin.IsPresent) {
 	cmd /c NET user "LocalSchedulerAdmin" "987Sched#@!" /ADD /Y
 	Add-LocalGroupMember -Group 'Administrators' -Member ('LocalSchedulerAdmin') -Verbose
+	New-LocalGroup -Name 'Warewolf Administrators'
 	Add-LocalGroupMember -Group 'Warewolf Administrators' -Member ('LocalSchedulerAdmin') -Verbose
 }
 if ($UseRegionalSettings.IsPresent) {
