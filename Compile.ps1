@@ -376,6 +376,16 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
                     Copy-Item -Path "$PSScriptRoot\Dev\Dev2.Web2" "$PSScriptRoot\Bin\$OutputFolderName\net6.0-windows\_PublishedWebsites\Dev2.Web" -Force -Recurse
                 }
                 Copy-Item -Path "$PSScriptRoot\Dev\.run\Job Shortcuts" "$PSScriptRoot\Bin\$OutputFolderName\net6.0-windows\Job Shortcuts" -Force -Recurse
+				Get-ChildItem "$PSScriptRoot\Dev\*" | ForEach-Object {
+				if ($_.FullName.ToLower().EndsWith(".tests") -or $_.FullName.ToLower().EndsWith(".specs")) {
+						if (!(Test-Path "$PSScriptRoot\bin\$OutputFolderName\net48\$($_.BaseName).dll") -and (Test-Path "$_\obj\Debug\net48\$($_.BaseName).dll")) {
+							Copy-Item "$_\obj\Debug\net48\$($_.BaseName).dll" "$PSScriptRoot\bin\$OutputFolderName\net48\$($_.BaseName).dll"
+						}
+						if (!(Test-Path "$PSScriptRoot\bin\$OutputFolderName\net6.0-windows\$($_.BaseName).dll") -and (Test-Path "$_\obj\Debug\net6.0-windows\$($_.BaseName).dll")) {
+							Copy-Item "$_\obj\Debug\net6.0-windows\$($_.BaseName).dll" "$PSScriptRoot\bin\$OutputFolderName\net6.0-windows\$($_.BaseName).dll"
+						}
+					}
+				}
             }
         }
     }
