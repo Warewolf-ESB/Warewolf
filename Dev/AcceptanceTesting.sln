@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dev2.Activities.Specs", "De
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dev2.Studio.Core.Specs", "Dev2.Studio.Core.Specs\Dev2.Studio.Core.Specs.csproj", "{96E59B04-1506-4554-B46A-B2B494116B07}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dev2.Integration.Tests", "Dev2.IntegrationTests\Dev2.Integration.Tests.csproj", "{2C7F0E32-C4C4-422D-A767-92F3B3510392}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dev2.Integration.Tests", "Dev2.Integration.Tests\Dev2.Integration.Tests.csproj", "{2C7F0E32-C4C4-422D-A767-92F3B3510392}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dev2.Runtime.WebServer", "Dev2.Runtime.WebServer\Dev2.Runtime.WebServer.csproj", "{4D0919C0-8FA4-480C-8629-00EB128DDEE9}"
 EndProject
