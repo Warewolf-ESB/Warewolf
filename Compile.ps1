@@ -386,6 +386,21 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
 						}
 					}
 				}
+				if (!(Test-Path "$PSScriptRoot\bin\$OutputFolderName\net48\Warewolf.Sql.dll") -and (Test-Path "$PSScriptRoot\Dev\Dev2.Sql\obj\Debug\net48\Warewolf.Sql.dll")) { 
+					Copy-Item "$PSScriptRoot\Dev\Dev2.Sql\obj\Debug\net48\Warewolf.Sql.dll" "$PSScriptRoot\bin\$OutputFolderName\net48\Warewolf.Sql.dll"
+				}
+				if (!(Test-Path "$PSScriptRoot\bin\$OutputFolderName\net6.0-windows\Warewolf.Sql.dll") -and (Test-Path "$PSScriptRoot\Dev\Dev2.Sql\obj\Debug\net6.0-windows\Warewolf.Sql.dll")) { 
+					Copy-Item "$PSScriptRoot\Dev\Dev2.Sql\obj\Debug\net6.0-windows\Warewolf.Sql.dll" "$PSScriptRoot\bin\$OutputFolderName\net6.0-windows\Warewolf.Sql.dll"
+				}
+				if (!(Test-Path "$PSScriptRoot\bin\$OutputFolderName\net48\Warewolf.TestingDotnetDllCascading.dll") -and (Test-Path "$PSScriptRoot\Dev\Warewolf.TestingDotnetDllCascading\obj\Debug\net48\Warewolf.TestingDotnetDllCascading.dll")) { 
+					Copy-Item "$PSScriptRoot\Dev\Warewolf.TestingDotnetDllCascading\obj\Debug\net48\Warewolf.TestingDotnetDllCascading.dll" "$PSScriptRoot\bin\$OutputFolderName\net48\Warewolf.TestingDotnetDllCascading.dll"
+				}
+				if (!(Test-Path "$PSScriptRoot\bin\$OutputFolderName\net6.0-windows\Warewolf.TestingDotnetDllCascading.dll") -and (Test-Path "$PSScriptRoot\Dev\Warewolf.TestingDotnetDllCascading\obj\Debug\net6.0-windows\Warewolf.TestingDotnetDllCascading.dll")) { 
+					Copy-Item "$PSScriptRoot\Dev\Warewolf.TestingDotnetDllCascading\obj\Debug\net6.0-windows\Warewolf.TestingDotnetDllCascading.dll" "$PSScriptRoot\bin\$OutputFolderName\net6.0-windows\Warewolf.TestingDotnetDllCascading.dll"
+				}
+				if (!(Test-Path "$PSScriptRoot\bin\$OutputFolderName\net48\Warewolf.COMIPC.exe") -and (Test-Path "$PSScriptRoot\Dev\Warewolf.COMIPC\obj\Debug\net48\win-x86\Warewolf.COMIPC.exe")) { 
+					Copy-Item "$PSScriptRoot\Dev\Warewolf.COMIPC\obj\Debug\net48\win-x86\Warewolf.COMIPC.exe" "$PSScriptRoot\bin\$OutputFolderName\net48\Warewolf.COMIPC.exe"
+				}
             }
         }
     }
