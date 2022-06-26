@@ -377,12 +377,18 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
                 }
                 Copy-Item -Path "$PSScriptRoot\Dev\.run\Job Shortcuts" "$PSScriptRoot\Bin\$OutputFolderName\net6.0-windows\Job Shortcuts" -Force -Recurse
 				Get-ChildItem "$PSScriptRoot\Dev\*" | ForEach-Object {
-				if ($_.FullName.ToLower().EndsWith(".tests") -or $_.FullName.ToLower().EndsWith(".specs")) {
+					if ($_.FullName.ToLower().EndsWith(".tests") -or $_.FullName.ToLower().EndsWith(".specs")) {
 						if (!(Test-Path "$PSScriptRoot\bin\$OutputFolderName\net48\$($_.BaseName).dll") -and (Test-Path "$_\obj\Debug\net48\$($_.BaseName).dll")) {
 							Copy-Item "$_\obj\Debug\net48\$($_.BaseName).dll" "$PSScriptRoot\bin\$OutputFolderName\net48\$($_.BaseName).dll"
 						}
 						if (!(Test-Path "$PSScriptRoot\bin\$OutputFolderName\net6.0-windows\$($_.BaseName).dll") -and (Test-Path "$_\obj\Debug\net6.0-windows\$($_.BaseName).dll")) {
 							Copy-Item "$_\obj\Debug\net6.0-windows\$($_.BaseName).dll" "$PSScriptRoot\bin\$OutputFolderName\net6.0-windows\$($_.BaseName).dll"
+						}
+						if (!(Test-Path "$PSScriptRoot\bin\$OutputFolderName\net48\$($_.BaseName).pdb") -and (Test-Path "$_\obj\Debug\net48\$($_.BaseName).pdb")) {
+							Copy-Item "$_\obj\Debug\net48\$($_.BaseName).pdb" "$PSScriptRoot\bin\$OutputFolderName\net48\$($_.BaseName).pdb"
+						}
+						if (!(Test-Path "$PSScriptRoot\bin\$OutputFolderName\net6.0-windows\$($_.BaseName).pdb") -and (Test-Path "$_\obj\Debug\net6.0-windows\$($_.BaseName).pdb")) {
+							Copy-Item "$_\obj\Debug\net6.0-windows\$($_.BaseName).pdb" "$PSScriptRoot\bin\$OutputFolderName\net6.0-windows\$($_.BaseName).pdb"
 						}
 					}
 				}
@@ -400,6 +406,12 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
 				}
 				if (!(Test-Path "$PSScriptRoot\bin\$OutputFolderName\net48\Warewolf.COMIPC.exe") -and (Test-Path "$PSScriptRoot\Dev\Warewolf.COMIPC\obj\Debug\net48\win-x86\Warewolf.COMIPC.exe")) { 
 					Copy-Item "$PSScriptRoot\Dev\Warewolf.COMIPC\obj\Debug\net48\win-x86\Warewolf.COMIPC.exe" "$PSScriptRoot\bin\$OutputFolderName\net48\Warewolf.COMIPC.exe"
+				}
+				if (!(Test-Path "$PSScriptRoot\bin\$OutputFolderName\net48\FluentAssertions.dll") -and (Test-Path "$env:userprofile\.nuget\packages\fluentassertions\3.4.0\lib\net45\FluentAssertions.dll")) { 
+					Copy-Item "$env:userprofile\.nuget\packages\fluentassertions\3.4.0\lib\net45\FluentAssertions.dll" "$PSScriptRoot\bin\$OutputFolderName\net48\FluentAssertions.dll"
+				}
+				if (!(Test-Path "$PSScriptRoot\bin\$OutputFolderName\net48\FluentAssertions.Core.dll") -and (Test-Path "$env:userprofile\.nuget\packages\fluentassertions\3.4.0\lib\net45\FluentAssertions.Core.dll")) { 
+					Copy-Item "$env:userprofile\.nuget\packages\fluentassertions\3.4.0\lib\net45\FluentAssertions.Core.dll" "$PSScriptRoot\bin\$OutputFolderName\net48\FluentAssertions.Core.dll"
 				}
             }
         }
