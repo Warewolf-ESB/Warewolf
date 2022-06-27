@@ -413,6 +413,12 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
 				if (!(Test-Path "$PSScriptRoot\bin\$OutputFolderName\net48\FluentAssertions.Core.dll") -and (Test-Path "$env:userprofile\.nuget\packages\fluentassertions\3.4.0\lib\net45\FluentAssertions.Core.dll")) { 
 					Copy-Item "$env:userprofile\.nuget\packages\fluentassertions\3.4.0\lib\net45\FluentAssertions.Core.dll" "$PSScriptRoot\bin\$OutputFolderName\net48\FluentAssertions.Core.dll"
 				}
+				if (!(Test-Path "$PSScriptRoot\bin\$OutputFolderName\net48\TestBase.dll") -and (Test-Path "$PSScriptRoot\Dev\TestBase\obj\Debug\net48\TestBase.dll")) { 
+					Copy-Item "$PSScriptRoot\Dev\TestBase\obj\Debug\net48\TestBase.dll" "$PSScriptRoot\bin\$OutputFolderName\net48\TestBase.dll"
+				}
+				if (!(Test-Path "$PSScriptRoot\bin\$OutputFolderName\net6.0-windows\TestBase.dll") -and (Test-Path "$PSScriptRoot\Dev\TestBase\obj\Debug\net6.0-windows\TestBase.dll")) { 
+					Copy-Item "$PSScriptRoot\Dev\TestBase\obj\Debug\net6.0-windows\TestBase.dll" "$PSScriptRoot\bin\$OutputFolderName\net6.0-windows\TestBase.dll"
+				}
             }
         }
     }
