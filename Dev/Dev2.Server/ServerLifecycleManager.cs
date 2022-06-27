@@ -248,8 +248,7 @@ namespace Dev2
                         if (checkLogServerConnectionTask.IsFaulted)
                         {
                             _writer.WriteLine("error: "+ checkLogServerConnectionTask.Exception?.Message);
-                        }
-                        Stop(false, 0, true);
+                        }                       
                     }
 
                     LogWarewolfVersion();
