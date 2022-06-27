@@ -1,3 +1,11 @@
+2.7.10 (27 June 2022)
+======================
+
+Bug Fixes
+----------
+- Patched an erro starting Warewolf server when ElasticSearch server is not already started.
+- Patched redis cache to work with jmeter.
+
 2.7.9 (17 June 2022)
 ======================
 
