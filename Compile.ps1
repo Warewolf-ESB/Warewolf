@@ -425,6 +425,12 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
 				if (!(Test-Path "$PSScriptRoot\bin\$OutputFolderName\net6.0-windows\TestBase.dll") -and (Test-Path "$PSScriptRoot\Dev\TestBase\obj\Debug\net6.0-windows\TestBase.dll")) { 
 					Copy-Item "$PSScriptRoot\Dev\TestBase\obj\Debug\net6.0-windows\TestBase.dll" "$PSScriptRoot\bin\$OutputFolderName\net6.0-windows\TestBase.dll"
 				}
+				if (!(Test-Path "$PSScriptRoot\bin\$OutputFolderName\net48\ConsoleAppToTestExecuteCommandLineActivity.exe") -and (Test-Path "$PSScriptRoot\Dev\ConsoleAppToTestExecuteCommandLineActivity\obj\Debug\net48\ConsoleAppToTestExecuteCommandLineActivity.exe")) { 
+					Copy-Item "$PSScriptRoot\Dev\ConsoleAppToTestExecuteCommandLineActivity\obj\Debug\net48\ConsoleAppToTestExecuteCommandLineActivity.exe" "$PSScriptRoot\bin\$OutputFolderName\net48\ConsoleAppToTestExecuteCommandLineActivity.exe"
+				}
+				if (!(Test-Path "$PSScriptRoot\bin\$OutputFolderName\net6.0-windows\ConsoleAppToTestExecuteCommandLineActivity.exe") -and (Test-Path "$PSScriptRoot\Dev\ConsoleAppToTestExecuteCommandLineActivity\obj\Debug\net6.0-windows\ConsoleAppToTestExecuteCommandLineActivity.exe")) { 
+					Copy-Item "$PSScriptRoot\Dev\ConsoleAppToTestExecuteCommandLineActivity\obj\Debug\net6.0-windows\ConsoleAppToTestExecuteCommandLineActivity.exe" "$PSScriptRoot\bin\$OutputFolderName\net6.0-windows\ConsoleAppToTestExecuteCommandLineActivity.exe"
+				}
             }
         }
     }
