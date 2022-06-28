@@ -403,6 +403,20 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
 							Copy-Item "$_\bin\Debug\net6.0-windows\$($_.BaseName).dll.config" "$PSScriptRoot\bin\$OutputFolderName\net6.0-windows\$($_.BaseName).dll.config"
 						}
 					}
+					if ($_.BaseName.ToLower().StartsWith("warewolf.uibindingtests.")) {
+						if (!(Test-Path "$PSScriptRoot\bin\$OutputFolderName\net48\$($_.BaseName).dll") -and (Test-Path "$_\obj\Debug\net48\$($_.BaseName).dll")) {
+							Copy-Item "$_\obj\Debug\net48\$($_.BaseName).dll" "$PSScriptRoot\bin\$OutputFolderName\net48\$($_.BaseName).dll"
+						}
+						if (!(Test-Path "$PSScriptRoot\bin\$OutputFolderName\net6.0-windows\$($_.BaseName).dll") -and (Test-Path "$_\obj\Debug\net6.0-windows\$($_.BaseName).dll")) {
+							Copy-Item "$_\obj\Debug\net6.0-windows\$($_.BaseName).dll" "$PSScriptRoot\bin\$OutputFolderName\net6.0-windows\$($_.BaseName).dll"
+						}
+						if (!(Test-Path "$PSScriptRoot\bin\$OutputFolderName\net48\$($_.BaseName).pdb") -and (Test-Path "$_\obj\Debug\net48\$($_.BaseName).pdb")) {
+							Copy-Item "$_\obj\Debug\net48\$($_.BaseName).pdb" "$PSScriptRoot\bin\$OutputFolderName\net48\$($_.BaseName).pdb"
+						}
+						if (!(Test-Path "$PSScriptRoot\bin\$OutputFolderName\net6.0-windows\$($_.BaseName).pdb") -and (Test-Path "$_\obj\Debug\net6.0-windows\$($_.BaseName).pdb")) {
+							Copy-Item "$_\obj\Debug\net6.0-windows\$($_.BaseName).pdb" "$PSScriptRoot\bin\$OutputFolderName\net6.0-windows\$($_.BaseName).pdb"
+						}
+					}
 				}
 				if (!(Test-Path "$PSScriptRoot\bin\$OutputFolderName\net48\Warewolf.Sql.dll") -and (Test-Path "$PSScriptRoot\Dev\Dev2.Sql\obj\Debug\net48\Warewolf.Sql.dll")) { 
 					Copy-Item "$PSScriptRoot\Dev\Dev2.Sql\obj\Debug\net48\Warewolf.Sql.dll" "$PSScriptRoot\bin\$OutputFolderName\net48\Warewolf.Sql.dll"
