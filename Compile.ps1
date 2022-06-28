@@ -437,6 +437,18 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
 				if (!(Test-Path "$PSScriptRoot\bin\$OutputFolderName\net6.0-windows\ConsoleAppToTestExecuteCommandLineActivity.exe") -and (Test-Path "$PSScriptRoot\Dev\ConsoleAppToTestExecuteCommandLineActivity\obj\Debug\net6.0-windows\ConsoleAppToTestExecuteCommandLineActivity.exe")) { 
 					Copy-Item "$PSScriptRoot\Dev\ConsoleAppToTestExecuteCommandLineActivity\obj\Debug\net6.0-windows\ConsoleAppToTestExecuteCommandLineActivity.exe" "$PSScriptRoot\bin\$OutputFolderName\net6.0-windows\ConsoleAppToTestExecuteCommandLineActivity.exe"
 				}
+				if (!(Test-Path "$PSScriptRoot\bin\$OutputFolderName\net48\Dev2.UnitTestUtils.dll") -and (Test-Path "$PSScriptRoot\Dev\Dev2.UnitTestUtils\obj\Debug\net48\Dev2.UnitTestUtils.dll")) { 
+					Copy-Item "$PSScriptRoot\Dev\Dev2.UnitTestUtils\obj\Debug\net48\Dev2.UnitTestUtils.dll" "$PSScriptRoot\bin\$OutputFolderName\net48\Dev2.UnitTestUtils.dll"
+				}
+				if (!(Test-Path "$PSScriptRoot\bin\$OutputFolderName\net6.0-windows\Dev2.UnitTestUtils.dll") -and (Test-Path "$PSScriptRoot\Dev\Dev2.UnitTestUtils\obj\Debug\net6.0-windows\Dev2.UnitTestUtils.dll")) { 
+					Copy-Item "$PSScriptRoot\Dev\Dev2.UnitTestUtils\obj\Debug\net6.0-windows\Dev2.UnitTestUtils.dll" "$PSScriptRoot\bin\$OutputFolderName\net6.0-windows\Dev2.UnitTestUtils.dll"
+				}
+				if (!(Test-Path "$PSScriptRoot\bin\$OutputFolderName\net48\Dev2.UnitTestUtils.pdb") -and (Test-Path "$PSScriptRoot\Dev\Dev2.UnitTestUtils\obj\Debug\net48\Dev2.UnitTestUtils.pdb")) { 
+					Copy-Item "$PSScriptRoot\Dev\Dev2.UnitTestUtils\obj\Debug\net48\Dev2.UnitTestUtils.pdb" "$PSScriptRoot\bin\$OutputFolderName\net48\Dev2.UnitTestUtils.pdb"
+				}
+				if (!(Test-Path "$PSScriptRoot\bin\$OutputFolderName\net6.0-windows\Dev2.UnitTestUtils.pdb") -and (Test-Path "$PSScriptRoot\Dev\Dev2.UnitTestUtils\obj\Debug\net6.0-windows\Dev2.UnitTestUtils.pdb")) { 
+					Copy-Item "$PSScriptRoot\Dev\Dev2.UnitTestUtils\obj\Debug\net6.0-windows\Dev2.UnitTestUtils.pdb" "$PSScriptRoot\bin\$OutputFolderName\net6.0-windows\Dev2.UnitTestUtils.pdb"
+				}
             }
         }
     }
