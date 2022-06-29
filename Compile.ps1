@@ -475,6 +475,12 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
 				if (!(Test-Path "$PSScriptRoot\bin\$OutputFolderName\net48\TechTalk.SpecFlow.MSTest.SpecFlowPlugin.dll") -and (Test-Path "$env:userprofile\.nuget\packages\specflow.mstest\3.9.40\lib\net6.0\TechTalk.SpecFlow.MSTest.SpecFlowPlugin.dll")) { 
 					Copy-Item "$env:userprofile\.nuget\packages\specflow.mstest\3.9.40\lib\net6.0\TechTalk.SpecFlow.MSTest.SpecFlowPlugin.dll" "$PSScriptRoot\bin\$OutputFolderName\net48\TechTalk.SpecFlow.MSTest.SpecFlowPlugin.dll"
 				}
+				if (!(Test-Path "$PSScriptRoot\bin\$OutputFolderName\net48\BoDi.dll") -and (Test-Path "$env:userprofile\.nuget\packages\bodi\1.5.0\lib\net45\BoDi.dll")) { 
+					Copy-Item "$env:userprofile\.nuget\packages\bodi\1.5.0\lib\net45\BoDi.dll" "$PSScriptRoot\bin\$OutputFolderName\net48\BoDi.dll"
+				}
+				if (!(Test-Path "$PSScriptRoot\bin\$OutputFolderName\net6.0-windows\BoDi.dll") -and (Test-Path "$env:userprofile\.nuget\packages\specflow.mstest\3.9.40\lib\netstandard2.0\BoDi.dll")) { 
+					Copy-Item "$env:userprofile\.nuget\packages\specflow.mstest\3.9.40\lib\netstandard2.0\BoDi.dll" "$PSScriptRoot\bin\$OutputFolderName\net6.0-windows\BoDi.dll"
+				}
             }
         }
     }
