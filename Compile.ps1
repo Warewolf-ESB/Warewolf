@@ -463,6 +463,18 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
 				if (!(Test-Path "$PSScriptRoot\bin\$OutputFolderName\net6.0-windows\Dev2.UnitTestUtils.pdb") -and (Test-Path "$PSScriptRoot\Dev\Dev2.UnitTestUtils\obj\Debug\net6.0-windows\Dev2.UnitTestUtils.pdb")) { 
 					Copy-Item "$PSScriptRoot\Dev\Dev2.UnitTestUtils\obj\Debug\net6.0-windows\Dev2.UnitTestUtils.pdb" "$PSScriptRoot\bin\$OutputFolderName\net6.0-windows\Dev2.UnitTestUtils.pdb"
 				}
+				if (!(Test-Path "$PSScriptRoot\bin\$OutputFolderName\net48\TechTalk.SpecFlow.dll") -and (Test-Path "$env:userprofile\.nuget\packages\specflow\3.9.40\lib\net461\TechTalk.SpecFlow.dll")) { 
+					Copy-Item "$env:userprofile\.nuget\packages\specflow\3.9.40\lib\net461\TechTalk.SpecFlow.dll" "$PSScriptRoot\bin\$OutputFolderName\net48\TechTalk.SpecFlow.dll"
+				}
+				if (!(Test-Path "$PSScriptRoot\bin\$OutputFolderName\net48\TechTalk.SpecFlow.dll") -and (Test-Path "$env:userprofile\.nuget\packages\specflow\3.9.40\lib\netstandard2.0\TechTalk.SpecFlow.dll")) { 
+					Copy-Item "$env:userprofile\.nuget\packages\specflow\3.9.40\lib\netstandard2.0\TechTalk.SpecFlow.dll" "$PSScriptRoot\bin\$OutputFolderName\net48\TechTalk.SpecFlow.dll"
+				}
+				if (!(Test-Path "$PSScriptRoot\bin\$OutputFolderName\net48\TechTalk.SpecFlow.MSTest.SpecFlowPlugin.dll") -and (Test-Path "$env:userprofile\.nuget\packages\specflow.mstest\3.9.40\lib\net461\TechTalk.SpecFlow.MSTest.SpecFlowPlugin.dll")) { 
+					Copy-Item "$env:userprofile\.nuget\packages\specflow.mstest\3.9.40\lib\net461\TechTalk.SpecFlow.MSTest.SpecFlowPlugin.dll" "$PSScriptRoot\bin\$OutputFolderName\net48\TechTalk.SpecFlow.MSTest.SpecFlowPlugin.dll"
+				}
+				if (!(Test-Path "$PSScriptRoot\bin\$OutputFolderName\net48\TechTalk.SpecFlow.MSTest.SpecFlowPlugin.dll") -and (Test-Path "$env:userprofile\.nuget\packages\specflow.mstest\3.9.40\lib\net6.0\TechTalk.SpecFlow.MSTest.SpecFlowPlugin.dll")) { 
+					Copy-Item "$env:userprofile\.nuget\packages\specflow.mstest\3.9.40\lib\net6.0\TechTalk.SpecFlow.MSTest.SpecFlowPlugin.dll" "$PSScriptRoot\bin\$OutputFolderName\net48\TechTalk.SpecFlow.MSTest.SpecFlowPlugin.dll"
+				}
             }
         }
     }
