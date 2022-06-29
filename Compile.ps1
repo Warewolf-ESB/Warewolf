@@ -481,6 +481,12 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
 				if (!(Test-Path "$PSScriptRoot\bin\$OutputFolderName\net6.0-windows\BoDi.dll") -and (Test-Path "$env:userprofile\.nuget\packages\specflow.mstest\3.9.40\lib\netstandard2.0\BoDi.dll")) { 
 					Copy-Item "$env:userprofile\.nuget\packages\specflow.mstest\3.9.40\lib\netstandard2.0\BoDi.dll" "$PSScriptRoot\bin\$OutputFolderName\net6.0-windows\BoDi.dll"
 				}
+				if (!(Test-Path "$PSScriptRoot\bin\$OutputFolderName\net48\netDumbster.dll") -and (Test-Path "$env:userprofile\.nuget\packages\netdumbster\1.3.0.7\lib\net40\netDumbster.dll")) { 
+					Copy-Item "$env:userprofile\.nuget\packages\netdumbster\1.3.0.7\lib\net40\netDumbster.dll" "$PSScriptRoot\bin\$OutputFolderName\net48\netDumbster.dll"
+				}
+				if (!(Test-Path "$PSScriptRoot\bin\$OutputFolderName\net6.0-windows\netDumbster.dll") -and (Test-Path "$env:userprofile\.nuget\packages\netdumbster\1.3.0.7\lib\net40\netDumbster.dll")) { 
+					Copy-Item "$env:userprofile\.nuget\packages\netdumbster\1.3.0.7\lib\net40\netDumbster.dll" "$PSScriptRoot\bin\$OutputFolderName\net6.0-windows\netDumbster.dll"
+				}
             }
         }
     }
