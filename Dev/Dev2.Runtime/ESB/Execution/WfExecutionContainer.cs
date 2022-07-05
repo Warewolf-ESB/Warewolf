@@ -452,7 +452,7 @@ namespace Dev2.Runtime.ESB.Execution
     
         public void Dispose()
         {
-            ReleaseUnmanagedResources();
+            
         }
     }
 

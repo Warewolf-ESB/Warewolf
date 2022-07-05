@@ -26,7 +26,6 @@ namespace Dev2.ServerLifeCycleWorkers
             CustomContainer.Register<IStateNotifierFactory>(new StateNotifierFactory());
             CustomContainer.Register<IResumableExecutionContainerFactory>(new ResumableExecutionContainerFactory());
             CustomContainer.Register<IFieldAndPropertyMapper>(new FieldAndPropertyMapper());
-
         }
     }
 }

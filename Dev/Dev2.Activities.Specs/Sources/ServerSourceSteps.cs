@@ -41,14 +41,6 @@ namespace Dev2.Activities.Specs.Sources
             environmentModel.Connect();
         }
 
-        string GetIPAddress(string server)
-        {
-            var serverName = server.Replace("http://", "").Replace(":3142", "").Replace(":3144", "").Replace(":" + declaredDependency.Container.Port, "");
-            var ipHostInfo = Dns.GetHostEntry(serverName);
-            var ipAddress = ipHostInfo.AddressList[0];
-            return ipAddress.ToString();
-        }
-
         private static void IsServerOnline(string server, string port)
         {
             using (var ping = new TcpClient())
@@ -92,8 +84,7 @@ namespace Dev2.Activities.Specs.Sources
             }
             if (!address.Contains("localhost"))
             {
-                var ipAddress = GetIPAddress(address);
-                IsServerOnline(ipAddress, declaredDependency.Container.Port);
+                IsServerOnline(address.Replace("http://", "").Replace(":3142", "").Replace(":3144", "").Replace(":" + declaredDependency.Container.Port, ""), declaredDependency.Container.Port);
             }
             var authenticationType = table.Rows[0]["AuthenticationType"];
             Enum.TryParse(authenticationType, true, out AuthenticationType result);

@@ -2798,6 +2798,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Show the additional data to use hangfire as a server if checkbox is checked.
+        /// </summary>
+        public static string PersistenceViewUseAsServerHelpText {
+            get {
+                return ResourceManager.GetString("PersistenceViewUseAsServerHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Change the connection string properties of the selected DLL.&lt;br&gt;	&lt;br/&gt;	Change the connection string from, say, a development DLL to a live DLL.&lt;br/&gt;	&lt;br/&gt;	&lt;a href=&quot;http://warewolf.io/knowledge-base/data-connectors&quot; target=&quot;_blank&quot;&gt;Read more in the Knowledgebase.&lt;/a&gt;.
         /// </summary>
         public static string PluginServiceEditSourceHelp {
