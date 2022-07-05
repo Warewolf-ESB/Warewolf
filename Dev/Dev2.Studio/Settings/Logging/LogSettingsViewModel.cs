@@ -283,6 +283,7 @@ namespace Dev2.Settings.Logging
                 changed |= _encryptDataSource != savedEncryptDataSource;
                 changed |= _selectedAuditingSource.ResourceID != savedResourceId;
                 changed |= _includeEnvironmentVariable != savedIncludeEnvironmentVariable;
+                changed |= _executionLogLevel != savedExecutionLogLevel;
 
                 //TODO: We will use the Server Log Level from the UI until we get the UI changed.
                 var serverSettingsChanged = _sink != savedSink;

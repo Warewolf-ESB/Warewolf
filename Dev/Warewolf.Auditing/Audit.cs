@@ -202,7 +202,9 @@ namespace Warewolf.Auditing
             var dsfDataObject = dataObject as IDSFDataObject;
             var env = dsfDataObject.Environment;
             var dev2Serializer = new Dev2JsonSerializer();
-            if(dsfDataObject != null)
+            LogLevel = LogLevel.Info;
+
+            if (dsfDataObject != null)
             {
                 WorkflowID = dsfDataObject.ResourceID.ToString();
                 ExecutionID = dsfDataObject.ExecutionID.ToString();
@@ -246,8 +248,6 @@ namespace Warewolf.Auditing
             AuditType = auditType;
             AdditionalDetail = detail;
             Exception = exception;
-
-            LogLevel = LogLevel.Info;
 
             if (previousActivity is IDev2Activity act1)
             {
