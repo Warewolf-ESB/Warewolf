@@ -53,7 +53,7 @@ namespace Dev2.Session
         
         public string JsonData
         {
-            get => _jsonData ?? (_jsonData = DataList);
+            get => _jsonData;
             set => _jsonData = value;
         }
 

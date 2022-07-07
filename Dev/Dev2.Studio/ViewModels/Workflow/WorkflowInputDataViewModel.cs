@@ -407,6 +407,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             DebugTo = Broker.InitDebugSession(DebugTo);
             SetInputData();
             XmlData = DebugTo.XmlData;
+            JsonData = DebugTo.JsonData;
             RememberInputs = DebugTo.RememberInputs;
             DataList = DebugTo.BinaryDataList;
 
@@ -581,7 +582,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         public void SetXmlData(bool includeBlank)
         {
             var dataListString = new AddToDatalistObject(this).DataListObject(includeBlank);
-            JsonData = dataListString;
+            if (string.IsNullOrEmpty(JsonData)) JsonData = dataListString;
             var xml = JsonConvert.DeserializeXNode(dataListString, @"DataList", true);
 
             try

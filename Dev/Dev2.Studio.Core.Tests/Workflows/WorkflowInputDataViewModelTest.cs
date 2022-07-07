@@ -951,6 +951,7 @@ namespace Dev2.Core.Tests.Workflows
                 payload.Add(new XElement("BDSDebugMode", workflowInputDataViewModel.DebugTo.IsDebugMode));
                 payload.Add(new XElement("DebugSessionID", workflowInputDataViewModel.DebugTo.SessionID));
                 payload.Add(new XElement("EnvironmentID", Guid.Empty));
+                payload.Add(new XElement("JsonData", workflowInputDataViewModel.DebugTo.JsonData));
 
                 var expectedPayload = payload.ToString(SaveOptions.None);
                 var actualPayload = workflowInputDataViewModel.SendExecuteRequestPayload.ToString(SaveOptions.None);
