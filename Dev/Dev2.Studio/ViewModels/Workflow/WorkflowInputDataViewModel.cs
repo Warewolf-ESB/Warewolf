@@ -242,6 +242,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             SetXmlData();
             DebugTo.XmlData = XmlData;
+            DebugTo.JsonData = JsonData;
             DebugTo.RememberInputs = RememberInputs;
             if (DebugTo.DataList != null)
             {
@@ -269,6 +270,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             dataList.Add(new XElement(@"BDSDebugMode", DebugTo.IsDebugMode));
             dataList.Add(new XElement(@"DebugSessionID", DebugTo.SessionID));
             dataList.Add(new XElement(@"EnvironmentID", _resourceModel.Environment.EnvironmentID));
+            dataList.Add(new XElement(@"JsonData", DebugTo.JsonData));
             OnDebugExecutionStart();
             SendExecuteRequest(dataList);
         }
