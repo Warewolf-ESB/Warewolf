@@ -487,6 +487,9 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
 				if (!(Test-Path "$PSScriptRoot\bin\$OutputFolderName\net6.0-windows\netDumbster.dll") -and (Test-Path "$env:userprofile\.nuget\packages\netdumbster\1.3.0.7\lib\net40\netDumbster.dll")) { 
 					Copy-Item "$env:userprofile\.nuget\packages\netdumbster\1.3.0.7\lib\net40\netDumbster.dll" "$PSScriptRoot\bin\$OutputFolderName\net6.0-windows\netDumbster.dll"
 				}
+				if (Test-Path "$env:userprofile\.nuget\packages\mstest.testadapter\2.1.2\build\netcoreapp1.0\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll") { 
+					Copy-Item -Force "$env:userprofile\.nuget\packages\mstest.testadapter\2.1.2\build\netcoreapp1.0\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll" "$PSScriptRoot\bin\$OutputFolderName\net6.0-windows\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll"
+				}
             }
         }
     }
