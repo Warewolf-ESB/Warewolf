@@ -490,6 +490,19 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
 				if (Test-Path "$env:userprofile\.nuget\packages\mstest.testadapter\2.1.2\build\netcoreapp1.0\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll") { 
 					Copy-Item -Force "$env:userprofile\.nuget\packages\mstest.testadapter\2.1.2\build\netcoreapp1.0\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll" "$PSScriptRoot\bin\$OutputFolderName\net6.0-windows\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll"
 				}
+				if (!(Test-Path "$PSScriptRoot\bin\$OutputFolderName\net6.0-windows\testhost.runtimeconfig.json")) {
+					@"
+{
+  "runtimeOptions": {
+    "tfm": "net6.0",
+    "framework": {
+      "name": "Microsoft.NETCore.App",
+      "version": "6.0.0"
+    }
+  }
+}
+"@ | Out-File -LiteralPath "$PSScriptRoot\bin\$OutputFolderName\net6.0-windows\testhost.runtimeconfig.json" -Encoding utf8 -Force
+				}
             }
         }
     }
