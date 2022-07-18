@@ -24,7 +24,7 @@ namespace Dev2.Infrastructure.Tests.MoqInstallerActions
         // ReSharper disable InconsistentNaming
         [TestMethod]
         [Owner("Travis Frisinger")]
-        [TestCategory("WarewolfSecurityOperations_AddWarewolfGroup")]
+        [TestCategory("Moq Installer Actions")]
         public void WarewolfSecurityOperations_AddWarewolfGroup_ExpectGroupAdded()
         {
             var grpOps = MoqInstallerActionFactory.CreateSecurityOperationsObject();
@@ -37,7 +37,7 @@ namespace Dev2.Infrastructure.Tests.MoqInstallerActions
 
         [TestMethod]
         [Owner("Travis Frisinger")]
-        [TestCategory("WarewolfSecurityOperations_DoesWarewolfGroupExist")]
+        [TestCategory("Moq Installer Actions")]
         public void WarewolfSecurityOperationsDoesWarewolfGroupExistWhenGroupDoesNotExistExpectFalse()
         {
             //------------Setup for test--------------------------
@@ -53,7 +53,7 @@ namespace Dev2.Infrastructure.Tests.MoqInstallerActions
 
         [TestMethod]
         [Owner("Travis Frisinger")]
-        [TestCategory("WarewolfSecurityOperations_DoesWarewolfGroupExist")]
+        [TestCategory("Moq Installer Actions")]
         public void WarewolfSecurityOperations_DoesWarewolfGroupExist_WhenGroupDoesExist_ExpectTrue()
         {
             //------------Setup for test--------------------------
@@ -70,7 +70,7 @@ namespace Dev2.Infrastructure.Tests.MoqInstallerActions
 
         [TestMethod]
         [Owner("Travis Frisinger")]
-        [TestCategory("WarewolfSecurityOperations_DeleteGroup")]
+        [TestCategory("Moq Installer Actions")]
         public void WarewolfSecurityOperations_DeleteGroupWorks_WhenGroupExist_ExpectGroupDeleted()
         {
             //------------Setup for test--------------------------
@@ -88,7 +88,7 @@ namespace Dev2.Infrastructure.Tests.MoqInstallerActions
 
         [TestMethod]
         [Owner("Travis Frisinger")]
-        [TestCategory("WarewolfSecurityOperations_AddWarewolfGroupToAdministrators")]
+        [TestCategory("Moq Installer Actions")]
         public void WarewolfSecurityOperations_AddWarewolfGroupToAdministrators_WhenNotAMember_ExpectNotAdded()
         {
             //------------Setup for test--------------------------
@@ -107,7 +107,7 @@ namespace Dev2.Infrastructure.Tests.MoqInstallerActions
 
         [TestMethod]
         [Owner("Travis Frisinger")]
-        [TestCategory("WarewolfSecurityOperations_AddWarewolfGroupToAdministrators")]
+        [TestCategory("Moq Installer Actions")]
         public void WarewolfSecurityOperations_AddWarewolfGroupToAdministrators_WhenNotAlreadyMember_ExpectAdministratorsMemberOfWarewolf()
         {
             //------------Setup for test--------------------------
@@ -127,7 +127,7 @@ namespace Dev2.Infrastructure.Tests.MoqInstallerActions
 
         [TestMethod]
         [Owner("Travis Frisinger")]
-        [TestCategory("WarewolfSecurityOperations_AddWarewolfGroupToAdministrators")]
+        [TestCategory("Moq Installer Actions")]
         [ExpectedException(typeof(TargetInvocationException))]
         public void WarewolfSecurityOperations_AddWarewolfGroupToAdministrators_WhenAlreadyMember_ExpectException()
         {
@@ -146,7 +146,7 @@ namespace Dev2.Infrastructure.Tests.MoqInstallerActions
 
         [TestMethod]
         [Owner("Travis Frisinger")]
-        [TestCategory("WarewolfSecurityOperations_DeleteGroup")]
+        [TestCategory("Moq Installer Actions")]
         public void WarewolfSecurityOperations_AddUserToWarewolfGroup_WhenUserNotPresent_ExpectUserAdded()
         {
             //------------Setup for test--------------------------
@@ -167,7 +167,7 @@ namespace Dev2.Infrastructure.Tests.MoqInstallerActions
 
         [TestMethod]
         [Owner("Travis Frisinger")]
-        [TestCategory("WarewolfSecurityOperations_DeleteGroup")]
+        [TestCategory("Moq Installer Actions")]
         public void WarewolfSecurityOperations_IsUserInGroup_WhenUserNotPresent_ExpectFalse()
         {
             //------------Setup for test--------------------------
@@ -182,7 +182,7 @@ namespace Dev2.Infrastructure.Tests.MoqInstallerActions
 
         [TestMethod]
         [Owner("Travis Frisinger")]
-        [TestCategory("WarewolfSecurityOperations_DeleteGroup")]
+        [TestCategory("Moq Installer Actions")]
         public void WarewolfSecurityOperations_AddLocalUserToWarewolfGroup_WhenUserNotPresent_ExpectUserAdded()
         {
             //------------Setup for test--------------------------
@@ -204,7 +204,7 @@ namespace Dev2.Infrastructure.Tests.MoqInstallerActions
 
         [TestMethod]
         [Owner("Travis Frisinger")]
-        [TestCategory("WarewolfSecurityOperations_DeleteGroup")]
+        [TestCategory("Moq Installer Actions")]
         public void WarewolfSecurityOperations_FormatUserForInsert_WhenLocalUser_ExpectUserFormated()
         {
             //------------Setup for test--------------------------
@@ -220,7 +220,7 @@ namespace Dev2.Infrastructure.Tests.MoqInstallerActions
 
         [TestMethod]
         [Owner("Travis Frisinger")]
-        [TestCategory("WarewolfSecurityOperations_DeleteGroup")]
+        [TestCategory("Moq Installer Actions")]
         public void WarewolfSecurityOperations_FormatUserForInsert_WhenDomainUser_ExpectUserFormated()
         {
             //------------Setup for test--------------------------
@@ -238,7 +238,7 @@ namespace Dev2.Infrastructure.Tests.MoqInstallerActions
 
         [TestMethod]
         [Owner("Travis Frisinger")]
-        [TestCategory("WarewolfSecurityOperations_AddUserToWarewolf")]
+        [TestCategory("Moq Installer Actions")]
         [ExpectedException(typeof(ArgumentNullException))]
         public void WarewolfSecurityOperations_AddUserToWarewolfGroup_WhenUserNull_ExpectException()
         {
@@ -251,7 +251,7 @@ namespace Dev2.Infrastructure.Tests.MoqInstallerActions
 
         [TestMethod]
         [Owner("Travis Frisinger")]
-        [TestCategory("WarewolfSecurityOperations_FormatUserForInsert")]
+        [TestCategory("Moq Installer Actions")]
         [ExpectedException(typeof(ArgumentNullException))]
         public void WarewolfSecurityOperations_FormatUserForInsert_WhenNullUser_ExpectException()
         {
@@ -264,7 +264,7 @@ namespace Dev2.Infrastructure.Tests.MoqInstallerActions
 
         [TestMethod]
         [Owner("Travis Frisinger")]
-        [TestCategory("WarewolfSecurityOperations_FormatUserForInsert")]
+        [TestCategory("Moq Installer Actions")]
         [ExpectedException(typeof(ArgumentNullException))]
         public void WarewolfSecurityOperations_FormatUserForInsert_WhenNullMachineName_ExpectException()
         {
@@ -277,7 +277,7 @@ namespace Dev2.Infrastructure.Tests.MoqInstallerActions
 
         [TestMethod]
         [Owner("Travis Frisinger")]
-        [TestCategory("WarewolfSecurityOperations_DeleteGroup")]
+        [TestCategory("Moq Installer Actions")]
         [ExpectedException(typeof(ArgumentNullException))]
         public void WarewolfSecurityOperations_IsUserInGroup_WhenUserNotPresent_ExpectException()
         {
