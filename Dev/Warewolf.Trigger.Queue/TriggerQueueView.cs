@@ -45,6 +45,7 @@ namespace Warewolf.Trigger.Queue
         private IList<INameValue> _queueNames;
         private string _queueName;
         private string _workflowName;
+        private string _prefetch;
         private int _concurrency;
         private string _userName;
         private string _password;
@@ -55,6 +56,7 @@ namespace Warewolf.Trigger.Queue
         private string _deadLetterQueue;
         private ObservableCollection<OptionView> _deadLetterOptions;
         private ICollection<IServiceInputBase> _inputs;
+        
 
         private string _oldQueueName;
         private bool _enabled;
@@ -120,9 +122,11 @@ namespace Warewolf.Trigger.Queue
             SelectedQueueSource = QueueSources.FirstOrDefault(o => o.ResourceID == queue.QueueSourceId);
             QueueName = queue.QueueName;
             WorkflowName = queue.WorkflowName;
+            Prefetch = queue.Prefetch;
             Concurrency = queue.Concurrency;
             UserName = queue.UserName;
             Password = queue.Password;
+            
             if (queue.Options != null)
             {
                 Options = FindOptions(queue.Options.ToList());
@@ -223,6 +227,18 @@ namespace Warewolf.Trigger.Queue
                 IsDirtyPropertyChange();
             }
         }
+
+        public string Prefetch
+        {
+            get => _prefetch;
+            set
+            {
+                _prefetch = value;
+                RaisePropertyChanged(nameof(Prefetch));
+                IsDirtyPropertyChange();
+            }
+        }
+
         public int Concurrency
         {
             get => _concurrency;
@@ -692,6 +708,7 @@ namespace Warewolf.Trigger.Queue
             equals &= _queueSourceId == other._queueSourceId;
             equals &= string.Equals(_queueName, other._queueName);
             equals &= string.Equals(_workflowName, other._workflowName);
+            equals &= _prefetch == other._prefetch; 
             equals &= _concurrency == other._concurrency;
             equals &= string.Equals(_userName, other._userName);
             equals &= string.Equals(_password, other._password);

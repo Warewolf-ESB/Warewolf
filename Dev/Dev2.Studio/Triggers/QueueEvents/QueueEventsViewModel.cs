@@ -303,6 +303,7 @@ namespace Dev2.Triggers.QueueEvents
                 QueueName = SelectedQueue.QueueName,
                 WorkflowName = SelectedQueue.WorkflowName,
                 ResourceId = SelectedQueue.ResourceId,
+                Prefetch = SelectedQueue.Prefetch,
                 Concurrency = SelectedQueue.Concurrency,
                 UserName = SelectedQueue.UserName,
                 Password = SelectedQueue.Password,
