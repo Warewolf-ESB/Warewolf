@@ -309,7 +309,6 @@ namespace Dev2.Infrastructure.Tests.Services.Security
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("AuthorizationServiceBase_IsAuthorized")]
-        [Timeout(300000)]
         public void AuthorizationServiceBase_IsAuthorized_HasDefaultGuestPermissions_WithoutGivenPermission_AndTokenExists_ExpectTrue()
         {
             while (!Debugger.IsAttached) { Thread.Sleep(30000); }
