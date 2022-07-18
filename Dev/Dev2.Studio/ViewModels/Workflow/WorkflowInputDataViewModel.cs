@@ -436,6 +436,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
                     DebugTo.XmlData = prevDoc.InnerXml;
                     DebugTo.BinaryDataList = new DataListModel();
+                    DebugTo.BinaryDataList.JsonDataRead = DebugTo.JsonData;
                     DebugTo.BinaryDataList.Create(DebugTo.XmlData, DebugTo.DataList);
                 }
                 catch (Exception ex)
@@ -581,8 +582,8 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public void SetXmlData(bool includeBlank)
         {
-            var dataListString = new AddToDatalistObject(this).DataListObject(includeBlank);
-            if (string.IsNullOrEmpty(JsonData)) JsonData = dataListString;
+            var dataListString = new AddToDatalistObject(this).DataListObject(includeBlank);           
+            JsonData = dataListString;
             var xml = JsonConvert.DeserializeXNode(dataListString, @"DataList", true);
 
             try

@@ -30,7 +30,9 @@ namespace Dev2.Data
         public List<IRecordSet> ShapeRecordSets { get; set; }
         public List<IComplexObject> ShapeComplexObjects { get; set; }
         public List<IComplexObject> ComplexObjects { get; set; }
-        
+
+        public string JsonDataRead { get; set; }
+
         public DataListModel()
         {
             Scalars = new List<IScalar>();
@@ -97,11 +99,23 @@ namespace Dev2.Data
                 var complexObject = ComplexObjects.FirstOrDefault(o => o.Name == "@" + c.Name);
                 if (complexObject != null)
                 {
-                    SetComplexObjectValue(c, complexObject);
+                    SetComplexObjectValue(complexObject, c.Name); 
                 }
                 else
                 {
                     SetScalarOrEcordsetValue(indexCache, c, recSet, shapeRecSet, scalar);
+                }
+            }
+        }
+
+        private void SetComplexObjectValue(IComplexObject complexObject, string cName)
+        {
+            if (!string.IsNullOrEmpty(JsonDataRead))
+            {                 
+                if (JsonConvert.DeserializeObject(JsonDataRead.Replace("\"@", "\"")) is JObject obj)
+                {
+                    var value = obj[cName].ToString();
+                    complexObject.Value = value;
                 }
             }
         }
