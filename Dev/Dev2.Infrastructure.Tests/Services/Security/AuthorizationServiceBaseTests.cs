@@ -11,11 +11,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.DirectoryServices;
 using System.Security.Cryptography;
 using System.Security.Principal;
-using System.Threading;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Security;
@@ -311,7 +309,6 @@ namespace Dev2.Infrastructure.Tests.Services.Security
         [TestCategory("AuthorizationServiceBase_IsAuthorized")]
         public void AuthorizationServiceBase_IsAuthorized_HasDefaultGuestPermissions_WithoutGivenPermission_AndTokenExists_ExpectTrue()
         {
-            while (!Debugger.IsAttached) { Thread.Sleep(30000); }
             //------------Setup for test--------------------------
             var resource = Guid.NewGuid();
             var permissions = new List<WindowsGroupPermission>
