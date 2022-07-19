@@ -436,7 +436,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
                     DebugTo.XmlData = prevDoc.InnerXml;
                     DebugTo.BinaryDataList = new DataListModel();
-                    DebugTo.BinaryDataList.JsonDataRead = DebugTo.JsonData;
+                    DebugTo.BinaryDataList.JsonData = DebugTo.JsonData;
                     DebugTo.BinaryDataList.Create(DebugTo.XmlData, DebugTo.DataList);
                 }
                 catch (Exception ex)

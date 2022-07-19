@@ -809,9 +809,13 @@ namespace Dev2.Core.Tests.Workflows
 
             var mockDataListViewModel = new Mock<IDataListViewModel>();
             var objObject = new ComplexObjectItemModel("obj", null, enDev2ColumnArgumentDirection.Input);
-            objObject.Children.Add(new ComplexObjectItemModel("intVal", objObject, enDev2ColumnArgumentDirection.Input));
-            objObject.Children.Add(new ComplexObjectItemModel("strVal", objObject, enDev2ColumnArgumentDirection.Input));
-            var complexObjectItemModels = new ObservableCollection<IComplexObjectItemModel> { objObject };
+            objObject.Children.Add(new ComplexObjectItemModel("a", objObject, enDev2ColumnArgumentDirection.Input));
+            objObject.Children.Add(new ComplexObjectItemModel("b", objObject, enDev2ColumnArgumentDirection.Input));
+            
+            var objObject2 = new ComplexObjectItemModel("JsonData", null, enDev2ColumnArgumentDirection.Input);
+            objObject2.Children.Add(new ComplexObjectItemModel("{\"obj\": {\"c\": 1}}", objObject, enDev2ColumnArgumentDirection.Input));
+
+            var complexObjectItemModels = new ObservableCollection<IComplexObjectItemModel> { objObject, objObject2 };
             mockDataListViewModel.Setup(model => model.ComplexObjectCollection).Returns(complexObjectItemModels);
             DataListSingleton.SetDataList(mockDataListViewModel.Object);
             var serviceDebugInfoModel = new ServiceDebugInfoModel
@@ -819,7 +823,7 @@ namespace Dev2.Core.Tests.Workflows
                 DebugModeSetting = DebugMode.DebugInteractive,
                 RememberInputs = true,
                 ResourceModel = rm.Object,
-                ServiceInputData = "<DataList><obj><c>C</c></obj></DataList>"
+                ServiceInputData = "<DataList><obj><c>1</c></obj></DataList>"
             };
 
             var debugVM = CreateDebugOutputViewModel();
@@ -827,11 +831,12 @@ namespace Dev2.Core.Tests.Workflows
             using (var workflowInputDataViewModel = new WorkflowInputDataViewModel(serviceDebugInfoModel, debugVM.SessionID))
             {
                 //------------Execute Test---------------------------
-               
+                workflowInputDataViewModel.DebugTo.JsonData = "{\"obj\": {\"c\": 1}}";
                 workflowInputDataViewModel.LoadWorkflowInputs();
                 workflowInputDataViewModel.SetXmlData();
+                
                 //------------Assert Results-------------------------
-                Assert.AreEqual("<DataList>  <obj>    <c>C</c>    <a></a>    <b></b>  </obj></DataList>", workflowInputDataViewModel.XmlData.Replace(Environment.NewLine, ""));
+                Assert.AreEqual("{  \"obj\": {    \"c\": 1,    \"a\": \"\",    \"b\": \"\"  }}", workflowInputDataViewModel.JsonData.Replace(Environment.NewLine, ""));
             }
         }
 

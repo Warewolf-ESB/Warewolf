@@ -15,6 +15,6 @@ namespace Dev2.Data
         void PopulateWithData(string data);
         void CreateShape(string shape);
 
-        string JsonDataRead { get; set; }
+        string JsonData { get; set; }
     }
 }

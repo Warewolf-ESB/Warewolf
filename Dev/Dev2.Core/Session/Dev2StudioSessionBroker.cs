@@ -110,7 +110,7 @@ namespace Dev2.Session
                 }
 
                 to.BinaryDataList = new DataListModel();
-                to.BinaryDataList.JsonDataRead = to.JsonData;
+                to.BinaryDataList.JsonData = to.JsonData;
                 to.BinaryDataList.Create(to.XmlData, to.DataList);
             }
             finally
