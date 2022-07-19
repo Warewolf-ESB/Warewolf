@@ -24,7 +24,7 @@ namespace Dev2.Infrastructure.Tests.MoqInstallerActions
 
         [TestMethod]
         [Owner("Travis Frisinger")]
-        [TestCategory("Moq Installer Actions")]
+        [TestCategory("MoqInstallerActionFactory_CreateInstallerActions")]
         public void MoqInstallerActionFactory_CreateInstallerActions_WhenCreatingNew_ExpectNewObject()
         {
             //------------Execute Test---------------------------
@@ -36,7 +36,7 @@ namespace Dev2.Infrastructure.Tests.MoqInstallerActions
 
         [TestMethod]
         [Owner("Travis Frisinger")]
-        [TestCategory("Moq Installer Actions")]
+        [TestCategory("MoqInstallerActionFactory_CreateSecurityOperationsObject")]
         public void MoqInstallerActionFactory_CreateSecurityOperationsObject_WhenCreatingNew_ExpectNewObject()
         {
             //------------Execute Test---------------------------
