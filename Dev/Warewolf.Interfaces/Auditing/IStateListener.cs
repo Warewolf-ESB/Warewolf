@@ -7,6 +7,7 @@ namespace Warewolf.Auditing
         void LogAdditionalDetail(object detail, string callerName);
         void LogExecuteException(Exception e, object activity);
         void LogExecuteCompleteState(object activity);
+        void LogExecuteActivityCompleteState(object activity);
         void LogStopExecutionState(object activity);
         void LogActivityExecuteState(object nextActivityObject);
     }

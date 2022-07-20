@@ -274,7 +274,10 @@ namespace Dev2.Runtime.ESB.Execution
                 stateNotifierRequired.SetStateNotifier(dsfDataObject.StateNotifier);
             }
 
-            return activity.Execute(dsfDataObject, update);
+            var result = activity.Execute(dsfDataObject, update);
+            dsfDataObject.StateNotifier?.LogExecuteActivityCompleteState(activity);
+            
+            return result;
         }
 
         void AddExecutionToExecutionManager(IDSFDataObject dsfDataObject, IDev2Activity resource)
