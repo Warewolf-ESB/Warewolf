@@ -831,7 +831,7 @@ namespace Dev2.Core.Tests.Workflows
             using (var workflowInputDataViewModel = new WorkflowInputDataViewModel(serviceDebugInfoModel, debugVM.SessionID))
             {
                 //------------Execute Test---------------------------
-                workflowInputDataViewModel.DebugTo.JsonData = "{\"obj\": {\"c\": 1}}";
+                workflowInputDataViewModel.DebugTo.JsonData = "{\"obj\": {\"c\": 1,    \"a\": \"\",    \"b\": \"\"  }}";
                 workflowInputDataViewModel.LoadWorkflowInputs();
                 workflowInputDataViewModel.SetXmlData();
                 
