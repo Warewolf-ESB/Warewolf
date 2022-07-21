@@ -39,6 +39,13 @@ namespace Warewolf.Auditing
             auditLog.LogLevel = LogLevel.Info;
             LogAuditState(auditLog);
         }
+        
+        public void LogExecuteActivityCompleteState(object activity)
+        {
+            var auditLog = new Audit(_dsfDataObject, "LogExecuteActivityCompleteState", null, activity, null);
+            auditLog.LogLevel = LogLevel.Info;
+            LogAuditState(auditLog);
+        }
 
         public void LogExecuteException(Exception exception, object activity)
         {

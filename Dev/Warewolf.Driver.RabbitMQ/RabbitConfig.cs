@@ -25,14 +25,24 @@ namespace Warewolf.Driver.RabbitMQ
         public bool Exclusive { get; set; }
         public bool AutoDelete { get; set; }
         public IDictionary<string, object> Arguments { get; set; }
+        public string Prefetch { get; set; }
 
         //options
         internal IModel CreateChannel(IConnection connection)
         {
             var channel = connection.CreateModel();
+            ushort prefetch;
+            prefetch = string.IsNullOrEmpty(Prefetch) ? (ushort)0 : ushort.Parse(Prefetch);
+
+
+            if (prefetch > 0)
+            {
+                channel.BasicQos(prefetchSize: 0, prefetchCount: prefetch, global: false);
+            }
+            
             channel.QueueDeclare(QueueName, Durable, Exclusive, AutoDelete, Arguments);
 
-              //configure channel using options here             
+            //configure channel using options here             
             return channel;
         }
     }

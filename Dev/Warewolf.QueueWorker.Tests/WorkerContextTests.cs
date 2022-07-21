@@ -36,6 +36,7 @@ namespace Warewolf.QueueWorker.Tests
         private static readonly string _queueName = "SomeQueue";
         private static readonly IServiceInput _expectedIServiceInput = new Mock<IServiceInput>().Object;
         private static readonly string _workflowName = "Some Workflow";
+        private static readonly string _prefetch = "2";
 
         [TestMethod]
         [Owner("Rory McGuire")]
@@ -131,7 +132,25 @@ namespace Warewolf.QueueWorker.Tests
             mockWatcher.VerifySet(o => o.EnableRaisingEvents = true, Times.Once);
         }
 
-        private static IWorkerContext ConstructWorkerContext(out RabbitMQSource rabbitSource, out RabbitMQSource rabbitSink)
+        [TestMethod]
+        [Owner("Tsumbo Mbedzi")]
+        [TestCategory(nameof(QueueWorker))]
+        public void WorkerContext_GivenValidConstruct_ExpectQueueConfig_To_Include_PrefetchValue()
+        {
+            var context = ConstructWorkerContext(out var _, out var _, true);
+            
+            var config = context.QueueConfig;
+            
+            var queueName = config.GetType().GetProperty("QueueName");
+            var durable = config.GetType().GetProperty("Durable");
+            var prefetch = config.GetType().GetProperty("Prefetch");
+
+            Assert.AreEqual(_queueName, queueName.GetValue(config));
+            Assert.AreEqual(true, durable.GetValue(config));
+            Assert.AreEqual("2", prefetch.GetValue(config));    
+        }
+
+        private static IWorkerContext ConstructWorkerContext(out RabbitMQSource rabbitSource, out RabbitMQSource rabbitSink, bool isPrefetchIncluded = false)
         {
             var mockArgs = new Mock<IArgs>();
             mockArgs.Setup(o => o.TriggerId).Returns(_resourceId.ToString());
@@ -157,20 +176,46 @@ namespace Warewolf.QueueWorker.Tests
             mockResourceCatalogProxy.Setup(o => o.GetResourceById<RabbitMQSource>(GlobalConstants.ServerWorkspaceID, _sinkId)).Returns(rabbitSink);
             var mockTriggerCatalog = new Mock<ITriggersCatalog>();
 
-            var triggerQueue = new TriggerQueue
-            {
-                QueueSourceId = _sourceId,
-                QueueSinkId = _sinkId,
-                Options = new IOption[] { new OptionBool { Name = "Durable", Value = true } },
-                ResourceId = _resourceId,
-                QueueName = _queueName,
-                WorkflowName = _workflowName,
-                Inputs = new List<IServiceInputBase> { _expectedIServiceInput },
-            };
+            var triggerQueue = GetTriggerQueue(isPrefetchIncluded);
 
             mockTriggerCatalog.Setup(o => o.PathFromResourceId(It.IsAny<string>())).Returns("C:\\ProgramData\\Warewolf\\Triggers\\Queue");
             mockTriggerCatalog.Setup(o => o.LoadQueueTriggerFromFile(It.IsAny<string>())).Returns(triggerQueue);
             return new WorkerContext(mockArgs.Object, mockResourceCatalogProxy.Object, mockTriggerCatalog.Object, mockFilePath.Object);
+        }
+              
+        private static TriggerQueue GetTriggerQueue(bool isPrefetchIncluded)
+        {
+            TriggerQueue triggerQueue;
+
+            if (!isPrefetchIncluded)
+            {
+                triggerQueue = new TriggerQueue
+                {
+                    QueueSourceId = _sourceId,
+                    QueueSinkId = _sinkId,
+                    Options = new IOption[] { new OptionBool { Name = "Durable", Value = true } },
+                    ResourceId = _resourceId,
+                    QueueName = _queueName,
+                    WorkflowName = _workflowName,
+                    Inputs = new List<IServiceInputBase> { _expectedIServiceInput },
+                };
+            }
+            else
+            {
+                triggerQueue = new TriggerQueue
+                {
+                    QueueSourceId = _sourceId,
+                    QueueSinkId = _sinkId,
+                    Options = new IOption[] { new OptionBool { Name = "Durable", Value = true } },
+                    ResourceId = _resourceId,
+                    QueueName = _queueName,
+                    WorkflowName = _workflowName,
+                    Inputs = new List<IServiceInputBase> { _expectedIServiceInput },
+                    Prefetch = _prefetch,
+                };
+            }
+
+            return triggerQueue;
         }
     }
 }

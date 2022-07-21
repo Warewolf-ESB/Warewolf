@@ -58,6 +58,14 @@ namespace Warewolf.Auditing
             }
         }
 
+        public void LogExecuteActivityCompleteState(object activity)
+        {
+            foreach (var stateListener in _stateListeners)
+            {
+                stateListener.LogExecuteActivityCompleteState(activity);
+            }
+        }
+
         public void LogExecuteException(Exception e, object activity)
         {
             foreach (var stateListener in _stateListeners)

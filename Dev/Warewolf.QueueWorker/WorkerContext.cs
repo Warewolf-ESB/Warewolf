@@ -118,6 +118,7 @@ namespace QueueWorker
                 var options = _triggerQueue.Options;
                 var result = OptionTo<RabbitConfig>(options);
                 result.QueueName = _triggerQueue.QueueName;
+                result.Prefetch = _triggerQueue.Prefetch;
                 return result;
             }
         }
