@@ -1,9 +1,21 @@
+2.8 (22 July 2022)
+======================
+
+Enhancements
+----------
+- Add prefetch value to help with RabbitMQ consumer performance using trigger queues
+- Log data at the DEBUG logging level is now more detailed.
+
+Bug Fixes 
+----------
+- JSON data input using the debug input window no longer  adds quotes around all property values.
+
 2.7.10 (27 June 2022)
 ======================
 
 Bug Fixes
 ----------
-- Patched an erro starting Warewolf server when ElasticSearch server is not already started.
+- Patched an error starting Warewolf server when ElasticSearch server is not already started.
 - Patched redis cache to work with jmeter.
 
 2.7.9 (17 June 2022)
