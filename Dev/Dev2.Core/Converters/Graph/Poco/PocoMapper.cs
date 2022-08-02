@@ -134,19 +134,24 @@ namespace Unlimited.Framework.Converters.Graph.Poco
         {
             if (propertyData is IEnumerable enumerableData)
             {
-                propertyStack.Push(new Tuple<string, bool, bool, object>(propertyInfo.Name, propertyInfo.PropertyType.IsEnumerable(), false, data));
-                paths.AddRange(BuildPaths(propertyData, propertyStack, root));
-                propertyStack.Pop();
+                byte[] propertyDataByte = propertyData as byte[];
 
-                var enumerator = enumerableData.GetEnumerator();
-                enumerator.Reset();
-                if (enumerator.MoveNext())
+                if (propertyDataByte != null && propertyDataByte.Length > 0)
                 {
-                    propertyData = enumerator.Current;
-
-                    propertyStack.Push(new Tuple<string, bool, bool, object>(propertyInfo.Name, propertyInfo.PropertyType.IsEnumerable(), true, data));
+                    propertyStack.Push(new Tuple<string, bool, bool, object>(propertyInfo.Name, propertyInfo.PropertyType.IsEnumerable(), false, data));
                     paths.AddRange(BuildPaths(propertyData, propertyStack, root));
                     propertyStack.Pop();
+
+                    var enumerator = enumerableData.GetEnumerator();
+                    enumerator.Reset();
+                    if (enumerator.MoveNext())
+                    {
+                        propertyData = enumerator.Current;
+
+                        propertyStack.Push(new Tuple<string, bool, bool, object>(propertyInfo.Name, propertyInfo.PropertyType.IsEnumerable(), true, data));
+                        paths.AddRange(BuildPaths(propertyData, propertyStack, root));
+                        propertyStack.Pop();
+                    }
                 }
             }
         }
