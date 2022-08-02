@@ -134,24 +134,26 @@ namespace Unlimited.Framework.Converters.Graph.Poco
         {
             if (propertyData is IEnumerable enumerableData)
             {
-                byte[] propertyDataByte = propertyData as byte[];
-
-                if (propertyDataByte != null && propertyDataByte.Length > 0)
+                if(propertyData.GetType() == typeof(byte[]))
                 {
-                    propertyStack.Push(new Tuple<string, bool, bool, object>(propertyInfo.Name, propertyInfo.PropertyType.IsEnumerable(), false, data));
+                    byte[] propertyDataByte = propertyData as byte[];
+                    if (propertyDataByte == null || propertyDataByte.Length == 0)
+                        return;
+                }
+
+                propertyStack.Push(new Tuple<string, bool, bool, object>(propertyInfo.Name, propertyInfo.PropertyType.IsEnumerable(), false, data));
+                paths.AddRange(BuildPaths(propertyData, propertyStack, root));
+                propertyStack.Pop();
+
+                var enumerator = enumerableData.GetEnumerator();
+                enumerator.Reset();
+                if (enumerator.MoveNext())
+                {
+                    propertyData = enumerator.Current;
+
+                    propertyStack.Push(new Tuple<string, bool, bool, object>(propertyInfo.Name, propertyInfo.PropertyType.IsEnumerable(), true, data));
                     paths.AddRange(BuildPaths(propertyData, propertyStack, root));
                     propertyStack.Pop();
-
-                    var enumerator = enumerableData.GetEnumerator();
-                    enumerator.Reset();
-                    if (enumerator.MoveNext())
-                    {
-                        propertyData = enumerator.Current;
-
-                        propertyStack.Push(new Tuple<string, bool, bool, object>(propertyInfo.Name, propertyInfo.PropertyType.IsEnumerable(), true, data));
-                        paths.AddRange(BuildPaths(propertyData, propertyStack, root));
-                        propertyStack.Pop();
-                    }
                 }
             }
         }
