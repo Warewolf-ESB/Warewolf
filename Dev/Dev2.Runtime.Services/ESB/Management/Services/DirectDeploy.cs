@@ -201,7 +201,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             var savePath = new StringBuilder();
             var resourceContent = ResourceCatalog.GetResourceContents(GlobalConstants.ServerWorkspaceID, resourceId);
             var resource = ResourceCatalog.GetResource(GlobalConstants.ServerWorkspaceID, resourceId);
-            if (!resource.IsService)
+            if (!resource.IsService || resource.ToXml().Value.Contains("FileReadWithBase64") || resource.ToXml().Value.Contains("DsfFileWrite") || resource.ToXml().Value.Contains("DsfFileRead") || resource.ToXml().Value.Contains("DsfFolderRead") || resource.ToXml().Value.Contains("DsfPathCopy") || resource.ToXml().Value.Contains("DsfPathCreate") || resource.ToXml().Value.Contains("DsfPathDelete") || resource.ToXml().Value.Contains("DsfPathMove") || resource.ToXml().Value.Contains("DsfPathMove") || resource.ToXml().Value.Contains("DsfPathRename") || resource.ToXml().Value.Contains("DsfZip") || resource.ToXml().Value.Contains("DsfUnzip"))
             {
                 var fetchResourceService = new FetchResourceDefinition();
                 resourceContent = fetchResourceService.DecryptAllPasswords(resourceContent);
