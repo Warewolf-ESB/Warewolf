@@ -27,7 +27,7 @@ namespace Dev2.Runtime.ServiceModel
             var serverUser = Common.Utilities.OrginalExecutingUser;
             var principle = serverUser;
 
-            var identity = principle.Identity as WindowsIdentity;
+            var identity = principle.Identity as Common.WindowsIdentity;
             WindowsImpersonationContext context = null;
 
             try

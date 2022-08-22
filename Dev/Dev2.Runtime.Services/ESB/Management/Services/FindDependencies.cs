@@ -20,8 +20,10 @@ using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.Runtime.Interfaces;
 using Dev2.Workspaces;
-using ServiceStack.Common.Extensions;
+using ServiceStack.Common;
 using Warewolf.Resource.Errors;
+using ServiceStack.Extensions;
+using ServiceStack;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -144,7 +146,8 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 sb.Append($"<node id=\"{resource.ResourceID}\" x=\"\" y=\"\" broken=\"false\">");
 
-                dependencies.ForEach(c => sb.Append($"<dependency id=\"{c.ResourceID}\" />"));
+                //dependencies.ForEach(c => sb.Append($"<dependency id=\"{c.ResourceID}\" />"));
+                dependencies.Each(c => sb.Append($"<dependency id=\"{c.ResourceID}\" />"));
 
                 sb.Append("</node>");
                 seenResource.Add(resourceGuid);

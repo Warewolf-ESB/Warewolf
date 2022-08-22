@@ -1,6 +1,7 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net48</TargetFramework>
+    <!--<TargetFramework>net48</TargetFramework>-->    
+    <TargetFramework>net6.0-windows</TargetFramework>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <EnableDefaultItems>false</EnableDefaultItems>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
@@ -12,6 +13,7 @@
     <FsYaccToolExe>fsyacc.dll</FsYaccToolExe>
     <FsLexYaccToolRunner>dotnet </FsLexYaccToolRunner>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <FSharpPreferNetFrameworkTools>True</FSharpPreferNetFrameworkTools>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\AssemblyCommonInfo.fs" Condition="Exists('..\AssemblyCommonInfo.fs')">

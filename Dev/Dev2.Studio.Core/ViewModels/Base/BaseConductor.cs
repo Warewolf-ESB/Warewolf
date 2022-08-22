@@ -16,7 +16,7 @@ using Caliburn.Micro;
 namespace Dev2.Studio.Core.ViewModels.Base
 {
     public class BaseConductor<T> : Conductor<T>.Collection.OneActive, IDisposable
-        where T : IScreen
+        where T : class
     {
         readonly IEventAggregator _eventPublisher;
         bool _disposed;

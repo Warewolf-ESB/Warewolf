@@ -78,7 +78,7 @@ namespace Dev2.Runtime.WebServer.Controllers
                 requestVariables.Add("IsDebug", true.ToString());
             }
 
-            return Request.Method == HttpMethod.Post
+            return Request.Method == HttpMethod.Post.ToString()
                 ? ProcessRequest<WebPostRequestHandler>(requestVariables, isUrlWithTokenPrefix)
                 : ProcessRequest<WebGetRequestHandler>(requestVariables, isUrlWithTokenPrefix);
         }
@@ -101,9 +101,9 @@ namespace Dev2.Runtime.WebServer.Controllers
         [Route("Secure/{*__name__}")]
         public HttpResponseMessage ExecuteSecureWorkflow(string __name__)
         {
-            if (Request?.RequestUri != null)
+            if (Request?.ToUri() != null)
             {
-                var requestUri = Request.RequestUri;
+                var requestUri = Request.ToUri();
                 if (requestUri.ToString().EndsWith("/.tests", StringComparison.InvariantCultureIgnoreCase) || requestUri.ToString().EndsWith("/.tests.trx", StringComparison.InvariantCultureIgnoreCase))
                 {
                     return ExecuteFolderTests(requestUri.ToString(), false);
@@ -123,9 +123,9 @@ namespace Dev2.Runtime.WebServer.Controllers
         [Route("Public/{*__name__}")]
         public HttpResponseMessage ExecutePublicWorkflow(string __name__)
         {
-            if (Request?.RequestUri != null)
+            if (Request?.ToUri() != null)
             {
-                var requestUri = Request.RequestUri;
+                var requestUri = Request.ToUri();
                 if (requestUri.ToString().EndsWith("/.tests", StringComparison.InvariantCultureIgnoreCase) || requestUri.ToString().EndsWith("/.tests.trx", StringComparison.InvariantCultureIgnoreCase))
                 {
                     return ExecuteFolderTests(requestUri.ToString(), true);
@@ -148,11 +148,14 @@ namespace Dev2.Runtime.WebServer.Controllers
         [Route("login")]
         public HttpResponseMessage ExecuteLoginWorkflow()
         {
-            var requestVariables = new NameValueCollection();
-            var context = new WebServerContext(Request, requestVariables) {Request = {User = User}};
-            var handler = CreateHandler<TokenRequestHandler>();
-            handler.ProcessRequest(context);
-            return context.ResponseMessage;
+            using (var r = new System.Net.Http.HttpRequestMessage())
+            {
+                var requestVariables = new NameValueCollection();
+                var context = new WebServerContext(r, requestVariables) { Request = { User = User } };
+                var handler = CreateHandler<TokenRequestHandler>();
+                handler.ProcessRequest(context);
+                return context.ResponseMessage;
+            }
         }
 
         [HttpGet]

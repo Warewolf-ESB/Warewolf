@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Data;
-using System.Data.Design;
+//using System.Data.Design;
 using System.IO;
 using System.Reflection;
 using System.Runtime.Serialization;
@@ -15,7 +15,7 @@ using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
 using System.Text;
-using System.Web.Services.Discovery;
+//using System.Web.Services.Discovery;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
@@ -40,12 +40,12 @@ namespace Dev2.Runtime.DynamicProxy
         CodeDomProvider codeDomProvider;
         ServiceContractGenerator contractGenerator;
 
-        Collection<MetadataSection> metadataCollection;
+        Collection<CoreWCF.Description.MetadataSection> metadataCollection;
         IEnumerable<Binding> bindings;
-        IEnumerable<ContractDescription> contracts;
-        ServiceEndpointCollection endpoints;
-        IEnumerable<MetadataConversionError> importWarnings;
-        IEnumerable<MetadataConversionError> codegenWarnings;
+        IEnumerable<CoreWCF.Description.ContractDescription> contracts;
+        IEnumerable<System.ServiceModel.Description.ServiceEndpoint> endpoints;
+        IEnumerable<CoreWCF.Description.MetadataConversionError> importWarnings;
+        IEnumerable<CoreWCF.Description.MetadataConversionError> codegenWarnings;
         IEnumerable<CompilerError> compilerWarnings;
 
         Assembly proxyAssembly;
@@ -87,10 +87,10 @@ namespace Dev2.Runtime.DynamicProxy
                 AllowAutoRedirect = true,
                 UseDefaultCredentials = true
             };
-            disco.DiscoverAny(wsdlUri);
-            disco.ResolveAll();
+            DiscoveryClientProtocol.DiscoverAny(wsdlUri);//disco.DiscoverAny(wsdlUri);
+            DiscoveryClientProtocol.ResolveAll();//disco.ResolveAll();
 
-            var results = new Collection<MetadataSection>();
+            var results = new Collection<CoreWCF.Description.MetadataSection>();
             if (disco.Documents.Values != null)
             {
                 foreach (var document in disco.Documents.Values)
@@ -102,7 +102,7 @@ namespace Dev2.Runtime.DynamicProxy
             metadataCollection = results;
         }
 
-        void AddDocumentToResults(object document, Collection<MetadataSection> results)
+        void AddDocumentToResults(object document, Collection<CoreWCF.Description.MetadataSection> results)
         {
             var wsdl = document as WsdlNS.ServiceDescription;
             var schema = document as XmlSchema;
@@ -110,19 +110,19 @@ namespace Dev2.Runtime.DynamicProxy
 
             if (wsdl != null)
             {
-                results.Add(MetadataSection.CreateFromServiceDescription(wsdl));
+                results.Add(CoreWCF.Description.MetadataSection.CreateFromServiceDescription(wsdl));
             }
             else if (schema != null)
             {
-                results.Add(MetadataSection.CreateFromSchema(schema));
+                results.Add(CoreWCF.Description.MetadataSection.CreateFromSchema(schema));
             }
             else if (xmlDoc != null && xmlDoc.LocalName == "Policy")
             {
-                results.Add(MetadataSection.CreateFromPolicy(xmlDoc, null));
+                results.Add(CoreWCF.Description.MetadataSection.CreateFromPolicy(xmlDoc, null));
             }
             else
             {
-                var mexDoc = new MetadataSection();
+                var mexDoc = new CoreWCF.Description.MetadataSection();
                 mexDoc.Metadata = document;
                 results.Add(mexDoc);
             }
@@ -134,13 +134,13 @@ namespace Dev2.Runtime.DynamicProxy
             codeCompileUnit = new CodeCompileUnit();
             CreateCodeDomProvider();
 
-            var importer = new WsdlImporter(new MetadataSet(metadataCollection));
+            var importer = new WsdlImporter(new CoreWCF.Description.MetadataSet(metadataCollection));
             AddStateForDataContractSerializerImport(importer);
             AddStateForXmlSerializerImport(importer);
 
-            bindings = importer.ImportAllBindings();
-            contracts = importer.ImportAllContracts();
-            endpoints = importer.ImportAllEndpoints();
+            bindings = WsdlImporter.ImportAllBindings();//bindings = importer.ImportAllBindings();
+            contracts = WsdlImporter.ImportAllContracts();//contracts = importer.ImportAllContracts();
+            endpoints = WsdlImporter.ImportAllEndpoints();//endpoints = importer.ImportAllEndpoints();
             importWarnings = importer.Errors;
 
             var success = true;
@@ -215,7 +215,7 @@ namespace Dev2.Runtime.DynamicProxy
 
             foreach (var contract in contracts)
             {
-                contractGenerator.GenerateServiceContractType(contract);
+                ServiceContractGenerator.GenerateServiceContractType(contract);//contractGenerator.GenerateServiceContractType(contract);
             }
 
             var success = true;
@@ -470,16 +470,15 @@ namespace Dev2.Runtime.DynamicProxy
 
         void CreateServiceContractGenerator()
         {
-            contractGenerator = new ServiceContractGenerator(
-                codeCompileUnit);
+            contractGenerator = new ServiceContractGenerator(codeCompileUnit);
             contractGenerator.Options |= ServiceContractGenerationOptions.ClientClass;
         }
 
-        public IEnumerable<MetadataSection> Metadata => metadataCollection;
+        public IEnumerable<CoreWCF.Description.MetadataSection> Metadata => metadataCollection;
 
         public IEnumerable<Binding> Bindings => bindings;
 
-        public IEnumerable<ContractDescription> Contracts => contracts;
+        public IEnumerable<CoreWCF.Description.ContractDescription> Contracts => contracts;
 
         public IEnumerable<ServiceEndpoint> Endpoints => endpoints;
 
@@ -487,13 +486,15 @@ namespace Dev2.Runtime.DynamicProxy
 
         public string ProxyCode => proxyCode;
 
-        public IEnumerable<MetadataConversionError> MetadataImportWarnings => importWarnings;
+        public IEnumerable<CoreWCF.Description.MetadataConversionError> MetadataImportWarnings => importWarnings;
 
-        public IEnumerable<MetadataConversionError> CodeGenerationWarnings => codegenWarnings;
+        public IEnumerable<CoreWCF.Description.MetadataConversionError> CodeGenerationWarnings => codegenWarnings;
 
         public IEnumerable<CompilerError> CompilationWarnings => compilerWarnings;
 
-        public static string ToString(IEnumerable<MetadataConversionError>
+
+
+        public static string ToString(IEnumerable<CoreWCF.Description.MetadataConversionError>
             importErrors)
         {
             if (importErrors != null)

@@ -9,6 +9,7 @@
 */
 
 using System;
+using Caliburn.Micro;
 using Dev2.Services.Events;
 using Dev2.Studio.Interfaces;
 

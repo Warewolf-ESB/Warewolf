@@ -29,7 +29,8 @@ using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Explorer;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
-using ServiceStack.Common.Extensions;
+using ServiceStack;
+//using ServiceStack.Common.Extensions;
 using Warewolf.Data;
 using Warewolf.Resource.Errors;
 
@@ -111,7 +112,8 @@ namespace Dev2.Runtime.Hosting
             var files = _directory.GetFiles(_envVersionFolder).Where(a => a.Contains(resource.VersionInfo.VersionId.ToString()));
             IEnumerable<string> enumerable = files as IList<string> ?? files.ToList();
 
-            enumerable.ForEach(a => _file.Move(a, _filePath.Combine(_envVersionFolder, _filePath.GetFileName(a))));
+            //enumerable.ForEach(a => _file.Move(a, _filePath.Combine(_envVersionFolder, _filePath.GetFileName(a))));
+            enumerable.Each(a => _file.Move(a, _filePath.Combine(_envVersionFolder, _filePath.GetFileName(a))));
         }
 
         public StringBuilder GetVersion(IVersionInfo version, string resourcePath)

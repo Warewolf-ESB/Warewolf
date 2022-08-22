@@ -22,7 +22,8 @@ using Dev2.Data.ServiceModel.Messages;
 using Dev2.DynamicServices;
 using Dev2.Runtime.Hosting;
 using Dev2.Workspaces;
-using ServiceStack.Common.Extensions;
+using ServiceStack;
+using ServiceStack.Common;
 using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.ESB.Management.Services
@@ -64,7 +65,8 @@ namespace Dev2.Runtime.ESB.Management.Services
             if(thisService != null)
             {
                 var workspaceGuids = WorkspaceRepository.Instance.GetWorkspaceGuids();
-                workspaceGuids.ForEach(guid =>
+                //workspaceGuids.ForEach(guid =>
+                workspaceGuids.Each(guid =>
                 {
                     var union = dependants.Union(ResourceCatalog.Instance.GetDependants(guid, thisService.ResourceID));
                     dependants = union.ToList();

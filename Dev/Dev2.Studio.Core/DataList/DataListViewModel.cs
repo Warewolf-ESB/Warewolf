@@ -25,7 +25,7 @@ using Dev2.Studio.Core.DataList;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Models.DataList;
 using Dev2.Studio.Core.ViewModels.Base;
-using ServiceStack.Common.Extensions;
+using ServiceStack.Common;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -42,7 +42,7 @@ using Dev2.Studio.Interfaces.DataList;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 using Warewolf.Studio.Resources.Languages;
-
+using ServiceStack;
 namespace Dev2.Studio.ViewModels.DataList
 {
     public class DataListViewModel : BaseViewModel, IDataListViewModel, IUpdatesHelp
@@ -637,7 +637,7 @@ namespace Dev2.Studio.ViewModels.DataList
 
         public string WriteToResourceModel()
         {
-            ScalarCollection.ForEach(_scalarHandler.FixNamingForScalar);
+            ScalarCollection.Each(_scalarHandler.FixNamingForScalar);
             _recordsetHandler.AddRecordsetNamesIfMissing();
             var result = GetDataListString();
             if(Resource != null)
@@ -698,11 +698,11 @@ namespace Dev2.Studio.ViewModels.DataList
                 {
                     if(group.Count() > 1 && !string.IsNullOrEmpty(group.Key))
                     {
-                        group.ForEach(item => item.model.SetError(StringResources.ErrorMessageDuplicateValue));
+                        group.Each(item => item.model.SetError(StringResources.ErrorMessageDuplicateValue));
                         continue;
                     }
 
-                    group.ForEach(
+                    group.Each(
                         item =>
                         {
                             if(item.model.ErrorMessage != null && item.model.ErrorMessage.Contains(StringResources.ErrorMessageDuplicateValue))

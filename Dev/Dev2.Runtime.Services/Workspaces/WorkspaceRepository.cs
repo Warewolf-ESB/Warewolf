@@ -126,7 +126,7 @@ namespace Dev2.Workspaces
 
         #endregion
 
-        public Guid GetWorkspaceID(WindowsIdentity identity)
+        public Guid GetWorkspaceID(System.Security.Principal.WindowsIdentity identity)
         {
             Guid workspaceID;
             try

@@ -28,7 +28,7 @@ using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
-using ServiceStack.Common.Extensions;
+using ServiceStack;
 using Warewolf.Common.Interfaces.NetStandard20;
 using Warewolf.Common.NetStandard20;
 using Warewolf.Resource.Errors;
@@ -169,7 +169,7 @@ namespace Dev2.Runtime.ESB.Execution
             if (data != null)
             {
                 var fetchRemoteDebugItems = RemoteDebugItemParser.ParseItems(data);
-                fetchRemoteDebugItems.ForEach(state => state.SessionID = DataObject.DebugSessionID);
+                fetchRemoteDebugItems.Each(state => state.SessionID = DataObject.DebugSessionID);
                 return fetchRemoteDebugItems;
             }
 

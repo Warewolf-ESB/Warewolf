@@ -18,7 +18,8 @@ using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.Workspaces;
 using System.Diagnostics;
-using ServiceStack.ServiceModel;
+using ServiceStack;
+//using ServiceStack.ServiceModel;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {

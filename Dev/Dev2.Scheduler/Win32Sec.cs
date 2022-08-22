@@ -177,7 +177,7 @@ public class SecurityWrapper : ISecurityWrapper
     {
         try
         {
-            return new WindowsPrincipal(new WindowsIdentity(username));
+            return new WindowsPrincipal(new System.Security.Principal.WindowsIdentity(username));
         }
         catch (Exception)
         {
@@ -323,7 +323,7 @@ public class SecurityWrapper : ISecurityWrapper
         IPrincipal identity;
         try
         {
-            identity = new WindowsPrincipal(new WindowsIdentity(unqualifiedUserName));
+            identity = new WindowsPrincipal(new System.Security.Principal.WindowsIdentity(unqualifiedUserName));
         }
         catch (Exception e)
         {
@@ -348,7 +348,7 @@ public class SecurityWrapper : ISecurityWrapper
         IPrincipal identity;
         try
         {
-            identity = new WindowsPrincipal(new WindowsIdentity(unqualifiedUserName));
+            identity = new WindowsPrincipal(new System.Security.Principal.WindowsIdentity(unqualifiedUserName));
         }
         catch (Exception e)
         {

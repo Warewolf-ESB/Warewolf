@@ -20,8 +20,9 @@ namespace Dev2.Runtime
 
         public Isolated()
         {
-           _domain = AppDomain.CreateDomain("Isolated:" + Guid.NewGuid(),
-                null, AppDomain.CurrentDomain.SetupInformation);
+           //_domain = AppDomain.CreateDomain("Isolated:" + Guid.NewGuid(),
+           //     null, AppDomain.CurrentDomain.SetupInformation);
+           FakeExtensions.CreateDomain("Isolated:" + Guid.NewGuid(), null, AppDomain.CurrentDomain.SetupInformation);
 
             var type = typeof(T);
 

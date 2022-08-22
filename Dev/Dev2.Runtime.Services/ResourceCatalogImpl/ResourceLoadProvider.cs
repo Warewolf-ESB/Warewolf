@@ -35,7 +35,8 @@ using Dev2.DynamicServices.Objects.Base;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
-using ServiceStack.Common.Extensions;
+using ServiceStack;
+using ServiceStack.Common;
 using Warewolf.Data;
 using Warewolf.Resource.Errors;
 
@@ -435,9 +436,10 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                 {
                     return;
                 }
-                resource.Dependencies.ForEach(tree =>
-                {
-                    if (tree.ResourceID == resourceId)
+            //resource.Dependencies.ForEach(tree =>
+            resource.Dependencies.Each(tree =>
+            {
+                if (tree.ResourceID == resourceId)
                     {
                         dependants.Add(resource.ResourceID);
                     }
@@ -452,7 +454,8 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             var dependants = new List<ResourceForTree>();
             foreach (var resource in resources)
             {
-                resource.Dependencies?.ForEach(tree =>
+                //resource.Dependencies?.ForEach(tree =>
+                resource.Dependencies?.Each(tree =>
                 {
                     if (tree.ResourceID == resourceId)
                     {

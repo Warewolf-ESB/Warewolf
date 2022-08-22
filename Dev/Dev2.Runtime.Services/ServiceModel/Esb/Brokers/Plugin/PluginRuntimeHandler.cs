@@ -20,7 +20,8 @@ using Dev2.Common.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using ServiceStack.Common.Extensions;
+using ServiceStack;
+using ServiceStack.Common;
 
 
 
@@ -154,7 +155,8 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             VerifyArgument.IsNotNull("setupInfo", setupInfo);
             var type = loadedAssembly.GetType(setupInfo.Fullname);
             var knownBinder = new KnownTypesBinder();
-            loadedAssembly.ExportedTypes.ForEach(t => knownBinder.KnownTypes.Add(t));
+            //loadedAssembly.ExportedTypes.ForEach(t => knownBinder.KnownTypes.Add(t));
+            loadedAssembly.ExportedTypes.Each(t => knownBinder.KnownTypes.Add(t));
             if (objectToRun.IsStatic)
             {
                 ExecuteSingleMethod(type, null, InvokeMethodsAction, loadedAssembly, dev2MethodInfo);

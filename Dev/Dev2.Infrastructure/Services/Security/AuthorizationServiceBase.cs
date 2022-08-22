@@ -356,7 +356,7 @@ namespace Dev2.Services.Security
             bool isInRole;
             var sid = new SecurityIdentifier(WellKnownSidType.BuiltinAdministratorsSid, null);
             var windowsPrincipal = principal as WindowsPrincipal;
-            var windowsIdentity = principal.Identity as WindowsIdentity;
+            var windowsIdentity = principal.Identity as System.Security.Principal.WindowsIdentity;
             if (windowsPrincipal != null)
             {
                 isInRole = IsInRole(windowsGroup, sid, windowsPrincipal, windowsIdentity);
@@ -369,7 +369,7 @@ namespace Dev2.Services.Security
             return isInRole;
         }
 
-        static bool IsInRole(string windowsGroup, SecurityIdentifier sid, WindowsPrincipal windowsPrincipal, WindowsIdentity windowsIdentity)
+        static bool IsInRole(string windowsGroup, SecurityIdentifier sid, WindowsPrincipal windowsPrincipal, System.Security.Principal.WindowsIdentity windowsIdentity)
         {
             bool isInRole = windowsPrincipal.IsInRole(WindowsBuiltInRole.Administrator) || windowsPrincipal.IsInRole("BUILTIN\\Administrators") || windowsPrincipal.IsInRole(sid);
             if (windowsIdentity != null && !isInRole && windowsIdentity.Groups != null)

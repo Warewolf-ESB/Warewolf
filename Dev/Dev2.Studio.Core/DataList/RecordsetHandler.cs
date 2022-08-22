@@ -11,7 +11,7 @@ using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.DataList;
 using Dev2.Studio.ViewModels.DataList;
-using ServiceStack.Common.Extensions;
+using ServiceStack.Common;
 
 namespace Dev2.Studio.Core.DataList
 {

@@ -11,7 +11,6 @@
 using System;
 using System.Net;
 using System.Runtime;
-using System.Web;
 using Dev2.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.Communication;
@@ -48,7 +47,7 @@ namespace Dev2.Runtime.WebServer.Executor
                 ContentType = contentType;
             }
 
-            private ResponseData(HttpException exception, string content)
+            private ResponseData(Common.Interfaces.HttpException exception, string content)
                 : this(content)
             {
                 Exception = exception;
@@ -61,7 +60,7 @@ namespace Dev2.Runtime.WebServer.Executor
             }
             public string Content { get; }
             public string ContentType { get; }
-            public HttpException Exception { get; }
+            public Common.Interfaces.HttpException Exception { get; }
             public ErrorResultTO ErrorResultTO { get; }
 
             public static ResponseData FromExecutionDto(IExecutionDto executionDto, string contentType)
@@ -69,7 +68,7 @@ namespace Dev2.Runtime.WebServer.Executor
                 return new ResponseData(executionDto.PayLoad, contentType);
             }
 
-            public static ResponseData FromException(HttpException exception, string content)
+            public static ResponseData FromException(Common.Interfaces.HttpException exception, string content)
             {
                 return new ResponseData(exception, content);
             }
@@ -135,7 +134,7 @@ namespace Dev2.Runtime.WebServer.Executor
                 else
                 {
                     var content = ExecuteExceptionPayload.Calculate(dataObject);
-                    return ResponseData.FromException(new HttpException((int)HttpStatusCode.InternalServerError, "internal server error"), content);
+                    return ResponseData.FromException(new Common.Interfaces.HttpException((int)HttpStatusCode.InternalServerError, "internal server error"), content);
                 }
             }
             else

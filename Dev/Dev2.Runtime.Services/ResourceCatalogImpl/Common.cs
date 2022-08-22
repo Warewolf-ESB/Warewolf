@@ -13,7 +13,8 @@ using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.Security;
-using ServiceStack.Common.Extensions;
+using ServiceStack;
+//using ServiceStack.Common.Extensions;
 
 namespace Dev2.Runtime.ResourceCatalogImpl
 {
@@ -46,7 +47,8 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             }
             else
             {
-                compileMessagesTO.ForEach(to =>
+                //compileMessagesTO.ForEach(to =>
+                compileMessagesTO.Each(to =>
                 {
                     var xElements = errorMessagesElement.Elements("ErrorMessage");
                     var firstOrDefault = xElements.FirstOrDefault(element =>

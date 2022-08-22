@@ -17,7 +17,7 @@ using Dev2.Intellisense;
 using Dev2.Services.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Interfaces;
-
+using Caliburn.Micro;
 
 namespace Dev2.Studio.InterfaceImplementors
 

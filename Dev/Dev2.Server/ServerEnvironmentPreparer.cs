@@ -53,7 +53,7 @@ namespace Dev2
 
             PrepareLogging(settingsConfigFile);
 
-            Common.Utilities.ServerUser = new WindowsPrincipal(WindowsIdentity.GetCurrent());
+            Common.Utilities.ServerUser = new WindowsPrincipal(System.Security.Principal.WindowsIdentity.GetCurrent());
             SetupTempCleanupSetting();
 
             Config.Server.SaveIfNotExists();

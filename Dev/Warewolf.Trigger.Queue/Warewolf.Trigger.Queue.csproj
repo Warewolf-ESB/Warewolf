@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
-    <TargetFramework>net48</TargetFramework>
+    <TargetFramework>net6.0-windows</TargetFramework>
     <RootNamespace>Warewolf.Trigger</RootNamespace>
   </PropertyGroup>
   <PropertyGroup>
@@ -17,6 +16,9 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Serilog.Sinks.SQLite" Version="4.5.0" />
+    <PackageReference Include="Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers" Version="0.4.336902">
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj" />
@@ -28,8 +30,4 @@
     <ProjectReference Include="..\Warewolf.Interfaces\Warewolf.Interfaces.csproj" />
     <ProjectReference Include="..\Warewolf.UI\Warewolf.UI.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <Reference Include="PresentationFramework" />
-  </ItemGroup>
-
 </Project>

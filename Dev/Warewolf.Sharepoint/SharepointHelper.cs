@@ -241,7 +241,7 @@ namespace Warewolf.Sharepoint
 
                     var fileUrl = string.Format("{0}/{1}", folder.ServerRelativeUrl, newfileName);
 
-                    File.SaveBinaryDirect(ctx, fileUrl, fs, true);
+                    Extensions.SaveBinaryDirect(ctx, fileUrl, fs, true);//File.SaveBinaryDirect(ctx, fileUrl, fs, true);
                 }
             }
 
@@ -280,7 +280,7 @@ namespace Warewolf.Sharepoint
                 ctx.ExecuteQuery();
 
                 var fileRef = file.ServerRelativeUrl;
-                var fileInfo = File.OpenBinaryDirect(ctx, fileRef);
+                var fileInfo = Extensions.OpenBinaryDirect(ctx, fileRef);//var fileInfo = File.OpenBinaryDirect(ctx, fileRef);
 
                 if (fileName == null || localPath == null)
                 {
@@ -291,7 +291,11 @@ namespace Warewolf.Sharepoint
 
                 using (var fileStream = System.IO.File.Create(newPath))
                 {
-                    fileInfo.Stream.CopyTo(fileStream);
+                    //fileInfo.Stream.CopyTo(fileStream);
+                    using(var stream = fileInfo.OpenRead())
+                    {
+                        stream.CopyTo(fileStream);
+                    }
                 }
             }
 

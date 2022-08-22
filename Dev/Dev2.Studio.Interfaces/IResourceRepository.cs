@@ -27,6 +27,7 @@ using Warewolf.Options;
 using Warewolf.Triggers;
 using Warewolf.Configuration;
 using Warewolf.Data;
+using Dev2.Runtime.ServiceModel;
 
 namespace Dev2.Studio.Interfaces
 {
