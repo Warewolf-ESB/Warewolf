@@ -144,73 +144,68 @@ namespace Warewolf.UnitTestAttributes
         {
             _containerType = type;
             Container = new Container(_containerType);
-//            if (_containerType == ContainerType.Redis)
-//            {
-//                Container.IP = "warewolf-redis-connector-testing.westeurope.azurecontainer.io";
-//                Container.Port = "6379";
-//            }
-//            else if(_containerType == ContainerType.FTPS)
-//            {
-//                Container.IP = "localhost";
-//                Container.Port = "1010";
-//            }
-//            else if (_containerType == ContainerType.RabbitMQ)
-//            {
-//                Container.IP = "warewolf-rabbitmq-connector-testing.westeurope.azurecontainer.io";
-//                Container.Port = "5672";
-//            }
-//            else if (_containerType == ContainerType.HTTPVerbsApi)
-//            {
-//                Container.IP = "http-verbs-connector-testing.westeurope.azurecontainer.io";
-//                Container.Port = "80";
-//            }
-//            else if (_containerType == ContainerType.WebApi)
-//            {
-//                Container.IP = "http-web-connector-testing.westeurope.azurecontainer.io";
-//                Container.Port = "80";
-//            }
-//            else if (_containerType == ContainerType.CIRemote || _containerType == ContainerType.AnonymousWarewolf)
-//            {
-//                Container.IP = "remote-warewolf-connector-testing.westeurope.azurecontainer.io";
-//                Container.Port = "3142";
-//            }
-//            else if (_containerType == ContainerType.WebApi)
-//            {
-//                Container.IP = "http-web-connector-testing.westeurope.azurecontainer.io";
-//                Container.Port = "80";
-//            }
-//            else if (_containerType == ContainerType.MSSQL)
-//            {
-//                Container.IP = "warewolf-connector-dependency-containers.westeurope.cloudapp.azure.com";
-//                Container.Port = "1433";
-//            }
-//            else if (_containerType == ContainerType.Elasticsearch)
-//            {
-//                Container.IP = "warewolf-connector-dependency-containers.westeurope.cloudapp.azure.com";
-//                Container.Port = "9400";
-//            }
-//            else if (_containerType == ContainerType.AnonymousElasticsearch)
-//            {
-//                Container.IP = "warewolf-connector-dependency-containers.westeurope.cloudapp.azure.com";
-//                Container.Port = "9200";
-//            }
-//            else if (_containerType == ContainerType.PostGreSQL)
-//            {
-//                Container.IP = "warewolf-connector-dependency-containers.westeurope.cloudapp.azure.com";
-//                Container.Port = "5433";
-//            }
-//            else if (_containerType == ContainerType.MySQL)
-//            {
-//                Container.IP = "warewolf-mysql-connector-testing.westeurope.azurecontainer.io";
-//                Container.Port = "3306";
-//            }
-//            else if (_containerType == ContainerType.AnonymousRedis)
-//            {
-//                Container.IP = "warewolf-anonymous-redis-connector-testing.westeurope.azurecontainer.io";
-//                Container.Port = "6379";
-//            }
-//            else
-//            {
+            if (_containerType == ContainerType.Redis)
+            {
+                Container.IP = "warewolf-redis-connector-testing.southafricanorth.azurecontainer.io";
+                Container.Port = "6379";
+            }
+            else if(_containerType == ContainerType.FTPS)
+            {
+                Container.IP = "localhost";
+                Container.Port = "1010";
+            }
+            else if (_containerType == ContainerType.RabbitMQ)
+            {
+                Container.IP = "warewolf-rabbitmq-connector-testing.southafricanorth.azurecontainer.io";
+                Container.Port = "5672";
+            }
+            else if (_containerType == ContainerType.HTTPVerbsApi)
+            {
+                Container.IP = "http-verbs-connector-testing.southafricanorth.azurecontainer.io";
+                Container.Port = "80";
+            }
+            else if (_containerType == ContainerType.WebApi)
+            {
+                Container.IP = "http-web-connector-testing.southafricanorth.azurecontainer.io";
+                Container.Port = "80";
+            }
+            else if (_containerType == ContainerType.CIRemote || _containerType == ContainerType.AnonymousWarewolf)
+            {
+                Container.IP = "102.37.115.89";
+                Container.Port = "3142";
+            }
+            else if (_containerType == ContainerType.MSSQL)
+            {
+                Container.IP = "102.37.115.89";
+                Container.Port = "1433";
+            }
+            else if (_containerType == ContainerType.Elasticsearch)
+            {
+                Container.IP = "102.37.115.89";
+                Container.Port = "9400";
+            }
+            else if (_containerType == ContainerType.AnonymousElasticsearch)
+            {
+                Container.IP = "102.37.115.89";
+                Container.Port = "9200";
+            }
+            else if (_containerType == ContainerType.PostGreSQL)
+            {
+                Container.IP = "102.37.115.89";
+                Container.Port = "5433";
+            }
+            else if (_containerType == ContainerType.MySQL)
+            {
+                Container.IP = "102.37.115.89";
+                Container.Port = "9300";
+            }
+            //else if (_containerType == ContainerType.AnonymousRedis)
+            //{
+            //    Container.IP = "warewolf-anonymous-redis-connector-testing.southafricanorth.azurecontainer.io";
+            //    Container.Port = "6379";
+            //}
+            else
+            {
                 string foundPort;
                 var portRetryCount = 0;
                 do
@@ -241,7 +236,7 @@ namespace Warewolf.UnitTestAttributes
 
                 Container.IP = SelectedHost;
                 Container.Port = foundPort;
-//            }
+            }
 
             if (!performSourceInjection) return;
             switch (_containerType)

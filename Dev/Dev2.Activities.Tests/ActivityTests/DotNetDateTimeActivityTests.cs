@@ -131,9 +131,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [Timeout(60000)]
         [TestCategory("DateTimeUnitTest")]
         [Owner("Massimo Guerrera")]
-
         public void DateTime_DateTimeUnitTest_ExecuteWithBlankInput_DateTimeNowIsUsed()
-
         {
             var now = DateTime.Now;
 
@@ -151,17 +149,21 @@ namespace Dev2.Tests.Activities.ActivityTests
             GetScalarValueFromEnvironment(result.Environment, "MyTestResult", out string actual, out string error);
             var actualdt = DateTime.Parse(actual, CultureInfo.InvariantCulture);
             var timeSpan = actualdt - now;
-
-            Assert.IsTrue(timeSpan.TotalMilliseconds >= 9000, timeSpan.TotalMilliseconds + " is not >= 9000");
+            if (now.Hour > 12 && now.Hour <= 24)
+            {
+                Assert.IsTrue(timeSpan.TotalMilliseconds + 43200000 >= 9000, timeSpan.TotalMilliseconds + 43200000 + " is not >= 9000");
+            }
+            else
+            {
+                Assert.IsTrue(timeSpan.TotalMilliseconds >= 9000, timeSpan.TotalMilliseconds + " is not >= 9000");
+            }
         }
 
         [TestMethod]
         [Timeout(60000)]
         [TestCategory("DateTimeUnitTest")]
         [Owner("Massimo Guerrera")]
-
         public void DateTime_DateTimeUnitTest_ExecuteWithBlankInputAndSplitSecondsOutput_OutputNotZero()
-
         {
             const string currDL = @"<root><MyTestResult></MyTestResult></root>";
             SetupArguments(currDL
@@ -237,6 +239,44 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Assert Results-------------------------
             Assert.AreEqual(1, outputs.Count);
             Assert.AreEqual("[[dt]]", outputs[0]);
+        }
+
+        [TestMethod]
+        [Timeout(60000)]
+        [Owner("Yogesh Rajpurohit")]
+        [TestCategory("DsfDateTimeActivity_GetOutputs")]
+        public void DsfDateTimeActivity_ExecuteTool_Called_ShouldReturnExpectedResult()
+        {
+            //------------Setup for test--------------------------
+            //------------Setup for test--------------------------
+            const string varName = "[[MyTestResult]]";
+            var act = new DsfDotNetDateTimeActivity
+            {
+                DateTime = "2022/06/19 05:45:00",
+                InputFormat = "yyyy/MM/dd hh:mm:ss",
+                OutputFormat = "yyyy/MM/dd hh:mm:ss",
+                TimeModifierType = "Minutes",
+                TimeModifierAmountDisplay = "10",
+                TimeModifierAmount = 10,
+                Result = "[[MyTestResult]]"
+
+            };
+            var dataMock = new Mock<IDSFDataObject>();
+            dataMock.Setup(o => o.IsDebugMode()).Returns(() => true);
+            var executionEnvironment = new ExecutionEnvironment();
+            dataMock.Setup(o => o.Environment).Returns(executionEnvironment);
+            var data = dataMock.Object;
+
+            //------------Execute Test---------------------------
+            var activity = act.Execute(data, 0);
+            //------------Assert Results-------------------------
+            var debugout = act.GetDebugOutputs(executionEnvironment, 0);
+           
+            Assert.AreEqual(false, debugout[0].ResultsList[0].HasError);
+            Assert.AreEqual(varName, debugout[0].ResultsList[0].Variable);
+            Assert.AreEqual(DebugItemResultType.Variable, debugout[0].ResultsList[0].Type);
+            Assert.AreEqual("2022/06/19 05:55:00", debugout[0].ResultsList[0].Value);
+
         }
 
         [TestMethod]

@@ -28,6 +28,7 @@ namespace Warewolf.Trigger.Queue
         public Guid QueueSourceId { get; set; }
         public string QueueName { get; set; }
         public string WorkflowName { get; set; }
+        public string Prefetch { get; set; }
         public int Concurrency { get; set; }
         public string UserName { get; set; }
         public string Password { get; set; }
@@ -38,6 +39,7 @@ namespace Warewolf.Trigger.Queue
         public bool MapEntireMessage { get; set; }
         public ICollection<IServiceInputBase> Inputs { get; set; }
         public Guid ResourceId { get; set; }
+        
 
         public bool Equals(ITriggerQueue other)
         {
@@ -56,6 +58,7 @@ namespace Warewolf.Trigger.Queue
             equals &= QueueSourceId == other.QueueSourceId;
             equals &= string.Equals(QueueName, other.QueueName);
             equals &= string.Equals(WorkflowName, other.WorkflowName);
+            equals &= Prefetch == other.Prefetch;
             equals &= Concurrency == other.Concurrency;
             equals &= string.Equals(UserName, other.UserName);
             equals &= string.Equals(Password, other.Password);
@@ -65,6 +68,7 @@ namespace Warewolf.Trigger.Queue
             equals &= DeadLetterOptions == other.DeadLetterOptions;
             equals &= MapEntireMessage == other.MapEntireMessage;
             equals &= Inputs == other.Inputs;
+            
 
             return equals;
         }

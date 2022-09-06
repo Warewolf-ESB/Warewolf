@@ -173,8 +173,25 @@ namespace Dev2.Activities.Designers2.Core
                         var errorMessage = string.Join(Environment.NewLine, _recordsetList.Select(recordset => recordset.ErrorMessage));
                         throw new Exception(errorMessage);
                     }
+
+                    List<IPath> responsePath = new List<IPath>();
+
+                    foreach (var dataSourceShapesItem in responseService.Description.DataSourceShapes)
+                    {                    
+                        foreach (var pathItem in dataSourceShapesItem.Paths)
+                        {
+                            if(!responsePath.Contains(pathItem))
+                            {
+                                responsePath.Add(pathItem);
+                            }
+                        }
+
+                        dataSourceShapesItem.Paths.Clear();
+                        dataSourceShapesItem.Paths.AddRange(responsePath);
+                    }                                    
+
                     Description = responseService.Description;
-                    
+
                     var outputMapping = _recordsetList.SelectMany(recordset => recordset.Fields, (recordset, recordsetField) =>
                     {
                         var serviceOutputMapping = new ServiceOutputMapping(recordsetField.Name, recordsetField.Alias, recordset.Name) { Path = recordsetField.Path };

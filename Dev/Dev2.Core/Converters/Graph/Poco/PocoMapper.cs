@@ -134,6 +134,13 @@ namespace Unlimited.Framework.Converters.Graph.Poco
         {
             if (propertyData is IEnumerable enumerableData)
             {
+                if(propertyData.GetType() == typeof(byte[]))
+                {
+                    byte[] propertyDataByte = propertyData as byte[];
+                    if (propertyDataByte == null || propertyDataByte.Length == 0)
+                        return;
+                }
+
                 propertyStack.Push(new Tuple<string, bool, bool, object>(propertyInfo.Name, propertyInfo.PropertyType.IsEnumerable(), false, data));
                 paths.AddRange(BuildPaths(propertyData, propertyStack, root));
                 propertyStack.Pop();

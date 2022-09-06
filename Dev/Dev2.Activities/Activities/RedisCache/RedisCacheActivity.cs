@@ -40,11 +40,12 @@ using Dev2.Data.Interfaces.Enums;
 using Warewolf.Data;
 using Warewolf.Exceptions;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using System.Threading;
 
 namespace Dev2.Activities.RedisCache
 {
     [ToolDescriptorInfo(nameof(RedisCache), "Redis Cache", ToolType.Native, "416eb671-64df-4c82-c6f0-43e48172a799", "Dev2.Activities", "1.0.0.0", "Legacy", "Database", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Database_RedisCache")]
-    public class RedisCacheActivity : DsfBaseActivity, IEquatable<RedisCacheActivity>
+    public class RedisCacheActivity : DsfBaseActivity, IEquatable<RedisCacheActivity>, IDisposable
     {
         readonly string _result = "Success";
         private readonly ISerializer _serializer;
@@ -165,18 +166,28 @@ namespace Dev2.Activities.RedisCache
 
         private TimeSpan CacheTTL => TimeSpan.FromSeconds(TTL);
 
+        private SemaphoreSlim _execution = new SemaphoreSlim(1, 1);
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
-            _dataObject = dataObject;
-            _update = update;
-            base.ExecuteTool(_dataObject, update);
+            try
+            {
+                _execution.Wait();
+                
+                _dataObject = dataObject;
+                _update = update;
+                base.ExecuteTool(_dataObject, update);
+            }
+            finally
+            {
+                _execution.Release();
+            }
         }
 
         protected override List<string> PerformExecution(Dictionary<string, string> evaluatedValues)
         {
+              
             _errorsTo = new ErrorResultTO();
-
             try
             {
                 RedisSource = ResourceCatalog.GetResource<RedisSource>(GlobalConstants.ServerWorkspaceID, SourceId);
@@ -563,5 +574,19 @@ namespace Dev2.Activities.RedisCache
         }
 
         public override enFindMissingType GetFindMissingType() => enFindMissingType.RedisCache;
+
+        public void Dispose()
+        {
+            _execution.Dispose();
+            GC.SuppressFinalize(this);
+        }
+
+        public void ExecuteWait()
+        {
+            if (_execution.CurrentCount >= 1)
+            {
+                _execution.Wait();
+            }
+        }
     }
 }

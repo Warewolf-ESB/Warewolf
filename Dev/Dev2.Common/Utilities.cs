@@ -69,18 +69,26 @@ namespace Dev2.Common
             else
             {
                 var impersonationContext = Impersonate(userPrinciple);
-                try
+                using (impersonationContext)
                 {
-                    if (actionToBePerformed != null) 
+                    try
                     {
-                        WindowsIdentity.RunImpersonated(impersonationContext.AccessToken, actionToBePerformed);
+                        if (actionToBePerformed != null)
+                        {
+                            WindowsIdentity.RunImpersonated(impersonationContext.AccessToken, actionToBePerformed);
+                        }
                     }
-                }
-                catch (Exception e)
-                {
-                    if (ServerUser.Identity is WindowsIdentity identity)
+                    catch (Exception e)
                     {
-                        WindowsIdentity.RunImpersonated(identity.AccessToken, actionToBePerformed);
+                        impersonationContext?.Dispose();
+                        if (ServerUser.Identity is WindowsIdentity identity)
+                        {
+                            WindowsIdentity.RunImpersonated(identity.AccessToken, actionToBePerformed);
+                        }
+                    }
+                    finally
+                    {
+                        impersonationContext?.Dispose();
                     }
                 }
             }

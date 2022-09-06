@@ -27,10 +27,10 @@ namespace Dev2.Runtime.ESB.Execution
     /// </summary>
     public abstract class EsbExecutionContainer : IEsbExecutionContainer
     {
-        protected ServiceAction ServiceAction { get; private set; }
-        protected IDSFDataObject DataObject { get; private set; }
-        protected IWorkspace TheWorkspace { get; private set; }
-        protected EsbExecuteRequest Request { get; private set; }
+        protected ServiceAction ServiceAction { get; set; }
+        protected IDSFDataObject DataObject { get; set; }
+        protected IWorkspace TheWorkspace { get; set; }
+        protected EsbExecuteRequest Request { get; set; }
 
         public string InstanceOutputDefinition { get; set; }
         public string InstanceInputDefinition { get; set; }

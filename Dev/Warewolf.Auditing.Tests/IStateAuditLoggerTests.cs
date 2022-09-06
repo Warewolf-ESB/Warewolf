@@ -48,6 +48,7 @@ namespace Warewolf.Auditing.Tests
             stateLoggerMock.Setup(o => o.LogExecuteException(exception, nextActivity)).Verifiable();
             stateLoggerMock.Setup(o => o.LogAdditionalDetail(message, detailMethodName)).Verifiable();
             stateLoggerMock.Setup(o => o.LogExecuteCompleteState(nextActivity)).Verifiable();
+            stateLoggerMock.Setup(o => o.LogExecuteActivityCompleteState(nextActivity)).Verifiable();
             stateLoggerMock.Setup(o => o.LogStopExecutionState(nextActivity)).Verifiable();
             var listener = stateLoggerMock.Object;
             // test
@@ -56,6 +57,7 @@ namespace Warewolf.Auditing.Tests
             notifier.LogExecuteException(exception, nextActivity);
             notifier.LogAdditionalDetail(message, detailMethodName);
             notifier.LogExecuteCompleteState(nextActivity);
+            notifier.LogExecuteActivityCompleteState(nextActivity);
             notifier.LogStopExecutionState(nextActivity);
 
             // verify
@@ -78,6 +80,25 @@ namespace Warewolf.Auditing.Tests
 
             //------------------------------Act------------------------------------
             _stateAuditLogger.NewStateListener(_dSFDataObject).LogExecuteCompleteState(nextActivity.Object);
+
+            mockWebSocketPool.VerifyAll();
+        }
+        
+        [TestMethod]
+        [Owner("Njabulo Nxele")]
+        [TestCategory(nameof(IStateAuditLogger))]
+        public void IStateAuditLogger_LogExecuteActivityCompleteState_Tests()
+        {
+            var expectedWorkflowId = Guid.NewGuid();
+            var nextActivity = new Mock<IDev2Activity>();
+            var expectedWorkflowName = "LogExecuteActivityCompleteState";
+
+            var mockWebSocketPool = new Mock<IWebSocketPool>();
+            mockWebSocketPool.Setup(o => o.Acquire(It.IsAny<string>())).Returns(new Mock<IWebSocketWrapper>().Object).Verifiable(); ;
+            TestAuditSetupWithAssignedInputs(expectedWorkflowId, expectedWorkflowName, out _stateAuditLogger, out _activity, mockWebSocketPool.Object);
+
+            //------------------------------Act------------------------------------
+            _stateAuditLogger.NewStateListener(_dSFDataObject).LogExecuteActivityCompleteState(nextActivity.Object);
 
             mockWebSocketPool.VerifyAll();
         }

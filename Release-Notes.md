@@ -1,3 +1,74 @@
+2.8 (22 July 2022)
+======================
+
+Enhancements
+----------
+- Add prefetch value to help with RabbitMQ consumer performance using trigger queues
+- Log data at the DEBUG logging level is now more detailed.
+
+Bug Fixes 
+----------
+- JSON data input using the debug input window no longer  adds quotes around all property values.
+
+2.7.10 (27 June 2022)
+======================
+
+Bug Fixes
+----------
+- Patched an error starting Warewolf server when ElasticSearch server is not already started.
+- Patched redis cache to work with jmeter.
+
+2.7.9 (17 June 2022)
+======================
+
+Bug Fixes
+----------
+- ElasticSearch logging errorlevel has changed to a more detailed level.
+- Performance and memory improvements to the suspend tool.
+
+2.7.8 (31 May 2022)
+======================
+
+Bug Fixes
+----------
+- Date/Time tool shows the correct date in the put field of the debug output view.
+- Fixed issue where elasticsearch logging wasn't working on source with credentials.
+
+2.7.7 (16 May 2022)
+======================
+
+Bug Fixes
+----------
+- Creating a test from debug defaults to the correct assert and mocks.
+
+Enhancements
+----------
+- Allow hangfire persistence server to be used as a client or server using a checkbox in the persistance settings.
+
+2.7.6 (2 May 2022)
+======================
+
+Bug Fixes
+----------
+- Patch for logging source settings sometimes not saving.
+- Patch for workflow test input values blank sometimes.
+- Patch for RabbitMQ tool sometimes not loading password value.
+
+2.7.5.32 (21 April 2022)
+======================
+
+Bug Fixes
+----------
+- Changes to address Suspend tool memory spiking and general improvements to suspend tool.
+
+2.7.5 (31 March 2022)
+======================
+
+Bug Fixes
+----------
+- Patched the debug output for workflows with multiple gate tools. The output appends to the correct gate tool now.
+- Suspend tool shouldn't throw a colleciton modified error when processing large amounts of transactions.
+
 2.7.4 (23 March 2022)
 ======================
 

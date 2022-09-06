@@ -153,6 +153,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
                 else
                 {
+                    if (assignValue.Value.StartsWith("[[@"))
+                    {
+                        var value = dataObject.Environment.EvalForJson(assignValue.Value);
+                        if (value != null)
+                        {
+                            assignValue = new AssignValue(assignValue.Name, ((CommonFunctions.WarewolfEvalResult.WarewolfAtomResult)value).Item.ToString());
+                        }
+                    }
                     dataObject.Environment.AssignWithFrame(assignValue, update);
                 }
             } catch (Exception e)

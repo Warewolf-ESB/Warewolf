@@ -29,6 +29,8 @@ namespace Dev2.Session
         public bool RememberInputs { get; set; }
 
         public string XmlData { get; set; }
+        
+        public string JsonData { get; set; }
 
         public string WorkflowID { get; set; }
 
