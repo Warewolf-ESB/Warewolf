@@ -141,26 +141,6 @@ namespace Dev2.Common.Tests
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(Utilities))]
-        public void Utilities_PerformActionInsideImpersonatedContext_GivenAnonymousPrincipal_ShouldTryServerUser()
-        {
-            var executed = false;
-            var mockPrincipal = new Mock<IPrincipal>();
-            var mockServerUserPrincipal = new Mock<IPrincipal>();
-
-            mockPrincipal.Setup(o => o.Identity).Returns(WindowsIdentity.GetAnonymous());
-            mockServerUserPrincipal.Setup(o => o.Identity).Returns(WindowsIdentity.GetAnonymous());
-            Utilities.ServerUser = mockServerUserPrincipal.Object;
-
-            Utilities.PerformActionInsideImpersonatedContext(mockPrincipal.Object, () => { executed = true; });
-
-            mockPrincipal.Verify(o => o.Identity, Times.Exactly(1));
-            mockServerUserPrincipal.Verify(o => o.Identity, Times.Once);
-            Assert.IsTrue(executed);
-        }
-
-        [TestMethod]
-        [Owner("Rory McGuire")]
-        [TestCategory(nameof(Utilities))]
         public void Utilities_PerformActionInsideImpersonatedContext_TaskFailureTriesAgain()
         {
             var executed = false;
