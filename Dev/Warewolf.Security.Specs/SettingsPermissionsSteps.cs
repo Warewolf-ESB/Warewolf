@@ -42,7 +42,6 @@ namespace Dev2.Activities.Specs.Permissions
             this._scenarioContext = scenarioContext;
         }
 
-
         [BeforeFeature("@Security")]
         public static void InitializeFeature(FeatureContext featureContext)
         {
@@ -53,10 +52,10 @@ namespace Dev2.Activities.Specs.Permissions
             var userGroup = GetUserGroup();
             AppUsageStats.LocalHost = $"http://{Environment.MachineName.ToLowerInvariant()}:3142";
             var environmentModel = ServerRepository.Instance.Source;
-            environmentModel.Connect();
+            environmentModel.ConnectAsync().Wait(60000);
             while (!environmentModel.IsConnected)
             {
-                environmentModel.Connect();
+                environmentModel.ConnectAsync().Wait(60000);
             }
 
             var currentSettings = environmentModel.ResourceRepository.ReadSettings(environmentModel);
@@ -73,7 +72,7 @@ namespace Dev2.Activities.Specs.Permissions
             var reconnectModel = new Server(Guid.NewGuid(), new ServerProxy(AppUsageStats.LocalHost, securitySpecsUser, securitySpecsPassword)) { Name = "Other Connection" };
             try
             {
-                reconnectModel.Connect();
+                reconnectModel.ConnectAsync().Wait(60000);
             }
             catch (UnauthorizedAccessException)
             {
