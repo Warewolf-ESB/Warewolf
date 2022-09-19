@@ -255,7 +255,7 @@ namespace Warewolf.Storage
             {
                 throw new WarewolfExecutionEnvironmentException("not a recordset");
             }
-
+            
             return _env.RecordSets[recordSetName.Trim()].LastIndex;
         }
 
