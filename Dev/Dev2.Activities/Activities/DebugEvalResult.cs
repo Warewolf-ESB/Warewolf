@@ -59,7 +59,10 @@ namespace Dev2.Activities
                 {
                     var recName = DataListUtil.ExtractRecordsetNameFromValue(_inputVariable);
                     var length = environment.GetLength(recName);
-                    _inputVariable = DataListUtil.ReplaceRecordsetBlankWithIndex(_inputVariable, length);
+                    if (length > 0)
+                    {
+                        _inputVariable = DataListUtil.ReplaceRecordsetBlankWithIndex(_inputVariable, length);
+                    }
                 }
 
                 if (isDataMerge)
