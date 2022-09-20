@@ -58,11 +58,7 @@ namespace Dev2.Activities
                 if (ExecutionEnvironment.IsRecordsetIdentifier(_inputVariable) && DataListUtil.IsEvaluated(_inputVariable) && DataListUtil.GetRecordsetIndexType(_inputVariable) == enRecordsetIndexType.Blank)
                 {
                     var recName = DataListUtil.ExtractRecordsetNameFromValue(_inputVariable);
-                    var length = -1;
-                    if (environment.HasRecordSet(recName))
-                    {
-                        length = environment.GetLength(recName);
-                    }
+                    var length = environment.GetLength(recName);
                     _inputVariable = DataListUtil.ReplaceRecordsetBlankWithIndex(_inputVariable, length);
                 }
 
