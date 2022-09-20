@@ -29,62 +29,92 @@ namespace Dev2.Common
 
         public static void Debug(object message, string executionId)
         {
-            var customMessage = UpdateCustomMessage(message, executionId);
-            _log.Debug(customMessage);
+            if (Config.Server.ExecutionLogLevel == "DEVUG")
+            {
+                var customMessage = UpdateCustomMessage(message, executionId);
+                _log.Debug(customMessage);
+            }
         }
 
         public static void Debug(object message, Exception exception, string executionId)
         {
-            var customMessage = UpdateCustomMessage(message, executionId);
-            _log.Debug(customMessage, exception);
+            if (Config.Server.ExecutionLogLevel == "DEBUG")
+            {
+                var customMessage = UpdateCustomMessage(message, executionId);
+                _log.Debug(customMessage, exception);
+            }
         }
 
         public static void Error(object message, string executionId)
         {
-            var customMessage = UpdateCustomMessage(message, executionId);
-            _log.Error(customMessage);
+            if (Config.Server.ExecutionLogLevel == "ERROR")
+            {
+                var customMessage = UpdateCustomMessage(message, executionId);
+                _log.Error(customMessage);
+            }
         }
 
         public static void Error(object message, Exception exception, string executionId)
         {
-            var customMessage = UpdateCustomMessage(message, executionId);
-            _log.Error(customMessage, exception);
+            if (Config.Server.ExecutionLogLevel == "ERROR")
+            {
+                var customMessage = UpdateCustomMessage(message, executionId);
+                _log.Error(customMessage, exception);
+            }
         }
 
         public static void Warn(object message, string executionId)
         {
-            var customMessage = UpdateCustomMessage(message, executionId);
-            _log.Warn(customMessage);
+            if (Config.Server.ExecutionLogLevel == "WARN")
+            {
+                var customMessage = UpdateCustomMessage(message, executionId);
+                _log.Warn(customMessage);
+            }
         }
 
         public static void Warn(object message, Exception exception, string executionId)
         {
-            var customMessage = UpdateCustomMessage(message, executionId);
-            _log.Warn(customMessage, exception);
+            if (Config.Server.ExecutionLogLevel == "WARN")
+            {
+                var customMessage = UpdateCustomMessage(message, executionId);
+                _log.Warn(customMessage, exception);
+            }
         }
 
         public static void Fatal(object message, string executionId)
         {
-            var customMessage = UpdateCustomMessage(message, executionId);
-            _log.Fatal(customMessage);
+            if (Config.Server.ExecutionLogLevel == "FATAL")
+            {
+                var customMessage = UpdateCustomMessage(message, executionId);
+                _log.Fatal(customMessage);
+            }
         }
 
         public static void Fatal(object message, Exception exception, string executionId)
         {
-            var customMessage = UpdateCustomMessage(message, executionId);
-            _log.Fatal(customMessage, exception);
+            if (Config.Server.ExecutionLogLevel == "FATAL")
+            {
+                var customMessage = UpdateCustomMessage(message, executionId);
+                _log.Fatal(customMessage, exception);
+            }
         }
 
         public static void Info(object message, string executionId)
         {
-            var customMessage = UpdateCustomMessage(message, executionId);
-            _log.Info(customMessage);
+            if (Config.Server.ExecutionLogLevel == "INFO")
+            {
+                var customMessage = UpdateCustomMessage(message, executionId);
+                _log.Info(customMessage);
+            }
         }
 
         public static void Info(object message, Exception exception, string executionId)
         {
-            var customMessage = UpdateCustomMessage(message, executionId);
-            _log.Info(customMessage, exception);
+            if (Config.Server.ExecutionLogLevel == "INFO")
+            {
+                var customMessage = UpdateCustomMessage(message, executionId);
+                _log.Info(customMessage, exception);
+            }
         }
 
         static string UpdateCustomMessage(object message, string executionId) => $"[{executionId}] - {message}";
