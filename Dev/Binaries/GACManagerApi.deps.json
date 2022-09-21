@@ -1,0 +1,52 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v6.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v6.0": {
+      "GACManagerApi/1.0.0": {
+        "dependencies": {
+          "Microsoft.CSharp": "4.7.0",
+          "Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers": "0.4.346201",
+          "System.Data.DataSetExtensions": "4.5.0"
+        },
+        "runtime": {
+          "GACManagerApi.dll": {}
+        }
+      },
+      "Microsoft.CSharp/4.7.0": {},
+      "Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers/0.4.346201": {},
+      "System.Data.DataSetExtensions/4.5.0": {}
+    }
+  },
+  "libraries": {
+    "GACManagerApi/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Microsoft.CSharp/4.7.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-pTj+D3uJWyN3My70i2Hqo+OXixq3Os2D1nJ2x92FFo6sk8fYS1m1WLNTs0Dc1uPaViH0YvEEwvzddQ7y4rhXmA==",
+      "path": "microsoft.csharp/4.7.0",
+      "hashPath": "microsoft.csharp.4.7.0.nupkg.sha512"
+    },
+    "Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers/0.4.346201": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-66TvE5DcCpa5lbf0DVlFHz/nhrkaz7WIQFTifZt9zUrvbz+CenHRD9gXgc9a2rBGcg8mQhBAY3NA7aoWGfA++Q==",
+      "path": "microsoft.dotnet.upgradeassistant.extensions.default.analyzers/0.4.346201",
+      "hashPath": "microsoft.dotnet.upgradeassistant.extensions.default.analyzers.0.4.346201.nupkg.sha512"
+    },
+    "System.Data.DataSetExtensions/4.5.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-221clPs1445HkTBZPL+K9sDBdJRB8UN8rgjO3ztB0CQ26z//fmJXtlsr6whGatscsKGBrhJl5bwJuKSA8mwFOw==",
+      "path": "system.data.datasetextensions/4.5.0",
+      "hashPath": "system.data.datasetextensions.4.5.0.nupkg.sha512"
+    }
+  }
+}
