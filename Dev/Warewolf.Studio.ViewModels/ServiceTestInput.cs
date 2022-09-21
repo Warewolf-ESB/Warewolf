@@ -9,12 +9,12 @@
 */
 using System;
 using Dev2.Common.Interfaces;
-using Microsoft.Practices.Prism.Mvvm;
+using Prism.Mvvm;
 using Newtonsoft.Json;
-
+using Dev2.Common;
 namespace Warewolf.Studio.ViewModels
 {
-    public class ServiceTestInput : BindableBase, IServiceTestInput
+    public class ServiceTestInput : BindableBase2, IServiceTestInput
     {
         string _variable;
         string _value;

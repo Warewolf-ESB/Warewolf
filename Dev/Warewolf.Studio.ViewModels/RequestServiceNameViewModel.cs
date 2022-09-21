@@ -27,8 +27,8 @@ using Dev2.Controller;
 using Dev2.Studio.Core;
 using Dev2.Studio.Interfaces;
 using Microsoft.Practices.Prism;
-using Microsoft.Practices.Prism.Commands;
-using Microsoft.Practices.Prism.Mvvm;
+using Prism.Commands;
+using Prism.Mvvm;
 using Warewolf.Resource.Errors;
 using Dev2.ConnectionHelpers;
 using System.Text;
@@ -36,7 +36,7 @@ using Dev2.Runtime.Hosting;
 
 namespace Warewolf.Studio.ViewModels
 {
-    public class RequestServiceNameViewModel : BindableBase, IRequestServiceNameViewModel
+    public class RequestServiceNameViewModel : BindableBase2, IRequestServiceNameViewModel
     {
         private string _name;
         private string _errorMessage;
@@ -347,7 +347,7 @@ namespace Warewolf.Studio.ViewModels
 
             HasLoaded = true;
             ValidateName();
-            _view.DataContext = this;
+           // _view.DataContext = this;
             _view.ShowView();
             
             UpdateEnvironment();

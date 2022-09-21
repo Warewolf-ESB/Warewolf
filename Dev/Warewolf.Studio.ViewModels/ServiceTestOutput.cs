@@ -15,12 +15,12 @@ using System.Linq;
 using Dev2.Common.Interfaces;
 using Dev2.DataList;
 using Dev2.DataList.Contract;
-using Microsoft.Practices.Prism.Mvvm;
+using Prism.Mvvm;
 using Newtonsoft.Json;
-
+using Dev2.Common;
 namespace Warewolf.Studio.ViewModels
 {
-    public class ServiceTestOutput : BindableBase, IServiceTestOutput
+    public class ServiceTestOutput : BindableBase2, IServiceTestOutput
     {
         string _variable;
         string _value;

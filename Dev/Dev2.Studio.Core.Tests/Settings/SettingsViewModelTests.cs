@@ -29,7 +29,7 @@ using Dev2.Settings.Security;
 using Dev2.Studio.Core;
 using Dev2.Studio.Interfaces;
 using Dev2.Threading;
-using Microsoft.Practices.Prism.PubSubEvents;
+using Prism.Events;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 

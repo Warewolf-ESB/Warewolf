@@ -49,10 +49,10 @@ namespace Dev2.Runtime.ESB.Control
         public Guid ExecuteRequest(IDSFDataObject dataObject, EsbExecuteRequest request, Guid workspaceId, out ErrorResultTO errors)
         {
 
-                var stateNotifier = CustomContainer.Get<IStateNotifierFactory>()?.New(dataObject);
-                dataObject.StateNotifier = stateNotifier;
+            var stateNotifier = CustomContainer.Get<IStateNotifierFactory>()?.New(dataObject);
+            dataObject.StateNotifier = stateNotifier;
 
-                var resultID = GlobalConstants.NullDataListID;
+            var resultID = GlobalConstants.NullDataListID;
             errors = new ErrorResultTO();
             IWorkspace theWorkspace = null;
             Common.Utilities.PerformActionInsideImpersonatedContext(Common.Utilities.ServerUser, () =>
@@ -197,7 +197,8 @@ namespace Dev2.Runtime.ESB.Control
                     _dataObject.IsServiceTestExecution = false;
 
                     var principle = Thread.CurrentPrincipal;
-                    Dev2Logger.Info("SUB-EXECUTION USER CONTEXT IS [ " + principle.Identity.Name + " ] FOR SERVICE  [ " + _dataObject.ServiceName + " ]", _dataObject.ExecutionID.ToString());
+                    if (principle != null)
+                        Dev2Logger.Info("SUB-EXECUTION USER CONTEXT IS [ " + principle.Identity.Name + " ] FOR SERVICE  [ " + _dataObject.ServiceName + " ]", _dataObject.ExecutionID.ToString());
                     _dataObject.StartTime = DateTime.Now;
 
                     var result = ExecuteWorkflow(wasTestExecution, update, handleErrors);

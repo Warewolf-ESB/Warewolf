@@ -278,7 +278,7 @@ namespace Dev2.Studio.ViewModels.DataList
         public DataListViewModel(IEventAggregator eventPublisher)
             : base(eventPublisher)
         {
-            ClearSearchTextCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() => SearchText = "");
+            ClearSearchTextCommand = new Prism.Commands.DelegateCommand(() => SearchText = "");
             ViewSortDelete = true;
 
             Provider = new Dev2TrieSuggestionProvider();

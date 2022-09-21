@@ -119,7 +119,8 @@ namespace Dev2.Tests.Activities
             var namespacesForImplementation = root.Element(a + "TextExpression.NamespacesForImplementation");
             Assert.IsNotNull(namespacesForImplementation);
 
-            XNamespace scg = "clr-namespace:System.Collections.Generic;assembly=mscorlib";
+            //XNamespace scg = "clr-namespace:System.Collections.Generic;assembly=mscorlib";
+            XNamespace scg = "clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib";
             var nsList = namespacesForImplementation.Element(scg + "List");
             Assert.IsNotNull(nsList);
 
@@ -129,7 +130,7 @@ namespace Dev2.Tests.Activities
             var referencesForImplementation = root.Element(a + "TextExpression.ReferencesForImplementation");
             Assert.IsNotNull(referencesForImplementation);
 
-            XNamespace sco = "clr-namespace:System.Collections.ObjectModel;assembly=mscorlib";
+            XNamespace sco = "clr-namespace:System.Collections.ObjectModel;assembly=System.Private.CoreLib";
             var asmList = referencesForImplementation.Element(sco + "Collection");
             Assert.IsNotNull(asmList);
 

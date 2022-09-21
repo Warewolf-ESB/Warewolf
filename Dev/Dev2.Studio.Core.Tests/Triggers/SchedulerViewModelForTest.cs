@@ -9,7 +9,7 @@
 */
 
 using Caliburn.Micro;
-using CubicOrange.Windows.Forms.ActiveDirectory;
+using Tulpep.ActiveDirectoryObjectPicker;
 using Dev2.Common.Interfaces.Scheduler.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Threading;

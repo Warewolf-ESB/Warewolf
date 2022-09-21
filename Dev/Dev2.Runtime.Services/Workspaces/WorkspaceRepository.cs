@@ -35,7 +35,7 @@ namespace Dev2.Workspaces
         public static readonly Guid ServerWorkspaceID = Guid.Empty;
         public static readonly string ServerWorkspacePath = EnvironmentVariables.GetWorkspacePath(GlobalConstants.ServerWorkspaceID);
 
-        readonly ConcurrentDictionary<string, Guid> _userMap;
+        readonly Dev2.Net6.Compatibility.ConcurrentDictionary<string, Guid> _userMap;
         readonly ConcurrentDictionary<Guid, IWorkspace> _items = new ConcurrentDictionary<Guid, IWorkspace>();
         readonly IResourceCatalog _resourceCatalog;
 
@@ -336,7 +336,7 @@ namespace Dev2.Workspaces
 
         static string GetUserMapFileName() => Path.Combine(EnvironmentVariables.WorkspacePath, "workspaces.bite");
 
-        static ConcurrentDictionary<string, Guid> ReadUserMap()
+        static Dev2.Net6.Compatibility.ConcurrentDictionary<string, Guid> ReadUserMap()
         {
             // force a lock on the file system ;)
             lock(UserMapLock)
@@ -350,7 +350,7 @@ namespace Dev2.Workspaces
                     {
                         try
                         {
-                            return (ConcurrentDictionary<string, Guid>)formatter.Deserialize(stream);
+                            return (Dev2.Net6.Compatibility.ConcurrentDictionary<string, Guid>)formatter.Deserialize(stream);
                         }                         
                         catch(Exception ex)                        
                         {
@@ -359,14 +359,14 @@ namespace Dev2.Workspaces
                         }
                     }
 
-                    var result = new ConcurrentDictionary<string, Guid>();
+                    var result = new Dev2.Net6.Compatibility.ConcurrentDictionary<string, Guid>();
                     formatter.Serialize(stream, result);
                     return result;
                 }
             }
         }
 
-        static void WriteUserMap(ConcurrentDictionary<string, Guid> userMap)
+        static void WriteUserMap(Dev2.Net6.Compatibility.ConcurrentDictionary<string, Guid> userMap)
         {
             // force a lock on the file system ;)
             lock (UserMapLock)

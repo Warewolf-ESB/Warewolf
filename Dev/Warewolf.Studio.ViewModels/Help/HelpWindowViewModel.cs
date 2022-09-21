@@ -14,12 +14,12 @@ using System.Collections.Generic;
 using System.Windows.Media;
 using Dev2;
 using Dev2.Common.Interfaces.Help;
-using Microsoft.Practices.Prism.Mvvm;
+using Dev2.Common;
 using Warewolf.Core;
-
+using Prism.Mvvm;
 namespace Warewolf.Studio.ViewModels.Help
 {
-    public class HelpWindowViewModel : BindableBase, IHelpWindowViewModel, IDisposable
+    public class HelpWindowViewModel : BindableBase2, IHelpWindowViewModel, IDisposable
     {
         IHelpDescriptorViewModel _currentHelpText;
         readonly IHelpDescriptorViewModel _defaultViewModel;

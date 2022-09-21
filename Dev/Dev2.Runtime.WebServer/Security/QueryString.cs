@@ -9,11 +9,12 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using Dev2.Services.Security;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.AspNet.SignalR.Hosting;
+//using Microsoft.AspNet.SignalR.Hosting;
 
 namespace Dev2.Runtime.WebServer.Security
 {

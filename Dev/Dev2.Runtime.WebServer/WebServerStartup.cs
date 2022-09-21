@@ -14,10 +14,10 @@ using System.Net;
 using System.Web.Http;
 using Dev2.Common;
 using Microsoft.AspNet.SignalR;
-using Microsoft.Owin.Cors;
+using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.Owin.Hosting;
 using Owin;
-
 
 namespace Dev2.Runtime.WebServer
 {
@@ -66,12 +66,11 @@ namespace Dev2.Runtime.WebServer
             listener.AuthenticationSchemeSelectorDelegate += AuthenticationSchemeSelectorDelegate;
             listener.IgnoreWriteExceptions = true;  // ignore errors written to disconnected clients.
             // Enable cross-domain calls
-            app.UseCors(CorsOptions.AllowAll);
-
+            //app.UseCors(CorsOptions.AllowAll);
             //
             // Sequence is important!
             // ALWAYS MapSignalR first then UseWebApi
-            //
+            
 
             // Add SignalR routing...
             var hubConfiguration = new HubConfiguration { EnableDetailedErrors = true, EnableJSONP = true };

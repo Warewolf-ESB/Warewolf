@@ -21,12 +21,12 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Services.Security;
 using Dev2.Studio.Interfaces;
-using Microsoft.Practices.Prism.Mvvm;
+using Prism.Mvvm;
 using Dev2.Common;
 
 namespace Warewolf.Studio.ViewModels
 {
-    public class ExplorerViewModelBase : BindableBase, IExplorerViewModel, IUpdatesHelp
+    public class ExplorerViewModelBase : BindableBase2, IExplorerViewModel, IUpdatesHelp
     {
         protected ObservableCollection<IEnvironmentViewModel> _environments;
         protected string _searchText;
@@ -38,9 +38,9 @@ namespace Warewolf.Studio.ViewModels
 
         protected ExplorerViewModelBase()
         {
-            RefreshCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(async () => await RefreshAsync(true).ConfigureAwait(true));
-            ClearSearchTextCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() => SearchText = "");
-            CreateFolderCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(CreateFolder);
+            RefreshCommand = new Prism.Commands.DelegateCommand(async () => await RefreshAsync(true).ConfigureAwait(true));
+            ClearSearchTextCommand = new Prism.Commands.DelegateCommand(() => SearchText = "");
+            CreateFolderCommand = new Prism.Commands.DelegateCommand(CreateFolder);
         }
 
         void CreateFolder()
@@ -303,12 +303,12 @@ namespace Warewolf.Studio.ViewModels
         readonly Action<IExplorerItemViewModel> _selectAction;
         bool _isLoading;
 
-        public ExplorerViewModel(IShellViewModel shellViewModel, Microsoft.Practices.Prism.PubSubEvents.IEventAggregator aggregator, bool shouldUpdateActiveEnvironment)
+        public ExplorerViewModel(IShellViewModel shellViewModel, Prism.Events.IEventAggregator aggregator, bool shouldUpdateActiveEnvironment)
             : this(shellViewModel, aggregator, shouldUpdateActiveEnvironment, null, true)
         {
         }
 
-        public ExplorerViewModel(IShellViewModel shellViewModel, Microsoft.Practices.Prism.PubSubEvents.IEventAggregator aggregator, bool shouldUpdateActiveEnvironment, Action<IExplorerItemViewModel> selectAction, bool loadLocalHost)
+        public ExplorerViewModel(IShellViewModel shellViewModel, Prism.Events.IEventAggregator aggregator, bool shouldUpdateActiveEnvironment, Action<IExplorerItemViewModel> selectAction, bool loadLocalHost)
         {
             if (shellViewModel == null)
             {

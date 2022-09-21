@@ -34,6 +34,7 @@ using Moq;
 using Newtonsoft.Json;
 using Dev2.Studio.Interfaces.Enums;
 using Microsoft.Practices.Prism.Mvvm;
+using Dev2.Tests;
 
 namespace Dev2.Core.Tests
 {
@@ -120,7 +121,7 @@ namespace Dev2.Core.Tests
         {
             CreateResourceRepo();
             var environmentRepo = GetEnvironmentRepository();
-            _eventAggregator = new Mock<IEventAggregator>();
+            _eventAggregator = new Mock<IEventAggregator>().Create();
             EventPublishers.Aggregator = _eventAggregator.Object;
             _popupController = new Mock<IPopupController>();
             _windowManager = new Mock<IWindowManager>();

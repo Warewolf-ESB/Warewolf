@@ -29,8 +29,8 @@ namespace Dev2.Activities.Utils
             Name = "";
             Value = "";
 
-            AddRowCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(AddRow);
-            RemoveRowCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(RemoveRow);
+            AddRowCommand = new Prism.Commands.DelegateCommand(AddRow);
+            RemoveRowCommand = new Prism.Commands.DelegateCommand(RemoveRow);
         }
 
         void RemoveRow()

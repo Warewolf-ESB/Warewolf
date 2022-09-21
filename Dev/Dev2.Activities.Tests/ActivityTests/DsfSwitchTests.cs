@@ -63,7 +63,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //---------------Set up test pack-------------------
             //string displayName, IDebugDispatcher debugDispatcher, bool isAsync = false
-            var switchActivity = new DsfFlowSwitchActivity("MyName", new Mock<IDebugDispatcher>().Object, It.IsAny<bool>())
+            var switchActivity = new DsfFlowSwitchActivity("MyName", new Mock<IDebugDispatcher>().Create().Object, It.IsAny<bool>())
             {
                 UniqueID = Guid.NewGuid().ToString()
             };
@@ -90,7 +90,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //---------------Set up test pack-------------------
             //string displayName, IDebugDispatcher debugDispatcher, bool isAsync = false
-            var switchActivity = new DsfFlowSwitchActivity("MyName", new Mock<IDebugDispatcher>().Object, It.IsAny<bool>())
+            var switchActivity = new DsfFlowSwitchActivity("MyName", new Mock<IDebugDispatcher>().Create().Object, It.IsAny<bool>())
             {
                 UniqueID = Guid.NewGuid().ToString()
             };
@@ -112,7 +112,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //---------------Set up test pack-------------------
             //string displayName, IDebugDispatcher debugDispatcher, bool isAsync = false
-            var switchActivity = new DsfFlowSwitchActivity("MyName", new Mock<IDebugDispatcher>().Object, It.IsAny<bool>())
+            var switchActivity = new DsfFlowSwitchActivity("MyName", new Mock<IDebugDispatcher>().Create().Object, It.IsAny<bool>())
             {
                 UniqueID = Guid.NewGuid().ToString()
             };
@@ -134,14 +134,14 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //---------------Set up test pack-------------------
             //string displayName, IDebugDispatcher debugDispatcher, bool isAsync = false
-            var switchActivity = new DsfFlowSwitchActivity("MyName", new Mock<IDebugDispatcher>().Object, It.IsAny<bool>())
+            var switchActivity = new DsfFlowSwitchActivity("MyName", new Mock<IDebugDispatcher>().Create().Object, It.IsAny<bool>())
             {
                 UniqueID = Guid.NewGuid().ToString()
             };
             var activity = new DsfSwitch(switchActivity);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            var customAttributes = activity.GetDebugInputs(new Mock<IExecutionEnvironment>().Object, 1);
+            var customAttributes = activity.GetDebugInputs(new Mock<IExecutionEnvironment>().Create().Object, 1);
             //---------------Test Result -----------------------
             Assert.AreEqual(0, customAttributes.Count);
         }
@@ -153,14 +153,14 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //---------------Set up test pack-------------------
             //string displayName, IDebugDispatcher debugDispatcher, bool isAsync = false
-            var switchActivity = new DsfFlowSwitchActivity("MyName", new Mock<IDebugDispatcher>().Object, It.IsAny<bool>())
+            var switchActivity = new DsfFlowSwitchActivity("MyName", new Mock<IDebugDispatcher>().Create().Object, It.IsAny<bool>())
             {
                 UniqueID = Guid.NewGuid().ToString()
             };
             var activity = new DsfSwitch(switchActivity);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            var customAttributes = activity.GetDebugOutputs(new Mock<IExecutionEnvironment>().Object, 1);
+            var customAttributes = activity.GetDebugOutputs(new Mock<IExecutionEnvironment>().Create().Object, 1);
             //---------------Test Result -----------------------
             Assert.AreEqual(0, customAttributes.Count);
         }
@@ -172,7 +172,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //---------------Set up test pack-------------------
             //string displayName, IDebugDispatcher debugDispatcher, bool isAsync = false
-            var switchActivity = new DsfFlowSwitchActivity("MyName", new Mock<IDebugDispatcher>().Object, It.IsAny<bool>())
+            var switchActivity = new DsfFlowSwitchActivity("MyName", new Mock<IDebugDispatcher>().Create().Object, It.IsAny<bool>())
             {
                 UniqueID = Guid.NewGuid().ToString()
             };
@@ -180,16 +180,16 @@ namespace Dev2.Tests.Activities.ActivityTests
             {
                 Result = "[[MyResult]]"
             };
-            var dataObject = new Mock<IDSFDataObject>();
+            var dataObject = new Mock<IDSFDataObject>().Create();
             dataObject.Setup(o => o.IsDebugMode()).Returns(true);
             var obj = new Warewolf.Testing.PrivateObject(activity);
             //---------------Assert Precondition----------------
-            var activityDebugOutputs = activity.GetDebugOutputs(new Mock<IExecutionEnvironment>().Object, 1);
+            var activityDebugOutputs = activity.GetDebugOutputs(new Mock<IExecutionEnvironment>().Create().Object, 1);
             Assert.AreEqual(0, activityDebugOutputs.Count);
             //---------------Execute Test ----------------------
             obj.Invoke("DebugOutput", dataObject.Object);
             //---------------Test Result -----------------------
-            activityDebugOutputs = activity.GetDebugOutputs(new Mock<IExecutionEnvironment>().Object, 1);
+            activityDebugOutputs = activity.GetDebugOutputs(new Mock<IExecutionEnvironment>().Create().Object, 1);
             Assert.AreEqual(1, activityDebugOutputs.Count);
         }
 
@@ -200,7 +200,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //---------------Set up test pack-------------------
             //string displayName, IDebugDispatcher debugDispatcher, bool isAsync = false
-            var switchActivity = new DsfFlowSwitchActivity("MyName", new Mock<IDebugDispatcher>().Object, It.IsAny<bool>())
+            var switchActivity = new DsfFlowSwitchActivity("MyName", new Mock<IDebugDispatcher>().Create().Object, It.IsAny<bool>())
             {
                 UniqueID = Guid.NewGuid().ToString(),
                 ExpressionText = ""
@@ -210,18 +210,18 @@ namespace Dev2.Tests.Activities.ActivityTests
             {
                 Result = "[[MyResult]]"
             };
-            var dataObject = new Mock<IDSFDataObject>();
+            var dataObject = new Mock<IDSFDataObject>().Create();
             dataObject.Setup(o => o.IsDebugMode()).Returns(true);
             var obj = new Warewolf.Testing.PrivateObject(activity);
             //---------------Assert Precondition----------------
-            var getDebugInputs = activity.GetDebugInputs(new Mock<IExecutionEnvironment>().Object, 1);
+            var getDebugInputs = activity.GetDebugInputs(new Mock<IExecutionEnvironment>().Create().Object, 1);
             Assert.AreEqual(0, getDebugInputs.Count);
             //---------------Execute Test ----------------------
             var result = "[[variable]]";
             var mySwitch = new Dev2Switch();
             obj.Invoke("Debug", dataObject.Object, result, mySwitch);
             //---------------Test Result -----------------------
-            getDebugInputs = activity.GetDebugInputs(new Mock<IExecutionEnvironment>().Object, 1);
+            getDebugInputs = activity.GetDebugInputs(new Mock<IExecutionEnvironment>().Create().Object, 1);
             Assert.AreEqual(1, getDebugInputs.Count);
         }
 
@@ -232,12 +232,12 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //---------------Set up test pack-------------------
             //string displayName, IDebugDispatcher debugDispatcher, bool isAsync = false
-            var switchActivity = new DsfFlowSwitchActivity("MyName", new Mock<IDebugDispatcher>().Object, It.IsAny<bool>())
+            var switchActivity = new DsfFlowSwitchActivity("MyName", new Mock<IDebugDispatcher>().Create().Object, It.IsAny<bool>())
             {
                 UniqueID = Guid.NewGuid().ToString(),
                 ExpressionText = ""
             };
-            var nextActivity = new Mock<IDev2Activity>();
+            var nextActivity = new Mock<IDev2Activity>().Create();
             var activity = new DsfSwitchMock(switchActivity)
             {
                 Result = "[[MyResult]]",
@@ -245,18 +245,18 @@ namespace Dev2.Tests.Activities.ActivityTests
                 Switches = new Dictionary<string, IDev2Activity>()
             };
             activity.Switches.Add("1", nextActivity.Object);
-            var dataObject = new Mock<IDSFDataObject>();
+            var dataObject = new Mock<IDSFDataObject>().Create();
             dataObject.Setup(o => o.IsDebugMode()).Returns(false);
             var executionEnvironment = new ExecutionEnvironment();
             executionEnvironment.Assign("[[Switch]]", "1", 1);
             dataObject.Setup(o => o.Environment).Returns(executionEnvironment);
             //---------------Assert Precondition----------------
-            var getDebugInputs = activity.GetDebugInputs(new Mock<IExecutionEnvironment>().Object, 1);
+            var getDebugInputs = activity.GetDebugInputs(new Mock<IExecutionEnvironment>().Create().Object, 1);
             Assert.AreEqual(0, getDebugInputs.Count);
             //---------------Execute Test ----------------------
             activity.ExecuteMock(dataObject.Object, 0);
             //---------------Test Result -----------------------
-            getDebugInputs = activity.GetDebugInputs(new Mock<IExecutionEnvironment>().Object, 1);
+            getDebugInputs = activity.GetDebugInputs(new Mock<IExecutionEnvironment>().Create().Object, 1);
             Assert.AreEqual(0, getDebugInputs.Count);
         }
 
@@ -267,12 +267,12 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //---------------Set up test pack-------------------
             //string displayName, IDebugDispatcher debugDispatcher, bool isAsync = false
-            var switchActivity = new DsfFlowSwitchActivity("MyName", new Mock<IDebugDispatcher>().Object, It.IsAny<bool>())
+            var switchActivity = new DsfFlowSwitchActivity("MyName", new Mock<IDebugDispatcher>().Create().Object, It.IsAny<bool>())
             {
                 UniqueID = Guid.NewGuid().ToString(),
                 ExpressionText = ""
             };
-            var nextActivity = new Mock<IDev2Activity>();
+            var nextActivity = new Mock<IDev2Activity>().Create();
             var activity = new DsfSwitchMock(switchActivity)
             {
                 Result = "[[MyResult]]",
@@ -280,19 +280,19 @@ namespace Dev2.Tests.Activities.ActivityTests
                 Switches = new Dictionary<string, IDev2Activity>()
             };
             activity.Switches.Add("1", nextActivity.Object);
-            var dataObject = new Mock<IDSFDataObject>();
+            var dataObject = new Mock<IDSFDataObject>().Create();
             dataObject.Setup(o => o.IsDebugMode()).Returns(false);
             var executionEnvironment = new ExecutionEnvironment();
             executionEnvironment.Assign("[[Switch]]", "1", 1);
             dataObject.Setup(o => o.Environment).Returns(executionEnvironment);
             //---------------Assert Precondition----------------
-            var getDebugInputs = activity.GetDebugInputs(new Mock<IExecutionEnvironment>().Object, 1);
+            var getDebugInputs = activity.GetDebugInputs(new Mock<IExecutionEnvironment>().Create().Object, 1);
             Assert.AreEqual(0, getDebugInputs.Count);
             Assert.IsNull(activity.NextNodes);
             //---------------Execute Test ----------------------
             activity.ExecuteMock(dataObject.Object, 0);
             //---------------Test Result -----------------------
-            getDebugInputs = activity.GetDebugInputs(new Mock<IExecutionEnvironment>().Object, 1);
+            getDebugInputs = activity.GetDebugInputs(new Mock<IExecutionEnvironment>().Create().Object, 1);
             Assert.AreEqual(0, getDebugInputs.Count);
             Assert.AreEqual(1, activity.NextNodes.Count());
             var contains = activity.NextNodes.Contains(nextActivity.Object);
@@ -305,12 +305,12 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //---------------Set up test pack-------------------
             //string displayName, IDebugDispatcher debugDispatcher, bool isAsync = false
-            var switchActivity = new DsfFlowSwitchActivity("MyName", new Mock<IDebugDispatcher>().Object, It.IsAny<bool>())
+            var switchActivity = new DsfFlowSwitchActivity("MyName", new Mock<IDebugDispatcher>().Create().Object, It.IsAny<bool>())
             {
                 UniqueID = Guid.NewGuid().ToString(),
                 ExpressionText = ""
             };
-            var nextActivity = new Mock<IDev2Activity>();
+            var nextActivity = new Mock<IDev2Activity>().Create();
             var activity = new DsfSwitchMock(switchActivity)
             {
                 Result = "[[MyResult]]",
@@ -318,19 +318,19 @@ namespace Dev2.Tests.Activities.ActivityTests
                 Switches = new Dictionary<string, IDev2Activity>(),
                 Default = new List<IDev2Activity> { nextActivity.Object }
             };
-            var dataObject = new Mock<IDSFDataObject>();
+            var dataObject = new Mock<IDSFDataObject>().Create();
             dataObject.Setup(o => o.IsDebugMode()).Returns(false);
             var executionEnvironment = new ExecutionEnvironment();
             executionEnvironment.Assign("[[Switch]]", "NoMatch", 1);
             dataObject.Setup(o => o.Environment).Returns(executionEnvironment);
             //---------------Assert Precondition----------------
-            var getDebugInputs = activity.GetDebugInputs(new Mock<IExecutionEnvironment>().Object, 1);
+            var getDebugInputs = activity.GetDebugInputs(new Mock<IExecutionEnvironment>().Create().Object, 1);
             Assert.AreEqual(0, getDebugInputs.Count);
             Assert.IsNull(activity.NextNodes);
             //---------------Execute Test ----------------------
             activity.ExecuteMock(dataObject.Object, 0);
             //---------------Test Result -----------------------
-            getDebugInputs = activity.GetDebugInputs(new Mock<IExecutionEnvironment>().Object, 1);
+            getDebugInputs = activity.GetDebugInputs(new Mock<IExecutionEnvironment>().Create().Object, 1);
             Assert.AreEqual(0, getDebugInputs.Count);
             Assert.IsNotNull(activity.NextNodes);
             Assert.AreEqual(1, activity.NextNodes.Count());
@@ -346,12 +346,12 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //---------------Set up test pack-------------------
             //string displayName, IDebugDispatcher debugDispatcher, bool isAsync = false
-            var switchActivity = new DsfFlowSwitchActivity("MyName", new Mock<IDebugDispatcher>().Object, It.IsAny<bool>())
+            var switchActivity = new DsfFlowSwitchActivity("MyName", new Mock<IDebugDispatcher>().Create().Object, It.IsAny<bool>())
             {
                 UniqueID = Guid.NewGuid().ToString(),
                 ExpressionText = ""
             };
-            var nextActivity = new Mock<IDev2Activity>();
+            var nextActivity = new Mock<IDev2Activity>().Create();
             var activity = new DsfSwitchMock(switchActivity)
             {
                 Result = "[[MyResult]]",
@@ -359,19 +359,19 @@ namespace Dev2.Tests.Activities.ActivityTests
                 Switches = new Dictionary<string, IDev2Activity>(),
                 Default = new List<IDev2Activity> { nextActivity.Object }
             };
-            var dataObject = new Mock<IDSFDataObject>();
+            var dataObject = new Mock<IDSFDataObject>().Create();
             dataObject.Setup(o => o.IsDebugMode()).Returns(true);
             var executionEnvironment = new ExecutionEnvironment();
             executionEnvironment.Assign("[[Switch]]", "NoMatch", 1);
             dataObject.Setup(o => o.Environment).Returns(executionEnvironment);
             //---------------Assert Precondition----------------
-            var getDebugInputs = activity.GetDebugInputs(new Mock<IExecutionEnvironment>().Object, 1);
+            var getDebugInputs = activity.GetDebugInputs(new Mock<IExecutionEnvironment>().Create().Object, 1);
             Assert.AreEqual(0, getDebugInputs.Count);
             Assert.IsNull(activity.NextNodes);
             //---------------Execute Test ----------------------
             activity.ExecuteMock(dataObject.Object, 0);
             //---------------Test Result -----------------------
-            getDebugInputs = activity.GetDebugInputs(new Mock<IExecutionEnvironment>().Object, 1);
+            getDebugInputs = activity.GetDebugInputs(new Mock<IExecutionEnvironment>().Create().Object, 1);
             Assert.AreEqual(1, getDebugInputs.Count);
             Assert.IsNotNull(activity.NextNodes);
             Assert.AreEqual(1, activity.NextNodes.Count());
@@ -387,12 +387,12 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //---------------Set up test pack-------------------
             //string displayName, IDebugDispatcher debugDispatcher, bool isAsync = false
-            var switchActivity = new DsfFlowSwitchActivity("MyName", new Mock<IDebugDispatcher>().Object, It.IsAny<bool>())
+            var switchActivity = new DsfFlowSwitchActivity("MyName", new Mock<IDebugDispatcher>().Create().Object, It.IsAny<bool>())
             {
                 UniqueID = Guid.NewGuid().ToString(),
                 ExpressionText = ""
             };
-            var nextActivity = new Mock<IDev2Activity>();
+            var nextActivity = new Mock<IDev2Activity>().Create();
             var activity = new DsfSwitchMock(switchActivity)
             {
                 Result = "[[MyResult]]",
@@ -400,19 +400,19 @@ namespace Dev2.Tests.Activities.ActivityTests
                 Switches = new Dictionary<string, IDev2Activity>(),
                 Default = null
             };
-            var dataObject = new Mock<IDSFDataObject>();
+            var dataObject = new Mock<IDSFDataObject>().Create();
             dataObject.Setup(o => o.IsDebugMode()).Returns(true);
             var executionEnvironment = new ExecutionEnvironment();
             executionEnvironment.Assign("[[Switch]]", "NoMatch", 1);
             dataObject.Setup(o => o.Environment).Returns(executionEnvironment);
             //---------------Assert Precondition----------------
-            var getDebugInputs = activity.GetDebugInputs(new Mock<IExecutionEnvironment>().Object, 1);
+            var getDebugInputs = activity.GetDebugInputs(new Mock<IExecutionEnvironment>().Create().Object, 1);
             Assert.AreEqual(0, getDebugInputs.Count);
             Assert.IsNull(activity.NextNodes);
             //---------------Execute Test ----------------------
             activity.ExecuteMock(dataObject.Object, 0);
             //---------------Test Result -----------------------
-            getDebugInputs = activity.GetDebugInputs(new Mock<IExecutionEnvironment>().Object, 1);
+            getDebugInputs = activity.GetDebugInputs(new Mock<IExecutionEnvironment>().Create().Object, 1);
             Assert.AreEqual(1, getDebugInputs.Count);
             Assert.IsNotNull(activity.NextNodes);
             Assert.AreEqual(0, activity.NextNodes.Count());
@@ -427,7 +427,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void DsfSwitch_GetState_ReturnsStateVariable()
         {
             //---------------Set up test pack-------------------
-            var nextActivity = new Mock<IDev2Activity>();
+            var nextActivity = new Mock<IDev2Activity>().Create();
             var serializer = new Dev2JsonSerializer();
             //------------Setup for test--------------------------
 

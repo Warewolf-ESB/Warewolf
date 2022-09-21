@@ -10,8 +10,11 @@ namespace Dev2.Core.Tests.Merge
         [Owner("Pieter Terblanche")]
         public void MergePreviewWorkflowStateApplier_Constructor()
         {
-            var mergePreviewWorkflowStateApplier = CreateMergePreviewWorkflowStateApplier();
-            Assert.IsNotNull(mergePreviewWorkflowStateApplier);
+            Net6.Compatibility.STAThreadExtensions.RunSTAThreadAsync(() =>
+            {
+                var mergePreviewWorkflowStateApplier = CreateMergePreviewWorkflowStateApplier();
+                Assert.IsNotNull(mergePreviewWorkflowStateApplier);
+            });
         }
     }
 }

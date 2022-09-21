@@ -26,7 +26,7 @@ using Dev2.Common.Interfaces.WebService;
 using Dev2.Common.Interfaces.WebServices;
 using Dev2.Communication;
 using Dev2.Runtime.ServiceModel.Data;
-using Microsoft.Practices.Prism.Commands;
+using Prism.Commands;
 using Newtonsoft.Json;
 using Warewolf.Core;
 using Warewolf.Data.Options;

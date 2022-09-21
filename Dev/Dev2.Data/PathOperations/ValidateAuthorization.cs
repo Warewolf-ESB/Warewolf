@@ -9,7 +9,7 @@
 */
 
 using System;
-using System.Security.Principal;
+using Dev2.Common;
 using Dev2.Data.Interfaces;
 using Dev2.PathOperations;
 
@@ -22,9 +22,9 @@ namespace Dev2.Data.PathOperations
 
     class WindowsImpersonationContextImpl : IWindowsImpersonationContext
     {
-        private readonly Common.WindowsImpersonationContext _context;
+        private readonly WindowsImpersonationContext _context;
 
-        public WindowsImpersonationContextImpl(Common.WindowsImpersonationContext context)
+        public WindowsImpersonationContextImpl(WindowsImpersonationContext context)
         {
             _context = context;
         }
@@ -50,7 +50,7 @@ namespace Dev2.Data.PathOperations
             {
                 using (safeToken)
                 {
-                    var newID = new Common.WindowsIdentity(safeToken.DangerousGetHandle());
+                    var newID = new WindowsIdentity(safeToken.DangerousGetHandle());
                     return new WindowsImpersonationContextImpl(newID.Impersonate());
                 }
             }

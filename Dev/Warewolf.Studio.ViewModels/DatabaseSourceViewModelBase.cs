@@ -13,8 +13,8 @@ using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Interfaces;
-using Microsoft.Practices.Prism.Commands;
-using Microsoft.Practices.Prism.PubSubEvents;
+using Prism.Commands;
+
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -338,7 +338,7 @@ namespace Warewolf.Studio.ViewModels
             InitializeViewModel(dbSourceImage);
         }
 
-        protected DatabaseSourceViewModelBase(IManageDatabaseSourceModel updateManager, Task<IRequestServiceNameViewModel> requestServiceNameViewModel, IEventAggregator aggregator, IAsyncWorker asyncWorker, string dbSourceImage)
+        protected DatabaseSourceViewModelBase(IManageDatabaseSourceModel updateManager, Task<IRequestServiceNameViewModel> requestServiceNameViewModel, Prism.Events.IEventAggregator aggregator, IAsyncWorker asyncWorker, string dbSourceImage)
             : this(asyncWorker, dbSourceImage)
         {
             VerifyArgument.IsNotNull("requestServiceNameViewModel", requestServiceNameViewModel);
@@ -358,7 +358,7 @@ namespace Warewolf.Studio.ViewModels
             Image = dbSourceImage;
         }
 
-        protected DatabaseSourceViewModelBase(IManageDatabaseSourceModel updateManager, IEventAggregator aggregator, IDbSource dbSource, IAsyncWorker asyncWorker, string dbSourceImage)
+        protected DatabaseSourceViewModelBase(IManageDatabaseSourceModel updateManager, Prism.Events.IEventAggregator aggregator, IDbSource dbSource, IAsyncWorker asyncWorker, string dbSourceImage)
             : this(asyncWorker, dbSourceImage)
         {
             VerifyArgument.IsNotNull("dbSource", dbSource);
@@ -381,7 +381,7 @@ namespace Warewolf.Studio.ViewModels
 
         #region Methods
 
-        void PerformInitialise(IManageDatabaseSourceModel updateManager, IEventAggregator aggregator)
+        void PerformInitialise(IManageDatabaseSourceModel updateManager, Prism.Events.IEventAggregator aggregator)
         {
             VerifyArgument.IsNotNull("updateManager", updateManager);
             VerifyArgument.IsNotNull("aggregator", aggregator);

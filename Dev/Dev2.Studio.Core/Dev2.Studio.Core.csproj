@@ -191,7 +191,6 @@
     <Compile Include="Models\DataList\RecordSetItemModel.cs" />
     <Compile Include="Models\DataList\ScalarItemModel.cs" />
     <Compile Include="NetworkStateChangedEventArgs.cs" />
-    <Compile Include="Fake\NotConnectedException.cs" />
     <Compile Include="Network\ServerProxyWithoutChunking.cs" />
     <Compile Include="CustomControls\CachingContentHost.cs" />
     <Compile Include="DataList\ActivityDataMappingBuilder.cs" />
@@ -439,7 +438,10 @@
     <PackageReference Include="System.ServiceModel.Duplex" Version="4.10.0" />
     <PackageReference Include="System.ServiceModel.NetTcp" Version="4.10.0" />
     <PackageReference Include="System.ServiceModel.Federation" Version="4.8.1" />
-    <PackageReference Include="TrieNet" Version="1.0.3.26316" />
+    <!--<PackageReference Include="TrieNet" Version="1.0.3.26316" />-->
+    <PackageReference Include="TrieNet.Core" Version="1.0.4" />
+    <PackageReference Include="Prism.Core" Version="8.1.97" />
+    <PackageReference Include="Prism.Wpf" Version="8.1.97" />
     <PackageReference Include="Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers" Version="0.4.336902">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>

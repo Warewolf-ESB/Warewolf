@@ -143,7 +143,6 @@
     <Compile Include="Exchange\IExchangeService.cs" />
     <Compile Include="Explorer\IExplorerItem.cs" />
     <Compile Include="Factories\IFileStreamFactory.cs" />
-    <Compile Include="Fake\HttpException.cs" />
     <Compile Include="FileListing.cs" />
     <Compile Include="Help\IHelpDescriptor.cs" />
     <Compile Include="Help\IHelpDescriptorViewModel.cs" />
@@ -470,9 +469,7 @@
     <PackageReference Include="Newtonsoft.Json">
       <Version>13.0.1</Version>
     </PackageReference>
-    <PackageReference Include="Prism.MVVM">
-      <Version>1.1.1</Version>
-    </PackageReference>
+    <PackageReference Include="Prism.Core" Version="8.1.97" />
     <PackageReference Include="TaskSchedulerEditor">
       <Version>2.10.1</Version>
     </PackageReference>
@@ -489,6 +486,7 @@
     <PackageReference Include="System.Activities.Core.Presentation">
       <Version>1.0.0-alpha003</Version>
     </PackageReference>
+    <PackageReference Include="Boxed.AspNetCore" Version="8.1.2" />
   </ItemGroup>
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />

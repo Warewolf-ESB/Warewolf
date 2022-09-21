@@ -17,7 +17,7 @@ using Dev2.Common.Serializers;
 using Dev2.Dialogs;
 using Dev2.Studio.Enums;
 using Dev2.Studio.Interfaces;
-using Microsoft.Practices.Prism.Commands;
+using Prism.Commands;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -42,7 +42,7 @@ namespace Dev2.Triggers.QueueEvents
 
         private ICommand _queueStatsCommand;
 
-        private readonly EnvironmentViewModel _source;
+        //private readonly EnvironmentViewModel _source;
         IResourcePickerDialog _currentResourcePicker;
         string _connectionError;
         bool _hasConnectionError;
@@ -69,7 +69,7 @@ namespace Dev2.Triggers.QueueEvents
 
             AddWorkflowCommand = new DelegateCommand(OpenResourcePicker);
 
-            _source = new EnvironmentViewModel(server, CustomContainer.Get<IShellViewModel>(), true);
+            //_source = new EnvironmentViewModel(server, CustomContainer.Get<IShellViewModel>(), true);
             _currentResourcePicker = resourcePickerDialog ?? CreateResourcePickerDialog();
             InitializeHelp();
             PopupController = CustomContainer.Get<IPopupController>();
@@ -120,8 +120,8 @@ namespace Dev2.Triggers.QueueEvents
 
         IResourcePickerDialog CreateResourcePickerDialog()
         {
-            var res = new ResourcePickerDialog(enDsfActivityType.All, _source);
-            ResourcePickerDialog.CreateAsync(enDsfActivityType.Workflow, _source).ContinueWith(a => _currentResourcePicker = a.Result);
+            var res = new ResourcePickerDialog(enDsfActivityType.All, null);
+            ResourcePickerDialog.CreateAsync(enDsfActivityType.Workflow, null).ContinueWith(a => _currentResourcePicker = a.Result);
             return res;
         }
 

@@ -19,12 +19,13 @@ using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.Deploy;
-using Microsoft.Practices.Prism.Mvvm;
+using Prism.Mvvm;
+using Prism.Mvvm;
 using Warewolf.Triggers;
 
 namespace Warewolf.Studio.ViewModels
 {
-    public class DeployStatsViewerViewModel : BindableBase, IDeployStatsViewerViewModel
+    public class DeployStatsViewerViewModel : BindableBase2, IDeployStatsViewerViewModel
     {
         readonly IDeployDestinationExplorerViewModel _destination;
         int _connectors;

@@ -51,7 +51,7 @@ namespace Dev2.Activities.Designers2.Core.NamespaceRegion
                 {
                     SelectedNamespace = Namespaces.FirstOrDefault(item => item.FullName == Namespace.FullName);
                 }
-                RefreshNamespaceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() =>
+                RefreshNamespaceCommand = new Prism.Commands.DelegateCommand(() =>
                 {
                     IsRefreshing = true;
                     if (_source.SelectedSource != null)
@@ -147,7 +147,7 @@ namespace Dev2.Activities.Designers2.Core.NamespaceRegion
                 SourceChangedNamespace?.Invoke();
                 OnSomethingChanged(this);
 
-                var delegateCommand = RefreshNamespaceCommand as Microsoft.Practices.Prism.Commands.DelegateCommand;
+                var delegateCommand = RefreshNamespaceCommand as Prism.Commands.DelegateCommand;
                 delegateCommand?.RaiseCanExecuteChanged();
 
                 _selectedNamespace = value;

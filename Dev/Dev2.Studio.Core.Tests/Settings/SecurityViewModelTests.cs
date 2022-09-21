@@ -19,7 +19,7 @@ using System.Text;
 using System.Windows;
 using System.Windows.Forms;
 using Caliburn.Micro;
-using CubicOrange.Windows.Forms.ActiveDirectory;
+using Tulpep.ActiveDirectoryObjectPicker;
 using Dev2.Common;
 using Dev2.Common.Interfaces.PopupController;
 using Dev2.Common.Interfaces.Studio.Controller;
@@ -38,7 +38,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Warewolf.Data;
 using Warewolf.Studio.Core.Popup;
-
+using Dev2.Net6.Compatibility;
 
 namespace Dev2.Core.Tests.Settings
 {
@@ -98,7 +98,7 @@ namespace Dev2.Core.Tests.Settings
             var explorerTooltips = new Mock<IExplorerTooltips>();
 
             CustomContainer.Register(mockShellViewModel.Object);
-            CustomContainer.Register(new Mock<Microsoft.Practices.Prism.PubSubEvents.IEventAggregator>().Object);
+            CustomContainer.Register(new Mock<Prism.Events.IEventAggregator>().Object);
             CustomContainer.Register(connectControlSingleton.Object);
             CustomContainer.Register(explorerTooltips.Object);
             ServerRepository.Instance.ActiveServer = _environmentModel.Object;
@@ -1174,6 +1174,7 @@ namespace Dev2.Core.Tests.Settings
         [Timeout(300000)]
         public void SecurityViewModel_CloseHelpCommand_IsResourceHelpVisibleIsTrue_IsResourceHelpVisibleIsFalse()
         {
+            //STAThreadExtensions.RunAsSTA(() => {
             //------------Setup for test--------------------------
             var viewModel = new SecurityViewModel(new SecuritySettingsTO(new WindowsGroupPermission[0]), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object) {IsResourceHelpVisible = true};
 
@@ -1183,6 +1184,7 @@ namespace Dev2.Core.Tests.Settings
             //------------Assert Results-------------------------
             Assert.IsFalse(viewModel.IsResourceHelpVisible);
             Assert.IsFalse(viewModel.IsServerHelpVisible);
+            //});
         }
 
         [TestMethod]

@@ -13,6 +13,7 @@ using System;
 using System.ComponentModel;
 using System.Text;
 using Microsoft.Practices.Prism.Mvvm;
+//using Microsoft.AspNetCore.Mvc.ViewEngines;
 
 
 
@@ -32,5 +33,14 @@ namespace Dev2.Studio.Interfaces
 
         void ClearErrors();
         StringBuilder GetWorkflowXaml();
+    }
+}
+
+
+namespace Microsoft.Practices.Prism.Mvvm
+{
+    public interface IView
+    {
+        object DataContext { get; set; }
     }
 }

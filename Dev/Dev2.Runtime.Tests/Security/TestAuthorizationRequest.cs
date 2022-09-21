@@ -14,7 +14,6 @@ using System.Security.Principal;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Runtime.WebServer.Security;
 using Dev2.Services.Security;
-using Microsoft.AspNet.SignalR.Hosting;
 using Moq;
 
 namespace Dev2.Tests.Runtime.Security
@@ -29,7 +28,7 @@ namespace Dev2.Tests.Runtime.Security
         {
         }
 
-        public TestAuthorizationRequest(AuthorizationContext authorizationContext, WebServerRequestType requestType, string url, INameValueCollection queryString, string resource = null)
+        public TestAuthorizationRequest(AuthorizationContext authorizationContext, WebServerRequestType requestType, string url, Microsoft.AspNet.SignalR.Hosting.INameValueCollection queryString, string resource = null)
         {
             UserIsInRole = false;
             AuthorizationContext = authorizationContext;

@@ -9,7 +9,7 @@ using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Threading;
-using Microsoft.Practices.Prism.PubSubEvents;
+using Prism.Events;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Studio.Interfaces;
 
@@ -63,9 +63,9 @@ namespace Warewolf.Studio.ViewModels
 
             HeaderText = Resources.Languages.Core.WcfServiceNewHeaderLabel;
             Header = Resources.Languages.Core.WcfServiceNewHeaderLabel;
-            TestCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(TestConnection, CanTest);
-            SaveCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(SaveConnection, CanSave);
-            CancelTestCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(CancelTest, CanCancelTest);
+            TestCommand = new Prism.Commands.DelegateCommand(TestConnection, CanTest);
+            SaveCommand = new Prism.Commands.DelegateCommand(SaveConnection, CanSave);
+            CancelTestCommand = new Prism.Commands.DelegateCommand(CancelTest, CanCancelTest);
         }
 
         bool _testPassed;

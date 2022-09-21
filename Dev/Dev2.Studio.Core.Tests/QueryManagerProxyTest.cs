@@ -22,6 +22,7 @@ using Dev2.Common.Interfaces.Explorer;
 using System.Threading;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
+using Dev2.Tests;
 
 namespace Dev2.Core.Tests
 {
@@ -34,7 +35,7 @@ namespace Dev2.Core.Tests
         public void QueryManagerProxy_Ctor_ValidValues_ExpectCreated()
         {
             //------------Setup for test--------------------------
-            var queryManagerProxy = new QueryManagerProxy(new Mock<ICommunicationControllerFactory>().Object, new Mock<IEnvironmentConnection>().Object);
+            var queryManagerProxy = new QueryManagerProxy(new Mock<ICommunicationControllerFactory>().Create().Object, new Mock<IEnvironmentConnection>().Object);
 
             //------------Execute Test---------------------------
             //------------Assert Results-------------------------
@@ -167,7 +168,7 @@ namespace Dev2.Core.Tests
         {
             var ser = new Dev2JsonSerializer();
             var res = ser.SerializeToBuilder(new List<IPluginConstructor>());
-            var ns = new Mock<INamespaceItem>();
+            var ns = new Mock<INamespaceItem>().Create();
             RunTest("FetchPluginConstructors", new ExecuteMessage
             {
                 HasError = false,
@@ -190,7 +191,7 @@ namespace Dev2.Core.Tests
             var dataListViewModel = new DataListViewModel(aggr.Object);
             dataListViewModel.Add(new ComplexObjectItemModel("Name", null, enDev2ColumnArgumentDirection.Both));
             DataListSingleton.SetDataList(dataListViewModel);
-            var ns = new Mock<INamespaceItem>();
+            var ns = new Mock<INamespaceItem>().Create();
             RunTest("FetchPluginConstructors", new ExecuteMessage
             {
                 HasError = false,
@@ -264,7 +265,9 @@ namespace Dev2.Core.Tests
         {
             var ser = new Dev2JsonSerializer();
             var res = ser.SerializeToBuilder(new List<IRabbitMQServiceSourceDefinition>());
-            RunTest("FetchDbActions", new ExecuteMessage { HasError = false, Message = res }, new List<Tuple<string, object>> { new Tuple<string, object>("source", new DbSourceDefinition()) }, a => Assert.AreEqual(0, a.Count), a => a.FetchDbActions(new Mock<IDbSource>().Object));
+            var source = new Mock<IDbSource>();
+            source.As<System.Runtime.Serialization.ISerializable>();
+            RunTest("FetchDbActions", new ExecuteMessage { HasError = false, Message = res }, new List<Tuple<string, object>> { new Tuple<string, object>("source", new DbSourceDefinition()) }, a => Assert.AreEqual(0, a.Count), a => a.FetchDbActions(source.Object));
         }
 
         [TestMethod]
@@ -275,7 +278,7 @@ namespace Dev2.Core.Tests
         {
             var ser = new Dev2JsonSerializer();
             var res = ser.SerializeToBuilder(new List<IRabbitMQServiceSourceDefinition>());
-            RunTest("FetchDbActions", new ExecuteMessage { HasError = true, Message = res }, new List<Tuple<string, object>> { new Tuple<string, object>("source", new DbSourceDefinition()) }, a => Assert.AreEqual(0, a.Count), a => a.FetchDbActions(new Mock<IDbSource>().Object));
+            RunTest("FetchDbActions", new ExecuteMessage { HasError = true, Message = res }, new List<Tuple<string, object>> { new Tuple<string, object>("source", new DbSourceDefinition()) }, a => Assert.AreEqual(0, a.Count), a => a.FetchDbActions(new Mock<IDbSource>().Create().Object));
         }
 
         [TestMethod]

@@ -153,11 +153,11 @@ namespace Dev2.Tests.Diagnostics
         {
             var debugDispatcher = new DebugDispatcherImplementation();
             var workspaceID = Guid.NewGuid();
-            var writer = new Mock<IDebugWriter>();
+            var writer = new Mock<IDebugWriter>().Create();
             writer.Setup(s => s.Write(It.IsAny<IDebugState>())).Verifiable();
             debugDispatcher.Add(workspaceID, writer.Object);
 
-            var mockState = new Mock<IDebugState>();
+            var mockState = new Mock<IDebugState>().Create();
             var clientId = Guid.NewGuid();
             var sessionId = Guid.NewGuid();
             mockState.Setup(o => o.WorkspaceID).Returns(workspaceID);

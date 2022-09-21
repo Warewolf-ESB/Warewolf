@@ -292,6 +292,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public void ShowMaximumLimitDataPopupMessage()
         {
+            if (_popupController == null) return;
             _popupController.Show(StringResources.DataInput_Warning,
                 StringResources.DataInput_Warning_Title,
                 MessageBoxButton.OK, MessageBoxImage.Warning, string.Empty, false, false, true, false, false, false);

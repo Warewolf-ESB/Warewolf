@@ -12,7 +12,6 @@ using Dev2.Common.Interfaces.Security;
 using Dev2.Communication;
 using Dev2.Runtime.Security;
 using Dev2.Services.Security;
-using Microsoft.AspNet.SignalR.Hosting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
@@ -21,6 +20,7 @@ using System.Reflection;
 using System.Threading;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Runtime.WebServer.Security;
+using Microsoft.AspNet.SignalR.Hosting;
 
 namespace Dev2.Tests.Runtime.Security
 {

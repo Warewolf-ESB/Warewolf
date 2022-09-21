@@ -9,11 +9,15 @@ using Dev2.Common.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using Warewolf.Studio.ViewModels;
 using Dev2.Common;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Warewolf.Studio.Views
 {
     public partial class ManageDatabaseSourceControl : IManageDatabaseSourceView, ICheckControlEnabledView
     {
+        public string Path => throw new NotImplementedException();
+
         public ManageDatabaseSourceControl()
         {
             InitializeComponent();
@@ -177,6 +181,11 @@ namespace Warewolf.Studio.Views
         public void SetDatabaseComboxBindingVisibility(Visibility collapsed)
         {
             DatabaseComboxContainer.Visibility = collapsed;
+        }
+
+        public Task RenderAsync(ViewContext context)
+        {
+            throw new NotImplementedException();
         }
     }
 

@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
 using Caliburn.Micro;
-using CubicOrange.Windows.Forms.ActiveDirectory;
+using Tulpep.ActiveDirectoryObjectPicker;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Explorer;
@@ -86,7 +86,7 @@ namespace Dev2.Core.Tests
             var ac = new Task<IExplorerItem>(() => new Mock<IExplorerItem>().Object);
             svr.Setup(a => a.LoadExplorer(false)).Returns(() => ac);
             CustomContainer.Register(svr.Object);
-            CustomContainer.Register(new Mock<Microsoft.Practices.Prism.PubSubEvents.IEventAggregator>().Object);
+            CustomContainer.Register(new Mock<Prism.Events.IEventAggregator>().Object);
             var serverRepo = new Mock<IServerRepository>();
             serverRepo.Setup(repository => repository.ActiveServer).Returns(svr.Object);
             CustomContainer.Register(serverRepo.Object);
@@ -367,17 +367,17 @@ namespace Dev2.Core.Tests
                     .First(i => i.WorkSurfaceViewModel.WorkSurfaceContext == WorkSurfaceContext.Workflow);
 
 
-            _eventAggregator.Setup(e => e.Publish(It.IsAny<SaveResourceMessage>()))
-                .Callback<object>(o =>
-                {
-                    var msg = (SaveResourceMessage)o;
-                    Assert.IsTrue(msg.Resource.Equals(_firstResource.Object));
-                });
+            //_eventAggregator.Setup(e => e.Publish(It.IsAny<SaveResourceMessage>()))
+            //    .Callback<object>(o =>
+            //    {
+            //        var msg = (SaveResourceMessage)o;
+            //        Assert.IsTrue(msg.Resource.Equals(_firstResource.Object));
+            //    });
 
             _shellViewModel.DeactivateItem(activetx, true);
             _mockWorkspaceRepo.Verify(c => c.Remove(_firstResource.Object), Times.Once());
             Assert.IsTrue(_shellViewModel.Items.Count == 1);
-            _eventAggregator.Verify(e => e.Publish(It.IsAny<SaveResourceMessage>()), Times.Once());
+          //  _eventAggregator.Verify(e => e.Publish(It.IsAny<SaveResourceMessage>()), Times.Once());
         }
 
         [TestMethod]
@@ -700,7 +700,7 @@ namespace Dev2.Core.Tests
             _firstResource.Setup(r => r.IsWorkflowSaved).Returns(false);
             _firstResource.Setup(r => r.IsAuthorized(AuthorizationContext.Contribute)).Returns(false);
 
-            _eventAggregator.Setup(e => e.Publish(It.IsAny<SaveResourceMessage>())).Verifiable();
+            //_eventAggregator.Setup(e => e.Publish(It.IsAny<SaveResourceMessage>())).Verifiable();
 
             _popupController.Setup(s => s.Show()).Returns(MessageBoxResult.Yes);
             var activetx = _shellViewModel.Items.ToList().First(i => i.WorkSurfaceViewModel.WorkSurfaceContext == WorkSurfaceContext.Workflow);
@@ -709,7 +709,7 @@ namespace Dev2.Core.Tests
             _shellViewModel.WorksurfaceContextManager.CloseWorkSurfaceContext(activetx, null);
             var pvt = new Warewolf.Testing.PrivateObject(_shellViewModel);
             //------------Assert Results-------------------------
-            _eventAggregator.Verify(e => e.Publish(It.IsAny<SaveResourceMessage>()), Times.Never());
+            //_eventAggregator.Verify(e => e.Publish(It.IsAny<SaveResourceMessage>()), Times.Never());
             _firstResource.Verify(r => r.Commit(), Times.Never(), "ResourceModel was committed when saved.");
             _firstResource.Verify(r => r.Rollback(), Times.Never(), "ResourceModel was rolled back when saved.");
             Assert.IsNull(pvt.GetField("_previousActive"));

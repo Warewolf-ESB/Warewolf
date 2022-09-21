@@ -331,7 +331,7 @@ namespace Dev2.Activities.Designers2.Core.QuickVariableInput
 
             var inputs = PreviewViewModel.Inputs.Select(input => input.Key);
             var enumerable = inputs as IList<string> ?? inputs.ToList();
-            EventPublishers.Aggregator.Publish(new AddStringListToDataListMessage(enumerable.ToList()));
+            //EventPublishers.Aggregator.Publish(new AddStringListToDataListMessage(enumerable.ToList()));
             _addToCollection(enumerable, Overwrite);
             DoClear(o);
         }

@@ -14,7 +14,6 @@ using System.Activities.Presentation.Model;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Common.Interfaces;
 using Dev2.Studio.Core.Activities.Utils;
-using Microsoft.Practices.Prism.Mvvm;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.Factory;
 using Dev2.Activities;
@@ -27,7 +26,7 @@ using Dev2.Studio.Interfaces.DataList;
 
 namespace Dev2.ViewModels.Merge
 {
-    public class ConflictModelFactory : BindableBase, IConflictModelFactory
+    public class ConflictModelFactory : BindableBase2, IConflictModelFactory
     {
         readonly IContextualResourceModel _resourceModel;
         bool _isWorkflowNameChecked;

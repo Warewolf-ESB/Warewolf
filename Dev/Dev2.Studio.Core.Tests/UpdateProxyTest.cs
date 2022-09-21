@@ -22,6 +22,7 @@ using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using System.Collections.Generic;
 using Dev2.Common.Interfaces.Deploy;
+using Dev2.Tests;
 
 namespace Dev2.Core.Tests
 {
@@ -43,7 +44,7 @@ namespace Dev2.Core.Tests
             controller.Setup(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>())).Returns(new ExecuteMessage { HasError = false });
             //------------Execute Test---------------------------
 
-            updateProxyTest.SaveRabbitMQServiceSource(new Mock<IRabbitMQServiceSourceDefinition>().Object, Guid.NewGuid());
+            updateProxyTest.SaveRabbitMQServiceSource(new Mock<IRabbitMQServiceSourceDefinition>().Create().Object, Guid.NewGuid());
             //------------Assert Results-------------------------
             controller.Verify(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>()));
         }
@@ -63,7 +64,7 @@ namespace Dev2.Core.Tests
             controller.Setup(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>())).Returns(new ExecuteMessage { HasError = false });
             //------------Execute Test---------------------------
 
-            updateProxyTest.TestRabbitMQServiceSource(new Mock<IRabbitMQServiceSourceDefinition>().Object);
+            updateProxyTest.TestRabbitMQServiceSource(new Mock<IRabbitMQServiceSourceDefinition>().Create().Object);
             //------------Assert Results-------------------------
             controller.Verify(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>()));
         }
@@ -84,7 +85,7 @@ namespace Dev2.Core.Tests
             controller.Setup(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>())).Returns(new ExecuteMessage { HasError = true, Message = new StringBuilder("bob") });
             //------------Execute Test---------------------------
 
-            updateProxyTest.SaveRabbitMQServiceSource(new Mock<IRabbitMQServiceSourceDefinition>().Object, Guid.NewGuid());
+            updateProxyTest.SaveRabbitMQServiceSource(new Mock<IRabbitMQServiceSourceDefinition>().Create().Object, Guid.NewGuid());
             //------------Assert Results-------------------------
             controller.Verify(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>()));
         }
@@ -105,7 +106,7 @@ namespace Dev2.Core.Tests
             controller.Setup(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>())).Returns(new ExecuteMessage { HasError = true, Message = new StringBuilder("") });
             //------------Execute Test---------------------------
 
-            updateProxyTest.TestRabbitMQServiceSource(new Mock<IRabbitMQServiceSourceDefinition>().Object);
+            updateProxyTest.TestRabbitMQServiceSource(new Mock<IRabbitMQServiceSourceDefinition>().Create().Object);
             //------------Assert Results-------------------------
             controller.Verify(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>()));
         }
@@ -125,7 +126,7 @@ namespace Dev2.Core.Tests
             controller.Setup(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>())).Returns(new ExecuteMessage { HasError = false });
             //------------Execute Test---------------------------
 
-            updateProxyTest.SaveExchangeSource(new Mock<IExchangeSource>().Object, Guid.NewGuid());
+            updateProxyTest.SaveExchangeSource(new Mock<IExchangeSource>().Create().Object, Guid.NewGuid());
             //------------Assert Results-------------------------
             controller.Verify(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>()));
         }
@@ -145,7 +146,7 @@ namespace Dev2.Core.Tests
             controller.Setup(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>())).Returns(new ExecuteMessage { HasError = false });
             //------------Execute Test---------------------------
 
-            updateProxyTest.TestExchangeServiceSource(new Mock<IExchangeSource>().Object);
+            updateProxyTest.TestExchangeServiceSource(new Mock<IExchangeSource>().Create().Object);
             //------------Assert Results-------------------------
             controller.Verify(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>()));
         }
@@ -166,7 +167,7 @@ namespace Dev2.Core.Tests
             controller.Setup(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>())).Returns(new ExecuteMessage { HasError = true, Message = new StringBuilder("bob") });
             //------------Execute Test---------------------------
 
-            updateProxyTest.SaveExchangeSource(new Mock<IExchangeSource>().Object, Guid.NewGuid());
+            updateProxyTest.SaveExchangeSource(new Mock<IExchangeSource>().Create().Object, Guid.NewGuid());
             //------------Assert Results-------------------------
             controller.Verify(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>()));
         }
@@ -187,7 +188,7 @@ namespace Dev2.Core.Tests
             controller.Setup(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>())).Returns(new ExecuteMessage { HasError = true, Message = new StringBuilder("") });
             //------------Execute Test---------------------------
 
-            updateProxyTest.TestExchangeServiceSource(new Mock<IExchangeSource>().Object);
+            updateProxyTest.TestExchangeServiceSource(new Mock<IExchangeSource>().Create().Object);
             //------------Assert Results-------------------------
             controller.Verify(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>()));
         }
@@ -207,7 +208,7 @@ namespace Dev2.Core.Tests
             controller.Setup(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>())).Returns(new ExecuteMessage { HasError = false });
             //------------Execute Test---------------------------
 
-            updateProxyTest.SaveEmailServiceSource(new Mock<IEmailServiceSource>().Object, Guid.NewGuid());
+            updateProxyTest.SaveEmailServiceSource(new Mock<IEmailServiceSource>().Create().Object, Guid.NewGuid());
             //------------Assert Results-------------------------
             controller.Verify(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>()));
         }
@@ -227,7 +228,7 @@ namespace Dev2.Core.Tests
             controller.Setup(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>())).Returns(new ExecuteMessage { HasError = false });
             //------------Execute Test---------------------------
 
-            updateProxyTest.TestEmailServiceSource(new Mock<IEmailServiceSource>().Object);
+            updateProxyTest.TestEmailServiceSource(new Mock<IEmailServiceSource>().Create().Object);
             //------------Assert Results-------------------------
             controller.Verify(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>()));
         }
@@ -248,7 +249,7 @@ namespace Dev2.Core.Tests
             controller.Setup(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>())).Returns(new ExecuteMessage { HasError = true, Message = new StringBuilder("bob") });
             //------------Execute Test---------------------------
 
-            updateProxyTest.SaveEmailServiceSource(new Mock<IEmailServiceSource>().Object, Guid.NewGuid());
+            updateProxyTest.SaveEmailServiceSource(new Mock<IEmailServiceSource>().Create().Object, Guid.NewGuid());
             //------------Assert Results-------------------------
             controller.Verify(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>()));
         }
@@ -269,7 +270,7 @@ namespace Dev2.Core.Tests
             controller.Setup(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>())).Returns(new ExecuteMessage { HasError = true, Message = new StringBuilder("bob") });
             //------------Execute Test---------------------------
 
-            updateProxyTest.TestEmailServiceSource(new Mock<IEmailServiceSource>().Object);
+            updateProxyTest.TestEmailServiceSource(new Mock<IEmailServiceSource>().Create().Object);
             //------------Assert Results-------------------------
             controller.Verify(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>()));
         }
@@ -289,7 +290,7 @@ namespace Dev2.Core.Tests
             controller.Setup(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>())).Returns(new ExecuteMessage { HasError = false });
             //------------Execute Test---------------------------
 
-            updateProxyTest.SaveOAuthSource(new Mock<IOAuthSource>().Object, Guid.NewGuid());
+            updateProxyTest.SaveOAuthSource(new Mock<IOAuthSource>().Create().Object, Guid.NewGuid());
             //------------Assert Results-------------------------
             controller.Verify(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>()));
         }
@@ -310,7 +311,7 @@ namespace Dev2.Core.Tests
             controller.Setup(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>())).Returns(new ExecuteMessage { HasError = true, Message = new StringBuilder("bob") });
             //------------Execute Test---------------------------
 
-            updateProxyTest.SaveOAuthSource(new Mock<IOAuthSource>().Object, Guid.NewGuid());
+            updateProxyTest.SaveOAuthSource(new Mock<IOAuthSource>().Create().Object, Guid.NewGuid());
             //------------Assert Results-------------------------
             controller.Verify(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>()));
         }
@@ -330,7 +331,7 @@ namespace Dev2.Core.Tests
             controller.Setup(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>())).Returns(new ExecuteMessage { HasError = false });
             //------------Execute Test---------------------------
 
-            updateProxyTest.SaveComPluginSource(new Mock<IComPluginSource>().Object, Guid.NewGuid());
+            updateProxyTest.SaveComPluginSource(new Mock<IComPluginSource>().Create().Object, Guid.NewGuid());
             //------------Assert Results-------------------------
             controller.Verify(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>()));
         }
@@ -350,7 +351,7 @@ namespace Dev2.Core.Tests
             controller.Setup(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>())).Returns(new ExecuteMessage { HasError = false });
             //------------Execute Test---------------------------
 
-            updateProxyTest.TestComPluginService(new Mock<IComPluginService>().Object);
+            updateProxyTest.TestComPluginService(new Mock<IComPluginService>().Create().Object);
             //------------Assert Results-------------------------
             controller.Verify(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>()));
         }
@@ -371,7 +372,7 @@ namespace Dev2.Core.Tests
             controller.Setup(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>())).Returns(new ExecuteMessage { HasError = true, Message = new StringBuilder("bob") });
             //------------Execute Test---------------------------
 
-            updateProxyTest.SaveComPluginSource(new Mock<IComPluginSource>().Object, Guid.NewGuid());
+            updateProxyTest.SaveComPluginSource(new Mock<IComPluginSource>().Create().Object, Guid.NewGuid());
             //------------Assert Results-------------------------
             controller.Verify(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>()));
         }
@@ -392,7 +393,7 @@ namespace Dev2.Core.Tests
             controller.Setup(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>())).Returns(new ExecuteMessage { HasError = true, Message = new StringBuilder("bob") });
             //------------Execute Test---------------------------
 
-            updateProxyTest.TestComPluginService(new Mock<IComPluginService>().Object);
+            updateProxyTest.TestComPluginService(new Mock<IComPluginService>().Create().Object);
             //------------Assert Results-------------------------
             controller.Verify(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>()));
         }
@@ -412,7 +413,7 @@ namespace Dev2.Core.Tests
             controller.Setup(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>())).Returns(new ExecuteMessage { HasError = false });
             //------------Execute Test---------------------------
 
-            updateProxyTest.SavePluginSource(new Mock<IPluginSource>().Object, Guid.NewGuid());
+            updateProxyTest.SavePluginSource(new Mock<IPluginSource>().Create().Object, Guid.NewGuid());
             //------------Assert Results-------------------------
             controller.Verify(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>()));
         }
@@ -432,7 +433,7 @@ namespace Dev2.Core.Tests
             controller.Setup(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>())).Returns(new ExecuteMessage { HasError = false });
             //------------Execute Test---------------------------
 
-            updateProxyTest.TestPluginService(new Mock<IPluginService>().Object);
+            updateProxyTest.TestPluginService(new Mock<IPluginService>().Create().Object);
             //------------Assert Results-------------------------
             controller.Verify(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>()));
         }
@@ -453,7 +454,7 @@ namespace Dev2.Core.Tests
             controller.Setup(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>())).Returns(new ExecuteMessage { HasError = true, Message = new StringBuilder("bob") });
             //------------Execute Test---------------------------
 
-            updateProxyTest.SavePluginSource(new Mock<IPluginSource>().Object, Guid.NewGuid());
+            updateProxyTest.SavePluginSource(new Mock<IPluginSource>().Create().Object, Guid.NewGuid());
             //------------Assert Results-------------------------
             controller.Verify(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>()));
         }
@@ -474,7 +475,7 @@ namespace Dev2.Core.Tests
             controller.Setup(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>())).Returns(new ExecuteMessage { HasError = true, Message = new StringBuilder("bob") });
             //------------Execute Test---------------------------
 
-            updateProxyTest.TestPluginService(new Mock<IPluginService>().Object);
+            updateProxyTest.TestPluginService(new Mock<IPluginService>().Create().Object);
             //------------Assert Results-------------------------
             controller.Verify(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>()));
         }
@@ -494,7 +495,7 @@ namespace Dev2.Core.Tests
             controller.Setup(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>())).Returns(new ExecuteMessage { HasError = false });
             //------------Execute Test---------------------------
 
-            updateProxyTest.SaveSharePointServiceSource(new Mock<ISharepointServerSource>().Object, Guid.NewGuid());
+            updateProxyTest.SaveSharePointServiceSource(new Mock<ISharepointServerSource>().Create().Object, Guid.NewGuid());
             //------------Assert Results-------------------------
             controller.Verify(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>()));
         }
@@ -515,7 +516,7 @@ namespace Dev2.Core.Tests
             controller.Setup(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>())).Returns(new ExecuteMessage { HasError = true, Message = new StringBuilder("bob") });
             //------------Execute Test---------------------------
 
-            updateProxyTest.SaveSharePointServiceSource(new Mock<ISharepointServerSource>().Object, Guid.NewGuid());
+            updateProxyTest.SaveSharePointServiceSource(new Mock<ISharepointServerSource>().Create().Object, Guid.NewGuid());
             //------------Assert Results-------------------------
             controller.Verify(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>()));
         }
@@ -536,7 +537,7 @@ namespace Dev2.Core.Tests
             controller.Setup(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>())).Returns(new ExecuteMessage { HasError = true, Message = new StringBuilder("bob") });
             //------------Execute Test---------------------------
 
-            updateProxyTest.TestConnection(new Mock<ISharepointServerSource>().Object);
+            updateProxyTest.TestConnection(new Mock<ISharepointServerSource>().Create().Object);
             //------------Assert Results-------------------------
             controller.Verify(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>()));
         }
@@ -556,7 +557,7 @@ namespace Dev2.Core.Tests
             controller.Setup(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>())).Returns(new ExecuteMessage { HasError = false });
             //------------Execute Test---------------------------
 
-            updateProxyTest.SaveWebserviceSource(new Mock<IWebServiceSource>().Object, Guid.NewGuid());
+            updateProxyTest.SaveWebserviceSource(new Mock<IWebServiceSource>().Create().Object, Guid.NewGuid());
             //------------Assert Results-------------------------
             controller.Verify(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>()));
         }
@@ -577,7 +578,7 @@ namespace Dev2.Core.Tests
             controller.Setup(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>())).Returns(new ExecuteMessage { HasError = true, Message = new StringBuilder("bob") });
             //------------Execute Test---------------------------
 
-            updateProxyTest.SaveWebserviceSource(new Mock<IWebServiceSource>().Object, Guid.NewGuid());
+            updateProxyTest.SaveWebserviceSource(new Mock<IWebServiceSource>().Create().Object, Guid.NewGuid());
             //------------Assert Results-------------------------
             controller.Verify(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>()));
         }
@@ -597,7 +598,7 @@ namespace Dev2.Core.Tests
             controller.Setup(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>())).Returns(new ExecuteMessage { HasError = false });
             //------------Execute Test---------------------------
 
-            updateProxyTest.SaveRedisServiceSource(new Mock<IRedisServiceSource>().Object, Guid.NewGuid());
+            updateProxyTest.SaveRedisServiceSource(new Mock<IRedisServiceSource>().Create().Object, Guid.NewGuid());
             //------------Assert Results-------------------------
             controller.Verify(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>()));
         }
@@ -618,7 +619,7 @@ namespace Dev2.Core.Tests
             controller.Setup(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>())).Returns(new ExecuteMessage { HasError = true, Message = new StringBuilder("bob") });
             //------------Execute Test---------------------------
 
-            updateProxyTest.SaveRedisServiceSource(new Mock<IRedisServiceSource>().Object, Guid.NewGuid());
+            updateProxyTest.SaveRedisServiceSource(new Mock<IRedisServiceSource>().Create().Object, Guid.NewGuid());
             //------------Assert Results-------------------------
             controller.Verify(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>()));
         }
@@ -638,7 +639,7 @@ namespace Dev2.Core.Tests
             controller.Setup(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>())).Returns(new ExecuteMessage { HasError = false });
             //------------Execute Test---------------------------
 
-            updateProxyTest.SaveDbSource(new Mock<IDbSource>().Object, Guid.NewGuid());
+            updateProxyTest.SaveDbSource(new Mock<IDbSource>().Create().Object, Guid.NewGuid());
             //------------Assert Results-------------------------
             controller.Verify(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>()));
         }
@@ -658,7 +659,7 @@ namespace Dev2.Core.Tests
             controller.Setup(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>())).Returns(new ExecuteMessage { HasError = false });
             //------------Execute Test---------------------------
 
-            updateProxyTest.TestDbConnection(new Mock<IDbSource>().Object);
+            updateProxyTest.TestDbConnection(new Mock<IDbSource>().Create().Object);
             //------------Assert Results-------------------------
             controller.Verify(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>()));
         }
@@ -679,7 +680,7 @@ namespace Dev2.Core.Tests
             controller.Setup(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>())).Returns(new ExecuteMessage { HasError = true, Message = new StringBuilder("bob") });
             //------------Execute Test---------------------------
 
-            updateProxyTest.SaveDbSource(new Mock<IDbSource>().Object, Guid.NewGuid());
+            updateProxyTest.SaveDbSource(new Mock<IDbSource>().Create().Object, Guid.NewGuid());
             //------------Assert Results-------------------------
             controller.Verify(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>()));
         }
@@ -700,7 +701,7 @@ namespace Dev2.Core.Tests
             controller.Setup(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>())).Returns(new ExecuteMessage { HasError = true, Message = new StringBuilder("bob") });
             //------------Execute Test---------------------------
 
-            updateProxyTest.TestDbConnection(new Mock<IDbSource>().Object);
+            updateProxyTest.TestDbConnection(new Mock<IDbSource>().Create().Object);
             //------------Assert Results-------------------------
             controller.Verify(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>()));
         }
@@ -720,7 +721,7 @@ namespace Dev2.Core.Tests
             controller.Setup(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>())).Returns(new ExecuteMessage { HasError = false });
             //------------Execute Test---------------------------
 
-            updateProxyTest.SaveServerSource(new Mock<IServerSource>().Object, Guid.NewGuid());
+            updateProxyTest.SaveServerSource(new Mock<IServerSource>().Create().Object, Guid.NewGuid());
             //------------Assert Results-------------------------
             controller.Verify(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>()));
         }
@@ -740,7 +741,7 @@ namespace Dev2.Core.Tests
             controller.Setup(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>())).Returns(new ExecuteMessage { HasError = false });
             //------------Execute Test---------------------------
 
-            updateProxyTest.TestConnection(new Mock<IServerSource>().Object);
+            updateProxyTest.TestConnection(new Mock<IServerSource>().Create().Object);
             //------------Assert Results-------------------------
             controller.Verify(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>()));
         }
@@ -761,7 +762,7 @@ namespace Dev2.Core.Tests
             controller.Setup(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>())).Returns(new ExecuteMessage { HasError = true, Message = new StringBuilder("bob") });
             //------------Execute Test---------------------------
 
-            updateProxyTest.SaveServerSource(new Mock<IServerSource>().Object, Guid.NewGuid());
+            updateProxyTest.SaveServerSource(new Mock<IServerSource>().Create().Object, Guid.NewGuid());
             //------------Assert Results-------------------------
             controller.Verify(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>()));
         }
@@ -782,7 +783,7 @@ namespace Dev2.Core.Tests
             controller.Setup(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>())).Returns(new ExecuteMessage { HasError = true, Message = new StringBuilder("bob") });
             //------------Execute Test---------------------------
 
-            updateProxyTest.TestConnection(new Mock<IServerSource>().Object);
+            updateProxyTest.TestConnection(new Mock<IServerSource>().Create().Object);
             //------------Assert Results-------------------------
             controller.Verify(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>()));
         }
@@ -802,7 +803,7 @@ namespace Dev2.Core.Tests
             controller.Setup(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>())).Returns(new ExecuteMessage { HasError = false });
             //------------Execute Test---------------------------
 
-            updateProxyTest.SaveWcfSource(new Mock<IWcfServerSource>().Object, Guid.NewGuid());
+            updateProxyTest.SaveWcfSource(new Mock<IWcfServerSource>().Create().Object, Guid.NewGuid());
             //------------Assert Results-------------------------
             controller.Verify(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>()));
         }
@@ -822,7 +823,7 @@ namespace Dev2.Core.Tests
             controller.Setup(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>())).Returns(new ExecuteMessage { HasError = false });
             //------------Execute Test---------------------------
 
-            updateProxyTest.TestWcfServiceSource(new Mock<IWcfServerSource>().Object);
+            updateProxyTest.TestWcfServiceSource(new Mock<IWcfServerSource>().Create().Object);
             //------------Assert Results-------------------------
             controller.Verify(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>()));
         }
@@ -843,7 +844,7 @@ namespace Dev2.Core.Tests
             controller.Setup(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>())).Returns(new ExecuteMessage { HasError = true, Message = new StringBuilder("bob") });
             //------------Execute Test---------------------------
 
-            updateProxyTest.SaveWcfSource(new Mock<IWcfServerSource>().Object, Guid.NewGuid());
+            updateProxyTest.SaveWcfSource(new Mock<IWcfServerSource>().Create().Object, Guid.NewGuid());
             //------------Assert Results-------------------------
             controller.Verify(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>()));
         }
@@ -864,7 +865,7 @@ namespace Dev2.Core.Tests
             controller.Setup(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>())).Returns(new ExecuteMessage { HasError = true, Message = new StringBuilder("bob") });
             //------------Execute Test---------------------------
 
-            updateProxyTest.TestWcfServiceSource(new Mock<IWcfServerSource>().Object);
+            updateProxyTest.TestWcfServiceSource(new Mock<IWcfServerSource>().Create().Object);
             //------------Assert Results-------------------------
             controller.Verify(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>()));
         }
@@ -884,7 +885,7 @@ namespace Dev2.Core.Tests
             controller.Setup(a => a.ExecuteCommand<List<IDeployResult>>(env.Object, It.IsAny<Guid>())).Returns(new List<IDeployResult>());
             //------------Execute Test---------------------------
 
-            var mockConnection = new Mock<IConnection>();
+            var mockConnection = new Mock<IConnection>().Create();
             mockConnection.Setup(con => con.Address).Returns("localhost");
             mockConnection.Setup(con => con.AuthenticationType).Returns(Runtime.ServiceModel.Data.AuthenticationType.Public);
             mockConnection.Setup(con => con.UserName).Returns("username");
@@ -910,7 +911,7 @@ namespace Dev2.Core.Tests
             controller.Setup(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>())).Returns(new ExecuteMessage { HasError = false });
             //------------Execute Test---------------------------
 
-            updateProxyTest.SaveElasticsearchServiceSource(new Mock<IElasticsearchSourceDefinition>().Object, Guid.NewGuid());
+            updateProxyTest.SaveElasticsearchServiceSource(new Mock<IElasticsearchSourceDefinition>().Create().Object, Guid.NewGuid());
             //------------Assert Results-------------------------
             controller.Verify(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>()));
         }
@@ -931,7 +932,7 @@ namespace Dev2.Core.Tests
             controller.Setup(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>())).Returns(new ExecuteMessage { HasError = true, Message = new StringBuilder("bob") });
             //------------Execute Test---------------------------
 
-            updateProxyTest.SaveElasticsearchServiceSource(new Mock<IElasticsearchSourceDefinition>().Object, Guid.NewGuid());
+            updateProxyTest.SaveElasticsearchServiceSource(new Mock<IElasticsearchSourceDefinition>().Create().Object, Guid.NewGuid());
             //------------Assert Results-------------------------
             controller.Verify(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>()));
         }

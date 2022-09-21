@@ -12,8 +12,8 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Interactivity;
-
+//using System.Windows.Interactivity;
+using Microsoft.Xaml.Behaviors;
 
 namespace Dev2.Studio.Core.AppResources.TriggerActions
 {

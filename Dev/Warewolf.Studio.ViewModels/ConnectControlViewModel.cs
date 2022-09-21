@@ -20,14 +20,14 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Studio.Interfaces;
 using Microsoft.Practices.Prism;
-using Microsoft.Practices.Prism.Commands;
-using Microsoft.Practices.Prism.Mvvm;
-using Microsoft.Practices.Prism.PubSubEvents;
+using Prism.Commands;
+using Prism.Mvvm;
 using Warewolf.Resource.Errors;
+using Prism.Mvvm;
 
 namespace Warewolf.Studio.ViewModels
 {
-    public class ConnectControlViewModel : BindableBase, IConnectControlViewModel, IUpdatesHelp
+    public class ConnectControlViewModel : Dev2.Common.BindableBase2, IConnectControlViewModel, IUpdatesHelp
     {
         bool _isConnected;
         bool _isConnecting;
@@ -41,22 +41,22 @@ namespace Warewolf.Studio.ViewModels
         bool _canEditServer;
         bool _canCreateServer;
 
-        public ConnectControlViewModel(IServer server, IEventAggregator aggregator)
+        public ConnectControlViewModel(IServer server, Prism.Events.IEventAggregator aggregator)
             : this(server, aggregator, null, null)
         {
         }
 
-        public ConnectControlViewModel(IServer server, IEventAggregator aggregator, ObservableCollection<IServer> servers)
+        public ConnectControlViewModel(IServer server, Prism.Events.IEventAggregator aggregator, ObservableCollection<IServer> servers)
             : this(server, aggregator, null, servers)
         {
         }
 
-        public ConnectControlViewModel(IServer server, IEventAggregator aggregator, IPopupController popupController)
+        public ConnectControlViewModel(IServer server, Prism.Events.IEventAggregator aggregator, IPopupController popupController)
             : this(server, aggregator, popupController, null)
         {
         }
 
-        public ConnectControlViewModel(IServer server, IEventAggregator aggregator, IPopupController popupController, ObservableCollection<IServer> servers)
+        public ConnectControlViewModel(IServer server, Prism.Events.IEventAggregator aggregator, IPopupController popupController, ObservableCollection<IServer> servers)
         {
             PopupController = popupController;
             if (aggregator == null)

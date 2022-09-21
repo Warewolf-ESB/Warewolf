@@ -42,6 +42,8 @@ using Warewolf.Resource.Errors;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.DataList;
 using Dev2.Common.Common;
+using System.Threading.Tasks;
+using System.Threading;
 
 namespace Dev2.Activities.Designers2.Service
 {
@@ -679,7 +681,7 @@ namespace Dev2.Activities.Designers2.Service
         {
             if (!IsDeleted)
             {
-                _eventPublisher.Publish(new EditActivityMessage(ModelItem, EnvironmentID));
+                //_eventPublisher.Publish(new EditActivityMessage(ModelItem, EnvironmentID));
             }
         }
 
@@ -703,5 +705,10 @@ namespace Dev2.Activities.Designers2.Service
         protected void OnPropertyChanged() => OnPropertyChanged(null);
         protected void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         public override void UpdateHelpDescriptor(string helpText) => CustomContainer.Get<IShellViewModel>()?.HelpViewModel.UpdateHelpText(helpText);
+
+        public Task HandleAsync(UpdateResourceMessage message, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

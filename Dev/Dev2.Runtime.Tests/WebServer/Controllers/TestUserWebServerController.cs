@@ -22,22 +22,22 @@ namespace Dev2.Tests.Runtime.WebServer.Controllers
     {
         readonly IPrincipal _user;
 
-        public TestUserWebServerController(HttpMethod method, IPrincipal user)
-        {
-            _user = user;
-            Request = new HttpRequestMessage
-            {
-                Method = method,
-                Content = new StringContent("")
-            };
-        }
+        //public TestUserWebServerController(HttpMethod method, IPrincipal user)
+        //{
+        //    _user = user;
+        //    Request = new HttpRequestMessage
+        //    {
+        //        Method = method,
+        //        Content = new StringContent("")
+        //    };
+        //}
 
-        protected override HttpResponseMessage ProcessRequest<TRequestHandler>(NameValueCollection requestVariables, bool isUrlWithTokenPrefix)
-        {
-            User = _user;
-            var result = base.ProcessRequest<TRequestHandler>(requestVariables, isUrlWithTokenPrefix);
-            return result;
-        }
+        //protected override HttpResponseMessage ProcessRequest<TRequestHandler>(NameValueCollection requestVariables, bool isUrlWithTokenPrefix)
+        //{
+        //    User = _user;
+        //    var result = base.ProcessRequest<TRequestHandler>(requestVariables, isUrlWithTokenPrefix);
+        //    return result;
+        //}
 
         protected override TRequestHandler CreateHandler<TRequestHandler>()
         {

@@ -25,6 +25,7 @@ using System.Activities.Presentation.View;
 using System.Windows;
 using Dev2.Common.Interfaces;
 using Dev2.Communication;
+using System.Threading;
 
 namespace Warewolf.MergeParser
 {
@@ -88,11 +89,43 @@ namespace Warewolf.MergeParser
             {
                 throw new Exception($"Could not find resource definition for {resourceModel.ResourceName}");
             }
-           
+
             return BuildWorkflow(xaml);
         }
 
         public List<ConflictTreeNode> BuildWorkflow(System.Text.StringBuilder xaml)
+        {
+            if(Thread.CurrentThread.GetApartmentState() == ApartmentState.STA)
+                return BuildWorkflowInternal(xaml);
+
+            return BuildWorkflowSTA(xaml).Result;
+        }
+
+        public async System.Threading.Tasks.Task<List<ConflictTreeNode>> BuildWorkflowSTA(System.Text.StringBuilder xaml)
+        {
+            List<ConflictTreeNode> nodes = new List<ConflictTreeNode>();
+           // Use a semaphore to prevent the [TestMethod] from returning prematurely.
+           SemaphoreSlim ss = new SemaphoreSlim(1);
+            await ss.WaitAsync();
+
+            Thread thread = new Thread(() =>
+            {
+                nodes = BuildWorkflowInternal(xaml);
+                ss.Release();
+            });
+
+
+            // Just make sure to set the apartment state BEFORE starting the thread:
+            thread.SetApartmentState(ApartmentState.STA);
+            thread.Start();
+            await ss.WaitAsync();
+
+            Console.WriteLine("All done!");
+
+            return nodes;
+        }
+
+        public List<ConflictTreeNode> BuildWorkflowInternal(System.Text.StringBuilder xaml)
         {
             var wd = new WorkflowDesigner
             {

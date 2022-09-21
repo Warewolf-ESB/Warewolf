@@ -41,7 +41,7 @@
         </HierarchicalDataTemplate>
     </Window.Resources>
 
-    <Grid x:Name="LayoutRoot" cal:Bind.Model="{Binding .}" Margin="{StaticResource ElementBorder}">
+    <Grid x:Name="LayoutRoot"  Margin="{StaticResource ElementBorder}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>

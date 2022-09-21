@@ -1,4 +1,5 @@
-﻿using Microsoft.Practices.Prism.Mvvm;
+﻿
+using Microsoft.Practices.Prism.Mvvm;
 
 namespace Dev2.Studio.Core
 {

@@ -1,5 +1,6 @@
 ﻿using Dev2.Studio.Interfaces;
-using Microsoft.Practices.Prism.PubSubEvents;
+using Prism.Events;
+//using Microsoft.Practices.Prism.PubSubEvents;
 
 namespace Warewolf.Studio.Core
 {

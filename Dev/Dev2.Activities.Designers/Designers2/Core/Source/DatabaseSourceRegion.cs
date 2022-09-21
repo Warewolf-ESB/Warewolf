@@ -39,8 +39,8 @@ namespace Dev2.Activities.Designers2.Core.Source
             LabelWidth = 46;
             ToolRegionName = "DatabaseSourceRegion";
             Dependants = new List<IToolRegion>();
-            NewSourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() => model.CreateNewSource(type));
-            EditSourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() => model.EditSource(SelectedSource, type), CanEditSource);
+            NewSourceCommand = new Prism.Commands.DelegateCommand(() => model.CreateNewSource(type));
+            EditSourceCommand = new Prism.Commands.DelegateCommand(() => model.EditSource(SelectedSource, type), CanEditSource);
             var sources = model.RetrieveSources().OrderBy(source => source.Name);
             Sources = sources.Where(source => source != null && source.Type == type).ToObservableCollection();
             IsEnabled = true;
@@ -224,7 +224,7 @@ namespace Dev2.Activities.Designers2.Core.Source
                 SetSelectedSource(value);
                 SourceChangedAction?.Invoke();
                 OnSomethingChanged(this);
-                var delegateCommand = EditSourceCommand as Microsoft.Practices.Prism.Commands.DelegateCommand;
+                var delegateCommand = EditSourceCommand as Prism.Commands.DelegateCommand;
                 delegateCommand?.RaiseCanExecuteChanged();
             }
         }

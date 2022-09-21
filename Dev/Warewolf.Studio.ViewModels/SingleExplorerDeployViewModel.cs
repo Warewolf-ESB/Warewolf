@@ -22,8 +22,8 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Deploy;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Data.ServiceModel;
-using Microsoft.Practices.Prism.Commands;
-using Microsoft.Practices.Prism.Mvvm;
+using Prism.Commands;
+using Prism.Mvvm;
 using Dev2.Studio.Core;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.Deploy;
@@ -32,7 +32,7 @@ using System.Globalization;
 
 namespace Warewolf.Studio.ViewModels
 {
-    public class SingleExplorerDeployViewModel : BindableBase, IDeployViewModel, IUpdatesHelp
+    public class SingleExplorerDeployViewModel : BindableBase2, IDeployViewModel, IUpdatesHelp
     {
         IDeploySourceExplorerViewModel _source;
         readonly IDeployStatsViewerViewModel _stats;

@@ -1108,6 +1108,7 @@ namespace Dev2.Core.Tests.Workflows
         {
             //------------Setup for test--------------------------
             const string datalist = @"<DataList><notInput /><rs ColumnIODirection=""Input""><val ColumnIODirection=""Input""/></rs></DataList>";
+            CustomContainer.Register(new Mock<Common.Interfaces.Studio.Controller.IPopupController>().Object);
             var rm = new Mock<IContextualResourceModel>();
             rm.Setup(r => r.ServerID).Returns(_serverID);
             rm.Setup(r => r.ResourceName).Returns("SomeOtherWorkflow");

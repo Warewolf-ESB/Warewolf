@@ -40,6 +40,9 @@
     <Reference Include="System.Reactive.Linq">
       <HintPath>..\Binaries\System.Reactive.Linq.dll</HintPath>
     </Reference>
+    <Reference Include="GACManagerApi">
+      <HintPath>..\Binaries\GACManagerApi.dll</HintPath>
+    </Reference>
     <Reference Include="Weave, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\Weave.dll</HintPath>
@@ -495,11 +498,11 @@
     <PackageReference Include="CoreWCF.NetTcp" Version="1.1.0" />
     <PackageReference Include="CoreWCF.Primitives" Version="1.1.0" />
     <PackageReference Include="CoreWCF.WebHttp" Version="1.1.0" />
-    <PackageReference Include="GAC.API">
+    <!--<PackageReference Include="GAC.API">
       <Version>1.0.1</Version>
-    </PackageReference>
+    </PackageReference>-->
     <PackageReference Include="log4net">
-      <Version>2.0.12</Version>
+      <Version>2.0.15</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.AspNet.SignalR.Client">
       <Version>2.4.3</Version>

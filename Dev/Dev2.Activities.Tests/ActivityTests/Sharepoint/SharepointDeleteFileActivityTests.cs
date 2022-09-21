@@ -190,7 +190,9 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
             catch(TargetInvocationException e)
             {
                 //------------Assert Results-------------------------
-                Assert.AreEqual("Please select valid source\r\nParameter name: 00000000-0000-0000-0000-000000000000", e.InnerException?.Message, "Expected exception was not thrown.");
+                //Assert.AreEqual("Please select valid source\r\nParameter name: 00000000-0000-0000-0000-000000000000", e.InnerException?.Message, "Expected exception was not thrown.");
+
+                Assert.AreEqual("Please select valid source (Parameter '00000000-0000-0000-0000-000000000000')", e.InnerException?.Message, "Expected exception was not thrown.");
             }
         }
 

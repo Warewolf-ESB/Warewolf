@@ -12,14 +12,14 @@
 using System;
 using System.Net;
 using System.Net.Http;
-using System.Web.Http.Controllers;
 using Dev2.Common;
 using Dev2.Services.Security;
 using Dev2.Web;
 using Microsoft.AspNet.SignalR;
-using Microsoft.AspNet.SignalR.Hubs;
 using Dev2.Runtime.WebServer;
 using Warewolf.Resource.Errors;
+using System.Web.Http.Controllers;
+using Microsoft.AspNet.SignalR.Hubs;
 
 namespace Dev2.Runtime.WebServer.Security
 {
@@ -42,7 +42,7 @@ namespace Dev2.Runtime.WebServer.Security
             RequestType = requestType,
             User = request.User,
             Url = request.Url,
-            QueryString = request.QueryString
+            QueryString = (INameValueCollection)request.QueryString
         };
 
         static WebServerRequestType GetRequestType(this IHubIncomingInvokerContext context) => ParseRequestType(context.MethodDescriptor.Hub.Name, context.MethodDescriptor.Name);

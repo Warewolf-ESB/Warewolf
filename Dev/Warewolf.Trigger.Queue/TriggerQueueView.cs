@@ -20,7 +20,7 @@ using Dev2.Data;
 using Dev2.Studio.Core;
 using Dev2.Studio.Interfaces;
 using Dev2.Threading;
-using Microsoft.Practices.Prism.Commands;
+using Prism.Commands;
 using System;
 using System.Collections.Generic;
 using System.Linq;

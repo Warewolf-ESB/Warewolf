@@ -24,8 +24,8 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Interfaces;
-using Microsoft.Practices.Prism.Commands;
-using Microsoft.Practices.Prism.PubSubEvents;
+using Prism.Commands;
+using Prism.Events;
 
 namespace Warewolf.Studio.ViewModels
 {

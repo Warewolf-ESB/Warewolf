@@ -29,11 +29,11 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Data;
 using Warewolf.Studio.Core;
 using Warewolf.Studio.Core.Popup;
-using BindableBase = Microsoft.Practices.Prism.Mvvm.BindableBase;
+using BindableBase = Prism.Mvvm.BindableBase;
 
 namespace Warewolf.Studio.ViewModels
 {
-    public class ExplorerItemViewModel : BindableBase, IExplorerItemViewModel, IEquatable<ExplorerItemViewModel>
+    public class ExplorerItemViewModel : BindableBase2, IExplorerItemViewModel, IEquatable<ExplorerItemViewModel>
     {
         public bool Equals(IExplorerTreeItem x, IExplorerTreeItem y)
         {

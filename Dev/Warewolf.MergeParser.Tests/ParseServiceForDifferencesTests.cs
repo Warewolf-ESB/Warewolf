@@ -923,6 +923,7 @@ namespace Warewolf.MergeParser.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [DoNotParallelize, STAThread()]
         public void FlowDecision_GetDifferences_WhenArmToolsTheSame_DecisionHasNoConflict()
         {
             var activityParser = new ActivityParser();

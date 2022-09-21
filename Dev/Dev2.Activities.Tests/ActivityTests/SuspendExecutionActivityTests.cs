@@ -610,7 +610,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             var environmentId = Guid.Empty;
             var mockPrincipal = new Mock<ClaimsPrincipal>();
-            mockPrincipal.Setup(o => o.Identity).Returns(WindowsIdentity.GetCurrent());
+            mockPrincipal.Setup(o => o.Identity).Returns(System.Security.Principal.WindowsIdentity.GetCurrent());
             var dataObject = new DsfDataObject(CurrentDl, ExecutionId)
             {
                 ServiceName = workflowName,
@@ -648,7 +648,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 {"environment", new StringBuilder(DpapiWrapper.Encrypt(currentEnvironment))},
                 {"startActivityId", new StringBuilder(nextNodeId.ToString())},
                 {"versionNumber", new StringBuilder(dataObject.VersionNumber.ToString())},
-                {"currentuserprincipal", new StringBuilder(WindowsIdentity.GetCurrent().Name)}
+                {"currentuserprincipal", new StringBuilder(System.Security.Principal.WindowsIdentity.GetCurrent().Name)}
             };
 
             var mockSuspendExecution = new Mock<IPersistenceExecution>();
@@ -696,7 +696,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             var environmentId = Guid.Empty;
             var mockPrincipal = new Mock<ClaimsPrincipal>();
-            mockPrincipal.Setup(o => o.Identity).Returns(WindowsIdentity.GetCurrent());
+            mockPrincipal.Setup(o => o.Identity).Returns(System.Security.Principal.WindowsIdentity.GetCurrent());
             var dataObject = new DsfDataObject(CurrentDl, ExecutionId)
             {
                 ServiceName = workflowName,
@@ -735,7 +735,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 {"environment", new StringBuilder(currentEnvironment)},
                 {"startActivityId", new StringBuilder(nextNodeId.ToString())},
                 {"versionNumber", new StringBuilder(dataObject.VersionNumber.ToString())},
-                {"currentuserprincipal", new StringBuilder(WindowsIdentity.GetCurrent().Name)}
+                {"currentuserprincipal", new StringBuilder(System.Security.Principal.WindowsIdentity.GetCurrent().Name)}
             };
 
             var mockSuspendExecution = new Mock<IPersistenceExecution>();
@@ -920,7 +920,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             var environmentId = Guid.Empty;
             var mockPrincipal = new Mock<ClaimsPrincipal>();
-            mockPrincipal.Setup(o => o.Identity).Returns(WindowsIdentity.GetCurrent());
+            mockPrincipal.Setup(o => o.Identity).Returns(System.Security.Principal.WindowsIdentity.GetCurrent());
             var dataObject = new DsfDataObject(CurrentDl, ExecutionId)
             {
                 ServiceName = workflowName,
@@ -1024,7 +1024,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             var environmentId = Guid.Empty;
             var mockPrincipal = new Mock<ClaimsPrincipal>();
-            mockPrincipal.Setup(o => o.Identity).Returns(WindowsIdentity.GetCurrent());
+            mockPrincipal.Setup(o => o.Identity).Returns(System.Security.Principal.WindowsIdentity.GetCurrent());
             var dataObject = new DsfDataObject(CurrentDl, ExecutionId)
             {
                 ServiceName = workflowName,

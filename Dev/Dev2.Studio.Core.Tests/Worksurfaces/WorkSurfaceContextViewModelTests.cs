@@ -15,6 +15,8 @@ using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using Caliburn.Micro;
 using Dev2.Common.Interfaces;
@@ -30,6 +32,7 @@ using Dev2.Core.Tests.Environments;
 using Dev2.Core.Tests.Workflows;
 using Dev2.Data.ServiceModel.Messages;
 using Dev2.Messages;
+using Dev2.Net6.Compatibility;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Security;
 using Dev2.Studio.AppResources.Comparers;
@@ -51,7 +54,7 @@ using Moq;
 
 namespace Dev2.Core.Tests
 {
-    [TestClass]
+    [STATestClass]
     [TestCategory("Studio Worksurfaces Core")]
     public class WorkSurfaceContextViewModelTests
     {
@@ -1283,6 +1286,19 @@ namespace Dev2.Core.Tests
 
         public string DisplayName { get; set; }
 
+        event AsyncEventHandler<DeactivationEventArgs> IDeactivate.Deactivated
+        {
+            add
+            {
+                throw new NotImplementedException();
+            }
+
+            remove
+            {
+                throw new NotImplementedException();
+            }
+        }
+
         #endregion
 
         #region Implementation of IActivate
@@ -1412,6 +1428,26 @@ namespace Dev2.Core.Tests
         public List<NameValue> GetSelectableGates(string uniqueId)
         {
             return new List<NameValue>();
+        }
+
+        public Task ActivateAsync(CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task DeactivateAsync(bool close, CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> CanCloseAsync(CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task TryCloseAsync(bool? dialogResult = null)
+        {
+            throw new NotImplementedException();
         }
     }
 }

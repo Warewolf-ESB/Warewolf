@@ -15,7 +15,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
-using CubicOrange.Windows.Forms.ActiveDirectory;
+using Tulpep.ActiveDirectoryObjectPicker;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;

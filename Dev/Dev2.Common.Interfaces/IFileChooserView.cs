@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Microsoft.Practices.Prism.Mvvm;
+using Microsoft.AspNetCore.Mvc.ViewEngines;
 
 namespace Dev2.Common.Interfaces
 {

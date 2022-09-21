@@ -19,7 +19,7 @@ using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Studio.Interfaces;
-using Microsoft.Practices.Prism.PubSubEvents;
+using Prism.Events;
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -74,14 +74,14 @@ namespace Warewolf.Studio.ViewModels
             {
                 var fileChooser = CustomContainer.GetInstancePerRequestType<IFileChooserView>();
                 fileChooser.ShowView(false);
-                if (fileChooser.DataContext is FileChooser vm && vm.Result == MessageBoxResult.OK)
-                {
-                    var selectedFiles = vm.GetAttachments();
-                    if (selectedFiles != null && selectedFiles.Count > 0)
-                    {
-                        ConfigFilePath = selectedFiles[0];
-                    }
-                }
+                //if (fileChooser.DataContext is FileChooser vm && vm.Result == MessageBoxResult.OK)
+                //{
+                //    var selectedFiles = vm.GetAttachments();
+                //    if (selectedFiles != null && selectedFiles.Count > 0)
+                //    {
+                //        ConfigFilePath = selectedFiles[0];
+                //    }
+                //}
             });
 
             CancelCommand = new DelegateCommand(o => CloseAction.Invoke());

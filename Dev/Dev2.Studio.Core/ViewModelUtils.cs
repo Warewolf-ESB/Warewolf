@@ -31,7 +31,7 @@ namespace Dev2
             {
                 var typeOfCommand = commandForCanExecuteChange.GetType();
 
-                if (typeOfCommand == typeof(Microsoft.Practices.Prism.Commands.DelegateCommand) && commandForCanExecuteChange is Microsoft.Practices.Prism.Commands.DelegateCommand command)
+                if (typeOfCommand == typeof(Prism.Commands.DelegateCommand) && commandForCanExecuteChange is Prism.Commands.DelegateCommand command)
                 {
                     if (Application.Current != null && Application.Current.Dispatcher != null)
                     {
@@ -47,7 +47,7 @@ namespace Dev2
 
                 // TODO: refactor RaiseCanExecuteChanged into a common interface for the "Command" type
 
-                if (typeOfCommand.BaseType == typeof(Microsoft.Practices.Prism.Commands.DelegateCommandBase) && commandForCanExecuteChange is Microsoft.Practices.Prism.Commands.DelegateCommandBase commandBase)
+                if (typeOfCommand.BaseType == typeof(Prism.Commands.DelegateCommandBase) && commandForCanExecuteChange is Prism.Commands.DelegateCommandBase commandBase)
                 {
                     commandBase.RaiseCanExecuteChanged();
                     return;

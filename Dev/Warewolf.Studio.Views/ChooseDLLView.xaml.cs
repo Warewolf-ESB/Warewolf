@@ -1,8 +1,9 @@
 #pragma warning disable
 ﻿using System.ComponentModel;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Dev2.Common.Interfaces;
-
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Warewolf.Studio.Views
 {
@@ -14,6 +15,13 @@ namespace Warewolf.Studio.Views
         public ChooseDLLView()
         {
             InitializeComponent();
+        }
+
+        public string Path => throw new System.NotImplementedException();
+
+        public Task RenderAsync(ViewContext context)
+        {
+            throw new System.NotImplementedException();
         }
 
         public void RequestClose()

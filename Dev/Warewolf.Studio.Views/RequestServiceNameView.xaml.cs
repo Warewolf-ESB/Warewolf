@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
@@ -7,6 +8,7 @@ using System.Windows.Threading;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Studio.Interfaces;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Warewolf.Studio.Core;
 using Warewolf.Studio.ViewModels;
 
@@ -105,6 +107,8 @@ namespace Warewolf.Studio.Views
 
         bool IsRenaming { get; set; }
 
+        public string Path => throw new NotImplementedException();
+
         void ExplorerView_OnPreviewKeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Escape)
@@ -140,6 +144,11 @@ namespace Warewolf.Studio.Views
                 IsRenaming = true;
                 e.Handled = true;
             }
+        }
+
+        public Task RenderAsync(ViewContext context)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿using Dev2.Common.Interfaces.Help;
-using Microsoft.Practices.Prism.PubSubEvents;
+using Prism.Events;
 
 namespace Warewolf.Studio.Models.Help
 {

@@ -16,12 +16,12 @@ using System.Windows.Media;
 using Dev2.Common.Interfaces;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.Util;
-using Microsoft.Practices.Prism.Mvvm;
+using Prism.Mvvm;
 using Newtonsoft.Json;
-
+using Dev2.Common;
 namespace Warewolf.Studio.ViewModels
 {
-    public class ServiceTestStep : BindableBase, IServiceTestStep
+    public class ServiceTestStep : BindableBase2, IServiceTestStep
     {
         string _stepDescription;
         StepType _type;

@@ -9,9 +9,11 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System.Threading.Tasks;
 using System.Windows.Media;
 using Dev2.Common.Interfaces;
 using Infragistics.Documents.RichText;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Warewolf.Studio.Views
 {
@@ -33,6 +35,13 @@ namespace Warewolf.Studio.Views
                 Background = colorInfo,
             };
             XamRichTextEditor.CaretColor = colorInfo;
+        }
+
+        public string Path => throw new System.NotImplementedException();
+
+        public Task RenderAsync(ViewContext context)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

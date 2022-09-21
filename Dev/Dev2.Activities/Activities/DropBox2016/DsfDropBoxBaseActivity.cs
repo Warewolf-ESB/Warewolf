@@ -38,7 +38,8 @@ namespace Dev2.Activities.DropBox2016
             {
                 return;
             }
-            var httpClient = new HttpClient(new WebRequestHandler { ReadWriteTimeout = 10 * 1000 })
+            //var httpClient = new HttpClient(new WebRequestHandler { ReadWriteTimeout = 10 * 1000 })
+            var httpClient = new HttpClient(new System.Net.Http.HttpClientHandler())
             {
                 Timeout = TimeSpan.FromMinutes(20)
             };

@@ -13,7 +13,7 @@ using System.Globalization;
 using System.Security.Principal;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Services.Security;
-using Microsoft.AspNet.SignalR.Hosting;
+//using Microsoft.AspNet.SignalR.Hosting;
 
 namespace Dev2.Runtime.WebServer.Security
 {

@@ -11,18 +11,20 @@
 
 using System;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio;
 using Dev2.Studio.Interfaces;
 using FontAwesome.WPF;
-using Microsoft.Practices.Prism.Commands;
-using Microsoft.Practices.Prism.Mvvm;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Prism.Commands;
+using Prism.Mvvm;
 
 namespace Warewolf.Studio.ViewModels
 {
-    public class MenuViewModel : BindableBase, IMenuViewModel, IMenuView,IUpdatesHelp
+    public class MenuViewModel : BindableBase2, IMenuViewModel, IMenuView,IUpdatesHelp
     {
         bool _hasNewVersion;
         bool _panelLockedOpen;
@@ -221,6 +223,11 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
+        public Task RenderAsync(ViewContext context)
+        {
+            throw new NotImplementedException();
+        }
+
         public int ButtonWidth { get; set; }
 
         public bool HasNewVersion
@@ -405,5 +412,7 @@ namespace Warewolf.Studio.ViewModels
         }
 
         public object DataContext { get; set; }
+
+        public string Path => throw new NotImplementedException();
     }
 }

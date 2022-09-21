@@ -13,10 +13,9 @@ using System;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Net.Http;
-using System.Web.Http;
 using Dev2.Runtime.WebServer.Handlers;
 using Dev2.Runtime.WebServer.Security;
-
+using Microsoft.AspNetCore.Mvc;
 
 namespace Dev2.Runtime.WebServer.Controllers
 {

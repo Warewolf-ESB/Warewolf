@@ -22,24 +22,24 @@ namespace Dev2.Tests.Runtime.WebServer.Controllers
     {
         Action _verifyProcessRequestInvoked;
 
-        public TestWebServerController(HttpMethod method, string requestUrl)
-        {
-            Request = new HttpRequestMessage
-            {
-                Method = method,
-                Content = new StringContent(""),
-                RequestUri = new Uri(requestUrl)
-            };
-        }
+        //public TestWebServerController(HttpMethod method, string requestUrl)
+        //{
+        //    Request = new HttpRequestMessage
+        //    {
+        //        Method = method,
+        //        Content = new StringContent(""),
+        //        RequestUri = new Uri(requestUrl)
+        //    };
+        //}
 
-        public TestWebServerController(HttpMethod method)
-        {
-            Request = new HttpRequestMessage
-            {
-                Method = method,
-                Content = new StringContent("")
-            };
-        }
+        //public TestWebServerController(HttpMethod method)
+        //{
+        //    Request = new HttpRequestMessage
+        //    {
+        //        Method = method,
+        //        Content = new StringContent("")
+        //    };
+        //}
 
         public TRequestHandler TestCreateHandler<TRequestHandler>()
             where TRequestHandler : class, IRequestHandler, new()

@@ -294,6 +294,8 @@ namespace Dev2.Activities
         {
             var sqlQuery = _advancedRecordset.UpdateSqlWithHashCodes(selectStatement);
             var results = _advancedRecordset.ExecuteQuery(sqlQuery);
+            if (null == results) return;
+
             foreach (DataTable dt in results.Tables)
             {
                 _advancedRecordset.ApplyResultToEnvironment(dt.TableName, _activity.Outputs, dt.Rows.Cast<DataRow>().ToList(), false, update, ref started);
@@ -304,6 +306,7 @@ namespace Dev2.Activities
         void ProcessComplexStatement(TSQLUnknownStatement complexStatement, int update, ref bool started)
 #pragma warning restore S1541 // Methods and properties should not be too complex
         {
+            if (null == complexStatement) return;
             var tokens = complexStatement.Tokens;
             for (int i = 0; i < complexStatement.Tokens.Count; i++)
             {

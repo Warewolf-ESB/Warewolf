@@ -35,8 +35,8 @@ namespace Dev2.Activities.Designers2.Core.Source
             LabelWidth = 46;
             ToolRegionName = "WcfSourceRegion";
             Dependants = new List<IToolRegion>();
-            NewSourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(model.CreateNewSource);
-            EditSourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() => model.EditSource(SelectedSource), CanEditSource);
+            NewSourceCommand = new Prism.Commands.DelegateCommand(model.CreateNewSource);
+            EditSourceCommand = new Prism.Commands.DelegateCommand(() => model.EditSource(SelectedSource), CanEditSource);
             var sources = model.RetrieveSources().OrderBy(source => source.Name);
             Sources = sources.ToObservableCollection();
             IsEnabled = true;
@@ -219,7 +219,7 @@ namespace Dev2.Activities.Designers2.Core.Source
                 SetSelectedSource(value);
                 SourceChangedAction?.Invoke();
                 OnSomethingChanged(this);
-                var delegateCommand = EditSourceCommand as Microsoft.Practices.Prism.Commands.DelegateCommand;
+                var delegateCommand = EditSourceCommand as Prism.Commands.DelegateCommand;
                 delegateCommand?.RaiseCanExecuteChanged();
             }
         }

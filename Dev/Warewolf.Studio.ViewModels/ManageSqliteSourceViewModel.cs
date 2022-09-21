@@ -16,7 +16,7 @@ using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Studio.Interfaces;
-using Microsoft.Practices.Prism.PubSubEvents;
+using Prism.Events;
 using System;
 using System.Linq;
 using System.Threading.Tasks;

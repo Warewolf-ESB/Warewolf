@@ -1,6 +1,7 @@
 ﻿using Caliburn.Micro;
 using Dev2.Common.Interfaces;
 using Dev2.Core.Tests.Environments;
+using Dev2.Net6.Compatibility;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Messages;
@@ -28,6 +29,7 @@ namespace Dev2.Core.Tests.Workflows
         [TestCategory("Studio Workflows Core")]
         public void AddItem_Given_MergeToolModel_VerifyCalls()
         {
+            STAThreadExtensions.RunAsSTA(() => { 
             //------------Setup for test--------------------------
             var serverRepo = new Mock<IServerRepository>();
             CustomContainer.Register(serverRepo.Object);
@@ -51,8 +53,8 @@ namespace Dev2.Core.Tests.Workflows
             testAct.UniqueID = actId.ToString();           
 
             var eventAggregator = new Mock<IEventAggregator>();
-            eventAggregator.Setup(aggregator => aggregator.Publish(It.IsAny<UpdateResourceMessage>())).Verifiable();
-            eventAggregator.Setup(aggregator => aggregator.Publish(It.IsAny<AddWorkSurfaceMessage>())).Verifiable();
+          //  eventAggregator.Setup(aggregator => aggregator.Publish(It.IsAny<UpdateResourceMessage>())).Verifiable();
+         //   eventAggregator.Setup(aggregator => aggregator.Publish(It.IsAny<AddWorkSurfaceMessage>())).Verifiable();
             var _moq = new Mock<WorkflowDesigner>();
             var modelService = new Mock<ModelService>();
             var viewStateService = new Mock<ViewStateService>();
@@ -72,6 +74,8 @@ namespace Dev2.Core.Tests.Workflows
             modelService.VerifyAll();
             viewStateService.Verify(p => p.RemoveViewState(It.IsAny<ModelItem>(), It.IsAny<string>()));
             viewStateService.Verify(p => p.StoreViewState(It.IsAny<ModelItem>(), It.IsAny<string>(), It.IsAny<Point>()));
+
+            });
         }
     }
 }

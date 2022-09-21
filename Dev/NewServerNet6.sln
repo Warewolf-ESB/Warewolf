@@ -113,6 +113,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dev2.Runtime.WebServer", "D
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dev2.Server", "Dev2.Server\Dev2.Server.csproj", "{87AEFD04-29F3-45B6-A7C6-4161F9190876}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.COMIPC", "Warewolf.COMIPC\Warewolf.COMIPC.csproj", "{D58AB24F-C45B-4DF1-9CDE-54AFF7995513}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleApp1", "ConsoleApp1\ConsoleApp1.csproj", "{082CD367-AE60-4A96-9105-9269941993C7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -339,6 +343,14 @@ Global
 		{87AEFD04-29F3-45B6-A7C6-4161F9190876}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{87AEFD04-29F3-45B6-A7C6-4161F9190876}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{87AEFD04-29F3-45B6-A7C6-4161F9190876}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D58AB24F-C45B-4DF1-9CDE-54AFF7995513}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D58AB24F-C45B-4DF1-9CDE-54AFF7995513}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D58AB24F-C45B-4DF1-9CDE-54AFF7995513}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D58AB24F-C45B-4DF1-9CDE-54AFF7995513}.Release|Any CPU.Build.0 = Release|Any CPU
+		{082CD367-AE60-4A96-9105-9269941993C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{082CD367-AE60-4A96-9105-9269941993C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{082CD367-AE60-4A96-9105-9269941993C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{082CD367-AE60-4A96-9105-9269941993C7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

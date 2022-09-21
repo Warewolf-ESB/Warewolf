@@ -6,7 +6,7 @@ using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Common.Interfaces.ToolBase.WCF;
 using Dev2.Communication;
 using Dev2.Runtime.ServiceModel.Data;
-using Microsoft.Practices.Prism.Commands;
+using Prism.Commands;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;

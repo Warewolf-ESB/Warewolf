@@ -4,6 +4,8 @@ using Warewolf.Studio.Core;
 using System.Windows.Input;
 using Dev2;
 using Dev2.Studio.Interfaces;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Warewolf.Studio.Views
 {
@@ -13,6 +15,8 @@ namespace Warewolf.Studio.Views
     public partial class MergeSelectionView : IMergeView
     {
         readonly Grid _blackoutGrid = new Grid();
+
+        public string Path => throw new System.NotImplementedException();
 
         public MergeSelectionView()
         {
@@ -62,6 +66,11 @@ namespace Warewolf.Studio.Views
                 var mainViewModel = CustomContainer.Get<IShellViewModel>();
                 mainViewModel?.ResetMainView();
             }
+        }
+
+        public Task RenderAsync(ViewContext context)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

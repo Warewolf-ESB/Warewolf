@@ -11,7 +11,7 @@
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using Dev2.Studio.Interfaces;
-using Microsoft.Practices.Prism.PubSubEvents;
+using Prism.Events;
 using Warewolf.Studio.ViewModels;
 using System.Threading.Tasks;
 using System.Linq;

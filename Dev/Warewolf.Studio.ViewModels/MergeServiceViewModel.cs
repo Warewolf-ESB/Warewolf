@@ -21,7 +21,7 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Studio.Interfaces;
 using Microsoft.Practices.Prism;
-using Microsoft.Practices.Prism.Commands;
+using Prism.Commands;
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -35,7 +35,7 @@ namespace Warewolf.Studio.ViewModels
         IConnectControlViewModel _mergeConnectControlViewModel;
         ObservableCollection<IExplorerItemViewModel> _mergeResourceVersions;
 
-        public MergeServiceViewModel(IShellViewModel shellViewModel, Microsoft.Practices.Prism.PubSubEvents.IEventAggregator aggregator, IExplorerItemViewModel selectedResource, IMergeView mergeView, IServer selectedServer)
+        public MergeServiceViewModel(IShellViewModel shellViewModel, Prism.Events.IEventAggregator aggregator, IExplorerItemViewModel selectedResource, IMergeView mergeView, IServer selectedServer)
         {
             if (shellViewModel == null)
             {
@@ -225,7 +225,7 @@ namespace Warewolf.Studio.ViewModels
 
         public MessageBoxResult ShowMergeDialog()
         {
-            _view.DataContext = this;
+            //_view.DataContext = this;
             _view.ShowView();
 
             return ViewResult;

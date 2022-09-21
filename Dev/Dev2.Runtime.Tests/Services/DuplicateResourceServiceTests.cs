@@ -79,14 +79,14 @@ namespace Dev2.Tests.Runtime.Services
         {
             const string guid = "7B71D6B8-3E11-4726-A7A0-AC924977D6E5";
             //---------------Set up test pack-------------------
-            var resourceCatalog = new Mock<IResourceCatalog>();
-            var resource = new Mock<IExplorerItem>();
+            var resourceCatalog = new Mock<IResourceCatalog>().Create();
+            var resource = new Mock<IExplorerItem>().Create();
             resourceCatalog.Setup(catalog => catalog.DuplicateResource(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(new ResourceCatalogDuplicateResult
                 {
                     DuplicatedItems = new List<IExplorerItem> { resource.Object }
                 });
-            var workScpace = new Mock<IWorkspace>();
+            var workScpace = new Mock<IWorkspace>().Create();
             var resourceService = new DuplicateResourceService(resourceCatalog.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(resourceService);

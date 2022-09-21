@@ -26,10 +26,11 @@ using Microsoft.Practices.Prism.Mvvm;
 using Dev2.Studio.Core;
 using Warewolf.Data;
 using Action = System.Action;
+using Dev2.Net6.Compatibility;
 
 namespace Dev2.Core.Tests
 {
-    [TestClass]
+    [STATestClass]
     [TestCategory("Studio Worksurfaces Core")]
     public class WorksurfaceContextManagerTests : MainViewModelBase
     {
@@ -56,7 +57,7 @@ namespace Dev2.Core.Tests
             var ac = new Task<IExplorerItem>(() => new Mock<IExplorerItem>().Object);
             svr.Setup(a => a.LoadExplorer(false)).Returns(() => ac);
             CustomContainer.Register(svr.Object);
-            CustomContainer.Register(new Mock<Microsoft.Practices.Prism.PubSubEvents.IEventAggregator>().Object);
+            CustomContainer.Register(new Mock<Prism.Events.IEventAggregator>().Object);
         }
 
         [TestMethod]

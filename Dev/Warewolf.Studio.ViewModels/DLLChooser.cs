@@ -16,13 +16,14 @@ using System.Windows.Input;
 using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Runtime.Configuration.ViewModels.Base;
-using Microsoft.Practices.Prism.Mvvm;
+using Prism.Mvvm;
+using Prism.Mvvm;
 using Warewolf.Studio.Core;
-
+using Dev2.Common;
 
 namespace Warewolf.Studio.ViewModels
 {
-    public class DLLChooser : BindableBase, IDLLChooser
+    public class DLLChooser : BindableBase2, IDLLChooser
     {
         readonly IManagePluginSourceModel _updateManager;
         bool _isLoading;

@@ -1,9 +1,9 @@
-﻿using Dev2.Common.Interfaces;
-using Microsoft.Practices.Prism.Mvvm;
+﻿using Dev2.Common;
+using Dev2.Common.Interfaces;
 
 namespace Dev2.Settings.Perfcounters
 {
-    public class PerformanceCountersByMachine : BindableBase,IPerformanceCountersByMachine
+    public class PerformanceCountersByMachine : BindableBase2,IPerformanceCountersByMachine
     {
         string _machineName;
         bool _requestPerSecond;

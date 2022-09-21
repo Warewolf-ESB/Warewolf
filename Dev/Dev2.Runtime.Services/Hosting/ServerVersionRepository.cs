@@ -240,12 +240,16 @@ namespace Dev2.Runtime.Hosting
             {
                 if (string.IsNullOrEmpty(_userName))
                 {
-                    _userName = Thread.CurrentPrincipal.Identity.Name;
+                    if (Thread.CurrentPrincipal != null)
+                        _userName = Thread.CurrentPrincipal.Identity.Name;
+                    else
+                        //todo: remove this hack
+                        _userName = "test";
                 }
 
                 lock (LockObject)
                 {
-                   var old = _catalogue.GetResource(Guid.Empty, resource.ResourceID);
+                    var old = _catalogue.GetResource(Guid.Empty, resource.ResourceID);
                     if (old == null)
                     { return; }
                     var versions = GetVersions(resource.ResourceID).FirstOrDefault();

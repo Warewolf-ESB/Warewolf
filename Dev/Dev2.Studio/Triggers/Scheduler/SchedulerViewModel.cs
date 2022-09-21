@@ -18,7 +18,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Caliburn.Micro;
-using CubicOrange.Windows.Forms.ActiveDirectory;
+using Tulpep.ActiveDirectoryObjectPicker;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Core.Help;
 using Dev2.Common;
@@ -45,7 +45,6 @@ using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Threading;
 using Warewolf.Studio.Resources.Languages;
 using Warewolf.Studio.ViewModels;
-
 namespace Dev2.Triggers.Scheduler
 {
     public class SchedulerViewModel : BaseWorkSurfaceViewModel, IStudioTab, IHelpSource
@@ -352,7 +351,7 @@ namespace Dev2.Triggers.Scheduler
             {
                 if (null == value)
                 {
-                    EventPublisher.Publish(new DebugOutputMessage(new List<IDebugState>()));
+                    //EventPublisher.Publish(new DebugOutputMessage(new List<IDebugState>()));
                     return;
                 }
                 _selectedHistory = value;
@@ -567,7 +566,7 @@ namespace Dev2.Triggers.Scheduler
                        (_editTriggerCommand = new DelegateCommand(param => SchedulerTaskManager.EditTrigger()));
 
         public ICommand AddWorkflowCommand => _addWorkflowCommand ??
-                       (_addWorkflowCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(SchedulerTaskManager.AddWorkflow, SchedulerTaskManager.CanSelectWorkflow));
+                       (_addWorkflowCommand = new Prism.Commands.DelegateCommand(SchedulerTaskManager.AddWorkflow, SchedulerTaskManager.CanSelectWorkflow));
 
         void InitializeHelp()
         {
@@ -596,7 +595,7 @@ namespace Dev2.Triggers.Scheduler
                     ScheduledResourceModel = new ClientScheduledResourceModel(CurrentEnvironment, CreateNewTask);
                     IsLoading = true;
 
-                    var cmd = AddWorkflowCommand as Microsoft.Practices.Prism.Commands.DelegateCommand;
+                    var cmd = AddWorkflowCommand as Prism.Commands.DelegateCommand;
                     cmd?.RaiseCanExecuteChanged();
 
                     foreach (var scheduledResource in ScheduledResourceModel.ScheduledResources.Where(a => !a.IsNewItem))

@@ -334,7 +334,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             }
 
             var inputDataViewModel = SetupForDebug(resourceModel, isDebug);
-            _windowManager.ShowDialog(inputDataViewModel);
+            //_windowManager.ShowDialog(inputDataViewModel);
         }
 
         WorkflowInputDataViewModel SetupForDebug(IContextualResourceModel resourceModel, bool isDebug)
@@ -376,7 +376,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         {
             FindMissing();
             Dev2Logger.Debug("Publish message of type - " + typeof(SaveAllOpenTabsMessage), "Warewolf Debug");
-            EventPublisher.Publish(new SaveAllOpenTabsMessage());
+           // EventPublisher.Publish(new SaveAllOpenTabsMessage());
 
             if (ContextualResourceModel?.Environment?.Connection == null)
             {
@@ -481,6 +481,25 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             }
         }
 
+        public void CanClose(Action<bool> callback)
+        {
+
+        }
+        public void TryClose()
+        {
+
+        }
+        public void TryClose(bool? dialogResult)
+        {
+
+        }
+
+        public event EventHandler<DeactivationEventArgs> Deactivated;
+        public void RaisePropertyChangedEventImmediately(string propertyName) { }
+
+        public void OnDeserialized(System.Runtime.Serialization.StreamingContext c) { }
+
+        public bool ShouldSerializeIsNotifying() { return false; }
         #endregion public methods
 
         #region private methods
@@ -617,9 +636,9 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
         #region overrides
 
-        protected override void OnActivate()
+        protected  void OnActivate()
         {
-            base.OnActivate();
+          //  base.OnActivate();
             DataListSingleton.SetDataList(DataListViewModel);
         }
 

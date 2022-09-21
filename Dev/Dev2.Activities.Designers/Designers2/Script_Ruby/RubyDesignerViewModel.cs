@@ -68,7 +68,7 @@ namespace Dev2.Activities.Designers2.Script_Ruby
         {
             var fileChooserMessage = _scriptChooser.ChooseScriptSources(IncludeFile);
             fileChooserMessage.Filter = "rb";
-            _eventPublisher.Publish(fileChooserMessage);
+            //_eventPublisher.Publish(fileChooserMessage);
             IncludeFile = string.Join(";", fileChooserMessage.SelectedFiles);
         }
     }

@@ -68,7 +68,7 @@ namespace Dev2.Network
             ServerEvents = EventPublishers.Studio;
 
             var uriString = serverUri;
-            if(!serverUri.EndsWith("dsf"))
+            if (!serverUri.EndsWith("dsf"))
             {
                 uriString = serverUri + (serverUri.EndsWith("/") ? "" : "/") + "dsf";
             }
@@ -77,7 +77,9 @@ namespace Dev2.Network
             AppServerUri = new Uri(uriString);
             WebServerUri = new Uri(uriString.Replace("/dsf", ""));
             Dev2Logger.Debug(credentials, "Warewolf Debug");
-            Dev2Logger.Debug("***** Attempting Server Hub : " + uriString + " -> " + CredentialCache.DefaultNetworkCredentials.Domain + @"\" + Principal.Identity.Name, "Warewolf Debug");
+
+            if (Principal != null)
+                Dev2Logger.Debug("***** Attempting Server Hub : " + uriString + " -> " + CredentialCache.DefaultNetworkCredentials.Domain + @"\" + Principal.Identity.Name, "Warewolf Debug");
             HubConnection = new HubConnectionWrapper(uriString) { Credentials = credentials };
             HubConnection.Error += OnHubConnectionError;
             HubConnection.Closed += HubConnectionOnClosed;
@@ -94,7 +96,7 @@ namespace Dev2.Network
             UserName = userName;
             Password = password;
             AuthenticationType = userName == "\\" ? AuthenticationType.Public : AuthenticationType.User;
-            if(AuthenticationType == AuthenticationType.Public)
+            if (AuthenticationType == AuthenticationType.Public)
             {
                 Principal = null;
             }
@@ -104,7 +106,7 @@ namespace Dev2.Network
         {
             get
             {
-                if(string.IsNullOrEmpty(DisplayName))
+                if (string.IsNullOrEmpty(DisplayName))
                 {
                     return false;
                 }
@@ -122,7 +124,7 @@ namespace Dev2.Network
 
         void InitializeEsbProxy()
         {
-            if(EsbProxy == null)
+            if (EsbProxy == null)
             {
                 EsbProxy = HubConnection.CreateHubProxy("esb");
                 EsbProxy.On<string>("SendMemo", OnMemoReceived);
@@ -140,10 +142,10 @@ namespace Dev2.Network
 
         public void FetchResourcesAffectedMemo(Guid resourceId)
         {
-            if(ReceivedResourceAffectedMessage != null)
+            if (ReceivedResourceAffectedMessage != null)
             {
                 var result = Task.Run(async () => await EsbProxy.Invoke<string>("FetchResourcesAffectedMemo", resourceId).ConfigureAwait(true)).GetAwaiter().GetResult();
-                if(!string.IsNullOrWhiteSpace(result))
+                if (!string.IsNullOrWhiteSpace(result))
                 {
                     FetchResourcesAffectedMemo(result);
                 }
@@ -153,11 +155,11 @@ namespace Dev2.Network
         void FetchResourcesAffectedMemo(string result)
         {
             var obj = _serializer.Deserialize<CompileMessageList>(result);
-            if(obj != null)
+            if (obj != null)
             {
                 ReceivedResourceAffectedMessage.Invoke(obj.ServiceID, obj);
                 var shellViewModel = CustomContainer.Get<IShellViewModel>();
-                if(shellViewModel != null)
+                if (shellViewModel != null)
                 {
                     shellViewModel.ResourceCalled = false;
                 }
@@ -174,12 +176,12 @@ namespace Dev2.Network
             Dev2Logger.Debug("*********** Hub connection down", "Warewolf Debug");
             IsConnected = false;
             IsConnecting = false;
-            if(IsShuttingDown)
+            if (IsShuttingDown)
             {
                 return;
             }
 
-            if(HubConnection.State != ConnectionStateWrapped.Disconnected)
+            if (HubConnection.State != ConnectionStateWrapped.Disconnected)
             {
                 OnNetworkStateChanged(new NetworkStateEventArgs(NetworkState.Online, NetworkState.Offline));
             }
@@ -204,7 +206,7 @@ namespace Dev2.Network
 
         protected void HubConnectionStateChanged(IStateChangeWrapped stateChange)
         {
-            switch(stateChange.NewState)
+            switch (stateChange.NewState)
             {
                 case ConnectionStateWrapped.Connected:
                     IsConnected = true;
@@ -240,13 +242,13 @@ namespace Dev2.Network
             ID = id;
             try
             {
-                if(!IsConnecting)
+                if (!IsConnecting)
                 {
                     var t = ConnectAsync(id);
                     t.ContinueWith(
                         (result) =>
                         {
-                            if(result.IsFaulted)
+                            if (result.IsFaulted)
                             {
                             }
                         });
@@ -254,14 +256,14 @@ namespace Dev2.Network
 
                 //ensureConnectedWaitTask.Wait(Config.Studio.ConnectTimeout);
             }
-            catch(AggregateException aex)
+            catch (AggregateException aex)
             {
                 aex.Flatten();
                 aex.Handle(
                     ex =>
                     {
                         Dev2Logger.Error(this, aex, "Warewolf Error");
-                        if(ex is HttpClientException hex && (hex.Response.StatusCode == HttpStatusCode.Unauthorized || hex.Response.StatusCode == HttpStatusCode.Forbidden))
+                        if (ex is HttpClientException hex && (hex.Response.StatusCode == HttpStatusCode.Unauthorized || hex.Response.StatusCode == HttpStatusCode.Forbidden))
                         {
                             UpdateIsAuthorized(false);
                             throw new UnauthorizedAccessException();
@@ -270,7 +272,7 @@ namespace Dev2.Network
                         throw ex;
                     });
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 HandleConnectError(e);
             }
@@ -304,21 +306,21 @@ namespace Dev2.Network
                 IsShuttingDown = true;
                 HubConnection.Stop(new TimeSpan(0, 0, 0, 5));
             }
-            catch(AggregateException aex)
+            catch (AggregateException aex)
             {
                 aex.Flatten();
                 aex.Handle(
                     ex =>
                     {
                         Dev2Logger.Error(this, aex, "Warewolf Error");
-                        if(ex is HttpClientException hex)
+                        if (ex is HttpClientException hex)
                         {
-                            switch(hex.Response.StatusCode)
+                            switch (hex.Response.StatusCode)
                             {
                                 case HttpStatusCode.Unauthorized:
                                 case HttpStatusCode.Forbidden:
                                     UpdateIsAuthorized(false);
-                                    throw new NotConnectedException();
+                                    throw new Dev2.Net6.Compatibility.NotConnectedException();
                                 case HttpStatusCode.Continue:
                                 case HttpStatusCode.SwitchingProtocols:
                                 case HttpStatusCode.OK:
@@ -360,14 +362,14 @@ namespace Dev2.Network
                                 case HttpStatusCode.GatewayTimeout:
                                 case HttpStatusCode.HttpVersionNotSupported:
                                 default:
-                                    throw new NotConnectedException();
+                                    throw new Dev2.Net6.Compatibility.NotConnectedException();
                             }
                         }
 
                         return false;
                     });
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Dev2Logger.Error(this, e, "Warewolf Error");
             }
@@ -377,14 +379,14 @@ namespace Dev2.Network
 
         public void Verify(Action<ConnectResult> callback, bool wait)
         {
-            if(IsConnected)
+            if (IsConnected)
             {
                 return;
             }
 
             ServicePointManager.ServerCertificateValidationCallback = ValidateServerCertificate;
 
-            if(wait)
+            if (wait)
             {
                 callback?.Invoke(
                     HubConnection.State == (ConnectionStateWrapped)ConnectionState.Connected
@@ -430,7 +432,7 @@ namespace Dev2.Network
             {
                 RaisePermissionsModified(obj.ModifiedPermissions);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Dev2Logger.Error(this, e, "Warewolf Error");
             }
@@ -493,7 +495,7 @@ namespace Dev2.Network
 
         void UpdateIsAuthorized(bool isAuthorized)
         {
-            if(IsAuthorized != isAuthorized)
+            if (IsAuthorized != isAuthorized)
             {
                 IsAuthorized = isAuthorized;
                 RaisePermissionsChanged();
@@ -513,13 +515,13 @@ namespace Dev2.Network
 
         public StringBuilder ExecuteCommand(StringBuilder xmlRequest, Guid workspaceId, int timeout)
         {
-            if(xmlRequest == null || xmlRequest.Length == 0)
+            if (xmlRequest == null || xmlRequest.Length == 0)
             {
                 throw new ArgumentNullException(nameof(xmlRequest));
             }
 
             var executeRequestAsync = Task.Run(async () => await ExecuteCommandAsync(xmlRequest, workspaceId).ConfigureAwait(true));
-            if(executeRequestAsync.Wait(timeout))
+            if (executeRequestAsync.Wait(timeout))
             {
                 return executeRequestAsync.Result;
             }
@@ -529,7 +531,7 @@ namespace Dev2.Network
 
         public async Task<StringBuilder> ExecuteCommandAsync(StringBuilder xmlRequest, Guid workspaceId)
         {
-            if(xmlRequest == null || xmlRequest.Length == 0)
+            if (xmlRequest == null || xmlRequest.Length == 0)
             {
                 throw new ArgumentNullException(nameof(xmlRequest));
             }
@@ -551,18 +553,18 @@ namespace Dev2.Network
                 var fragmentInvoke = await EsbProxy.Invoke<string>("FetchExecutePayloadFragment", new FutureReceipt { PartID = 0, RequestID = messageId }).ConfigureAwait(false);
                 result.Append(fragmentInvoke);
 
-                if(result.Length > 0)
+                if (result.Length > 0)
                 {
                     var start = result.LastIndexOf("<" + GlobalConstants.ManagementServicePayload + ">", false);
                     var end = result.LastIndexOf("</" + GlobalConstants.ManagementServicePayload + ">", false);
-                    if(start > 0 && start < end && end - start > 1)
+                    if (start > 0 && start < end && end - start > 1)
                     {
                         start += GlobalConstants.ManagementServicePayload.Length + 2;
                         return new StringBuilder(result.Substring(start, end - start));
                     }
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Dev2Logger.Error(e, "Warewolf Error");
             }
@@ -596,7 +598,7 @@ namespace Dev2.Network
 
         protected virtual void Dispose(bool disposing)
         {
-            if(!_disposedValue)
+            if (!_disposedValue)
             {
                 _disposedValue = true;
             }

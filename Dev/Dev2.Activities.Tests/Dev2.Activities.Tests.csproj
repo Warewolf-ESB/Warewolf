@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{2A8088A6-8F8D-42FD-B877-D809C494C561}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <TargetFramework>net48</TargetFramework>
+    <TargetFramework>net6.0-windows</TargetFramework>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <EnableDefaultItems>false</EnableDefaultItems>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
@@ -54,28 +54,11 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\Microsoft.Scripting.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
-    <Reference Include="System" />
     <Reference Include="System.Activities" />
     <Reference Include="System.Activities.Presentation" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Core">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Net.Http.WebRequest" />
-    <Reference Include="System.Runtime.DurableInstancing" />
-    <Reference Include="System.Xaml" />
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Xml.Linq" />
     <Reference Include="Weave">
       <HintPath>..\Binaries\Weave.dll</HintPath>
     </Reference>
-    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <CodeAnalysisDependentAssemblyPaths Condition=" '$(VS100COMNTOOLS)' != '' " Include="$(VS100COMNTOOLS)..\IDE\PrivateAssemblies">
@@ -376,10 +359,6 @@
       <Project>{df3ca7cd-16b7-465e-a7db-91951dfc330f}</Project>
       <Name>ConsoleAppToTestExecuteCommandLineActivity</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Dev2.Activities.Designers\Dev2.Activities.Designers.csproj">
-      <Project>{B95B724A-B052-4E18-98A4-88072C8DF2C2}</Project>
-      <Name>Dev2.Activities.Designers</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Dev2.Activities\Dev2.Activities.csproj">
       <Project>{0a369a8b-0906-47eb-8eee-ca20e9d4f151}</Project>
       <Name>Dev2.Activities</Name>
@@ -424,6 +403,7 @@
       <Project>{615EAE6D-040C-4364-B708-63DC8755CD4F}</Project>
       <Name>Dev2.Infrastructure</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Dev2.Net6.Compatibility\Dev2.Net6.Compatibility.csproj" />
     <ProjectReference Include="..\Dev2.Runtime.Services\Dev2.Runtime.Services.csproj">
       <Project>{b48ffdf5-6b1b-4279-a93f-2913b9d3be83}</Project>
       <Name>Dev2.Runtime.Services</Name>
@@ -451,10 +431,6 @@
     <ProjectReference Include="..\Dev2.Studio.Interfaces\Dev2.Studio.Interfaces.csproj">
       <Project>{37149E8E-FEF2-47C0-8391-80DCCE86D26D}</Project>
       <Name>Dev2.Studio.Interfaces</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Dev2.Studio\Dev2.Studio.csproj">
-      <Project>{62247A80-2266-4295-A8F6-A05507E2796E}</Project>
-      <Name>Dev2.Studio</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Util\Dev2.Util.csproj">
       <Project>{1990550D-EA6F-4DAC-9B5E-8571E86923ED}</Project>
@@ -532,14 +508,11 @@
     <PackageReference Include="Dropbox.Api">
       <Version>6.15.0</Version>
     </PackageReference>
-    <PackageReference Include="FluentAssertions">
-      <Version>3.4.0</Version>
-    </PackageReference>
     <PackageReference Include="log4net">
       <Version>2.0.12</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.SharePointOnline.CSOM">
-      <Version>16.1.3912.1204</Version>
+      <Version>16.1.22615.12000</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.TestPlatform.ObjectModel">
       <Version>16.11.0</Version>
@@ -547,12 +520,10 @@
     <PackageReference Include="Moq">
       <Version>4.16.1</Version>
     </PackageReference>
-    <PackageReference Include="MSTest.TestAdapter">
+    <!--<PackageReference Include="MSTest.TestFramework">
       <Version>2.1.2</Version>
-    </PackageReference>
-    <PackageReference Include="MSTest.TestFramework">
-      <Version>2.1.2</Version>
-    </PackageReference>
+    </PackageReference>-->
+    <PackageReference Include="MSTest.TestFramework" Version="2.2.8" />
     <PackageReference Include="Newtonsoft.Json">
       <Version>13.0.1</Version>
     </PackageReference>
@@ -568,12 +539,17 @@
     <PackageReference Include="System.Runtime">
       <Version>4.3.1</Version>
     </PackageReference>
-    <PackageReference Include="System.Threading.Tasks.Extensions">
-      <Version>4.5.4</Version>
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="6.0.0" />
+    <PackageReference Include="System.Net.Http" Version="4.3.4" />
+    <PackageReference Include="MSTest.TestAdapter" Version="2.2.8" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.1.0" />
+    <PackageReference Include="coverlet.collector" Version="3.1.2" />
+    <PackageReference Include="Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers" Version="0.4.336902">      
+      <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="TSQL.Parser">
-      <Version>1.1.1</Version>
-    </PackageReference>
+    <PackageReference Include="FluentAssertions" Version="6.7.0" />
+    <!--<PackageReference Include="TSQL.Parser" Version="1.5.3" />-->
+    <PackageReference Include="TSQL.Parser" Version="2.5.0" />
   </ItemGroup>
   <ItemGroup />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

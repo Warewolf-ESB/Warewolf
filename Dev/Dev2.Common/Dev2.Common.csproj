@@ -116,11 +116,11 @@
     <Compile Include="ExplorerRepositoryResult.cs" />
     <Compile Include="ExternalProcessExecutor.cs" />
     <Compile Include="ExtMethods\BaseEnumExtensions.cs" />
+    <Compile Include="ExtMethods\BindableBaseExtensions.cs" />
     <Compile Include="ExtMethods\GuidExtensions.cs" />
     <Compile Include="ExtMethods\ObjectExtensions.cs" />
     <Compile Include="ExtMethods\StringExtension.cs" />
     <Compile Include="ExtMethods\TypeExtensions.cs" />
-    <Compile Include="Fake\WebRequestHandler.cs" />
     <Compile Include="Fake\WindowsIdentityHelpers.cs" />
     <Compile Include="FileStreamFactory.cs" />
     <Compile Include="WebRequestHeadersHelper.cs" />
@@ -202,6 +202,7 @@
       <Project>{d7189600-3c18-4d35-97a4-8095de1a4504}</Project>
       <Name>Dev2.Data.Interfaces</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Dev2.Net6.Compatibility\Dev2.Net6.Compatibility.csproj" />
     <ProjectReference Include="..\Warewolf.Common\Warewolf.Common.csproj">
       <Project>{6c6d687d-ec18-4ab9-8f2e-07c9fbdbca97}</Project>
       <Name>Warewolf.Common</Name>
@@ -235,6 +236,7 @@
     <PackageReference Include="Newtonsoft.Json">
       <Version>13.0.1</Version>
     </PackageReference>
+    <PackageReference Include="Prism.Core" Version="8.1.97" />
     <PackageReference Include="System.Data.SQLite.Core">
       <Version>1.0.112</Version>
     </PackageReference>

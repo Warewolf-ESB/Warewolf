@@ -11,11 +11,13 @@
 
 using System;
 using System.ComponentModel;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Warewolf.Studio.Core;
 
 namespace Warewolf.Studio.Views
@@ -25,6 +27,8 @@ namespace Warewolf.Studio.Views
         readonly Grid _blackoutGrid = new Grid();
         bool _isDialog;
         bool _studioShutdown;
+
+        public string Path => throw new NotImplementedException();
 
         public SplashPage()
         {
@@ -102,6 +106,11 @@ namespace Warewolf.Studio.Views
         void ButtonBase_OnClick(object sender, RoutedEventArgs e)
         {
             CloseSplash(false);
+        }
+
+        public Task RenderAsync(ViewContext context)
+        {
+            throw new NotImplementedException();
         }
     }
 }

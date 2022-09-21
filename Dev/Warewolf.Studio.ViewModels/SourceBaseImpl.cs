@@ -4,11 +4,11 @@ using System.Linq;
 using Dev2;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Studio.Interfaces;
-using Microsoft.Practices.Prism.Mvvm;
-
+using Prism.Mvvm;
+using Dev2.Common;
 namespace Warewolf.Studio.ViewModels
 {
-    public abstract class SourceBaseImpl<T> : BindableBase, ISourceBase<T>, IDockViewModel,IDisposable
+    public abstract class SourceBaseImpl<T> : BindableBase2, ISourceBase<T>, IDockViewModel,IDisposable
         where T:IEquatable<T>
     {
         string _header;

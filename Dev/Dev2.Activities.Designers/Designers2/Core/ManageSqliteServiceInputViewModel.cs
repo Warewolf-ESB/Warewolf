@@ -11,7 +11,7 @@ using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Common.Interfaces.ToolBase.Database;
-using Microsoft.Practices.Prism.Commands;
+using Prism.Commands;
 using Warewolf.Core;
 using Warewolf.Resource.Errors;
 

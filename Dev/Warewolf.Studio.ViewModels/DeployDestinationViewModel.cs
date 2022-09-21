@@ -13,7 +13,7 @@ using System;
 using System.Linq;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.Deploy;
-using Microsoft.Practices.Prism.PubSubEvents;
+
 using System.Threading.Tasks;
 
 namespace Warewolf.Studio.ViewModels
@@ -26,14 +26,14 @@ namespace Warewolf.Studio.ViewModels
         Version _serverVersion;
         public IDeployStatsViewerViewModel StatsArea { private get; set; }
 
-        public DeployDestinationViewModel(IShellViewModel shellViewModel, IEventAggregator aggregator)
+        public DeployDestinationViewModel(IShellViewModel shellViewModel, Prism.Events.IEventAggregator aggregator)
             : base(shellViewModel, aggregator,false)
         {
             ConnectControlViewModel = new ConnectControlViewModel(shellViewModel.LocalhostServer, aggregator, shellViewModel.ExplorerViewModel.ConnectControlViewModel.Servers);
             ConnectControlViewModel.ServerConnected += async (sender, server) => { await ServerConnectedAsync(sender, server).ConfigureAwait(true); };
             ConnectControlViewModel.ServerDisconnected += ServerDisconnected;
             SelectedEnvironment = _environments.FirstOrDefault();
-            RefreshCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() => RefreshEnvironment(SelectedEnvironment.ResourceId));
+            RefreshCommand = new Prism.Commands.DelegateCommand(() => RefreshEnvironment(SelectedEnvironment.ResourceId));
             ValidateEnvironments(shellViewModel);
         }
 

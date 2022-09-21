@@ -15,8 +15,8 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Interactivity;
 using Dev2.CustomControls.Utils;
+using Microsoft.Xaml.Behaviors;
 
 namespace Dev2.Studio.AppResources.Behaviors
 {

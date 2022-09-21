@@ -101,3 +101,31 @@ Dev/SonarQube/SolutionBinding.sqconfig
 /Dev/Warewolf.Data1.Tests
 /Dev/.idea
 
+/Dev/ConsoleApp1
+/Dev/ConsoleApp2
+/Dev/Dev2.Activities.Designers.backup
+/Dev/Dev2.Activities.Tests.backup
+/Dev/Dev2.Common/Dev2 - Backup.Common.csproj
+/Dev/Dev2.Common.Tests.backup
+/Dev/Dev2.Data.Tests.backup
+/Dev/Dev2.Diagnostics.Tests.backup
+/Dev/Dev2.Infrastructure.Tests.backup
+/Dev/Dev2.Runtime.Configuration.Tests.backup
+/Dev/Dev2.Runtime.Tests.backup
+/Dev/Dev2.Runtime.WebServer.Tests.backup
+/Dev/Dev2.Studio.backup
+/Dev/Dev2.Studio.Core.Tests.backup
+/Dev/SampleTest
+/Dev/TestBase.backup
+/Dev/Warewolf.Core.Tests.backup
+/Dev/Warewolf.MergeParser.backup
+/Dev/Warewolf.MergeParser.Tests.backup
+/Dev/Warewolf.ResourceManagement.Tests.backup
+/Dev/Warewolf.Studio.AntiCorruptionLayer.backup
+/Dev/Warewolf.Studio.CustomControls.backup
+/Dev/Warewolf.Studio.Models.backup
+/Dev/Warewolf.Studio.Themes.Luna.backup
+/Dev/Warewolf.Studio.ViewModels.backup
+/Dev/Warewolf.Studio.Views.backup
+/Dev/Warewolf.Testing.backup
+/Dev/ServerTests2.sln

@@ -141,14 +141,14 @@ namespace Dev2.Studio.ViewModels.Help
 
         /// <summary>Called when deactivating.</summary>
         /// <param name="close">Inidicates whether this instance will be closed.</param>
-        protected override void OnDeactivate(bool close)
+        protected  void OnDeactivate(bool close)
         {
             if (close)
             {
                 EventPublisher.Unsubscribe(this);
                 HelpViewDisposed = true;
             }
-            base.OnDeactivate(close);
+            //base.OnDeactivate(close);
         }
 
         #endregion

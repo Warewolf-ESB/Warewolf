@@ -9,7 +9,7 @@ using System.Windows.Input;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Runtime.ServiceModel.Data;
-using Microsoft.Practices.Prism.Commands;
+using Prism.Commands;
 
 namespace Warewolf.Studio.ViewModels
 {

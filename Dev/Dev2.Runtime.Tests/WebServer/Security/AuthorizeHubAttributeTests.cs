@@ -13,7 +13,6 @@ using System.Security.Principal;
 using Dev2.Runtime.Security;
 using Dev2.Runtime.WebServer.Security;
 using Dev2.Services.Security;
-using Microsoft.AspNet.SignalR;
 using Microsoft.AspNet.SignalR.Hubs;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -177,12 +176,12 @@ namespace Dev2.Tests.Runtime.WebServer.Security
             Assert.AreEqual(isAuthenticated && isAuthorized, response);
         }
 
-        public static Mock<IRequest> CreateRequest(bool isAuthenticated)
+        public static Mock<Microsoft.AspNet.SignalR.IRequest> CreateRequest(bool isAuthenticated)
         {
             var user = new Mock<IPrincipal>();
             user.Setup(u => u.Identity.IsAuthenticated).Returns(isAuthenticated);
 
-            var request = new Mock<IRequest>();
+            var request = new Mock<Microsoft.AspNet.SignalR.IRequest>();
             request.Setup(r => r.User).Returns(user.Object);
             return request;
         }

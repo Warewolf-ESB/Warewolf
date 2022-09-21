@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -6,7 +6,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{62247A80-2266-4295-A8F6-A05507E2796E}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net48</TargetFramework>
+    <TargetFramework>net6.0-windows</TargetFramework>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <EnableDefaultItems>false</EnableDefaultItems>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
@@ -14,7 +14,7 @@
     <RootNamespace>Dev2</RootNamespace>
     <AssemblyName>Warewolf Studio</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <RuntimeIdentifier>win</RuntimeIdentifier>
+    <RuntimeIdentifier>win-x86</RuntimeIdentifier>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
@@ -44,7 +44,7 @@
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <UseWpf>true</UseWpf>
-	<CodeAnalysisRuleSet>..\.sonarlint\warewolf_dotnet_frameworkcsharp.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>..\.sonarlint\warewolf_dotnet_frameworkcsharp.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>Warewolf.ico</ApplicationIcon>
@@ -148,11 +148,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\Microsoft.Expression.Interactions.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.VisualBasic" />
-    <Reference Include="PresentationFramework.Aero" />
-    <Reference Include="PresentationFramework.Classic" />
-    <Reference Include="PresentationFramework.Luna" />
-    <Reference Include="PresentationFramework.Royale" />
     <Reference Include="RestSharp, Version=102.7.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\RestSharp.dll</HintPath>
@@ -160,45 +155,18 @@
     <Reference Include="RibbonControlsLibrary, Version=4.0.0.11019, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\Binaries\RibbonControlsLibrary.dll</HintPath>
     </Reference>
-    <Reference Include="ServiceStack.Common, Version=3.9.37.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\ServiceStack.Common.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
     <Reference Include="System.Activities" />
     <Reference Include="System.Activities.Core.Presentation" />
     <Reference Include="System.Activities.Presentation" />
     <Reference Include="System.ComponentModel.Composition" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.DirectoryServices" />
-    <Reference Include="System.Drawing" />
     <Reference Include="System.Management" />
     <Reference Include="System.Reactive, Version=1.0.10621.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\Binaries\System.Reactive.dll</HintPath>
     </Reference>
-    <Reference Include="System.Runtime.DurableInstancing" />
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.Web" />
-    <Reference Include="System.Web.Extensions" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Xaml">
-      <RequiredTargetFramework>4.0</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
     <Reference Include="Weave, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\Weave.dll</HintPath>
     </Reference>
-    <Reference Include="WindowsBase" />
-    <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -712,10 +680,6 @@
       <Project>{95E8977A-0C2F-4D90-BD27-A5E8E33D1DF9}</Project>
       <Name>Dev2.SignalR.Wrappers.Interfaces</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Dev2.Studio.Core\Dev2.Studio.Core.csproj">
-      <Project>{a58b157b-960b-4e84-8957-24e4884c5c77}</Project>
-      <Name>Dev2.Studio.Core</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Dev2.Studio.Interfaces\Dev2.Studio.Interfaces.csproj">
       <Project>{37149E8E-FEF2-47C0-8391-80DCCE86D26D}</Project>
       <Name>Dev2.Studio.Interfaces</Name>
@@ -772,14 +736,11 @@
       <Project>{A62DA168-5BF3-4C14-B880-4AD83478E3A7}</Project>
       <Name>Warewolf.Studio.Models</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Warewolf.Studio.Resources\Warewolf.Studio.Resources.csproj">
-      <Project>{CB565C94-8833-4911-B20F-0921EE3C286C}</Project>
-      <Name>Warewolf.Studio.Resources</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Warewolf.Studio.CustomControls\Warewolf.Studio.CustomControls.csproj">
       <Project>{1bd5cc42-66c7-4a1b-af1f-e6f2d4372b44}</Project>
       <Name>Warewolf.Studio.CustomControls</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Studio.Resources\Warewolf.Studio.Resources.csproj" />
     <ProjectReference Include="..\Warewolf.Studio.Themes.Luna\Warewolf.Studio.Themes.Luna.csproj">
       <Project>{18717e42-df21-45a4-9527-f0bb95d7135d}</Project>
       <Name>Warewolf.Studio.Themes.Luna</Name>
@@ -803,6 +764,7 @@
   </ItemGroup>
   <ItemGroup>
     <AdditionalFiles Include="..\.sonarlint\warewolf_dotnet_framework\CSharp\SonarLint.xml" Link="SonarLint.xml" />
+    <Content Include="appsettings.json" />
     <Content Include="Help\PageNotAvailable.htm">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -815,9 +777,8 @@
     <Folder Include="Views\Wizards\" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Caliburn.Micro">
-      <Version>1.4.1</Version>
-    </PackageReference>
+    <PackageReference Include="Caliburn.Micro" Version="4.0.212" />
+    <PackageReference Include="Caliburn.Micro.Core" Version="4.0.212" />
     <PackageReference Include="codecracker.CSharp">
       <Version>1.1.0</Version>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -828,9 +789,6 @@
     </PackageReference>
     <PackageReference Include="Expression.Blend.Sdk">
       <Version>1.0.2</Version>
-    </PackageReference>
-    <PackageReference Include="FontAwesome.WPF">
-      <Version>4.5.0.8</Version>
     </PackageReference>
     <PackageReference Include="log4net">
       <Version>2.0.12</Version>
@@ -844,21 +802,30 @@
     <PackageReference Include="Newtonsoft.Json">
       <Version>13.0.1</Version>
     </PackageReference>
-    <PackageReference Include="Prism.Mvvm">
+    <!--<PackageReference Include="Prism.Mvvm">
       <Version>1.1.1</Version>
-    </PackageReference>
-    <PackageReference Include="Prism.UnityExtensions">
+    </PackageReference>-->
+    <PackageReference Include="Prism.Core" Version="8.1.97" />
+
+    <!--<PackageReference Include="Prism.UnityExtensions">
       <Version>5.0.1</Version>
-    </PackageReference>
+    </PackageReference>-->
+    <PackageReference Include="Prism.Unity.Extensions" Version="8.0.62" />
+    <PackageReference Include="ServiceStack" Version="6.3.0" />
+    <PackageReference Include="ServiceStack.Common" Version="6.3.0" />
+    <PackageReference Include="ServiceStack.Redis" Version="6.3.0" />
     <PackageReference Include="System.Data.SQLite.Core">
       <Version>1.0.112</Version>
     </PackageReference>
     <PackageReference Include="TaskSchedulerEditor">
-      <Version>2.5.20</Version>
+      <Version>2.10.1</Version>
     </PackageReference>
-    <PackageReference Include="WPFTextBoxAutoComplete">
-      <Version>1.0.0</Version>
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="6.0.0" />
+    <PackageReference Include="Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers" Version="0.4.336902">
+      <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="FontAwesome.WPF" Version="4.7.0.9" />
+    <PackageReference Include="WPFTextBoxAutoComplete" Version="1.0.5" />
   </ItemGroup>
   <PropertyGroup>
     <PostBuildEvent>if exist "$(SolutionDir)Dev2.Studio\bin\Debug\net48\win\Warewolf Studio.exe" (
@@ -872,4 +839,7 @@ if exist "$(SolutionDir)Dev2.Studio\bin\Release\net48\win\Warewolf Studio.exe" (
   if not exist "$(SolutionDir)Dev2.Studio\bin\Release\net48\win\Trackerbird.Tracker.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.Tracker.dll" "$(SolutionDir)Dev2.Studio\bin\Release\net48\win"
 )</PostBuildEvent>
   </PropertyGroup>
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
 </Project>

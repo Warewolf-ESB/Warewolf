@@ -66,6 +66,7 @@
     <Compile Include="CookieHelper.cs" />
     <Compile Include="CustomMenuIcons.cs" />
     <Compile Include="DllListingModel.cs" />
+    <Compile Include="Extensions\ImageAwesomeExtensions.cs" />
     <Compile Include="FileListingModel.cs" />
     <Compile Include="HelpSetter.cs" />
     <Compile Include="Infragistics Prism Region Adapter\IDockAware.cs" />
@@ -128,23 +129,28 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="Expression.Blend.Sdk">
+    <!--<PackageReference Include="Expression.Blend.Sdk">
       <Version>1.0.2</Version>
-    </PackageReference>
+    </PackageReference>-->
     <PackageReference Include="Newtonsoft.Json">
       <Version>13.0.1</Version>
     </PackageReference>
     <!--<PackageReference Include="Prism.Mvvm">
       <Version>1.1.1</Version>
     </PackageReference>-->
-    <PackageReference Include="Prism.UnityExtensions">
+    <PackageReference Include="Prism.Core" Version="8.1.97" />
+
+    <!--<PackageReference Include="Prism.UnityExtensions">
       <Version>5.0.1</Version>
-    </PackageReference>
+    </PackageReference>-->
+    <PackageReference Include="Prism.Unity.Extensions" Version="8.0.62" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="6.0.0" />
     <PackageReference Include="Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers" Version="0.4.336902">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="FontAwesome.WPF" Version="4.7.0.9" />
+    <!--<PackageReference Include="FontAwesome.WPF" Version="4.7.0.9" />-->
+    <PackageReference Include="FontAwesome6.Fonts" Version="2.3.0" />
+    <PackageReference Include="FontAwesome6.Fonts.WinUI" Version="2.3.0" />
   </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

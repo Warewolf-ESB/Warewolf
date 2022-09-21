@@ -13,7 +13,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
 using Caliburn.Micro;
-using CubicOrange.Windows.Forms.ActiveDirectory;
+using Tulpep.ActiveDirectoryObjectPicker;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Resources;
 using Dev2.Common.Interfaces.Studio.Controller;

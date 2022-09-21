@@ -14,11 +14,12 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Dev2.Common.Interfaces;
-using Microsoft.Practices.Prism.Mvvm;
-
+//using Microsoft.Practices.Prism.Mvvm;
+using Prism.Mvvm;
+using Dev2.Common;
 namespace Warewolf.Studio.Core
 {
-    public class DllListingModel : BindableBase, IDllListingModel, IEquatable<DllListingModel>
+    public class DllListingModel : BindableBase2, IDllListingModel, IEquatable<DllListingModel>
     {
         readonly IManagePluginSourceModel _updateManager;
         readonly IManageComPluginSourceModel _comUpdateManager;
@@ -32,7 +33,7 @@ namespace Warewolf.Studio.Core
         bool _isSelected;
         bool _isExpanderVisible;
         readonly bool _isCom;
-
+        
         public DllListingModel(IManagePluginSourceModel updateManager, IFileListing dllListing)
         {
             _updateManager = updateManager;

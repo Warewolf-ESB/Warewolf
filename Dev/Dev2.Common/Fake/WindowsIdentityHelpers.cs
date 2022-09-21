@@ -21,24 +21,40 @@ namespace Dev2.Common
     public partial class WindowsIdentity
     {
         private IntPtr intPtr;
+        private WindowsIdentity identity;
 
         public WindowsIdentity(IntPtr intPtr)
         {
             this.intPtr = intPtr;
         }
 
+        public WindowsIdentity(WindowsIdentity identity)
+        {
+            this.identity = identity;
+        }
+        public WindowsIdentity()
+        {
+
+        }
+
         public bool IsAnonymous { get; internal set; }
         public string Name { get; internal set; }
         public List<System.Security.Principal.IdentityReference> Groups { get; set; }
+        public object Identity { get; internal set; }
 
         public static WindowsIdentity GetCurrent()
         {
-            throw new NotImplementedException();
+            return new WindowsIdentity() { Name = "Test" };
         }
 
-        public WindowsImpersonationContext Impersonate()
+        public virtual WindowsImpersonationContext Impersonate()
         {
             return null;
+        }
+
+        internal static IIdentity GetAnonymous()
+        {
+            throw new NotImplementedException();
         }
     }
     public class WindowsImpersonationContext : IDisposable

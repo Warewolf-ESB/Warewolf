@@ -1,5 +1,6 @@
 #pragma warning disable
-﻿using System.Windows;
+using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Shapes;
@@ -7,6 +8,7 @@ using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Infragistics.Windows.DockManager;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Warewolf.Studio.ViewModels.ToolBox;
 
 namespace Warewolf.Studio.Views
@@ -16,6 +18,8 @@ namespace Warewolf.Studio.Views
     /// </summary>
     public partial class ToolboxView : IToolboxView
     {
+        public string Path => throw new System.NotImplementedException();
+
         public ToolboxView()
         {
             InitializeComponent();
@@ -98,6 +102,11 @@ namespace Warewolf.Studio.Views
                     popupController?.Show(Studio.Resources.Languages.Core.ToolboxPopupDescription, Studio.Resources.Languages.Core.ToolboxPopupHeader, MessageBoxButton.OK, MessageBoxImage.Information, "", false, false, true, false, false, false);
                 }
             }
+        }
+
+        public Task RenderAsync(ViewContext context)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

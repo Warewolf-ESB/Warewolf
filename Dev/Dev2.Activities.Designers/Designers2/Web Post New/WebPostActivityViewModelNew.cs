@@ -27,8 +27,8 @@ using Dev2.Common.Interfaces.WebServices;
 using Dev2.Communication;
 using Dev2.Providers.Errors;
 using Dev2.Studio.Interfaces;
-using Microsoft.Practices.ObjectBuilder2;
-using Microsoft.Practices.Prism.Commands;
+//using Microsoft.Practices.ObjectBuilder2;
+using Prism.Commands;
 using Warewolf.Core;
 using Warewolf.Data.Options;
 using Warewolf.Options;
@@ -311,7 +311,11 @@ namespace Dev2.Activities.Designers2.Web_Post_New
                 conditionExpressionList = new List<FormDataConditionExpression>();
             }
             var result = OptionConvertor.ConvertFromListOfT(conditionExpressionList);
-            result.ForEach(r => ((FormDataOptionConditionExpression)r).IsMultiPart = !InputArea.IsUrlEncodedChecked);
+            foreach (FormDataOptionConditionExpression item in result)
+            {
+                item.IsMultiPart = !InputArea.IsUrlEncodedChecked;
+            }
+            //result.ForEach(r => ((FormDataOptionConditionExpression)r).IsMultiPart = !InputArea.IsUrlEncodedChecked);
             ConditionExpressionOptions = new OptionsWithNotifier { Options = result };
             UpdateConditionExpressionOptionsModelItem();
         }

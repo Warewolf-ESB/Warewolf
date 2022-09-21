@@ -16,7 +16,7 @@ using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Common.Interfaces.ToolBase.Database;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
-using Microsoft.Practices.Prism.Commands;
+using Prism.Commands;
 using Warewolf.Core;
 using Warewolf.Resource.Errors;
 

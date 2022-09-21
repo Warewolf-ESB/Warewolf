@@ -9,15 +9,16 @@
 */
 
 using System;
-using System.Web;
 using Warewolf.Exceptions;
+using Boxed.AspNetCore;
 
 namespace Dev2.Common.Interfaces
 {
+    
     public class AccessDeniedException : HttpException, IWarewolfException
     {
         public AccessDeniedException(string message)
-            : base(message)
+            : base(System.Net.HttpStatusCode.Forbidden, message)
         {
         }
     }

@@ -8,7 +8,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using Microsoft.Practices.Prism.Mvvm;
+using Microsoft.AspNetCore.Mvc.ViewEngines;
 
 namespace Dev2.Common.Interfaces
 {

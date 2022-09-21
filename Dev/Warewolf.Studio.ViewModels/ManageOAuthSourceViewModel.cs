@@ -3,7 +3,7 @@ using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Data.ServiceModel;
 using Dropbox.Api;
-using Microsoft.Practices.Prism.Commands;
+using Prism.Commands;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;

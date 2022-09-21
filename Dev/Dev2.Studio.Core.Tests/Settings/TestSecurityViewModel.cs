@@ -9,7 +9,7 @@
 */
 
 using System.Windows.Forms;
-using CubicOrange.Windows.Forms.ActiveDirectory;
+using Tulpep.ActiveDirectoryObjectPicker;
 using Dev2.Dialogs;
 using Dev2.Services.Security;
 using Dev2.Settings.Security;

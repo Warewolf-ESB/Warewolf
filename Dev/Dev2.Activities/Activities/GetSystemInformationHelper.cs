@@ -259,7 +259,7 @@ namespace Dev2.Activities
         public string GetUserRolesInformation(IIdentity currentIdentity)
         {
             var stringBuilder = new StringBuilder();
-            var identity = currentIdentity as Common.WindowsIdentity ?? Common.WindowsIdentity.GetCurrent();
+            var identity = currentIdentity as System.Security.Principal.WindowsIdentity ?? System.Security.Principal.WindowsIdentity.GetCurrent();
 
             if (identity.Groups != null)
             {

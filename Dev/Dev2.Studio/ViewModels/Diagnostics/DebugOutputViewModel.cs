@@ -111,7 +111,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
             SessionID = Guid.NewGuid();
             _popup = CustomContainer.Get<IPopupController>();
-            ClearSearchTextCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() => SearchText = "");
+            ClearSearchTextCommand = new Prism.Commands.DelegateCommand(() => SearchText = "");
             AddNewTestCommand = new DelegateCommand(o => AddNewTest(EventPublishers.Aggregator), o=> CanAddNewTest());
             _outputViewModelUtil = new DebugOutputViewModelUtil(SessionID);
         }
@@ -126,7 +126,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                 ResourceModel = _contextualResourceModel,
                 RootItems = RootItems.ToList()
             };
-            eventPublisher.Publish(newTestFromDebugMessage);
+           // eventPublisher.Publish(newTestFromDebugMessage);
         }
 
         public Guid ResourceID { get; set; }

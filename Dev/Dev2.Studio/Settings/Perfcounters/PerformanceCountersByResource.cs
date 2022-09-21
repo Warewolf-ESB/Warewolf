@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Windows.Input;
+using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Runtime.Configuration.ViewModels.Base;
-using Microsoft.Practices.Prism.Mvvm;
 
 namespace Dev2.Settings.Perfcounters
 {
-    public class PerformanceCountersByResource : BindableBase,IPerformanceCountersByResource
+    public class PerformanceCountersByResource : BindableBase2,IPerformanceCountersByResource
     {
         bool _isDeleted;
         Guid _resourceId;

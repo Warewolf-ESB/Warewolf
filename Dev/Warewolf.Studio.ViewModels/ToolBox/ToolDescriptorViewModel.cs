@@ -7,13 +7,13 @@ using System.Windows;
 using System.Windows.Media;
 using Dev2;
 using Dev2.Common.Interfaces.Toolbox;
-using Microsoft.Practices.Prism.Mvvm;
+using Prism.Mvvm;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
-
+using Dev2.Common;
 
 namespace Warewolf.Studio.ViewModels.ToolBox
 {
-    public class ToolDescriptorViewModel : BindableBase,IToolDescriptorViewModel
+    public class ToolDescriptorViewModel : BindableBase2,IToolDescriptorViewModel
     {
         IToolDescriptor _tool;
         bool _isEnabled;

@@ -4,7 +4,7 @@ using System.Windows;
 using System.Windows.Input;
 using Caliburn.Micro;
 using FontAwesome.WPF;
-using Microsoft.Practices.Prism.Commands;
+using Prism.Commands;
 
 
 namespace Warewolf.Studio.ViewModels
@@ -157,25 +157,25 @@ namespace Warewolf.Studio.ViewModels
         public void No()
         {
             Result = MessageBoxResult.No;
-            TryClose(false);
+            //TryClose(false);
         }
 
         public void Yes()
         {
             Result = MessageBoxResult.Yes;
-            TryClose(true);
+            //TryClose(true);
         }
 
         public void Cancel()
         {
             Result = MessageBoxResult.Cancel;
-            TryClose(false);
+            //TryClose(false);
         }
 
         public void Ok()
         {
             Result = MessageBoxResult.OK;
-            TryClose(true);
+            //TryClose(true);
         }
     }
 }

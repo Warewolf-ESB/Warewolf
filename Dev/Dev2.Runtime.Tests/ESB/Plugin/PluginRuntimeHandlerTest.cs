@@ -25,6 +25,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Oracle.ManagedDataAccess.Client;
 using TestingDotnetDllCascading;
 
 namespace Dev2.Tests.Runtime.ESB.Plugin

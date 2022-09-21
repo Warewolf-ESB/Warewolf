@@ -3,7 +3,7 @@
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.RabbitMQ;
-using Microsoft.Practices.Prism.Commands;
+using Prism.Commands;
 using System;
 using System.Threading.Tasks;
 using System.Windows;

@@ -40,7 +40,7 @@ namespace Dev2.Activities.Designers2.DropBox2016.Delete
         {
             _sourceManager = sourceManager;
             EditDropboxSourceCommand = new RelayCommand(o => EditDropBoxSource(), p => IsDropboxSourceSelected);
-            NewSourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(CreateOAuthSource);
+            NewSourceCommand = new Prism.Commands.DelegateCommand(CreateOAuthSource);
             
             Sources = LoadOAuthSources();
             AddTitleBarLargeToggle();

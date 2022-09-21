@@ -11,8 +11,8 @@
 
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Interactivity;
 using Dev2.Common.Interfaces;
+using Microsoft.Xaml.Behaviors;
 
 namespace Warewolf.Studio.Core
 {

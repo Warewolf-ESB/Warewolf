@@ -342,7 +342,7 @@ namespace Dev2.Tests.Runtime.Services
             //------------Setup for test--------------------------
             var resourceID = Guid.NewGuid();
             var serializer = new Dev2JsonSerializer();
-            var identity = new MockPrincipal(WindowsIdentity.GetCurrent().Name);
+            var identity = new MockPrincipal(System.Security.Principal.WindowsIdentity.GetCurrent().Name);
             var currentPrincipal = new GenericPrincipal(identity, new[] {"Role1", "Roll2"});
             Thread.CurrentPrincipal = currentPrincipal;
             var values = new Dictionary<string, StringBuilder>
@@ -379,7 +379,7 @@ namespace Dev2.Tests.Runtime.Services
             //------------Setup for test--------------------------
             var resourceID = Guid.NewGuid();
             var serializer = new Dev2JsonSerializer();
-            var identity = new MockPrincipal(WindowsIdentity.GetCurrent().Name);
+            var identity = new MockPrincipal(System.Security.Principal.WindowsIdentity.GetCurrent().Name);
             var currentPrincipal = new GenericPrincipal(identity, new[] {"Role1", "Roll2"});
             Thread.CurrentPrincipal = currentPrincipal;
             var values = new Dictionary<string, StringBuilder>

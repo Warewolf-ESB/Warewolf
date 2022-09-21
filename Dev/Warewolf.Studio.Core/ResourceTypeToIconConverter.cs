@@ -4,8 +4,11 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
-using FontAwesome.WPF;
+//using FontAwesome.WPF;
 using System.Windows.Controls;
+using FontAwesome6.Fonts;
+using FontAwesome6;
+using Warewolf.Studio.Core.Extensions;
 
 namespace Warewolf.Studio.Core
 {
@@ -68,7 +71,7 @@ namespace Warewolf.Studio.Core
                     case "Dev2Server":
                         return _dict[CustomMenuIcons.ServerSource] as DrawingImage;
                     case "StartPage":
-                        var imageSource = ImageAwesome.CreateImageSource(FontAwesomeIcon.Home, _brush);
+                        var imageSource = ImageAwesomeExtensions.CreateImageSource(EFontAwesomeIcon.Solid_House, _brush);
                         return imageSource;
                     case "OAuth":
                     case "OauthSource":
@@ -76,21 +79,21 @@ namespace Warewolf.Studio.Core
                         return Application.Current.Resources["DropboxSource"];
                         //TODO: Remove once Triggers is the only entry point.
                     case "Scheduler":
-                        return ImageAwesome.CreateImageSource(FontAwesomeIcon.History, _brush);
+                        return ImageAwesomeExtensions.CreateImageSource(EFontAwesomeIcon.Solid_ClockRotateLeft, _brush);
                     case "Triggers":
-                        return ImageAwesome.CreateImageSource(FontAwesomeIcon.Play, _brush);
+                        return ImageAwesomeExtensions.CreateImageSource(EFontAwesomeIcon.Solid_Play, _brush);
                     case "ServiceTestsViewer":
-                        return ImageAwesome.CreateImageSource(FontAwesomeIcon.Flask, _brush);
+                        return ImageAwesomeExtensions.CreateImageSource(EFontAwesomeIcon.Solid_Flask, _brush);
                     case "MergeConflicts":
                         return _dict[CustomMenuIcons.MergeConflicts] as DrawingImage;
                     case "Search":
-                        return ImageAwesome.CreateImageSource(FontAwesomeIcon.Search, _brush);
+                        return ImageAwesomeExtensions.CreateImageSource(EFontAwesomeIcon.Solid_MagnifyingGlass, _brush);
                     case "Settings":
-                        return ImageAwesome.CreateImageSource(FontAwesomeIcon.Cogs, _brush);
+                        return ImageAwesomeExtensions.CreateImageSource(EFontAwesomeIcon.Solid_Gears, _brush);
                     case "DependencyViewer":
-                        return ImageAwesome.CreateImageSource(FontAwesomeIcon.Sitemap, _brush);
+                        return ImageAwesomeExtensions.CreateImageSource(EFontAwesomeIcon.Solid_Sitemap, _brush);
                     case "DeployViewer":
-                        return ImageAwesome.CreateImageSource(FontAwesomeIcon.PaperPlane, _brush);
+                        return ImageAwesomeExtensions.CreateImageSource(EFontAwesomeIcon.Solid_PaperPlane, _brush);
                     default:
                         return _dict[CustomMenuIcons.Folder] as DrawingImage;
                 }

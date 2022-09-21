@@ -9,11 +9,11 @@
 */
 
 using Dev2.Studio.Interfaces;
-using Microsoft.Practices.Prism.Mvvm;
-
+using Prism.Mvvm;
+using Dev2.Common;
 namespace Warewolf.Studio.ViewModels
 {
-    public class ExplorerTooltips : BindableBase, IExplorerTooltips
+    public class ExplorerTooltips : BindableBase2, IExplorerTooltips
     {
         string _newServiceTooltip;
         string _newServerSourceTooltip;

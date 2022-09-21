@@ -299,7 +299,7 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
                 }
 
             };
-            _eventPublisher.Publish(message);
+            //_eventPublisher.Publish(message);
         }
 
         public override void Validate()

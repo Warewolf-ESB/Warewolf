@@ -9,9 +9,10 @@
 */
 
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Security.Principal;
 using Dev2.Common.Interfaces.Enums;
-using Microsoft.AspNet.SignalR.Hosting;
 
 namespace Dev2.Services.Security
 {
@@ -30,5 +31,12 @@ namespace Dev2.Services.Security
         Uri Url { get; }
         INameValueCollection QueryString { get; }
         string ResourcePath { get; }
+    }
+
+    public interface INameValueCollection : IEnumerable<KeyValuePair<string, string>>, IEnumerable
+    {
+        string this[string key] { get; }
+        IEnumerable<string> GetValues(string key);
+        string Get(string key);
     }
 }

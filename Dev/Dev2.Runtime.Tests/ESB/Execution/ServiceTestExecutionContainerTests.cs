@@ -140,14 +140,14 @@ namespace Dev2.Tests.Runtime.ESB.Execution
         public void ServiceTestExecutionContainer_Execute_AuthenticationType_Public_ReturnsExecutedResults()
         {
             //---------------Set up test pack-------------------
-            var mockServiceTestInputs = new Mock<IEnumerable<IServiceTestInput>>();
-            var mockServiceTestModelTO = new Mock<IServiceTestModelTO>();
-            var mockDSFDataObject = new Mock<IDSFDataObject>();
-            var mockTestCatalog = new Mock<ITestCatalog>();
-            var mockResourceCatalog = new Mock<IResourceCatalog>();
-            var mockDev2Activity = new Mock<IDev2Activity>();
-            var mockWorkspace = new Mock<IWorkspace>();
-            var mockEsbChannel = new Mock<IEsbChannel>();
+            var mockServiceTestInputs = new Mock<IEnumerable<IServiceTestInput>>().Create();
+            var mockServiceTestModelTO = new Mock<IServiceTestModelTO>().Create();
+            var mockDSFDataObject = new Mock<IDSFDataObject>().Create();
+            var mockTestCatalog = new Mock<ITestCatalog>().Create();
+            var mockResourceCatalog = new Mock<IResourceCatalog>().Create();
+            var mockDev2Activity = new Mock<IDev2Activity>().Create();
+            var mockWorkspace = new Mock<IWorkspace>().Create();
+            var mockEsbChannel = new Mock<IEsbChannel>().Create();
 
             var resourceId = Guid.NewGuid();
 
@@ -467,12 +467,12 @@ Test Failed because of some reasons
         public void ServiceTestExecutionContainer_ExecuteWf_AuthenticationType_Windows_Should_AssignAllRecordSetItems()
         {
             //------------Setup for test-------------------------
-            var mockWorkspace = new Mock<IWorkspace>();
-            var mockEsbChannel = new Mock<IEsbChannel>();
-            var mockDSFDataObject = new Mock<IDSFDataObject>();
-            var mockResourceCatalog = new Mock<IResourceCatalog>();
-            var mockTestCatalog = new Mock<ITestCatalog>();
-            var mockServiceTestModelTO = new Mock<IServiceTestModelTO>();
+            var mockWorkspace = new Mock<IWorkspace>().Create();
+            var mockEsbChannel = new Mock<IEsbChannel>().Create();
+            var mockDSFDataObject = new Mock<IDSFDataObject>().Create();
+            var mockResourceCatalog = new Mock<IResourceCatalog>().Create();
+            var mockTestCatalog = new Mock<ITestCatalog>().Create();
+            var mockServiceTestModelTO = new Mock<IServiceTestModelTO>().Create();
 
             const string Datalist = "<DataList><scalar1 ColumnIODirection=\"Input\"/><persistantscalar ColumnIODirection=\"Input\"/><rs><f1 ColumnIODirection=\"Input\"/><f2 ColumnIODirection=\"Input\"/></rs><recset><field1/><field2/></recset></DataList>";
             const string TestName = "test2";
@@ -520,12 +520,12 @@ Test Failed because of some reasons
         public void ServiceTestExecutionContainer_TryExecuteWf_Inputs_StartsWithAt_Should_AssignAllRecordSetItems()
         {
             //------------Setup for test-------------------------
-            var mockWorkspace = new Mock<IWorkspace>();
-            var mockEsbChannel = new Mock<IEsbChannel>();
-            var mockDSFDataObject = new Mock<IDSFDataObject>();
-            var mockResourceCatalog = new Mock<IResourceCatalog>();
-            var mockTestCatalog = new Mock<ITestCatalog>();
-            var mockServiceTestModelTO = new Mock<IServiceTestModelTO>();
+            var mockWorkspace = new Mock<IWorkspace>().Create();
+            var mockEsbChannel = new Mock<IEsbChannel>().Create();
+            var mockDSFDataObject = new Mock<IDSFDataObject>().Create();
+            var mockResourceCatalog = new Mock<IResourceCatalog>().Create();
+            var mockTestCatalog = new Mock<ITestCatalog>().Create();
+            var mockServiceTestModelTO = new Mock<IServiceTestModelTO>().Create();
 
             const string Datalist = "<DataList><scalar1 ColumnIODirection=\"Input\"/><persistantscalar ColumnIODirection=\"Input\"/><rs><f1 ColumnIODirection=\"Input\"/><f2 ColumnIODirection=\"Input\"/></rs><recset><field1/><field2/></recset></DataList>";
             const string TestName = "test2";
@@ -581,12 +581,12 @@ Test Failed because of some reasons
         public void ServiceTestExecutionContainer_TryExecuteWf_DataObject_StopExecutionTrue_Should_AssignAllRecordSetItems()
         {
             //------------Setup for test-------------------------
-            var mockWorkspace = new Mock<IWorkspace>();
-            var mockEsbChannel = new Mock<IEsbChannel>();
-            var mockDSFDataObject = new Mock<IDSFDataObject>();
-            var mockResourceCatalog = new Mock<IResourceCatalog>();
-            var mockTestCatalog = new Mock<ITestCatalog>();
-            var mockServiceTestModelTO = new Mock<IServiceTestModelTO>();
+            var mockWorkspace = new Mock<IWorkspace>().Create();
+            var mockEsbChannel = new Mock<IEsbChannel>().Create();
+            var mockDSFDataObject = new Mock<IDSFDataObject>().Create();
+            var mockResourceCatalog = new Mock<IResourceCatalog>().Create();
+            var mockTestCatalog = new Mock<ITestCatalog>().Create();
+            var mockServiceTestModelTO = new Mock<IServiceTestModelTO>().Create();
 
             const string Datalist = "<DataList><scalar1 ColumnIODirection=\"Input\"/><persistantscalar ColumnIODirection=\"Input\"/><rs><f1 ColumnIODirection=\"Input\"/><f2 ColumnIODirection=\"Input\"/></rs><recset><field1/><field2/></recset></DataList>";
             const string TestName = "test2";
@@ -645,12 +645,12 @@ Test Failed because of some reasons
         public void ServiceTestExecutionContainer_TryExecuteWf_DataObject_StopExecutionFalse_Should_AssignAllRecordSetItems()
         {
             //------------Setup for test-------------------------
-            var mockWorkspace = new Mock<IWorkspace>();
-            var mockEsbChannel = new Mock<IEsbChannel>();
-            var mockDSFDataObject = new Mock<IDSFDataObject>();
-            var mockResourceCatalog = new Mock<IResourceCatalog>();
-            var mockTestCatalog = new Mock<ITestCatalog>();
-            var mockServiceTestModelTO = new Mock<IServiceTestModelTO>();
+            var mockWorkspace = new Mock<IWorkspace>().Create();
+            var mockEsbChannel = new Mock<IEsbChannel>().Create();
+            var mockDSFDataObject = new Mock<IDSFDataObject>().Create();
+            var mockResourceCatalog = new Mock<IResourceCatalog>().Create();
+            var mockTestCatalog = new Mock<ITestCatalog>().Create();
+            var mockServiceTestModelTO = new Mock<IServiceTestModelTO>().Create();
 
             const string Datalist = "<DataList><scalar1 ColumnIODirection=\"Input\"/><persistantscalar ColumnIODirection=\"Input\"/><rs><f1 ColumnIODirection=\"Input\"/><f2 ColumnIODirection=\"Input\"/></rs><recset><field1/><field2/></recset></DataList>";
             const string TestName = "test2";
@@ -709,12 +709,12 @@ Test Failed because of some reasons
         public void ServiceTestExecutionContainer_ExecuteWf_DataObject_StopExecutionFalse_TestPassedTrue_Should_AssignAllRecordSetItems()
         {
             //------------Setup for test-------------------------
-            var mockWorkspace = new Mock<IWorkspace>();
-            var mockEsbChannel = new Mock<IEsbChannel>();
-            var mockDSFDataObject = new Mock<IDSFDataObject>();
-            var mockResourceCatalog = new Mock<IResourceCatalog>();
-            var mockTestCatalog = new Mock<ITestCatalog>();
-            var mockServiceTestModelTO = new Mock<IServiceTestModelTO>();
+            var mockWorkspace = new Mock<IWorkspace>().Create();
+            var mockEsbChannel = new Mock<IEsbChannel>().Create();
+            var mockDSFDataObject = new Mock<IDSFDataObject>().Create();
+            var mockResourceCatalog = new Mock<IResourceCatalog>().Create();
+            var mockTestCatalog = new Mock<ITestCatalog>().Create();
+            var mockServiceTestModelTO = new Mock<IServiceTestModelTO>().Create();
 
             const string Datalist = "<DataList><scalar1 ColumnIODirection=\"Input\"/><persistantscalar ColumnIODirection=\"Input\"/><rs><f1 ColumnIODirection=\"Input\"/><f2 ColumnIODirection=\"Input\"/></rs><recset><field1/><field2/></recset></DataList>";
             const string TestName = "test2";
@@ -774,12 +774,12 @@ Test Failed because of some reasons
         public void ServiceTestExecutionContainer_TryExecuteWf_SetTestFailureBasedOnExpectedError_ErrorExpectedTrue_Should_AssignAllRecordSetItems()
         {
             //------------Setup for test-------------------------
-            var mockWorkspace = new Mock<IWorkspace>();
-            var mockEsbChannel = new Mock<IEsbChannel>();
-            var mockDSFDataObject = new Mock<IDSFDataObject>();
-            var mockResourceCatalog = new Mock<IResourceCatalog>();
-            var mockTestCatalog = new Mock<ITestCatalog>();
-            var mockServiceTestModelTO = new Mock<IServiceTestModelTO>();
+            var mockWorkspace = new Mock<IWorkspace>().Create();
+            var mockEsbChannel = new Mock<IEsbChannel>().Create();
+            var mockDSFDataObject = new Mock<IDSFDataObject>().Create();
+            var mockResourceCatalog = new Mock<IResourceCatalog>().Create();
+            var mockTestCatalog = new Mock<ITestCatalog>().Create();
+            var mockServiceTestModelTO = new Mock<IServiceTestModelTO>().Create();
 
             const string Datalist = "<DataList><scalar1 ColumnIODirection=\"Input\"/><persistantscalar ColumnIODirection=\"Input\"/><rs><f1 ColumnIODirection=\"Input\"/><f2 ColumnIODirection=\"Input\"/></rs><recset><field1/><field2/></recset></DataList>";
             const string TestName = "test2";
@@ -842,12 +842,12 @@ Test Failed because of some reasons
         public void ServiceTestExecutionContainer_TryExecuteWf_DataObject_StopExecution_ThrowInvalidWorkflowException_Should_AssignAllRecordSetItems()
         {
             //------------Setup for test-------------------------
-            var mockWorkspace = new Mock<IWorkspace>();
-            var mockEsbChannel = new Mock<IEsbChannel>();
-            var mockDSFDataObject = new Mock<IDSFDataObject>();
-            var mockResourceCatalog = new Mock<IResourceCatalog>();
-            var mockTestCatalog = new Mock<ITestCatalog>();
-            var mockServiceTestModelTO = new Mock<IServiceTestModelTO>();
+            var mockWorkspace = new Mock<IWorkspace>().Create();
+            var mockEsbChannel = new Mock<IEsbChannel>().Create();
+            var mockDSFDataObject = new Mock<IDSFDataObject>().Create();
+            var mockResourceCatalog = new Mock<IResourceCatalog>().Create();
+            var mockTestCatalog = new Mock<ITestCatalog>().Create();
+            var mockServiceTestModelTO = new Mock<IServiceTestModelTO>().Create();
 
             const string Datalist = "<DataList><scalar1 ColumnIODirection=\"Input\"/><persistantscalar ColumnIODirection=\"Input\"/><rs><f1 ColumnIODirection=\"Input\"/><f2 ColumnIODirection=\"Input\"/></rs><recset><field1/><field2/></recset></DataList>";
             const string TestName = "test2";
@@ -909,12 +909,12 @@ Test Failed because of some reasons
         public void ServiceTestExecutionContainer_TryExecuteWf_SetTestFailureBasedOnExpectedError_EnvironmentErrorsTrue_Should_AssignAllRecordSetItems()
         {
             //------------Setup for test-------------------------
-            var mockWorkspace = new Mock<IWorkspace>();
-            var mockEsbChannel = new Mock<IEsbChannel>();
-            var mockDSFDataObject = new Mock<IDSFDataObject>();
-            var mockResourceCatalog = new Mock<IResourceCatalog>();
-            var mockTestCatalog = new Mock<ITestCatalog>();
-            var mockServiceTestModelTO = new Mock<IServiceTestModelTO>();
+            var mockWorkspace = new Mock<IWorkspace>().Create();
+            var mockEsbChannel = new Mock<IEsbChannel>().Create();
+            var mockDSFDataObject = new Mock<IDSFDataObject>().Create();
+            var mockResourceCatalog = new Mock<IResourceCatalog>().Create();
+            var mockTestCatalog = new Mock<ITestCatalog>().Create();
+            var mockServiceTestModelTO = new Mock<IServiceTestModelTO>().Create();
 
             const string Datalist = "<DataList><scalar1 ColumnIODirection=\"Input\"/><persistantscalar ColumnIODirection=\"Input\"/><rs><f1 ColumnIODirection=\"Input\"/><f2 ColumnIODirection=\"Input\"/></rs><recset><field1/><field2/></recset></DataList>";
             const string TestName = "test2";
@@ -979,12 +979,12 @@ Test Failed because of some reasons
         public void ServiceTestExecutionContainer_Execute_IsDebugTrue_EnvironmentHasErrors_Should_AssignAllRecordSetItems()
         {
             //------------Setup for test-------------------------
-            var mockWorkspace = new Mock<IWorkspace>();
-            var mockEsbChannel = new Mock<IEsbChannel>();
-            var mockDSFDataObject = new Mock<IDSFDataObject>();
-            var mockResourceCatalog = new Mock<IResourceCatalog>();
-            var mockTestCatalog = new Mock<ITestCatalog>();
-            var mockServiceTestModelTO = new Mock<IServiceTestModelTO>();
+            var mockWorkspace = new Mock<IWorkspace>().Create();
+            var mockEsbChannel = new Mock<IEsbChannel>().Create();
+            var mockDSFDataObject = new Mock<IDSFDataObject>().Create();
+            var mockResourceCatalog = new Mock<IResourceCatalog>().Create();
+            var mockTestCatalog = new Mock<ITestCatalog>().Create();
+            var mockServiceTestModelTO = new Mock<IServiceTestModelTO>().Create();
 
             const string Datalist = "<DataList><scalar1 ColumnIODirection=\"Input\"/><persistantscalar ColumnIODirection=\"Input\"/><rs><f1 ColumnIODirection=\"Input\"/><f2 ColumnIODirection=\"Input\"/></rs><recset><field1/><field2/></recset></DataList>";
             const string TestName = "test2";
@@ -1043,12 +1043,12 @@ Test Failed because of some reasons
         public void ServiceTestExecutionContainer_Execute_AddTestInputsToJsonOrRecordset_NullValue_Should_Not_Fail()
         {
             //------------Setup for test-------------------------
-            var mockWorkspace = new Mock<IWorkspace>();
-            var mockEsbChannel = new Mock<IEsbChannel>();
-            var mockDSFDataObject = new Mock<IDSFDataObject>();
-            var mockResourceCatalog = new Mock<IResourceCatalog>();
-            var mockTestCatalog = new Mock<ITestCatalog>();
-            var mockServiceTestModelTO = new Mock<IServiceTestModelTO>();
+            var mockWorkspace = new Mock<IWorkspace>().Create();
+            var mockEsbChannel = new Mock<IEsbChannel>().Create();
+            var mockDSFDataObject = new Mock<IDSFDataObject>().Create();
+            var mockResourceCatalog = new Mock<IResourceCatalog>().Create();
+            var mockTestCatalog = new Mock<ITestCatalog>().Create();
+            var mockServiceTestModelTO = new Mock<IServiceTestModelTO>().Create();
 
             const string Datalist = "<DataList><scalar1 ColumnIODirection=\"Input\"/><persistantscalar ColumnIODirection=\"Input\"/><rs><f1 ColumnIODirection=\"Input\"/><f2 ColumnIODirection=\"Input\"/></rs><recset><field1/><field2/></recset></DataList>";
             const string TestName = "test2";

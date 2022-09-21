@@ -11,6 +11,7 @@ namespace Dev2.Core.Tests
         [Owner("Pieter Terblanche")]
         public void MergeWorkflowViewModel_Constructor()
         {
+            Net6.Compatibility.STAThreadExtensions.RunSTAThreadAsync(() => {
             var mergeWorkflowViewModel = CreateMergeWorkflowViewModel();
 
             Assert.IsNotNull(mergeWorkflowViewModel);
@@ -20,6 +21,7 @@ namespace Dev2.Core.Tests
 
             Assert.IsNotNull(mergeWorkflowViewModel.ModelFactoryCurrent.WorkflowName);
             Assert.IsNotNull(mergeWorkflowViewModel.ModelFactoryDifferent.WorkflowName);
+            });
         }
     }
 }

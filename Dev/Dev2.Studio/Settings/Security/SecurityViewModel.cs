@@ -19,7 +19,7 @@ using System.Security.Cryptography;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
-using CubicOrange.Windows.Forms.ActiveDirectory;
+using Tulpep.ActiveDirectoryObjectPicker;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Core.Help;
 using Dev2.Common;

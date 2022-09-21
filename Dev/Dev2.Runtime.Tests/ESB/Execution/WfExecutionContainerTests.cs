@@ -162,10 +162,10 @@ namespace Dev2.Tests.Runtime.ESB.Execution
         public void WfExecutionContainer_ExecuteNode_CheckWhenDataObjectStopExecutionIsTrue_ShouldNotEmptyExecutionExceptionInDataObject()
         {
             //--------------Arrange------------------------------
-            var dataObjectMock = new Mock<IDSFDataObject>();
-            var workSpaceMock = new Mock<IWorkspace>();
-            var esbChannelMock = new Mock<IEsbChannel>();
-            var executionEnvironment = new Mock<ExecutionEnvironment>();
+            var dataObjectMock = new Mock<IDSFDataObject>().Create();
+            var workSpaceMock = new Mock<IWorkspace>().Create();
+            var esbChannelMock = new Mock<IEsbChannel>().Create();
+            var executionEnvironment = new Mock<ExecutionEnvironment>().Create();
             var serviceAction = new ServiceAction();
 
             dataObjectMock.SetupAllProperties();
@@ -189,10 +189,10 @@ namespace Dev2.Tests.Runtime.ESB.Execution
         public void WfExecutionContainer_ExecuteNode_CheckWhenDataObjectStopExecutionIsFalse_ShouldEmptyExecutionExceptionInDataObject()
         {
             //--------------Arrange------------------------------
-            var dataObjectMock = new Mock<IDSFDataObject>();
-            var workSpaceMock = new Mock<IWorkspace>();
-            var esbChannelMock = new Mock<IEsbChannel>();
-            var executionEnvironment = new Mock<ExecutionEnvironment>();
+            var dataObjectMock = new Mock<IDSFDataObject>().Create();
+            var workSpaceMock = new Mock<IWorkspace>().Create();
+            var esbChannelMock = new Mock<IEsbChannel>().Create();
+            var executionEnvironment = new Mock<ExecutionEnvironment>().Create();
             var serviceAction = new ServiceAction();
 
 
@@ -265,15 +265,15 @@ namespace Dev2.Tests.Runtime.ESB.Execution
         public void WfExecutionContainer_ExecuteNode_WhenSeverSettings_EnableDetailedLogging_IsTrue_ShouldRunLogActivityExecuteStateAndLogExecuteCompleteState()
         {
             //--------------Arrange------------------------------
-            var dataObjectMock = new Mock<IDSFDataObject>();
-            var workSpaceMock = new Mock<IWorkspace>();
-            var esbChannelMock = new Mock<IEsbChannel>();
-            var executionEnvironmentMock = new Mock<IExecutionEnvironment>();
+            var dataObjectMock = new Mock<IDSFDataObject>().Create();
+            var workSpaceMock = new Mock<IWorkspace>().Create();
+            var esbChannelMock = new Mock<IEsbChannel>().Create();
+            var executionEnvironmentMock = new Mock<IExecutionEnvironment>().Create();
             var serviceAction = new ServiceAction();
-            var mockStateNotifier = new Mock<IStateNotifier>();
-            var mockExecutionManager = new Mock<IExecutionManager>();
+            var mockStateNotifier = new Mock<IStateNotifier>().Create();
+            var mockExecutionManager = new Mock<IExecutionManager>().Create();
 
-            var dev2WorkflowSettings = new Mock<Dev2.Common.Interfaces.IDev2WorkflowSettings>();
+            var dev2WorkflowSettings = new Mock<Dev2.Common.Interfaces.IDev2WorkflowSettings>().Create();
             dev2WorkflowSettings.Setup(o => o.EnableDetailedLogging).Returns(true);
             dev2WorkflowSettings.Setup(o => o.ExecutionLogLevel).Returns(LogLevel.DEBUG.ToString);
             executionEnvironmentMock.Setup(environment => environment.AllErrors).Returns(new HashSet<string>());

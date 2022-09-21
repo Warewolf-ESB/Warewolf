@@ -150,7 +150,7 @@ namespace Dev2.Core.Tests.Diagnostics
         {
             //Initialize
             var aggregator = new Mock<IEventAggregator>();
-            aggregator.Setup(c => c.Publish(It.IsAny<SaveAllOpenTabsMessage>())).Verifiable();
+           // aggregator.Setup(c => c.Publish(It.IsAny<SaveAllOpenTabsMessage>())).Verifiable();
 
             var mockApp = new Mock<IApp>();
             mockApp.Setup(c => c.Shutdown()).Verifiable();
@@ -172,7 +172,7 @@ namespace Dev2.Core.Tests.Diagnostics
         {
             //Initialize
             var aggregator = new Mock<IEventAggregator>();
-            aggregator.Setup(c => c.Publish(It.IsAny<SaveAllOpenTabsMessage>())).Verifiable();
+            //aggregator.Setup(c => c.Publish(It.IsAny<SaveAllOpenTabsMessage>())).Verifiable();
 
             var mockApp = new Mock<IApp>();
             mockApp.Setup(c => c.Shutdown()).Verifiable();

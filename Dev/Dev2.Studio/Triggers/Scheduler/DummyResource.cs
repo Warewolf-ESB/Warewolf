@@ -12,7 +12,7 @@ using System;
 using System.Windows.Input;
 using Dev2.Common.Interfaces.Data.TO;
 using Dev2.Common.Interfaces.Scheduler.Interfaces;
-using Microsoft.Practices.Prism.Commands;
+using Prism.Commands;
 
 namespace Dev2.Scheduler
 {

@@ -44,8 +44,8 @@ using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Network;
 using Dev2.Studio.Interfaces;
-using Microsoft.Practices.Prism.Commands;
-using Microsoft.Practices.Prism.Mvvm;
+using Prism.Commands;
+using Prism.Mvvm;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Core;
 using Warewolf.Data.Options;
@@ -54,7 +54,7 @@ using Warewolf.Resource.Errors;
 
 namespace Warewolf.Studio.ViewModels
 {
-    public class ServiceTestViewModel : BindableBase, IServiceTestViewModel
+    public class ServiceTestViewModel : BindableBase2, IServiceTestViewModel
     {
         readonly IExternalProcessExecutor _processExecutor;
         private IServiceTestModel _selectedServiceTest;
@@ -2581,7 +2581,7 @@ namespace Warewolf.Studio.ViewModels
                 if (value == null)
                 {
                     _selectedServiceTest = null;
-                    EventPublisher.Publish(new DebugOutputMessage(new List<IDebugState>()));
+                    //EventPublisher.Publish(new DebugOutputMessage(new List<IDebugState>()));
                     OnPropertyChanged(() => SelectedServiceTest);
                     return;
                 }
@@ -2611,7 +2611,7 @@ namespace Warewolf.Studio.ViewModels
                 SetSelectedTestUrl();
                 SetDuplicateTestTooltip();
                 OnPropertyChanged(() => SelectedServiceTest);
-                EventPublisher.Publish(new DebugOutputMessage(_selectedServiceTest?.DebugForTest ?? new List<IDebugState>()));
+                //EventPublisher.Publish(new DebugOutputMessage(_selectedServiceTest?.DebugForTest ?? new List<IDebugState>()));
                 if (_selectedServiceTest != null)
                 {
                     _selectedServiceTest.IsTestLoading = false;
@@ -2648,7 +2648,7 @@ namespace Warewolf.Studio.ViewModels
             }
             if (e.PropertyName == "DebugForTest")
             {
-                EventPublisher.Publish(new DebugOutputMessage(SelectedServiceTest?.DebugForTest ?? new List<IDebugState>()));
+                //EventPublisher.Publish(new DebugOutputMessage(SelectedServiceTest?.DebugForTest ?? new List<IDebugState>()));
             }
             if (e.PropertyName == "TestName")
             {

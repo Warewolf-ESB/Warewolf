@@ -10,7 +10,6 @@
 */
 
 using Dev2.Common.Interfaces;
-using Microsoft.Practices.Prism.Mvvm;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.ViewModels.Workflow;
 using System;
@@ -22,7 +21,7 @@ using Dev2.ViewModels.Merge.Utils;
 
 namespace Dev2.ViewModels.Merge
 {
-    public class MergeWorkflowViewModel : BindableBase, IMergeWorkflowViewModel
+    public class MergeWorkflowViewModel : BindableBase2, IMergeWorkflowViewModel
     {
         string _displayName;
         bool _hasMergeStarted;
