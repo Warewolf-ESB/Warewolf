@@ -29,7 +29,7 @@ namespace Dev2.Common
 
         public static void Debug(object message, string executionId)
         {
-            if (Config.Server.ExecutionLogLevel == "DEVUG")
+            if (Config.Server.ExecutionLogLevel == "DEBUG" || Config.Server.ExecutionLogLevel == "TRACE")
             {
                 var customMessage = UpdateCustomMessage(message, executionId);
                 _log.Debug(customMessage);
@@ -38,7 +38,7 @@ namespace Dev2.Common
 
         public static void Debug(object message, Exception exception, string executionId)
         {
-            if (Config.Server.ExecutionLogLevel == "DEBUG")
+            if (Config.Server.ExecutionLogLevel == "DEBUG" || Config.Server.ExecutionLogLevel == "TRACE")
             {
                 var customMessage = UpdateCustomMessage(message, executionId);
                 _log.Debug(customMessage, exception);
@@ -47,7 +47,7 @@ namespace Dev2.Common
 
         public static void Error(object message, string executionId)
         {
-            if (Config.Server.ExecutionLogLevel == "ERROR")
+            if (Config.Server.ExecutionLogLevel == "ERROR" || Config.Server.ExecutionLogLevel == "WARN" || Config.Server.ExecutionLogLevel == "INFO" || Config.Server.ExecutionLogLevel == "DEBUG" || Config.Server.ExecutionLogLevel == "TRACE")
             {
                 var customMessage = UpdateCustomMessage(message, executionId);
                 _log.Error(customMessage);
@@ -56,7 +56,7 @@ namespace Dev2.Common
 
         public static void Error(object message, Exception exception, string executionId)
         {
-            if (Config.Server.ExecutionLogLevel == "ERROR")
+            if (Config.Server.ExecutionLogLevel == "ERROR" || Config.Server.ExecutionLogLevel == "WARN" || Config.Server.ExecutionLogLevel == "INFO" || Config.Server.ExecutionLogLevel == "DEBUG" || Config.Server.ExecutionLogLevel == "TRACE")
             {
                 var customMessage = UpdateCustomMessage(message, executionId);
                 _log.Error(customMessage, exception);
@@ -65,7 +65,7 @@ namespace Dev2.Common
 
         public static void Warn(object message, string executionId)
         {
-            if (Config.Server.ExecutionLogLevel == "WARN")
+            if (Config.Server.ExecutionLogLevel == "WARN" || Config.Server.ExecutionLogLevel == "INFO" || Config.Server.ExecutionLogLevel == "DEBUG" || Config.Server.ExecutionLogLevel == "TRACE")
             {
                 var customMessage = UpdateCustomMessage(message, executionId);
                 _log.Warn(customMessage);
@@ -74,7 +74,7 @@ namespace Dev2.Common
 
         public static void Warn(object message, Exception exception, string executionId)
         {
-            if (Config.Server.ExecutionLogLevel == "WARN")
+            if (Config.Server.ExecutionLogLevel == "WARN" || Config.Server.ExecutionLogLevel == "INFO" || Config.Server.ExecutionLogLevel == "DEBUG" || Config.Server.ExecutionLogLevel == "TRACE")
             {
                 var customMessage = UpdateCustomMessage(message, executionId);
                 _log.Warn(customMessage, exception);
@@ -83,7 +83,7 @@ namespace Dev2.Common
 
         public static void Fatal(object message, string executionId)
         {
-            if (Config.Server.ExecutionLogLevel == "FATAL")
+            if (Config.Server.ExecutionLogLevel == "FATAL" || Config.Server.ExecutionLogLevel == "ERROR" || Config.Server.ExecutionLogLevel == "WARN" || Config.Server.ExecutionLogLevel == "INFO" || Config.Server.ExecutionLogLevel == "DEBUG" || Config.Server.ExecutionLogLevel == "TRACE")
             {
                 var customMessage = UpdateCustomMessage(message, executionId);
                 _log.Fatal(customMessage);
@@ -92,7 +92,7 @@ namespace Dev2.Common
 
         public static void Fatal(object message, Exception exception, string executionId)
         {
-            if (Config.Server.ExecutionLogLevel == "FATAL")
+            if (Config.Server.ExecutionLogLevel == "FATAL" || Config.Server.ExecutionLogLevel == "ERROR" || Config.Server.ExecutionLogLevel == "WARN" || Config.Server.ExecutionLogLevel == "INFO" || Config.Server.ExecutionLogLevel == "DEBUG" || Config.Server.ExecutionLogLevel == "TRACE")
             {
                 var customMessage = UpdateCustomMessage(message, executionId);
                 _log.Fatal(customMessage, exception);
@@ -101,7 +101,7 @@ namespace Dev2.Common
 
         public static void Info(object message, string executionId)
         {
-            if (Config.Server.ExecutionLogLevel == "INFO")
+            if (Config.Server.ExecutionLogLevel == "INFO" || Config.Server.ExecutionLogLevel == "DEBUG" || Config.Server.ExecutionLogLevel == "TRACE")
             {
                 var customMessage = UpdateCustomMessage(message, executionId);
                 _log.Info(customMessage);
@@ -110,7 +110,7 @@ namespace Dev2.Common
 
         public static void Info(object message, Exception exception, string executionId)
         {
-            if (Config.Server.ExecutionLogLevel == "INFO")
+            if (Config.Server.ExecutionLogLevel == "INFO" || Config.Server.ExecutionLogLevel == "DEBUG" || Config.Server.ExecutionLogLevel == "TRACE")
             {
                 var customMessage = UpdateCustomMessage(message, executionId);
                 _log.Info(customMessage, exception);
