@@ -13,10 +13,10 @@ using CommandLine;
 using Fleck;
 using System.Collections.Generic;
 using System.Threading;
-using Dev2.Network;
-using Warewolf.Common;
 using Warewolf.Interfaces.Auditing;
 using Warewolf.Logging;
+using Dev2.Common;
+using System.Diagnostics;
 
 namespace Warewolf.Logger
 {
@@ -81,19 +81,35 @@ namespace Warewolf.Logger
 
                     if (_context.Source != null)
                     {
-                        _writer.WriteLine("Connecting to logging server.. ");
+                        if (Config.Server.ExecutionLogLevel == "INFO" || Config.Server.ExecutionLogLevel == "DEBUG" || Config.Server.ExecutionLogLevel == "TRACE")
+                        {
+                            _writer.WriteLine("Connecting to logging server.. ");
+                        }
+                        while (!Debugger.IsAttached) 
+                        {
+                            Thread.Sleep(1000); 
+                        }
                         var logServer = _logServerFactory.New(_webSocketServerFactory, _writer, _context);
                         logServer.Start(new List<IWebSocketConnection>());
-                        _writer.WriteLine("Logging Server Started.");
+                        if (Config.Server.ExecutionLogLevel == "INFO" || Config.Server.ExecutionLogLevel == "DEBUG" || Config.Server.ExecutionLogLevel == "TRACE")
+                        {
+                            _writer.WriteLine("Logging Server Started.");
+                        }
                     }
                     else
                     {
-                        _writer.WriteLine("Failed to start logging server: Invalid or missing Logging Data Source.");
+                        if (Config.Server.ExecutionLogLevel == "ERROR" || Config.Server.ExecutionLogLevel == "WARN" || Config.Server.ExecutionLogLevel == "INFO" || Config.Server.ExecutionLogLevel == "DEBUG" || Config.Server.ExecutionLogLevel == "TRACE")
+                        {
+                            _writer.WriteLine("Failed to start logging server: Invalid or missing Logging Data Source.");
+                        }
                     }
                 }
                 catch (Exception ex)
                 {
-                    _writer.WriteLine($"Logging Server OnError, Error details:{ex.Message}");
+                    if (Config.Server.ExecutionLogLevel == "ERROR" || Config.Server.ExecutionLogLevel == "WARN" || Config.Server.ExecutionLogLevel == "INFO" || Config.Server.ExecutionLogLevel == "DEBUG" || Config.Server.ExecutionLogLevel == "TRACE")
+                    {
+                        _writer.WriteLine($"Logging Server OnError, Error details:{ex.Message}");
+                    }
                 }
             }
 
