@@ -16,7 +16,6 @@ using System.Threading;
 using Warewolf.Interfaces.Auditing;
 using Warewolf.Logging;
 using Dev2.Common;
-using System.Diagnostics;
 
 namespace Warewolf.Logger
 {
@@ -84,10 +83,6 @@ namespace Warewolf.Logger
                         if (Config.Server.ExecutionLogLevel == "INFO" || Config.Server.ExecutionLogLevel == "DEBUG" || Config.Server.ExecutionLogLevel == "TRACE")
                         {
                             _writer.WriteLine("Connecting to logging server.. ");
-                        }
-                        while (!Debugger.IsAttached) 
-                        {
-                            Thread.Sleep(1000); 
                         }
                         var logServer = _logServerFactory.New(_webSocketServerFactory, _writer, _context);
                         logServer.Start(new List<IWebSocketConnection>());
