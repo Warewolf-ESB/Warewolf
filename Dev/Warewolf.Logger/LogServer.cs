@@ -67,7 +67,7 @@ namespace Warewolf.Logger
             var loggerConfig = _loggerContext.LoggerConfig;
 
             _server = _webSocketServerFactory.New(loggerConfig.Endpoint);
-            else if (Config.Server.ExecutionLogLevel == "INFO" || Config.Server.ExecutionLogLevel == "TRACE")
+            if (Config.Server.ExecutionLogLevel == "INFO" || Config.Server.ExecutionLogLevel == "TRACE")
             {
                 FleckLog.Level = Fleck.LogLevel.Info;
             }
