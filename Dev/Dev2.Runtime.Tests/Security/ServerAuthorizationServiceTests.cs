@@ -20,7 +20,7 @@ using System.Reflection;
 using System.Threading;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Runtime.WebServer.Security;
-using Microsoft.AspNet.SignalR.Hosting;
+//using Microsoft.AspNet.SignalR.Hosting;
 
 namespace Dev2.Tests.Runtime.Security
 {
