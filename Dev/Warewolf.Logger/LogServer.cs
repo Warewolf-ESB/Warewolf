@@ -68,19 +68,19 @@ namespace Warewolf.Logger
             var loggerConfig = _loggerContext.LoggerConfig;
 
             _server = _webSocketServerFactory.New(loggerConfig.Endpoint);
-            if (Config.Server.ExecutionLogLevel == "INFO" || Config.Server.ExecutionLogLevel == "TRACE")
+            if (Config.Server.ExecutionLogLevel.ConvertToLogLevelEnum() == Dev2.Data.Interfaces.Enums.LogLevel.INFO || Config.Server.ExecutionLogLevel.ConvertToLogLevelEnum() == Dev2.Data.Interfaces.Enums.LogLevel.TRACE)
             {
                 FleckLog.Level = Fleck.LogLevel.Info;
             }
-            else if (Config.Server.ExecutionLogLevel == "DEBUG")
+            else if (Config.Server.ExecutionLogLevel.ConvertToLogLevelEnum() == Dev2.Data.Interfaces.Enums.LogLevel.DEBUG)
             {
                 FleckLog.Level = Fleck.LogLevel.Debug;
             }             
-            else if (Config.Server.ExecutionLogLevel == "WARN")
+            else if (Config.Server.ExecutionLogLevel.ConvertToLogLevelEnum() == Dev2.Data.Interfaces.Enums.LogLevel.WARN)
             {
                 FleckLog.Level = Fleck.LogLevel.Warn;
             }
-            else if (Config.Server.ExecutionLogLevel == "ERROR" || Config.Server.ExecutionLogLevel == "FATAL")
+            else if (Config.Server.ExecutionLogLevel.ConvertToLogLevelEnum() == Dev2.Data.Interfaces.Enums.LogLevel.ERROR || Config.Server.ExecutionLogLevel.ConvertToLogLevelEnum() == Dev2.Data.Interfaces.Enums.LogLevel.FATAL || Config.Server.ExecutionLogLevel.ConvertToLogLevelEnum() == Dev2.Data.Interfaces.Enums.LogLevel.OFF)
             {
                 FleckLog.Level = Fleck.LogLevel.Error;
             }

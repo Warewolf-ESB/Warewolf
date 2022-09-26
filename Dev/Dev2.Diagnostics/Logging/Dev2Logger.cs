@@ -19,6 +19,8 @@ using log4net;
 using log4net.Appender;
 using log4net.Repository.Hierarchy;
 using Dev2.Common.Interfaces.Logging;
+using System.Runtime.CompilerServices;
+using Microsoft.SharePoint.Client.Discovery;
 
 namespace Dev2.Common
 {
@@ -29,7 +31,7 @@ namespace Dev2.Common
 
         public static void Debug(object message, string executionId)
         {
-            if (Config.Server.ExecutionLogLevel == "DEBUG" || Config.Server.ExecutionLogLevel == "TRACE")
+            if (Config.Server.ExecutionLogLevel.ConvertToLogLevelEnum() >= Dev2.Data.Interfaces.Enums.LogLevel.DEBUG)
             {
                 var customMessage = UpdateCustomMessage(message, executionId);
                 _log.Debug(customMessage);
@@ -38,7 +40,7 @@ namespace Dev2.Common
 
         public static void Debug(object message, Exception exception, string executionId)
         {
-            if (Config.Server.ExecutionLogLevel == "DEBUG" || Config.Server.ExecutionLogLevel == "TRACE")
+            if (Config.Server.ExecutionLogLevel.ConvertToLogLevelEnum() >= Dev2.Data.Interfaces.Enums.LogLevel.DEBUG)
             {
                 var customMessage = UpdateCustomMessage(message, executionId);
                 _log.Debug(customMessage, exception);
@@ -47,7 +49,7 @@ namespace Dev2.Common
 
         public static void Error(object message, string executionId)
         {
-            if (Config.Server.ExecutionLogLevel == "ERROR" || Config.Server.ExecutionLogLevel == "WARN" || Config.Server.ExecutionLogLevel == "INFO" || Config.Server.ExecutionLogLevel == "DEBUG" || Config.Server.ExecutionLogLevel == "TRACE")
+            if (Config.Server.ExecutionLogLevel.ConvertToLogLevelEnum() >= Dev2.Data.Interfaces.Enums.LogLevel.ERROR)
             {
                 var customMessage = UpdateCustomMessage(message, executionId);
                 _log.Error(customMessage);
@@ -56,7 +58,7 @@ namespace Dev2.Common
 
         public static void Error(object message, Exception exception, string executionId)
         {
-            if (Config.Server.ExecutionLogLevel == "ERROR" || Config.Server.ExecutionLogLevel == "WARN" || Config.Server.ExecutionLogLevel == "INFO" || Config.Server.ExecutionLogLevel == "DEBUG" || Config.Server.ExecutionLogLevel == "TRACE")
+            if (Config.Server.ExecutionLogLevel.ConvertToLogLevelEnum() >= Dev2.Data.Interfaces.Enums.LogLevel.ERROR)
             {
                 var customMessage = UpdateCustomMessage(message, executionId);
                 _log.Error(customMessage, exception);
@@ -65,7 +67,7 @@ namespace Dev2.Common
 
         public static void Warn(object message, string executionId)
         {
-            if (Config.Server.ExecutionLogLevel == "WARN" || Config.Server.ExecutionLogLevel == "INFO" || Config.Server.ExecutionLogLevel == "DEBUG" || Config.Server.ExecutionLogLevel == "TRACE")
+            if (Config.Server.ExecutionLogLevel.ConvertToLogLevelEnum() >= Dev2.Data.Interfaces.Enums.LogLevel.WARN)
             {
                 var customMessage = UpdateCustomMessage(message, executionId);
                 _log.Warn(customMessage);
@@ -74,7 +76,7 @@ namespace Dev2.Common
 
         public static void Warn(object message, Exception exception, string executionId)
         {
-            if (Config.Server.ExecutionLogLevel == "WARN" || Config.Server.ExecutionLogLevel == "INFO" || Config.Server.ExecutionLogLevel == "DEBUG" || Config.Server.ExecutionLogLevel == "TRACE")
+            if (Config.Server.ExecutionLogLevel.ConvertToLogLevelEnum() >= Dev2.Data.Interfaces.Enums.LogLevel.WARN)
             {
                 var customMessage = UpdateCustomMessage(message, executionId);
                 _log.Warn(customMessage, exception);
@@ -83,7 +85,7 @@ namespace Dev2.Common
 
         public static void Fatal(object message, string executionId)
         {
-            if (Config.Server.ExecutionLogLevel == "FATAL" || Config.Server.ExecutionLogLevel == "ERROR" || Config.Server.ExecutionLogLevel == "WARN" || Config.Server.ExecutionLogLevel == "INFO" || Config.Server.ExecutionLogLevel == "DEBUG" || Config.Server.ExecutionLogLevel == "TRACE")
+            if (Config.Server.ExecutionLogLevel.ConvertToLogLevelEnum() >= Dev2.Data.Interfaces.Enums.LogLevel.FATAL)
             {
                 var customMessage = UpdateCustomMessage(message, executionId);
                 _log.Fatal(customMessage);
@@ -92,7 +94,7 @@ namespace Dev2.Common
 
         public static void Fatal(object message, Exception exception, string executionId)
         {
-            if (Config.Server.ExecutionLogLevel == "FATAL" || Config.Server.ExecutionLogLevel == "ERROR" || Config.Server.ExecutionLogLevel == "WARN" || Config.Server.ExecutionLogLevel == "INFO" || Config.Server.ExecutionLogLevel == "DEBUG" || Config.Server.ExecutionLogLevel == "TRACE")
+            if (Config.Server.ExecutionLogLevel.ConvertToLogLevelEnum() >= Dev2.Data.Interfaces.Enums.LogLevel.FATAL)
             {
                 var customMessage = UpdateCustomMessage(message, executionId);
                 _log.Fatal(customMessage, exception);
@@ -101,7 +103,7 @@ namespace Dev2.Common
 
         public static void Info(object message, string executionId)
         {
-            if (Config.Server.ExecutionLogLevel == "INFO" || Config.Server.ExecutionLogLevel == "DEBUG" || Config.Server.ExecutionLogLevel == "TRACE")
+            if (Config.Server.ExecutionLogLevel.ConvertToLogLevelEnum() >= Dev2.Data.Interfaces.Enums.LogLevel.INFO)
             {
                 var customMessage = UpdateCustomMessage(message, executionId);
                 _log.Info(customMessage);
@@ -110,7 +112,7 @@ namespace Dev2.Common
 
         public static void Info(object message, Exception exception, string executionId)
         {
-            if (Config.Server.ExecutionLogLevel == "INFO" || Config.Server.ExecutionLogLevel == "DEBUG" || Config.Server.ExecutionLogLevel == "TRACE")
+            if (Config.Server.ExecutionLogLevel.ConvertToLogLevelEnum() >= Dev2.Data.Interfaces.Enums.LogLevel.INFO)
             {
                 var customMessage = UpdateCustomMessage(message, executionId);
                 _log.Info(customMessage, exception);
@@ -362,6 +364,42 @@ namespace Dev2.Common
             errorMappingElement.Add(new XElement("level", new XAttribute("value", levelValue)));
             errorMappingElement.Add(new XElement("eventLogEntryType", new XAttribute("value", eventLogType)));
             return errorMappingElement;
+        }
+
+        public static Dev2.Data.Interfaces.Enums.LogLevel ConvertToLogLevelEnum(this string LogLevelString)
+        {
+            if (LogLevelString == Dev2.Data.Interfaces.Enums.LogLevel.OFF.ToString())
+            {
+                return Dev2.Data.Interfaces.Enums.LogLevel.OFF;
+            }
+            else if (LogLevelString == Dev2.Data.Interfaces.Enums.LogLevel.FATAL.ToString())
+            {
+                return Dev2.Data.Interfaces.Enums.LogLevel.FATAL;
+            }
+            else if (LogLevelString == Dev2.Data.Interfaces.Enums.LogLevel.ERROR.ToString())
+            {
+                return Dev2.Data.Interfaces.Enums.LogLevel.ERROR;
+            }
+            else if (LogLevelString == Dev2.Data.Interfaces.Enums.LogLevel.TRACE.ToString())
+            {
+                return Dev2.Data.Interfaces.Enums.LogLevel.TRACE;
+            }
+            else if (LogLevelString == Dev2.Data.Interfaces.Enums.LogLevel.WARN.ToString())
+            {
+                return Dev2.Data.Interfaces.Enums.LogLevel.WARN;
+            }
+            else if (LogLevelString == Dev2.Data.Interfaces.Enums.LogLevel.DEBUG.ToString())
+            {
+                return Dev2.Data.Interfaces.Enums.LogLevel.DEBUG;
+            }
+            else if (LogLevelString == Dev2.Data.Interfaces.Enums.LogLevel.INFO.ToString())
+            {
+                return Dev2.Data.Interfaces.Enums.LogLevel.INFO;
+            }
+            else
+            {
+                throw new ArgumentOutOfRangeException("String must be a recognized log level.");
+            }
         }
     }
 

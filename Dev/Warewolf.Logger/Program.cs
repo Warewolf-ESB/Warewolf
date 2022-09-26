@@ -80,20 +80,20 @@ namespace Warewolf.Logger
 
                     if (_context.Source != null)
                     {
-                        if (Config.Server.ExecutionLogLevel == "INFO" || Config.Server.ExecutionLogLevel == "DEBUG" || Config.Server.ExecutionLogLevel == "TRACE")
+                        if (Config.Server.ExecutionLogLevel.ConvertToLogLevelEnum() >= Dev2.Data.Interfaces.Enums.LogLevel.INFO)
                         {
                             _writer.WriteLine("Connecting to logging server.. ");
                         }
                         var logServer = _logServerFactory.New(_webSocketServerFactory, _writer, _context);
                         logServer.Start(new List<IWebSocketConnection>());
-                        if (Config.Server.ExecutionLogLevel == "INFO" || Config.Server.ExecutionLogLevel == "DEBUG" || Config.Server.ExecutionLogLevel == "TRACE")
+                        if (Config.Server.ExecutionLogLevel.ConvertToLogLevelEnum() >= Dev2.Data.Interfaces.Enums.LogLevel.INFO)
                         {
                             _writer.WriteLine("Logging Server Started.");
                         }
                     }
                     else
                     {
-                        if (Config.Server.ExecutionLogLevel == "ERROR" || Config.Server.ExecutionLogLevel == "WARN" || Config.Server.ExecutionLogLevel == "INFO" || Config.Server.ExecutionLogLevel == "DEBUG" || Config.Server.ExecutionLogLevel == "TRACE")
+                        if (Config.Server.ExecutionLogLevel.ConvertToLogLevelEnum() >= Dev2.Data.Interfaces.Enums.LogLevel.ERROR)
                         {
                             _writer.WriteLine("Failed to start logging server: Invalid or missing Logging Data Source.");
                         }
@@ -101,7 +101,7 @@ namespace Warewolf.Logger
                 }
                 catch (Exception ex)
                 {
-                    if (Config.Server.ExecutionLogLevel == "ERROR" || Config.Server.ExecutionLogLevel == "WARN" || Config.Server.ExecutionLogLevel == "INFO" || Config.Server.ExecutionLogLevel == "DEBUG" || Config.Server.ExecutionLogLevel == "TRACE")
+                    if (Config.Server.ExecutionLogLevel.ConvertToLogLevelEnum() >= Dev2.Data.Interfaces.Enums.LogLevel.ERROR)
                     {
                         _writer.WriteLine($"Logging Server OnError, Error details:{ex.Message}");
                     }
