@@ -275,8 +275,6 @@ namespace Dev2.Runtime.ESB.Execution
             }
 
             var result = activity.Execute(dsfDataObject, update);
-            dsfDataObject.StateNotifier?.LogExecuteActivityCompleteState(activity);
-            
             return result;
         }
 
@@ -318,6 +316,8 @@ namespace Dev2.Runtime.ESB.Execution
                     lastActivity = current;
                     next = ExecuteTool(dsfDataObject, current, update);
                     environment.AllErrors.UnionWith(environment.Errors);
+                    
+                    dsfDataObject.StateNotifier?.LogExecuteActivityCompleteState(lastActivity);
 
                     if (dsfDataObject.StopExecution)
                     {
@@ -421,7 +421,15 @@ namespace Dev2.Runtime.ESB.Execution
                                       $"Resume Node not found. UniqueID:{_resumeActivityId}");
             dsfDataObject.Environment = _resumeEnvironment;
             dsfDataObject.StartActivityId = Guid.Empty;
-            base.EvalInner(dsfDataObject, startAtActivity, update);
+
+            var stateNotifier = new StateNotifier();
+            using (var listener = new StateAuditLogger(new WebSocketPool()))
+            {
+                stateNotifier.Subscribe(listener.NewStateListener(dsfDataObject));
+                dsfDataObject.StateNotifier = stateNotifier;
+
+                base.EvalInner(dsfDataObject, startAtActivity, update);
+            }
         }
 
         private IDev2Activity FindActivity(IDev2Activity resource)
