@@ -248,7 +248,7 @@ SxVGgsgXs58fKq0k6khAOa4asQ==
 "@ | Out-File -LiteralPath "C:\cert.key" -Encoding ascii -Force
 		}
 		pip install pyftpdlib
-		pip install pyOpenSSL
+		pip install 'pyOpenSSL==22.0.0'
 		if (!(Test-Path "C:\ftps_entrypoint.py")) {
 @"
 import os, random, string
