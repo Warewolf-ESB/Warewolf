@@ -13,6 +13,7 @@ using System.Net;
 using System.Windows;
 using Dev2.CustomControls;
 using Dev2.Studio.Views.Help;
+using Microsoft.Web.WebView2.Core;
 using Microsoft.Web.WebView2.Wpf;
 
 namespace Dev2.ViewModels.Help
@@ -54,9 +55,11 @@ namespace Dev2.ViewModels.Help
             }
         }
 
-        public void Navigate(string uri)
+        public async void Navigate(string uri)
         {
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Ssl3;
+            var webView2Environment = await CoreWebView2Environment.CreateAsync(null, Environment.ExpandEnvironmentVariables("%localappdata%\\Warewolf"));
+            await HelpView.webView.EnsureCoreWebView2Async(webView2Environment);
             HelpView.webView.Source = new Uri(uri, UriKind.Absolute);
         }
     }
