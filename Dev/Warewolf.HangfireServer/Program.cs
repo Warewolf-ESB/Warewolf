@@ -112,7 +112,10 @@ namespace HangfireServer
                     if (string.IsNullOrEmpty(connectionString))
                     {
                         _logger.Error("Fatal Error: Could not find persistence config file. Hangfire server is unable to start.");
-                        _writer.WriteLine("Fatal Error: Could not find persistence config file. Hangfire server is unable to start.");
+                        if (Config.Server.ExecutionLogLevel == "INFO" || Config.Server.ExecutionLogLevel == "DEBUG" || Config.Server.ExecutionLogLevel == "TRACE")
+                        {
+                            _writer.WriteLine("Fatal Error: Could not find persistence config file. Hangfire server is unable to start.");
+                        }
                         _writer.Write("Press any key to exit...");
                         return;
                     }
@@ -144,7 +147,10 @@ namespace HangfireServer
                 catch (Exception ex)
                 {
                     _logger.Error($"Hangfire Server OnError, Error details:{ex.Message}");
-                    _writer.WriteLine($"Hangfire Server OnError, Error details:{ex.Message}");
+                    if (Config.Server.ExecutionLogLevel == "INFO" || Config.Server.ExecutionLogLevel == "DEBUG" || Config.Server.ExecutionLogLevel == "TRACE")
+                    {
+                        _writer.WriteLine($"Hangfire Server OnError, Error details:{ex.Message}");
+                    }
                 }
             }
 

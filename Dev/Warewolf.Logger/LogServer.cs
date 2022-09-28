@@ -94,7 +94,12 @@ namespace Warewolf.Logger
                 {
                     clients.Remove(socket);
                 };
-                socket.OnError = exception => { _writer.WriteLine($"Logging Server OnError, Error details:{exception.Message}"); };
+                socket.OnError = exception => {
+                    if (Config.Server.ExecutionLogLevel == "ERROR" || Config.Server.ExecutionLogLevel == "WARN" || Config.Server.ExecutionLogLevel == "INFO" || Config.Server.ExecutionLogLevel == "DEBUG" || Config.Server.ExecutionLogLevel == "TRACE")
+                    {
+                        _writer.WriteLine($"Logging Server OnError, Error details:{exception.Message}");
+                    }
+                };
 
                 var innerConsumer = new SeriLogConsumer(_loggerContext);
                 var defaultConsumer = _auditCommandConsumerFactory?.New(innerConsumer, socket, _writer) ?? new AuditCommandConsumerFactory().New(innerConsumer, socket, _writer);

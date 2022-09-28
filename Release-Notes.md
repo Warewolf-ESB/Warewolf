@@ -1,3 +1,20 @@
+2.8.1 (27 September 2022)
+======================
+
+Enhancements
+----------
+- Add functionality to be able to support assigning a variable from object property
+
+Bug fixes
+----------
+- Fixed bug where WCF Tool would crash warewolf server.
+- Fixed bug with WCF Tool where service would not return data or translate variables.
+- Passwords in file tools are no longer scrambled on deploy.
+- The advanced recordset tool is now threadsafe.
+- The server text log file only shows messages above the threshold set in the studio settings.
+- Patched an error that was showing on the studio start page help video.
+- Studio connection to the server is more stable at high memory usages.
+
 2.8 (22 July 2022)
 ======================
 
