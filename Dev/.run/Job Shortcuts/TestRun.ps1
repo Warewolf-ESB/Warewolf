@@ -144,8 +144,11 @@ if ($CreateUNCPath.IsPresent) {
 }
 for ($LoopCounter=0; $LoopCounter -le $RetryCount; $LoopCounter++) {
 	if ($StartFTPServer.IsPresent) {
-		mkdir "C:\ftp_home\dev2\FORUNZIPTESTING"
+		if (!(Test-Path "C:\ftp_home\dev2\FORUNZIPTESTING")) {
+			mkdir "C:\ftp_home\dev2\FORUNZIPTESTING"
+		}
 		pip install pyftpdlib
+		if (!(Test-Path "C:\ftp_entrypoint.py")) {
 @"
 import os, random, string
 
@@ -175,11 +178,17 @@ def main():
 if __name__ == '__main__':
 	main()
 "@ | Out-File -LiteralPath "C:\ftp_entrypoint.py" -Encoding utf8 -Force
+		}
 		pythonw -u "C:\ftp_entrypoint.py"
 	}
 	if ($StartFTPSServer.IsPresent) {
-		mkdir "C:\ftps_home\dev2\FORFILERENAMETESTING"
-		mkdir "C:\ftps_home\dev2\FORUNZIPTESTING"
+		if (!(Test-Path "C:\ftps_home\dev2\FORFILERENAMETESTING")) {
+			mkdir "C:\ftps_home\dev2\FORFILERENAMETESTING"
+		}
+		if (!(Test-Path "C:\ftps_home\dev2\FORUNZIPTESTING")) {
+			mkdir "C:\ftps_home\dev2\FORUNZIPTESTING"
+		}
+		if (!(Test-Path "C:\cert.crt")) {
 @"
 -----BEGIN CERTIFICATE-----
 MIID+TCCAuGgAwIBAgIUMjnF+Uh4NhKoRO425/Sgjbs7xs0wDQYJKoZIhvcNAQEL
@@ -206,6 +215,8 @@ c5/UqCGPmHgd2paDzQ3qc5tpCy86mY0zy7FreP/Z8VrnoOKIoH8ULjQAxiopl6zg
 SfOUJf/1oE9T9vp1yQ==
 -----END CERTIFICATE-----
 "@ | Out-File -LiteralPath "C:\cert.crt" -Encoding ascii -Force
+		}
+		if (!(Test-Path "C:\cert.key")) {
 @"
 -----BEGIN PRIVATE KEY-----
 MIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQDZ5Y6Xo6Nj9XrE
@@ -236,8 +247,10 @@ w+jDPTUUugs8MOyE1bUNJutBgEjkeKN8bQt3mQlIhC6HSuwS+NHcku5sKobvjohj
 SxVGgsgXs58fKq0k6khAOa4asQ==
 -----END PRIVATE KEY-----
 "@ | Out-File -LiteralPath "C:\cert.key" -Encoding ascii -Force
+		}
 		pip install pyftpdlib
-		pip install pyOpenSSL
+		pip install 'pyOpenSSL==22.0.0'
+		if (!(Test-Path "C:\ftps_entrypoint.py")) {
 @"
 import os, random, string
 
@@ -269,6 +282,7 @@ def main():
 if __name__ == '__main__':
 	main()
 "@ | Out-File -LiteralPath "C:\ftps_entrypoint.py" -Encoding utf8 -Force
+		}
 		pythonw -u "C:\ftps_entrypoint.py"
 	}
     if ($RetryRebuild.IsPresent) {

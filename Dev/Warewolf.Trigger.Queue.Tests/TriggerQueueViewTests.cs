@@ -853,6 +853,29 @@ namespace Warewolf.Trigger.Queue.Tests
             Assert.AreEqual(triggerQueueView.DeadLetterOptions.Count, triggerQueueView.Item.DeadLetterOptions.Count);
             Assert.AreEqual(triggerQueueView.Inputs.Count, triggerQueueView.Item.Inputs.Count);
         }
+
+        [TestMethod]
+        [TestCategory(nameof(TriggerQueueView))]
+        [Owner("Tsumbo Mbedzi")]
+        public void TriggerQueueView_PrefetchValue_Not_Set()
+        {
+            var triggerQueueView = CreateViewModel();
+
+            Assert.IsNull(triggerQueueView.Prefetch);
+            Assert.AreEqual(null, triggerQueueView.Prefetch);
+        }
+
+        [TestMethod]
+        [TestCategory(nameof(TriggerQueueView))]
+        [Owner("Tsumbo Mbedzi")]
+        public void TriggerQueueView_PrefetchValue_Set()
+        {
+            var triggerQueueView = CreateViewModel();
+
+            Assert.IsNull(triggerQueueView.Prefetch);
+            triggerQueueView.Prefetch = "2";
+            Assert.AreEqual("2", triggerQueueView.Prefetch);
+        }
     }
 
     public class OptionViewForTesting : OptionView

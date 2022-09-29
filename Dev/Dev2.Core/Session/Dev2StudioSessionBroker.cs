@@ -100,14 +100,17 @@ namespace Dev2.Session
                 if (_debugPersistSettings.TryGetValue(to.WorkflowID, out tmp))
                 {
                     to.XmlData = tmp.RememberInputs ? tmp.XmlData : (to.XmlData ?? "<DataList></DataList>");
+                    to.JsonData = tmp.RememberInputs ? tmp.JsonData : (to.JsonData ?? "");;
                     tmp.CleanUp();
                 }
                 else
                 {
                     to.XmlData = to.RememberInputs ? to.XmlData : "<DataList></DataList>";
+                    to.JsonData = to.RememberInputs ? to.JsonData : "";
                 }
 
                 to.BinaryDataList = new DataListModel();
+                to.BinaryDataList.JsonData = to.JsonData;
                 to.BinaryDataList.Create(to.XmlData, to.DataList);
             }
             finally

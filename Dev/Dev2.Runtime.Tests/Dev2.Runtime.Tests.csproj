@@ -673,16 +673,16 @@
       <Version>16.8.3</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Owin.Cors">
-      <Version>4.1.0</Version>
+      <Version>4.2.2</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Owin.Host.HttpListener">
-      <Version>4.1.0</Version>
+      <Version>4.2.2</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Owin.Security">
-      <Version>4.1.1</Version>
+      <Version>4.2.2</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Owin.SelfHost">
-      <Version>4.1.0</Version>
+      <Version>4.2.2</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.TestPlatform.ObjectModel">
       <Version>16.11.0</Version>

@@ -139,5 +139,7 @@ namespace Dev2.Tests.Runtime.Services
         public string Name { get; set; }
 
         public bool Equals(ITriggerQueue other) => throw new NotImplementedException();
+
+        public string Prefetch { get; set; }
     }
 }

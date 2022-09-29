@@ -32,62 +32,92 @@ namespace Dev2.Common
 
         public static void Debug(object message, string executionId)
         {
-            var customMessage = UpdateCustomMessage(message, executionId);
-            _log.Debug(customMessage);
+            if (Config.Server.ExecutionLogLevel.ConvertToLogLevelEnum() >= Dev2.Data.Interfaces.Enums.LogLevel.DEBUG)
+            {
+                var customMessage = UpdateCustomMessage(message, executionId);
+                _log.Debug(customMessage);
+            }
         }
 
         public static void Debug(object message, Exception exception, string executionId)
         {
-            var customMessage = UpdateCustomMessage(message, executionId);
-            _log.Debug(customMessage, exception);
+            if (Config.Server.ExecutionLogLevel.ConvertToLogLevelEnum() >= Dev2.Data.Interfaces.Enums.LogLevel.DEBUG)
+            {
+                var customMessage = UpdateCustomMessage(message, executionId);
+                _log.Debug(customMessage, exception);
+            }
         }
 
         public static void Error(object message, string executionId)
         {
-            var customMessage = UpdateCustomMessage(message, executionId);
-            _log.Error(customMessage);
+            if (Config.Server.ExecutionLogLevel.ConvertToLogLevelEnum() >= Dev2.Data.Interfaces.Enums.LogLevel.ERROR)
+            {
+                var customMessage = UpdateCustomMessage(message, executionId);
+                _log.Error(customMessage);
+            }
         }
 
         public static void Error(object message, Exception exception, string executionId)
         {
-            var customMessage = UpdateCustomMessage(message, executionId);
-            _log.Error(customMessage, exception);
+            if (Config.Server.ExecutionLogLevel.ConvertToLogLevelEnum() >= Dev2.Data.Interfaces.Enums.LogLevel.ERROR)
+            {
+                var customMessage = UpdateCustomMessage(message, executionId);
+                _log.Error(customMessage, exception);
+            }
         }
 
         public static void Warn(object message, string executionId)
         {
-            var customMessage = UpdateCustomMessage(message, executionId);
-            _log.Warn(customMessage);
+            if (Config.Server.ExecutionLogLevel.ConvertToLogLevelEnum() >= Dev2.Data.Interfaces.Enums.LogLevel.WARN)
+            {
+                var customMessage = UpdateCustomMessage(message, executionId);
+                _log.Warn(customMessage);
+            }
         }
 
         public static void Warn(object message, Exception exception, string executionId)
         {
-            var customMessage = UpdateCustomMessage(message, executionId);
-            _log.Warn(customMessage, exception);
+            if (Config.Server.ExecutionLogLevel.ConvertToLogLevelEnum() >= Dev2.Data.Interfaces.Enums.LogLevel.WARN)
+            {
+                var customMessage = UpdateCustomMessage(message, executionId);
+                _log.Warn(customMessage, exception);
+            }
         }
 
         public static void Fatal(object message, string executionId)
         {
-            var customMessage = UpdateCustomMessage(message, executionId);
-            _log.Fatal(customMessage);
+            if (Config.Server.ExecutionLogLevel.ConvertToLogLevelEnum() >= Dev2.Data.Interfaces.Enums.LogLevel.FATAL)
+            {
+                var customMessage = UpdateCustomMessage(message, executionId);
+                _log.Fatal(customMessage);
+            }
         }
 
         public static void Fatal(object message, Exception exception, string executionId)
         {
-            var customMessage = UpdateCustomMessage(message, executionId);
-            _log.Fatal(customMessage, exception);
+            if (Config.Server.ExecutionLogLevel.ConvertToLogLevelEnum() >= Dev2.Data.Interfaces.Enums.LogLevel.FATAL)
+            {
+                var customMessage = UpdateCustomMessage(message, executionId);
+                _log.Fatal(customMessage, exception);
+            }
         }
 
         public static void Info(object message, string executionId)
         {
-            var customMessage = UpdateCustomMessage(message, executionId);
-            _log.Info(customMessage);
+            if (Config.Server.ExecutionLogLevel.ConvertToLogLevelEnum() >= Dev2.Data.Interfaces.Enums.LogLevel.INFO)
+            {
+                var customMessage = UpdateCustomMessage(message, executionId);
+                _log.Info(customMessage);
+            }
         }
 
         public static void Info(object message, Exception exception, string executionId)
         {
-            var customMessage = UpdateCustomMessage(message, executionId);
-            _log.Info(customMessage, exception);
+            if (Config.Server.ExecutionLogLevel.ConvertToLogLevelEnum() >= Dev2.Data.Interfaces.Enums.LogLevel.INFO)
+            {
+                var customMessage = UpdateCustomMessage(message, executionId);
+                _log.Info(customMessage, exception);
+            }
         }
 
         static string UpdateCustomMessage(object message, string executionId) => $"[{executionId}] - {message}";
@@ -335,6 +365,42 @@ namespace Dev2.Common
             errorMappingElement.Add(new XElement("level", new XAttribute("value", levelValue)));
             errorMappingElement.Add(new XElement("eventLogEntryType", new XAttribute("value", eventLogType)));
             return errorMappingElement;
+        }
+
+        public static Dev2.Data.Interfaces.Enums.LogLevel ConvertToLogLevelEnum(this string LogLevelString)
+        {
+            if (LogLevelString == Dev2.Data.Interfaces.Enums.LogLevel.OFF.ToString())
+            {
+                return Dev2.Data.Interfaces.Enums.LogLevel.OFF;
+            }
+            else if (LogLevelString == Dev2.Data.Interfaces.Enums.LogLevel.FATAL.ToString())
+            {
+                return Dev2.Data.Interfaces.Enums.LogLevel.FATAL;
+            }
+            else if (LogLevelString == Dev2.Data.Interfaces.Enums.LogLevel.ERROR.ToString())
+            {
+                return Dev2.Data.Interfaces.Enums.LogLevel.ERROR;
+            }
+            else if (LogLevelString == Dev2.Data.Interfaces.Enums.LogLevel.TRACE.ToString())
+            {
+                return Dev2.Data.Interfaces.Enums.LogLevel.TRACE;
+            }
+            else if (LogLevelString == Dev2.Data.Interfaces.Enums.LogLevel.WARN.ToString())
+            {
+                return Dev2.Data.Interfaces.Enums.LogLevel.WARN;
+            }
+            else if (LogLevelString == Dev2.Data.Interfaces.Enums.LogLevel.DEBUG.ToString())
+            {
+                return Dev2.Data.Interfaces.Enums.LogLevel.DEBUG;
+            }
+            else if (LogLevelString == Dev2.Data.Interfaces.Enums.LogLevel.INFO.ToString())
+            {
+                return Dev2.Data.Interfaces.Enums.LogLevel.INFO;
+            }
+            else
+            {
+                throw new ArgumentOutOfRangeException("String must be a recognized log level.");
+            }
         }
     }
 

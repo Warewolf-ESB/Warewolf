@@ -8,6 +8,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using Dev2.Common;
 using Dev2.Common.Serializers;
 using Fleck;
 using System;
@@ -67,7 +68,22 @@ namespace Warewolf.Logger
             var loggerConfig = _loggerContext.LoggerConfig;
 
             _server = _webSocketServerFactory.New(loggerConfig.Endpoint);
-
+            if (Config.Server.ExecutionLogLevel.ConvertToLogLevelEnum() == Dev2.Data.Interfaces.Enums.LogLevel.INFO || Config.Server.ExecutionLogLevel.ConvertToLogLevelEnum() == Dev2.Data.Interfaces.Enums.LogLevel.TRACE)
+            {
+                FleckLog.Level = Fleck.LogLevel.Info;
+            }
+            else if (Config.Server.ExecutionLogLevel.ConvertToLogLevelEnum() == Dev2.Data.Interfaces.Enums.LogLevel.DEBUG)
+            {
+                FleckLog.Level = Fleck.LogLevel.Debug;
+            }             
+            else if (Config.Server.ExecutionLogLevel.ConvertToLogLevelEnum() == Dev2.Data.Interfaces.Enums.LogLevel.WARN)
+            {
+                FleckLog.Level = Fleck.LogLevel.Warn;
+            }
+            else if (Config.Server.ExecutionLogLevel.ConvertToLogLevelEnum() == Dev2.Data.Interfaces.Enums.LogLevel.ERROR || Config.Server.ExecutionLogLevel.ConvertToLogLevelEnum() == Dev2.Data.Interfaces.Enums.LogLevel.FATAL || Config.Server.ExecutionLogLevel.ConvertToLogLevelEnum() == Dev2.Data.Interfaces.Enums.LogLevel.OFF)
+            {
+                FleckLog.Level = Fleck.LogLevel.Error;
+            }
             _server.Start(socket =>
             {
                 socket.OnOpen = () =>
@@ -78,7 +94,12 @@ namespace Warewolf.Logger
                 {
                     clients.Remove(socket);
                 };
-                socket.OnError = exception => { _writer.WriteLine($"Logging Server OnError, Error details:{exception.Message}"); };
+                socket.OnError = exception => {
+                    if (Config.Server.ExecutionLogLevel == "ERROR" || Config.Server.ExecutionLogLevel == "WARN" || Config.Server.ExecutionLogLevel == "INFO" || Config.Server.ExecutionLogLevel == "DEBUG" || Config.Server.ExecutionLogLevel == "TRACE")
+                    {
+                        _writer.WriteLine($"Logging Server OnError, Error details:{exception.Message}");
+                    }
+                };
 
                 var innerConsumer = new SeriLogConsumer(_loggerContext);
                 var defaultConsumer = _auditCommandConsumerFactory?.New(innerConsumer, socket, _writer) ?? new AuditCommandConsumerFactory().New(innerConsumer, socket, _writer);

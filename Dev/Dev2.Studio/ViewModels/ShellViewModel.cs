@@ -61,6 +61,7 @@ using Dev2.Data.ServiceModel;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.Enums;
 using System.IO;
+using System.Threading;
 using Dev2.Webs;
 using Dev2.Common.Wrappers;
 using Dev2.Common.Interfaces.Wrappers;
@@ -2015,49 +2016,68 @@ namespace Dev2.Studio.ViewModels
         }
 
         readonly Func<IWorkspaceItemRepository> _getWorkspaceItemRepository = () => WorkspaceItemRepository.Instance;
-
+        
+        private SemaphoreSlim throttler = new SemaphoreSlim(1, 1);
         protected virtual void AddWorkspaceItems(IPopupController popupController)
         {
-            if (ServerRepository == null)
+            try
             {
-                return;
-            }
-
-            var workspaceItemsToRemove = new HashSet<IWorkspaceItem>();
-            for (int i = 0; i < _getWorkspaceItemRepository().WorkspaceItems.Count; i++)
-            {
-                var item = _getWorkspaceItemRepository().WorkspaceItems[i];
-                Dev2Logger.Info($"Start Proccessing WorkspaceItem: {item.ServiceName}", GlobalConstants.WarewolfInfo);
-                var environment = ServerRepository.All().Where(env => env.IsConnected).TakeWhile(env => env.Connection != null).FirstOrDefault(env => env.EnvironmentID == item.EnvironmentID);
-
-                if (environment?.ResourceRepository == null)
+                throttler.Wait();
+                
+                if (ServerRepository == null)
                 {
-                    Dev2Logger.Info(@"Environment Not Found", GlobalConstants.WarewolfInfo);
-                    if (environment != null && item.EnvironmentID == environment.EnvironmentID)
+                    return;
+                }
+
+                var workspaceItemsToRemove = new HashSet<IWorkspaceItem>();
+                for (int i = 0; i < _getWorkspaceItemRepository().WorkspaceItems.Count; i++)
+                {
+                    var item = _getWorkspaceItemRepository().WorkspaceItems[i];
+                    Dev2Logger.Info($"Start Proccessing WorkspaceItem: {item.ServiceName}",
+                        GlobalConstants.WarewolfInfo);
+                    var environment = ServerRepository.All().Where(env => env.IsConnected)
+                        .TakeWhile(env => env.Connection != null)
+                        .FirstOrDefault(env => env.EnvironmentID == item.EnvironmentID);
+
+                    if (environment?.ResourceRepository == null)
+                    {
+                        Dev2Logger.Info(@"Environment Not Found", GlobalConstants.WarewolfInfo);
+                        if (environment != null && item.EnvironmentID == environment.EnvironmentID)
+                        {
+                            workspaceItemsToRemove.Add(item);
+                        }
+                    }
+
+                    if (environment != null)
+                    {
+                        Dev2Logger.Info(
+                            $"Proccessing WorkspaceItem: {item.ServiceName} for Environment: {environment.DisplayName}",
+                            GlobalConstants.WarewolfInfo);
+                        if (environment.ResourceRepository != null)
+                        {
+                            environment.ResourceRepository.LoadResourceFromWorkspace(item.ID, item.WorkspaceID);
+                            var resource = environment.ResourceRepository?.All().FirstOrDefault(rm =>
+                            {
+                                return EnvironmentContainsResourceModel(rm, item, environment);
+                            }) as IContextualResourceModel;
+                            AddResourcesAsWorkSurfaceItem(workspaceItemsToRemove, item, environment, resource,
+                                popupController);
+                        }
+                    }
+                    else
                     {
                         workspaceItemsToRemove.Add(item);
                     }
                 }
 
-                if (environment != null)
+                foreach (IWorkspaceItem workspaceItem in workspaceItemsToRemove)
                 {
-                    Dev2Logger.Info($"Proccessing WorkspaceItem: {item.ServiceName} for Environment: {environment.DisplayName}", GlobalConstants.WarewolfInfo);
-                    if (environment.ResourceRepository != null)
-                    {
-                        environment.ResourceRepository.LoadResourceFromWorkspace(item.ID, item.WorkspaceID);
-                        var resource = environment.ResourceRepository?.All().FirstOrDefault(rm => { return EnvironmentContainsResourceModel(rm, item, environment); }) as IContextualResourceModel;
-                        AddResourcesAsWorkSurfaceItem(workspaceItemsToRemove, item, environment, resource, popupController);
-                    }
-                }
-                else
-                {
-                    workspaceItemsToRemove.Add(item);
+                    _getWorkspaceItemRepository().WorkspaceItems.Remove(workspaceItem);
                 }
             }
-
-            foreach (IWorkspaceItem workspaceItem in workspaceItemsToRemove)
+            finally
             {
-                _getWorkspaceItemRepository().WorkspaceItems.Remove(workspaceItem);
+                throttler.Release();
             }
         }
 

@@ -278,8 +278,6 @@ namespace Dev2
                                 {
                                     _writer.WriteLine("error: " + checkLogServerConnectionTask.Exception?.Message);
                                 }
-
-                                Stop(false, 0, true);
                             }
 
                             var logger = _loggerFactory.New(new JsonSerializer(), _webSocketPool);

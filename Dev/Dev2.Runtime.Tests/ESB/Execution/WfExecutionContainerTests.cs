@@ -294,6 +294,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
 
             mockStateNotifier.Setup(o => o.LogActivityExecuteState(It.IsAny<IDev2Activity>())).Verifiable();
             mockStateNotifier.Setup(o => o.LogExecuteCompleteState(It.IsAny<IDev2Activity>())).Verifiable();
+            mockStateNotifier.Setup(o => o.LogExecuteActivityCompleteState(It.IsAny<IDev2Activity>())).Verifiable();
 
             var logManagerMock = new Mock<IStateNotifierFactory>();
             logManagerMock.Setup(o => o.New(It.IsAny<IDSFDataObject>())).Returns(mockStateNotifier.Object);
@@ -308,6 +309,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             //--------------Assert-------------------------------
             Assert.IsNull(dataObjectMock.Object.ExecutionException);
             mockStateNotifier.Verify(o => o.LogExecuteCompleteState(It.IsAny<IDev2Activity>()), Times.Once);
+            mockStateNotifier.Verify(o => o.LogExecuteActivityCompleteState(It.IsAny<IDev2Activity>()), Times.AtLeast(1));
             mockStateNotifier.Verify(o => o.Dispose(), Times.Once);
             mockExecutionManager.Verify(o => o.CompleteExecution(), Times.Once);
         }

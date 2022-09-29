@@ -57,8 +57,12 @@ namespace Dev2.Activities
             {
                 if (ExecutionEnvironment.IsRecordsetIdentifier(_inputVariable) && DataListUtil.IsEvaluated(_inputVariable) && DataListUtil.GetRecordsetIndexType(_inputVariable) == enRecordsetIndexType.Blank)
                 {
-                    var length = environment.GetLength(DataListUtil.ExtractRecordsetNameFromValue(_inputVariable));
-                    _inputVariable = DataListUtil.ReplaceRecordsetBlankWithIndex(_inputVariable, length);
+                    var recName = DataListUtil.ExtractRecordsetNameFromValue(_inputVariable);
+                    var length = environment.GetLength(recName);
+                    if (length > 0)
+                    {
+                        _inputVariable = DataListUtil.ReplaceRecordsetBlankWithIndex(_inputVariable, length);
+                    }
                 }
 
                 if (isDataMerge)
@@ -148,33 +152,40 @@ namespace Dev2.Activities
         public override List<IDebugItemResult> GetDebugItemResult()
 #pragma warning restore S1541 // Methods and properties should not be too complex
         {
-            if (_evalResult.IsWarewolfAtomResult)
+            if (_evalResult != null)
             {
-                if (_evalResult is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult scalarResult && !scalarResult.Item.IsNothing)
+                if (_evalResult.IsWarewolfAtomResult)
                 {
-                    var warewolfAtomToString = ExecutionEnvironment.WarewolfAtomToString(scalarResult.Item);
-                    if (warewolfAtomToString == _inputVariable && DataListUtil.IsEvaluated(_inputVariable))
+                    if (_evalResult is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult scalarResult &&
+                        !scalarResult.Item.IsNothing)
                     {
-                        warewolfAtomToString = null;
+                        var warewolfAtomToString = ExecutionEnvironment.WarewolfAtomToString(scalarResult.Item);
+                        if (warewolfAtomToString == _inputVariable && DataListUtil.IsEvaluated(_inputVariable))
+                        {
+                            warewolfAtomToString = null;
+                        }
+
+                        if (_inputVariable != null && !DataListUtil.IsEvaluated(_inputVariable))
+                        {
+                            _inputVariable = null;
+                        }
+
+                        return new DebugItemWarewolfAtomResult(warewolfAtomToString, _inputVariable, LabelText,
+                            _operand, MockSelected).GetDebugItemResult();
                     }
-                    if (!DataListUtil.IsEvaluated(_inputVariable))
-                    {
-                        _inputVariable = null;
-                    }
-                    return new DebugItemWarewolfAtomResult(warewolfAtomToString, _inputVariable, LabelText, _operand, MockSelected).GetDebugItemResult();
                 }
-            }
-            else if (_evalResult.IsWarewolfAtomListresult && _evalResult is CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult atomListResult)
-            {
-                return new DebugItemWarewolfAtomListResult(atomListResult, "", "", _inputVariable, LabelText, "", "=", _isCalculate, MockSelected).GetDebugItemResult();
-            }
-            else if (_evalResult.IsWarewolfRecordSetResult && _evalResult is CommonFunctions.WarewolfEvalResult.WarewolfRecordSetResult recordsetResult)
-            {
-                return new DebugItemWarewolfRecordset(recordsetResult.Item, _inputVariable, LabelText, "=", MockSelected).GetDebugItemResult();
-            }
-            else
-            {
-                return new DebugItemStaticDataParams("", _inputVariable, LabelText, MockSelected).GetDebugItemResult();
+                else if (_evalResult.IsWarewolfAtomListresult &&
+                         _evalResult is CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult atomListResult)
+                {
+                    return new DebugItemWarewolfAtomListResult(atomListResult, "", "", _inputVariable, LabelText, "",
+                        "=", _isCalculate, MockSelected).GetDebugItemResult();
+                }
+                else if (_evalResult.IsWarewolfRecordSetResult &&
+                         _evalResult is CommonFunctions.WarewolfEvalResult.WarewolfRecordSetResult recordsetResult)
+                {
+                    return new DebugItemWarewolfRecordset(recordsetResult.Item, _inputVariable, LabelText, "=",
+                        MockSelected).GetDebugItemResult();
+                }
             }
 
             return new DebugItemStaticDataParams("", _inputVariable, LabelText, MockSelected).GetDebugItemResult();

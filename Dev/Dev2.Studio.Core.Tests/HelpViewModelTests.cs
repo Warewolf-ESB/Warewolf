@@ -17,6 +17,7 @@ using Dev2.ViewModels.Help;
 using Dev2.Webs.Callbacks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Microsoft.Web.WebView2.Wpf;
 
 namespace Dev2.Core.Tests
 {
@@ -63,7 +64,7 @@ namespace Dev2.Core.Tests
             var task = new Task<bool>(() => true);
             task.RunSynchronously();
             var helpViewWrapper = new Mock<IHelpViewWrapper>();
-            var webBrowser = new Frame();
+            var webBrowser = new WebView2();
             helpViewWrapper.SetupGet(m => m.WebBrowser).Returns(webBrowser);
             helpViewWrapper.Setup(m => m.Navigate(It.IsAny<string>())).Verifiable();
             var helpViewModel = new HelpViewModel(helpViewWrapper.Object, false);

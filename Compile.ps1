@@ -307,8 +307,8 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
                 npm install --add-python-to-path='true' --global --production windows-build-tools
             }
             if ($OutputFolderName -eq "AcceptanceTesting" -and !($ProjectSpecificOutputs.IsPresent)) {
-                &"$NuGet" install Microsoft.TestPlatform -ExcludeVersion -NonInteractive -OutputDirectory "$PSScriptRoot\Bin\$OutputFolderName\net48"
-                &"$NuGet" install Microsoft.TestPlatform -ExcludeVersion -NonInteractive -OutputDirectory "$PSScriptRoot\Bin\$OutputFolderName\net6.0-windows"
+                &"$NuGet" install Microsoft.TestPlatform -ExcludeVersion -NonInteractive -OutputDirectory "$PSScriptRoot\Bin\$OutputFolderName\net48" -Version "17.2.0"
+                &"$NuGet" install Microsoft.TestPlatform -ExcludeVersion -NonInteractive -OutputDirectory "$PSScriptRoot\Bin\$OutputFolderName\net6.0-windows" -Version "17.2.0"
             }
             if ($ProjectSpecificOutputs.IsPresent) {
                 $OutputProperty = ""
