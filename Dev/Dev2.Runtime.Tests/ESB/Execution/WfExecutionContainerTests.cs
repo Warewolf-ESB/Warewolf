@@ -271,6 +271,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
         public void WfExecutionContainer_ExecuteNode_WhenSeverSettings_EnableDetailedLogging_IsTrue_ShouldRunLogActivityExecuteStateAndLogExecuteCompleteState()
         {
             //--------------Arrange------------------------------
+            Config.Server.ExecutionLogLevel = "INFO";
             var dataObjectMock = new Mock<IDSFDataObject>();
             var workSpaceMock = new Mock<IWorkspace>();
             var esbChannelMock = new Mock<IEsbChannel>();
