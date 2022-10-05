@@ -636,4 +636,7 @@ Please note that tabs are fully supported at runtime, in variables and when read
   <data name="RevulyticsSdkError" xml:space="preserve">
     <value>Revulytics Sdk Error</value>
   </data>
+  <data name="CommentDropNotAllowedMessage" xml:space="preserve">
+    <value>The Comment tool cannot be dropped onto this tool.</value>
+  </data>
 </root>

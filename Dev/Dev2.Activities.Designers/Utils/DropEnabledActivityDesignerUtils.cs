@@ -32,27 +32,7 @@ namespace Dev2.Activities.Utils
             {
                 return true;
             }
-
-            var modelItemString = formats.FirstOrDefault(s => s.IndexOf("ModelItemsFormat", StringComparison.Ordinal) >= 0);
-            if(!string.IsNullOrEmpty(modelItemString))
-            {
-                var innnerObjectData = data.GetData(modelItemString);
-                if (innnerObjectData is List<ModelItem> modelList && modelList.Count > 1 && modelList.FirstOrDefault(c => c.ItemType == typeof(FlowDecision) || c.ItemType == typeof(FlowSwitch<string>)) != null)
-                {
-                    return false;
-                }
-
-            }
-
-            modelItemString = formats.FirstOrDefault(s => s.IndexOf("ModelItemFormat", StringComparison.Ordinal) >= 0);
-            if(string.IsNullOrEmpty(modelItemString))
-            {
-                modelItemString = formats.FirstOrDefault(s => s.IndexOf("WorkflowItemTypeNameFormat", StringComparison.Ordinal) >= 0);
-                if(string.IsNullOrEmpty(modelItemString))
-                {
-                    return true;
-                }
-            }
+            var modelItemString = formats.FirstOrDefault(s => s.IndexOf("WorkflowItemTypeNameFormat", StringComparison.Ordinal) >= 0);
             var objectData = data.GetData(modelItemString);
             return DropPointOnDragEnter(objectData);
         }
@@ -78,6 +58,10 @@ namespace Dev2.Activities.Utils
                 return false;
             }
             if (!ValidateSelectAndApply(objectData, data, true))
+            {
+                return false;
+            }
+            if (!ValidateComment(objectData, data, true))
             {
                 return false;
             }
@@ -127,6 +111,22 @@ namespace Dev2.Activities.Utils
             if (!dropEnabled)
             {
                 ShowErrorMessage(Warewolf.Studio.Resources.Languages.Core.SelectAndApplyDropNotAllowedMessage,
+                    Warewolf.Studio.Resources.Languages.Core.ExplorerDropNotAllowedHeader);
+            }
+            return dropEnabled;
+        }
+
+        bool ValidateComment(object objectData, ModelItem data, bool dropEnabled)
+        {
+            var stringValue = objectData as string;
+            if ((data != null && data.ItemType.Name == "DsfCommentActivity") || (stringValue != null && stringValue.Contains("Comment")))
+            {
+                dropEnabled = false;
+            }
+
+            if (!dropEnabled)
+            {
+                ShowErrorMessage(Warewolf.Studio.Resources.Languages.Core.CommentDropNotAllowedMessage,
                     Warewolf.Studio.Resources.Languages.Core.ExplorerDropNotAllowedHeader);
             }
             return dropEnabled;
