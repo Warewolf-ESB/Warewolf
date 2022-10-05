@@ -271,7 +271,6 @@ namespace Dev2.Tests.Runtime.ESB.Execution
         public void WfExecutionContainer_ExecuteNode_WhenSeverSettings_EnableDetailedLogging_IsTrue_ShouldRunLogActivityExecuteStateAndLogExecuteCompleteState()
         {
             //--------------Arrange------------------------------
-            Config.Server.ExecutionLogLevel = "INFO";
             var dataObjectMock = new Mock<IDSFDataObject>();
             var workSpaceMock = new Mock<IWorkspace>();
             var esbChannelMock = new Mock<IEsbChannel>();
@@ -279,14 +278,16 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             var serviceAction = new ServiceAction();
             var mockStateNotifier = new Mock<IStateNotifier>();
             var mockExecutionManager = new Mock<IExecutionManager>();
-
+            var subscriptionProvider = new Mock<ISubscriptionProvider>();
             var dev2WorkflowSettings = new Mock<Dev2.Common.Interfaces.IDev2WorkflowSettings>();
+
             dev2WorkflowSettings.Setup(o => o.EnableDetailedLogging).Returns(true);
-            dev2WorkflowSettings.Setup(o => o.ExecutionLogLevel).Returns(LogLevel.DEBUG.ToString);
+            dev2WorkflowSettings.Setup(o => o.ExecutionLogLevel).Returns(LogLevel.INFO.ToString);
             executionEnvironmentMock.Setup(environment => environment.AllErrors).Returns(new HashSet<string>());
             executionEnvironmentMock.Setup(environment => environment.Errors).Returns(new HashSet<string>());
             dataObjectMock.Setup(o => o.Environment.FetchErrors())
                 .Returns("");
+            subscriptionProvider.Setup(o => o.IsLicensed).Returns(true);
 
             dataObjectMock.SetupGet(o => o.Environment).Returns(executionEnvironmentMock.Object);
             dataObjectMock.Setup(o => o.StopExecution).Returns(false);
@@ -302,7 +303,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
 
             CustomContainer.Register<IExecutionManager>(mockExecutionManager.Object);
             CustomContainer.Register<IStateNotifierFactory>(logManagerMock.Object);
-            var wfExecutionContainer = new WfExecutionContainer(serviceAction, dataObjectMock.Object, workSpaceMock.Object, esbChannelMock.Object, new Mock<ISubscriptionProvider>().Object);
+            var wfExecutionContainer = new WfExecutionContainer(serviceAction, dataObjectMock.Object, workSpaceMock.Object, esbChannelMock.Object, subscriptionProvider.Object);
 
             //--------------Act----------------------------------
             wfExecutionContainer.Eval(FlowchartProcess, dataObjectMock.Object, 0);
