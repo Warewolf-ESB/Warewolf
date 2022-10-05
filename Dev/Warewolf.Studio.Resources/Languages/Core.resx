@@ -589,8 +589,7 @@ The window will be reloaded when you click OK.</value>
 Please contact your Windows System Administrator.</value>
   </data>
   <data name="SchedulerExecutePermissionError" xml:space="preserve">
-    <value>This Workflow requires that you have Execute permission on the '{0}' Workflow. 
-Please contact your Warewolf System Administrator.</value>
+    <value>This Workflow requires that you have Execute permission on the '{0}' Workflow.\r\nPlease contact your Warewolf System Administrator.</value>
   </data>
   <data name="SchedulerInvalidCharactersError" xml:space="preserve">
     <value>The task name may not contain the following characters</value>
