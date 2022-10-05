@@ -20,6 +20,7 @@ namespace Dev2.ViewModels.Help
 {
     public class HelpViewWrapper : IHelpViewWrapper
     {
+        const string _pathFolder = "Microsoft.WebView2.FixedVersionRuntime.95.0.1020.44.x64";
         public HelpViewWrapper(HelpView view)
         {
             HelpView = view;
@@ -58,8 +59,11 @@ namespace Dev2.ViewModels.Help
         public async void Navigate(string uri)
         {
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Ssl3;
-            var webView2Environment = await CoreWebView2Environment.CreateAsync("Microsoft.WebView2.FixedVersionRuntime.95.0.1020.44.x64", Environment.ExpandEnvironmentVariables("%localappdata%\\Warewolf"));
+            var webView2Environment = await CoreWebView2Environment.CreateAsync(null, Environment.ExpandEnvironmentVariables("%localappdata%\\Warewolf"));
             await HelpView.webView.EnsureCoreWebView2Async(webView2Environment);
+            var path = System.IO.Path.Combine(System.IO.Directory.GetCurrentDirectory(), _pathFolder);
+            HelpView.webView.CreationProperties =
+                new CoreWebView2CreationProperties { BrowserExecutableFolder = path };
             HelpView.webView.Source = new Uri(uri, UriKind.Absolute);
         }
     }
