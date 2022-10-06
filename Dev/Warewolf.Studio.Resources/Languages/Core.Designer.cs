@@ -1054,7 +1054,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This Workflow requires that you have Execute permission on the &apos;{0}&apos; Workflow. 
+        ///   Looks up a localized string similar to This Workflow requires that you have Execute permission on the &apos;{0}&apos; Workflow.
         ///Please contact your Warewolf System Administrator..
         /// </summary>
         public static string SchedulerExecutePermissionError {
