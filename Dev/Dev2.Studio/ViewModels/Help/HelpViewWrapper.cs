@@ -44,7 +44,7 @@ namespace Dev2.ViewModels.Help
             }
         }
 
-         public Visibility CircularProgressBarVisibility  
+        public Visibility CircularProgressBarVisibility  
         {
             get
             {
@@ -56,14 +56,15 @@ namespace Dev2.ViewModels.Help
             }
         }
 
-        public async void Navigate(string uri)
+        public void Navigate(string uri)
         {
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Ssl3;
-            var webView2Environment = await CoreWebView2Environment.CreateAsync(null, Environment.ExpandEnvironmentVariables("%localappdata%\\Warewolf"));
-            await HelpView.webView.EnsureCoreWebView2Async(webView2Environment);
             var path = System.IO.Path.Combine(System.IO.Directory.GetCurrentDirectory(), _pathFolder);
-            HelpView.webView.CreationProperties =
-                new CoreWebView2CreationProperties { BrowserExecutableFolder = path };
+            HelpView.webView.CreationProperties = new CoreWebView2CreationProperties
+            { 
+                BrowserExecutableFolder = path,
+                UserDataFolder = Environment.ExpandEnvironmentVariables("%localappdata%\\Warewolf")
+            };
             HelpView.webView.Source = new Uri(uri, UriKind.Absolute);
         }
     }
