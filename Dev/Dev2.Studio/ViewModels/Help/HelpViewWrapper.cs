@@ -11,16 +11,14 @@
 using System;
 using System.Net;
 using System.Windows;
+using System.Windows.Controls;
 using Dev2.CustomControls;
 using Dev2.Studio.Views.Help;
-using Microsoft.Web.WebView2.Core;
-using Microsoft.Web.WebView2.Wpf;
 
 namespace Dev2.ViewModels.Help
 {
     public class HelpViewWrapper : IHelpViewWrapper
     {
-        const string _pathFolder = "Microsoft.WebView2.FixedVersionRuntime.95.0.1020.44.x64";
         public HelpViewWrapper(HelpView view)
         {
             HelpView = view;
@@ -28,11 +26,11 @@ namespace Dev2.ViewModels.Help
 
         public HelpView HelpView { get; private set; }
 
-        public WebView2 WebBrowser => HelpView.webView;
+        public Frame WebBrowser => HelpView.WebBrowserHost;
 
         public CircularProgressBar CircularProgressBar => HelpView.CircularProgressBar;
 
-        public Visibility WebBrowserVisibility  
+        public Visibility WebBrowserVisibility
         {
             get
             {
@@ -44,7 +42,7 @@ namespace Dev2.ViewModels.Help
             }
         }
 
-        public Visibility CircularProgressBarVisibility  
+        public Visibility CircularProgressBarVisibility
         {
             get
             {
@@ -59,13 +57,7 @@ namespace Dev2.ViewModels.Help
         public void Navigate(string uri)
         {
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Ssl3;
-            var path = System.IO.Path.Combine(System.IO.Directory.GetCurrentDirectory(), _pathFolder);
-            HelpView.webView.CreationProperties = new CoreWebView2CreationProperties
-            { 
-                BrowserExecutableFolder = path,
-                UserDataFolder = Environment.ExpandEnvironmentVariables("%localappdata%\\Warewolf")
-            };
-            HelpView.webView.Source = new Uri(uri, UriKind.Absolute);
+            HelpView.WebBrowserHost.Source = new Uri(uri, UriKind.Absolute);
         }
     }
 }
