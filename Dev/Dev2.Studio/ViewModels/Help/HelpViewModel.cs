@@ -59,9 +59,9 @@ namespace Dev2.Studio.ViewModels.Help
 
         protected override void OnViewLoaded(object view)
         {
-            base.OnViewLoaded(view);    
+            base.OnViewLoaded(view);
             var helpView = view as HelpView;
-            if(helpView == null)
+            if (helpView == null)
             {
                 return;
             }
@@ -72,15 +72,15 @@ namespace Dev2.Studio.ViewModels.Help
         public async void OnViewisLoaded(IHelpViewWrapper viewWrapper)
         {
             HelpViewWrapper = viewWrapper;
-            if(!IsViewAvailable)
+            if (!IsViewAvailable)
             {
                 try
                 {
                     await LoadBrowserUri(Uri);
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
-                    Dev2Logger.Error(e.Message,e, "Warewolf Error");
+                    Dev2Logger.Error(e.Message, e, "Warewolf Error");
                 }
             }
         }
@@ -98,6 +98,7 @@ namespace Dev2.Studio.ViewModels.Help
                 IsViewAvailable = true;
                 SetupFailedNavigationEvent();
                 SetupLoadCompletedEvent();
+                SetupNavigationCompletdEvent();
                 Execute.OnUIThread(() => { HelpViewWrapper.Navigate(Uri); });
             }
             return Task.FromResult(true);
@@ -105,25 +106,34 @@ namespace Dev2.Studio.ViewModels.Help
 
         void SetupLoadCompletedEvent()
         {
-            HelpViewWrapper.WebBrowser.Loaded += (sender, args) => Execute.OnUIThread(() =>
+            HelpViewWrapper.WebBrowser.LoadCompleted += (sender, args) => Execute.OnUIThread(() =>
             {
                 HelpViewWrapper.CircularProgressBarVisibility = Visibility.Collapsed;
                 HelpViewWrapper.WebBrowserVisibility = Visibility.Visible;
             });
         }
 
+        void SetupNavigationCompletdEvent()
+        {
+            HelpViewWrapper.WebBrowser.Navigated += (sender, args) =>
+            {
+                var navService = HelpViewWrapper.WebBrowser.NavigationService;
+                dynamic browser = navService.GetType().GetField("_webBrowser", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).GetValue(navService);
+                var iWebBrowser2 = browser.GetType().GetField("_axIWebBrowser2", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).GetValue(browser);
+                iWebBrowser2.Silent = true;
+            };
+        }
         void SetupFailedNavigationEvent()
         {
-            HelpViewWrapper.WebBrowser.NavigationCompleted += (sender, args) =>
+            HelpViewWrapper.WebBrowser.NavigationService.NavigationFailed += (sender, args) =>
             {
-                if (!args.IsSuccess) {
-                    ResourcePath = FileHelper.GetFullPath(StringResources.Uri_Studio_PageNotAvailable);
-                    Execute.OnUIThread(() =>
-                    {
-                        HelpViewWrapper.Navigate(ResourcePath);
-                        HelpViewWrapper.CircularProgressBarVisibility = Visibility.Collapsed;
-                        HelpViewWrapper.WebBrowserVisibility = Visibility.Visible;
-                    }); }
+                ResourcePath = FileHelper.GetFullPath(StringResources.Uri_Studio_PageNotAvailable);
+                Execute.OnUIThread(() =>
+                {
+                    HelpViewWrapper.Navigate(ResourcePath);
+                    HelpViewWrapper.CircularProgressBarVisibility = Visibility.Collapsed;
+                    HelpViewWrapper.WebBrowserVisibility = Visibility.Visible;
+                });
             };
         }
 

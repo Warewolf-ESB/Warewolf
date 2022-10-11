@@ -7,8 +7,7 @@
               xmlns:customControls="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
               Background="Transparent"
               d:DesignHeight="300"
-              d:DesignWidth="300"
-              xmlns:wv2="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf">
+              d:DesignWidth="300">
     <Grid x:Name="LayoutRoot" Background="Transparent">
         <customControls:CircularProgressBar x:Name="CircularProgressBar"
                                             Height="150"
@@ -18,22 +17,11 @@
                                             HorizontalAlignment="Center"
                                             Visibility="Visible" />
         <ScrollViewer>
-            <wv2:WebView2 x:Name="webView"
-                          Margin="3"
-                          RenderTransformOrigin="0.5,0.5"
-                          HorizontalAlignment="Stretch"
-                          VerticalAlignment="Stretch">
-                <wv2:WebView2.RenderTransform>
-                    <TransformGroup>
-                        <ScaleTransform />
-                        <SkewTransform />
-                        <RotateTransform Angle="-0.018" />
-                        <TranslateTransform />
-                    </TransformGroup>
-                </wv2:WebView2.RenderTransform>
-
-            </wv2:WebView2>
-
+            <Frame x:Name="WebBrowserHost"
+                        Margin="3"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        Visibility="Collapsed" />
         </ScrollViewer>
     </Grid>
 </UserControl>  
