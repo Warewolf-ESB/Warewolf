@@ -815,19 +815,6 @@
       <Version>1.0.0-alpha003</Version>
     </PackageReference>
   </ItemGroup>
-  <PropertyGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
-    <PostBuildEvent>if exist "$(SolutionDir)Dev2.Studio\bin\Debug\net48\Warewolf Studio.exe" (
-  if not exist "$(SolutionDir)Dev2.Studio\bin\Debug\net48\Trackerbird.x64.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.x64.dll" "$(SolutionDir)Dev2.Studio\bin\Debug\net48\Trackerbird.x64.dll"
-  if not exist "$(SolutionDir)Dev2.Studio\bin\Debug\net48\Trackerbird.x86.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.x86.dll" "$(SolutionDir)Dev2.Studio\bin\Debug\net48"
-  if not exist "$(SolutionDir)Dev2.Studio\bin\Debug\net48\Trackerbird.Tracker.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.Tracker.dll" "$(SolutionDir)Dev2.Studio\bin\Debug\net48"
-)
-if exist "$(SolutionDir)Dev2.Studio\bin\Release\net48\Warewolf Studio.exe" (
-  if not exist "$(SolutionDir)Dev2.Studio\bin\Release\net48\Trackerbird.x64.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.x64.dll" "$(SolutionDir)Dev2.Studio\bin\Release\net48\Trackerbird.x64.dll"
-  if not exist "$(SolutionDir)Dev2.Studio\bin\Release\net48\Trackerbird.x86.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.x86.dll" "$(SolutionDir)Dev2.Studio\bin\Release\net48"
-  if not exist "$(SolutionDir)Dev2.Studio\bin\Release\net48\Trackerbird.Tracker.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.Tracker.dll" "$(SolutionDir)Dev2.Studio\bin\Release\net48"
-)
-    </PostBuildEvent>
-  </PropertyGroup>
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
     <Exec Command="if not exist &quot;$(TargetDir)Microsoft.WebView2.FixedVersionRuntime.95.0.1020.44.x64&quot; powershell.exe -ExecutionPolicy RemoteSigned -nologo -noprofile -file &quot;$(TargetDir)InstallWebView2FixedVersion.ps1&quot;" />
   </Target>
