@@ -33,7 +33,7 @@ namespace Dev2.ViewModels.Help
 
         public CircularProgressBar CircularProgressBar => HelpView.CircularProgressBar;
 
-        public Visibility WebBrowserVisibility  
+        public Visibility WebBrowserVisibility
         {
             get
             {
@@ -45,7 +45,7 @@ namespace Dev2.ViewModels.Help
             }
         }
 
-        public Visibility CircularProgressBarVisibility  
+        public Visibility CircularProgressBarVisibility
         {
             get
             {
@@ -60,24 +60,29 @@ namespace Dev2.ViewModels.Help
         public void Navigate(string uri)
         {
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Ssl3;
-            if (Directory.Exists(Path.Combine(Directory.GetCurrentDirectory(), _pathFolder)))
+            var path = Path.Combine(Environment.ExpandEnvironmentVariables("%localappdata%\\Warewolf"), _pathFolder);
+            if (!Directory.Exists(path))
             {
-                HelpView.webView.CreationProperties = new CoreWebView2CreationProperties
-                {
-                    BrowserExecutableFolder = Path.Combine(Directory.GetCurrentDirectory(), _pathFolder),
-                    UserDataFolder = Environment.ExpandEnvironmentVariables("%localappdata%\\Warewolf")
-                };
+                CopyWebView2(Path.Combine(Directory.GetCurrentDirectory(), _pathFolder), path);
             }
-            else if (Directory.Exists(Path.Combine(Environment.ExpandEnvironmentVariables("%localappdata%\\Warewolf"), _pathFolder)))
+            HelpView.webView.CreationProperties = new CoreWebView2CreationProperties
             {
-                HelpView.webView.CreationProperties = new CoreWebView2CreationProperties
-                {
-                    BrowserExecutableFolder = Path.Combine(Environment.ExpandEnvironmentVariables("%localappdata%\\Warewolf"), _pathFolder),
-                    UserDataFolder = Environment.ExpandEnvironmentVariables("%localappdata%\\Warewolf")
-                };
-            }
-            else throw new FileNotFoundException("Cannot find " + _pathFolder + " at " + Directory.GetCurrentDirectory() + " or " + Environment.ExpandEnvironmentVariables("%localappdata%\\Warewolf"));
+                BrowserExecutableFolder = path,
+                UserDataFolder = Environment.ExpandEnvironmentVariables("%localappdata%\\Warewolf")
+            };
             HelpView.webView.Source = new Uri(uri, UriKind.Absolute);
+        }
+
+        static void CopyWebView2(string sourcePath, string targetPath)
+        {
+            foreach (string dirPath in Directory.GetDirectories(sourcePath, "*", SearchOption.AllDirectories))
+            {
+                Directory.CreateDirectory(dirPath.Replace(sourcePath, targetPath));
+            }
+            foreach (string newPath in Directory.GetFiles(sourcePath, "*.*", SearchOption.AllDirectories))
+            {
+                File.Copy(newPath, newPath.Replace(sourcePath, targetPath), true);
+            }
         }
     }
 }
