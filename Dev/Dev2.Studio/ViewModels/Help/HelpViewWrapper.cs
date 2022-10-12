@@ -9,6 +9,7 @@
 */
 
 using System;
+using System.IO;
 using System.Net;
 using System.Windows;
 using Dev2.CustomControls;
@@ -59,12 +60,23 @@ namespace Dev2.ViewModels.Help
         public void Navigate(string uri)
         {
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Ssl3;
-            var path = System.IO.Path.Combine(System.IO.Directory.GetCurrentDirectory(), _pathFolder);
-            HelpView.webView.CreationProperties = new CoreWebView2CreationProperties
-            { 
-                BrowserExecutableFolder = path,
-                UserDataFolder = Environment.ExpandEnvironmentVariables("%localappdata%\\Warewolf")
-            };
+            if (Directory.Exists(Path.Combine(Directory.GetCurrentDirectory(), _pathFolder)))
+            {
+                HelpView.webView.CreationProperties = new CoreWebView2CreationProperties
+                {
+                    BrowserExecutableFolder = Path.Combine(Directory.GetCurrentDirectory(), _pathFolder),
+                    UserDataFolder = Environment.ExpandEnvironmentVariables("%localappdata%\\Warewolf")
+                };
+            }
+            else if (Directory.Exists(Path.Combine(Environment.ExpandEnvironmentVariables("%localappdata%\\Warewolf"), _pathFolder)))
+            {
+                HelpView.webView.CreationProperties = new CoreWebView2CreationProperties
+                {
+                    BrowserExecutableFolder = Path.Combine(Environment.ExpandEnvironmentVariables("%localappdata%\\Warewolf"), _pathFolder),
+                    UserDataFolder = Environment.ExpandEnvironmentVariables("%localappdata%\\Warewolf")
+                };
+            }
+            else throw new FileNotFoundException("Cannot find " + _pathFolder + " at " + Directory.GetCurrentDirectory() + " or " + Environment.ExpandEnvironmentVariables("%localappdata%\\Warewolf"));
             HelpView.webView.Source = new Uri(uri, UriKind.Absolute);
         }
     }
