@@ -11,10 +11,9 @@
 using System;
 using System.Net;
 using System.Windows;
+using System.Windows.Controls;
 using Dev2.CustomControls;
 using Dev2.Studio.Views.Help;
-using Microsoft.Web.WebView2.Core;
-using Microsoft.Web.WebView2.Wpf;
 
 namespace Dev2.ViewModels.Help
 {
@@ -27,11 +26,11 @@ namespace Dev2.ViewModels.Help
 
         public HelpView HelpView { get; private set; }
 
-        public WebView2 WebBrowser => HelpView.webView;
+        public Frame WebBrowser => HelpView.WebBrowserHost;
 
         public CircularProgressBar CircularProgressBar => HelpView.CircularProgressBar;
 
-        public Visibility WebBrowserVisibility  
+        public Visibility WebBrowserVisibility
         {
             get
             {
@@ -43,7 +42,7 @@ namespace Dev2.ViewModels.Help
             }
         }
 
-         public Visibility CircularProgressBarVisibility  
+        public Visibility CircularProgressBarVisibility
         {
             get
             {
@@ -55,12 +54,10 @@ namespace Dev2.ViewModels.Help
             }
         }
 
-        public async void Navigate(string uri)
+        public void Navigate(string uri)
         {
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Ssl3;
-            var webView2Environment = await CoreWebView2Environment.CreateAsync(null, Environment.ExpandEnvironmentVariables("%localappdata%\\Warewolf"));
-            await HelpView.webView.EnsureCoreWebView2Async(webView2Environment);
-            HelpView.webView.Source = new Uri(uri, UriKind.Absolute);
+            HelpView.WebBrowserHost.Source = new Uri(uri, UriKind.Absolute);
         }
     }
 }
