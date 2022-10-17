@@ -34,10 +34,18 @@ namespace Dev2.Runtime.Security
         {
             get
             {
-                var serverAuthorizationService = _theInstance.Value;
-                serverAuthorizationService.SecurityService.PermissionsChanged += (s, e) => ClearCaches();
-                serverAuthorizationService.SecurityService.PermissionsModified += (s, e) => ClearCaches();
-                return serverAuthorizationService;        
+                try
+                {
+                    var serverAuthorizationService = _theInstance.Value;
+                    serverAuthorizationService.SecurityService.PermissionsChanged += (s, e) => ClearCaches();
+                    serverAuthorizationService.SecurityService.PermissionsModified += (s, e) => ClearCaches();
+                    return serverAuthorizationService;
+                }
+                catch (Exception ex)
+                {
+                    // log exception here
+                    return null;
+                }        
             }
         }
 

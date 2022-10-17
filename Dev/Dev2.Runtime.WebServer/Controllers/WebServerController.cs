@@ -10,6 +10,7 @@
 */
 
 using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Net.Http;
@@ -24,7 +25,10 @@ namespace Dev2.Runtime.WebServer.Controllers
      * request that comes from an HTTP, that includes REST and a user executing a workflow
      * from a web browser
      */
-    [AuthorizeWeb]
+    //[AuthorizeWeb]
+    //[CustomActionFilter]
+    [ApiController]
+    [Route("")]
     public class WebServerController : AbstractController
     {
         [HttpGet]
@@ -171,4 +175,6 @@ namespace Dev2.Runtime.WebServer.Controllers
             return ProcessRequest<GetApisJsonServiceHandler>(requestVariables, false);
         }
     }
+
+   
 }

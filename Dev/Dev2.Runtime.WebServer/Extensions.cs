@@ -11,13 +11,14 @@
 
 using Dev2.Common;
 using Dev2.Web;
+using Microsoft.AspNetCore.Mvc.WebApiCompatShim;
 using System;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Security.Principal;
 using System.Text;
-using System.Web.Http.Controllers;
+//using System.Web.Http.Controllers;
 
 namespace Dev2.Runtime.WebServer
 {
@@ -69,10 +70,32 @@ namespace Dev2.Runtime.WebServer
                           : new StringContent(message, System.Text.Encoding.UTF8, "application/json");
         }
 
-        public static void CreateWarewolfErrorResponse(this HttpActionContext context, WarewolfErrorResponseArgs errorResponseArgs)
+        //public static void CreateWarewolfErrorResponse(this HttpActionContext context, WarewolfErrorResponseArgs errorResponseArgs)
+        //{
+        //    context.Response = CreateWarewolfErrorResponse(context.Request.RequestUri, errorResponseArgs);
+        //}
+
+        public static void CreateWarewolfErrorResponse(this Microsoft.AspNetCore.Http.HttpContext context, WarewolfErrorResponseArgs errorResponseArgs)
         {
-            context.Response = CreateWarewolfErrorResponse(context.Request.RequestUri, errorResponseArgs);
+
+            var errorResponse = CreateWarewolfErrorResponse(context.Request.ToUri(), errorResponseArgs);
+            var errorContent = errorResponse.Content.ReadAsStringAsync().Result;
+            context.GetHttpRequestMessage().CreateErrorResponse(errorResponse.StatusCode, errorContent);
+
+            //context.Response = errorResponse;
         }
+
+        //public static void CreateWarewolfErrorResponse(this Microsoft.AspNetCore.Mvc.ActionContext actionContext, WarewolfErrorResponseArgs errorResponseArgs)
+        //{
+        //    var context = actionContext.HttpContext;
+        //    var errorResponse = CreateWarewolfErrorResponse(context.Request.ToUri(), errorResponseArgs);
+        //    var errorContent = errorResponse.Content.ReadAsStringAsync().Result;
+        //    context.GetHttpRequestMessage().CreateErrorResponse(errorResponse.StatusCode, errorContent);
+
+        //    //context.Response = errorResponse;
+        //}
+
+
 
         public static HttpResponseMessage CreateWarewolfErrorResponse(this HttpRequestMessage requestMessage, WarewolfErrorResponseArgs errorResponseArgs) => CreateWarewolfErrorResponse(requestMessage.RequestUri, errorResponseArgs);
         public static HttpResponseMessage CreateWarewolfErrorResponse(Uri uri, WarewolfErrorResponseArgs errorResponseArgs) => CreateWarewolfErrorResponse(uri.GetEmitionType(), errorResponseArgs.StatusCode, errorResponseArgs.Title, errorResponseArgs.Message);

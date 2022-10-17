@@ -10,6 +10,7 @@
 */
 
 using Dev2.Services.Security;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -18,7 +19,7 @@ using System.Linq;
 
 namespace Dev2.Runtime.WebServer.Security
 {
-    public class QueryString : INameValueCollection
+    public class QueryString : IEnumerable//: INameValueCollection
     {
         readonly IEnumerable<KeyValuePair<string, string>> _items;
 
@@ -49,6 +50,11 @@ namespace Dev2.Runtime.WebServer.Security
         }
 
         public string Get(string key) => this[key];
+
+        public bool Equals(Microsoft.AspNetCore.Http.QueryString other)
+        {
+            throw new NotImplementedException();
+        }
 
         public string this[string key]
         {

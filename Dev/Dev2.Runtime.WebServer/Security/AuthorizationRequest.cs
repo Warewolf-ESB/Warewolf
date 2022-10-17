@@ -23,7 +23,7 @@ namespace Dev2.Runtime.WebServer.Security
         public WebServerRequestType RequestType { get; set; }
         public IPrincipal User { get; set; }
         public Uri Url { get; set; }
-        public INameValueCollection QueryString { get; set; }
+        public Microsoft.AspNetCore.Http.IQueryCollection QueryString { get; set; }
 
         public string ResourcePath
         {

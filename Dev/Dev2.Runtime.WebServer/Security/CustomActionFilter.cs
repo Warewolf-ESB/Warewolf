@@ -1,14 +1,4 @@
-#pragma warning disable
-/*
-*  Warewolf - Once bitten, there's no going back
-*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later.
-*  Some rights reserved.
-*  Visit our website for more information <http://warewolf.io/>
-*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
-*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
-*/
-
+﻿
 using System;
 using System.Net;
 using System.Net.Http;
@@ -30,31 +20,36 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc;
 
+
 namespace Dev2.Runtime.WebServer.Security
 {
-    [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
-    public class AuthorizeWebAttribute : Attribute //  //, IAuthenticationFilter
+    public sealed class CustomActionFilter : ActionFilterAttribute
     {
-        private readonly IHttpContextAccessor actionContext;
-
-        public AuthorizeWebAttribute()
-            : this(ServerAuthorizationService.Instance)
+        public CustomActionFilter() : this(ServerAuthorizationService.Instance)
         {
-        }
 
-        public AuthorizeWebAttribute(Services.Security.IAuthorizationService authorizationService)
+        }
+        public CustomActionFilter(Services.Security.IAuthorizationService authorizationService)
         {
             VerifyArgument.IsNotNull("AuthorizationService", authorizationService);
             Service = authorizationService;
         }
-
         public Services.Security.IAuthorizationService Service { get; private set; }
 
-        public void OnAuthorization()
+        public override void OnActionExecuting(ActionExecutingContext objContext)
         {
-            VerifyArgument.IsNotNull("actionContext", actionContext);
+            OnAuthorization(objContext);
+        }
+
+        public override void OnActionExecuted(ActionExecutedContext objContext)
+        {
+        }
+
+        public void OnAuthorization(ActionContext actionContext)
+        {
+            VerifyArgument.IsNotNull(nameof(actionContext), actionContext);
             var user = actionContext.HttpContext.User;
-            string actionName = actionContext.HttpContext?.Request.RouteValues["action"]?.ToString();
+            var actionName = actionContext.HttpContext?.Request.RouteValues["action"]?.ToString();
 
             if (actionName == "ExecutePublicTokenWorkflow" || actionName == "ExecuteLoginWorkflow")
             {
@@ -75,15 +70,16 @@ namespace Dev2.Runtime.WebServer.Security
                 return;
             }
 
-            var authorizationRequest = GetAuthorizationRequest();
+            var authorizationRequest = GetAuthorizationRequest(actionContext);
             if (!Service.IsAuthorized(authorizationRequest))
             {
                 actionContext.HttpContext.CreateWarewolfErrorResponse(new WarewolfErrorResponseArgs { StatusCode = HttpStatusCode.Forbidden, Title = GlobalConstants.USER_FORBIDDEN, Message = ErrorResource.AuthorizationDeniedForThisRequest });
             }
         }
 
-        AuthorizationRequest GetAuthorizationRequest()
+        static AuthorizationRequest GetAuthorizationRequest(ActionContext actionContext)
         {
+            
             var authorizationRequest = actionContext.HttpContext.GetAuthorizationRequest();
 
             try
@@ -116,7 +112,7 @@ namespace Dev2.Runtime.WebServer.Security
             return authorizationRequest;
         }
 
-        int GetNameStartIndex(string absolutePath)
+        static int GetNameStartIndex(string absolutePath)
         {
             var startIndex = absolutePath.IndexOf("services/", StringComparison.InvariantCultureIgnoreCase);
             if (startIndex == -1)
@@ -128,7 +124,7 @@ namespace Dev2.Runtime.WebServer.Security
             return startIndex;
         }
 
-        int GetNameStartIndexForToken(string absolutePath)
+        static int GetNameStartIndexForToken(string absolutePath)
         {
             var startIndex = absolutePath.IndexOf("token/", StringComparison.InvariantCultureIgnoreCase);
             if (startIndex == -1)
