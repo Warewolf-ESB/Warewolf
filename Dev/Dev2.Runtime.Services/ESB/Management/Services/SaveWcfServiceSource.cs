@@ -50,7 +50,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 var con = new WcfSource
                 {
                     EndpointUrl = src.EndpointUrl,
-                    ResourceName = src.Name,
+                    ResourceName = src.Name, 
                     Name = src.Name,
                     ResourceID = src.Id,
                     Type = enSourceType.WcfSource,
