@@ -354,7 +354,7 @@ namespace Warewolf.Resource.Tests
             Assert.AreEqual("Parent and Child DataList IDs are the same, aborting resumption!", ErrorResource.SameParentAndChildDataListId);
             Assert.AreEqual("Can only save to folders or root", ErrorResource.SaveToFolderOrRootOnly);
             Assert.AreEqual("Scalars are not allowed. Please check the following: {0}", ErrorResource.ScalarsNotAllowed);
-            Assert.AreEqual("This Workflow requires that you have Execute permission on the 'bob' Workflow. \r\nPlease contact your Warewolf System Administrator.", ErrorResource.ScheduledResourceInvalidUserPermissionErrorTest);
+            Assert.AreEqual("This Workflow requires that you have Execute permission on the 'bob' Workflow.\r\nPlease contact your Warewolf System Administrator.", ErrorResource.ScheduledResourceInvalidUserPermissionErrorTest);
             Assert.AreEqual("This task requires that the user account specified has 'Log On As Batch' job rights. \r\nPlease contact your Windows System Administrator.", ErrorResource.ScheduledResourceLogOnAsBatchErrorTest);
             Assert.AreEqual("Scheduler Error Enumerating Groups:{0}", ErrorResource.SchedulerErrorEnumeratingGroups);
             Assert.AreEqual("There was an error when returning a value from your script, remember to use the 'Return' keyword when returning the result", ErrorResource.ScriptingErrorReturningValue);
