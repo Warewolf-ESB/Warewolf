@@ -350,7 +350,10 @@ namespace Warewolf.Studio.ViewModels
 
                 src.Path = Item.Path ?? _wcfServerSource.Path;
                 src.Name = Item.Name ?? _wcfServerSource.ResourceName;
-                src.ResourceID = source.ResourceID;    
+                if (source != null)
+                {
+                    src.ResourceID = source.ResourceID;
+                }
                 src.Id = _wcfServerSource.Id; 
                 
                 Save(src);
