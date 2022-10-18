@@ -38,8 +38,8 @@ namespace Dev2.Runtime.WebServer
             InitializeContentLength();
             InitializeContentType();
             InitializeQueryString();
-        } 
-        
+        }
+
         public WebServerRequest(HttpRequestMessage request)
         {
             VerifyArgument.IsNotNull(nameof(request), request);
@@ -85,15 +85,20 @@ namespace Dev2.Runtime.WebServer
         private void InitializeQueryString()
         {
             QueryString = new NameValueCollection();
-            foreach(var kvp in _request.GetQueryNameValuePairs())
+            var requestQueryString = _request.RequestUri.ParseQueryString();
+
+            //foreach(var kvp in _request.GetQueryNameValuePairs())
+            foreach (var key in requestQueryString.AllKeys)
             {
-                QueryString.Add(kvp.Key, kvp.Value);
+                var value = requestQueryString.Get(key);
+                if(value != null)
+                QueryString.Add(key, value);
             }
         }
 
         private Stream ReadInputStream()
         {
-            if(_request.Content == null)
+            if (_request.Content == null)
             {
                 return null;
             }

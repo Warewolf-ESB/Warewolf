@@ -72,6 +72,9 @@ namespace Dev2
             {
                 if (_owinServer != null)
                 {
+                    var app = _owinServer as Microsoft.AspNetCore.Builder.WebApplication;
+                    if(app != null) app.StopAsync();
+
                     _owinServer.Dispose();
                     _owinServer = null;
                 }

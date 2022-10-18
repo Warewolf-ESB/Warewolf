@@ -13,12 +13,13 @@ using System;
 using System.Net;
 using System.Web.Http;
 using Dev2.Common;
-using Microsoft.AspNet.SignalR;
-using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Cors.Infrastructure;
-using Microsoft.Owin.Hosting;
-using Owin;
-
+using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.DependencyInjection;
+//using Microsoft.Owin.Hosting;
+//using Owin;
+//using Microsoft.AspNetCore.Owin;
+//using Microsoft.AspNetCore.Hosting;
+//using Microsoft.AspNetCore.Owin.Hosting;
 namespace Dev2.Runtime.WebServer
 {
     public interface IWebServerStartup
@@ -59,7 +60,11 @@ namespace Dev2.Runtime.WebServer
             return WebApp.Start<WebServerStartup>(startOptions);
         }
 
-    
+        //public void ConfigureServices(IServiceCollection services)
+        //{
+        //    services.AddSignalR();
+        //}
+
         public void Configuration(IAppBuilder app)
         {
             var listener = (HttpListener)app.Properties[typeof(HttpListener).FullName];
@@ -75,7 +80,8 @@ namespace Dev2.Runtime.WebServer
             // Add SignalR routing...
             var hubConfiguration = new HubConfiguration { EnableDetailedErrors = true, EnableJSONP = true };
             app.MapSignalR("/dsf", hubConfiguration);
-
+            
+            
             // Add web server routing...
             var config = new HttpConfiguration();
 

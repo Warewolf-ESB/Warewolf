@@ -29,14 +29,14 @@ namespace Dev2.Services.Security
         WebServerRequestType RequestType { get; }
         IPrincipal User { get; }
         Uri Url { get; }
-        INameValueCollection QueryString { get; }
+        Microsoft.AspNetCore.Http.IQueryCollection QueryString { get; }
         string ResourcePath { get; }
     }
 
-    public interface INameValueCollection : IEnumerable<KeyValuePair<string, string>>, IEnumerable
-    {
-        string this[string key] { get; }
-        IEnumerable<string> GetValues(string key);
-        string Get(string key);
-    }
+    //public interface INameValueCollection : IEnumerable<KeyValuePair<string, string>>, IEnumerable
+    //{
+    //    string this[string key] { get; }
+    //    IEnumerable<string> GetValues(string key);
+    //    string Get(string key);
+    //}
 }

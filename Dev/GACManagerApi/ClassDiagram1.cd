@@ -1,0 +1,169 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="GACManagerApi.AssemblyMustBeStronglyNamedException" Collapsed="true">
+    <Position X="0.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>AssemblyCache.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GACManagerApi.AssemblyCache" Collapsed="true">
+    <Position X="0.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAAAAAAAgAAAAAAAAAAAAgAAAAAAAAAAAAAA=</HashCode>
+      <FileName>AssemblyCache.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GACManagerApi.AssemblyCacheEnumerator" Collapsed="true">
+    <Position X="2.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEQAAAAQAAAAAAABAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>AssemblyCacheEnumerator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GACManagerApi.AssemblyDescription">
+    <Position X="7.75" Y="2.5" Width="2" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>KAAAEAAgAAAAgAIAAgAGEASAAQAAAAEAAAAAAAAQIAA=</HashCode>
+      <FileName>AssemblyDescription.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GACManagerApi.AssemblyFusionProperties" Collapsed="true">
+    <Position X="6" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAABAQQAQAAAAEgAAAQAAEQBQAAAAAAAAAQAQAA=</HashCode>
+      <FileName>AssemblyFusionProperties.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GACManagerApi.AssemblyReflectionProperties" Collapsed="true">
+    <Position X="2.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>AssemblyReflectionProperties.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GACManagerApi.GacUtil" Collapsed="true">
+    <Position X="0.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAABAAABA=</HashCode>
+      <FileName>GacUtil.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GACManagerApi.InstallReferenceEnumerator" Collapsed="true">
+    <Position X="2.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>InstallReferenceEnumerator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GACManagerApi.InstallReferenceGuid" Collapsed="true">
+    <Position X="4.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAAAIAAAAAAAAADAAAAAAAgACAAAAAAAABAAA=</HashCode>
+      <FileName>InstallReferenceGuid.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GACManagerApi.Fusion.FUSION_INSTALL_REFERENCE" Collapsed="true">
+    <Position X="4.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAECAAAgAgAAIAAAAAAAAAAAAABAAAAAQAAAAAQ=</HashCode>
+      <FileName>Fusion\FUSION_INSTALL_REFERENCE.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GACManagerApi.Fusion.FusionImports" Collapsed="true">
+    <Position X="6" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACBAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAQQAAAAAAA=</HashCode>
+      <FileName>Fusion\FusionImports.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="GACManagerApi.Fusion.ASSEMBLY_INFO" Collapsed="true">
+    <Position X="0.75" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAACAAAIACAAAAAAIAIAAAA=</HashCode>
+      <FileName>Fusion\ASSEMBLY_INFO.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Interface Name="GACManagerApi.Fusion.IAssemblyCache" Collapsed="true">
+    <Position X="0.75" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAAgAAAAgAAAAAAAAAAAAgAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Fusion\IAssemblyCache.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GACManagerApi.Fusion.IAssemblyEnum" Collapsed="true">
+    <Position X="2.5" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAABA=</HashCode>
+      <FileName>Fusion\IAssemblyEnum.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GACManagerApi.Fusion.IAssemblyName" Collapsed="true">
+    <Position X="4.25" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAAAgAAAABIQAAAAAAAAEAgAAAAAAAAAAABBA=</HashCode>
+      <FileName>Fusion\IAssemblyName.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GACManagerApi.Fusion.IInstallReferenceEnum" Collapsed="true">
+    <Position X="6" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Fusion\IInstallReferenceEnum.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GACManagerApi.Fusion.IInstallReferenceItem" Collapsed="true">
+    <Position X="0.75" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Fusion\IInstallReferenceItem.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="GACManagerApi.Fusion.ASM_CACHE_FLAGS" Collapsed="true">
+    <Position X="0.75" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAAAAAAAAAQAAAAAAAAAAAAAgAAAAAAAAAAgQ=</HashCode>
+      <FileName>Fusion\ASM_CACHE_FLAGS.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="GACManagerApi.Fusion.ASM_DISPLAY_FLAGS" Collapsed="true">
+    <Position X="2.5" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAASCAAAAAAgAAgAEAAACIAAAIAAAAEAAABAAAAgA=</HashCode>
+      <FileName>Fusion\ASM_DISPLAY_FLAGS.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="GACManagerApi.Fusion.ASM_NAME" Collapsed="true">
+    <Position X="4.25" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACBAAABJCACAEAACAgACAAABAoAABABAUAwAAAA=</HashCode>
+      <FileName>Fusion\ASM_NAME.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="GACManagerApi.Fusion.AssemblyCommitFlags" Collapsed="true">
+    <Position X="6" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAIAAA=</HashCode>
+      <FileName>Fusion\AssemblyCommitFlags.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="GACManagerApi.Fusion.CREATE_ASM_NAME_OBJ_FLAGS" Collapsed="true">
+    <Position X="0.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Fusion\CREATE_ASM_NAME_OBJ_FLAGS.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="GACManagerApi.Fusion.IASSEMBLYCACHE_UNINSTALL_DISPOSITION" Collapsed="true">
+    <Position X="2.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgAAAEAAAAAAAAAEAAEQAAAAAAAAAAAIAAAABA=</HashCode>
+      <FileName>Fusion\IASSEMBLYCACHE_UNINSTALL_DISPOSITION.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

@@ -115,7 +115,9 @@
     <Compile Include="Security\AuthorizationRequestHelper.cs" />
     <Compile Include="Security\AuthorizeHubAttribute.cs" />
     <Compile Include="Security\AuthorizeWebAttribute.cs" />
+    <Compile Include="Security\CustomActionFilter.cs" />
     <Compile Include="Security\QueryString.cs" />
+    <Compile Include="Security\WindowsAndAnonymousAuthenticationMiddleware.cs" />
     <Compile Include="ServiceTesting\IServiceTestExecutor.cs" />
     <Compile Include="ServiceTesting\ServiceTestCoverageExecutor.cs" />
     <Compile Include="ServiceTesting\ServiceTestCoverageModelHTMLResultBuilder.cs" />
@@ -132,11 +134,11 @@
     <Compile Include="Responses\StaticFileResponseWriter.cs" />
     <Compile Include="Responses\StringResponseWriter.cs" />
     <Compile Include="Responses\IResponseWriter.cs" />
+    <Compile Include="WebServerCoreStartup.cs" />
     <Compile Include="WebServerRequest.cs" />
     <Compile Include="WebServerRequestContent.cs" />
     <Compile Include="WebServerRequestContentHeaders.cs" />
     <Compile Include="WebServerResponse.cs" />
-    <Compile Include="WebServerStartup.cs" />
     <Compile Include="Controllers\WebServerController.cs" />
     <Compile Include="Handlers\AbstractWebRequestHandler.cs" />
   </ItemGroup>
@@ -225,16 +227,17 @@
     <PackageReference Include="log4net">
       <Version>2.0.15</Version>
     </PackageReference>
-    <PackageReference Include="Microsoft.AspNet.SignalR.SelfHost" Version="2.4.3" />
-    <PackageReference Include="Microsoft.AspNet.WebApi.OwinSelfHost">
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.WebApiCompatShim" Version="2.2.0" />
+    <!--<PackageReference Include="Microsoft.AspNet.SignalR.SelfHost" Version="2.4.3" />-->
+    <!--<PackageReference Include="Microsoft.AspNet.WebApi.OwinSelfHost">
       <Version>5.2.7</Version>
-    </PackageReference>
-    <PackageReference Include="Microsoft.Owin.Cors">
+    </PackageReference>-->
+    <!--<PackageReference Include="Microsoft.Owin.Cors">
       <Version>4.1.0</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Owin.SelfHost">
       <Version>4.1.0</Version>
-    </PackageReference>
+    </PackageReference>-->
     <PackageReference Include="Newtonsoft.Json">
       <Version>13.0.1</Version>
     </PackageReference>
@@ -245,6 +248,8 @@
     <PackageReference Include="System.ServiceModel.Duplex" Version="4.10.0" />
     <PackageReference Include="System.ServiceModel.NetTcp" Version="4.10.0" />
     <PackageReference Include="System.ServiceModel.Federation" Version="4.8.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Negotiate" Version="6.0.9" />
+    
     <PackageReference Include="Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers" Version="0.4.336902">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>

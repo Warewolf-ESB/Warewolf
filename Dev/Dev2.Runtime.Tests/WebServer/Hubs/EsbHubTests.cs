@@ -15,7 +15,8 @@ using Dev2.Common.Interfaces.Communication;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
 using Dev2.Explorer;
 using Dev2.Runtime.WebServer.Hubs;
-using Microsoft.AspNet.SignalR.Hubs;
+//using Microsoft.AspNet.SignalR.Hubs;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -33,15 +34,21 @@ namespace Dev2.Tests.Runtime.WebServer.Hubs
         {
             //------------Setup for test--------------------------
             var hub = new MockEsbHub();
-            var mockClients = new Mock<IHubCallerConnectionContext<dynamic>>();
+            
+            //var mockClients = new Mock<IHubCallerConnectionContext<dynamic>>();
+            var mockClients = new Mock<IHubCallerClients>();
+            
+            var mockContext = new Mock<HubCallerContext>();
             hub.Clients = mockClients.Object;
-            dynamic all = new ExpandoObject();
             var messagePublished = false;
-            all.ItemAddedMessage = new Action<string>(serialisedItem =>
-            {
-                messagePublished = true;
-            });
-            mockClients.Setup(m => m.All).Returns((ExpandoObject)all);
+            //dynamic all = new ExpandoObject();            
+
+            //all.ItemAddedMessage = new Action<string>(serialisedItem =>
+            //{
+            //    messagePublished = true;
+            //});
+            var all = new Mock<IClientProxy>().Object;
+            mockClients.Setup(m => m.All).Returns(all);
             //------------Execute Test---------------------------
             hub.AddItemMessage(new ServerExplorerItem
                 {
@@ -60,7 +67,7 @@ namespace Dev2.Tests.Runtime.WebServer.Hubs
         {
             //------------Setup for test--------------------------
             var hub = new MockEsbHub();
-            var mockClients = new Mock<IHubCallerConnectionContext<dynamic>>();
+            var mockClients = new Mock<IHubCallerClients>();
             hub.Clients = mockClients.Object;
             dynamic all = new ExpandoObject();
             var messagePublished = false;
@@ -68,7 +75,7 @@ namespace Dev2.Tests.Runtime.WebServer.Hubs
             {
                 messagePublished = true;
             });
-            mockClients.Setup(m => m.All).Returns((ExpandoObject)all);
+            mockClients.Setup(m => m.All).Returns(all);
             //------------Execute Test---------------------------
             hub.AddItemMessage(null);
             //------------Assert Results-------------------------

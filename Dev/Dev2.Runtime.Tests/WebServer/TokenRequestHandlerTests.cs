@@ -232,7 +232,7 @@ namespace Dev2.Tests.Runtime.WebServer
 
         [TestMethod]
         [Owner("Candice Daniel")]
-        [ExpectedException(typeof(HttpResponseException))]
+        [ExpectedException(typeof(System.Web.Http.HttpResponseException))]
         [TestCategory(nameof(TokenRequestHandler))]
         [DoNotParallelize]
         [TestCategory("CannotParallelize")]//CustomContainer.Get<Warewolf.Auditing.IStateNotifierFactory>()
