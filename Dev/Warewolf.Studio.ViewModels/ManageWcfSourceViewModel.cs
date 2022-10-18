@@ -12,9 +12,9 @@ using Dev2.Common.Interfaces.Threading;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Studio.Interfaces;
-
-
-
+using Dev2.Runtime.Hosting;
+using Dev2.Runtime.ServiceModel.Data;
+using Dev2.Common;
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -45,8 +45,10 @@ namespace Warewolf.Studio.ViewModels
             {
                 _wcfServerSource = source;
                 _wcfServerSource.Path = wcfSource.Path;
+                _wcfServerSource.Id = wcfSource.Id; 
+                FromModel(_wcfServerSource);
+                Item = ToSource();
                 SetupHeaderTextFromExisting();
-                FromModel(source);
             });
         }
 
@@ -276,7 +278,7 @@ namespace Warewolf.Studio.ViewModels
             EndpointUrl = EndpointUrl,
             ResourceType = "WcfSource",
             Type = enSourceType.WcfSource,
-            Id = _wcfServerSource?.Id ?? Guid.NewGuid()
+            Id = _wcfServerSource?.Id ?? Guid.NewGuid(),
         };
 
         public string Path { get; set; }
@@ -322,6 +324,12 @@ namespace Warewolf.Studio.ViewModels
                     var src = ToSource();
                     src.Name = GetRequestServiceNameViewModel().ResourceName.Name;
                     src.Path = GetRequestServiceNameViewModel().ResourceName.Path ?? GetRequestServiceNameViewModel().ResourceName.Name;
+                    
+                    if(src.ResourceID == Guid.Empty)
+                    {
+                        src.ResourceID = src.Id;
+                    }
+                    
                     Save(src);
                     if (GetRequestServiceNameViewModel().SingleEnvironmentExplorerViewModel != null)
                     {
@@ -337,8 +345,17 @@ namespace Warewolf.Studio.ViewModels
             else
             {
                 var src = ToSource();
-                src.Path = Item.Path ?? "";
-                src.Name = Item.Name;
+                
+                var source = ResourceCatalog.Instance.GetResource<WcfSource>(GlobalConstants.ServerWorkspaceID, _wcfServerSource.Id);
+
+                src.Path = Item.Path ?? _wcfServerSource.Path;
+                src.Name = Item.Name ?? _wcfServerSource.ResourceName;
+                if (source != null)
+                {
+                    src.ResourceID = source.ResourceID;
+                }
+                src.Id = _wcfServerSource.Id; 
+                
                 Save(src);
                 Item = src;
                 _wcfServerSource = src;
@@ -363,7 +380,6 @@ namespace Warewolf.Studio.ViewModels
                     ResourceName = Name,
                     Name = Name,
                     ResourceType = "WcfSource",
-                    ResourceID = _wcfServerSource?.Id ?? Guid.NewGuid(),
                     Id = _wcfServerSource?.Id ?? Guid.NewGuid()
                 };
             }
@@ -372,6 +388,8 @@ namespace Warewolf.Studio.ViewModels
                 _wcfServerSource.EndpointUrl = EndpointUrl;
                 _wcfServerSource.ResourceType = "WcfSource";
                 _wcfServerSource.Name = Name;
+                _wcfServerSource.ResourceName = Name ?? ResourceName;
+
                 return _wcfServerSource;
             }
         }
@@ -379,7 +397,8 @@ namespace Warewolf.Studio.ViewModels
         public override void FromModel(IWcfServerSource source)
         {
             ResourceName = source.Name;
-            EndpointUrl = source.EndpointUrl;            
+            EndpointUrl = source.EndpointUrl;
+            SelectedGuid = source.Id;
         }
 
         public override bool CanSave() => TestPassed;

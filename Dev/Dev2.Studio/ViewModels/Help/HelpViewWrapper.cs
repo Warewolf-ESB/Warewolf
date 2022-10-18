@@ -9,16 +9,19 @@
 */
 
 using System;
+using System.IO;
 using System.Net;
 using System.Windows;
-using System.Windows.Controls;
 using Dev2.CustomControls;
 using Dev2.Studio.Views.Help;
+using Microsoft.Web.WebView2.Core;
+using Microsoft.Web.WebView2.Wpf;
 
 namespace Dev2.ViewModels.Help
 {
     public class HelpViewWrapper : IHelpViewWrapper
     {
+        const string _pathFolder = "Microsoft.WebView2.FixedVersionRuntime.95.0.1020.44.x64";
         public HelpViewWrapper(HelpView view)
         {
             HelpView = view;
@@ -26,7 +29,7 @@ namespace Dev2.ViewModels.Help
 
         public HelpView HelpView { get; private set; }
 
-        public Frame WebBrowser => HelpView.WebBrowserHost;
+        public WebView2 WebBrowser => HelpView.webView;
 
         public CircularProgressBar CircularProgressBar => HelpView.CircularProgressBar;
 
@@ -57,7 +60,29 @@ namespace Dev2.ViewModels.Help
         public void Navigate(string uri)
         {
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Ssl3;
-            HelpView.WebBrowserHost.Source = new Uri(uri, UriKind.Absolute);
+            var path = Path.Combine(Environment.ExpandEnvironmentVariables("%localappdata%\\Warewolf"), _pathFolder);
+            if (!Directory.Exists(path))
+            {
+                CopyWebView2(Path.Combine(Directory.GetCurrentDirectory(), _pathFolder), path);
+            }
+            HelpView.webView.CreationProperties = new CoreWebView2CreationProperties
+            {
+                BrowserExecutableFolder = path,
+                UserDataFolder = Environment.ExpandEnvironmentVariables("%localappdata%\\Warewolf")
+            };
+            HelpView.webView.Source = new Uri(uri, UriKind.Absolute);
+        }
+
+        static void CopyWebView2(string sourcePath, string targetPath)
+        {
+            foreach (string dirPath in Directory.GetDirectories(sourcePath, "*", SearchOption.AllDirectories))
+            {
+                Directory.CreateDirectory(dirPath.Replace(sourcePath, targetPath));
+            }
+            foreach (string newPath in Directory.GetFiles(sourcePath, "*.*", SearchOption.AllDirectories))
+            {
+                File.Copy(newPath, newPath.Replace(sourcePath, targetPath), true);
+            }
         }
     }
 }

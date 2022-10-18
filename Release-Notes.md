@@ -1,9 +1,17 @@
+2.8.1.21 (17 October 2022)
+======================
+
+Bug fixes
+----------
+- Patch for Studio crash when dropping a comment into a For Each or Select and Apply tool.
+- Patch for errors logged when saving an existing WCF source.
+
 2.8.1 (27 September 2022)
 ======================
 
 Enhancements
 ----------
-- Add functionality to be able to support assigning a variable from object property
+- Add functionality to be able to support assigning a variable from object property.
 
 Bug fixes
 ----------
