@@ -25,8 +25,8 @@ namespace Dev2.Runtime.WebServer.Controllers
      * request that comes from an HTTP, that includes REST and a user executing a workflow
      * from a web browser
      */
-    //[AuthorizeWeb]
-    //[CustomActionFilter]
+    
+    [CustomActionFilter]
     [ApiController]
     [Route("")]
     public class WebServerController : AbstractController

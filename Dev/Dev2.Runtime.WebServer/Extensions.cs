@@ -16,6 +16,7 @@ using System;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Formatting;
 using System.Security.Principal;
 using System.Text;
 //using System.Web.Http.Controllers;
@@ -77,10 +78,10 @@ namespace Dev2.Runtime.WebServer
 
         public static void CreateWarewolfErrorResponse(this Microsoft.AspNetCore.Http.HttpContext context, WarewolfErrorResponseArgs errorResponseArgs)
         {
-
             var errorResponse = CreateWarewolfErrorResponse(context.Request.ToUri(), errorResponseArgs);
             var errorContent = errorResponse.Content.ReadAsStringAsync().Result;
-            context.GetHttpRequestMessage().CreateErrorResponse(errorResponse.StatusCode, errorContent);
+            //context.GetHttpRequestMessage().CreateErrorResponse(errorResponse.StatusCode, errorContent);
+            context.GetHttpRequestMessage().CreateResponse(errorResponse.StatusCode, errorContent, new JsonMediaTypeFormatter());
 
             //context.Response = errorResponse;
         }
