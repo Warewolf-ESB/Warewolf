@@ -9,8 +9,10 @@
 */
 
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
+using System.Threading;
 using System.Windows;
 using Dev2.CustomControls;
 using Dev2.Studio.Views.Help;
@@ -59,6 +61,10 @@ namespace Dev2.ViewModels.Help
 
         public void Navigate(string uri)
         {
+            while (!Debugger.IsAttached)
+            {
+                Thread.Sleep(3000);
+            }
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Ssl3;
             var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Warewolf", _pathFolder);
             if (!Directory.Exists(path))
