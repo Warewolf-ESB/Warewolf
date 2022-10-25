@@ -32,17 +32,8 @@ namespace Dev2.Activities.Utils
             {
                 return true;
             }
-            var modelItemString = formats.FirstOrDefault(s => s.IndexOf("ModelItemsFormat", StringComparison.Ordinal) >= 0);
-            if (!string.IsNullOrEmpty(modelItemString))
-            {
-                var innnerObjectData = data.GetData(modelItemString);
-                if (innnerObjectData is List<ModelItem> modelList && modelList.Count > 1 && modelList.FirstOrDefault(c => c.ItemType == typeof(FlowDecision) || c.ItemType == typeof(FlowSwitch<string>)) != null)
-                {
-                    return false;
-                }
-
-            } 
-            else
+            var modelItemString = formats.FirstOrDefault(s => s.IndexOf("ModelItemFormat", StringComparison.Ordinal) >= 0);
+            if (string.IsNullOrEmpty(modelItemString))
             {
                 modelItemString = formats.FirstOrDefault(s => s.IndexOf("WorkflowItemTypeNameFormat", StringComparison.Ordinal) >= 0);
                 if (string.IsNullOrEmpty(modelItemString))
