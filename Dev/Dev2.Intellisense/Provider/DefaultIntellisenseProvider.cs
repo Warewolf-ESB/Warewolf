@@ -83,7 +83,7 @@ namespace Dev2.Studio.InterfaceImplementors
                 return new List<IntellisenseProviderResult>();
             }
 
-            return DataListSingleton.ActiveDataList.Provider.GetSuggestions(context.InputText, context.CaretPosition, true, context.FilterType).Select(a => new IntellisenseProviderResult(this, a, String.Empty)).ToList();
+            return DataListSingleton.ActiveDataList?.Provider.GetSuggestions(context.InputText, context.CaretPosition, true, context.FilterType).Select(a => new IntellisenseProviderResult(this, a, String.Empty)).ToList();
             
         }
 
