@@ -63,8 +63,7 @@ namespace Dev2.ViewModels.Help
             var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Warewolf", _pathFolder);
             if (!Directory.Exists(path))
             {
-                Directory.CreateDirectory(path);
-                CopyWebView2(Path.Combine(Directory.GetCurrentDirectory(), _pathFolder), path);
+                CopyWebView2(Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location), _pathFolder), path);
             }
             HelpView.webView.CreationProperties = new CoreWebView2CreationProperties
             {
