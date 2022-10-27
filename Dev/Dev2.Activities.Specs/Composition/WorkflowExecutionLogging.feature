@@ -16,12 +16,6 @@ Scenario: Workflow execution entry point detailed log
     | [[Name]]  | World     |
     And execution is complete
 
-Scenario: Workflow execution stops on error detailed logs
-    Given "Hello World" stop on error is set to "true"
-    And workflow execution entry point detailed logs are created and logged
-    When a workflow stops on error
-    Then execution is complete
-
 Scenario: Workflow execution completed detailed logs
     Given "Hello World" stop on error is set to "false"
     And workflow execution entry point detailed logs are created and logged
