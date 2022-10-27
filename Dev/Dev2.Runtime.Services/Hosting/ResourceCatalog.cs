@@ -81,6 +81,25 @@ namespace Dev2.Runtime.Hosting
             _catalogPluginContainer = new ResourceCatalogPluginContainer(_serverVersionRepository, WorkspaceResources, managementServices);
             _catalogPluginContainer.Build(this);
         }
+        
+        public ResourceCatalog(ConcurrentDictionary<Guid, List<IResource>> resources, IServerVersionRepository serverVersionRepository,
+            ResourceCatalogPluginContainer catalogPluginContainer)
+        {
+            WorkspaceResources = resources;
+            _serverVersionRepository = serverVersionRepository;
+            _catalogPluginContainer = catalogPluginContainer;
+        }
+
+        public IServerVersionRepository GetServerVersionRepository()
+        {
+            return _serverVersionRepository;
+        }
+        
+        public ResourceCatalogPluginContainer GetCatalogPluginContainer()
+        {
+            return _catalogPluginContainer;
+        }
+
 
         public IContextualResourceCatalog NewContextualResourceCatalog(IAuthorizationService authService, Guid workspaceId)
         {

@@ -9,7 +9,7 @@ using Dev2.Runtime.ResourceCatalogImpl;
 
 namespace Dev2.Runtime.Hosting
 {
-    class ResourceCatalogPluginContainer
+    public class ResourceCatalogPluginContainer
     {
         readonly IServerVersionRepository _versionRepository;
         readonly ConcurrentDictionary<Guid, List<IResource>> _workspaceResources;
