@@ -222,6 +222,7 @@ namespace Dev2.Activities.Designers2.AdvancedRecordset
             try
             {
                 OutputsRegion.Outputs.Clear();
+                Errors = null;
                 if (string.IsNullOrWhiteSpace(SqlQuery))
                 {
                     OutputsRegion.RecordsetName = string.Empty;
