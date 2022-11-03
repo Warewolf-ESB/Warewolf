@@ -60,15 +60,15 @@ namespace Dev2.ViewModels.Help
         public void Navigate(string uri)
         {
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Ssl3;
-            var path = Path.Combine(Environment.ExpandEnvironmentVariables("%localappdata%\\Warewolf"), _pathFolder);
+            var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Warewolf", _pathFolder);
             if (!Directory.Exists(path))
             {
-                CopyWebView2(Path.Combine(Directory.GetCurrentDirectory(), _pathFolder), path);
+                CopyWebView2(Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location), _pathFolder), path);
             }
             HelpView.webView.CreationProperties = new CoreWebView2CreationProperties
             {
                 BrowserExecutableFolder = path,
-                UserDataFolder = Environment.ExpandEnvironmentVariables("%localappdata%\\Warewolf")
+                UserDataFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Warewolf")
             };
             HelpView.webView.Source = new Uri(uri, UriKind.Absolute);
         }

@@ -32,7 +32,15 @@ namespace Dev2.Activities.Utils
             {
                 return true;
             }
-            var modelItemString = formats.FirstOrDefault(s => s.IndexOf("WorkflowItemTypeNameFormat", StringComparison.Ordinal) >= 0);
+            var modelItemString = formats.FirstOrDefault(s => s.IndexOf("ModelItemFormat", StringComparison.Ordinal) >= 0);
+            if (string.IsNullOrEmpty(modelItemString))
+            {
+                modelItemString = formats.FirstOrDefault(s => s.IndexOf("WorkflowItemTypeNameFormat", StringComparison.Ordinal) >= 0);
+                if (string.IsNullOrEmpty(modelItemString))
+                {
+                    return true;
+                }
+            }
             var objectData = data.GetData(modelItemString);
             return DropPointOnDragEnter(objectData);
         }
