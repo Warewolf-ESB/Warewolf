@@ -313,6 +313,10 @@ namespace Dev2.Activities
                 {
                     ProcessCreateTableStatement(complexStatement);
                 }
+                if (tokens[i].Type.ToString() == "Keyword" && (tokens[i].Text.ToUpper() == "UPDATE"))
+                {
+                    ProcessUpdateStatement(complexStatement, update, ref started);
+                }
                 if (tokens[i].Type.ToString() == "Keyword" && (tokens[i].Text.ToUpper() == "DELETE"))
                 {
                     ProcessUpdateStatement(complexStatement, update, ref started);
