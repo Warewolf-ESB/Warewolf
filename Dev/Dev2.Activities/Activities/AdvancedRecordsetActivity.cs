@@ -314,6 +314,32 @@ namespace Dev2.Activities
                 {
                     ProcessCreateTableStatement(complexStatement);
                 }
+                if (tokens[i].Type.ToString() == "Keyword" && (tokens[i].Text.ToUpper() == "DELETE"))
+                {
+                    ProcessUpdateStatement(complexStatement, update, ref started);
+                }
+                if (tokens[i].Type.ToString() == "Keyword" && (tokens[i].Text.ToUpper() == "INSERT"))
+                {
+                    ProcessUpdateStatement(complexStatement, update, ref started);
+                }
+                if (tokens[i].Type.ToString() == "SystemIdentifier" && (tokens[i].Text.ToUpper() == "REPLACE"))
+                {
+                    ProcessUpdateStatement(complexStatement, update, ref started);
+                }
+            }
+        }
+
+#pragma warning disable S1541 // Methods and properties should not be too complex
+        void ProcessComplexStatement(TSQLUpdateStatement complexStatement, int update, ref bool started)
+#pragma warning restore S1541 // Methods and properties should not be too complex
+        {
+            var tokens = complexStatement.Tokens;
+            for (int i = 0; i < complexStatement.Tokens.Count; i++)
+            {
+                if (tokens[i].Type.ToString() == "Keyword" && (tokens[i].Text.ToUpper() == "CREATE"))
+                {
+                    ProcessCreateTableStatement(complexStatement);
+                }
                 if (tokens[i].Type.ToString() == "Keyword" && (tokens[i].Text.ToUpper() == "UPDATE"))
                 {
                     ProcessUpdateStatement(complexStatement, update, ref started);
@@ -326,7 +352,67 @@ namespace Dev2.Activities
                 {
                     ProcessUpdateStatement(complexStatement, update, ref started);
                 }
-                if (tokens[i].Type.ToString() == "Identifier" && (tokens[i].Text.ToUpper() == "REPLACE"))
+                if (tokens[i].Type.ToString() == "SystemIdentifier" && (tokens[i].Text.ToUpper() == "REPLACE"))
+                {
+                    ProcessUpdateStatement(complexStatement, update, ref started);
+                }
+            }
+        }
+
+#pragma warning disable S1541 // Methods and properties should not be too complex
+        void ProcessComplexStatement(TSQLDeleteStatement complexStatement, int update, ref bool started)
+#pragma warning restore S1541 // Methods and properties should not be too complex
+        {
+            var tokens = complexStatement.Tokens;
+            for (int i = 0; i < complexStatement.Tokens.Count; i++)
+            {
+                if (tokens[i].Type.ToString() == "Keyword" && (tokens[i].Text.ToUpper() == "CREATE"))
+                {
+                    ProcessCreateTableStatement(complexStatement);
+                }
+                if (tokens[i].Type.ToString() == "Keyword" && (tokens[i].Text.ToUpper() == "UPDATE"))
+                {
+                    ProcessUpdateStatement(complexStatement, update, ref started);
+                }
+                if (tokens[i].Type.ToString() == "Keyword" && (tokens[i].Text.ToUpper() == "DELETE"))
+                {
+                    ProcessUpdateStatement(complexStatement, update, ref started);
+                }
+                if (tokens[i].Type.ToString() == "Keyword" && (tokens[i].Text.ToUpper() == "INSERT"))
+                {
+                    ProcessUpdateStatement(complexStatement, update, ref started);
+                }
+                if (tokens[i].Type.ToString() == "SystemIdentifier" && (tokens[i].Text.ToUpper() == "REPLACE"))
+                {
+                    ProcessUpdateStatement(complexStatement, update, ref started);
+                }
+            }
+        }
+
+#pragma warning disable S1541 // Methods and properties should not be too complex
+        void ProcessComplexStatement(TSQLInsertStatement complexStatement, int update, ref bool started)
+#pragma warning restore S1541 // Methods and properties should not be too complex
+        {
+            var tokens = complexStatement.Tokens;
+            for (int i = 0; i < complexStatement.Tokens.Count; i++)
+            {
+                if (tokens[i].Type.ToString() == "Keyword" && (tokens[i].Text.ToUpper() == "CREATE"))
+                {
+                    ProcessCreateTableStatement(complexStatement);
+                }
+                if (tokens[i].Type.ToString() == "Keyword" && (tokens[i].Text.ToUpper() == "UPDATE"))
+                {
+                    ProcessUpdateStatement(complexStatement, update, ref started);
+                }
+                if (tokens[i].Type.ToString() == "Keyword" && (tokens[i].Text.ToUpper() == "DELETE"))
+                {
+                    ProcessUpdateStatement(complexStatement, update, ref started);
+                }
+                if (tokens[i].Type.ToString() == "Keyword" && (tokens[i].Text.ToUpper() == "INSERT"))
+                {
+                    ProcessUpdateStatement(complexStatement, update, ref started);
+                }
+                if (tokens[i].Type.ToString() == "SystemIdentifier" && (tokens[i].Text.ToUpper() == "REPLACE"))
                 {
                     ProcessUpdateStatement(complexStatement, update, ref started);
                 }
@@ -334,6 +420,33 @@ namespace Dev2.Activities
         }
 
         void ProcessCreateTableStatement(TSQLUnknownStatement complexStatement)
+        {
+            var recordset = new DataTable();
+            recordset.Columns.Add("records_affected", typeof(int));
+            recordset.Rows.Add(AdvancedRecordset.ExecuteNonQuery(AdvancedRecordset.ReturnSql(complexStatement.Tokens)));
+            var outputName = _activity.Outputs.FirstOrDefault(e => e.MappedFrom == "records_affected")?.MappedTo;
+            AdvancedRecordset.ApplyScalarResultToEnvironment(outputName, int.Parse(recordset.Rows[0].ItemArray[0].ToString()));
+        }
+
+        void ProcessCreateTableStatement(TSQLUpdateStatement complexStatement)
+        {
+            var recordset = new DataTable();
+            recordset.Columns.Add("records_affected", typeof(int));
+            recordset.Rows.Add(AdvancedRecordset.ExecuteNonQuery(AdvancedRecordset.ReturnSql(complexStatement.Tokens)));
+            var outputName = _activity.Outputs.FirstOrDefault(e => e.MappedFrom == "records_affected")?.MappedTo;
+            AdvancedRecordset.ApplyScalarResultToEnvironment(outputName, int.Parse(recordset.Rows[0].ItemArray[0].ToString()));
+        }
+
+        void ProcessCreateTableStatement(TSQLDeleteStatement complexStatement)
+        {
+            var recordset = new DataTable();
+            recordset.Columns.Add("records_affected", typeof(int));
+            recordset.Rows.Add(AdvancedRecordset.ExecuteNonQuery(AdvancedRecordset.ReturnSql(complexStatement.Tokens)));
+            var outputName = _activity.Outputs.FirstOrDefault(e => e.MappedFrom == "records_affected")?.MappedTo;
+            AdvancedRecordset.ApplyScalarResultToEnvironment(outputName, int.Parse(recordset.Rows[0].ItemArray[0].ToString()));
+        }
+
+        void ProcessCreateTableStatement(TSQLInsertStatement complexStatement)
         {
             var recordset = new DataTable();
             recordset.Columns.Add("records_affected", typeof(int));
@@ -358,7 +471,151 @@ namespace Dev2.Activities
                 {
                     outputRecordsetName = tokens[i + 2].Text;
                 }
-                if (tokens[i].Type.ToString() == "Identifier" && (tokens[i].Text.ToUpper() == "REPLACE"))
+                if (tokens[i].Type.ToString() == "SystemIdentifier" && (tokens[i].Text.ToUpper() == "REPLACE"))
+                {
+                    outputRecordsetName = tokens[i + 2].Text;
+                }
+                if (tokens[i].Type.ToString() == "Keyword" && (tokens[i].Text.ToUpper() == "DELETE"))
+                {
+                    outputRecordsetName = tokens[i + 2].Text;
+                }
+            }
+
+            var sqlQuery = AdvancedRecordset.UpdateSqlWithHashCodes(complexStatement);
+
+            var recordset = new DataTable();
+            recordset.Columns.Add("records_affected", typeof(int));
+            recordset.Rows.Add(AdvancedRecordset.ExecuteNonQuery(sqlQuery));
+            object sumObject;
+            sumObject = recordset.Compute("Sum(records_affected)", "");
+            _recordsAffected += Convert.ToInt16(sumObject.ToString());
+            var mapping = _activity.Outputs.FirstOrDefault(e => e.MappedFrom == "records_affected");
+
+
+            if (mapping != null)
+            {
+                AdvancedRecordset.ApplyScalarResultToEnvironment(mapping.MappedTo, _recordsAffected);
+            }
+            var results = AdvancedRecordset.ExecuteQuery("SELECT * FROM " + AdvancedRecordset.HashedRecSets.FirstOrDefault(x => x.recSet == outputRecordsetName).hashCode);
+            foreach (DataTable dt in results.Tables)
+            {
+                AdvancedRecordset.ApplyResultToEnvironment(outputRecordsetName, _activity.Outputs, dt.Rows.Cast<DataRow>().ToList(), true, update, ref started);
+            }
+        }
+
+#pragma warning disable S1541 // Methods and properties should not be too complex
+        void ProcessUpdateStatement(TSQLUpdateStatement complexStatement, int update, ref bool started)
+#pragma warning restore S1541 // Methods and properties should not be too complex
+        {
+            var tokens = complexStatement.Tokens;
+            var outputRecordsetName = "";
+            for (int i = 0; i < complexStatement.Tokens.Count; i++)
+            {
+                if (i == 1 && tokens[i].Type.ToString() == "Identifier" && (tokens[i - 1].Text.ToUpper() == "UPDATE"))
+                {
+                    outputRecordsetName = tokens[i].Text;
+                }
+                if (tokens[i].Type.ToString() == "Keyword" && (tokens[i].Text.ToUpper() == "INSERT"))
+                {
+                    outputRecordsetName = tokens[i + 2].Text;
+                }
+                if (tokens[i].Type.ToString() == "SystemIdentifier" && (tokens[i].Text.ToUpper() == "REPLACE"))
+                {
+                    outputRecordsetName = tokens[i + 2].Text;
+                }
+                if (tokens[i].Type.ToString() == "Keyword" && (tokens[i].Text.ToUpper() == "DELETE"))
+                {
+                    outputRecordsetName = tokens[i + 2].Text;
+                }
+            }
+
+            var sqlQuery = AdvancedRecordset.UpdateSqlWithHashCodes(complexStatement);
+
+            var recordset = new DataTable();
+            recordset.Columns.Add("records_affected", typeof(int));
+            recordset.Rows.Add(AdvancedRecordset.ExecuteNonQuery(sqlQuery));
+            object sumObject;
+            sumObject = recordset.Compute("Sum(records_affected)", "");
+            _recordsAffected += Convert.ToInt16(sumObject.ToString());
+            var mapping = _activity.Outputs.FirstOrDefault(e => e.MappedFrom == "records_affected");
+
+
+            if (mapping != null)
+            {
+                AdvancedRecordset.ApplyScalarResultToEnvironment(mapping.MappedTo, _recordsAffected);
+            }
+            var results = AdvancedRecordset.ExecuteQuery("SELECT * FROM " + AdvancedRecordset.HashedRecSets.FirstOrDefault(x => x.recSet == outputRecordsetName).hashCode);
+            foreach (DataTable dt in results.Tables)
+            {
+                AdvancedRecordset.ApplyResultToEnvironment(outputRecordsetName, _activity.Outputs, dt.Rows.Cast<DataRow>().ToList(), true, update, ref started);
+            }
+        }
+
+#pragma warning disable S1541 // Methods and properties should not be too complex
+        void ProcessUpdateStatement(TSQLDeleteStatement complexStatement, int update, ref bool started)
+#pragma warning restore S1541 // Methods and properties should not be too complex
+        {
+            var tokens = complexStatement.Tokens;
+            var outputRecordsetName = "";
+            for (int i = 0; i < complexStatement.Tokens.Count; i++)
+            {
+                if (i == 1 && tokens[i].Type.ToString() == "Identifier" && (tokens[i - 1].Text.ToUpper() == "UPDATE"))
+                {
+                    outputRecordsetName = tokens[i].Text;
+                }
+                if (tokens[i].Type.ToString() == "Keyword" && (tokens[i].Text.ToUpper() == "INSERT"))
+                {
+                    outputRecordsetName = tokens[i + 2].Text;
+                }
+                if (tokens[i].Type.ToString() == "SystemIdentifier" && (tokens[i].Text.ToUpper() == "REPLACE"))
+                {
+                    outputRecordsetName = tokens[i + 2].Text;
+                }
+                if (tokens[i].Type.ToString() == "Keyword" && (tokens[i].Text.ToUpper() == "DELETE"))
+                {
+                    outputRecordsetName = tokens[i + 2].Text;
+                }
+            }
+
+            var sqlQuery = AdvancedRecordset.UpdateSqlWithHashCodes(complexStatement);
+
+            var recordset = new DataTable();
+            recordset.Columns.Add("records_affected", typeof(int));
+            recordset.Rows.Add(AdvancedRecordset.ExecuteNonQuery(sqlQuery));
+            object sumObject;
+            sumObject = recordset.Compute("Sum(records_affected)", "");
+            _recordsAffected += Convert.ToInt16(sumObject.ToString());
+            var mapping = _activity.Outputs.FirstOrDefault(e => e.MappedFrom == "records_affected");
+
+
+            if (mapping != null)
+            {
+                AdvancedRecordset.ApplyScalarResultToEnvironment(mapping.MappedTo, _recordsAffected);
+            }
+            var results = AdvancedRecordset.ExecuteQuery("SELECT * FROM " + AdvancedRecordset.HashedRecSets.FirstOrDefault(x => x.recSet == outputRecordsetName).hashCode);
+            foreach (DataTable dt in results.Tables)
+            {
+                AdvancedRecordset.ApplyResultToEnvironment(outputRecordsetName, _activity.Outputs, dt.Rows.Cast<DataRow>().ToList(), true, update, ref started);
+            }
+        }
+
+#pragma warning disable S1541 // Methods and properties should not be too complex
+        void ProcessUpdateStatement(TSQLInsertStatement complexStatement, int update, ref bool started)
+#pragma warning restore S1541 // Methods and properties should not be too complex
+        {
+            var tokens = complexStatement.Tokens;
+            var outputRecordsetName = "";
+            for (int i = 0; i < complexStatement.Tokens.Count; i++)
+            {
+                if (i == 1 && tokens[i].Type.ToString() == "Identifier" && (tokens[i - 1].Text.ToUpper() == "UPDATE"))
+                {
+                    outputRecordsetName = tokens[i].Text;
+                }
+                if (tokens[i].Type.ToString() == "Keyword" && (tokens[i].Text.ToUpper() == "INSERT"))
+                {
+                    outputRecordsetName = tokens[i + 2].Text;
+                }
+                if (tokens[i].Type.ToString() == "SystemIdentifier" && (tokens[i].Text.ToUpper() == "REPLACE"))
                 {
                     outputRecordsetName = tokens[i + 2].Text;
                 }
@@ -403,7 +660,7 @@ namespace Dev2.Activities
             var queryText = AddSqlForVariables(_activity.SqlQuery);
             var statements = TSQLStatementReader.ParseStatements(queryText);
 
-            if (queryText.Contains("UNION") && statements.Count == 2)
+            if (queryText.Contains("UNION"))
             {
                 var tables = statements[0].GetAllTables();
                 foreach (var table in tables)
@@ -440,6 +697,21 @@ namespace Dev2.Activities
                 {
                     var selectStatement = statement as TSQLSelectStatement;
                     ProcessSelectStatement(selectStatement, update, ref started);
+                }
+                else if (statement.Type == TSQLStatementType.Update)
+                {
+                    var unknownStatement = statement as TSQLUpdateStatement;
+                    ProcessComplexStatement(unknownStatement, update, ref started);
+                }
+                else if (statement.Type == TSQLStatementType.Delete)
+                {
+                    var unknownStatement = statement as TSQLDeleteStatement;
+                    ProcessComplexStatement(unknownStatement, update, ref started);
+                }
+                else if (statement.Type == TSQLStatementType.Insert)
+                {
+                    var unknownStatement = statement as TSQLInsertStatement;
+                    ProcessComplexStatement(unknownStatement, update, ref started);
                 }
                 else
                 {
