@@ -263,8 +263,8 @@ namespace Dev2.Tests.Activities.ActivityTests
                 viewModel.ExecuteSql(0, ref started);
                 mockAdvancedRecordset.Verify(advancedRecordset => advancedRecordset.LoadRecordsetAsTable("person"), Times.Exactly(2));
                 mockAdvancedRecordset.Verify(advancedRecordset => advancedRecordset.UpdateSqlWithHashCodes(It.IsAny<TSQLSelectStatement>()), Times.Once);
-                mockAdvancedRecordset.Verify(advancedRecordset => advancedRecordset.ApplyResultToEnvironment(It.IsAny<string>(), It.IsAny<ICollection<IServiceOutputMapping>>(), It.IsAny<List<DataRow>>(), It.IsAny<bool>(), It.IsAny<int>(), ref started), Times.Once);
-                mockAdvancedRecordset.Verify(advancedRecordset => advancedRecordset.ExecuteQuery("SELECT * FROM person"), Times.Once);
+                mockAdvancedRecordset.Verify(advancedRecordset => advancedRecordset.ApplyResultToEnvironment(It.IsAny<string>(), It.IsAny<ICollection<IServiceOutputMapping>>(), It.IsAny<List<DataRow>>(), It.IsAny<bool>(), It.IsAny<int>(), ref started), Times.Exactly(2));
+                mockAdvancedRecordset.Verify(advancedRecordset => advancedRecordset.ExecuteQuery("SELECT * FROM person"), Times.Exactly(2));
                 mockAdvancedRecordset.Verify(advancedRecordset => advancedRecordset.ApplyScalarResultToEnvironment(It.IsAny<string>(), It.IsAny<int>()), Times.Once);
             }
         }
