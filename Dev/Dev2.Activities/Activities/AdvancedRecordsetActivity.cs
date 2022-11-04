@@ -400,10 +400,10 @@ namespace Dev2.Activities
         public void ExecuteSql(int update, ref bool started)
         {
             var queryText = AddSqlForVariables(_activity.SqlQuery);
-            var statements = TSQLStatementReader.ParseStatements(queryText);
 
             if (queryText.Contains("UNION"))
             {
+                var statements = TSQLStatementReader.ParseStatements(queryText.Substring(0, queryText.IndexOf("UNION")));
                 var tables = statements[0].GetAllTables();
                 foreach (var table in tables)
                 {
@@ -422,6 +422,7 @@ namespace Dev2.Activities
             }
             else
             {
+                var statements = TSQLStatementReader.ParseStatements(queryText);
                 ExecuteAllSqlStatements(update, statements, ref started);
             }
         }
