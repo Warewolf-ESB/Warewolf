@@ -543,7 +543,7 @@ namespace Dev2.Runtime.Hosting
                 var activity = GetActivity(sa);
                 if (parser != null)
                 {
-                    return parser.Parse(activity, resourceID);
+                    return parser.ParseWithoutCache(activity, resourceID, true);
                 }
             }
 
