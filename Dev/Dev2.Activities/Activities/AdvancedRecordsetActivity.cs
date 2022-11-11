@@ -303,13 +303,12 @@ namespace Dev2.Activities
         }
 
 #pragma warning disable S1541 // Methods and properties should not be too complex
-        void ProcessComplexStatement(TSQLUnknownStatement complexStatement, int update, ref bool started)
+        void ProcessComplexStatement(TSQLStatement complexStatement, int update, ref bool started)
 #pragma warning restore S1541 // Methods and properties should not be too complex
         {
             var tokens = complexStatement.Tokens;
             for (int i = 0; i < complexStatement.Tokens.Count; i++)
             {
-                //(i == 1 && tokens[i].Type.ToString() == "Identifier" && (tokens[i - 1].Text.ToUpper() == "TABLE"))
                 if (tokens[i].Type.ToString() == "Keyword" && (tokens[i].Text.ToUpper() == "CREATE"))
                 {
                     ProcessCreateTableStatement(complexStatement);
@@ -326,14 +325,14 @@ namespace Dev2.Activities
                 {
                     ProcessUpdateStatement(complexStatement, update, ref started);
                 }
-                if (tokens[i].Type.ToString() == "Identifier" && (tokens[i].Text.ToUpper() == "REPLACE"))
+                if (tokens[i].Type.ToString() == "SystemIdentifier" && (tokens[i].Text.ToUpper() == "REPLACE"))
                 {
                     ProcessUpdateStatement(complexStatement, update, ref started);
                 }
             }
         }
 
-        void ProcessCreateTableStatement(TSQLUnknownStatement complexStatement)
+        void ProcessCreateTableStatement(TSQLStatement complexStatement)
         {
             var recordset = new DataTable();
             recordset.Columns.Add("records_affected", typeof(int));
@@ -343,7 +342,7 @@ namespace Dev2.Activities
         }
 
 #pragma warning disable S1541 // Methods and properties should not be too complex
-        void ProcessUpdateStatement(TSQLUnknownStatement complexStatement, int update, ref bool started)
+        void ProcessUpdateStatement(TSQLStatement complexStatement, int update, ref bool started)
 #pragma warning restore S1541 // Methods and properties should not be too complex
         {
             var tokens = complexStatement.Tokens;
@@ -358,7 +357,7 @@ namespace Dev2.Activities
                 {
                     outputRecordsetName = tokens[i + 2].Text;
                 }
-                if (tokens[i].Type.ToString() == "Identifier" && (tokens[i].Text.ToUpper() == "REPLACE"))
+                if (tokens[i].Type.ToString() == "SystemIdentifier" && (tokens[i].Text.ToUpper() == "REPLACE"))
                 {
                     outputRecordsetName = tokens[i + 2].Text;
                 }
@@ -401,10 +400,10 @@ namespace Dev2.Activities
         public void ExecuteSql(int update, ref bool started)
         {
             var queryText = AddSqlForVariables(_activity.SqlQuery);
-            var statements = TSQLStatementReader.ParseStatements(queryText);
 
-            if (queryText.Contains("UNION") && statements.Count == 2)
+            if (queryText.Contains("UNION"))
             {
+                var statements = TSQLStatementReader.ParseStatements(queryText.Substring(0, queryText.IndexOf("UNION")));
                 var tables = statements[0].GetAllTables();
                 foreach (var table in tables)
                 {
@@ -423,6 +422,7 @@ namespace Dev2.Activities
             }
             else
             {
+                var statements = TSQLStatementReader.ParseStatements(queryText);
                 ExecuteAllSqlStatements(update, statements, ref started);
             }
         }
@@ -443,8 +443,7 @@ namespace Dev2.Activities
                 }
                 else
                 {
-                    var unknownStatement = statement as TSQLUnknownStatement;
-                    ProcessComplexStatement(unknownStatement, update, ref started);
+                    ProcessComplexStatement(statement, update, ref started);
                 }
             }
         }

@@ -242,10 +242,9 @@ namespace Dev2.Tests.Activities.ActivityTests
         [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory("AdvancedRecordset")]
-        [DeploymentItem(@"x86\SQLite.Interop.dll")]
         public void AdvancedRecordset_Converter_ExpectCanRunMultipleQueries()
         {
-            string query = "select CURRENT_TIMESTAMP;" +
+            string query = "select DATE();" +
                 "select * from address;update person set Age=20 where Name=\"zak\";" +
                 "select * from person p join address a on p.address_id=a.id where a.addr=\"11 test lane\" order by Name";
             var worker = CreatePersonAddressWorkers();

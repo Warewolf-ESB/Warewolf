@@ -7,6 +7,7 @@ using Dev2;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Decision;
 using Dev2.Activities.Designers2.Switch;
+using Dev2.Common;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Studio.Interfaces;
 using Warewolf.Studio.Core;
@@ -62,6 +63,7 @@ namespace Warewolf.Studio.Views
             if (valid)
             {
                 DialogResult = true;
+                Dev2Logger.Debug("Closing Decision dialog.", GlobalConstants.WarewolfDebug);
                 Close();
             }
         }

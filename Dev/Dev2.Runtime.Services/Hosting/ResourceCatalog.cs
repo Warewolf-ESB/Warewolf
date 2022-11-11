@@ -256,7 +256,15 @@ namespace Dev2.Runtime.Hosting
             }
             foreach (var resource in userServices)
             {
-                AddToActivityCache(resource);
+                try
+                {
+                    AddToActivityCache(resource);
+                }
+                catch(System.Xml.XmlException xmlEx)
+                {
+                    Dev2Logger.Error("Error reading resource definition for \"" + resource.FilePath + "\". See full error under \"Error Starting Server\":", GlobalConstants.WarewolfError);
+                    throw xmlEx;
+                }
             }
         }
 
