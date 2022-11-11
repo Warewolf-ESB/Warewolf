@@ -11,12 +11,16 @@
 using System;
 using System.Linq;
 using System.Reflection;
+using System.Security.Claims;
 using Dev2.Runtime.WebServer.Controllers;
 using Dev2.Runtime.WebServer.Hubs;
 using Dev2.Runtime.WebServer.Security;
 using Dev2.Services.Security;
-using Microsoft.AspNet.SignalR.Hubs;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 
 namespace Dev2.Tests.Runtime.WebServer.Security
 {
@@ -31,14 +35,14 @@ namespace Dev2.Tests.Runtime.WebServer.Security
         {
             Verify_RequestType(() =>
             {
-                var context = AuthorizeWebAttributeTests.CreateActionContext(true, "xxx");
-                return context.GetAuthorizationRequest();
+                var context = CustomActionFilterTests.CreateActionContext(true, "xxx");
+                return CustomActionFilter.GetAuthorizationRequest(context);
             }, WebServerRequestType.Unknown);
 
             Verify_RequestTypeIsParsedCorrectly(typeof(WebServerController), "Web", actionName =>
             {
-                var context = AuthorizeWebAttributeTests.CreateActionContext(true, actionName);
-                return context.GetAuthorizationRequest();
+                var context = CustomActionFilterTests.CreateActionContext(true, actionName);
+                return CustomActionFilter.GetAuthorizationRequest(context);
             });
         }
 
@@ -49,8 +53,15 @@ namespace Dev2.Tests.Runtime.WebServer.Security
         {
             Verify_RequestType(() =>
             {
-                var request = AuthorizeHubAttributeTests.CreateRequest(false);
-                return new HubDescriptor().GetAuthorizationRequest(request.Object);
+                var user = new Mock<ClaimsPrincipal>();
+                user.Setup(u => u.Identity.IsAuthenticated).Returns(false);
+
+                var httpContext = new Mock<HttpContext>();
+                httpContext.Setup(r => r.User).Returns(user.Object);
+                httpContext.Setup(r => r.Request).Returns(CustomHubFilterTests.CreateRequest(string.Empty).Object);
+
+                return httpContext.Object.GetAuthorizationRequest(WebServerRequestType.HubConnect);
+
             }, WebServerRequestType.HubConnect);
         }
 
@@ -61,23 +72,23 @@ namespace Dev2.Tests.Runtime.WebServer.Security
         {
             Verify_RequestType(() =>
             {
-                var context = AuthorizeHubAttributeTests.CreateHubIncomingInvokerContext(true, "xxx");
+                var context = CustomHubFilterTests.CreateHubInvocationContext(true, "xxx");
                 return context.GetAuthorizationRequest();
             }, WebServerRequestType.Unknown);
 
 
             var hubs = new[]
             {
-                new Tuple<Type, string>(typeof(EsbHub), "esb"),
+                new Tuple<Type, string>(typeof(EsbHub), "esb"),                
             };
 
-            foreach(var hub in hubs)
+            foreach (var hub in hubs)
             {
                 var hub1 = hub;
                 Func<string, AuthorizationRequest> getAuthorizationRequest = methodName =>
                 {
-                    var context = AuthorizeHubAttributeTests.CreateHubIncomingInvokerContext(true, methodName, hub1.Item2);
-                    return context.GetAuthorizationRequest();
+                    var context = CustomHubFilterTests.CreateHubInvocationContext(true, methodName, hub1.Item2);
+                    return context.GetAuthorizationRequest(hub1.Item2);
                 };
                 Verify_RequestTypeIsParsedCorrectly(hub1.Item1, hub1.Item2, getAuthorizationRequest);
             }
@@ -86,7 +97,7 @@ namespace Dev2.Tests.Runtime.WebServer.Security
         static void Verify_RequestTypeIsParsedCorrectly(Type handlerType, string handlerPrefix, Func<string, AuthorizationRequest> getAuthorizationRequest)
         {
             var methodNames = handlerType.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly).Where(mi => !mi.IsSpecialName).Select(mi => mi.Name);
-            foreach(var methodName in methodNames)
+            foreach (var methodName in methodNames)
             {
                 var expectedRequestType = (WebServerRequestType)Enum.Parse(typeof(WebServerRequestType), handlerPrefix + methodName, true);
 

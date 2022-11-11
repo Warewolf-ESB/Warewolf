@@ -42,8 +42,8 @@ namespace Dev2.Services.Security
         // See Hubs
         HubConnect,
 
-        EsbOnConnected,
-        EsbOnDisconnected,
+        EsbOnConnectedAsync,
+        EsbOnDisconnectedAsync,
         EsbOnReconnected,
         EsbAddDebugWriter,
         EsbFetchExecutePayloadFragment,
@@ -53,7 +53,7 @@ namespace Dev2.Services.Security
         EsbFetchResourcesAffectedMemo,
         EsbSendDebugState,
         EsbWrite,
-
+        ESbWriteDebugState,
         ResourcesSendMemo,
         WebExecuteInternalService
     }

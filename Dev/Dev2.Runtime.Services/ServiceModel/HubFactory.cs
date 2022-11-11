@@ -15,14 +15,15 @@ using System.Security.Principal;
 using Dev2.Common;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
-using Microsoft.AspNet.SignalR.Client;
+using Microsoft.AspNetCore.SignalR.Client;
 using Connection = Dev2.Data.ServiceModel.Connection;
 
 namespace Dev2.Runtime.ServiceModel
 {
-    public class HubFactory: IHubFactory
+    public class HubFactory : IHubFactory
     {
-        public IHubProxy CreateHubProxy(Connection connection)
+        //public IHubProxy CreateHubProxy(Connection connection)
+        public HubConnection GetHubConnection(Connection connection)
         {
             var serverUser = Common.Utilities.OrginalExecutingUser;
             var principle = serverUser;
@@ -58,15 +59,17 @@ namespace Dev2.Runtime.ServiceModel
                     }
 
                     var connectionAddress = connection.FetchTestConnectionAddress();
-                    var hub = new HubConnection(connectionAddress) { Credentials = client.Credentials };
-                    hub.Error += exception => { };
-                    ServicePointManager.ServerCertificateValidationCallback = (sender, certificate, chain, errors) => true;
-                    var proxy = hub.CreateHubProxy("esb");
-                    if (!hub.Start().Wait(GlobalConstants.NetworkTimeOut))
+                    var hubConnection = new HubConnectionBuilder().WithUrl(connectionAddress, options =>
                     {
-                        throw new HttpClientException(new HttpResponseMessage(HttpStatusCode.GatewayTimeout));
+                        options.Credentials = client.Credentials;
+                    }).Build();
+
+                    ServicePointManager.ServerCertificateValidationCallback = (sender, certificate, chain, errors) => true;
+                    if (!hubConnection.StartAsync().Wait(GlobalConstants.NetworkTimeOut))
+                    {
+                        throw new Net6.Compatibility.HttpClientException(new HttpResponseMessage(HttpStatusCode.GatewayTimeout));
                     }
-                    return proxy;
+                    return hubConnection;
                 }
             }
             finally
