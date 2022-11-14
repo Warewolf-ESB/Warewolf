@@ -30,7 +30,7 @@ namespace Dev2.SignalR.Wrappers
     {        
         IHubProxyWrapper CreateHubProxy(string hubName);
         event Action<Exception> Error;
-        event Action Closed;
+        event Func<Exception, Task> Closed;
         event Action<IStateChangeWrapped> StateChanged;
         ConnectionStateWrapped State { get;  }
         ICredentials Credentials { get;  }

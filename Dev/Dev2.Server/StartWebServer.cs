@@ -13,7 +13,7 @@ using System;
 using Dev2.Common;
 using Dev2.Runtime.WebServer;
 using Warewolf;
-
+using Microsoft.AspNetCore.Builder;
 namespace Dev2
 {
 
@@ -25,13 +25,13 @@ namespace Dev2
     public class StartWebServer : IStartWebServer
     {
         private readonly IWriter _writer;
-        private readonly Func<Dev2Endpoint[], IDisposable> _startAction;
+        private readonly Func<Dev2Endpoint[], WebApplicationBuilder, IDisposable> _startAction;
 
         IDisposable _owinServer;
         
 
 
-        public StartWebServer(IWriter writer, Func<Dev2Endpoint[], IDisposable> startAction)
+        public StartWebServer(IWriter writer, Func<Dev2Endpoint[], WebApplicationBuilder, IDisposable> startAction)
         {
             _writer = writer;
             _startAction = startAction;
@@ -58,7 +58,9 @@ namespace Dev2
         public void DoStartWebServer(IWebServerConfiguration webServerConfig)
         {
             var endPoints = webServerConfig.EndPoints;
-            _owinServer = _startAction(endPoints); // WebServerStartup.Start(endPoints)
+            var builder = WebApplication.CreateBuilder();
+
+            _owinServer = _startAction(endPoints, builder); // WebServerStartup.Start(endPoints)
             EnvironmentVariables.IsServerOnline = true;
             _writer.WriteLine("\r\nWeb Server Started");
             foreach (var endpoint in endPoints)

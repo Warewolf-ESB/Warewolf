@@ -185,7 +185,7 @@ namespace Dev2.Runtime.Security
                 case WebServerRequestType.EsbExecuteCommand:
                 case WebServerRequestType.EsbSendDebugState:
                 case WebServerRequestType.EsbWrite:
-                case WebServerRequestType.EsbOnConnected:
+                case WebServerRequestType.EsbOnConnectedAsync:
                 case WebServerRequestType.EsbFetchExecutePayloadFragment:
                 case WebServerRequestType.ResourcesSendMemo:
                 case WebServerRequestType.WebExecuteGetRootLevelApisJson:
@@ -194,7 +194,7 @@ namespace Dev2.Runtime.Security
                     break;
                 case WebServerRequestType.Unknown:
                     break;
-                case WebServerRequestType.EsbOnDisconnected:
+                case WebServerRequestType.EsbOnDisconnectedAsync:
                     break;
                 case WebServerRequestType.EsbOnReconnected:
                     break;
@@ -273,9 +273,9 @@ namespace Dev2.Runtime.Security
                     return null;
                 case WebServerRequestType.HubConnect:
                     return null;
-                case WebServerRequestType.EsbOnConnected:
+                case WebServerRequestType.EsbOnConnectedAsync:
                     return null;
-                case WebServerRequestType.EsbOnDisconnected:
+                case WebServerRequestType.EsbOnDisconnectedAsync:
                     return null;
                 case WebServerRequestType.EsbOnReconnected:
                     return null;

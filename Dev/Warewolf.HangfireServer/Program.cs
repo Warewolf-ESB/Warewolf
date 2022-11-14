@@ -18,7 +18,7 @@ using Dev2.Communication;
 using Dev2.Runtime.ServiceModel.Data;
 using Hangfire;
 using Hangfire.SqlServer;
-using Microsoft.Owin.Hosting;
+//using Microsoft.Owin.Hosting;
 using Warewolf;
 using Warewolf.Auditing;
 using Warewolf.Common;
@@ -115,9 +115,12 @@ namespace HangfireServer
 
                     ConfigureServerStorage(connectionString);
                     var dashboardEndpoint = _persistence.DashboardHostname + ":" + _persistence.DashboardPort;
-                    var options = new StartOptions();
-                    options.Urls.Add(dashboardEndpoint);
-                    WebApp.Start<Dashboard>(options);
+                    //var options = new StartOptions();
+                    //options.Urls.Add(dashboardEndpoint);
+                    //WebApp.Start<Dashboard>(options);
+
+                    new Dashboard().Start(dashboardEndpoint);
+
                     _writer.WriteLine("Hangfire dashboard started...");
                     _logger.Debug("Hangfire dashboard started...");
                     // var backgroundJobServerOptions = new BackgroundJobServerOptions

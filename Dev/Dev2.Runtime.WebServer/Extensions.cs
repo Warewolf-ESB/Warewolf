@@ -11,11 +11,13 @@
 
 using Dev2.Common;
 using Dev2.Web;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.WebApiCompatShim;
 using System;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Formatting;
 using System.Security.Principal;
 using System.Text;
 //using System.Web.Http.Controllers;
@@ -75,14 +77,18 @@ namespace Dev2.Runtime.WebServer
         //    context.Response = CreateWarewolfErrorResponse(context.Request.RequestUri, errorResponseArgs);
         //}
 
-        public static void CreateWarewolfErrorResponse(this Microsoft.AspNetCore.Http.HttpContext context, WarewolfErrorResponseArgs errorResponseArgs)
+        public static HttpResponseMessage CreateWarewolfErrorResponse(this Microsoft.AspNetCore.Http.HttpContext context, WarewolfErrorResponseArgs errorResponseArgs)
         {
-
             var errorResponse = CreateWarewolfErrorResponse(context.Request.ToUri(), errorResponseArgs);
             var errorContent = errorResponse.Content.ReadAsStringAsync().Result;
-            context.GetHttpRequestMessage().CreateErrorResponse(errorResponse.StatusCode, errorContent);
-
+            //context.GetHttpRequestMessage().CreateErrorResponse(errorResponse.StatusCode, errorContent);
+            var request = context.GetHttpRequestMessage();
+            if (request != null)
+                return request.CreateResponse(errorResponse.StatusCode, errorContent, new JsonMediaTypeFormatter());
+            
             //context.Response = errorResponse;
+            return null;
+
         }
 
         //public static void CreateWarewolfErrorResponse(this Microsoft.AspNetCore.Mvc.ActionContext actionContext, WarewolfErrorResponseArgs errorResponseArgs)
