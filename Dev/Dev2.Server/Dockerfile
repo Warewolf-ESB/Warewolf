@@ -1,6 +1,6 @@
 FROM golang:1.19.3-windowsservercore-ltsc2022 as pauseloopbuilder
 ADD pauseloop pauseloop
-RUN cd pauseloop ; go build -o pauseloop.exe .
+RUN cd pauseloop ; go mod init pauseloop ; go build -o pauseloop.exe .
 
 FROM mcr.microsoft.com/dotnet/framework/runtime:4.8.1-windowsservercore-ltsc2022
 
