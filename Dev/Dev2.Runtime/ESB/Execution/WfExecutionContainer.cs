@@ -372,7 +372,7 @@ namespace Dev2.Runtime.ESB.Execution
             
             // using (var catalog = new ResourceCatalog(resourcesNew, _resourceCatalog.GetServerVersionRepository(), _resourceCatalog.GetCatalogPluginContainer()))
             // {
-                var catalog = new ResourceCatalog(resourcesNew, _resourceCatalog.GetServerVersionRepository(), _resourceCatalog.GetCatalogPluginContainer())
+                var catalog = new ResourceCatalog(resourcesNew, _resourceCatalog.GetServerVersionRepository(), _resourceCatalog.GetCatalogPluginContainer());
                 var hasVersionOverride = false;
                 if (versionNumber != 0)
                 {
