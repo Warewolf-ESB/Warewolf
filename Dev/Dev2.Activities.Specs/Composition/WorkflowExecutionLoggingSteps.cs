@@ -264,7 +264,7 @@ namespace Dev2.Activities.Specs.Composition
             var mockStateNotifier = _scenarioContext.Get<Mock<IStateNotifier>>("mockStateNotifier");
             var resource = _scenarioContext.Get<DsfDecision>("resource");
 
-            mockStateNotifier.Verify(o => o.LogStopExecutionState(resource), Times.Once);
+            mockStateNotifier.Verify(o => o.LogStopExecutionState(It.IsAny<IDev2Activity>()), Times.Once);
         }
 
         [Then(@"execution is complete")]

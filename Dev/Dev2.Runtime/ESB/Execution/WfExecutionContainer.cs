@@ -369,10 +369,9 @@ namespace Dev2.Runtime.ESB.Execution
 
                 resourcesNew.AddOrUpdate(r.Key, id => r.Value, (id, resources) => resourceListCopy);
             }
-            
-            // using (var catalog = new ResourceCatalog(resourcesNew, _resourceCatalog.GetServerVersionRepository(), _resourceCatalog.GetCatalogPluginContainer()))
-            // {
-                var catalog = new ResourceCatalog(resourcesNew, _resourceCatalog.GetServerVersionRepository(), _resourceCatalog.GetCatalogPluginContainer());
+
+            using (var catalog = new ResourceCatalog(resourcesNew, _resourceCatalog.GetServerVersionRepository(), _resourceCatalog.GetCatalogPluginContainer()))
+            {
                 var hasVersionOverride = false;
                 if (versionNumber != 0)
                 {
@@ -387,9 +386,9 @@ namespace Dev2.Runtime.ESB.Execution
                     {
                         resumeVersionNumber = catalog.GetLatestVersionNumberForResource(resourceId: resourceID);
                     }
-                    
+
                     var resourceObject = catalog.GetResource(GlobalConstants.ServerWorkspaceID, resourceID,
-                         resumeVersionNumber.ToString());
+                        resumeVersionNumber.ToString());
                     startActivity = catalog.Parse(TheWorkspace.ID, resourceID, executionId, resourceObject);
                 }
                 else
@@ -399,7 +398,7 @@ namespace Dev2.Runtime.ESB.Execution
 
                 Dev2Logger.Debug("Got Resource to Execute", executionId);
                 EvalInner(dataObject, startActivity, dataObject.ForEachUpdateValue);
-            //}
+            }
         }
     }
 
