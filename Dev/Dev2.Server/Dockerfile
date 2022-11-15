@@ -19,4 +19,4 @@ RUN New-Item -Path "programdata\Warewolf" -ItemType Directory
 RUN Copy-Item -Path \"Server\Resources - Release\*\" -Destination \"programdata\Warewolf\" -Recurse -Force
 
 COPY --from=pauseloopbuilder "c:\\go\\pauseloop\\pauseloop.exe" "c:\\windows\\system32\\pauseloop.exe"
-CMD .\Server\StartAsService.ps1 -NoExit
+CMD ["powershell", ".\\Server\\StartAsService.ps1 -NoExit"]
