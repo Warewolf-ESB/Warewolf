@@ -30,32 +30,20 @@ namespace Dev2.Runtime.WebServer.Security
 
         public Task OnConnectedAsync(HubLifetimeContext hubLifeTimeContext, Func<HubLifetimeContext, Task> next)
         {
-            VerifyArgument.IsNotNull(nameof(hubLifeTimeContext), hubLifeTimeContext);
-
-            var httpContext = hubLifeTimeContext.Context.GetHttpContext();
-
-            if (httpContext != null && httpContext.User.IsAuthenticated() && Service.IsAuthorized(hubLifeTimeContext.GetAuthorizationRequest()))
+            if (AuthorizeHubConnection(hubLifeTimeContext))
                 return next?.Invoke(hubLifeTimeContext);
 
             return Task.FromResult(false);
         }
+      
 
         public async ValueTask<object> InvokeMethodAsync(
             HubInvocationContext invocationContext, Func<HubInvocationContext, ValueTask<object>> next)
         {
-            VerifyArgument.IsNotNull(nameof(invocationContext), invocationContext);
-
-            var httpContext = invocationContext.Context.GetHttpContext();
-            VerifyArgument.IsNotNull(nameof(httpContext), httpContext);
-
-            var request = invocationContext.GetAuthorizationRequest();
-            var result = httpContext.User.IsAuthenticated() && Service.IsAuthorized(request);
-            //var result = AuthorizeHubMethodInvocation(httpContext, httpContext.getre);
-            if (result)
+            if (AuthorizeHubMethodInvocation(invocationContext))
             {
-                var handler = next;
-                if (handler != null)
-                    return await handler(invocationContext);
+                if (next != null)
+                    return await next(invocationContext);
                 else
                     return default(ValueTask);
             }
@@ -63,23 +51,24 @@ namespace Dev2.Runtime.WebServer.Security
             return ValueTask.FromException(new HubException("Unauthorized"));
         }
 
-        public bool AuthorizeHubMethodInvocation(HttpContext httpContext, WebServerRequestType requestType)
+        public bool AuthorizeHubConnection(HubLifetimeContext hubLifeTimeContext)
         {
-            if (httpContext != null && httpContext.User.IsAuthenticated())
-            {
-                var request = httpContext.Request;
-                var url = GetUri(request);
-                var auth = new AuthorizationRequest
-                {
-                    Url = url,
-                    User = httpContext.User,
-                    QueryString = request.Query,
-                    RequestType = requestType
-                };
+            VerifyArgument.IsNotNull(nameof(hubLifeTimeContext), hubLifeTimeContext);
 
-                return Service.IsAuthorized(auth);
-            }
-            return false;
+            var httpContext = hubLifeTimeContext.Context.GetHttpContext();
+
+            return httpContext.User.IsAuthenticated() && Service.IsAuthorized(hubLifeTimeContext.GetAuthorizationRequest());
+        }
+
+        public bool AuthorizeHubMethodInvocation(HubInvocationContext invocationContext)
+        {
+            VerifyArgument.IsNotNull(nameof(invocationContext), invocationContext);
+
+            var httpContext = invocationContext.Context.GetHttpContext();
+            
+            VerifyArgument.IsNotNull(nameof(httpContext), httpContext);
+
+            return httpContext != null && httpContext.User.IsAuthenticated() && Service.IsAuthorized(invocationContext.GetAuthorizationRequest());
         }
 
       

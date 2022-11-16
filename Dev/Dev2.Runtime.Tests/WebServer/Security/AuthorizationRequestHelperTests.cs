@@ -36,7 +36,7 @@ namespace Dev2.Tests.Runtime.WebServer.Security
             Verify_RequestType(() =>
             {
                 var context = CustomActionFilterTests.CreateActionContext(true, "xxx");
-                return CustomActionFilter.GetAuthorizationRequest(context);
+                return context.GetAuthorizationRequest();
             }, WebServerRequestType.Unknown);
 
             Verify_RequestTypeIsParsedCorrectly(typeof(WebServerController), "Web", actionName =>
@@ -53,14 +53,8 @@ namespace Dev2.Tests.Runtime.WebServer.Security
         {
             Verify_RequestType(() =>
             {
-                var user = new Mock<ClaimsPrincipal>();
-                user.Setup(u => u.Identity.IsAuthenticated).Returns(false);
-
-                var httpContext = new Mock<HttpContext>();
-                httpContext.Setup(r => r.User).Returns(user.Object);
-                httpContext.Setup(r => r.Request).Returns(CustomHubFilterTests.CreateRequest(string.Empty).Object);
-
-                return httpContext.Object.GetAuthorizationRequest(WebServerRequestType.HubConnect);
+                var context = CustomHubFilterTests.CreateHubLifeTimeContext(false, string.Empty);
+                return context.GetAuthorizationRequest();
 
             }, WebServerRequestType.HubConnect);
         }
@@ -87,8 +81,8 @@ namespace Dev2.Tests.Runtime.WebServer.Security
                 var hub1 = hub;
                 Func<string, AuthorizationRequest> getAuthorizationRequest = methodName =>
                 {
-                    var context = CustomHubFilterTests.CreateHubInvocationContext(true, methodName, hub1.Item2);
-                    return context.GetAuthorizationRequest(hub1.Item2);
+                    var context = CustomHubFilterTests.CreateHubInvocationContext(true, methodName, new EsbHub());
+                    return context.GetAuthorizationRequest();
                 };
                 Verify_RequestTypeIsParsedCorrectly(hub1.Item1, hub1.Item2, getAuthorizationRequest);
             }

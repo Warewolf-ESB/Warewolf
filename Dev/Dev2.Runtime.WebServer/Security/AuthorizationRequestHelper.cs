@@ -19,36 +19,17 @@ using Dev2.Runtime.WebServer;
 using Warewolf.Resource.Errors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.AspNetCore.Mvc;
 //using System.Web.Http.Controllers;
 
 namespace Dev2.Runtime.WebServer.Security
 {
     public static class AuthorizationRequestHelper
     {
-        public static AuthorizationRequest GetAuthorizationRequest(this HttpContext context) => GetAuthorizationRequest(context, context.GetRequestType());
+        public static AuthorizationRequest GetAuthorizationRequest(this ActionContext actionContext) => GetAuthorizationRequest(actionContext, actionContext.GetRequestType());
 
-        public static AuthorizationRequest GetAuthorizationRequest(this HttpContext context, WebServerRequestType requestType) => new AuthorizationRequest
-        {
-            RequestType = requestType,
-            User = context.User,
-            Url = context.Request.ToUri(),
-            //QueryString = new QueryString(context.Request.GetQueryNameValuePairs())
-            QueryString = context.Request.Query
-        };
 
-        public static AuthorizationRequest GetAuthorizationRequest(this HttpContext context, string sourceName)
-        {
-            var requestType = ParseRequestType(sourceName, context.GetActionName());
-            return new AuthorizationRequest
-            {
-                RequestType = requestType,
-                User = context.User,
-                Url = context.Request.ToUri(),
-                QueryString = context.Request.Query
-            };
-        }
-
-            public static AuthorizationRequest GetAuthorizationRequest(this HubLifetimeContext hubLifeTimeContext)
+        public static AuthorizationRequest GetAuthorizationRequest(this HubLifetimeContext hubLifeTimeContext)
         {
             var context = hubLifeTimeContext.Context.GetHttpContext();
 
@@ -74,6 +55,28 @@ namespace Dev2.Runtime.WebServer.Security
             };
         }
 
+         static AuthorizationRequest GetAuthorizationRequest(this ActionContext actionContext, WebServerRequestType requestType)
+        {
+            var context = actionContext.HttpContext;
+            return new AuthorizationRequest
+            {
+                RequestType = requestType,
+                User = context.User,
+                Url = context.Request.ToUri(),
+                QueryString = context.Request.Query
+            };
+        }
+
+        public static AuthorizationRequest GetAuthorizationRequest(this HttpContext context)
+        {
+            return new AuthorizationRequest
+            {
+                RequestType = context.GetRequestType(),
+                User = context.User,
+                Url = context.Request.ToUri(),
+                QueryString = context.Request.Query
+            };
+        }
 
         static WebServerRequestType GetRequestType(this HubInvocationContext context)
         {
@@ -83,17 +86,21 @@ namespace Dev2.Runtime.WebServer.Security
 
             return ParseRequestType(hubName, context.HubMethodName);
         }
-        
 
-        static WebServerRequestType GetRequestType(this HttpContext context)
+        static WebServerRequestType GetRequestType(this ActionContext context)
         {
             return ParseRequestType("Web", context.GetActionName());
         }
 
-     
-        static string GetActionName(this HttpContext context)
+        static WebServerRequestType GetRequestType(this HttpContext context)
         {
-            return  context.Request.RouteValues["action"]?.ToString();
+            return ParseRequestType("Web", context.Request.RouteValues["action"]?.ToString());
+        }
+
+        static string GetActionName(this ActionContext context)
+        {
+            var httpContext = context.HttpContext;
+            return httpContext.Request.RouteValues["action"]?.ToString();
         }
 
         static WebServerRequestType ParseRequestType(string source, string actionName)
@@ -101,5 +108,6 @@ namespace Dev2.Runtime.WebServer.Security
             Enum.TryParse(source + actionName, true, out WebServerRequestType requestType);
             return requestType;
         }
+      
     }
 }

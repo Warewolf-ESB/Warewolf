@@ -221,8 +221,11 @@ namespace Dev2.Runtime.ESB.Management.Services
             };
             var messageId = Guid.NewGuid();
             await hubConnection.InvokeAsync<Receipt>("ExecuteCommand", envelope, true, Guid.Empty, Guid.Empty, messageId).ConfigureAwait(false);
-            var fragmentInvokeResult = await hubConnection.InvokeAsync<string>("FetchExecutePayloadFragment", new FutureReceipt {PartID = 0, RequestID = messageId}).ConfigureAwait(false);
-            var execResult = serializer.Deserialize<ExecuteMessage>(fragmentInvokeResult) ?? new ExecuteMessage {HasError = true, Message = new StringBuilder("Deploy Failed")};
+            //var fragmentInvokeResult = await hubConnection.InvokeAsync<string>("FetchExecutePayloadFragment", new FutureReceipt {PartID = 0, RequestID = messageId}).ConfigureAwait(false);
+
+            var fragmentInvokeResult = hubConnection.InvokeCoreAsync("FetchExecutePayloadFragment", typeof(String), new FutureReceipt[] { new FutureReceipt { PartID = 0, RequestID = messageId } },new System.Threading.CancellationToken()).Result ;
+
+            var execResult = serializer.Deserialize<ExecuteMessage>(fragmentInvokeResult as string) ?? new ExecuteMessage {HasError = true, Message = new StringBuilder("Deploy Failed")};
             toReturn.Add(new DeployResult(execResult, resource.ResourceName));
 
             if (doTriggerDeploy)
@@ -242,8 +245,11 @@ namespace Dev2.Runtime.ESB.Management.Services
                 };
                 var deployMessageId = Guid.NewGuid();
                 await hubConnection.InvokeAsync<Receipt>("ExecuteCommand", deployEnvelope, true, Guid.Empty, Guid.Empty, deployMessageId).ConfigureAwait(false);
-                var deployFragmentInvokeResult = await hubConnection.InvokeAsync<string>("FetchExecutePayloadFragment", new FutureReceipt {PartID = 0, RequestID = deployMessageId}).ConfigureAwait(false);
-                var deployExecResult = serializer.Deserialize<ExecuteMessage>(deployFragmentInvokeResult) ?? new ExecuteMessage {HasError = true, Message = new StringBuilder("Trigger Deploy Failed")};
+                //var deployFragmentInvokeResult = await hubConnection.InvokeAsync<string>("FetchExecutePayloadFragment", new FutureReceipt {PartID = 0, RequestID = deployMessageId}).ConfigureAwait(false);
+
+                var deployFragmentInvokeResult = hubConnection.InvokeCoreAsync("FetchExecutePayloadFragment", typeof(String), new FutureReceipt[] { new FutureReceipt { PartID = 0, RequestID = deployMessageId } }, new System.Threading.CancellationToken()).Result;
+                    
+                var deployExecResult = serializer.Deserialize<ExecuteMessage>(deployFragmentInvokeResult as string) ?? new ExecuteMessage {HasError = true, Message = new StringBuilder("Trigger Deploy Failed")};
                 toReturn.Add(new DeployResult(deployExecResult, $"{resource.ResourceName} Triggers"));
             }
 
@@ -264,8 +270,12 @@ namespace Dev2.Runtime.ESB.Management.Services
                 };
                 var deployMessageId = Guid.NewGuid();
                 await hubConnection.InvokeAsync<Receipt>("ExecuteCommand", deployEnvelope, true, Guid.Empty, Guid.Empty, deployMessageId).ConfigureAwait(false);
-                var deployFragmentInvokeResult = await hubConnection.InvokeAsync<string>("FetchExecutePayloadFragment", new FutureReceipt {PartID = 0, RequestID = deployMessageId}).ConfigureAwait(false);
-                var deployExecResult = serializer.Deserialize<ExecuteMessage>(deployFragmentInvokeResult) ?? new ExecuteMessage {HasError = true, Message = new StringBuilder("Tests Deploy Failed")};
+
+                //var deployFragmentInvokeResult = await hubConnection.InvokeAsync<string>("FetchExecutePayloadFragment", new FutureReceipt {PartID = 0, RequestID = deployMessageId}).ConfigureAwait(false);
+
+                var deployFragmentInvokeResult = hubConnection.InvokeCoreAsync("FetchExecutePayloadFragment", typeof(String), new FutureReceipt[] { new FutureReceipt { PartID = 0, RequestID = deployMessageId } }, new System.Threading.CancellationToken()).Result;
+
+                var deployExecResult = serializer.Deserialize<ExecuteMessage>(deployFragmentInvokeResult as string) ?? new ExecuteMessage {HasError = true, Message = new StringBuilder("Tests Deploy Failed")};
                 toReturn.Add(new DeployResult(deployExecResult, $"{resource.ResourceName} Tests"));
             }
 
