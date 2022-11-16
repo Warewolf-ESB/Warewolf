@@ -43,8 +43,6 @@
     <LangVersion>7.3</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Fake\Extensions.cs" />
-    <Compile Include="Fake\SharePointOnlineCredentials.cs" />
     <Compile Include="SharepointHelper.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -70,9 +68,10 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.SharePointOnline.CSOM">
+    <!--<PackageReference Include="Microsoft.SharePointOnline.CSOM">
       <Version>16.1.22615.12000</Version>
-    </PackageReference>
+    </PackageReference>-->
+	  <PackageReference Include="TTCUE.NetCore.SharepointOnline.CSOM.16.1.8029.1200" Version="16.1.8029.1200" />
     <PackageReference Include="Newtonsoft.Json">
       <Version>13.0.1</Version>
     </PackageReference>

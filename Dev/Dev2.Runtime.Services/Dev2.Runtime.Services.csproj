@@ -87,7 +87,6 @@
     <Compile Include="Fake\DataContractSerializerMessageContractImporter.cs" />
     <Compile Include="Fake\DataSetSchemaImporterExtension.cs" />
     <Compile Include="Fake\DiscoveryClientProtocol.cs" />
-    <Compile Include="Fake\FakeExtensions.cs" />
     <Compile Include="Fake\ImportOptions.cs" />
     <Compile Include="Fake\ServiceContractGenerator.cs" />
     <Compile Include="Fake\System\Web\Services\Description\WebReferenceOptions.cs" />

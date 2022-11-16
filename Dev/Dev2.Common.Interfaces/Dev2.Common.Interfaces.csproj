@@ -463,9 +463,10 @@
     </PackageReference>-->
     <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />
     <PackageReference Include="Microsoft.Exchange.WebServices.NETStandard" Version="1.1.3" />
-    <PackageReference Include="Microsoft.SharePointOnline.CSOM">
+    <!--<PackageReference Include="Microsoft.SharePointOnline.CSOM">
       <Version>16.1.22615.12000</Version>
-    </PackageReference>
+    </PackageReference>-->
+	  <PackageReference Include="TTCUE.NetCore.SharepointOnline.CSOM.16.1.8029.1200" Version="16.1.8029.1200" />
     <PackageReference Include="Newtonsoft.Json">
       <Version>13.0.1</Version>
     </PackageReference>

@@ -17,6 +17,7 @@ using Dev2.Data.Interfaces;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.PathOperations;
 using Warewolf.Resource.Errors;
+using Dev2.Data.Security;
 
 namespace Dev2.Data.PathOperations.Operations
 {
@@ -50,7 +51,7 @@ namespace Dev2.Data.PathOperations.Operations
         {
             try
             {
-                if (_impersonatedUser != null)
+                if (_impersonatedUser != null && _impersonatedUser.Identity != null)
                 {
                     return ExecuteOperationWithAuth();
                 }
@@ -76,26 +77,29 @@ namespace Dev2.Data.PathOperations.Operations
         
         public override IList<IActivityIOPath> ExecuteOperationWithAuth()
         {
-            using (_impersonatedUser)
-            {
-                try
+            if (_impersonatedUser != null && _impersonatedUser.Identity != null)
+                return _impersonatedUser.Identity.RunImpersonated<IList<IActivityIOPath>>(() =>
                 {
-
-                    if (!Dev2ActivityIOPathUtils.IsStarWildCard(_newPath))
+                    try
                     {
-                        return AddDirsToResults(GetDirectoriesForType(_newPath, string.Empty, _type, _dirWrapper), _path);
-                    }
-                    var baseDir = Dev2ActivityIOPathUtils.ExtractFullDirectoryPath(_newPath);
-                    var pattern = Dev2ActivityIOPathUtils.ExtractFileName(_newPath);
-                    return AddDirsToResults(GetDirectoriesForType(baseDir, pattern, _type, _dirWrapper), _path);
 
+                        if (!Dev2ActivityIOPathUtils.IsStarWildCard(_newPath))
+                        {
+                            return AddDirsToResults(GetDirectoriesForType(_newPath, string.Empty, _type, _dirWrapper), _path);
+                        }
+                        var baseDir = Dev2ActivityIOPathUtils.ExtractFullDirectoryPath(_newPath);
+                        var pattern = Dev2ActivityIOPathUtils.ExtractFileName(_newPath);
+                        return AddDirsToResults(GetDirectoriesForType(baseDir, pattern, _type, _dirWrapper), _path);
+
+                    }
+                    catch (Exception ex)
+                    {
+                        Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
+                        throw new Exception(string.Format(ErrorResource.DirectoryNotFound, _path.Path));
+                    }
                 }
-                catch (Exception ex)
-                {
-                    Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
-                    throw new Exception(string.Format(ErrorResource.DirectoryNotFound, _path.Path));
-                }
-            }
+            );
+            return null;
         }
     }
 }

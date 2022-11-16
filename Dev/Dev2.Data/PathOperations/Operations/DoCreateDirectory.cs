@@ -14,6 +14,7 @@ using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
 using Dev2.Data.Interfaces;
 using Dev2.PathOperations;
+using Dev2.Data.Security;
 
 namespace Dev2.Data.PathOperations.Operations
 {
@@ -29,10 +30,10 @@ namespace Dev2.Data.PathOperations.Operations
         protected readonly DoDeleteOperation _handleOverwrite;
 
         public DoCreateDirectory(IActivityIOPath path, IDev2CRUDOperationTO args)
-            :this(path, args, new LogonProvider(), new FileWrapper(), new DirectoryWrapper(), ValidateAuthorization.RequiresAuth)
+            : this(path, args, new LogonProvider(), new FileWrapper(), new DirectoryWrapper(), ValidateAuthorization.RequiresAuth)
         { }
         public DoCreateDirectory(IActivityIOPath path, IDev2CRUDOperationTO args, IDev2LogonProvider dev2LogonProvider, IFile fileWrapper, IDirectory directory, ImpersonationDelegate impersonationDelegate)
-            :base(impersonationDelegate)
+            : base(impersonationDelegate)
         {
             _logOnProvider = dev2LogonProvider;
             _fileWrapper = fileWrapper;
@@ -46,7 +47,7 @@ namespace Dev2.Data.PathOperations.Operations
 
         public override bool ExecuteOperation()
         {
-            if (_impersonatedUser != null)
+            if (_impersonatedUser != null && _impersonatedUser.Identity != null)
             {
                 return ExecuteOperationWithAuth();
             }
@@ -60,29 +61,32 @@ namespace Dev2.Data.PathOperations.Operations
 
         public override bool ExecuteOperationWithAuth()
         {
-            using (_impersonatedUser)
-            {
-                try
+            if (_impersonatedUser != null && _impersonatedUser.Identity != null)
+                return _impersonatedUser.Identity.RunImpersonated<bool>(() =>
                 {
-                    if (_handleOverwrite == null)
+                    try
                     {
+                        if (_handleOverwrite == null)
+                        {
+                            _dirWrapper.CreateDirectory(_path.Path);
+                            return true;
+                        }
+                        if (DirectoryExist(_path, _dirWrapper))
+                        {
+                            _handleOverwrite.ExecuteOperation();
+                        }
                         _dirWrapper.CreateDirectory(_path.Path);
                         return true;
-                    }
-                    if (DirectoryExist(_path, _dirWrapper))
-                    {
-                        _handleOverwrite.ExecuteOperation();
-                    }
-                    _dirWrapper.CreateDirectory(_path.Path);
-                    return true;
 
+                    }
+                    catch (Exception exception)
+                    {
+                        Dev2Logger.Error(exception, GlobalConstants.WarewolfError);
+                        throw;
+                    }
                 }
-                catch (Exception exception)
-                {
-                    Dev2Logger.Error(exception, GlobalConstants.WarewolfError);
-                    throw;
-                }
-            }
+            );
+            return false;
         }
     }
 }

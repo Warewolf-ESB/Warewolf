@@ -121,7 +121,6 @@
     <Compile Include="ExtMethods\ObjectExtensions.cs" />
     <Compile Include="ExtMethods\StringExtension.cs" />
     <Compile Include="ExtMethods\TypeExtensions.cs" />
-    <Compile Include="Fake\WindowsIdentityHelpers.cs" />
     <Compile Include="FileStreamFactory.cs" />
     <Compile Include="WebRequestHeadersHelper.cs" />
     <Compile Include="Wrappers\EnvironmentWrapper.cs" />

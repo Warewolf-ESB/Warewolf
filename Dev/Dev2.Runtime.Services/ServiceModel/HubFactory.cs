@@ -13,6 +13,7 @@ using System.Net;
 using System.Net.Http;
 using System.Security.Principal;
 using Dev2.Common;
+using Dev2.Data.Security;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.AspNetCore.SignalR.Client;
@@ -28,16 +29,42 @@ namespace Dev2.Runtime.ServiceModel
             var serverUser = Common.Utilities.OrginalExecutingUser;
             var principle = serverUser;
 
-            var identity = principle.Identity as Common.WindowsIdentity;
-            WindowsImpersonationContext context = null;
+            var identity = principle.Identity as WindowsIdentity;
+            WindowsIdentity context = null;
 
+            if (identity != null && connection.AuthenticationType == AuthenticationType.Windows)
+            {
+                context = identity.Impersonate();
+                try
+                {
+
+                    if (context != null)
+                    {
+                        return context.RunImpersonated<HubConnection>(() =>
+                        {
+                            return CreateHubProxyInternal(connection);
+                        });
+                    }
+                }
+                finally
+                {
+                    if (context != null && connection.AuthenticationType == AuthenticationType.Windows)
+                    {
+                        //context.Dispose(); Should not dispose identity passed.
+                    }
+                }
+            }
+            else
+            {
+                return CreateHubProxyInternal(connection);
+            }
+            return null;
+        }
+
+        private HubConnection CreateHubProxyInternal(Connection connection)
+        {
             try
             {
-                if (identity != null && connection.AuthenticationType == AuthenticationType.Windows)
-                {
-                    context = identity.Impersonate();
-                }
-
                 using (var client = new WebClient())
                 {
                     if (connection.AuthenticationType == AuthenticationType.Windows)
@@ -74,10 +101,10 @@ namespace Dev2.Runtime.ServiceModel
             }
             finally
             {
-                if (context != null && connection.AuthenticationType == AuthenticationType.Windows)
-                {
-                    context.Undo();
-                }
+                // if (context != null && connection.AuthenticationType == AuthenticationType.Windows)
+                // {
+                //context.Undo();
+                // }
             }
         }
     }
