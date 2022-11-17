@@ -78,7 +78,8 @@ namespace Dev2.Runtime.WebServer.Tests
         public void Extensions_CreateWarewolfErrorResponse_HttpActionContext_GivenJSONURI_ShouldReturnJSON()
         {
             var sut = CreateActionContext(true, "http://localhost:3241/help/wolf-tools/redis.json");
-            var errorResult = sut.CreateWarewolfErrorResponse(new WarewolfErrorResponseArgs { StatusCode = HttpStatusCode.Unauthorized, Title = "test_title", Message = "test_message" });
+            var httpContext = sut.HttpContext;
+            var errorResult = httpContext.CreateWarewolfErrorResponse(new WarewolfErrorResponseArgs { StatusCode = HttpStatusCode.Unauthorized, Title = "test_title", Message = "test_message" });
 
             var result = GetResponse(errorResult); //sut.Response.Content.ReadAsStringAsync().Result;
             var expected = new Error
@@ -95,7 +96,8 @@ namespace Dev2.Runtime.WebServer.Tests
         public void Extensions_CreateWarewolfErrorResponse_HttpActionContext_GivenXMLURI_ShouldReturnXML()
         {
             var sut = CreateActionContext(true, "http://localhost:3241/help/wolf-tools/gates.xml");
-            var errorResult = sut.CreateWarewolfErrorResponse(new WarewolfErrorResponseArgs { StatusCode = HttpStatusCode.Unauthorized, Title = "test_title", Message = "test_message" });
+            var httpContext = sut.HttpContext;
+            var errorResult = httpContext.CreateWarewolfErrorResponse(new WarewolfErrorResponseArgs { StatusCode = HttpStatusCode.Unauthorized, Title = "test_title", Message = "test_message" });
 
             var result = GetResponse(errorResult); //sut.Response.Content.ReadAsStringAsync().Result;
             var expected = new Error
@@ -111,8 +113,10 @@ namespace Dev2.Runtime.WebServer.Tests
         [Owner("Siphamandla Dube")]
         public void Extensions_CreateWarewolfErrorResponse_HttpActionContext_GivenTRXURI_ShouldReturnXML()
         {
-            var sut = CreateActionContext(true, "http://localhost:3241/help/wolf-configs/logger.trx?name=elastic");
-            var errorResult = sut.CreateWarewolfErrorResponse(new WarewolfErrorResponseArgs { StatusCode = HttpStatusCode.Unauthorized, Title = "test_title", Message = "test_message" });
+            //var sut = CreateActionContext(true, "http://localhost:3241/help/wolf-configs/logger.trx?name=elastic");
+            var sut = CreateActionContext(true, "http://localhost:3241/help/wolf-configs/logger.trx");
+            var httpContext = sut.HttpContext;
+            var errorResult = httpContext.CreateWarewolfErrorResponse(new WarewolfErrorResponseArgs { StatusCode = HttpStatusCode.Unauthorized, Title = "test_title", Message = "test_message" });
 
             var result = GetResponse(errorResult); //sut.Response.Content.ReadAsStringAsync().Result;
             var expected = new Error
@@ -186,6 +190,7 @@ namespace Dev2.Runtime.WebServer.Tests
             contextFeatures.Set(new HttpRequestMessageFeature(httpContext.Object));
             httpContext.Setup(ad => ad.Features).Returns(contextFeatures);
 
+            
             return new ActionContext(httpContext.Object, new RouteData(routeValues), new ActionDescriptor());
         }
 
