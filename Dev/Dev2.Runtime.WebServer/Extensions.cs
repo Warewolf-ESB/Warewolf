@@ -72,10 +72,11 @@ namespace Dev2.Runtime.WebServer
                           : new StringContent(message, System.Text.Encoding.UTF8, "application/json");
         }
 
-        //public static void CreateWarewolfErrorResponse(this HttpActionContext context, WarewolfErrorResponseArgs errorResponseArgs)
-        //{
-        //    context.Response = CreateWarewolfErrorResponse(context.Request.RequestUri, errorResponseArgs);
-        //}
+        public static HttpResponseMessage CreateWarewolfErrorResponse(this Microsoft.AspNetCore.Mvc.ActionContext context, WarewolfErrorResponseArgs errorResponseArgs)
+        {
+            var errorResponse = CreateWarewolfErrorResponse(context.HttpContext.Request.ToUri(), errorResponseArgs);
+            return errorResponse;
+        }
 
         public static HttpResponseMessage CreateWarewolfErrorResponse(this Microsoft.AspNetCore.Http.HttpContext context, WarewolfErrorResponseArgs errorResponseArgs)
         {

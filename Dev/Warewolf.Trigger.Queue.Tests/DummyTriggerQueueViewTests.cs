@@ -35,7 +35,7 @@ namespace Warewolf.Trigger.Queue.Tests
             var explorerTooltips = new Mock<IExplorerTooltips>();
 
             CustomContainer.Register(mockShellViewModel.Object);
-            CustomContainer.Register(new Mock<Microsoft.Practices.Prism.PubSubEvents.IEventAggregator>().Object);
+            CustomContainer.Register(new Mock<Prism.Events.IEventAggregator>().Object);
             CustomContainer.Register(connectControlSingleton.Object);
             CustomContainer.Register(explorerTooltips.Object);
 

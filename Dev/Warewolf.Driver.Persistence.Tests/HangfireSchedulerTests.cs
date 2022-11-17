@@ -42,6 +42,7 @@ using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 using enActionType = Dev2.Common.Interfaces.Core.DynamicServices.enActionType;
+using WindowsIdentity = System.Security.Principal.WindowsIdentity;
 
 namespace Warewolf.Driver.Drivers.HangfireScheduler.Tests
 {

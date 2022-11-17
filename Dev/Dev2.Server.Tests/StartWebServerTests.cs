@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using Dev2.Runtime.WebServer;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Warewolf;
@@ -68,7 +69,8 @@ namespace Dev2.Server.Tests
         }
 
         Mock<IDisposable> mockServer = new Mock<IDisposable>();
-        IDisposable StartAction(Dev2Endpoint[] endPoints) {
+        IDisposable StartAction(Dev2Endpoint[] endPoints, WebApplicationBuilder webApplicationBuilder)
+        {
             Assert.IsNotNull(endPoints);
             return mockServer.Object;
         }
@@ -90,7 +92,7 @@ namespace Dev2.Server.Tests
 
             mockWriter.Setup(o => o.Fail(It.IsAny<string>(), It.IsAny<Exception>()));
             //-------------------Act-------------------------
-            using (var start = new StartWebServer(mockWriter.Object, StartAction1))
+            using (var start = new StartWebServer(mockWriter.Object, StartAction))
             {
                 start.Execute(mockWebServerConfiguration.Object, mockPauseHelper.Object);
             }
@@ -98,15 +100,6 @@ namespace Dev2.Server.Tests
             //-------------------Assert----------------------
             mockWriter.Verify(a => a.WriteLine("Web server listening at Url"), Times.Once);
         }
-
-        IDisposable StartAction1(Dev2Endpoint[] endPoints = null)
-        {
-            Mock<IDisposable> mockServer1 = new Mock<IDisposable>();
-            mockServer1.Setup(o => o.Dispose()).Callback(() => throw new Exception());
-
-            return mockServer1.Object;
-        }
-
 
         [TestMethod]
         [Owner("Siphamandla Dube")]
