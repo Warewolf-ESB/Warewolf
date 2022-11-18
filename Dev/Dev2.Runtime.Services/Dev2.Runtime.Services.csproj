@@ -86,9 +86,6 @@
     <Compile Include="ESB\Management\WorkflowManagementEndpointAbstract.cs" />
     <Compile Include="Fake\DiscoveryClientProtocol.cs" />
     <Compile Include="Fake\FakeExtensions.cs" />
-    <Compile Include="Fake\XsdDataContractImporter.cs" />
-    <Compile Include="Fake\XsdDataContractImporter.cs" />
-    <Compile Include="Fake\XsdDataContractImporter.cs" />
     <Compile Include="Hosting\ContextualResourceCatalog.cs" />
     <Compile Include="Hosting\ResourceCatalogFactory.cs" />
     <Compile Include="Hosting\TriggersCatalog.cs" />
