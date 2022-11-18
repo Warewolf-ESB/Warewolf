@@ -385,19 +385,19 @@
       <Version>1.0.2</Version>
     </PackageReference>
     <PackageReference Include="log4net">
-      <Version>2.0.12</Version>
+      <Version>2.0.15</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.AspNet.SignalR.Client">
       <Version>2.4.3</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.TestPlatform.ObjectModel">
-      <Version>16.11.0</Version>
+      <Version>17.4.0</Version>
     </PackageReference>
     <PackageReference Include="Moq">
-      <Version>4.16.1</Version>
+      <Version>4.18.2</Version>
     </PackageReference>
     <PackageReference Include="MSTest.TestFramework">
-      <Version>2.1.2</Version>
+      <Version>2.2.10</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>13.0.1</Version>
@@ -405,17 +405,17 @@
     <PackageReference Include="Prism.Mvvm">
       <Version>1.1.1</Version>
     </PackageReference>
-    <PackageReference Include="System.Configuration.ConfigurationManager" Version="5.0.0" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="7.0.0" />
     <PackageReference Include="System.Net.Http" Version="4.3.4" />
-    <PackageReference Include="System.ServiceModel.Duplex" Version="4.8.1" />
-    <PackageReference Include="System.ServiceModel.NetTcp" Version="4.8.1" />
-    <PackageReference Include="System.ServiceModel.Federation" Version="4.8.1" />
+    <PackageReference Include="System.ServiceModel.Duplex" Version="4.10.0" />
+    <PackageReference Include="System.ServiceModel.NetTcp" Version="4.10.0" />
+    <PackageReference Include="System.ServiceModel.Federation" Version="4.10.0" />
     <PackageReference Include="MSTest.TestAdapter" Version="2.2.10" />
-    <PackageReference Include="Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers" Version="0.4.346202">
+    <PackageReference Include="Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers" Version="0.4.355802">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="Caliburn.Micro" Version="2.0.2" />
-    <PackageReference Include="Oracle.ManagedDataAccess" Version="12.2.20220118" />
+    <PackageReference Include="Caliburn.Micro" Version="4.0.212" />
+    <PackageReference Include="Oracle.ManagedDataAccess" Version="21.8.0" />
   </ItemGroup>
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
