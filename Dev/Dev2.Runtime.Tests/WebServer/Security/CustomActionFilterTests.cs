@@ -99,7 +99,6 @@ namespace Dev2.Tests.Runtime.WebServer.Security
             //------------Execute Test---------------------------
             var result = attribute.OnAuthorization(httpActionContext);
             //------------Assert Results-------------------------
-            //var result = httpActionContext.HttpContext.Response;
             Assert.IsFalse(IsSuccessStatusCode(result));
             var responseMessage = GetResponse(result);
 
@@ -270,31 +269,21 @@ namespace Dev2.Tests.Runtime.WebServer.Security
             contextFeatures.Set(new HttpRequestMessageFeature(httpContext.Object));
             httpContext.Setup(ad => ad.Features).Returns(contextFeatures);
 
-            return new ActionContext(httpContext.Object, new RouteData(routeValues), new ActionDescriptor());
+            var actionDescriptor = new Mock<ActionDescriptor>();
+            actionDescriptor.Setup(ad => ad.DisplayName).Returns(actionName);
+
+            return new ActionContext(httpContext.Object, new RouteData(routeValues), actionDescriptor.Object);
         }
 
         public bool IsSuccessStatusCode(HttpResponseMessage response)
         {
             if (response == null) return false;
-            //var statusCode = response.StatusCode;
-            //return statusCode >= 200 && statusCode <= 299;
             return response.IsSuccessStatusCode;
         }
 
         public static string GetResponse(HttpResponseMessage response)
         {
             var result = string.Empty;
-            //if (response != null && response.Body != null)
-            //{
-            //    response.Body.Seek(0, SeekOrigin.Begin);
-            //    using (var reader = new StreamReader(response.Body))
-            //    {
-            //        result = reader.ReadToEnd();
-            //    }
-            //    response.Body.Dispose();
-            //}
-
-            //return response.Content.ReadAsStringAsync().Result;
             if (response != null && response.Content != null)
                 result = (response.Content as ObjectContent).Value.ToString();
             

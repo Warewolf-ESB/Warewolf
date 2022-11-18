@@ -152,7 +152,7 @@ namespace Dev2.Activities.Sharepoint
                     var list = sharepointHelper.LoadFieldsForList(SharepointList, ctx, false);
                     listItems = list.GetItems(camlQuery);
                     ctx.Load(listItems);
-                    ctx.ExecuteQuery();
+                    ctx.ExecuteQueryAsync().Wait();
                 }
                 using (var ctx = sharepointHelper.GetContext())
                 {
@@ -163,7 +163,7 @@ namespace Dev2.Activities.Sharepoint
                     }
 
                     list.Update();
-                    ctx.ExecuteQuery();
+                    ctx.ExecuteQueryAsync().Wait();
                 }
                 var successfulDeleteCount = listItems.Count();
                 if (!string.IsNullOrWhiteSpace(DeleteCount))

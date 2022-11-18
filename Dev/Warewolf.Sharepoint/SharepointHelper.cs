@@ -1,5 +1,5 @@
 #pragma warning disable
-﻿/*
+/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
@@ -9,17 +9,19 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Infrastructure.SharedModels;
 using Dev2.Runtime.ServiceModel.Data;
-using Microsoft.SharePoint.Client;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Security;
-using File = Microsoft.SharePoint.Client.File;
+using Microsoft.SharePoint.Client;
+using System.Security.Policy;
+using Dev2.Common.Interfaces.Wrappers;
+using Microsoft.Exchange.WebServices.Data;
+using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Infrastructure.SharedModels;
 
 namespace Warewolf.Sharepoint
 {
@@ -84,7 +86,7 @@ namespace Warewolf.Sharepoint
                 {
                     secureString.AppendChar(c);
                 }
-                ctx.Credentials = new SharePointOnlineCredentials(UserName, secureString);
+                ctx.Credentials = new SharePointOnlineCredentials(UserName, secureString.ToString());
             }
             return ctx;
         }
@@ -96,7 +98,7 @@ namespace Warewolf.Sharepoint
             {
                 var listCollection = context.Web.Lists;
                 context.Load(listCollection);
-                context.ExecuteQuery();
+                context.ExecuteQueryAsync().Wait();
                 lists.AddRange(listCollection.Select(list => new SharepointListTo { FullName = list.Title }));
             }
             return lists;
@@ -108,7 +110,7 @@ namespace Warewolf.Sharepoint
             using (var ctx = GetContext())
             {
                 var list = LoadFieldsForList(listName, ctx, editableFieldsOnly);
-                ctx.ExecuteQuery();
+                ctx.ExecuteQueryAsync().Wait();
                 var fieldCollection = list.Fields;
                 fields.AddRange(fieldCollection.Select(field => CreateSharepointFieldToFromSharepointField(field)));
             }
@@ -125,7 +127,7 @@ namespace Warewolf.Sharepoint
                 var fullPath = GetSharePointRootFolder(folderUrl, ctx);
                 var folder = ctx.Web.GetFolderByServerRelativeUrl(fullPath);
                 ctx.Load(folder, f => f.Files.Include(c => c.Name, c => c.ServerRelativeUrl), f => f.ParentFolder.ServerRelativeUrl, f => f.ServerRelativeUrl, f => f.Folders);
-                ctx.ExecuteQuery();
+                ctx.ExecuteQueryAsync().Wait();
 
                 fields.AddRange(folder.Files.Select(file => file.ServerRelativeUrl));
             }
@@ -142,7 +144,7 @@ namespace Warewolf.Sharepoint
                 var fullPath = GetSharePointRootFolder(folderUrl, ctx);
                 var folder = ctx.Web.GetFolderByServerRelativeUrl(fullPath);
                 ctx.Load(folder, f => f.Files.Include(c => c.Name, c => c.ServerRelativeUrl), f => f.ParentFolder.ServerRelativeUrl, f => f.ServerRelativeUrl, f => f.Folders);
-                ctx.ExecuteQuery();
+                ctx.ExecuteQueryAsync().Wait();
 
                 folders.AddRange(folder.Folders.Select(file => file.ServerRelativeUrl));
             }
@@ -158,10 +160,10 @@ namespace Warewolf.Sharepoint
                 var file = ctx.Web.GetFileByServerRelativeUrl(fullPath);
 
                 ctx.Load(file);
-                ctx.ExecuteQuery();
+                ctx.ExecuteQueryAsync().Wait();
 
                 file.CopyTo(copyPath, overWrite);
-                ctx.ExecuteQuery();
+                ctx.ExecuteQueryAsync().Wait();
             }
 
             return "Success";
@@ -183,10 +185,10 @@ namespace Warewolf.Sharepoint
                 var file = ctx.Web.GetFileByServerRelativeUrl(fullPath);
 
                 ctx.Load(file);
-                ctx.ExecuteQuery();
+                ctx.ExecuteQueryAsync().Wait();
 
                 file.MoveTo(movePath, moveOption);
-                ctx.ExecuteQuery();
+                ctx.ExecuteQueryAsync().Wait();
             }
 
             return "Success";
@@ -200,10 +202,10 @@ namespace Warewolf.Sharepoint
                 var file = ctx.Web.GetFileByServerRelativeUrl(fullPath);
 
                 ctx.Load(file);
-                ctx.ExecuteQuery();
+                ctx.ExecuteQueryAsync().Wait();
 
                 file.DeleteObject();
-                ctx.ExecuteQuery();
+                ctx.ExecuteQueryAsync().Wait();
             }
 
             return "Success";
@@ -225,24 +227,18 @@ namespace Warewolf.Sharepoint
             }
 
             using (var ctx = GetContext())
-            {
-                using (var fs = new FileStream(localPath, FileMode.Open))
-                {
-                    var localFile = new FileInfo(localPath);
-
-                    var fullPath = GetSharePointRootFolder(serverPath, ctx);
-
-                    var folder = ctx.Web.GetFolderByServerRelativeUrl(fullPath);
-
-                    ctx.Load(folder, f => f.Files.Include(c => c.Name, c => c.ServerRelativeUrl), f => f.ParentFolder.ServerRelativeUrl, f => f.ServerRelativeUrl, f => f.Folders);
-                    ctx.ExecuteQuery();
-
-                    var newfileName = !string.IsNullOrEmpty(fileName) ? fileName : localFile.Name;
-
-                    var fileUrl = string.Format("{0}/{1}", folder.ServerRelativeUrl, newfileName);
-
-                    Extensions.SaveBinaryDirect(ctx, fileUrl, fs, true);//File.SaveBinaryDirect(ctx, fileUrl, fs, true);
-                }
+            {               
+                string filepath = localPath;
+                FileCreationInformation newfile = new FileCreationInformation();
+                newfile.Url = System.IO.Path.GetFileName(filepath);
+                newfile.Content = System.IO.File.ReadAllBytes(filepath);
+                var fullPath = GetSharePointRootFolder(serverPath, ctx);
+                var folder = ctx.Web.GetFolderByServerRelativeUrl(fullPath);
+                Microsoft.SharePoint.Client.File uploadFile = folder.Files.Add(newfile);
+                ctx.Load(folder, f => f.Files.Include(c => c.Name, c => c.ServerRelativeUrl), f => f.ParentFolder.ServerRelativeUrl, f => f.ServerRelativeUrl, f => f.Folders);
+                ctx.ExecuteQueryAsync().Wait();
+                ctx.Load(uploadFile);
+                ctx.ExecuteQueryAsync().Wait();
             }
 
             return "Success";
@@ -267,6 +263,10 @@ namespace Warewolf.Sharepoint
                 return "Success";
             }
 
+            if (fileName == null || localPath == null)
+            {
+                return "Failed";
+            }
 
             CreateFolderIfNotExist(localPath);
 
@@ -277,26 +277,17 @@ namespace Warewolf.Sharepoint
                 var file = ctx.Web.GetFileByServerRelativeUrl(fullPath);
 
                 ctx.Load(file);
-                ctx.ExecuteQuery();
+                ctx.ExecuteQueryAsync().Wait();
 
-                var fileRef = file.ServerRelativeUrl;
-                var fileInfo = Extensions.OpenBinaryDirect(ctx, fileRef);//var fileInfo = File.OpenBinaryDirect(ctx, fileRef);
-
-                if (fileName == null || localPath == null)
-                {
-                    return "Failed";
-                }
-
+                Microsoft.SharePoint.Client.ClientResult<Stream> mstream = file.OpenBinaryStream();
+                ctx.ExecuteQueryAsync().Wait();
+              
                 var newPath = Path.Combine(localPath, fileName);
 
-                using (var fileStream = System.IO.File.Create(newPath))
+                using (var fileStream = new System.IO.FileStream(newPath, System.IO.FileMode.Create))
                 {
-                    //fileInfo.Stream.CopyTo(fileStream);
-                    using(var stream = fileInfo.OpenRead())
-                    {
-                        stream.CopyTo(fileStream);
-                    }
-                }
+                    mstream.Value.CopyTo(fileStream);
+                }               
             }
 
             return "Success";
@@ -320,7 +311,7 @@ namespace Warewolf.Sharepoint
         {
             var list = ctx.Web.Lists.GetByTitle("Documents");
             ctx.Load(list.RootFolder);
-            ctx.ExecuteQuery();
+            ctx.ExecuteQueryAsync().Wait();
             var serverRelativeUrl = list.RootFolder.ServerRelativeUrl;
             var fullPath = folderUrl;
             if (!folderUrl.StartsWith(serverRelativeUrl))
@@ -451,7 +442,7 @@ namespace Warewolf.Sharepoint
                 {
                     var web = ctx.Web;
                     ctx.Load(web);
-                    ctx.ExecuteQuery();
+                    ctx.ExecuteQueryAsync().Wait();
                 }
             }
             catch (Exception)
@@ -462,7 +453,7 @@ namespace Warewolf.Sharepoint
                     {
                         var web = ctx.Web;
                         ctx.Load(web);
-                        ctx.ExecuteQuery();
+                        ctx.ExecuteQueryAsync().Wait();
                         isSharepointOnline = true;
                     }
                 }

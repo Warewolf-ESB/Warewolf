@@ -9,39 +9,44 @@
 */
 
 using System;
+using System.Security.Principal;
 using Dev2.Common;
 using Dev2.Data.Interfaces;
+using Dev2.Data.Security;
 using Dev2.PathOperations;
 
 namespace Dev2.Data.PathOperations
 {
     public interface IWindowsImpersonationContext : IDisposable
     {
+        WindowsIdentity Identity { get; set; }
         void Undo();
+
     }
 
     class WindowsImpersonationContextImpl : IWindowsImpersonationContext
     {
-        private readonly WindowsImpersonationContext _context;
+        private WindowsIdentity _context;
 
-        public WindowsImpersonationContextImpl(WindowsImpersonationContext context)
+        public WindowsImpersonationContextImpl(WindowsIdentity context)
         {
             _context = context;
         }
 
+        public WindowsIdentity Identity { get => _context; set => _context = value; }
+
         public void Dispose()
         {
-            _context.Dispose();
+            //// _context.Dispose(); Should not dispose identity passed.
         }
-
         public void Undo()
         {
-            _context.Undo();
+            //_context.Dispose(); Should not dispose identity passed.
         }
     }
 
     public static class ValidateAuthorization
-    {      
+    {
         public static SafeTokenHandle DoLogOn(IDev2LogonProvider dev2Logon, IActivityIOPath path) => dev2Logon.DoLogon(path);
         public static IWindowsImpersonationContext RequiresAuth(IActivityIOPath path, IDev2LogonProvider dev2LogonProvider)
         {

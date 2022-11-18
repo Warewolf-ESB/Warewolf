@@ -163,7 +163,7 @@ namespace Dev2.Activities.Sharepoint
                         }
                     }
                     listItem.Update();
-                    ctx.ExecuteQuery();
+                    ctx.ExecuteQueryAsync().Wait();
                 }
             }
             if (!string.IsNullOrEmpty(Result))

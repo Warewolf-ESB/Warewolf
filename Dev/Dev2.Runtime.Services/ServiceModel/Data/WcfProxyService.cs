@@ -134,7 +134,7 @@ namespace Dev2.Runtime.ServiceModel.Data
 
             var methods = proxy.ProxyType.GetMethods();
 
-            foreach (var methodInfo in methods.Where(methodInfo => methodInfo.DeclaringType == type))
+            foreach (var methodInfo in methods.Where(methodInfo => methodInfo.DeclaringType == type && methodInfo.IsFinal))
             {
                 serviceModel.MethodName = methodInfo.Name;
 

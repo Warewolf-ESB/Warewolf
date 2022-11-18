@@ -9,11 +9,15 @@
 */
 
 using System;
+using System.Collections.Generic;
+using System.Reflection;
 using System.Security.Claims;
 using Dev2.Runtime.Security;
 using Dev2.Runtime.WebServer.Security;
 using Dev2.Services.Security;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Connections.Features;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -53,7 +57,64 @@ namespace Dev2.Tests.Runtime.WebServer.Security
             //------------Assert Results-------------------------
         }
 
-       
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("AuthorizeHubAttribute_AuthorizeHubConnection")]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void AuthorizeHubAttribute_AuthorizeHubConnection_HubDescriptorIsNull_ThrowsArgumentNullException()
+        {
+            //------------Setup for test--------------------------
+            var authorizationProvider = new Mock<IAuthorizationService>();
+            var attribute = new CustomHubFilter(authorizationProvider.Object);
+
+            //------------Execute Test---------------------------
+            attribute.AuthorizeHubConnection(null);
+
+            //------------Assert Results-------------------------
+        }
+
+
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("AuthorizeHubAttribute_AuthorizeHubConnection")]
+        public void AuthorizeHubAttribute_AuthorizeHubConnection_UserIsNotAuthenticated_ResponseIsFalse()
+        {
+            Verify_AuthorizeHubConnection(isAuthenticated: false, isAuthorized: false);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("AuthorizeHubAttribute_AuthorizeHubConnection")]
+        public void AuthorizeHubAttribute_AuthorizeHubConnection_UserIsAuthenticatedAndNotAuthorized_ResponseIsFalse()
+        {
+            Verify_AuthorizeHubConnection(isAuthenticated: true, isAuthorized: false);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("AuthorizeHubAttribute_AuthorizeHubConnection")]
+        public void AuthorizeHubAttribute_AuthorizeHubConnection_UserIsAuthenticatedAndAuthorized_ResponseIsTrue()
+        {
+            Verify_AuthorizeHubConnection(isAuthenticated: true, isAuthorized: true);
+        }
+
+        static void Verify_AuthorizeHubConnection(bool isAuthenticated, bool isAuthorized)
+        {
+            //------------Setup for test--------------------------
+            var authorizationProvider = new Mock<IAuthorizationService>();
+            authorizationProvider.Setup(p => p.IsAuthorized(It.IsAny<IAuthorizationRequest>())).Returns(isAuthorized);
+            var attribute = new CustomHubFilter(authorizationProvider.Object);
+
+            //------------Execute Test---------------------------
+            var hubLifeTimeContext = CreateHubLifeTimeContext(isAuthenticated, string.Empty);
+            var response = attribute.AuthorizeHubConnection(hubLifeTimeContext);
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(isAuthenticated && isAuthorized, response);
+        }
+
+
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("CustomHubFilter_AuthorizeHubMethodInvocation")]
@@ -103,13 +164,57 @@ namespace Dev2.Tests.Runtime.WebServer.Security
             var attribute = new CustomHubFilter(authorizationProvider.Object);
 
             //------------Execute Test---------------------------
-            var response = attribute.AuthorizeHubMethodInvocation(CreateHubInvocationContext(isAuthenticated, methodName), WebServerRequestType.Unknown);
+            var response = attribute.AuthorizeHubMethodInvocation(CreateHubInvocationContext(isAuthenticated, methodName));
 
             //------------Assert Results-------------------------
             Assert.AreEqual(isAuthenticated && isAuthorized, response);
         }
 
-        public static Mock<HttpRequest> CreateRequest(string methodName)
+
+
+        public static HubLifetimeContext CreateHubLifeTimeContext(bool isAuthenticated, string methodName)
+        {
+            var hubCallerContext = CreateHubCallerContext(isAuthenticated, methodName).Object;
+
+            var context = new HubLifetimeContext(hubCallerContext, new Mock<IServiceProvider>().Object, new Mock<Hub>().Object);
+            return context;
+        }
+
+
+        public static HubInvocationContext CreateHubInvocationContext(bool isAuthenticated, string methodName, Hub hub = null)
+        {
+            var hubCallerContext = CreateHubCallerContext(isAuthenticated, methodName).Object;
+
+            var methodInfo = new Mock<MethodInfo>();
+            methodInfo.Setup(r => r.Name).Returns(methodName);
+            
+            if (hub == null)
+                hub = new Mock<Hub>().Object;
+
+            var context = new HubInvocationContext(hubCallerContext, new Mock<IServiceProvider>().Object, hub, methodInfo.Object, new List<object>());
+
+            return context;
+        }
+
+        private static Mock<HubCallerContext> CreateHubCallerContext(bool isAuthenticated, string methodName)
+        {
+            var user = new Mock<ClaimsPrincipal>();
+            user.Setup(u => u.Identity.IsAuthenticated).Returns(isAuthenticated);
+
+            var httpContext = new Mock<HttpContext>();
+            httpContext.Setup(r => r.User).Returns(user.Object);
+            httpContext.Setup(r => r.Request).Returns(CreateRequest(methodName).Object);
+
+            var httpConnectionContext = new HttpContextFeatureImpl() { HttpContext = httpContext.Object };
+            var contextFeatures = new FeatureCollection();
+            contextFeatures.Set<IHttpContextFeature>(httpConnectionContext);
+
+            var hubCallerContext = new Mock<HubCallerContext>();
+            hubCallerContext.Setup(r => r.Features).Returns(contextFeatures);
+            return hubCallerContext;
+        }
+
+        private static Mock<HttpRequest> CreateRequest(string methodName)
         {
             var routeValues = new RouteValueDictionary();
             routeValues.Add("action", methodName);
@@ -122,34 +227,10 @@ namespace Dev2.Tests.Runtime.WebServer.Security
             request.Setup(r => r.Query).Returns(new Mock<IQueryCollection>().Object);
             return request;
         }
+    }
 
-        public static HttpContext CreateHubInvocationContext(bool isAuthenticated, string methodName, string hubName = null)
-        {
-            var user = new Mock<ClaimsPrincipal>();
-            user.Setup(u => u.Identity.IsAuthenticated).Returns(isAuthenticated);
-
-            var context = new Mock<HttpContext>();
-            context.Setup(r => r.User).Returns(user.Object);
-            context.Setup(r => r.Request).Returns(CreateRequest(methodName).Object);
-
-            return context.Object;
-        }
-
-
-        //public static HubInvocationContext CreateHubInvocationContext1(bool isAuthenticated, string methodName, string hubName = null)
-        //{
-        //    var user = new Mock<ClaimsPrincipal>();
-        //    user.Setup(u => u.Identity.IsAuthenticated).Returns(isAuthenticated);
-
-        //    var callerContext = new Mock<HubCallerContext>();
-        //    callerContext.Setup(r => r.User).Returns(user.Object);
-
-        //    var context = new Mock<HubInvocationContext>();
-        //    context.Setup(c => c.Context).Returns(callerContext.Object);
-        //    context.Setup(c => c.Hub).Returns(new Mock<Hub>().Object);
-            
-
-        //    return context.Object;
-        //}
+    class HttpContextFeatureImpl : IHttpContextFeature
+    {
+        public HttpContext HttpContext { get; set; }
     }
 }

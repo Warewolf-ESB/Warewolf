@@ -180,7 +180,7 @@ namespace Dev2.Activities.Sharepoint
                     var list = ctx.Web.Lists.GetByTitle(SharepointList);
                     var listItems = list.GetItems(camlQuery);
                     ctx.Load(listItems);
-                    ctx.ExecuteQuery();
+                    ctx.ExecuteQueryAsync().Wait();
                     AddItemList(update, sharepointReadListTos, env, fields, listItems);
                 }
                 env.CommitAssign();

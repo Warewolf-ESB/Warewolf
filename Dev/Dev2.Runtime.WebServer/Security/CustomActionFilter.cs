@@ -80,7 +80,7 @@ namespace Dev2.Runtime.WebServer.Security
         public static AuthorizationRequest GetAuthorizationRequest(ActionContext actionContext)
         {
 
-            var authorizationRequest = actionContext.HttpContext.GetAuthorizationRequest();
+            var authorizationRequest = actionContext.GetAuthorizationRequest();
 
             try
             {

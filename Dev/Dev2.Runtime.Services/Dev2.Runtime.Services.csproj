@@ -84,17 +84,8 @@
     <Compile Include="ESB\Management\Services\TaskExtentions.cs" />
     <Compile Include="ESB\Management\Services\TestSqliteService.cs" />
     <Compile Include="ESB\Management\WorkflowManagementEndpointAbstract.cs" />
-    <Compile Include="Fake\DataContractSerializerMessageContractImporter.cs" />
-    <Compile Include="Fake\DataSetSchemaImporterExtension.cs" />
     <Compile Include="Fake\DiscoveryClientProtocol.cs" />
     <Compile Include="Fake\FakeExtensions.cs" />
-    <Compile Include="Fake\ImportOptions.cs" />
-    <Compile Include="Fake\ServiceContractGenerator.cs" />
-    <Compile Include="Fake\System\Web\Services\Description\WebReferenceOptions.cs" />
-    <Compile Include="Fake\TypedDataSetSchemaImporterExtension.cs" />
-    <Compile Include="Fake\WsdlImporter.cs" />
-    <Compile Include="Fake\XmlSerializerImportOptions.cs" />
-    <Compile Include="Fake\XsdDataContractImporter.cs" />
     <Compile Include="Hosting\ContextualResourceCatalog.cs" />
     <Compile Include="Hosting\ResourceCatalogFactory.cs" />
     <Compile Include="Hosting\TriggersCatalog.cs" />

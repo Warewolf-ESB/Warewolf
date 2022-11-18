@@ -10,32 +10,33 @@
 */
 
 using System;
+using System.Reflection;
+using System.Runtime.Loader;
+
 
 namespace Dev2.Runtime
 {
     public sealed class Isolated<T> : IDisposable where T : MarshalByRefObject
     {
-        AppDomain _domain;
+        AssemblyLoadContext _domain;
         readonly T _value;
 
         public Isolated()
         {
-           //_domain = AppDomain.CreateDomain("Isolated:" + Guid.NewGuid(),
-           //     null, AppDomain.CurrentDomain.SetupInformation);
-           FakeExtensions.CreateDomain("Isolated:" + Guid.NewGuid(), null, AppDomain.CurrentDomain.SetupInformation);
+            _domain = new AssemblyLoadContext(name: "Isolated:" + Guid.NewGuid(), isCollectible: true);
 
             var type = typeof(T);
-
-            _value = (T)_domain.CreateInstanceAndUnwrap(type.Assembly.FullName, type.FullName);
+            Assembly loadContextAssembly = _domain.LoadFromAssemblyName(type.Assembly.GetName());
+            _value = (T)loadContextAssembly.CreateInstance((type.FullName == null ? "" : type.FullName))!;
         }
-        
+
         public T Value => _value;
 
         public void Dispose()
         {
             if (_domain != null)
             {
-                AppDomain.Unload(_domain);
+                _domain.Unload();
 
                 _domain = null;
             }

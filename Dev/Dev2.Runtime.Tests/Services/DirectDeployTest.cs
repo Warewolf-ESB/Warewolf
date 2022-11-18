@@ -309,7 +309,9 @@ namespace Dev2.Tests.Runtime.Services
             executeMessage.HasError = false;
             executeMessage.Message = new StringBuilder("Great Succesess");
             var execMsg = serializer.Serialize(executeMessage);
-            hubProxy.Setup(proxy => proxy.InvokeCoreAsync("FetchExecutePayloadFragment", typeof(Task), null, It.IsAny<CancellationToken>())).Returns(Task.FromResult(execMsg as object));
+
+            hubProxy.Setup(proxy => proxy.InvokeCoreAsync("FetchExecutePayloadFragment", typeof(String), It.IsAny<FutureReceipt[]>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(execMsg as object));
+
             connectionsMock.Setup(connection => connection.GetHubConnection(It.IsAny<Data.ServiceModel.Connection>())).Returns(hubProxy.Object);
 
             directDeploy.Connections = connectionsMock.Object;

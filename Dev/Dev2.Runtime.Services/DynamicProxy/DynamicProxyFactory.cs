@@ -8,13 +8,17 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Data;
 //using System.Data.Design;
+using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
 using System.Text;
+using System.Threading;
+using System.Web.Services.Description;
 //using System.Web.Services.Discovery;
 using System.Xml;
 using System.Xml.Schema;
@@ -28,28 +32,28 @@ using System.Xml.Serialization;
 
 namespace Dev2.Runtime.DynamicProxy
 {
+    using Binding = System.ServiceModel.Channels.Binding;
     using WsdlNS = System.Web.Services.Description;
 
 
     public class DynamicProxyFactory
     {
-        readonly string wsdlUri;
+        readonly string wsdlUrl;
         readonly DynamicProxyFactoryOptions options;
 
         CodeCompileUnit codeCompileUnit;
         CodeDomProvider codeDomProvider;
-        ServiceContractGenerator contractGenerator;
 
-        Collection<CoreWCF.Description.MetadataSection> metadataCollection;
         IEnumerable<Binding> bindings;
-        IEnumerable<CoreWCF.Description.ContractDescription> contracts;
+        IEnumerable<System.ServiceModel.Description.ContractDescription> contracts;
         IEnumerable<System.ServiceModel.Description.ServiceEndpoint> endpoints;
-        IEnumerable<CoreWCF.Description.MetadataConversionError> importWarnings;
-        IEnumerable<CoreWCF.Description.MetadataConversionError> codegenWarnings;
         IEnumerable<CompilerError> compilerWarnings;
 
         Assembly proxyAssembly;
         string proxyCode;
+
+        string fileDirectory = "C:/ProgramData/Warewolf/Temp/WCFReference";
+        string fileName = "Reference.cs";
 
         public DynamicProxyFactory(string wsdlUri, DynamicProxyFactoryOptions options)
         {
@@ -63,182 +67,28 @@ namespace Dev2.Runtime.DynamicProxy
                 throw new ArgumentNullException("options");
             }
 
-            this.wsdlUri = wsdlUri;
+            if (!wsdlUri.Contains("?wsdl"))
+            {
+                wsdlUri = wsdlUri + "?wsdl";
+            }
+
+            this.wsdlUrl = wsdlUri;
             this.options = options;
 
-            DownloadMetadata();
-            ImportMetadata();
-            CreateProxy();
-            WriteCode();
+            CreateFilePath(fileDirectory);
+            ExecuteCommand("dotnet-svcutil " + wsdlUri + " --outputDir " + fileDirectory);
+            CreateCodeDomProvider();
+            WriteCodeFromFile();
             CompileProxy();
+            contracts = GetAllContracts();
+            bindings = GetAllBindings();
+            endpoints = GetAllEndpoints();
+            CleanUpReferenceFiles();
         }
 
         public DynamicProxyFactory(string wsdlUri)
             : this(wsdlUri, new DynamicProxyFactoryOptions())
         {
-        }
-
-        void DownloadMetadata()
-        {
-            var epr = new EndpointAddress(wsdlUri);
-
-            var disco = new DiscoveryClientProtocol
-            {
-                AllowAutoRedirect = true,
-                UseDefaultCredentials = true
-            };
-            DiscoveryClientProtocol.DiscoverAny(wsdlUri);//disco.DiscoverAny(wsdlUri);
-            DiscoveryClientProtocol.ResolveAll();//disco.ResolveAll();
-
-            var results = new Collection<CoreWCF.Description.MetadataSection>();
-            if (disco.Documents.Values != null)
-            {
-                foreach (var document in disco.Documents.Values)
-                {
-                    AddDocumentToResults(document, results);
-                }
-            }
-
-            metadataCollection = results;
-        }
-
-        void AddDocumentToResults(object document, Collection<CoreWCF.Description.MetadataSection> results)
-        {
-            var wsdl = document as WsdlNS.ServiceDescription;
-            var schema = document as XmlSchema;
-            var xmlDoc = document as XmlElement;
-
-            if (wsdl != null)
-            {
-                results.Add(CoreWCF.Description.MetadataSection.CreateFromServiceDescription(wsdl));
-            }
-            else if (schema != null)
-            {
-                results.Add(CoreWCF.Description.MetadataSection.CreateFromSchema(schema));
-            }
-            else if (xmlDoc != null && xmlDoc.LocalName == "Policy")
-            {
-                results.Add(CoreWCF.Description.MetadataSection.CreateFromPolicy(xmlDoc, null));
-            }
-            else
-            {
-                var mexDoc = new CoreWCF.Description.MetadataSection();
-                mexDoc.Metadata = document;
-                results.Add(mexDoc);
-            }
-        }
-
-
-        void ImportMetadata()
-        {
-            codeCompileUnit = new CodeCompileUnit();
-            CreateCodeDomProvider();
-
-            var importer = new WsdlImporter(new CoreWCF.Description.MetadataSet(metadataCollection));
-            AddStateForDataContractSerializerImport(importer);
-            AddStateForXmlSerializerImport(importer);
-
-            bindings = WsdlImporter.ImportAllBindings();//bindings = importer.ImportAllBindings();
-            contracts = WsdlImporter.ImportAllContracts();//contracts = importer.ImportAllContracts();
-            endpoints = WsdlImporter.ImportAllEndpoints();//endpoints = importer.ImportAllEndpoints();
-            importWarnings = importer.Errors;
-
-            var success = true;
-            if (importWarnings != null)
-            {
-                foreach (var error in importWarnings)
-                {
-                    if (!error.IsWarning)
-                    {
-                        success = false;
-                        break;
-                    }
-                }
-            }
-
-            if (!success)
-            {
-                var exception = new DynamicProxyException(
-                    Constants.ErrorMessages.ImportError);
-                exception.MetadataImportErrors = importWarnings;
-                throw exception;
-            }
-        }
-
-        void AddStateForXmlSerializerImport(WsdlImporter importer)
-        {
-            var importOptions =
-                new XmlSerializerImportOptions(codeCompileUnit);
-            importOptions.CodeProvider = codeDomProvider;
-
-            importOptions.WebReferenceOptions = new WsdlNS.WebReferenceOptions();
-            importOptions.WebReferenceOptions.CodeGenerationOptions =
-                CodeGenerationOptions.GenerateProperties |
-                CodeGenerationOptions.GenerateOrder;
-
-            importOptions.WebReferenceOptions.SchemaImporterExtensions.Add(
-                typeof(TypedDataSetSchemaImporterExtension).AssemblyQualifiedName);
-            importOptions.WebReferenceOptions.SchemaImporterExtensions.Add(
-                typeof(DataSetSchemaImporterExtension).AssemblyQualifiedName);
-
-            importer.State.Add(typeof(XmlSerializerImportOptions), importOptions);
-        }
-
-        void AddStateForDataContractSerializerImport(WsdlImporter importer)
-        {
-            var xsdDataContractImporter =
-                new XsdDataContractImporter(codeCompileUnit);
-            xsdDataContractImporter.Options = new ImportOptions();
-            xsdDataContractImporter.Options.ImportXmlType =
-                (options.FormatMode ==
-                    DynamicProxyFactoryOptions.FormatModeOptions.DataContractSerializer);
-
-            xsdDataContractImporter.Options.CodeProvider = codeDomProvider;
-            importer.State.Add(typeof(XsdDataContractImporter),
-                    xsdDataContractImporter);
-
-            foreach (var importExtension in importer.WsdlImportExtensions)
-            {
-
-                if (importExtension is DataContractSerializerMessageContractImporter dcConverter)
-                {
-                    dcConverter.Enabled = options.FormatMode ==
-                        DynamicProxyFactoryOptions.FormatModeOptions.XmlSerializer ? false : true;
-                }
-
-            }
-        }
-
-        void CreateProxy()
-        {
-            CreateServiceContractGenerator();
-
-            foreach (var contract in contracts)
-            {
-                ServiceContractGenerator.GenerateServiceContractType(contract);//contractGenerator.GenerateServiceContractType(contract);
-            }
-
-            var success = true;
-            codegenWarnings = contractGenerator.Errors;
-            if (codegenWarnings != null)
-            {
-                foreach (var error in codegenWarnings)
-                {
-                    if (!error.IsWarning)
-                    {
-                        success = false;
-                        break;
-                    }
-                }
-            }
-
-            if (!success)
-            {
-                var exception = new DynamicProxyException(
-                 Constants.ErrorMessages.CodeGenerationError);
-                exception.CodeGenerationErrors = codegenWarnings;
-                throw exception;
-            }
         }
 
         void CompileProxy()
@@ -283,25 +133,6 @@ namespace Dev2.Runtime.DynamicProxy
 
             compilerWarnings = ToEnumerable(results.Errors);
             proxyAssembly = Assembly.LoadFile(results.PathToAssembly);
-        }
-
-        void WriteCode()
-        {
-            using (var writer = new StringWriter())
-            {
-                var codeGenOptions = new CodeGeneratorOptions();
-                codeGenOptions.BracingStyle = "C";
-                codeDomProvider.GenerateCodeFromCompileUnit(
-                        codeCompileUnit, writer, codeGenOptions);
-                writer.Flush();
-                proxyCode = writer.ToString();
-            }
-
-            // use the modified proxy code, if code modifier is set.
-            if (options.CodeModifier != null)
-            {
-                proxyCode = options.CodeModifier(proxyCode);
-            }
         }
 
         void AddAssemblyReference(Assembly referencedAssembly,
@@ -468,17 +299,9 @@ namespace Dev2.Runtime.DynamicProxy
             codeDomProvider = CodeDomProvider.CreateProvider(options.Language.ToString());
         }
 
-        void CreateServiceContractGenerator()
-        {
-            contractGenerator = new ServiceContractGenerator(codeCompileUnit);
-            contractGenerator.Options |= ServiceContractGenerationOptions.ClientClass;
-        }
-
-        public IEnumerable<CoreWCF.Description.MetadataSection> Metadata => metadataCollection;
-
         public IEnumerable<Binding> Bindings => bindings;
 
-        public IEnumerable<CoreWCF.Description.ContractDescription> Contracts => contracts;
+        public IEnumerable<System.ServiceModel.Description.ContractDescription> Contracts => contracts;
 
         public IEnumerable<ServiceEndpoint> Endpoints => endpoints;
 
@@ -486,12 +309,7 @@ namespace Dev2.Runtime.DynamicProxy
 
         public string ProxyCode => proxyCode;
 
-        public IEnumerable<CoreWCF.Description.MetadataConversionError> MetadataImportWarnings => importWarnings;
-
-        public IEnumerable<CoreWCF.Description.MetadataConversionError> CodeGenerationWarnings => codegenWarnings;
-
         public IEnumerable<CompilerError> CompilationWarnings => compilerWarnings;
-
 
 
         public static string ToString(IEnumerable<CoreWCF.Description.MetadataConversionError>
@@ -541,6 +359,286 @@ namespace Dev2.Runtime.DynamicProxy
             }
 
             return errorList;
+        }
+
+        void ExecuteCommand(string Command)
+        {
+            ProcessStartInfo ProcessInfo;
+            Process Process;
+            const int minutes = 1;
+            const int timeoutInMilliseconds = 1000 * 60 * minutes;
+            const int milliSeconds = 1000;
+
+            ProcessInfo = new ProcessStartInfo("cmd.exe", "/K " + Command);
+            ProcessInfo.CreateNoWindow = false;
+            ProcessInfo.UseShellExecute = false;
+
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
+            Process = Process.Start(ProcessInfo);
+
+            int timeSpent = milliSeconds;
+            while (!Process.HasExited && timeSpent <= timeoutInMilliseconds)
+            {
+                Process.WaitForExit(timeSpent);
+                timeSpent = timeSpent + milliSeconds;
+            }
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
+        }
+
+        void WriteCodeFromFile()
+        {
+            var codeGenOptions = new CodeGeneratorOptions();
+            codeGenOptions.BracingStyle = "C";
+            var fileReference = fileDirectory + "/" + fileName;
+
+            if (File.Exists(fileReference))
+            {
+                // Read entire file content in one string    
+                proxyCode = File.ReadAllText(fileReference);
+                // Need to replace the private methods with public methods in order access the default binding and defaulf endpoint methods. 
+                proxyCode = proxyCode.Replace("private static System", "public static System");
+            }
+            else
+            {
+                proxyCode = null;
+            }
+
+            // use the modified proxy code, if code modifier is set.
+            if (options.CodeModifier != null)
+            {
+                proxyCode = options.CodeModifier(proxyCode);
+            }
+        }
+
+        Collection<ContractDescription> GetAllContracts()
+        {
+            var allTypes = proxyAssembly.GetTypes();
+            Type contractType = null;
+
+            Collection<ContractDescription> collection = new Collection<ContractDescription>();
+
+            foreach (var type in allTypes)
+            {
+                // Is it an interface?
+                if (!type.IsInterface)
+                {
+                    continue;
+                }
+
+                XmlTextReader myReader = new XmlTextReader(wsdlUrl);
+                if (WsdlNS.ServiceDescription.CanRead(myReader))
+                {
+                    WsdlNS.ServiceDescription myDescription = WsdlNS.ServiceDescription.Read(myReader);
+                    foreach (WsdlNS.PortType portType in myDescription.PortTypes)
+                    {
+                        contractType = type;
+                        ContractDescription contractDescription = ContractDescription.GetContract(contractType);
+                        if (contractDescription != null)
+                        {
+                            collection.Add(contractDescription);
+                        }
+                    }
+                }
+                break;
+
+            }
+
+            if (contractType == null)
+            {
+                CleanUpReferenceFiles();
+                throw new ArgumentException(
+                    Constants.ErrorMessages.UnknownContract);
+            }
+
+            return collection;
+        }
+
+        Collection<System.ServiceModel.Channels.Binding> GetAllBindings()
+        {
+            Collection<System.ServiceModel.Channels.Binding> collection = new Collection<System.ServiceModel.Channels.Binding>();
+
+            var allTypes = proxyAssembly.GetTypes();
+            Type contractType = null;
+
+            foreach (var type in allTypes)
+            {
+                if (!type.IsInterface && type.Name.Contains("Client"))
+                {
+                    var methods = type.GetMethods();
+                    foreach (var method in methods)
+                    {
+                        if (method.Name == "GetDefaultBinding")
+                        {
+                            contractType = type;
+                            var bindingMethod = method.Invoke(contractType, null);
+                            if (bindingMethod != null)
+                            {
+                                collection.Add((System.ServiceModel.Channels.Binding)bindingMethod);
+                            }
+                            break;
+                        }
+                    }
+
+                    //The Reference file does not contain GetDefaultBinding method.
+                    if (collection.Count() == 0)
+                    {
+                        XmlTextReader myReader = new XmlTextReader(wsdlUrl);
+                        if (WsdlNS.ServiceDescription.CanRead(myReader))
+                        {
+                            WsdlNS.ServiceDescription myDescription = WsdlNS.ServiceDescription.Read(myReader);
+                            foreach (WsdlNS.Port port in myDescription.Services[0].Ports)
+                            {
+                                if (port.Binding.Name.Contains("WSHttpBinding"))
+                                {
+                                    WSHttpBinding binding = new WSHttpBinding();
+                                    contractType = type;
+                                    collection.Add(binding);
+                                }
+                                else if (port.Binding.Name.Contains("BasicHttpBinding"))
+                                {
+                                    BasicHttpBinding binding = new BasicHttpBinding();
+                                    contractType = type;
+                                    collection.Add(binding);
+                                }
+                                else if (port.Binding.Name.Contains("CustomBinding"))
+                                {
+                                    CustomBinding binding = new CustomBinding();
+                                    contractType = type;
+                                    collection.Add(binding);
+                                }
+                                else if (port.Binding.Name.Contains("NetHttpBinding"))
+                                {
+                                    NetHttpBinding binding = new NetHttpBinding();
+                                    contractType = type;
+                                    collection.Add(binding);
+                                }
+                                else if (port.Binding.Name.Contains("NetTcpBinding"))
+                                {
+                                    NetTcpBinding binding = new NetTcpBinding();
+                                    contractType = type;
+                                    collection.Add(binding);
+                                }
+                            }
+                        }
+                    }
+                    break;
+                }
+                else
+                {
+                    continue;
+                }
+            }
+
+            if (contractType == null)
+            {
+                CleanUpReferenceFiles();
+                throw new ArgumentException(
+                    Constants.ErrorMessages.BindingError);
+            }
+
+            return collection;
+        }
+
+        Collection<ServiceEndpoint> GetAllEndpoints()
+        {
+            Collection<ServiceEndpoint> serviceEndpointCollection = new Collection<ServiceEndpoint>();
+
+            var allTypes = proxyAssembly.GetTypes();
+            Type contractType = null;
+
+            foreach (var type in allTypes)
+            {
+                if (!type.IsInterface && type.Name.Contains("Client"))
+                {
+                    var methods = type.GetMethods();
+                    foreach (var method in methods)
+                    {
+                        if (method.Name == "GetDefaultEndpointAddress")
+                        {
+                            var endpointMethod = method.Invoke(contractType, null);
+                            if (endpointMethod != null)
+                            {
+                                XmlTextReader myReader = new XmlTextReader(wsdlUrl);
+                                if (WsdlNS.ServiceDescription.CanRead(myReader))
+                                {
+                                    WsdlNS.ServiceDescription myDescription = WsdlNS.ServiceDescription.Read(myReader);
+                                    foreach (WsdlNS.Port port in myDescription.Services[0].Ports)
+                                    {
+                                        contractType = type;
+                                        ContractDescription contractDescription = ContractDescription.GetContract(contractType);
+                                        if (contractDescription != null)
+                                        {
+                                            ServiceEndpoint serviceEndpoint = new ServiceEndpoint(contractDescription, bindings.FirstOrDefault(), (EndpointAddress)endpointMethod);
+                                            if (serviceEndpoint != null)
+                                            {
+                                                serviceEndpointCollection.Add(serviceEndpoint);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            break;
+                        }
+                    }
+
+                    //The Reference file does not contain GetDefaultEndpointAddress method.
+                    if (serviceEndpointCollection.Count() == 0)
+                    {
+                        XmlTextReader myReader = new XmlTextReader(wsdlUrl);
+                        if (WsdlNS.ServiceDescription.CanRead(myReader))
+                        {
+                            WsdlNS.ServiceDescription myDescription = WsdlNS.ServiceDescription.Read(myReader);
+                            foreach (WsdlNS.Port port in myDescription.Services[0].Ports)
+                            {
+                                contractType = type;
+                                ContractDescription contractDescription = ContractDescription.GetContract(contractType);
+                                if (contractDescription != null)
+                                {
+                                    EndpointAddress endpointAddress = new EndpointAddress(wsdlUrl);
+                                    ServiceEndpoint serviceEndpoint = new ServiceEndpoint(contractDescription, bindings.FirstOrDefault(), endpointAddress);
+                                    if (serviceEndpoint != null)
+                                    {
+                                        serviceEndpointCollection.Add(serviceEndpoint);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    break;
+                }
+                else
+                {
+                    continue;
+                }
+            }
+
+            if (contractType == null)
+            {
+                CleanUpReferenceFiles();
+                throw new ArgumentException(
+                    Constants.ErrorMessages.EndpointNotFound);
+            }
+
+            return serviceEndpointCollection;
+        }
+
+        void CleanUpReferenceFiles()
+        {
+            DirectoryInfo directory = new DirectoryInfo(fileDirectory);
+            FileInfo[] files = directory.GetFiles();
+
+            if (files.Length > 0)
+            {
+                Directory.Delete(fileDirectory, true);
+            }
+        }
+
+        void CreateFilePath(string directory)
+        {
+            string pathString = System.IO.Path.Combine(directory, Guid.NewGuid().ToString());
+            System.IO.Directory.CreateDirectory(pathString);
+
+            fileDirectory = pathString;
         }
     }
 }

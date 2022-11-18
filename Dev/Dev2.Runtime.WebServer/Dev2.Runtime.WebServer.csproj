@@ -89,7 +89,6 @@
     <Compile Include="Executor\IExecutionDto.cs" />
     <Compile Include="Executor\IExecutor.cs" />
     <Compile Include="Executor\SubmittedData.cs" />
-    <Compile Include="Fake\HttpRequestExtensions.cs" />
     <Compile Include="Handlers\GetApisJsonServiceHandler.cs" />
     <Compile Include="Handlers\GetLogFileServiceHandler.cs" />
     <Compile Include="Handlers\GetOpenAPIServiceHandler.cs" />
