@@ -1,9 +1,11 @@
-using Microsoft.AspNet.SignalR.Client;
+using Dev2.SignalR.Wrappers;
+using Microsoft.AspNetCore.SignalR.Client;
 
 namespace Dev2.Runtime.Interfaces
 {
     public interface IHubFactory
     {
-        IHubProxy CreateHubProxy(Data.ServiceModel.Connection connection);
+        //IHubProxy CreateHubProxy(Data.ServiceModel.Connection connection);
+        HubConnection GetHubConnection(Data.ServiceModel.Connection connection);
     }
 }

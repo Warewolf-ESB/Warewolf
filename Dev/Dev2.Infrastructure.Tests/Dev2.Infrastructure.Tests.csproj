@@ -170,9 +170,9 @@
     <PackageReference Include="log4net">
       <Version>2.0.12</Version>
     </PackageReference>
-    <PackageReference Include="Microsoft.AspNet.SignalR.Core">
+    <!--<PackageReference Include="Microsoft.AspNet.SignalR.Core">
       <Version>2.4.3</Version>
-    </PackageReference>
+    </PackageReference>-->
     
     <PackageReference Include="Newtonsoft.Json">
       <Version>13.0.1</Version>

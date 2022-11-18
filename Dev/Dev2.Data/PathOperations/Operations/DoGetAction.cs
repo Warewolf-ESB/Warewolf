@@ -15,6 +15,7 @@ using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
 using Dev2.Data.Interfaces;
 using Warewolf.Resource.Errors;
+using Dev2.Data.Security;
 
 namespace Dev2.Data.PathOperations.Operations
 {
@@ -39,7 +40,7 @@ namespace Dev2.Data.PathOperations.Operations
         }
         public override Stream ExecuteOperation()
         {
-            if (_impersonatedUser != null)
+            if (_impersonatedUser != null && _impersonatedUser.Identity != null)
             {
                 return ExecuteOperationWithAuth();
             }
@@ -51,18 +52,21 @@ namespace Dev2.Data.PathOperations.Operations
         }
         public override Stream ExecuteOperationWithAuth()
         {
-            using (_impersonatedUser)
-            {
-                try
+            if (_impersonatedUser != null && _impersonatedUser.Identity != null)
+                return _impersonatedUser.Identity.RunImpersonated<Stream>(() =>
                 {
-                    return new MemoryStream(_fileWrapper.ReadAllBytes(_path.Path));
+                    try
+                    {
+                        return new MemoryStream(_fileWrapper.ReadAllBytes(_path.Path));
+                    }
+                    catch (Exception exception)
+                    {
+                        Dev2Logger.Error(exception.Message, GlobalConstants.WarewolfError);
+                        throw new Exception(exception.Message, exception);
+                    }
                 }
-                catch (Exception exception)
-                {
-                    Dev2Logger.Error(exception.Message, GlobalConstants.WarewolfError);
-                    throw new Exception(exception.Message, exception);
-                }
-            }
+            );
+            return null;
         }
     }
 }

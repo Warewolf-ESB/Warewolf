@@ -13,6 +13,8 @@ using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Wrappers;
 using Dev2.Data.Interfaces;
+using Dev2.Data.Security;
+
 
 namespace Dev2.Data.PathOperations.Operations
 {
@@ -50,7 +52,7 @@ namespace Dev2.Data.PathOperations.Operations
         {
             try
             {
-                if (_impersonatedUser != null)
+                if (_impersonatedUser != null && _impersonatedUser.Identity != null)
                 {
                     return ExecuteOperationWithAuth();
                 }
@@ -64,18 +66,21 @@ namespace Dev2.Data.PathOperations.Operations
         }
         public override bool ExecuteOperationWithAuth()
         {
-            using (_impersonatedUser)
-            {
-                try
+            if (_impersonatedUser != null && _impersonatedUser.Identity != null)
+                return _impersonatedUser.Identity.RunImpersonated<bool>(() =>
                 {
-                    return _deleteHelper.Delete(_path.Path);
+                    try
+                    {
+                        return _deleteHelper.Delete(_path.Path);
+                    }
+                    catch (Exception ex)
+                    {
+                        Dev2Logger.Error(ex.Message, GlobalConstants.Warewolf);
+                        return false;
+                    }
                 }
-                catch (Exception ex)
-                {
-                    Dev2Logger.Error(ex.Message, GlobalConstants.Warewolf);
-                    return false;
-                }
-            }
+                );
+            return false;
         }
     }
 }

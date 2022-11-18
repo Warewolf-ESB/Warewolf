@@ -48,7 +48,6 @@ namespace Dev2.Runtime.WebServer.Hubs
      * SignalR hub primarily used by Warewolf Studio, if one wanted to use SignalR from a web browser to interact with the Warewolf Server
      * one would use this hub by connecting using the JS SignalR client library with url "/esb".
      */
-    [Microsoft.AspNetCore.Authorization.Authorize("AuthorizeHub")]
     //[AuthorizeHub]
     //[HubName("esb")]
     public class EsbHub : ServerHub, IDebugWriter, IExplorerRepositorySync
@@ -57,6 +56,8 @@ namespace Dev2.Runtime.WebServer.Hubs
         static readonly ConcurrentDictionary<Guid, StringBuilder> MessageCache = new ConcurrentDictionary<Guid, StringBuilder>();
         readonly Dev2JsonSerializer _serializer = new Dev2JsonSerializer();
         static readonly Dictionary<Guid, string>  ResourceAffectedMessagesCache = new Dictionary<Guid, string>();
+
+        [Microsoft.Extensions.DependencyInjection.ActivatorUtilitiesConstructor]
         public EsbHub()
         {
             DebugDispatcher.Instance.Add(GlobalConstants.ServerWorkspaceID, this);

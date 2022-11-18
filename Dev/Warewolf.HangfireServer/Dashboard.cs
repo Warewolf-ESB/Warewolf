@@ -10,33 +10,40 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using Hangfire;
-using Microsoft.Owin;
-using Owin;
-using HangfireServer;
+using Microsoft.AspNetCore.Builder;
 
-[assembly: OwinStartup(typeof(Dashboard))]
 namespace HangfireServer
 {
     public class Dashboard
     {
         [ExcludeFromCodeCoverage]
-        public void Configuration(IAppBuilder app)
+        public void Start(string startEndPoint)
         {
-            app.UseHangfireDashboard("/" + Dev2.Common.Config.Persistence.DashboardName, new DashboardOptions()
+            var builder = WebApplication.CreateBuilder();
+
+            if (Dev2.Common.Config.Persistence.UseAsServer)
             {
-                Authorization = new[] { new HangFireAuthorizationFilter () },
-                IgnoreAntiforgeryToken = true
-            });
-            
-            if(Dev2.Common.Config.Persistence.UseAsServer)
-            {
-                app.UseHangfireServer(new BackgroundJobServerOptions()
+                builder.Services.AddHangfireServer(provider => new BackgroundJobServerOptions
                 {
                     ServerName = Dev2.Common.Config.Persistence.ServerName,
                     ServerTimeout = TimeSpan.FromMinutes(10),
                     WorkerCount = Environment.ProcessorCount
                 });
             }
+            else
+                builder.Services.AddHangfireServer();
+
+            var app = builder.Build();
+
+            app.UseHangfireDashboard("/" + Dev2.Common.Config.Persistence.DashboardName, new DashboardOptions()
+            {
+                Authorization = new[] { new HangFireAuthorizationFilter() },
+                IgnoreAntiforgeryToken = true
+            });
+
+            app.Urls.Add(startEndPoint);
+
+            app.StartAsync().Wait();
         }
     }
 }

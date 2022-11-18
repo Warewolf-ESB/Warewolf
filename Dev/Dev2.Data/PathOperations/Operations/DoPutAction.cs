@@ -19,6 +19,7 @@ using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
 using Dev2.Data.Interfaces;
 using Dev2.PathOperations;
+using Dev2.Data.Security;
 
 namespace Dev2.Data.PathOperations.Operations
 {
@@ -76,7 +77,7 @@ namespace Dev2.Data.PathOperations.Operations
             _fileLock.EnterWriteLock();
             try
             {
-                if (_impersonatedUser != null)
+                if (_impersonatedUser != null && _impersonatedUser.Identity != null)
                 {
                     return ExecuteOperationWithAuth(_currentStream, destination);
                 }
@@ -91,15 +92,18 @@ namespace Dev2.Data.PathOperations.Operations
 
         public override int ExecuteOperationWithAuth(Stream src, IActivityIOPath dst)
         {
-            using (_impersonatedUser)
-            {
-                return WriteData(src, dst);
-            }
+            if (_impersonatedUser != null && _impersonatedUser.Identity != null)
+                return _impersonatedUser.Identity.RunImpersonated<int>(() =>
+                {
+                    return WriteData(src, dst);
+                }
+                );
+            return 0;
         }
 
         int WriteData(Stream src, IActivityIOPath dst)
         {
-            var streamLength = (int) src.Length;
+            var streamLength = (int)src.Length;
             if (_arguments.Overwrite)
             {
                 _fileWrapper.WriteAllBytes(dst.Path, src.ToByteArray());

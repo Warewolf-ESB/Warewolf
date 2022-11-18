@@ -21,7 +21,7 @@ namespace Dev2.Common
     {
         public static IEnumerable<T> Flatten<T>(this IEnumerable<T> e, Func<T, IEnumerable<T>> f)
         {
-            if(e is null)
+            if (e is null)
             {
                 return new List<T>();
             }
@@ -43,47 +43,53 @@ namespace Dev2.Common
             }
             else
             {
-                var impersonationContext = Impersonate(userPrinciple);
-                using (impersonationContext)
+                var widentity = GetWindowsIdentity(userPrinciple);
+                if (null != widentity)
                 {
                     try
                     {
-                        actionToBePerformed?.Invoke();
+                        WindowsIdentity.RunImpersonated(widentity.AccessToken, actionToBePerformed);
                     }
-                    catch (Exception e)
+                    catch (Exception ex)
                     {
-                        impersonationContext?.Undo();
                         if (ServerUser.Identity is WindowsIdentity identity)
                         {
-                            impersonationContext = identity.Impersonate();
+                            WindowsIdentity.RunImpersonated(identity.AccessToken, actionToBePerformed);
                         }
-
-                        actionToBePerformed?.Invoke();
-                    }
-                    finally
-                    {
-                        impersonationContext?.Undo();
+                        else
+                        {
+                            actionToBePerformed?.Invoke();
+                        }
                     }
                 }
+                else
+                {
+                    if (ServerUser.Identity is WindowsIdentity identity)
+                    {
+                        WindowsIdentity.RunImpersonated(identity.AccessToken, actionToBePerformed);
+                    }
+                    else
+                    {
+                        actionToBePerformed?.Invoke();
+                    }
+                }
+
             }
         }
 
-        private static WindowsImpersonationContext Impersonate(IPrincipal userPrinciple)
+
+        private static WindowsIdentity GetWindowsIdentity(IPrincipal userPrinciple)
         {
-            WindowsImpersonationContext impersonationContext = null;
             if (userPrinciple.Identity is WindowsIdentity identity)
             {
                 if (identity.IsAnonymous)
                 {
                     identity = ServerUser.Identity as WindowsIdentity;
                 }
-                if (identity != null)
-                {
-                    impersonationContext = identity.Impersonate();
-                }
+                return identity;
             }
+            return null;
 
-            return impersonationContext;
         }
 
         public static IPrincipal OrginalExecutingUser { get; set; }

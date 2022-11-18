@@ -18,54 +18,96 @@ using Dev2.Web;
 using Dev2.Runtime.WebServer;
 using Warewolf.Resource.Errors;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.SignalR;
+using Microsoft.AspNetCore.Mvc;
 //using System.Web.Http.Controllers;
 
 namespace Dev2.Runtime.WebServer.Security
 {
     public static class AuthorizationRequestHelper
     {
-        public static AuthorizationRequest GetAuthorizationRequest(this HttpContext context) => new AuthorizationRequest
+        public static AuthorizationRequest GetAuthorizationRequest(this ActionContext actionContext) => GetAuthorizationRequest(actionContext, actionContext.GetRequestType());
+
+
+        public static AuthorizationRequest GetAuthorizationRequest(this HubLifetimeContext hubLifeTimeContext)
         {
-            RequestType = context.GetRequestType(),
-            User = context.User,
-            Url = context.Request.ToUri(),
-            //QueryString = new QueryString(context.Request.GetQueryNameValuePairs())
-            QueryString = context.Request.Query
-        };
+            var context = hubLifeTimeContext.Context.GetHttpContext();
 
-        //public static AuthorizationRequest GetAuthorizationRequest(this Microsoft.AspNetCore.Mvc.ActionContext context) => new AuthorizationRequest
-        //{
-        //    RequestType = context.HttpContext.GetRequestType(),
-        //    User = context.ControllerContext.RequestContext.Principal,
-        //    Url = context.Request.RequestUri,
-        //    QueryString = new QueryString(context.Request.GetQueryNameValuePairs())
-        //};
+            return new AuthorizationRequest
+            {
+                RequestType = WebServerRequestType.HubConnect,
+                User = context.User,
+                Url = context.Request.ToUri(),
+                QueryString = context.Request.Query
+            };
+        }
 
-        //public static AuthorizationRequest GetAuthorizationRequest(this HubDescriptor hubDescriptor, IRequest request) => GetAuthorizationRequest(request, WebServerRequestType.HubConnect);
+        public static AuthorizationRequest GetAuthorizationRequest(this HubInvocationContext hubInvocationContext)
+        {
+            var context = hubInvocationContext.Context.GetHttpContext();
 
-        //public static AuthorizationRequest GetAuthorizationRequest(this IHubIncomingInvokerContext context) => GetAuthorizationRequest(context.Hub.Context.Request, context.GetRequestType());
+            return new AuthorizationRequest
+            {
+                RequestType = hubInvocationContext.GetRequestType(),
+                User = context.User,
+                Url = context.Request.ToUri(),
+                QueryString = context.Request.Query
+            };
+        }
 
-        //static AuthorizationRequest GetAuthorizationRequest(this IRequest request, WebServerRequestType requestType) => new AuthorizationRequest
-        //{
-        //    RequestType = requestType,
-        //    User = request.User,
-        //    Url = request.Url,
-        //    QueryString = (INameValueCollection)request.QueryString
-        //};
+         static AuthorizationRequest GetAuthorizationRequest(this ActionContext actionContext, WebServerRequestType requestType)
+        {
+            var context = actionContext.HttpContext;
+            return new AuthorizationRequest
+            {
+                RequestType = requestType,
+                User = context.User,
+                Url = context.Request.ToUri(),
+                QueryString = context.Request.Query
+            };
+        }
 
-        //static WebServerRequestType GetRequestType(this IHubIncomingInvokerContext context) => ParseRequestType(context.MethodDescriptor.Hub.Name, context.MethodDescriptor.Name);
+        public static AuthorizationRequest GetAuthorizationRequest(this HttpContext context)
+        {
+            return new AuthorizationRequest
+            {
+                RequestType = context.GetRequestType(),
+                User = context.User,
+                Url = context.Request.ToUri(),
+                QueryString = context.Request.Query
+            };
+        }
+
+        static WebServerRequestType GetRequestType(this HubInvocationContext context)
+        {
+            var httpContext = context.Context.GetHttpContext();
+            var hubInfo = context.Hub.GetType();
+            var hubName = hubInfo.Name.Replace("hub", "", StringComparison.OrdinalIgnoreCase);
+
+            return ParseRequestType(hubName, context.HubMethodName);
+        }
+
+        static WebServerRequestType GetRequestType(this ActionContext context)
+        {
+            return ParseRequestType("Web", context.GetActionName());
+        }
 
         static WebServerRequestType GetRequestType(this HttpContext context)
         {
-            string actionName = context.Request.RouteValues["action"]?.ToString();
-            return ParseRequestType("Web", actionName);
+            return ParseRequestType("Web", context.Request.RouteValues["action"]?.ToString());
         }
-        
+
+        static string GetActionName(this ActionContext context)
+        {
+            var httpContext = context.HttpContext;
+            return httpContext.Request.RouteValues["action"]?.ToString();
+        }
 
         static WebServerRequestType ParseRequestType(string source, string actionName)
         {
             Enum.TryParse(source + actionName, true, out WebServerRequestType requestType);
             return requestType;
         }
+      
     }
 }

@@ -188,7 +188,7 @@ namespace Dev2.Activities.Sharepoint
                     var list = ctx.Web.Lists.GetByTitle(SharepointList);
                     var listItems = list.GetItems(camlQuery);
                     ctx.Load(listItems);
-                    ctx.ExecuteQuery();
+                    ctx.ExecuteQueryAsync().Wait();
                     var iteratorList = new WarewolfListIterator();
                     foreach (var sharepointReadListTo in sharepointReadListTos)
                     {
@@ -204,7 +204,7 @@ namespace Dev2.Activities.Sharepoint
                             listItem[warewolfIterator.Key] = warewolfIterator.Value.GetNextValue();
                         }
                         listItem.Update();
-                        ctx.ExecuteQuery();
+                        ctx.ExecuteQueryAsync().Wait();
                     }
                 }
                 if (!string.IsNullOrEmpty(Result))

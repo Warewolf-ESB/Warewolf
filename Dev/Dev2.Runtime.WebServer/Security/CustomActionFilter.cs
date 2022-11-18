@@ -45,7 +45,7 @@ namespace Dev2.Runtime.WebServer.Security
         {
         }
 
-        public void OnAuthorization(ActionContext actionContext)
+        public HttpResponseMessage OnAuthorization(ActionContext actionContext)
         {
             VerifyArgument.IsNotNull(nameof(actionContext), actionContext);
             var user = actionContext.HttpContext.User;
@@ -53,7 +53,7 @@ namespace Dev2.Runtime.WebServer.Security
 
             if (actionName == "ExecutePublicTokenWorkflow" || actionName == "ExecuteLoginWorkflow")
             {
-                return;
+                return null;
             }
 
             if (user == null && (actionName == "ExecutePublicWorkflow" || actionName == "ExecuteGetRootLevelApisJson"))
@@ -66,21 +66,21 @@ namespace Dev2.Runtime.WebServer.Security
             if (!user.IsAuthenticated())
             {
                 var httpContext = actionContext.HttpContext;
-                httpContext.CreateWarewolfErrorResponse(new WarewolfErrorResponseArgs { StatusCode = HttpStatusCode.Unauthorized, Title = GlobalConstants.USER_UNAUTHORIZED, Message = ErrorResource.AuthorizationDeniedForThisUser });
-                return;
+                return httpContext.CreateWarewolfErrorResponse(new WarewolfErrorResponseArgs { StatusCode = HttpStatusCode.Unauthorized, Title = GlobalConstants.USER_UNAUTHORIZED, Message = ErrorResource.AuthorizationDeniedForThisUser });
             }
 
             var authorizationRequest = GetAuthorizationRequest(actionContext);
             if (!Service.IsAuthorized(authorizationRequest))
             {
-                actionContext.HttpContext.CreateWarewolfErrorResponse(new WarewolfErrorResponseArgs { StatusCode = HttpStatusCode.Forbidden, Title = GlobalConstants.USER_FORBIDDEN, Message = ErrorResource.AuthorizationDeniedForThisRequest });
+                return actionContext.HttpContext.CreateWarewolfErrorResponse(new WarewolfErrorResponseArgs { StatusCode = HttpStatusCode.Forbidden, Title = GlobalConstants.USER_FORBIDDEN, Message = ErrorResource.AuthorizationDeniedForThisRequest });
             }
+            return null;
         }
 
-        static AuthorizationRequest GetAuthorizationRequest(ActionContext actionContext)
+        public static AuthorizationRequest GetAuthorizationRequest(ActionContext actionContext)
         {
-            
-            var authorizationRequest = actionContext.HttpContext.GetAuthorizationRequest();
+
+            var authorizationRequest = actionContext.GetAuthorizationRequest();
 
             try
             {
