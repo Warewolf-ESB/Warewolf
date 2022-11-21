@@ -43,6 +43,9 @@ namespace Dev2.Runtime.DynamicProxy
 
             internal const string WebAddressError =
                 "The web source has an incomplete web address.";
+
+            internal const string BindingError =
+                "There was an error in getting the bindings for the service contract.";
         }
     } 
 }
