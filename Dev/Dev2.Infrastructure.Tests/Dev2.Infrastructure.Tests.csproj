@@ -168,7 +168,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="log4net">
-      <Version>2.0.12</Version>
+      <Version>2.0.15</Version>
     </PackageReference>
     <!--<PackageReference Include="Microsoft.AspNet.SignalR.Core">
       <Version>2.4.3</Version>
@@ -185,8 +185,8 @@
     <PackageReference Include="Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers" Version="0.4.336902">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>    
-    <PackageReference Include="Microsoft.TestPlatform.ObjectModel" Version="17.3.1" />
-    <PackageReference Include="Moq" Version="4.18.2" />
+    <PackageReference Include="Microsoft.TestPlatform.ObjectModel" Version="17.1.0" />
+    <PackageReference Include="Moq" Version="4.16.1" />
     
   </ItemGroup>
   <ItemGroup>
