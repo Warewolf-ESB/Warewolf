@@ -11,7 +11,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Warewolf.Core.Tests</RootNamespace>
     <AssemblyName>Warewolf.Core.Tests</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    
     <RuntimeIdentifier>win</RuntimeIdentifier>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -125,15 +125,9 @@
     <ProjectReference Include="..\Warewolf.Testing\Warewolf.Testing.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <!--<PackageReference Include="Microsoft.NET.Test.Sdk">
-      <Version>16.8.3</Version>
-    </PackageReference>-->
     <PackageReference Include="Moq">
       <Version>4.16.1</Version>
     </PackageReference>
-    <!--<PackageReference Include="MSTest.TestFramework">
-      <Version>2.1.2</Version>
-    </PackageReference>-->
     <PackageReference Include="Newtonsoft.Json">
       <Version>13.0.1</Version>
     </PackageReference>
@@ -141,7 +135,6 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.1.0" />
     <PackageReference Include="MSTest.TestAdapter" Version="2.2.8" />
     <PackageReference Include="coverlet.collector" Version="3.1.2" />
-    <!--<PackageReference Include="MSTest.TestAdapter" Version="2.2.10" />-->
     <PackageReference Include="Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers" Version="0.4.336902">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>

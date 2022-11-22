@@ -11,7 +11,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Warewolf.Exchange.Email.Wrapper</RootNamespace>
     <AssemblyName>Warewolf.Exchange.Email.Wrapper</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    
     <RuntimeIdentifier>win</RuntimeIdentifier>
     <FileAlignment>512</FileAlignment>
     <SonarQubeExclude>True</SonarQubeExclude>

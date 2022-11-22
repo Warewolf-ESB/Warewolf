@@ -116,20 +116,16 @@ namespace Dev2.Runtime.WebServer
         }
         public static Uri ToUri(this Microsoft.AspNetCore.Http.HttpRequest request)
         {
-            var hostComponents = request.Host.ToUriComponent().Split(':');
-
             var builder = new UriBuilder
             {
                 Scheme = request.Scheme,
-                Host = hostComponents[0],
-                Path = request.Path,
+                Host = request.Host.Host,
+                Path = request.Path,                
                 Query = request.QueryString.ToUriComponent()
             };
 
-            if (hostComponents.Length == 2)
-            {
-                builder.Port = Convert.ToInt32(hostComponents[1]);
-            }
+            if (request.Host.Port.HasValue)
+                builder.Port = request.Host.Port.Value;
 
             return builder.Uri;
         }

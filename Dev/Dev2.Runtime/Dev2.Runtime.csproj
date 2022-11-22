@@ -13,7 +13,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Dev2.Runtime</RootNamespace>
     <AssemblyName>Dev2.Runtime</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    
     <RuntimeIdentifier>win</RuntimeIdentifier>
     <FileAlignment>512</FileAlignment>
     <PublishUrl>publish\</PublishUrl>
@@ -241,7 +241,7 @@
     <PackageReference Include="System.Data.SQLite">
       <Version>1.0.112</Version>
     </PackageReference>
-    <PackageReference Include="System.ServiceModel.Federation" Version="4.8.1" />
+    <PackageReference Include="System.ServiceModel.Federation" Version="4.9.0" />
     <PackageReference Include="Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers" Version="0.4.336902">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
