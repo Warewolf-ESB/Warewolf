@@ -15,6 +15,7 @@ using System.Linq;
 using System.Security.Principal;
 using Moq;
 using System.Threading;
+using Dev2.Data.Security;
 
 namespace Dev2.Common.Tests
 {
@@ -122,23 +123,24 @@ namespace Dev2.Common.Tests
             Assert.IsTrue(executed);
         }
 
-        class MyWindowsIdentity : WindowsIdentity
-        {
-            public int ImpersonateCallCount { get; private set; }
-            protected MyWindowsIdentity(WindowsIdentity identity) : base(identity)
-            {
-            }
-            public static MyWindowsIdentity New(WindowsIdentity identity)
-            {
-                return new MyWindowsIdentity(identity);
-            }
+        #region Impersonation Override no more existing in .NET 6
+        //class MyWindowsIdentity : WindowsIdentity
+        //{
+        //    public int ImpersonateCallCount { get; private set; }
+        //    protected MyWindowsIdentity(WindowsIdentity identity) : base(identity)
+        //    {
+        //    }
+        //    public static MyWindowsIdentity New(WindowsIdentity identity)
+        //    {
+        //        return new MyWindowsIdentity(identity);
+        //    }
 
-            public override WindowsImpersonationContext Impersonate()
-            {
-                ImpersonateCallCount++;
-                return base.Impersonate();
-            }
-        }
+        //    public void Impersonate()
+        //    {
+        //        ImpersonateCallCount++;
+        //        //return WindowsIdentityExtensions.Impersonate(this);
+        //    }
+        //}
 
         //[TestMethod]
         //[Owner("Rory McGuire")]
@@ -152,7 +154,7 @@ namespace Dev2.Common.Tests
 
         //    Utilities.OrginalExecutingUser = mockPrincipal.Object;
 
-        //    Utilities.PerformActionInsideImpersonatedContext(mockPrincipal.Object, () => { executed = true; });
+        //    Utilities.PerformActionInsideImpersonatedContext(mockPrincipal.Object, () => { executed = true; identity.Impersonate(); });
 
         //    mockPrincipal.Verify(o => o.Identity, Times.Exactly(1));
         //    Assert.IsTrue(executed);
@@ -175,14 +177,15 @@ namespace Dev2.Common.Tests
 
         //    Utilities.OrginalExecutingUser = mockPrincipal.Object;
 
-        //    Utilities.PerformActionInsideImpersonatedContext(mockPrincipal.Object, () => { executed = true; });
+        //    Utilities.PerformActionInsideImpersonatedContext(mockPrincipal.Object, () => { executed = true; identity.Impersonate(); });
 
         //    mockPrincipal.Verify(o => o.Identity, Times.Exactly(1));
         //    Assert.IsTrue(executed);
         //    Assert.AreEqual(1, identity.ImpersonateCallCount);
 
         //    Assert.AreEqual(mockPrincipal.Object, Utilities.OrginalExecutingUser);
-        //}
+        //} 
+        #endregion
 
         [TestMethod]
         [Owner("Rory McGuire")]
@@ -231,71 +234,73 @@ namespace Dev2.Common.Tests
             Assert.IsFalse(executed);
         }
 
-        //[TestMethod]
-        //[Owner("Rory McGuire")]
-        //[TestCategory(nameof(Utilities))]
-        //public void Utilities_PerformActionInsideImpersonatedContext_TaskFailureTriesAgain()
-        //{
-        //    var executed = false;
-        //    var mockPrincipal = new Mock<IPrincipal>();
-        //    var mockServerUserPrincipal = new Mock<IPrincipal>();
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(Utilities))]
+        public void Utilities_PerformActionInsideImpersonatedContext_TaskFailureTriesAgain()
+        {
+            var executed = false;
+            var mockPrincipal = new Mock<IPrincipal>();
+            var mockServerUserPrincipal = new Mock<IPrincipal>();
 
 
-        //    mockPrincipal.Setup(o => o.Identity).Returns(WindowsIdentity.GetCurrent());
+            mockPrincipal.Setup(o => o.Identity).Returns(WindowsIdentity.GetCurrent());
 
-        //    mockServerUserPrincipal.Setup(o => o.Identity).Returns(WindowsIdentity.GetCurrent());
-        //    Utilities.ServerUser = mockServerUserPrincipal.Object;
+            mockServerUserPrincipal.Setup(o => o.Identity).Returns(WindowsIdentity.GetCurrent());
+            Utilities.ServerUser = mockServerUserPrincipal.Object;
 
-        //    var shouldThrow = true;
+            var shouldThrow = true;
 
-        //    Utilities.PerformActionInsideImpersonatedContext(mockPrincipal.Object, () => {
-        //        if (shouldThrow)
-        //        {
-        //            shouldThrow = false;
-        //            throw new Exception("some exception");
-        //        }
-        //        executed = true;
-        //    });
+            Utilities.PerformActionInsideImpersonatedContext(mockPrincipal.Object, () =>
+            {
+                if (shouldThrow)
+                {
+                    shouldThrow = false;
+                    throw new Exception("some exception");
+                }
+                executed = true;
+            });
 
-        //    mockPrincipal.Verify(o => o.Identity, Times.Exactly(1));
-        //    mockServerUserPrincipal.Verify(o => o.Identity, Times.Once);
+            mockPrincipal.Verify(o => o.Identity, Times.Exactly(1));
+            mockServerUserPrincipal.Verify(o => o.Identity, Times.Once);
 
-        //    Assert.IsFalse(shouldThrow);
-        //    Assert.IsTrue(executed);
-        //}
+            Assert.IsFalse(shouldThrow);
+            Assert.IsTrue(executed);
+        }
 
-        //[TestMethod]
-        //[Owner("Rory McGuire")]
-        //[TestCategory(nameof(Utilities))]
-        //public void Utilities_PerformActionInsideImpersonatedContext_TaskFailureTriesAgainAndFailsAgain_ShouldThrow()
-        //{
-        //    var executedCount = 0;
-        //    var mockPrincipal = new Mock<IPrincipal>();
-        //    var mockServerUserPrincipal = new Mock<IPrincipal>();
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(Utilities))]
+        public void Utilities_PerformActionInsideImpersonatedContext_TaskFailureTriesAgainAndFailsAgain_ShouldThrow()
+        {
+            var executedCount = 0;
+            var mockPrincipal = new Mock<IPrincipal>();
+            var mockServerUserPrincipal = new Mock<IPrincipal>();
 
 
-        //    mockPrincipal.Setup(o => o.Identity).Returns(WindowsIdentity.GetCurrent());
+            mockPrincipal.Setup(o => o.Identity).Returns(WindowsIdentity.GetCurrent());
 
-        //    mockServerUserPrincipal.Setup(o => o.Identity).Returns(WindowsIdentity.GetCurrent());
-        //    Utilities.ServerUser = mockServerUserPrincipal.Object;
+            mockServerUserPrincipal.Setup(o => o.Identity).Returns(WindowsIdentity.GetCurrent());
+            Utilities.ServerUser = mockServerUserPrincipal.Object;
 
-        //    try
-        //    {
-        //        Utilities.PerformActionInsideImpersonatedContext(mockPrincipal.Object, () => {
-        //            executedCount++;
-        //            throw new Exception("some exception");
-        //        });
-        //        Assert.Fail("Expected exception");
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        Assert.AreEqual("some exception", e.Message);
-        //    }
+            try
+            {
+                Utilities.PerformActionInsideImpersonatedContext(mockPrincipal.Object, () =>
+                {
+                    executedCount++;
+                    throw new Exception("some exception");
+                });
+                Assert.Fail("Expected exception");
+            }
+            catch (Exception e)
+            {
+                Assert.AreEqual("some exception", e.Message);
+            }
 
-        //    mockPrincipal.Verify(o => o.Identity, Times.Exactly(1));
-        //    mockServerUserPrincipal.Verify(o => o.Identity, Times.Once);
+            mockPrincipal.Verify(o => o.Identity, Times.Exactly(1));
+            mockServerUserPrincipal.Verify(o => o.Identity, Times.Once);
 
-        //    Assert.AreEqual(2, executedCount);
-        //}
+            Assert.AreEqual(2, executedCount);
+        }
     }
 }

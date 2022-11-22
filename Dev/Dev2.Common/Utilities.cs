@@ -64,14 +64,23 @@ namespace Dev2.Common
                 }
                 else
                 {
-                    if (ServerUser.Identity is WindowsIdentity identity)
-                    {
-                        WindowsIdentity.RunImpersonated(identity.AccessToken, actionToBePerformed);
-                    }
-                    else
+
+                    try
                     {
                         actionToBePerformed?.Invoke();
                     }
+                    catch (Exception ex)
+                    {
+                        if (ServerUser != null && ServerUser.Identity is WindowsIdentity identity)
+                        {
+                            WindowsIdentity.RunImpersonated(identity.AccessToken, actionToBePerformed);
+                        }
+                        else
+                        {
+                            actionToBePerformed?.Invoke();
+                        }
+                    }
+
                 }
 
             }
@@ -85,6 +94,10 @@ namespace Dev2.Common
                 if (identity.IsAnonymous)
                 {
                     identity = ServerUser.Identity as WindowsIdentity;
+
+                    // since Anonymous identity can not perform an impersonation
+                    if (identity.IsAnonymous)
+                        throw new System.InvalidOperationException("An anonymous identity cannot perform an impersonation.");
                 }
                 return identity;
             }
