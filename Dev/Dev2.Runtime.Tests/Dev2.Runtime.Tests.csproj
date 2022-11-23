@@ -684,7 +684,8 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Caliburn.Micro" Version="4.0.212" />
-    <PackageReference Include="FluentAssertions" Version="3.5.0" />
+    <!--<PackageReference Include="FluentAssertions" Version="3.5.0" />-->
+    <PackageReference Include="FluentAssertions" Version="6.7.0" />
     <!--<PackageReference Include="Microsoft.AspNet.WebApi.Cors" Version="5.2.9" />-->
   </ItemGroup>
   <ItemGroup>

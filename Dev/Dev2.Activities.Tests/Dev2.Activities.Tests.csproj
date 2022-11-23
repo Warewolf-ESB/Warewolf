@@ -548,6 +548,7 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="FluentAssertions" Version="6.7.0" />
+    <!--<PackageReference Include="FluentAssertions" Version="3.5.0" />-->
     <!--<PackageReference Include="TSQL.Parser" Version="1.5.3" />-->
     <PackageReference Include="TSQL.Parser" Version="2.5.0" />
   </ItemGroup>

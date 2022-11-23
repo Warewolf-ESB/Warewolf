@@ -64,7 +64,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="7.0.0" />
 	<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.4.0" />
 	<PackageReference Include="Microsoft.TestPlatform.ObjectModel" Version="17.4.0" />
