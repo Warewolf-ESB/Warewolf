@@ -12,6 +12,7 @@ Param(
   [switch]$Studio,
   [switch]$Release,
   [switch]$Web,
+  [switch]$NewServerNet6,
   [switch]$RegenerateSpecFlowFeatureFiles,
   [switch]$InContainer,
   [string]$GitCredential
@@ -21,8 +22,9 @@ $KnownSolutionFiles = "Dev\AcceptanceTesting.sln",
                       "Dev\Server.sln",
                       "Dev\Studio.sln",
                       "Dev\Release.sln",
-                      "Dev\Web.sln"
-$NoSolutionParametersPresent = !($AcceptanceTesting.IsPresent) -and !($UITesting.IsPresent) -and !($Server.IsPresent) -and !($Studio.IsPresent) -and !($Release.IsPresent) -and !($Web.IsPresent) -and !($RegenerateSpecFlowFeatureFiles.IsPresent)
+                      "Dev\Web.sln",
+					  "Dev\NewServerNet6.sln"
+$NoSolutionParametersPresent = !($AcceptanceTesting.IsPresent) -and !($UITesting.IsPresent) -and !($Server.IsPresent) -and !($Studio.IsPresent) -and !($Release.IsPresent) -and !($Web.IsPresent) -and !($RegenerateSpecFlowFeatureFiles.IsPresent) -and !($NewServerNet6.IsPresent)
 if ($Target -ne "") {
     $Target = "/t:" + $Target
 }
