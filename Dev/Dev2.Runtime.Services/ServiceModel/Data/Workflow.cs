@@ -64,6 +64,13 @@ namespace Dev2.Runtime.ServiceModel.Data
 
             XamlDefinition = action.ElementSafeStringBuilder("XamlDefinition");
         }
+        
+        public Workflow Clone()
+        {
+            var clone = MemberwiseClone() as Workflow;
+            
+            return clone;
+        }
 
         private List<IWorkflowNode> GetWorkflowNodesForHtml()
         {

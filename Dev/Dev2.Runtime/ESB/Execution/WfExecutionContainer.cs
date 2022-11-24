@@ -26,9 +26,15 @@ using Dev2.Runtime.Security;
 using Dev2.Workspaces;
 using System;
 using System.Activities;
+using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading;
+using Dev2.Common.Common;
+using Dev2.Common.Interfaces.Data;
+using Dev2.Runtime.ESB.Management;
+using Dev2.Runtime.ServiceModel.Data;
+using ServiceStack.Common.Extensions;
 using Warewolf.Auditing;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage.Interfaces;
@@ -275,8 +281,6 @@ namespace Dev2.Runtime.ESB.Execution
             }
 
             var result = activity.Execute(dsfDataObject, update);
-            dsfDataObject.StateNotifier?.LogExecuteActivityCompleteState(activity);
-            
             return result;
         }
 
@@ -318,6 +322,8 @@ namespace Dev2.Runtime.ESB.Execution
                     lastActivity = current;
                     next = ExecuteTool(dsfDataObject, current, update);
                     environment.AllErrors.UnionWith(environment.Errors);
+                    
+                    dsfDataObject.StateNotifier?.LogExecuteActivityCompleteState(lastActivity);
 
                     if (dsfDataObject.StopExecution)
                     {
@@ -346,32 +352,53 @@ namespace Dev2.Runtime.ESB.Execution
 
             Dev2Logger.Debug("Getting Resource to Execute", executionId);
 
-            var hasVersionOverride = false;
-            if (versionNumber != 0)
+            var resourcesNew = new System.Collections.Concurrent.ConcurrentDictionary<Guid, List<IResource>>();
+            foreach (var r in _resourceCatalog.WorkspaceResources)
             {
-                hasVersionOverride = true;
-            }
-
-            IDev2Activity startActivity;
-            if (hasVersionOverride)
-            {
-                var resumeVersionNumber = versionNumber;
-                if (resumeVersionNumber == 0)
+                var resourceList = r.Value as List<IResource>;
+                var resourceListCopy = new List<IResource>();
+                foreach (var b in resourceList)
                 {
-                    resumeVersionNumber = _resourceCatalog.GetLatestVersionNumberForResource(resourceId: resourceID);
+                    var resourceToAdd = b;
+                    if (resourceToAdd is Workflow)
+                    {
+                        resourceToAdd = ((Workflow)resourceToAdd).Clone();
+                    }
+                    resourceListCopy.Add(resourceToAdd);
                 }
 
-                var resourceObject = _resourceCatalog.GetResource(GlobalConstants.ServerWorkspaceID, resourceID,
-                    resumeVersionNumber.ToString());
-                startActivity = _resourceCatalog.Parse(TheWorkspace.ID, resourceID, executionId, resourceObject);
-            }
-            else
-            {
-                startActivity = _resourceCatalog.Parse(TheWorkspace.ID, resourceID, executionId);
+                resourcesNew.AddOrUpdate(r.Key, id => r.Value, (id, resources) => resourceListCopy);
             }
 
-            Dev2Logger.Debug("Got Resource to Execute", executionId);
-            EvalInner(dataObject, startActivity, dataObject.ForEachUpdateValue);
+            using (var catalog = new ResourceCatalog(resourcesNew, _resourceCatalog.GetServerVersionRepository(), _resourceCatalog.GetCatalogPluginContainer()))
+            {
+                var hasVersionOverride = false;
+                if (versionNumber != 0)
+                {
+                    hasVersionOverride = true;
+                }
+
+                IDev2Activity startActivity;
+                if (hasVersionOverride)
+                {
+                    var resumeVersionNumber = versionNumber;
+                    if (resumeVersionNumber == 0)
+                    {
+                        resumeVersionNumber = catalog.GetLatestVersionNumberForResource(resourceId: resourceID);
+                    }
+
+                    var resourceObject = catalog.GetResource(GlobalConstants.ServerWorkspaceID, resourceID,
+                        resumeVersionNumber.ToString());
+                    startActivity = catalog.Parse(TheWorkspace.ID, resourceID, executionId, resourceObject);
+                }
+                else
+                {
+                    startActivity = catalog.Parse(TheWorkspace.ID, resourceID, executionId);
+                }
+
+                Dev2Logger.Debug("Got Resource to Execute", executionId);
+                EvalInner(dataObject, startActivity, dataObject.ForEachUpdateValue);
+            }
         }
     }
 
@@ -421,7 +448,15 @@ namespace Dev2.Runtime.ESB.Execution
                                       $"Resume Node not found. UniqueID:{_resumeActivityId}");
             dsfDataObject.Environment = _resumeEnvironment;
             dsfDataObject.StartActivityId = Guid.Empty;
-            base.EvalInner(dsfDataObject, startAtActivity, update);
+
+            var stateNotifier = new StateNotifier();
+            using (var listener = new StateAuditLogger(new WebSocketPool()))
+            {
+                stateNotifier.Subscribe(listener.NewStateListener(dsfDataObject));
+                dsfDataObject.StateNotifier = stateNotifier;
+
+                base.EvalInner(dsfDataObject, startAtActivity, update);
+            }
         }
 
         private IDev2Activity FindActivity(IDev2Activity resource)

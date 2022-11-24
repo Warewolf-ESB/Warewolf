@@ -35,11 +35,9 @@ using System.ComponentModel;
 using System.Data;
 using Dev2.Studio.Core;
 using System.Text.RegularExpressions;
-using Dev2.Data.Util;
 using static LanguageAST.LanguageExpression;
 using System.Text;
 using Dev2.Studio.Interfaces.DataList;
-using Dev2.Common;
 using Dev2.Activities.Utils;
 using static DataStorage;
 
@@ -222,6 +220,7 @@ namespace Dev2.Activities.Designers2.AdvancedRecordset
             try
             {
                 OutputsRegion.Outputs.Clear();
+                Errors = null;
                 if (string.IsNullOrWhiteSpace(SqlQuery))
                 {
                     OutputsRegion.RecordsetName = string.Empty;
@@ -663,13 +662,8 @@ namespace Dev2.Activities.Designers2.AdvancedRecordset
         }
         public override void Validate()
         {
-            if (Errors == null)
-            {
-                Errors = new List<IActionableErrorInfo>();
-            }
-            Errors.Clear();
-
-            Errors = Regions.SelectMany(a => a.Errors).Select(a => new ActionableErrorInfo(new ErrorInfo { Message = a, ErrorType = ErrorType.Critical }, () => { }) as IActionableErrorInfo).ToList();
+            Errors = Errors ?? new List<IActionableErrorInfo>();
+            Errors.AddRange(Regions.SelectMany(a => a.Errors).Select(a => new ActionableErrorInfo(new ErrorInfo { Message = a, ErrorType = ErrorType.Critical }, () => { }) as IActionableErrorInfo).ToList());
             if (Errors.Count <= 0)
             {
                 ClearValidationMemoWithNoFoundError();
@@ -685,9 +679,5 @@ namespace Dev2.Activities.Designers2.AdvancedRecordset
                 Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo(new ErrorInfo { ErrorType = ErrorType.Critical, FixData = "", FixType = FixType.None, Message = exception.Message, StackTrace = exception.StackTrace }, () => { }) };
             }
         }
-
-
     }
-
-
 }

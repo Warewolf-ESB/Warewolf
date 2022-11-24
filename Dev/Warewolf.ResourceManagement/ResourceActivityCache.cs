@@ -79,6 +79,36 @@ namespace Warewolf.ResourceManagement
             return null;
         }
 
+        public IDev2Activity ParseWithoutCache(DynamicActivity activity, Guid resourceIdGuid, bool failOnError)
+        {
+            var dynamicActivity = activity;
+            if (dynamicActivity != null)
+            {
+                try
+                {
+                    var act = _activityParser.Parse(dynamicActivity);
+                    return act;
+                }
+                catch (InvalidWorkflowException e)
+                {
+                    Dev2Logger.Error($"Error processing {resourceIdGuid}: " + e.Message, "Warewolf Error");
+                    if (failOnError)
+                    {
+                        throw;
+                    }
+                }
+                catch (Exception err) //errors caught inside                    
+                {
+                    Dev2Logger.Error(err, "Warewolf Error");
+                    if (failOnError)
+                    {
+                        throw;
+                    }
+                }   
+            }
+            return null;
+        }
+
         public IDev2Activity GetActivity(Guid resourceIdGuid) => Cache[resourceIdGuid];
 
         public bool HasActivityInCache(Guid resourceIdGuid) => Cache.ContainsKey(resourceIdGuid);

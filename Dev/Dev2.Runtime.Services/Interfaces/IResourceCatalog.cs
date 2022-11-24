@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Versioning;
 using Dev2.DynamicServices;
 using Dev2.Runtime.Hosting;
 using Dev2.Services.Security;
@@ -57,6 +58,8 @@ namespace Dev2.Runtime.Interfaces
         IContextualResourceCatalog NewContextualResourceCatalog(IAuthorizationService authService, Guid workspaceId);
         IWarewolfWorkflow GetWorkflow(Guid resourceId);
         ResourceCatalogResult SaveResources(Guid serverWorkspaceID, List<DuplicateResourceTO> resourceMaps, bool overrideExisting);
+        IServerVersionRepository GetServerVersionRepository();
+        ResourceCatalogPluginContainer GetCatalogPluginContainer();
     }
 
     public interface IResourceCatalogFactory

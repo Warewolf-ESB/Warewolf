@@ -81,6 +81,25 @@ namespace Dev2.Runtime.Hosting
             _catalogPluginContainer = new ResourceCatalogPluginContainer(_serverVersionRepository, WorkspaceResources, managementServices);
             _catalogPluginContainer.Build(this);
         }
+        
+        public ResourceCatalog(ConcurrentDictionary<Guid, List<IResource>> resources, IServerVersionRepository serverVersionRepository,
+            ResourceCatalogPluginContainer catalogPluginContainer)
+        {
+            WorkspaceResources = resources;
+            _serverVersionRepository = serverVersionRepository;
+            _catalogPluginContainer = catalogPluginContainer;
+        }
+
+        public IServerVersionRepository GetServerVersionRepository()
+        {
+            return _serverVersionRepository;
+        }
+        
+        public ResourceCatalogPluginContainer GetCatalogPluginContainer()
+        {
+            return _catalogPluginContainer;
+        }
+
 
         public IContextualResourceCatalog NewContextualResourceCatalog(IAuthorizationService authService, Guid workspaceId)
         {
@@ -237,7 +256,15 @@ namespace Dev2.Runtime.Hosting
             }
             foreach (var resource in userServices)
             {
-                AddToActivityCache(resource);
+                try
+                {
+                    AddToActivityCache(resource);
+                }
+                catch(System.Xml.XmlException xmlEx)
+                {
+                    Dev2Logger.Error("Error reading resource definition for \"" + resource.FilePath + "\". See full error under \"Error Starting Server\":", GlobalConstants.WarewolfError);
+                    throw xmlEx;
+                }
             }
         }
 
@@ -524,7 +551,7 @@ namespace Dev2.Runtime.Hosting
                 var activity = GetActivity(sa);
                 if (parser != null)
                 {
-                    return parser.Parse(activity, resourceID);
+                    return parser.ParseWithoutCache(activity, resourceID, true);
                 }
             }
 

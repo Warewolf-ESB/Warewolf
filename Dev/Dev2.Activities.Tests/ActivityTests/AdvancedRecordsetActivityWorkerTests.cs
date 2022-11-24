@@ -255,16 +255,16 @@ namespace Dev2.Tests.Activities.ActivityTests
             mockAdvancedRecordset.Setup(advancedRecordset => advancedRecordset.LoadRecordsetAsTable(tableName));
             mockAdvancedRecordset.Setup(advancedRecordset => advancedRecordset.ExecuteQuery("SELECT * FROM person")).Returns(dataSet);
             mockAdvancedRecordset.Setup(advancedRecordset => advancedRecordset.ApplyResultToEnvironment(It.IsAny<string>(), It.IsAny<ICollection<IServiceOutputMapping>>(), It.IsAny<List<DataRow>>(), It.IsAny<bool>(), It.IsAny<int>(), ref started));
-            mockAdvancedRecordset.Setup(advancedRecordset => advancedRecordset.UpdateSqlWithHashCodes(It.IsAny<TSQLUnknownStatement>())).Returns(sqlQuery);
+            mockAdvancedRecordset.Setup(advancedRecordset => advancedRecordset.UpdateSqlWithHashCodes(It.IsAny<TSQLSelectStatement>())).Returns("SELECT * FROM person");
             mockAdvancedRecordset.Setup(advancedRecordset => advancedRecordset.ApplyScalarResultToEnvironment(It.IsAny<string>(), It.IsAny<int>()));
 
             using (var viewModel = new AdvancedRecordsetActivityWorker(advancedRecordsetActivity, mockAdvancedRecordset.Object))
             {
                 viewModel.ExecuteSql(0, ref started);
-                mockAdvancedRecordset.Verify(advancedRecordset => advancedRecordset.LoadRecordsetAsTable("person"), Times.Once);
-                mockAdvancedRecordset.Verify(advancedRecordset => advancedRecordset.UpdateSqlWithHashCodes(It.IsAny<TSQLUnknownStatement>()), Times.Once);
-                mockAdvancedRecordset.Verify(advancedRecordset => advancedRecordset.ApplyResultToEnvironment(It.IsAny<string>(), It.IsAny<ICollection<IServiceOutputMapping>>(), It.IsAny<List<DataRow>>(), It.IsAny<bool>(), It.IsAny<int>(), ref started), Times.Once);
-                mockAdvancedRecordset.Verify(advancedRecordset => advancedRecordset.ExecuteQuery("SELECT * FROM person"), Times.Once);
+                mockAdvancedRecordset.Verify(advancedRecordset => advancedRecordset.LoadRecordsetAsTable("person"), Times.Exactly(2));
+                mockAdvancedRecordset.Verify(advancedRecordset => advancedRecordset.UpdateSqlWithHashCodes(It.IsAny<TSQLSelectStatement>()), Times.Once);
+                mockAdvancedRecordset.Verify(advancedRecordset => advancedRecordset.ApplyResultToEnvironment(It.IsAny<string>(), It.IsAny<ICollection<IServiceOutputMapping>>(), It.IsAny<List<DataRow>>(), It.IsAny<bool>(), It.IsAny<int>(), ref started), Times.Exactly(2));
+                mockAdvancedRecordset.Verify(advancedRecordset => advancedRecordset.ExecuteQuery("SELECT * FROM person"), Times.Exactly(2));
                 mockAdvancedRecordset.Verify(advancedRecordset => advancedRecordset.ApplyScalarResultToEnvironment(It.IsAny<string>(), It.IsAny<int>()), Times.Once);
             }
         }
@@ -308,16 +308,16 @@ namespace Dev2.Tests.Activities.ActivityTests
             mockAdvancedRecordset.Setup(advancedRecordset => advancedRecordset.LoadRecordsetAsTable(tableName));
             mockAdvancedRecordset.Setup(advancedRecordset => advancedRecordset.ExecuteQuery("SELECT * FROM person")).Returns(dataSet);
             mockAdvancedRecordset.Setup(advancedRecordset => advancedRecordset.ApplyResultToEnvironment(It.IsAny<string>(), It.IsAny<ICollection<IServiceOutputMapping>>(), It.IsAny<List<DataRow>>(), It.IsAny<bool>(), It.IsAny<int>(), ref started));
-            mockAdvancedRecordset.Setup(advancedRecordset => advancedRecordset.UpdateSqlWithHashCodes(It.IsAny<TSQLUnknownStatement>())).Returns(sqlQuery);
+            mockAdvancedRecordset.Setup(advancedRecordset => advancedRecordset.UpdateSqlWithHashCodes(It.IsAny<TSQLSelectStatement>())).Returns("SELECT * FROM person");
             mockAdvancedRecordset.Setup(advancedRecordset => advancedRecordset.ApplyScalarResultToEnvironment(It.IsAny<string>(), It.IsAny<int>()));
 
             using (var viewModel = new AdvancedRecordsetActivityWorker(advancedRecordsetActivity, mockAdvancedRecordset.Object))
             {
                 viewModel.ExecuteSql(0, ref started);
-                mockAdvancedRecordset.Verify(advancedRecordset => advancedRecordset.LoadRecordsetAsTable("person"), Times.Once);
-                mockAdvancedRecordset.Verify(advancedRecordset => advancedRecordset.UpdateSqlWithHashCodes(It.IsAny<TSQLUnknownStatement>()), Times.Once);
-                mockAdvancedRecordset.Verify(advancedRecordset => advancedRecordset.ApplyResultToEnvironment(It.IsAny<string>(), It.IsAny<ICollection<IServiceOutputMapping>>(), It.IsAny<List<DataRow>>(), It.IsAny<bool>(), It.IsAny<int>(), ref started), Times.Once);
-                mockAdvancedRecordset.Verify(advancedRecordset => advancedRecordset.ExecuteQuery("SELECT * FROM person"), Times.Once);
+                mockAdvancedRecordset.Verify(advancedRecordset => advancedRecordset.LoadRecordsetAsTable("person"), Times.Exactly(2));
+                mockAdvancedRecordset.Verify(advancedRecordset => advancedRecordset.UpdateSqlWithHashCodes(It.IsAny<TSQLSelectStatement>()), Times.Once);
+                mockAdvancedRecordset.Verify(advancedRecordset => advancedRecordset.ApplyResultToEnvironment(It.IsAny<string>(), It.IsAny<ICollection<IServiceOutputMapping>>(), It.IsAny<List<DataRow>>(), It.IsAny<bool>(), It.IsAny<int>(), ref started), Times.Exactly(2));
+                mockAdvancedRecordset.Verify(advancedRecordset => advancedRecordset.ExecuteQuery("SELECT * FROM person"), Times.Exactly(2));
                 mockAdvancedRecordset.Verify(advancedRecordset => advancedRecordset.ApplyScalarResultToEnvironment(It.IsAny<string>(), It.IsAny<int>()), Times.Once);
             }
         }
@@ -361,14 +361,14 @@ namespace Dev2.Tests.Activities.ActivityTests
             mockAdvancedRecordset.Setup(advancedRecordset => advancedRecordset.LoadRecordsetAsTable(tableName));
             mockAdvancedRecordset.Setup(advancedRecordset => advancedRecordset.ExecuteQuery("SELECT * FROM person")).Returns(dataSet);
             mockAdvancedRecordset.Setup(advancedRecordset => advancedRecordset.ApplyResultToEnvironment(It.IsAny<string>(), It.IsAny<ICollection<IServiceOutputMapping>>(), It.IsAny<List<DataRow>>(), It.IsAny<bool>(), It.IsAny<int>(), ref started));
-            mockAdvancedRecordset.Setup(advancedRecordset => advancedRecordset.UpdateSqlWithHashCodes(It.IsAny<TSQLUnknownStatement>())).Returns(sqlQuery);
+            mockAdvancedRecordset.Setup(advancedRecordset => advancedRecordset.UpdateSqlWithHashCodes(It.IsAny<TSQLInsertStatement>())).Returns(sqlQuery);
             mockAdvancedRecordset.Setup(advancedRecordset => advancedRecordset.ApplyScalarResultToEnvironment(It.IsAny<string>(), It.IsAny<int>()));
 
             using (var viewModel = new AdvancedRecordsetActivityWorker(advancedRecordsetActivity, mockAdvancedRecordset.Object))
             {
                 viewModel.ExecuteSql(0, ref started);
                 mockAdvancedRecordset.Verify(advancedRecordset => advancedRecordset.LoadRecordsetAsTable("person"), Times.Once);
-                mockAdvancedRecordset.Verify(advancedRecordset => advancedRecordset.UpdateSqlWithHashCodes(It.IsAny<TSQLUnknownStatement>()), Times.Once);
+                mockAdvancedRecordset.Verify(advancedRecordset => advancedRecordset.UpdateSqlWithHashCodes(It.IsAny<TSQLInsertStatement>()), Times.Once);
                 mockAdvancedRecordset.Verify(advancedRecordset => advancedRecordset.ApplyResultToEnvironment(It.IsAny<string>(), It.IsAny<ICollection<IServiceOutputMapping>>(), It.IsAny<List<DataRow>>(), It.IsAny<bool>(), It.IsAny<int>(), ref started), Times.Once);
                 mockAdvancedRecordset.Verify(advancedRecordset => advancedRecordset.ExecuteQuery("SELECT * FROM person"), Times.Once);
                 mockAdvancedRecordset.Verify(advancedRecordset => advancedRecordset.ApplyScalarResultToEnvironment(It.IsAny<string>(), It.IsAny<int>()), Times.Once);
