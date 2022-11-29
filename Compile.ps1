@@ -10,9 +10,11 @@ Param(
   [switch]$UITesting,
   [switch]$Server,
   [switch]$Studio,
+  [switch]$StudioProject,
   [switch]$Release,
   [switch]$Web,
   [switch]$NewServerNet6,
+  [switch]$ServerTests,
   [switch]$RegenerateSpecFlowFeatureFiles,
   [switch]$InContainer,
   [string]$GitCredential
@@ -23,8 +25,10 @@ $KnownSolutionFiles = "Dev\AcceptanceTesting.sln",
                       "Dev\Studio.sln",
                       "Dev\Release.sln",
                       "Dev\Web.sln",
-					  "Dev\NewServerNet6.sln"
-$NoSolutionParametersPresent = !($AcceptanceTesting.IsPresent) -and !($UITesting.IsPresent) -and !($Server.IsPresent) -and !($Studio.IsPresent) -and !($Release.IsPresent) -and !($Web.IsPresent) -and !($RegenerateSpecFlowFeatureFiles.IsPresent) -and !($NewServerNet6.IsPresent)
+					  "Dev\NewServerNet6.sln",
+					  "Dev\ServerTests.sln",
+					  "Dev\Dev2.Studio\Dev2.Studio.csproj"
+$NoSolutionParametersPresent = !($AcceptanceTesting.IsPresent) -and !($UITesting.IsPresent) -and !($Server.IsPresent) -and !($Studio.IsPresent) -and !($Release.IsPresent) -and !($Web.IsPresent) -and !($RegenerateSpecFlowFeatureFiles.IsPresent) -and !($NewServerNet6.IsPresent) -and !($ServerTests.IsPresent) -and !($StudioProject.IsPresent)
 if ($Target -ne "") {
     $Target = "/t:" + $Target
 }
@@ -298,7 +302,10 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
         $GetSolutionFileInfo = Get-Item "$PSScriptRoot\$SolutionFile"
         $SolutionFileName = $GetSolutionFileInfo.Name
         $SolutionFileExtension = $GetSolutionFileInfo.Extension
-        $OutputFolderName = $SolutionFileName.TrimEnd("." + $SolutionFileExtension).TrimEnd("2")
+        $OutputFolderName = $SolutionFileName.TrimEnd($SolutionFileExtension).TrimStart("Dev2.").TrimEnd("2")
+        if ($OutputFolderName -eq "Studi") {
+            $OutputFolderName = "StudioProject"
+        }
         if ((Get-Variable "$OutputFolderName*" -ValueOnly).IsPresent.Length -gt 1) {
             $SolutionParameterIsPresent = (Get-Variable "$OutputFolderName*" -ValueOnly).IsPresent[0]
         } else {
