@@ -11,7 +11,7 @@
 
 using System;
 using System.Windows;
-using System.Windows.Interactivity;
+using Microsoft.Xaml.Behaviors;
 
 namespace Dev2.Studio.AppResources.Behaviors
 {

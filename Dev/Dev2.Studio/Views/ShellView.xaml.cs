@@ -24,7 +24,8 @@ using System.Xml;
 using Dev2.Common;
 using Dev2.Triggers.Scheduler;
 using Dev2.Studio.ViewModels;
-using FontAwesome.WPF;
+using FontAwesome6;
+using FontAwesome6.Fonts;
 using Infragistics.Windows.DockManager.Events;
 using WinInterop = System.Windows.Interop;
 using Dev2.Studio.Core;
@@ -753,17 +754,17 @@ namespace Dev2.Studio.Views
             var dependencyObject = GetTemplateChild("PART_LOCK");
             if (dependencyObject != null)
             {
-                var fontAwesome = new FontAwesome.WPF.FontAwesome();
+                var fontAwesome = new FontAwesome6.EFontAwesomeIcon();
                 if (_isLocked)
                 {
                     HideFullScreenPanel.IsHitTestVisible = true;
                     ShowFullScreenPanel.IsHitTestVisible = true;
-                    fontAwesome.Icon = FontAwesomeIcon.Unlock;
+                    fontAwesome = EFontAwesomeIcon.Solid_Unlock;
                     DoAnimateCloseTitle();
                 }
                 else
                 {
-                    fontAwesome.Icon = FontAwesomeIcon.Lock;
+                    fontAwesome = EFontAwesomeIcon.Solid_Lock;
                 }
                 dependencyObject.SetValue(ContentProperty, fontAwesome);
                 _isLocked = !_isLocked;

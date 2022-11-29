@@ -16,7 +16,9 @@ using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
-using FontAwesome.WPF;
+using FontAwesome6;
+using FontAwesome6.Fonts;
+using Warewolf.Studio.Core.Extensions;
 
 namespace Dev2.Activities.Designers2.Core
 {
@@ -156,16 +158,16 @@ namespace Dev2.Activities.Designers2.Core
                 switch (sourceUri)
                 {
                     case "Question":
-                        image.Source = ImageAwesome.CreateImageSource(FontAwesomeIcon.Question, brush);
+                        image.Source = ImageAwesomeExtensions.CreateImageSource(EFontAwesomeIcon.Solid_Question, brush);
                         break;
                     case "ServiceQuickVariableInput":
-                        image.Source = ImageAwesome.CreateImageSource(FontAwesomeIcon.ListAlt, brush);
+                        image.Source = ImageAwesomeExtensions.CreateImageSource(EFontAwesomeIcon.Solid_List, brush);
                         break;
                     case "ServicePropertyEdit":
-                        image.Source = ImageAwesome.CreateImageSource(FontAwesomeIcon.Pencil, brush);
+                        image.Source = ImageAwesomeExtensions.CreateImageSource(EFontAwesomeIcon.Solid_Pencil, brush);
                         break;
                     case "ServiceHelp":
-                        image.Source = ImageAwesome.CreateImageSource(FontAwesomeIcon.Gears, brush);
+                        image.Source = ImageAwesomeExtensions.CreateImageSource(EFontAwesomeIcon.Solid_Gear, brush);
                         break;
                     default:
                         image.Source = new BitmapImage(new Uri(sourceUri));

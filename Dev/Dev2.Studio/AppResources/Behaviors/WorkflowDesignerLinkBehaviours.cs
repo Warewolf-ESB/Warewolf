@@ -14,7 +14,7 @@ using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Input;
-using System.Windows.Interactivity;
+using Microsoft.Xaml.Behaviors;
 using Dev2.Studio.AppResources.ExtensionMethods;
 
 namespace Dev2.Studio.AppResources.Behaviors

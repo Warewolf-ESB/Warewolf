@@ -49,7 +49,7 @@ namespace Warewolf.Studio.Views
 
         void SelectivelyIgnoreMouseButton(object sender, MouseButtonEventArgs e)
         {
-            var imageSource = e.OriginalSource as FontAwesome.WPF.ImageAwesome;
+            var imageSource = e.OriginalSource as FontAwesome6.Fonts.ImageAwesome;
             var rectSource = e.OriginalSource as Rectangle;
             if (imageSource == null && rectSource == null && sender is TextBox tb && !tb.IsKeyboardFocusWithin)
             {

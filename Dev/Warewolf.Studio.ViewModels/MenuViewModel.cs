@@ -17,7 +17,8 @@ using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio;
 using Dev2.Studio.Interfaces;
-using FontAwesome.WPF;
+using FontAwesome6;
+using FontAwesome6.Fonts;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Prism.Commands;
 using Prism.Mvvm;
@@ -32,7 +33,7 @@ namespace Warewolf.Studio.ViewModels
         bool _isOverLock;
         ICommand _saveCommand;
         ICommand _executeServiceCommand;
-        FontAwesomeIcon _debugIcon;
+        EFontAwesomeIcon _debugIcon;
         bool _isProcessing;
         const int ButtonWidthSmall = 35;
         const int ButtonWidthLarge = 125;
@@ -82,11 +83,11 @@ namespace Warewolf.Studio.ViewModels
             IsPanelLockedOpen = true;
             IsPanelOpen = true;
             IsPopoutViewOpen = false;
-            DebugIcon = FontAwesomeIcon.Bug;
+            DebugIcon = EFontAwesomeIcon.Solid_Bug;
             
         }
 
-        public FontAwesomeIcon DebugIcon
+        public EFontAwesomeIcon DebugIcon
         {
             get => _debugIcon;
             set
@@ -346,7 +347,7 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 SetProperty(ref _isProcessing, value);
-                DebugIcon = _isProcessing ? FontAwesomeIcon.Stop : FontAwesomeIcon.Bug;
+                DebugIcon = _isProcessing ? EFontAwesomeIcon.Solid_Stop : EFontAwesomeIcon.Solid_Bug;
                 OnPropertyChanged(()=>DebugLabel);
             }
         }
