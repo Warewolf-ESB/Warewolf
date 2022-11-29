@@ -3,7 +3,8 @@
 using System.Windows;
 using System.Windows.Input;
 using Caliburn.Micro;
-using FontAwesome.WPF;
+using FontAwesome6;
+using FontAwesome6.Fonts;
 using Prism.Commands;
 
 
@@ -14,14 +15,14 @@ namespace Warewolf.Studio.ViewModels
         MessageBoxButton _buttons = MessageBoxButton.OK;
         string _message;
         string _title;
-        FontAwesomeIcon _icon;
+        EFontAwesomeIcon _icon;
         bool _isError;
         bool _isInfo;
         bool _isQuestion;
         List<string> _urlsFound;
         bool _isDuplicatesVisible;
 
-        public MessageBoxViewModel(string message, string title, MessageBoxButton buttons, FontAwesomeIcon icon, bool isDependenciesButtonVisible,
+        public MessageBoxViewModel(string message, string title, MessageBoxButton buttons, EFontAwesomeIcon icon, bool isDependenciesButtonVisible,
             bool isError, bool isInfo, bool isQuestion, List<string> urlsFound, bool isDeleteAnywayButtonVisible, bool applyToAll)
         {
             Title = title;
@@ -51,7 +52,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        FontAwesomeIcon Icon
+        EFontAwesomeIcon Icon
         {
             get { return _icon; }
             set

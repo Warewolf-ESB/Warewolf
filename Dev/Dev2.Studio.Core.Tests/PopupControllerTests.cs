@@ -13,7 +13,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using Dev2.Common;
-using FontAwesome.WPF;
+//using FontAwesome.WPF;
+using FontAwesome6;
+using FontAwesome6.Svg;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.Studio.Core.Popup;
 using Warewolf.Studio.ViewModels;
@@ -43,7 +45,7 @@ namespace Dev2.Core.Tests
                     header = hdr;
                     buttons = btn;
                     popupWasCalled = true;
-                    return new MessageBoxViewModel(desc, hdr, btn, FontAwesomeIcon.Adn, isDependBtnVisible, isErr, isInf, isQuest, duplicates, isDeleteAnywayBtnVisible, applyToAll)
+                    return new MessageBoxViewModel(desc, hdr, btn, EFontAwesomeIcon.Brands_Adn, isDependBtnVisible, isErr, isInf, isQuest, duplicates, isDeleteAnywayBtnVisible, applyToAll)
                     {
                         Result = MessageBoxResult.OK
                     };
@@ -79,7 +81,7 @@ namespace Dev2.Core.Tests
                     header = hdr;
                     buttons = btn;
                     popupWasCalled = true;
-                    return new MessageBoxViewModel(desc, hdr, btn, FontAwesomeIcon.Adn, isDependBtnVisible, isErr, isInf, isQuest, duplicates, isDeleteAnywayBtnVisible, applyToAll)
+                    return new MessageBoxViewModel(desc, hdr, btn, EFontAwesomeIcon.Brands_Adn, isDependBtnVisible, isErr, isInf, isQuest, duplicates, isDeleteAnywayBtnVisible, applyToAll)
                     {
                         Result = MessageBoxResult.OK
                     };
@@ -115,7 +117,7 @@ namespace Dev2.Core.Tests
                     header = hdr;
                     buttons = btn;
                     popupWasCalled = true;
-                    return new MessageBoxViewModel(desc, hdr, btn, FontAwesomeIcon.Adn, isDependBtnVisible, isErr, isInf, isQuest, duplicates, isDeleteAnywayBtnVisible, applyToAll)
+                    return new MessageBoxViewModel(desc, hdr, btn, EFontAwesomeIcon.Brands_Adn, isDependBtnVisible, isErr, isInf, isQuest, duplicates, isDeleteAnywayBtnVisible, applyToAll)
                     {
                         Result = MessageBoxResult.OK
                     };
@@ -165,7 +167,7 @@ namespace Dev2.Core.Tests
                     header = hdr;
                     buttons = btn;
                     popupWasCalled = true;
-                    return new MessageBoxViewModel(desc, hdr, btn, FontAwesomeIcon.Adn, isDependBtnVisible, isErr, isInf, isQuest, duplicates, isDeleteAnywayBtnVisible, applyToAll)
+                    return new MessageBoxViewModel(desc, hdr, btn, EFontAwesomeIcon.Brands_Adn, isDependBtnVisible, isErr, isInf, isQuest, duplicates, isDeleteAnywayBtnVisible, applyToAll)
                     {
                         Result = MessageBoxResult.OK
                     };
@@ -205,7 +207,7 @@ namespace Dev2.Core.Tests
                     header = hdr;
                     buttons = btn;
                     popupWasCalled = true;
-                    return new MessageBoxViewModel(desc, hdr, btn, FontAwesomeIcon.Adn, isDependBtnVisible, isErr, isInf, isQuest, duplicates, isDeleteAnywayBtnVisible, applyToAll)
+                    return new MessageBoxViewModel(desc, hdr, btn, EFontAwesomeIcon.Brands_Adn, isDependBtnVisible, isErr, isInf, isQuest, duplicates, isDeleteAnywayBtnVisible, applyToAll)
                     {
                         Result = MessageBoxResult.OK
                     };
@@ -245,7 +247,7 @@ namespace Dev2.Core.Tests
                     header = hdr;
                     buttons = btn;
                     popupWasCalled = true;
-                    return new MessageBoxViewModel(desc, hdr, btn, FontAwesomeIcon.Adn, isDependBtnVisible, isErr, isInf, isQuest, duplicates, isDeleteAnywayBtnVisible, applyToAll)
+                    return new MessageBoxViewModel(desc, hdr, btn, EFontAwesomeIcon.Brands_Adn, isDependBtnVisible, isErr, isInf, isQuest, duplicates, isDeleteAnywayBtnVisible, applyToAll)
                     {
                         Result = MessageBoxResult.OK
                     };
@@ -295,7 +297,7 @@ namespace Dev2.Core.Tests
                     header = hdr;
                     buttons = btn;
                     popupWasCalled = true;
-                    return new MessageBoxViewModel(desc, hdr, btn, FontAwesomeIcon.Adn, isDependBtnVisible, isErr, isInf, isQuest, duplicates, isDeleteAnywayBtnVisible, applyToAll)
+                    return new MessageBoxViewModel(desc, hdr, btn, EFontAwesomeIcon.Brands_Adn, isDependBtnVisible, isErr, isInf, isQuest, duplicates, isDeleteAnywayBtnVisible, applyToAll)
                     {
                         Result = MessageBoxResult.OK
                     };
@@ -336,7 +338,7 @@ namespace Dev2.Core.Tests
                     header = hdr;
                     buttons = btn;
                     popupWasCalled = true;
-                    return new MessageBoxViewModel(desc, hdr, btn, FontAwesomeIcon.Adn, isDependBtnVisible, isErr, isInf, isQuest, duplicates, isDeleteAnywayBtnVisible, applyToAll)
+                    return new MessageBoxViewModel(desc, hdr, btn, EFontAwesomeIcon.Brands_Adn, isDependBtnVisible, isErr, isInf, isQuest, duplicates, isDeleteAnywayBtnVisible, applyToAll)
                     {
                         Result = MessageBoxResult.OK
                     };
@@ -385,7 +387,7 @@ namespace Dev2.Core.Tests
                     header = hdr;
                     buttons = btn;
                     popupWasCalled = true;
-                    return new MessageBoxViewModel(desc, hdr, btn, FontAwesomeIcon.Adn, isDependBtnVisible, isErr, isInf, isQuest, duplicates, isDeleteAnywayBtnVisible, applyToAll)
+                    return new MessageBoxViewModel(desc, hdr, btn, EFontAwesomeIcon.Brands_Adn, isDependBtnVisible, isErr, isInf, isQuest, duplicates, isDeleteAnywayBtnVisible, applyToAll)
                     {
                         Result = MessageBoxResult.OK
                     };
@@ -438,7 +440,7 @@ namespace Dev2.Core.Tests
                     header = hdr;
                     buttons = btn;
                     popupWasCalled = true;
-                    return new MessageBoxViewModel(desc, hdr, btn, FontAwesomeIcon.Adn, isDependBtnVisible, isErr, isInf, isQuest, duplicates, isDeleteAnywayBtnVisible, applyToAll)
+                    return new MessageBoxViewModel(desc, hdr, btn, EFontAwesomeIcon.Brands_Adn, isDependBtnVisible, isErr, isInf, isQuest, duplicates, isDeleteAnywayBtnVisible, applyToAll)
                     {
                         Result = MessageBoxResult.OK
                     };
@@ -490,7 +492,7 @@ namespace Dev2.Core.Tests
                     header = hdr;
                     buttons = btn;
                     popupWasCalled = true;
-                    return new MessageBoxViewModel(desc, hdr, btn, FontAwesomeIcon.Adn, isDependBtnVisible, isErr, isInf, isQuest, duplicates, isDeleteAnywayBtnVisible, applyToAll)
+                    return new MessageBoxViewModel(desc, hdr, btn, EFontAwesomeIcon.Brands_Adn, isDependBtnVisible, isErr, isInf, isQuest, duplicates, isDeleteAnywayBtnVisible, applyToAll)
                     {
                         Result = MessageBoxResult.OK
                     };
@@ -583,7 +585,7 @@ namespace Dev2.Core.Tests
                     header = hdr;
                     buttons = btn;
                     popupWasCalled = true;
-                    return new MessageBoxViewModel(desc, hdr, btn, FontAwesomeIcon.Adn, isDependBtnVisible, isErr, isInf, isQuest, duplicates, isDeleteAnywayBtnVisible, applyToAll)
+                    return new MessageBoxViewModel(desc, hdr, btn, EFontAwesomeIcon.Brands_Adn, isDependBtnVisible, isErr, isInf, isQuest, duplicates, isDeleteAnywayBtnVisible, applyToAll)
                     {
                         Result = MessageBoxResult.OK
                     };
@@ -630,7 +632,7 @@ namespace Dev2.Core.Tests
                     header = hdr;
                     buttons = btn;
                     popupWasCalled = true;
-                    return new MessageBoxViewModel(desc, hdr, btn, FontAwesomeIcon.Adn, isDependBtnVisible, isErr, isInf, isQuest, duplicates, isDeleteAnywayBtnVisible, applyToAll)
+                    return new MessageBoxViewModel(desc, hdr, btn, EFontAwesomeIcon.Brands_Adn, isDependBtnVisible, isErr, isInf, isQuest, duplicates, isDeleteAnywayBtnVisible, applyToAll)
                     {
                         Result = MessageBoxResult.OK
                     };
@@ -673,7 +675,7 @@ namespace Dev2.Core.Tests
                     header = hdr;
                     buttons = btn;
                     popupWasCalled = true;
-                    return new MessageBoxViewModel(desc, hdr, btn, FontAwesomeIcon.Adn, isDependBtnVisible, isErr, isInf, isQuest, duplicates, isDeleteAnywayBtnVisible, applyToAll)
+                    return new MessageBoxViewModel(desc, hdr, btn, EFontAwesomeIcon.Brands_Adn, isDependBtnVisible, isErr, isInf, isQuest, duplicates, isDeleteAnywayBtnVisible, applyToAll)
                     {
                         Result = MessageBoxResult.OK
                     };
@@ -720,7 +722,7 @@ namespace Dev2.Core.Tests
                     header = hdr;
                     buttons = btn;
                     popupWasCalled = true;
-                    return new MessageBoxViewModel(desc, hdr, btn, FontAwesomeIcon.Adn, isDependBtnVisible, isErr, isInf, isQuest, duplicates, isDeleteAnywayBtnVisible, applyToAll)
+                    return new MessageBoxViewModel(desc, hdr, btn, EFontAwesomeIcon.Brands_Adn, isDependBtnVisible, isErr, isInf, isQuest, duplicates, isDeleteAnywayBtnVisible, applyToAll)
                     {
                         Result = MessageBoxResult.OK
                     };
@@ -766,7 +768,7 @@ namespace Dev2.Core.Tests
                     header = hdr;
                     buttons = btn;
                     popupWasCalled = true;
-                    return new MessageBoxViewModel(desc, hdr, btn, FontAwesomeIcon.Adn, isDependBtnVisible, isErr, isInf, isQuest, duplicates, isDeleteAnywayBtnVisible, applyToAll)
+                    return new MessageBoxViewModel(desc, hdr, btn, EFontAwesomeIcon.Brands_Adn, isDependBtnVisible, isErr, isInf, isQuest, duplicates, isDeleteAnywayBtnVisible, applyToAll)
                     {
                         Result = MessageBoxResult.OK
                     };
@@ -822,7 +824,7 @@ namespace Dev2.Core.Tests
                     header = hdr;
                     buttons = btn;
                     popupWasCalled = true;
-                    return new MessageBoxViewModel(desc, hdr, btn, FontAwesomeIcon.Adn, isDependBtnVisible, isErr, isInf, isQuest, duplicates, isDeleteAnywayBtnVisible, applyToAll)
+                    return new MessageBoxViewModel(desc, hdr, btn, EFontAwesomeIcon.Brands_Adn, isDependBtnVisible, isErr, isInf, isQuest, duplicates, isDeleteAnywayBtnVisible, applyToAll)
                     {
                         Result = MessageBoxResult.OK
                     };
@@ -861,7 +863,7 @@ namespace Dev2.Core.Tests
                     header = hdr;
                     buttons = btn;
                     popupWasCalled = true;
-                    return new MessageBoxViewModel(desc, hdr, btn, FontAwesomeIcon.Adn, isDependBtnVisible, isErr, isInf, isQuest, duplicates, isDeleteAnywayBtnVisible, applyToAll)
+                    return new MessageBoxViewModel(desc, hdr, btn, EFontAwesomeIcon.Brands_Adn, isDependBtnVisible, isErr, isInf, isQuest, duplicates, isDeleteAnywayBtnVisible, applyToAll)
                     {
                         Result = MessageBoxResult.OK
                     };
@@ -908,7 +910,7 @@ namespace Dev2.Core.Tests
                     buttons = btn;
                     imageType = img;
                     popupWasCalled = true;
-                    return new MessageBoxViewModel(desc, hdr, btn, FontAwesomeIcon.Adn, isDependBtnVisible, isErr, isInf, isQuest, duplicates, isDeleteAnywayBtnVisible, applyToAll)
+                    return new MessageBoxViewModel(desc, hdr, btn, EFontAwesomeIcon.Brands_Adn, isDependBtnVisible, isErr, isInf, isQuest, duplicates, isDeleteAnywayBtnVisible, applyToAll)
                     {
                         Result = MessageBoxResult.OK
                     };
@@ -957,7 +959,7 @@ namespace Dev2.Core.Tests
                     buttons = btn;
                     imageType = img;
                     popupWasCalled = true;
-                    return new MessageBoxViewModel(desc, hdr, btn, FontAwesomeIcon.Adn, isDependBtnVisible, isErr, isInf, isQuest, duplicates, isDeleteAnywayBtnVisible, applyToAll)
+                    return new MessageBoxViewModel(desc, hdr, btn, EFontAwesomeIcon.Brands_Adn, isDependBtnVisible, isErr, isInf, isQuest, duplicates, isDeleteAnywayBtnVisible, applyToAll)
                     {
                         Result = MessageBoxResult.OK
                     };
@@ -1004,7 +1006,7 @@ namespace Dev2.Core.Tests
                     buttons = btn;
                     imageType = img;
                     popupWasCalled = true;
-                    return new MessageBoxViewModel(desc, hdr, btn, FontAwesomeIcon.Adn, isDependBtnVisible, isErr, isInf, isQuest, duplicates, isDeleteAnywayBtnVisible, applyToAll)
+                    return new MessageBoxViewModel(desc, hdr, btn, EFontAwesomeIcon.Brands_Adn, isDependBtnVisible, isErr, isInf, isQuest, duplicates, isDeleteAnywayBtnVisible, applyToAll)
                     {
                         Result = MessageBoxResult.OK
                     };
@@ -1050,7 +1052,7 @@ namespace Dev2.Core.Tests
                     buttons = btn;
                     imageType = img;
                     popupWasCalled = true;
-                    return new MessageBoxViewModel(desc, hdr, btn, FontAwesomeIcon.Adn, isDependBtnVisible, isErr, isInf, isQuest, duplicates, isDeleteAnywayBtnVisible, applyToAll)
+                    return new MessageBoxViewModel(desc, hdr, btn, EFontAwesomeIcon.Brands_Adn, isDependBtnVisible, isErr, isInf, isQuest, duplicates, isDeleteAnywayBtnVisible, applyToAll)
                     {
                         Result = MessageBoxResult.OK
                     };
@@ -1088,7 +1090,7 @@ namespace Dev2.Core.Tests
                     buttons = btn;
                     imageType = img;
                     popupWasCalled = true;
-                    return new MessageBoxViewModel(desc, hdr, btn, FontAwesomeIcon.Adn, isDependBtnVisible, isErr, isInf, isQuest, duplicates, isDeleteAnywayBtnVisible, applyToAll)
+                    return new MessageBoxViewModel(desc, hdr, btn, EFontAwesomeIcon.Brands_Adn, isDependBtnVisible, isErr, isInf, isQuest, duplicates, isDeleteAnywayBtnVisible, applyToAll)
                     {
                         Result = MessageBoxResult.OK
                     };
@@ -1128,7 +1130,7 @@ namespace Dev2.Core.Tests
                     buttons = btn;
                     imageType = img;
                     popupWasCalled = true;
-                    return new MessageBoxViewModel(desc, hdr, btn, FontAwesomeIcon.Adn, isDependBtnVisible, isErr, isInf, isQuest, duplicates, isDeleteAnywayBtnVisible, applyToAll)
+                    return new MessageBoxViewModel(desc, hdr, btn, EFontAwesomeIcon.Brands_Adn, isDependBtnVisible, isErr, isInf, isQuest, duplicates, isDeleteAnywayBtnVisible, applyToAll)
                     {
                         Result = MessageBoxResult.OK
                     };
@@ -1173,7 +1175,7 @@ namespace Dev2.Core.Tests
                     buttons = btn;
                     imageType = img;
                     popupWasCalled = true;
-                    return new MessageBoxViewModel(desc, hdr, btn, FontAwesomeIcon.Adn, isDependBtnVisible, isErr, isInf, isQuest, duplicates, isDeleteAnywayBtnVisible, applyToAll)
+                    return new MessageBoxViewModel(desc, hdr, btn, EFontAwesomeIcon.Brands_Adn, isDependBtnVisible, isErr, isInf, isQuest, duplicates, isDeleteAnywayBtnVisible, applyToAll)
                     {
                         Result = MessageBoxResult.OK
                     };
@@ -1218,7 +1220,7 @@ namespace Dev2.Core.Tests
                     buttons = btn;
                     imageType = img;
                     popupWasCalled = true;
-                    return new MessageBoxViewModel(desc, hdr, btn, FontAwesomeIcon.Adn, isDependBtnVisible, isErr, isInf, isQuest, duplicates, isDeleteAnywayBtnVisible, applyToAll)
+                    return new MessageBoxViewModel(desc, hdr, btn, EFontAwesomeIcon.Brands_Adn, isDependBtnVisible, isErr, isInf, isQuest, duplicates, isDeleteAnywayBtnVisible, applyToAll)
                     {
                         Result = MessageBoxResult.OK
                     };
@@ -1263,7 +1265,7 @@ namespace Dev2.Core.Tests
                     buttons = btn;
                     imageType = img;
                     popupWasCalled = true;
-                    return new MessageBoxViewModel(desc, hdr, btn, FontAwesomeIcon.Adn, isDependBtnVisible, isErr, isInf, isQuest, duplicates, isDeleteAnywayBtnVisible, applyToAll)
+                    return new MessageBoxViewModel(desc, hdr, btn, EFontAwesomeIcon.Brands_Adn, isDependBtnVisible, isErr, isInf, isQuest, duplicates, isDeleteAnywayBtnVisible, applyToAll)
                     {
                         Result = MessageBoxResult.OK
                     };
@@ -1306,7 +1308,7 @@ namespace Dev2.Core.Tests
                     imageType = img;
                     popupWasCalled = true;
                     dontShowAgainKey = dntShwAgKy;
-                    return new MessageBoxViewModel(desc, hdr, btn, FontAwesomeIcon.Adn, isDependBtnVisible, isErr, isInf, isQuest, duplicates, isDeleteAnywayBtnVisible, applyToAll)
+                    return new MessageBoxViewModel(desc, hdr, btn, EFontAwesomeIcon.Brands_Adn, isDependBtnVisible, isErr, isInf, isQuest, duplicates, isDeleteAnywayBtnVisible, applyToAll)
                     {
                         Result = MessageBoxResult.OK
                     };
@@ -1348,7 +1350,7 @@ namespace Dev2.Core.Tests
                     imageType = img;
                     popupWasCalled = true;
                     dontShowAgainKey = dntShwAgKy;
-                    return new MessageBoxViewModel(desc, hdr, btn, FontAwesomeIcon.Adn, isDependBtnVisible, isErr, isInf, isQuest, duplicates, isDeleteAnywayBtnVisible, applyToAll)
+                    return new MessageBoxViewModel(desc, hdr, btn, EFontAwesomeIcon.Brands_Adn, isDependBtnVisible, isErr, isInf, isQuest, duplicates, isDeleteAnywayBtnVisible, applyToAll)
                     {
                         Result = MessageBoxResult.OK
                     };
@@ -1385,7 +1387,7 @@ namespace Dev2.Core.Tests
                     header = hdr;
                     buttons = btn;
                     popupWasCalled = true;
-                    return new MessageBoxViewModel(desc, hdr, btn, FontAwesomeIcon.Adn, isDependBtnVisible, isErr, isInf, isQuest, duplicates, isDeleteAnywayBtnVisible, applyToAll)
+                    return new MessageBoxViewModel(desc, hdr, btn, EFontAwesomeIcon.Brands_Adn, isDependBtnVisible, isErr, isInf, isQuest, duplicates, isDeleteAnywayBtnVisible, applyToAll)
                     {
                         Result = MessageBoxResult.OK
                     };
@@ -1447,7 +1449,7 @@ namespace Dev2.Core.Tests
                     imageType = img;
                     popupWasCalled = true;
                     dontShowAgainKey = dntShwAgKy;
-                    return new MessageBoxViewModel(desc, hdr, btn, FontAwesomeIcon.Adn, isDependBtnVisible, isErr, isInf, isQuest, duplicates, isDeleteAnywayBtnVisible, applyToAll)
+                    return new MessageBoxViewModel(desc, hdr, btn, EFontAwesomeIcon.Brands_Adn, isDependBtnVisible, isErr, isInf, isQuest, duplicates, isDeleteAnywayBtnVisible, applyToAll)
                     {
                         Result = MessageBoxResult.OK
                     };
