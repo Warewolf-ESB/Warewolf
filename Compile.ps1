@@ -306,6 +306,9 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
         if ($OutputFolderName -eq "Studi") {
             $OutputFolderName = "StudioProject"
         }
+        if ($OutputFolderName -eq "ServerTest") {
+            $OutputFolderName = "ServerTests"
+        }
         if ((Get-Variable "$OutputFolderName*" -ValueOnly).IsPresent.Length -gt 1) {
             $SolutionParameterIsPresent = (Get-Variable "$OutputFolderName*" -ValueOnly).IsPresent[0]
         } else {
