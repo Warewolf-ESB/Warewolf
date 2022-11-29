@@ -213,8 +213,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.COMIPC", "Warewolf
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dev2.Net6.Compatibility", "Dev2.Net6.Compatibility\Dev2.Net6.Compatibility.csproj", "{0ACEC0AE-78B7-4173-98DA-305DD89C80FD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleApp2", "ConsoleApp2\ConsoleApp2.csproj", "{86918982-BCE5-42DB-A4E3-666024E868B6}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GACManagerApi", "GACManagerApi\GACManagerApi.csproj", "{96ABF278-3598-4462-B678-3458DB19C5E3}"
 EndProject
 Global
@@ -643,10 +641,6 @@ Global
 		{0ACEC0AE-78B7-4173-98DA-305DD89C80FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0ACEC0AE-78B7-4173-98DA-305DD89C80FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0ACEC0AE-78B7-4173-98DA-305DD89C80FD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{86918982-BCE5-42DB-A4E3-666024E868B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{86918982-BCE5-42DB-A4E3-666024E868B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{86918982-BCE5-42DB-A4E3-666024E868B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{86918982-BCE5-42DB-A4E3-666024E868B6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{96ABF278-3598-4462-B678-3458DB19C5E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{96ABF278-3598-4462-B678-3458DB19C5E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{96ABF278-3598-4462-B678-3458DB19C5E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
