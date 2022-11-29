@@ -14,7 +14,6 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.IO;
 using System.Net;
-using System.Web;
 using TestBase;
 
 namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.InternalServices

@@ -43,14 +43,14 @@ namespace Dev2.Views.Dialogs
         private static void SetSilent(WebBrowser browser, bool silent)
         {
             if (browser == null)
-                throw new ArgumentNullException("browser");
+                throw new ArgumentNullException(nameof(browser));
 
             // get an IWebBrowser2 from the document
-            IOleServiceProvider sp = browser.Document as IOleServiceProvider;
+            var sp = browser.Document as IOleServiceProvider;
             if (sp != null)
             {
-                Guid iidIWebBrowserApp = new Guid("0002DF05-0000-0000-C000-000000000046");
-                Guid iidIWebBrowser2 = new Guid("D30C1661-CDAF-11d0-8A3E-00C04FC9E26E");
+                var iidIWebBrowserApp = new Guid("0002DF05-0000-0000-C000-000000000046");
+                var iidIWebBrowser2 = new Guid("D30C1661-CDAF-11d0-8A3E-00C04FC9E26E");
 
                 object webBrowser;
                 sp.QueryService(ref iidIWebBrowserApp, ref iidIWebBrowser2, out webBrowser);

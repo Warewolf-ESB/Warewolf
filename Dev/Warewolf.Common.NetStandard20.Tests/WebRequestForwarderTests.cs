@@ -18,6 +18,7 @@ using Moq;
 using Warewolf.Common;
 using Warewolf.Data;
 using HttpClientFactory = Warewolf.Common.HttpClientFactory;
+using IHttpClientFactory = Warewolf.Common.IHttpClientFactory;
 
 namespace Warewolf.Web.Tests
 {

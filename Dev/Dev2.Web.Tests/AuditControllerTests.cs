@@ -9,6 +9,7 @@
 */
 
 using Dev2.Web2.Controllers;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json;
@@ -16,9 +17,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Net;
-using System.Web;
-using System.Web.Mvc;
-using System.Web.Routing;
 using Warewolf.Auditing;
 
 namespace Dev2.Web.Tests
