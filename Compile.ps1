@@ -318,7 +318,7 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
             if ($OutputFolderName -eq "Webs") {
                 npm install --add-python-to-path='true' --global --production windows-build-tools
             }
-            if (($OutputFolderName -eq "AcceptanceTesting" or $OutputFolderName -eq "ServerTests") -and !($ProjectSpecificOutputs.IsPresent)) {
+            if (($OutputFolderName -eq "AcceptanceTesting" -or $OutputFolderName -eq "ServerTests") -and !($ProjectSpecificOutputs.IsPresent)) {
                 &"$NuGet" install Microsoft.TestPlatform -ExcludeVersion -NonInteractive -OutputDirectory "$PSScriptRoot\Bin\$OutputFolderName" -Version "17.2.0"
             }
             if ($ProjectSpecificOutputs.IsPresent) {
