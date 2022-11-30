@@ -283,7 +283,7 @@ namespace Warewolf.Tools.Specs.Toolbox.Resources.Web
         public async Task ThenIClickGetGenerateOutputs()
         {
             var webServiceGetViewModel = GetViewModel();
-            await webServiceGetViewModel.TestInputCommand.Execute();
+            webServiceGetViewModel.TestInputCommand.Execute();
         }
         
         [Given(@"Get the Generate Outputs window is shown")]

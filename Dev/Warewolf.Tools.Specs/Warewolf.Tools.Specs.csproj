@@ -869,7 +869,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Caliburn.Micro">
-      <Version>1.4.1</Version>
+      <Version>4.0.212</Version>
     </PackageReference>
     <PackageReference Include="FluentAssertions">
       <Version>3.4.0</Version>

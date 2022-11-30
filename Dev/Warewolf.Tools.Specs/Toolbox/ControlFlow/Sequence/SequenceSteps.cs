@@ -649,10 +649,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
         /// </remarks>
         /// </summary>
         /// <param name="debugState">The state to be written.</param>
-        public void Write(IDebugState debugState)
-        {
-            DebugStates.Add(debugState);
-        }
+        public void Write(IDebugState debugState) => DebugStates.Add(debugState);
 
         public void Write(string serializeObject)
         {
@@ -661,7 +658,9 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
             Write(debugState);
         }
 
-        
+        public void WriteDebugState(IDebugState debugState) => Write(debugState);
+
+
         #endregion
     }
 }

@@ -526,7 +526,7 @@
     <PackageReference Include="Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers" Version="0.4.336902">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="Caliburn.Micro" Version="4.0.210" />
+    <PackageReference Include="Caliburn.Micro" Version="4.0.212" />
     <PackageReference Include="MySql.Data" Version="6.10.9" />
     <PackageReference Include="Npgsql" Version="3.2.7" />
     <PackageReference Include="TxFileManager" Version="1.5.0.1" />

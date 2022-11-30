@@ -160,13 +160,6 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
             };
         }
 
-        [Then(@"the New Dropbox Source window is opened")]
-        public void ThenTheNewDropboxSourceWindowIsOpened()
-        {
-            var mock = scenarioContext.Get<Mock<IEventAggregator>>("mockEventAggregator");
-            mock.Verify(aggregator => aggregator.Publish(It.IsAny<IMessage>()));
-        }
-
         [Then(@"the ""(.*)"" Dropbox Source window is opened")]
         public void ThenTheDropboxSourceWindowIsOpened(string sourceName)
         {

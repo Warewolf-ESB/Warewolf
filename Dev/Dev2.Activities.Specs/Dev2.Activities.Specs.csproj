@@ -1,10 +1,9 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{A03004BE-79B5-47AF-88EF-112197619A5F}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <TargetFramework>net48</TargetFramework>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <EnableDefaultItems>false</EnableDefaultItems>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
@@ -233,7 +232,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Caliburn.Micro">
-      <Version>1.4.1</Version>
+      <Version>4.0.212</Version>
     </PackageReference>
     <PackageReference Include="Dropbox.Api">
       <Version>6.15.0</Version>
@@ -295,9 +294,11 @@
     <PackageReference Include="System.Threading.Tasks.Extensions">
       <Version>4.5.4</Version>
     </PackageReference>
+    <PackageReference Include="TaskScheduler" Version="2.10.1" />
     <PackageReference Include="TaskSchedulerEditor">
       <Version>2.5.20</Version>
     </PackageReference>
+    <PackageReference Include="Tulpep.ActiveDirectoryObjectPicker" Version="3.0.11" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Composition\DBSource\XmlFetch.cs" />

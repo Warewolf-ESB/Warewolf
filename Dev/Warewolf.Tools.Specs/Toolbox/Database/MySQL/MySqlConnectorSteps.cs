@@ -236,8 +236,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.Resources.MySQL
             var viewModel = GetViewModel();
             Assert.IsTrue(viewModel.TestInputCommand.CanExecute());
             var serviceModel = GetServiceModel();
-            var executeResult = viewModel.TestInputCommand.Execute();
-            Assert.AreEqual("RanToCompletion", executeResult.Status.ToString());
+            viewModel.TestInputCommand.Execute();
         }
 
         [When(@"The Connector and Calculate Outputs appear for mysql connector tool")]
