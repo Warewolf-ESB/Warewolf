@@ -4,9 +4,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:ig="http://schemas.infragistics.com/xaml"
-             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:perfcounters="clr-namespace:Dev2.Settings.Perfcounters"
-             xmlns:fa="http://schemas.fontawesome.io/icons/"
+             xmlns:fa="http://schemas.fontawesome.com/icons/fonts"
              xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
              xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
              mc:Ignorable="d" 
@@ -423,7 +423,7 @@
 
         <TextBlock Grid.Row="3" >
                         <Hyperlink Command="{Binding Path=ResetCountersCommand}" Style="{StaticResource HyperLinkStyle}">
-                            <fa:FontAwesome Icon="Eye" FontSize="16"></fa:FontAwesome>
+                            <fa:FontAwesome Icon="Solid_Eye" FontSize="16"></fa:FontAwesome>
                             <TextBlock Text="Reset Counters" Style="{StaticResource HoverUnderlineStyle}"></TextBlock>
                 </Hyperlink></TextBlock>
     </Grid>

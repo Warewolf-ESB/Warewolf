@@ -2,7 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:bdsm="clr-namespace:Dev2.Studio.Core.Models;assembly=Dev2.Studio.Core"
                     xmlns:customControls="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
-                    xmlns:fa="http://schemas.fontawesome.io/icons/">
+                    xmlns:fa="http://schemas.fontawesome.com/icons/fonts">
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/Warewolf Studio;component/Themes/DataTemplatesIntellisense.xaml" />

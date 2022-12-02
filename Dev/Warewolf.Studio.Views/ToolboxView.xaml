@@ -5,7 +5,7 @@
 			 xmlns:customControls="clr-namespace:Warewolf.Studio.CustomControls;assembly=Warewolf.Studio.CustomControls"
 			 xmlns:toolBox="clr-namespace:Warewolf.Studio.ViewModels.ToolBox;assembly=Warewolf.Studio.ViewModels"
 			 xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
-			 xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+			 xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
 			 xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
 			 xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
 			 mc:Ignorable="d"

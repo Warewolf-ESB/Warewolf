@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:queueEvents="clr-namespace:Dev2.Triggers.QueueEvents"
              xmlns:triggers="clr-namespace:Dev2.Triggers"
-             xmlns:fa="http://schemas.fontawesome.io/icons/"
+             xmlns:fa="http://schemas.fontawesome.com/icons/fonts"
              d:DesignHeight="300"
              d:DesignWidth="300"
              mc:Ignorable="d"
@@ -25,7 +25,7 @@
                     <TabItem Style="{StaticResource TabItemStyle}" IsSelected="{Binding IsEventsSelected}">
                         <TabItem.Header>
                             <StackPanel Orientation="Horizontal" Cursor="Hand">
-                                <fa:FontAwesome Icon="Calendar" FontSize="17" Margin="{StaticResource ControlBorderTop}"></fa:FontAwesome>
+                                <fa:FontAwesome Icon="Solid_Calendar" FontSize="17" Margin="{StaticResource ControlBorderTop}"></fa:FontAwesome>
                                 <TextBlock FontSize="15" Text="{Binding QueueEventsHeader}"/>
                             </StackPanel>
                         </TabItem.Header>

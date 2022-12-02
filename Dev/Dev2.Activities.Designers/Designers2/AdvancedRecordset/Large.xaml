@@ -9,7 +9,7 @@
                                xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
                                xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
 							   xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
-							   xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+							   xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
 							   xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
                                xmlns:controls="clr-namespace:Dev2.Activities.Designers2.Core.Controls"
                                xmlns:provider="clr-namespace:Dev2.Intellisense.Provider;assembly=Dev2.Intellisense"

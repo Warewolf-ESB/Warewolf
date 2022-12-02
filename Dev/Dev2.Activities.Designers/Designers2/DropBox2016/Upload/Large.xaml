@@ -4,7 +4,7 @@
                                xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
                                xmlns:upload="clr-namespace:Dev2.Activities.Designers2.DropBox2016.Upload"
                                xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
-                               xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+                               xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
                                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                                

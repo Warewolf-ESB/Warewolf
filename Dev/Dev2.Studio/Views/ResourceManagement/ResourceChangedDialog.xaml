@@ -1,7 +1,7 @@
 ﻿<Window x:Class="Dev2.Studio.Views.ResourceManagement.ResourceChangedDialog"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:fa="http://schemas.fontawesome.io/icons/"
+        xmlns:fa="http://schemas.fontawesome.com/icons/fonts"
         Title="Inputs / Outputs Changed" Height="157" Width="362"
         Style="{DynamicResource ModalDialogStyle}"
         WindowStartupLocation="CenterOwner" MinHeight="100" MinWidth="350"

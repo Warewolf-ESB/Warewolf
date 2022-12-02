@@ -2,12 +2,12 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:search="clr-namespace:Dev2.ViewModels.Search;assembly=Warewolf.Studio.ViewModels"
              xmlns:views="clr-namespace:Warewolf.Studio.Views"
              xmlns:controls="clr-namespace:Dev2.Activities.Designers2.Core.Controls;assembly=Dev2.Activities.Designers"
-             xmlns:fa="http://schemas.fontawesome.io/icons/"
+             xmlns:fa="http://schemas.fontawesome.com/icons/fonts"
              xmlns:converters1="clr-namespace:Dev2.CustomControls.Converters;assembly=Dev2.Studio.Core"
              xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
              xmlns:help="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
@@ -63,7 +63,7 @@
                     Grid.Column="1" 
                     Margin="{StaticResource ControlBorderLeft}" 
                     Command="{Binding SearchInputCommand}">
-                <fa:FontAwesome HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="16" FontWeight="Light" Icon="Search" />
+                <fa:FontAwesome HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="16" FontWeight="Light" Icon="Solid_MagnifyingGlass" />
                 <Button.Style>
                     <Style BasedOn="{StaticResource ButtonStyle}" TargetType="Button">
                         <Style.Triggers>

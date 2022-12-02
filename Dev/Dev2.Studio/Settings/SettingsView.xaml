@@ -7,7 +7,7 @@
              xmlns:logging="clr-namespace:Dev2.Settings.Logging"
              xmlns:security="clr-namespace:Dev2.Settings.Security"
              xmlns:persistence="clr-namespace:Dev2.Settings.Persistence"
-             xmlns:fa="http://schemas.fontawesome.io/icons/"
+             xmlns:fa="http://schemas.fontawesome.com/icons/fonts"
              xmlns:perfcounters="clr-namespace:Dev2.Settings.Perfcounters"
              Padding="5"
              d:DesignHeight="300"
