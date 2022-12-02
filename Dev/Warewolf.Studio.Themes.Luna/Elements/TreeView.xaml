@@ -1,17 +1,18 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:system="clr-namespace:System;assembly=mscorlib"
-                    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+                    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
                     xmlns:behaviors="clr-namespace:Dev2.Studio.Core.AppResources.Behaviors;assembly=Dev2.Studio.Core"
-                    xmlns:fa="http://schemas.fontawesome.io/icons/"
-                    xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna">
+                    xmlns:fa="http://schemas.fontawesome.com/icons/fonts"
+                    xmlns:luna1="clr-namespace:Warewolf.Studio.Themes.Luna"
+                    >
 
     <ResourceDictionary.MergedDictionaries>
-        <luna:SharedResourceDictionary Source="../Common/Color.xaml" />
-        <luna:SharedResourceDictionary Source="../Common/Brushes.xaml" />
-        <luna:SharedResourceDictionary Source="../Common/Styles.xaml" />
-        <luna:SharedResourceDictionary Source="../Elements/FontAwesome.xaml"/>
-        <luna:SharedResourceDictionary Source="../Elements/ValidationToolTip.xaml" />
+        <luna1:SharedResourceDictionary Source="../Common/Color.xaml" />
+        <luna1:SharedResourceDictionary Source="../Common/Brushes.xaml" />
+        <luna1:SharedResourceDictionary Source="../Common/Styles.xaml" />
+        <luna1:SharedResourceDictionary Source="../Elements/FontAwesome.xaml"/>
+        <luna1:SharedResourceDictionary Source="../Elements/ValidationToolTip.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <!--  TreeView Brushes  -->
@@ -106,7 +107,7 @@
                             Background="Transparent"
                             Padding="4">
                         <StackPanel x:Name="ExpandPath">
-                            <fa:FontAwesome Icon="LevelUp" FontSize="14" />
+                            <fa:FontAwesome Icon="Solid_Elevator" FontSize="14" />
                             <StackPanel.RenderTransform>
                                 <RotateTransform Angle="90" CenterX="3" CenterY="3" />
                             </StackPanel.RenderTransform>
@@ -1881,7 +1882,7 @@
                             <StackPanel.RenderTransform>
                                 <RotateTransform Angle="90" CenterX="3" CenterY="3" />
                             </StackPanel.RenderTransform>
-                            <fa:FontAwesome Icon="LevelUp" FontSize="14"></fa:FontAwesome>
+                            <fa:FontAwesome Icon="Solid_Elevator" FontSize="14"></fa:FontAwesome>
                         </StackPanel>
                     </Border>
                     <ControlTemplate.Triggers>

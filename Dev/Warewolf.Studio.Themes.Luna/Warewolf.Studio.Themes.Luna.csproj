@@ -995,9 +995,10 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="Expression.Blend.Sdk">
+    <!--<PackageReference Include="Expression.Blend.Sdk">
       <Version>1.0.2</Version>
-    </PackageReference>
+    </PackageReference>-->
+	  <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
     <PackageReference Include="Newtonsoft.Json">
       <Version>13.0.1</Version>
     </PackageReference>
@@ -1005,7 +1006,8 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Caliburn.Micro" Version="4.0.212" />
-    <PackageReference Include="FontAwesome.WPF" Version="4.7.0.9" />
+    <!--<PackageReference Include="FontAwesome.WPF" Version="4.7.0.9" />-->
+	  
   </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

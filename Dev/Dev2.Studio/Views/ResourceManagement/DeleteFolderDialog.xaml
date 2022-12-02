@@ -1,7 +1,7 @@
 ﻿<Window x:Class="Dev2.Studio.Views.ResourceManagement.DeleteFolderDialog"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:fa="http://schemas.fontawesome.io/icons/"
+        xmlns:fa="http://schemas.fontawesome.com/icons/fonts"
         Title="Dependants Detected" Height="157" Width="362"
         
         WindowStartupLocation="CenterOwner" WindowStyle="ThreeDBorderWindow" ShowInTaskbar="False" MinHeight="100" MinWidth="350" ResizeMode="NoResize"

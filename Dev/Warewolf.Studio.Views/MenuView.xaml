@@ -3,8 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:fa="http://schemas.fontawesome.io/icons/"
-             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:fa="http://schemas.fontawesome.com/icons/fonts"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
              xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -118,7 +118,7 @@
                                Style="{StaticResource MenuTextBlockStyle}">
                         <fa:FontAwesome FontSize="20"
                                         FontWeight="Light"
-                                        Icon="Plus" />
+                                        Icon="Solid_Plus" />
                     </TextBlock>
                     <TextBlock Padding="15,8,0,5"
                                Style="{StaticResource MenuTextBlockStyle}"
@@ -149,7 +149,7 @@
                                Style="{StaticResource MenuTextBlockStyle}">
                         <fa:FontAwesome FontSize="20"
                                         FontWeight="Light"
-                                        Icon="Save" />
+                                        Icon="Solid_FloppyDisk" />
                     </TextBlock>
                     <TextBlock Padding="15,8,0,5"
                                Style="{StaticResource MenuTextBlockStyle}"
@@ -180,7 +180,7 @@
                                Style="{StaticResource MenuTextBlockStyle}">
                         <fa:FontAwesome FontSize="18"
                                         FontWeight="Light"
-                                        Icon="PaperPlaneOutline" />
+                                        Icon="Solid_PaperPlane" />
                     </TextBlock>
                     <TextBlock Padding="15,8,0,5"
                                Style="{StaticResource MenuTextBlockStyle}"
@@ -217,7 +217,7 @@
                                Style="{StaticResource MenuTextBlockStyle}">
                         <fa:FontAwesome FontSize="20"
                                         FontWeight="Light"
-                                        Icon="Search" />
+                                        Icon="Solid_MagnifyingGlass" />
                     </TextBlock>
                     <TextBlock Padding="15,8,0,5"
                                Style="{StaticResource MenuTextBlockStyle}"
@@ -244,7 +244,7 @@
                                Style="{StaticResource MenuTextBlockStyle}">
                         <fa:FontAwesome FontSize="20"
                                         FontWeight="Light"
-                                        Icon="History" />
+                                        Icon="Solid_ClockRotateLeft" />
                     </TextBlock>
                     <TextBlock Padding="15,8,0,5"
                                Style="{StaticResource MenuTextBlockStyle}"
@@ -278,7 +278,7 @@
                                Style="{StaticResource MenuTextBlockStyle}">
                         <fa:FontAwesome FontSize="20"
                                         FontWeight="Light"
-                                        Icon="Play" />
+                                        Icon="Solid_Play" />
                     </TextBlock>
                     <TextBlock Padding="15,8,0,5"
                                Style="{StaticResource MenuTextBlockStyle}"
@@ -314,7 +314,7 @@
                                            Style="{StaticResource MenuTextBlockStyle}">
                                     <fa:FontAwesome FontSize="18"
                                                     FontWeight="Light"
-                                                    Icon="Calendar" />
+                                                    Icon="Solid_Calendar" />
                                 </TextBlock>
                                 <TextBlock Padding="0,8,5,5"
                                            Style="{StaticResource MenuTextBlockStyle}"
@@ -385,7 +385,7 @@
                                Style="{StaticResource MenuTextBlockStyle}">
                         <fa:FontAwesome FontSize="18"
                                         FontWeight="Light"
-                                        Icon="Cogs" />
+                                        Icon="Solid_Gears" />
                     </TextBlock>
                     <TextBlock Padding="15,8,0,5"
                                Style="{StaticResource MenuTextBlockStyle}"
@@ -422,7 +422,7 @@
                                Style="{StaticResource MenuTextBlockStyle}">
                         <fa:FontAwesome FontSize="22"
                                         FontWeight="Light"
-                                        Icon="Question" />
+                                        Icon="Solid_Question" />
                     </TextBlock>
                     <TextBlock Padding="15,8,0,5"
                                Style="{StaticResource MenuTextBlockStyle}"
@@ -459,7 +459,7 @@
                                         FontSize="22"
                                         FontWeight="Light"
                                         Foreground="{StaticResource WareWolfOrangeBrush}"
-                                        Icon="ArrowCircleDown" />
+                                        Icon="Solid_CircleArrowDown" />
                     </TextBlock>
                     <TextBlock x:Name="VersionText"
                                FontSize="{StaticResource FontSize-Normal}"

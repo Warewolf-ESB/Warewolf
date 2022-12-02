@@ -3,11 +3,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:interfaces="clr-namespace:Warewolf.Triggers;assembly=Warewolf.Interfaces"
              xmlns:queueEvents="clr-namespace:Dev2.Triggers.QueueEvents"
              xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
-             xmlns:fa="http://schemas.fontawesome.io/icons/"
+             xmlns:fa="http://schemas.fontawesome.com/icons/fonts"
              xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
              xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
              xmlns:controls="clr-namespace:System.Windows.Controls;assembly=Dev2.Runtime.Configuration"
@@ -123,7 +123,7 @@
                                             IsEnabled="{Binding Enabled}"
                                             Style="{StaticResource ButtonSchedulerDeleteTransparentStyle}" >
                                             <Button.Content>
-                                                <fa:FontAwesome Icon="Trash" FontSize="18"></fa:FontAwesome>
+                                                <fa:FontAwesome Icon="Solid_Trash" FontSize="18"></fa:FontAwesome>
                                             </Button.Content>
                                             <i:Interaction.Behaviors>
                                                 <core:HelpSetter Text="{x:Static languages:HelpText.QueueDeleteHelpTextTrigger}"
@@ -150,7 +150,7 @@
                                                     <Grid.RowDefinitions>
                                                         <RowDefinition Height="Auto"/>
                                                     </Grid.RowDefinitions>
-                                                    <fa:FontAwesome Icon="Plus" FontSize="24" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                                    <fa:FontAwesome Icon="Solid_Plus" FontSize="24" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                                                     <TextBlock Grid.Column="1" Text="Create a new queue" FontSize="14"/>
                                                 </Grid>
                                             </Button.Content>
@@ -671,14 +671,14 @@
                                              Margin="{StaticResource ControlBorderRight}" 
                                              Foreground="{StaticResource WareWolfOrangeBrush}" 
                                              Visibility="{Binding VerifyPassed,Converter={StaticResource BoolToVisibilityConverter}}" 
-                                             Icon="Check" 
+                                             Icon="Solid_Check" 
                                              HorizontalAlignment="Right" />
                                     <fa:ImageAwesome Width="14" 
                                              Height="14" 
                                              Margin="{StaticResource ControlBorderRight}" 
                                              Foreground="{StaticResource WareWolfOrangeBrush}" 
                                              Visibility="{Binding VerifyFailed,Converter={StaticResource BoolToVisibilityConverter}}" 
-                                             Icon="Ban" 
+                                             Icon="Solid_Ban" 
                                              HorizontalAlignment="Right" />
                                     <customControls:CircularProgressBar Width="25"
                                                                 HorizontalAlignment="Right" 

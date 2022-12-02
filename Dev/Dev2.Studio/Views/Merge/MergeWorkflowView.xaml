@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:customcontrols="clr-namespace:Dev2.CustomControls"
              xmlns:customcontrols1="clr-namespace:Warewolf.Studio.CustomControls;assembly=Warewolf.Studio.CustomControls"
              xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
@@ -11,7 +11,7 @@
              xmlns:merge="clr-namespace:Dev2.ViewModels.Merge"
              xmlns:ig="http://schemas.infragistics.com/xaml"
              xmlns:interfaces1="clr-namespace:Dev2.Studio.Interfaces;assembly=Dev2.Studio.Interfaces"
-             xmlns:fa="http://schemas.fontawesome.io/icons/"
+             xmlns:fa="http://schemas.fontawesome.com/icons/fonts"
              xmlns:help="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance interfaces1:IMergeWorkflowViewModel}"
@@ -472,7 +472,7 @@
                                                                        HorizontalAlignment="Stretch"/>
 
                                                             <fa:FontAwesome Margin="5,2,0,0" 
-                                                                            Icon="LongArrowRight" 
+                                                                            Icon="Solid_ArrowRightLong" 
                                                                             Grid.Column="0"
                                                                             ToolTip="Connects to" 
                                                                             FontSize="18" 
@@ -596,7 +596,7 @@
                                                                Visibility="{Binding AllowSelection, Converter={StaticResource BoolToVisibilityConverter}}" />
 
                                                     <fa:FontAwesome Margin="5,2,0,0" 
-                                                                    Icon="LongArrowRight" 
+                                                                    Icon="Solid_ArrowRightLong" 
                                                                     ToolTip="Connects to" 
                                                                     FontSize="18" 
                                                                     Foreground="Gray" 
