@@ -130,3 +130,5 @@ Dev/SonarQube/SolutionBinding.sqconfig
 /Dev/Warewolf.Testing.backup
 /Dev/ServerTests2.sln
 *.bak
+/Dev/Dev2.UnitTestUtils.backup
+/Dev/Warewolf.UnitTestAttributes.backup
