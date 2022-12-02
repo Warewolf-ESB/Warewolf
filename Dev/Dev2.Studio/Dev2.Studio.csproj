@@ -315,6 +315,9 @@
       <DependentUpon>DependencyVisualiserView.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Views\Dialogs\WebLatestVersionDialog.xaml.cs">
+      <DependentUpon>WebLatestVersionDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\Help\HelpViewModel.cs" />
     <Compile Include="ViewModels\Workflow\WorkflowInputDataViewModel.cs" />
     <Compile Include="ViewModels\Workflow\DsfActivityDropViewModel.cs">
@@ -489,6 +492,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\DependencyVisualization\DependencyVisualiserView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Dialogs\WebLatestVersionDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -769,6 +776,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Help\PageNotAvailable.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="InstallWebView2FixedVersion.ps1">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

@@ -16,7 +16,6 @@ using System.Security.Principal;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
-using CubicOrange.Windows.Forms.ActiveDirectory;
 using Dev2.Common.Interfaces.Scheduler.Interfaces;
 using Dev2.Core.Tests.Utils;
 using Dev2.Services.Events;
@@ -35,6 +34,7 @@ using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Studio.Interfaces;
 using System.IO;
 using Dev2.Infrastructure.Tests;
+using Tulpep.ActiveDirectoryObjectPicker;
 
 namespace Dev2.Activities.Specs.Scheduler
 {

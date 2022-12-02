@@ -26,6 +26,8 @@ using System.Runtime.ConstrainedExecution;
 using System.Security;
 using Dev2.Infrastructure.Tests;
 using Warewolf.UnitTestAttributes;
+using Dev2.Data.PathOperations;
+using Dev2.Data.Security;
 
 namespace Dev2.Integration.Tests.Services.Sql
 {
@@ -260,8 +262,14 @@ namespace Dev2.Integration.Tests.Services.Sql
             {
                 if (impersonator.Impersonate(userName, domain, password))
                 {
-                    action?.Invoke();
-                    result = true;
+                    if (impersonator.Context != null)
+                    {
+                        impersonator.Context.RunImpersonated(() =>
+                        {
+                            action?.Invoke();
+                            result = true;
+                        });
+                    }
                 }
             }
 
@@ -278,7 +286,7 @@ namespace Dev2.Integration.Tests.Services.Sql
         {
             const int LOGON32_PROVIDER_DEFAULT = 0;
             const int LOGON32_LOGON_INTERACTIVE = 2;
-
+            public WindowsIdentity Context { get { return _impersonationContext; } }
             #region DllImports
 
             [DllImport("advapi32.dll", SetLastError = true, CharSet = CharSet.Auto)]
@@ -298,7 +306,7 @@ namespace Dev2.Integration.Tests.Services.Sql
 
             #endregion
 
-            WindowsImpersonationContext _impersonationContext;
+            WindowsIdentity _impersonationContext;
 
             #region Impersonate
 
@@ -312,11 +320,14 @@ namespace Dev2.Integration.Tests.Services.Sql
                     _impersonationContext = tempWindowsIdentity.Impersonate();
                     if (_impersonationContext != null)
                     {
-                        ClaimsPrincipal principal = new WindowsPrincipal(tempWindowsIdentity);
-                        Thread.CurrentPrincipal = principal;
-                        CloseHandle(token);
-                        CloseHandle(tokenDuplicate);
-                        return true;
+                        return _impersonationContext.RunImpersonated<bool>(() =>
+                        {
+                            ClaimsPrincipal principal = new WindowsPrincipal(tempWindowsIdentity);
+                            Thread.CurrentPrincipal = principal;
+                            CloseHandle(token);
+                            CloseHandle(tokenDuplicate);
+                            return true;
+                        });
                     }
                 }
                 if (token != IntPtr.Zero)
@@ -336,11 +347,11 @@ namespace Dev2.Integration.Tests.Services.Sql
 
             public void Undo()
             {
-                if (_impersonationContext != null)
-                {
-                    _impersonationContext.Undo();
-                    _impersonationContext.Dispose();
-                }
+                //if (_impersonationContext != null)
+                //{
+                //    _impersonationContext.Undo();
+                //    _impersonationContext.Dispose();
+                //}
             }
 
             #endregion

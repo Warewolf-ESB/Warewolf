@@ -16,18 +16,17 @@ using System.Net;
 using System.Net.Http;
 using System.Security.Principal;
 using Dev2.Runtime.WebServer.Executor;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http.Features;
-using Microsoft.AspNetCore.Mvc.Abstractions;
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Mvc.WebApiCompatShim;
 using Microsoft.AspNetCore.Http;
-using System.IO;
-using System.Security.Claims;
-using System.Collections.Generic;
+using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Abstractions;
+using Microsoft.AspNetCore.Mvc.WebApiCompatShim;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Primitives;
-//using System.Web.Http.Controllers;
+using System.Collections.Generic;
+using System.IO;
+using System.Security.Claims;
+using Dev2.Runtime.WebServer;
 
 namespace Dev2.Runtime.WebServer.Tests
 {
@@ -79,8 +78,10 @@ namespace Dev2.Runtime.WebServer.Tests
         public void Extensions_CreateWarewolfErrorResponse_HttpActionContext_GivenJSONURI_ShouldReturnJSON()
         {
             var sut = CreateActionContext(true, "http://localhost:3241/help/wolf-tools/redis.json");
-            var result = GetResponse(sut.HttpContext.CreateWarewolfErrorResponse(new WarewolfErrorResponseArgs { StatusCode = HttpStatusCode.Unauthorized, Title = "test_title", Message = "test_message" }));
+            var httpContext = sut.HttpContext;
+            var errorResult = httpContext.CreateWarewolfErrorResponse(new WarewolfErrorResponseArgs { StatusCode = HttpStatusCode.Unauthorized, Title = "test_title", Message = "test_message" });
 
+            var result = GetResponse(errorResult); //sut.Response.Content.ReadAsStringAsync().Result;
             var expected = new Error
             {
                 Status = (int)HttpStatusCode.Unauthorized,
@@ -95,8 +96,10 @@ namespace Dev2.Runtime.WebServer.Tests
         public void Extensions_CreateWarewolfErrorResponse_HttpActionContext_GivenXMLURI_ShouldReturnXML()
         {
             var sut = CreateActionContext(true, "http://localhost:3241/help/wolf-tools/gates.xml");
-            var result = GetResponse(sut.HttpContext.CreateWarewolfErrorResponse(new WarewolfErrorResponseArgs { StatusCode = HttpStatusCode.Unauthorized, Title = "test_title", Message = "test_message" }));
+            var httpContext = sut.HttpContext;
+            var errorResult = httpContext.CreateWarewolfErrorResponse(new WarewolfErrorResponseArgs { StatusCode = HttpStatusCode.Unauthorized, Title = "test_title", Message = "test_message" });
 
+            var result = GetResponse(errorResult); //sut.Response.Content.ReadAsStringAsync().Result;
             var expected = new Error
             {
                 Status = (int)HttpStatusCode.Unauthorized,
@@ -110,9 +113,12 @@ namespace Dev2.Runtime.WebServer.Tests
         [Owner("Siphamandla Dube")]
         public void Extensions_CreateWarewolfErrorResponse_HttpActionContext_GivenTRXURI_ShouldReturnXML()
         {
-            var sut = CreateActionContext(true, "http://localhost:3241/help/wolf-configs/logger.trx?name=elastic");
-            var result = GetResponse(sut.HttpContext.CreateWarewolfErrorResponse(new WarewolfErrorResponseArgs { StatusCode = HttpStatusCode.Unauthorized, Title = "test_title", Message = "test_message" }));
+            //var sut = CreateActionContext(true, "http://localhost:3241/help/wolf-configs/logger.trx?name=elastic");
+            var sut = CreateActionContext(true, "http://localhost:3241/help/wolf-configs/logger.trx");
+            var httpContext = sut.HttpContext;
+            var errorResult = httpContext.CreateWarewolfErrorResponse(new WarewolfErrorResponseArgs { StatusCode = HttpStatusCode.Unauthorized, Title = "test_title", Message = "test_message" });
 
+            var result = GetResponse(errorResult); //sut.Response.Content.ReadAsStringAsync().Result;
             var expected = new Error
             {
                 Status = (int)HttpStatusCode.Unauthorized,
@@ -122,50 +128,6 @@ namespace Dev2.Runtime.WebServer.Tests
             Assert.AreEqual(expected.ToXML(), result);
         }
 
-
-        public static ActionContext CreateActionContext(bool isAuthenticated, string actionName)
-        {
-            var routeValues = new RouteValueDictionary();
-            routeValues.Add("action", actionName);
-
-            var defaultPath = "http://localhost:8080/content/site.css";
-            if (!string.IsNullOrEmpty(actionName))
-                defaultPath = string.Format("http://localhost:8080/services/{0}", actionName);
-
-            var uri = new Uri(defaultPath);
-
-            var headers = new HeaderDictionary();
-            headers.Add(new KeyValuePair<string, StringValues>("accept", new StringValues("all")));
-            var request = new Mock<HttpRequest>();
-            request.Setup(r => r.RouteValues).Returns(routeValues);
-            request.Setup(r => r.Scheme).Returns(uri.Scheme);
-            request.Setup(r => r.Host).Returns(new HostString(uri.Host, uri.Port));
-            request.Setup(r => r.Path).Returns(uri.AbsolutePath);
-            request.Setup(r => r.Method).Returns("Get");
-            request.Setup(r => r.Body).Returns(new Mock<Stream>().Object);
-            request.Setup(r => r.Headers).Returns(headers);
-
-            var user = new Mock<ClaimsPrincipal>();
-            user.Setup(u => u.Identity.IsAuthenticated).Returns(isAuthenticated);
-
-            var response = new Mock<HttpResponse>();
-            response.Setup(u => u.StatusCode).Returns(0);
-            response.Setup(u => u.Body).Returns(new MemoryStream());
-
-            var httpContext = new Mock<HttpContext>();
-            httpContext.Setup(ad => ad.User).Returns(user.Object);
-            httpContext.Setup(ad => ad.Request).Returns(request.Object);
-            httpContext.Setup(ad => ad.Response).Returns(response.Object);
-
-            var contextFeatures = new FeatureCollection();
-            contextFeatures.Set(new HttpRequestMessageFeature(httpContext.Object));
-            httpContext.Setup(ad => ad.Features).Returns(contextFeatures);
-
-            var actionDescriptor = new Mock<ActionDescriptor>();
-            actionDescriptor.Setup(ad => ad.DisplayName).Returns(actionName);
-
-            return new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(routeValues), actionDescriptor.Object);
-        }
 
         //public static HttpActionContext CreateActionContext(bool isAuthenticated, string actionName)
         //{
@@ -192,14 +154,54 @@ namespace Dev2.Runtime.WebServer.Tests
         //    return actionContext;
         //}
 
+        public static ActionContext CreateActionContext(bool isAuthenticated, string actionName)
+        {
+            var routeValues = new RouteValueDictionary();
+            routeValues.Add("action", actionName);
+
+            var defaultPath = "/content/site.css";
+            if (!string.IsNullOrEmpty(actionName))
+                defaultPath = string.Format("/services/{0}", actionName);
+
+            var headers = new HeaderDictionary();
+            headers.Add(new KeyValuePair<string, StringValues>("accept", new StringValues("all")));
+            var request = new Mock<HttpRequest>();
+            request.Setup(r => r.RouteValues).Returns(routeValues);
+            request.Setup(r => r.Scheme).Returns("http");
+            request.Setup(r => r.Host).Returns(new HostString("localhost", 8080));
+            request.Setup(r => r.Path).Returns(defaultPath);
+            request.Setup(r => r.Method).Returns("Get");
+            request.Setup(r => r.Body).Returns(new Mock<Stream>().Object);
+            request.Setup(r => r.Headers).Returns(headers);
+
+            var user = new Mock<ClaimsPrincipal>();
+            user.Setup(u => u.Identity.IsAuthenticated).Returns(isAuthenticated);
+
+            var response = new Mock<HttpResponse>();
+            response.Setup(u => u.StatusCode).Returns(0);
+            response.Setup(u => u.Body).Returns(new MemoryStream());
+
+            var httpContext = new Mock<HttpContext>();
+            httpContext.Setup(ad => ad.User).Returns(user.Object);
+            httpContext.Setup(ad => ad.Request).Returns(request.Object);
+            httpContext.Setup(ad => ad.Response).Returns(response.Object);
+
+            var contextFeatures = new FeatureCollection();
+            contextFeatures.Set(new HttpRequestMessageFeature(httpContext.Object));
+            httpContext.Setup(ad => ad.Features).Returns(contextFeatures);
+
+            
+            return new ActionContext(httpContext.Object, new RouteData(routeValues), new ActionDescriptor());
+        }
+
         public static string GetResponse(HttpResponseMessage response)
         {
             var result = string.Empty;
+
             if (response != null && response.Content != null)
                 result = (response.Content as ObjectContent).Value.ToString();
 
             return result;
         }
-
     }
 }

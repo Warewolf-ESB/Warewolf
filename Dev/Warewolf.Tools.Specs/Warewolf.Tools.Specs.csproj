@@ -4,14 +4,13 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{CAD4D820-C619-4099-AA9C-DCACD23ADB89}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <TargetFramework>net48</TargetFramework>
+    <TargetFramework>net6.0-windows</TargetFramework>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <EnableDefaultItems>false</EnableDefaultItems>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Warewolf.Tools.Specs</RootNamespace>
     <AssemblyName>Warewolf.Tools.Specs</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <RuntimeIdentifier>win</RuntimeIdentifier>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -751,10 +750,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Dev2.Activities.Designers.Tests\Dev2.Activities.Designers.Tests.csproj">
-      <Project>{3C4AC14C-4134-48A6-A9EA-9D47218E05C5}</Project>
-      <Name>Dev2.Activities.Designers.Tests</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Dev2.Activities.Designers\Dev2.Activities.Designers.csproj">
       <Project>{B95B724A-B052-4E18-98A4-88072C8DF2C2}</Project>
       <Name>Dev2.Activities.Designers</Name>
@@ -874,7 +869,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Caliburn.Micro">
-      <Version>1.4.1</Version>
+      <Version>4.0.212</Version>
     </PackageReference>
     <PackageReference Include="FluentAssertions">
       <Version>3.4.0</Version>
@@ -883,7 +878,7 @@
       <Version>16.11.0</Version>
     </PackageReference>
     <PackageReference Include="Moq">
-      <Version>4.16.1</Version>
+      <Version>4.18.2</Version>
     </PackageReference>
     <PackageReference Include="MSTest.TestAdapter">
       <Version>2.1.2</Version>

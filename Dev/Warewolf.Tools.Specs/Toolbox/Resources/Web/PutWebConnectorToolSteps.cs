@@ -274,7 +274,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources.Web
         public async Task ThenIClickPutGenerateOutputs()
         {
             var webServicePutViewModel = GetViewModel();
-            await webServicePutViewModel.TestInputCommand.Execute();
+            webServicePutViewModel.TestInputCommand.Execute();
         }
 
         [Then(@"Put Response appears as ""(.*)""")]

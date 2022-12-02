@@ -29,7 +29,7 @@ using Warewolf.UnitTestAttributes;
 namespace Dev2.Activities.Specs.Sources
 {
     [Binding]
-    public sealed class ServerSourceSteps : RecordSetBases
+    public sealed class ServerSourceSteps : RecordSetBases, IDisposable
     {
         Depends declaredDependency;
         IServer environmentModel;
@@ -89,7 +89,7 @@ namespace Dev2.Activities.Specs.Sources
             var authenticationType = table.Rows[0]["AuthenticationType"];
             Enum.TryParse(authenticationType, true, out AuthenticationType result);
 
-            IServerSource serverSource = new ServerSource()
+            IServerSource serverSource = new ServerSource
             {
                 Address = address,
                 AuthenticationType = result
@@ -160,7 +160,6 @@ namespace Dev2.Activities.Specs.Sources
             ICommunicationControllerFactory factory = new CommunicationControllerFactory();
 
             var instanceSource = ServerRepository.Instance.Source;
-            var serverSource = scenarioContext.Get<IServerSource>("serverSource");
             var environmentConnection = instanceSource.Connection;
             var studioResourceUpdateManager = new StudioResourceUpdateManager(factory, environmentConnection);
             var queryManagerProxy = new QueryManagerProxy(factory, environmentConnection);
@@ -200,5 +199,10 @@ namespace Dev2.Activities.Specs.Sources
 
         [BeforeFeature("ServerSourceTests")]
         public static void StartRemoteContainer() => WorkflowExecutionSteps._containerOps = new Depends(Depends.ContainerType.Warewolf, true);
+
+        public void Dispose()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

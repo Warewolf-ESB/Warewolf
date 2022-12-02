@@ -55,7 +55,7 @@ using Dev2.Studio.Diagnostics;
 using Dev2.Studio.ViewModels;
 using Dev2.Util;
 using Warewolf.MergeParser;
-
+using Dev2.Views.Dialogs;
 using Dev2.Studio.Utils;
 using System.Security.Claims;
 using Dev2.Studio.Interfaces;
@@ -66,6 +66,8 @@ using Dev2.Studio.Core;
 using Dev2.Factory;
 using System.Globalization;
 using System.Reflection;
+using Dev2.Studio.Core.Helpers;
+using ServiceStack;
 
 namespace Dev2.Studio
 {
@@ -129,7 +131,7 @@ namespace Dev2.Studio
             InitializeShell(e);
 #if ! (DEBUG)
             var versionChecker = new VersionChecker();
-            if(versionChecker.GetNewerVersion())
+            if(versionChecker.GetNewerVersionAsync().GetResult<bool>())
             {
                 WebLatestVersionDialog dialog = new WebLatestVersionDialog();
                 dialog.ShowDialog();

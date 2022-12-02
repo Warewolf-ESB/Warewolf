@@ -14,7 +14,6 @@ using System.Linq;
 using System.Windows;
 using Dev2.Common;
 using FontAwesome6;
-using FontAwesome6.Svg;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.Studio.Core.Popup;
 using Warewolf.Studio.ViewModels;

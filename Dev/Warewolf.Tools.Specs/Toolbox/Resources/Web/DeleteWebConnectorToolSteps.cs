@@ -271,7 +271,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources.Web
         public async Task ThenIClickDeleteGenerateOutputs()
         {
             var webServiceDeleteViewModel = GetViewModel();
-            await webServiceDeleteViewModel.TestInputCommand.Execute();
+            webServiceDeleteViewModel.TestInputCommand.Execute();
         }
 
         [Then(@"Delete Response appears as ""(.*)""")]
