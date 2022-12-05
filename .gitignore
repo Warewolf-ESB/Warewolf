@@ -132,3 +132,4 @@ Dev/SonarQube/SolutionBinding.sqconfig
 *.bak
 /Dev/Dev2.UnitTestUtils.backup
 /Dev/Warewolf.UnitTestAttributes.backup
+/Dev/WPFTextBoxAutoComplete/.vs
