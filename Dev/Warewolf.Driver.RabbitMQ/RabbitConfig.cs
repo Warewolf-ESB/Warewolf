@@ -31,15 +31,10 @@ namespace Warewolf.Driver.RabbitMQ
         internal IModel CreateChannel(IConnection connection)
         {
             var channel = connection.CreateModel();
-            ushort prefetch;
-            prefetch = string.IsNullOrEmpty(Prefetch) ? (ushort)0 : ushort.Parse(Prefetch);
+            var prefetch = string.IsNullOrEmpty(Prefetch) ? (ushort)1 : ushort.Parse(Prefetch);
+            prefetch = prefetch < 1 ? (ushort)1 : prefetch;
 
-
-            if (prefetch > 0)
-            {
-                channel.BasicQos(prefetchSize: 0, prefetchCount: prefetch, global: false);
-            }
-            
+            channel.BasicQos(prefetchSize: 0, prefetchCount: prefetch, global: false);
             channel.QueueDeclare(QueueName, Durable, Exclusive, AutoDelete, Arguments);
 
             //configure channel using options here             

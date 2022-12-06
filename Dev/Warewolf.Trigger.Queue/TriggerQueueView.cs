@@ -70,6 +70,7 @@ namespace Warewolf.Trigger.Queue
         readonly IAsyncWorker _asyncWorker;
 
         private bool _mapEntireMessage;
+        private bool _triggerEnabled;
         private bool _isVerifying;
         private bool _verifyFailed;
         private bool _verifyPassed;
@@ -126,6 +127,7 @@ namespace Warewolf.Trigger.Queue
             Concurrency = queue.Concurrency;
             UserName = queue.UserName;
             Password = queue.Password;
+            TriggerEnabled = Concurrency > 0;
             
             if (queue.Options != null)
             {
@@ -421,6 +423,17 @@ namespace Warewolf.Trigger.Queue
             {
                 _nameForDisplay = value;
                 RaisePropertyChanged(nameof(NameForDisplay));
+            }
+        }
+        
+        public bool TriggerEnabled
+        {
+            get => _triggerEnabled;
+            set
+            {
+                _triggerEnabled = value;
+                Concurrency = value ? 1 : 0;
+                RaisePropertyChanged(nameof(TriggerEnabled));
             }
         }
 
