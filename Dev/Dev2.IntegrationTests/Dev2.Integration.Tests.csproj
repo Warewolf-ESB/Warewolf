@@ -381,9 +381,9 @@
     <Folder Include="VersionStrategy\" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Expression.Blend.Sdk">
+    <!--<PackageReference Include="Expression.Blend.Sdk">
       <Version>1.0.2</Version>
-    </PackageReference>
+    </PackageReference>-->
     <PackageReference Include="log4net">
       <Version>2.0.15</Version>
     </PackageReference>
@@ -402,9 +402,9 @@
     <PackageReference Include="Newtonsoft.Json">
       <Version>13.0.1</Version>
     </PackageReference>
-    <PackageReference Include="Prism.Mvvm">
+    <!--<PackageReference Include="Prism.Mvvm">
       <Version>1.1.1</Version>
-    </PackageReference>
+    </PackageReference>-->
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="7.0.0" />
     <PackageReference Include="System.Net.Http" Version="4.3.4" />
     <PackageReference Include="System.ServiceModel.Duplex" Version="4.9.0" />
@@ -415,7 +415,8 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Caliburn.Micro" Version="4.0.212" />
-    <PackageReference Include="Oracle.ManagedDataAccess" Version="21.8.0" />
+    <!--<PackageReference Include="Oracle.ManagedDataAccess" Version="21.8.0" />-->
+  <!--<PackageReference Include="Oracle.ManagedDataAccess.Core" Version="3.21.80" />-->
   </ItemGroup>
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
