@@ -440,7 +440,7 @@
 		<!--<PackageReference Include="FontAwesome.WPF" Version="4.7.0.9" />-->
 		<!--<PackageReference Include="Unity" Version="4.0.1" />-->
 		<PackageReference Include="Unity" Version="5.11.10" />
-		<PackageReference Include="WPFTextBoxAutoComplete" Version="1.0.5" />
+		<!--<PackageReference Include="WPFTextBoxAutoComplete" Version="1.0.5" />-->
 	</ItemGroup>
 	<!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

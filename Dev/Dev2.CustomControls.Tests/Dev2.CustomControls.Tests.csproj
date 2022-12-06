@@ -75,9 +75,6 @@
     <Compile Include="Person.cs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Expression.Blend.Sdk">
-      <Version>1.0.2</Version>
-    </PackageReference>
     <PackageReference Include="Microsoft.TestPlatform.ObjectModel">
       <Version>17.4.0</Version>
     </PackageReference>
