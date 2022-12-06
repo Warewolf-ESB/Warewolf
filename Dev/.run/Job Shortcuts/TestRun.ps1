@@ -143,6 +143,9 @@ if ($CreateUNCPath.IsPresent) {
     New-SmbShare -Path C:\FileSystemShareTestingSite -FullAccess Everyone -Name FileSystemShareTestingSite
 }
 if ($STA.IsPresent) {
+	if (!(Test-Path "$TestResultsPath")) {
+		mkdir "$TestResultsPath"
+	}
 @"
 <?xml version="1.0" encoding="utf-8"?>
 <RunSettings>
