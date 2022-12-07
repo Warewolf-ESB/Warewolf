@@ -28,7 +28,7 @@ namespace Warewolf.Tools.Specs.Toolbox.Data.DataSplit
         
         private Microsoft.VisualStudio.TestTools.UnitTesting.TestContext _testContext;
         
-        private string[] _featureTags = new string[] {
+        private static string[] featureTags = new string[] {
                 "Data",
                 "MSTest:DeploymentItem:EnableDocker.txt",
                 "MSTest:DeploymentItem:x86\\SQLite.Interop.dll"};
@@ -53,10 +53,7 @@ namespace Warewolf.Tools.Specs.Toolbox.Data.DataSplit
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Toolbox/Data/DataSplit", "DataSplit", "\tIn order to split data\r\n\tAs a Warewolf user\r\n\tI want a tool that splits two or m" +
-                    "ore pieces of data", ProgrammingLanguage.CSharp, new string[] {
-                        "Data",
-                        "MSTest:DeploymentItem:EnableDocker.txt",
-                        "MSTest:DeploymentItem:x86\\SQLite.Interop.dll"});
+                    "ore pieces of data", ProgrammingLanguage.CSharp, featureTags);
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -68,7 +65,7 @@ namespace Warewolf.Tools.Specs.Toolbox.Data.DataSplit
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestInitializeAttribute()]
-        public virtual void TestInitialize()
+        public void TestInitialize()
         {
             if (((testRunner.FeatureContext != null) 
                         && (testRunner.FeatureContext.FeatureInfo.Title != "DataSplit")))
@@ -78,23 +75,23 @@ namespace Warewolf.Tools.Specs.Toolbox.Data.DataSplit
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCleanupAttribute()]
-        public virtual void TestTearDown()
+        public void TestTearDown()
         {
             testRunner.OnScenarioEnd();
         }
         
-        public virtual void ScenarioInitialize(TechTalk.SpecFlow.ScenarioInfo scenarioInfo)
+        public void ScenarioInitialize(TechTalk.SpecFlow.ScenarioInfo scenarioInfo)
         {
             testRunner.OnScenarioInitialize(scenarioInfo);
             testRunner.ScenarioContext.ScenarioContainer.RegisterInstanceAs<Microsoft.VisualStudio.TestTools.UnitTesting.TestContext>(_testContext);
         }
         
-        public virtual void ScenarioStart()
+        public void ScenarioStart()
         {
             testRunner.OnScenarioStart();
         }
         
-        public virtual void ScenarioCleanup()
+        public void ScenarioCleanup()
         {
             testRunner.CollectScenarioErrors();
         }
@@ -105,25 +102,15 @@ namespace Warewolf.Tools.Specs.Toolbox.Data.DataSplit
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
-        public virtual void SplitTextToARecordsetUsingIndexUsingStarNotation()
+        public void SplitTextToARecordsetUsingIndexUsingStarNotation()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split text to a recordset using Index using Star notation", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split text to a recordset using Index using Star notation", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 9
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -218,25 +205,15 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
-        public virtual void SplitTextToAScalar()
+        public void SplitTextToAScalar()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split text to a scalar", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split text to a scalar", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 32
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -275,25 +252,15 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
-        public virtual void SplitTextToARecordsetUsingIndexUsingAppendNotation()
+        public void SplitTextToARecordsetUsingIndexUsingAppendNotation()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split text to a recordset using Index using Append notation", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split text to a recordset using Index using Append notation", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 42
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -388,25 +355,15 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
-        public virtual void SplitCharactersUsingIndexGoingBackwardsUsingStarNotation()
+        public void SplitCharactersUsingIndexGoingBackwardsUsingStarNotation()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split characters using Index Going Backwards Using Star notation", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split characters using Index Going Backwards Using Star notation", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 65
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -492,25 +449,15 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
-        public virtual void SplitCharactersUsingIndexGoingBackwardsUsingAppendNotation()
+        public void SplitCharactersUsingIndexGoingBackwardsUsingAppendNotation()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split characters using Index Going Backwards Using Append notation", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split characters using Index Going Backwards Using Append notation", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 85
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -596,25 +543,15 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
-        public virtual void SplitCharactersUsingIndexGoingForwardUsingStarNotation()
+        public void SplitCharactersUsingIndexGoingForwardUsingStarNotation()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split characters using Index Going Forward using Star notation", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split characters using Index Going Forward using Star notation", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 105
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -700,25 +637,15 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
-        public virtual void SplitCharactersUsingIndexGoingForwardUsingAppendNotation()
+        public void SplitCharactersUsingIndexGoingForwardUsingAppendNotation()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split characters using Index Going Forward using Append Notation", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split characters using Index Going Forward using Append Notation", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 125
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -804,25 +731,15 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
-        public virtual void SplitTextUsingAllSplitTypes_SomeWithIncludeSelected()
+        public void SplitTextUsingAllSplitTypes_SomeWithIncludeSelected()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split text using All split types - Some with Include selected", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split text using All split types - Some with Include selected", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 145
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -974,26 +891,16 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
-        public virtual void SplitTextUsingAllSplitTypes_SomeWithIncludeSelectedUsingAStarNotation()
+        public void SplitTextUsingAllSplitTypes_SomeWithIncludeSelectedUsingAStarNotation()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split text using All split types - Some with Include selected using a Star Notati" +
-                    "on", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+                    "on", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 178
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -1144,25 +1051,15 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
-        public virtual void SplitCSVFileFormatIntoRecordset_SomeFieldsBlank()
+        public void SplitCSVFileFormatIntoRecordset_SomeFieldsBlank()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split CSV file format into recordset - some fields blank", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split CSV file format into recordset - some fields blank", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 210
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -1356,25 +1253,15 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
-        public virtual void SplitCSVFileFormatIntoRecordset_SkipBlankRowsSelected()
+        public void SplitCSVFileFormatIntoRecordset_SkipBlankRowsSelected()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split CSV file format into recordset - Skip blank rows selected", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split CSV file format into recordset - Skip blank rows selected", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 258
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -1571,25 +1458,15 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
-        public virtual void SplitBlankTextUsingAllSplitTypes()
+        public void SplitBlankTextUsingAllSplitTypes()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split blank text using All split types", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split blank text using All split types", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 307
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -1718,25 +1595,15 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
-        public virtual void SplitTextUsingIndexWhereAndSpace()
+        public void SplitTextUsingIndexWhereAndSpace()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split text using Index where and Space >", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split text using Index where and Space >", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 328
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -1812,25 +1679,15 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
-        public virtual void SplitTextUsingCharAndEscapeCharacter()
+        public void SplitTextUsingCharAndEscapeCharacter()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split text using Char and Escape character", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split text using Char and Escape character", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 342
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -1901,25 +1758,15 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
-        public virtual void SplitBlankText()
+        public void SplitBlankText()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split blank text", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split blank text", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 359
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -1978,25 +1825,15 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
-        public virtual void SplitTextToARecordsetUsingANegativeIndex()
+        public void SplitTextToARecordsetUsingANegativeIndex()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split text to a recordset using a negative Index", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split text to a recordset using a negative Index", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 370
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -2055,25 +1892,15 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
-        public virtual void SplitTextIntoNegativeRecordsetIndexAsTheIndexToSplitAt()
+        public void SplitTextIntoNegativeRecordsetIndexAsTheIndexToSplitAt()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split text into negative recordset index as the index to split at", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split text into negative recordset index as the index to split at", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 381
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -2103,25 +1930,15 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
-        public virtual void SplitTextUsingAIndexWithAndSpace()
+        public void SplitTextUsingAIndexWithAndSpace()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split text using a index with \",\" and space", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split text using a index with \",\" and space", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 387
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -2155,25 +1972,15 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
-        public virtual void SplitTextUsingIndexWhereIndexIsNotNumeric_Variable()
+        public void SplitTextUsingIndexWhereIndexIsNotNumeric_Variable()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split text using Index where index is not numeric - variable", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split text using Index where index is not numeric - variable", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 394
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -2215,25 +2022,15 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
-        public virtual void SplitTextUsingIndexWhereIndexProvided()
+        public void SplitTextUsingIndexWhereIndexProvided()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split text using Index where index > provided", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split text using Index where index > provided", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 404
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -2272,25 +2069,15 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
-        public virtual void SendingErrorInErrorVariableAndCallingWebservice()
+        public void SendingErrorInErrorVariableAndCallingWebservice()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Sending Error in error variable and calling webservice", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Sending Error in error variable and calling webservice", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 413
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -2366,25 +2153,15 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
-        public virtual void SplitNegativeRecordIndexAsInput()
+        public void SplitNegativeRecordIndexAsInput()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split negative record index as Input", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split negative record index as Input", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 429
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -2443,25 +2220,15 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
-        public virtual void SplitTextIntoNegativeRecordsetIndex()
+        public void SplitTextIntoNegativeRecordsetIndex()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split text into negative recordset index", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split text into negative recordset index", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 440
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -2520,21 +2287,11 @@ this.ScenarioInitialize(scenarioInfo);
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             argumentsOfScenario.Add("No", no);
             argumentsOfScenario.Add("Type", type);
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split Text using type Index but Index is invalid", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split Text using type Index but Index is invalid", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 452
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -2596,7 +2353,7 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Type", "")]
-        public virtual void SplitTextUsingTypeIndexButIndexIsInvalid_1()
+        public void SplitTextUsingTypeIndexButIndexIsInvalid_1()
         {
 #line 452
 this.SplitTextUsingTypeIndexButIndexIsInvalid("1", "", ((string[])(null)));
@@ -2612,7 +2369,7 @@ this.SplitTextUsingTypeIndexButIndexIsInvalid("1", "", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Type", "[[%$]]")]
-        public virtual void SplitTextUsingTypeIndexButIndexIsInvalid_2()
+        public void SplitTextUsingTypeIndexButIndexIsInvalid_2()
         {
 #line 452
 this.SplitTextUsingTypeIndexButIndexIsInvalid("2", "[[%$]]", ((string[])(null)));
@@ -2625,21 +2382,11 @@ this.SplitTextUsingTypeIndexButIndexIsInvalid("2", "[[%$]]", ((string[])(null)))
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             argumentsOfScenario.Add("No", no);
             argumentsOfScenario.Add("Variable", variable);
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Debug output Validation errors", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Debug output Validation errors", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 467
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -2701,7 +2448,7 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 0")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec().a]]=]]")]
-        public virtual void DebugOutputValidationErrors_Variant0()
+        public void DebugOutputValidationErrors_Variant0()
         {
 #line 467
 this.DebugOutputValidationErrors("1", "[[rec().a]]=]]", ((string[])(null)));
@@ -2717,7 +2464,7 @@ this.DebugOutputValidationErrors("1", "[[rec().a]]=]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec\"()\".a]]")]
-        public virtual void DebugOutputValidationErrors_Variant1()
+        public void DebugOutputValidationErrors_Variant1()
         {
 #line 467
 this.DebugOutputValidationErrors("2", "[[rec\"()\".a]]", ((string[])(null)));
@@ -2733,7 +2480,7 @@ this.DebugOutputValidationErrors("2", "[[rec\"()\".a]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec\"()\".a]]")]
-        public virtual void DebugOutputValidationErrors_Variant2()
+        public void DebugOutputValidationErrors_Variant2()
         {
 #line 467
 this.DebugOutputValidationErrors("3", "[[rec\"()\".a]]", ((string[])(null)));
@@ -2749,7 +2496,7 @@ this.DebugOutputValidationErrors("3", "[[rec\"()\".a]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec\".a]]")]
-        public virtual void DebugOutputValidationErrors_Variant3()
+        public void DebugOutputValidationErrors_Variant3()
         {
 #line 467
 this.DebugOutputValidationErrors("4", "[[rec\".a]]", ((string[])(null)));
@@ -2765,7 +2512,7 @@ this.DebugOutputValidationErrors("4", "[[rec\".a]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec.a]]")]
-        public virtual void DebugOutputValidationErrors_Variant4()
+        public void DebugOutputValidationErrors_Variant4()
         {
 #line 467
 this.DebugOutputValidationErrors("5", "[[rec.a]]", ((string[])(null)));
@@ -2781,7 +2528,7 @@ this.DebugOutputValidationErrors("5", "[[rec.a]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec()*.a]]")]
-        public virtual void DebugOutputValidationErrors_Variant5()
+        public void DebugOutputValidationErrors_Variant5()
         {
 #line 467
 this.DebugOutputValidationErrors("6", "[[rec()*.a]]", ((string[])(null)));
@@ -2797,7 +2544,7 @@ this.DebugOutputValidationErrors("6", "[[rec()*.a]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "9")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec().a]]*")]
-        public virtual void DebugOutputValidationErrors_Variant6()
+        public void DebugOutputValidationErrors_Variant6()
         {
 #line 467
 this.DebugOutputValidationErrors("9", "[[rec().a]]*", ((string[])(null)));
@@ -2813,7 +2560,7 @@ this.DebugOutputValidationErrors("9", "[[rec().a]]*", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "10")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[1]]")]
-        public virtual void DebugOutputValidationErrors_Variant7()
+        public void DebugOutputValidationErrors_Variant7()
         {
 #line 467
 this.DebugOutputValidationErrors("10", "[[1]]", ((string[])(null)));
@@ -2829,7 +2576,7 @@ this.DebugOutputValidationErrors("10", "[[1]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 8")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "11")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[@]]")]
-        public virtual void DebugOutputValidationErrors_Variant8()
+        public void DebugOutputValidationErrors_Variant8()
         {
 #line 467
 this.DebugOutputValidationErrors("11", "[[@]]", ((string[])(null)));
@@ -2845,7 +2592,7 @@ this.DebugOutputValidationErrors("11", "[[@]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 9")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "13")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var]]00]]")]
-        public virtual void DebugOutputValidationErrors_Variant9()
+        public void DebugOutputValidationErrors_Variant9()
         {
 #line 467
 this.DebugOutputValidationErrors("13", "[[var]]00]]", ((string[])(null)));
@@ -2861,7 +2608,7 @@ this.DebugOutputValidationErrors("13", "[[var]]00]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 10")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "14")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var]]@]]")]
-        public virtual void DebugOutputValidationErrors_Variant10()
+        public void DebugOutputValidationErrors_Variant10()
         {
 #line 467
 this.DebugOutputValidationErrors("14", "[[var]]@]]", ((string[])(null)));
@@ -2877,7 +2624,7 @@ this.DebugOutputValidationErrors("14", "[[var]]@]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 11")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "15")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var.()]]")]
-        public virtual void DebugOutputValidationErrors_Variant11()
+        public void DebugOutputValidationErrors_Variant11()
         {
 #line 467
 this.DebugOutputValidationErrors("15", "[[var.()]]", ((string[])(null)));
@@ -2893,7 +2640,7 @@ this.DebugOutputValidationErrors("15", "[[var.()]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 12")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "16")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[]]")]
-        public virtual void DebugOutputValidationErrors_Variant12()
+        public void DebugOutputValidationErrors_Variant12()
         {
 #line 467
 this.DebugOutputValidationErrors("16", "[[]]", ((string[])(null)));
@@ -2909,7 +2656,7 @@ this.DebugOutputValidationErrors("16", "[[]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 13")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "17")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[()]]")]
-        public virtual void DebugOutputValidationErrors_Variant13()
+        public void DebugOutputValidationErrors_Variant13()
         {
 #line 467
 this.DebugOutputValidationErrors("17", "[[()]]", ((string[])(null)));
@@ -2925,7 +2672,7 @@ this.DebugOutputValidationErrors("17", "[[()]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 14")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "28")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var[[]]")]
-        public virtual void DebugOutputValidationErrors_Variant14()
+        public void DebugOutputValidationErrors_Variant14()
         {
 #line 467
 this.DebugOutputValidationErrors("28", "[[var[[]]", ((string[])(null)));
@@ -2941,7 +2688,7 @@ this.DebugOutputValidationErrors("28", "[[var[[]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 15")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "29")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var1.a]]")]
-        public virtual void DebugOutputValidationErrors_Variant15()
+        public void DebugOutputValidationErrors_Variant15()
         {
 #line 467
 this.DebugOutputValidationErrors("29", "[[var1.a]]", ((string[])(null)));
@@ -2957,7 +2704,7 @@ this.DebugOutputValidationErrors("29", "[[var1.a]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 16")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "20")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec()!a]]")]
-        public virtual void DebugOutputValidationErrors_Variant16()
+        public void DebugOutputValidationErrors_Variant16()
         {
 #line 467
 this.DebugOutputValidationErrors("20", "[[rec()!a]]", ((string[])(null)));
@@ -2973,7 +2720,7 @@ this.DebugOutputValidationErrors("20", "[[rec()!a]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 17")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "21")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec()         a]]")]
-        public virtual void DebugOutputValidationErrors_Variant17()
+        public void DebugOutputValidationErrors_Variant17()
         {
 #line 467
 this.DebugOutputValidationErrors("21", "[[rec()         a]]", ((string[])(null)));
@@ -2989,7 +2736,7 @@ this.DebugOutputValidationErrors("21", "[[rec()         a]]", ((string[])(null))
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 18")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "22")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[{{rec(_).a}}]]]")]
-        public virtual void DebugOutputValidationErrors_Variant18()
+        public void DebugOutputValidationErrors_Variant18()
         {
 #line 467
 this.DebugOutputValidationErrors("22", "[[{{rec(_).a}}]]]", ((string[])(null)));
@@ -3005,7 +2752,7 @@ this.DebugOutputValidationErrors("22", "[[{{rec(_).a}}]]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 19")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "23")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec(23).[[var*]]]]")]
-        public virtual void DebugOutputValidationErrors_Variant19()
+        public void DebugOutputValidationErrors_Variant19()
         {
 #line 467
 this.DebugOutputValidationErrors("23", "[[rec(23).[[var*]]]]", ((string[])(null)));
@@ -3021,7 +2768,7 @@ this.DebugOutputValidationErrors("23", "[[rec(23).[[var*]]]]", ((string[])(null)
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 20")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "24")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec()")]
-        public virtual void DebugOutputValidationErrors_Variant20()
+        public void DebugOutputValidationErrors_Variant20()
         {
 #line 467
 this.DebugOutputValidationErrors("24", "[[rec()", ((string[])(null)));
@@ -3037,7 +2784,7 @@ this.DebugOutputValidationErrors("24", "[[rec()", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 21")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "25")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "a[[rec([[[[b]]]]).a]]@")]
-        public virtual void DebugOutputValidationErrors_Variant21()
+        public void DebugOutputValidationErrors_Variant21()
         {
 #line 467
 this.DebugOutputValidationErrors("25", "a[[rec([[[[b]]]]).a]]@", ((string[])(null)));
@@ -3053,7 +2800,7 @@ this.DebugOutputValidationErrors("25", "a[[rec([[[[b]]]]).a]]@", ((string[])(nul
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 22")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "26")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var  ]]")]
-        public virtual void DebugOutputValidationErrors_Variant22()
+        public void DebugOutputValidationErrors_Variant22()
         {
 #line 467
 this.DebugOutputValidationErrors("26", "[[var  ]]", ((string[])(null)));
@@ -3069,7 +2816,7 @@ this.DebugOutputValidationErrors("26", "[[var  ]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 23")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "27")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var@]]")]
-        public virtual void DebugOutputValidationErrors_Variant23()
+        public void DebugOutputValidationErrors_Variant23()
         {
 #line 467
 this.DebugOutputValidationErrors("27", "[[var@]]", ((string[])(null)));
@@ -3085,7 +2832,7 @@ this.DebugOutputValidationErrors("27", "[[var@]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 24")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "29")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var]]]]")]
-        public virtual void DebugOutputValidationErrors_Variant24()
+        public void DebugOutputValidationErrors_Variant24()
         {
 #line 467
 this.DebugOutputValidationErrors("29", "[[var]]]]", ((string[])(null)));
@@ -3101,7 +2848,7 @@ this.DebugOutputValidationErrors("29", "[[var]]]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 25")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "30")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[(1var)]]")]
-        public virtual void DebugOutputValidationErrors_Variant25()
+        public void DebugOutputValidationErrors_Variant25()
         {
 #line 467
 this.DebugOutputValidationErrors("30", "[[(1var)]]", ((string[])(null)));
@@ -3117,7 +2864,7 @@ this.DebugOutputValidationErrors("30", "[[(1var)]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 26")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "31")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[1var)]]")]
-        public virtual void DebugOutputValidationErrors_Variant26()
+        public void DebugOutputValidationErrors_Variant26()
         {
 #line 467
 this.DebugOutputValidationErrors("31", "[[1var)]]", ((string[])(null)));
@@ -3133,7 +2880,7 @@ this.DebugOutputValidationErrors("31", "[[1var)]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 27")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "32")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var.()]]")]
-        public virtual void DebugOutputValidationErrors_Variant27()
+        public void DebugOutputValidationErrors_Variant27()
         {
 #line 467
 this.DebugOutputValidationErrors("32", "[[var.()]]", ((string[])(null)));
@@ -3149,7 +2896,7 @@ this.DebugOutputValidationErrors("32", "[[var.()]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 28")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "33")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var  ]]")]
-        public virtual void DebugOutputValidationErrors_Variant28()
+        public void DebugOutputValidationErrors_Variant28()
         {
 #line 467
 this.DebugOutputValidationErrors("33", "[[var  ]]", ((string[])(null)));
@@ -3165,7 +2912,7 @@ this.DebugOutputValidationErrors("33", "[[var  ]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 29")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "34")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var~]]")]
-        public virtual void DebugOutputValidationErrors_Variant29()
+        public void DebugOutputValidationErrors_Variant29()
         {
 #line 467
 this.DebugOutputValidationErrors("34", "[[var~]]", ((string[])(null)));
@@ -3181,7 +2928,7 @@ this.DebugOutputValidationErrors("34", "[[var~]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 30")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "35")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var+]]")]
-        public virtual void DebugOutputValidationErrors_Variant30()
+        public void DebugOutputValidationErrors_Variant30()
         {
 #line 467
 this.DebugOutputValidationErrors("35", "[[var+]]", ((string[])(null)));
@@ -3197,7 +2944,7 @@ this.DebugOutputValidationErrors("35", "[[var+]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 31")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "36")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var]a]]")]
-        public virtual void DebugOutputValidationErrors_Variant31()
+        public void DebugOutputValidationErrors_Variant31()
         {
 #line 467
 this.DebugOutputValidationErrors("36", "[[var]a]]", ((string[])(null)));
@@ -3213,7 +2960,7 @@ this.DebugOutputValidationErrors("36", "[[var]a]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 32")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "37")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var[a]]")]
-        public virtual void DebugOutputValidationErrors_Variant32()
+        public void DebugOutputValidationErrors_Variant32()
         {
 #line 467
 this.DebugOutputValidationErrors("37", "[[var[a]]", ((string[])(null)));
@@ -3229,7 +2976,7 @@ this.DebugOutputValidationErrors("37", "[[var[a]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 33")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "38")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var 1]]")]
-        public virtual void DebugOutputValidationErrors_Variant33()
+        public void DebugOutputValidationErrors_Variant33()
         {
 #line 467
 this.DebugOutputValidationErrors("38", "[[var 1]]", ((string[])(null)));
@@ -3245,7 +2992,7 @@ this.DebugOutputValidationErrors("38", "[[var 1]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 34")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "39")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var[[]]")]
-        public virtual void DebugOutputValidationErrors_Variant34()
+        public void DebugOutputValidationErrors_Variant34()
         {
 #line 467
 this.DebugOutputValidationErrors("39", "[[var[[]]", ((string[])(null)));
@@ -3261,7 +3008,7 @@ this.DebugOutputValidationErrors("39", "[[var[[]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 35")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "40")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var[[1]]]]")]
-        public virtual void DebugOutputValidationErrors_Variant35()
+        public void DebugOutputValidationErrors_Variant35()
         {
 #line 467
 this.DebugOutputValidationErrors("40", "[[var[[1]]]]", ((string[])(null)));
@@ -3277,7 +3024,7 @@ this.DebugOutputValidationErrors("40", "[[var[[1]]]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 36")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "41")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var.a]]")]
-        public virtual void DebugOutputValidationErrors_Variant36()
+        public void DebugOutputValidationErrors_Variant36()
         {
 #line 467
 this.DebugOutputValidationErrors("41", "[[var.a]]", ((string[])(null)));
@@ -3293,7 +3040,7 @@ this.DebugOutputValidationErrors("41", "[[var.a]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 37")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "42")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var1.a]]")]
-        public virtual void DebugOutputValidationErrors_Variant37()
+        public void DebugOutputValidationErrors_Variant37()
         {
 #line 467
 this.DebugOutputValidationErrors("42", "[[var1.a]]", ((string[])(null)));
@@ -3309,7 +3056,7 @@ this.DebugOutputValidationErrors("42", "[[var1.a]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 38")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "43")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[[[a]].[[b]]]]cd]]")]
-        public virtual void DebugOutputValidationErrors_Variant38()
+        public void DebugOutputValidationErrors_Variant38()
         {
 #line 467
 this.DebugOutputValidationErrors("43", "[[[[a]].[[b]]]]cd]]", ((string[])(null)));
@@ -3325,7 +3072,7 @@ this.DebugOutputValidationErrors("43", "[[[[a]].[[b]]]]cd]]", ((string[])(null))
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 39")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "44")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var*]]")]
-        public virtual void DebugOutputValidationErrors_Variant39()
+        public void DebugOutputValidationErrors_Variant39()
         {
 #line 467
 this.DebugOutputValidationErrors("44", "[[var*]]", ((string[])(null)));
@@ -3341,7 +3088,7 @@ this.DebugOutputValidationErrors("44", "[[var*]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 40")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "46")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[#var]]")]
-        public virtual void DebugOutputValidationErrors_Variant40()
+        public void DebugOutputValidationErrors_Variant40()
         {
 #line 467
 this.DebugOutputValidationErrors("46", "[[#var]]", ((string[])(null)));
@@ -3357,7 +3104,7 @@ this.DebugOutputValidationErrors("46", "[[#var]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 41")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "47")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var]](var)]]")]
-        public virtual void DebugOutputValidationErrors_Variant41()
+        public void DebugOutputValidationErrors_Variant41()
         {
 #line 467
 this.DebugOutputValidationErrors("47", "[[var]](var)]]", ((string[])(null)));
@@ -3373,7 +3120,7 @@ this.DebugOutputValidationErrors("47", "[[var]](var)]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 42")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "48")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var,]]")]
-        public virtual void DebugOutputValidationErrors_Variant42()
+        public void DebugOutputValidationErrors_Variant42()
         {
 #line 467
 this.DebugOutputValidationErrors("48", "[[var,]]", ((string[])(null)));
@@ -3389,7 +3136,7 @@ this.DebugOutputValidationErrors("48", "[[var,]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 43")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "49")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[:var 1]]")]
-        public virtual void DebugOutputValidationErrors_Variant43()
+        public void DebugOutputValidationErrors_Variant43()
         {
 #line 467
 this.DebugOutputValidationErrors("49", "[[:var 1]]", ((string[])(null)));
@@ -3405,7 +3152,7 @@ this.DebugOutputValidationErrors("49", "[[:var 1]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 44")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "50")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[,var]]")]
-        public virtual void DebugOutputValidationErrors_Variant44()
+        public void DebugOutputValidationErrors_Variant44()
         {
 #line 467
 this.DebugOutputValidationErrors("50", "[[,var]]", ((string[])(null)));
@@ -3421,7 +3168,7 @@ this.DebugOutputValidationErrors("50", "[[,var]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 45")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "51")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[test,var]]")]
-        public virtual void DebugOutputValidationErrors_Variant45()
+        public void DebugOutputValidationErrors_Variant45()
         {
 #line 467
 this.DebugOutputValidationErrors("51", "[[test,var]]", ((string[])(null)));
@@ -3437,7 +3184,7 @@ this.DebugOutputValidationErrors("51", "[[test,var]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 46")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "52")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[test. var]]")]
-        public virtual void DebugOutputValidationErrors_Variant46()
+        public void DebugOutputValidationErrors_Variant46()
         {
 #line 467
 this.DebugOutputValidationErrors("52", "[[test. var]]", ((string[])(null)));
@@ -3453,7 +3200,7 @@ this.DebugOutputValidationErrors("52", "[[test. var]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 47")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "53")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[test.var]]")]
-        public virtual void DebugOutputValidationErrors_Variant47()
+        public void DebugOutputValidationErrors_Variant47()
         {
 #line 467
 this.DebugOutputValidationErrors("53", "[[test.var]]", ((string[])(null)));
@@ -3469,7 +3216,7 @@ this.DebugOutputValidationErrors("53", "[[test.var]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 48")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "54")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[test. 1]]")]
-        public virtual void DebugOutputValidationErrors_Variant48()
+        public void DebugOutputValidationErrors_Variant48()
         {
 #line 467
 this.DebugOutputValidationErrors("54", "[[test. 1]]", ((string[])(null)));
@@ -3485,7 +3232,7 @@ this.DebugOutputValidationErrors("54", "[[test. 1]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 49")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "55")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec(*).&]]")]
-        public virtual void DebugOutputValidationErrors_Variant49()
+        public void DebugOutputValidationErrors_Variant49()
         {
 #line 467
 this.DebugOutputValidationErrors("55", "[[rec(*).&]]", ((string[])(null)));
@@ -3501,7 +3248,7 @@ this.DebugOutputValidationErrors("55", "[[rec(*).&]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 50")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "56")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec(),a]]")]
-        public virtual void DebugOutputValidationErrors_Variant50()
+        public void DebugOutputValidationErrors_Variant50()
         {
 #line 467
 this.DebugOutputValidationErrors("56", "[[rec(),a]]", ((string[])(null)));
@@ -3517,7 +3264,7 @@ this.DebugOutputValidationErrors("56", "[[rec(),a]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 51")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "57")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec()         a]]")]
-        public virtual void DebugOutputValidationErrors_Variant51()
+        public void DebugOutputValidationErrors_Variant51()
         {
 #line 467
 this.DebugOutputValidationErrors("57", "[[rec()         a]]", ((string[])(null)));
@@ -3533,7 +3280,7 @@ this.DebugOutputValidationErrors("57", "[[rec()         a]]", ((string[])(null))
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 52")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "58")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec(1).[[rec().1]]]]")]
-        public virtual void DebugOutputValidationErrors_Variant52()
+        public void DebugOutputValidationErrors_Variant52()
         {
 #line 467
 this.DebugOutputValidationErrors("58", "[[rec(1).[[rec().1]]]]", ((string[])(null)));
@@ -3549,7 +3296,7 @@ this.DebugOutputValidationErrors("58", "[[rec(1).[[rec().1]]]]", ((string[])(nul
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 53")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "59")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec(a).[[rec().a]]]]")]
-        public virtual void DebugOutputValidationErrors_Variant53()
+        public void DebugOutputValidationErrors_Variant53()
         {
 #line 467
 this.DebugOutputValidationErrors("59", "[[rec(a).[[rec().a]]]]", ((string[])(null)));
@@ -3565,7 +3312,7 @@ this.DebugOutputValidationErrors("59", "[[rec(a).[[rec().a]]]]", ((string[])(nul
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 54")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "60")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[{{rec(_).a}}]]]")]
-        public virtual void DebugOutputValidationErrors_Variant54()
+        public void DebugOutputValidationErrors_Variant54()
         {
 #line 467
 this.DebugOutputValidationErrors("60", "[[{{rec(_).a}}]]]", ((string[])(null)));
@@ -3581,7 +3328,7 @@ this.DebugOutputValidationErrors("60", "[[{{rec(_).a}}]]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 55")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "61")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[*[{{rec(_).a}}]]]")]
-        public virtual void DebugOutputValidationErrors_Variant55()
+        public void DebugOutputValidationErrors_Variant55()
         {
 #line 467
 this.DebugOutputValidationErrors("61", "[[*[{{rec(_).a}}]]]", ((string[])(null)));
@@ -3597,7 +3344,7 @@ this.DebugOutputValidationErrors("61", "[[*[{{rec(_).a}}]]]", ((string[])(null))
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 56")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "62")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec(23).[[var}]]]]")]
-        public virtual void DebugOutputValidationErrors_Variant56()
+        public void DebugOutputValidationErrors_Variant56()
         {
 #line 467
 this.DebugOutputValidationErrors("62", "[[rec(23).[[var}]]]]", ((string[])(null)));
@@ -3613,7 +3360,7 @@ this.DebugOutputValidationErrors("62", "[[rec(23).[[var}]]]]", ((string[])(null)
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 57")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "63")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec(23).[[var*]]]]")]
-        public virtual void DebugOutputValidationErrors_Variant57()
+        public void DebugOutputValidationErrors_Variant57()
         {
 #line 467
 this.DebugOutputValidationErrors("63", "[[rec(23).[[var*]]]]", ((string[])(null)));
@@ -3629,7 +3376,7 @@ this.DebugOutputValidationErrors("63", "[[rec(23).[[var*]]]]", ((string[])(null)
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 58")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec(23).[[var%^&%]]]]")]
-        public virtual void DebugOutputValidationErrors_Variant58()
+        public void DebugOutputValidationErrors_Variant58()
         {
 #line 467
 this.DebugOutputValidationErrors("64", "[[rec(23).[[var%^&%]]]]", ((string[])(null)));
@@ -3645,7 +3392,7 @@ this.DebugOutputValidationErrors("64", "[[rec(23).[[var%^&%]]]]", ((string[])(nu
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 59")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "65")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec().a]]234234]]")]
-        public virtual void DebugOutputValidationErrors_Variant59()
+        public void DebugOutputValidationErrors_Variant59()
         {
 #line 467
 this.DebugOutputValidationErrors("65", "[[rec().a]]234234]]", ((string[])(null)));
@@ -3661,7 +3408,7 @@ this.DebugOutputValidationErrors("65", "[[rec().a]]234234]]", ((string[])(null))
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 60")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "66")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec().a]]=]]")]
-        public virtual void DebugOutputValidationErrors_Variant60()
+        public void DebugOutputValidationErrors_Variant60()
         {
 #line 467
 this.DebugOutputValidationErrors("66", "[[rec().a]]=]]", ((string[])(null)));
@@ -3677,7 +3424,7 @@ this.DebugOutputValidationErrors("66", "[[rec().a]]=]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 61")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "67")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec()..]]")]
-        public virtual void DebugOutputValidationErrors_Variant61()
+        public void DebugOutputValidationErrors_Variant61()
         {
 #line 467
 this.DebugOutputValidationErrors("67", "[[rec()..]]", ((string[])(null)));
@@ -3693,7 +3440,7 @@ this.DebugOutputValidationErrors("67", "[[rec()..]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 62")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "68")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec().a.b]]")]
-        public virtual void DebugOutputValidationErrors_Variant62()
+        public void DebugOutputValidationErrors_Variant62()
         {
 #line 467
 this.DebugOutputValidationErrors("68", "[[rec().a.b]]", ((string[])(null)));
@@ -3709,7 +3456,7 @@ this.DebugOutputValidationErrors("68", "[[rec().a.b]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 63")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "69")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec().a]].a]]")]
-        public virtual void DebugOutputValidationErrors_Variant63()
+        public void DebugOutputValidationErrors_Variant63()
         {
 #line 467
 this.DebugOutputValidationErrors("69", "[[rec().a]].a]]", ((string[])(null)));
@@ -3725,7 +3472,7 @@ this.DebugOutputValidationErrors("69", "[[rec().a]].a]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "70")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec(@).a]]")]
-        public virtual void DebugOutputValidationErrors_Variant64()
+        public void DebugOutputValidationErrors_Variant64()
         {
 #line 467
 this.DebugOutputValidationErrors("70", "[[rec(@).a]]", ((string[])(null)));
@@ -3741,7 +3488,7 @@ this.DebugOutputValidationErrors("70", "[[rec(@).a]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 65")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "71")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec(().a]]")]
-        public virtual void DebugOutputValidationErrors_Variant65()
+        public void DebugOutputValidationErrors_Variant65()
         {
 #line 467
 this.DebugOutputValidationErrors("71", "[[rec(().a]]", ((string[])(null)));
@@ -3757,7 +3504,7 @@ this.DebugOutputValidationErrors("71", "[[rec(().a]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 66")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "72")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec()).a]]")]
-        public virtual void DebugOutputValidationErrors_Variant66()
+        public void DebugOutputValidationErrors_Variant66()
         {
 #line 467
 this.DebugOutputValidationErrors("72", "[[rec()).a]]", ((string[])(null)));
@@ -3773,7 +3520,7 @@ this.DebugOutputValidationErrors("72", "[[rec()).a]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 67")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "73")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec(+).a]]")]
-        public virtual void DebugOutputValidationErrors_Variant67()
+        public void DebugOutputValidationErrors_Variant67()
         {
 #line 467
 this.DebugOutputValidationErrors("73", "[[rec(+).a]]", ((string[])(null)));
@@ -3789,7 +3536,7 @@ this.DebugOutputValidationErrors("73", "[[rec(+).a]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 68")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "74")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec(-).a]]")]
-        public virtual void DebugOutputValidationErrors_Variant68()
+        public void DebugOutputValidationErrors_Variant68()
         {
 #line 467
 this.DebugOutputValidationErrors("74", "[[rec(-).a]]", ((string[])(null)));
@@ -3805,7 +3552,7 @@ this.DebugOutputValidationErrors("74", "[[rec(-).a]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 69")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "75")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec(!).a]]")]
-        public virtual void DebugOutputValidationErrors_Variant69()
+        public void DebugOutputValidationErrors_Variant69()
         {
 #line 467
 this.DebugOutputValidationErrors("75", "[[rec(!).a]]", ((string[])(null)));
@@ -3821,7 +3568,7 @@ this.DebugOutputValidationErrors("75", "[[rec(!).a]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 70")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "76")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec(q).a]]")]
-        public virtual void DebugOutputValidationErrors_Variant70()
+        public void DebugOutputValidationErrors_Variant70()
         {
 #line 467
 this.DebugOutputValidationErrors("76", "[[rec(q).a]]", ((string[])(null)));
@@ -3837,7 +3584,7 @@ this.DebugOutputValidationErrors("76", "[[rec(q).a]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 71")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "77")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec(w).a]]")]
-        public virtual void DebugOutputValidationErrors_Variant71()
+        public void DebugOutputValidationErrors_Variant71()
         {
 #line 467
 this.DebugOutputValidationErrors("77", "[[rec(w).a]]", ((string[])(null)));
@@ -3853,7 +3600,7 @@ this.DebugOutputValidationErrors("77", "[[rec(w).a]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 72")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "78")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec(.).a]]")]
-        public virtual void DebugOutputValidationErrors_Variant72()
+        public void DebugOutputValidationErrors_Variant72()
         {
 #line 467
 this.DebugOutputValidationErrors("78", "[[rec(.).a]]", ((string[])(null)));
@@ -3869,7 +3616,7 @@ this.DebugOutputValidationErrors("78", "[[rec(.).a]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 73")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "79")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec(:).a]]")]
-        public virtual void DebugOutputValidationErrors_Variant73()
+        public void DebugOutputValidationErrors_Variant73()
         {
 #line 467
 this.DebugOutputValidationErrors("79", "[[rec(:).a]]", ((string[])(null)));
@@ -3885,7 +3632,7 @@ this.DebugOutputValidationErrors("79", "[[rec(:).a]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 74")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "80")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec(,).a]]")]
-        public virtual void DebugOutputValidationErrors_Variant74()
+        public void DebugOutputValidationErrors_Variant74()
         {
 #line 467
 this.DebugOutputValidationErrors("80", "[[rec(,).a]]", ((string[])(null)));
@@ -3901,7 +3648,7 @@ this.DebugOutputValidationErrors("80", "[[rec(,).a]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 75")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "81")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec\"()\".a]]")]
-        public virtual void DebugOutputValidationErrors_Variant75()
+        public void DebugOutputValidationErrors_Variant75()
         {
 #line 467
 this.DebugOutputValidationErrors("81", "[[rec\"()\".a]]", ((string[])(null)));
@@ -3917,7 +3664,7 @@ this.DebugOutputValidationErrors("81", "[[rec\"()\".a]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 76")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "82")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec\"()\".a]]")]
-        public virtual void DebugOutputValidationErrors_Variant76()
+        public void DebugOutputValidationErrors_Variant76()
         {
 #line 467
 this.DebugOutputValidationErrors("82", "[[rec\"()\".a]]", ((string[])(null)));
@@ -3933,7 +3680,7 @@ this.DebugOutputValidationErrors("82", "[[rec\"()\".a]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 77")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "83")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec\").a]]")]
-        public virtual void DebugOutputValidationErrors_Variant77()
+        public void DebugOutputValidationErrors_Variant77()
         {
 #line 467
 this.DebugOutputValidationErrors("83", "[[rec\").a]]", ((string[])(null)));
@@ -3949,7 +3696,7 @@ this.DebugOutputValidationErrors("83", "[[rec\").a]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 78")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "84")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec{a]]")]
-        public virtual void DebugOutputValidationErrors_Variant78()
+        public void DebugOutputValidationErrors_Variant78()
         {
 #line 467
 this.DebugOutputValidationErrors("84", "[[rec{a]]", ((string[])(null)));
@@ -3965,7 +3712,7 @@ this.DebugOutputValidationErrors("84", "[[rec{a]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 79")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "85")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec{a}]]")]
-        public virtual void DebugOutputValidationErrors_Variant79()
+        public void DebugOutputValidationErrors_Variant79()
         {
 #line 467
 this.DebugOutputValidationErrors("85", "[[rec{a}]]", ((string[])(null)));
@@ -3981,7 +3728,7 @@ this.DebugOutputValidationErrors("85", "[[rec{a}]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 80")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "86")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec()*.a]]")]
-        public virtual void DebugOutputValidationErrors_Variant80()
+        public void DebugOutputValidationErrors_Variant80()
         {
 #line 467
 this.DebugOutputValidationErrors("86", "[[rec()*.a]]", ((string[])(null)));
@@ -3997,7 +3744,7 @@ this.DebugOutputValidationErrors("86", "[[rec()*.a]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 81")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "89")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec(-1).a")]
-        public virtual void DebugOutputValidationErrors_Variant81()
+        public void DebugOutputValidationErrors_Variant81()
         {
 #line 467
 this.DebugOutputValidationErrors("89", "[[rec(-1).a", ((string[])(null)));
@@ -4013,7 +3760,7 @@ this.DebugOutputValidationErrors("89", "[[rec(-1).a", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 82")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "90")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[r(q).a]][[r()..]][[r\"]][[r()]][[]][[1]]")]
-        public virtual void DebugOutputValidationErrors_Variant82()
+        public void DebugOutputValidationErrors_Variant82()
         {
 #line 467
 this.DebugOutputValidationErrors("90", "[[r(q).a]][[r()..]][[r\"]][[r()]][[]][[1]]", ((string[])(null)));
@@ -4031,21 +3778,11 @@ this.DebugOutputValidationErrors("90", "[[r(q).a]][[r()..]][[r\"]][[r()]][[]][[1
             argumentsOfScenario.Add("Using", @using);
             argumentsOfScenario.Add("Escape", escape);
             argumentsOfScenario.Add("ErrorOccured", errorOccured);
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split data using scalars and recordsets", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split data using scalars and recordsets", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 563
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -4112,7 +3849,7 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Using", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Escape", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ErrorOccured", "AN")]
-        public virtual void SplitDataUsingScalarsAndRecordsets_1()
+        public void SplitDataUsingScalarsAndRecordsets_1()
         {
 #line 563
 this.SplitDataUsingScalarsAndRecordsets("1", "[[var]]", "\"\"", "Index", "1", "", "AN", ((string[])(null)));
@@ -4133,7 +3870,7 @@ this.SplitDataUsingScalarsAndRecordsets("1", "[[var]]", "\"\"", "Index", "1", ""
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Using", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Escape", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ErrorOccured", "AN")]
-        public virtual void SplitDataUsingScalarsAndRecordsets_2()
+        public void SplitDataUsingScalarsAndRecordsets_2()
         {
 #line 563
 this.SplitDataUsingScalarsAndRecordsets("2", "Warewolf", "[[var]]", "", "1", "", "AN", ((string[])(null)));
@@ -4154,7 +3891,7 @@ this.SplitDataUsingScalarsAndRecordsets("2", "Warewolf", "[[var]]", "", "1", "",
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Using", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Escape", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ErrorOccured", "AN")]
-        public virtual void SplitDataUsingScalarsAndRecordsets_3()
+        public void SplitDataUsingScalarsAndRecordsets_3()
         {
 #line 563
 this.SplitDataUsingScalarsAndRecordsets("3", "Warewolf", "[[a]] = \"\"", "", "1", "", "AN", ((string[])(null)));
@@ -4167,21 +3904,11 @@ this.SplitDataUsingScalarsAndRecordsets("3", "Warewolf", "[[a]] = \"\"", "", "1"
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             argumentsOfScenario.Add("No", no);
             argumentsOfScenario.Add("Variable", variable);
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Debug output Validation errors x", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Debug output Validation errors x", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 579
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -4214,7 +3941,7 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec().a]]")]
-        public virtual void DebugOutputValidationErrorsX_1()
+        public void DebugOutputValidationErrorsX_1()
         {
 #line 579
 this.DebugOutputValidationErrorsX("1", "[[rec().a]]", ((string[])(null)));
@@ -4227,25 +3954,15 @@ this.DebugOutputValidationErrorsX("1", "[[rec().a]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
-        public virtual void SplitTextFormatIntoRecordset_WithEscapeValue()
+        public void SplitTextFormatIntoRecordset_WithEscapeValue()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split text format into recordset - With Escape value", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split text format into recordset - With Escape value", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 588
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -4334,25 +4051,15 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
-        public virtual void SplitTextFormatIntoRecordset_WithNewLineValue()
+        public void SplitTextFormatIntoRecordset_WithNewLineValue()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split text format into recordset - With NewLine value", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split text format into recordset - With NewLine value", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 609
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }

@@ -27,7 +27,7 @@ namespace Warewolf.Tools.Specs.Toolbox.FileAndFolder.WriteFile
         
         private Microsoft.VisualStudio.TestTools.UnitTesting.TestContext _testContext;
         
-        private string[] _featureTags = new string[] {
+        private static string[] featureTags = new string[] {
                 "WriteFile"};
         
 #line 1 "Write File.feature"
@@ -50,8 +50,7 @@ namespace Warewolf.Tools.Specs.Toolbox.FileAndFolder.WriteFile
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Toolbox/FileAndFolder/Write File", "Write File", "\tIn order to be able to Write File\r\n\tas a Warewolf user\r\n\tI want a tool that writ" +
-                    "es a file at a given location", ProgrammingLanguage.CSharp, new string[] {
-                        "WriteFile"});
+                    "es a file at a given location", ProgrammingLanguage.CSharp, featureTags);
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -63,7 +62,7 @@ namespace Warewolf.Tools.Specs.Toolbox.FileAndFolder.WriteFile
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestInitializeAttribute()]
-        public virtual void TestInitialize()
+        public void TestInitialize()
         {
             if (((testRunner.FeatureContext != null) 
                         && (testRunner.FeatureContext.FeatureInfo.Title != "Write File")))
@@ -73,23 +72,23 @@ namespace Warewolf.Tools.Specs.Toolbox.FileAndFolder.WriteFile
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCleanupAttribute()]
-        public virtual void TestTearDown()
+        public void TestTearDown()
         {
             testRunner.OnScenarioEnd();
         }
         
-        public virtual void ScenarioInitialize(TechTalk.SpecFlow.ScenarioInfo scenarioInfo)
+        public void ScenarioInitialize(TechTalk.SpecFlow.ScenarioInfo scenarioInfo)
         {
             testRunner.OnScenarioInitialize(scenarioInfo);
             testRunner.ScenarioContext.ScenarioContainer.RegisterInstanceAs<Microsoft.VisualStudio.TestTools.UnitTesting.TestContext>(_testContext);
         }
         
-        public virtual void ScenarioStart()
+        public void ScenarioStart()
         {
             testRunner.OnScenarioStart();
         }
         
-        public virtual void ScenarioCleanup()
+        public void ScenarioCleanup()
         {
             testRunner.CollectScenarioErrors();
         }
@@ -109,21 +108,11 @@ namespace Warewolf.Tools.Specs.Toolbox.FileAndFolder.WriteFile
             argumentsOfScenario.Add("result", result);
             argumentsOfScenario.Add("errorOccured", errorOccured);
             argumentsOfScenario.Add("sourcePrivateKeyFile", sourcePrivateKeyFile);
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Write file at location", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Write file at location", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 7
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -201,7 +190,7 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        public virtual void WriteFileAtLocation_Variant0()
+        public void WriteFileAtLocation_Variant0()
         {
 #line 7
 this.WriteFileAtLocation("Local with Overwrite", "[[path]]", "c:\\Temp\\filetowrite0.txt", "Overwrite", "warewolf rules", "\"\"", "\"\"", "[[result]]", "Success", "NO", "", ((string[])(null)));
@@ -224,7 +213,7 @@ this.WriteFileAtLocation("Local with Overwrite", "[[path]]", "c:\\Temp\\filetowr
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        public virtual void WriteFileAtLocation_Variant1()
+        public void WriteFileAtLocation_Variant1()
         {
 #line 7
 this.WriteFileAtLocation("FTP with Overwrite", "[[path]]", "ftp://DEVOPSPDC.premier.local:1001/FORWRITEFILETESTING/filetowrite0.txt", "Overwrite", "warewolf rules", "dev2", "Q/ulw&]", "[[result]]", "Success", "NO", "", ((string[])(null)));
@@ -247,7 +236,7 @@ this.WriteFileAtLocation("FTP with Overwrite", "[[path]]", "ftp://DEVOPSPDC.prem
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        public virtual void WriteFileAtLocation_Variant2()
+        public void WriteFileAtLocation_Variant2()
         {
 #line 7
 this.WriteFileAtLocation("FTPS with Overwrite", "[[path]]", "ftp://DEVOPSPDC.premier.local:1002/FORWRITEFILETESTING/filetowrite0.txt", "Overwrite", "warewolf rules", "dev2", "Q/ulw&]", "[[result]]", "Success", "NO", "", ((string[])(null)));
@@ -270,7 +259,7 @@ this.WriteFileAtLocation("FTPS with Overwrite", "[[path]]", "ftp://DEVOPSPDC.pre
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        public virtual void WriteFileAtLocation_Variant3()
+        public void WriteFileAtLocation_Variant3()
         {
 #line 7
 this.WriteFileAtLocation("SFTP with Overwrite", "[[path]]", "sftp://3xhcmicj2djiu.southafricanorth.azurecontainer.io/upload/filetowrite0.txt", "Overwrite", "warewolf rules", "dev2", "Q/ulw&]", "[[result]]", "Success", "NO", "", ((string[])(null)));
@@ -293,7 +282,7 @@ this.WriteFileAtLocation("SFTP with Overwrite", "[[path]]", "sftp://3xhcmicj2dji
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        public virtual void WriteFileAtLocation_Variant4()
+        public void WriteFileAtLocation_Variant4()
         {
 #line 7
 this.WriteFileAtLocation("Local with Append Top", "[[path]]", "c:\\Temp\\filetowrite1.txt", "Append Top", "warewolf rules", "\"\"", "\"\"", "[[result]]", "Success", "NO", "", ((string[])(null)));
@@ -316,7 +305,7 @@ this.WriteFileAtLocation("Local with Append Top", "[[path]]", "c:\\Temp\\filetow
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        public virtual void WriteFileAtLocation_Variant5()
+        public void WriteFileAtLocation_Variant5()
         {
 #line 7
 this.WriteFileAtLocation("FTP with Append Top", "[[path]]", "ftp://DEVOPSPDC.premier.local:1001/FORWRITEFILETESTING/filetowrite1.txt", "Append Top", "warewolf rules", "dev2", "Q/ulw&]", "[[result]]", "Success", "NO", "", ((string[])(null)));
@@ -339,7 +328,7 @@ this.WriteFileAtLocation("FTP with Append Top", "[[path]]", "ftp://DEVOPSPDC.pre
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        public virtual void WriteFileAtLocation_Variant6()
+        public void WriteFileAtLocation_Variant6()
         {
 #line 7
 this.WriteFileAtLocation("FTPS with Append Top", "[[path]]", "ftp://DEVOPSPDC.premier.local:1002/FORWRITEFILETESTING/filetowrite1.txt", "Append Top", "warewolf rules", "dev2", "Q/ulw&]", "[[result]]", "Success", "NO", "", ((string[])(null)));
@@ -362,7 +351,7 @@ this.WriteFileAtLocation("FTPS with Append Top", "[[path]]", "ftp://DEVOPSPDC.pr
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        public virtual void WriteFileAtLocation_Variant7()
+        public void WriteFileAtLocation_Variant7()
         {
 #line 7
 this.WriteFileAtLocation("SFTP with Append Top", "[[path]]", "sftp://3xhcmicj2djiu.southafricanorth.azurecontainer.io/upload/filetowrite1.txt", "Append Top", "warewolf rules", "dev2", "Q/ulw&]", "[[result]]", "Success", "NO", "", ((string[])(null)));
@@ -385,7 +374,7 @@ this.WriteFileAtLocation("SFTP with Append Top", "[[path]]", "sftp://3xhcmicj2dj
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        public virtual void WriteFileAtLocation_Variant8()
+        public void WriteFileAtLocation_Variant8()
         {
 #line 7
 this.WriteFileAtLocation("Local with Append Bottom", "[[path]]", "c:\\Temp\\filetowrite2.txt", "Append Bottom", "warewolf rules", "\"\"", "\"\"", "[[result]]", "Success", "NO", "", ((string[])(null)));
@@ -408,7 +397,7 @@ this.WriteFileAtLocation("Local with Append Bottom", "[[path]]", "c:\\Temp\\file
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        public virtual void WriteFileAtLocation_Variant9()
+        public void WriteFileAtLocation_Variant9()
         {
 #line 7
 this.WriteFileAtLocation("FTP with Append Bottom", "[[path]]", "ftp://DEVOPSPDC.premier.local:1001/FORWRITEFILETESTING/filetowrite2.txt", "Append Bottom", "warewolf rules", "dev2", "Q/ulw&]", "[[result]]", "Success", "NO", "", ((string[])(null)));
@@ -431,7 +420,7 @@ this.WriteFileAtLocation("FTP with Append Bottom", "[[path]]", "ftp://DEVOPSPDC.
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        public virtual void WriteFileAtLocation_Variant10()
+        public void WriteFileAtLocation_Variant10()
         {
 #line 7
 this.WriteFileAtLocation("FTPS with Append Bottom", "[[path]]", "ftp://DEVOPSPDC.premier.local:1002/FORWRITEFILETESTING/filetowrite2.txt", "Append Bottom", "warewolf rules", "dev2", "Q/ulw&]", "[[result]]", "Success", "NO", "", ((string[])(null)));
@@ -454,7 +443,7 @@ this.WriteFileAtLocation("FTPS with Append Bottom", "[[path]]", "ftp://DEVOPSPDC
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        public virtual void WriteFileAtLocation_Variant11()
+        public void WriteFileAtLocation_Variant11()
         {
 #line 7
 this.WriteFileAtLocation("SFTP with Append Bottom", "[[path]]", "sftp://3xhcmicj2djiu.southafricanorth.azurecontainer.io/upload/filetowrite2.txt", "Append Bottom", "warewolf rules", "dev2", "Q/ulw&]", "[[result]]", "Success", "NO", "", ((string[])(null)));
@@ -477,7 +466,7 @@ this.WriteFileAtLocation("SFTP with Append Bottom", "[[path]]", "sftp://3xhcmicj
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "C:\\Temp\\key.opk")]
-        public virtual void WriteFileAtLocation_Variant12()
+        public void WriteFileAtLocation_Variant12()
         {
 #line 7
 this.WriteFileAtLocation("SFTP with Append Bottom PK", "[[path]]", "sftp://3xhcmicj2djiu.southafricanorth.azurecontainer.io/upload/filetowrite21.txt", "Append Bottom", "warewolf rules", "dev2", "Q/ulw&]", "[[result]]", "Success", "NO", "C:\\Temp\\key.opk", ((string[])(null)));
@@ -500,7 +489,7 @@ this.WriteFileAtLocation("SFTP with Append Bottom PK", "[[path]]", "sftp://3xhcm
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "AN")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        public virtual void WriteFileAtLocation_Variant13()
+        public void WriteFileAtLocation_Variant13()
         {
 #line 7
 this.WriteFileAtLocation("Local with Overwrite", "[[path]]", "", "Overwrite", "warewolf rules", "\"\"", "\"\"", "[[result]]", "", "AN", "", ((string[])(null)));
@@ -522,21 +511,11 @@ this.WriteFileAtLocation("Local with Overwrite", "[[path]]", "", "Overwrite", "w
             argumentsOfScenario.Add("result", result);
             argumentsOfScenario.Add("errorOccured", errorOccured);
             argumentsOfScenario.Add("sourcePrivateKeyFile", sourcePrivateKeyFile);
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Write file at location Null", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Write file at location Null", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 41
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -587,7 +566,7 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "AN")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        public virtual void WriteFileAtLocationNull_LocalWithOverwrite()
+        public void WriteFileAtLocationNull_LocalWithOverwrite()
         {
 #line 41
 this.WriteFileAtLocationNull("Local with Overwrite", "[[path]]", "NULL", "Overwrite", "warewolf rules", "\"\"", "\"\"", "[[result]]", "", "AN", "", ((string[])(null)));
@@ -633,21 +612,11 @@ this.WriteFileAtLocationNull("Local with Overwrite", "[[path]]", "NULL", "Overwr
             argumentsOfScenario.Add("DesignValidation", designValidation);
             argumentsOfScenario.Add("OutputError", outputError);
             argumentsOfScenario.Add("sourcePrivateKeyFile", sourcePrivateKeyFile);
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Write file validation", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Write file validation", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 54
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -750,7 +719,7 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        public virtual void WriteFileValidation_1()
+        public void WriteFileValidation_1()
         {
 #line 54
 this.WriteFileValidation("1", "Local with Overwrite", "[[sourcePath]]", "\"\"", "\"\"", "C:\\filetoread.txt", "Overwrite", "warewolf rules", "\"\"", "\"\"", "[[result]]", "String", "NO", "False", "\"\"", "\"\"", "", ((string[])(null)));
@@ -779,7 +748,7 @@ this.WriteFileValidation("1", "Local with Overwrite", "[[sourcePath]]", "\"\"", 
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        public virtual void WriteFileValidation_2()
+        public void WriteFileValidation_2()
         {
 #line 54
 this.WriteFileValidation("2", "Local with Overwrite", "[[sourcePath]]", "\"\"", "\"\"", "C:\\filetoread.txt", "Overwrite", "warewolf rules", "\"\"", "\"\"", "[[result]]", "String", "NO", "False", "\"\"", "\"\"", "", ((string[])(null)));
@@ -808,7 +777,7 @@ this.WriteFileValidation("2", "Local with Overwrite", "[[sourcePath]]", "\"\"", 
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        public virtual void WriteFileValidation_3()
+        public void WriteFileValidation_3()
         {
 #line 54
 this.WriteFileValidation("3", "Local with Overwrite", "[[sourcePath]]", "\"\"", "\"\"", "C:\\filetoread.txt", "Overwrite", "warewolf rules", "\"\"", "\"\"", "[[result]]", "String", "NO", "False", "\"\"", "\"\"", "", ((string[])(null)));
@@ -837,7 +806,7 @@ this.WriteFileValidation("3", "Local with Overwrite", "[[sourcePath]]", "\"\"", 
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        public virtual void WriteFileValidation_4()
+        public void WriteFileValidation_4()
         {
 #line 54
 this.WriteFileValidation("4", "Local with Overwrite", "[[a]].txt", "c:\\file", "toread", "C:\\filetoread.txt", "Overwrite", "warewolf rules", "\"\"", "\"\"", "[[result]]", "String", "NO", "False", "\"\"", "\"\"", "", ((string[])(null)));
@@ -866,7 +835,7 @@ this.WriteFileValidation("4", "Local with Overwrite", "[[a]].txt", "c:\\file", "
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        public virtual void WriteFileValidation_5()
+        public void WriteFileValidation_5()
         {
 #line 54
 this.WriteFileValidation("5", "Local with Overwrite", "[[a]][[b]].txt", "c:\\fileto", "read", "C:\\filetoread.txt", "Overwrite", "warewolf rules", "\"\"", "\"\"", "[[result]]", "String", "NO", "False", "\"\"", "\"\"", "", ((string[])(null)));
@@ -895,7 +864,7 @@ this.WriteFileValidation("5", "Local with Overwrite", "[[a]][[b]].txt", "c:\\fil
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        public virtual void WriteFileValidation_6()
+        public void WriteFileValidation_6()
         {
 #line 54
 this.WriteFileValidation("6", "Local with Overwrite", "[[rec([[index]]).a]]", "c:\\filetoread.txt", "\"\"", "C:\\filetoread.txt", "Append Top", "warewolf rules", "\"\"", "\"\"", "[[result]]", "String", "NO", "False", "\"\"", "\"\"", "", ((string[])(null)));
@@ -924,7 +893,7 @@ this.WriteFileValidation("6", "Local with Overwrite", "[[rec([[index]]).a]]", "c
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        public virtual void WriteFileValidation_7()
+        public void WriteFileValidation_7()
         {
 #line 54
 this.WriteFileValidation("7", "Local with Overwrite", "[[a]][[b]]", "c:\\file", "toread.txt", "C:\\filetoread.txt", "Append Top", "warewolf rules", "\"\"", "\"\"", "[[result]]", "String", "NO", "False", "\"\"", "\"\"", "", ((string[])(null)));
@@ -953,7 +922,7 @@ this.WriteFileValidation("7", "Local with Overwrite", "[[a]][[b]]", "c:\\file", 
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        public virtual void WriteFileValidation_8()
+        public void WriteFileValidation_8()
         {
 #line 54
 this.WriteFileValidation("8", "Local with Overwrite", "[[a]]\\[[b]]", "c:", "filetoread.txt", "C:\\filetoread.txt", "Append Top", "warewolf rules", "\"\"", "\"\"", "[[result]]", "String", "NO", "False", "\"\"", "\"\"", "", ((string[])(null)));
@@ -982,7 +951,7 @@ this.WriteFileValidation("8", "Local with Overwrite", "[[a]]\\[[b]]", "c:", "fil
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        public virtual void WriteFileValidation_9()
+        public void WriteFileValidation_9()
         {
 #line 54
 this.WriteFileValidation("9", "Local with Overwrite", "[[a]]:[[b]]", "c", "\\filetoread.txt", "C:\\filetoread.txt", "Append Top", "warewolf rules", "\"\"", "\"\"", "[[result]]", "String", "NO", "False", "\"\"", "\"\"", "", ((string[])(null)));
@@ -1011,7 +980,7 @@ this.WriteFileValidation("9", "Local with Overwrite", "[[a]]:[[b]]", "c", "\\fil
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        public virtual void WriteFileValidation_10()
+        public void WriteFileValidation_10()
         {
 #line 54
 this.WriteFileValidation("10", "Local with Overwrite", "C:[[a]][[b]].txt", "\\fileto", "read", "C:\\filetoread.txt", "Append Top", "warewolf rules", "\"\"", "\"\"", "[[result]]", "String", "NO", "False", "\"\"", "\"\"", "", ((string[])(null)));
@@ -1040,7 +1009,7 @@ this.WriteFileValidation("10", "Local with Overwrite", "C:[[a]][[b]].txt", "\\fi
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        public virtual void WriteFileValidation_11()
+        public void WriteFileValidation_11()
         {
 #line 54
 this.WriteFileValidation("11", "Local with Overwrite", "[[rec(1).a]][[rec(2).a]]", "c:\\fileto", "read.txt", "C:\\filetoread.txt", "Append Bottom", "warewolf rules", "\"\"", "\"\"", "[[result]]", "String", "NO", "False", "\"\"", "\"\"", "", ((string[])(null)));
@@ -1069,7 +1038,7 @@ this.WriteFileValidation("11", "Local with Overwrite", "[[rec(1).a]][[rec(2).a]]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        public virtual void WriteFileValidation_12()
+        public void WriteFileValidation_12()
         {
 #line 54
 this.WriteFileValidation("12", "Local with Overwrite", "[[rec(1).a]]\\[[rec(2).a]]", "c:", "filetoread.txt", "C:\\filetoread.txt", "Append Bottom", "warewolf rules", "\"\"", "\"\"", "[[result]]", "String", "NO", "False", "\"\"", "\"\"", "", ((string[])(null)));
@@ -1098,7 +1067,7 @@ this.WriteFileValidation("12", "Local with Overwrite", "[[rec(1).a]]\\[[rec(2).a
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        public virtual void WriteFileValidation_13()
+        public void WriteFileValidation_13()
         {
 #line 54
 this.WriteFileValidation("13", "Local with Overwrite", "[[rec(1).a]][[rec(2).a]].txt", "c:\\file", "toread", "C:\\filetoread.txt", "Append Bottom", "warewolf rules", "\"\"", "\"\"", "[[result]]", "String", "NO", "False", "\"\"", "\"\"", "", ((string[])(null)));
@@ -1127,7 +1096,7 @@ this.WriteFileValidation("13", "Local with Overwrite", "[[rec(1).a]][[rec(2).a]]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        public virtual void WriteFileValidation_14()
+        public void WriteFileValidation_14()
         {
 #line 54
 this.WriteFileValidation("14", "Local with Overwrite", "[[rec(1).a]]:[[rec(2).a]]", "c", "\\filetoread.txt", "C:\\filetoread.txt", "Append Bottom", "warewolf rules", "\"\"", "\"\"", "[[result]]", "String", "NO", "False", "\"\"", "\"\"", "", ((string[])(null)));
@@ -1156,7 +1125,7 @@ this.WriteFileValidation("14", "Local with Overwrite", "[[rec(1).a]]:[[rec(2).a]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        public virtual void WriteFileValidation_15()
+        public void WriteFileValidation_15()
         {
 #line 54
 this.WriteFileValidation("15", "Local with Overwrite", "C:[[rec(1).a]][[rec(2).a]].txt", "fileto", "read", "C:\\filetoread.txt", "Append Bottom", "warewolf rules", "\"\"", "\"\"", "[[result]]", "String", "NO", "False", "\"\"", "\"\"", "", ((string[])(null)));
@@ -1185,7 +1154,7 @@ this.WriteFileValidation("15", "Local with Overwrite", "C:[[rec(1).a]][[rec(2).a
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        public virtual void WriteFileValidation_16()
+        public void WriteFileValidation_16()
         {
 #line 54
 this.WriteFileValidation("16", "Local with Overwrite", "c:\\copyfile0.txt", "\"\"", "\"\"", "", "method", "content", "\"\"", "\"\"", "[[result]]", "String", "NO", "False", "\"\"", "\"\"", "", ((string[])(null)));
@@ -1214,7 +1183,7 @@ this.WriteFileValidation("16", "Local with Overwrite", "c:\\copyfile0.txt", "\"\
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        public virtual void WriteFileValidation_17()
+        public void WriteFileValidation_17()
         {
 #line 54
 this.WriteFileValidation("17", "Local with Overwrite", "[[rec([[index]]).a]]", "c:\\filetoread.txt", "\"\"", "c:\\filetoread.txt", "Overwrite", "warewolf rules", "\"\"", "\"\"", "[[result]]", "String", "NO", "False", "\"\"", "\"\"", "", ((string[])(null)));
@@ -1243,7 +1212,7 @@ this.WriteFileValidation("17", "Local with Overwrite", "[[rec([[index]]).a]]", "
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "File Name - Variable name [[a&]] contains invalid character(s)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.File Name - Variable name [[a&]] contains invalid character(s)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        public virtual void WriteFileValidation_18()
+        public void WriteFileValidation_18()
         {
 #line 54
 this.WriteFileValidation("18", "Local with Overwrite", "[[a&]]", "\"\"", "\"\"", "", "Overwrite", "warewolf rules", "\"\"", "\"\"", "[[result]]", "\"\"", "AN", "True", "File Name - Variable name [[a&]] contains invalid character(s)", "1.File Name - Variable name [[a&]] contains invalid character(s)", "", ((string[])(null)));
@@ -1272,7 +1241,7 @@ this.WriteFileValidation("18", "Local with Overwrite", "[[a&]]", "\"\"", "\"\"",
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "File Name - Recordset index (**) contains invalid character(s)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.File Name - Recordset index (**) contains invalid character(s)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        public virtual void WriteFileValidation_19()
+        public void WriteFileValidation_19()
         {
 #line 54
 this.WriteFileValidation("19", "Local with Overwrite", "[[rec(**).a]]", "\"\"", "\"\"", "", "Overwrite", "warewolf rules", "\"\"", "\"\"", "[[result]]", "\"\"", "AN", "True", "File Name - Recordset index (**) contains invalid character(s)", "1.File Name - Recordset index (**) contains invalid character(s)", "", ((string[])(null)));
@@ -1301,7 +1270,7 @@ this.WriteFileValidation("19", "Local with Overwrite", "[[rec(**).a]]", "\"\"", 
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Please supply a valid File or Folder")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Please supply a valid File or Folder")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        public virtual void WriteFileValidation_20()
+        public void WriteFileValidation_20()
         {
 #line 54
 this.WriteFileValidation("20", "Local with Overwrite", "c(*()", "\"\"", "\"\"", "", "Overwrite", "warewolf rules", "\"\"", "\"\"", "[[result]]", "\"\"", "AN", "True", "Please supply a valid File or Folder", "1.Please supply a valid File or Folder", "", ((string[])(null)));
@@ -1330,7 +1299,7 @@ this.WriteFileValidation("20", "Local with Overwrite", "c(*()", "\"\"", "\"\"", 
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.File Name not found [ C:\\\\\\gvh ]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        public virtual void WriteFileValidation_21()
+        public void WriteFileValidation_21()
         {
 #line 54
 this.WriteFileValidation("21", "Local with Overwrite", "C:\\\\\\gvh", "\"\"", "\"\"", "", "Overwrite", "warewolf rules", "\"\"", "\"\"", "[[result]]", "\"\"", "AN", "False", "\"\"", "1.File Name not found [ C:\\\\\\gvh ]", "", ((string[])(null)));
@@ -1359,7 +1328,7 @@ this.WriteFileValidation("21", "Local with Overwrite", "C:\\\\\\gvh", "\"\"", "\
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "File Name - Variable name [[index$x]] contains invalid character(s)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.File Name - Variable name [[index$x]] contains invalid character(s)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        public virtual void WriteFileValidation_22()
+        public void WriteFileValidation_22()
         {
 #line 54
 this.WriteFileValidation("22", "Local with Overwrite", "[[rec([[inde$x]]).a]]", "\"\"", "\"\"", "", "Append Top", "warewolf rules", "\"\"", "\"\"", "[[result]]", "\"\"", "AN", "True", "File Name - Variable name [[index$x]] contains invalid character(s)", "1.File Name - Variable name [[index$x]] contains invalid character(s)", "", ((string[])(null)));
@@ -1388,7 +1357,7 @@ this.WriteFileValidation("22", "Local with Overwrite", "[[rec([[inde$x]]).a]]", 
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.No Value assigned for [[a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        public virtual void WriteFileValidation_23()
+        public void WriteFileValidation_23()
         {
 #line 54
 this.WriteFileValidation("23", "Local with Overwrite", "[[sourcePath]]", "\"\"", "\"\"", "", "Append Top", "warewolf rules", "\"\"", "\"\"", "[[result]]", "\"\"", "AN", "False", "\"\"", "1.No Value assigned for [[a]]", "", ((string[])(null)));
@@ -1417,7 +1386,7 @@ this.WriteFileValidation("23", "Local with Overwrite", "[[sourcePath]]", "\"\"",
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Username - Variable name [[$#]] contains invalid character(s)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Username - Variable name [[$#]] contains invalid character(s)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        public virtual void WriteFileValidation_24()
+        public void WriteFileValidation_24()
         {
 #line 54
 this.WriteFileValidation("24", "Local with Overwrite", "[[sourcePath]]", "\"\"", "\"\"", "C:\\filetoread.txt", "Append Top", "warewolf rules", "[[$#]]", "String", "[[result]]", "\"\"", "AN", "True", "Username - Variable name [[$#]] contains invalid character(s)", "1.Username - Variable name [[$#]] contains invalid character(s)", "", ((string[])(null)));
@@ -1446,7 +1415,7 @@ this.WriteFileValidation("24", "Local with Overwrite", "[[sourcePath]]", "\"\"",
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.No Value assigned for [[a]] 2.1.No Value assigned for [[b]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        public virtual void WriteFileValidation_25()
+        public void WriteFileValidation_25()
         {
 #line 54
 this.WriteFileValidation("25", "Local with Overwrite", "[[sourcePath]]", "\"\"", "\"\"", "C:\\filetoread.txt", "Append Top", "warewolf rules", "[[a]]\\[[b]]", "String", "[[result]]", "\"\"", "AN", "False", "\"\"", "1.No Value assigned for [[a]] 2.1.No Value assigned for [[b]]", "", ((string[])(null)));
@@ -1475,7 +1444,7 @@ this.WriteFileValidation("25", "Local with Overwrite", "[[sourcePath]]", "\"\"",
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.No Value assigned for [[index]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        public virtual void WriteFileValidation_26()
+        public void WriteFileValidation_26()
         {
 #line 54
 this.WriteFileValidation("26", "Local with Overwrite", "[[sourcePath]]", "\"\"", "\"\"", "C:\\filetoread.txt", "Append Top", "warewolf rules", "[[rec([[index]]).a]]", "String", "[[result]]", "\"\"", "AN", "False", "\"\"", "1.No Value assigned for [[index]]", "", ((string[])(null)));
@@ -1504,7 +1473,7 @@ this.WriteFileValidation("26", "Local with Overwrite", "[[sourcePath]]", "\"\"",
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Username - Recordset name [[indexx&]] contains invalid character(s)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "Username - Recordset name [[indexx&]] contains invalid character(s)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        public virtual void WriteFileValidation_27()
+        public void WriteFileValidation_27()
         {
 #line 54
 this.WriteFileValidation("27", "Local with Overwrite", "[[sourcePath]].txt", "\"\"", "\"\"", "C:\\filetoread.txt", "Append Bottom", "warewolf rules", "[[rec([[index&]]).a]]", "String", "[[result]]", "\"\"", "AN", "True", "Username - Recordset name [[indexx&]] contains invalid character(s)", "Username - Recordset name [[indexx&]] contains invalid character(s)", "", ((string[])(null)));
@@ -1533,7 +1502,7 @@ this.WriteFileValidation("27", "Local with Overwrite", "[[sourcePath]].txt", "\"
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Username - Invalid expression: opening and closing brackets don\'t match")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Username - Invalid expression: opening and closing brackets don\'t match")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        public virtual void WriteFileValidation_29()
+        public void WriteFileValidation_29()
         {
 #line 54
 this.WriteFileValidation("29", "Local with Overwrite", "[[sourcePath]].txt", "\"\"", "\"\"", "C:\\filetoread.txt", "Append Bottom", "warewolf rules", "[[a]]*]]", "String", "[[result]]", "\"\"", "AN", "True", "Username - Invalid expression: opening and closing brackets don\'t match", "1.Username - Invalid expression: opening and closing brackets don\'t match", "", ((string[])(null)));
@@ -1562,7 +1531,7 @@ this.WriteFileValidation("29", "Local with Overwrite", "[[sourcePath]].txt", "\"
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Result - Variable name [[var@]] contains invalid character(s)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Result - Variable name [[var@]] contains invalid character(s)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        public virtual void WriteFileValidation_30()
+        public void WriteFileValidation_30()
         {
 #line 54
 this.WriteFileValidation("30", "Local with Overwrite", "[[sourcePath]]", "\"\"", "\"\"", "C:\\filetoread.txt", "Append Bottom", "warewolf rules", "\"\"", "\"\"", "[[var@]]", "\"\"", "AN", "True", "Result - Variable name [[var@]] contains invalid character(s)", "1.Result - Variable name [[var@]] contains invalid character(s)", "", ((string[])(null)));
@@ -1591,7 +1560,7 @@ this.WriteFileValidation("30", "Local with Overwrite", "[[sourcePath]]", "\"\"",
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Result - Variable name [[var@]] contains invalid character(s)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Result - Variable name [[var@]] contains invalid character(s)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        public virtual void WriteFileValidation_31()
+        public void WriteFileValidation_31()
         {
 #line 54
 this.WriteFileValidation("31", "Local with Overwrite", "[[sourcePath]]", "\"\"", "\"\"", "C:\\filetoread.txt", "Overwrite", "warewolf rules", "\"\"", "\"\"", "[[var@]]", "\"\"", "AN", "True", "Result - Variable name [[var@]] contains invalid character(s)", "1.Result - Variable name [[var@]] contains invalid character(s)", "", ((string[])(null)));
@@ -1620,7 +1589,7 @@ this.WriteFileValidation("31", "Local with Overwrite", "[[sourcePath]]", "\"\"",
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Result - Invalid Region [[var[[a]]]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Result - Invalid Region [[var[[a]]]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        public virtual void WriteFileValidation_32()
+        public void WriteFileValidation_32()
         {
 #line 54
 this.WriteFileValidation("32", "Local with Overwrite", "[[sourcePath]]", "\"\"", "\"\"", "C:\\filetoread.txt", "Overwrite", "warewolf rules", "\"\"", "\"\"", "[[var[[a]]]]", "\"\"", "AN", "True", "Result - Invalid Region [[var[[a]]]]", "1.Result - Invalid Region [[var[[a]]]]", "", ((string[])(null)));
@@ -1649,7 +1618,7 @@ this.WriteFileValidation("32", "Local with Overwrite", "[[sourcePath]]", "\"\"",
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Result - Variable name [[var.a]]contains invalid character(s)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Result - Variable name [[var.a]] contains invalid character(s)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        public virtual void WriteFileValidation_33()
+        public void WriteFileValidation_33()
         {
 #line 54
 this.WriteFileValidation("33", "Local with Overwrite", "[[sourcePath]]", "\"\"", "\"\"", "C:\\filetoread.txt", "Overwrite", "warewolf rules", "\"\"", "\"\"", "[[var.a]]", "\"\"", "AN", "True", "Result - Variable name [[var.a]]contains invalid character(s)", "1.Result - Variable name [[var.a]] contains invalid character(s)", "", ((string[])(null)));
@@ -1678,7 +1647,7 @@ this.WriteFileValidation("33", "Local with Overwrite", "[[sourcePath]]", "\"\"",
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Result - Variable name [[@var]] contains invalid character(s)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Result - Variable name [[@var]] contains invalid character(s)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        public virtual void WriteFileValidation_34()
+        public void WriteFileValidation_34()
         {
 #line 54
 this.WriteFileValidation("34", "Local with Overwrite", "[[sourcePath]]", "\"\"", "\"\"", "C:\\filetoread.txt", "Overwrite", "warewolf rules", "\"\"", "\"\"", "[[#var]]", "\"\"", "AN", "True", "Result - Variable name [[@var]] contains invalid character(s)", "1.Result - Variable name [[@var]] contains invalid character(s)", "", ((string[])(null)));
@@ -1707,7 +1676,7 @@ this.WriteFileValidation("34", "Local with Overwrite", "[[sourcePath]]", "\"\"",
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Result - Variable name [[var 1]] contains invalid character(s)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Result - Variable name [[var 1]] contains invalid character(s)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        public virtual void WriteFileValidation_35()
+        public void WriteFileValidation_35()
         {
 #line 54
 this.WriteFileValidation("35", "Local with Overwrite", "[[sourcePath]]", "\"\"", "\"\"", "C:\\filetoread.txt", "Overwrite", "warewolf rules", "\"\"", "\"\"", "[[var 1]]", "\"\"", "AN", "True", "Result - Variable name [[var 1]] contains invalid character(s)", "1.Result - Variable name [[var 1]] contains invalid character(s)", "", ((string[])(null)));
@@ -1736,7 +1705,7 @@ this.WriteFileValidation("35", "Local with Overwrite", "[[sourcePath]]", "\"\"",
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Result - Invalid Region [[var[[a]]]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Result - Invalid Region [[var[[a]]]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        public virtual void WriteFileValidation_36()
+        public void WriteFileValidation_36()
         {
 #line 54
 this.WriteFileValidation("36", "Local with Overwrite", "[[sourcePath]]", "\"\"", "\"\"", "C:\\filetoread.txt", "Append Top", "warewolf rules", "\"\"", "\"\"", "[[rec(1).[[rec().1]]]]", "\"\"", "AN", "True", "Result - Invalid Region [[var[[a]]]]", "1.Result - Invalid Region [[var[[a]]]]", "", ((string[])(null)));
@@ -1765,7 +1734,7 @@ this.WriteFileValidation("36", "Local with Overwrite", "[[sourcePath]]", "\"\"",
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Result - Recordset index [[@]] contains invalid character(s)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Result - Recordset index [[@]] contains invalid character(s)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        public virtual void WriteFileValidation_37()
+        public void WriteFileValidation_37()
         {
 #line 54
 this.WriteFileValidation("37", "Local with Overwrite", "[[sourcePath]]", "\"\"", "\"\"", "C:\\filetoread.txt", "Append Top", "warewolf rules", "\"\"", "\"\"", "[[rec(@).a]]", "\"\"", "AN", "True", "Result - Recordset index [[@]] contains invalid character(s)", "1.Result - Recordset index [[@]] contains invalid character(s)", "", ((string[])(null)));
@@ -1794,7 +1763,7 @@ this.WriteFileValidation("37", "Local with Overwrite", "[[sourcePath]]", "\"\"",
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Result - Recordset name [[rec\"()\"]] contains invalid character(s)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Result - Recordset name [[rec\"()\"]] contains invalid character(s)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        public virtual void WriteFileValidation_38()
+        public void WriteFileValidation_38()
         {
 #line 54
 this.WriteFileValidation("38", "Local with Overwrite", "[[sourcePath]]", "\"\"", "\"\"", "C:\\filetoread.txt", "Append Top", "warewolf rules", "\"\"", "\"\"", "[[rec\"()\".a]]", "\"\"", "AN", "True", "Result - Recordset name [[rec\"()\"]] contains invalid character(s)", "1.Result - Recordset name [[rec\"()\"]] contains invalid character(s)", "", ((string[])(null)));
@@ -1823,7 +1792,7 @@ this.WriteFileValidation("38", "Local with Overwrite", "[[sourcePath]]", "\"\"",
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Result - Invalid Region [[rec([[[[b]]]]).a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Result - Invalid Region [[rec([[[[b]]]]).a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        public virtual void WriteFileValidation_39()
+        public void WriteFileValidation_39()
         {
 #line 54
 this.WriteFileValidation("39", "Local with Overwrite", "[[sourcePath]]", "\"\"", "\"\"", "C:\\filetoread.txt", "Append Top", "warewolf rules", "\"\"", "\"\"", "[[rec([[[[b]]]]).a]]", "\"\"", "AN", "True", "Result - Invalid Region [[rec([[[[b]]]]).a]]", "1.Result - Invalid Region [[rec([[[[b]]]]).a]]", "", ((string[])(null)));
@@ -1852,7 +1821,7 @@ this.WriteFileValidation("39", "Local with Overwrite", "[[sourcePath]]", "\"\"",
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "File Name - Invalid expression: opening and closing brackets don\'t match")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.File Name - Invalid expression: opening and closing brackets don\'t match")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        public virtual void WriteFileValidation_40()
+        public void WriteFileValidation_40()
         {
 #line 54
 this.WriteFileValidation("40", "Local with Overwrite", "[[a]", "\"\"", "\"\"", "", "Append Top", "warewolf rules", "\"\"", "\"\"", "[[result]]", "\"\"", "AN", "True", "File Name - Invalid expression: opening and closing brackets don\'t match", "1.File Name - Invalid expression: opening and closing brackets don\'t match", "", ((string[])(null)));
@@ -1881,7 +1850,7 @@ this.WriteFileValidation("40", "Local with Overwrite", "[[a]", "\"\"", "\"\"", "
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "File Name - [[rec]] does not exist in your variable list")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.File Name - [[rec]] does not exist in your variable list")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        public virtual void WriteFileValidation_41()
+        public void WriteFileValidation_41()
         {
 #line 54
 this.WriteFileValidation("41", "Local with Overwrite", "[[rec]]", "\"\"", "\"\"", "", "Append Bottom", "warewolf rules", "\"\"", "\"\"", "[[result]]", "\"\"", "AN", "True", "File Name - [[rec]] does not exist in your variable list", "1.File Name - [[rec]] does not exist in your variable list", "", ((string[])(null)));
@@ -1910,7 +1879,7 @@ this.WriteFileValidation("41", "Local with Overwrite", "[[rec]]", "\"\"", "\"\""
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "File Name - Recordset name [[rec(]] contains invalid character(s)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.File Name - Recordset name [[rec(]] contains invalid character(s)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        public virtual void WriteFileValidation_42()
+        public void WriteFileValidation_42()
         {
 #line 54
 this.WriteFileValidation("42", "Local with Overwrite", "[[rec]", "\"\"", "\"\"", "", "Append Bottom", "warewolf rules", "\"\"", "\"\"", "[[result]]", "\"\"", "AN", "True", "File Name - Recordset name [[rec(]] contains invalid character(s)", "1.File Name - Recordset name [[rec(]] contains invalid character(s)", "", ((string[])(null)));
@@ -1939,7 +1908,7 @@ this.WriteFileValidation("42", "Local with Overwrite", "[[rec]", "\"\"", "\"\"",
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Password cannot be empty or only white space")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Password cannot be empty or only white space")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        public virtual void WriteFileValidation_43()
+        public void WriteFileValidation_43()
         {
 #line 54
 this.WriteFileValidation("43", "Local with Overwrite", "[[sourcePath]]", "\"\"", "\"\"", "C:\\filetoread.txt", "Append Bottom", "warewolf rules", "Test", "\"\"", "[[result]]", "\"\"", "AN", "True", "Password cannot be empty or only white space", "1.Password cannot be empty or only white space", "", ((string[])(null)));
@@ -1968,7 +1937,7 @@ this.WriteFileValidation("43", "Local with Overwrite", "[[sourcePath]]", "\"\"",
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Please supply valid File Name")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Please supply valid File Name")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        public virtual void WriteFileValidation_44()
+        public void WriteFileValidation_44()
         {
 #line 54
 this.WriteFileValidation("44", "Local with Overwrite", "A", "\"\"", "\"\"", "\"\"", "Append Bottom", "warewolf rules", "Test", "\"\"", "[[result]]", "\"\"", "AN", "True", "Please supply valid File Name", "1.Please supply valid File Name", "", ((string[])(null)));
@@ -1999,7 +1968,7 @@ this.WriteFileValidation("44", "Local with Overwrite", "A", "\"\"", "\"\"", "\"\
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Username - Variable name [[$#]] contains invalid character(s)  2.Result - Varia" +
             "ble name [[var@]] contains invalid character(s)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        public virtual void WriteFileValidation_45()
+        public void WriteFileValidation_45()
         {
 #line 54
 this.WriteFileValidation("45", "Local with Overwrite", "[[var@]]", "\"\"", "\"\"", "", "Append Bottom", "warewolf rules", "[[var@]]", "\"\"", "[[var@]]", "\"\"", "AN", "True", "Username - Variable name [[$#]] contains invalid character(s)   Result - Variable" +
@@ -2034,7 +2003,7 @@ this.WriteFileValidation("45", "Local with Overwrite", "[[var@]]", "\"\"", "\"\"
             "name - Invalid expression: opening and closing brackets don\'t match   3.Result -" +
             " Invalid expression: opening and closing brackets don\'t match")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        public virtual void WriteFileValidation_46()
+        public void WriteFileValidation_46()
         {
 #line 54
 this.WriteFileValidation("46", "Local with Overwrite", "C#$%#$]]", "\"\"", "\"\"", "", "Append Bottom", "warewolf rules", "C#$%#$]]", "\"\"", "C#$%#$]]", "\"\"", "AN", "True", "File Name - Invalid expression: opening and closing brackets don\'t match  Usernam" +
@@ -2067,7 +2036,7 @@ this.WriteFileValidation("46", "Local with Overwrite", "C#$%#$]]", "\"\"", "\"\"
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Contents - Recordset name [[indexx&]] contains invalid character(s)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Contents - Recordset name [[indexx&]] contains invalid character(s)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        public virtual void WriteFileValidation_47()
+        public void WriteFileValidation_47()
         {
 #line 54
 this.WriteFileValidation("47", "Local with Overwrite", "[[sourcePath]]", "\"\"", "\"\"", "C:\\filetoread.txt", "Append Bottom", "[[rec(]]", "\"\"", "\"\"", "[[result]]", "\"\"", "AN", "True", "Contents - Recordset name [[indexx&]] contains invalid character(s)", "1.Contents - Recordset name [[indexx&]] contains invalid character(s)", "", ((string[])(null)));
@@ -2096,7 +2065,7 @@ this.WriteFileValidation("47", "Local with Overwrite", "[[sourcePath]]", "\"\"",
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Contents - Variable name [[var$]]  contains invalid character(s)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Contents - Variable name [[var$]]  contains invalid character(s)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        public virtual void WriteFileValidation_48()
+        public void WriteFileValidation_48()
         {
 #line 54
 this.WriteFileValidation("48", "Local with Overwrite", "[[sourcePath]]", "\"\"", "\"\"", "C:\\filetoread.txt", "Append Bottom", "[[var$]]", "\"\"", "\"\"", "[[result]]", "Success", "AN", "True", "Contents - Variable name [[var$]]  contains invalid character(s)", "1.Contents - Variable name [[var$]]  contains invalid character(s)", "", ((string[])(null)));
@@ -2125,7 +2094,7 @@ this.WriteFileValidation("48", "Local with Overwrite", "[[sourcePath]]", "\"\"",
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Contents - Recordset index (**) contains invalid character(s)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Contents - Recordset index (**) contains invalid character(s)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        public virtual void WriteFileValidation_49()
+        public void WriteFileValidation_49()
         {
 #line 54
 this.WriteFileValidation("49", "Local with Overwrite", "[[sourcePath]]", "\"\"", "\"\"", "C:\\filetoread.txt", "Append Bottom", "[[rec(**).a]] rules", "\"\"", "\"\"", "[[result]]", "\"\"", "AN", "True", "Contents - Recordset index (**) contains invalid character(s)", "1.Contents - Recordset index (**) contains invalid character(s)", "", ((string[])(null)));
@@ -2154,7 +2123,7 @@ this.WriteFileValidation("49", "Local with Overwrite", "[[sourcePath]]", "\"\"",
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Contents - Invalid expression: Opening and closing brackets don\'t match")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Contents - Invalid expression: Opening and closing brackets don\'t match")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        public virtual void WriteFileValidation_50()
+        public void WriteFileValidation_50()
         {
 #line 54
 this.WriteFileValidation("50", "Local with Overwrite", "[[sourcePath]]", "\"\"", "\"\"", "C:\\filetoread.txt", "Append Bottom", "[[rec(**).a", "\"\"", "\"\"", "[[result]]", "\"\"", "AN", "True", "Contents - Invalid expression: Opening and closing brackets don\'t match", "1.Contents - Invalid expression: Opening and closing brackets don\'t match", "", ((string[])(null)));
@@ -2183,7 +2152,7 @@ this.WriteFileValidation("50", "Local with Overwrite", "[[sourcePath]]", "\"\"",
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Contents - No Value assigned for : [[rec().a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        public virtual void WriteFileValidation_51()
+        public void WriteFileValidation_51()
         {
 #line 54
 this.WriteFileValidation("51", "Local with Overwrite", "[[sourcePath]]", "\"\"", "\"\"", "C:\\filetoread.txt", "Append Bottom", "[[rec().a]] rules", "\"\"", "\"\"", "[[result]]", "Success", "NO", "False", "", "1.Contents - No Value assigned for : [[rec().a]]", "", ((string[])(null)));
@@ -2212,7 +2181,7 @@ this.WriteFileValidation("51", "Local with Overwrite", "[[sourcePath]]", "\"\"",
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Contents - No Value assigned for : [[a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        public virtual void WriteFileValidation_52()
+        public void WriteFileValidation_52()
         {
 #line 54
 this.WriteFileValidation("52", "Local with Overwrite", "[[sourcePath]]", "\"\"", "\"\"", "C:\\filetoread.txt", "Append Bottom", "[[rec([[a]]).a]] rules", "\"\"", "\"\"", "[[result]]", "\"\"", "AN", "False", "", "1.Contents - No Value assigned for : [[a]]", "", ((string[])(null)));
@@ -2241,7 +2210,7 @@ this.WriteFileValidation("52", "Local with Overwrite", "[[sourcePath]]", "\"\"",
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        public virtual void WriteFileValidation_53()
+        public void WriteFileValidation_53()
         {
 #line 54
 this.WriteFileValidation("53", "Local with Overwrite", "[[variable]]", "c:\\Tempfile.txt", "\"\"", "C:\\filetoread.txt", "Overwrite", "[[var]] variable is null", "\"\"", "\"\"", "[[result]]", "\"\"", "NO", "False", "", "\"\"", "", ((string[])(null)));

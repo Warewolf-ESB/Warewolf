@@ -27,7 +27,7 @@ namespace Warewolf.Tools.Specs.Toolbox.Data.BaseConversion
         
         private Microsoft.VisualStudio.TestTools.UnitTesting.TestContext _testContext;
         
-        private string[] _featureTags = new string[] {
+        private static string[] featureTags = new string[] {
                 "Data"};
         
 #line 1 "BaseConversion.feature"
@@ -50,8 +50,7 @@ namespace Warewolf.Tools.Specs.Toolbox.Data.BaseConversion
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Toolbox/Data/BaseConversion", "BaseConversion", "\tIn order to convert base encoding types\r\n\tAs a Warewolf user\r\n\tI want a tool tha" +
-                    "t converts data from one base econding to another", ProgrammingLanguage.CSharp, new string[] {
-                        "Data"});
+                    "t converts data from one base econding to another", ProgrammingLanguage.CSharp, featureTags);
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -63,7 +62,7 @@ namespace Warewolf.Tools.Specs.Toolbox.Data.BaseConversion
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestInitializeAttribute()]
-        public virtual void TestInitialize()
+        public void TestInitialize()
         {
             if (((testRunner.FeatureContext != null) 
                         && (testRunner.FeatureContext.FeatureInfo.Title != "BaseConversion")))
@@ -73,23 +72,23 @@ namespace Warewolf.Tools.Specs.Toolbox.Data.BaseConversion
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCleanupAttribute()]
-        public virtual void TestTearDown()
+        public void TestTearDown()
         {
             testRunner.OnScenarioEnd();
         }
         
-        public virtual void ScenarioInitialize(TechTalk.SpecFlow.ScenarioInfo scenarioInfo)
+        public void ScenarioInitialize(TechTalk.SpecFlow.ScenarioInfo scenarioInfo)
         {
             testRunner.OnScenarioInitialize(scenarioInfo);
             testRunner.ScenarioContext.ScenarioContainer.RegisterInstanceAs<Microsoft.VisualStudio.TestTools.UnitTesting.TestContext>(_testContext);
         }
         
-        public virtual void ScenarioStart()
+        public void ScenarioStart()
         {
             testRunner.OnScenarioStart();
         }
         
-        public virtual void ScenarioCleanup()
+        public void ScenarioCleanup()
         {
             testRunner.CollectScenarioErrors();
         }
@@ -98,25 +97,15 @@ namespace Warewolf.Tools.Specs.Toolbox.Data.BaseConversion
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert from text to text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
-        public virtual void ConvertFromTextToText()
+        public void ConvertFromTextToText()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from text to text", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from text to text", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 7
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -168,25 +157,15 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert from text to binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
-        public virtual void ConvertFromTextToBinary()
+        public void ConvertFromTextToBinary()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from text to binary", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from text to binary", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 20
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -238,25 +217,15 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert from text to hexadecimal")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
-        public virtual void ConvertFromTextToHexadecimal()
+        public void ConvertFromTextToHexadecimal()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from text to hexadecimal", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from text to hexadecimal", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 33
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -308,25 +277,15 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert from text to base64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
-        public virtual void ConvertFromTextToBase64()
+        public void ConvertFromTextToBase64()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from text to base64", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from text to base64", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 46
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -378,25 +337,15 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert from binary to binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
-        public virtual void ConvertFromBinaryToBinary()
+        public void ConvertFromBinaryToBinary()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from binary to binary", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from binary to binary", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 59
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -448,25 +397,15 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert from binary to text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
-        public virtual void ConvertFromBinaryToText()
+        public void ConvertFromBinaryToText()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from binary to text", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from binary to text", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 72
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -518,25 +457,15 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert from binary to hexadecimal")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
-        public virtual void ConvertFromBinaryToHexadecimal()
+        public void ConvertFromBinaryToHexadecimal()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from binary to hexadecimal", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from binary to hexadecimal", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 85
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -588,25 +517,15 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert from binary to base64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
-        public virtual void ConvertFromBinaryToBase64()
+        public void ConvertFromBinaryToBase64()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from binary to base64", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from binary to base64", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 98
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -658,25 +577,15 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert from hexadecimal to hexadecimal")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
-        public virtual void ConvertFromHexadecimalToHexadecimal()
+        public void ConvertFromHexadecimalToHexadecimal()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from hexadecimal to hexadecimal", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from hexadecimal to hexadecimal", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 111
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -728,25 +637,15 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert from hexadecimal to text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
-        public virtual void ConvertFromHexadecimalToText()
+        public void ConvertFromHexadecimalToText()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from hexadecimal to text", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from hexadecimal to text", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 124
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -798,25 +697,15 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert from hexadecimal to binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
-        public virtual void ConvertFromHexadecimalToBinary()
+        public void ConvertFromHexadecimalToBinary()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from hexadecimal to binary", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from hexadecimal to binary", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 137
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -868,25 +757,15 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert from hexadecimal to base64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
-        public virtual void ConvertFromHexadecimalToBase64()
+        public void ConvertFromHexadecimalToBase64()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from hexadecimal to base64", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from hexadecimal to base64", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 150
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -938,25 +817,15 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert from base64 to hexadecimal")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
-        public virtual void ConvertFromBase64ToHexadecimal()
+        public void ConvertFromBase64ToHexadecimal()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from base64 to hexadecimal", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from base64 to hexadecimal", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 163
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -1008,25 +877,15 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert from base64 to text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
-        public virtual void ConvertFromBase64ToText()
+        public void ConvertFromBase64ToText()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from base64 to text", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from base64 to text", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 176
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -1078,25 +937,15 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert from base64 to binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
-        public virtual void ConvertFromBase64ToBinary()
+        public void ConvertFromBase64ToBinary()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from base64 to binary", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from base64 to binary", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 189
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -1148,25 +997,15 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert from base64 to base64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
-        public virtual void ConvertFromBase64ToBase64()
+        public void ConvertFromBase64ToBase64()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from base64 to base64", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from base64 to base64", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 202
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -1218,25 +1057,15 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert blank from text to binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
-        public virtual void ConvertBlankFromTextToBinary()
+        public void ConvertBlankFromTextToBinary()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert blank from text to binary", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert blank from text to binary", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 215
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -1288,25 +1117,15 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert blank from text to hexadecimal")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
-        public virtual void ConvertBlankFromTextToHexadecimal()
+        public void ConvertBlankFromTextToHexadecimal()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert blank from text to hexadecimal", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert blank from text to hexadecimal", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 228
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -1358,25 +1177,15 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert blank from text to base64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
-        public virtual void ConvertBlankFromTextToBase64()
+        public void ConvertBlankFromTextToBase64()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert blank from text to base64", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert blank from text to base64", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 241
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -1428,25 +1237,15 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert blank from binary to text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
-        public virtual void ConvertBlankFromBinaryToText()
+        public void ConvertBlankFromBinaryToText()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert blank from binary to text", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert blank from binary to text", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 254
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -1498,25 +1297,15 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert blank from binary to hexadecimal")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
-        public virtual void ConvertBlankFromBinaryToHexadecimal()
+        public void ConvertBlankFromBinaryToHexadecimal()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert blank from binary to hexadecimal", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert blank from binary to hexadecimal", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 267
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -1568,25 +1357,15 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert blank from binary to base64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
-        public virtual void ConvertBlankFromBinaryToBase64()
+        public void ConvertBlankFromBinaryToBase64()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert blank from binary to base64", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert blank from binary to base64", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 280
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -1638,25 +1417,15 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert blank from hexadecimal to text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
-        public virtual void ConvertBlankFromHexadecimalToText()
+        public void ConvertBlankFromHexadecimalToText()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert blank from hexadecimal to text", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert blank from hexadecimal to text", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 293
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -1708,25 +1477,15 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert blank from hexadecimal to binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
-        public virtual void ConvertBlankFromHexadecimalToBinary()
+        public void ConvertBlankFromHexadecimalToBinary()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert blank from hexadecimal to binary", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert blank from hexadecimal to binary", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 306
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -1778,25 +1537,15 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert blank from hexadecimal to base64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
-        public virtual void ConvertBlankFromHexadecimalToBase64()
+        public void ConvertBlankFromHexadecimalToBase64()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert blank from hexadecimal to base64", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert blank from hexadecimal to base64", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 319
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -1848,25 +1597,15 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert blank from base64 to hexadecimal")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
-        public virtual void ConvertBlankFromBase64ToHexadecimal()
+        public void ConvertBlankFromBase64ToHexadecimal()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert blank from base64 to hexadecimal", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert blank from base64 to hexadecimal", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 332
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -1918,25 +1657,15 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert blank from base64 to text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
-        public virtual void ConvertBlankFromBase64ToText()
+        public void ConvertBlankFromBase64ToText()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert blank from base64 to text", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert blank from base64 to text", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 345
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -1988,25 +1717,15 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert blank from base64 to binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
-        public virtual void ConvertBlankFromBase64ToBinary()
+        public void ConvertBlankFromBase64ToBinary()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert blank from base64 to binary", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert blank from base64 to binary", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 358
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -2058,25 +1777,15 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert negative recordset index from text to binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
-        public virtual void ConvertNegativeRecordsetIndexFromTextToBinary()
+        public void ConvertNegativeRecordsetIndexFromTextToBinary()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert negative recordset index from text to binary", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert negative recordset index from text to binary", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 371
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -2125,25 +1834,15 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert negative recordset index from text to hexadecimal")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
-        public virtual void ConvertNegativeRecordsetIndexFromTextToHexadecimal()
+        public void ConvertNegativeRecordsetIndexFromTextToHexadecimal()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert negative recordset index from text to hexadecimal", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert negative recordset index from text to hexadecimal", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 383
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -2192,25 +1891,15 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert negative recordset index from text to base64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
-        public virtual void ConvertNegativeRecordsetIndexFromTextToBase64()
+        public void ConvertNegativeRecordsetIndexFromTextToBase64()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert negative recordset index from text to base64", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert negative recordset index from text to base64", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 395
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -2259,25 +1948,15 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert negative recordset index from binary to text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
-        public virtual void ConvertNegativeRecordsetIndexFromBinaryToText()
+        public void ConvertNegativeRecordsetIndexFromBinaryToText()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert negative recordset index from binary to text", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert negative recordset index from binary to text", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 407
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -2326,25 +2005,15 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert negative recordset index from binary to hexadecimal")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
-        public virtual void ConvertNegativeRecordsetIndexFromBinaryToHexadecimal()
+        public void ConvertNegativeRecordsetIndexFromBinaryToHexadecimal()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert negative recordset index from binary to hexadecimal", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert negative recordset index from binary to hexadecimal", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 419
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -2393,25 +2062,15 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert negative recordset index from binary to base64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
-        public virtual void ConvertNegativeRecordsetIndexFromBinaryToBase64()
+        public void ConvertNegativeRecordsetIndexFromBinaryToBase64()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert negative recordset index from binary to base64", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert negative recordset index from binary to base64", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 431
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -2460,25 +2119,15 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert negative recordset index from hexadecimal to text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
-        public virtual void ConvertNegativeRecordsetIndexFromHexadecimalToText()
+        public void ConvertNegativeRecordsetIndexFromHexadecimalToText()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert negative recordset index from hexadecimal to text", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert negative recordset index from hexadecimal to text", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 443
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -2527,25 +2176,15 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert negative recordset index from hexadecimal to binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
-        public virtual void ConvertNegativeRecordsetIndexFromHexadecimalToBinary()
+        public void ConvertNegativeRecordsetIndexFromHexadecimalToBinary()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert negative recordset index from hexadecimal to binary", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert negative recordset index from hexadecimal to binary", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 455
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -2594,25 +2233,15 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert negative recordset index from hexadecimal to base64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
-        public virtual void ConvertNegativeRecordsetIndexFromHexadecimalToBase64()
+        public void ConvertNegativeRecordsetIndexFromHexadecimalToBase64()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert negative recordset index from hexadecimal to base64", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert negative recordset index from hexadecimal to base64", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 467
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -2661,25 +2290,15 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert negative recordset index from base64 to hexadecimal")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
-        public virtual void ConvertNegativeRecordsetIndexFromBase64ToHexadecimal()
+        public void ConvertNegativeRecordsetIndexFromBase64ToHexadecimal()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert negative recordset index from base64 to hexadecimal", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert negative recordset index from base64 to hexadecimal", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 479
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -2728,25 +2347,15 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert negative recordset index from base64 to text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
-        public virtual void ConvertNegativeRecordsetIndexFromBase64ToText()
+        public void ConvertNegativeRecordsetIndexFromBase64ToText()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert negative recordset index from base64 to text", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert negative recordset index from base64 to text", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 491
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -2795,25 +2404,15 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert negative recordset index from base64 to binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
-        public virtual void ConvertNegativeRecordsetIndexFromBase64ToBinary()
+        public void ConvertNegativeRecordsetIndexFromBase64ToBinary()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert negative recordset index from base64 to binary", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert negative recordset index from base64 to binary", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 503
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -2865,21 +2464,11 @@ this.ScenarioInitialize(scenarioInfo);
             argumentsOfScenario.Add("No", no);
             argumentsOfScenario.Add("From", from);
             argumentsOfScenario.Add("To", to);
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Converting two varibles on one row", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Converting two varibles on one row", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 516
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -2926,7 +2515,7 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Base 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Binary")]
-        public virtual void ConvertingTwoVariblesOnOneRow_1()
+        public void ConvertingTwoVariblesOnOneRow_1()
         {
 #line 516
 this.ConvertingTwoVariblesOnOneRow("1", "Base 64", "Binary", ((string[])(null)));
@@ -2941,7 +2530,7 @@ this.ConvertingTwoVariblesOnOneRow("1", "Base 64", "Binary", ((string[])(null)))
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Base 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Text")]
-        public virtual void ConvertingTwoVariblesOnOneRow_2()
+        public void ConvertingTwoVariblesOnOneRow_2()
         {
 #line 516
 this.ConvertingTwoVariblesOnOneRow("2", "Base 64", "Text", ((string[])(null)));
@@ -2956,7 +2545,7 @@ this.ConvertingTwoVariblesOnOneRow("2", "Base 64", "Text", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Base 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Hex")]
-        public virtual void ConvertingTwoVariblesOnOneRow_3()
+        public void ConvertingTwoVariblesOnOneRow_3()
         {
 #line 516
 this.ConvertingTwoVariblesOnOneRow("3", "Base 64", "Hex", ((string[])(null)));
@@ -2971,7 +2560,7 @@ this.ConvertingTwoVariblesOnOneRow("3", "Base 64", "Hex", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Text")]
-        public virtual void ConvertingTwoVariblesOnOneRow_4()
+        public void ConvertingTwoVariblesOnOneRow_4()
         {
 #line 516
 this.ConvertingTwoVariblesOnOneRow("4", "Binary", "Text", ((string[])(null)));
@@ -2986,7 +2575,7 @@ this.ConvertingTwoVariblesOnOneRow("4", "Binary", "Text", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Hex")]
-        public virtual void ConvertingTwoVariblesOnOneRow_5()
+        public void ConvertingTwoVariblesOnOneRow_5()
         {
 #line 516
 this.ConvertingTwoVariblesOnOneRow("5", "Binary", "Hex", ((string[])(null)));
@@ -3001,7 +2590,7 @@ this.ConvertingTwoVariblesOnOneRow("5", "Binary", "Hex", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Base 64")]
-        public virtual void ConvertingTwoVariblesOnOneRow_6()
+        public void ConvertingTwoVariblesOnOneRow_6()
         {
 #line 516
 this.ConvertingTwoVariblesOnOneRow("6", "Binary", "Base 64", ((string[])(null)));
@@ -3016,7 +2605,7 @@ this.ConvertingTwoVariblesOnOneRow("6", "Binary", "Base 64", ((string[])(null)))
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Binary")]
-        public virtual void ConvertingTwoVariblesOnOneRow_7()
+        public void ConvertingTwoVariblesOnOneRow_7()
         {
 #line 516
 this.ConvertingTwoVariblesOnOneRow("7", "Text", "Binary", ((string[])(null)));
@@ -3031,7 +2620,7 @@ this.ConvertingTwoVariblesOnOneRow("7", "Text", "Binary", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "8")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Hex")]
-        public virtual void ConvertingTwoVariblesOnOneRow_8()
+        public void ConvertingTwoVariblesOnOneRow_8()
         {
 #line 516
 this.ConvertingTwoVariblesOnOneRow("8", "Text", "Hex", ((string[])(null)));
@@ -3046,7 +2635,7 @@ this.ConvertingTwoVariblesOnOneRow("8", "Text", "Hex", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "9")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Base 64")]
-        public virtual void ConvertingTwoVariblesOnOneRow_9()
+        public void ConvertingTwoVariblesOnOneRow_9()
         {
 #line 516
 this.ConvertingTwoVariblesOnOneRow("9", "Text", "Base 64", ((string[])(null)));
@@ -3061,7 +2650,7 @@ this.ConvertingTwoVariblesOnOneRow("9", "Text", "Base 64", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "10")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Hex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Binary")]
-        public virtual void ConvertingTwoVariblesOnOneRow_10()
+        public void ConvertingTwoVariblesOnOneRow_10()
         {
 #line 516
 this.ConvertingTwoVariblesOnOneRow("10", "Hex", "Binary", ((string[])(null)));
@@ -3076,7 +2665,7 @@ this.ConvertingTwoVariblesOnOneRow("10", "Hex", "Binary", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "11")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Hex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Text")]
-        public virtual void ConvertingTwoVariblesOnOneRow_11()
+        public void ConvertingTwoVariblesOnOneRow_11()
         {
 #line 516
 this.ConvertingTwoVariblesOnOneRow("11", "Hex", "Text", ((string[])(null)));
@@ -3091,7 +2680,7 @@ this.ConvertingTwoVariblesOnOneRow("11", "Hex", "Text", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "12")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Hex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Base 64")]
-        public virtual void ConvertingTwoVariblesOnOneRow_12()
+        public void ConvertingTwoVariblesOnOneRow_12()
         {
 #line 516
 this.ConvertingTwoVariblesOnOneRow("12", "Hex", "Base 64", ((string[])(null)));
@@ -3105,21 +2694,11 @@ this.ConvertingTwoVariblesOnOneRow("12", "Hex", "Base 64", ((string[])(null)));
             argumentsOfScenario.Add("no", no);
             argumentsOfScenario.Add("From", from);
             argumentsOfScenario.Add("To", to);
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Converting varibles with data", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Converting varibles with data", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 541
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -3150,7 +2729,7 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:no", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Base 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Binary")]
-        public virtual void ConvertingVariblesWithData_1()
+        public void ConvertingVariblesWithData_1()
         {
 #line 541
 this.ConvertingVariblesWithData("1", "Base 64", "Binary", ((string[])(null)));
@@ -3165,7 +2744,7 @@ this.ConvertingVariblesWithData("1", "Base 64", "Binary", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:no", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Base 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Text")]
-        public virtual void ConvertingVariblesWithData_2()
+        public void ConvertingVariblesWithData_2()
         {
 #line 541
 this.ConvertingVariblesWithData("2", "Base 64", "Text", ((string[])(null)));
@@ -3180,7 +2759,7 @@ this.ConvertingVariblesWithData("2", "Base 64", "Text", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:no", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Base 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Hex")]
-        public virtual void ConvertingVariblesWithData_3()
+        public void ConvertingVariblesWithData_3()
         {
 #line 541
 this.ConvertingVariblesWithData("3", "Base 64", "Hex", ((string[])(null)));
@@ -3195,7 +2774,7 @@ this.ConvertingVariblesWithData("3", "Base 64", "Hex", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:no", "4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Base 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Base 64")]
-        public virtual void ConvertingVariblesWithData_4()
+        public void ConvertingVariblesWithData_4()
         {
 #line 541
 this.ConvertingVariblesWithData("4", "Base 64", "Base 64", ((string[])(null)));
@@ -3210,7 +2789,7 @@ this.ConvertingVariblesWithData("4", "Base 64", "Base 64", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:no", "5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Binary")]
-        public virtual void ConvertingVariblesWithData_5()
+        public void ConvertingVariblesWithData_5()
         {
 #line 541
 this.ConvertingVariblesWithData("5", "Binary", "Binary", ((string[])(null)));
@@ -3225,7 +2804,7 @@ this.ConvertingVariblesWithData("5", "Binary", "Binary", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:no", "6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Text")]
-        public virtual void ConvertingVariblesWithData_6()
+        public void ConvertingVariblesWithData_6()
         {
 #line 541
 this.ConvertingVariblesWithData("6", "Binary", "Text", ((string[])(null)));
@@ -3240,7 +2819,7 @@ this.ConvertingVariblesWithData("6", "Binary", "Text", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:no", "7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Hex")]
-        public virtual void ConvertingVariblesWithData_7()
+        public void ConvertingVariblesWithData_7()
         {
 #line 541
 this.ConvertingVariblesWithData("7", "Binary", "Hex", ((string[])(null)));
@@ -3255,7 +2834,7 @@ this.ConvertingVariblesWithData("7", "Binary", "Hex", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:no", "8")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Base 64")]
-        public virtual void ConvertingVariblesWithData_8()
+        public void ConvertingVariblesWithData_8()
         {
 #line 541
 this.ConvertingVariblesWithData("8", "Binary", "Base 64", ((string[])(null)));
@@ -3270,7 +2849,7 @@ this.ConvertingVariblesWithData("8", "Binary", "Base 64", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:no", "9")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Binary")]
-        public virtual void ConvertingVariblesWithData_9()
+        public void ConvertingVariblesWithData_9()
         {
 #line 541
 this.ConvertingVariblesWithData("9", "Text", "Binary", ((string[])(null)));
@@ -3285,7 +2864,7 @@ this.ConvertingVariblesWithData("9", "Text", "Binary", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:no", "10")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Text")]
-        public virtual void ConvertingVariblesWithData_10()
+        public void ConvertingVariblesWithData_10()
         {
 #line 541
 this.ConvertingVariblesWithData("10", "Text", "Text", ((string[])(null)));
@@ -3300,7 +2879,7 @@ this.ConvertingVariblesWithData("10", "Text", "Text", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:no", "11")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Hex")]
-        public virtual void ConvertingVariblesWithData_11()
+        public void ConvertingVariblesWithData_11()
         {
 #line 541
 this.ConvertingVariblesWithData("11", "Text", "Hex", ((string[])(null)));
@@ -3315,7 +2894,7 @@ this.ConvertingVariblesWithData("11", "Text", "Hex", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:no", "12")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Base 64")]
-        public virtual void ConvertingVariblesWithData_12()
+        public void ConvertingVariblesWithData_12()
         {
 #line 541
 this.ConvertingVariblesWithData("12", "Text", "Base 64", ((string[])(null)));
@@ -3330,7 +2909,7 @@ this.ConvertingVariblesWithData("12", "Text", "Base 64", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:no", "13")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Hex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Binary")]
-        public virtual void ConvertingVariblesWithData_13()
+        public void ConvertingVariblesWithData_13()
         {
 #line 541
 this.ConvertingVariblesWithData("13", "Hex", "Binary", ((string[])(null)));
@@ -3345,7 +2924,7 @@ this.ConvertingVariblesWithData("13", "Hex", "Binary", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:no", "14")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Hex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Text")]
-        public virtual void ConvertingVariblesWithData_14()
+        public void ConvertingVariblesWithData_14()
         {
 #line 541
 this.ConvertingVariblesWithData("14", "Hex", "Text", ((string[])(null)));
@@ -3360,7 +2939,7 @@ this.ConvertingVariblesWithData("14", "Hex", "Text", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:no", "15")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Hex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Hex")]
-        public virtual void ConvertingVariblesWithData_15()
+        public void ConvertingVariblesWithData_15()
         {
 #line 541
 this.ConvertingVariblesWithData("15", "Hex", "Hex", ((string[])(null)));
@@ -3375,7 +2954,7 @@ this.ConvertingVariblesWithData("15", "Hex", "Hex", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:no", "16")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Hex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Base 64")]
-        public virtual void ConvertingVariblesWithData_16()
+        public void ConvertingVariblesWithData_16()
         {
 #line 541
 this.ConvertingVariblesWithData("16", "Hex", "Base 64", ((string[])(null)));
@@ -3391,21 +2970,11 @@ this.ConvertingVariblesWithData("16", "Hex", "Base 64", ((string[])(null)));
             argumentsOfScenario.Add("Value", value);
             argumentsOfScenario.Add("From", from);
             argumentsOfScenario.Add("To", to);
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validation messages when Convert Invalid Variables", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validation messages when Convert Invalid Variables", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 567
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -3438,7 +3007,7 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "QUE=")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Base 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Binary")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant0()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant0()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("1", "[[my(-1).var]]", "QUE=", "Base 64", "Binary", ((string[])(null)));
@@ -3455,7 +3024,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("1", "[[my(-1).var]]", "QUE="
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "QUE=")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Base 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Text")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant1()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant1()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("2", "[[my(-1).var]]", "QUE=", "Base 64", "Text", ((string[])(null)));
@@ -3472,7 +3041,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("2", "[[my(-1).var]]", "QUE="
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "QUE=")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Base 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Hex")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant2()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant2()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("3", "[[my([-1]).var]]", "QUE=", "Base 64", "Hex", ((string[])(null)));
@@ -3489,7 +3058,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("3", "[[my([-1]).var]]", "QUE
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "QUE=")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Base 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Binary")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant3()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant3()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("4", "[rec().a]]=]]", "QUE=", "Base 64", "Binary", ((string[])(null)));
@@ -3506,7 +3075,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("4", "[rec().a]]=]]", "QUE=",
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "QUE=")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Base 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Text")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant4()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant4()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("5", "[[rec\"()\".a]]", "QUE=", "Base 64", "Text", ((string[])(null)));
@@ -3523,7 +3092,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("5", "[[rec\"()\".a]]", "QUE=
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "QUE=")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Base 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Hex")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant5()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant5()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("6", "[[rec\"()\".a]]", "QUE=", "Base 64", "Hex", ((string[])(null)));
@@ -3540,7 +3109,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("6", "[[rec\"()\".a]]", "QUE=
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "QUE=")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Base 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Binary")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant6()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant6()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("7", "[[rec\".a]]", "QUE=", "Base 64", "Binary", ((string[])(null)));
@@ -3557,7 +3126,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("7", "[[rec\".a]]", "QUE=", "
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "QUE=")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Base 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Text")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant7()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant7()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("8", "[[rec.a]]", "QUE=", "Base 64", "Text", ((string[])(null)));
@@ -3574,7 +3143,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("8", "[[rec.a]]", "QUE=", "Ba
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "QUE=")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Base 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Hex")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant8()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant8()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("9", "[[rec()*.a]]", "QUE=", "Base 64", "Hex", ((string[])(null)));
@@ -3591,7 +3160,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("9", "[[rec()*.a]]", "QUE=", 
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "QUE=")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Base 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Binary")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant9()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant9()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("10", "[[rec().a]]*", "QUE=", "Base 64", "Binary", ((string[])(null)));
@@ -3608,7 +3177,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("10", "[[rec().a]]*", "QUE=",
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "QUE=")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Base 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Text")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant10()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant10()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("11", "[[1]]", "QUE=", "Base 64", "Text", ((string[])(null)));
@@ -3625,7 +3194,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("11", "[[1]]", "QUE=", "Base 
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "QUE=")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Base 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Hex")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant11()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant11()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("12", "[[@]]", "QUE=", "Base 64", "Hex", ((string[])(null)));
@@ -3642,7 +3211,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("12", "[[@]]", "QUE=", "Base 
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "QUE=")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Base 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Binary")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant12()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant12()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("13", "[[var#]]", "QUE=", "Base 64", "Binary", ((string[])(null)));
@@ -3659,7 +3228,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("13", "[[var#]]", "QUE=", "Ba
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "QUE=")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Base 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Text")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant13()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant13()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("14", "[[var]]00]]", "QUE=", "Base 64", "Text", ((string[])(null)));
@@ -3676,7 +3245,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("14", "[[var]]00]]", "QUE=", 
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "QUE=")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Base 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Hex")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant14()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant14()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("15", "[[var]]@]]", "QUE=", "Base 64", "Hex", ((string[])(null)));
@@ -3693,7 +3262,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("15", "[[var]]@]]", "QUE=", "
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "QUE=")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Base 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Binary")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant15()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant15()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("16", "[[var.()]]", "QUE=", "Base 64", "Binary", ((string[])(null)));
@@ -3710,7 +3279,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("16", "[[var.()]]", "QUE=", "
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "QUE=")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Base 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Text")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant16()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant16()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("17", "[[]]", "QUE=", "Base 64", "Text", ((string[])(null)));
@@ -3727,7 +3296,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("17", "[[]]", "QUE=", "Base 6
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "QUE=")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Base 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Hex")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant17()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant17()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("18", "[[()]]", "QUE=", "Base 64", "Hex", ((string[])(null)));
@@ -3744,7 +3313,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("18", "[[()]]", "QUE=", "Base
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "QUE=")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Base 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Binary")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant18()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant18()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("19", "[[var[[a]*]]]", "QUE=", "Base 64", "Binary", ((string[])(null)));
@@ -3761,7 +3330,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("19", "[[var[[a]*]]]", "QUE="
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "QUE=")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Base 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Text")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant19()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant19()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("20", "[[var[[]]", "QUE=", "Base 64", "Text", ((string[])(null)));
@@ -3778,7 +3347,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("20", "[[var[[]]", "QUE=", "B
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "QUE=")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Base 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Hex")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant20()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant20()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("21", "[[var1.a]]", "QUE=", "Base 64", "Hex", ((string[])(null)));
@@ -3795,7 +3364,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("21", "[[var1.a]]", "QUE=", "
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "QUE=")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Base 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Binary")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant21()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant21()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("22", "[[rec()!a]]", "QUE=", "Base 64", "Binary", ((string[])(null)));
@@ -3812,7 +3381,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("22", "[[rec()!a]]", "QUE=", 
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "QUE=")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Base 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Text")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant22()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant22()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("23", "[[rec()         a]]", "QUE=", "Base 64", "Text", ((string[])(null)));
@@ -3829,7 +3398,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("23", "[[rec()         a]]", 
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "QUE=")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Base 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Hex")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant23()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant23()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("24", "[[{{rec(_).a}}]]]", "QUE=", "Base 64", "Hex", ((string[])(null)));
@@ -3846,7 +3415,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("24", "[[{{rec(_).a}}]]]", "Q
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "QUE=")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Base 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Binary")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant24()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant24()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("25", "[[rec(23).[[var*]]]]", "QUE=", "Base 64", "Binary", ((string[])(null)));
@@ -3863,7 +3432,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("25", "[[rec(23).[[var*]]]]",
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "QUE=")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Base 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Text")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant25()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant25()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("26", "[[r(q).a]][[r()..]][[r\"]][[r()]][[]][[1]]", "QUE=", "Base 64", "Text", ((string[])(null)));
@@ -3880,7 +3449,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("26", "[[r(q).a]][[r()..]][[r
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "QUE=")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Base 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Hex")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant26()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant26()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("27", "[[rec().a]]&[[a]]", "QUE=", "Base 64", "Hex", ((string[])(null)));
@@ -3897,7 +3466,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("27", "[[rec().a]]&[[a]]", "Q
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "QUE=")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Base 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Binary")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant27()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant27()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("28", "a[[rec([[[[b]]]]).a]]@", "QUE=", "Base 64", "Binary", ((string[])(null)));
@@ -3914,7 +3483,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("28", "a[[rec([[[[b]]]]).a]]@
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "QUE=")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Base 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Text")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant28()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant28()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("29", "[[var  ]]", "QUE=", "Base 64", "Text", ((string[])(null)));
@@ -3931,7 +3500,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("29", "[[var  ]]", "QUE=", "B
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "AA")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Binary")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant29()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant29()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("30", "[[my(-1).var]]", "AA", "Text", "Binary", ((string[])(null)));
@@ -3948,7 +3517,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("30", "[[my(-1).var]]", "AA",
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "AA")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Hex")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant30()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant30()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("31", "[[my(-1).var]]", "AA", "Text", "Hex", ((string[])(null)));
@@ -3965,7 +3534,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("31", "[[my(-1).var]]", "AA",
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "AA")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Base 64")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant31()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant31()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("32", "[[my(-1).var]]", "AA", "Text", "Base 64", ((string[])(null)));
@@ -3982,7 +3551,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("32", "[[my(-1).var]]", "AA",
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "AA")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Text")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant32()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant32()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("33", "[[rec\"()\".a]]", "AA", "Text", "Text", ((string[])(null)));
@@ -3999,7 +3568,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("33", "[[rec\"()\".a]]", "AA"
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "AA")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Hex")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant33()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant33()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("34", "[[rec\"()\".a]]", "AA", "Text", "Hex", ((string[])(null)));
@@ -4016,7 +3585,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("34", "[[rec\"()\".a]]", "AA"
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "AA")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Base 64")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant34()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant34()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("35", "[[rec\".a]]", "AA", "Text", "Base 64", ((string[])(null)));
@@ -4033,7 +3602,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("35", "[[rec\".a]]", "AA", "T
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "AA")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Text")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant35()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant35()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("36", "[[rec.a]]", "AA", "Text", "Text", ((string[])(null)));
@@ -4050,7 +3619,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("36", "[[rec.a]]", "AA", "Tex
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "AA")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Hex")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant36()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant36()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("37", "[[rec()*.a]]", "AA", "Text", "Hex", ((string[])(null)));
@@ -4067,7 +3636,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("37", "[[rec()*.a]]", "AA", "
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "AA")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Base 64")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant37()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant37()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("38", "[[rec().a]]*", "AA", "Text", "Base 64", ((string[])(null)));
@@ -4084,7 +3653,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("38", "[[rec().a]]*", "AA", "
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "AA")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Base 64")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant38()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant38()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("39", "[[1]]", "AA", "Text", "Base 64", ((string[])(null)));
@@ -4101,7 +3670,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("39", "[[1]]", "AA", "Text", 
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "AA")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Hex")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant39()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant39()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("40", "[[@]]", "AA", "Text", "Hex", ((string[])(null)));
@@ -4118,7 +3687,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("40", "[[@]]", "AA", "Text", 
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "AA")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Base 64")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant40()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant40()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("41", "[[var#]]", "AA", "Text", "Base 64", ((string[])(null)));
@@ -4135,7 +3704,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("41", "[[var#]]", "AA", "Text
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "AA")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Text")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant41()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant41()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("42", "[[var]]00]]", "AA", "Text", "Text", ((string[])(null)));
@@ -4152,7 +3721,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("42", "[[var]]00]]", "AA", "T
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "AA")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Hex")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant42()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant42()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("43", "[[var]]@]]", "AA", "Text", "Hex", ((string[])(null)));
@@ -4169,7 +3738,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("43", "[[var]]@]]", "AA", "Te
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "AA")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Binary")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant43()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant43()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("44", "[[var.()]]", "AA", "Text", "Binary", ((string[])(null)));
@@ -4186,7 +3755,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("44", "[[var.()]]", "AA", "Te
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "AA")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Base 64")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant44()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant44()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("45", "[[]]", "AA", "Text", "Base 64", ((string[])(null)));
@@ -4203,7 +3772,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("45", "[[]]", "AA", "Text", "
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "AA")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Hex")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant45()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant45()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("46", "[[()]]", "AA", "Text", "Hex", ((string[])(null)));
@@ -4220,7 +3789,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("46", "[[()]]", "AA", "Text",
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "AA")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Base 64")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant46()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant46()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("47", "19", "AA", "Text", "Base 64", ((string[])(null)));
@@ -4237,7 +3806,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("47", "19", "AA", "Text", "Ba
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "AA")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Text")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant47()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant47()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("48", "[[var[[]]", "AA", "Text", "Text", ((string[])(null)));
@@ -4254,7 +3823,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("48", "[[var[[]]", "AA", "Tex
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "AA")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Hex")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant48()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant48()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("49", "[[var1.a]]", "AA", "Text", "Hex", ((string[])(null)));
@@ -4271,7 +3840,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("49", "[[var1.a]]", "AA", "Te
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "AA")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Binary")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant49()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant49()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("50", "[[rec()!a]]", "AA", "Text", "Binary", ((string[])(null)));
@@ -4288,7 +3857,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("50", "[[rec()!a]]", "AA", "T
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "AA")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Base 64")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant50()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant50()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("51", "[[rec()         a]]", "AA", "Text", "Base 64", ((string[])(null)));
@@ -4305,7 +3874,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("51", "[[rec()         a]]", 
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "AA")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Hex")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant51()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant51()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("52", "[[{{rec(_).a}}]]]", "AA", "Text", "Hex", ((string[])(null)));
@@ -4322,7 +3891,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("52", "[[{{rec(_).a}}]]]", "A
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "AA")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Binary")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant52()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant52()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("53", "[[rec(23).[[var*]]]]", "AA", "Text", "Binary", ((string[])(null)));
@@ -4339,7 +3908,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("53", "[[rec(23).[[var*]]]]",
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "AA")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Binary")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant53()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant53()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("54", "[[r(q).a]][[r()..]][[r\"]][[r()]][[]][[1]]", "AA", "Text", "Binary", ((string[])(null)));
@@ -4356,7 +3925,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("54", "[[r(q).a]][[r()..]][[r
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "AA")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Hex")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant54()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant54()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("55", "[[rec().a]]&[[a]]", "AA", "Text", "Hex", ((string[])(null)));
@@ -4373,7 +3942,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("55", "[[rec().a]]&[[a]]", "A
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "AA")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Binary")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant55()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant55()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("56", "a[[rec([[[[b]]]]).a]]@", "AA", "Text", "Binary", ((string[])(null)));
@@ -4390,7 +3959,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("56", "a[[rec([[[[b]]]]).a]]@
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "AA")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Base 64")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant56()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant56()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("57", "[[var  ]]", "AA", "Text", "Base 64", ((string[])(null)));
@@ -4407,7 +3976,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("57", "[[var  ]]", "AA", "Tex
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0100000101000001")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Text")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant57()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant57()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("58", "[[my(-1).var]]", "0100000101000001", "Binary", "Text", ((string[])(null)));
@@ -4424,7 +3993,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("58", "[[my(-1).var]]", "0100
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0100000101000001")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Hex")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant58()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant58()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("59", "[[my(-1).var]]", "0100000101000001", "Binary", "Hex", ((string[])(null)));
@@ -4441,7 +4010,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("59", "[[my(-1).var]]", "0100
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0100000101000001")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Base 64")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant59()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant59()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("60", "[[my(-1).var]]", "0100000101000001", "Binary", "Base 64", ((string[])(null)));
@@ -4458,7 +4027,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("60", "[[my(-1).var]]", "0100
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0100000101000001")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Text")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant60()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant60()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("61", "[[rec\"()\".a]]", "0100000101000001", "Binary", "Text", ((string[])(null)));
@@ -4475,7 +4044,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("61", "[[rec\"()\".a]]", "010
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0100000101000001")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Hex")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant61()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant61()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("62", "[[rec\"()\".a]]", "0100000101000001", "Binary", "Hex", ((string[])(null)));
@@ -4492,7 +4061,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("62", "[[rec\"()\".a]]", "010
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0100000101000001")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Base 64")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant62()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant62()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("63", "[[rec\".a]]", "0100000101000001", "Binary", "Base 64", ((string[])(null)));
@@ -4509,7 +4078,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("63", "[[rec\".a]]", "0100000
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0100000101000001")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Text")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant63()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant63()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("64", "[[rec.a]]", "0100000101000001", "Binary", "Text", ((string[])(null)));
@@ -4526,7 +4095,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("64", "[[rec.a]]", "010000010
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0100000101000001")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Hex")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant64()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant64()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("65", "[[rec()*.a]]", "0100000101000001", "Binary", "Hex", ((string[])(null)));
@@ -4543,7 +4112,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("65", "[[rec()*.a]]", "010000
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0100000101000001")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Base 64")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant65()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant65()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("66", "[[rec().a]]*", "0100000101000001", "Binary", "Base 64", ((string[])(null)));
@@ -4560,7 +4129,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("66", "[[rec().a]]*", "010000
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0100000101000001")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Base 64")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant66()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant66()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("67", "[[1]]", "0100000101000001", "Binary", "Base 64", ((string[])(null)));
@@ -4577,7 +4146,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("67", "[[1]]", "0100000101000
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0100000101000001")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Hex")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant67()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant67()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("68", "[[@]]", "0100000101000001", "Binary", "Hex", ((string[])(null)));
@@ -4594,7 +4163,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("68", "[[@]]", "0100000101000
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0100000101000001")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Base 64")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant68()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant68()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("69", "[[var#]]", "0100000101000001", "Binary", "Base 64", ((string[])(null)));
@@ -4611,7 +4180,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("69", "[[var#]]", "0100000101
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0100000101000001")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Text")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant69()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant69()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("70", "[[var]]00]]", "0100000101000001", "Binary", "Text", ((string[])(null)));
@@ -4628,7 +4197,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("70", "[[var]]00]]", "0100000
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0100000101000001")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Hex")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant70()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant70()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("71", "[[var]]@]]", "0100000101000001", "Binary", "Hex", ((string[])(null)));
@@ -4645,7 +4214,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("71", "[[var]]@]]", "01000001
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0100000101000001")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Hex")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant71()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant71()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("72", "[[var.()]]", "0100000101000001", "Binary", "Hex", ((string[])(null)));
@@ -4662,7 +4231,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("72", "[[var.()]]", "01000001
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0100000101000001")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Base 64")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant72()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant72()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("73", "[[]]", "0100000101000001", "Binary", "Base 64", ((string[])(null)));
@@ -4679,7 +4248,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("73", "[[]]", "01000001010000
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0100000101000001")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Hex")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant73()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant73()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("74", "[[()]]", "0100000101000001", "Binary", "Hex", ((string[])(null)));
@@ -4696,7 +4265,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("74", "[[()]]", "010000010100
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0100000101000001")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Base 64")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant74()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant74()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("75", "19", "0100000101000001", "Binary", "Base 64", ((string[])(null)));
@@ -4713,7 +4282,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("75", "19", "0100000101000001
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0100000101000001")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Text")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant75()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant75()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("75", "[[var[[]]", "0100000101000001", "Binary", "Text", ((string[])(null)));
@@ -4730,7 +4299,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("75", "[[var[[]]", "010000010
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0100000101000001")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Hex")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant76()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant76()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("77", "[[var1.a]]", "0100000101000001", "Binary", "Hex", ((string[])(null)));
@@ -4747,7 +4316,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("77", "[[var1.a]]", "01000001
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0100000101000001")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Hex")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant77()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant77()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("78", "[[rec()!a]]", "0100000101000001", "Binary", "Hex", ((string[])(null)));
@@ -4764,7 +4333,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("78", "[[rec()!a]]", "0100000
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0100000101000001")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Base 64")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant78()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant78()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("79", "[[rec()         a]]", "0100000101000001", "Binary", "Base 64", ((string[])(null)));
@@ -4781,7 +4350,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("79", "[[rec()         a]]", 
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0100000101000001")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Hex")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant79()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant79()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("80", "[[{{rec(_).a}}]]]", "0100000101000001", "Binary", "Hex", ((string[])(null)));
@@ -4798,7 +4367,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("80", "[[{{rec(_).a}}]]]", "0
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0100000101000001")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Hex")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant80()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant80()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("81", "[[rec(23).[[var*]]]]", "0100000101000001", "Binary", "Hex", ((string[])(null)));
@@ -4815,7 +4384,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("81", "[[rec(23).[[var*]]]]",
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0100000101000001")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Hex")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant81()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant81()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("82", "[[r(q).a]][[r()..]][[r\"]][[r()]][[]][[1]]", "0100000101000001", "Binary", "Hex", ((string[])(null)));
@@ -4832,7 +4401,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("82", "[[r(q).a]][[r()..]][[r
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0100000101000001")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Hex")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant82()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant82()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("83", "[[rec().a]]&[[a]]", "0100000101000001", "Binary", "Hex", ((string[])(null)));
@@ -4849,7 +4418,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("83", "[[rec().a]]&[[a]]", "0
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0100000101000001")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Hex")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant83()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant83()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("84", "a[[rec([[[[b]]]]).a]]@", "0100000101000001", "Binary", "Hex", ((string[])(null)));
@@ -4866,7 +4435,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("84", "a[[rec([[[[b]]]]).a]]@
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0100000101000001")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Base 64")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant84()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant84()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("85", "[[var  ]]", "0100000101000001", "Binary", "Base 64", ((string[])(null)));
@@ -4883,7 +4452,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("85", "[[var  ]]", "010000010
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0x4141")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Hex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Binary")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant85()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant85()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("86", "[[my(-1).var]]", "0x4141", "Hex", "Binary", ((string[])(null)));
@@ -4900,7 +4469,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("86", "[[my(-1).var]]", "0x41
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0x4141")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Hex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Base 64")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant86()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant86()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("87", "[[my(-1).var]]", "0x4141", "Hex", "Base 64", ((string[])(null)));
@@ -4917,7 +4486,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("87", "[[my(-1).var]]", "0x41
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0x4141")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Hex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Text")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant87()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant87()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("88", "[[my(-1).var]]", "0x4141", "Hex", "Text", ((string[])(null)));
@@ -4934,7 +4503,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("88", "[[my(-1).var]]", "0x41
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0x4141")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Hex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Text")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant88()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant88()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("89", "[[rec\"()\".a]]", "0x4141", "Hex", "Text", ((string[])(null)));
@@ -4951,7 +4520,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("89", "[[rec\"()\".a]]", "0x4
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0x4141")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Hex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Base 64")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant89()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant89()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("90", "[[rec\"()\".a]]", "0x4141", "Hex", "Base 64", ((string[])(null)));
@@ -4968,7 +4537,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("90", "[[rec\"()\".a]]", "0x4
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0x4141")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Hex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Base 64")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant90()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant90()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("91", "[[rec\".a]]", "0x4141", "Hex", "Base 64", ((string[])(null)));
@@ -4985,7 +4554,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("91", "[[rec\".a]]", "0x4141"
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0x4141")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Hex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Text")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant91()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant91()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("92", "[[rec.a]]", "0x4141", "Hex", "Text", ((string[])(null)));
@@ -5002,7 +4571,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("92", "[[rec.a]]", "0x4141", 
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0x4141")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Hex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Base 64")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant92()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant92()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("93", "[[rec()*.a]]", "0x4141", "Hex", "Base 64", ((string[])(null)));
@@ -5019,7 +4588,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("93", "[[rec()*.a]]", "0x4141
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0x4141")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Hex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Base 64")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant93()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant93()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("94", "[[rec().a]]*", "0x4141", "Hex", "Base 64", ((string[])(null)));
@@ -5036,7 +4605,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("94", "[[rec().a]]*", "0x4141
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0x4141")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Hex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Base 64")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant94()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant94()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("95", "[[1]]", "0x4141", "Hex", "Base 64", ((string[])(null)));
@@ -5053,7 +4622,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("95", "[[1]]", "0x4141", "Hex
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0x4141")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Hex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Hex")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant95()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant95()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("96", "[[@]]", "0x4141", "Hex", "Hex", ((string[])(null)));
@@ -5070,7 +4639,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("96", "[[@]]", "0x4141", "Hex
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0x4141")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Hex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Base 64")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant96()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant96()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("97", "[[var#]]", "0x4141", "Hex", "Base 64", ((string[])(null)));
@@ -5087,7 +4656,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("97", "[[var#]]", "0x4141", "
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0x4141")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Hex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Text")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant97()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant97()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("98", "[[var]]00]]", "0x4141", "Hex", "Text", ((string[])(null)));
@@ -5104,7 +4673,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("98", "[[var]]00]]", "0x4141"
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0x4141")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Hex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Binary")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant98()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant98()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("99", "[[var]]@]]", "0x4141", "Hex", "Binary", ((string[])(null)));
@@ -5121,7 +4690,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("99", "[[var]]@]]", "0x4141",
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0x4141")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Hex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Binary")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant99()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant99()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("100", "[[var.()]]", "0x4141", "Hex", "Binary", ((string[])(null)));
@@ -5138,7 +4707,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("100", "[[var.()]]", "0x4141"
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0x4141")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Hex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Base 64")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant100()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant100()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("101", "[[]]", "0x4141", "Hex", "Base 64", ((string[])(null)));
@@ -5155,7 +4724,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("101", "[[]]", "0x4141", "Hex
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0x4141")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Hex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Binary")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant101()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant101()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("102", "[[()]]", "0x4141", "Hex", "Binary", ((string[])(null)));
@@ -5172,7 +4741,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("102", "[[()]]", "0x4141", "H
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0x4141")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Hex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Base 64")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant102()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant102()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("103", "19", "0x4141", "Hex", "Base 64", ((string[])(null)));
@@ -5189,7 +4758,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("103", "19", "0x4141", "Hex",
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0x4141")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Hex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Text")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant103()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant103()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("104", "[[var[[]]", "0x4141", "Hex", "Text", ((string[])(null)));
@@ -5206,7 +4775,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("104", "[[var[[]]", "0x4141",
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0x4141")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Hex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Binary")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant104()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant104()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("105", "[[var1.a]]", "0x4141", "Hex", "Binary", ((string[])(null)));
@@ -5223,7 +4792,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("105", "[[var1.a]]", "0x4141"
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0x4141")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Hex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Binary")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant105()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant105()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("106", "[[rec()!a]]", "0x4141", "Hex", "Binary", ((string[])(null)));
@@ -5240,7 +4809,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("106", "[[rec()!a]]", "0x4141
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0x4141")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Hex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Base 64")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant106()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant106()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("107", "[[rec()         a]]", "0x4141", "Hex", "Base 64", ((string[])(null)));
@@ -5257,7 +4826,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("107", "[[rec()         a]]",
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0x4141")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Hex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Binary")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant107()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant107()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("108", "[[{{rec(_).a}}]]]", "0x4141", "Hex", "Binary", ((string[])(null)));
@@ -5274,7 +4843,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("108", "[[{{rec(_).a}}]]]", "
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0x4141")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Hex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Binary")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant108()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant108()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("109", "[[rec(23).[[var*]]]]", "0x4141", "Hex", "Binary", ((string[])(null)));
@@ -5291,7 +4860,7 @@ this.ValidationMessagesWhenConvertInvalidVariables("109", "[[rec(23).[[var*]]]]"
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0x4141")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Hex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Binary")]
-        public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant109()
+        public void ValidationMessagesWhenConvertInvalidVariables_Variant109()
         {
 #line 567
 this.ValidationMessagesWhenConvertInvalidVariables("110", "[[r(q).a]][[r()..]][[r\"]][[r()]][[]][[1", "0x4141", "Hex", "Binary", ((string[])(null)));
@@ -5302,25 +4871,15 @@ this.ValidationMessagesWhenConvertInvalidVariables("110", "[[r(q).a]][[r()..]][[
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert a Variable That Does Not Exist")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
-        public virtual void ConvertAVariableThatDoesNotExist()
+        public void ConvertAVariableThatDoesNotExist()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert a Variable That Does Not Exist", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert a Variable That Does Not Exist", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 685
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -5353,21 +4912,11 @@ this.ScenarioInitialize(scenarioInfo);
             argumentsOfScenario.Add("From", from);
             argumentsOfScenario.Add("To", to);
             argumentsOfScenario.Add("Error", error);
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert an empty recordset *", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert an empty recordset *", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 691
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -5401,7 +4950,7 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Invalid Recordset")]
-        public virtual void ConvertAnEmptyRecordset_1()
+        public void ConvertAnEmptyRecordset_1()
         {
 #line 691
 this.ConvertAnEmptyRecordset("1", "[[rs(*).row]]", "", "Binary", "Binary", "Invalid Recordset", ((string[])(null)));
@@ -5419,7 +4968,7 @@ this.ConvertAnEmptyRecordset("1", "[[rs(*).row]]", "", "Binary", "Binary", "Inva
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Invalid Recordset")]
-        public virtual void ConvertAnEmptyRecordset_2()
+        public void ConvertAnEmptyRecordset_2()
         {
 #line 691
 this.ConvertAnEmptyRecordset("2", "[[rs(*).row]]", "", "Binary", "Text", "Invalid Recordset", ((string[])(null)));
@@ -5437,7 +4986,7 @@ this.ConvertAnEmptyRecordset("2", "[[rs(*).row]]", "", "Binary", "Text", "Invali
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Hex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Invalid Recordset")]
-        public virtual void ConvertAnEmptyRecordset_3()
+        public void ConvertAnEmptyRecordset_3()
         {
 #line 691
 this.ConvertAnEmptyRecordset("3", "[[rs(*).row]]", "", "Binary", "Hex", "Invalid Recordset", ((string[])(null)));
@@ -5455,7 +5004,7 @@ this.ConvertAnEmptyRecordset("3", "[[rs(*).row]]", "", "Binary", "Hex", "Invalid
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Base 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Invalid Recordset")]
-        public virtual void ConvertAnEmptyRecordset_4()
+        public void ConvertAnEmptyRecordset_4()
         {
 #line 691
 this.ConvertAnEmptyRecordset("4", "[[rs(*).row]]", "", "Binary", "Base 64", "Invalid Recordset", ((string[])(null)));
@@ -5473,7 +5022,7 @@ this.ConvertAnEmptyRecordset("4", "[[rs(*).row]]", "", "Binary", "Base 64", "Inv
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Invalid Recordset")]
-        public virtual void ConvertAnEmptyRecordset_5()
+        public void ConvertAnEmptyRecordset_5()
         {
 #line 691
 this.ConvertAnEmptyRecordset("5", "[[rs(*).row]]", "", "Text", "Binary", "Invalid Recordset", ((string[])(null)));
@@ -5491,7 +5040,7 @@ this.ConvertAnEmptyRecordset("5", "[[rs(*).row]]", "", "Text", "Binary", "Invali
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Invalid Recordset")]
-        public virtual void ConvertAnEmptyRecordset_6()
+        public void ConvertAnEmptyRecordset_6()
         {
 #line 691
 this.ConvertAnEmptyRecordset("6", "[[rs(*).row]]", "", "Text", "Text", "Invalid Recordset", ((string[])(null)));
@@ -5509,7 +5058,7 @@ this.ConvertAnEmptyRecordset("6", "[[rs(*).row]]", "", "Text", "Text", "Invalid 
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Hex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Invalid Recordset")]
-        public virtual void ConvertAnEmptyRecordset_7()
+        public void ConvertAnEmptyRecordset_7()
         {
 #line 691
 this.ConvertAnEmptyRecordset("7", "[[rs(*).row]]", "", "Text", "Hex", "Invalid Recordset", ((string[])(null)));
@@ -5527,7 +5076,7 @@ this.ConvertAnEmptyRecordset("7", "[[rs(*).row]]", "", "Text", "Hex", "Invalid R
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Base 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Invalid Recordset")]
-        public virtual void ConvertAnEmptyRecordset_8()
+        public void ConvertAnEmptyRecordset_8()
         {
 #line 691
 this.ConvertAnEmptyRecordset("8", "[[rs(*).row]]", "", "Text", "Base 64", "Invalid Recordset", ((string[])(null)));
@@ -5545,7 +5094,7 @@ this.ConvertAnEmptyRecordset("8", "[[rs(*).row]]", "", "Text", "Base 64", "Inval
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Hex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Invalid Recordset")]
-        public virtual void ConvertAnEmptyRecordset_9()
+        public void ConvertAnEmptyRecordset_9()
         {
 #line 691
 this.ConvertAnEmptyRecordset("9", "[[rs(*).row]]", "", "Hex", "Binary", "Invalid Recordset", ((string[])(null)));
@@ -5563,7 +5112,7 @@ this.ConvertAnEmptyRecordset("9", "[[rs(*).row]]", "", "Hex", "Binary", "Invalid
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Hex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Invalid Recordset")]
-        public virtual void ConvertAnEmptyRecordset_10()
+        public void ConvertAnEmptyRecordset_10()
         {
 #line 691
 this.ConvertAnEmptyRecordset("10", "[[rs(*).row]]", "", "Hex", "Text", "Invalid Recordset", ((string[])(null)));
@@ -5581,7 +5130,7 @@ this.ConvertAnEmptyRecordset("10", "[[rs(*).row]]", "", "Hex", "Text", "Invalid 
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Hex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Hex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Invalid Recordset")]
-        public virtual void ConvertAnEmptyRecordset_11()
+        public void ConvertAnEmptyRecordset_11()
         {
 #line 691
 this.ConvertAnEmptyRecordset("11", "[[rs(*).row]]", "", "Hex", "Hex", "Invalid Recordset", ((string[])(null)));
@@ -5599,7 +5148,7 @@ this.ConvertAnEmptyRecordset("11", "[[rs(*).row]]", "", "Hex", "Hex", "Invalid R
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Hex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Base 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Invalid Recordset")]
-        public virtual void ConvertAnEmptyRecordset_12()
+        public void ConvertAnEmptyRecordset_12()
         {
 #line 691
 this.ConvertAnEmptyRecordset("12", "[[rs(*).row]]", "", "Hex", "Base 64", "Invalid Recordset", ((string[])(null)));
@@ -5617,7 +5166,7 @@ this.ConvertAnEmptyRecordset("12", "[[rs(*).row]]", "", "Hex", "Base 64", "Inval
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Base 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Invalid Recordset")]
-        public virtual void ConvertAnEmptyRecordset_13()
+        public void ConvertAnEmptyRecordset_13()
         {
 #line 691
 this.ConvertAnEmptyRecordset("13", "[[rs(*).row]]", "", "Base 64", "Binary", "Invalid Recordset", ((string[])(null)));
@@ -5635,7 +5184,7 @@ this.ConvertAnEmptyRecordset("13", "[[rs(*).row]]", "", "Base 64", "Binary", "In
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Base 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Invalid Recordset")]
-        public virtual void ConvertAnEmptyRecordset_14()
+        public void ConvertAnEmptyRecordset_14()
         {
 #line 691
 this.ConvertAnEmptyRecordset("14", "[[rs(*).row]]", "", "Base 64", "Text", "Invalid Recordset", ((string[])(null)));
@@ -5653,7 +5202,7 @@ this.ConvertAnEmptyRecordset("14", "[[rs(*).row]]", "", "Base 64", "Text", "Inva
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Base 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Hex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Invalid Recordset")]
-        public virtual void ConvertAnEmptyRecordset_15()
+        public void ConvertAnEmptyRecordset_15()
         {
 #line 691
 this.ConvertAnEmptyRecordset("15", "[[rs(*).row]]", "", "Base 64", "Hex", "Invalid Recordset", ((string[])(null)));
@@ -5671,7 +5220,7 @@ this.ConvertAnEmptyRecordset("15", "[[rs(*).row]]", "", "Base 64", "Hex", "Inval
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Base 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Base 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Invalid Recordset")]
-        public virtual void ConvertAnEmptyRecordset_16()
+        public void ConvertAnEmptyRecordset_16()
         {
 #line 691
 this.ConvertAnEmptyRecordset("16", "[[rs(*).row]]", "", "Base 64", "Base 64", "Invalid Recordset", ((string[])(null)));
@@ -5689,7 +5238,7 @@ this.ConvertAnEmptyRecordset("16", "[[rs(*).row]]", "", "Base 64", "Base 64", "I
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Invalid Index")]
-        public virtual void ConvertAnEmptyRecordset_17()
+        public void ConvertAnEmptyRecordset_17()
         {
 #line 691
 this.ConvertAnEmptyRecordset("17", "[[rs([[var]]).row]]", "", "Binary", "Binary", "Invalid Index", ((string[])(null)));
@@ -5707,7 +5256,7 @@ this.ConvertAnEmptyRecordset("17", "[[rs([[var]]).row]]", "", "Binary", "Binary"
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Invalid Index")]
-        public virtual void ConvertAnEmptyRecordset_18()
+        public void ConvertAnEmptyRecordset_18()
         {
 #line 691
 this.ConvertAnEmptyRecordset("18", "[[rs([[var]]).row]]", "", "Binary", "Text", "Invalid Index", ((string[])(null)));
@@ -5725,7 +5274,7 @@ this.ConvertAnEmptyRecordset("18", "[[rs([[var]]).row]]", "", "Binary", "Text", 
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Hex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Invalid Index")]
-        public virtual void ConvertAnEmptyRecordset_19()
+        public void ConvertAnEmptyRecordset_19()
         {
 #line 691
 this.ConvertAnEmptyRecordset("19", "[[rs([[var]]).row]]", "", "Binary", "Hex", "Invalid Index", ((string[])(null)));
@@ -5743,7 +5292,7 @@ this.ConvertAnEmptyRecordset("19", "[[rs([[var]]).row]]", "", "Binary", "Hex", "
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Base 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Invalid Index")]
-        public virtual void ConvertAnEmptyRecordset_20()
+        public void ConvertAnEmptyRecordset_20()
         {
 #line 691
 this.ConvertAnEmptyRecordset("20", "[[rs([[var]]).row]]", "", "Binary", "Base 64", "Invalid Index", ((string[])(null)));
@@ -5761,7 +5310,7 @@ this.ConvertAnEmptyRecordset("20", "[[rs([[var]]).row]]", "", "Binary", "Base 64
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Invalid Index")]
-        public virtual void ConvertAnEmptyRecordset_21()
+        public void ConvertAnEmptyRecordset_21()
         {
 #line 691
 this.ConvertAnEmptyRecordset("21", "[[rs([[var]]).row]]", "", "Text", "Binary", "Invalid Index", ((string[])(null)));
@@ -5779,7 +5328,7 @@ this.ConvertAnEmptyRecordset("21", "[[rs([[var]]).row]]", "", "Text", "Binary", 
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Invalid Index")]
-        public virtual void ConvertAnEmptyRecordset_22()
+        public void ConvertAnEmptyRecordset_22()
         {
 #line 691
 this.ConvertAnEmptyRecordset("22", "[[rs([[var]]).row]]", "", "Text", "Text", "Invalid Index", ((string[])(null)));
@@ -5797,7 +5346,7 @@ this.ConvertAnEmptyRecordset("22", "[[rs([[var]]).row]]", "", "Text", "Text", "I
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Hex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Invalid Index")]
-        public virtual void ConvertAnEmptyRecordset_23()
+        public void ConvertAnEmptyRecordset_23()
         {
 #line 691
 this.ConvertAnEmptyRecordset("23", "[[rs([[var]]).row]]", "", "Text", "Hex", "Invalid Index", ((string[])(null)));
@@ -5815,7 +5364,7 @@ this.ConvertAnEmptyRecordset("23", "[[rs([[var]]).row]]", "", "Text", "Hex", "In
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Base 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Invalid Index")]
-        public virtual void ConvertAnEmptyRecordset_24()
+        public void ConvertAnEmptyRecordset_24()
         {
 #line 691
 this.ConvertAnEmptyRecordset("24", "[[rs([[var]]).row]]", "", "Text", "Base 64", "Invalid Index", ((string[])(null)));
@@ -5833,7 +5382,7 @@ this.ConvertAnEmptyRecordset("24", "[[rs([[var]]).row]]", "", "Text", "Base 64",
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Hex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Invalid Index")]
-        public virtual void ConvertAnEmptyRecordset_25()
+        public void ConvertAnEmptyRecordset_25()
         {
 #line 691
 this.ConvertAnEmptyRecordset("25", "[[rs([[var]]).row]]", "", "Hex", "Binary", "Invalid Index", ((string[])(null)));
@@ -5851,7 +5400,7 @@ this.ConvertAnEmptyRecordset("25", "[[rs([[var]]).row]]", "", "Hex", "Binary", "
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Hex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Invalid Index")]
-        public virtual void ConvertAnEmptyRecordset_26()
+        public void ConvertAnEmptyRecordset_26()
         {
 #line 691
 this.ConvertAnEmptyRecordset("26", "[[rs([[var]]).row]]", "", "Hex", "Text", "Invalid Index", ((string[])(null)));
@@ -5869,7 +5418,7 @@ this.ConvertAnEmptyRecordset("26", "[[rs([[var]]).row]]", "", "Hex", "Text", "In
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Hex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Hex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Invalid Index")]
-        public virtual void ConvertAnEmptyRecordset_27()
+        public void ConvertAnEmptyRecordset_27()
         {
 #line 691
 this.ConvertAnEmptyRecordset("27", "[[rs([[var]]).row]]", "", "Hex", "Hex", "Invalid Index", ((string[])(null)));
@@ -5887,7 +5436,7 @@ this.ConvertAnEmptyRecordset("27", "[[rs([[var]]).row]]", "", "Hex", "Hex", "Inv
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Hex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Base 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Invalid Index")]
-        public virtual void ConvertAnEmptyRecordset_28()
+        public void ConvertAnEmptyRecordset_28()
         {
 #line 691
 this.ConvertAnEmptyRecordset("28", "[[rs([[var]]).row]]", "", "Hex", "Base 64", "Invalid Index", ((string[])(null)));
@@ -5905,7 +5454,7 @@ this.ConvertAnEmptyRecordset("28", "[[rs([[var]]).row]]", "", "Hex", "Base 64", 
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Base 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Invalid Index")]
-        public virtual void ConvertAnEmptyRecordset_29()
+        public void ConvertAnEmptyRecordset_29()
         {
 #line 691
 this.ConvertAnEmptyRecordset("29", "[[rs([[var]]).row]]", "", "Base 64", "Binary", "Invalid Index", ((string[])(null)));
@@ -5923,7 +5472,7 @@ this.ConvertAnEmptyRecordset("29", "[[rs([[var]]).row]]", "", "Base 64", "Binary
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Base 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Invalid Index")]
-        public virtual void ConvertAnEmptyRecordset_30()
+        public void ConvertAnEmptyRecordset_30()
         {
 #line 691
 this.ConvertAnEmptyRecordset("30", "[[rs([[var]]).row]]", "", "Base 64", "Text", "Invalid Index", ((string[])(null)));
@@ -5941,7 +5490,7 @@ this.ConvertAnEmptyRecordset("30", "[[rs([[var]]).row]]", "", "Base 64", "Text",
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Base 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Hex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Invalid Index")]
-        public virtual void ConvertAnEmptyRecordset_31()
+        public void ConvertAnEmptyRecordset_31()
         {
 #line 691
 this.ConvertAnEmptyRecordset("31", "[[rs([[var]]).row]]", "", "Base 64", "Hex", "Invalid Index", ((string[])(null)));
@@ -5959,7 +5508,7 @@ this.ConvertAnEmptyRecordset("31", "[[rs([[var]]).row]]", "", "Base 64", "Hex", 
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Base 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Base 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Invalid Index")]
-        public virtual void ConvertAnEmptyRecordset_32()
+        public void ConvertAnEmptyRecordset_32()
         {
 #line 691
 this.ConvertAnEmptyRecordset("32", "[[rs([[var]]).row]]", "", "Base 64", "Base 64", "Invalid Index", ((string[])(null)));
@@ -5977,7 +5526,7 @@ this.ConvertAnEmptyRecordset("32", "[[rs([[var]]).row]]", "", "Base 64", "Base 6
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Invalid Recordset")]
-        public virtual void ConvertAnEmptyRecordset_33()
+        public void ConvertAnEmptyRecordset_33()
         {
 #line 691
 this.ConvertAnEmptyRecordset("33", "[[rs().row]]", "", "Binary", "Binary", "Invalid Recordset", ((string[])(null)));
@@ -5995,7 +5544,7 @@ this.ConvertAnEmptyRecordset("33", "[[rs().row]]", "", "Binary", "Binary", "Inva
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Invalid Recordset")]
-        public virtual void ConvertAnEmptyRecordset_34()
+        public void ConvertAnEmptyRecordset_34()
         {
 #line 691
 this.ConvertAnEmptyRecordset("34", "[[rs().row]]", "", "Binary", "Text", "Invalid Recordset", ((string[])(null)));
@@ -6013,7 +5562,7 @@ this.ConvertAnEmptyRecordset("34", "[[rs().row]]", "", "Binary", "Text", "Invali
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Hex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Invalid Recordset")]
-        public virtual void ConvertAnEmptyRecordset_35()
+        public void ConvertAnEmptyRecordset_35()
         {
 #line 691
 this.ConvertAnEmptyRecordset("35", "[[rs().row]]", "", "Binary", "Hex", "Invalid Recordset", ((string[])(null)));
@@ -6031,7 +5580,7 @@ this.ConvertAnEmptyRecordset("35", "[[rs().row]]", "", "Binary", "Hex", "Invalid
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Base 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Invalid Recordset")]
-        public virtual void ConvertAnEmptyRecordset_36()
+        public void ConvertAnEmptyRecordset_36()
         {
 #line 691
 this.ConvertAnEmptyRecordset("36", "[[rs().row]]", "", "Binary", "Base 64", "Invalid Recordset", ((string[])(null)));
@@ -6049,7 +5598,7 @@ this.ConvertAnEmptyRecordset("36", "[[rs().row]]", "", "Binary", "Base 64", "Inv
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Invalid Recordset")]
-        public virtual void ConvertAnEmptyRecordset_37()
+        public void ConvertAnEmptyRecordset_37()
         {
 #line 691
 this.ConvertAnEmptyRecordset("37", "[[rs().row]]", "", "Text", "Binary", "Invalid Recordset", ((string[])(null)));
@@ -6067,7 +5616,7 @@ this.ConvertAnEmptyRecordset("37", "[[rs().row]]", "", "Text", "Binary", "Invali
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Invalid Recordset")]
-        public virtual void ConvertAnEmptyRecordset_38()
+        public void ConvertAnEmptyRecordset_38()
         {
 #line 691
 this.ConvertAnEmptyRecordset("38", "[[rs().row]]", "", "Text", "Text", "Invalid Recordset", ((string[])(null)));
@@ -6085,7 +5634,7 @@ this.ConvertAnEmptyRecordset("38", "[[rs().row]]", "", "Text", "Text", "Invalid 
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Hex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Invalid Recordset")]
-        public virtual void ConvertAnEmptyRecordset_39()
+        public void ConvertAnEmptyRecordset_39()
         {
 #line 691
 this.ConvertAnEmptyRecordset("39", "[[rs().row]]", "", "Text", "Hex", "Invalid Recordset", ((string[])(null)));
@@ -6103,7 +5652,7 @@ this.ConvertAnEmptyRecordset("39", "[[rs().row]]", "", "Text", "Hex", "Invalid R
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Base 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Invalid Recordset")]
-        public virtual void ConvertAnEmptyRecordset_40()
+        public void ConvertAnEmptyRecordset_40()
         {
 #line 691
 this.ConvertAnEmptyRecordset("40", "[[rs().row]]", "", "Text", "Base 64", "Invalid Recordset", ((string[])(null)));
@@ -6121,7 +5670,7 @@ this.ConvertAnEmptyRecordset("40", "[[rs().row]]", "", "Text", "Base 64", "Inval
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Hex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Invalid Recordset")]
-        public virtual void ConvertAnEmptyRecordset_41()
+        public void ConvertAnEmptyRecordset_41()
         {
 #line 691
 this.ConvertAnEmptyRecordset("41", "[[rs().row]]", "", "Hex", "Binary", "Invalid Recordset", ((string[])(null)));
@@ -6139,7 +5688,7 @@ this.ConvertAnEmptyRecordset("41", "[[rs().row]]", "", "Hex", "Binary", "Invalid
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Hex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Invalid Recordset")]
-        public virtual void ConvertAnEmptyRecordset_42()
+        public void ConvertAnEmptyRecordset_42()
         {
 #line 691
 this.ConvertAnEmptyRecordset("42", "[[rs().row]]", "", "Hex", "Text", "Invalid Recordset", ((string[])(null)));
@@ -6157,7 +5706,7 @@ this.ConvertAnEmptyRecordset("42", "[[rs().row]]", "", "Hex", "Text", "Invalid R
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Hex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Hex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Invalid Recordset")]
-        public virtual void ConvertAnEmptyRecordset_43()
+        public void ConvertAnEmptyRecordset_43()
         {
 #line 691
 this.ConvertAnEmptyRecordset("43", "[[rs().row]]", "", "Hex", "Hex", "Invalid Recordset", ((string[])(null)));
@@ -6175,7 +5724,7 @@ this.ConvertAnEmptyRecordset("43", "[[rs().row]]", "", "Hex", "Hex", "Invalid Re
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Hex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Base 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Invalid Recordset")]
-        public virtual void ConvertAnEmptyRecordset_44()
+        public void ConvertAnEmptyRecordset_44()
         {
 #line 691
 this.ConvertAnEmptyRecordset("44", "[[rs().row]]", "", "Hex", "Base 64", "Invalid Recordset", ((string[])(null)));
@@ -6193,7 +5742,7 @@ this.ConvertAnEmptyRecordset("44", "[[rs().row]]", "", "Hex", "Base 64", "Invali
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Base 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Invalid Recordset")]
-        public virtual void ConvertAnEmptyRecordset_45()
+        public void ConvertAnEmptyRecordset_45()
         {
 #line 691
 this.ConvertAnEmptyRecordset("45", "[[rs().row]]", "", "Base 64", "Binary", "Invalid Recordset", ((string[])(null)));
@@ -6211,7 +5760,7 @@ this.ConvertAnEmptyRecordset("45", "[[rs().row]]", "", "Base 64", "Binary", "Inv
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Base 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Invalid Recordset")]
-        public virtual void ConvertAnEmptyRecordset_46()
+        public void ConvertAnEmptyRecordset_46()
         {
 #line 691
 this.ConvertAnEmptyRecordset("46", "[[rs().row]]", "", "Base 64", "Text", "Invalid Recordset", ((string[])(null)));
@@ -6229,7 +5778,7 @@ this.ConvertAnEmptyRecordset("46", "[[rs().row]]", "", "Base 64", "Text", "Inval
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Base 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Hex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Invalid Recordset")]
-        public virtual void ConvertAnEmptyRecordset_47()
+        public void ConvertAnEmptyRecordset_47()
         {
 #line 691
 this.ConvertAnEmptyRecordset("47", "[[rs().row]]", "", "Base 64", "Hex", "Invalid Recordset", ((string[])(null)));
@@ -6247,7 +5796,7 @@ this.ConvertAnEmptyRecordset("47", "[[rs().row]]", "", "Base 64", "Hex", "Invali
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Base 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Base 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Invalid Recordset")]
-        public virtual void ConvertAnEmptyRecordset_48()
+        public void ConvertAnEmptyRecordset_48()
         {
 #line 691
 this.ConvertAnEmptyRecordset("48", "[[rs().row]]", "", "Base 64", "Base 64", "Invalid Recordset", ((string[])(null)));
@@ -6258,25 +5807,15 @@ this.ConvertAnEmptyRecordset("48", "[[rs().row]]", "", "Base 64", "Base 64", "In
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert a Variable that is null")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
-        public virtual void ConvertAVariableThatIsNull()
+        public void ConvertAVariableThatIsNull()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert a Variable that is null", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert a Variable that is null", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 748
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }

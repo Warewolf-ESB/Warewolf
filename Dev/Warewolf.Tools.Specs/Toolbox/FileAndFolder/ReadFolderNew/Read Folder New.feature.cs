@@ -27,7 +27,7 @@ namespace Warewolf.Tools.Specs.Toolbox.FileAndFolder.ReadFolderNew
         
         private Microsoft.VisualStudio.TestTools.UnitTesting.TestContext _testContext;
         
-        private string[] _featureTags = new string[] {
+        private static string[] featureTags = new string[] {
                 "NewReadFolder"};
         
 #line 1 "Read Folder New.feature"
@@ -50,8 +50,7 @@ namespace Warewolf.Tools.Specs.Toolbox.FileAndFolder.ReadFolderNew
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Toolbox/FileAndFolder/ReadFolderNew", "Read Folder", "\tIn order to be able to Read Folder File or Folder \r\n\tas a Warewolf user\r\n\tI want" +
-                    " a tool that reads the contents of a Folder at a given location", ProgrammingLanguage.CSharp, new string[] {
-                        "NewReadFolder"});
+                    " a tool that reads the contents of a Folder at a given location", ProgrammingLanguage.CSharp, featureTags);
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -63,7 +62,7 @@ namespace Warewolf.Tools.Specs.Toolbox.FileAndFolder.ReadFolderNew
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestInitializeAttribute()]
-        public virtual void TestInitialize()
+        public void TestInitialize()
         {
             if (((testRunner.FeatureContext != null) 
                         && (testRunner.FeatureContext.FeatureInfo.Title != "Read Folder")))
@@ -73,23 +72,23 @@ namespace Warewolf.Tools.Specs.Toolbox.FileAndFolder.ReadFolderNew
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCleanupAttribute()]
-        public virtual void TestTearDown()
+        public void TestTearDown()
         {
             testRunner.OnScenarioEnd();
         }
         
-        public virtual void ScenarioInitialize(TechTalk.SpecFlow.ScenarioInfo scenarioInfo)
+        public void ScenarioInitialize(TechTalk.SpecFlow.ScenarioInfo scenarioInfo)
         {
             testRunner.OnScenarioInitialize(scenarioInfo);
             testRunner.ScenarioContext.ScenarioContainer.RegisterInstanceAs<Microsoft.VisualStudio.TestTools.UnitTesting.TestContext>(_testContext);
         }
         
-        public virtual void ScenarioStart()
+        public void ScenarioStart()
         {
             testRunner.OnScenarioStart();
         }
         
-        public virtual void ScenarioCleanup()
+        public void ScenarioCleanup()
         {
             testRunner.CollectScenarioErrors();
         }
@@ -108,21 +107,11 @@ namespace Warewolf.Tools.Specs.Toolbox.FileAndFolder.ReadFolderNew
             argumentsOfScenario.Add("resultVar", resultVar);
             argumentsOfScenario.Add("result", result);
             argumentsOfScenario.Add("errorOccured", errorOccured);
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Read Folder file at location new", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Read Folder file at location new", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 8
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -194,7 +183,7 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "String")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        public virtual void ReadFolderFileAtLocationNew_Variant0()
+        public void ReadFolderFileAtLocationNew_Variant0()
         {
 #line 8
 this.ReadFolderFileAtLocationNew("1", "Local Files", "[[path]]", "c:\\", "Files", "\"\"", "\"\"", "[[result]]", "String", "NO", ((string[])(null)));
@@ -216,7 +205,7 @@ this.ReadFolderFileAtLocationNew("1", "Local Files", "[[path]]", "c:\\", "Files"
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "String")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        public virtual void ReadFolderFileAtLocationNew_Variant1()
+        public void ReadFolderFileAtLocationNew_Variant1()
         {
 #line 8
 this.ReadFolderFileAtLocationNew("2", "UNC", "[[path]]", "\\\\localhost\\FileSystemShareTestingSite\\ReadFolderSharedTestingSite", "Files", "\"\"", "\"\"", "[[result]]", "String", "NO", ((string[])(null)));
@@ -238,7 +227,7 @@ this.ReadFolderFileAtLocationNew("2", "UNC", "[[path]]", "\\\\localhost\\FileSys
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "String")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        public virtual void ReadFolderFileAtLocationNew_Variant2()
+        public void ReadFolderFileAtLocationNew_Variant2()
         {
 #line 8
 this.ReadFolderFileAtLocationNew("3", "FTP", "[[path]]", "ftp://DEVOPSPDC.premier.local:1001/FORREADFOLDERTESTING/", "Files", "dev2", "Q/ulw&]", "[[result]]", "String", "NO", ((string[])(null)));
@@ -260,7 +249,7 @@ this.ReadFolderFileAtLocationNew("3", "FTP", "[[path]]", "ftp://DEVOPSPDC.premie
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "String")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        public virtual void ReadFolderFileAtLocationNew_Variant3()
+        public void ReadFolderFileAtLocationNew_Variant3()
         {
 #line 8
 this.ReadFolderFileAtLocationNew("4", "FTPS", "[[path]]", "ftp://DEVOPSPDC.premier.local:1002/FORREADFOLDERTESTING/", "Files", "dev2", "Q/ulw&]", "[[result]]", "String", "NO", ((string[])(null)));
@@ -282,7 +271,7 @@ this.ReadFolderFileAtLocationNew("4", "FTPS", "[[path]]", "ftp://DEVOPSPDC.premi
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "String")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        public virtual void ReadFolderFileAtLocationNew_Variant4()
+        public void ReadFolderFileAtLocationNew_Variant4()
         {
 #line 8
 this.ReadFolderFileAtLocationNew("5", "UNC", "[[path]]", "\\\\localhost\\FileSystemShareTestingSite\\ReadFolderSharedTestingSite", "Folders", "\"\"", "\"\"", "[[result]]", "String", "NO", ((string[])(null)));
@@ -304,7 +293,7 @@ this.ReadFolderFileAtLocationNew("5", "UNC", "[[path]]", "\\\\localhost\\FileSys
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "String")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        public virtual void ReadFolderFileAtLocationNew_Variant5()
+        public void ReadFolderFileAtLocationNew_Variant5()
         {
 #line 8
 this.ReadFolderFileAtLocationNew("4", "FTP", "[[rec(1).a]]", "ftp://DEVOPSPDC.premier.local:1001/", "Folders", "dev2", "Q/ulw&]", "[[result]]", "String", "NO", ((string[])(null)));
@@ -326,7 +315,7 @@ this.ReadFolderFileAtLocationNew("4", "FTP", "[[rec(1).a]]", "ftp://DEVOPSPDC.pr
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "String")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        public virtual void ReadFolderFileAtLocationNew_Variant6()
+        public void ReadFolderFileAtLocationNew_Variant6()
         {
 #line 8
 this.ReadFolderFileAtLocationNew("5", "FTPS", "[[rec(1).a]]", "ftp://DEVOPSPDC.premier.local:1002/", "Folders", "dev2", "Q/ulw&]", "[[result]]", "String", "NO", ((string[])(null)));
@@ -348,7 +337,7 @@ this.ReadFolderFileAtLocationNew("5", "FTPS", "[[rec(1).a]]", "ftp://DEVOPSPDC.p
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "String")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        public virtual void ReadFolderFileAtLocationNew_Variant7()
+        public void ReadFolderFileAtLocationNew_Variant7()
         {
 #line 8
 this.ReadFolderFileAtLocationNew("6", "Local", "[[path]]", "c:\\", "Files & Folders", "\"\"", "\"\"", "[[result]]", "String", "NO", ((string[])(null)));
@@ -370,7 +359,7 @@ this.ReadFolderFileAtLocationNew("6", "Local", "[[path]]", "c:\\", "Files & Fold
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "String")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        public virtual void ReadFolderFileAtLocationNew_Variant8()
+        public void ReadFolderFileAtLocationNew_Variant8()
         {
 #line 8
 this.ReadFolderFileAtLocationNew("7", "UNC", "[[path]]", "\\\\localhost\\FileSystemShareTestingSite\\ReadFolderSharedTestingSite", "Files & Folders", "\"\"", "\"\"", "[[result]]", "String", "NO", ((string[])(null)));
@@ -392,7 +381,7 @@ this.ReadFolderFileAtLocationNew("7", "UNC", "[[path]]", "\\\\localhost\\FileSys
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "String")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        public virtual void ReadFolderFileAtLocationNew_Variant9()
+        public void ReadFolderFileAtLocationNew_Variant9()
         {
 #line 8
 this.ReadFolderFileAtLocationNew("8", "FTP", "[[path]]", "ftp://DEVOPSPDC.premier.local:1001/FORREADFOLDERTESTING/", "Files & Folders", "dev2", "Q/ulw&]", "[[result]]", "String", "NO", ((string[])(null)));
@@ -414,7 +403,7 @@ this.ReadFolderFileAtLocationNew("8", "FTP", "[[path]]", "ftp://DEVOPSPDC.premie
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "String")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        public virtual void ReadFolderFileAtLocationNew_Variant10()
+        public void ReadFolderFileAtLocationNew_Variant10()
         {
 #line 8
 this.ReadFolderFileAtLocationNew("9", "FTPS", "[[path]]", "ftp://DEVOPSPDC.premier.local:1002/FORREADFOLDERTESTING/", "Files & Folders", "dev2", "Q/ulw&]", "[[result]]", "String", "NO", ((string[])(null)));
@@ -436,7 +425,7 @@ this.ReadFolderFileAtLocationNew("9", "FTPS", "[[path]]", "ftp://DEVOPSPDC.premi
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "String")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        public virtual void ReadFolderFileAtLocationNew_Variant11()
+        public void ReadFolderFileAtLocationNew_Variant11()
         {
 #line 8
 this.ReadFolderFileAtLocationNew("10", "Empty_Local_Files", "[[path]]", "c:\\emptydir", "Files", "\"\"", "\"\"", "[[result]]", "String", "NO", ((string[])(null)));
@@ -458,7 +447,7 @@ this.ReadFolderFileAtLocationNew("10", "Empty_Local_Files", "[[path]]", "c:\\emp
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "String")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        public virtual void ReadFolderFileAtLocationNew_Variant12()
+        public void ReadFolderFileAtLocationNew_Variant12()
         {
 #line 8
 this.ReadFolderFileAtLocationNew("11", "Empty_UNC_Files", "[[path]]", "\\\\localhost\\FileSystemShareTestingSite\\ReadFolderSharedTestingSite\\emptydir", "Files", "\"\"", "\"\"", "[[result]]", "String", "NO", ((string[])(null)));
@@ -480,7 +469,7 @@ this.ReadFolderFileAtLocationNew("11", "Empty_UNC_Files", "[[path]]", "\\\\local
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "String")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        public virtual void ReadFolderFileAtLocationNew_Variant13()
+        public void ReadFolderFileAtLocationNew_Variant13()
         {
 #line 8
 this.ReadFolderFileAtLocationNew("12", "Empty_FTP_Files", "[[path]]", "ftp://DEVOPSPDC.premier.local:1001/FORTESTING/emptydir", "Files", "dev2", "Q/ulw&]", "[[result]]", "String", "NO", ((string[])(null)));
@@ -502,7 +491,7 @@ this.ReadFolderFileAtLocationNew("12", "Empty_FTP_Files", "[[path]]", "ftp://DEV
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "String")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        public virtual void ReadFolderFileAtLocationNew_Variant14()
+        public void ReadFolderFileAtLocationNew_Variant14()
         {
 #line 8
 this.ReadFolderFileAtLocationNew("13", "Empty_FTPS_Files", "[[path]]", "ftp://DEVOPSPDC.premier.local:1002/FORTESTING/emptydir", "Files", "dev2", "Q/ulw&]", "[[result]]", "String", "NO", ((string[])(null)));
@@ -524,7 +513,7 @@ this.ReadFolderFileAtLocationNew("13", "Empty_FTPS_Files", "[[path]]", "ftp://DE
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "String")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        public virtual void ReadFolderFileAtLocationNew_Variant15()
+        public void ReadFolderFileAtLocationNew_Variant15()
         {
 #line 8
 this.ReadFolderFileAtLocationNew("14", "Empty_Local_Folders", "[[path]]", "c:\\emptydir", "Folders", "\"\"", "\"\"", "[[result]]", "String", "NO", ((string[])(null)));
@@ -546,7 +535,7 @@ this.ReadFolderFileAtLocationNew("14", "Empty_Local_Folders", "[[path]]", "c:\\e
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "String")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        public virtual void ReadFolderFileAtLocationNew_Variant16()
+        public void ReadFolderFileAtLocationNew_Variant16()
         {
 #line 8
 this.ReadFolderFileAtLocationNew("15", "Empty_UNC_Folders", "[[path]]", "\\\\localhost\\FileSystemShareTestingSite\\ReadFolderSharedTestingSite\\emptydir", "Folders", "\"\"", "\"\"", "[[result]]", "String", "NO", ((string[])(null)));
@@ -568,7 +557,7 @@ this.ReadFolderFileAtLocationNew("15", "Empty_UNC_Folders", "[[path]]", "\\\\loc
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "String")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        public virtual void ReadFolderFileAtLocationNew_Variant17()
+        public void ReadFolderFileAtLocationNew_Variant17()
         {
 #line 8
 this.ReadFolderFileAtLocationNew("16", "Empty_FTP_Folders", "[[path]]", "ftp://DEVOPSPDC.premier.local:1001/FORTESTING/emptydir", "Folders", "dev2", "Q/ulw&]", "[[result]]", "String", "NO", ((string[])(null)));
@@ -590,7 +579,7 @@ this.ReadFolderFileAtLocationNew("16", "Empty_FTP_Folders", "[[path]]", "ftp://D
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "String")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        public virtual void ReadFolderFileAtLocationNew_Variant18()
+        public void ReadFolderFileAtLocationNew_Variant18()
         {
 #line 8
 this.ReadFolderFileAtLocationNew("17", "Empty_FTPS_Folders", "[[path]]", "ftp://DEVOPSPDC.premier.local:1002/FORTESTING/emptydir", "Folders", "dev2", "Q/ulw&]", "[[result]]", "String", "NO", ((string[])(null)));
@@ -612,7 +601,7 @@ this.ReadFolderFileAtLocationNew("17", "Empty_FTPS_Folders", "[[path]]", "ftp://
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "String")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        public virtual void ReadFolderFileAtLocationNew_Variant19()
+        public void ReadFolderFileAtLocationNew_Variant19()
         {
 #line 8
 this.ReadFolderFileAtLocationNew("18", "Empty_Local_Files_Folders", "[[path]]", "c:\\emptydir", "Files & Folders", "\"\"", "\"\"", "[[result]]", "String", "NO", ((string[])(null)));
@@ -634,7 +623,7 @@ this.ReadFolderFileAtLocationNew("18", "Empty_Local_Files_Folders", "[[path]]", 
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "String")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        public virtual void ReadFolderFileAtLocationNew_Variant20()
+        public void ReadFolderFileAtLocationNew_Variant20()
         {
 #line 8
 this.ReadFolderFileAtLocationNew("19", "Empty_UNC_Files_Folders", "[[path]]", "\\\\localhost\\FileSystemShareTestingSite\\ReadFolderSharedTestingSite\\emptydir", "Files & Folders", "\"\"", "\"\"", "[[result]]", "String", "NO", ((string[])(null)));
@@ -656,7 +645,7 @@ this.ReadFolderFileAtLocationNew("19", "Empty_UNC_Files_Folders", "[[path]]", "\
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "String")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        public virtual void ReadFolderFileAtLocationNew_Variant21()
+        public void ReadFolderFileAtLocationNew_Variant21()
         {
 #line 8
 this.ReadFolderFileAtLocationNew("20", "Empty_FTP_Files_Folders", "[[path]]", "ftp://DEVOPSPDC.premier.local:1001/FORTESTING/emptydir", "Files & Folders", "dev2", "Q/ulw&]", "[[result]]", "String", "NO", ((string[])(null)));
@@ -678,7 +667,7 @@ this.ReadFolderFileAtLocationNew("20", "Empty_FTP_Files_Folders", "[[path]]", "f
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "String")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        public virtual void ReadFolderFileAtLocationNew_Variant22()
+        public void ReadFolderFileAtLocationNew_Variant22()
         {
 #line 8
 this.ReadFolderFileAtLocationNew("21", "Empty_FTPS_Files_Folders", "[[path]]", "ftp://DEVOPSPDC.premier.local:1002/FORTESTING/emptydir", "Files & Folders", "dev2", "Q/ulw&]", "[[result]]", "String", "NO", ((string[])(null)));
@@ -703,21 +692,11 @@ this.ReadFolderFileAtLocationNew("21", "Empty_FTPS_Files_Folders", "[[path]]", "
             argumentsOfScenario.Add("ValidationResult", validationResult);
             argumentsOfScenario.Add("DesignValidation", designValidation);
             argumentsOfScenario.Add("OutputError", outputError);
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Read Folder file validation new", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Read Folder file validation new", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 51
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -814,7 +793,7 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "False")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
-        public virtual void ReadFolderFileValidationNew_1()
+        public void ReadFolderFileValidationNew_1()
         {
 #line 51
 this.ReadFolderFileValidationNew("1", "Local Files", "[[sourcePath]]", "\"\"", "\"\"", "c:\\", "\"\"", "\"\"", "[[result]]", "String", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
@@ -840,7 +819,7 @@ this.ReadFolderFileValidationNew("1", "Local Files", "[[sourcePath]]", "\"\"", "
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "False")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
-        public virtual void ReadFolderFileValidationNew_2()
+        public void ReadFolderFileValidationNew_2()
         {
 #line 51
 this.ReadFolderFileValidationNew("2", "Local Files", "[[sourcePath]]", "\"\"", "\"\"", "c:\\", "\"\"", "\"\"", "[[result]]", "String", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
@@ -866,7 +845,7 @@ this.ReadFolderFileValidationNew("2", "Local Files", "[[sourcePath]]", "\"\"", "
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "False")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
-        public virtual void ReadFolderFileValidationNew_3()
+        public void ReadFolderFileValidationNew_3()
         {
 #line 51
 this.ReadFolderFileValidationNew("3", "Local Files", "[[sourcePath]]", "\"\"", "\"\"", "c:\\", "\"\"", "\"\"", "[[result]]", "String", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
@@ -892,7 +871,7 @@ this.ReadFolderFileValidationNew("3", "Local Files", "[[sourcePath]]", "\"\"", "
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "False")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
-        public virtual void ReadFolderFileValidationNew_4()
+        public void ReadFolderFileValidationNew_4()
         {
 #line 51
 this.ReadFolderFileValidationNew("4", "Local Files", "[[a]]", "c:\\", "\"\"", "c:\\", "\"\"", "\"\"", "[[result]]", "String", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
@@ -918,7 +897,7 @@ this.ReadFolderFileValidationNew("4", "Local Files", "[[a]]", "c:\\", "\"\"", "c
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "False")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
-        public virtual void ReadFolderFileValidationNew_5()
+        public void ReadFolderFileValidationNew_5()
         {
 #line 51
 this.ReadFolderFileValidationNew("5", "Local Files", "[[a]][[b]]", "c", ":\\", "c:\\", "\"\"", "\"\"", "[[result]]", "String", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
@@ -944,7 +923,7 @@ this.ReadFolderFileValidationNew("5", "Local Files", "[[a]][[b]]", "c", ":\\", "
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "False")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
-        public virtual void ReadFolderFileValidationNew_6()
+        public void ReadFolderFileValidationNew_6()
         {
 #line 51
 this.ReadFolderFileValidationNew("6", "Local Files", "[[rec(1).a]]", "c:\\", "", "c:\\", "\"\"", "\"\"", "[[result]]", "String", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
@@ -970,7 +949,7 @@ this.ReadFolderFileValidationNew("6", "Local Files", "[[rec(1).a]]", "c:\\", "",
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "False")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
-        public virtual void ReadFolderFileValidationNew_7()
+        public void ReadFolderFileValidationNew_7()
         {
 #line 51
 this.ReadFolderFileValidationNew("7", "Local Files", "[[a]][[b]]", "ftp://SVRPDC.premier.local:", ":1001/FORREADFOLDERTESTING/", "ftp://DEVOPSPDC.premier.local:1001/FOREADFOLDERTTESTING/", "dev2", "Q/ulw&]", "[[result]]", "String", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
@@ -996,7 +975,7 @@ this.ReadFolderFileValidationNew("7", "Local Files", "[[a]][[b]]", "ftp://SVRPDC
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "False")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
-        public virtual void ReadFolderFileValidationNew_8()
+        public void ReadFolderFileValidationNew_8()
         {
 #line 51
 this.ReadFolderFileValidationNew("8", "Local Files", "[[a]]\\[[b]]", "c:", "\"\"", "c:\\", "\"\"", "\"\"", "[[result]]", "String", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
@@ -1022,7 +1001,7 @@ this.ReadFolderFileValidationNew("8", "Local Files", "[[a]]\\[[b]]", "c:", "\"\"
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "False")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
-        public virtual void ReadFolderFileValidationNew_9()
+        public void ReadFolderFileValidationNew_9()
         {
 #line 51
 this.ReadFolderFileValidationNew("9", "Local Files", "[[a]]:[[b]]", "c", "\\", "c:\\", "\"\"", "\"\"", "[[result]]", "String", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
@@ -1048,7 +1027,7 @@ this.ReadFolderFileValidationNew("9", "Local Files", "[[a]]:[[b]]", "c", "\\", "
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "False")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
-        public virtual void ReadFolderFileValidationNew_11()
+        public void ReadFolderFileValidationNew_11()
         {
 #line 51
 this.ReadFolderFileValidationNew("11", "Local Files", "[[rec(1).a]][[rec(2).a]]", "c", ":\\", "c:\\", "\"\"", "\"\"", "[[result]]", "String", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
@@ -1074,7 +1053,7 @@ this.ReadFolderFileValidationNew("11", "Local Files", "[[rec(1).a]][[rec(2).a]]"
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "False")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
-        public virtual void ReadFolderFileValidationNew_13()
+        public void ReadFolderFileValidationNew_13()
         {
 #line 51
 this.ReadFolderFileValidationNew("13", "Local Files", "[[rec(1).a]][[rec(2).a]]", "c", ":\\", "c:\\", "\"\"", "\"\"", "[[result]]", "String", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
@@ -1100,7 +1079,7 @@ this.ReadFolderFileValidationNew("13", "Local Files", "[[rec(1).a]][[rec(2).a]]"
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "False")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
-        public virtual void ReadFolderFileValidationNew_14()
+        public void ReadFolderFileValidationNew_14()
         {
 #line 51
 this.ReadFolderFileValidationNew("14", "Local Files", "[[rec(1).a]]:[[rec(2).a]]", "c", "\\", "c:\\", "\"\"", "\"\"", "[[result]]", "String", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
@@ -1126,7 +1105,7 @@ this.ReadFolderFileValidationNew("14", "Local Files", "[[rec(1).a]]:[[rec(2).a]]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "False")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
-        public virtual void ReadFolderFileValidationNew_16()
+        public void ReadFolderFileValidationNew_16()
         {
 #line 51
 this.ReadFolderFileValidationNew("16", "Local Files", "c:\\copyfile0.txt", "\"\"", "\"\"", "", "\"\"", "\"\"", "[[result]]", "String", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
@@ -1152,7 +1131,7 @@ this.ReadFolderFileValidationNew("16", "Local Files", "c:\\copyfile0.txt", "\"\"
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "False")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
-        public virtual void ReadFolderFileValidationNew_17()
+        public void ReadFolderFileValidationNew_17()
         {
 #line 51
 this.ReadFolderFileValidationNew("17", "Local Files", "[[rec(1).a]]", "c:\\", "\"\"", "c:\\", "\"\"", "\"\"", "[[result]]", "String", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
@@ -1178,7 +1157,7 @@ this.ReadFolderFileValidationNew("17", "Local Files", "[[rec(1).a]]", "c:\\", "\
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Directory - Variable name [[a&]] contains invalid character(s)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Directory - Variable name [[a&]] contains invalid character(s)")]
-        public virtual void ReadFolderFileValidationNew_18()
+        public void ReadFolderFileValidationNew_18()
         {
 #line 51
 this.ReadFolderFileValidationNew("18", "Local Files", "[[a&]]", "\"\"", "\"\"", "", "\"\"", "\"\"", "[[result]]", "\"\"", "AN", "True", "Directory - Variable name [[a&]] contains invalid character(s)", "1.Directory - Variable name [[a&]] contains invalid character(s)", ((string[])(null)));
@@ -1204,7 +1183,7 @@ this.ReadFolderFileValidationNew("18", "Local Files", "[[a&]]", "\"\"", "\"\"", 
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Directory - Recordset index (**) contains invalid character(s)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Directory - Recordset index (**) contains invalid character(s)")]
-        public virtual void ReadFolderFileValidationNew_19()
+        public void ReadFolderFileValidationNew_19()
         {
 #line 51
 this.ReadFolderFileValidationNew("19", "Local Files", "[[rec(**).a]]", "\"\"", "\"\"", "", "\"\"", "\"\"", "[[result]]", "\"\"", "AN", "True", "Directory - Recordset index (**) contains invalid character(s)", "1.Directory - Recordset index (**) contains invalid character(s)", ((string[])(null)));
@@ -1230,7 +1209,7 @@ this.ReadFolderFileValidationNew("19", "Local Files", "[[rec(**).a]]", "\"\"", "
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Please supply a valid File or Folder")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Please supply a valid File or Folder")]
-        public virtual void ReadFolderFileValidationNew_20()
+        public void ReadFolderFileValidationNew_20()
         {
 #line 51
 this.ReadFolderFileValidationNew("20", "Local Files", "c(*()", "\"\"", "\"\"", "", "\"\"", "\"\"", "[[result]]", "\"\"", "AN", "True", "Please supply a valid File or Folder", "1.Please supply a valid File or Folder", ((string[])(null)));
@@ -1256,7 +1235,7 @@ this.ReadFolderFileValidationNew("20", "Local Files", "c(*()", "\"\"", "\"\"", "
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "False")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Directory not found [ C:\\\\\\gvh ]")]
-        public virtual void ReadFolderFileValidationNew_21()
+        public void ReadFolderFileValidationNew_21()
         {
 #line 51
 this.ReadFolderFileValidationNew("21", "Local Files", "[[a]]", "C\\\\\\gvh", "\"\"", "c\\", "\"\"", "\"\"", "\"\"", "\"\"", "AN", "False", "\"\"", "1.Directory not found [ C:\\\\\\gvh ]", ((string[])(null)));
@@ -1282,7 +1261,7 @@ this.ReadFolderFileValidationNew("21", "Local Files", "[[a]]", "C\\\\\\gvh", "\"
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Directory - Variable name [[index$x]] contains invalid character(s)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Directory - Variable name [[index$x]] contains invalid character(s)")]
-        public virtual void ReadFolderFileValidationNew_22()
+        public void ReadFolderFileValidationNew_22()
         {
 #line 51
 this.ReadFolderFileValidationNew("22", "Local Files", "[[rec([[inde$x]]).a]]", "\"\"", "\"\"", "", "\"\"", "\"\"", "[[result]]", "\"\"", "AN", "True", "Directory - Variable name [[index$x]] contains invalid character(s)", "1.Directory - Variable name [[index$x]] contains invalid character(s)", ((string[])(null)));
@@ -1308,7 +1287,7 @@ this.ReadFolderFileValidationNew("22", "Local Files", "[[rec([[inde$x]]).a]]", "
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "False")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.No Value assigned for [[a]]")]
-        public virtual void ReadFolderFileValidationNew_23()
+        public void ReadFolderFileValidationNew_23()
         {
 #line 51
 this.ReadFolderFileValidationNew("23", "Local Files", "[[sourcePath]]", "\"\"", "\"\"", "", "\"\"", "\"\"", "[[result]]", "\"\"", "AN", "False", "\"\"", "1.No Value assigned for [[a]]", ((string[])(null)));
@@ -1334,7 +1313,7 @@ this.ReadFolderFileValidationNew("23", "Local Files", "[[sourcePath]]", "\"\"", 
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Username - Variable name [[$#]] contains invalid character(s)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Username - Variable name [[$#]] contains invalid character(s)")]
-        public virtual void ReadFolderFileValidationNew_24()
+        public void ReadFolderFileValidationNew_24()
         {
 #line 51
 this.ReadFolderFileValidationNew("24", "Local Files", "[[sourcePath]]", "\"\"", "\"\"", "c:\\", "[[$#]]", "String", "[[result]]", "\"\"", "AN", "True", "Username - Variable name [[$#]] contains invalid character(s)", "1.Username - Variable name [[$#]] contains invalid character(s)", ((string[])(null)));
@@ -1360,7 +1339,7 @@ this.ReadFolderFileValidationNew("24", "Local Files", "[[sourcePath]]", "\"\"", 
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "False")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.No Value assigned for [[a]] 2.1.No Value assigned for [[b]]")]
-        public virtual void ReadFolderFileValidationNew_25()
+        public void ReadFolderFileValidationNew_25()
         {
 #line 51
 this.ReadFolderFileValidationNew("25", "Local Files", "[[sourcePath]]", "\"\"", "\"\"", "c:\\", "[[a]]\\[[b]]", "String", "[[result]]", "\"\"", "AN", "False", "\"\"", "1.No Value assigned for [[a]] 2.1.No Value assigned for [[b]]", ((string[])(null)));
@@ -1386,7 +1365,7 @@ this.ReadFolderFileValidationNew("25", "Local Files", "[[sourcePath]]", "\"\"", 
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "False")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.No Value assigned for [[index]]")]
-        public virtual void ReadFolderFileValidationNew_26()
+        public void ReadFolderFileValidationNew_26()
         {
 #line 51
 this.ReadFolderFileValidationNew("26", "Local Files", "[[sourcePath]]", "\"\"", "\"\"", "c:\\", "[[rec([[index]]).a]]", "String", "[[result]]", "\"\"", "AN", "False", "\"\"", "1.No Value assigned for [[index]]", ((string[])(null)));
@@ -1412,7 +1391,7 @@ this.ReadFolderFileValidationNew("26", "Local Files", "[[sourcePath]]", "\"\"", 
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Username - Recordset name [[indexx&]] contains invalid character(s)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "Username - Recordset name [[indexx&]] contains invalid character(s)")]
-        public virtual void ReadFolderFileValidationNew_27()
+        public void ReadFolderFileValidationNew_27()
         {
 #line 51
 this.ReadFolderFileValidationNew("27", "Local Files", "[[sourcePath]].txt", "\"\"", "\"\"", "c:\\", "[[rec([[index&]]).a]]", "String", "[[result]]", "\"\"", "AN", "True", "Username - Recordset name [[indexx&]] contains invalid character(s)", "Username - Recordset name [[indexx&]] contains invalid character(s)", ((string[])(null)));
@@ -1438,7 +1417,7 @@ this.ReadFolderFileValidationNew("27", "Local Files", "[[sourcePath]].txt", "\"\
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Username - Invalid expression: opening and closing brackets don\"t match")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Username - Invalid expression: opening and closing brackets don\"t match")]
-        public virtual void ReadFolderFileValidationNew_28()
+        public void ReadFolderFileValidationNew_28()
         {
 #line 51
 this.ReadFolderFileValidationNew("28", "Local Files", "[[sourcePath]].txt", "\"\"", "\"\"", "c:\\", "[[a]]*]]", "String", "[[result]]", "\"\"", "AN", "True", "Username - Invalid expression: opening and closing brackets don\"t match", "1.Username - Invalid expression: opening and closing brackets don\"t match", ((string[])(null)));
@@ -1464,7 +1443,7 @@ this.ReadFolderFileValidationNew("28", "Local Files", "[[sourcePath]].txt", "\"\
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Result - Invalid expression: opening and closing brackets don\"t match")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Result - Invalid expression: opening and closing brackets don\"t match")]
-        public virtual void ReadFolderFileValidationNew_30()
+        public void ReadFolderFileValidationNew_30()
         {
 #line 51
 this.ReadFolderFileValidationNew("30", "Local Files", "[[sourcePath]]", "\"\"", "\"\"", "c:\\", "\"\"", "[[a]]*]]", "\"\"", "\"\"", "AN", "True", "Result - Invalid expression: opening and closing brackets don\"t match", "1.Result - Invalid expression: opening and closing brackets don\"t match", ((string[])(null)));
@@ -1490,7 +1469,7 @@ this.ReadFolderFileValidationNew("30", "Local Files", "[[sourcePath]]", "\"\"", 
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Result - Variable name [[var@]] contains invalid character(s)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Result - Variable name [[var@]] contains invalid character(s)")]
-        public virtual void ReadFolderFileValidationNew_31()
+        public void ReadFolderFileValidationNew_31()
         {
 #line 51
 this.ReadFolderFileValidationNew("31", "Local Files", "[[sourcePath]]", "\"\"", "\"\"", "c:\\", "\"\"", "\"\"", "[[var@]]", "\"\"", "AN", "True", "Result - Variable name [[var@]] contains invalid character(s)", "1.Result - Variable name [[var@]] contains invalid character(s)", ((string[])(null)));
@@ -1516,7 +1495,7 @@ this.ReadFolderFileValidationNew("31", "Local Files", "[[sourcePath]]", "\"\"", 
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Result - Invalid expression: opening and closing brackets don\"t match")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Result - Invalid expression: opening and closing brackets don\"t match")]
-        public virtual void ReadFolderFileValidationNew_32()
+        public void ReadFolderFileValidationNew_32()
         {
 #line 51
 this.ReadFolderFileValidationNew("32", "Local Files", "[[sourcePath]]", "\"\"", "\"\"", "c:\\", "\"\"", "[[var]]00]]", "[[var]]00]]", "\"\"", "AN", "True", "Result - Invalid expression: opening and closing brackets don\"t match", "1.Result - Invalid expression: opening and closing brackets don\"t match", ((string[])(null)));
@@ -1542,7 +1521,7 @@ this.ReadFolderFileValidationNew("32", "Local Files", "[[sourcePath]]", "\"\"", 
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Result - Variable name [[var@]] contains invalid character(s)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Result - Variable name [[var@]] contains invalid character(s)")]
-        public virtual void ReadFolderFileValidationNew_33()
+        public void ReadFolderFileValidationNew_33()
         {
 #line 51
 this.ReadFolderFileValidationNew("33", "Local Files", "[[sourcePath]]", "\"\"", "\"\"", "c:\\", "\"\"", "\"\"", "[[var@]]", "\"\"", "AN", "True", "Result - Variable name [[var@]] contains invalid character(s)", "1.Result - Variable name [[var@]] contains invalid character(s)", ((string[])(null)));
@@ -1568,7 +1547,7 @@ this.ReadFolderFileValidationNew("33", "Local Files", "[[sourcePath]]", "\"\"", 
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Result - Invalid Region [[var[[a]]]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Result - Invalid Region [[var[[a]]]]")]
-        public virtual void ReadFolderFileValidationNew_34()
+        public void ReadFolderFileValidationNew_34()
         {
 #line 51
 this.ReadFolderFileValidationNew("34", "Local Files", "[[sourcePath]]", "\"\"", "\"\"", "c:\\", "\"\"", "\"\"", "[[var[[a]]]]", "\"\"", "AN", "True", "Result - Invalid Region [[var[[a]]]]", "1.Result - Invalid Region [[var[[a]]]]", ((string[])(null)));
@@ -1594,7 +1573,7 @@ this.ReadFolderFileValidationNew("34", "Local Files", "[[sourcePath]]", "\"\"", 
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Result - Variable name [[var.a]]contains invalid character(s)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Result - Variable name [[var.a]] contains invalid character(s)")]
-        public virtual void ReadFolderFileValidationNew_35()
+        public void ReadFolderFileValidationNew_35()
         {
 #line 51
 this.ReadFolderFileValidationNew("35", "Local Files", "[[sourcePath]]", "\"\"", "\"\"", "c:\\", "\"\"", "\"\"", "[[var.a]]", "\"\"", "AN", "True", "Result - Variable name [[var.a]]contains invalid character(s)", "1.Result - Variable name [[var.a]] contains invalid character(s)", ((string[])(null)));
@@ -1620,7 +1599,7 @@ this.ReadFolderFileValidationNew("35", "Local Files", "[[sourcePath]]", "\"\"", 
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Result - Variable name [[@var]] contains invalid character(s)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Result - Variable name [[@var]] contains invalid character(s)")]
-        public virtual void ReadFolderFileValidationNew_36()
+        public void ReadFolderFileValidationNew_36()
         {
 #line 51
 this.ReadFolderFileValidationNew("36", "Local Files", "[[sourcePath]]", "\"\"", "\"\"", "c:\\", "\"\"", "\"\"", "[[#var]]", "\"\"", "AN", "True", "Result - Variable name [[@var]] contains invalid character(s)", "1.Result - Variable name [[@var]] contains invalid character(s)", ((string[])(null)));
@@ -1646,7 +1625,7 @@ this.ReadFolderFileValidationNew("36", "Local Files", "[[sourcePath]]", "\"\"", 
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Result - Variable name [[var 1]] contains invalid character(s)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Result - Variable name [[var 1]] contains invalid character(s)")]
-        public virtual void ReadFolderFileValidationNew_37()
+        public void ReadFolderFileValidationNew_37()
         {
 #line 51
 this.ReadFolderFileValidationNew("37", "Local Files", "[[sourcePath]]", "\"\"", "\"\"", "c:\\", "\"\"", "\"\"", "[[var 1]]", "\"\"", "AN", "True", "Result - Variable name [[var 1]] contains invalid character(s)", "1.Result - Variable name [[var 1]] contains invalid character(s)", ((string[])(null)));
@@ -1672,7 +1651,7 @@ this.ReadFolderFileValidationNew("37", "Local Files", "[[sourcePath]]", "\"\"", 
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Result - Invalid Region [[var[[a]]]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Result - Invalid Region [[var[[a]]]]")]
-        public virtual void ReadFolderFileValidationNew_38()
+        public void ReadFolderFileValidationNew_38()
         {
 #line 51
 this.ReadFolderFileValidationNew("38", "Local Files", "[[sourcePath]]", "\"\"", "\"\"", "c:\\", "\"\"", "\"\"", "[[rec(1).[[rec().1]]]]", "\"\"", "AN", "True", "Result - Invalid Region [[var[[a]]]]", "1.Result - Invalid Region [[var[[a]]]]", ((string[])(null)));
@@ -1698,7 +1677,7 @@ this.ReadFolderFileValidationNew("38", "Local Files", "[[sourcePath]]", "\"\"", 
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Result - Recordset index [[@]] contains invalid character(s)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Result - Recordset index [[@]] contains invalid character(s)")]
-        public virtual void ReadFolderFileValidationNew_39()
+        public void ReadFolderFileValidationNew_39()
         {
 #line 51
 this.ReadFolderFileValidationNew("39", "Local Files", "[[sourcePath]]", "\"\"", "\"\"", "c:\\", "\"\"", "\"\"", "[[rec(@).a]]", "\"\"", "AN", "True", "Result - Recordset index [[@]] contains invalid character(s)", "1.Result - Recordset index [[@]] contains invalid character(s)", ((string[])(null)));
@@ -1724,7 +1703,7 @@ this.ReadFolderFileValidationNew("39", "Local Files", "[[sourcePath]]", "\"\"", 
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Result - Recordset name [[rec\"()\"]] contains invalid character(s)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Result - Recordset name [[rec\"()\"]] contains invalid character(s)")]
-        public virtual void ReadFolderFileValidationNew_40()
+        public void ReadFolderFileValidationNew_40()
         {
 #line 51
 this.ReadFolderFileValidationNew("40", "Local Files", "[[sourcePath]]", "\"\"", "\"\"", "c:\\", "\"\"", "\"\"", "[[rec\"()\".a]]", "\"\"", "AN", "True", "Result - Recordset name [[rec\"()\"]] contains invalid character(s)", "1.Result - Recordset name [[rec\"()\"]] contains invalid character(s)", ((string[])(null)));
@@ -1750,7 +1729,7 @@ this.ReadFolderFileValidationNew("40", "Local Files", "[[sourcePath]]", "\"\"", 
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Result - Invalid Region [[rec([[[[b]]]]).a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Result - Invalid Region [[rec([[[[b]]]]).a]]")]
-        public virtual void ReadFolderFileValidationNew_41()
+        public void ReadFolderFileValidationNew_41()
         {
 #line 51
 this.ReadFolderFileValidationNew("41", "Local Files", "[[sourcePath]]", "\"\"", "\"\"", "c:\\", "\"\"", "[[rec([[[[b]]]]).a]]", "[[rec([[[[b]]]]).a]]", "\"\"", "AN", "True", "Result - Invalid Region [[rec([[[[b]]]]).a]]", "1.Result - Invalid Region [[rec([[[[b]]]]).a]]", ((string[])(null)));
@@ -1776,7 +1755,7 @@ this.ReadFolderFileValidationNew("41", "Local Files", "[[sourcePath]]", "\"\"", 
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Directory - Invalid expression: opening and closing brackets don\"t match")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Directory - Invalid expression: opening and closing brackets don\"t match")]
-        public virtual void ReadFolderFileValidationNew_42()
+        public void ReadFolderFileValidationNew_42()
         {
 #line 51
 this.ReadFolderFileValidationNew("42", "Local Files", "[[a]", "\"\"", "\"\"", "", "\"\"", "\"\"", "[[result]]", "\"\"", "AN", "True", "Directory - Invalid expression: opening and closing brackets don\"t match", "1.Directory - Invalid expression: opening and closing brackets don\"t match", ((string[])(null)));
@@ -1802,7 +1781,7 @@ this.ReadFolderFileValidationNew("42", "Local Files", "[[a]", "\"\"", "\"\"", ""
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Directory - [[rec]] does not exist in your variable list")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Directory - [[rec]] does not exist in your variable list")]
-        public virtual void ReadFolderFileValidationNew_43()
+        public void ReadFolderFileValidationNew_43()
         {
 #line 51
 this.ReadFolderFileValidationNew("43", "Local Files", "[[rec]", "\"\"", "\"\"", "", "\"\"", "\"\"", "[[result]]", "\"\"", "AN", "True", "Directory - [[rec]] does not exist in your variable list", "1.Directory - [[rec]] does not exist in your variable list", ((string[])(null)));
@@ -1828,7 +1807,7 @@ this.ReadFolderFileValidationNew("43", "Local Files", "[[rec]", "\"\"", "\"\"", 
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Password cannot be empty or only white space")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Password cannot be empty or only white space")]
-        public virtual void ReadFolderFileValidationNew_44()
+        public void ReadFolderFileValidationNew_44()
         {
 #line 51
 this.ReadFolderFileValidationNew("44", "Local Files", "[[sourcePath]]", "\"\"", "\"\"\"", "c:\\", "Test", "\"\"", "[[result]]", "\"\"", "AN", "True", "Password cannot be empty or only white space", "1.Password cannot be empty or only white space", ((string[])(null)));
@@ -1856,7 +1835,7 @@ this.ReadFolderFileValidationNew("44", "Local Files", "[[sourcePath]]", "\"\"", 
             " name [[var@]] contains invalid character(s)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Username - Variable name [[$#]] contains invalid character(s)  2.Result - Varia" +
             "ble name [[var@]] contains invalid character(s)")]
-        public virtual void ReadFolderFileValidationNew_45()
+        public void ReadFolderFileValidationNew_45()
         {
 #line 51
 this.ReadFolderFileValidationNew("45", "Local Files", "[[var@]]", "\"\"", "\"\"", "", "[[var@]]", "String", "[[var@]]", "\"\"", "AN", "True", "Username - Variable name [[$#]] contains invalid character(s)   Result - Variable" +
@@ -1878,21 +1857,11 @@ this.ReadFolderFileValidationNew("45", "Local Files", "[[var@]]", "\"\"", "\"\""
             argumentsOfScenario.Add("password", password);
             argumentsOfScenario.Add("resultVar", resultVar);
             argumentsOfScenario.Add("result", result);
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Read Folder file at location with invalid directories new", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Read Folder file at location with invalid directories new", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 117
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -1961,7 +1930,7 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "")]
-        public virtual void ReadFolderFileAtLocationWithInvalidDirectoriesNew_1()
+        public void ReadFolderFileAtLocationWithInvalidDirectoriesNew_1()
         {
 #line 117
 this.ReadFolderFileAtLocationWithInvalidDirectoriesNew("1", "Local Files", "4234", "4234", "Files", "\"\"", "\"\"", "[[result]]", "", ((string[])(null)));
@@ -1982,7 +1951,7 @@ this.ReadFolderFileAtLocationWithInvalidDirectoriesNew("1", "Local Files", "4234
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "")]
-        public virtual void ReadFolderFileAtLocationWithInvalidDirectoriesNew_2()
+        public void ReadFolderFileAtLocationWithInvalidDirectoriesNew_2()
         {
 #line 117
 this.ReadFolderFileAtLocationWithInvalidDirectoriesNew("2", "UNC", "[[var]]", "", "Folder", "\"\"", "\"\"", "[[result]]", "", ((string[])(null)));
@@ -2003,7 +1972,7 @@ this.ReadFolderFileAtLocationWithInvalidDirectoriesNew("2", "UNC", "[[var]]", ""
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "")]
-        public virtual void ReadFolderFileAtLocationWithInvalidDirectoriesNew_3()
+        public void ReadFolderFileAtLocationWithInvalidDirectoriesNew_3()
         {
 #line 117
 this.ReadFolderFileAtLocationWithInvalidDirectoriesNew("3", "FTP", "[[variable]]", "\"\"", "Files", "\"\"", "\"\"", "[[result]]", "", ((string[])(null)));
