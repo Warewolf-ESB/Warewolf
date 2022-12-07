@@ -38,9 +38,9 @@
     <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
-  <!--<ItemGroup>
+  <ItemGroup>
     <Reference Include="System" />
-  </ItemGroup>-->
+  </ItemGroup>
   <ItemGroup>
     <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
       <Link>Properties\AssemblyCommonInfo.cs</Link>

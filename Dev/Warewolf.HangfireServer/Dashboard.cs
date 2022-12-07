@@ -10,20 +10,31 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using Hangfire;
+using Hangfire.SqlServer;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace HangfireServer
 {
     public class Dashboard
     {
+        WebApplicationBuilder _builder = null;   
+        public Dashboard()
+        {
+            _builder = WebApplication.CreateBuilder();
+        }
+
+        public IServiceCollection GetServices()
+        {
+            return _builder.Services;
+        }
+
         [ExcludeFromCodeCoverage]
         public void Start(string startEndPoint)
         {
-            var builder = WebApplication.CreateBuilder();
-
             if (Dev2.Common.Config.Persistence.UseAsServer)
             {
-                builder.Services.AddHangfireServer(provider => new BackgroundJobServerOptions
+                _builder.Services.AddHangfireServer(provider => new BackgroundJobServerOptions
                 {
                     ServerName = Dev2.Common.Config.Persistence.ServerName,
                     ServerTimeout = TimeSpan.FromMinutes(10),
@@ -31,9 +42,9 @@ namespace HangfireServer
                 });
             }
             else
-                builder.Services.AddHangfireServer();
+                _builder.Services.AddHangfireServer();
 
-            var app = builder.Build();
+            var app = _builder.Build();
 
             app.UseHangfireDashboard("/" + Dev2.Common.Config.Persistence.DashboardName, new DashboardOptions()
             {

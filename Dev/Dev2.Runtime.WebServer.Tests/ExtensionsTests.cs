@@ -159,17 +159,19 @@ namespace Dev2.Runtime.WebServer.Tests
             var routeValues = new RouteValueDictionary();
             routeValues.Add("action", actionName);
 
-            var defaultPath = "/content/site.css";
+            var defaultPath = "http://localhost:8080/content/site.css";
             if (!string.IsNullOrEmpty(actionName))
-                defaultPath = string.Format("/services/{0}", actionName);
+                defaultPath = string.Format("http://localhost:8080/services/{0}", actionName);
+
+            var uri = new Uri(defaultPath);
 
             var headers = new HeaderDictionary();
             headers.Add(new KeyValuePair<string, StringValues>("accept", new StringValues("all")));
             var request = new Mock<HttpRequest>();
             request.Setup(r => r.RouteValues).Returns(routeValues);
-            request.Setup(r => r.Scheme).Returns("http");
-            request.Setup(r => r.Host).Returns(new HostString("localhost", 8080));
-            request.Setup(r => r.Path).Returns(defaultPath);
+            request.Setup(r => r.Scheme).Returns(uri.Scheme);
+            request.Setup(r => r.Host).Returns(new HostString(uri.Host, uri.Port));
+            request.Setup(r => r.Path).Returns(uri.AbsolutePath);
             request.Setup(r => r.Method).Returns("Get");
             request.Setup(r => r.Body).Returns(new Mock<Stream>().Object);
             request.Setup(r => r.Headers).Returns(headers);
@@ -190,8 +192,10 @@ namespace Dev2.Runtime.WebServer.Tests
             contextFeatures.Set(new HttpRequestMessageFeature(httpContext.Object));
             httpContext.Setup(ad => ad.Features).Returns(contextFeatures);
 
-            
-            return new ActionContext(httpContext.Object, new RouteData(routeValues), new ActionDescriptor());
+            var actionDescriptor = new Mock<ActionDescriptor>();
+            actionDescriptor.Setup(ad => ad.DisplayName).Returns(actionName);
+
+            return new ActionContext(httpContext.Object, new Microsoft.AspNetCore.Routing.RouteData(routeValues), actionDescriptor.Object);
         }
 
         public static string GetResponse(HttpResponseMessage response)
