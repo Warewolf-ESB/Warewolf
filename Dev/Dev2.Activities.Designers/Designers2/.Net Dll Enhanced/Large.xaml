@@ -8,10 +8,10 @@
                                xmlns:netDll="clr-namespace:Dev2.Activities.Designers2.Net_Dll_Enhanced"
                                xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
                                xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
-                               xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+                               xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
                                xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
                                xmlns:actionRegion="clr-namespace:Dev2.Activities.Designers2.Core.ActionRegion"
-                               xmlns:fa="http://schemas.fontawesome.io/icons/"
+                               xmlns:fa="http://schemas.fontawesome.com/icons/fonts"
                                xmlns:controls="clr-namespace:Dev2.Activities.Designers2.Core.Controls"
                                xmlns:common="clr-namespace:System.Data.Common;assembly=System.Data"
                                xmlns:to="clr-namespace:Dev2.TO;assembly=Dev2.Activities"
@@ -178,7 +178,7 @@
 											                IsEnabled="{Binding IsDeleteActionEnabled}"
 											                Style="{StaticResource ButtonDeleteActionTransparentStyle}" >
                                                         <Button.Content>
-                                                            <fa:FontAwesome Icon="Trash" FontSize="18"/>
+                                                            <fa:FontAwesome Icon="Solid_Trash" FontSize="18"/>
                                                         </Button.Content>
                                                         <i:Interaction.Behaviors>
                                                             <core1:HelpSetter Text="{x:Static languages:HelpText.TestsDeleteSelectedTestHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />

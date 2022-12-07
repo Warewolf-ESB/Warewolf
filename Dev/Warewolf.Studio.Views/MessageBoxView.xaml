@@ -4,7 +4,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:cal="http://www.caliburnproject.org"
-        xmlns:fa="http://schemas.fontawesome.io/icons/"
+        xmlns:fa="http://schemas.fontawesome.com/icons/fonts"
         xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
         xmlns:system="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d" 
@@ -35,9 +35,9 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <StackPanel Orientation="Horizontal">
-                <fa:FontAwesome Icon="ExclamationCircle" FontSize="22" Foreground="DarkRed" Visibility="{Binding Path=IsError, Converter={StaticResource BooleanToVisibilityConverter}}"></fa:FontAwesome>
-                <fa:FontAwesome Icon="InfoCircle" FontSize="22" Foreground="DarkOrange" Visibility="{Binding Path=IsInfo, Converter={StaticResource BooleanToVisibilityConverter}}"></fa:FontAwesome>
-                <fa:FontAwesome Icon="QuestionCircle" FontSize="22" Foreground="DarkBlue" Visibility="{Binding Path=IsQuestion, Converter={StaticResource BooleanToVisibilityConverter}}"></fa:FontAwesome>
+                <fa:FontAwesome Icon="Solid_CircleExclamation" FontSize="22" Foreground="DarkRed" Visibility="{Binding Path=IsError, Converter={StaticResource BooleanToVisibilityConverter}}"></fa:FontAwesome>
+                <fa:FontAwesome Icon="Solid_CircleInfo" FontSize="22" Foreground="DarkOrange" Visibility="{Binding Path=IsInfo, Converter={StaticResource BooleanToVisibilityConverter}}"></fa:FontAwesome>
+                <fa:FontAwesome Icon="Regular_CircleQuestion" FontSize="22" Foreground="DarkBlue" Visibility="{Binding Path=IsQuestion, Converter={StaticResource BooleanToVisibilityConverter}}"></fa:FontAwesome>
                 <TextBlock Text="{Binding Path=Title}" Margin="6,0,0,0" />
             </StackPanel>
             <TextBlock Grid.Row="1" Text="{Binding Path=Message}" TextWrapping="Wrap" Margin="{StaticResource ControlBorderTop}" />

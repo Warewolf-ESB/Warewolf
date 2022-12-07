@@ -1,6 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:fa="http://schemas.fontawesome.io/icons/"
+                    xmlns:fa="http://schemas.fontawesome.com/icons/fonts"
                     xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna"
                     xmlns:converters="clr-namespace:Dev2.CustomControls.Converters;assembly=Dev2.Studio.Core">
 
@@ -511,8 +511,8 @@
                                 <ColumnDefinition Width="15"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <fa:FontAwesome Grid.Column="0" x:Name="iconExpand" Icon="CaretRight" VerticalAlignment="Center" FontSize="14" Visibility="Visible"/>
-                            <fa:FontAwesome Grid.Column="0" x:Name="iconCollapse" Icon="CaretDown" VerticalAlignment="Center" FontSize="14" Visibility="Collapsed"/>
+                            <fa:FontAwesome Grid.Column="0" x:Name="iconExpand" Icon="Solid_CaretRight" VerticalAlignment="Center" FontSize="14" Visibility="Visible"/>
+                            <fa:FontAwesome Grid.Column="0" x:Name="iconCollapse" Icon="Solid_CaretDown" VerticalAlignment="Center" FontSize="14" Visibility="Collapsed"/>
                             <ContentPresenter Grid.Column="1" HorizontalAlignment="Left" Margin="4,0,0,0" RecognizesAccessKey="True" SnapsToDevicePixels="True" VerticalAlignment="Center"/>
                         </Grid>
                     </Border>
@@ -606,8 +606,8 @@
                                 <ColumnDefinition Width="15"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <fa:FontAwesome Grid.Column="0" x:Name="iconExpand" Icon="CaretRight" VerticalAlignment="Center" FontSize="14" Visibility="Visible"/>
-                            <fa:FontAwesome Grid.Column="0" x:Name="iconCollapse" Icon="CaretDown" VerticalAlignment="Center" FontSize="14" Visibility="Collapsed"/>
+                            <fa:FontAwesome Grid.Column="0" x:Name="iconExpand" Icon="Solid_CaretRight" VerticalAlignment="Center" FontSize="14" Visibility="Visible"/>
+                            <fa:FontAwesome Grid.Column="0" x:Name="iconCollapse" Icon="Solid_CaretDown" VerticalAlignment="Center" FontSize="14" Visibility="Collapsed"/>
                             <ContentPresenter Grid.Column="1" x:Name="headerContent" HorizontalAlignment="Stretch" Margin="3,0,0,0" RecognizesAccessKey="True" SnapsToDevicePixels="True" VerticalAlignment="Center"/>
                         </Grid>
                     </Border>
@@ -649,8 +649,8 @@
                                 <ColumnDefinition Width="15"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <fa:FontAwesome Grid.Column="0" x:Name="iconExpand" Icon="CaretRight" VerticalAlignment="Center" FontSize="14" Visibility="Visible"/>
-                            <fa:FontAwesome Grid.Column="0" x:Name="iconCollapse" Icon="CaretDown" VerticalAlignment="Center" FontSize="14" Visibility="Collapsed"/>
+                            <fa:FontAwesome Grid.Column="0" x:Name="iconExpand" Icon="Solid_CaretRight" VerticalAlignment="Center" FontSize="14" Visibility="Visible"/>
+                            <fa:FontAwesome Grid.Column="0" x:Name="iconCollapse" Icon="Solid_CaretDown" VerticalAlignment="Center" FontSize="14" Visibility="Collapsed"/>
                             <ContentPresenter Grid.Column="1" x:Name="headerContent" HorizontalAlignment="Stretch" Margin="0,0,0,0" RecognizesAccessKey="True" SnapsToDevicePixels="True" VerticalAlignment="Center"/>
                         </Grid>
                     </Border>
@@ -747,8 +747,8 @@
                                 <ColumnDefinition Width="15"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <fa:FontAwesome Grid.Column="0" x:Name="iconExpand" Icon="CaretRight" VerticalAlignment="Center" FontSize="14" Visibility="Visible"/>
-                            <fa:FontAwesome Grid.Column="0" x:Name="iconCollapse" Icon="CaretDown" VerticalAlignment="Center" FontSize="14" Visibility="Collapsed"/>
+                            <fa:FontAwesome Grid.Column="0" x:Name="iconExpand" Icon="Solid_CaretRight" VerticalAlignment="Center" FontSize="14" Visibility="Visible"/>
+                            <fa:FontAwesome Grid.Column="0" x:Name="iconCollapse" Icon="Solid_CaretDown" VerticalAlignment="Center" FontSize="14" Visibility="Collapsed"/>
                             <ContentPresenter Grid.Column="1" x:Name="headerContent" HorizontalAlignment="Stretch" Margin="3,0,0,0" RecognizesAccessKey="True" SnapsToDevicePixels="True" VerticalAlignment="Center"/>
                         </Grid>
                     </Border>

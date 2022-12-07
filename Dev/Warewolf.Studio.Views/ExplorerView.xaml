@@ -4,8 +4,8 @@
              xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
              xmlns:customControls="clr-namespace:Warewolf.Studio.CustomControls;assembly=Warewolf.Studio.CustomControls"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:fa="http://schemas.fontawesome.io/icons/"
-             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:fa="http://schemas.fontawesome.com/icons/fonts"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:interfaces="clr-namespace:Dev2.Studio.Interfaces;assembly=Dev2.Studio.Interfaces"
              xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
              xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
@@ -96,7 +96,7 @@
                     <fa:FontAwesome HorizontalAlignment="Center"
                                     VerticalAlignment="Top"
                                     FontSize="16"
-                                    Icon="Refresh"
+                                    Icon="Solid_ArrowsRotate"
                                     TextOptions.TextFormattingMode="Display" />
                     <i:Interaction.Behaviors>
                         <core:HelpSetter DataContext="{Binding}" Text="{x:Static languages:HelpText.ExplorerViewRefreshHelp}" />
@@ -185,7 +185,7 @@
                                                   ToolTip="{x:Static languages:Tooltips.RunAllServerTestsToolTip}"
                                                   Visibility="{Binding IsSaveDialog, Converter={StaticResource BoolToVisibilityConverterNegative}}">
                                             <MenuItem.Icon>
-                                                <fa:FontAwesome FontSize="14" FontWeight="Light" Foreground="Green" Icon="Play" />
+                                                <fa:FontAwesome FontSize="14" FontWeight="Light" Foreground="Green" Icon="Solid_Play" />
                                             </MenuItem.Icon>
                                         </MenuItem>
                                         <MenuItem Name="RunAllCoverage"
@@ -197,11 +197,11 @@
                                                   ToolTip="{x:Static languages:Tooltips.RunServerCoverageToolTip}"
                                                   Visibility="{Binding IsSaveDialog, Converter={StaticResource BoolToVisibilityConverterNegative}}">
                                             <MenuItem.Icon>
-                                                <fa:FontAwesome FontSize="14" FontWeight="Light" Icon="Shield" />
+                                                <fa:FontAwesome FontSize="14" FontWeight="Light" Icon="Solid_Shield" />
                                             </MenuItem.Icon>
                                         </MenuItem>
                                         <MenuItem.Icon>
-                                            <fa:FontAwesome FontSize="14" FontWeight="Light" Icon="Flask" />
+                                            <fa:FontAwesome FontSize="14" FontWeight="Light" Icon="Solid_Flask" />
                                         </MenuItem.Icon>
                                     </MenuItem>
                                     <!--Set Visibility to collapsed until we add functionality for deploy on server-->
@@ -214,7 +214,7 @@
                                               ToolTip="{Binding ExplorerTooltips.DeployTooltip}"
                                               Visibility="{Binding IsSaveDialog, Converter={StaticResource BoolToVisibilityConverterNegative}}">
                                         <MenuItem.Icon>
-                                            <fa:FontAwesome FontSize="12" FontWeight="Light" Icon="PaperPlaneOutline" />
+                                            <fa:FontAwesome FontSize="12" FontWeight="Light" Icon="Solid_PaperPlane" />
                                         </MenuItem.Icon>
                                     </MenuItem>
 
@@ -577,7 +577,7 @@
 								                      ToolTip="{Binding ExplorerTooltips.DebugInputsTooltip}"
 								                      Visibility="{Binding IsDebugInputsVisible, Converter={StaticResource BoolToVisibilityConverter}}">
                                                 <MenuItem.Icon>
-                                                    <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="Bug" />
+                                                    <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="Solid_Bug" />
                                                 </MenuItem.Icon>
                                             </MenuItem>
 
@@ -589,7 +589,7 @@
 								                      ToolTip="{Binding ExplorerTooltips.DebugStudioTooltip}"
 								                      Visibility="{Binding IsDebugStudioVisible, Converter={StaticResource BoolToVisibilityConverter}}">
                                                 <MenuItem.Icon>
-                                                    <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="Bug" />
+                                                    <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="Solid_Bug" />
                                                 </MenuItem.Icon>
                                             </MenuItem>
 
@@ -601,7 +601,7 @@
 								                      ToolTip="{Binding ExplorerTooltips.DebugBrowserTooltip}"
 								                      Visibility="{Binding IsDebugBrowserVisible, Converter={StaticResource BoolToVisibilityConverter}}">
                                                 <MenuItem.Icon>
-                                                    <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="Bug" />
+                                                    <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="Solid_Bug" />
                                                 </MenuItem.Icon>
                                             </MenuItem>
 
@@ -613,7 +613,7 @@
 								                      ToolTip="{Binding ExplorerTooltips.ScheduleTooltip}"
 								                      Visibility="{Binding IsScheduleVisible, Converter={StaticResource BoolToVisibilityConverter}}">
                                                 <MenuItem.Icon>
-                                                    <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="History" />
+                                                    <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="Solid_ClockRotateLeft" />
                                                 </MenuItem.Icon>
                                             </MenuItem>
 
@@ -671,7 +671,7 @@
                                                     </Style>
                                                 </MenuItem.Style>
                                                 <MenuItem.Icon>
-                                                    <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="TrashOutline" />
+                                                    <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="Solid_Trash" />
                                                 </MenuItem.Icon>
                                             </MenuItem>
 
@@ -695,7 +695,7 @@
                                                     </Style>
                                                 </MenuItem.Style>
                                                 <MenuItem.Icon>
-                                                    <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="Clone" />
+                                                    <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="Solid_Clone" />
                                                 </MenuItem.Icon>
                                             </MenuItem>
 
@@ -711,7 +711,7 @@
 								                          ToolTip="{Binding ExplorerTooltips.CreateTestTooltip}"
 								                          Visibility="{Binding IsCreateTestVisible, Converter={StaticResource BoolToVisibilityConverter}}">
                                                     <MenuItem.Icon>
-                                                        <fa:FontAwesome FontSize="14" FontWeight="Light" Foreground="Green" Icon="Plus" />
+                                                        <fa:FontAwesome FontSize="14" FontWeight="Light" Foreground="Green" Icon="Solid_Plus" />
                                                     </MenuItem.Icon>
                                                 </MenuItem>
 
@@ -735,7 +735,7 @@
                                                         </Style>
                                                     </MenuItem.Style>
                                                     <MenuItem.Icon>
-                                                        <fa:FontAwesome FontSize="14" FontWeight="Light" Foreground="Green" Icon="Play" />
+                                                        <fa:FontAwesome FontSize="14" FontWeight="Light" Foreground="Green" Icon="Solid_Play" />
                                                     </MenuItem.Icon>
                                                 </MenuItem>
                                                 <MenuItem Name="RunAllCoverageItem"
@@ -758,11 +758,11 @@
                                                         </Style>
                                                     </MenuItem.Style>
                                                     <MenuItem.Icon>
-                                                        <fa:FontAwesome FontSize="14" FontWeight="Light" Icon="Shield" />
+                                                        <fa:FontAwesome FontSize="14" FontWeight="Light" Icon="Solid_Shield" />
                                                     </MenuItem.Icon>
                                                 </MenuItem>
                                                 <MenuItem.Icon>
-                                                    <fa:FontAwesome FontSize="14" FontWeight="Light" Icon="Flask" />
+                                                    <fa:FontAwesome FontSize="14" FontWeight="Light" Icon="Solid_Flask" />
                                                 </MenuItem.Icon>
                                             </MenuItem>
 
@@ -807,7 +807,7 @@
                                                     </Style>
                                                 </MenuItem.Style>
                                                 <MenuItem.Icon>
-                                                    <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="PaperPlaneOutline" />
+                                                    <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="Solid_PaperPlane" />
                                                 </MenuItem.Icon>
                                             </MenuItem>
                                             <MenuItem Name="Dependencies"
@@ -819,7 +819,7 @@
 								                      ToolTip="{Binding ExplorerTooltips.DependenciesTooltip}"
 								                      Visibility="{Binding IsDependenciesVisible, Converter={StaticResource BoolToVisibilityConverter}}">
                                                 <MenuItem.Icon>
-                                                    <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="Sitemap" />
+                                                    <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="Solid_Sitemap" />
                                                 </MenuItem.Icon>
                                             </MenuItem>
 

@@ -6,7 +6,7 @@
                                xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
                                xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
                                xmlns:attachedProperties="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"
-                               xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+                               xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
                                xmlns:manualResumption="clr-namespace:Dev2.Activities.Designers2.ManualResumption"
                                xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"

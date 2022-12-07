@@ -3,8 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-             xmlns:fa="http://schemas.fontawesome.io/icons/"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:fa="http://schemas.fontawesome.com/icons/fonts"
              xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
              xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
              xmlns:ig="http://schemas.infragistics.com/xaml"
@@ -141,20 +141,20 @@
 
                                         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Row="0"
                                                     Grid.RowSpan="2">
-                                            <fa:FontAwesome Icon="Check" Foreground="Green"
+                                            <fa:FontAwesome Icon="Solid_Check" Foreground="Green"
                                                             ToolTip="{x:Static languages:Tooltips.ServiceTestPassedTooltip}"
                                                             FontSize="20"
                                                             Visibility="{Binding TestPassed, Converter={StaticResource BoolToVisibilityConverter}}" />
-                                            <fa:FontAwesome Icon="Times" Foreground="Red"
+                                            <fa:FontAwesome Icon="Solid_CircleXmark" Foreground="Red"
                                                             ToolTip="{x:Static languages:Tooltips.ServiceTestFailingTooltip}"
                                                             FontSize="20"
                                                             Visibility="{Binding TestFailing, Converter={StaticResource BoolToVisibilityConverter}}" />
-                                            <fa:FontAwesome Icon="Exclamation" Foreground="OrangeRed"
+                                            <fa:FontAwesome Icon="Solid_Exclamation" Foreground="OrangeRed"
                                                             Margin="{StaticResource ControlBorderLeft}"
                                                             ToolTip="{x:Static languages:Tooltips.ServiceTestInvalidTooltip}"
                                                             FontSize="20"
                                                             Visibility="{Binding TestInvalid, Converter={StaticResource BoolToVisibilityConverter}}" />
-                                            <fa:FontAwesome Icon="Question" Foreground="Black"
+                                            <fa:FontAwesome Icon="Solid_Question" Foreground="Black"
                                                             ToolTip="{x:Static languages:Tooltips.ServiceTestPendingTooltip}"
                                                             FontSize="20"
                                                             Visibility="{Binding TestPending, Converter={StaticResource BoolToVisibilityConverter}}" />
@@ -223,7 +223,7 @@
                                                 Style="{StaticResource ButtonRunTestTransparentStyle}"
                                                 PreviewMouseLeftButtonDown="SelectedTestRunTestButton_OnPreviewMouseLeftButtonDown">
                                             <Button.Content>
-                                                <fa:FontAwesome Icon="Play" FontSize="18" Background="Transparent" />
+                                                <fa:FontAwesome Icon="Solid_Play" FontSize="18" Background="Transparent" />
                                             </Button.Content>
                                             <i:Interaction.Behaviors>
                                                 <core:HelpSetter
@@ -241,7 +241,7 @@
                                                 Style="{StaticResource ButtonStopTestTransparentStyle}"
                                                 PreviewMouseLeftButtonDown="SelectedTestRunTestButton_OnPreviewMouseLeftButtonDown">
                                             <Button.Content>
-                                                <fa:FontAwesome Icon="Stop" FontSize="18" Background="Transparent" />
+                                                <fa:FontAwesome Icon="Solid_Stop" FontSize="18" Background="Transparent" />
                                             </Button.Content>
                                             <i:Interaction.Behaviors>
                                                 <core:HelpSetter
@@ -260,7 +260,7 @@
                                                 Style="{StaticResource ButtonDeleteTestTransparentStyle}"
                                                 PreviewMouseLeftButtonDown="SelectedTestRunTestButton_OnPreviewMouseLeftButtonDown">
                                             <Button.Content>
-                                                <fa:FontAwesome Icon="Trash" FontSize="18" />
+                                                <fa:FontAwesome Icon="Solid_Trash" FontSize="18" />
                                             </Button.Content>
                                             <i:Interaction.Behaviors>
                                                 <core:HelpSetter
@@ -285,7 +285,7 @@
                                                     <Grid.RowDefinitions>
                                                         <RowDefinition Height="Auto" />
                                                     </Grid.RowDefinitions>
-                                                    <fa:FontAwesome Icon="Plus" FontSize="24"
+                                                    <fa:FontAwesome Icon="Solid_Plus" FontSize="24"
                                                                     HorizontalAlignment="Left"
                                                                     VerticalAlignment="Center" />
                                                     <TextBlock Grid.Column="1" Text="Create a new Test" FontSize="14" />
@@ -350,7 +350,7 @@
                                         Margin="{StaticResource ControlBorderLeft}"
                                         Style="{StaticResource ServiceTestDuplicateButtonStyle}"
                                         ToolTip="{Binding SelectedServiceTest.DuplicateTestTooltip}">
-                                    <fa:FontAwesome FontSize="12" FontWeight="Light" Icon="Clone" />
+                                    <fa:FontAwesome FontSize="12" FontWeight="Light" Icon="Solid_Clone" />
                                     <i:Interaction.Behaviors>
                                         <core:HelpSetter
                                             Text="{x:Static languages:HelpText.ServiceTestDuplicateSelectedTestHelpText}"
@@ -601,22 +601,22 @@
                                                     <StackPanel DockPanel.Dock="Left" Orientation="Horizontal"
                                                                 Margin="{StaticResource ControlBorderLeft}">
 
-                                                        <fa:FontAwesome Icon="Check" Foreground="Green"
+                                                        <fa:FontAwesome Icon="Solid_Check" Foreground="Green"
                                                                         ToolTip="{x:Static languages:Tooltips.ServiceTestPassedTooltip}"
                                                                         FontSize="16"
                                                                         Visibility="{Binding TestPassed, Converter={StaticResource BoolToVisibilityConverter}}"
                                                                         Margin="0,2,0,0" />
-                                                        <fa:FontAwesome Icon="Times" Foreground="Red"
+                                                        <fa:FontAwesome Icon="Solid_CircleXmark" Foreground="Red"
                                                                         ToolTip="{x:Static languages:Tooltips.ServiceTestFailingTooltip}"
                                                                         FontSize="16"
                                                                         Visibility="{Binding TestFailing, Converter={StaticResource BoolToVisibilityConverter}}"
                                                                         Margin="0,2,0,0" />
-                                                        <fa:FontAwesome Icon="Exclamation" Foreground="OrangeRed"
+                                                        <fa:FontAwesome Icon="Solid_Exclamation" Foreground="OrangeRed"
                                                                         ToolTip="{x:Static languages:Tooltips.ServiceTestInvalidTooltip}"
                                                                         FontSize="16"
                                                                         Visibility="{Binding TestInvalid, Converter={StaticResource BoolToVisibilityConverter}}"
                                                                         Margin="3,2,0,0" />
-                                                        <fa:FontAwesome Icon="Question" Foreground="Black"
+                                                        <fa:FontAwesome Icon="Solid_Question" Foreground="Black"
                                                                         ToolTip="{x:Static languages:Tooltips.ServiceTestPendingTooltip}"
                                                                         FontSize="16"
                                                                         Visibility="{Binding TestPending, Converter={StaticResource BoolToVisibilityConverter}}"
@@ -660,21 +660,21 @@
                                                                             Orientation="Horizontal">
                                                                     <StackPanel VerticalAlignment="Center"
                                                                         HorizontalAlignment="Center" Margin="2,0,0,0">
-                                                                        <fa:FontAwesome Icon="Check" Foreground="Green"
+                                                                        <fa:FontAwesome Icon="Solid_Check" Foreground="Green"
                                                                             ToolTip="{x:Static languages:Tooltips.ServiceTestPassedTooltip}"
                                                                             FontSize="16"
                                                                             Visibility="{Binding TestPassed, Converter={StaticResource BoolToVisibilityConverter}}" />
-                                                                        <fa:FontAwesome Icon="Times" Foreground="Red"
+                                                                        <fa:FontAwesome Icon="Solid_CircleXmark" Foreground="Red"
                                                                             ToolTip="{x:Static languages:Tooltips.ServiceTestFailingTooltip}"
                                                                             FontSize="16"
                                                                             Visibility="{Binding TestFailing, Converter={StaticResource BoolToVisibilityConverter}}" />
-                                                                        <fa:FontAwesome Icon="Exclamation"
+                                                                        <fa:FontAwesome Icon="Solid_Exclamation"
                                                                             Foreground="OrangeRed"
                                                                             ToolTip="{x:Static languages:Tooltips.ServiceTestInvalidTooltip}"
                                                                             FontSize="16"
                                                                             Visibility="{Binding TestInvalid, Converter={StaticResource BoolToVisibilityConverter}}"
                                                                             Margin="2,0,0,0" />
-                                                                        <fa:FontAwesome Icon="Question"
+                                                                        <fa:FontAwesome Icon="Solid_Question"
                                                                             Foreground="Black"
                                                                             ToolTip="{x:Static languages:Tooltips.ServiceTestPendingTooltip}"
                                                                             FontSize="16"
@@ -707,7 +707,7 @@
                                                                         CommandParameter="{Binding ElementName=DeleteTestStepButton, Path=DataContext}"
                                                                         ToolTip="{x:Static languages:Tooltips.ServiceTestStepDeleteStepTooltip}"
                                                                         AutomationProperties.AutomationId="UI_TestStepDelete_AutoID">
-                                                                    <fa:FontAwesome Icon="Trash" />
+                                                                    <fa:FontAwesome Icon="Solid_Trash" />
                                                                     <i:Interaction.Behaviors>
                                                                         <core:HelpSetter
                                                                             Text="{x:Static languages:HelpText.ServiceTestStepDeleteStepHelpText}"

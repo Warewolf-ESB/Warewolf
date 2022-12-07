@@ -4,9 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
-             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-             xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
-             
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"             
              xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
              xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
              xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
@@ -78,6 +77,7 @@
                                     ToolTip="{x:Static languages:Tooltips.NativeActivityToolTipCallthiswebservice}"
                                     AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Workflow_AutoID}">
                 <i:Interaction.Behaviors>
+                    
                     <core:HelpSetter Text="{x:Static languages:HelpText.NativeActivityHelpCallthiswebservice}" DataContext="{Binding}" />
                     <errors:ErrorsSetter Source="{Binding}"
                                          SourcePropertyName="OnErrorWorkflow"
