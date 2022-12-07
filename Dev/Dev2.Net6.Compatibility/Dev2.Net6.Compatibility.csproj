@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -7,7 +7,7 @@
   </PropertyGroup>
   <ItemGroup>
 	<Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
-		<Link>..\AssemblyCommonInfo.cs</Link>
+		<Link>Properties\AssemblyCommonInfo.cs</Link>
 	</Compile>
   </ItemGroup>
   <ItemGroup>
