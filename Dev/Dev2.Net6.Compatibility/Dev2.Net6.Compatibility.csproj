@@ -6,6 +6,7 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
+	<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 	<Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
 		<Link>Properties\AssemblyCommonInfo.cs</Link>
 	</Compile>
