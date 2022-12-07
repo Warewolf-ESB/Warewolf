@@ -432,7 +432,15 @@ namespace Warewolf.Trigger.Queue
             set
             {
                 _triggerEnabled = value;
-                Concurrency = value ? 1 : 0;
+
+                if (Concurrency == 0 && value)
+                {
+                    Concurrency = 1;
+                }
+                else if(!value)
+                {
+                    Concurrency = 0;
+                }
                 RaisePropertyChanged(nameof(TriggerEnabled));
             }
         }
