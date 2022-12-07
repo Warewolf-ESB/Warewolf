@@ -48,13 +48,6 @@
     <LangVersion>7.3</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
-    <Reference Include="System" />
-    <Reference Include="System.Xaml" />
-    <Reference Include="WindowsBase" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Dev2.CustomControls\Dev2.CustomControls.csproj">
       <Project>{F5162BDB-D3DB-480E-92E4-FD732904A247}</Project>
       <Name>Dev2.CustomControls</Name>

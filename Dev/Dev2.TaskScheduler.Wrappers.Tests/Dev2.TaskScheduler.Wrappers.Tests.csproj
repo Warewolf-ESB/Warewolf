@@ -45,10 +45,6 @@
     <LangVersion>7.3</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>

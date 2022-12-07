@@ -39,10 +39,6 @@
     <LangVersion>7.3</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Data" />
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="AssignTests.cs" />
     <Compile Include="EvalFunctionTests.cs" />
     <Compile Include="Person.cs" />
