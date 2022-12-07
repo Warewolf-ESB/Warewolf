@@ -6,6 +6,11 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
+	<Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
+		<Link>Properties\AssemblyCommonInfo.cs</Link>
+	</Compile>
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="Moq">
       <Version>4.18.2</Version>
     </PackageReference>
