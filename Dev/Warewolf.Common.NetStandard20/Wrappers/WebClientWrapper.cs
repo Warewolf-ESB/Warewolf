@@ -79,7 +79,7 @@ namespace Warewolf.Common.NetStandard20
 
         public string UploadString(string address, string method, string data)
         {
-           return _webClient.UploadString(address, method, data);
+            return _webClient.UploadString(address, method, data);
         }
     }
 }

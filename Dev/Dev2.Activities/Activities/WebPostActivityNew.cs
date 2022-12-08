@@ -47,6 +47,7 @@ namespace Dev2.Activities
         private bool IsUrlEncodedChecked => Convert.ToBoolean(this.Settings?.FirstOrDefault(s => s.Name == nameof(IsUrlEncodedChecked))?.Value);
         public IList<FormDataConditionExpression> Conditions { get; set; }
         public string QueryString { get; set; }
+        public int Timeout { get; set; }
         public IOutputDescription OutputDescription { get; set; }
         public IResponseManager ResponseManager { get; set; }
         public string PostData { get; set; }
