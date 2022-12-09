@@ -539,6 +539,9 @@ namespace Dev2.Activities.Designers2.Web_Post_New
 
             var queryString = InputArea.QueryString;
             _builder.GetValue(queryString, dt);
+            
+            var timeout = InputArea.Timeout;
+            _builder.GetValue(timeout.ToString(), dt);
 
             foreach (var nameValue in InputArea.Headers)
             {

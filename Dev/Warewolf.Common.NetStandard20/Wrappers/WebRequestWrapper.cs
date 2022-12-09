@@ -73,5 +73,11 @@ namespace Warewolf.Common.NetStandard20
         {
             return _request.GetResponseAsync();
         }
+        
+        public int Timeout
+        {
+            get => _request.Timeout;
+            set => _request.Timeout = value;
+        }
     }
 }

@@ -163,6 +163,7 @@ namespace Dev2.Activities
                 var isManualChecked = Convert.ToBoolean(Settings?.FirstOrDefault(s => s.Name == nameof(IsManualChecked))?.Value);
                 var isFormDataChecked = Convert.ToBoolean(Settings?.FirstOrDefault(s => s.Name == nameof(IsFormDataChecked))?.Value);
                 var isUrlEncodedChecked = Convert.ToBoolean(Settings?.FirstOrDefault(s => s.Name == nameof(IsUrlEncodedChecked))?.Value);
+                var timeout = Convert.ToInt32(Settings?.FirstOrDefault(s => s.Name == nameof(Timeout))?.Value);
                 
                 if(isManualChecked || isFormDataChecked || isUrlEncodedChecked)
                 {
@@ -178,7 +179,8 @@ namespace Dev2.Activities
                         Settings = Settings,
                         IsManualChecked = isManualChecked,
                         IsFormDataChecked = isFormDataChecked,
-                        IsUrlEncodedChecked = isUrlEncodedChecked
+                        IsUrlEncodedChecked = isUrlEncodedChecked,
+                        Timeout = Timeout,
                     };
                     
                     webRequestResult = PerformWebPostRequest(webPostOptions);
