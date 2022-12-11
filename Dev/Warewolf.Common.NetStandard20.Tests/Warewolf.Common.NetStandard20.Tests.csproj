@@ -26,7 +26,7 @@
     <ProjectReference Include="..\Warewolf.Common.NetStandard20\Warewolf.Common.NetStandard20.csproj" />
     <ProjectReference Include="..\Warewolf.Interfaces\Warewolf.Interfaces.csproj" />
   </ItemGroup>
-  <ItemGroup>
+  <!--<ItemGroup>
     <Reference Include="System.Net.Http" />
-  </ItemGroup>
+  </ItemGroup>-->
 </Project>

@@ -120,13 +120,11 @@ namespace HangfireServer
                         return;
                     }
 
-                    ConfigureServerStorage(connectionString);
+                    var dashboard = new Dashboard();
+                    ConfigureServerStorage(dashboard.GetServices(), connectionString);
+                    
                     var dashboardEndpoint = _persistence.DashboardHostname + ":" + _persistence.DashboardPort;
-                    //var options = new StartOptions();
-                    //options.Urls.Add(dashboardEndpoint);
-                    //WebApp.Start<Dashboard>(options);
-
-                    new Dashboard().Start(dashboardEndpoint);
+                    dashboard.Start(dashboardEndpoint);
 
                     _writer.WriteLine("Hangfire dashboard started...");
                     _logger.Debug("Hangfire dashboard started...");
@@ -142,7 +140,7 @@ namespace HangfireServer
                     //     WorkerCount = Environment.ProcessorCount * 5
                     // };
                     // _ = new BackgroundJobServer(backgroundJobServerOptions);
-                    
+
                     if (_logLevel >= Dev2.Data.Interfaces.Enums.LogLevel.INFO)
                     {
                         _writer.WriteLine("Hangfire server started...");
@@ -162,11 +160,11 @@ namespace HangfireServer
             private static PersistenceSettings _persistence;
             private readonly IBuilderSerializer _deserializer;
 
-            private void ConfigureServerStorage(string connectionString)
+            private void ConfigureServerStorage(Microsoft.Extensions.DependencyInjection.IServiceCollection services, string connectionString)
             {
                 var resumptionAttribute = new ResumptionAttribute(_logger);
 
-                GlobalConfiguration.Configuration
+                services.AddHangfire(x => x
                     .UseFilter(resumptionAttribute)
                     .UseSqlServerStorage(connectionString, new SqlServerStorageOptions
                     {
@@ -176,7 +174,7 @@ namespace HangfireServer
                         QueuePollInterval = TimeSpan.Zero,
                         UseRecommendedIsolationLevel = true,
                         DisableGlobalLocks = true
-                    });
+                    }));
             }
 
             private string ConnectionString()

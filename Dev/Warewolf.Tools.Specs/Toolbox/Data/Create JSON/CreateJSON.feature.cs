@@ -27,7 +27,7 @@ namespace Warewolf.Tools.Specs.Toolbox.Data.CreateJSON
         
         private Microsoft.VisualStudio.TestTools.UnitTesting.TestContext _testContext;
         
-        private string[] _featureTags = new string[] {
+        private static string[] featureTags = new string[] {
                 "Data"};
         
 #line 1 "CreateJSON.feature"
@@ -50,8 +50,7 @@ namespace Warewolf.Tools.Specs.Toolbox.Data.CreateJSON
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Toolbox/Data/Create JSON", "CreateJSON", "\tIn order to create a json payload\r\n\tAs a warewolf user\r\n\tI want to be given the " +
-                    "JSON representation of my variables", ProgrammingLanguage.CSharp, new string[] {
-                        "Data"});
+                    "JSON representation of my variables", ProgrammingLanguage.CSharp, featureTags);
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -63,7 +62,7 @@ namespace Warewolf.Tools.Specs.Toolbox.Data.CreateJSON
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestInitializeAttribute()]
-        public virtual void TestInitialize()
+        public void TestInitialize()
         {
             if (((testRunner.FeatureContext != null) 
                         && (testRunner.FeatureContext.FeatureInfo.Title != "CreateJSON")))
@@ -73,23 +72,23 @@ namespace Warewolf.Tools.Specs.Toolbox.Data.CreateJSON
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCleanupAttribute()]
-        public virtual void TestTearDown()
+        public void TestTearDown()
         {
             testRunner.OnScenarioEnd();
         }
         
-        public virtual void ScenarioInitialize(TechTalk.SpecFlow.ScenarioInfo scenarioInfo)
+        public void ScenarioInitialize(TechTalk.SpecFlow.ScenarioInfo scenarioInfo)
         {
             testRunner.OnScenarioInitialize(scenarioInfo);
             testRunner.ScenarioContext.ScenarioContainer.RegisterInstanceAs<Microsoft.VisualStudio.TestTools.UnitTesting.TestContext>(_testContext);
         }
         
-        public virtual void ScenarioStart()
+        public void ScenarioStart()
         {
             testRunner.OnScenarioStart();
         }
         
-        public virtual void ScenarioCleanup()
+        public void ScenarioCleanup()
         {
             testRunner.CollectScenarioErrors();
         }
@@ -101,21 +100,11 @@ namespace Warewolf.Tools.Specs.Toolbox.Data.CreateJSON
             argumentsOfScenario.Add("type", type);
             argumentsOfScenario.Add("value", value);
             argumentsOfScenario.Add("result", result);
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Single Scalar Variable", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Single Scalar Variable", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 8
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -168,7 +157,7 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:type", "Character")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "c")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"a\":\"c\"}")]
-        public virtual void SingleScalarVariable_Character()
+        public void SingleScalarVariable_Character()
         {
 #line 8
 this.SingleScalarVariable("Character", "c", "{\"a\":\"c\"}", ((string[])(null)));
@@ -183,7 +172,7 @@ this.SingleScalarVariable("Character", "c", "{\"a\":\"c\"}", ((string[])(null)))
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:type", "Integer")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"a\":2}")]
-        public virtual void SingleScalarVariable_Integer()
+        public void SingleScalarVariable_Integer()
         {
 #line 8
 this.SingleScalarVariable("Integer", "2", "{\"a\":2}", ((string[])(null)));
@@ -198,7 +187,7 @@ this.SingleScalarVariable("Integer", "2", "{\"a\":2}", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:type", "Decimal")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "5.6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"a\":5.6}")]
-        public virtual void SingleScalarVariable_Decimal()
+        public void SingleScalarVariable_Decimal()
         {
 #line 8
 this.SingleScalarVariable("Decimal", "5.6", "{\"a\":5.6}", ((string[])(null)));
@@ -213,7 +202,7 @@ this.SingleScalarVariable("Decimal", "5.6", "{\"a\":5.6}", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:type", "String")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "Hello")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"a\":\"Hello\"}")]
-        public virtual void SingleScalarVariable_String()
+        public void SingleScalarVariable_String()
         {
 #line 8
 this.SingleScalarVariable("String", "Hello", "{\"a\":\"Hello\"}", ((string[])(null)));
@@ -228,7 +217,7 @@ this.SingleScalarVariable("String", "Hello", "{\"a\":\"Hello\"}", ((string[])(nu
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:type", "Boolean_True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"a\":true}")]
-        public virtual void SingleScalarVariable_Boolean_True()
+        public void SingleScalarVariable_Boolean_True()
         {
 #line 8
 this.SingleScalarVariable("Boolean_True", "true", "{\"a\":true}", ((string[])(null)));
@@ -243,7 +232,7 @@ this.SingleScalarVariable("Boolean_True", "true", "{\"a\":true}", ((string[])(nu
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:type", "Boolean_False")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "false")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"a\":false}")]
-        public virtual void SingleScalarVariable_Boolean_False()
+        public void SingleScalarVariable_Boolean_False()
         {
 #line 8
 this.SingleScalarVariable("Boolean_False", "false", "{\"a\":false}", ((string[])(null)));
@@ -258,7 +247,7 @@ this.SingleScalarVariable("Boolean_False", "false", "{\"a\":false}", ((string[])
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:type", "Null")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"a\":null}")]
-        public virtual void SingleScalarVariable_Null()
+        public void SingleScalarVariable_Null()
         {
 #line 8
 this.SingleScalarVariable("Null", "", "{\"a\":null}", ((string[])(null)));
@@ -272,21 +261,11 @@ this.SingleScalarVariable("Null", "", "{\"a\":null}", ((string[])(null)));
             argumentsOfScenario.Add("type", type);
             argumentsOfScenario.Add("value", value);
             argumentsOfScenario.Add("result", result);
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Single Scalar VariableMultipleSelections", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Single Scalar VariableMultipleSelections", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 32
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -348,7 +327,7 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:type", "Character")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "c")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"a\":\"c\",\"c\":\"x\"}")]
-        public virtual void SingleScalarVariableMultipleSelections_Character()
+        public void SingleScalarVariableMultipleSelections_Character()
         {
 #line 32
 this.SingleScalarVariableMultipleSelections("Character", "c", "{\"a\":\"c\",\"c\":\"x\"}", ((string[])(null)));
@@ -363,7 +342,7 @@ this.SingleScalarVariableMultipleSelections("Character", "c", "{\"a\":\"c\",\"c\
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:type", "Integer")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"a\":2,\"c\":\"x\"}")]
-        public virtual void SingleScalarVariableMultipleSelections_Integer()
+        public void SingleScalarVariableMultipleSelections_Integer()
         {
 #line 32
 this.SingleScalarVariableMultipleSelections("Integer", "2", "{\"a\":2,\"c\":\"x\"}", ((string[])(null)));
@@ -378,7 +357,7 @@ this.SingleScalarVariableMultipleSelections("Integer", "2", "{\"a\":2,\"c\":\"x\
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:type", "Decimal")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "5.6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"a\":5.6,\"c\":\"x\"}")]
-        public virtual void SingleScalarVariableMultipleSelections_Decimal()
+        public void SingleScalarVariableMultipleSelections_Decimal()
         {
 #line 32
 this.SingleScalarVariableMultipleSelections("Decimal", "5.6", "{\"a\":5.6,\"c\":\"x\"}", ((string[])(null)));
@@ -393,7 +372,7 @@ this.SingleScalarVariableMultipleSelections("Decimal", "5.6", "{\"a\":5.6,\"c\":
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:type", "String")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "Hello")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"a\":\"Hello\",\"c\":\"x\"}")]
-        public virtual void SingleScalarVariableMultipleSelections_String()
+        public void SingleScalarVariableMultipleSelections_String()
         {
 #line 32
 this.SingleScalarVariableMultipleSelections("String", "Hello", "{\"a\":\"Hello\",\"c\":\"x\"}", ((string[])(null)));
@@ -408,7 +387,7 @@ this.SingleScalarVariableMultipleSelections("String", "Hello", "{\"a\":\"Hello\"
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:type", "Boolean_True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"a\":true,\"c\":\"x\"}")]
-        public virtual void SingleScalarVariableMultipleSelections_Boolean_True()
+        public void SingleScalarVariableMultipleSelections_Boolean_True()
         {
 #line 32
 this.SingleScalarVariableMultipleSelections("Boolean_True", "true", "{\"a\":true,\"c\":\"x\"}", ((string[])(null)));
@@ -423,7 +402,7 @@ this.SingleScalarVariableMultipleSelections("Boolean_True", "true", "{\"a\":true
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:type", "Boolean_False")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "false")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"a\":false,\"c\":\"x\"}")]
-        public virtual void SingleScalarVariableMultipleSelections_Boolean_False()
+        public void SingleScalarVariableMultipleSelections_Boolean_False()
         {
 #line 32
 this.SingleScalarVariableMultipleSelections("Boolean_False", "false", "{\"a\":false,\"c\":\"x\"}", ((string[])(null)));
@@ -438,7 +417,7 @@ this.SingleScalarVariableMultipleSelections("Boolean_False", "false", "{\"a\":fa
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:type", "Null")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"a\":null,\"c\":\"x\"}")]
-        public virtual void SingleScalarVariableMultipleSelections_Null()
+        public void SingleScalarVariableMultipleSelections_Null()
         {
 #line 32
 this.SingleScalarVariableMultipleSelections("Null", "", "{\"a\":null,\"c\":\"x\"}", ((string[])(null)));
@@ -452,21 +431,11 @@ this.SingleScalarVariableMultipleSelections("Null", "", "{\"a\":null,\"c\":\"x\"
             argumentsOfScenario.Add("type", type);
             argumentsOfScenario.Add("value", value);
             argumentsOfScenario.Add("result", result);
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Single Scalar Variable with changed name", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Single Scalar Variable with changed name", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 58
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -519,7 +488,7 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:type", "Character")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "c")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"myVar\":\"c\"}")]
-        public virtual void SingleScalarVariableWithChangedName_Character()
+        public void SingleScalarVariableWithChangedName_Character()
         {
 #line 58
 this.SingleScalarVariableWithChangedName("Character", "c", "{\"myVar\":\"c\"}", ((string[])(null)));
@@ -534,7 +503,7 @@ this.SingleScalarVariableWithChangedName("Character", "c", "{\"myVar\":\"c\"}", 
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:type", "Integer")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"myVar\":2}")]
-        public virtual void SingleScalarVariableWithChangedName_Integer()
+        public void SingleScalarVariableWithChangedName_Integer()
         {
 #line 58
 this.SingleScalarVariableWithChangedName("Integer", "2", "{\"myVar\":2}", ((string[])(null)));
@@ -549,7 +518,7 @@ this.SingleScalarVariableWithChangedName("Integer", "2", "{\"myVar\":2}", ((stri
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:type", "Decimal")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "5.6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"myVar\":5.6}")]
-        public virtual void SingleScalarVariableWithChangedName_Decimal()
+        public void SingleScalarVariableWithChangedName_Decimal()
         {
 #line 58
 this.SingleScalarVariableWithChangedName("Decimal", "5.6", "{\"myVar\":5.6}", ((string[])(null)));
@@ -564,7 +533,7 @@ this.SingleScalarVariableWithChangedName("Decimal", "5.6", "{\"myVar\":5.6}", ((
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:type", "String")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "Hello")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"myVar\":\"Hello\"}")]
-        public virtual void SingleScalarVariableWithChangedName_String()
+        public void SingleScalarVariableWithChangedName_String()
         {
 #line 58
 this.SingleScalarVariableWithChangedName("String", "Hello", "{\"myVar\":\"Hello\"}", ((string[])(null)));
@@ -579,7 +548,7 @@ this.SingleScalarVariableWithChangedName("String", "Hello", "{\"myVar\":\"Hello\
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:type", "Boolean_True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"myVar\":true}")]
-        public virtual void SingleScalarVariableWithChangedName_Boolean_True()
+        public void SingleScalarVariableWithChangedName_Boolean_True()
         {
 #line 58
 this.SingleScalarVariableWithChangedName("Boolean_True", "true", "{\"myVar\":true}", ((string[])(null)));
@@ -594,7 +563,7 @@ this.SingleScalarVariableWithChangedName("Boolean_True", "true", "{\"myVar\":tru
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:type", "Boolean_False")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "false")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"myVar\":false}")]
-        public virtual void SingleScalarVariableWithChangedName_Boolean_False()
+        public void SingleScalarVariableWithChangedName_Boolean_False()
         {
 #line 58
 this.SingleScalarVariableWithChangedName("Boolean_False", "false", "{\"myVar\":false}", ((string[])(null)));
@@ -609,7 +578,7 @@ this.SingleScalarVariableWithChangedName("Boolean_False", "false", "{\"myVar\":f
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:type", "Null")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"myVar\":null}")]
-        public virtual void SingleScalarVariableWithChangedName_Null()
+        public void SingleScalarVariableWithChangedName_Null()
         {
 #line 58
 this.SingleScalarVariableWithChangedName("Null", "", "{\"myVar\":null}", ((string[])(null)));
@@ -623,21 +592,11 @@ this.SingleScalarVariableWithChangedName("Null", "", "{\"myVar\":null}", ((strin
             argumentsOfScenario.Add("type", type);
             argumentsOfScenario.Add("value", value);
             argumentsOfScenario.Add("result", result);
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Simple Recordset single field", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Simple Recordset single field", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 81
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -690,7 +649,7 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:type", "Character")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "c")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"a\":[\"c\"]}")]
-        public virtual void SimpleRecordsetSingleField_Character()
+        public void SimpleRecordsetSingleField_Character()
         {
 #line 81
 this.SimpleRecordsetSingleField("Character", "c", "{\"a\":[\"c\"]}", ((string[])(null)));
@@ -705,7 +664,7 @@ this.SimpleRecordsetSingleField("Character", "c", "{\"a\":[\"c\"]}", ((string[])
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:type", "Integer")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"a\":[2]}")]
-        public virtual void SimpleRecordsetSingleField_Integer()
+        public void SimpleRecordsetSingleField_Integer()
         {
 #line 81
 this.SimpleRecordsetSingleField("Integer", "2", "{\"a\":[2]}", ((string[])(null)));
@@ -720,7 +679,7 @@ this.SimpleRecordsetSingleField("Integer", "2", "{\"a\":[2]}", ((string[])(null)
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:type", "Decimal")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "5.6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"a\":[5.6]}")]
-        public virtual void SimpleRecordsetSingleField_Decimal()
+        public void SimpleRecordsetSingleField_Decimal()
         {
 #line 81
 this.SimpleRecordsetSingleField("Decimal", "5.6", "{\"a\":[5.6]}", ((string[])(null)));
@@ -735,7 +694,7 @@ this.SimpleRecordsetSingleField("Decimal", "5.6", "{\"a\":[5.6]}", ((string[])(n
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:type", "String")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "Hello")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"a\":[\"Hello\"]}")]
-        public virtual void SimpleRecordsetSingleField_String()
+        public void SimpleRecordsetSingleField_String()
         {
 #line 81
 this.SimpleRecordsetSingleField("String", "Hello", "{\"a\":[\"Hello\"]}", ((string[])(null)));
@@ -750,7 +709,7 @@ this.SimpleRecordsetSingleField("String", "Hello", "{\"a\":[\"Hello\"]}", ((stri
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:type", "Boolean_True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"a\":[true]}")]
-        public virtual void SimpleRecordsetSingleField_Boolean_True()
+        public void SimpleRecordsetSingleField_Boolean_True()
         {
 #line 81
 this.SimpleRecordsetSingleField("Boolean_True", "true", "{\"a\":[true]}", ((string[])(null)));
@@ -765,7 +724,7 @@ this.SimpleRecordsetSingleField("Boolean_True", "true", "{\"a\":[true]}", ((stri
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:type", "Boolean_False")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "false")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"a\":[false]}")]
-        public virtual void SimpleRecordsetSingleField_Boolean_False()
+        public void SimpleRecordsetSingleField_Boolean_False()
         {
 #line 81
 this.SimpleRecordsetSingleField("Boolean_False", "false", "{\"a\":[false]}", ((string[])(null)));
@@ -779,21 +738,11 @@ this.SimpleRecordsetSingleField("Boolean_False", "false", "{\"a\":[false]}", ((s
             argumentsOfScenario.Add("type", type);
             argumentsOfScenario.Add("value", value);
             argumentsOfScenario.Add("result", result);
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Simple Recordset single field Null", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Simple Recordset single field Null", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 103
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -846,7 +795,7 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:type", "Null")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"a\":[null]}")]
-        public virtual void SimpleRecordsetSingleFieldNull_Null()
+        public void SimpleRecordsetSingleFieldNull_Null()
         {
 #line 103
 this.SimpleRecordsetSingleFieldNull("Null", "", "{\"a\":[null]}", ((string[])(null)));
@@ -861,21 +810,11 @@ this.SimpleRecordsetSingleFieldNull("Null", "", "{\"a\":[null]}", ((string[])(nu
             argumentsOfScenario.Add("valueA", valueA);
             argumentsOfScenario.Add("valueB", valueB);
             argumentsOfScenario.Add("result", result);
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Multiple Scalars Variable", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Multiple Scalars Variable", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 120
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -938,7 +877,7 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueA", "c")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueB", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"a\":\"c\",\"b\":3}")]
-        public virtual void MultipleScalarsVariable_Character()
+        public void MultipleScalarsVariable_Character()
         {
 #line 120
 this.MultipleScalarsVariable("Character", "c", "3", "{\"a\":\"c\",\"b\":3}", ((string[])(null)));
@@ -954,7 +893,7 @@ this.MultipleScalarsVariable("Character", "c", "3", "{\"a\":\"c\",\"b\":3}", ((s
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueA", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueB", "a")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"a\":2,\"b\":\"a\"}")]
-        public virtual void MultipleScalarsVariable_Integer()
+        public void MultipleScalarsVariable_Integer()
         {
 #line 120
 this.MultipleScalarsVariable("Integer", "2", "a", "{\"a\":2,\"b\":\"a\"}", ((string[])(null)));
@@ -970,7 +909,7 @@ this.MultipleScalarsVariable("Integer", "2", "a", "{\"a\":2,\"b\":\"a\"}", ((str
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueA", "5.6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueB", "World")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"a\":5.6,\"b\":\"World\"}")]
-        public virtual void MultipleScalarsVariable_Decimal()
+        public void MultipleScalarsVariable_Decimal()
         {
 #line 120
 this.MultipleScalarsVariable("Decimal", "5.6", "World", "{\"a\":5.6,\"b\":\"World\"}", ((string[])(null)));
@@ -986,7 +925,7 @@ this.MultipleScalarsVariable("Decimal", "5.6", "World", "{\"a\":5.6,\"b\":\"Worl
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueA", "Hello")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueB", "10.1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"a\":\"Hello\",\"b\":10.1}")]
-        public virtual void MultipleScalarsVariable_String()
+        public void MultipleScalarsVariable_String()
         {
 #line 120
 this.MultipleScalarsVariable("String", "Hello", "10.1", "{\"a\":\"Hello\",\"b\":10.1}", ((string[])(null)));
@@ -1002,7 +941,7 @@ this.MultipleScalarsVariable("String", "Hello", "10.1", "{\"a\":\"Hello\",\"b\":
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueA", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueB", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"a\":true,\"b\":null}")]
-        public virtual void MultipleScalarsVariable_Boolean_True()
+        public void MultipleScalarsVariable_Boolean_True()
         {
 #line 120
 this.MultipleScalarsVariable("Boolean_True", "true", "", "{\"a\":true,\"b\":null}", ((string[])(null)));
@@ -1018,7 +957,7 @@ this.MultipleScalarsVariable("Boolean_True", "true", "", "{\"a\":true,\"b\":null
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueA", "false")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueB", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"a\":false,\"b\":true}")]
-        public virtual void MultipleScalarsVariable_Boolean_False()
+        public void MultipleScalarsVariable_Boolean_False()
         {
 #line 120
 this.MultipleScalarsVariable("Boolean_False", "false", "true", "{\"a\":false,\"b\":true}", ((string[])(null)));
@@ -1034,7 +973,7 @@ this.MultipleScalarsVariable("Boolean_False", "false", "true", "{\"a\":false,\"b
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueA", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueB", "false")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"a\":null,\"b\":false}")]
-        public virtual void MultipleScalarsVariable_Null()
+        public void MultipleScalarsVariable_Null()
         {
 #line 120
 this.MultipleScalarsVariable("Null", "", "false", "{\"a\":null,\"b\":false}", ((string[])(null)));
@@ -1049,21 +988,11 @@ this.MultipleScalarsVariable("Null", "", "false", "{\"a\":null,\"b\":false}", ((
             argumentsOfScenario.Add("valueA", valueA);
             argumentsOfScenario.Add("valueB", valueB);
             argumentsOfScenario.Add("result", result);
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Multiple Recordset Variable", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Multiple Recordset Variable", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 146
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -1126,7 +1055,7 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueA", "c")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueB", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"a\":[\"c\"],\"b\":[3]}")]
-        public virtual void MultipleRecordsetVariable_Character()
+        public void MultipleRecordsetVariable_Character()
         {
 #line 146
 this.MultipleRecordsetVariable("Character", "c", "3", "{\"a\":[\"c\"],\"b\":[3]}", ((string[])(null)));
@@ -1142,7 +1071,7 @@ this.MultipleRecordsetVariable("Character", "c", "3", "{\"a\":[\"c\"],\"b\":[3]}
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueA", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueB", "a")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"a\":[2],\"b\":[\"a\"]}")]
-        public virtual void MultipleRecordsetVariable_Integer()
+        public void MultipleRecordsetVariable_Integer()
         {
 #line 146
 this.MultipleRecordsetVariable("Integer", "2", "a", "{\"a\":[2],\"b\":[\"a\"]}", ((string[])(null)));
@@ -1158,7 +1087,7 @@ this.MultipleRecordsetVariable("Integer", "2", "a", "{\"a\":[2],\"b\":[\"a\"]}",
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueA", "5.6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueB", "World")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"a\":[5.6],\"b\":[\"World\"]}")]
-        public virtual void MultipleRecordsetVariable_Decimal()
+        public void MultipleRecordsetVariable_Decimal()
         {
 #line 146
 this.MultipleRecordsetVariable("Decimal", "5.6", "World", "{\"a\":[5.6],\"b\":[\"World\"]}", ((string[])(null)));
@@ -1174,7 +1103,7 @@ this.MultipleRecordsetVariable("Decimal", "5.6", "World", "{\"a\":[5.6],\"b\":[\
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueA", "Hello")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueB", "10.1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"a\":[\"Hello\"],\"b\":[10.1]}")]
-        public virtual void MultipleRecordsetVariable_String()
+        public void MultipleRecordsetVariable_String()
         {
 #line 146
 this.MultipleRecordsetVariable("String", "Hello", "10.1", "{\"a\":[\"Hello\"],\"b\":[10.1]}", ((string[])(null)));
@@ -1190,7 +1119,7 @@ this.MultipleRecordsetVariable("String", "Hello", "10.1", "{\"a\":[\"Hello\"],\"
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueA", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueB", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"a\":[true],\"b\":[null]}")]
-        public virtual void MultipleRecordsetVariable_Boolean_True()
+        public void MultipleRecordsetVariable_Boolean_True()
         {
 #line 146
 this.MultipleRecordsetVariable("Boolean_True", "true", "", "{\"a\":[true],\"b\":[null]}", ((string[])(null)));
@@ -1206,7 +1135,7 @@ this.MultipleRecordsetVariable("Boolean_True", "true", "", "{\"a\":[true],\"b\":
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueA", "false")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueB", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"a\":[false],\"b\":[true]}")]
-        public virtual void MultipleRecordsetVariable_Boolean_False()
+        public void MultipleRecordsetVariable_Boolean_False()
         {
 #line 146
 this.MultipleRecordsetVariable("Boolean_False", "false", "true", "{\"a\":[false],\"b\":[true]}", ((string[])(null)));
@@ -1222,7 +1151,7 @@ this.MultipleRecordsetVariable("Boolean_False", "false", "true", "{\"a\":[false]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueA", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueB", "false")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"a\":[null],\"b\":[false]}")]
-        public virtual void MultipleRecordsetVariable_Null()
+        public void MultipleRecordsetVariable_Null()
         {
 #line 146
 this.MultipleRecordsetVariable("Null", "", "false", "{\"a\":[null],\"b\":[false]}", ((string[])(null)));
@@ -1237,21 +1166,11 @@ this.MultipleRecordsetVariable("Null", "", "false", "{\"a\":[null],\"b\":[false]
             argumentsOfScenario.Add("valueA", valueA);
             argumentsOfScenario.Add("valueB", valueB);
             argumentsOfScenario.Add("result", result);
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Multiple Scalars Variable comma seperated", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Multiple Scalars Variable comma seperated", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 172
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -1308,7 +1227,7 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueA", "c")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueB", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"rec\":{\"a\":\"c\",\"b\":3}}")]
-        public virtual void MultipleScalarsVariableCommaSeperated_Character()
+        public void MultipleScalarsVariableCommaSeperated_Character()
         {
 #line 172
 this.MultipleScalarsVariableCommaSeperated("Character", "c", "3", "{\"rec\":{\"a\":\"c\",\"b\":3}}", ((string[])(null)));
@@ -1324,7 +1243,7 @@ this.MultipleScalarsVariableCommaSeperated("Character", "c", "3", "{\"rec\":{\"a
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueA", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueB", "a")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"rec\":{\"a\":2,\"b\":\"a\"}}")]
-        public virtual void MultipleScalarsVariableCommaSeperated_Integer()
+        public void MultipleScalarsVariableCommaSeperated_Integer()
         {
 #line 172
 this.MultipleScalarsVariableCommaSeperated("Integer", "2", "a", "{\"rec\":{\"a\":2,\"b\":\"a\"}}", ((string[])(null)));
@@ -1340,7 +1259,7 @@ this.MultipleScalarsVariableCommaSeperated("Integer", "2", "a", "{\"rec\":{\"a\"
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueA", "5.6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueB", "World")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"rec\":{\"a\":5.6,\"b\":\"World\"}}")]
-        public virtual void MultipleScalarsVariableCommaSeperated_Decimal()
+        public void MultipleScalarsVariableCommaSeperated_Decimal()
         {
 #line 172
 this.MultipleScalarsVariableCommaSeperated("Decimal", "5.6", "World", "{\"rec\":{\"a\":5.6,\"b\":\"World\"}}", ((string[])(null)));
@@ -1356,7 +1275,7 @@ this.MultipleScalarsVariableCommaSeperated("Decimal", "5.6", "World", "{\"rec\":
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueA", "Hello")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueB", "10.1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"rec\":{\"a\":\"Hello\",\"b\":10.1}}")]
-        public virtual void MultipleScalarsVariableCommaSeperated_String()
+        public void MultipleScalarsVariableCommaSeperated_String()
         {
 #line 172
 this.MultipleScalarsVariableCommaSeperated("String", "Hello", "10.1", "{\"rec\":{\"a\":\"Hello\",\"b\":10.1}}", ((string[])(null)));
@@ -1372,7 +1291,7 @@ this.MultipleScalarsVariableCommaSeperated("String", "Hello", "10.1", "{\"rec\":
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueA", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueB", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"rec\":{\"a\":true,\"b\":3}}")]
-        public virtual void MultipleScalarsVariableCommaSeperated_Boolean_True()
+        public void MultipleScalarsVariableCommaSeperated_Boolean_True()
         {
 #line 172
 this.MultipleScalarsVariableCommaSeperated("Boolean_True", "true", "3", "{\"rec\":{\"a\":true,\"b\":3}}", ((string[])(null)));
@@ -1388,7 +1307,7 @@ this.MultipleScalarsVariableCommaSeperated("Boolean_True", "true", "3", "{\"rec\
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueA", "false")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueB", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"rec\":{\"a\":false,\"b\":true}}")]
-        public virtual void MultipleScalarsVariableCommaSeperated_Boolean_False()
+        public void MultipleScalarsVariableCommaSeperated_Boolean_False()
         {
 #line 172
 this.MultipleScalarsVariableCommaSeperated("Boolean_False", "false", "true", "{\"rec\":{\"a\":false,\"b\":true}}", ((string[])(null)));
@@ -1403,21 +1322,11 @@ this.MultipleScalarsVariableCommaSeperated("Boolean_False", "false", "true", "{\
             argumentsOfScenario.Add("valueA", valueA);
             argumentsOfScenario.Add("valueB", valueB);
             argumentsOfScenario.Add("result", result);
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Multiple Scalars Variable comma seperated Null", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Multiple Scalars Variable comma seperated Null", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 195
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -1474,7 +1383,7 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueA", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueB", "false")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"rec\":{\"a\":null,\"b\":false}}")]
-        public virtual void MultipleScalarsVariableCommaSeperatedNull_Null()
+        public void MultipleScalarsVariableCommaSeperatedNull_Null()
         {
 #line 195
 this.MultipleScalarsVariableCommaSeperatedNull("Null", "", "false", "{\"rec\":{\"a\":null,\"b\":false}}", ((string[])(null)));
@@ -1489,21 +1398,11 @@ this.MultipleScalarsVariableCommaSeperatedNull("Null", "", "false", "{\"rec\":{\
             argumentsOfScenario.Add("valueA", valueA);
             argumentsOfScenario.Add("valueB", valueB);
             argumentsOfScenario.Add("result", result);
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Multiple Recordset Variable comma seperatedNull", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Multiple Recordset Variable comma seperatedNull", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 213
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -1560,7 +1459,7 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueA", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueB", "false")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"rec\":[{\"a\":null,\"b\":false}]}")]
-        public virtual void MultipleRecordsetVariableCommaSeperatedNull_Null()
+        public void MultipleRecordsetVariableCommaSeperatedNull_Null()
         {
 #line 213
 this.MultipleRecordsetVariableCommaSeperatedNull("Null", "", "false", "{\"rec\":[{\"a\":null,\"b\":false}]}", ((string[])(null)));
@@ -1575,21 +1474,11 @@ this.MultipleRecordsetVariableCommaSeperatedNull("Null", "", "false", "{\"rec\":
             argumentsOfScenario.Add("valueA", valueA);
             argumentsOfScenario.Add("valueB", valueB);
             argumentsOfScenario.Add("result", result);
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Multiple Recordset Variable comma seperated", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Multiple Recordset Variable comma seperated", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 231
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -1646,7 +1535,7 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueA", "c")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueB", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"rec\":[{\"a\":\"c\",\"b\":3}]}")]
-        public virtual void MultipleRecordsetVariableCommaSeperated_Character()
+        public void MultipleRecordsetVariableCommaSeperated_Character()
         {
 #line 231
 this.MultipleRecordsetVariableCommaSeperated("Character", "c", "3", "{\"rec\":[{\"a\":\"c\",\"b\":3}]}", ((string[])(null)));
@@ -1662,7 +1551,7 @@ this.MultipleRecordsetVariableCommaSeperated("Character", "c", "3", "{\"rec\":[{
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueA", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueB", "a")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"rec\":[{\"a\":2,\"b\":\"a\"}]}")]
-        public virtual void MultipleRecordsetVariableCommaSeperated_Integer()
+        public void MultipleRecordsetVariableCommaSeperated_Integer()
         {
 #line 231
 this.MultipleRecordsetVariableCommaSeperated("Integer", "2", "a", "{\"rec\":[{\"a\":2,\"b\":\"a\"}]}", ((string[])(null)));
@@ -1678,7 +1567,7 @@ this.MultipleRecordsetVariableCommaSeperated("Integer", "2", "a", "{\"rec\":[{\"
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueA", "5.6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueB", "World")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"rec\":[{\"a\":5.6,\"b\":\"World\"}]}")]
-        public virtual void MultipleRecordsetVariableCommaSeperated_Decimal()
+        public void MultipleRecordsetVariableCommaSeperated_Decimal()
         {
 #line 231
 this.MultipleRecordsetVariableCommaSeperated("Decimal", "5.6", "World", "{\"rec\":[{\"a\":5.6,\"b\":\"World\"}]}", ((string[])(null)));
@@ -1694,7 +1583,7 @@ this.MultipleRecordsetVariableCommaSeperated("Decimal", "5.6", "World", "{\"rec\
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueA", "Hello")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueB", "10.1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"rec\":[{\"a\":\"Hello\",\"b\":10.1}]}")]
-        public virtual void MultipleRecordsetVariableCommaSeperated_String()
+        public void MultipleRecordsetVariableCommaSeperated_String()
         {
 #line 231
 this.MultipleRecordsetVariableCommaSeperated("String", "Hello", "10.1", "{\"rec\":[{\"a\":\"Hello\",\"b\":10.1}]}", ((string[])(null)));
@@ -1710,7 +1599,7 @@ this.MultipleRecordsetVariableCommaSeperated("String", "Hello", "10.1", "{\"rec\
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueA", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueB", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"rec\":[{\"a\":true,\"b\":3}]}")]
-        public virtual void MultipleRecordsetVariableCommaSeperated_Boolean_True()
+        public void MultipleRecordsetVariableCommaSeperated_Boolean_True()
         {
 #line 231
 this.MultipleRecordsetVariableCommaSeperated("Boolean_True", "true", "3", "{\"rec\":[{\"a\":true,\"b\":3}]}", ((string[])(null)));
@@ -1726,7 +1615,7 @@ this.MultipleRecordsetVariableCommaSeperated("Boolean_True", "true", "3", "{\"re
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueA", "false")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueB", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"rec\":[{\"a\":false,\"b\":true}]}")]
-        public virtual void MultipleRecordsetVariableCommaSeperated_Boolean_False()
+        public void MultipleRecordsetVariableCommaSeperated_Boolean_False()
         {
 #line 231
 this.MultipleRecordsetVariableCommaSeperated("Boolean_False", "false", "true", "{\"rec\":[{\"a\":false,\"b\":true}]}", ((string[])(null)));
@@ -1740,21 +1629,11 @@ this.MultipleRecordsetVariableCommaSeperated("Boolean_False", "false", "true", "
             argumentsOfScenario.Add("type", type);
             argumentsOfScenario.Add("value", value);
             argumentsOfScenario.Add("result", result);
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Simple Recordset with * single field Null", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Simple Recordset with * single field Null", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 254
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -1807,7 +1686,7 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:type", "Null")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"rec\":[null]}")]
-        public virtual void SimpleRecordsetWithSingleFieldNull_Null()
+        public void SimpleRecordsetWithSingleFieldNull_Null()
         {
 #line 254
 this.SimpleRecordsetWithSingleFieldNull("Null", "", "{\"rec\":[null]}", ((string[])(null)));
@@ -1821,21 +1700,11 @@ this.SimpleRecordsetWithSingleFieldNull("Null", "", "{\"rec\":[null]}", ((string
             argumentsOfScenario.Add("type", type);
             argumentsOfScenario.Add("value", value);
             argumentsOfScenario.Add("result", result);
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Simple Recordset with * single field", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Simple Recordset with * single field", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 271
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -1888,7 +1757,7 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:type", "Character")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "c")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"rec\":[\"c\"]}")]
-        public virtual void SimpleRecordsetWithSingleField_Character()
+        public void SimpleRecordsetWithSingleField_Character()
         {
 #line 271
 this.SimpleRecordsetWithSingleField("Character", "c", "{\"rec\":[\"c\"]}", ((string[])(null)));
@@ -1903,7 +1772,7 @@ this.SimpleRecordsetWithSingleField("Character", "c", "{\"rec\":[\"c\"]}", ((str
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:type", "Integer")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"rec\":[2]}")]
-        public virtual void SimpleRecordsetWithSingleField_Integer()
+        public void SimpleRecordsetWithSingleField_Integer()
         {
 #line 271
 this.SimpleRecordsetWithSingleField("Integer", "2", "{\"rec\":[2]}", ((string[])(null)));
@@ -1918,7 +1787,7 @@ this.SimpleRecordsetWithSingleField("Integer", "2", "{\"rec\":[2]}", ((string[])
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:type", "Decimal")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "5.6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"rec\":[5.6]}")]
-        public virtual void SimpleRecordsetWithSingleField_Decimal()
+        public void SimpleRecordsetWithSingleField_Decimal()
         {
 #line 271
 this.SimpleRecordsetWithSingleField("Decimal", "5.6", "{\"rec\":[5.6]}", ((string[])(null)));
@@ -1933,7 +1802,7 @@ this.SimpleRecordsetWithSingleField("Decimal", "5.6", "{\"rec\":[5.6]}", ((strin
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:type", "String")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "Hello")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"rec\":[\"Hello\"]}")]
-        public virtual void SimpleRecordsetWithSingleField_String()
+        public void SimpleRecordsetWithSingleField_String()
         {
 #line 271
 this.SimpleRecordsetWithSingleField("String", "Hello", "{\"rec\":[\"Hello\"]}", ((string[])(null)));
@@ -1948,7 +1817,7 @@ this.SimpleRecordsetWithSingleField("String", "Hello", "{\"rec\":[\"Hello\"]}", 
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:type", "Boolean_True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"rec\":[true]}")]
-        public virtual void SimpleRecordsetWithSingleField_Boolean_True()
+        public void SimpleRecordsetWithSingleField_Boolean_True()
         {
 #line 271
 this.SimpleRecordsetWithSingleField("Boolean_True", "true", "{\"rec\":[true]}", ((string[])(null)));
@@ -1963,7 +1832,7 @@ this.SimpleRecordsetWithSingleField("Boolean_True", "true", "{\"rec\":[true]}", 
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:type", "Boolean_False")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "false")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"rec\":[false]}")]
-        public virtual void SimpleRecordsetWithSingleField_Boolean_False()
+        public void SimpleRecordsetWithSingleField_Boolean_False()
         {
 #line 271
 this.SimpleRecordsetWithSingleField("Boolean_False", "false", "{\"rec\":[false]}", ((string[])(null)));
@@ -1982,21 +1851,11 @@ this.SimpleRecordsetWithSingleField("Boolean_False", "false", "{\"rec\":[false]}
             argumentsOfScenario.Add("valueB2", valueB2);
             argumentsOfScenario.Add("valueB3", valueB3);
             argumentsOfScenario.Add("result", result);
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Recordset with * multiple fields and values Null", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Recordset with * multiple fields and values Null", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 294
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -2075,7 +1934,7 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueB2", "false")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueB3", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"rec\":[{\"a\":\"a\",\"b\":null},{\"a\":null,\"b\":false},{\"a\":null,\"b\":true}]}")]
-        public virtual void RecordsetWithMultipleFieldsAndValuesNull_Null()
+        public void RecordsetWithMultipleFieldsAndValuesNull_Null()
         {
 #line 294
 this.RecordsetWithMultipleFieldsAndValuesNull("Null", "a", "", "", "", "false", "true", "{\"rec\":[{\"a\":\"a\",\"b\":null},{\"a\":null,\"b\":false},{\"a\":null,\"b\":true}]}", ((string[])(null)));
@@ -2094,21 +1953,11 @@ this.RecordsetWithMultipleFieldsAndValuesNull("Null", "a", "", "", "", "false", 
             argumentsOfScenario.Add("valueB2", valueB2);
             argumentsOfScenario.Add("valueB3", valueB3);
             argumentsOfScenario.Add("result", result);
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Recordset with * multiple fields and values", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Recordset with * multiple fields and values", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 318
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -2196,7 +2045,7 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueB2", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueB3", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"rec\":[{\"a\":\"c\",\"b\":1},{\"a\":\"b\",\"b\":2},{\"a\":\"g\",\"b\":3}]}")]
-        public virtual void RecordsetWithMultipleFieldsAndValues_Character()
+        public void RecordsetWithMultipleFieldsAndValues_Character()
         {
 #line 318
 this.RecordsetWithMultipleFieldsAndValues("Character", "c", "b", "g", "1", "2", "3", "{\"rec\":[{\"a\":\"c\",\"b\":1},{\"a\":\"b\",\"b\":2},{\"a\":\"g\",\"b\":3}]}", ((string[])(null)));
@@ -2216,7 +2065,7 @@ this.RecordsetWithMultipleFieldsAndValues("Character", "c", "b", "g", "1", "2", 
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueB2", "h")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueB3", "i")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"rec\":[{\"a\":2,\"b\":\"g\"},{\"a\":56,\"b\":\"h\"},{\"a\":100,\"b\":\"i\"}]}")]
-        public virtual void RecordsetWithMultipleFieldsAndValues_Integer()
+        public void RecordsetWithMultipleFieldsAndValues_Integer()
         {
 #line 318
 this.RecordsetWithMultipleFieldsAndValues("Integer", "2", "56", "100", "g", "h", "i", "{\"rec\":[{\"a\":2,\"b\":\"g\"},{\"a\":56,\"b\":\"h\"},{\"a\":100,\"b\":\"i\"}]}", ((string[])(null)));
@@ -2236,7 +2085,7 @@ this.RecordsetWithMultipleFieldsAndValues("Integer", "2", "56", "100", "g", "h",
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueB2", "World")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueB3", "bob")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"rec\":[{\"a\":5.6,\"b\":\"Hello\"},{\"a\":7.1,\"b\":\"World\"},{\"a\":100.34,\"b\":\"bob\"}]}")]
-        public virtual void RecordsetWithMultipleFieldsAndValues_Decimal()
+        public void RecordsetWithMultipleFieldsAndValues_Decimal()
         {
 #line 318
 this.RecordsetWithMultipleFieldsAndValues("Decimal", "5.6", "7.1", "100.34", "Hello", "World", "bob", "{\"rec\":[{\"a\":5.6,\"b\":\"Hello\"},{\"a\":7.1,\"b\":\"World\"},{\"a\":100.34,\"b\":\"bob\"}]}", ((string[])(null)));
@@ -2256,7 +2105,7 @@ this.RecordsetWithMultipleFieldsAndValues("Decimal", "5.6", "7.1", "100.34", "He
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueB2", "st")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueB3", "56")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"rec\":[{\"a\":\"Hello\",\"b\":34},{\"a\":\"name\",\"b\":\"st\"},{\"a\":\"dora\",\"b\":56}]}")]
-        public virtual void RecordsetWithMultipleFieldsAndValues_String()
+        public void RecordsetWithMultipleFieldsAndValues_String()
         {
 #line 318
 this.RecordsetWithMultipleFieldsAndValues("String", "Hello", "name", "dora", "34", "st", "56", "{\"rec\":[{\"a\":\"Hello\",\"b\":34},{\"a\":\"name\",\"b\":\"st\"},{\"a\":\"dora\",\"b\":56}]}", ((string[])(null)));
@@ -2276,7 +2125,7 @@ this.RecordsetWithMultipleFieldsAndValues("String", "Hello", "name", "dora", "34
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueB2", "145.25")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueB3", "90.2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"rec\":[{\"a\":true,\"b\":78.1},{\"a\":false,\"b\":145.25},{\"a\":\"a\",\"b\":90.2}]}")]
-        public virtual void RecordsetWithMultipleFieldsAndValues_Boolean_True()
+        public void RecordsetWithMultipleFieldsAndValues_Boolean_True()
         {
 #line 318
 this.RecordsetWithMultipleFieldsAndValues("Boolean_True", "true", "false", "a", "78.1", "145.25", "90.2", "{\"rec\":[{\"a\":true,\"b\":78.1},{\"a\":false,\"b\":145.25},{\"a\":\"a\",\"b\":90.2}]}", ((string[])(null)));
@@ -2296,7 +2145,7 @@ this.RecordsetWithMultipleFieldsAndValues("Boolean_True", "true", "false", "a", 
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueB2", "8")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:valueB3", "7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{\"rec\":[{\"a\":false,\"b\":1},{\"a\":\"bob\",\"b\":8},{\"a\":9,\"b\":7}]}")]
-        public virtual void RecordsetWithMultipleFieldsAndValues_Boolean_False()
+        public void RecordsetWithMultipleFieldsAndValues_Boolean_False()
         {
 #line 318
 this.RecordsetWithMultipleFieldsAndValues("Boolean_False", "false", "bob", "9", "1", "8", "7", "{\"rec\":[{\"a\":false,\"b\":1},{\"a\":\"bob\",\"b\":8},{\"a\":9,\"b\":7}]}", ((string[])(null)));
@@ -2307,25 +2156,15 @@ this.RecordsetWithMultipleFieldsAndValues("Boolean_False", "false", "bob", "9", 
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Recordset with * multiple fields and values different length for columns")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "CreateJSON")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
-        public virtual void RecordsetWithMultipleFieldsAndValuesDifferentLengthForColumns()
+        public void RecordsetWithMultipleFieldsAndValuesDifferentLengthForColumns()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Recordset with * multiple fields and values different length for columns", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Recordset with * multiple fields and values different length for columns", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 351
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -2400,26 +2239,16 @@ this.ScenarioInitialize(scenarioInfo);
             "ltiple Columns")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "CreateJSON")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
-        public virtual void RecordsetWithMultipleFieldsAndScalarValuesDifferentLengthForColumnMultipleColumns()
+        public void RecordsetWithMultipleFieldsAndScalarValuesDifferentLengthForColumnMultipleColumns()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Recordset with * multiple fields and  scalar values different length for columnMu" +
-                    "ltiple Columns", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+                    "ltiple Columns", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 375
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }

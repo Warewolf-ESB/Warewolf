@@ -27,7 +27,7 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.Calculate
         
         private Microsoft.VisualStudio.TestTools.UnitTesting.TestContext _testContext;
         
-        private string[] _featureTags = new string[] {
+        private static string[] featureTags = new string[] {
                 "Utility"};
         
 #line 1 "Calculate.feature"
@@ -50,8 +50,7 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.Calculate
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Toolbox/Utility/Calculate", "Calculate", "\tIn order to perform basic calculations\r\n\tAs a Warewolf user\r\n\tI want a tool that" +
-                    " I can input a formula and will calculate and retun a result", ProgrammingLanguage.CSharp, new string[] {
-                        "Utility"});
+                    " I can input a formula and will calculate and retun a result", ProgrammingLanguage.CSharp, featureTags);
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -63,7 +62,7 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.Calculate
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestInitializeAttribute()]
-        public virtual void TestInitialize()
+        public void TestInitialize()
         {
             if (((testRunner.FeatureContext != null) 
                         && (testRunner.FeatureContext.FeatureInfo.Title != "Calculate")))
@@ -73,23 +72,23 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.Calculate
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCleanupAttribute()]
-        public virtual void TestTearDown()
+        public void TestTearDown()
         {
             testRunner.OnScenarioEnd();
         }
         
-        public virtual void ScenarioInitialize(TechTalk.SpecFlow.ScenarioInfo scenarioInfo)
+        public void ScenarioInitialize(TechTalk.SpecFlow.ScenarioInfo scenarioInfo)
         {
             testRunner.OnScenarioInitialize(scenarioInfo);
             testRunner.ScenarioContext.ScenarioContainer.RegisterInstanceAs<Microsoft.VisualStudio.TestTools.UnitTesting.TestContext>(_testContext);
         }
         
-        public virtual void ScenarioStart()
+        public void ScenarioStart()
         {
             testRunner.OnScenarioStart();
         }
         
-        public virtual void ScenarioCleanup()
+        public void ScenarioCleanup()
         {
             testRunner.CollectScenarioErrors();
         }
@@ -98,25 +97,15 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.Calculate
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Calculate using a given formula")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Calculate")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Utility")]
-        public virtual void CalculateUsingAGivenFormula()
+        public void CalculateUsingAGivenFormula()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Calculate using a given formula", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Calculate using a given formula", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 23
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -157,25 +146,15 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Calculate using multiple scalars and recordset inputs")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Calculate")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Utility")]
-        public virtual void CalculateUsingMultipleScalarsAndRecordsetInputs()
+        public void CalculateUsingMultipleScalarsAndRecordsetInputs()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Calculate using multiple scalars and recordset inputs", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Calculate using multiple scalars and recordset inputs", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 35
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -222,25 +201,15 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Calculate with new lines should concatenate values")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Calculate")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Utility")]
-        public virtual void CalculateWithNewLinesShouldConcatenateValues()
+        public void CalculateWithNewLinesShouldConcatenateValues()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Calculate with new lines should concatenate values", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Calculate with new lines should concatenate values", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 49
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -287,25 +256,15 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Calculate using Recordset (*) input in an agregate function like SUM")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Calculate")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Utility")]
-        public virtual void CalculateUsingRecordsetInputInAnAgregateFunctionLikeSUM()
+        public void CalculateUsingRecordsetInputInAnAgregateFunctionLikeSUM()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Calculate using Recordset (*) input in an agregate function like SUM", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Calculate using Recordset (*) input in an agregate function like SUM", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 63
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -362,26 +321,16 @@ this.ScenarioInitialize(scenarioInfo);
             "ecordset star")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Calculate")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Utility")]
-        public virtual void CalculateUsingRecordsetInputInAnAgregateFunctionLikeSUMAndOutputRecordsetStar()
+        public void CalculateUsingRecordsetInputInAnAgregateFunctionLikeSUMAndOutputRecordsetStar()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Calculate using Recordset (*) input in an agregate function like SUM and output r" +
-                    "ecordset star", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+                    "ecordset star", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 82
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -451,26 +400,16 @@ this.ScenarioInitialize(scenarioInfo);
             "ecordset star complex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Calculate")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Utility")]
-        public virtual void CalculateUsingRecordsetInputInAnAgregateFunctionLikeSUMAndOutputRecordsetStarComplex()
+        public void CalculateUsingRecordsetInputInAnAgregateFunctionLikeSUMAndOutputRecordsetStarComplex()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Calculate using Recordset (*) input in an agregate function like SUM and output r" +
-                    "ecordset star complex", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+                    "ecordset star complex", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 107
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -539,25 +478,15 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Calculate using incorrect formula")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Calculate")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Utility")]
-        public virtual void CalculateUsingIncorrectFormula()
+        public void CalculateUsingIncorrectFormula()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Calculate using incorrect formula", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Calculate using incorrect formula", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 132
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -599,25 +528,15 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Calculate using variable as full calculation")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Calculate")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Utility")]
-        public virtual void CalculateUsingVariableAsFullCalculation()
+        public void CalculateUsingVariableAsFullCalculation()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Calculate using variable as full calculation", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Calculate using variable as full calculation", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 145
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -661,25 +580,15 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Calculate using a negative index recordset value")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Calculate")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Utility")]
-        public virtual void CalculateUsingANegativeIndexRecordsetValue()
+        public void CalculateUsingANegativeIndexRecordsetValue()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Calculate using a negative index recordset value", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Calculate using a negative index recordset value", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 158
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -717,25 +626,15 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Calculate using isnumber and blank")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Calculate")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Utility")]
-        public virtual void CalculateUsingIsnumberAndBlank()
+        public void CalculateUsingIsnumberAndBlank()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Calculate using isnumber and blank", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Calculate using isnumber and blank", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 169
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -769,25 +668,15 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Calculate Assign by evaluating a variable inside a variable")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Calculate")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Utility")]
-        public virtual void CalculateAssignByEvaluatingAVariableInsideAVariable()
+        public void CalculateAssignByEvaluatingAVariableInsideAVariable()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Calculate Assign by evaluating a variable inside a variable", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Calculate Assign by evaluating a variable inside a variable", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 179
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -834,25 +723,15 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Calculate Assign by evaluating a variable inside a variable with function")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Calculate")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Utility")]
-        public virtual void CalculateAssignByEvaluatingAVariableInsideAVariableWithFunction()
+        public void CalculateAssignByEvaluatingAVariableInsideAVariableWithFunction()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Calculate Assign by evaluating a variable inside a variable with function", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Calculate Assign by evaluating a variable inside a variable with function", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 193
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -902,21 +781,11 @@ this.ScenarioInitialize(scenarioInfo);
             argumentsOfScenario.Add("No", no);
             argumentsOfScenario.Add("fx", fx);
             argumentsOfScenario.Add("result", result);
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Calculate Assign by evaluating variables with functions", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Calculate Assign by evaluating variables with functions", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 207
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -978,7 +847,7 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "abs([[e]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "1000")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_1()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_1()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("1", "abs([[e]])", "1000", ((string[])(null)));
@@ -993,7 +862,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("1", "abs([[e]])", "1000"
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "acos([[x]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "0")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_2()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_2()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("2", "acos([[x]])", "0", ((string[])(null)));
@@ -1008,7 +877,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("2", "acos([[x]])", "0", 
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "acosh([[rc(1).set]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "2.29243166956118")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_3()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_3()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("3", "acosh([[rc(1).set]])", "2.29243166956118", ((string[])(null)));
@@ -1023,7 +892,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("3", "acosh([[rc(1).set]]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "AND([[s]]<[[z]]<5)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "False")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_4()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_4()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("4", "AND([[s]]<[[z]]<5)", "False", ((string[])(null)));
@@ -1038,7 +907,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("4", "AND([[s]]<[[z]]<5)"
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "AND([[y]]<5)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "True")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_5()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_5()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("5", "AND([[y]]<5)", "True", ((string[])(null)));
@@ -1053,7 +922,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("5", "AND([[y]]<5)", "Tru
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "ASIN([[s]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "-1.57079632679490")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_7()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_7()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("7", "ASIN([[s]])", "-1.57079632679490", ((string[])(null)));
@@ -1068,7 +937,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("7", "ASIN([[s]])", "-1.5
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "8")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "ASINH([[rc(1).set]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "2.312438341272750")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_8()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_8()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("8", "ASINH([[rc(1).set]])", "2.312438341272750", ((string[])(null)));
@@ -1083,7 +952,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("8", "ASINH([[rc(1).set]]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "9")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "ATAN([[s]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "-0.785398163397448")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_9()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_9()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("9", "ATAN([[s]])", "-0.785398163397448", ((string[])(null)));
@@ -1098,7 +967,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("9", "ATAN([[s]])", "-0.7
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "10")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "ATAN2([[x]],[[s]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "-0.785398163397448")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_10()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_10()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("10", "ATAN2([[x]],[[s]])", "-0.785398163397448", ((string[])(null)));
@@ -1113,7 +982,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("10", "ATAN2([[x]],[[s]])
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "11")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "ATANH([[t]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "0")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_11()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_11()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("11", "ATANH([[t]])", "0", ((string[])(null)));
@@ -1128,7 +997,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("11", "ATANH([[t]])", "0"
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "12")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "AVEDEV([[x]],[[z]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "4.5")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_12()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_12()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("12", "AVEDEV([[x]],[[z]])", "4.5", ((string[])(null)));
@@ -1143,7 +1012,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("12", "AVEDEV([[x]],[[z]]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "13")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "AVERAGE([[x]],[[y]],[[z]],[[rc(1).set]],[[s]],[[t]],[[e]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "145.285714285714")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_13()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_13()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("13", "AVERAGE([[x]],[[y]],[[z]],[[rc(1).set]],[[s]],[[t]],[[e]])", "145.285714285714", ((string[])(null)));
@@ -1158,7 +1027,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("13", "AVERAGE([[x]],[[y]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "14")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "BIN2DEC([[z]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "2")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_14()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_14()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("14", "BIN2DEC([[z]])", "2", ((string[])(null)));
@@ -1173,7 +1042,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("14", "BIN2DEC([[z]])", "
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "15")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "BIN2HEX([[x]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "1")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_15()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_15()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("15", "BIN2HEX([[x]])", "1", ((string[])(null)));
@@ -1188,7 +1057,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("15", "BIN2HEX([[x]])", "
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "16")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "BIN2OCT([[z]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "2")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_16()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_16()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("16", "BIN2OCT([[z]])", "2", ((string[])(null)));
@@ -1203,7 +1072,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("16", "BIN2OCT([[z]])", "
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "17")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "CEILING([[z]],[[y]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "10")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_17()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_17()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("17", "CEILING([[z]],[[y]])", "10", ((string[])(null)));
@@ -1218,7 +1087,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("17", "CEILING([[z]],[[y]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "18")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "char([[x]][[t]][[x]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "e")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_18()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_18()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("18", "char([[x]][[t]][[x]])", "e", ((string[])(null)));
@@ -1233,7 +1102,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("18", "char([[x]][[t]][[x
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "19")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "CHOOSE(4,[[z]],[[t]],[[rc(1).set]],100)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "100")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_19()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_19()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("19", "CHOOSE(4,[[z]],[[t]],[[rc(1).set]],100)", "100", ((string[])(null)));
@@ -1248,7 +1117,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("19", "CHOOSE(4,[[z]],[[t
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "20")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "CODE(111)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "49")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_20()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_20()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("20", "CODE(111)", "49", ((string[])(null)));
@@ -1263,7 +1132,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("20", "CODE(111)", "49", 
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "21")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "COMBIN([[z]],[[y]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "45")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_21()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_21()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("21", "COMBIN([[z]],[[y]])", "45", ((string[])(null)));
@@ -1278,7 +1147,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("21", "COMBIN([[z]],[[y]]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "22")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "COMPLEX([[y]],[[e]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "2+1000i")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_22()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_22()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("22", "COMPLEX([[y]],[[e]])", "2+1000i", ((string[])(null)));
@@ -1293,7 +1162,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("22", "COMPLEX([[y]],[[e]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "23")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "CONCATENATE([[z]],[[x]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "101")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_23()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_23()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("23", "CONCATENATE([[z]],[[x]])", "101", ((string[])(null)));
@@ -1308,7 +1177,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("23", "CONCATENATE([[z]],
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "24")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "CONVERT([[z]],\"m\",\"in\")")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "393.700787401575")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_24()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_24()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("24", "CONVERT([[z]],\"m\",\"in\")", "393.700787401575", ((string[])(null)));
@@ -1323,7 +1192,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("24", "CONVERT([[z]],\"m\
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "25")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "COS([[[[a]]]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "-0.989992496600445")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_25()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_25()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("25", "COS([[[[a]]]])", "-0.989992496600445", ((string[])(null)));
@@ -1338,7 +1207,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("25", "COS([[[[a]]]])", "
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "26")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "COSH([[z]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "11013.232920103300")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_26()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_26()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("26", "COSH([[z]])", "11013.232920103300", ((string[])(null)));
@@ -1353,7 +1222,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("26", "COSH([[z]])", "110
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "27")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "COUNT([[x]],[[y]],[[[[a]]]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "3")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_27()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_27()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("27", "COUNT([[x]],[[y]],[[[[a]]]])", "3", ((string[])(null)));
@@ -1368,7 +1237,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("27", "COUNT([[x]],[[y]],
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "29")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "DATE(2000,[[y]],12)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{2/12/2000 12:00:00.000 AM} or {12/02/2000 12:00:00.000 AM}")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_29()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_29()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("29", "DATE(2000,[[y]],12)", "{2/12/2000 12:00:00.000 AM} or {12/02/2000 12:00:00.000 AM}", ((string[])(null)));
@@ -1383,7 +1252,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("29", "DATE(2000,[[y]],12
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "30")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "DAY([[x]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "1")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_30()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_30()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("30", "DAY([[x]])", "1", ((string[])(null)));
@@ -1398,7 +1267,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("30", "DAY([[x]])", "1", 
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "31")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "DAYS360([[x]],[[y]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "1")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_31()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_31()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("31", "DAYS360([[x]],[[y]])", "1", ((string[])(null)));
@@ -1413,7 +1282,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("31", "DAYS360([[x]],[[y]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "32")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "DB([[e]],[[z]],12,12,12)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "4.66024676978963")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_32()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_32()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("32", "DB([[e]],[[z]],12,12,12)", "4.66024676978963", ((string[])(null)));
@@ -1428,7 +1297,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("32", "DB([[e]],[[z]],12,
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "33")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "DBNull()")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_33()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_33()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("33", "DBNull()", "", ((string[])(null)));
@@ -1443,7 +1312,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("33", "DBNull()", "", ((s
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "34")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "DDB([[e]],[[z]],12,12,[[x]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "31.9996025467397")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_34()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_34()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("34", "DDB([[e]],[[z]],12,12,[[x]])", "31.9996025467397", ((string[])(null)));
@@ -1458,7 +1327,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("34", "DDB([[e]],[[z]],12
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "35")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "DEC2BIN([[x]],[[z]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "0000000001")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_35()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_35()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("35", "DEC2BIN([[x]],[[z]])", "0000000001", ((string[])(null)));
@@ -1473,7 +1342,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("35", "DEC2BIN([[x]],[[z]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "36")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "DEC2HEX(1,10)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "0000000001")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_36()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_36()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("36", "DEC2HEX(1,10)", "0000000001", ((string[])(null)));
@@ -1488,7 +1357,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("36", "DEC2HEX(1,10)", "0
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "37")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "DEC2OCT([[y]],[[z]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "0000000002")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_37()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_37()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("37", "DEC2OCT([[y]],[[z]])", "0000000002", ((string[])(null)));
@@ -1503,7 +1372,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("37", "DEC2OCT([[y]],[[z]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "38")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "DEGREES([[z]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "572.957795130823")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_38()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_38()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("38", "DEGREES([[z]])", "572.957795130823", ((string[])(null)));
@@ -1518,7 +1387,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("38", "DEGREES([[z]])", "
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "39")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "DELTA([[t]],[[x]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "0")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_39()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_39()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("39", "DELTA([[t]],[[x]])", "0", ((string[])(null)));
@@ -1533,7 +1402,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("39", "DELTA([[t]],[[x]])
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "40")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "DOLLARDE([[z]],[[y]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "10")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_40()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_40()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("40", "DOLLARDE([[z]],[[y]])", "10", ((string[])(null)));
@@ -1548,7 +1417,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("40", "DOLLARDE([[z]],[[y
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "41")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "DOLLARFR([[x]],[[z]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "1")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_41()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_41()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("41", "DOLLARFR([[x]],[[z]])", "1", ((string[])(null)));
@@ -1563,7 +1432,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("41", "DOLLARFR([[x]],[[z
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "42")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "EDATE([[z]],[[[[a]]]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{4/10/1900 12:00:00.000 AM} or {10/04/1900 12:00:00.000 AM}")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_42()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_42()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("42", "EDATE([[z]],[[[[a]]]])", "{4/10/1900 12:00:00.000 AM} or {10/04/1900 12:00:00.000 AM}", ((string[])(null)));
@@ -1578,7 +1447,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("42", "EDATE([[z]],[[[[a]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "43")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "EOMONTH([[z]],[[[[a]]]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{4/30/1900 12:00:00.000 AM} or {30/04/1900 12:00:00.000 AM}")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_43()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_43()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("43", "EOMONTH([[z]],[[[[a]]]])", "{4/30/1900 12:00:00.000 AM} or {30/04/1900 12:00:00.000 AM}", ((string[])(null)));
@@ -1593,7 +1462,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("43", "EOMONTH([[z]],[[[[
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "45")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "EVEN([[y]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "2")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_45()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_45()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("45", "EVEN([[y]])", "2", ((string[])(null)));
@@ -1608,7 +1477,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("45", "EVEN([[y]])", "2",
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "46")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "EXP([[x]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "2.71828182845905")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_46()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_46()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("46", "EXP([[x]])", "2.71828182845905", ((string[])(null)));
@@ -1623,7 +1492,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("46", "EXP([[x]])", "2.71
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "47")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "FACT([[z]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "3628800")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_47()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_47()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("47", "FACT([[z]])", "3628800", ((string[])(null)));
@@ -1638,7 +1507,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("47", "FACT([[z]])", "362
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "48")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "FIND([[t]],[[e]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "2")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_48()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_48()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("48", "FIND([[t]],[[e]])", "2", ((string[])(null)));
@@ -1653,7 +1522,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("48", "FIND([[t]],[[e]])"
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "49")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "FACTDOUBLE([[z]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "3840")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_49()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_49()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("49", "FACTDOUBLE([[z]])", "3840", ((string[])(null)));
@@ -1668,7 +1537,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("49", "FACTDOUBLE([[z]])"
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "50")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "FLOOR([[z]],[[z]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "10")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_50()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_50()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("50", "FLOOR([[z]],[[z]])", "10", ((string[])(null)));
@@ -1683,7 +1552,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("50", "FLOOR([[z]],[[z]])
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "51")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "FV(10,12,100,10,1)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "-376611405206410")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_51()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_51()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("51", "FV(10,12,100,10,1)", "-376611405206410", ((string[])(null)));
@@ -1698,7 +1567,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("51", "FV(10,12,100,10,1)
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "52")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "GCD([[x]],[[z]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "1")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_52()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_52()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("52", "GCD([[x]],[[z]])", "1", ((string[])(null)));
@@ -1713,7 +1582,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("52", "GCD([[x]],[[z]])",
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "53")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "GESTEP([[[[a]]]],[[s]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "1")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_53()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_53()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("53", "GESTEP([[[[a]]]],[[s]])", "1", ((string[])(null)));
@@ -1728,7 +1597,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("53", "GESTEP([[[[a]]]],[
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "54")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "HEX2BIN([[y]],[[y]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "10")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_54()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_54()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("54", "HEX2BIN([[y]],[[y]])", "10", ((string[])(null)));
@@ -1743,7 +1612,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("54", "HEX2BIN([[y]],[[y]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "55")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "HEX2DEC([[rc(1).set]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "5")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_55()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_55()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("55", "HEX2DEC([[rc(1).set]])", "5", ((string[])(null)));
@@ -1758,7 +1627,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("55", "HEX2DEC([[rc(1).se
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "56")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "HEX2OCT([[rc(1).set]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "5")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_56()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_56()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("56", "HEX2OCT([[rc(1).set]])", "5", ((string[])(null)));
@@ -1773,7 +1642,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("56", "HEX2OCT([[rc(1).se
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "57")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "IF([[z]],[[rc(1).set]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "5")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_57()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_57()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("57", "IF([[z]],[[rc(1).set]])", "5", ((string[])(null)));
@@ -1788,7 +1657,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("57", "IF([[z]],[[rc(1).s
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "58")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "IFERROR([[t]],[[x]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "0")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_58()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_58()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("58", "IFERROR([[t]],[[x]])", "0", ((string[])(null)));
@@ -1803,7 +1672,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("58", "IFERROR([[t]],[[x]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "59")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "IMABS([[x]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "1")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_59()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_59()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("59", "IMABS([[x]])", "1", ((string[])(null)));
@@ -1818,7 +1687,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("59", "IMABS([[x]])", "1"
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "60")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "IMAGINARY([[rc(1).set]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "0")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_60()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_60()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("60", "IMAGINARY([[rc(1).set]])", "0", ((string[])(null)));
@@ -1833,7 +1702,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("60", "IMAGINARY([[rc(1).
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "61")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "IMARGUMENT([[e]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "0")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_61()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_61()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("61", "IMARGUMENT([[e]])", "0", ((string[])(null)));
@@ -1848,7 +1717,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("61", "IMARGUMENT([[e]])"
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "62")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "IMCONJUGATE([[[[a]]]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "3")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_62()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_62()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("62", "IMCONJUGATE([[[[a]]]])", "3", ((string[])(null)));
@@ -1863,7 +1732,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("62", "IMCONJUGATE([[[[a]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "63")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "IMCOS([[y]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "-0.416146836547142")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_63()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_63()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("63", "IMCOS([[y]])", "-0.416146836547142", ((string[])(null)));
@@ -1878,7 +1747,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("63", "IMCOS([[y]])", "-0
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "IMDIV(1,10)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "0.1")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_64()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_64()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("64", "IMDIV(1,10)", "0.1", ((string[])(null)));
@@ -1893,7 +1762,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("64", "IMDIV(1,10)", "0.1
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "65")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "IMEXP([[rc(1).set]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "148.413159102577")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_65()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_65()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("65", "IMEXP([[rc(1).set]])", "148.413159102577", ((string[])(null)));
@@ -1908,7 +1777,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("65", "IMEXP([[rc(1).set]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "66")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "IMLN([[[[a]]]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "1.09861228866811")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_66()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_66()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("66", "IMLN([[[[a]]]])", "1.09861228866811", ((string[])(null)));
@@ -1923,7 +1792,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("66", "IMLN([[[[a]]]])", 
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "67")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "IMLOG10([[y]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "0.301029995663981")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_67()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_67()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("67", "IMLOG10([[y]])", "0.301029995663981", ((string[])(null)));
@@ -1938,7 +1807,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("67", "IMLOG10([[y]])", "
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "68")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "IMLOG2([[y]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "1")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_68()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_68()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("68", "IMLOG2([[y]])", "1", ((string[])(null)));
@@ -1953,7 +1822,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("68", "IMLOG2([[y]])", "1
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "69")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "IMPOWER(2,[[z]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "1024")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_69()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_69()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("69", "IMPOWER(2,[[z]])", "1024", ((string[])(null)));
@@ -1968,7 +1837,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("69", "IMPOWER(2,[[z]])",
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "70")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "IMPRODUCT([[x]],[[y]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "2")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_70()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_70()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("70", "IMPRODUCT([[x]],[[y]])", "2", ((string[])(null)));
@@ -1983,7 +1852,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("70", "IMPRODUCT([[x]],[[
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "71")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "IMREAL([[z]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "10")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_71()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_71()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("71", "IMREAL([[z]])", "10", ((string[])(null)));
@@ -1998,7 +1867,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("71", "IMREAL([[z]])", "1
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "72")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "IMSIN([[x]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "0.841470984807897")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_72()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_72()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("72", "IMSIN([[x]])", "0.841470984807897", ((string[])(null)));
@@ -2013,7 +1882,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("72", "IMSIN([[x]])", "0.
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "73")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "IMSQRT([[e]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "31.6227766016838")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_73()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_73()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("73", "IMSQRT([[e]])", "31.6227766016838", ((string[])(null)));
@@ -2028,7 +1897,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("73", "IMSQRT([[e]])", "3
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "74")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "IMSUB([[x]],[[rc(1).set]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "-4")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_74()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_74()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("74", "IMSUB([[x]],[[rc(1).set]])", "-4", ((string[])(null)));
@@ -2043,7 +1912,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("74", "IMSUB([[x]],[[rc(1
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "75")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "IMSUM([[x]],[[rc(1).set]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "6")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_75()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_75()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("75", "IMSUM([[x]],[[rc(1).set]])", "6", ((string[])(null)));
@@ -2058,7 +1927,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("75", "IMSUM([[x]],[[rc(1
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "77")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "INT([[s]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "-1")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_77()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_77()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("77", "INT([[s]])", "-1", ((string[])(null)));
@@ -2073,7 +1942,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("77", "INT([[s]])", "-1",
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "78")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "INTRATE(2015,2030,1000,1,4)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "-23.976")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_78()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_78()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("78", "INTRATE(2015,2030,1000,1,4)", "-23.976", ((string[])(null)));
@@ -2088,7 +1957,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("78", "INTRATE(2015,2030,
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "79")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "IPMT(5,12,100,1000,2000,1)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "-833.333358764648")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_79()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_79()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("79", "IPMT(5,12,100,1000,2000,1)", "-833.333358764648", ((string[])(null)));
@@ -2103,7 +1972,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("79", "IPMT(5,12,100,1000
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "81")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "isdbnull([[x]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "False")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_81()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_81()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("81", "isdbnull([[x]])", "False", ((string[])(null)));
@@ -2118,7 +1987,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("81", "isdbnull([[x]])", 
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "82")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "ISBLANK(1)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "False")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_82()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_82()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("82", "ISBLANK(1)", "False", ((string[])(null)));
@@ -2133,7 +2002,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("82", "ISBLANK(1)", "Fals
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "83")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "ISERR([[e]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "False")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_83()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_83()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("83", "ISERR([[e]])", "False", ((string[])(null)));
@@ -2148,7 +2017,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("83", "ISERR([[e]])", "Fa
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "84")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "ISERROR([[rc(1).set]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "False")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_84()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_84()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("84", "ISERROR([[rc(1).set]])", "False", ((string[])(null)));
@@ -2163,7 +2032,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("84", "ISERROR([[rc(1).se
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "85")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "ISEVEN([[z]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "True")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_85()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_85()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("85", "ISEVEN([[z]])", "True", ((string[])(null)));
@@ -2178,7 +2047,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("85", "ISEVEN([[z]])", "T
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "86")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "ISLOGICAL([[x]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "False")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_86()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_86()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("86", "ISLOGICAL([[x]])", "False", ((string[])(null)));
@@ -2193,7 +2062,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("86", "ISLOGICAL([[x]])",
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "87")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "ISNA([[t]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "False")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_87()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_87()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("87", "ISNA([[t]])", "False", ((string[])(null)));
@@ -2208,7 +2077,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("87", "ISNA([[t]])", "Fal
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "88")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "ISNONTEXT([[[[a]]]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "True")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_88()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_88()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("88", "ISNONTEXT([[[[a]]]])", "True", ((string[])(null)));
@@ -2223,7 +2092,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("88", "ISNONTEXT([[[[a]]]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "89")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "ISNUMBER([[x]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "True")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_89()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_89()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("89", "ISNUMBER([[x]])", "True", ((string[])(null)));
@@ -2238,7 +2107,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("89", "ISNUMBER([[x]])", 
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "90")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "ISODD([[[[a]]]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "True")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_90()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_90()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("90", "ISODD([[[[a]]]])", "True", ((string[])(null)));
@@ -2253,7 +2122,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("90", "ISODD([[[[a]]]])",
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "91")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "ISREF([[t]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "False")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_91()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_91()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("91", "ISREF([[t]])", "False", ((string[])(null)));
@@ -2268,7 +2137,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("91", "ISREF([[t]])", "Fa
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "92")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "ISTEXT([[rc(1).set]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "False")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_92()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_92()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("92", "ISTEXT([[rc(1).set]])", "False", ((string[])(null)));
@@ -2283,7 +2152,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("92", "ISTEXT([[rc(1).set
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "93")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "LCM(1,2,10)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "10")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_93()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_93()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("93", "LCM(1,2,10)", "10", ((string[])(null)));
@@ -2298,7 +2167,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("93", "LCM(1,2,10)", "10"
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "94")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "LEFT([[x]],[[e]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "1")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_94()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_94()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("94", "LEFT([[x]],[[e]])", "1", ((string[])(null)));
@@ -2313,7 +2182,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("94", "LEFT([[x]],[[e]])"
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "95")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "LEN([[z]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "2")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_95()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_95()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("95", "LEN([[z]])", "2", ((string[])(null)));
@@ -2328,7 +2197,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("95", "LEN([[z]])", "2", 
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "96")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "LN([[rc(1).set]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "1.6094379124341")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_96()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_96()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("96", "LN([[rc(1).set]])", "1.6094379124341", ((string[])(null)));
@@ -2343,7 +2212,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("96", "LN([[rc(1).set]])"
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "97")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "LOG([[z]],[[y]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "3.32192809488736")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_97()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_97()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("97", "LOG([[z]],[[y]])", "3.32192809488736", ((string[])(null)));
@@ -2358,7 +2227,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("97", "LOG([[z]],[[y]])",
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "98")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "LOG10([[z]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "1")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_98()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_98()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("98", "LOG10([[z]])", "1", ((string[])(null)));
@@ -2373,7 +2242,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("98", "LOG10([[z]])", "1"
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "99")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "LOWER([[rc(1).set]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "5")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_99()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_99()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("99", "LOWER([[rc(1).set]])", "5", ((string[])(null)));
@@ -2388,7 +2257,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("99", "LOWER([[rc(1).set]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "100")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "MAX(10,1,1000)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "1000")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_100()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_100()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("100", "MAX(10,1,1000)", "1000", ((string[])(null)));
@@ -2403,7 +2272,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("100", "MAX(10,1,1000)", 
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "101")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "MEDIAN(10,1,1000)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "10")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_101()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_101()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("101", "MEDIAN(10,1,1000)", "10", ((string[])(null)));
@@ -2418,7 +2287,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("101", "MEDIAN(10,1,1000)
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "102")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "MID(10,1,1000)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "10")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_102()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_102()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("102", "MID(10,1,1000)", "10", ((string[])(null)));
@@ -2433,7 +2302,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("102", "MID(10,1,1000)", 
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "103")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "MIN(10,1,1000)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "1")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_103()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_103()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("103", "MIN(10,1,1000)", "1", ((string[])(null)));
@@ -2448,7 +2317,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("103", "MIN(10,1,1000)", 
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "104")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "MINUTE([[[[a]]]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "0")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_104()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_104()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("104", "MINUTE([[[[a]]]])", "0", ((string[])(null)));
@@ -2463,7 +2332,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("104", "MINUTE([[[[a]]]])
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "105")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "MOD([[b]],[[rc(1).set]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "3")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_105()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_105()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("105", "MOD([[b]],[[rc(1).set]])", "3", ((string[])(null)));
@@ -2478,7 +2347,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("105", "MOD([[b]],[[rc(1)
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "106")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "MONTH([[z]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "1")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_106()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_106()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("106", "MONTH([[z]])", "1", ((string[])(null)));
@@ -2493,7 +2362,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("106", "MONTH([[z]])", "1
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "107")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "MROUND([[x]],[[y]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "2")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_107()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_107()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("107", "MROUND([[x]],[[y]])", "2", ((string[])(null)));
@@ -2508,7 +2377,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("107", "MROUND([[x]],[[y]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "108")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "MULTINOMIAL(10,[[x]],2)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "858")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_108()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_108()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("108", "MULTINOMIAL(10,[[x]],2)", "858", ((string[])(null)));
@@ -2523,7 +2392,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("108", "MULTINOMIAL(10,[[
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "109")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "N([[s]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "-1")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_109()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_109()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("109", "N([[s]])", "-1", ((string[])(null)));
@@ -2538,7 +2407,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("109", "N([[s]])", "-1", 
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "111")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "NETWORKDAYS(2014,2015)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "2")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_111()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_111()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("111", "NETWORKDAYS(2014,2015)", "2", ((string[])(null)));
@@ -2553,7 +2422,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("111", "NETWORKDAYS(2014,
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "112")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "NOT([[[[a]]]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "False")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_112()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_112()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("112", "NOT([[[[a]]]])", "False", ((string[])(null)));
@@ -2568,7 +2437,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("112", "NOT([[[[a]]]])", 
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "113")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "NOW()")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[Now]")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_113()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_113()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("113", "NOW()", "[Now]", ((string[])(null)));
@@ -2583,7 +2452,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("113", "NOW()", "[Now]", 
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "114")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "NPER(0.1, 100, 1000, 999,0)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "-79.74911468163210")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_114()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_114()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("114", "NPER(0.1, 100, 1000, 999,0)", "-79.74911468163210", ((string[])(null)));
@@ -2598,7 +2467,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("114", "NPER(0.1, 100, 10
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "115")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "NPV([[z]],[[z]],[[rc(1).set]],[[y]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "0.951915852742299")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_115()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_115()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("115", "NPV([[z]],[[z]],[[rc(1).set]],[[y]])", "0.951915852742299", ((string[])(null)));
@@ -2613,7 +2482,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("115", "NPV([[z]],[[z]],[
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "117")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "OCT2BIN([[z]],[[z]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "0000001000")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_117()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_117()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("117", "OCT2BIN([[z]],[[z]])", "0000001000", ((string[])(null)));
@@ -2628,7 +2497,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("117", "OCT2BIN([[z]],[[z
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "118")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "OCT2DEC([[z]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "8")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_118()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_118()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("118", "OCT2DEC([[z]])", "8", ((string[])(null)));
@@ -2643,7 +2512,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("118", "OCT2DEC([[z]])", 
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "119")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "OCT2HEX(10,2)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "08")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_119()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_119()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("119", "OCT2HEX(10,2)", "08", ((string[])(null)));
@@ -2658,7 +2527,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("119", "OCT2HEX(10,2)", "
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "120")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "ODD([[z]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "11")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_120()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_120()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("120", "ODD([[z]])", "11", ((string[])(null)));
@@ -2673,7 +2542,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("120", "ODD([[z]])", "11"
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "121")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "OR(1,2)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "True")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_121()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_121()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("121", "OR(1,2)", "True", ((string[])(null)));
@@ -2688,7 +2557,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("121", "OR(1,2)", "True",
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "122")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "PI()")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "3.14159265358979")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_122()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_122()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("122", "PI()", "3.14159265358979", ((string[])(null)));
@@ -2703,7 +2572,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("122", "PI()", "3.1415926
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "123")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "PMT([[z]],[[x]],100,200,[[t]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "-1300")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_123()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_123()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("123", "PMT([[z]],[[x]],100,200,[[t]])", "-1300", ((string[])(null)));
@@ -2718,7 +2587,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("123", "PMT([[z]],[[x]],1
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "124")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "POWER([[z]],[[y]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "100")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_124()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_124()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("124", "POWER([[z]],[[y]])", "100", ((string[])(null)));
@@ -2733,7 +2602,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("124", "POWER([[z]],[[y]]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "125")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "PPMT(10,1,1,1000,500,0)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "-1500")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_125()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_125()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("125", "PPMT(10,1,1,1000,500,0)", "-1500", ((string[])(null)));
@@ -2748,7 +2617,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("125", "PPMT(10,1,1,1000,
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "126")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "PRODUCT([[x]],[[y]],[[z]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "20")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_126()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_126()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("126", "PRODUCT([[x]],[[y]],[[z]])", "20", ((string[])(null)));
@@ -2763,7 +2632,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("126", "PRODUCT([[x]],[[y
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "127")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "PV(5,1,10,100,0)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "-18.3333333333333")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_127()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_127()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("127", "PV(5,1,10,100,0)", "-18.3333333333333", ((string[])(null)));
@@ -2778,7 +2647,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("127", "PV(5,1,10,100,0)"
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "128")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "QUOTIENT([[z]],[[rc(1).set]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "2")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_128()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_128()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("128", "QUOTIENT([[z]],[[rc(1).set]])", "2", ((string[])(null)));
@@ -2793,7 +2662,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("128", "QUOTIENT([[z]],[[
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "129")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "RADIANS([[z]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "0.174532925199433")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_129()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_129()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("129", "RADIANS([[z]])", "0.174532925199433", ((string[])(null)));
@@ -2808,7 +2677,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("129", "RADIANS([[z]])", 
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "130")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "RANDBETWEEN([[x]],10)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[Int]")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_130()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_130()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("130", "RANDBETWEEN([[x]],10)", "[Int]", ((string[])(null)));
@@ -2823,7 +2692,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("130", "RANDBETWEEN([[x]]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "131")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "RATE(360,-600,100000,0,1)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "0.00504500404584643")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_131()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_131()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("131", "RATE(360,-600,100000,0,1)", "0.00504500404584643", ((string[])(null)));
@@ -2838,7 +2707,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("131", "RATE(360,-600,100
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "132")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "REPT([[y]],[[y]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "22")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_132()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_132()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("132", "REPT([[y]],[[y]])", "22", ((string[])(null)));
@@ -2853,7 +2722,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("132", "REPT([[y]],[[y]])
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "133")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "RIGHT([[x]],[[x]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "1")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_133()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_133()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("133", "RIGHT([[x]],[[x]])", "1", ((string[])(null)));
@@ -2868,7 +2737,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("133", "RIGHT([[x]],[[x]]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "134")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "ROMAN(10,0)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "X")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_134()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_134()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("134", "ROMAN(10,0)", "X", ((string[])(null)));
@@ -2883,7 +2752,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("134", "ROMAN(10,0)", "X"
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "135")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "ROUND([[rc(1).set]],3)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "5")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_135()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_135()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("135", "ROUND([[rc(1).set]],3)", "5", ((string[])(null)));
@@ -2898,7 +2767,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("135", "ROUND([[rc(1).set
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "136")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "ROUNDDOWN([[rc(1).set]],3)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "5")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_136()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_136()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("136", "ROUNDDOWN([[rc(1).set]],3)", "5", ((string[])(null)));
@@ -2913,7 +2782,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("136", "ROUNDDOWN([[rc(1)
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "137")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "ROUNDUP(5,2)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "5")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_137()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_137()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("137", "ROUNDUP(5,2)", "5", ((string[])(null)));
@@ -2928,7 +2797,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("137", "ROUNDUP(5,2)", "5
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "138")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "SEARCH(1,[[x]],1)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "1")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_138()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_138()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("138", "SEARCH(1,[[x]],1)", "1", ((string[])(null)));
@@ -2943,7 +2812,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("138", "SEARCH(1,[[x]],1)
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "139")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "SEARCHB(1,1,1)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "1")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_139()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_139()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("139", "SEARCHB(1,1,1)", "1", ((string[])(null)));
@@ -2958,7 +2827,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("139", "SEARCHB(1,1,1)", 
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "140")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "SECOND([[e]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "0")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_140()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_140()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("140", "SECOND([[e]])", "0", ((string[])(null)));
@@ -2973,7 +2842,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("140", "SECOND([[e]])", "
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "141")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "SERIESSUM(1000,10,10,10)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "1E+31")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_141()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_141()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("141", "SERIESSUM(1000,10,10,10)", "1E+31", ((string[])(null)));
@@ -2988,7 +2857,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("141", "SERIESSUM(1000,10
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "142")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "SIGN(50)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "1")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_142()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_142()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("142", "SIGN(50)", "1", ((string[])(null)));
@@ -3003,7 +2872,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("142", "SIGN(50)", "1", (
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "143")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "SIN([[z]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "-0.54402111088937")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_143()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_143()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("143", "SIN([[z]])", "-0.54402111088937", ((string[])(null)));
@@ -3018,7 +2887,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("143", "SIN([[z]])", "-0.
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "144")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "SINH([[z]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "11013.2328747034")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_144()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_144()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("144", "SINH([[z]])", "11013.2328747034", ((string[])(null)));
@@ -3033,7 +2902,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("144", "SINH([[z]])", "11
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "145")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "SLN(100,10,[[x]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "90")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_145()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_145()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("145", "SLN(100,10,[[x]])", "90", ((string[])(null)));
@@ -3048,7 +2917,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("145", "SLN(100,10,[[x]])
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "146")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "SQRT(16)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "4")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_146()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_146()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("146", "SQRT(16)", "4", ((string[])(null)));
@@ -3063,7 +2932,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("146", "SQRT(16)", "4", (
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "147")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "SQRTPI(16)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "7.08981540362206")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_147()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_147()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("147", "SQRTPI(16)", "7.08981540362206", ((string[])(null)));
@@ -3078,7 +2947,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("147", "SQRTPI(16)", "7.0
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "148")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "STDEV(1,10,5)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "4.50924975282289")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_148()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_148()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("148", "STDEV(1,10,5)", "4.50924975282289", ((string[])(null)));
@@ -3093,7 +2962,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("148", "STDEV(1,10,5)", "
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "149")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "SUBTOTAL(2,[[x]],[[z]],0)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "3")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_149()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_149()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("149", "SUBTOTAL(2,[[x]],[[z]],0)", "3", ((string[])(null)));
@@ -3108,7 +2977,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("149", "SUBTOTAL(2,[[x]],
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "150")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "SUM([[rc(1).set]],[[z]],[[s]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "14")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_150()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_150()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("150", "SUM([[rc(1).set]],[[z]],[[s]])", "14", ((string[])(null)));
@@ -3123,7 +2992,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("150", "SUM([[rc(1).set]]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "151")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "SYD(1000,[[z]],[[rc(1).set]],[[x]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "330")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_151()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_151()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("151", "SYD(1000,[[z]],[[rc(1).set]],[[x]])", "330", ((string[])(null)));
@@ -3138,7 +3007,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("151", "SYD(1000,[[z]],[[
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "152")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "TAN([[z]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "0.648360827459087")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_152()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_152()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("152", "TAN([[z]])", "0.648360827459087", ((string[])(null)));
@@ -3153,7 +3022,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("152", "TAN([[z]])", "0.6
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "153")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "TANH([[z]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "0.999999995877693")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_153()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_153()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("153", "TANH([[z]])", "0.999999995877693", ((string[])(null)));
@@ -3168,7 +3037,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("153", "TANH([[z]])", "0.
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "154")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "TEXT([[y]],[[rc(1).set]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "5")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_154()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_154()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("154", "TEXT([[y]],[[rc(1).set]])", "5", ((string[])(null)));
@@ -3183,7 +3052,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("154", "TEXT([[y]],[[rc(1
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "155")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "TIME(24,[[x]],[[x]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "0.000706018518518518")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_155()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_155()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("155", "TIME(24,[[x]],[[x]])", "0.000706018518518518", ((string[])(null)));
@@ -3198,7 +3067,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("155", "TIME(24,[[x]],[[x
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "156")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "TIMEVALUE(\"2:24 AM\")")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "0.1")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_156()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_156()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("156", "TIMEVALUE(\"2:24 AM\")", "0.1", ((string[])(null)));
@@ -3213,7 +3082,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("156", "TIMEVALUE(\"2:24 
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "157")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "TODAY()")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[Today]")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_157()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_157()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("157", "TODAY()", "[Today]", ((string[])(null)));
@@ -3228,7 +3097,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("157", "TODAY()", "[Today
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "158")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "TRIM(10)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "10")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_158()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_158()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("158", "TRIM(10)", "10", ((string[])(null)));
@@ -3243,7 +3112,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("158", "TRIM(10)", "10", 
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "159")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "TRUNC(1000,[[rc(1).set]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "1000")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_159()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_159()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("159", "TRUNC(1000,[[rc(1).set]])", "1000", ((string[])(null)));
@@ -3258,7 +3127,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("159", "TRUNC(1000,[[rc(1
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "160")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "TYPE(-1)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "1")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_160()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_160()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("160", "TYPE(-1)", "1", ((string[])(null)));
@@ -3273,7 +3142,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("160", "TYPE(-1)", "1", (
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "161")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "UPPER(-1)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "-1")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_161()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_161()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("161", "UPPER(-1)", "-1", ((string[])(null)));
@@ -3288,7 +3157,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("161", "UPPER(-1)", "-1",
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "162")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "VALUE([[x]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "1")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_162()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_162()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("162", "VALUE([[x]])", "1", ((string[])(null)));
@@ -3303,7 +3172,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("162", "VALUE([[x]])", "1
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "163")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "VAR([[rc(1).set]],[[z]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "12.5")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_163()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_163()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("163", "VAR([[rc(1).set]],[[z]])", "12.5", ((string[])(null)));
@@ -3318,7 +3187,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("163", "VAR([[rc(1).set]]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "164")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "WEEKDAY(11011,[[x]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "7")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_164()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_164()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("164", "WEEKDAY(11011,[[x]])", "7", ((string[])(null)));
@@ -3333,7 +3202,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("164", "WEEKDAY(11011,[[x
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "165")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "WEEKNUM(11011,[[y]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "8")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_165()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_165()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("165", "WEEKNUM(11011,[[y]])", "8", ((string[])(null)));
@@ -3348,7 +3217,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("165", "WEEKNUM(11011,[[y
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "166")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "WORKDAY([[rc(1).set]],[[rc(1).set]],[[z]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{1/15/1900 12:00:00.000 AM} or {15/01/1900 12:00:00.000 AM}")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_166()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_166()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("166", "WORKDAY([[rc(1).set]],[[rc(1).set]],[[z]])", "{1/15/1900 12:00:00.000 AM} or {15/01/1900 12:00:00.000 AM}", ((string[])(null)));
@@ -3363,7 +3232,7 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("166", "WORKDAY([[rc(1).s
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "167")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "YEAR(11011)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "1930")]
-        public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_167()
+        public void CalculateAssignByEvaluatingVariablesWithFunctions_167()
         {
 #line 207
 this.CalculateAssignByEvaluatingVariablesWithFunctions("167", "YEAR(11011)", "1930", ((string[])(null)));
@@ -3377,21 +3246,11 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("167", "YEAR(11011)", "19
             argumentsOfScenario.Add("No", no);
             argumentsOfScenario.Add("fx", fx);
             argumentsOfScenario.Add("value", value);
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Calculate using Recordset input in aggregate functions like SUM", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Calculate using Recordset input in aggregate functions like SUM", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 385
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -3436,7 +3295,7 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "SUM([[var([[val]]).int]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "3")]
-        public virtual void CalculateUsingRecordsetInputInAggregateFunctionsLikeSUM_1()
+        public void CalculateUsingRecordsetInputInAggregateFunctionsLikeSUM_1()
         {
 #line 385
 this.CalculateUsingRecordsetInputInAggregateFunctionsLikeSUM("1", "SUM([[var([[val]]).int]])", "3", ((string[])(null)));
@@ -3451,7 +3310,7 @@ this.CalculateUsingRecordsetInputInAggregateFunctionsLikeSUM("1", "SUM([[var([[v
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "SUM([[var([[val]]).int]],[[var([[val]]).int]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "6")]
-        public virtual void CalculateUsingRecordsetInputInAggregateFunctionsLikeSUM_2()
+        public void CalculateUsingRecordsetInputInAggregateFunctionsLikeSUM_2()
         {
 #line 385
 this.CalculateUsingRecordsetInputInAggregateFunctionsLikeSUM("2", "SUM([[var([[val]]).int]],[[var([[val]]).int]])", "6", ((string[])(null)));
@@ -3466,7 +3325,7 @@ this.CalculateUsingRecordsetInputInAggregateFunctionsLikeSUM("2", "SUM([[var([[v
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "SUM([[var([[val]]).int]],[[var([[val]]).int]])")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "6")]
-        public virtual void CalculateUsingRecordsetInputInAggregateFunctionsLikeSUM_3()
+        public void CalculateUsingRecordsetInputInAggregateFunctionsLikeSUM_3()
         {
 #line 385
 this.CalculateUsingRecordsetInputInAggregateFunctionsLikeSUM("3", "SUM([[var([[val]]).int]],[[var([[val]]).int]])", "6", ((string[])(null)));
@@ -3477,25 +3336,15 @@ this.CalculateUsingRecordsetInputInAggregateFunctionsLikeSUM("3", "SUM([[var([[v
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Calculate using variables with a null value")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Calculate")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Utility")]
-        public virtual void CalculateUsingVariablesWithANullValue()
+        public void CalculateUsingVariablesWithANullValue()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Calculate using variables with a null value", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Calculate using variables with a null value", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 402
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -3532,25 +3381,15 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Variable that does not exist")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Calculate")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Utility")]
-        public virtual void VariableThatDoesNotExist()
+        public void VariableThatDoesNotExist()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Variable that does not exist", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Variable that does not exist", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 412
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -3594,25 +3433,15 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Calculate using variables with a no existent value")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Calculate")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Utility")]
-        public virtual void CalculateUsingVariablesWithANoExistentValue()
+        public void CalculateUsingVariablesWithANoExistentValue()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Calculate using variables with a no existent value", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Calculate using variables with a no existent value", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 424
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }

@@ -202,13 +202,13 @@
     </Compile>
     <Compile Include="StudioTestFramework\StudioTestFrameworkSteps.cs" />
     <Compile Include="DatasplitCompositionLoadTests.cs" />
-    <Reference Include="Microsoft.Practices.Prism.PubSubEvents, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
+    <!--<Reference Include="Microsoft.Practices.Prism.PubSubEvents, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Nuane.SftpLite, Version=0.8.0.4, Culture=neutral, processorArchitecture=MSIL">
+    --><!--<Reference Include="Nuane.SftpLite, Version=0.8.0.4, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\Sftp Server\Nuane.SftpLite.dll</HintPath>
-    </Reference>
+    </Reference>--><!--
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
@@ -228,7 +228,7 @@
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="WindowsBase" />
+    <Reference Include="WindowsBase" />-->
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Caliburn.Micro">
@@ -282,10 +282,10 @@
       <Version>1.3.3</Version>
     </PackageReference>
     <PackageReference Include="SpecFlow">
-      <Version>3.9.22</Version>
+      <Version>3.9.74</Version>
     </PackageReference>
     <PackageReference Include="SpecFlow.MsTest">
-      <Version>3.9.22</Version>
+      <Version>3.9.74</Version>
     </PackageReference>
     <PackageReference Include="System.Data.SQLite.Core">
       <Version>1.0.112</Version>
