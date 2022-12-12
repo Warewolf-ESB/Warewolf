@@ -406,7 +406,7 @@ if __name__ == '__main__':
 		&"$TestResultsPath\RunTests.ps1"
 	} else {
 		if ($ContainerID -eq "latest") {
-			docker run -i --rm --memory 4g -v "${PWD}:C:\BuildUnderTest" registry.gitlab.com/warewolf/vstest powershell -Command Set-Location .\BuildUnderTest`;`&.\TestResults\RunTests.ps1
+			docker run -i --rm --memory 4g -v "${PWD}:C:\BuildUnderTest" registry.gitlab.com/warewolf/vstest:core2022 powershell -Command Set-Location .\BuildUnderTest`;`&.\TestResults\RunTests.ps1
 		} else {
 			docker run -i --rm --memory 4g -v "${PWD}\TestResults:C:\BuildUnderTest\TestResults" registry.gitlab.com/warewolf/vstest:$ContainerID powershell -Command Set-Location .\BuildUnderTest`;`&.\TestResults\RunTests.ps1
 		}
