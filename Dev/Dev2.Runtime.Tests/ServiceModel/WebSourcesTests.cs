@@ -760,36 +760,6 @@ namespace Dev2.Tests.Runtime.ServiceModel
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(WebSources))]
-        public void WebSources_Execute_WebRequestMethod_Post_Classic_ExpectNonBase64String()
-        {
-            var responseFromWeb = "response from web request";
-            var mockWebClientWrapper = new Mock<IWebClientWrapper>();
-
-            mockWebClientWrapper.Setup(o => o.Headers).Returns(new WebHeaderCollection { });
-            mockWebClientWrapper.Setup(o => o.UploadString(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
-                .Returns(responseFromWeb);
-
-            var source = new WebSource 
-            { 
-                Address = "http://www.msn.com/", 
-                AuthenticationType = AuthenticationType.Anonymous, 
-                Client = mockWebClientWrapper.Object 
-            };
-
-            var result = WebSources.Execute(source, WebRequestMethod.Post, "http://www.msn.com/", "", false, out var errors, new[] { "Content-Type:application/json" });
-
-            Assert.IsFalse(IsBase64(result));
-            Assert.AreEqual(result, responseFromWeb);
-
-            var client = source.Client;
-
-            Assert.AreEqual(client.Headers[HttpRequestHeader.ContentType], "application/json");
-            mockWebClientWrapper.Verify(o => o.UploadString("http://www.msn.com/", "POST", string.Empty), Times.Once);
-        }
-
-        [TestMethod]
-        [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(WebSources))]
         public void WebSources_Execute_WebRequestMethod_Delete_Classic_ExpectNonBase64String()
         {
             var responseFromWeb = "response from web request";
