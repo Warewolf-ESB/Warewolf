@@ -1,7 +1,7 @@
 echo Adding Warewolf administrator user from environment variables an tarting Warewolf server as %SERVER_USERNAME%
-		Write-Host 1. Create Warewolf Administrators group.
-		NET localgroup "Warewolf Administrators" /ADD
-		Write-Host 2. Create new Warewolf Administrator.
+echo 1. Create Warewolf Administrators group.
+NET localgroup "Warewolf Administrators" /ADD
+echo 2. Create new Warewolf Administrator.
 NET user "%SERVER_USERNAME%" "%SERVER_PASSWORD%" /ADD /Y
 if (%ERRORLEVEL% == 2)(exit 1)
 NET user "%SERVER_USERNAME%" "%SERVER_PASSWORD%" /Y
