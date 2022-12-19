@@ -10,4 +10,8 @@ echo 3. Add new Warewolf Administrator to Administrators group.
 NET localgroup "Administrators" "%SERVER_USERNAME%" /ADD
 echo 4. Add new Warewolf Administrator to Warewolf Administrators group.
 NET localgroup "Warewolf Administrators" "%SERVER_USERNAME%" /ADD
+echo 5. Remove environment variables.
+REG delete "HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" /F /V SERVER_USERNAME
+REG delete "HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" /F /V SERVER_PASSWORD
+echo 6. Start Warewolf server.
 "%`DP0\Warewolf Server.exe"
