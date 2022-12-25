@@ -4,6 +4,7 @@
 	I want to be to cached data while the Time To Live has not elapsed 
 
 @RedisCache
+@AnonymousRedis
 Scenario: No data in cache
 	Given valid Redis source
 	And I have a key "MyData" with GUID and ttl of "3000" milliseconds
@@ -36,6 +37,7 @@ Scenario: Data exists for given TTL not hit
 		| [[Var1]] | "[[Var1]],Data in cache" |
 
 @RedisCache
+@AnonymousRedis
 Scenario: Data Not Exist For Given Key (TTL exceeded) Spec
 	Given valid Redis source
 	And I have a key "MyData" with GUID and ttl of "3000" milliseconds
@@ -54,6 +56,7 @@ Scenario: Data Not Exist For Given Key (TTL exceeded) Spec
 		| [[Var1]] | "Test1" |
 
 @RedisCache
+@AnonymousRedis
 Scenario: Input Variable Keys Are Less Then Cached Data Variable Keys
 	Given valid Redis source
 	And I have "key1" of "MyData" with GUID and "ttl1" of "15" seconds
@@ -80,6 +83,7 @@ Scenario: Input Variable Keys Are Less Then Cached Data Variable Keys
 		| null                       | [[Var4]] | =        | "Test24" |
 
 @RedisCache
+@AnonymousRedis
 Scenario: Input Variable Keys Are Greater Then Cached Data Variable Keys
 	Given valid Redis source
 	And I have "key1" of "MyData" with GUID and "ttl1" of "15" seconds
