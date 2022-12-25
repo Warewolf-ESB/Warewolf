@@ -111,6 +111,7 @@ namespace Dev2.Integration.Tests.Redis
         [Timeout(120000)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(RedisRemoveActivity))]
+        [TestCategory("AnonymousRedis")]
         public void RedisRemoveIntegration_RecordsetAsKey()
         {
             try

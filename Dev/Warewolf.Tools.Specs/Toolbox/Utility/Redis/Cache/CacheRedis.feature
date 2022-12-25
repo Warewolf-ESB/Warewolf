@@ -21,6 +21,7 @@ Scenario: No data in cache
 		| [[Var1]] | "Test1" |
 
 @RedisCache
+@AnonymousRedis
 Scenario: Data exists for given TTL not hit
 	Given valid Redis source
 	And I have a key "MyData" with GUID and ttl of "20000" milliseconds
