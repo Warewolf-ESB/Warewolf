@@ -15,6 +15,7 @@ using Dev2.Data.PathOperations.Operations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
+using System.Security.Principal;
 
 namespace Dev2.Data.Tests.PathOperations
 {
@@ -108,6 +109,7 @@ namespace Dev2.Data.Tests.PathOperations
             var mockFile = new Mock<IFile>();
             var mockDirectory = new Mock<IDirectory>();
             var mockWindowsImpersonationContext = new Mock<IWindowsImpersonationContext>();
+            mockWindowsImpersonationContext.Setup(w => w.Identity).Returns(WindowsIdentity.GetCurrent());
 
             const string serverLogFile = @"C:\ProgramData\Warewolf\Server Log\wareWolf-Server.log";
 
@@ -134,6 +136,7 @@ namespace Dev2.Data.Tests.PathOperations
             var mockFile = new Mock<IFile>();
             var mockDirectory = new Mock<IDirectory>();
             var mockWindowsImpersonationContext = new Mock<IWindowsImpersonationContext>();
+            mockWindowsImpersonationContext.Setup(w => w.Identity).Returns(WindowsIdentity.GetCurrent());
 
             const string serverLogFile = @"C:\ProgramData\Warewolf\Server Log\wareWolf-Server.*";
 

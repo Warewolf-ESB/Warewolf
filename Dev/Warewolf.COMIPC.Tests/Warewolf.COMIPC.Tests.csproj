@@ -56,10 +56,6 @@
       <Project>{bca6f2b3-c102-45b5-8f64-f0cce2533f1f}</Project>
       <Name>Warewolf.COMIPC.Client</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Warewolf.COMIPC\Warewolf.COMIPC.csproj">
-      <Project>{d58ab24f-c45b-4df1-9cde-54aff7995513}</Project>
-      <Name>Warewolf.COMIPC</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="7.0.0" />

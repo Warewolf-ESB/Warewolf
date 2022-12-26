@@ -15,6 +15,7 @@ using Dev2.Data.PathOperations.Operations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
+using System.Security.Principal;
 
 namespace Dev2.Data.Tests.PathOperations
 {
@@ -71,7 +72,7 @@ namespace Dev2.Data.Tests.PathOperations
             mockActivityIOPath.Setup(o => o.Path).Returns("testPath");
             mockDirectory.Setup(o => o.Exists(It.IsAny<string>())).Returns(true);
 
-            var doPathExistOperation = new DoPathExistOperation(mockActivityIOPath.Object, mockDev2LogonProvider.Object,mockfileWrapper.Object, mockDirectory.Object, (arg1, arg2) => mockWindowsImpersonationContext.Object);
+            var doPathExistOperation = new DoPathExistOperation(mockActivityIOPath.Object, mockDev2LogonProvider.Object, mockfileWrapper.Object, mockDirectory.Object, (arg1, arg2) => mockWindowsImpersonationContext.Object);
             //--------------------------Act-----------------------------
             var isExecuteOperation = doPathExistOperation.ExecuteOperation();
             //--------------------------Assert--------------------------
@@ -137,6 +138,7 @@ namespace Dev2.Data.Tests.PathOperations
             var mockfileWrapper = new Mock<IFile>();
             var mockDirectory = new Mock<IDirectory>();
             var mockWindowsImpersonationContext = new Mock<IWindowsImpersonationContext>();
+            mockWindowsImpersonationContext.Setup(w => w.Identity).Returns(WindowsIdentity.GetCurrent());
 
             mockActivityIOPath.Setup(o => o.Path).Returns("ftp://testPath/looger.log");
             mockfileWrapper.Setup(o => o.Exists(It.IsAny<string>())).Returns(true);
@@ -161,6 +163,7 @@ namespace Dev2.Data.Tests.PathOperations
             var mockfileWrapper = new Mock<IFile>();
             var mockDirectory = new Mock<IDirectory>();
             var mockWindowsImpersonationContext = new Mock<IWindowsImpersonationContext>();
+            mockWindowsImpersonationContext.Setup(w => w.Identity).Returns(WindowsIdentity.GetCurrent());
 
             mockActivityIOPath.Setup(o => o.Path).Returns("ftp://testPath/looger.log");
             mockDirectory.Setup(o => o.Exists(It.IsAny<string>())).Returns(true);
@@ -184,11 +187,13 @@ namespace Dev2.Data.Tests.PathOperations
             var mockDev2LogonProvider = new Mock<IDev2LogonProvider>();
             var mockfileWrapper = new Mock<IFile>();
             var mockDirectory = new Mock<IDirectory>();
+            var mockWindowsImpersonationContext = new Mock<IWindowsImpersonationContext>();
+            mockWindowsImpersonationContext.Setup(w => w.Identity).Returns(WindowsIdentity.GetCurrent());
 
             mockActivityIOPath.Setup(o => o.Path).Returns("ftp://testPath/looger.log");
             mockDirectory.Setup(o => o.Exists(It.IsAny<string>())).Returns(true);
 
-            var doPathExistOperation = new DoPathExistOperation(mockActivityIOPath.Object, mockDev2LogonProvider.Object, mockfileWrapper.Object, mockDirectory.Object, (arg1, arg2) => null);
+            var doPathExistOperation = new DoPathExistOperation(mockActivityIOPath.Object, mockDev2LogonProvider.Object, mockfileWrapper.Object, mockDirectory.Object, (arg1, arg2) => mockWindowsImpersonationContext.Object);
             //--------------------------Act-----------------------------
             var isExecuteOperation = doPathExistOperation.ExecuteOperationWithAuth();
             //--------------------------Assert--------------------------

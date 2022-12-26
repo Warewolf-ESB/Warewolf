@@ -25,8 +25,8 @@ namespace Dev2.TaskScheduler.Wrappers.Test
               {
                   Trigger a = new DailyTrigger(6);
                   var native = a.Repetition;
-                  a.Repetition.Duration = new TimeSpan(2);
-                  a.Repetition.Interval = new TimeSpan(3);
+            a.Repetition.Duration = TimeSpan.FromMinutes(2);//new TimeSpan(2); // Minimum allowed time is 1 minute
+            a.Repetition.Interval = TimeSpan.FromMinutes(3); //new TimeSpan(3); // Minimum allowed time is 1 minute
                   a.Repetition.StopAtDurationEnd = true;
 
                   var patt = new Dev2RepetitionPattern(a.Repetition);

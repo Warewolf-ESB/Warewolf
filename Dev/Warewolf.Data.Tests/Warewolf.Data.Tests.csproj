@@ -23,5 +23,6 @@
     <PackageReference Include="Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers" Version="0.4.355802">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="NUnit3TestAdapter" Version="3.14.0" />
   </ItemGroup>
 </Project>
