@@ -29,6 +29,7 @@ using Warewolf.Common.Interfaces.NetStandard20;
 using Warewolf.Common.NetStandard20;
 using Warewolf.Data.Options;
 using System.Linq;
+using System.Web;
 
 namespace Dev2.Runtime.ServiceModel
 {
@@ -158,7 +159,7 @@ namespace Dev2.Runtime.ServiceModel
         public static string Execute(IWebPostOptions options, out ErrorResultTO errors)
         {
             return Execute(source: options.Source, method: options.Method, headers: options.Headers, relativeUrl: options.Query,
-                data: options.PostData, throwError: true, errors: out errors, formDataParameters: options.Parameters, settings: options.Settings);
+                data: options.PostData, throwError: true, errors: out errors, formDataParameters: options.Parameters, settings: options.Settings, timeout: options.Timeout);
         }
         
         public static string Execute(IWebSource source, WebRequestMethod method, IEnumerable<string> headers, string relativeUrl,
@@ -175,7 +176,7 @@ namespace Dev2.Runtime.ServiceModel
         
         public static string Execute(IWebSource source, WebRequestMethod method, IEnumerable<string> headers, string relativeUrl,
             string data, bool throwError, out ErrorResultTO errors,
-            IEnumerable<IFormDataParameters> formDataParameters = null, IWebRequestFactory webRequestFactory = null, IEnumerable<INameValue> settings = null)
+            IEnumerable<IFormDataParameters> formDataParameters = null, IWebRequestFactory webRequestFactory = null, IEnumerable<INameValue> settings = null, int timeout = 0)
         {
             IWebClientWrapper client = null;
 
@@ -202,13 +203,19 @@ namespace Dev2.Runtime.ServiceModel
                     var formDataBoundary = contentType.Split('=').Last();
                     var bytesData = isFormDataChecked ? GetMultipartFormData(formDataParameters, formDataBoundary) : GetFormUrlEncodedData(formDataParameters, formDataBoundary);
                     
-                    return PerformMultipartWebRequest(webRequestFactory, client, address, bytesData);
+                    return PerformMultipartWebRequest(webRequestFactory, client, address, bytesData, timeout);
                 }
 
                 if (isManualChecked && contentType != null && (contentType.ToLowerInvariant().Contains("multipart") || contentType.ToLowerInvariant().Contains("x-www")))
                 {
                     var bytesData = ConvertToHttpNewLine(ref data);
-                    return PerformMultipartWebRequest(webRequestFactory, client, address, bytesData);
+                    return PerformMultipartWebRequest(webRequestFactory, client, address, bytesData, timeout);
+                }
+
+                if (method == WebRequestMethod.Post)
+                {
+                    var bytesData = Encoding.ASCII.GetBytes(data);
+                    return PerformMultipartWebRequest(webRequestFactory, client, address, bytesData, timeout);
                 }
 
                 switch (method)
@@ -362,13 +369,17 @@ namespace Dev2.Runtime.ServiceModel
             return method == WebRequestMethod.Get ? client.DownloadData(address) : client.UploadData(address, method.ToString().ToUpperInvariant(), data);
         }
 
-        public static string PerformMultipartWebRequest(IWebRequestFactory webRequestFactory, IWebClientWrapper client, string address, byte[] bytesData)
+        public static string PerformMultipartWebRequest(IWebRequestFactory webRequestFactory, IWebClientWrapper client, string address, byte[] bytesData, int timeout = 0)
         {
             var wr = webRequestFactory.New(address);
             wr.Headers[HttpRequestHeader.Authorization] = client.Headers[HttpRequestHeader.Authorization];
             wr.ContentType = client.Headers[HttpRequestHeader.ContentType];
             wr.Method = "POST";
             wr.ContentLength = bytesData.Length;
+            if (timeout > 0)
+            {
+                wr.Timeout = timeout * 1000;
+            }
 
             using (var requestStream = wr.GetRequestStream())
             {
@@ -378,7 +389,7 @@ namespace Dev2.Runtime.ServiceModel
 
             using (var wresp = wr.GetResponse() as HttpWebResponse)
             {
-                if (wresp != null && wresp.StatusCode == HttpStatusCode.OK)
+                if (wresp != null && IsSuccessCode(wresp.StatusCode))
                 {
                     using (var responseStream = wresp.GetResponseStream())
                     {
@@ -396,6 +407,11 @@ namespace Dev2.Runtime.ServiceModel
                 var wrespStatusCode = wresp?.StatusCode ?? HttpStatusCode.Ambiguous;
                 throw new ApplicationException("Error while upload files. Server status code: " + wrespStatusCode);
             }
+        }
+
+        private static bool IsSuccessCode(HttpStatusCode code)
+        {
+            return (int)code >= 200 && (int)code < 300;
         }
 
         private static byte[] ConvertToHttpNewLine(ref string data)

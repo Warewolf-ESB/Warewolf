@@ -10,7 +10,8 @@
  xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib"
  xmlns:uaba="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Dev2.Activities"
  xmlns:uf="clr-namespace:Unlimited.Framework;assembly=Dev2.Core"
- xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"&gt;
+ xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+ xmlns:da="clr-namespace:Dev2.Activities;assembly=Dev2.Activities"&gt;
   &lt;x:Members&gt;
     &lt;x:Property Name="AmbientDataList" Type="InOutArgument(scg:List(x:String))" /&gt;
     &lt;x:Property Name="ParentWorkflowInstanceId" Type="InOutArgument(s:Guid)" /&gt;
@@ -125,16 +126,7 @@
           &lt;av:Size x:Key="ShapeSize"&gt;200,22&lt;/av:Size&gt;
         &lt;/scg:Dictionary&gt;
       &lt;/sap:WorkflowViewStateService.ViewState&gt;
-      &lt;uaba:DsfHttpActivity Compiler="{x:Null}" CurrentResult="{x:Null}" DataObject="{x:Null}" ExplicitDataList="{x:Null}" FieldName="{x:Null}" InputMapping="{x:Null}" InputTransformation="{x:Null}" OnResumeKeepList="{x:Null}" OutputMapping="{x:Null}" ParentServiceName="{x:Null}" ParentWorkflowInstanceId="{x:Null}" PostData="{x:Null}" ResultTransformation="{x:Null}" ScenarioID="{x:Null}" ScopingObject="{x:Null}" SimulationOutput="{x:Null}" Uri="{x:Null}" Add="False" AmbientDataList="[AmbientDataList]" DatabindRecursive="False" HasError="[HasError]" sap:VirtualizedContainerService.HintSize="200,22" HttpMethod="GET" InstructionList="[InstructionList]" IsSimulationEnabled="False" IsUIStep="False" IsValid="[IsValid]" IsWorkflow="False" OnResumeClearAmbientDataList="False" OnResumeClearTags="FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage" SimulationMode="OnDemand" UniqueID="b6badbec-1e30-418a-97e7-1c2c735aa371" /&gt;
-    &lt;/FlowStep&gt;
-    &lt;FlowStep&gt;
-      &lt;sap:WorkflowViewStateService.ViewState&gt;
-        &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
-          &lt;av:Point x:Key="ShapeLocation"&gt;590,119&lt;/av:Point&gt;
-          &lt;av:Size x:Key="ShapeSize"&gt;200,46&lt;/av:Size&gt;
-        &lt;/scg:Dictionary&gt;
-      &lt;/sap:WorkflowViewStateService.ViewState&gt;
-      &lt;uaba:DsfWebPageActivity ActionName="{x:Null}" ActivityStateData="{x:Null}" AuthorRoles="{x:Null}" Category="{x:Null}" Compiler="{x:Null}" CurrentResult="{x:Null}" DataObject="{x:Null}" DataTags="{x:Null}" ExplicitDataList="{x:Null}" FriendlySourceName="{x:Null}" HelpLink="{x:Null}" IconPath="{x:Null}" InputTransformation="{x:Null}" OnResumeKeepList="{x:Null}" ParentServiceName="{x:Null}" ParentWorkflowInstanceId="{x:Null}" ResultTransformation="{x:Null}" ResultValidationExpression="{x:Null}" ResultValidationRequiredTags="{x:Null}" ScenarioID="{x:Null}" ScopingObject="{x:Null}" ServiceName="{x:Null}" SimulationOutput="{x:Null}" Tags="{x:Null}" ToolboxFriendlyName="{x:Null}" Type="{x:Null}" WebsiteRegionName="{x:Null}" Add="False" AmbientDataList="[AmbientDataList]" DatabindRecursive="False" DeferExecution="False" DisplayName="Webpage 1" FormEncodingType="application/x-www-form-urlencoded" HasError="[HasError]" sap:VirtualizedContainerService.HintSize="200,46" InputMapping="&amp;lt;Inputs /&amp;gt;" InstructionList="[InstructionList]" IsPreview="False" IsSimulationEnabled="False" IsUIStep="False" IsValid="[IsValid]" IsWorkflow="False" MetaTags="" OnResumeClearAmbientDataList="False" OnResumeClearTags="FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage" OutputMapping="&amp;lt;Outputs /&amp;gt;" RemoveInputFromOutput="False" SimulationMode="OnDemand" UniqueID="f42cee0e-7318-48e5-a90c-5ff99375b151" WebsiteServiceName="Default Master Page" XMLConfiguration="&amp;lt;WebParts/&amp;gt;" /&gt;
+      &lt;da:DsfWebGetActivity ActionName="{x:Null}" ActivityStateData="{x:Null}" AuthorRoles="{x:Null}" Category="{x:Null}" CurrentResult="{x:Null}" DataTags="{x:Null}" EnvironmentID="{x:Null}" ExplicitDataList="{x:Null}" FriendlySourceName="{x:Null}" HelpLink="{x:Null}" InputMapping="{x:Null}" InputTransformation="{x:Null}" Inputs="{x:Null}" ObjectName="{x:Null}" OnErrorVariable="{x:Null}" OnErrorWorkflow="{x:Null}" OnResumeKeepList="{x:Null}" OutputMapping="{x:Null}" ParentServiceID="{x:Null}" ParentServiceName="{x:Null}" ParentWorkflowInstanceId="{x:Null}" ResourceID="{x:Null}" ResponseManager="{x:Null}" ResultTransformation="{x:Null}" ResultValidationExpression="{x:Null}" ResultValidationRequiredTags="{x:Null}" ScenarioID="{x:Null}" ScopingObject="{x:Null}" ServiceName="{x:Null}" ServiceUri="{x:Null}" SimulationOutput="{x:Null}" Tags="{x:Null}" ToolboxFriendlyName="{x:Null}" Add="False" DatabindRecursive="False" DeferExecution="False" DisplayName="GET Web Method" HasError="[HasError]" sap:VirtualizedContainerService.HintSize="350,488.8" InstructionList="[InstructionList]" IsEndedOnError="False" IsObject="False" IsService="False" IsSimulationEnabled="False" IsUIStep="False" IsValid="[IsValid]" IsWorkflow="False" ObjectResult="" OnResumeClearAmbientDataList="False" OnResumeClearTags="FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage" QueryString="" RemoveInputFromOutput="False" RunWorkflowAsync="False" ServiceServer="00000000-0000-0000-0000-000000000000" SimulationMode="OnDemand" SourceId="f9f193e6-d8fc-4cdc-aa99-f45cc7899723" Type="GET Web Method" UniqueID="daaa5704-f8e3-49e8-94c4-08cc8fcb92ec" /&gt;
     &lt;/FlowStep&gt;
     &lt;FlowStep&gt;
       &lt;sap:WorkflowViewStateService.ViewState&gt;

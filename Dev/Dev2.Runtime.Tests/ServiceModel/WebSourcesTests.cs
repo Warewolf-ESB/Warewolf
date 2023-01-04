@@ -762,29 +762,64 @@ namespace Dev2.Tests.Runtime.ServiceModel
         [TestCategory(nameof(WebSources))]
         public void WebSources_Execute_WebRequestMethod_Post_Classic_ExpectNonBase64String()
         {
+            var address = "http://www.msn.com/";
             var responseFromWeb = "response from web request";
             var mockWebClientWrapper = new Mock<IWebClientWrapper>();
-
+            var mockWebRequestFactory = new Mock<IWebRequestFactory>();
+            var mockWebRequest = new Mock<IWebRequest>();
+            var mockWebResponseWrapper = new Mock<HttpWebResponse>();
+            
+            var responseStream = new MemoryStream(responseFromWeb.ToBytesArray());
+        
             mockWebClientWrapper.Setup(o => o.Headers).Returns(new WebHeaderCollection { });
             mockWebClientWrapper.Setup(o => o.UploadString(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(responseFromWeb);
+            
+            mockWebResponseWrapper.Setup(o => o.StatusCode)
+                .Returns(HttpStatusCode.OK);
+            mockWebResponseWrapper.Setup(o => o.GetResponseStream())
+                .Returns(responseStream);
 
+            mockWebRequest.Setup(o => o.GetRequestStream()).Returns(new MemoryStream());
+            mockWebRequest.Setup(o => o.GetResponse()).Returns(mockWebResponseWrapper.Object);
+            
+            mockWebRequestFactory.Setup(o => o.New(address)).Returns(mockWebRequest.Object);
+
+            mockWebRequest.Setup(o => o.Headers)
+                .Returns(new WebHeaderCollection
+                {
+                    "Authorization:bear: sdfsfff",
+                });
+
+            var webExecuteStringArgs = new WebExecuteStringArgs
+            {
+                IsManualChecked = true,
+                IsFormDataChecked = false,
+                IsUrlEncodedChecked = false,
+                FormDataParameters = new List<IFormDataParameters>(),
+                WebRequestFactory = new WebRequestFactory()
+            };
+        
+            var settings = new List<INameValue>();
+            settings.Add(new NameValue("IsManualChecked", "true"));
+        
             var source = new WebSource 
             { 
-                Address = "http://www.msn.com/", 
+                Address = address, 
                 AuthenticationType = AuthenticationType.Anonymous, 
                 Client = mockWebClientWrapper.Object 
             };
-
-            var result = WebSources.Execute(source, WebRequestMethod.Post, "http://www.msn.com/", "", false, out var errors, new[] { "Content-Type:application/json" });
-
+        
+            var result = WebSources.Execute(source, WebRequestMethod.Post, new[] { "Content-Type:application/json" }, address, "testing",
+                false, out var errors, webExecuteStringArgs.FormDataParameters, mockWebRequestFactory.Object, settings: settings);
+        
             Assert.IsFalse(IsBase64(result));
             Assert.AreEqual(result, responseFromWeb);
-
+        
             var client = source.Client;
-
+        
             Assert.AreEqual(client.Headers[HttpRequestHeader.ContentType], "application/json");
-            mockWebClientWrapper.Verify(o => o.UploadString("http://www.msn.com/", "POST", string.Empty), Times.Once);
+            mockWebRequest.Verify(o => o.GetRequestStream(), Times.Once);
         }
 
         [TestMethod]

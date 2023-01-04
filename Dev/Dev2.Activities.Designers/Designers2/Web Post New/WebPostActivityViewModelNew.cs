@@ -441,7 +441,6 @@ namespace Dev2.Activities.Designers2.Web_Post_New
                 if (OutputsRegion.Outputs.Count > 0)
                 {
                     OutputsRegion.IsEnabled = true;
-
                 }
                 ErrorRegion = new ErrorRegion();
                 regions.Add(ErrorRegion);
@@ -515,6 +514,7 @@ namespace Dev2.Activities.Designers2.Web_Post_New
                 Settings = InputArea.Settings?.Select(value => new NameValue { Name = value.Name, Value = value.Value } as INameValue).ToList(),
                 FormDataParameters = BuildFormDataParameters(),
                 QueryString = InputArea.QueryString,
+                Timeout = InputArea.Timeout,
                 RequestUrl = SourceRegion.SelectedSource.HostName,
                 Response = "",
                 Method = WebRequestMethod.Post
@@ -543,6 +543,9 @@ namespace Dev2.Activities.Designers2.Web_Post_New
 
             var queryString = InputArea.QueryString;
             _builder.GetValue(queryString, dt);
+            
+            var timeout = InputArea.Timeout;
+            _builder.GetValue(timeout.ToString(), dt);
 
             foreach (var nameValue in InputArea.Headers)
             {
