@@ -73,9 +73,7 @@
     <Reference Include="System.Activities" />
     <Reference Include="System.Activities.Presentation" />
     <Reference Include="System.ComponentModel.Composition" />
-    <Reference Include="System.Reactive">
-      <HintPath>..\Binaries\System.Reactive.dll</HintPath>
-    </Reference>
+    
     <Reference Include="Weave">
       <HintPath>..\Binaries\Weave.dll</HintPath>
     </Reference>

@@ -9,7 +9,9 @@
 */
 
 
+using System;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using Warewolf.Web;
 
@@ -43,5 +45,10 @@ namespace Warewolf
         }
         
         public bool HasCredentials { get; private set; }
+
+        public void SetTimeout(TimeSpan timespan)
+        {
+            _httpClient.Timeout = timespan;
+        }
     }
 }

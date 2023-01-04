@@ -16,34 +16,17 @@
     <DebugSymbols>false</DebugSymbols>
     <DebugType>none</DebugType>
   </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="ServiceStack.Common">
-      <HintPath>..\Binaries\ServiceStack.Common.dll</HintPath>
-    </Reference>
-    <Reference Include="ServiceStack.Redis">
-      <HintPath>..\Binaries\ServiceStack.Redis.dll</HintPath>
-    </Reference>
+  <ItemGroup>   
     <Reference Include="System.Activities" />
     <Reference Include="System.Activities.Presentation" />
     <Reference Include="System.DirectoryServices.AccountManagement" />
-    <Reference Include="System.Reactive.Core, Version=2.1.30214.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\System.Reactive.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Reactive.Interfaces, Version=2.1.30214.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\System.Reactive.Interfaces.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Reactive.Linq">
-      <HintPath>..\Binaries\System.Reactive.Linq.dll</HintPath>
-    </Reference>
+    
     <Reference Include="GACManagerApi">
       <HintPath>..\Binaries\GACManagerApi.dll</HintPath>
-    </Reference>
-    <Reference Include="Weave, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    </Reference>    
+    <Reference Include="Weave">
       <HintPath>..\Binaries\Weave.dll</HintPath>
-    </Reference>
+    </Reference>   
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
@@ -526,6 +509,7 @@
     <PackageReference Include="Npgsql" Version="3.2.7" />
     <PackageReference Include="TxFileManager" Version="1.5.0.1" />
     <PackageReference Include="Microsoft.Windows.Compatibility" Version="6.0.0" />
+	 <PackageReference Include="System.Reactive.Core" Version="5.0.0" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Triggers\" />

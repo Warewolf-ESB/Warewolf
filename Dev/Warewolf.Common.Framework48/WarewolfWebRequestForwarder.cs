@@ -17,6 +17,7 @@ using Dev2.Common.ExtMethods;
 using System.Linq;
 using System.Net;
 using System.Net.Http.Headers;
+using System.Threading;
 using Dev2.Common.Serializers;
 using Dev2.Runtime.ServiceModel;
 using Warewolf.Common.NetStandard20;
@@ -77,6 +78,7 @@ namespace Warewolf.Common
         private async Task<HttpResponseMessage> SendEventToWarewolf(string uri, string postData, Headers headers, byte[] body = null)
         {
             var client = _httpClientFactory.New(uri, _username, _password, headers);
+            client.SetTimeout(Timeout.InfiniteTimeSpan);
             var input = _valueKeys.FirstOrDefault();
             //if there is only one input and it is an object, send through the request as form data
             if (_mapEntireMessage && body != null && input != null && input.Name.StartsWith("@"))

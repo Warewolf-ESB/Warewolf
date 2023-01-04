@@ -514,7 +514,7 @@ namespace Dev2.Activities
 
                             identifierVariables = new List<string>();
 
-                            identifierVariables.AddRange(statement.Tokens.Where(a => a.Type == TSQL.Tokens.TSQLTokenType.Identifier && a.Text != key).Select(a => a.Text));
+                            identifierVariables.AddRange(statement.Tokens.Where(a => a.Type == TSQL.Tokens.TSQLTokenType.Identifier && a.Text != key && (statement.Tokens[statement.Tokens.IndexOf(a)-1].Text != "AS" && statement.Tokens[statement.Tokens.IndexOf(a) - 1].Type != TSQL.Tokens.TSQLTokenType.Identifier)).Select(a => a.Text));
 
                             identifiers.Add(key, identifierVariables);
                         }

@@ -107,9 +107,9 @@
 			<SpecificVersion>False</SpecificVersion>
 			<HintPath>..\Binaries\Microsoft.Windows.Design.Extensibility.dll</HintPath>
 		</Reference>
-		<Reference Include="MvvmFoundation.Wpf">
+		<!--<Reference Include="MvvmFoundation.Wpf">
 			<HintPath>..\Binaries\MvvmFoundation.Wpf.dll</HintPath>
-		</Reference>
+		</Reference>-->
 		<Reference Include="System.Activities" />
 		<Reference Include="System.Activities.Presentation" />
 		<Reference Include="System.ServiceModel.Activities" />

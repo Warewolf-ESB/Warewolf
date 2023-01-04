@@ -25,6 +25,7 @@ namespace Warewolf.Core
         public IList<IServiceInput> Inputs { get; set; }
         public IList<IServiceOutputMapping> OutputMappings { get; set; }
         public string QueryString { get; set; }
+        public int Timeout { get; set; }
         public string RequestUrl { get; set; }
         public Guid Id { get; set; }
         public List<INameValue> Headers { get; set; }

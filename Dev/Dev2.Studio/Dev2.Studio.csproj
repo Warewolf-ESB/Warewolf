@@ -75,12 +75,12 @@
     <StartupObject>Dev2.Startup</StartupObject>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AdornedControl">
-      <HintPath>..\Binaries\AdornedControl.dll</HintPath>
-    </Reference>
-    <Reference Include="ICSharpCode.AvalonEdit">
-      <HintPath>..\Binaries\ICSharpCode.AvalonEdit.dll</HintPath>
-    </Reference>
+	  <!--<Reference Include="AdornedControl">
+		  <HintPath>..\Binaries\AdornedControl.dll</HintPath>
+	  </Reference>-->
+	  <Reference Include="ICSharpCode.AvalonEdit">
+		  <HintPath>..\Binaries\ICSharpCode.AvalonEdit.dll</HintPath>
+	  </Reference>
     <Reference Include="InfragisticsWPF4.Calculations.XamCalculationManager.v15.1, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\InfragisticsWPF4.Calculations.XamCalculationManager.v15.1.dll</HintPath>
@@ -144,29 +144,14 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\InfragisticsWPF4.v15.1.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Expression.Interactions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\Microsoft.Expression.Interactions.dll</HintPath>
-    </Reference>
-    <Reference Include="RestSharp, Version=102.7.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\RestSharp.dll</HintPath>
-    </Reference>
-    <Reference Include="RibbonControlsLibrary, Version=4.0.0.11019, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\Binaries\RibbonControlsLibrary.dll</HintPath>
-    </Reference>
+    
     <Reference Include="System.Activities" />
     <Reference Include="System.Activities.Core.Presentation" />
     <Reference Include="System.Activities.Presentation" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Management" />
-    <Reference Include="System.Reactive, Version=1.0.10621.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\Binaries\System.Reactive.dll</HintPath>
-    </Reference>
-    <Reference Include="Weave, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\Weave.dll</HintPath>
-    </Reference>
+ 
+   
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -787,6 +772,7 @@
     <Folder Include="Views\Wizards\" />
   </ItemGroup>
   <ItemGroup>
+
     <PackageReference Include="Caliburn.Micro" Version="4.0.212" />
     <PackageReference Include="Caliburn.Micro.Core" Version="4.0.212" />
     <PackageReference Include="codecracker.CSharp">
@@ -837,7 +823,7 @@
     <!--<PackageReference Include="FontAwesome.WPF" Version="4.7.0.9" />-->
 	  <PackageReference Include="FontAwesome6.Fonts" Version="2.3.0" />
 	  <PackageReference Include="FontAwesome6.Fonts.WinUI" Version="2.3.0" />
-    <!--<PackageReference Include="WPFTextBoxAutoComplete" Version="1.0.5" />-->
+	  <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
 	<PackageReference Include="Microsoft.Web.WebView2">
 	  <Version>1.0.1072.54</Version>
 	</PackageReference>

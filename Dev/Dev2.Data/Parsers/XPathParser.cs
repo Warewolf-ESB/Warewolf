@@ -17,7 +17,7 @@ using System.Xml;
 using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Data.Util;
-using org.xml.sax;
+//using org.xml.sax;
 using Saxon.Api;
 using Warewolf.Resource.Errors;
 
@@ -79,10 +79,10 @@ namespace Dev2.Data.Parsers
             }
             catch (Exception exception)
             {
-                if (exception.GetType() == typeof(SAXException))
-                {
-                    throw new Exception(ErrorResource.XPathProvidedNotValid);
-                }
+                //if (exception.GetType() == typeof(SAXException))
+                //{
+                //    throw new Exception(ErrorResource.XPathProvidedNotValid);
+                //}
 
                 Dev2Logger.Error(exception, GlobalConstants.WarewolfError);
                 throw;

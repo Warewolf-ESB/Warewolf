@@ -50,20 +50,11 @@
     <CodeAnalysisRuleSet>..\.sonarlint\warewolf_dotnet_frameworkcsharp.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="IronPython">
-      <HintPath>..\Binaries\IronPython.dll</HintPath>
-    </Reference>
-    <Reference Include="IronPython.Modules">
-      <HintPath>..\Binaries\IronPython.Modules.dll</HintPath>
-    </Reference>
     <Reference Include="IronRuby">
       <HintPath>..\Binaries\IronRuby.dll</HintPath>
     </Reference>
     <Reference Include="IronRuby.Libraries">
       <HintPath>..\Binaries\IronRuby.Libraries.dll</HintPath>
-    </Reference>
-    <Reference Include="Jurassic">
-      <HintPath>..\Binaries\Jurassic.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Dynamic">
       <HintPath>..\Binaries\Microsoft.Dynamic.dll</HintPath>
@@ -111,6 +102,9 @@
     <PackageReference Include="Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers" Version="0.4.336902">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+	  <PackageReference Include="System.Text.Encoding.CodePages" Version="7.0.0" />
+	  <PackageReference Include="IronPython" Version="3.4.0" />
+	  <PackageReference Include="Jurassic" Version="3.2.6" />
   </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
