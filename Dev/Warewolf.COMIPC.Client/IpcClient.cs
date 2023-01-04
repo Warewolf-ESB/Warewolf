@@ -59,7 +59,7 @@ namespace WarewolfCOMIPC.Client
         
         internal IpcClientImpl()
         {
-            var token = Guid.NewGuid().ToString();
+            var token = Guid.NewGuid().ToString();            
             var currentAssemblyPath = Assembly.GetExecutingAssembly().Location;
             var currentAssemblyDirectoryPath = Path.GetDirectoryName(currentAssemblyPath);
             var clientPath = Path.Combine(currentAssemblyDirectoryPath, "Warewolf.COMIPC.exe");

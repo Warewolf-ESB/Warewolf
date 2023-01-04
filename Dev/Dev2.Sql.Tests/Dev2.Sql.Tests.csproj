@@ -98,7 +98,7 @@
       <Version>2.2.10</Version>
     </PackageReference>
     <PackageReference Include="System.Data.SQLite.Core">
-      <Version>1.0.116</Version>
+      <Version>1.0.117</Version>
     </PackageReference>
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="7.0.0" />
     <PackageReference Include="Microsoft.TestPlatform.ObjectModel" Version="17.4.0" />

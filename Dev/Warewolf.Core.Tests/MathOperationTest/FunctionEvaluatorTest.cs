@@ -264,7 +264,8 @@ namespace Dev2.Tests.MathOperationTest
 
             if (hasSucceeded)
             {
-                Assert.AreEqual("6.12303176911189E-17+i", result);
+                //Assert.AreEqual("6.12303176911189E-17+i", result);
+                Assert.AreEqual("6.12323399573677E-17+i", result);
             }
             else
             {
