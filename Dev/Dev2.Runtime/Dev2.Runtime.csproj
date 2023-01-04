@@ -72,17 +72,11 @@
     <CodeAnalysisRuleSet>..\.sonarlint\warewolf_dotnet_frameworkcsharp.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <!--<Reference Include="IKVM.OpenJDK.Core, Version=7.2.4630.5, Culture=neutral, PublicKeyToken=13235d27fcbfff58" />
-    <Reference Include="IKVM.OpenJDK.Util, Version=7.2.4630.5, Culture=neutral, PublicKeyToken=13235d27fcbfff58" />-->
-    <Reference Include="ServiceStack.Common">
-      <HintPath>..\Binaries\ServiceStack.Common.dll</HintPath>
-    </Reference>
+    
     <Reference Include="System.Activities" />
     <Reference Include="System.Activities.Presentation" />
     <Reference Include="System.DirectoryServices.AccountManagement" />
-    <Reference Include="System.Reactive">
-      <HintPath>..\Binaries\System.Reactive.dll</HintPath>
-    </Reference>
+   
     <Reference Include="Weave">
       <HintPath>..\Binaries\Weave.dll</HintPath>
     </Reference>

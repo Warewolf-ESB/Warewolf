@@ -57,14 +57,8 @@
     <LangVersion>7.3</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DEV2.MultiPartFormPasser">
-      <HintPath>..\Binaries\DEV2.MultiPartFormPasser.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Activities" />
-    <Reference Include="System.Reactive, Version=1.0.10621.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\System.Reactive.dll</HintPath>
-    </Reference>
+   
+    <Reference Include="System.Activities" />    
     <Reference Include="Weave">
       <HintPath>..\Binaries\Weave.dll</HintPath>
     </Reference>

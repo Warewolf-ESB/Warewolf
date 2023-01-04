@@ -46,10 +46,9 @@
     <Reference Include="System.Activities" />
     <Reference Include="System.Activities.Core.Presentation" />
     <Reference Include="System.Activities.Presentation" />
-    <Reference Include="Weave, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\Weave.dll</HintPath>
-    </Reference>
+	  <Reference Include="Weave">
+		  <HintPath>..\Binaries\Weave.dll</HintPath>
+	  </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
