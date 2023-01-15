@@ -271,7 +271,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var activity = act.Execute(data, 0);
             //------------Assert Results-------------------------
             var debugout = act.GetDebugOutputs(executionEnvironment, 0);
-           
+
             Assert.AreEqual(false, debugout[0].ResultsList[0].HasError);
             Assert.AreEqual(varName, debugout[0].ResultsList[0].Variable);
             Assert.AreEqual(DebugItemResultType.Variable, debugout[0].ResultsList[0].Type);
@@ -329,9 +329,10 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //------------Setup for test--------------------------
             const string varName = "[[dt]]";
+            const string dateTime = "a/p/R";
             var act = new DsfDotNetDateTimeActivity
             {
-                DateTime = "a/p/R",
+                DateTime = dateTime,
                 InputFormat = "",
                 OutputFormat = "",
                 TimeModifierType = "",
@@ -360,7 +361,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(varName, debugout[0].ResultsList[0].Variable);
             Assert.AreEqual(DebugItemResultType.Variable, debugout[0].ResultsList[0].Type);
 
-            Assert.AreEqual("The string was not recognized as a valid DateTime. There is an unknown word starting at index 0.", executionEnvironment.FetchErrors());
+            //Assert.AreEqual("The string was not recognized as a valid DateTime. There is an unknown word starting at index 0.", executionEnvironment.FetchErrors());
+
+            Assert.AreEqual(string.Concat("The string '", dateTime, "' was not recognized as a valid DateTime. There is an unknown word starting at index '0'."), executionEnvironment.FetchErrors());
         }
 
         #region Private Test Methods

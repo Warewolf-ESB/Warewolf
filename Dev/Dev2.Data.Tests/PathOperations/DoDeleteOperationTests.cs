@@ -9,6 +9,7 @@
 */
 
 using System;
+using System.Security.Principal;
 using Dev2.Common.Common;
 using Dev2.Data.Interfaces;
 using Dev2.Data.PathOperations;
@@ -72,7 +73,8 @@ namespace Dev2.Data.Tests.PathOperations
             //---------------------------Arrange---------------------------
             var mockActivityIOPath = new Mock<IActivityIOPath>();
             var mockDev2LogonProvider = new Mock<IDev2LogonProvider>();
-
+            var mockWindowsImpersonationContext = new Mock<IWindowsImpersonationContext>();
+            mockWindowsImpersonationContext.Setup(w => w.Identity).Returns(WindowsIdentity.GetCurrent());
             const string serverLogFile = @"C:\ProgramData\Warewolf\Server Log\wareWolf-Server.*";
 
             mockActivityIOPath.Setup(o => o.Path).Returns(serverLogFile);
@@ -81,7 +83,7 @@ namespace Dev2.Data.Tests.PathOperations
             mockDeleteHelper.Setup(o => o.Delete(serverLogFile)).Returns(true);
 
             //---------------------------Act-------------------------------
-            var doDeleteOperation = new DoDeleteOperation(mockDeleteHelper.Object, mockActivityIOPath.Object, mockDev2LogonProvider.Object, (arg1, arg2) => null);
+            var doDeleteOperation = new DoDeleteOperation(mockDeleteHelper.Object, mockActivityIOPath.Object, mockDev2LogonProvider.Object, (arg1, arg2) => mockWindowsImpersonationContext.Object);
             //---------------------------Assert----------------------------
             var result = doDeleteOperation.ExecuteOperationWithAuth();
 
@@ -98,7 +100,8 @@ namespace Dev2.Data.Tests.PathOperations
             //---------------------------Arrange---------------------------
             var mockActivityIOPath = new Mock<IActivityIOPath>();
             var mockDev2LogonProvider = new Mock<IDev2LogonProvider>();
-
+            var mockWindowsImpersonationContext = new Mock<IWindowsImpersonationContext>();
+            mockWindowsImpersonationContext.Setup(w => w.Identity).Returns(WindowsIdentity.GetCurrent());
             const string serverLogFile = @"C:\ProgramData\Warewolf\Server Log\wareWolf-Server.*";
 
             mockActivityIOPath.Setup(o => o.Path).Returns(serverLogFile);
@@ -107,7 +110,7 @@ namespace Dev2.Data.Tests.PathOperations
             mockDeleteHelper.Setup(o => o.Delete(serverLogFile)).Throws(new Exception());
 
             //---------------------------Act-------------------------------
-            var doDeleteOperation = new DoDeleteOperation(mockDeleteHelper.Object, mockActivityIOPath.Object, mockDev2LogonProvider.Object, (arg1, arg2) => null);
+            var doDeleteOperation = new DoDeleteOperation(mockDeleteHelper.Object, mockActivityIOPath.Object, mockDev2LogonProvider.Object, (arg1, arg2) => mockWindowsImpersonationContext.Object);
             //---------------------------Assert----------------------------
             var result = doDeleteOperation.ExecuteOperationWithAuth();
 

@@ -167,6 +167,9 @@ namespace Dev2.Activities.Scripting
                 var engine = new ScriptingEngineRepo().CreateEngine(ScriptType, _sources);
                 var value = engine.Execute(scriptItr.GetNextValue());
 
+                if(value == "undefined")
+                    throw new NullReferenceException("Object reference not set to an instance of an object");
+
                 foreach (var region in DataListCleaningUtils.SplitIntoRegions(Result))
                 {
                     env.Assign(region, value, update);

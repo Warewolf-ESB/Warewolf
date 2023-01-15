@@ -58,17 +58,11 @@
     <CodeAnalysisRuleSet>..\.sonarlint\warewolf_dotnet_frameworkcsharp.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Jurassic">
-      <HintPath>..\Binaries\Jurassic.dll</HintPath>
-    </Reference>
+
     <Reference Include="System.Activities" />
     <Reference Include="System.Management" />
-    <Reference Include="Weave">
-      <HintPath>..\Binaries\Weave.dll</HintPath>
-    </Reference>
-    <Reference Include="WPF.JoshSmith">
-      <HintPath>..\Binaries\WPF.JoshSmith.dll</HintPath>
-    </Reference>
+ 
+
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
@@ -122,6 +116,7 @@
     <Compile Include="ExtMethods\StringExtension.cs" />
     <Compile Include="ExtMethods\TypeExtensions.cs" />
     <Compile Include="FileStreamFactory.cs" />
+    <Compile Include="ViewStateCleaningWriter.cs" />
     <Compile Include="WebRequestHeadersHelper.cs" />
     <Compile Include="Wrappers\EnvironmentWrapper.cs" />
     <Compile Include="Wrappers\FileSystemWatcherWrapper.cs" />
@@ -237,7 +232,7 @@
     </PackageReference>
     <PackageReference Include="Prism.Core" Version="8.1.97" />
     <PackageReference Include="System.Data.SQLite.Core">
-      <Version>1.0.112</Version>
+      <Version>1.0.117</Version>
     </PackageReference>
     <PackageReference Include="System.Net.Http" Version="4.3.4" />
     <PackageReference Include="System.ServiceModel.Federation" Version="4.10.0" />

@@ -39,6 +39,7 @@ namespace Dev2.Integration.Tests.Redis
         [Timeout(120000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(RedisCacheActivity))]
+        [TestCategory("AnonymousRedis")]
         public void RedisCacheIntegration_CacheVariableResult_GetDebugInputs_With_DataListUtilIsEvaluated_ShouldReturnInnerActivityOutputs()
         {
             try
@@ -169,6 +170,7 @@ namespace Dev2.Integration.Tests.Redis
         [Timeout(120000)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(RedisCacheActivity))]
+        [TestCategory("AnonymousRedis")]
         public void RedisCacheIntegration_CacheVariableResult_EvaluateVariableAsKey()
         {
             try
@@ -229,6 +231,7 @@ namespace Dev2.Integration.Tests.Redis
         [Timeout(120000)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(RedisCacheActivity))]
+        [TestCategory("AnonymousRedis")]
         public void RedisCacheIntegration_CacheRecordsetResult_ReturnInnerActivityOutputs()
         {
             try
@@ -298,6 +301,7 @@ namespace Dev2.Integration.Tests.Redis
         [Timeout(120000)]
         [Owner("Yogesh Rajpurohit")]
         [TestCategory(nameof(RedisCacheActivity))]
+        [TestCategory("AnonymousRedis")]
         public void RedisCacheActivity_PerformExecution_RedisKeyNotFound()
         {
             TestAnonymousAuth(out var hostName, out var password, out var port);

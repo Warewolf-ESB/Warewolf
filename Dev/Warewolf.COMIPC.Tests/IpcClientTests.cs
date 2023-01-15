@@ -81,7 +81,7 @@ namespace WarewolfCOMIPC.Test
             //---------------Set up test pack-------------------
             var pipeMock = new Mock<INamedPipeClientStreamWrapper>();
             var memoryStream = new MemoryStream();
-            var serializeObject = JsonConvert.SerializeObject(GetType().GetMethods()[0]);
+            var serializeObject = JsonConvert.SerializeObject(GetType().GetMethods()[0], Formatting.Indented, new JsonSerializerSettings() { ReferenceLoopHandling  = ReferenceLoopHandling.Ignore});
             memoryStream.WriteByte(Encoding.ASCII.GetBytes(serializeObject)[0]);
             pipeMock.Setup(wrapper => wrapper.GetInternalStream()).Returns(memoryStream);
             var client = IpcClient.GetIpcExecutor(pipeMock.Object);

@@ -21,7 +21,7 @@ namespace Dev2.TaskScheduler.Wrappers.Test
     {
         TaskService _taskService;
         Mock<ITaskServiceConvertorFactory> _factory;
-        
+
         [TestInitialize]
         public void Init()
         {
@@ -37,26 +37,27 @@ namespace Dev2.TaskScheduler.Wrappers.Test
             }
             catch (COMException e)
             {
-                if (e.Message != "Cannot create a file when that file already exists. (Exception from HRESULT: 0x800700B7)")
+                //if (e.Message != "Cannot create a file when that file already exists. (Exception from HRESULT: 0x800700B7)")
+                if (e.Message != "Cannot create a file when that file already exists. (0x800700B7)")
                 {
                     throw e;
                 }
             }
             _factory = new Mock<ITaskServiceConvertorFactory>();
         }
-        
+
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("LocalSchedulerAdmin")]
         public void Dev2Task_ConstructTest()
         {
             var task = _taskService.GetTask("UnitTestTask");
-            var wrapper = new Dev2Task(_factory.Object,task);
+            var wrapper = new Dev2Task(_factory.Object, task);
             wrapper.Enabled = false;
-            Assert.AreEqual(wrapper.Enabled,task.Enabled);
-            Assert.AreEqual(task,wrapper.Instance);
+            Assert.AreEqual(wrapper.Enabled, task.Enabled);
+            Assert.AreEqual(task, wrapper.Instance);
         }
-        
+
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("LocalSchedulerAdmin")]
@@ -64,13 +65,13 @@ namespace Dev2.TaskScheduler.Wrappers.Test
         {
             var task = _taskService.GetTask("UnitTestTask");
             var wrapper = new Dev2Task(_factory.Object, task);
-            new  Mock<IDev2TaskDefinition>();
-        
+            new Mock<IDev2TaskDefinition>();
+
             Assert.AreEqual(task, wrapper.Instance);
-            Assert.AreEqual(task.IsActive,wrapper.IsActive);
-            Assert.AreEqual(task.Name,wrapper.Name);
+            Assert.AreEqual(task.IsActive, wrapper.IsActive);
+            Assert.AreEqual(task.Name, wrapper.Name);
             Assert.AreEqual(task.NextRunTime, wrapper.NextRunTime);
-            Assert.AreEqual(task.NumberOfMissedRuns,wrapper.NumberOfMissedRuns);
+            Assert.AreEqual(task.NumberOfMissedRuns, wrapper.NumberOfMissedRuns);
             Assert.AreEqual(task.Path, wrapper.Path);
             Assert.AreEqual(task.State, wrapper.State);
         }
