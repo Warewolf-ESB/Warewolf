@@ -13,10 +13,11 @@ param(
   [String] $PreTestRunScript,
   [String] $PostTestRunScript,
   [switch] $InContainer,
+  [String] $InContainerVersion="latest",
+  [String] $InContainerCommitID="latest",
   [switch] $Coverage,
   [switch] $RetryRebuild,
   [String] $UNCPassword,
-  [String] $ContainerID="latest",
   [switch] $StartFTPServer,
   [switch] $StartFTPSServer,
   [switch] $CreateUNCPath,
@@ -68,7 +69,7 @@ if (Test-Path "$TestResultsPath") {
 if ($VSTestPath -eq $null -or $VSTestPath -eq "" -or !(Test-Path "$VSTestPath\Extensions\TestPlatform\vstest.console.exe")) {
 	$VSTestPath = ".\Microsoft.TestPlatform\tools\net451\common7\ide"
 } else {
-	if ($InContainer.IsPresent -or $ContainerID -ne "latest") {
+	if ($InContainer.IsPresent -or $InContainerCommitID -ne "latest" -or $InContainerVersion -ne "latest") {
 		Write-Warning -Message "Ignoring VSTestPath parameter because it cannot be used with the -InContainer or -ContainerID parameters."
 		$VSTestPath = ".\Microsoft.TestPlatform\tools\net451\Common7\IDE"
 	}
@@ -294,7 +295,7 @@ if __name__ == '__main__':
 			}
 		}
 	} else {
-		if (!(Test-Path "$PWD\*tests.dll") -and $ContainerID -eq "latest") {
+		if (!(Test-Path "$PWD\*tests.dll") -and $InContainerCommitID -eq "latest") {
 			Write-Error "This script expects to be run from a directory containing test assemblies. (Files with names that end in tests.dll)"
 			exit 1
 		}
@@ -383,13 +384,13 @@ if __name__ == '__main__':
 		"net use \\DEVOPSPDC.premier.local\FileSystemShareTestingSite /delete" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
 	}
 	Get-Content "$TestResultsPath\RunTests.ps1"
-	if (!($InContainer.IsPresent) -and $ContainerID -eq "latest") {
+	if (!($InContainer.IsPresent) -and $InContainerCommitID -eq "latest" -and $InContainerVersion -eq "latest") {
 		&"$TestResultsPath\RunTests.ps1"
 	} else {
-		if ($ContainerID -eq "latest") {
-			docker run -i --rm --memory 4g -v "${PWD}:C:\BuildUnderTest" registry.gitlab.com/warewolf/vstest powershell -Command Set-Location .\BuildUnderTest`;`&.\TestResults\RunTests.ps1
+		if ($InContainerCommitID -eq "latest") {
+			docker run -i --rm --memory 4g -v "${PWD}:C:\BuildUnderTest" registry.gitlab.com/warewolf/vstest:$InContainerVersion powershell -Command Set-Location .\BuildUnderTest`;`&.\TestResults\RunTests.ps1
 		} else {
-			docker run -i --rm --memory 4g -v "${PWD}\TestResults:C:\BuildUnderTest\TestResults" registry.gitlab.com/warewolf/vstest:$ContainerID powershell -Command Set-Location .\BuildUnderTest`;`&.\TestResults\RunTests.ps1
+			docker run -i --rm --memory 4g -v "${PWD}\TestResults:C:\BuildUnderTest\TestResults" registry.gitlab.com/warewolf/vstest:$InContainerCommitID powershell -Command Set-Location .\BuildUnderTest`;`&.\TestResults\RunTests.ps1
 		}
 	}
     if (Test-Path "$VSTestPath\Extensions\TestPlatform\TestResults\*.trx") {

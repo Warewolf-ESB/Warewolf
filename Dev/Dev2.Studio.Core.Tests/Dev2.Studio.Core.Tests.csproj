@@ -57,33 +57,18 @@
     <Reference Include="InfragisticsWPF4.v15.1, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\InfragisticsWPF4.v15.1.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Expression.Interactions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\Microsoft.Expression.Interactions.dll</HintPath>
-    </Reference>
+    </Reference> 
     <Reference Include="InfragisticsWPF4.DataPresenter.v15.1">
       <HintPath>..\Binaries\InfragisticsWPF4.DataPresenter.v15.1.dll</HintPath>
     </Reference>
-    <Reference Include="System.Management" />
-    <Reference Include="RibbonControlsLibrary, Version=4.0.0.11019, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\RibbonControlsLibrary.dll</HintPath>
-    </Reference>
+    <Reference Include="System.Management" />  
     <Reference Include="System.Activities" />
     <Reference Include="System.Activities.Core.Presentation" />
     <Reference Include="System.Activities.Presentation" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.DirectoryServices.AccountManagement" />
-    <Reference Include="System.Reactive">
-      <HintPath>..\Binaries\System.Reactive.dll</HintPath>
-    </Reference>
     <Reference Include="Weave">
       <HintPath>..\Binaries\Weave.dll</HintPath>
-    </Reference>
-    <Reference Include="WPF.JoshSmith, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\WPF.JoshSmith.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

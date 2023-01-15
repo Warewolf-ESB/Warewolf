@@ -51,25 +51,10 @@
     <Reference Include="InfragisticsWPF4.Calculations.XamCalculationManager.v15.1, Version=15.1.20151.2055, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\InfragisticsWPF4.Calculations.XamCalculationManager.v15.1.dll</HintPath>
-    </Reference>
-    <Reference Include="ServiceStack.Common">
-      <HintPath>..\Binaries\ServiceStack.Common.dll</HintPath>
-    </Reference>
-    <!--<Reference Include="ServiceStack.Interfaces">
-      <HintPath>..\Binaries\ServiceStack.Interfaces.dll</HintPath>
-    </Reference>-->
-    <PackageReference Include="ServiceStack.Interfaces" Version="6.4.0" />
-    <!--<Reference Include="ServiceStack.Redis">
-      <HintPath>..\Binaries\ServiceStack.Redis.dll</HintPath>
-    </Reference>-->
-    <PackageReference Include="ServiceStack.Redis" Version="6.4.0" />
-    <Reference Include="ServiceStack.Text">
-      <HintPath>..\Binaries\ServiceStack.Text.dll</HintPath>
-    </Reference>
-    <Reference Include="Weave, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\Weave.dll</HintPath>
-    </Reference>
+    </Reference>   
+     <Reference Include="Weave">
+		  <HintPath>..\Binaries\Weave.dll</HintPath>
+	  </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
@@ -281,6 +266,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.4.0" />
     <PackageReference Include="Microsoft.TestPlatform.ObjectModel">
       <Version>17.4.0</Version>
     </PackageReference>

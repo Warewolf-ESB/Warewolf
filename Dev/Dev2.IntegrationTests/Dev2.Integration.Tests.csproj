@@ -76,37 +76,6 @@
     <EmbeddedResource Include="TestData\testresult.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
-    <Reference Include="AdornedControl">
-      <HintPath>..\Binaries\AdornedControl.dll</HintPath>
-    </Reference>
-    <Reference Include="DEV2.MultiPartFormPasser">
-      <HintPath>..\Binaries\DEV2.MultiPartFormPasser.dll</HintPath>
-    </Reference>
-    <Reference Include="ICSharpCode.AvalonEdit">
-      <HintPath>..\Binaries\ICSharpCode.AvalonEdit.dll</HintPath>
-    </Reference>
-    <Reference Include="Ionic.Zip.Reduced">
-      <HintPath>..\Binaries\Ionic.Zip.Reduced.dll</HintPath>
-    </Reference>
-   
-    <Reference Include="Microsoft.Expression.Interactions">
-      <HintPath>..\Binaries\Microsoft.Expression.Interactions.dll</HintPath>
-    </Reference>
-   
-    <Reference Include="Microsoft.Windows.Shell, Version=3.5.41019.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\Microsoft.Windows.Shell.dll</HintPath>
-    </Reference>
-    <Reference Include="MvvmFoundation.Wpf">
-      <HintPath>..\Binaries\MvvmFoundation.Wpf.dll</HintPath>
-    </Reference>
-    <Reference Include="Nuane.SftpLite">
-      <HintPath>..\Binaries\Sftp Server\Nuane.SftpLite.dll</HintPath>
-    </Reference>
-    
-    <Reference Include="RibbonControlsLibrary">
-      <HintPath>..\Binaries\RibbonControlsLibrary.dll</HintPath>
-    </Reference>
     
     <Reference Include="System.Activities" />
     <Reference Include="System.Activities.Presentation">
@@ -115,29 +84,11 @@
     <Reference Include="System.ComponentModel.Composition" />
  
     <Reference Include="System.Management" />
-    <Reference Include="System.Reactive, Version=1.0.10621.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\System.Reactive.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Reactive.Core, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\System.Reactive.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Reactive.Interfaces, Version=2.1.30214.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\System.Reactive.Interfaces.dll</HintPath>
-    </Reference>
     
-   
+	  <Reference Include="Weave">
+		  <HintPath>..\Binaries\Weave.dll</HintPath>
+	  </Reference>
  
-    <Reference Include="Weave, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\Weave.dll</HintPath>
-    </Reference>
- 
-    <Reference Include="WPF.JoshSmith">
-      <HintPath>..\Binaries\WPF.JoshSmith.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <CodeAnalysisDependentAssemblyPaths Condition=" '$(VS100COMNTOOLS)' != '' " Include="$(VS100COMNTOOLS)..\IDE\PrivateAssemblies">

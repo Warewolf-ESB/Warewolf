@@ -104,7 +104,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
             var activity = new DsfScriptingActivity();
             Assert.IsNotNull(activity);
             activity.IncludeFile = GetJsTmpFile();
-            activity.Script = "return \"someValue\".endsWith(\"e\")";
+            activity.Script = "return \"someValue\".endsWith(\"e\")"; 
             activity.ScriptType = enScriptType.JavaScript;
             activity.Execute(DataObject, 0);
             Assert.AreEqual(0, DataObject.Environment.Errors.Count);
@@ -321,8 +321,9 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
         public void GivenFunctionNotInExternalFile_Execute_JavascriptScriptingActivity_ShouldNotExecuteFunction()
         {
             var activity = new DsfScriptingActivity();
-            Assert.IsNotNull(activity);
-            activity.Script = "return \"someValue\".endsWith(\"e\")";
+            Assert.IsNotNull(activity);            
+            //activity.Script = "return \"someValue\".endsWith(\"e\")"; New Jurassic library supports endsWith function. So replacing it with another function
+            activity.Script = "return \"someValue\".endsWith1(\"e\")";
             activity.ScriptType = enScriptType.JavaScript;
             activity.Execute(DataObject, 0);
             Assert.AreEqual(1, DataObject.Environment.Errors.Count);

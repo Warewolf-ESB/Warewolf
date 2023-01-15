@@ -4,14 +4,15 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <IsTestProject>false</IsTestProject>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Moq">
       <Version>4.18.2</Version>
     </PackageReference>
     <PackageReference Include="MSTest.TestFramework" Version="2.2.8" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.1.0" />
+    <!--<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.1.0" />
     <PackageReference Include="MSTest.TestAdapter" Version="2.2.8" />
-     <PackageReference Include="coverlet.collector" Version="3.2.0" />
+     <PackageReference Include="coverlet.collector" Version="3.2.0" />-->
   </ItemGroup>
 </Project>

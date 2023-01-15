@@ -28,6 +28,19 @@ namespace Dev2.Tests.Activities.ActivityTests
     {
         public TestContext TestContext { get; set; }
         public const string CommandLineToolName = "ConsoleAppToTestExecuteCommandLineActivity.exe";
+        static string _testDirectory;
+
+        #region ClassInitialize
+
+        [ClassInitialize]
+        public static void MyClassInitialize(TestContext context)
+        {
+            _testDirectory = Path.Combine(context.TestDir, "out");
+        }
+
+        #endregion
+
+      
 
         [TestMethod]
         [Timeout(60000)]
@@ -84,7 +97,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //------------Setup for test--------------------------
             var activity = new DsfExecuteCommandLineActivity();
-            activity.CommandFileName = "\"" + TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe\" output";
+            activity.CommandFileName = "\"" + TestContext.TestDeploymentDir + "\\ConsoleAppToTestExecuteCommandLineActivity.exe\" output";
             activity.CommandResult = "[[Result]]";
             TestStartNode = new FlowStep
             {
@@ -106,11 +119,14 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Setup for test--------------------------
             const string ExeName = "ConsoleAppToTestExecuteCommandLineActivity.exe";
             string destFile;
-            if (!TestContext.DeploymentDirectory.Contains(" "))
+            
+            var testDirectoryPath = _testDirectory;
+            //if (!TestContext.DeploymentDirectory.Contains(" "))
+            if (!testDirectoryPath.Contains(" "))
             {
-                var destDir = Path.Combine(TestContext.DeploymentDirectory, Guid.NewGuid() + " Temp");
+                var destDir = Path.Combine(testDirectoryPath, Guid.NewGuid() + " Temp");
 
-                var sourceFile = Path.Combine(TestContext.DeploymentDirectory, ExeName);
+                var sourceFile = Path.Combine(testDirectoryPath, ExeName);
                 if (!File.Exists(sourceFile))
                 {
                     sourceFile = Path.Combine(Environment.CurrentDirectory, ExeName);
@@ -122,7 +138,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             }
             else
             {
-                destFile = TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
+                destFile = testDirectoryPath + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
             }
 
             var activity = new DsfExecuteCommandLineActivity { CommandFileName = destFile, CommandResult = "[[OutVar1]]" };
@@ -140,7 +156,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             // remove test datalist ;)
             //------------Assert Results-------------------------
             Assert.IsTrue(hasErrors);
-            Assert.IsTrue(res.StartsWith("'" + TestContext.DeploymentDirectory.Substring(0, TestContext.DeploymentDirectory.IndexOf(" ")) + "' is not recognized as an internal or external command,"));
+            Assert.IsTrue(res.StartsWith("'" + testDirectoryPath.Substring(0, testDirectoryPath.IndexOf(" ")) + "' is not recognized as an internal or external command,"));
             Assert.IsTrue(res.Contains("operable program or batch file."));
         }
 
@@ -150,7 +166,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //------------Setup for test--------------------------
             var activity = new DsfExecuteCommandLineActivity();
-            var toolPath = TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
+            var toolPath = _testDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
             if (!File.Exists(toolPath))
             {
                 toolPath = Environment.CurrentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
@@ -231,7 +247,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //------------Setup for test--------------------------
             var activity = new DsfExecuteCommandLineActivity();
-            var toolPath = TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
+            var toolPath = _testDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
             if (!File.Exists(toolPath))
             {
                 toolPath = Environment.CurrentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
@@ -266,7 +282,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //------------Setup for test--------------------------
             var activity = new DsfExecuteCommandLineActivity();
-            var toolPath = TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
+            var toolPath = _testDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
             if (!File.Exists(toolPath))
             {
                 toolPath = Environment.CurrentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
@@ -352,7 +368,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             // ------------Setup for test--------------------------
             var activity = new DsfExecuteCommandLineActivity();
-            var toolPath = TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
+            var toolPath = _testDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
             if (!File.Exists(toolPath))
             {
                 toolPath = Environment.CurrentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
@@ -383,7 +399,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //------------Setup for test--------------------------
             var activity = new DsfExecuteCommandLineActivity();
-            var toolPath = TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
+            var toolPath = _testDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
             if (!File.Exists(toolPath))
             {
                 toolPath = Environment.CurrentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
@@ -419,7 +435,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //------------Setup for test--------------------------
             var activity = new DsfExecuteCommandLineActivity();
-            var toolPath = TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
+            var toolPath = _testDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
             if (!File.Exists(toolPath))
             {
                 toolPath = Environment.CurrentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
@@ -456,7 +472,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //------------Setup for test--------------------------
             var activity = new DsfExecuteCommandLineActivity();
-            var toolPath = TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
+            var toolPath = _testDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
             if (!File.Exists(toolPath))
             {
                 toolPath = Environment.CurrentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
@@ -487,7 +503,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //------------Setup for test--------------------------
             var activity = new DsfExecuteCommandLineActivity();
-            var toolPath = TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
+            var toolPath = _testDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
             if (!File.Exists(toolPath))
             {
                 toolPath = Environment.CurrentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
@@ -516,7 +532,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //------------Setup for test--------------------------
             var activity = new DsfExecuteCommandLineActivity();
-            var toolPath = TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
+            var toolPath = _testDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
             if (!File.Exists(toolPath))
             {
                 toolPath = Environment.CurrentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
@@ -535,7 +551,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             StringAssert.Contains(actual, Expected);
         }
-        
+
 
         [TestMethod]
         [Timeout(60000)]
@@ -544,7 +560,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void DsfExecuteCommandLineActivity_UpdateForEachInputs_NullUpdates_DoesNothing()
         {
             //------------Setup for test--------------------------
-            var command1 = "\"" + TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe\" output";
+            var command1 = "\"" + _testDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe\" output";
             var act = new DsfExecuteCommandLineActivity { CommandFileName = command1, CommandResult = "[[OutVar1]]", CommandPriority = ProcessPriorityClass.RealTime };
 
             //------------Execute Test---------------------------
@@ -561,7 +577,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void DsfExecuteCommandLineActivity_UpdateForEachInputs_MoreThan1Updates_DoesNothing()
         {
             //------------Setup for test--------------------------
-            var command1 = "\"" + TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe\" output";
+            var command1 = "\"" + _testDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe\" output";
             var act = new DsfExecuteCommandLineActivity { CommandFileName = command1, CommandResult = "[[OutVar1]]", CommandPriority = ProcessPriorityClass.RealTime };
 
             var tuple1 = new Tuple<string, string>("Test", "Test");
@@ -582,7 +598,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void DsfExecuteCommandLineActivity_UpdateForEachInputs_UpdatesNotMatching_DoesNotUpdateRecordsetName()
         {
             //------------Setup for test--------------------------
-            var command1 = "\"" + TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe\" output";
+            var command1 = "\"" + _testDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe\" output";
             var act = new DsfExecuteCommandLineActivity { CommandFileName = command1, CommandResult = "[[OutVar1]]", CommandPriority = ProcessPriorityClass.RealTime };
 
             var tuple1 = new Tuple<string, string>("Test", "Test");
@@ -600,7 +616,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void DsfExecuteCommandLineActivity_UpdateForEachOutputs_NullUpdates_DoesNothing()
         {
             //------------Setup for test--------------------------
-            var command1 = "\"" + TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe\" output";
+            var command1 = "\"" + _testDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe\" output";
             const string result = "[[OutVar1]]";
             var act = new DsfExecuteCommandLineActivity { CommandFileName = command1, CommandResult = result };
 
@@ -616,7 +632,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void DsfExecuteCommandLineActivity_UpdateForEachOutputs_MoreThan1Updates_DoesNothing()
         {
             //------------Setup for test--------------------------
-            var command1 = "\"" + TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe\" output";
+            var command1 = "\"" + _testDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe\" output";
             const string result = "[[OutVar1]]";
             var act = new DsfExecuteCommandLineActivity { CommandFileName = command1, CommandResult = result };
 
@@ -635,7 +651,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void DsfExecuteCommandLineActivity_UpdateForEachOutputs_1Updates_UpdateCommandResult()
         {
             //------------Setup for test--------------------------
-            var command1 = "\"" + TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe\" output";
+            var command1 = "\"" + _testDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe\" output";
             const string result = "[[OutVar1]]";
             var act = new DsfExecuteCommandLineActivity { CommandFileName = command1, CommandResult = result };
 
@@ -654,7 +670,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //------------Setup for test--------------------------
             const ProcessPriorityClass commandPriority = ProcessPriorityClass.RealTime;
-            var command1 = "\"" + TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe\" output";
+            var command1 = "\"" + _testDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe\" output";
             var act = new DsfExecuteCommandLineActivity { CommandFileName = command1, CommandResult = "[[OutVar1]]", CommandPriority = commandPriority };
 
             //------------Execute Test---------------------------
@@ -674,7 +690,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void DsfExecuteCommandLineActivity_GetForEachOutputs_WhenHasResult_ReturnsOutputList()
         {
             //------------Setup for test--------------------------
-            var command1 = "\"" + TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe\" output";
+            var command1 = "\"" + _testDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe\" output";
             const string result = "[[OutVar1]]";
             var act = new DsfExecuteCommandLineActivity { CommandFileName = command1, CommandResult = result };
 
@@ -722,7 +738,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //---------------Set up test pack-------------------
             //------------Setup for test--------------------------
-            var act = new DsfExecuteCommandLineActivity { CommandFileName = "cm bob", CommandResult="[[res]]" };
+            var act = new DsfExecuteCommandLineActivity { CommandFileName = "cm bob", CommandResult = "[[res]]" };
             //------------Execute Test---------------------------
             var stateItems = act.GetState();
             Assert.AreEqual(3, stateItems.Count());

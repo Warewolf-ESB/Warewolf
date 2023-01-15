@@ -177,7 +177,8 @@ namespace Warewolf.Auditing.Drivers
                 {
                     sqlConn.Open();
                     sqlConn.EnableExtensions(true);
-                    sqlConn.LoadExtension("SQLite.Interop.dll", "sqlite3_json_init");
+                    //sqlConn.LoadExtension("SQLite.Interop.dll", "sqlite3_json_init");
+                    sqlConn.LoadExtension("SQLite.Interop.dll", "sqlite3_fts5_init");
                     var reader = command.ExecuteReader();
                     if (reader.HasRows)
                     {

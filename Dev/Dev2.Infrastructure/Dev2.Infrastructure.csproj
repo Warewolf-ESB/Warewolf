@@ -54,22 +54,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System.DirectoryServices.AccountManagement" />
-    <Reference Include="System.Reactive.Core">
-      <HintPath>..\Binaries\System.Reactive.Core.dll</HintPath>
+   
+    <Reference Include="System.Reactive.Windows.Thread">
+      <HintPath>..\Binaries\System.Reactive.Windows.Thread.dll</HintPath>
     </Reference>
-    <Reference Include="System.Reactive.Interfaces">
-      <HintPath>..\Binaries\System.Reactive.Interfaces.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Reactive.Linq">
-      <HintPath>..\Binaries\System.Reactive.Linq.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Reactive.Windows.Threading">
-      <HintPath>..\Binaries\System.Reactive.Windows.Threading.dll</HintPath>
-    </Reference>
-    <Reference Include="Weave, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\Weave.dll</HintPath>
-    </Reference>
+	  <Reference Include="Weave">
+		  <HintPath>..\Binaries\Weave.dll</HintPath>
+	  </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\AssemblyCommonInfo.cs">
@@ -223,11 +214,7 @@
     </PackageReference>
     <PackageReference Include="log4net">
       <Version>2.0.15</Version>
-    </PackageReference>
-    <!--<PackageReference Include="Microsoft.AspNet.SignalR.SelfHost" Version="2.4.3" />-->
-    <!--<PackageReference Include="Microsoft.AspNetCore" Version="2.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.1.0" />
-    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="6.0.8" />-->
+    </PackageReference>    
     <PackageReference Include="Newtonsoft.Json">
       <Version>13.0.1</Version>
     </PackageReference>
@@ -235,6 +222,7 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.Windows.Compatibility" Version="6.0.0" />
+	  <PackageReference Include="System.Reactive.Core" Version="5.0.0" />
   </ItemGroup>
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
