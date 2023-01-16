@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -129,6 +129,9 @@
     <Compile Include="ServerLifeCycleWorkers\RegisterDependenciesWorker.cs" />
     <None Include="Dockerfile">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="AddAdminFromEnvironmentVariablesAndStart.bat">
+     <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="pauseloop\pauseloop.go" OutputPath="pauseloop\pauseloop.go">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -352,7 +355,7 @@
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="7.0.0" />
     <PackageReference Include="System.ServiceModel.Duplex" Version="4.9.0" />
     <PackageReference Include="System.ServiceModel.NetTcp" Version="4.9.0" />
-    <PackageReference Include="System.ServiceModel.Federation" Version="4.9.0" />
+    <PackageReference Include="System.ServiceModel.Federation" Version="4.10.0" />
     <PackageReference Include="Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers" Version="0.4.336902">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>

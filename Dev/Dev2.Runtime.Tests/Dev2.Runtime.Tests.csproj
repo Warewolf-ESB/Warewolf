@@ -662,10 +662,9 @@
       <Version>2.10.1</Version>
     </PackageReference>
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="7.0.0" />
-    <PackageReference Include="System.ServiceModel.Duplex" Version="4.9.0" />
-    <PackageReference Include="System.ServiceModel.NetTcp" Version="4.9.0" />
-    <PackageReference Include="System.ServiceModel.Federation" Version="4.9.0" />
-    <!--<PackageReference Include="MSTest.TestAdapter" Version="2.2.10" />-->
+    <PackageReference Include="System.ServiceModel.Duplex" Version="4.10.0" />
+    <PackageReference Include="System.ServiceModel.NetTcp" Version="4.10.0" />
+    <PackageReference Include="System.ServiceModel.Federation" Version="4.10.0" />
     <PackageReference Include="MSTest.TestFramework" Version="2.2.10" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.4.0" />
     <PackageReference Include="MSTest.TestAdapter" Version="2.2.10" />
@@ -674,9 +673,7 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Caliburn.Micro" Version="4.0.212" />
-    <!--<PackageReference Include="FluentAssertions" Version="3.5.0" />-->
-    <PackageReference Include="FluentAssertions" Version="6.7.0" />
-    <!--<PackageReference Include="Microsoft.AspNet.WebApi.Cors" Version="5.2.9" />-->
+    <PackageReference Include="FluentAssertions" Version="6.8.0" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="XML\DbSource.xml" />
@@ -723,15 +720,16 @@
     <EmbeddedResource Include="XML\ComPluginService.xml" />
   </ItemGroup>
   <PropertyGroup>
-    <PostBuildEvent>if exist "$(SolutionDir)WarewolfCOMIPC\bin\x86\Debug\WarewolfCOMIPC.exe" copy "$(SolutionDir)WarewolfCOMIPC\bin\x86\Debug\WarewolfCOMIPC.exe" "$(SolutionDir)Dev2.Runtime.Tests\bin\Debug\net48\win\WarewolfCOMIPC.exe"</PostBuildEvent>
+    <PostBuildEvent>if exist "$(SolutionDir)Binaries\Warewolf.COMIPC.exe" copy "$(SolutionDir)WarewolfCOMIPC\bin\x86\Debug\WarewolfCOMIPC.exe" "$(SolutionDir)Dev2.Runtime.Tests\bin\Debug\net6.0-windows\win\Warewolf.COMIPC.exe"</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PostBuildEvent>taskkill /f /im Warewolf.COMIPC.exe /fi "STATUS eq RUNNING"
-taskkill /f /im Warewolf.COMIPC.vshost.exe /fi "STATUS eq RUNNING"
-if exist "$(SolutionDir)Dev2.Runtime.Tests\bin\Debug\net48\win\Dev2.Runtime.Tests.dll" (
-  if not exist "$(SolutionDir)Dev2.Runtime.Tests\bin\Debug\net48\win\Warewolf.COMIPC.exe" xcopy /Y "$(SolutionDir)Warewolf.COMIPC\bin\Debug\net48\win-x86\Warewolf.COMIPC.exe" "$(SolutionDir)Dev2.Runtime.Tests\bin\Debug\net48\win"
-  if not exist "$(SolutionDir)Dev2.Runtime.Tests\bin\Debug\net48\win\Warewolf.COMIPC.pdb" xcopy /Y "$(SolutionDir)Warewolf.COMIPC\bin\Debug\net48\win-x86\Warewolf.COMIPC.pdb" "$(SolutionDir)Dev2.Runtime.Tests\bin\Debug\net48\win"
-)</PostBuildEvent>
+    <PostBuildEvent>
+      taskkill /f /im Warewolf.COMIPC.exe /fi "STATUS eq RUNNING"
+      taskkill /f /im Warewolf.COMIPC.vshost.exe /fi "STATUS eq RUNNING"
+      if exist "$(SolutionDir)Dev2.Runtime.Tests\bin\Debug\net6.0-windows\win\Dev2.Runtime.Tests.dll" (
+      if not exist "$(SolutionDir)Dev2.Runtime.Tests\bin\Debug\net6.0-windows\win\Warewolf.COMIPC.exe" xcopy /Y "$(SolutionDir)Binaries\Warewolf.COMIPC.exe" "$(SolutionDir)Dev2.Runtime.Tests\bin\Debug\net6.0-windows\win"
+      if not exist "$(SolutionDir)Dev2.Runtime.Tests\bin\Debug\net6.0-windows\win\Warewolf.COMIPC.pdb" xcopy /Y "$(SolutionDir)Binaries\Warewolf.COMIPC.pdb" "$(SolutionDir)Dev2.Runtime.Tests\bin\Debug\net6.0-windows\win"
+      )</PostBuildEvent>
   </PropertyGroup>
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />

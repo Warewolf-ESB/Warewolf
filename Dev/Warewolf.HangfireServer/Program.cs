@@ -129,11 +129,11 @@ namespace HangfireServer
                     _writer.WriteLine("Hangfire dashboard started...");
                     _logger.Debug("Hangfire dashboard started...");
 
-                    if (_logLevel >= Dev2.Data.Interfaces.Enums.LogLevel.DEBUG)
-                    {
-                        _writer.WriteLine("Hangfire dashboard started...");
-                        _logger.Debug("Hangfire dashboard started...");
-                    }
+                    //if (_logLevel >= Dev2.Data.Interfaces.Enums.LogLevel.DEBUG)
+                    //{
+                    //    _writer.WriteLine("Hangfire dashboard started...");
+                    //    _logger.Debug("Hangfire dashboard started...");
+                    //}
 
                     // var backgroundJobServerOptions = new BackgroundJobServerOptions
                     // {

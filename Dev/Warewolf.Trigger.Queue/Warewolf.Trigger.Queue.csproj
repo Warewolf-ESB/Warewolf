@@ -16,7 +16,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Prism.Core" Version="8.1.97" />
-    <PackageReference Include="Serilog.Sinks.SQLite" Version="4.5.0" />
+    <PackageReference Include="Serilog.Sinks.SQLite" Version="5.5.0" />
     <PackageReference Include="Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers" Version="0.4.336902">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>

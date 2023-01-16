@@ -43,7 +43,6 @@
     <Compile Include="ExecuteExceptionPayloadTests.cs" />
     <Compile Include="ExecutionDtoExtensionsTests.cs" />
     <Compile Include="ExtensionsTests.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceTestCoverageExecutorTests.cs" />
     <Compile Include="WebRequestExtentionsTests.cs" />
     <Compile Include="WorkflowTestResultsTests.cs" />

@@ -22,7 +22,8 @@ param(
   [switch] $StartFTPSServer,
   [switch] $CreateUNCPath,
   [switch] $UseRegionalSettings,
-  [switch] $CreateLocalSchedulerAdmin
+  [switch] $CreateLocalSchedulerAdmin,
+  [switch] $STA
 )
 if (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
 	Write-Error "This script expects to be run as Administrator. (Right click run as administrator)"
@@ -141,6 +142,19 @@ if ($CreateUNCPath.IsPresent) {
     mkdir C:\FileSystemShareTestingSite\ReadFileSharedTestingSite
     "file contents to read" | Out-File -LiteralPath "C:\FileSystemShareTestingSite\ReadFileSharedTestingSite\filetoread.txt" -Encoding utf8 -Force
     New-SmbShare -Path C:\FileSystemShareTestingSite -FullAccess Everyone -Name FileSystemShareTestingSite
+}
+if ($STA.IsPresent) {
+	if (!(Test-Path "$TestResultsPath")) {
+		mkdir "$TestResultsPath"
+	}
+@"
+<?xml version="1.0" encoding="utf-8"?>
+<RunSettings>
+  <RunConfiguration>
+    <ExecutionThreadApartmentState>STA</ExecutionThreadApartmentState>
+  </RunConfiguration>
+</RunSettings>
+"@ | Out-File -LiteralPath "$TestResultsPath\STA.runsettings" -Encoding utf8 -Force
 }
 for ($LoopCounter=0; $LoopCounter -le $RetryCount; $LoopCounter++) {
 	if ($StartFTPServer.IsPresent) {
@@ -336,15 +350,20 @@ if __name__ == '__main__':
 	if ($UNCPassword) {
 		"net use \\DEVOPSPDC.premier.local\FileSystemShareTestingSite /user:Administrator $UNCPassword" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
 	}
+	if ($STA.IsPresent) {
+		$STAArg = "--settings:`"$TestResultsPath\STA.runsettings`""
+	} else {
+		$STAArg = ""
+	}
 	if ($TestsToRun) {
 		if ($PreTestRunScript) {
 			"&.\$PreTestRunScript" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
-			"&`"$VSTestPath\Extensions\TestPlatform\vstest.console.exe`" /logger:trx $AssembliesArg /Tests:`"$TestsToRun`"" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
+			"&`"$VSTestPath\Extensions\TestPlatform\vstest.console.exe`" /logger:trx $AssembliesArg /Tests:`"$TestsToRun`" $STAArg" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
 		} else {
 			if ($Coverage.IsPresent -and !($PreTestRunScript)) {
-				"&`"$VSTestPath\Extensions\TestPlatform\vstest.console.exe`" /logger:trx $AssembliesArg /Tests:`"$TestsToRun`" /EnableCodeCoverage" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
+				"&`"$VSTestPath\Extensions\TestPlatform\vstest.console.exe`" /logger:trx $AssembliesArg /Tests:`"$TestsToRun`" $STAArg /EnableCodeCoverage" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
 			} else {
-				"&`"$VSTestPath\Extensions\TestPlatform\vstest.console.exe`" /logger:trx $AssembliesArg /Tests:`"$TestsToRun`"" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
+				"&`"$VSTestPath\Extensions\TestPlatform\vstest.console.exe`" /logger:trx $AssembliesArg /Tests:`"$TestsToRun`" $STAArg" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
 			}
 		}
 	} else {
@@ -369,12 +388,12 @@ if __name__ == '__main__':
 		}
 		if ($PreTestRunScript) {
 			"&.\$PreTestRunScript" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
-			"&`"$VSTestPath\Extensions\TestPlatform\vstest.console.exe`" /logger:trx $AssembliesArg $CategoryArg" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
+			"&`"$VSTestPath\Extensions\TestPlatform\vstest.console.exe`" /logger:trx $AssembliesArg $CategoryArg $STAArg" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
 		} else {
 			if ($Coverage.IsPresent -and !($PreTestRunScript)) {
-				"&`"$VSTestPath\Extensions\TestPlatform\vstest.console.exe`" /logger:trx $AssembliesArg $CategoryArg /EnableCodeCoverage" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
+				"&`"$VSTestPath\Extensions\TestPlatform\vstest.console.exe`" /logger:trx $AssembliesArg $CategoryArg $STAArg /EnableCodeCoverage" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
 			} else {
-				"&`"$VSTestPath\Extensions\TestPlatform\vstest.console.exe`" /logger:trx $AssembliesArg $CategoryArg" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
+				"&`"$VSTestPath\Extensions\TestPlatform\vstest.console.exe`" /logger:trx $AssembliesArg $CategoryArg $STAArg" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
 			}
 		}
 	}
