@@ -2,7 +2,8 @@ FROM golang:1.12.6-windowsservercore-1809 as pauseloopbuilder
 ADD pauseloop pauseloop
 RUN cd pauseloop ; go mod init pauseloop ; go build -o pauseloop.exe .
 
-FROM mcr.microsoft.com/windows/nanoserver:ltsc22022
+FROM mcr.microsoft.com/windows/servercore:ltsc2022
+USER ContainerAdministrator
 
 EXPOSE 3142
 EXPOSE 3143
