@@ -15,7 +15,8 @@ using System.Linq.Expressions;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Data.MathOperations;
-using Infragistics.Calculations.CalcManager;
+using Dev2.Net6.Compatibility;
+using Infragistics.Calculations;
 using Infragistics.Calculations.Engine;
 using Warewolf.Resource.Errors;
 
@@ -27,7 +28,7 @@ namespace Dev2.MathOperations
     public class FunctionRepository : IFrameworkRepository<IFunction>
     {
         readonly List<IFunction> _functions;
-        static readonly IDev2CalculationManager CalcManager = new Dev2CalculationManager();
+        static readonly XamCalculationManager CalcManager = new XamCalculationManager();
         bool _isDisposed;
 
         internal FunctionRepository()
@@ -94,13 +95,15 @@ namespace Dev2.MathOperations
         /// </summary>
         public void Load()
         {
-            var calcFunctions = CalcManager.GetAllFunctions();
-
-            foreach (CalculationFunction calcFunction in calcFunctions)
+            STAThreadExtensions.RunAsSTA(() =>
             {
-                _functions.Add(MathOpsFactory.CreateFunction(calcFunction.Name, calcFunction.ArgList, calcFunction.ArgDescriptors, calcFunction.Description));
-            }
+                var calcFunctions = CalcManager.GetAllFunctions();
 
+                foreach (CalculationFunction calcFunction in calcFunctions)
+                {
+                    _functions.Add(MathOpsFactory.CreateFunction(calcFunction.Name, calcFunction.ArgList, calcFunction.ArgDescriptors, calcFunction.Description));
+                }
+            });
         }
 
         /// <summary>

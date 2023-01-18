@@ -11,7 +11,8 @@
 
 using System;
 using System.Collections.Generic;
-using Infragistics.Calculations.CalcManager;
+using Infragistics.Calculations;
+
 
 namespace Dev2.MathOperations
 {
@@ -23,6 +24,6 @@ namespace Dev2.MathOperations
 
     
         void CreateCustomFunction(string functionName, List<string> arguments, List<string> argumentDescriptions, string description,
-           Func<double[], double> function, IDev2CalculationManager calcManager);
+           Func<double[], double> function, XamCalculationManager calcManager);
     }
 }

@@ -12,7 +12,7 @@ using System;
 using System.Collections.Generic;
 using Dev2.Common;
 using Infragistics.Calculations;
-using Infragistics.Calculations.CalcManager;
+
 using Warewolf.Resource.Errors;
 
 namespace Dev2.MathOperations
@@ -60,7 +60,7 @@ namespace Dev2.MathOperations
 
         #region Public Methods
 
-        public void CreateCustomFunction(string functionName, List<string> arguments, List<string> argumentDescriptions, string description, Func<double[], double> function, IDev2CalculationManager calcManager)
+        public void CreateCustomFunction(string functionName, List<string> arguments, List<string> argumentDescriptions, string description, Func<double[], double> function, XamCalculationManager calcManager)
         {
             if (CreateCustomFunction(functionName, function, out CustomCalculationFunction calcFunction))
             {

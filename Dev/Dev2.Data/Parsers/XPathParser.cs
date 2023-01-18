@@ -56,7 +56,7 @@ namespace Dev2.Data.Parsers
                 }
                 using (TextReader stringReader = new StringReader(useXmlData))
                 {
-                    var processor = new Processor(false);
+                    var processor = new Processor();
                     var compiler = processor.NewXPathCompiler();
                     compiler.XPathLanguageVersion = "3.0";
                     foreach (var keyValuePair in namespaces)

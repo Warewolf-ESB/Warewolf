@@ -10,7 +10,7 @@
 
 using System;
 using System.Globalization;
-using Infragistics.Calculations.CalcManager;
+using Dev2.Net6.Compatibility;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 
@@ -24,13 +24,15 @@ namespace Dev2.Tests.MathOperationTest
     public class InfragisticsEvaluationTest
     {
 
-        Dev2CalculationManager _manager;
+        Infragistics.Calculations.XamCalculationManager _manager;
 
         [TestInitialize]
         public void Init()
         {
-            _manager = new Dev2CalculationManager();
-            
+            STAThreadExtensions.RunAsSTA(() =>
+            {
+                _manager = new Infragistics.Calculations.XamCalculationManager();
+            });
         }
 
         [Owner("Leon Rajindrapersadh")]
@@ -46,7 +48,7 @@ namespace Dev2.Tests.MathOperationTest
         [TestMethod]
         public void IsNumber_Correct_For_Empty()
         {
-            AssertValues(new Tuple<string, string>("false", "isnumber(\"\")"), new Tuple<string, string>("false", "isnumber(\"g\")"), new Tuple<string, string>("false", "isnumber(\",\")"));
+            AssertValues(new Tuple<string, string>("false", "isnumber(\" \")"), new Tuple<string, string>("false", "isnumber(\"g\")"), new Tuple<string, string>("false", "isnumber(\",\")"));
         }
 
         [Owner("Leon Rajindrapersadh")]
@@ -62,7 +64,7 @@ namespace Dev2.Tests.MathOperationTest
         [TestMethod]
         public void Value_Correct_For_NonNumbers()
         {
-            AssertValues(new Tuple<string, string>("#num!", "value(\"a\")"), new Tuple<string, string>("#num!", "value(\"\")"), new Tuple<string, string>("#num!", "value(\" \")"), new Tuple<string, string>("#num!", "value(\",\")"));
+            AssertValues(new Tuple<string, string>("#num!", "value(\"a\")"), new Tuple<string, string>("#num!", "value(\"12ab\")"), new Tuple<string, string>("#num!", "value(\" \")"), new Tuple<string, string>("#num!", "value(\",\")"));
         }
 
         [Owner("Leon Rajindrapersadh")]
@@ -70,7 +72,7 @@ namespace Dev2.Tests.MathOperationTest
         [TestMethod]
         public void IsEven_Correct_For_NonNumbers()
         {
-            AssertValues(new Tuple<string, string>("#num!", "iseven(\"a\")"), new Tuple<string, string>("#num!", "iseven(\"\")"), new Tuple<string, string>("#num!", "iseven(\" \")"), new Tuple<string, string>("#num!", "iseven(\",\")"));
+            AssertValues(new Tuple<string, string>("#num!", "iseven(\"a\")"), new Tuple<string, string>("#num!", "iseven(\"12ab\")"), new Tuple<string, string>("#num!", "iseven(\" \")"), new Tuple<string, string>("#num!", "iseven(\",\")"));
         }
 
         [Owner("Leon Rajindrapersadh")]
@@ -87,7 +89,7 @@ namespace Dev2.Tests.MathOperationTest
         [TestMethod]
         public void IsOdd_Correct_For_NonNumbers()
         {
-            AssertValues(new Tuple<string, string>("#num!", "isodd(\"a\")"), new Tuple<string, string>("#num!", "isodd(\"\")"), new Tuple<string, string>("#num!", "isodd(\" \")"), new Tuple<string, string>("#num!", "isodd(\",\")"));
+            AssertValues(new Tuple<string, string>("#num!", "isodd(\"a\")"), new Tuple<string, string>("#num!", "isodd(\"12ab\")"), new Tuple<string, string>("#num!", "isodd(\" \")"), new Tuple<string, string>("#num!", "isodd(\",\")"));
         }
 
         [Owner("Leon Rajindrapersadh")]

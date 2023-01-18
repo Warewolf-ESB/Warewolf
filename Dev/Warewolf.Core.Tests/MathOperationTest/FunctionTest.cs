@@ -10,9 +10,12 @@
 
 using System;
 using System.Collections.Generic;
+using System.Windows;
+using System.Windows.Threading;
 using Dev2.Data.MathOperations;
 using Dev2.MathOperations;
-using Infragistics.Calculations.CalcManager;
+using Dev2.Net6.Compatibility;
+using Infragistics.Calculations;
 using Infragistics.Calculations.Engine;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -118,22 +121,29 @@ namespace Dev2.Tests.MathOperationTest
 
         #region CreateCustomFunction Test
 
+ 
 
-        [TestMethod]
+        [TestMethod]   
         public void CreateCustomFunction_AllValidValues_Expected_CustomFunctionCreatedAndRegisteredWithCalcManager()
-        {
-            const string functionName = "TestFunction";
-            var arguments = new List<string> { "x", "y" };
-            var argumentDescriptions = new List<string> { "the first argument", "the second argument" };
-            const string description = "My TestFunction";
+        {           
 
-            var func = MathOpsFactory.CreateFunction(functionName, arguments, argumentDescriptions, description);
-            IDev2CalculationManager manager = new Dev2CalculationManager();
-            Func<double[], double> function = AddAbs;
+            STAThreadExtensions.RunAsSTA(() =>
+            {
+                const string functionName = "TestFunction";
+                var arguments = new List<string> { "x", "y" };
+                var argumentDescriptions = new List<string> { "the first argument", "the second argument" };
+                const string description = "My TestFunction";
 
-            func.CreateCustomFunction(functionName, arguments, argumentDescriptions, description, function, manager);
-            var value = manager.CalculateFormula("TestFunction(1)");
-            Assert.AreEqual(123123423423, value.ToDouble());
+                var func = MathOpsFactory.CreateFunction(functionName, arguments, argumentDescriptions, description);
+
+                XamCalculationManager manager = new XamCalculationManager();
+                Func<double[], double> function = AddAbs;
+
+                func.CreateCustomFunction(functionName, arguments, argumentDescriptions, description, function, manager);
+                var value = manager.CalculateFormula("TestFunction(1)");
+                Assert.AreEqual(123123423423, value.ToDouble());
+            });
+           
         }
 
         [TestMethod]
@@ -160,32 +170,37 @@ namespace Dev2.Tests.MathOperationTest
         [TestMethod]
         public void CreateCustomFunction_NullFunc_Expected_ExceptionReturned()
         {
-            const string functionName = "TestFunction";
-            var arguments = new List<string> { "x", "y" };
-            var argumentDescriptions = new List<string> { "the first argument", "the second argument" };
-            const string description = "My TestFunction";
+            STAThreadExtensions.RunAsSTA(() =>
+            {
+                const string functionName = "TestFunction";
+                var arguments = new List<string> { "x", "y" };
+                var argumentDescriptions = new List<string> { "the first argument", "the second argument" };
+                const string description = "My TestFunction";
 
-            var func = MathOpsFactory.CreateFunction(functionName, arguments, argumentDescriptions, description);
-            IDev2CalculationManager manager = new Dev2CalculationManager();
-            func.CreateCustomFunction(functionName, arguments, argumentDescriptions, description, null, manager);
+                var func = MathOpsFactory.CreateFunction(functionName, arguments, argumentDescriptions, description);
+                XamCalculationManager manager = new XamCalculationManager();
+                func.CreateCustomFunction(functionName, arguments, argumentDescriptions, description, null, manager);
 
-            Assert.AreEqual("TestFunction", func.FunctionName);
-
+                Assert.AreEqual("TestFunction", func.FunctionName);
+            });
 
         }
 
         [TestMethod]
         public void CreateCustomFunction_NullArgumentDescription_Expected_ExceptionReturned()
         {
-            const string functionName = "TestFunction";
-            var arguments = new List<string> { "x", "y" };
-            const string description = "My TestFunction";
+            STAThreadExtensions.RunAsSTA(() =>
+            {
+                const string functionName = "TestFunction";
+                var arguments = new List<string> { "x", "y" };
+                const string description = "My TestFunction";
 
-            var func = MathOpsFactory.CreateFunction(functionName, arguments, null, description);
-            IDev2CalculationManager manager = new Dev2CalculationManager();
-            func.CreateCustomFunction(functionName, arguments, null, description, null, manager);
+                var func = MathOpsFactory.CreateFunction(functionName, arguments, null, description);
+                XamCalculationManager manager = new XamCalculationManager();
+                func.CreateCustomFunction(functionName, arguments, null, description, null, manager);
 
-            Assert.AreNotEqual(null, func.ArgumentDescriptions);
+                Assert.AreNotEqual(null, func.ArgumentDescriptions);
+            });
         }
 
 
