@@ -464,7 +464,7 @@ namespace Dev2.Runtime.ServiceModel
                 {
                     if (header != ":" && !header.ToLower().StartsWith("content-type:"))
                     {
-                        wr.Headers.Add(header.Trim());
+                        wr.AddHeader(header.Trim());
                     }
                 }
             }
