@@ -18,7 +18,8 @@ namespace Dev2
     {
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            CreateHostBuilder(args).Build().RunAsync();
+            EntryPoint.RunMain(args).Wait();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>

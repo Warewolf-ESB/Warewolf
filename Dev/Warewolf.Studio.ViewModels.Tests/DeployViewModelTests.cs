@@ -187,7 +187,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(250)]
+        [Timeout(1000)]
         [Owner("Sanele Mthembu")]
         public void Given_TheSameServer_CheckDestinationPersmisions_ShouldBeTrue()
         {

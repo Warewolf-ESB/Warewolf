@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Windows.Threading;
 using Dev2.Common.Interfaces.Infrastructure.Events;
@@ -38,7 +39,7 @@ namespace Dev2.Services
                 if(dispatcher.CheckAccess() && !dispatcher.Thread.IsBackground)
                 {
 
-                    _events = _events.ObserveOnDispatcher();
+                    _events = _events.ObserveOn(Scheduler.Default);
                 }
             }
             
