@@ -59,10 +59,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\System.Reactive.Linq.dll</HintPath>
     </Reference>
-    <Reference Include="System.Reactive.Windows.Threading, Version=2.1.30214.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+    <!--<Reference Include="System.Reactive.Windows.Threading, Version=2.1.30214.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\System.Reactive.Windows.Threading.dll</HintPath>
-    </Reference>
+    </Reference>-->
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\AssemblyCommonInfo.cs">
@@ -190,7 +190,7 @@
     </PackageReference>    
     <PackageReference Include="Microsoft.TestPlatform.ObjectModel" Version="17.4.0" />
     <PackageReference Include="Moq" Version="4.18.2" />
-    
+	  <PackageReference Include="ReactiveUI.WPF" Version="18.4.1" />
   </ItemGroup>
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />

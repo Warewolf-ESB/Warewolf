@@ -54,10 +54,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System.DirectoryServices.AccountManagement" />
-   
-    <Reference Include="System.Reactive.Windows.Thread">
+	  
+	  <!--<Reference Include="System.Reactive.Windows.Thread">
       <HintPath>..\Binaries\System.Reactive.Windows.Thread.dll</HintPath>
-    </Reference>
+    </Reference>-->
 	  <Reference Include="Weave">
 		  <HintPath>..\Binaries\Weave.dll</HintPath>
 	  </Reference>

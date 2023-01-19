@@ -70,9 +70,9 @@
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.DirectoryServices.AccountManagement" />
     
-    <Reference Include="System.Reactive.Windows.Threading">
+    <!--<Reference Include="System.Reactive.Windows.Threading">
       <HintPath>..\Binaries\System.Reactive.Windows.Thread.dll</HintPath>
-    </Reference>
+    </Reference>-->
 	  <Reference Include="Weave">
 		  <HintPath>..\Binaries\Weave.dll</HintPath>
 	  </Reference>
@@ -429,6 +429,7 @@
     <PackageReference Include="Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers" Version="0.4.336902">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+	  <PackageReference Include="ReactiveUI.WPF" Version="18.4.1" />
   </ItemGroup>
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
