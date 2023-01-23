@@ -70,7 +70,7 @@ namespace Warewolf.Auditing.Tests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AuditQueryableSqlite))]
-        [DeploymentItem(@"x64\SQLite.Interop.dll")]
+        [DeploymentItem(@"x86\SQLite.Interop.dll")]
         public void AuditQueryableSqlite_QueryLogData_FilterBy_ExecutionId_EventLevel()
         {
             var executionID = Guid.NewGuid();

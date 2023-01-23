@@ -105,6 +105,10 @@ namespace Warewolf.Auditing.Drivers
                     var audit = JsonConvert.DeserializeObject<Audit>(result);
                     if (audit != null)
                     {
+                        if (audit.ExecutionTime == null)
+                        {
+                            audit.ExecutionTime = (audit.CompletedDateTime - audit.StartDateTime).ToString();
+                        }
                         yield return audit;
                     }
                 }
@@ -143,12 +147,12 @@ namespace Warewolf.Auditing.Drivers
                 }
             }
 
-            if (eventLevel != LogLevel.None && !string.IsNullOrEmpty(executionId))
+            if (!string.IsNullOrEmpty(executionId))
             {
                 sb.Append("AND json_extract(Message, '$.ExecutionID') = '" + executionId + "' ");
             }
 
-            if ((eventLevel != LogLevel.None || !string.IsNullOrEmpty(executionId)) && !string.IsNullOrEmpty(startTime) && !string.IsNullOrEmpty(endTime))
+            if ((!string.IsNullOrEmpty(executionId)) && !string.IsNullOrEmpty(startTime) && !string.IsNullOrEmpty(endTime))
             {
                 sb.Append("AND (Timestamp >= '" + startTime + "' ");
                 sb.Append("AND Timestamp <= '" + endTime + "') ");
@@ -174,7 +178,7 @@ namespace Warewolf.Auditing.Drivers
                         while (reader.Read())
                         {
                             var results = reader.GetValues();
-                            ret.Add(results.GetValues("Message")[0]); // TODO: should not just hope that the Message key exists
+                            ret.Add(results.GetValues("Message")[0]);
                         }
 
                         return ret.ToArray();
