@@ -152,7 +152,7 @@ namespace Warewolf.Auditing.Drivers
                 sb.Append("AND json_extract(Message, '$.ExecutionID') = '" + executionId + "' ");
             }
 
-            if ((!string.IsNullOrEmpty(executionId)) && !string.IsNullOrEmpty(startTime) && !string.IsNullOrEmpty(endTime))
+            if (!string.IsNullOrEmpty(startTime) && !string.IsNullOrEmpty(endTime))
             {
                 sb.Append("AND (Timestamp >= '" + startTime + "' ");
                 sb.Append("AND Timestamp <= '" + endTime + "') ");
