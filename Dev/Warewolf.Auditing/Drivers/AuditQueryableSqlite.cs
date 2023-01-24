@@ -109,6 +109,17 @@ namespace Warewolf.Auditing.Drivers
                         {
                             audit.ExecutionTime = (audit.CompletedDateTime - audit.StartDateTime).ToString();
                         }
+                        if (audit.Status == null)
+                        {
+                            if (audit.AuditType.StartsWith("Log"))
+                            {
+                                audit.Status = audit.AuditType.Substring(3);
+                            }
+                            else
+                            {
+                                audit.Status = audit.AuditType;
+                            }
+                        }
                         yield return audit;
                     }
                 }
