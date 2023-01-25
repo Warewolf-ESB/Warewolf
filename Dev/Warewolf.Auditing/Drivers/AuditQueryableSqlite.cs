@@ -132,7 +132,7 @@ namespace Warewolf.Auditing.Drivers
 
         private void BuildQuery(string executionId, string startTime, string endTime, LogLevel eventLevel = LogLevel.None)
         {
-            var sb = new StringBuilder($"SELECT * FROM (SELECT json_extract(Properties, '$.Data') AS Message, Level, TimeStamp FROM Logs) WHERE json_extract(Message, '$.ExecutionID') <> '' ");
+            var sb = new StringBuilder($"SELECT * FROM (SELECT json_extract(Properties, '$.Data') AS Message, Level, TimeStamp FROM Logs) WHERE json_extract(Message, '$.Url') <> '' ");
 
             if (eventLevel != LogLevel.None)
             {
