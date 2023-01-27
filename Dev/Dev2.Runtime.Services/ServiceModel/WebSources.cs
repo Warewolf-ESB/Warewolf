@@ -215,7 +215,7 @@ namespace Dev2.Runtime.ServiceModel
                 if (method == WebRequestMethod.Post)
                 {
                     var bytesData = Encoding.ASCII.GetBytes(data);
-                    return PerformMultipartWebRequest(webRequestFactory, client, address, bytesData, timeout);
+                    return PerformMultipartWebRequest(webRequestFactory, client, address, bytesData, timeout, headers);
                 }
 
                 switch (method)
@@ -369,13 +369,14 @@ namespace Dev2.Runtime.ServiceModel
             return method == WebRequestMethod.Get ? client.DownloadData(address) : client.UploadData(address, method.ToString().ToUpperInvariant(), data);
         }
 
-        public static string PerformMultipartWebRequest(IWebRequestFactory webRequestFactory, IWebClientWrapper client, string address, byte[] bytesData, int timeout = 0)
+        public static string PerformMultipartWebRequest(IWebRequestFactory webRequestFactory, IWebClientWrapper client, string address, byte[] bytesData, int timeout = 0, IEnumerable<string> headers = null)
         {
             var wr = webRequestFactory.New(address);
             wr.Headers[HttpRequestHeader.Authorization] = client.Headers[HttpRequestHeader.Authorization];
             wr.ContentType = client.Headers[HttpRequestHeader.ContentType];
             wr.Method = "POST";
             wr.ContentLength = bytesData.Length;
+            AddHeaders(wr, headers);
             if (timeout > 0)
             {
                 wr.Timeout = timeout * 1000;
@@ -450,6 +451,20 @@ namespace Dev2.Runtime.ServiceModel
                     if (header != ":")
                     {
                         webClient.Headers.Add(header.Trim());
+                    }
+                }
+            }
+        }
+        
+        private static void AddHeaders(IWebRequest wr, IEnumerable<string> headers)
+        {
+            if (headers != null)
+            {
+                foreach (var header in headers)
+                {
+                    if (header != ":" && !header.ToLower().StartsWith("content-type:"))
+                    {
+                        wr.AddHeader(header.Trim());
                     }
                 }
             }

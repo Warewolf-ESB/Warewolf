@@ -199,11 +199,11 @@ namespace Warewolf.UnitTestAttributes
                 Container.IP = "102.37.115.89";
                 Container.Port = "9300";
             }
-            //else if (_containerType == ContainerType.AnonymousRedis)
-            //{
-            //    Container.IP = "warewolf-anonymous-redis-connector-testing.southafricanorth.azurecontainer.io";
-            //    Container.Port = "6379";
-            //}
+            else if (_containerType == ContainerType.AnonymousRedis)
+            {
+                Container.IP = "102.37.115.89";
+                Container.Port = "6380";
+            }
             else
             {
                 string foundPort;

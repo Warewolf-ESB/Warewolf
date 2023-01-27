@@ -114,6 +114,11 @@ namespace Dev2.Tests.Runtime.ESB
                 GetResponseCallCount++;
                 return new TestWebResponse();
             }
+
+            public void AddHeader(string header)
+            {
+                Headers.Add(header);
+            }
         }
 
         [TestMethod]
