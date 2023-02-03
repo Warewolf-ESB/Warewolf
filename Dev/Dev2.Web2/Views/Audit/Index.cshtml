@@ -219,7 +219,7 @@
 		if (request.status == 0) {
 			var errorMessage = "Local Warewolf Server Not Found."
 			if (window.chrome) {
-				errorMessage += "\n\nEnsure chrome://flags/#block-insecure-private-network-requests is set to Disabled.";
+				errorMessage += "\n\nThis is a Chromium based browser. Please ensure chrome://flags/#block-insecure-private-network-requests is set to Disabled.";
 			}
 			alert(errorMessage);
 		}
@@ -236,7 +236,7 @@
 		if (request.status == 0) {
 			var errorMessage = "Local Warewolf Server Not Found."
 			if (window.chrome) {
-				errorMessage += "\n\nEnsure chrome://flags/#block-insecure-private-network-requests is set to Disabled.";
+                errorMessage += "\n\nThis is a Chromium based browser. Please ensure chrome://flags/#block-insecure-private-network-requests is set to Disabled.";
 			}
 			alert(errorMessage);
 		}
