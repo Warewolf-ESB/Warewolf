@@ -315,8 +315,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Auditing", "Warewo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Auditing.Tests", "Warewolf.Auditing.Tests\Warewolf.Auditing.Tests.csproj", "{CB78B4CF-9B54-4491-9B17-B35199A95970}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dev2.Web.Tests", "Dev2.Web.Tests\Dev2.Web.Tests.csproj", "{35A58032-9521-487D-89DC-C521C3845410}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Driver.Redis", "Warewolf.Driver.Redis\Warewolf.Driver.Redis.csproj", "{86DF54BB-E37D-4559-8014-13D6030A2242}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.UIBindingTests.RedisSource", "Warewolf.UIBindingTests.RedisSource\Warewolf.UIBindingTests.RedisSource.csproj", "{31D0816B-8A86-4FC4-8D45-81BF301EE4C8}"
@@ -358,8 +356,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Run Configurations", "Run C
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Studio.AntiCorruptionLayer", "Warewolf.Studio.AntiCorruptionLayer\Warewolf.Studio.AntiCorruptionLayer.csproj", "{CC1B89CD-3222-4019-A0D1-58664F92CC47}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Web", "Dev2.Web2\Dev2.Web.csproj", "{76467C57-4F15-4FD6-90BD-68443ADB838D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -1262,12 +1258,6 @@ Global
 		{CB78B4CF-9B54-4491-9B17-B35199A95970}.Debug|x86.Build.0 = Debug|Any CPU
 		{CB78B4CF-9B54-4491-9B17-B35199A95970}.Release|Any CPU.ActiveCfg = Debug|Any CPU
 		{CB78B4CF-9B54-4491-9B17-B35199A95970}.Release|x86.ActiveCfg = Debug|Any CPU
-		{35A58032-9521-487D-89DC-C521C3845410}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{35A58032-9521-487D-89DC-C521C3845410}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{35A58032-9521-487D-89DC-C521C3845410}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{35A58032-9521-487D-89DC-C521C3845410}.Debug|x86.Build.0 = Debug|Any CPU
-		{35A58032-9521-487D-89DC-C521C3845410}.Release|Any CPU.ActiveCfg = Debug|Any CPU
-		{35A58032-9521-487D-89DC-C521C3845410}.Release|x86.ActiveCfg = Debug|Any CPU
 		{86DF54BB-E37D-4559-8014-13D6030A2242}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{86DF54BB-E37D-4559-8014-13D6030A2242}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{86DF54BB-E37D-4559-8014-13D6030A2242}.Debug|x86.ActiveCfg = Debug|Any CPU
@@ -1385,14 +1375,6 @@ Global
 		{CC1B89CD-3222-4019-A0D1-58664F92CC47}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CC1B89CD-3222-4019-A0D1-58664F92CC47}.Release|x86.ActiveCfg = Release|Any CPU
 		{CC1B89CD-3222-4019-A0D1-58664F92CC47}.Release|x86.Build.0 = Release|Any CPU
-		{76467C57-4F15-4FD6-90BD-68443ADB838D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{76467C57-4F15-4FD6-90BD-68443ADB838D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{76467C57-4F15-4FD6-90BD-68443ADB838D}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{76467C57-4F15-4FD6-90BD-68443ADB838D}.Debug|x86.Build.0 = Debug|Any CPU
-		{76467C57-4F15-4FD6-90BD-68443ADB838D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{76467C57-4F15-4FD6-90BD-68443ADB838D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{76467C57-4F15-4FD6-90BD-68443ADB838D}.Release|x86.ActiveCfg = Release|Any CPU
-		{76467C57-4F15-4FD6-90BD-68443ADB838D}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
