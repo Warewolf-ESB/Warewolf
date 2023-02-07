@@ -9,15 +9,8 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
-using System.Activities;
-using System.Activities.XamlIntegration;
-using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Windows.Markup;
-using System.Xaml;
-using System.Xml;
 
 namespace Dev2.Common
 {
@@ -61,20 +54,6 @@ namespace Dev2.Common
 
             result = ReplaceChangedNamespaces(result);
 
-            result = StripViewState(result);
-
-            return result;
-        }
-
-        private StringBuilder StripViewState(StringBuilder input)
-        {
-            var result = new StringBuilder();
-            XmlReader xmlReader = XmlReader.Create(new StringReader(input.ToString()));
-            XamlXmlReader xamlReader = new XamlXmlReader(xmlReader);
-            ActivityBuilder ab = XamlServices.Load(ActivityXamlServices.CreateBuilderReader(xamlReader)) as ActivityBuilder;
-            XmlWriter xmlWriter = XmlWriter.Create(result);
-            XamlXmlWriter xamlWriter = new XamlXmlWriter(xmlWriter, new XamlSchemaContext());
-            XamlServices.Save(new ViewStateCleaningWriter(ActivityXamlServices.CreateBuilderWriter(xamlWriter)), ab);
             return result;
         }
 
