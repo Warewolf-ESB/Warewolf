@@ -55,14 +55,14 @@
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>Warewolf.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
-  <ItemGroup>
+  <!--<ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Xml" />
-  </ItemGroup>
+  </ItemGroup>-->
   <ItemGroup>
     <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
       <Link>Properties\AssemblyCommonInfo.cs</Link>

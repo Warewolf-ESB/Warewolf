@@ -544,7 +544,7 @@ namespace Dev2.Network
             var envelope = new Envelope
             {
                 PartID = 0,
-                Type = typeof(Envelope),
+                //Type = typeof(Envelope),
                 Content = xmlRequest.ToString()
             };
 

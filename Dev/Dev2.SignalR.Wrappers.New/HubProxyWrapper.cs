@@ -140,7 +140,7 @@ namespace Dev2.SignalR.Wrappers.New
         /// <param name="method">The name of the method.</param>
         /// <param name="args">The arguments</param>
         /// <returns>A task that represents when invocation returned.</returns>
-        public Task Invoke(string method, params object[] args) => _hubConnection.InvokeAsync(method, args);
+        public Task Invoke(string method, params object[] args) => _hubConnection.InvokeCoreAsync(method, args);
 
         /// <summary>
         /// Executes a method on the server side hub asynchronously.
@@ -149,7 +149,7 @@ namespace Dev2.SignalR.Wrappers.New
         /// <param name="method">The name of the method.</param>
         /// <param name="args">The arguments</param>
         /// <returns>A task that represents when invocation returned.</returns>
-        public Task<T> Invoke<T>(string method, params object[] args) => _hubConnection.InvokeAsync<T>(method, args);
+        public Task<T> Invoke<T>(string method, params object[] args) => _hubConnection.InvokeCoreAsync<T>(method, args);
 
         public object Object() => _hubConnection;
 

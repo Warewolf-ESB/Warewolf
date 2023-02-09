@@ -52,7 +52,7 @@ namespace Dev2.Common
                     }
                     catch (Exception ex)
                     {
-                        if (ServerUser.Identity is WindowsIdentity identity)
+                        if (ServerUser != null && ServerUser.Identity is WindowsIdentity identity)
                         {
                             WindowsIdentity.RunImpersonated(identity.AccessToken, actionToBePerformed);
                         }
@@ -91,7 +91,7 @@ namespace Dev2.Common
         {
             if (userPrinciple.Identity is WindowsIdentity identity)
             {
-                if (identity.IsAnonymous)
+                if (identity.IsAnonymous && ServerUser != null)
                 {
                     identity = ServerUser.Identity as WindowsIdentity;
 

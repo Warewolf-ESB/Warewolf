@@ -54,6 +54,11 @@ namespace Dev2
             PrepareLogging(settingsConfigFile);
 
             Common.Utilities.ServerUser = new WindowsPrincipal(System.Security.Principal.WindowsIdentity.GetCurrent());
+
+            // System.Transactions -> DefaultTimeOut in App.Config is not supported in .NET 6
+            // TODO: so below alternative, can read time from AppSettings and set it then
+            Dev2.Net6.Compatibility.TransactionManagerExtensions.ConfigureTransactionTimeout(TimeSpan.FromMinutes(120), TimeSpan.FromMinutes(150)); // default - 120 min, maximum - 150 minutes
+
             SetupTempCleanupSetting();
 
             Config.Server.SaveIfNotExists();

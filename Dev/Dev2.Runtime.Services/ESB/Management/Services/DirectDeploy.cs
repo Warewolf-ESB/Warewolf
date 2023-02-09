@@ -217,7 +217,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 Content = serializer.SerializeToBuilder(esbExecuteRequest).ToString(),
                 PartID = 0,
-                Type = typeof(Envelope)
+                //Type = typeof(Envelope)
             };
             var messageId = Guid.NewGuid();
             await hubConnection.InvokeAsync<Receipt>("ExecuteCommand", envelope, true, Guid.Empty, Guid.Empty, messageId).ConfigureAwait(false);
@@ -241,7 +241,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     Content = serializer.SerializeToBuilder(triggerDeployRequest).ToString(),
                     PartID = 0,
-                    Type = typeof(Envelope),
+                    //Type = typeof(Envelope),
                 };
                 var deployMessageId = Guid.NewGuid();
                 await hubConnection.InvokeAsync<Receipt>("ExecuteCommand", deployEnvelope, true, Guid.Empty, Guid.Empty, deployMessageId).ConfigureAwait(false);
@@ -266,7 +266,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     Content = serializer.SerializeToBuilder(testDeployRequest).ToString(),
                     PartID = 0,
-                    Type = typeof(Envelope)
+                    //Type = typeof(Envelope)
                 };
                 var deployMessageId = Guid.NewGuid();
                 await hubConnection.InvokeAsync<Receipt>("ExecuteCommand", deployEnvelope, true, Guid.Empty, Guid.Empty, deployMessageId).ConfigureAwait(false);
