@@ -9,7 +9,7 @@
 */
 
 using System.Windows;
-using System.Windows.Controls;
+using CefSharp.Wpf;
 using Dev2.CustomControls;
 using Dev2.Studio.Views.Help;
 
@@ -18,7 +18,7 @@ namespace Dev2.ViewModels.Help
     public interface IHelpViewWrapper
     {
         HelpView HelpView { get; }
-        Frame WebBrowser { get; }
+		ChromiumWebBrowser WebBrowser { get; }
         CircularProgressBar CircularProgressBar { get; }
         Visibility WebBrowserVisibility { get; set; }
         Visibility CircularProgressBarVisibility { get; set; }

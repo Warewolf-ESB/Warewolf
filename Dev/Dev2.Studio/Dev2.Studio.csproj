@@ -818,6 +818,7 @@
     <PackageReference Include="Caliburn.Micro">
       <Version>1.4.1</Version>
     </PackageReference>
+    <PackageReference Include="CefSharp.Wpf" Version="110.0.250" />
     <PackageReference Include="codecracker.CSharp">
       <Version>1.1.0</Version>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -860,16 +861,4 @@
       <Version>1.0.0</Version>
     </PackageReference>
   </ItemGroup>
-  <PropertyGroup>
-    <PostBuildEvent>if exist "$(SolutionDir)Dev2.Studio\bin\Debug\net48\win\Warewolf Studio.exe" (
-  if not exist "$(SolutionDir)Dev2.Studio\bin\Debug\net48\win\Trackerbird.x64.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.x64.dll" "$(SolutionDir)Dev2.Studio\bin\Debug\net48\win\Trackerbird.x64.dll"
-  if not exist "$(SolutionDir)Dev2.Studio\bin\Debug\net48\win\Trackerbird.x86.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.x86.dll" "$(SolutionDir)Dev2.Studio\bin\Debug\net48\win"
-  if not exist "$(SolutionDir)Dev2.Studio\bin\Debug\net48\win\Trackerbird.Tracker.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.Tracker.dll" "$(SolutionDir)Dev2.Studio\bin\Debug\net48\win"
-)
-if exist "$(SolutionDir)Dev2.Studio\bin\Release\net48\win\Warewolf Studio.exe" (
-  if not exist "$(SolutionDir)Dev2.Studio\bin\Release\net48\win\Trackerbird.x64.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.x64.dll" "$(SolutionDir)Dev2.Studio\bin\Release\net48\win\Trackerbird.x64.dll"
-  if not exist "$(SolutionDir)Dev2.Studio\bin\Release\net48\win\Trackerbird.x86.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.x86.dll" "$(SolutionDir)Dev2.Studio\bin\Release\net48\win"
-  if not exist "$(SolutionDir)Dev2.Studio\bin\Release\net48\win\Trackerbird.Tracker.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.Tracker.dll" "$(SolutionDir)Dev2.Studio\bin\Release\net48\win"
-)</PostBuildEvent>
-  </PropertyGroup>
 </Project>
