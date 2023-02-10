@@ -12,14 +12,13 @@ using System.Windows;
 using System.Windows.Controls;
 using Dev2.CustomControls;
 using Dev2.Studio.Views.Help;
-using Microsoft.Web.WebView2.Wpf;
 
 namespace Dev2.ViewModels.Help
 {
     public interface IHelpViewWrapper
     {
         HelpView HelpView { get; }
-        WebView2 WebBrowser { get; }
+        Frame WebBrowser { get; }
         CircularProgressBar CircularProgressBar { get; }
         Visibility WebBrowserVisibility { get; set; }
         Visibility CircularProgressBarVisibility { get; set; }
