@@ -9,13 +9,11 @@
 */
 
 using System.Threading.Tasks;
-using System.Windows.Controls;
 using CefSharp.Wpf;
 using Dev2.Studio.Interfaces.Enums;
 using Dev2.Studio.ViewModels.Help;
 using Dev2.Studio.Views.Help;
 using Dev2.ViewModels.Help;
-using Dev2.Webs.Callbacks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -31,10 +29,10 @@ namespace Dev2.Core.Tests
         public void HelpViewModel_OnViewLoaded_ValidHelpView_HelpViewIsSet()
         {
             //------------Setup for test--------------------------
-            var helpViewModel = new HelpViewModel(null, true);// { Uri = uri };
             var helpViewWrapper = new Mock<IHelpViewWrapper>(); 
+            var helpViewModel = new HelpViewModel(helpViewWrapper.Object, true);
             //------------Execute Test---------------------------
-            helpViewModel.OnViewisLoaded(helpViewWrapper.Object);
+            helpViewModel.OnViewisLoaded();
             //------------Assert Results-------------------------
             Assert.AreEqual(helpViewWrapper.Object, helpViewModel.HelpViewWrapper);
             Assert.IsTrue(helpViewModel.IsViewAvailable);
@@ -48,7 +46,7 @@ namespace Dev2.Core.Tests
             //------------Setup for test--------------------------
             var helpViewModel = new HelpViewModel(null, false);
             //------------Execute Test---------------------------
-            helpViewModel.OnViewisLoaded(null);
+            helpViewModel.OnViewisLoaded();
             //------------Assert Results-------------------------
             Assert.AreEqual(null, helpViewModel.HelpViewWrapper);
             Assert.IsFalse(helpViewModel.IsViewAvailable);
