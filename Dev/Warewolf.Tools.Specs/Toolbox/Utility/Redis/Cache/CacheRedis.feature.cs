@@ -96,13 +96,15 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.Redis.Cache
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("No data in cache")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "RedisCache")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("RedisCache")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("AnonymousRedis")]
         public virtual void NoDataInCache()
         {
             string[] tagsOfScenario = new string[] {
-                    "RedisCache"};
+                    "RedisCache",
+                    "AnonymousRedis"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("No data in cache", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
-#line 7
+#line 8
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -122,13 +124,13 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 8
+#line 9
  testRunner.Given("valid Redis source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 9
+#line 10
  testRunner.And("I have a key \"MyData\" with GUID and ttl of \"3000\" milliseconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 10
+#line 11
  testRunner.And("No data in the cache", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table2837 = new TechTalk.SpecFlow.Table(new string[] {
@@ -137,10 +139,10 @@ this.ScenarioInitialize(scenarioInfo);
                 table2837.AddRow(new string[] {
                             "[[Var1]]",
                             "\"Test1\""});
-#line 11
+#line 12
  testRunner.And("an assign \"dataToStore\" as", ((string)(null)), table2837, "And ");
 #line hidden
-#line 14
+#line 15
  testRunner.When("I execute the Redis Cache tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
                 TechTalk.SpecFlow.Table table2838 = new TechTalk.SpecFlow.Table(new string[] {
@@ -149,7 +151,7 @@ this.ScenarioInitialize(scenarioInfo);
                 table2838.AddRow(new string[] {
                             "MyData",
                             "\"[[Var1]],Test1\""});
-#line 15
+#line 16
  testRunner.Then("the cache will contain", ((string)(null)), table2838, "Then ");
 #line hidden
                 TechTalk.SpecFlow.Table table2839 = new TechTalk.SpecFlow.Table(new string[] {
@@ -158,7 +160,7 @@ this.ScenarioInitialize(scenarioInfo);
                 table2839.AddRow(new string[] {
                             "[[Var1]]",
                             "\"Test1\""});
-#line 18
+#line 19
  testRunner.And("output variables have the following values", ((string)(null)), table2839, "And ");
 #line hidden
             }
@@ -169,13 +171,15 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Data exists for given TTL not hit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "RedisCache")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("RedisCache")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("AnonymousRedis")]
         public virtual void DataExistsForGivenTTLNotHit()
         {
             string[] tagsOfScenario = new string[] {
-                    "RedisCache"};
+                    "RedisCache",
+                    "AnonymousRedis"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Data exists for given TTL not hit", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
-#line 23
+#line 25
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -195,10 +199,10 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 24
+#line 26
  testRunner.Given("valid Redis source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 25
+#line 27
  testRunner.And("I have a key \"MyData\" with GUID and ttl of \"20000\" milliseconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table2840 = new TechTalk.SpecFlow.Table(new string[] {
@@ -207,7 +211,7 @@ this.ScenarioInitialize(scenarioInfo);
                 table2840.AddRow(new string[] {
                             "MyData",
                             "\"[[Var1]],Data in cache\""});
-#line 26
+#line 28
  testRunner.And("data exists (TTL not hit) for key \"MyData\" with GUID as", ((string)(null)), table2840, "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table2841 = new TechTalk.SpecFlow.Table(new string[] {
@@ -216,13 +220,13 @@ this.ScenarioInitialize(scenarioInfo);
                 table2841.AddRow(new string[] {
                             "[[Var1]]",
                             "\"Test1\""});
-#line 29
+#line 31
  testRunner.And("an assign \"dataToStore\" as", ((string)(null)), table2841, "And ");
 #line hidden
-#line 32
+#line 34
  testRunner.When("I execute the Redis Cache tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 33
+#line 35
  testRunner.Then("the assign \"dataToStore\" is not executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
                 TechTalk.SpecFlow.Table table2842 = new TechTalk.SpecFlow.Table(new string[] {
@@ -231,7 +235,7 @@ this.ScenarioInitialize(scenarioInfo);
                 table2842.AddRow(new string[] {
                             "[[Var1]]",
                             "\"[[Var1]],Data in cache\""});
-#line 34
+#line 36
  testRunner.And("output variables have the following values", ((string)(null)), table2842, "And ");
 #line hidden
             }
@@ -242,13 +246,15 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Data Not Exist For Given Key (TTL exceeded) Spec")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "RedisCache")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("RedisCache")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("AnonymousRedis")]
         public virtual void DataNotExistForGivenKeyTTLExceededSpec()
         {
             string[] tagsOfScenario = new string[] {
-                    "RedisCache"};
+                    "RedisCache",
+                    "AnonymousRedis"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Data Not Exist For Given Key (TTL exceeded) Spec", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
-#line 39
+#line 42
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -268,16 +274,16 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 40
+#line 43
  testRunner.Given("valid Redis source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 41
+#line 44
  testRunner.And("I have a key \"MyData\" with GUID and ttl of \"3000\" milliseconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table2843 = new TechTalk.SpecFlow.Table(new string[] {
                             "",
                             ""});
-#line 42
+#line 45
  testRunner.And("data does not exist (TTL exceeded) for key \"MyData\" as", ((string)(null)), table2843, "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table2844 = new TechTalk.SpecFlow.Table(new string[] {
@@ -286,13 +292,13 @@ this.ScenarioInitialize(scenarioInfo);
                 table2844.AddRow(new string[] {
                             "[[Var1]]",
                             "\"Test1\""});
-#line 44
+#line 47
  testRunner.And("an assign \"dataToStore\" as", ((string)(null)), table2844, "And ");
 #line hidden
-#line 47
+#line 50
  testRunner.When("I execute the Redis Cache tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 48
+#line 51
  testRunner.Then("the assign \"dataToStore\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
                 TechTalk.SpecFlow.Table table2845 = new TechTalk.SpecFlow.Table(new string[] {
@@ -301,7 +307,7 @@ this.ScenarioInitialize(scenarioInfo);
                 table2845.AddRow(new string[] {
                             "MyData",
                             "\"[[Var1]],Test1\""});
-#line 49
+#line 52
  testRunner.Then("the cache will contain", ((string)(null)), table2845, "Then ");
 #line hidden
                 TechTalk.SpecFlow.Table table2846 = new TechTalk.SpecFlow.Table(new string[] {
@@ -310,7 +316,7 @@ this.ScenarioInitialize(scenarioInfo);
                 table2846.AddRow(new string[] {
                             "[[Var1]]",
                             "\"Test1\""});
-#line 52
+#line 55
  testRunner.And("output variables have the following values", ((string)(null)), table2846, "And ");
 #line hidden
             }
@@ -321,13 +327,15 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Input Variable Keys Are Less Then Cached Data Variable Keys")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "RedisCache")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("RedisCache")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("AnonymousRedis")]
         public virtual void InputVariableKeysAreLessThenCachedDataVariableKeys()
         {
             string[] tagsOfScenario = new string[] {
-                    "RedisCache"};
+                    "RedisCache",
+                    "AnonymousRedis"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Input Variable Keys Are Less Then Cached Data Variable Keys", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
-#line 57
+#line 61
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -347,13 +355,13 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 58
+#line 62
  testRunner.Given("valid Redis source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 59
+#line 63
  testRunner.And("I have \"key1\" of \"MyData\" with GUID and \"ttl1\" of \"15\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 60
+#line 64
  testRunner.And("I have \"key2\" of \"MyData\" with GUID and \"ttl2\" of \"3\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table2847 = new TechTalk.SpecFlow.Table(new string[] {
@@ -365,7 +373,7 @@ this.ScenarioInitialize(scenarioInfo);
                 table2847.AddRow(new string[] {
                             "[[Var2]]",
                             "\"Test2\""});
-#line 61
+#line 65
  testRunner.And("an assign \"dataToStore1\" into \"DsfMultiAssignActivity1\" with", ((string)(null)), table2847, "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table2848 = new TechTalk.SpecFlow.Table(new string[] {
@@ -374,10 +382,10 @@ this.ScenarioInitialize(scenarioInfo);
                 table2848.AddRow(new string[] {
                             "[[Var1]]",
                             "\"Test21\""});
-#line 65
+#line 69
  testRunner.And("an assign \"dataToStore2\" into \"DsfMultiAssignActivity2\" with", ((string)(null)), table2848, "And ");
 #line hidden
-#line 68
+#line 72
  testRunner.Then("the assigned \"key1\", \"ttl1\" and innerActivity \"DsfMultiAssignActivity1\" is execut" +
                         "ed by \"RedisActivity1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -390,10 +398,10 @@ this.ScenarioInitialize(scenarioInfo);
                 table2849.AddRow(new string[] {
                             "[[Var2]]",
                             "\"Test2\""});
-#line 69
+#line 73
  testRunner.And("the Redis Cache under \"key1\" with GUID will contain", ((string)(null)), table2849, "And ");
 #line hidden
-#line 73
+#line 77
  testRunner.Then("the assigned \"key2\", \"ttl2\" and innerActivity \"DsfMultiAssignActivity2\" is execut" +
                         "ed by \"RedisActivity2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -427,7 +435,7 @@ this.ScenarioInitialize(scenarioInfo);
                             "[[Var4]]",
                             "=",
                             "\"Test24\""});
-#line 74
+#line 78
  testRunner.Then("\"RedisActivity2\" output variables have the following values", ((string)(null)), table2850, "Then ");
 #line hidden
             }
@@ -438,13 +446,15 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Input Variable Keys Are Greater Then Cached Data Variable Keys")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "RedisCache")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("RedisCache")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("AnonymousRedis")]
         public virtual void InputVariableKeysAreGreaterThenCachedDataVariableKeys()
         {
             string[] tagsOfScenario = new string[] {
-                    "RedisCache"};
+                    "RedisCache",
+                    "AnonymousRedis"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Input Variable Keys Are Greater Then Cached Data Variable Keys", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
-#line 83
+#line 88
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -464,13 +474,13 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 84
+#line 89
  testRunner.Given("valid Redis source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 85
+#line 90
  testRunner.And("I have \"key1\" of \"MyData\" with GUID and \"ttl1\" of \"15\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 86
+#line 91
  testRunner.And("I have \"key2\" of \"MyData\" with GUID and \"ttl2\" of \"3\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table2851 = new TechTalk.SpecFlow.Table(new string[] {
@@ -482,7 +492,7 @@ this.ScenarioInitialize(scenarioInfo);
                 table2851.AddRow(new string[] {
                             "[[Var2]]",
                             "\"Test2\""});
-#line 87
+#line 92
  testRunner.And("an assign \"dataToStore1\" into \"DsfMultiAssignActivity1\" with", ((string)(null)), table2851, "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table2852 = new TechTalk.SpecFlow.Table(new string[] {
@@ -512,10 +522,10 @@ this.ScenarioInitialize(scenarioInfo);
                 table2852.AddRow(new string[] {
                             "[[bank(2).id]]",
                             "\"200\""});
-#line 91
+#line 96
  testRunner.And("an assign \"dataToStore2\" into \"DsfMultiAssignActivity2\" with", ((string)(null)), table2852, "And ");
 #line hidden
-#line 101
+#line 106
  testRunner.Then("the assigned \"key1\", \"ttl1\" and innerActivity \"DsfMultiAssignActivity1\" is execut" +
                         "ed by \"RedisActivity1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -528,10 +538,10 @@ this.ScenarioInitialize(scenarioInfo);
                 table2853.AddRow(new string[] {
                             "[[Var2]]",
                             "\"Test2\""});
-#line 102
+#line 107
  testRunner.And("the Redis Cache under \"key1\" with GUID will contain", ((string)(null)), table2853, "And ");
 #line hidden
-#line 106
+#line 111
  testRunner.Then("the assigned \"key2\", \"ttl2\" and innerActivity \"DsfMultiAssignActivity2\" is execut" +
                         "ed by \"RedisActivity2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -585,7 +595,7 @@ this.ScenarioInitialize(scenarioInfo);
                             "[[bank(2).id]]",
                             "=",
                             "\"200\""});
-#line 107
+#line 112
  testRunner.Then("\"RedisActivity2\" output variables have the following values", ((string)(null)), table2854, "Then ");
 #line hidden
             }
