@@ -27,7 +27,7 @@ namespace Warewolf.Auditing.Tests
     public class AuditQueryableSqliteTests
     {
         string connstring = @"C:\ProgramData\Warewolf\Audits\AuditTestDB.db";
-        string sqlMessage = "SELECT * FROM (SELECT json_extract(Properties, '$.Data') AS Message, Level, TimeStamp FROM Logs) WHERE json_extract(Message, '$.ExecutionID') <> '' ";
+        string sqlMessage = "SELECT * FROM (SELECT json_extract(Properties, '$.Data') AS Message, Level, TimeStamp FROM Logs) WHERE json_extract(Message, '$.Url') <> '' ";
         [ClassInitialize]
         [DeploymentItem(@"x86\SQLite.Interop.dll")]
         public static void TestFixtureSetup(TestContext context)
