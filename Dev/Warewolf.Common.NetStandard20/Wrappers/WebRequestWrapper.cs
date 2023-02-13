@@ -79,5 +79,10 @@ namespace Warewolf.Common.NetStandard20
             get => _request.Timeout;
             set => _request.Timeout = value;
         }
+
+        public void AddHeader(string header)
+        {
+            _request.Headers.Add(header);
+        }
     }
 }
