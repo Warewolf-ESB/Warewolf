@@ -51,12 +51,11 @@ namespace Dev2.Activities.Specs.Permissions
             var securitySpecsUser = GetSecuritySpecsUser();
             var securitySpecsPassword = GetSecuritySpecsPassword();
             var userGroup = GetUserGroup();
-            AppUsageStats.LocalHost = $"http://{Environment.MachineName.ToLowerInvariant()}:3142";
             var environmentModel = ServerRepository.Instance.Source;
-            environmentModel.Connect();
-            while (!environmentModel.IsConnected)
+            environmentModel.ConnectAsync().Wait(60000);
+            if (!environmentModel.IsConnected)
             {
-                environmentModel.Connect();
+                Assert.Fail("Cannot connect to local Warewolf server.");
             }
 
             var currentSettings = environmentModel.ResourceRepository.ReadSettings(environmentModel);
@@ -70,7 +69,7 @@ namespace Dev2.Activities.Specs.Permissions
             environmentModel.Disconnect();
             _featureContext.Add("environment", environmentModel);
 
-            var reconnectModel = new Server(Guid.NewGuid(), new ServerProxy(AppUsageStats.LocalHost, securitySpecsUser, securitySpecsPassword)) { Name = "Other Connection" };
+            var reconnectModel = new Server(Guid.NewGuid(), new ServerProxy($"http://localhost:3142", securitySpecsUser, securitySpecsPassword)) { Name = "Other Connection" };
             try
             {
                 reconnectModel.Connect();
