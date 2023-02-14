@@ -1,3 +1,43 @@
+Warewolf-2.8.1.63 (19 January 2023)
+======================
+
+Bug fixes
+----------
+- Fix POST tool not reading custom headers issue
+
+Warewolf-2.8.1.54 (13 December 2022)
+======================
+ 
+Enhancements
+----------
+- Add timeout option to POST activity
+ 
+Bug fixes
+----------
+- Fix PointCollection error on workflow
+
+Warewolf-2.8.1.46 (09 December 2022)
+======================
+ 
+Enhancements
+----------
+- Add checkbox to enable/disable trigger
+- Default prefetch count on queue trigger to 1
+ 
+Bug fixes
+----------
+- Increase timeout on queue trigger process to cater for long running workflows
+
+
+Warewolf-2.8.1.42 (16 November 2022)
+======================
+
+Bug fixes
+----------
+- Fixed a threading issue on POST tool which was causing duplicate transactions under heavy load/multiple threads	
+- Decision with blank match type shows as invalid.
+- Advanced Recordset tool SQL validation shows errors in error dialog
+
 2.8.1.21 (17 October 2022)
 ======================
 
