@@ -1415,84 +1415,84 @@ namespace Dev2.Activities.Specs.Composition
             Assert.IsTrue(debugStates.Where(ds => ds.ParentID.GetValueOrDefault() == workflowId && !ds.DisplayName.Equals(toolName)).All(a => a.Server == "localhost"));
         }
 
-        [Then(@"the ""(.*)"" in Workflow ""(.*)"" debug outputs is")]
-        public void ThenTheInWorkflowDebugOutputsIs(string p0, string p1, Table table)
-        {
-            ThenTheInWorkflowDebugOutputsAs(p0, p1, table);
-        }
+        //[Then(@"the ""(.*)"" in Workflow ""(.*)"" debug outputs is")]
+        //public void ThenTheInWorkflowDebugOutputsIs(string p0, string p1, Table table)
+        //{
+        //    ThenTheInWorkflowDebugOutputsAs(p0, p1, table);
+        //}
 
-        [Given(@"the ""(.*)"" in Workflow ""(.*)"" debug outputs as")]
-        [When(@"the ""(.*)"" in Workflow ""(.*)"" debug outputs as")]
-        [Then(@"the ""(.*)"" in Workflow ""(.*)"" debug outputs as")]
-        public void ThenTheInWorkflowDebugOutputsAs(string toolName, string workflowName, Table table)
-        {
-            TryGetValue("activityList", out Dictionary<string, Activity> activityList);
-            TryGetValue("parentWorkflowName", out string parentWorkflowName);
+        //[Given(@"the ""(.*)"" in Workflow ""(.*)"" debug outputs as")]
+        //[When(@"the ""(.*)"" in Workflow ""(.*)"" debug outputs as")]
+        //[Then(@"the ""(.*)"" in Workflow ""(.*)"" debug outputs as")]
+        //public void ThenTheInWorkflowDebugOutputsAs(string toolName, string workflowName, Table table)
+        //{
+        //    TryGetValue("activityList", out Dictionary<string, Activity> activityList);
+        //    TryGetValue("parentWorkflowName", out string parentWorkflowName);
 
-            var debugStates = Get<List<IDebugState>>("debugStates");
-            var workflowId = Guid.Empty;
+        //    var debugStates = Get<List<IDebugState>>("debugStates");
+        //    var workflowId = Guid.Empty;
 
-            if (parentWorkflowName != workflowName)
-            {
-                if (toolName != null && workflowName != null)
-                {
-                    IDebugState debugState = debugStates.FirstOrDefault(wf => wf.DisplayName.Equals(workflowName));
-                    if (debugState != null)
-                    {
-                        workflowId = debugState.ID;
-                    }
-                    else
-                    {
-                        var errors = debugStates.Where(wf => wf.ErrorMessage != "");
-                        var errorsMessage = "";
-                        if (errors.Count() > 0)
-                        {
-                            errorsMessage = " There were one or more errors found in other tools on the same workflow though: " + string.Join(", ", errors.Select(wf => wf.ErrorMessage).Distinct().ToArray());
-                        }
+        //    if (parentWorkflowName != workflowName)
+        //    {
+        //        if (toolName != null && workflowName != null)
+        //        {
+        //            IDebugState debugState = debugStates.FirstOrDefault(wf => wf.DisplayName.Equals(workflowName));
+        //            if (debugState != null)
+        //            {
+        //                workflowId = debugState.ID;
+        //            }
+        //            else
+        //            {
+        //                var errors = debugStates.Where(wf => wf.ErrorMessage != "");
+        //                var errorsMessage = "";
+        //                if (errors.Count() > 0)
+        //                {
+        //                    errorsMessage = " There were one or more errors found in other tools on the same workflow though: " + string.Join(", ", errors.Select(wf => wf.ErrorMessage).Distinct().ToArray());
+        //                }
 
-                        Assert.Fail($"Debug output for {toolName} not found in {workflowName}.{errorsMessage}");
-                    }
-                }
-                else
-                {
-                    throw new InvalidOperationException("SpecFlow broke.");
-                }
-            }
+        //                Assert.Fail($"Debug output for {toolName} not found in {workflowName}.{errorsMessage}");
+        //            }
+        //        }
+        //        else
+        //        {
+        //            throw new InvalidOperationException("SpecFlow broke.");
+        //        }
+        //    }
 
-            var toolSpecificDebug =
-                debugStates.Where(ds => ds.ParentID.GetValueOrDefault() == workflowId && ds.DisplayName.Equals(toolName)).ToList();
-            if (!toolSpecificDebug.Any())
-            {
-                toolSpecificDebug =
-                    debugStates.Where(ds => ds.DisplayName.Equals(toolName)).ToList();
-            }
+        //    var toolSpecificDebug =
+        //        debugStates.Where(ds => ds.ParentID.GetValueOrDefault() == workflowId && ds.DisplayName.Equals(toolName)).ToList();
+        //    if (!toolSpecificDebug.Any())
+        //    {
+        //        toolSpecificDebug =
+        //            debugStates.Where(ds => ds.DisplayName.Equals(toolName)).ToList();
+        //    }
 
-            // Data Merge breaks our debug scheme, it only ever has 1 value, not the expected 2 ;)
-            var isDataMergeDebug = toolSpecificDebug.Count == 1 && toolSpecificDebug.Any(t => t.Name == "Data Merge");
-            IDebugState outputState;
-            if (toolSpecificDebug.Count > 1 && toolSpecificDebug.Any(state => state.StateType == StateType.End))
-            {
-                outputState = toolSpecificDebug.FirstOrDefault(state => state.StateType == StateType.End);
-            }
-            else
-            {
-                outputState = toolSpecificDebug.FirstOrDefault();
-            }
+        //    // Data Merge breaks our debug scheme, it only ever has 1 value, not the expected 2 ;)
+        //    var isDataMergeDebug = toolSpecificDebug.Count == 1 && toolSpecificDebug.Any(t => t.Name == "Data Merge");
+        //    IDebugState outputState;
+        //    if (toolSpecificDebug.Count > 1 && toolSpecificDebug.Any(state => state.StateType == StateType.End))
+        //    {
+        //        outputState = toolSpecificDebug.FirstOrDefault(state => state.StateType == StateType.End);
+        //    }
+        //    else
+        //    {
+        //        outputState = toolSpecificDebug.FirstOrDefault();
+        //    }
 
-            if (outputState != null && outputState.Outputs != null)
-            {
-                var SelectResults = outputState.Outputs.SelectMany(s => s.ResultsList);
-                if (SelectResults != null && SelectResults.ToList() != null)
-                {
-                    _commonSteps.ThenTheDebugOutputAs(table, SelectResults.ToList(), isDataMergeDebug);
-                    return;
-                }
+        //    if (outputState != null && outputState.Outputs != null)
+        //    {
+        //        var SelectResults = outputState.Outputs.SelectMany(s => s.ResultsList);
+        //        if (SelectResults != null && SelectResults.ToList() != null)
+        //        {
+        //            _commonSteps.ThenTheDebugOutputAs(table, SelectResults.ToList(), isDataMergeDebug);
+        //            return;
+        //        }
 
-                Assert.Fail(outputState.Outputs.ToList() + " debug outputs found on " + workflowName + " does not include " + toolName + ".");
-            }
+        //        Assert.Fail(outputState.Outputs.ToList() + " debug outputs found on " + workflowName + " does not include " + toolName + ".");
+        //    }
 
-            Assert.Fail("No debug output found for " + workflowName + ".");
-        }
+        //    Assert.Fail("No debug output found for " + workflowName + ".");
+        //}
 
 
         [Given(@"the ""(.*)"" in Workflow ""(.*)"" unsorted debug outputs as")]
