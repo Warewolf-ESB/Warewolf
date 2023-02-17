@@ -12,10 +12,9 @@ using System;
 using System.IO;
 using System.Net;
 using System.Windows;
+using CefSharp.Wpf;
 using Dev2.CustomControls;
 using Dev2.Studio.Views.Help;
-using Microsoft.Web.WebView2.Core;
-using Microsoft.Web.WebView2.Wpf;
 
 namespace Dev2.ViewModels.Help
 {
@@ -29,7 +28,7 @@ namespace Dev2.ViewModels.Help
 
         public HelpView HelpView { get; private set; }
 
-        public WebView2 WebBrowser => HelpView.webView;
+        public ChromiumWebBrowser WebBrowser => HelpView.WebBrowserHost;
 
         public CircularProgressBar CircularProgressBar => HelpView.CircularProgressBar;
 
@@ -60,17 +59,7 @@ namespace Dev2.ViewModels.Help
         public void Navigate(string uri)
         {
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Ssl3;
-            var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Warewolf", _pathFolder);
-            if (!Directory.Exists(path))
-            {
-                CopyWebView2(Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location), _pathFolder), path);
-            }
-            HelpView.webView.CreationProperties = new CoreWebView2CreationProperties
-            {
-                BrowserExecutableFolder = path,
-                UserDataFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Warewolf")
-            };
-            HelpView.webView.Source = new Uri(uri, UriKind.Absolute);
+            HelpView.WebBrowserHost.LoadUrl(uri);
         }
 
         static void CopyWebView2(string sourcePath, string targetPath)
