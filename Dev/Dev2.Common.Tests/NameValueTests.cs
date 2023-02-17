@@ -53,7 +53,7 @@ namespace Dev2.Common.Tests
         {
             var constructor = new NameValue("testName", "testValue");
             Assert.IsNotNull(constructor);
-            Assert.AreNotEqual("0", constructor.GetHashCode());
+            Assert.AreNotEqual(0, constructor.GetHashCode());
         }
 
         [TestMethod]

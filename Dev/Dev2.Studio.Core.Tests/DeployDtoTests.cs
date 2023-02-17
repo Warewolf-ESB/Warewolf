@@ -32,7 +32,7 @@ namespace Dev2.Core.Tests
             //---------------Test Result -----------------------
             Assert.AreEqual(default(bool), deployDto.DeployTests);
             Assert.AreEqual(default(bool), deployDto.DeployTriggers);
-            Assert.AreEqual(default(IList<ResourceModel>), deployDto.ResourceModels);
+            Assert.AreEqual<IList<Dev2.Studio.Interfaces.IResourceModel>>(default(IList<Dev2.Studio.Interfaces.IResourceModel>), deployDto.ResourceModels);
         }
 
         [TestMethod]
@@ -45,10 +45,10 @@ namespace Dev2.Core.Tests
             //---------------Assert Precondition----------------
             Assert.AreEqual(default(bool), deployDto.DeployTests);
             Assert.AreEqual(default(bool), deployDto.DeployTriggers);
-            Assert.AreEqual(default(IList<ResourceModel>), deployDto.ResourceModels);
-            //---------------Execute Test ----------------------
-            //---------------Test Result -----------------------
-            Assert.IsInstanceOfType(deployDto, typeof(IDeployDto));
+			Assert.AreEqual<IList<Dev2.Studio.Interfaces.IResourceModel>>(default(IList<Dev2.Studio.Interfaces.IResourceModel>), deployDto.ResourceModels);
+			//---------------Execute Test ----------------------
+			//---------------Test Result -----------------------
+			Assert.IsInstanceOfType(deployDto, typeof(IDeployDto));
         }
     }
 }

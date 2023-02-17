@@ -87,7 +87,7 @@ namespace Dev2.Infrastructure.Tests.SharedModels
             Assert.AreEqual(serverExplorerItem, serverExplorerItem2);
             Assert.AreNotEqual(serverExplorerItem, null);
             Assert.AreEqual(serverExplorerItem, serverExplorerItem);
-            Assert.AreNotEqual(serverExplorerItem, guid);
+            Assert.IsFalse(serverExplorerItem.Equals(guid));
             Assert.AreNotEqual(serverExplorerItem, serverExplorerItem3);
 
         }

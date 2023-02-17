@@ -126,7 +126,7 @@
       <Version>2.0.15</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
-      <Version>13.0.1</Version>
+      <Version>13.0.2</Version>
     </PackageReference>
     <PackageReference Include="Prism.Core" Version="8.1.97" />
     <PackageReference Include="System.DirectoryServices" Version="6.0.0" />

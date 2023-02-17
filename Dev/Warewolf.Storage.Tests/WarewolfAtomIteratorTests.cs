@@ -47,7 +47,7 @@ namespace Warewolf.Storage.Tests
             //-------------------------Act------------------------------
             var value = warewolfAtomIterator.GetNextValue();
             //-------------------------Assert---------------------------
-            Assert.AreEqual(listResult.First(), value);
+            Assert.AreEqual(listResult.First().ToString(), value);
         }
 
         [TestMethod]

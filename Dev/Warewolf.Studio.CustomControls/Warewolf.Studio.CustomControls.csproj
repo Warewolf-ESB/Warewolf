@@ -137,7 +137,7 @@
 	   <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
     <PackageReference Include="FontAwesome6.Fonts" Version="2.3.0" />
     <PackageReference Include="Newtonsoft.Json">
-      <Version>13.0.1</Version>
+      <Version>13.0.2</Version>
     </PackageReference>
     <!--<PackageReference Include="Prism.Mvvm">
       <Version>1.1.1</Version>

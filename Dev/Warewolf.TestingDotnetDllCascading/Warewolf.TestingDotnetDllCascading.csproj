@@ -41,10 +41,10 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.TestPlatform.ObjectModel">
-      <Version>17.4.0</Version>
+      <Version>17.4.1</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
-      <Version>13.0.1</Version>
+      <Version>13.0.2</Version>
     </PackageReference>
     <PackageReference Include="SpecFlow.MsTest">
       <Version>3.9.74</Version>

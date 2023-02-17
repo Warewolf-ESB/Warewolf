@@ -62,7 +62,7 @@ namespace Dev2.Core.Tests
             var mock_newDataListViewModel = new Mock<IDataListViewModel>();
             mock_newDataListViewModel.Setup(dataList => dataList.Resource).Returns(Dev2MockFactory.SetupResourceModelMock().Object);
             DataListSingleton.SetDataList(mock_newDataListViewModel.Object);
-            Assert.AreNotEqual(DataListSingleton.ActiveDataList, mockdataListViewModel);
+            Assert.AreNotEqual(DataListSingleton.ActiveDataList, mockdataListViewModel.Object);
         }
 
         #endregion UpdateActiveDataList Tests

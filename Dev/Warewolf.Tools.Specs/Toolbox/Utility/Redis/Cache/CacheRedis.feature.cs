@@ -97,7 +97,7 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.Redis.Cache
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "RedisCache")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("RedisCache")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("AnonymousRedis")]
-        public virtual void NoDataInCache()
+        public void NoDataInCache()
         {
             string[] tagsOfScenario = new string[] {
                     "RedisCache",
@@ -162,7 +162,7 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "RedisCache")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("RedisCache")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("AnonymousRedis")]
-        public virtual void DataExistsForGivenTTLNotHit()
+        public void DataExistsForGivenTTLNotHit()
         {
             string[] tagsOfScenario = new string[] {
                     "RedisCache",
@@ -227,7 +227,7 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "RedisCache")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("RedisCache")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("AnonymousRedis")]
-        public virtual void DataNotExistForGivenKeyTTLExceededSpec()
+        public void DataNotExistForGivenKeyTTLExceededSpec()
         {
             string[] tagsOfScenario = new string[] {
                     "RedisCache",
@@ -298,7 +298,7 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "RedisCache")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("RedisCache")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("AnonymousRedis")]
-        public virtual void InputVariableKeysAreLessThenCachedDataVariableKeys()
+        public void InputVariableKeysAreLessThenCachedDataVariableKeys()
         {
             string[] tagsOfScenario = new string[] {
                     "RedisCache",
@@ -407,7 +407,7 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "RedisCache")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("RedisCache")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("AnonymousRedis")]
-        public virtual void InputVariableKeysAreGreaterThenCachedDataVariableKeys()
+        public void InputVariableKeysAreGreaterThenCachedDataVariableKeys()
         {
             string[] tagsOfScenario = new string[] {
                     "RedisCache",

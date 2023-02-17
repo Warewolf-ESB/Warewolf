@@ -167,7 +167,7 @@ namespace Dev2.Tests.Runtime.Services
             var provider = new HostSecurityProviderImpl(config.Object);
 
             
-            var originalID = Guid.Parse(TestXml.Attribute("ServerID").Value);
+            var originalID = TestXml.Attribute("ServerID").Value;
             var signedXml = provider.SignXml(new StringBuilder(TestXml.ToString()));
 
             var xml = XElement.Parse(signedXml.ToString());

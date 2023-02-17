@@ -348,6 +348,7 @@
     <PackageReference Include="System.Data.SQLite.Core">
       <Version>1.0.117</Version>
     </PackageReference>
+    <PackageReference Include="System.DirectoryServices.Protocols" Version="6.0.1" />
     <PackageReference Include="TaskSchedulerEditor">
       <Version>2.10.1</Version>
     </PackageReference>
