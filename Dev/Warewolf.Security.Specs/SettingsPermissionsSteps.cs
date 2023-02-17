@@ -52,6 +52,7 @@ namespace Dev2.Activities.Specs.Permissions
             var securitySpecsPassword = GetSecuritySpecsPassword();
             var userGroup = GetUserGroup();
             var environmentModel = ServerRepository.Instance.Source;
+            AppUsageStats.LocalHost = "http://localhost:3142";
             environmentModel.ConnectAsync().Wait(60000);
             if (!environmentModel.IsConnected)
             {
