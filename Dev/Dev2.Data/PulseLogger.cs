@@ -26,7 +26,6 @@ namespace Dev2.Data
     {
         internal readonly Timer _timer;
         private readonly IExecutionLogPublisher _logger;
-        private readonly IWebSocketPool _webSocketPool;
 
         public PulseLogger(double intervalMs, IExecutionLogPublisher executionLogPublisher)
         {
@@ -110,9 +109,9 @@ namespace Dev2.Data
                 case MemoryStatus.LoadMemory:
                     if (((int)status.dwMemoryLoad) >= 90)
                     {
-                        memoryPressureMessage = "Load memory of " + status.dwMemoryLoad + "% Used. Memory Pressure detected.";
+                        memoryPressureMessage = "Load memory of " + status.dwMemoryLoad + "% Used. High Memory Pressure detected.";
                         Dev2Logger.Warn(memoryPressureMessage, "Warewolf Warn");
-                        //_logger.Warn(memoryPressureMessage);
+                        _logger.Warn(memoryPressureMessage);
                     }
                     stringBuilder.Append((status.dwMemoryLoad) + "% Used. " + memoryPressureMessage);
                     break;
