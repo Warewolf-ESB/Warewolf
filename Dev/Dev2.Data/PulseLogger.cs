@@ -11,29 +11,21 @@
 
 using System;
 using System.Diagnostics;
-using System.Runtime.InteropServices;
-using System.Text;
 using System.Timers;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
-using Warewolf.Execution;
-using Warewolf.Interfaces.Auditing;
-using Warewolf.Streams;
 
 namespace Dev2.Data
 {
     public class PulseLogger : IStartTimer
     {
         internal readonly Timer _timer;
-        private readonly IExecutionLogPublisher _logger;
-        private readonly IWebSocketPool _webSocketPool;
 
-        public PulseLogger(double intervalMs, IExecutionLogPublisher executionLogPublisher)
+        public PulseLogger(double intervalMs)
         {
             Interval = intervalMs;
             _timer = new Timer(Interval);
-            _timer.Elapsed += Timer_Elapsed;
-            _logger = executionLogPublisher;
+            _timer.Elapsed += Timer_Elapsed;       
         }
 
         void Timer_Elapsed(object sender, ElapsedEventArgs e)
@@ -44,17 +36,11 @@ namespace Dev2.Data
     Process Memory Usage(mb): {0}
     Number of Requests: {1} 
     Time Taken(Ms): {2}   
-    Uptime: {3}
-    Total Physical Memory: {4}
-    Total Available Physical Memory: {5}
-    Load Memory: {6}",
+    Uptime: {3}",
                     GC.GetTotalMemory(false) / 10000000,
                     ServerStats.TotalRequests,
                     ServerStats.TotalTime,
-                    DateTime.Now - Process.GetCurrentProcess().StartTime,
-                    MemoryPressureTracker(MemoryStatus.TotalPhys),
-                    MemoryPressureTracker(MemoryStatus.AvaliablePhys),
-                    MemoryPressureTracker(MemoryStatus.LoadMemory)),"Warewolf System Data");
+                    DateTime.Now - Process.GetCurrentProcess().StartTime), "Warewolf System Data");
             }                
             catch (Exception err)
             {
@@ -82,44 +68,6 @@ namespace Dev2.Data
         }
 
         public double Interval { get; private set; }
-
-        public enum MemoryStatus
-        {
-            TotalPhys,
-            AvaliablePhys,
-            LoadMemory
-        }
-
-        public string MemoryPressureTracker(MemoryStatus memoryStatus)
-        {
-            NativeMethods.MEMORYSTATUSEX status = new NativeMethods.MEMORYSTATUSEX();
-            status.dwLength = (uint)Marshal.SizeOf(status);
-            Boolean ret = NativeMethods.GlobalMemoryStatusEx(ref status);
-
-            StringBuilder stringBuilder = new StringBuilder();
-            var memoryPressureMessage = string.Empty;
-
-            switch (memoryStatus)
-            {
-                case MemoryStatus.TotalPhys:
-                    stringBuilder.Append((status.ulTotalPhys / 1024 / 1024 / 1024) + "GB");
-                    break;
-                case MemoryStatus.AvaliablePhys:
-                    stringBuilder.Append((status.ulAvailPhys / 1024 / 1024 / 1024) + "GB");
-                    break;
-                case MemoryStatus.LoadMemory:
-                    if (((int)status.dwMemoryLoad) >= 90)
-                    {
-                        memoryPressureMessage = "Load memory of " + status.dwMemoryLoad + "% Used. Memory Pressure detected.";
-                        Dev2Logger.Warn(memoryPressureMessage, "Warewolf Warn");
-                        //_logger.Warn(memoryPressureMessage);
-                    }
-                    stringBuilder.Append((status.dwMemoryLoad) + "% Used. " + memoryPressureMessage);
-                    break;
-            }
-
-            return stringBuilder.ToString();
-        }
     }
 
     public class PulseTracker : IStartTimer
