@@ -22,7 +22,8 @@ param(
   [switch] $StartFTPSServer,
   [switch] $CreateUNCPath,
   [switch] $UseRegionalSettings,
-  [switch] $CreateLocalSchedulerAdmin
+  [switch] $CreateLocalSchedulerAdmin,
+  [String] $RunInDirectory
 )
 if (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
 	Write-Error "This script expects to be run as Administrator. (Right click run as administrator)"
@@ -65,6 +66,9 @@ if ($PostTestRunScript -and $Coverage.IsPresent -and !($PostTestRunScript.Contai
 $TestResultsPath = ".\TestResults"
 if (Test-Path "$TestResultsPath") {
 	Remove-Item -Force -Recurse "$TestResultsPath"
+}
+if ($RunInDirectory) {
+	Set-Location "$RunInDirectory"
 }
 if ($VSTestPath -eq $null -or $VSTestPath -eq "" -or !(Test-Path "$VSTestPath\Extensions\TestPlatform\vstest.console.exe")) {
 	$VSTestPath = ".\Microsoft.TestPlatform\tools\net451\common7\ide"
