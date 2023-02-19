@@ -1,0 +1,9 @@
+
+<Source ID="78899836-7c8f-4a8e-8c0a-b45eba3a522e" Name="testRabbitMQSource" ResourceType="RabbitMQSource" IsValid="false" ConnectionString="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAK9ydVoMDkES0Rl0+zISnGAQAAAACAAAAAAAQZgAAAAEAACAAAACjpFWxdEbnO3nsR9nHGqiK4LYkMKJVQkiVe0VX4cZGbwAAAAAOgAAAAAIAACAAAACcsbkY38VjEq1yQQIPfRwTndPHsCwUuRVUT0nw6yuvUrAAAACcv9e17fVuPWgdWC/o1VIZAzuLmMTZ/bi+QKfzdJDCywEImmtxaLwnHLLgpDoescGDSLQ5/E82imqZ9jvFBZqMx4Iop0gOtBycWpn/kcd01e39AHAxPBMJ87Btf2E8b6RP2kwfgUEBPAckvFGKXy2gItxw7gJWTZqLn32rL/6jgOJiFoFmDjOcLi9klj5yCDWhDzhuyLb3S/Vt5kawiYCEmda8/C509ajQJrI2/SlQMEAAAABvQ5sVEOTdRidU0cWP/mOGVOtzNRFcvLQW6QamNQijD1ZIIxwbVAWUwgicabzlpW+8VIZ+435kWFr/FydpX+Mn" Type="RabbitMQSource" ServerVersion="0.0.0.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+  <DisplayName>testRabbitMQSource</DisplayName>
+  <AuthorRoles>
+  </AuthorRoles>
+  <ErrorMessages />
+  <TypeOf>RabbitMQSource</TypeOf>
+  <VersionInfo DateTimeStamp="2016-11-11T11:48:00.97348+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="78899836-7c8f-4a8e-8c0a-b45eba3a522e" VersionId="9b50af7a-7973-40b0-b0da-f72c1d22c846" />
+</Source>

@@ -1,0 +1,9 @@
+
+<Source ID="e541d860-cd10-4aec-b2fe-79eca3c62c25" Name="WebGetServiceSource" ResourceType="WebSource" IsValid="false" ConnectionString="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAK9ydVoMDkES0Rl0+zISnGAQAAAACAAAAAAAQZgAAAAEAACAAAAAgzOP862HO929TnQukEfky5qRZuAsodIysELXl7bWlcAAAAAAOgAAAAAIAACAAAAA0aaXt0E2AZqnO24QLPnkH8BOP7XW+Z/+nAI59cG6q8NAAAABbm+1zvHLjF/U4ay8amUj+B1Gk3LX7aSu+8CK355TuZbiRd+1h4aMMDde35WsFGzMDFKIn2g4YNa3OfVcjfmtejteTQMYBG1b1w1cNRbw5jHVwJDgrHzV29U6IRSb3BKHdQvVq7Nak0Dph9x2HyL3ctow4qiERmmzbni/M4ePQR8OA0sVRZos+YCDnCRMen5NhXPygf390WKmXkZ7xhnEEnC1leH7HsN+1Q3CYYbCmocfz9I7DFIdSKtHN/sy89bfXL7gb8DZ2BcrWkX/gVMcdQAAAAGY2xcZ6eyGkuA6J9+sRL3jq2HEXvO6mDHMIW0a+rix8tyHxmimAtS/6kW4YFQdEOqfYS8cNKpCHRR5xCqgUCLE=" Type="WebSource" ServerVersion="0.0.0.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+  <DisplayName>WebGetServiceSource</DisplayName>
+  <AuthorRoles>
+  </AuthorRoles>
+  <ErrorMessages />
+  <TypeOf>WebSource</TypeOf>
+  <VersionInfo DateTimeStamp="2016-11-18T09:38:30.0731162+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="e541d860-cd10-4aec-b2fe-79eca3c62c25" VersionId="2e5fc2d5-6497-4a7a-ad0d-a6939a491d72" />
+</Source>

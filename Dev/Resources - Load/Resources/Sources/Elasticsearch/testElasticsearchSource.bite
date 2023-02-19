@@ -1,0 +1,9 @@
+
+<Source ID="9fe9a5d8-4d6c-4cbc-ab8c-27d9154e4cfb" Name="testElasticsearchSource" ResourceType="ElasticsearchSource" IsValid="false" ConnectionString="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAK9ydVoMDkES0Rl0+zISnGAQAAAACAAAAAAAQZgAAAAEAACAAAADCPDSsCPd4KM01PvQJSZO5PHdrjPXmyIC0gUAXpZTIrwAAAAAOgAAAAAIAACAAAAAR0BfOT/GptDW/sACJYPW7R4ItP6fk+jzRuBrNamTDU4AAAABxXr4Xj1ayOxUQ7v973/afUO7mdMykzZx2K0I8yKr4ERnrrl576Xf6Fq0lk3qDkZ4yUrYNta5vBu30+JfYnZVEGrYn1xUcWOvAohSjZRXaUDTOoDVAIgAYcWma6kVabhLEKjNYfHKMT+FeYpXPrfP0lg8sQTCT21alMJqHSZvlk0AAAACfpEH0Aj/i1z9sliMKzeu5XXf2U53fawbqiCi8BfeXIlC/mbhYwYFKJLIQCzOlnmThLoBYiiS2dqnjGayUb1G/" Type="ElasticsearchSource" ServerVersion="0.0.0.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+  <DisplayName>testElasticsearchSource</DisplayName>
+  <AuthorRoles>
+  </AuthorRoles>
+  <ErrorMessages />
+  <TypeOf>ElasticsearchSource</TypeOf>
+  <VersionInfo DateTimeStamp="2016-11-11T11:48:00.97348+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="78899836-7c8f-4a8e-8c0a-b45eba3a522e" VersionId="9b50af7a-7973-40b0-b0da-f72c1d22c846" />
+</Source>

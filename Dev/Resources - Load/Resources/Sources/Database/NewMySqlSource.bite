@@ -1,0 +1,22 @@
+
+<Source ID="97d6272e-15a1-483f-afdb-a076f602604f" Name="NewMySqlSource" ResourceType="MySqlDatabase" IsValid="false" ServerType="MySqlDatabase" Type="DbSource" ConnectionString="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAK9ydVoMDkES0Rl0+zISnGAQAAAACAAAAAAAQZgAAAAEAACAAAADSXC8sKyonFN9W3LLWFU1jxzrfOxYpYKrWJou6YpglqQAAAAAOgAAAAAIAACAAAABA+S7QTxn1hQC6xdszscFt6jdCoCCDhXYWYdIRCiDjtIAAAADMwrq7zYz5uZBnGnOkVuS1PKUGvbBMn3hLJW1T2CFUdCnnSpS5Mj9Oj5BM7BHXZIJTthYInRmy/MPsuEByLG9A3/em/w+iNCoT9uC74kNlXb2XgxFmAxCri9km+5fbtxRxpW9bwIfgtzl8XfujldZWvSO88wPlNmQp7SSgFHOsT0AAAADwJbb1ytKli4XKOvjUjeYOzFvI7SHXxPyWug/W0yvotcI0Xc+fpzhOaSkcHV8vO0yq3FbI5O/QFPjhM7P4HlRC" ServerVersion="0.0.0.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+  <DisplayName>NewMySqlSource</DisplayName>
+  <AuthorRoles>
+  </AuthorRoles>
+  <ErrorMessages />
+  <AuthorRoles>
+  </AuthorRoles>
+  <Comment>
+  </Comment>
+  <HelpLink>
+  </HelpLink>
+  <Tags>
+  </Tags>
+  <UnitTestTargetWorkflowService>
+  </UnitTestTargetWorkflowService>
+  <BizRule>
+  </BizRule>
+  <WorkflowActivityDef>
+  </WorkflowActivityDef>
+  <VersionInfo DateTimeStamp="2016-11-20T20:23:24.8732392+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="97d6272e-15a1-483f-afdb-a076f602604f" VersionId="876ced33-79e3-48ee-99a6-e9be2f971058" />
+</Source>

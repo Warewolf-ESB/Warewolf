@@ -1,0 +1,23 @@
+
+<Source ID="62652f31-813a-4b97-b488-02e4c16150ff" Name="PostgreSourceTest" ResourceType="PostgreSql" IsValid="false" ServerType="PostgreSql" Type="DbSource" ConnectionString="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAK9ydVoMDkES0Rl0+zISnGAQAAAACAAAAAAAQZgAAAAEAACAAAACfJpj0A1XmP0pc/YzORwWXZLCyffaqGKRVaUv7gSybEQAAAAAOgAAAAAIAACAAAABhJPIrXEk+aL2FaKyYGy01xbjmSEs7AM71yHO2953Q2KAAAAA0bwq1q9d0MiLJj6AAaLaZODvkmt83q+HU6vGOEvUM0mVCBgCMdWhIDK0CuAbTfNuI9aVu/DONiGES3JuuIcrRd+y0k9OFmK01HBxC0i/y7TOv53aXcAwNcVpm2RRcJD2Cedj5WdCaoPIyD8tBElb698e+G1r5om6U3RyQvOu/uHOei35U7kFALnI7i6fcHFUUlQorUIg81wwVpZ05xcHLQAAAAFxMxLPoBXf3Ne0KMg//OHwHUgrD0dbImkgbrK1kJkSHcPcsMB71tll0f+oYslOu7KYz0O6bhpp4kar/sF4e/xc=" ServerVersion="0.0.0.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+  <DisplayName>PostgreSourceTest</DisplayName>
+  <Category>Acceptance Testing Resources\PostgreSourceTest</Category>
+  <AuthorRoles>
+  </AuthorRoles>
+  <ErrorMessages />
+  <AuthorRoles>
+  </AuthorRoles>
+  <Comment>
+  </Comment>
+  <HelpLink>
+  </HelpLink>
+  <Tags>
+  </Tags>
+  <UnitTestTargetWorkflowService>
+  </UnitTestTargetWorkflowService>
+  <BizRule>
+  </BizRule>
+  <WorkflowActivityDef>
+  </WorkflowActivityDef>
+  <VersionInfo DateTimeStamp="2016-06-24T10:35:24.1770983+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="62652f31-813a-4b97-b488-02e4c16150ff" VersionId="07c55a82-e9c5-4ddb-8655-8cde5398ef04" />
+</Source>

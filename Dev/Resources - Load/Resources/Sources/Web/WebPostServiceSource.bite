@@ -1,0 +1,9 @@
+
+<Source ID="ab4d5ab5-ad44-421d-8125-adfcc3aa655b" Name="WebPostServiceSource" ResourceType="WebSource" IsValid="false" ConnectionString="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAK9ydVoMDkES0Rl0+zISnGAQAAAACAAAAAAAQZgAAAAEAACAAAACAuF3zs1uDCREvJ6WJoC3ZAwYgA01yLMn7lCJWqxJX9gAAAAAOgAAAAAIAACAAAABh4snb8aBoyDlR8pD/iAQtNjIiej/1ICh05WzNVYyisdAAAAApi1QTpEbtEaUpueZ2KUv/jfDpFbMvSP6pllgHKryGGFnrlErrlPIQDsZD3U5PE1+5LfafsXd9p4wXFH+1lCna8wjW0903ERAnKEvC07O0gV79plH9nTadLuapjpYTuxQ3PjwCYTA5l4amgXn8k25cwGBgRLpR73aLC1/g+07NQgl6XoRrc21qjY9y1bk6w+RUFMsPWsIAJP3tLiWDfGUg+BHVtHYh8Wg7jCMZMMwBxRLa0eOeW7jyeeObrPUrm8Z0o5Xx4CImgp3OtZzuTcGEQAAAALnRnoXrLCczy3yYvJI7tO1E982gL7d5RDYr23dARCquGdg9hyd2mlkiA5NLza+zK7YSyzK8fNqpNurQd7h4um8=" Type="WebSource" ServerVersion="0.0.0.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+  <DisplayName>WebPostServiceSource</DisplayName>
+  <AuthorRoles>
+  </AuthorRoles>
+  <ErrorMessages />
+  <TypeOf>WebSource</TypeOf>
+  <VersionInfo DateTimeStamp="2016-11-18T09:37:52.8589373+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="ab4d5ab5-ad44-421d-8125-adfcc3aa655b" VersionId="ab202581-0bb6-4ab5-bb67-195685a16e71" />
+</Source>

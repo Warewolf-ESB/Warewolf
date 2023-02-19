@@ -1,0 +1,9 @@
+
+<Source ID="0fb49fec-e454-4357-a06f-08f329558b18" Name="WebPutServiceSource" ResourceType="WebSource" IsValid="false" ConnectionString="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAK9ydVoMDkES0Rl0+zISnGAQAAAACAAAAAAAQZgAAAAEAACAAAAA1Mip5qXY9ZHs+XtyQAMLtIFp+RCmIcIjxHJQOul35jwAAAAAOgAAAAAIAACAAAABGWbO4oFOU2S2xxsAfRrEVs75ZYVEnBK63mIyLSVnF79AAAAD7XvySxUjcFzxNb3F7kmH1e3zDpp4XNOxlA2HxuJZ12VUbL/WHyFgP/rGx6Et6EuJ2G2crKyY8/4j/ZYJEq7ssVWwUvft1VQfDMhZD1L2xPK7W9sEcYFMQpziOfDKnf1+go7zACbzqjKn92u9XB+LAQqHZodasR8+48IA0J7CE/IFFuAcyc9yW9wSzBVqhBzPMM2fmFzSlpEcRDqQ4gEP+xMk+eE1fIosD1lOhYMNcDshCDtnG1RFRdnew9y8NgXEL4NYBTZJctPPMVwSNm7SGQAAAAEv2dG0fi6t4W5pUGxN9DStgNJdAwAR+LI3JKngQMxE+XlWKjmjGg/Xw6gQft3ghORp7caj+/Nucj2mnvjvhLZo=" Type="WebSource" ServerVersion="0.0.0.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+  <DisplayName>WebPutServiceSource</DisplayName>
+  <AuthorRoles>
+  </AuthorRoles>
+  <ErrorMessages />
+  <TypeOf>WebSource</TypeOf>
+  <VersionInfo DateTimeStamp="2016-11-21T17:23:26.9875401+02:00" Reason="" User="DEV2\nkosinathi.sangweni" VersionNumber="3" ResourceId="0fb49fec-e454-4357-a06f-08f329558b18" VersionId="065ae8f1-19ca-4a34-ab6f-f828a00935c1" />
+</Source>

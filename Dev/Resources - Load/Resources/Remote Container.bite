@@ -1,0 +1,9 @@
+
+<Source ID="0c256766-11bf-4e77-a347-51ad9abf234f" Name="Remote Container" ResourceType="Dev2Server" IsValid="false" ConnectionString="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAK9ydVoMDkES0Rl0+zISnGAQAAAACAAAAAAAQZgAAAAEAACAAAABx+TjU330P61BQE+Q66rzjCycH7teLzIIPXz9C7g880gAAAAAOgAAAAAIAACAAAAA1bkEv69EMBOy/dErKz+ES4nDxcaFD0Os0tURkopzr0MAAAABH20kK6ELaJMI+9/sOVckVROlYJ7RVkHnHSu7vuel6HMHTZ63O0b5RQP3xDmWeJr9dB+6I1ndi/yK7TSfs2QtRqh+zLb6TuaD96n5GZVHPWnKO9/WVNFjt733xrQO3yOyINWlipHaJd1qCuj6+CAOKPckNOWthnnvG/FLlEfELaYVxIudBUfcaqMaaVAo47wA73vNLydEtImws/Icj6ePqHyn8CDbCS+uFwQN3W4XnqRmvip/ZhRYmZQSLd+JJyz5AAAAAWB+x9vcJJ9cC2HskRK1jm3+Zif7v9z98LqcJMRUxGIs+0ngo8b9JEuc/NJ9cE4GcYW3P/vbi+vFiAWwFvQL4Tg==" Type="Connection" ServerVersion="0.0.0.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+  <DisplayName>Remote Container</DisplayName>
+  <AuthorRoles>
+  </AuthorRoles>
+  <ErrorMessages />
+  <TypeOf>Dev2Server</TypeOf>
+  <VersionInfo DateTimeStamp="2018-07-19T08:42:52.2815935+02:00" ResourceId="0c256766-11bf-4e77-a347-51ad9abf234f" VersionId="00000000-0000-0000-0000-000000000000" />
+</Source>

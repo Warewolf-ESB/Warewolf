@@ -1,0 +1,9 @@
+
+<Source ID="3032b7fd-f12a-4ab8-be7d-2f4705c31317" Name="WebDeleteServiceSource" ResourceType="WebSource" IsValid="false" ConnectionString="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAK9ydVoMDkES0Rl0+zISnGAQAAAACAAAAAAAQZgAAAAEAACAAAACH+uXXZfHKMjRS63G+197axlwZtEdW8vaCwVRncxXAsQAAAAAOgAAAAAIAACAAAABYTRb9bEs7yTjIoQhoHLvFgLa4z2jv9jGSEXoxX2DoXdAAAABmbWEfGHI+Ckz3cpQ2UHk4UwDdo/gfErpA0bq/8bUkpOJkfyOm8q7QvoVf8j93hHVNQsxK2kbsM12Prg/RnBimJyt8YLtlrtWHczqTkHjtZH69Cc8X4eYA08FrD+7efCfUURpiMoRyIPrdRW1U198hT/s44Ba7UhaZonu9+itQu9atxYAnoWTnjoDWeHqGWYdRazH40qjtw6USnHOxwPEwThwV2HyRs1v2yZ0yIgc64GMdCKmkKx15QdYHRnA8TBFFcqMbU6Dg5M6dUTvVFbvoQAAAAOVTT+MTApSWRFhFEx/tZU7+uCeRkSKk4ZYei2I3nHcta/30SU9YKYgEccv9obllh9hZUDFY/KkdwIpLywyDdbA=" Type="WebSource" ServerVersion="0.0.0.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+  <DisplayName>WebDeleteServiceSource</DisplayName>
+  <AuthorRoles>
+  </AuthorRoles>
+  <ErrorMessages />
+  <TypeOf>WebSource</TypeOf>
+  <VersionInfo DateTimeStamp="2016-11-18T09:36:48.6277109+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="3032b7fd-f12a-4ab8-be7d-2f4705c31317" VersionId="8d4a13e3-2ed8-42ff-a66c-ba576934fe9b" />
+</Source>
