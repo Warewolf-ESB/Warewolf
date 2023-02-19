@@ -325,6 +325,9 @@ if __name__ == '__main__':
     }
 	New-Item -ItemType Directory "$TestResultsPath" -ErrorAction SilentlyContinue
 	if (Test-Path "$TestResultsPath\RunTests.ps1") {
+		if (Test-Path "$TestResultsPath\RunTests($LoopCounter).ps1") {
+			Remove-Item "$TestResultsPath\RunTests($LoopCounter).ps1"
+		}
 		Move-Item "$TestResultsPath\RunTests.ps1" "$TestResultsPath\RunTests($LoopCounter).ps1"
 	}
 	if (Test-Path "$TestResultsPath\warewolf-server.log") {
