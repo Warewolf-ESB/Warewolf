@@ -94,6 +94,7 @@ namespace Dev2.Data
             NativeMethods.MEMORYSTATUSEX status = new NativeMethods.MEMORYSTATUSEX();
             status.dwLength = (uint)Marshal.SizeOf(status);
             Boolean ret = NativeMethods.GlobalMemoryStatusEx(ref status);
+            NativeMethods.RegisterNotification();
 
             StringBuilder stringBuilder = new StringBuilder();
             var memoryPressureMessage = string.Empty;
@@ -113,9 +114,18 @@ namespace Dev2.Data
                         Dev2Logger.Warn(memoryPressureMessage, "Warewolf Warn");
                         _logger.Warn(memoryPressureMessage);
                     }
+
+                    if(NativeMethods.IsLowMemoryDetected())
+                    {
+                        var lowMemoryMessage = "Low memory of " + status.dwMemoryLoad + "% signaled by Operating System at " + DateTime.Now.ToString();
+                        Dev2Logger.Warn(lowMemoryMessage, "Warewolf Warn");
+                        _logger.Warn(lowMemoryMessage);
+                    }
                     stringBuilder.Append((status.dwMemoryLoad) + "% Used. " + memoryPressureMessage);
                     break;
             }
+
+            NativeMethods.ReleaseResources();
 
             return stringBuilder.ToString();
         }
