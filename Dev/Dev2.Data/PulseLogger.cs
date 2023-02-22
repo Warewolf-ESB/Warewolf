@@ -29,6 +29,7 @@ namespace Dev2.Data
 
         public PulseLogger(double intervalMs, IExecutionLogPublisher executionLogPublisher)
         {
+            NativeMethods.RegisterNotification();
             Interval = intervalMs;
             _timer = new Timer(Interval);
             _timer.Elapsed += Timer_Elapsed;
@@ -78,6 +79,7 @@ namespace Dev2.Data
         public void Dispose()
         {
             _timer.Dispose();
+            NativeMethods.ReleaseResources();
         }
 
         public double Interval { get; private set; }
@@ -94,8 +96,7 @@ namespace Dev2.Data
             NativeMethods.MEMORYSTATUSEX status = new NativeMethods.MEMORYSTATUSEX();
             status.dwLength = (uint)Marshal.SizeOf(status);
             Boolean ret = NativeMethods.GlobalMemoryStatusEx(ref status);
-            NativeMethods.RegisterNotification();
-
+            
             StringBuilder stringBuilder = new StringBuilder();
             var memoryPressureMessage = string.Empty;
 
@@ -124,9 +125,7 @@ namespace Dev2.Data
                     stringBuilder.Append((status.dwMemoryLoad) + "% Used. " + memoryPressureMessage);
                     break;
             }
-
-            NativeMethods.ReleaseResources();
-
+                        
             return stringBuilder.ToString();
         }
     }
