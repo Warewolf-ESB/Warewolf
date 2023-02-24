@@ -52,10 +52,60 @@ namespace Warewolf.Storage
 
         public CommonFunctions.WarewolfEvalResult Eval(string exp, int update, bool throwsifnotexists) => Eval(exp, update, throwsifnotexists, false);
 
+        public int CountChar(string source)
+        {
+            char toFind = '-';
+            int count = 0;
+            try
+            {
+                char charToCount = toFind;
+                foreach (char c in source)
+                {
+                    if (c == charToCount)
+                    {
+                        count++;
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }        
+            return count;
+        }
+
+
+        public string ConvertToEvalDate(string newValue)
+        {
+            DateTime dateValue = DateTime.MinValue;
+            try
+            {
+                string[] arrVals = newValue.ToString().Split(' ');
+                foreach (string dateString in arrVals)
+                {
+                    var newString = dateString.Replace(")", "").Replace("(", "").Replace("\"", "");
+                    if (DateTime.TryParse(newString, out dateValue))
+                    {
+                        return dateValue.ToString("yyyy-MM-dd");
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return dateValue.ToString();
+        }
+
+
         public CommonFunctions.WarewolfEvalResult Eval(string exp, int update, bool throwsifnotexists, bool shouldEscape)
         {
             try
-            {
+            {                
+                if (CountChar(PublicFunctions.EvalEnvExpression(exp, update, shouldEscape, _env).ToString()) > 1)
+                {
+                    exp = ConvertToEvalDate(PublicFunctions.EvalEnvExpression(exp, update, shouldEscape, _env).ToString());
+                }
                 return PublicFunctions.EvalEnvExpression(exp, update, shouldEscape, _env);
             }
             catch (IndexOutOfRangeException)
@@ -223,7 +273,7 @@ namespace Warewolf.Storage
                     throw new WarewolfExecutionEnvironmentException(msg);
                 }
                 //NOTE:This have a possibility to duplicate error add if caller is also catching exceptions and adding error, use with caution
-                Errors.Add(msg +": " + "{ " + DataListUtilBase.StripLeadingAndTrailingBracketsFromValue(exp) + " }"); 
+                Errors.Add(msg +": " + "{ " + DataListUtilBase.StripLeadingAndTrailingBracketsFromValue(exp) + " }");
             }
         }
 
@@ -258,7 +308,7 @@ namespace Warewolf.Storage
 
             if (!_env.RecordSets.ContainsKey(recordSetName.Trim()))
                 return -1;
-            
+
             return _env.RecordSets[recordSetName.Trim()].LastIndex;
         }
 
@@ -640,7 +690,17 @@ namespace Warewolf.Storage
 
         public bool HasErrors() => Errors.Any(s => !string.IsNullOrEmpty(s)) || AllErrors.Any(s => !string.IsNullOrEmpty(s));
 
-        public string EvalToExpression(string exp, int update) => string.IsNullOrEmpty(exp) ? string.Empty : EvaluationFunctions.evalToExpression(_env, update, exp);
+        public string EvalToExpression(string exp, int update) => string.IsNullOrEmpty(exp) ? string.Empty : EvaluteDateField(_env, update, exp);
+
+        public string EvaluteDateField(DataStorage.WarewolfEnvironment _env, int update, string exp)
+        {           
+            
+            if (CountChar(EvaluationFunctions.evalToExpression(_env, update, exp).ToString()) > 1)
+            {
+                return ConvertToEvalDate(EvaluationFunctions.evalToExpression(_env, update, exp));
+            }
+            return EvaluationFunctions.evalToExpression(_env, update, exp);
+        }
 
         public static string ConvertToIndex(string outputVar, int i)
         {
@@ -881,13 +941,13 @@ namespace Warewolf.Storage
                 }
                 return sb.ToString();
             }
-            
+
             private static bool IsNumeric(string val)
             {
                 decimal result = 0;
                 return Decimal.TryParse(val, out result);
             }
-            
+
             private static bool IsBool(string val)
             {
                 var result = false;
