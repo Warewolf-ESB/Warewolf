@@ -1,21 +1,21 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.28803.202
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Web", "Dev2.Web2\Dev2.Web.csproj", "{76467C57-4F15-4FD6-90BD-68443ADB838D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Common", "Dev2.Common\Dev2.Common.csproj", "{84405FDF-0FF8-49A2-8925-8A4AEBA8104A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dev2.Common", "Dev2.Common\Dev2.Common.csproj", "{84405FDF-0FF8-49A2-8925-8A4AEBA8104A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Common.Interfaces", "Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj", "{13C0C6E9-7DC3-4DC3-8535-031C263CEE0B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dev2.Common.Interfaces", "Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj", "{13C0C6E9-7DC3-4DC3-8535-031C263CEE0B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Resource", "Warewolf.Resource\Warewolf.Resource.csproj", "{DFF93ECB-FDD1-405E-AE02-9F4BC7571C1B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Studio.Resources", "Warewolf.Studio.Resources\Warewolf.Studio.Resources.csproj", "{CB565C94-8833-4911-B20F-0921EE3C286C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Studio.Resources", "Warewolf.Studio.Resources\Warewolf.Studio.Resources.csproj", "{CB565C94-8833-4911-B20F-0921EE3C286C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Web.UI.Tests", "Warewolf.Web.UI.Tests\Warewolf.Web.UI.Tests.csproj", "{7B37A4F9-645A-4CB0-A44A-C948B614E9E8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Web.UI.Tests", "Warewolf.Web.UI.Tests\Warewolf.Web.UI.Tests.csproj", "{7B37A4F9-645A-4CB0-A44A-C948B614E9E8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Web.Tests", "Dev2.Web.Tests\Dev2.Web.Tests.csproj", "{35A58032-9521-487D-89DC-C521C3845410}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dev2.Web.Tests", "Dev2.Web.Tests\Dev2.Web.Tests.csproj", "{35A58032-9521-487D-89DC-C521C3845410}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Security", "Warewolf.Security\Warewolf.Security.csproj", "{CA5E9373-46FE-41B9-AB2E-BD637F48B456}"
 EndProject
@@ -27,33 +27,41 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Interfaces", "Ware
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Common", "Warewolf.Common\Warewolf.Common.csproj", "{930B195F-1B04-4D6F-99BA-DB579339EC00}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Infrastructure", "Dev2.Infrastructure\Dev2.Infrastructure.csproj", "{615EAE6D-040C-4364-B708-63DC8755CD4F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dev2.Infrastructure", "Dev2.Infrastructure\Dev2.Infrastructure.csproj", "{615EAE6D-040C-4364-B708-63DC8755CD4F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Data.Interfaces", "Dev2.Data.Interfaces\Dev2.Data.Interfaces.csproj", "{D7189600-3C18-4D35-97A4-8095DE1A4504}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dev2.Data.Interfaces", "Dev2.Data.Interfaces\Dev2.Data.Interfaces.csproj", "{D7189600-3C18-4D35-97A4-8095DE1A4504}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Diagnostics", "Dev2.Diagnostics\Dev2.Diagnostics.csproj", "{A7D9DA27-F023-4588-AA64-AC2DE44C0B82}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dev2.Diagnostics", "Dev2.Diagnostics\Dev2.Diagnostics.csproj", "{A7D9DA27-F023-4588-AA64-AC2DE44C0B82}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Runtime.Configuration", "Dev2.Runtime.Configuration\Dev2.Runtime.Configuration.csproj", "{9C43D5A2-FEFD-4632-9BF2-EE0E4C05BEBC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dev2.Runtime.Configuration", "Dev2.Runtime.Configuration\Dev2.Runtime.Configuration.csproj", "{9C43D5A2-FEFD-4632-9BF2-EE0E4C05BEBC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.CustomControls", "Dev2.CustomControls\Dev2.CustomControls.csproj", "{F5162BDB-D3DB-480E-92E4-FD732904A247}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dev2.CustomControls", "Dev2.CustomControls\Dev2.CustomControls.csproj", "{F5162BDB-D3DB-480E-92E4-FD732904A247}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Util", "Dev2.Util\Dev2.Util.csproj", "{1990550D-EA6F-4DAC-9B5E-8571E86923ED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dev2.Util", "Dev2.Util\Dev2.Util.csproj", "{1990550D-EA6F-4DAC-9B5E-8571E86923ED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Core", "Dev2.Core\Dev2.Core.csproj", "{6007C1F1-CE38-474A-A88C-0C05A77BC415}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dev2.Core", "Dev2.Core\Dev2.Core.csproj", "{6007C1F1-CE38-474A-A88C-0C05A77BC415}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Data", "Dev2.Data\Dev2.Data.csproj", "{4BD0C970-ECD6-470B-B9EE-17ECFE53E5FB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dev2.Data", "Dev2.Data\Dev2.Data.csproj", "{4BD0C970-ECD6-470B-B9EE-17ECFE53E5FB}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Warewolf.Language.Parser", "Warewolf.Language.Parser\Warewolf.Language.Parser.fsproj", "{DF3AB090-911F-4646-9AD1-205E2CED908A}"
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Warewolf.Language.Parser", "Warewolf.Language.Parser\Warewolf.Language.Parser.fsproj", "{DF3AB090-911F-4646-9AD1-205E2CED908A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Parser.Interop", "Warewolf.Parser.Interop\Warewolf.Parser.Interop.csproj", "{6EB59EEE-4E16-4F29-B1B0-715E56E9139D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Parser.Interop", "Warewolf.Parser.Interop\Warewolf.Parser.Interop.csproj", "{6EB59EEE-4E16-4F29-B1B0-715E56E9139D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Storage", "Warewolf.Storage\Warewolf.Storage.csproj", "{B3D070E0-11C1-4C1C-81A5-E680C1494945}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Storage", "Warewolf.Storage\Warewolf.Storage.csproj", "{B3D070E0-11C1-4C1C-81A5-E680C1494945}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Storage.Interfaces", "Warewolf.Storage.Interfaces\Warewolf.Storage.Interfaces.csproj", "{61A15557-1D18-4C69-88EB-31BF49B7FB50}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Storage.Interfaces", "Warewolf.Storage.Interfaces\Warewolf.Storage.Interfaces.csproj", "{61A15557-1D18-4C69-88EB-31BF49B7FB50}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Driver.Serilog", "Warewolf.Driver.Serilog\Warewolf.Driver.Serilog.csproj", "{C910662A-F71B-4AC2-A53F-0D44185ADF31}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Data", "Warewolf.Data\Warewolf.Data.csproj", "{ED6D034C-477F-447A-929C-3246B60AA76D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Data", "Warewolf.Data\Warewolf.Data.csproj", "{ED6D034C-477F-447A-929C-3246B60AA76D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Common.Interfaces.NetStandard20", "Warewolf.Common.Interfaces.NetStandard20\Warewolf.Common.Interfaces.NetStandard20.csproj", "{264E88D8-68F2-4FFC-885E-37E3A22393A1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Driver.Redis", "Warewolf.Driver.Redis\Warewolf.Driver.Redis.csproj", "{338790D9-1D61-407A-8F9E-FC57CFA57F78}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Driver.RabbitMQ", "Warewolf.Driver.RabbitMQ\Warewolf.Driver.RabbitMQ.csproj", "{083AF6B0-3E19-4B5C-B371-E702EB265DC1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Sharepoint", "Warewolf.Sharepoint\Warewolf.Sharepoint.csproj", "{D7A04A3F-DDBD-497C-A311-EFD2016830DF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -183,14 +191,6 @@ Global
 		{A7D9DA27-F023-4588-AA64-AC2DE44C0B82}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A7D9DA27-F023-4588-AA64-AC2DE44C0B82}.Release|x86.ActiveCfg = Release|Any CPU
 		{A7D9DA27-F023-4588-AA64-AC2DE44C0B82}.Release|x86.Build.0 = Release|Any CPU
-		{52F26184-CB50-4D82-B8A2-83F73D2B5011}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{52F26184-CB50-4D82-B8A2-83F73D2B5011}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{52F26184-CB50-4D82-B8A2-83F73D2B5011}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{52F26184-CB50-4D82-B8A2-83F73D2B5011}.Debug|x86.Build.0 = Debug|Any CPU
-		{52F26184-CB50-4D82-B8A2-83F73D2B5011}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{52F26184-CB50-4D82-B8A2-83F73D2B5011}.Release|Any CPU.Build.0 = Release|Any CPU
-		{52F26184-CB50-4D82-B8A2-83F73D2B5011}.Release|x86.ActiveCfg = Release|Any CPU
-		{52F26184-CB50-4D82-B8A2-83F73D2B5011}.Release|x86.Build.0 = Release|Any CPU
 		{9C43D5A2-FEFD-4632-9BF2-EE0E4C05BEBC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9C43D5A2-FEFD-4632-9BF2-EE0E4C05BEBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9C43D5A2-FEFD-4632-9BF2-EE0E4C05BEBC}.Debug|x86.ActiveCfg = Debug|Any CPU
@@ -279,6 +279,38 @@ Global
 		{ED6D034C-477F-447A-929C-3246B60AA76D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{ED6D034C-477F-447A-929C-3246B60AA76D}.Release|x86.ActiveCfg = Release|Any CPU
 		{ED6D034C-477F-447A-929C-3246B60AA76D}.Release|x86.Build.0 = Release|Any CPU
+		{264E88D8-68F2-4FFC-885E-37E3A22393A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{264E88D8-68F2-4FFC-885E-37E3A22393A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{264E88D8-68F2-4FFC-885E-37E3A22393A1}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{264E88D8-68F2-4FFC-885E-37E3A22393A1}.Debug|x86.Build.0 = Debug|Any CPU
+		{264E88D8-68F2-4FFC-885E-37E3A22393A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{264E88D8-68F2-4FFC-885E-37E3A22393A1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{264E88D8-68F2-4FFC-885E-37E3A22393A1}.Release|x86.ActiveCfg = Release|Any CPU
+		{264E88D8-68F2-4FFC-885E-37E3A22393A1}.Release|x86.Build.0 = Release|Any CPU
+		{338790D9-1D61-407A-8F9E-FC57CFA57F78}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{338790D9-1D61-407A-8F9E-FC57CFA57F78}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{338790D9-1D61-407A-8F9E-FC57CFA57F78}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{338790D9-1D61-407A-8F9E-FC57CFA57F78}.Debug|x86.Build.0 = Debug|Any CPU
+		{338790D9-1D61-407A-8F9E-FC57CFA57F78}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{338790D9-1D61-407A-8F9E-FC57CFA57F78}.Release|Any CPU.Build.0 = Release|Any CPU
+		{338790D9-1D61-407A-8F9E-FC57CFA57F78}.Release|x86.ActiveCfg = Release|Any CPU
+		{338790D9-1D61-407A-8F9E-FC57CFA57F78}.Release|x86.Build.0 = Release|Any CPU
+		{083AF6B0-3E19-4B5C-B371-E702EB265DC1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{083AF6B0-3E19-4B5C-B371-E702EB265DC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{083AF6B0-3E19-4B5C-B371-E702EB265DC1}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{083AF6B0-3E19-4B5C-B371-E702EB265DC1}.Debug|x86.Build.0 = Debug|Any CPU
+		{083AF6B0-3E19-4B5C-B371-E702EB265DC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{083AF6B0-3E19-4B5C-B371-E702EB265DC1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{083AF6B0-3E19-4B5C-B371-E702EB265DC1}.Release|x86.ActiveCfg = Release|Any CPU
+		{083AF6B0-3E19-4B5C-B371-E702EB265DC1}.Release|x86.Build.0 = Release|Any CPU
+		{D7A04A3F-DDBD-497C-A311-EFD2016830DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D7A04A3F-DDBD-497C-A311-EFD2016830DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D7A04A3F-DDBD-497C-A311-EFD2016830DF}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D7A04A3F-DDBD-497C-A311-EFD2016830DF}.Debug|x86.Build.0 = Debug|Any CPU
+		{D7A04A3F-DDBD-497C-A311-EFD2016830DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D7A04A3F-DDBD-497C-A311-EFD2016830DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D7A04A3F-DDBD-497C-A311-EFD2016830DF}.Release|x86.ActiveCfg = Release|Any CPU
+		{D7A04A3F-DDBD-497C-A311-EFD2016830DF}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
