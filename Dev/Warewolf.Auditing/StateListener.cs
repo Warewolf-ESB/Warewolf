@@ -31,23 +31,37 @@ namespace Warewolf.Auditing
             var serializer = new Dev2JsonSerializer();
             var auditLog = new Audit(_dsfDataObject, "LogAdditionalDetail", serializer.Serialize(detail, Formatting.None), null, null);
             LogAuditState(auditLog);
-        }
+		}
 
-        public void LogExecuteCompleteState(object activity)
+		public void LogExecuteStartState(object activity)
+		{
+			var auditLog = new Audit(_dsfDataObject, "LogExecuteStartState", null, null, activity);
+			auditLog.LogLevel = LogLevel.Info;
+			LogAuditState(auditLog);
+		}
+
+		public void LogExecuteCompleteState(object activity)
         {
             var auditLog = new Audit(_dsfDataObject, "LogExecuteCompleteState", null, activity, null);
             auditLog.LogLevel = LogLevel.Info;
             LogAuditState(auditLog);
-        }
-        
-        public void LogExecuteActivityCompleteState(object activity)
+		}
+
+		public void LogExecuteActivityStartState(object activity)
+		{
+			var auditLog = new Audit(_dsfDataObject, "LogExecuteActivityStartState", null, null, activity);
+			auditLog.LogLevel = LogLevel.Info;
+			LogAuditState(auditLog);
+		}
+
+		public void LogExecuteActivityCompleteState(object activity)
         {
             var auditLog = new Audit(_dsfDataObject, "LogExecuteActivityCompleteState", null, activity, null);
             auditLog.LogLevel = LogLevel.Info;
             LogAuditState(auditLog);
         }
 
-        public void LogExecuteException(Exception exception, object activity)
+        public void LogExecuteException(SerializableException exception, object activity)
         {
             var auditLog = new Audit(_dsfDataObject, "LogExecuteException", exception.Message, activity, null, exception);
             LogAuditState(auditLog);

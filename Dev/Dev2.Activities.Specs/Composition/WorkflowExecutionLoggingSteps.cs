@@ -296,7 +296,7 @@ namespace Dev2.Activities.Specs.Composition
             var mockStateNotifier = _scenarioContext.Get<Mock<IStateNotifier>>("mockStateNotifier");
             var activityMock = _scenarioContext.Get<IDev2Activity>("activityMock");
 
-            mockStateNotifier.Verify(o => o.LogExecuteException(_falseException, activityMock));
+            mockStateNotifier.Verify(o => o.LogExecuteException(new SerializableException(_falseException), activityMock));
         }
 
         [Then(@"a detailed execution exception log entry is created")]

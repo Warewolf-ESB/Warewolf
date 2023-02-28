@@ -102,40 +102,36 @@ namespace Warewolf.Auditing.Drivers
             {
                 foreach (var result in results)
                 {
-                    Audit audit = null;
-                    try
+                    var audit = JsonConvert.DeserializeObject<Audit>(result);
+                    if (audit.ExecutionTime == null)
                     {
-                        audit = JsonConvert.DeserializeObject<Audit>(result);
-                        if (audit.ExecutionTime == null)
-                        {
-                            audit.ExecutionTime = (audit.CompletedDateTime - audit.StartDateTime).ToString();
-                        }
-                        if (audit.Status == null)
+                        audit.ExecutionTime = (audit.CompletedDateTime - audit.StartDateTime).ToString();
+                    }
+                    if (audit.Status == null)
+					{
+                        var trimStart = "LogExecute";
+						if (audit.AuditType.StartsWith(trimStart))
 						{
-                            var trimStart = "LogExecute";
+							audit.Status = audit.AuditType.Substring(trimStart.Length);
+						}
+						else
+						{
+							trimStart = "Log";
 							if (audit.AuditType.StartsWith(trimStart))
 							{
 								audit.Status = audit.AuditType.Substring(trimStart.Length);
 							}
 							else
 							{
-								trimStart = "Log";
-								if (audit.AuditType.StartsWith(trimStart))
-								{
-									audit.Status = audit.AuditType.Substring(trimStart.Length);
-								}
-								else
-								{
-									audit.Status = audit.AuditType;
-								}
+								audit.Status = audit.AuditType;
 							}
-                            var trimEnd = "State";
-                            if (audit.Status.EndsWith(trimEnd))
-                            {
-								audit.Status = audit.Status.Substring(0, audit.Status.Length - trimEnd.Length);
-							}
-                        }
-                    } catch (JsonSerializationException) { }
+						}
+                        var trimEnd = "State";
+                        if (audit.Status.EndsWith(trimEnd))
+                        {
+							audit.Status = audit.Status.Substring(0, audit.Status.Length - trimEnd.Length);
+						}
+                    }
                     if (audit != null)
                     {
                         yield return audit;

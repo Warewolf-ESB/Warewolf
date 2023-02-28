@@ -5,9 +5,11 @@ namespace Warewolf.Auditing
     public interface IStateListener : IDisposable
     {
         void LogAdditionalDetail(object detail, string callerName);
-        void LogExecuteException(Exception e, object activity);
-        void LogExecuteCompleteState(object activity);
-        void LogExecuteActivityCompleteState(object activity);
+        void LogExecuteException(SerializableException e, object activity);
+		void LogExecuteStartState(object activity);
+		void LogExecuteCompleteState(object activity);
+		void LogExecuteActivityStartState(object activity);
+		void LogExecuteActivityCompleteState(object activity);
         void LogStopExecutionState(object activity);
         void LogActivityExecuteState(object nextActivityObject);
     }
