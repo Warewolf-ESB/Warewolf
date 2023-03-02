@@ -81,6 +81,7 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Composition\SubworkflowExecution.feature.cs" />
     <Compile Include="Composition\WorkflowExecutionLogging.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -95,11 +96,6 @@
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Hooks\ConnectAndLoadServerResourcesHooks.cs" />
     <Compile Include="MergeExecutionSteps.cs" />
-    <Compile Include="Composition\SubworkflowExecution.feature.cs">
-      <DependentUpon>SubworkflowExecution.feature</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="Composition\WorkflowExecution.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -338,9 +334,6 @@
     </None>
     <None Include="Merge\MergeExecution.feature">
       <LastGenOutput>MergeExecution.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Composition\SubworkflowExecution.feature">
-      <LastGenOutput>SubworkflowExecution.feature.cs</LastGenOutput>
     </None>
     <None Include="Composition\WorkflowExecution.feature">
       <LastGenOutput>WorkflowExecution.feature.cs</LastGenOutput>
