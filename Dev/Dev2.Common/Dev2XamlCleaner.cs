@@ -9,15 +9,10 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using Dev2.Common.Common;
 using System;
-using System.Activities;
-using System.Activities.XamlIntegration;
-using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Windows.Markup;
-using System.Xaml;
-using System.Xml;
 
 namespace Dev2.Common
 {
@@ -66,25 +61,49 @@ namespace Dev2.Common
             return result;
         }
 
-        private StringBuilder StripViewState(StringBuilder input)
+        StringBuilder StripViewState(StringBuilder def)
         {
-            var result = new StringBuilder();
-            XmlReader xmlReader = XmlReader.Create(new StringReader(input.ToString()));
-            XamlXmlReader xamlReader = new XamlXmlReader(xmlReader);
-            ActivityBuilder ab = XamlServices.Load(ActivityXamlServices.CreateBuilderReader(xamlReader)) as ActivityBuilder;
-            XmlWriter xmlWriter = XmlWriter.Create(result);
-            XamlXmlWriter xamlWriter = new XamlXmlWriter(xmlWriter, new XamlSchemaContext());
-            XamlServices.Save(new ViewStateCleaningWriter(ActivityXamlServices.CreateBuilderWriter(xamlWriter)), ab);
-            return result;
+            var startViewStateTag = "<sap:WorkflowViewStateService.ViewState>";
+			var endViewStateTag = "</sap:WorkflowViewStateService.ViewState>";
+			var findViewStateStart = IndexOf(def, startViewStateTag);
+			int findViewStateEnd = IndexOf(def, endViewStateTag);
+			while (findViewStateStart >= 0 && findViewStateEnd >= 0)
+            {
+				def.Remove(findViewStateStart, findViewStateEnd - findViewStateStart + endViewStateTag.Length);
+				findViewStateStart = IndexOf(def, startViewStateTag);
+				findViewStateEnd = IndexOf(def, endViewStateTag);
+			}
+            return def;
         }
 
+		int IndexOf(StringBuilder sb, string value)
+		{
+			int index;
+			int length = value.Length;
+			int maxSearchLength = (sb.Length - length) + 1;
 
-        /// <summary>
-        ///     Replaces the changed namespaces.
-        /// </summary>
-        /// <param name="def">The def.</param>
-        /// <returns></returns>
-        StringBuilder ReplaceChangedNamespaces(StringBuilder def)
+			for (int i = 0; i < maxSearchLength; ++i)
+			{
+				if (sb[i] == value[0])
+				{
+					index = 1;
+					while ((index < length) && (sb[i + index] == value[index]))
+						++index;
+
+					if (index == length)
+						return i;
+				}
+			}
+
+			return -1;
+		}
+
+		/// <summary>
+		///     Replaces the changed namespaces.
+		/// </summary>
+		/// <param name="def">The def.</param>
+		/// <returns></returns>
+		StringBuilder ReplaceChangedNamespaces(StringBuilder def)
         {
             var result = def;
             for (int i = 0; i < replaceNamespaces.Length / 2; i++)

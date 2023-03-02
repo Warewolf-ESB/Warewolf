@@ -139,7 +139,7 @@ namespace Dev2
             _startupResourceCatalogFactory = startupConfiguration.ResourceCatalogFactory;
             _ipcClient = startupConfiguration.IpcClient;
             _assemblyLoader = startupConfiguration.AssemblyLoader;
-            _pulseLogger = new PulseLogger(60000).Start();
+            _pulseLogger = new PulseLogger(60000, startupConfiguration.LoggerFactory.New(new JsonSerializer(), new WebSocketPool())).Start();
             _pulseTracker = new PulseTracker(TimeSpan.FromDays(1).TotalMilliseconds).Start();
             _serverEnvironmentPreparer.PrepareEnvironment();
             _startWebServer = startupConfiguration.StartWebServer;
