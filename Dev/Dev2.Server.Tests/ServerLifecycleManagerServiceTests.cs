@@ -257,6 +257,8 @@ namespace Dev2.Server.Tests
             mockWebSocketWrapper.Setup(o => o.IsOpen()).Returns(false);
             mockWebSocketPool.Setup(o => o.Acquire(It.IsAny<string>())).Returns(mockWebSocketWrapper.Object);
 
+            var mockLoggerFactory = new Mock<ExecutionLogger.IExecutionLoggerFactory>();
+
             //------------------------Act----------------------------
             var config = new StartupConfiguration
             {
@@ -272,6 +274,7 @@ namespace Dev2.Server.Tests
                 LoggingServiceMonitor = mockLoggingServiceMonitorWithRestart,
                 HangfireServerMonitor = mockHangfireServerMonitorWithRestart,
                 WebSocketPool = mockWebSocketPool.Object,
+                LoggerFactory = mockLoggerFactory.Object
             };
             using (var serverLifeCycleManager = new ServerLifecycleManager(config))
             {
@@ -406,6 +409,8 @@ namespace Dev2.Server.Tests
             mockAssemblyLoader.Setup(o => o.AssemblyNames(It.IsAny<Assembly>())).Returns(new[] {new AssemblyName {Name = "testAssemblyName"}});
             mockWebServerConfiguration.Setup(o => o.EndPoints).Returns(new[] {new Dev2Endpoint(new IPEndPoint(0x40E9BB63, 8080), "Url", "path")});
 
+            var mockLoggerFactory = new Mock<ExecutionLogger.IExecutionLoggerFactory>();
+
             //------------------------Act----------------------------
             var config = new StartupConfiguration
             {
@@ -419,7 +424,8 @@ namespace Dev2.Server.Tests
                 StartWebServer = mockStartWebServer.Object,
                 SecurityIdentityFactory = mockSecurityIdentityFactory.Object,
                 LoggingServiceMonitor = mockLoggingServiceMonitorWithRestart,
-                HangfireServerMonitor = mockHangfireServerMonitorWithRestart
+                HangfireServerMonitor = mockHangfireServerMonitorWithRestart,
+                LoggerFactory = mockLoggerFactory.Object
             };
             using (var serverLifeCycleManager = new ServerLifecycleManager(config))
             {
@@ -465,6 +471,8 @@ namespace Dev2.Server.Tests
             mockAssemblyLoader.Setup(o => o.AssemblyNames(It.IsAny<Assembly>())).Returns(new[] {new AssemblyName {Name = "testAssemblyName"}});
             mockWebServerConfiguration.Setup(o => o.EndPoints).Returns(new[] {new Dev2Endpoint(new IPEndPoint(0x40E9BB63, 8080), "Url", "path")});
 
+            var mockLoggerFactory = new Mock<ExecutionLogger.IExecutionLoggerFactory>();
+
             //------------------------Act----------------------------
             var config = new StartupConfiguration
             {
@@ -477,7 +485,8 @@ namespace Dev2.Server.Tests
                 Writer = mockWriter.Object,
                 StartWebServer = mockStartWebServer.Object,
                 SecurityIdentityFactory = mockSecurityIdentityFactory.Object,
-                LoggingServiceMonitor = mockLoggingServiceMonitorWithRestart
+                LoggingServiceMonitor = mockLoggingServiceMonitorWithRestart,
+                LoggerFactory = mockLoggerFactory.Object
             };
             using (var serverLifeCycleManager = new ServerLifecycleManager(config))
             {

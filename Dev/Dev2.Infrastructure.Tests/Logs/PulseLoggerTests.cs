@@ -12,6 +12,8 @@ using System.Threading;
 using Dev2.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Dev2.Common;
+using Warewolf.Execution;
+using Moq;
 
 namespace Dev2.Infrastructure.Tests.Logs
 {
@@ -19,14 +21,15 @@ namespace Dev2.Infrastructure.Tests.Logs
     public class PulseLoggerTests
     {
         bool _elapsed;
-
+       
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(PulseLogger))]
         public void PulseLogger_Ctor_CheckValues_ExpectInitialised()
         {
+            var mockExecutionLogPublish = new Mock<IExecutionLogPublisher>();
             //------------Setup for test--------------------------
-            using (var pulseLogger = new PulseLogger(25))
+            using (var pulseLogger = new PulseLogger(25, mockExecutionLogPublish.Object))
             {
                 Assert.AreEqual(25, pulseLogger.Interval);
                 var timer = pulseLogger._timer;
@@ -39,8 +42,9 @@ namespace Dev2.Infrastructure.Tests.Logs
         [TestCategory(nameof(PulseLogger))]
         public void PulseLogger_Ctor_Start_ExpectInitialised()
         {
+            var mockExecutionLogPublish = new Mock<IExecutionLogPublisher>();
             //------------Setup for test--------------------------
-            using (var pulseLogger = new PulseLogger(2000))
+            using (var pulseLogger = new PulseLogger(2000, mockExecutionLogPublish.Object))
             {
                 Assert.AreEqual(2000, pulseLogger.Interval);
                 var timer = pulseLogger._timer;
