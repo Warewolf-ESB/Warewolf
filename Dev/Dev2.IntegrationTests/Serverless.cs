@@ -13,9 +13,9 @@ namespace Dev2.Integration.Tests
 		public void Execution_Expected_CertainTimeElapsed()
 		{
 			//------------Setup for test--------------------------
-			var waitTime = 60;
+			var waitTime = 120;
 			var expectedTimeElapsed = TimeSpan.FromSeconds(waitTime).TotalMilliseconds;
-			var expectedExtraTimeElapsed = TimeSpan.FromSeconds(10).TotalMilliseconds;
+			var expectedExtraTimeElapsed = TimeSpan.FromSeconds(20).TotalMilliseconds;
 
 			//------------Execute Test---------------------------
 			var result = PerformanceGadgeWithReturn.TimedExecution((inputPath) => TestHelper.PostDataToWebserver(inputPath), waitTime);
