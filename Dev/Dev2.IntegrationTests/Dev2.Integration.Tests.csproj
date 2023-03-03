@@ -235,7 +235,7 @@
     </EmbeddedResource>
     <Content Include="RunServerlessTests500TimesInParallel.ps1" CopyToOutputDirectory="PreserveNewest">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ConsoleAppToTestExecuteCommandLineActivity\ConsoleAppToTestExecuteCommandLineActivity.csproj">
