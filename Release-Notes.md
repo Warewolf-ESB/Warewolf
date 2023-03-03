@@ -1,3 +1,15 @@
+Warewolf-2.8.2 (16 February 2023)
+======================
+
+Enhancements
+----------
+- Don’t throw error and from sub workflow if error is handled in main workflow
+
+Bug fixes
+----------
+- Fix POST tool reading escaped JSON into string
+- Patched for my.warewolf.io missing some data
+
 Warewolf-2.8.1.63 (19 January 2023)
 ======================
 

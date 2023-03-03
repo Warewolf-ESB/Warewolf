@@ -394,15 +394,19 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 if (allErrors.HasErrors())
                 {
                     var env = dataObject.Environment;
-                    foreach (var allError in allErrors.FetchErrors())
+                    if (this.IsEndedOnError || string.IsNullOrEmpty(OnErrorVariable))
                     {
-                        env.AddError(allError);
+                        foreach (var allError in allErrors.FetchErrors())
+                        {
+                            env.AddError(allError);
+                        }
                     }
 
                     // add to datalist in variable specified
                     if (!String.IsNullOrEmpty(OnErrorVariable))
                     {
-                        var errorString = env.FetchErrors();
+                        //string.Join(Environment.NewLine, AllErrors.Union(Errors));
+                        var errorString = string.Join(Environment.NewLine, allErrors.FetchErrors()); //env.FetchErrors();
                         var errors = ErrorResultTO.MakeErrorResultFromDataListString(errorString, true);
                         var upsertVariable = DataListUtil.AddBracketsToValueIfNotExist(OnErrorVariable);
                         if (errors.HasErrors())

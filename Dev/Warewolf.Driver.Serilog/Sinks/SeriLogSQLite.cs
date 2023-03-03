@@ -13,6 +13,7 @@ using Serilog.Events;
 using System;
 using Dev2.Common;
 using Warewolf.Logging;
+using System.IO;
 
 namespace Warewolf.Driver.Serilog
 {
@@ -89,7 +90,7 @@ namespace Warewolf.Driver.Serilog
 
     public class SeriLogSQLiteSource: ILoggerSource
     {
-        public string ConnectionString { get; set; } = Config.Legacy.AuditFilePath;
+        public string ConnectionString { get; set; } = Path.Combine(Config.Legacy.AuditFilePath, "AuditDB.db");
         public string TableName { get; set; } = "Logs";
         public ILoggerConnection NewConnection(ILoggerConfig loggerConfig)
         {

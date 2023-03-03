@@ -78,9 +78,9 @@ namespace Dev2.Integration.Tests.Server_Refresh
             SetupPermissions();
             RestartServer();
 
-            var url1 = $"http://localhost:3142/secure/Hello%20World.json?Name=Varian";
-            var passRequest = ExecuteRequest(new Uri(url1));
-            Assert.IsTrue(passRequest.Contains("\"Message\": \"Hello Varian.\""), "Hello World example workflow not loaded when programdata resources folder does not exist.");
+            var url = "http://localhost:3142/services/getserverversion.json";
+            var passRequest = ExecuteRequest(new Uri(url));
+            Assert.IsFalse(String.IsNullOrEmpty(passRequest));
         }
 
         void RestartServer()

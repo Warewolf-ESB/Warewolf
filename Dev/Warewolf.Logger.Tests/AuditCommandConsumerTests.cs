@@ -270,14 +270,14 @@ namespace Warewolf.Logger.Tests
             var mockSocket = new Mock<IWebSocketConnection>();
             var mockWriter = new Mock<IWriter>();
             mockWriter.Setup(o => o.WriteLine("Logging Server OnMessage: Type:" + auditCommand.Type)).Verifiable();
-            mockWriter.Setup(o => o.WriteLine("Logging Server Invalid Message Type")).Verifiable();
+            mockWriter.Setup(o => o.WriteLine("Logging Server Invalid Message Type ")).Verifiable();
 
             var auditCommandConsumer = new AuditCommandConsumer(mockLoggerConsumer.Object, mockSocket.Object, mockWriter.Object);
 
             auditCommandConsumer.Consume(auditCommand, parameters);
 
             mockWriter.Verify(o => o.WriteLine("Logging Server OnMessage: Type:" + auditCommand.Type), Times.Once);
-            mockWriter.Verify(o => o.WriteLine("Logging Server Invalid Message Type"), Times.Once);
+            mockWriter.Verify(o => o.WriteLine("Logging Server Invalid Message Type "), Times.Once);
         }
     }
 }

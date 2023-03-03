@@ -5,6 +5,7 @@
     <Configurations>Debug</Configurations>
     <Platforms>AnyCPU</Platforms>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+	<PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.4.1" />
