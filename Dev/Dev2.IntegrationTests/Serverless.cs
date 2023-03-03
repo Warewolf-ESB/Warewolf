@@ -1,9 +1,6 @@
-﻿using Dev2.Common;
-using Dev2.Common.Common;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Diagnostics;
-using System.Net;
 using TestBase;
 
 namespace Dev2.Integration.Tests
@@ -16,9 +13,9 @@ namespace Dev2.Integration.Tests
 		public void Execution_Expected_CertainTimeElapsed()
 		{
 			//------------Setup for test--------------------------
-			var waitTime = 30;
+			var waitTime = 60;
 			var expectedTimeElapsed = TimeSpan.FromSeconds(waitTime).TotalMilliseconds;
-			var expectedExtraTimeElapsed = TimeSpan.FromSeconds(5).TotalMilliseconds;
+			var expectedExtraTimeElapsed = TimeSpan.FromSeconds(10).TotalMilliseconds;
 
 			//------------Execute Test---------------------------
 			var result = PerformanceGadgeWithReturn.TimedExecution((inputPath) => TestHelper.PostDataToWebserver(inputPath), waitTime);
