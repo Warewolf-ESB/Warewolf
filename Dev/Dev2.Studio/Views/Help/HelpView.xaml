@@ -3,7 +3,6 @@
               xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
               xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
               xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-              xmlns:wpf="clr-namespace:CefSharp.Wpf;assembly=CefSharp.Wpf"
               mc:Ignorable="d"
               xmlns:customControls="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
               Background="Transparent"
@@ -16,23 +15,13 @@
                                             Margin="0,0,2,0"
                                             VerticalAlignment="Center"
                                             HorizontalAlignment="Center"
-                                            Visibility="Collapsed" />
+                                            Visibility="Visible" />
         <ScrollViewer>
-            <wpf:ChromiumWebBrowser x:Name="WebBrowserHost"
-                          Margin="3"
-                          RenderTransformOrigin="0.5,0.5"
-                          HorizontalAlignment="Stretch"
-                          VerticalAlignment="Stretch"
-                          Visibility="Visible">
-                <wpf:ChromiumWebBrowser.RenderTransform>
-                    <TransformGroup>
-                        <ScaleTransform />
-                        <SkewTransform />
-                        <RotateTransform Angle="-0.018" />
-                        <TranslateTransform />
-                    </TransformGroup>
-                </wpf:ChromiumWebBrowser.RenderTransform>
-            </wpf:ChromiumWebBrowser>
+            <Frame x:Name="WebBrowserHost"
+                        Margin="3"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        Visibility="Collapsed" />
         </ScrollViewer>
     </Grid>
 </UserControl>  

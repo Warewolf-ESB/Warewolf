@@ -818,7 +818,6 @@
     <PackageReference Include="Caliburn.Micro">
       <Version>1.4.1</Version>
     </PackageReference>
-    <PackageReference Include="CefSharp.Wpf" Version="110.0.250" />
     <PackageReference Include="codecracker.CSharp">
       <Version>1.1.0</Version>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -843,7 +842,7 @@
       <Version>2.4.3</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
-      <Version>13.0.1</Version>
+      <Version>13.0.2</Version>
     </PackageReference>
     <PackageReference Include="Prism.Mvvm">
       <Version>1.1.1</Version>
