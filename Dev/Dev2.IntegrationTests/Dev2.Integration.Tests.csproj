@@ -63,6 +63,7 @@
     <Compile Include="Redis\RedisRemoveIntegrationTests.cs" />
     <Compile Include="Redis\TestRedisActivity.cs" />
     <Compile Include="Server Refresh\FreshlyInstalledServerStartupTest.cs" />
+    <Compile Include="Serverless.cs" />
     <Compile Include="TestCoverage\TestCoverageCatalogIntegrationTests.cs" />
     <Compile Include="TestResource.Designer.cs">
       <AutoGen>True</AutoGen>
