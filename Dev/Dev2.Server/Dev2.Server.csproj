@@ -329,6 +329,7 @@
     <PackageReference Include="log4net">
       <Version>2.0.15</Version>
     </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="6.0.1" />
     <!--<PackageReference Include="Log4Net.Async">
       <Version>2.0.4</Version>
     </PackageReference>-->
@@ -404,6 +405,7 @@
       taskkill /f /im Warewolf.COMIPC.vshost.exe /fi "STATUS eq RUNNING"</PostBuildEvent>
     <StartupObject>Dev2.Program</StartupObject>
     <IsTestProject>false</IsTestProject>
+    <UserSecretsId>61f81da6-a240-4f74-ac27-c901cbc2e6bd</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
