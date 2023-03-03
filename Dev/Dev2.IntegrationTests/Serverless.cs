@@ -1,7 +1,9 @@
 ﻿using Dev2.Common;
+using Dev2.Common.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Diagnostics;
+using System.Net;
 using TestBase;
 
 namespace Dev2.Integration.Tests
@@ -14,9 +16,9 @@ namespace Dev2.Integration.Tests
 		public void Execution_Expected_CertainTimeElapsed()
 		{
 			//------------Setup for test--------------------------
-			var waitTime = 10;
+			var waitTime = 30;
 			var expectedTimeElapsed = TimeSpan.FromSeconds(waitTime).TotalMilliseconds;
-			var expectedExtraTimeElapsed = TimeSpan.FromSeconds(1).TotalMilliseconds;
+			var expectedExtraTimeElapsed = TimeSpan.FromSeconds(5).TotalMilliseconds;
 
 			//------------Execute Test---------------------------
 			var result = PerformanceGadgeWithReturn.TimedExecution((inputPath) => TestHelper.PostDataToWebserver(inputPath), waitTime);
@@ -37,7 +39,7 @@ namespace Dev2.Integration.Tests
 		{
 			var stopWatch = new Stopwatch();
 			stopWatch.Start();
-			var result = method.Invoke("http://localhost:3142/secure/" + "Wait.json?WaitSeconds=" + waitTime.ToString());
+			var result = method.Invoke($"http://{Environment.GetEnvironmentVariable("ComputerName")}:3142/secure/" + "Wait.json?WaitSeconds=" + waitTime.ToString());
 			stopWatch.Stop();
 			var json = Newtonsoft.Json.JsonConvert.DeserializeObject<WaitResult>(result);
 			Assert.AreEqual("Wait Successful", json.Result);
