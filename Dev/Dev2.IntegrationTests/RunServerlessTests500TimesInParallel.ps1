@@ -3,105 +3,105 @@
 )
 cd "$RunInDirectory"
 $proc000 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc001 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc002 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc003 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc004 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc005 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc006 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc007 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc008 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc009 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc010 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc011 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc012 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc013 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc014 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc015 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc016 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc017 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc018 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc019 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc020 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc021 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc022 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc023 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc024 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc025 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc026 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc027 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc028 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc029 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc030 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc031 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc032 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc033 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc034 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc035 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc036 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc037 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc038 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc039 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc040 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc041 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc042 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc043 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc044 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc045 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc046 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc047 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc048 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc049 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc050 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc051 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc052 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc053 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc054 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc055 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc056 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc057 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc058 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc059 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc060 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc061 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc062 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc063 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc064 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc065 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc066 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc067 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc068 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc069 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc070 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc071 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc072 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc073 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc074 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc075 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc076 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc077 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc078 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc079 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc080 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc081 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc082 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc083 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc084 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc085 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc086 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc087 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc088 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc089 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc090 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc091 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc092 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc093 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc094 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc095 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc096 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc097 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc098 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
-#$proc099 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc001 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc002 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc003 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc004 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc005 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc006 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc007 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc008 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc009 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc010 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc011 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc012 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc013 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc014 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc015 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc016 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc017 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc018 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc019 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc020 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc021 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc022 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc023 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc024 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc025 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc026 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc027 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc028 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc029 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc030 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc031 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc032 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc033 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc034 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc035 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc036 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc037 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc038 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc039 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc040 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc041 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc042 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc043 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc044 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc045 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc046 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc047 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc048 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc049 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc050 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc051 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc052 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc053 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc054 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc055 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc056 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc057 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc058 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc059 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc060 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc061 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc062 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc063 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc064 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc065 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc066 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc067 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc068 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc069 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc070 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc071 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc072 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc073 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc074 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc075 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc076 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc077 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc078 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc079 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc080 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc081 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc082 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc083 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc084 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc085 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc086 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc087 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc088 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc089 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc090 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc091 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc092 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc093 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc094 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc095 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc096 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc097 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc098 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
+$proc099 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
 #$proc100 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
 #$proc101 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
 #$proc102 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
@@ -503,105 +503,105 @@ $proc000 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net45
 #$proc498 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
 #$proc499 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
 $proc000.WaitForExit()
-#$proc001.WaitForExit()
-#$proc002.WaitForExit()
-#$proc003.WaitForExit()
-#$proc004.WaitForExit()
-#$proc005.WaitForExit()
-#$proc006.WaitForExit()
-#$proc007.WaitForExit()
-#$proc008.WaitForExit()
-#$proc009.WaitForExit()
-#$proc010.WaitForExit()
-#$proc011.WaitForExit()
-#$proc012.WaitForExit()
-#$proc013.WaitForExit()
-#$proc014.WaitForExit()
-#$proc015.WaitForExit()
-#$proc016.WaitForExit()
-#$proc017.WaitForExit()
-#$proc018.WaitForExit()
-#$proc019.WaitForExit()
-#$proc020.WaitForExit()
-#$proc021.WaitForExit()
-#$proc022.WaitForExit()
-#$proc023.WaitForExit()
-#$proc024.WaitForExit()
-#$proc025.WaitForExit()
-#$proc026.WaitForExit()
-#$proc027.WaitForExit()
-#$proc028.WaitForExit()
-#$proc029.WaitForExit()
-#$proc030.WaitForExit()
-#$proc031.WaitForExit()
-#$proc032.WaitForExit()
-#$proc033.WaitForExit()
-#$proc034.WaitForExit()
-#$proc035.WaitForExit()
-#$proc036.WaitForExit()
-#$proc037.WaitForExit()
-#$proc038.WaitForExit()
-#$proc039.WaitForExit()
-#$proc040.WaitForExit()
-#$proc041.WaitForExit()
-#$proc042.WaitForExit()
-#$proc043.WaitForExit()
-#$proc044.WaitForExit()
-#$proc045.WaitForExit()
-#$proc046.WaitForExit()
-#$proc047.WaitForExit()
-#$proc048.WaitForExit()
-#$proc049.WaitForExit()
-#$proc050.WaitForExit()
-#$proc051.WaitForExit()
-#$proc052.WaitForExit()
-#$proc053.WaitForExit()
-#$proc054.WaitForExit()
-#$proc055.WaitForExit()
-#$proc056.WaitForExit()
-#$proc057.WaitForExit()
-#$proc058.WaitForExit()
-#$proc059.WaitForExit()
-#$proc060.WaitForExit()
-#$proc061.WaitForExit()
-#$proc062.WaitForExit()
-#$proc063.WaitForExit()
-#$proc064.WaitForExit()
-#$proc065.WaitForExit()
-#$proc066.WaitForExit()
-#$proc067.WaitForExit()
-#$proc068.WaitForExit()
-#$proc069.WaitForExit()
-#$proc070.WaitForExit()
-#$proc071.WaitForExit()
-#$proc072.WaitForExit()
-#$proc073.WaitForExit()
-#$proc074.WaitForExit()
-#$proc075.WaitForExit()
-#$proc076.WaitForExit()
-#$proc077.WaitForExit()
-#$proc078.WaitForExit()
-#$proc079.WaitForExit()
-#$proc080.WaitForExit()
-#$proc081.WaitForExit()
-#$proc082.WaitForExit()
-#$proc083.WaitForExit()
-#$proc084.WaitForExit()
-#$proc085.WaitForExit()
-#$proc086.WaitForExit()
-#$proc087.WaitForExit()
-#$proc088.WaitForExit()
-#$proc089.WaitForExit()
-#$proc090.WaitForExit()
-#$proc091.WaitForExit()
-#$proc092.WaitForExit()
-#$proc093.WaitForExit()
-#$proc094.WaitForExit()
-#$proc095.WaitForExit()
-#$proc096.WaitForExit()
-#$proc097.WaitForExit()
-#$proc098.WaitForExit()
-#$proc099.WaitForExit()
+$proc001.WaitForExit()
+$proc002.WaitForExit()
+$proc003.WaitForExit()
+$proc004.WaitForExit()
+$proc005.WaitForExit()
+$proc006.WaitForExit()
+$proc007.WaitForExit()
+$proc008.WaitForExit()
+$proc009.WaitForExit()
+$proc010.WaitForExit()
+$proc011.WaitForExit()
+$proc012.WaitForExit()
+$proc013.WaitForExit()
+$proc014.WaitForExit()
+$proc015.WaitForExit()
+$proc016.WaitForExit()
+$proc017.WaitForExit()
+$proc018.WaitForExit()
+$proc019.WaitForExit()
+$proc020.WaitForExit()
+$proc021.WaitForExit()
+$proc022.WaitForExit()
+$proc023.WaitForExit()
+$proc024.WaitForExit()
+$proc025.WaitForExit()
+$proc026.WaitForExit()
+$proc027.WaitForExit()
+$proc028.WaitForExit()
+$proc029.WaitForExit()
+$proc030.WaitForExit()
+$proc031.WaitForExit()
+$proc032.WaitForExit()
+$proc033.WaitForExit()
+$proc034.WaitForExit()
+$proc035.WaitForExit()
+$proc036.WaitForExit()
+$proc037.WaitForExit()
+$proc038.WaitForExit()
+$proc039.WaitForExit()
+$proc040.WaitForExit()
+$proc041.WaitForExit()
+$proc042.WaitForExit()
+$proc043.WaitForExit()
+$proc044.WaitForExit()
+$proc045.WaitForExit()
+$proc046.WaitForExit()
+$proc047.WaitForExit()
+$proc048.WaitForExit()
+$proc049.WaitForExit()
+$proc050.WaitForExit()
+$proc051.WaitForExit()
+$proc052.WaitForExit()
+$proc053.WaitForExit()
+$proc054.WaitForExit()
+$proc055.WaitForExit()
+$proc056.WaitForExit()
+$proc057.WaitForExit()
+$proc058.WaitForExit()
+$proc059.WaitForExit()
+$proc060.WaitForExit()
+$proc061.WaitForExit()
+$proc062.WaitForExit()
+$proc063.WaitForExit()
+$proc064.WaitForExit()
+$proc065.WaitForExit()
+$proc066.WaitForExit()
+$proc067.WaitForExit()
+$proc068.WaitForExit()
+$proc069.WaitForExit()
+$proc070.WaitForExit()
+$proc071.WaitForExit()
+$proc072.WaitForExit()
+$proc073.WaitForExit()
+$proc074.WaitForExit()
+$proc075.WaitForExit()
+$proc076.WaitForExit()
+$proc077.WaitForExit()
+$proc078.WaitForExit()
+$proc079.WaitForExit()
+$proc080.WaitForExit()
+$proc081.WaitForExit()
+$proc082.WaitForExit()
+$proc083.WaitForExit()
+$proc084.WaitForExit()
+$proc085.WaitForExit()
+$proc086.WaitForExit()
+$proc087.WaitForExit()
+$proc088.WaitForExit()
+$proc089.WaitForExit()
+$proc090.WaitForExit()
+$proc091.WaitForExit()
+$proc092.WaitForExit()
+$proc093.WaitForExit()
+$proc094.WaitForExit()
+$proc095.WaitForExit()
+$proc096.WaitForExit()
+$proc097.WaitForExit()
+$proc098.WaitForExit()
+$proc099.WaitForExit()
 #$proc100.WaitForExit()
 #$proc101.WaitForExit()
 #$proc102.WaitForExit()
