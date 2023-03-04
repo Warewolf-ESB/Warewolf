@@ -1,4 +1,7 @@
-﻿cd "$(Agent.BuildDirectory)"
+﻿param(
+  [String] $RunInDirectory
+)
+cd "$RunInDirectory"
 $proc000 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
 $proc001 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
 $proc002 = Start-Process -Verb RunAs -File ".\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\vstest.console.exe" -ArgumentList '/logger:trx .\Dev2.Integration.Tests.dll /TestCaseFilter:"(TestCategory=Serverless)"' -PassThru
