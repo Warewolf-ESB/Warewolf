@@ -6,6 +6,7 @@ using Dev2.DynamicServices;
 using Dev2.Workspaces;
 using Dev2.Common;
 using Warewolf.Auditing.Drivers;
+using System;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -13,7 +14,7 @@ namespace Dev2.Runtime.ESB.Management.Services
     {
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            var executionId = values["ExecutionId"];
+            var executionId = values["ExecutionID"];
             var trimExecutionId = executionId.ToString().Trim();
             var serializer = new Dev2JsonSerializer();
             var auditQueryable = new AuditQueryableSqlite();
@@ -22,17 +23,32 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
 				LogDataCache.CurrentResults = auditQueryable.QueryLogData(values).ToList();
             }
-            var tmpObjects = LogDataCache.CurrentResults.FirstOrDefault(r => r.ExecutionId == trimExecutionId && r.Message.StartsWith("Execution Result"));
-            var replace = "";
+            var tmpObjects = LogDataCache.CurrentResults.FirstOrDefault(r => r.ExecutionID == trimExecutionId && r.Environment != string.Empty);
+            var message = string.Empty;
+            var startDateTime = new DateTime();
+            var url = string.Empty;
+            var user = string.Empty;
+            var completedDateTime = new DateTime();
+            var executionTime = string.Empty;
             if (tmpObjects != null)
             {
-                string message = tmpObjects.Message;
-                var startIdx = GlobalConstants.ExecutionLoggingResultStartTag.Length;
-                var endIdx = GlobalConstants.ExecutionLoggingResultEndTag.Length;
-                var lengthToSelect = message.Length - startIdx - endIdx;
-                replace = message.Substring(startIdx, lengthToSelect);
+                message = tmpObjects.Environment;
+                startDateTime = tmpObjects.StartDateTime;
+                url = tmpObjects.Url;
+                user = tmpObjects.User;
+                completedDateTime = tmpObjects.CompletedDateTime;
+                executionTime = tmpObjects.ExecutionTime;
             }
-            var logEntry = new Common.LogEntry { Result = replace };
+            var logEntry = new LogEntry
+            {
+                Result = message,
+                ExecutionId = trimExecutionId,
+                StartDateTime = startDateTime,
+                Url = url,
+                User = user,
+                CompletedDateTime = completedDateTime,
+                ExecutionTime = executionTime
+			};
             return serializer.SerializeToBuilder(logEntry);
         }
 

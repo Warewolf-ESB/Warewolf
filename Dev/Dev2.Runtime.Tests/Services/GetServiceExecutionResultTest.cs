@@ -1,40 +1,40 @@
 using System;
 using System.Collections.Generic;
-using System.Reflection;
 using System.Text;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Communication;
 using Dev2.Runtime.ESB.Management.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Dev2.Common;
-using Dev2.Runtime.Auditing;
 using Moq;
 using Dev2.Interfaces;
 using Warewolf.Storage;
 using System.Security.Principal;
+using Warewolf.Auditing;
+using Warewolf.Common.NetStandard20;
+using Warewolf.OS;
+using System.Threading.Tasks;
+using System.Threading;
 
 namespace Dev2.Tests.Runtime.Services
 {
     [TestClass]
     public class GetServiceExecutionResultTest
-    {
-        Dev2StateAuditLogger _dev2StateAuditLogger;
-        Mock<IDev2Activity> _activity;
-
-        private static Dev2StateAuditLogger GetDev2AuditStateLogger(Mock<IDSFDataObject> mockedDataObject)
+	{
+		IStateListener _dev2StateAuditLogger;
+		static IStateListener GetDev2AuditStateLogger(Mock<IDSFDataObject> mockedDataObject)
         {
-            return new Dev2StateAuditLogger(mockedDataObject.Object);
+            return new StateAuditLogger(new WebSocketPool()).NewStateListener(mockedDataObject.Object);
         }
 
-        private static void TestAuditSetupWithAssignedInputs(Guid resourceId, string workflowName, Guid executionId, out Dev2StateAuditLogger dev2AuditStateLogger, out Mock<IDev2Activity> activity)
+        static IStateListener TestAuditSetupWithAssignedInputs(Guid resourceId, string workflowName, Guid executionId)
         {
             // setup
             Mock<IDSFDataObject> mockedDataObject = SetupDataObjectWithAssignedInputs(resourceId, workflowName, executionId);
-            activity = new Mock<IDev2Activity>();
-            dev2AuditStateLogger = GetDev2AuditStateLogger(mockedDataObject);
+            return GetDev2AuditStateLogger(mockedDataObject);
         }
 
-        private static Mock<IDSFDataObject> SetupDataObjectWithAssignedInputs(Guid resourceId, string workflowName, Guid executionId)
+        static Mock<IDSFDataObject> SetupDataObjectWithAssignedInputs(Guid resourceId, string workflowName, Guid executionId)
         {
             // mocks
             var mockedDataObject = new Mock<IDSFDataObject>();
@@ -42,11 +42,46 @@ namespace Dev2.Tests.Runtime.Services
             mockedDataObject.Setup(o => o.ServiceName).Returns(() => workflowName);
             mockedDataObject.Setup(o => o.ResourceID).Returns(() => resourceId);
             mockedDataObject.Setup(o => o.ExecutionID).Returns(() => executionId);
-            var principal = new Mock<IPrincipal>();
+			mockedDataObject.Setup(o => o.WebUrl).Returns(() => "http://localhost:3142/secure/" + workflowName + ".json");
+			var principal = new Mock<IPrincipal>();
             principal.Setup(o => o.Identity).Returns(() => new Mock<IIdentity>().Object);
             mockedDataObject.Setup(o => o.ExecutingUser).Returns(() => principal.Object);
             return mockedDataObject;
         }
+
+		void CreateLogDataToTestWith(Guid expectedWorkflowId, Guid expectedExecutionId, string expectedWorkflowName)
+		{
+			var mockLoggingServiceMonitorWithRestart = new LoggingServiceMonitorWithRestart(new Mock<ChildProcessTrackerWrapper>().Object, new Mock<ProcessWrapperFactory>().Object);
+			var webSocketPool = new WebSocketPool();
+			var mockExecutionLoggerFactory = new Mock<ExecutionLogger.IExecutionLoggerFactory>();
+			var config = new StartupConfiguration
+			{
+				LoggingServiceMonitor = mockLoggingServiceMonitorWithRestart,
+				WebSocketPool = webSocketPool,
+				LoggerFactory = mockExecutionLoggerFactory.Object
+			};
+			var loggingProcessMonitor = config.LoggingServiceMonitor;
+			loggingProcessMonitor.Start();
+			var checkLogServerConnectionTask = Task.Run(() =>
+			{
+				var webSocketWrapper = webSocketPool.Acquire(Config.Auditing.Endpoint);
+				return webSocketWrapper.IsOpen();
+			});
+			var loggingServerCheckDelay = Task.Delay(TimeSpan.FromSeconds(300));
+			var result = Task.WaitAny(new[] { checkLogServerConnectionTask, loggingServerCheckDelay });
+			var isConnectedOkay = !checkLogServerConnectionTask.IsCanceled && !checkLogServerConnectionTask.IsFaulted && checkLogServerConnectionTask.Result == true;
+			var logServerConnectedOkayNoTimeout = result == 0 && isConnectedOkay;
+			Assert.IsTrue(logServerConnectedOkayNoTimeout);
+			_dev2StateAuditLogger = TestAuditSetupWithAssignedInputs(expectedWorkflowId, expectedWorkflowName, expectedExecutionId);
+			_dev2StateAuditLogger.LogExecuteCompleteState(new Audit()
+			{
+				ExecutionID = expectedExecutionId.ToString(),
+				WorkflowID = expectedWorkflowId.ToString(),
+				WorkflowName = expectedWorkflowName,
+				Url = "http://localhost:3142/secure/" + expectedWorkflowName + ".json"
+			});
+			Thread.Sleep(10000);
+		}
 
         [TestCleanup]
         public void Cleanup()
@@ -100,75 +135,48 @@ namespace Dev2.Tests.Runtime.Services
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("GetLogDataService_Execute")]
         public void GetServiceExecutionResult_Execute_WithExecutionId_ShouldFilterLogData()
-        {
-            //------------Setup for test--------------------------
-            var expectedWorkflowId = Guid.NewGuid();
-            var expectedExecutionId = Guid.NewGuid();
-            var nextActivity = new Mock<IDev2Activity>();
-            var expectedWorkflowName = "LogExecuteCompleteState_Workflow";
-            TestAuditSetupWithAssignedInputs(expectedWorkflowId, expectedWorkflowName, expectedExecutionId, out _dev2StateAuditLogger, out _activity);
-            _dev2StateAuditLogger.LogExecuteCompleteState(nextActivity.Object);
+		{
+			//------------Setup for test--------------------------
+			var expectedWorkflowId = Guid.NewGuid();
+			var expectedExecutionId = Guid.NewGuid();
+			var expectedWorkflowName = "LogExecuteCompleteState_Workflow";
+			CreateLogDataToTestWith(expectedWorkflowId, expectedExecutionId, expectedWorkflowName);
 
-            var getLogDataService = new GetServiceExecutionResult();
-            //---------------Assert Precondition----------------
-            Assert.IsNotNull(getLogDataService);
-            //------------Execute Test---------------------------
-            var stringBuilders = new Dictionary<string, StringBuilder> { { "ExecutionId", new StringBuilder("06385e0f-ac27-4cf0-af55-7642c3c08ba3") } };
-            var logEntriesJson = getLogDataService.Execute(stringBuilders, null);
-            var serializer = new Dev2JsonSerializer();
-            Assert.IsNotNull(logEntriesJson);
-            var logEntriesObject = serializer.Deserialize<List<AuditLog>>(logEntriesJson.ToString());
-            Assert.AreEqual(expectedWorkflowId.ToString(), logEntriesObject[0].WorkflowID);
+			var stringBuilders = new Dictionary<string, StringBuilder> { { "ExecutionID", new StringBuilder(expectedExecutionId.ToString()) } };
+			var serializer = new Dev2JsonSerializer();
+			var getLogDataService = new GetServiceExecutionResult();
+			//---------------Assert Precondition----------------
+			Assert.IsNotNull(getLogDataService);
+			//------------Execute Test---------------------------
+			var logEntriesJson = getLogDataService.Execute(stringBuilders, null);
+			//---------------Assert Postconditions----------------
+			Assert.IsNotNull(logEntriesJson);
+			var logEntriesObject = serializer.Deserialize<Common.LogEntry>(logEntriesJson.ToString());
+			Assert.AreEqual(expectedExecutionId.ToString(), logEntriesObject.ExecutionId);
 
-        }
-        [TestMethod]
+		}
+
+		[TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("GetLogDataService_Execute")]
         public void GetServiceExecutionResult_Execute_WithExecutionId_ShouldFilterLogData_NewFormat()
         {
             //------------Setup for test--------------------------
-            var getLogDataService = new GetServiceExecutionResult();
-            //---------------Assert Precondition----------------
-            Assert.IsNotNull(getLogDataService);
-            //------------Execute Test---------------------------
-            var stringBuilders = new Dictionary<string, StringBuilder> { { "ExecutionId", new StringBuilder("06385e0f-ac27-4cf0-af55-7642c3c08ba3") } };
+			var expectedWorkflowId = Guid.NewGuid();
+			var expectedExecutionId = Guid.NewGuid();
+			var expectedWorkflowName = "LogExecuteStartState_Workflow";
+			CreateLogDataToTestWith(expectedWorkflowId, expectedExecutionId, expectedWorkflowName);
+
+			var getLogDataService = new GetServiceExecutionResult();
+			//---------------Assert Precondition----------------
+			Assert.IsNotNull(getLogDataService);
+			//------------Execute Test---------------------------
+			var stringBuilders = new Dictionary<string, StringBuilder> { { "ExecutionID", new StringBuilder(expectedExecutionId.ToString()) } };
             var logEntriesJson = getLogDataService.Execute(stringBuilders, null);
 
             var serializer = new Dev2JsonSerializer();
-            var logEntry = serializer.Deserialize<LogEntry>(logEntriesJson.ToString());
+            var logEntry = serializer.Deserialize<Common.LogEntry>(logEntriesJson.ToString());
             Assert.IsNotNull(logEntry);
-        }
-
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        [TestCategory("GetLogDataService_GetLogEntryValues")]
-        public void GetServiceExecutionResult_GivenLogEntry_ExpectCorrectResult()
-        {
-            //------------Setup for test--------------------------
-            const string logEntry = @"2017-07-13 08:02:52,799 DEBUG - [52cea226-d594-49eb-9c37-0598bd2803f5] - Request URL [ http://RSAKLFPETERB:3142/Examples\Loop Constructs - Select and Apply.XML ]";
-            var dataServiceBase = new LogDataServiceBase();
-            //---------------Assert Precondition----------------
-            Assert.AreEqual(dataServiceBase.GetAuthorizationContextForService(), AuthorizationContext.Administrator);
-            //------------Execute Test---------------------------
-            var privateObject = new PrivateObject(dataServiceBase);
-            var invoke = (string[])privateObject.Invoke("GetLogEntryValues", BindingFlags.NonPublic | BindingFlags.Instance, logEntry);
-            Assert.AreEqual(5, invoke.Length);
-        }
-
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        [TestCategory("GetLogDataService_GetLogEntryValues")]
-        public void GetServiceExecutionResult_GivenLogEntry_ExpectCorrectResult_NewFormat()
-        {
-            //------------Setup for test--------------------------
-            const string logEntry = @"2017-07-13 10:16:55,613 DEBUG - [03659971-6b50-42e7-af3e-1177fc2e86ed] - Mapping Inputs from Environment";
-            var dataServiceBase = new LogDataServiceBase();
-            //---------------Assert Precondition----------------
-            Assert.AreEqual(dataServiceBase.GetAuthorizationContextForService(), AuthorizationContext.Administrator);
-            //------------Execute Test---------------------------
-            var privateObject = new PrivateObject(dataServiceBase);
-            var invoke = (string[])privateObject.Invoke("GetLogEntryValues", BindingFlags.NonPublic | BindingFlags.Instance, logEntry);
-            Assert.AreEqual(5, invoke.Length);
         }
     }
 }
