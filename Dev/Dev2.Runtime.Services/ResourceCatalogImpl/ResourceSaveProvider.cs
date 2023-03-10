@@ -198,7 +198,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             {
                 List<IResourceForTree> resourceForTrees = new List<IResourceForTree>();
                 var dependencies = resourceList[count]?.Dependencies;
-                if (dependencies.Count > 0)
+                if (dependencies != null && dependencies.Count > 0)
                 {
                     dependencies.ToList().ForEach(c =>
                     {
