@@ -28,7 +28,7 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
-      <Version>13.0.1</Version>
+      <Version>13.0.2</Version>
     </PackageReference>
     <PackageReference Include="System.Drawing.Common" Version="4.7.2" />
     <PackageReference Include="System.Security.Cryptography.ProtectedData" Version="4.5.0" />
