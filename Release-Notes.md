@@ -1,3 +1,16 @@
+Warewolf-2.8.2.9 (3 March 2023)
+======================
+
+Enhancements
+----------
+- A warning is logged if there is less than 10% total memory available.
+
+Bug fixes
+----------
+- Reduced the installer size.
+- patched about "PointCollection".
+- Deleted Demo workflows no longer come back when the server restarts.
+
 Warewolf-2.8.2 (16 February 2023)
 ======================
 
