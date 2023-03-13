@@ -350,7 +350,8 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             dataObjectMock.Setup(o => o.StateNotifier).Returns(mockStateNotifier.Object);
 
             mockStateNotifier.Setup(o => o.LogActivityExecuteState(It.IsAny<IDev2Activity>())).Verifiable();
-            mockStateNotifier.Setup(o => o.LogExecuteException(It.IsAny<SerializableException>(), It.IsAny<IDev2Activity>())).Verifiable();
+            var actualExceptionMessage = string.Empty;
+            mockStateNotifier.Setup(o => o.LogExecuteException(It.IsAny<SerializableException>(), It.IsAny<IDev2Activity>())).Callback<SerializableException, Object>((ex, act) => { actualExceptionMessage = ex.Message; }).Verifiable();
 
             var logManagerMock = new Mock<IStateNotifierFactory>();
             logManagerMock.Setup(o => o.New(It.IsAny<IDSFDataObject>())).Returns(mockStateNotifier.Object);
@@ -368,7 +369,8 @@ namespace Dev2.Tests.Runtime.ESB.Execution
 
             //--------------Assert-------------------------------
             Assert.IsNotNull(dataObjectMock.Object.ExecutionException);
-            mockStateNotifier.Verify(o => o.LogExecuteException(falseSerializableException, activityMock.Object), Times.Once);
+            Assert.AreEqual(falseException.Message, actualExceptionMessage, "Wrong exception message logged.");
+            mockStateNotifier.Verify(o => o.LogExecuteException(It.IsAny<SerializableException>(), activityMock.Object), Times.Once);
             mockStateNotifier.Verify(o => o.LogExecuteCompleteState(It.IsAny<IDev2Activity>()), Times.Once);
             mockStateNotifier.Verify(o => o.Dispose(), Times.Once);
             mockExecutionManager.Verify(o => o.CompleteExecution(), Times.Once);

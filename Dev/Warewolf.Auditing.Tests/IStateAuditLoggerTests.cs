@@ -46,7 +46,8 @@ namespace Warewolf.Auditing.Tests
 
             var notifier = new StateNotifier();
             var stateLoggerMock = new Mock<IStateListener>();
-            stateLoggerMock.Setup(o => o.LogExecuteException(new SerializableException(exception), nextActivity)).Verifiable();
+			var actualExceptionMessage = string.Empty;
+			stateLoggerMock.Setup(o => o.LogExecuteException(It.IsAny<SerializableException>(), nextActivity)).Callback<SerializableException, Object>((ex, act) => { actualExceptionMessage = ex.Message; }).Verifiable();
             stateLoggerMock.Setup(o => o.LogAdditionalDetail(message, detailMethodName)).Verifiable();
             stateLoggerMock.Setup(o => o.LogExecuteCompleteState(nextActivity)).Verifiable();
             stateLoggerMock.Setup(o => o.LogExecuteActivityCompleteState(nextActivity)).Verifiable();
@@ -61,8 +62,9 @@ namespace Warewolf.Auditing.Tests
             notifier.LogExecuteActivityCompleteState(nextActivity);
             notifier.LogStopExecutionState(nextActivity);
 
-            // verify
-            stateLoggerMock.Verify();
+			// verify
+			Assert.AreEqual(exception.Message, actualExceptionMessage, "Wrong exception message logged.");
+			stateLoggerMock.Verify();
             notifier.Dispose();
         }
 

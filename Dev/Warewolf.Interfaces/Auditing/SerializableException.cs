@@ -19,7 +19,7 @@ namespace Warewolf.Auditing
 			Message = exception.Message.ToString();
 			Data = new string[0];
 			InnerException = exception.InnerException;
-			TargetSite = exception.TargetSite.ToString();
+			TargetSite = exception.TargetSite?.ToString();
 			StackTrace = exception.StackTrace;
 			HelpLink = exception.HelpLink;
 			Source = exception.Source;
