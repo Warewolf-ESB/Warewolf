@@ -351,7 +351,9 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
                 if (!(Test-Path "$PSScriptRoot\Bin\$OutputFolderName\_PublishedWebsites\Dev2.Web")) {
                     Copy-Item -Path "$PSScriptRoot\Dev\Dev2.Web2" "$PSScriptRoot\Bin\$OutputFolderName\_PublishedWebsites\Dev2.Web" -Force -Recurse
                 }
-                Copy-Item -Path "$PSScriptRoot\Dev\.run\Job Shortcuts" "$PSScriptRoot\Bin\$OutputFolderName\Job Shortcuts" -Force -Recurse
+                Copy-Item -Path "$PSScriptRoot\Dev\.azure\TestRun.ps1" "$PSScriptRoot\Bin\$OutputFolderName\TestRun.ps1" -Force
+                Copy-Item -Path "$PSScriptRoot\Dev\.azure\StartFTPServer.ps1" "$PSScriptRoot\Bin\$OutputFolderName\StartFTPServer.ps1" -Force
+                Copy-Item -Path "$PSScriptRoot\Dev\.azure\StartFTPSServer.ps1" "$PSScriptRoot\Bin\$OutputFolderName\StartFTPSServer.ps1" -Force
             }
         }
     }
