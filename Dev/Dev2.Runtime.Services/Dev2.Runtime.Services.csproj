@@ -280,6 +280,7 @@
     <Compile Include="Compiler\ServiceModelCompiler.cs" />
     <Compile Include="ResourceCatalogImpl\Common.cs" />
     <Compile Include="ResourceCatalogImpl\ResourceDeleteProvider.cs" />
+    <Compile Include="ResourceCatalogImpl\ResourceDependentProvider.cs" />
     <Compile Include="ResourceCatalogImpl\ResourceDuplicateProvider.cs" />
     <Compile Include="ResourceCatalogImpl\ResourceLoadProvider.cs" />
     <Compile Include="ResourceCatalogImpl\ResourceNameProvider.cs" />
