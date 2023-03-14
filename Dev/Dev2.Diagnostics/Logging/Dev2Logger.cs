@@ -158,11 +158,16 @@ namespace Dev2.Common
         {
             var h = (Hierarchy)LogManager.GetRepository();
             var rootLogger = h.Root;
-            if (rootLogger.GetAppender("LogFileAppender") is RollingFileAppender appender)
-            {
-                var logSize = appender.MaxFileSize / 1024 / 1024;
-                return (int)Math.Round((decimal)logSize, 0);
-            }
+            var appenderVals = LogManager.GetLogger("LogFileAppender").Logger.Repository.GetAppenders();
+            foreach(var appender in appenderVals)
+            {               
+                if(appender.Name=="rollingFile")
+                {                    
+                    RollingFileAppender rollAppender = (RollingFileAppender)appender;
+                    var logSize = rollAppender.MaxFileSize / 1024 / 1024;
+                    return (int)Math.Round((decimal)logSize, 0);
+                }
+            } 
             return 0;
         }
 
@@ -286,7 +291,7 @@ namespace Dev2.Common
 
         static void UpdateFileSizeForFileLogAppender(string maxLogSize, IList<XElement> appenders)
         {
-            var fileAppender = appenders.FirstOrDefault(element => element.Attribute("name").Value == "LogFileAppender");
+            var fileAppender = appenders.FirstOrDefault(element => element.Attribute("name").Value == "rollingFile");
             var maxFileSizeElement = fileAppender?.Element("maximumFileSize");
             var maxFileSizeElementValueAttrib = maxFileSizeElement?.Attribute("value");
             if (maxFileSizeElementValueAttrib != null)
