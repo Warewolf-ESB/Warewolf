@@ -45,6 +45,7 @@ namespace Dev2.Studio.ViewModels.DependencyVisualization
         readonly IServer _server;
         readonly IPopupController _popupController;
         readonly IDependencyGraphGenerator _graphGenerator;
+        private bool _isProgressBarVisible;
 
         public DependencyVisualiserViewModel(IDependencyGraphGenerator generator, IEventAggregator aggregator, IServer server)
             : this(aggregator)
@@ -181,11 +182,22 @@ namespace Dev2.Studio.ViewModels.DependencyVisualization
             }
         }
 
+        public bool IsProgressBarVisible
+        {
+            get => _isProgressBarVisible;
+            set
+            {
+                _isProgressBarVisible = value;
+                OnPropertyChanged(nameof(IsProgressBarVisible));
+            }
+        }
+
         public override string DisplayName => string.Format(GetDependsOnMe ? "Dependency - {0}" : "{0}*Dependencies", ResourceModel.ResourceName);
 
         // NOTE: This method is invoked from DependencyVisualiser.xaml
         async void BuildGraphs()
         {
+            IsProgressBarVisible = true;
             var repo = ResourceModel.Environment.ResourceRepository;
             var graphData = await repo.GetDependenciesXmlAsync(ResourceModel, GetDependsOnMe);
 
@@ -205,6 +217,8 @@ namespace Dev2.Studio.ViewModels.DependencyVisualization
                 GetItems(new List<IDependencyVisualizationNode> { graph.Nodes.FirstOrDefault() }, null, acc, seenResource);
                 AllNodes = acc.Count == 0 || acc.LastOrDefault() == null ? new ObservableCollection<IExplorerItemNodeViewModel>() : new ObservableCollection<IExplorerItemNodeViewModel>(acc.Last().AsNodeList());
             }
+
+            IsProgressBarVisible = false;
         }
 
 

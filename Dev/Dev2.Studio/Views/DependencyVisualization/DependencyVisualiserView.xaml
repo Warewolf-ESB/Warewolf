@@ -5,7 +5,7 @@
              xmlns:behavior="clr-namespace:Dev2.CustomControls.Behavior;assembly=Dev2.CustomControls"
              xmlns:ig="http://schemas.infragistics.com/xaml"
              xmlns:interfaces="clr-namespace:Dev2.Common.Interfaces.Scheduler.Interfaces;assembly=Dev2.Common.Interfaces"
-             xmlns:converters="clr-namespace:Dev2.AppResources.Converters;assembly=Dev2.Studio.Core"
+             xmlns:converters="clr-namespace:Dev2.AppResources.Converters;assembly=Dev2.Studio.Core" xmlns:customControls="clr-namespace:Warewolf.Studio.Views;assembly=Warewolf.Studio.Views"
              AutomationProperties.AutomationId="UI_DependencyView_AutoID">
 
     <UserControl.Resources>
@@ -44,7 +44,7 @@
                                  x:Name="WfDependsOn"
                                  HorizontalAlignment="Left"
                                  Content="{Binding FavoritesLabel}"></RadioButton>
-
+                    
                     <StackPanel Grid.Column="1" Grid.Row="0" HorizontalAlignment="Right">
                         <Grid>
                             <Grid.ColumnDefinitions>
@@ -113,6 +113,12 @@
                     </ig:NetworkNodeNodeLayout>
                 </ig:XamNetworkNode.GlobalNodeLayouts>
             </ig:XamNetworkNode>
+            <customControls:CircularProgressBar Grid.Column="0"
+                                Height="40"
+                                Width="150"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Visibility="{Binding IsProgressBarVisible, Converter={StaticResource BoolToVisibilityConverterPositive}}" />
 
         </Grid>
     </ScrollViewer>
