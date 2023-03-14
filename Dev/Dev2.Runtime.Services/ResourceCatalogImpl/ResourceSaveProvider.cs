@@ -38,6 +38,7 @@ using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.Security;
 using Dev2.Runtime.ServiceModel.Data;
 using Warewolf.Resource.Errors;
+
 using static Dev2.Common.Interfaces.WarewolfExecutionEnvironmentException;
 
 namespace Dev2.Runtime.ResourceCatalogImpl
@@ -94,7 +95,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
         public ResourceCatalogResult SaveResource(Guid workspaceID, IResource resource, string savedPath, string reason, string user)
         {
             _serverVersionRepository.StoreVersion(resource, user, reason, workspaceID, savedPath);
-
+         
             if (resource == null)
             {
                 throw new ArgumentNullException(nameof(resource));
@@ -188,8 +189,34 @@ namespace Dev2.Runtime.ResourceCatalogImpl
         void UpdateResourceDependencies(IResource resource, StringBuilder contents)
         {
             resource.LoadDependencies(contents.ToXElement());
-        }
 
+            List<IResource> resourceList = new List<IResource>();
+            var count = 0;
+            resourceList.Add(resource);
+
+            while (count != -1)
+            {
+                List<IResourceForTree> resourceForTrees = new List<IResourceForTree>();
+                var dependencies = resourceList[count]?.Dependencies;
+                if (dependencies != null && dependencies.Count > 0)
+                {
+                    dependencies.ToList().ForEach(c =>
+                    {
+                        c.Resource = _resourceCatalog.GetResource(GlobalConstants.ServerWorkspaceID, c.ResourceID);
+
+                        resourceList.Add(c.Resource);
+                        resourceForTrees.Add(c);
+
+                        count++;
+                    });
+                }
+                else
+                {
+                    count = -1;
+                }
+            }
+            resource = resourceList[0];
+        }
         protected void CompileTheResourceAfterSave(Guid workspaceID, IResource resource, StringBuilder contents, ServiceAction beforeAction)
         {
             if (beforeAction != null)

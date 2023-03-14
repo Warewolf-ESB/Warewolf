@@ -103,23 +103,37 @@ namespace Warewolf.Auditing.Drivers
                 foreach (var result in results)
                 {
                     var audit = JsonConvert.DeserializeObject<Audit>(result);
+                    if (audit.ExecutionTime == null)
+                    {
+                        audit.ExecutionTime = (audit.CompletedDateTime - audit.StartDateTime).ToString();
+                    }
+                    if (audit.Status == null)
+					{
+                        var trimStart = "LogExecute";
+						if (audit.AuditType.StartsWith(trimStart))
+						{
+							audit.Status = audit.AuditType.Substring(trimStart.Length);
+						}
+						else
+						{
+							trimStart = "Log";
+							if (audit.AuditType.StartsWith(trimStart))
+							{
+								audit.Status = audit.AuditType.Substring(trimStart.Length);
+							}
+							else
+							{
+								audit.Status = audit.AuditType;
+							}
+						}
+                        var trimEnd = "State";
+                        if (audit.Status.EndsWith(trimEnd))
+                        {
+							audit.Status = audit.Status.Substring(0, audit.Status.Length - trimEnd.Length);
+						}
+                    }
                     if (audit != null)
                     {
-                        if (audit.ExecutionTime == null)
-                        {
-                            audit.ExecutionTime = (audit.CompletedDateTime - audit.StartDateTime).ToString();
-                        }
-                        if (audit.Status == null)
-                        {
-                            if (audit.AuditType.StartsWith("Log"))
-                            {
-                                audit.Status = audit.AuditType.Substring(3);
-                            }
-                            else
-                            {
-                                audit.Status = audit.AuditType;
-                            }
-                        }
                         yield return audit;
                     }
                 }

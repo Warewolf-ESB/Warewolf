@@ -142,8 +142,12 @@ namespace Dev2.Activities.Specs.Composition
         private Mock<IStateNotifier> SetupMockStateNotifier()
         {
             var mockStateNotifier = new Mock<IStateNotifier>();
-            _scenarioContext.Add(nameof(mockStateNotifier), mockStateNotifier);
-            return mockStateNotifier;
+			mockStateNotifier.Setup(o => o.LogExecuteException(It.IsAny<SerializableException>(), It.IsAny<IDev2Activity>())).Callback<SerializableException, Object>((ex, act) => 
+            {
+				_scenarioContext.Add("actualExceptionMessage", ex.Message);
+			}).Verifiable();
+			_scenarioContext.Add(nameof(mockStateNotifier), mockStateNotifier);
+			return mockStateNotifier;
         }
 
         private static DsfDataObject BuildDataObject(IResourceModel workflow, IPrincipal principal, IStateNotifier stateNotifier, IExecutionEnvironment environment, bool stopOnError)
@@ -289,8 +293,9 @@ namespace Dev2.Activities.Specs.Composition
         {
             var mockStateNotifier = _scenarioContext.Get<Mock<IStateNotifier>>("mockStateNotifier");
             var activityMock = _scenarioContext.Get<IDev2Activity>("activityMock");
-
-            mockStateNotifier.Verify(o => o.LogExecuteException(_falseException, activityMock));
+			var actualExceptionMessage = _scenarioContext.Get<string>("actualExceptionMessage");
+			Assert.AreEqual(_falseException.Message, actualExceptionMessage, "Wrong exception message was thrown.");
+            mockStateNotifier.Verify(o => o.LogExecuteException(It.IsAny<SerializableException>(), activityMock));
         }
 
         [Then(@"a detailed execution exception log entry is created")]
