@@ -20,6 +20,8 @@ using System.Xml.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.CodeDom;
+using Microsoft.AspNetCore.Mvc;
+using System.Net.Http;
 
 namespace Dev2.Common.Common
 {
@@ -114,19 +116,22 @@ namespace Dev2.Common.Common
         {
             try
             {
-                var result = sb.EncodeStream(Encoding.UTF8);
+                var result = sb.EncodeStream(Encoding.Unicode);
                 XElement.Load(result);
                 result.Position = 0;
                 return result;
             }
             catch (Exception ex)
             {
-                var result = sb.EncodeStream(Encoding.Unicode);
+                
+                var result = sb.EncodeStream(Encoding.UTF8);
                 XElement.Load(result);
                 result.Position = 0;
                 return result;
             }
         }
+
+       
 
         static Stream EncodeStream(this StringBuilder sb, Encoding encoding)
         {
@@ -546,5 +551,7 @@ namespace Dev2.Common.Common
         private static byte[] GetBytesFromFailedBase64String(string base64String) => Encoding.ASCII.GetBytes(base64String);
 
         private static byte[] GetBytesFromBase64String(string base64String) => Convert.FromBase64String(base64String);
+
+        
     }
 }

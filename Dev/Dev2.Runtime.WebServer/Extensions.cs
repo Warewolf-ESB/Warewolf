@@ -12,6 +12,7 @@
 using Dev2.Common;
 using Dev2.Web;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.WebApiCompatShim;
 using System;
 using System.Linq;
@@ -129,6 +130,11 @@ namespace Dev2.Runtime.WebServer
                 builder.Port = request.Host.Port.Value;
 
             return builder.Uri;
+        }
+
+        public static ActionResult ToResponseData(this HttpResponseMessage message)
+        {
+            return new System.Web.Http.ResponseMessageResult(message);
         }
 
     }

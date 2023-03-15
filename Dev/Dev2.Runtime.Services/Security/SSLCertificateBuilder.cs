@@ -50,7 +50,7 @@ namespace Dev2.Runtime.Security
                     File.WriteAllText(exeBase, writeBack);
                 }
 
-                if(ProcessHost.Invoke(workingDir, "CreateCertificate.bat", null))
+                if(ProcessHost.Invoke(workingDir, "CreateCertificate.bat", null, true))
                 {
                     result = BindSslCertToPorts(endPoint, certPath);
                 }

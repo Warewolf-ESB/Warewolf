@@ -17,6 +17,7 @@ using System.Net.Http;
 using Dev2.Runtime.WebServer.Handlers;
 using Dev2.Runtime.WebServer.Security;
 using Microsoft.AspNetCore.Mvc;
+using Saxon.Hej.functions;
 
 namespace Dev2.Runtime.WebServer.Controllers
 {
@@ -25,7 +26,7 @@ namespace Dev2.Runtime.WebServer.Controllers
      * request that comes from an HTTP, that includes REST and a user executing a workflow
      * from a web browser
      */
-    
+
     [CustomActionFilter]
     [ApiController]
     [Route("")]
@@ -40,7 +41,7 @@ namespace Dev2.Runtime.WebServer.Controllers
         {
             if (__name__.EndsWith("apis.json", StringComparison.OrdinalIgnoreCase))
             {
-                var path = __name__.Split(new[] {"/apis.json"}, StringSplitOptions.RemoveEmptyEntries);
+                var path = __name__.Split(new[] { "/apis.json" }, StringSplitOptions.RemoveEmptyEntries);
                 if (path.Any() && path[0].Equals("apis.json", StringComparison.OrdinalIgnoreCase))
                 {
                     path[0] = null;
@@ -56,12 +57,12 @@ namespace Dev2.Runtime.WebServer.Controllers
 
             if (__name__.EndsWith(".api", StringComparison.OrdinalIgnoreCase))
             {
-                var path = __name__.Split(new[] {"/.api"}, StringSplitOptions.RemoveEmptyEntries);
+                var path = __name__.Split(new[] { "/.api" }, StringSplitOptions.RemoveEmptyEntries);
                 if (path.Any() && path[0].Equals(".api", StringComparison.OrdinalIgnoreCase))
                 {
                     path[0] = null;
                 }
-            
+
                 var requestVar = new NameValueCollection
                 {
                     {"servicename", __name__},
@@ -70,7 +71,7 @@ namespace Dev2.Runtime.WebServer.Controllers
                 };
                 return ProcessRequest<GetOpenAPIServiceHandler>(requestVar, isUrlWithTokenPrefix);
             }
-            
+
             var requestVariables = new NameValueCollection
             {
                 {"servicename", __name__},
@@ -102,23 +103,23 @@ namespace Dev2.Runtime.WebServer.Controllers
         [HttpGet]
         [HttpPost]
         [Route("Secure/{*__name__}")]
-        public HttpResponseMessage ExecuteSecureWorkflow(string __name__)
+        public ActionResult ExecuteSecureWorkflow(string __name__)
         {
             if (Request?.ToUri() != null)
             {
                 var requestUri = Request.ToUri();
                 if (requestUri.ToString().EndsWith("/.tests", StringComparison.InvariantCultureIgnoreCase) || requestUri.ToString().EndsWith("/.tests.trx", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    return ExecuteFolderTests(requestUri.ToString(), false);
+                    return ExecuteFolderTests(requestUri.ToString(), false).ToResponseData();
                 }
 
                 if (requestUri.ToString().EndsWith("/.coverage", StringComparison.InvariantCultureIgnoreCase) || requestUri.ToString().EndsWith("/.coverage.json", StringComparison.InvariantCultureIgnoreCase) || requestUri.ToString().EndsWith("/.coverage.trx", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    return ExecuteFolderTests(requestUri.ToString(), false);
+                    return ExecuteFolderTests(requestUri.ToString(), false).ToResponseData();
                 }
             }
 
-            return ExecuteWorkflow(__name__, false, false);
+            return ExecuteWorkflow(__name__, false, false).ToResponseData();
         }
 
         [HttpGet]
@@ -176,5 +177,5 @@ namespace Dev2.Runtime.WebServer.Controllers
         }
     }
 
-   
+
 }

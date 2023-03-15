@@ -28,16 +28,33 @@ namespace Dev2.PerformanceCounters.Management
             EmptyCounter = new EmptyCounter();
         }
 
-        public IPerformanceCounter GetCounter(string name) => _counters.First(a => a.Name == name).ToSafe();
+        public IPerformanceCounter GetCounter(string name)
+        {
+            var counter = _counters.FirstOrDefault(a => a.Name == name);
+            
+            if(null != counter) return counter.ToSafe();
+            
+            return EmptyCounter; // safely return EmptyCounter
+        } 
 
-        public IPerformanceCounter GetCounter(WarewolfPerfCounterType type) => _counters.First(a => a.PerfCounterType == type).ToSafe();
+        public IPerformanceCounter GetCounter(WarewolfPerfCounterType type)
+        {
+            var counter = _counters.FirstOrDefault(a => a.PerfCounterType == type);
+            
+            if(null != counter) return counter.ToSafe();
+
+            return null; // not returning EmptyCounter as this overload is used by Tests so to fail it when it is null returning null here
+        } 
 
         public IPerformanceCounter GetCounter(Guid resourceId, WarewolfPerfCounterType type)
         {
             try
             {
-                var returnValue = _resourceCounters.Where(a => a is IResourcePerformanceCounter).Cast<IResourcePerformanceCounter>().First(a => a.ResourceId == resourceId && a.PerfCounterType==type).ToSafe();
-                return returnValue;
+                var returnValue = _resourceCounters.Where(a => a is IResourcePerformanceCounter).Cast<IResourcePerformanceCounter>().FirstOrDefault(a => a.ResourceId == resourceId && a.PerfCounterType == type);
+ 
+                if(null != returnValue) return returnValue.ToSafe();
+                
+                return EmptyCounter;
             }
             catch(Exception)
             {
@@ -68,7 +85,8 @@ namespace Dev2.PerformanceCounters.Management
 
         public IResourcePerformanceCounter CreateCounter(Guid resourceId, WarewolfPerfCounterType type, string name)
         {
-            if (GetCounter(resourceId, type) == EmptyCounter)
+            var foundCounter = GetCounter(resourceId, type);
+            if (foundCounter == EmptyCounter)
             {
                 IResourcePerformanceCounter counter = new EmptyCounter();
 
@@ -97,7 +115,7 @@ namespace Dev2.PerformanceCounters.Management
                 _perf.Save(_resourceCounters, EnvironmentVariables.ServerResourcePerfmonSettingsFile);
                 return counter;
             }
-            return (IResourcePerformanceCounter)GetCounter(resourceId, type).FromSafe();
+            return (IResourcePerformanceCounter)foundCounter.FromSafe();
         }
 
         #endregion

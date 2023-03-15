@@ -210,6 +210,16 @@ namespace Dev2.Runtime.Hosting
             Queues.Remove(triggerQueue);
         }
 
+        public void DeleteTriggerQueueFile(ITriggerQueue triggerQueue)
+        {
+            var queueFilePath = GetQueueFilePath(triggerQueue);
+
+            if (_fileWrapper.Exists(queueFilePath))
+            {
+                _fileWrapper.Delete(queueFilePath);
+            }
+        }
+
         private void Load()
         {
             var newQueues = new List<ITriggerQueue>();

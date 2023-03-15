@@ -19,8 +19,7 @@ using System.Security.Principal;
 using Dev2.Common;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
-
-
+using ServiceStack.Redis.Generic;
 
 namespace Dev2.Workspaces
 {
@@ -35,7 +34,7 @@ namespace Dev2.Workspaces
         public static readonly Guid ServerWorkspaceID = Guid.Empty;
         public static readonly string ServerWorkspacePath = EnvironmentVariables.GetWorkspacePath(GlobalConstants.ServerWorkspaceID);
 
-        readonly Dev2.Net6.Compatibility.ConcurrentDictionary<string, Guid> _userMap;
+        readonly System.Collections.Concurrent.ConcurrentDictionary<string, Guid> _userMap;
         readonly ConcurrentDictionary<Guid, IWorkspace> _items = new ConcurrentDictionary<Guid, IWorkspace>();
         readonly IResourceCatalog _resourceCatalog;
 
@@ -63,11 +62,11 @@ namespace Dev2.Workspaces
         {
             get
             {
-                if(_instance == null)
+                if (_instance == null)
                 {
-                    lock(SyncRoot)
+                    lock (SyncRoot)
                     {
-                        if(_instance == null)
+                        if (_instance == null)
                         {
                             _instance = new WorkspaceRepository();
                         }
@@ -89,7 +88,7 @@ namespace Dev2.Workspaces
         // PBI 9363 - 2013.05.29 - TWR: Added for testing 
         public WorkspaceRepository(IResourceCatalog resourceCatalog)
         {
-            if(resourceCatalog == null)
+            if (resourceCatalog == null)
             {
                 throw new ArgumentNullException("resourceCatalog");
             }
@@ -136,7 +135,7 @@ namespace Dev2.Workspaces
                 {
                     userID = identity.User.Value;
                 }
-                
+
                 if (!_userMap.TryGetValue(userID, out workspaceID))
                 {
                     workspaceID = Guid.NewGuid();
@@ -160,7 +159,7 @@ namespace Dev2.Workspaces
 
         public IWorkspace Get(Guid workspaceID, bool force, bool loadResources)
         {
-            lock(_readLock)
+            lock (_readLock)
             {
                 // PBI 9363 - 2013.05.29 - TWR: Added loadResources parameter
                 if (force || !_items.TryGetValue(workspaceID, out IWorkspace workspace))
@@ -198,14 +197,14 @@ namespace Dev2.Workspaces
         #endregion
 
         #region GetLatest
-        
+
         public void GetLatest(IWorkspace workspace, IList<string> servicesToIgnore)
         {
-            lock(_readLock)
+            lock (_readLock)
             {
-                
+
                 var filesToIgnore = servicesToIgnore.Select(s => s + ".bite").ToList();
-                
+
                 var targetPath = EnvironmentVariables.GetWorkspacePath(workspace.ID);
                 _resourceCatalog.SyncTo(ServerWorkspacePath, targetPath, true, true, filesToIgnore);
             }
@@ -221,7 +220,7 @@ namespace Dev2.Workspaces
         /// <param name="workspace">The workspace to be saved.</param>
         public void Save(IWorkspace workspace)
         {
-            if(workspace == null)
+            if (workspace == null)
             {
                 return;
             }
@@ -245,7 +244,7 @@ namespace Dev2.Workspaces
         /// <param name="workspace">The workspace to be deleted.</param>
         public void Delete(IWorkspace workspace)
         {
-            if(workspace == null)
+            if (workspace == null)
             {
                 return;
             }
@@ -300,13 +299,13 @@ namespace Dev2.Workspaces
 
         void Write(IWorkspace workspace)
         {
-            if(workspace == null)
+            if (workspace == null)
             {
                 return;
             }
 
             var filePath = GetFileName(workspace.ID);
-            using(var stream = File.Open(filePath, FileMode.OpenOrCreate))
+            using (var stream = File.Open(filePath, FileMode.OpenOrCreate))
             {
                 var formatter = new BinaryFormatter();
                 formatter.Serialize(stream, workspace);
@@ -320,7 +319,7 @@ namespace Dev2.Workspaces
         void Delete(Guid workspaceID)
         {
             var filePath = GetFileName(workspaceID);
-            if(File.Exists(filePath))
+            if (File.Exists(filePath))
             {
                 File.Delete(filePath);
             }
@@ -336,49 +335,71 @@ namespace Dev2.Workspaces
 
         static string GetUserMapFileName() => Path.Combine(EnvironmentVariables.WorkspacePath, "workspaces.bite");
 
-        static Dev2.Net6.Compatibility.ConcurrentDictionary<string, Guid> ReadUserMap()
-        {
-            // force a lock on the file system ;)
-            lock(UserMapLock)
-            {
-                var filePath = GetUserMapFileName();
-                using(var stream = File.Open(filePath, FileMode.OpenOrCreate))
-                {
-                    var fileExists = File.Exists(filePath);
-                    var formatter = new BinaryFormatter();
-                    if(fileExists)
-                    {
-                        try
-                        {
-                            return (Dev2.Net6.Compatibility.ConcurrentDictionary<string, Guid>)formatter.Deserialize(stream);
-                        }                         
-                        catch(Exception ex)                        
-                        {
-                            Dev2Logger.Error("WorkspaceRepository", ex, GlobalConstants.WarewolfError);
-                            // Deserialization failed so overwrite with new one.
-                        }
-                    }
-
-                    var result = new Dev2.Net6.Compatibility.ConcurrentDictionary<string, Guid>();
-                    formatter.Serialize(stream, result);
-                    return result;
-                }
-            }
-        }
-
-        static void WriteUserMap(Dev2.Net6.Compatibility.ConcurrentDictionary<string, Guid> userMap)
+        static System.Collections.Concurrent.ConcurrentDictionary<string, Guid> ReadUserMap()
         {
             // force a lock on the file system ;)
             lock (UserMapLock)
             {
                 var filePath = GetUserMapFileName();
-                using (var stream = File.Open(filePath, FileMode.OpenOrCreate))
+                var fileExists = File.Exists(filePath);
+
+                if (fileExists)
                 {
-                    var formatter = new BinaryFormatter();
-                    formatter.Serialize(stream, userMap);
+                    try
+                    {
+                        var bytes = File.ReadAllBytes(filePath);
+                        return (System.Collections.Concurrent.ConcurrentDictionary<string, Guid>)MessagePack.MessagePackSerializer.Typeless.Deserialize(bytes);
+                    }
+                    catch (Exception ex)
+                    {
+                        // Deserialization failed so overwrite with new one.
+                        Dev2Logger.Error("WorkspaceRepository", ex, GlobalConstants.WarewolfError);
+
+                        var helper = new Dev2.Net6.Compatibility.BinarySerializationHelper();
+                        var deserializedDictionary = helper.DeserializeFile(filePath);
+                        if (deserializedDictionary != null)
+                        {
+                            WriteUserMap(deserializedDictionary, isAlreadyLocked: true);
+                            return deserializedDictionary;
+                        }
+                    }
+                }
+
+                var emptyDictionary = new System.Collections.Concurrent.ConcurrentDictionary<string, Guid>();
+                WriteUserMap(emptyDictionary, isAlreadyLocked: true);
+                return emptyDictionary;
+            }
+
+        }
+
+        static void WriteUserMap(System.Collections.Concurrent.ConcurrentDictionary<string, Guid> userMap, bool isAlreadyLocked = false)
+        {
+
+            if(!isAlreadyLocked)
+            {
+                // force a lock on the file system ;)
+                lock (UserMapLock)
+                {
+                    WriteUserMapInternal(userMap);
                 }
             }
+            else
+                WriteUserMapInternal(userMap);
+            
         }
+
+        private static void WriteUserMapInternal(System.Collections.Concurrent.ConcurrentDictionary<string, Guid> userMap)
+        {
+            var filePath = GetUserMapFileName();
+            using (var stream = File.Open(filePath, FileMode.OpenOrCreate))
+            {
+                // var formatter = new BinaryFormatter();
+                //formatter.Serialize(stream, userMap);
+                MessagePack.MessagePackSerializer.Typeless.Serialize(stream, userMap);
+            }
+        }
+
+
 
         #endregion
 

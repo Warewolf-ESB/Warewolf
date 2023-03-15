@@ -17,6 +17,7 @@ using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Communication;
 using Dev2.Runtime.ESB.Management.Services;
+using Dev2.Runtime.Hosting;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -114,6 +115,8 @@ namespace Dev2.Tests.Runtime.Services
             Assert.IsFalse(result.HasError);
             var triggerId = Guid.Parse(result.Message.ToString());
             Assert.IsTrue(triggerId != Guid.Empty);
+            source.TriggerId = triggerId;
+            ((TriggersCatalog)TriggersCatalog.Instance).DeleteTriggerQueueFile(source);
         }
     }
 

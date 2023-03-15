@@ -15,7 +15,15 @@ namespace Dev2.Runtime.Security
 {
     public static class ProcessHost
     {
-        public static bool Invoke(string workingDir, string fileName, string args)
+        /// <summary>
+        /// Invokes Process.Start to start/run a process (application or batch file)
+        /// </summary>
+        /// <param name="workingDir">s</param>
+        /// <param name="fileName"></param>
+        /// <param name="args"></param>
+        /// <param name="useShellExecute"></param>
+        /// <returns></returns>
+        public static bool Invoke(string workingDir, string fileName, string args, bool useShellExecute = false)
         {
             var invoked = true;
 
@@ -26,7 +34,8 @@ namespace Dev2.Runtime.Security
                     CreateNoWindow = true,
                     WindowStyle = ProcessWindowStyle.Hidden,
                     FileName = fileName,
-                    Verb = "runas"
+                    Verb = "runas",
+                    UseShellExecute = true
                 }
             };
 

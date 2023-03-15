@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication.Negotiate;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.WebApiCompatShim;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -29,10 +30,11 @@ namespace Dev2.Runtime.WebServer
         {
             builder.Services.AddControllers(options =>
             {
+                options.OutputFormatters.Insert(0, new HttpResponseMessageOutputFormatter());
                 //options.Filters.Add(new CustomActionFilter());
             }).AddApplicationPart(typeof(WebServerStartup).Assembly);
-
-
+            
+            
             #region Windows Authentication with UseWindowsAndAnonymousAuthenticationMiddleware
             // to use the UseWindowsAndAnonymousAuthenticationMiddleware uncomment below lines
             builder.Services.AddAuthentication(NegotiateDefaults.AuthenticationScheme).AddNegotiate();
