@@ -353,9 +353,6 @@
       <Version>1.0.3</Version>
     </PackageReference>
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="6.0.0" />
-    <PackageReference Include="Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers" Version="0.4.336902">
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
     <!--<PackageReference Include="SaxonCS" Version="11.4.1" />-->
     <PackageReference Include="SaxonCS-b6" Version="11.4.1" />
 

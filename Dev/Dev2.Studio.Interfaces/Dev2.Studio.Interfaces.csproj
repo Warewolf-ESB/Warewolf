@@ -170,10 +170,6 @@
     </PackageReference>-->
     <PackageReference Include="Prism.Core" Version="8.1.97" />
 
-    <PackageReference Include="Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers" Version="0.4.336902">
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
-
     <PackageReference Include="Prism.Wpf" Version="8.1.97" />
   </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

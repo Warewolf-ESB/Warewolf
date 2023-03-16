@@ -271,9 +271,6 @@
       <Version>5.0.1</Version>
     </PackageReference>-->
 		<PackageReference Include="Prism.Unity.Extensions" Version="8.0.62" />
-		<PackageReference Include="Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers" Version="0.4.336902">
-			<PrivateAssets>all</PrivateAssets>
-		</PackageReference>
 		<PackageReference Include="Caliburn.Micro" Version="4.0.212" />
 		<!--<PackageReference Include="FontAwesome.WPF" Version="4.7.0.9" />-->
 		<PackageReference Include="FontAwesome6.Fonts" Version="2.3.0" />

@@ -149,9 +149,6 @@
     <PackageReference Include="System.Data.SQLite">
       <Version>1.0.117</Version>
     </PackageReference>
-    <PackageReference Include="Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers" Version="0.4.336902">
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
     <PackageReference Include="MySql.Data" Version="6.10.9" />
     <PackageReference Include="Npgsql" Version="3.2.7" />
     <PackageReference Include="TSQL.Parser" Version="2.6.0" />

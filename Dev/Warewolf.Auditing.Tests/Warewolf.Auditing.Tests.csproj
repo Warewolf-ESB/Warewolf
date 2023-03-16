@@ -18,9 +18,6 @@
     <PackageReference Include="MSTest.TestFramework" Version="3.0.2" />
     <PackageReference Include="System.Data.SQLite.Core" Version="1.0.117" />
     <PackageReference Include="MSTest.TestAdapter" Version="3.0.2" />
-    <PackageReference Include="Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers" Version="0.4.355802">
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dev2.Core\Dev2.Core.csproj" />

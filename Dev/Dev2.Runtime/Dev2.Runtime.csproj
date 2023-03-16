@@ -236,9 +236,6 @@
       <Version>1.0.117</Version>
     </PackageReference>
     <PackageReference Include="System.ServiceModel.Federation" Version="4.10.0" />
-    <PackageReference Include="Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers" Version="0.4.336902">
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
     <PackageReference Include="TxFileManager" Version="1.5.0.1" />
     <PackageReference Include="Microsoft.Windows.Compatibility" Version="6.0.0" />
   </ItemGroup>

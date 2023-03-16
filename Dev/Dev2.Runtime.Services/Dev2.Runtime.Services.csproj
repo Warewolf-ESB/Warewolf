@@ -502,9 +502,6 @@
       <Version>1.0.117</Version>
     </PackageReference>
     <PackageReference Include="System.ServiceModel.Federation" Version="4.10.0" />
-    <PackageReference Include="Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers" Version="0.4.336902">
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
     <PackageReference Include="Caliburn.Micro" Version="4.0.212" />
     <PackageReference Include="MySql.Data" Version="6.10.9" />
     <PackageReference Include="Npgsql" Version="3.2.7" />

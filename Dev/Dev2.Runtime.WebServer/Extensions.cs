@@ -132,8 +132,9 @@ namespace Dev2.Runtime.WebServer
             return builder.Uri;
         }
 
-        public static ActionResult ToResponseData(this HttpResponseMessage message)
+        public static ActionResult ToActionResult(this HttpResponseMessage message)
         {
+            if (null == message) return null;
             return new System.Web.Http.ResponseMessageResult(message);
         }
 

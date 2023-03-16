@@ -447,12 +447,9 @@
       <Version>7.0.3300</Version>
     </PackageReference>-->
 		<PackageReference Include="Unofficial.Microsoft.mshtml.NetStandard" Version="7.0.3300.2" />
-		<PackageReference Include="System.ServiceModel.Duplex" Version="4.9.0" />
-		<PackageReference Include="System.ServiceModel.NetTcp" Version="4.9.0" />
+		<PackageReference Include="System.ServiceModel.Duplex" Version="4.10.0" />
+		<PackageReference Include="System.ServiceModel.NetTcp" Version="4.10.0" />
 		<PackageReference Include="System.ServiceModel.Federation" Version="4.10.0" />
-		<PackageReference Include="Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers" Version="0.4.336902">
-			<PrivateAssets>all</PrivateAssets>
-		</PackageReference>
 		<PackageReference Include="Caliburn.Micro" Version="4.0.212" />
 		<!--<PackageReference Include="FontAwesome.WPF" Version="4.7.0.9" />-->
 		<!--<PackageReference Include="Unity" Version="4.0.1" />-->

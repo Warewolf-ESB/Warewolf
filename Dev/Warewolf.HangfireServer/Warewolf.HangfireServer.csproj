@@ -26,9 +26,6 @@
     <PackageReference Include="CommandLineParser" Version="2.6.0" />
     <PackageReference Include="Hangfire" Version="1.7.32" />
     <!--<PackageReference Include="Microsoft.Owin.Hosting" Version="4.1.0" />-->
-    <PackageReference Include="Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers" Version="0.4.336902">
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
     <PackageReference Include="Microsoft.Windows.Compatibility" Version="6.0.0" />
   </ItemGroup>
   <ItemGroup>

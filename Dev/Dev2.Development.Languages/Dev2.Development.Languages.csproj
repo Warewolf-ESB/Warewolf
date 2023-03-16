@@ -99,9 +99,6 @@
     <PackageReference Include="Newtonsoft.Json">
       <Version>13.0.2</Version>
     </PackageReference>
-    <PackageReference Include="Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers" Version="0.4.336902">
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
 	  <PackageReference Include="System.Text.Encoding.CodePages" Version="7.0.0" />
 	  <PackageReference Include="IronPython" Version="3.4.0" />
 	  <PackageReference Include="Jurassic" Version="3.2.6" />
