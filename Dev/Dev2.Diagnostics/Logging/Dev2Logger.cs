@@ -35,7 +35,6 @@ namespace Dev2.Common
             {
                 var customMessage = UpdateCustomMessage(message, executionId);
                 _log.Debug(customMessage);
-                Console.WriteLine(customMessage);
             }
         }
 
@@ -45,7 +44,6 @@ namespace Dev2.Common
             {
                 var customMessage = UpdateCustomMessage(message, executionId);
                 _log.Debug(customMessage, exception);
-                Console.WriteLine(customMessage);
             }
         }
 
@@ -55,7 +53,6 @@ namespace Dev2.Common
             {
                 var customMessage = UpdateCustomMessage(message, executionId);
                 _log.Error(customMessage);
-                Console.WriteLine(customMessage);
             }
         }
 
@@ -65,7 +62,6 @@ namespace Dev2.Common
             {
                 var customMessage = UpdateCustomMessage(message, executionId);
                 _log.Error(customMessage, exception);
-                Console.WriteLine(customMessage);
             }
         }
 
@@ -75,7 +71,6 @@ namespace Dev2.Common
             {
                 var customMessage = UpdateCustomMessage(message, executionId);
                 _log.Warn(customMessage);
-                Console.WriteLine(customMessage);
             }
         }
 
@@ -85,7 +80,6 @@ namespace Dev2.Common
             {
                 var customMessage = UpdateCustomMessage(message, executionId);
                 _log.Warn(customMessage, exception);
-                Console.WriteLine(customMessage);
             }
         }
 
@@ -95,7 +89,6 @@ namespace Dev2.Common
             {
                 var customMessage = UpdateCustomMessage(message, executionId);
                 _log.Fatal(customMessage);
-                Console.WriteLine(customMessage);
             }
         }
 
@@ -105,7 +98,6 @@ namespace Dev2.Common
             {
                 var customMessage = UpdateCustomMessage(message, executionId);
                 _log.Fatal(customMessage, exception);
-                Console.WriteLine(customMessage);
             }
         }
 
@@ -115,7 +107,6 @@ namespace Dev2.Common
             {
                 var customMessage = UpdateCustomMessage(message, executionId);
                 _log.Info(customMessage);
-                Console.WriteLine(customMessage);
             }
         }
 
@@ -125,7 +116,6 @@ namespace Dev2.Common
             {
                 var customMessage = UpdateCustomMessage(message, executionId);
                 _log.Info(customMessage, exception);
-                Console.WriteLine(customMessage);
             }
         }
 

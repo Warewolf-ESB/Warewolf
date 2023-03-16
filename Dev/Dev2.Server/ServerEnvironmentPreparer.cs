@@ -94,7 +94,6 @@ namespace Dev2
             if (!_fileWrapper.Exists(settingsConfigFile))
             {
                 _fileWrapper.WriteAllText(settingsConfigFile, GlobalConstants.DefaultServerLogFileConfig);
-                Console.WriteLine(GlobalConstants.DefaultServerLogFileConfig);
             }
         }
 
