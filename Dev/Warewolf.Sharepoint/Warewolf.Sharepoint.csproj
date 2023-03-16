@@ -73,7 +73,7 @@
     </PackageReference>-->
 	  <PackageReference Include="TTCUE.NetCore.SharepointOnline.CSOM.16.1.8029.1200" Version="16.1.8029.1200" />
     <PackageReference Include="Newtonsoft.Json">
-      <Version>13.0.1</Version>
+      <Version>13.0.2</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers" Version="0.4.336902">
       <PrivateAssets>all</PrivateAssets>

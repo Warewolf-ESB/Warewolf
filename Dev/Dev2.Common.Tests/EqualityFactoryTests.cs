@@ -86,7 +86,7 @@ namespace Dev2.Common.Tests
             var cmp = EqualityFactory.GetEquitable<Example>((a) => expected);
             var actual = (cmp as IEqualityComparer<Example>).Equals(new Example());
 
-            Assert.AreNotEqual(0, actual);
+            Assert.IsFalse(actual);
         }
 
         [TestMethod]
@@ -98,7 +98,7 @@ namespace Dev2.Common.Tests
             var cmp = EqualityFactory.GetEquitable<Example>((a) => expected);
             var actual = (cmp as IEquatable<Example>).Equals(new Example());
 
-            Assert.AreNotEqual(0, actual);
+            Assert.IsTrue(actual);
         }
     }
 }

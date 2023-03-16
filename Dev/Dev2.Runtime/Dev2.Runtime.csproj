@@ -229,7 +229,7 @@
       <Version>2.0.15</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
-      <Version>13.0.1</Version>
+      <Version>13.0.2</Version>
     </PackageReference>
     <PackageReference Include="ServiceStack" Version="6.2.0" />
     <PackageReference Include="System.Data.SQLite">

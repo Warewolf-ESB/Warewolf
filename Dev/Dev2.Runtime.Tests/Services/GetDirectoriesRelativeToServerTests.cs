@@ -80,7 +80,7 @@ namespace Dev2.Tests.Runtime.Services
         {
             var esb = new GetDirectoriesRelativeToServer();
             var actual = esb.Execute(null, null);
-            Assert.AreEqual(string.Empty, actual);
+            Assert.AreEqual(string.Empty, actual.ToString());
         }
 
         [TestMethod]
@@ -91,7 +91,7 @@ namespace Dev2.Tests.Runtime.Services
 
             var esb = new GetDirectoriesRelativeToServer();
             var actual = esb.Execute(new Dictionary<string, StringBuilder> { { "DebugFilePath", null } }, null);
-            Assert.AreEqual(string.Empty, actual);
+            Assert.AreEqual(string.Empty, actual.ToString());
         }
        
 
@@ -103,7 +103,7 @@ namespace Dev2.Tests.Runtime.Services
 
             var esb = new GetDirectoriesRelativeToServer();
             var actual = esb.Execute(new Dictionary<string, StringBuilder> { { "Directory", new StringBuilder() } }, null);
-            Assert.AreEqual(string.Empty, actual);
+            Assert.AreEqual(string.Empty, actual.ToString());
         }
 
         [TestMethod]
@@ -135,7 +135,7 @@ namespace Dev2.Tests.Runtime.Services
             //----------------Execute------------------------------------------------
             var actual = esb.Execute(new Dictionary<string, StringBuilder> { { "Directory", new StringBuilder("Resources") } }, null);
             //----------------Assert Results-----------------------------------------
-            Assert.AreNotEqual(string.Empty, actual);
+            Assert.AreNotEqual(string.Empty, actual.ToString());
              var expected = @"<JSON>{
   ""$id"": ""1"",
   ""$type"": ""Dev2.Runtime.ESB.Management.Services.JsonTreeNode, Dev2.Runtime.Services"",

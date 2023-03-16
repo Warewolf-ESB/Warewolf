@@ -139,7 +139,7 @@ namespace Dev2
             _startupResourceCatalogFactory = startupConfiguration.ResourceCatalogFactory;
             _ipcClient = startupConfiguration.IpcClient;
             _assemblyLoader = startupConfiguration.AssemblyLoader;
-            _pulseLogger = new PulseLogger(60000).Start();
+            _pulseLogger = new PulseLogger(60000, startupConfiguration.LoggerFactory.New(new JsonSerializer(), new WebSocketPool())).Start();
             _pulseTracker = new PulseTracker(TimeSpan.FromDays(1).TotalMilliseconds).Start();
             _serverEnvironmentPreparer.PrepareEnvironment();
             _startWebServer = startupConfiguration.StartWebServer;
@@ -220,7 +220,10 @@ namespace Dev2
 
                     _loadResources = new LoadResources("Resources", _writer, _startUpDirectory, _startupResourceCatalogFactory);
                     LoadHostSecurityProvider();
-                    _loadResources.CheckExampleResources();
+
+                    //Disable download of example resources. In future include this for new installations only
+                    //_loadResources.CheckExampleResources();
+
                     _loadResources.MigrateOldTests();
                     var webServerConfig = _webServerConfiguration;
                     webServerConfig.Execute();

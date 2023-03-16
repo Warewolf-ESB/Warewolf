@@ -2081,7 +2081,7 @@ namespace Warewolf.Storage.Tests
         {
             var givenSomeString = DataStorage.WarewolfAtom.NewDataString("SomeString");
             var result = ExecutionEnvironment.WarewolfAtomToStringNullAsNothing(givenSomeString);
-            Assert.AreEqual(givenSomeString, result);
+            Assert.AreEqual(givenSomeString.ToString(), result);
         }
 
         [TestMethod]

@@ -386,10 +386,10 @@ namespace Dev2.Runtime.WebServer.Hubs
 
             var t = new Task(() =>
             {
-                var workspaceId = Server.GetWorkspaceID(_httpContextAccessor.HttpContext.User.Identity);
+                var workspaceId = Server.GetWorkspaceID(Context.User.Identity);
                 ResourceCatalog.Instance.LoadServerActivityCache();
                 var hubCallerConnectionContext = Clients;
-                var user = hubCallerConnectionContext.User(_httpContextAccessor.HttpContext.User.Identity.Name);
+                var user = hubCallerConnectionContext.User(Context.User.Identity.Name);
                 user.SendAsync("SendWorkspaceID", workspaceId);//user.SendWorkspaceID(workspaceId);
                 user.SendAsync("SendServerID", HostSecurityProvider.Instance.ServerID);//user.SendServerID(HostSecurityProvider.Instance.ServerID);
                 PermissionsHaveBeenModified(null, null);

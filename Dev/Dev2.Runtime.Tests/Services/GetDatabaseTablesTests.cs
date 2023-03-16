@@ -69,7 +69,7 @@ namespace Dev2.Tests.Runtime.Services
         {
             var esb = new GetDatabaseTables();
             var actual = esb.Execute(null, null);
-            Assert.AreEqual(string.Empty, actual);
+            Assert.AreEqual(string.Empty, actual.ToString());
         }
 
         [TestMethod]

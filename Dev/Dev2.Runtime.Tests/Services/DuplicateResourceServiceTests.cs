@@ -200,7 +200,7 @@ namespace Dev2.Tests.Runtime.Services
                 var serializer = new Dev2JsonSerializer();
                 var executeMessage = serializer.Deserialize<ExecuteMessage>(stringBuilder);
                 Assert.IsTrue(executeMessage.HasError);
-                Assert.AreEqual("ResourceId is required", executeMessage.Message);
+                Assert.AreEqual("ResourceId is required", executeMessage.Message.ToString());
                 Assert.AreEqual("Catalog Error", ex.Message);
             }
 

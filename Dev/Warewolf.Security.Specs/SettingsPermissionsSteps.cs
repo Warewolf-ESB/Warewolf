@@ -51,12 +51,11 @@ namespace Dev2.Activities.Specs.Permissions
             var securitySpecsUser = GetSecuritySpecsUser();
             var securitySpecsPassword = GetSecuritySpecsPassword();
             var userGroup = GetUserGroup();
-            AppUsageStats.LocalHost = $"http://{Environment.MachineName.ToLowerInvariant()}:3142";
             var environmentModel = ServerRepository.Instance.Source;
-            environmentModel.Connect();
-            while (!environmentModel.IsConnected)
+            environmentModel.ConnectAsync().Wait(60000);
+            if (!environmentModel.IsConnected)
             {
-                environmentModel.Connect();
+                Assert.Fail("Cannot connect to local Warewolf server.");
             }
 
             var currentSettings = environmentModel.ResourceRepository.ReadSettings(environmentModel);
@@ -70,23 +69,27 @@ namespace Dev2.Activities.Specs.Permissions
             environmentModel.Disconnect();
             _featureContext.Add("environment", environmentModel);
 
-            var reconnectModel = new Server(Guid.NewGuid(), new ServerProxy(AppUsageStats.LocalHost, securitySpecsUser, securitySpecsPassword)) { Name = "Other Connection" };
+            var reconnectModel = new Server(Guid.NewGuid(), new ServerProxy($"http://localhost:3142", securitySpecsUser, securitySpecsPassword)) { Name = "Other Connection" };
             try
             {
-                reconnectModel.Connect();
+                reconnectModel.ConnectAsync().Wait(60000);
             }
             catch (UnauthorizedAccessException)
             {
                 Assert.Fail("Connection unauthorized when connecting to local Warewolf server as user who is part of '" + userGroup + "' user group.");
-            }
-            _featureContext.Add("currentEnvironment", reconnectModel);
+			}
+			if (!reconnectModel.IsConnected)
+			{
+				Assert.Fail("Cannot connect to local Warewolf server.");
+			}
+			_featureContext.Add("currentEnvironment", reconnectModel);
         }
 
-        static string GetUserGroup() => ConfigurationManager.AppSettings["userGroup"];
+        static string GetUserGroup() => "Warewolf Administrators";
 
-        static string GetSecuritySpecsPassword() => ConfigurationManager.AppSettings["SecuritySpecsPassword"];
+        static string GetSecuritySpecsPassword() => "ASfas123@!fda";
 
-        static string GetSecuritySpecsUser() => ConfigurationManager.AppSettings["SecuritySpecsUser"];
+        static string GetSecuritySpecsUser() => "SecuritySpecsUser";
 
         [Given(@"it has ""(.*)"" with ""(.*)""")]
         public void GivenItHasWith(string groupName, string groupRights)
@@ -220,12 +223,21 @@ namespace Dev2.Activities.Specs.Permissions
         {
             var environmentModel = _featureContext.Get<IServer>("currentEnvironment");
             EnsureEnvironmentConnected(environmentModel);
-            if (environmentModel.IsConnected && !environmentModel.HasLoadedResources)
+			if (!environmentModel.IsConnected)
+			{
+				Assert.Fail("Cannot connect to local Warewolf server.");
+			}
+
+			if (!environmentModel.HasLoadedResources)
             {
                 environmentModel.ForceLoadResources();
-            }
+			}
+			if (!environmentModel.ResourceRepository.IsLoaded)
+			{
+				Assert.Fail("Cannot load resources for local Warewolf server.");
+			}
 
-            return environmentModel;
+			return environmentModel;
         }
 
         [Given(@"I have waited (.*) seconds for the rights to propogate to all the resources")]

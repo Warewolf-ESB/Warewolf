@@ -777,9 +777,6 @@
     <Content Include="Help\PageNotAvailable.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="InstallWebView2FixedVersion.ps1">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ViewModels\Administration\" />
@@ -810,7 +807,7 @@
       <Version>2.4.3</Version>
     </PackageReference>-->
     <PackageReference Include="Newtonsoft.Json">
-      <Version>13.0.1</Version>
+      <Version>13.0.2</Version>
     </PackageReference>
     <!--<PackageReference Include="Prism.Mvvm">
       <Version>1.1.1</Version>
