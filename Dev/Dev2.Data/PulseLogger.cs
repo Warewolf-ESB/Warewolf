@@ -27,6 +27,10 @@ namespace Dev2.Data
         internal readonly Timer _timer;
         private readonly IExecutionLogPublisher _logger;
 
+        private const long OneKb = 1024;
+        private const long OneMb = OneKb * 1024;
+        private const long OneGb = OneMb * 1024;
+
         public PulseLogger(double intervalMs, IExecutionLogPublisher executionLogPublisher)
         {
             NativeMethods.RegisterNotification();
@@ -103,10 +107,24 @@ namespace Dev2.Data
             switch (memoryStatus)
             {
                 case MemoryStatus.TotalPhys:
-                    stringBuilder.Append((status.ulTotalPhys / 1024 / 1024 / 1024) + "GB");
+                    if (status.ulTotalPhys / OneGb < 1)
+                    {
+                        stringBuilder.Append((status.ulTotalPhys / OneMb) + "MB");
+                    }
+                    else
+                    {
+                        stringBuilder.Append((status.ulTotalPhys / OneGb) + "GB");
+                    }
                     break;
                 case MemoryStatus.AvaliablePhys:
-                    stringBuilder.Append((status.ulAvailPhys / 1024 / 1024 / 1024) + "GB");
+                    if (status.ulTotalPhys / OneGb < 34)
+                    {
+                        stringBuilder.Append((status.ulAvailPhys / OneMb) + "MB");
+                    }
+                    else
+                    {
+                        stringBuilder.Append((status.ulAvailPhys / OneGb) + "GB");
+                    }
                     break;
                 case MemoryStatus.LoadMemory:
                     if (((int)status.dwMemoryLoad) >= 90)
