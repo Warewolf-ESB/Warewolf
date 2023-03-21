@@ -1,0 +1,32 @@
+namespace IronRuby.Runtime
+{
+	internal enum GlobalVariableId
+	{
+		MatchData,
+		EntireMatch,
+		MatchLastGroup,
+		PreMatch,
+		PostMatch,
+		CurrentException,
+		CurrentExceptionBacktrace,
+		ItemSeparator,
+		StringSeparator,
+		InputSeparator,
+		OutputSeparator,
+		LastInputLine,
+		InputFileName,
+		CommandLineProgramPath,
+		CommandLineArguments,
+		LoadPath,
+		LoadedFiles,
+		InputContent,
+		OutputStream,
+		LastInputLineNumber,
+		InputStream,
+		ErrorOutputStream,
+		SafeLevel,
+		Verbose,
+		KCode,
+		ChildProcessExitStatus
+	}
+}

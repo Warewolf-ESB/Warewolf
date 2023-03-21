@@ -148,7 +148,7 @@
       <Version>5.0.1</Version>
     </PackageReference>-->
     <PackageReference Include="Prism.Unity.Extensions" Version="8.0.62" />
-    <PackageReference Include="System.Configuration.ConfigurationManager" Version="6.0.0" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="6.0.1" />
     <!--<PackageReference Include="FontAwesome.WPF" Version="4.7.0.9" />-->
     <PackageReference Include="FontAwesome6.Fonts" Version="2.3.0" />
     <PackageReference Include="FontAwesome6.Fonts.WinUI" Version="2.3.0" />

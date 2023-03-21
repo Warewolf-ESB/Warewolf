@@ -79,7 +79,7 @@
     <PackageReference Include="MSTest.TestFramework">
       <Version>3.0.2</Version>
     </PackageReference>
-    <PackageReference Include="System.Configuration.ConfigurationManager" Version="7.0.0" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="6.0.1" />
     <PackageReference Include="MSTest.TestAdapter" Version="3.0.2" />
     <PackageReference Include="Caliburn.Micro" Version="4.0.212" />
   </ItemGroup>

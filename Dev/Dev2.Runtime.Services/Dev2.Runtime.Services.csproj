@@ -464,10 +464,10 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="CoreWCF.Http" Version="1.1.0" />
-    <PackageReference Include="CoreWCF.NetTcp" Version="1.1.0" />
-    <PackageReference Include="CoreWCF.Primitives" Version="1.1.0" />
-    <PackageReference Include="CoreWCF.WebHttp" Version="1.1.0" />
+    <PackageReference Include="CoreWCF.Http" Version="1.2.1" />
+    <PackageReference Include="CoreWCF.NetTcp" Version="1.2.1" />
+    <PackageReference Include="CoreWCF.Primitives" Version="1.2.1" />
+    <PackageReference Include="CoreWCF.WebHttp" Version="1.2.1" />
     <PackageReference Include="MessagePack" Version="2.4.59" />
     <!--<PackageReference Include="GAC.API">
       <Version>1.0.1</Version>
@@ -501,7 +501,7 @@
     <PackageReference Include="System.Data.SQLite">
       <Version>1.0.117</Version>
     </PackageReference>
-    <PackageReference Include="System.ServiceModel.Federation" Version="4.10.0" />
+    <PackageReference Include="System.ServiceModel.Federation" Version="4.9.0" />
     <PackageReference Include="Caliburn.Micro" Version="4.0.212" />
     <PackageReference Include="MySql.Data" Version="6.10.9" />
     <PackageReference Include="Npgsql" Version="3.2.7" />
