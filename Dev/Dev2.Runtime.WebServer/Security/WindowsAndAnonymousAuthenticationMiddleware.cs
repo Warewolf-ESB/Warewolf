@@ -28,6 +28,12 @@ namespace Dev2.Runtime.WebServer.Security
 
         public async Task Invoke(HttpContext context)
         {
+            if (context.Request.Path.HasValue && context.Request.Path.Value.EndsWith("/favicon.ico"))
+            {
+                context.Response.StatusCode = 200;
+                return;
+            }
+
             var isAuthenticated = context.User.Identity?.IsAuthenticated;
 
             if ((isAuthenticated ?? false) || GetAuthenticationScheme(context) == AuthenticationSchemes.Anonymous)
@@ -36,7 +42,7 @@ namespace Dev2.Runtime.WebServer.Security
                 await next(context);
                 return;
             }
-            
+
             await context.ChallengeAsync(NegotiateDefaults.AuthenticationScheme);
         }
 
@@ -48,19 +54,19 @@ namespace Dev2.Runtime.WebServer.Security
             var port = context.Request.Host.Port;
 
             EnvironmentVariables.DnsName = dnsName;
-            EnvironmentVariables.Port = port??0;
+            EnvironmentVariables.Port = port ?? 0;
 
             if (null == url) return AuthenticationSchemes.Ntlm | AuthenticationSchemes.Basic;
 
-            if(url.StartsWith("/public/", StringComparison.OrdinalIgnoreCase))
+            if (url.StartsWith("/public/", StringComparison.OrdinalIgnoreCase))
             {
                 return AuthenticationSchemes.Anonymous;
             }
-            else if(url.StartsWith("/token/", StringComparison.OrdinalIgnoreCase))
+            else if (url.StartsWith("/token/", StringComparison.OrdinalIgnoreCase))
             {
                 return AuthenticationSchemes.Anonymous;
             }
-            else if(url.StartsWith("/login/", StringComparison.OrdinalIgnoreCase))
+            else if (url.StartsWith("/login/", StringComparison.OrdinalIgnoreCase))
             {
                 return AuthenticationSchemes.Anonymous;
             }
