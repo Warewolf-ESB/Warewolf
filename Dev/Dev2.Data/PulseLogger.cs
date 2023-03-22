@@ -27,10 +27,6 @@ namespace Dev2.Data
         internal readonly Timer _timer;
         private readonly IExecutionLogPublisher _logger;
 
-        private const long OneKb = 1024;
-        private const long OneMb = OneKb * 1024;
-        private const long OneGb = OneMb * 1024;
-
         public PulseLogger(double intervalMs, IExecutionLogPublisher executionLogPublisher)
         {
             NativeMethods.RegisterNotification();
@@ -95,6 +91,20 @@ namespace Dev2.Data
             LoadMemory
         }
 
+        public StringBuilder GetConvertedBytes(ulong statusValue, StringBuilder stringBuilder)
+        {
+            ByteConstants byteConstants = new ByteConstants();
+
+            if ((long)statusValue / byteConstants.OneGbValue < 1)
+            {
+                return stringBuilder.Append(Dev2Logger.ByteConvertor((long)statusValue, byteConstants.OneMbValue) + "MB");
+            }
+            else
+            {
+                return stringBuilder.Append(Dev2Logger.ByteConvertor((long)statusValue, byteConstants.OneGbValue) + "GB");
+            }   
+        }
+
         public string MemoryPressureTracker(MemoryStatus memoryStatus)
         {
             NativeMethods.MEMORYSTATUSEX status = new NativeMethods.MEMORYSTATUSEX();
@@ -107,24 +117,26 @@ namespace Dev2.Data
             switch (memoryStatus)
             {
                 case MemoryStatus.TotalPhys:
-                    if (status.ulTotalPhys / OneGb < 1)
-                    {
-                        stringBuilder.Append((status.ulTotalPhys / OneMb) + "MB");
-                    }
-                    else
-                    {
-                        stringBuilder.Append((status.ulTotalPhys / OneGb) + "GB");
-                    }
+                    GetConvertedBytes(status.ulTotalPhys, stringBuilder);
+                    //if (status.ulTotalPhys / OneGb < 1)
+                    //{
+                    //    stringBuilder.Append((status.ulTotalPhys / OneMb) + "MB");
+                    //}
+                    //else
+                    //{
+                    //    stringBuilder.Append((status.ulTotalPhys / OneGb) + "GB");
+                    //}
                     break;
                 case MemoryStatus.AvaliablePhys:
-                    if (status.ulTotalPhys / OneGb < 34)
-                    {
-                        stringBuilder.Append((status.ulAvailPhys / OneMb) + "MB");
-                    }
-                    else
-                    {
-                        stringBuilder.Append((status.ulAvailPhys / OneGb) + "GB");
-                    }
+                    GetConvertedBytes(status.ulAvailPhys, stringBuilder);
+                    //if (status.ulTotalPhys / OneGb < 1)
+                    //{
+                    //    stringBuilder.Append((status.ulAvailPhys / OneMb) + "MB");
+                    //}
+                    //else
+                    //{
+                    //    stringBuilder.Append((status.ulAvailPhys / OneGb) + "GB");
+                    //}
                     break;
                 case MemoryStatus.LoadMemory:
                     if (((int)status.dwMemoryLoad) >= 90)

@@ -160,10 +160,17 @@ namespace Dev2.Common
             var rootLogger = h.Root;
             if (rootLogger.GetAppender("LogFileAppender") is RollingFileAppender appender)
             {
-                var logSize = appender.MaxFileSize / 1024 / 1024;
+                //var logSize = appender.MaxFileSize / 1024 / 1024;
+                ByteConstants byteConstants = new ByteConstants();
+                var logSize = ByteConvertor(appender.MaxFileSize, byteConstants.OneMbValue);
                 return (int)Math.Round((decimal)logSize, 0);
             }
             return 0;
+        }
+
+        public static long ByteConvertor(long longValue, long convertTo)
+        {
+            return longValue / convertTo;
         }
 
         public static void UpdateFileLoggerToProgramData(string settingsConfigFile)
@@ -453,6 +460,28 @@ namespace Dev2.Common
         public void Info(object message, Exception exception, string executionId)
         {
             Dev2Logger.Info(message, exception, executionId);
+        }
+    }
+
+    public class ByteConstants
+    {
+        private const long OneKb = 1024;
+        private const long OneMb = OneKb * 1024;
+        private const long OneGb = OneMb * 1024;
+
+        public long OneKbValue
+        {
+            get { return OneKb; }
+        }
+
+        public long OneMbValue
+        {
+            get { return OneMb; }
+        }
+
+        public long OneGbValue
+        {
+            get { return OneGb; }
         }
     }
 }
