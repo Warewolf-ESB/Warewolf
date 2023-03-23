@@ -18,7 +18,6 @@ using System.ComponentModel.DataAnnotations;
 using System.Data.Linq.Mapping;
 using System.Linq.Expressions;
 using System.Runtime.Serialization;
-using Warewolf.Configuration;
 using Warewolf.Interfaces.Auditing;
 using LogLevel = Warewolf.Logging.LogLevel;
 
@@ -170,7 +169,7 @@ namespace Warewolf.Auditing
         [Column(Name = "Exception", CanBeNull = true)]
         [JsonProperty("Exception")]
         [DataMember]
-        public Exception Exception { get; set; }
+        public SerializableException Exception { get; set; }
 
         [JsonProperty("StartDateTime")]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:mm:ss}")]
@@ -196,7 +195,7 @@ namespace Warewolf.Auditing
 
         }
 
-        public Audit(IExecutionContext dataObject, string auditType, string detail, object previousActivity, object nextActivity, Exception exception)
+        public Audit(IExecutionContext dataObject, string auditType, string detail, object previousActivity, object nextActivity, SerializableException exception)
         {
 
             var dsfDataObject = dataObject as IDSFDataObject;
@@ -248,7 +247,7 @@ namespace Warewolf.Auditing
             AuditDate = DateTime.Now;
             AuditType = auditType;
             AdditionalDetail = detail;
-            Exception = exception;
+			Exception = exception;
 
             if (previousActivity is IDev2Activity act1)
             {

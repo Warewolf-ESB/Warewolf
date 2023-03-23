@@ -38,6 +38,7 @@ using ServiceStack.Common.Extensions;
 using Warewolf.Auditing;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage.Interfaces;
+using System.Runtime.Serialization;
 
 namespace Dev2.Runtime.ESB.Execution
 {
@@ -255,8 +256,9 @@ namespace Dev2.Runtime.ESB.Execution
                 WorkflowExecutionWatcher.HasAWorkflowBeenExecuted = true;
 
                 Dev2Logger.Debug("Starting Execute", dsfDataObject.ExecutionID?.ToString());
+				dsfDataObject.StateNotifier?.LogExecuteStartState(resource);
 
-                var lastActivity = resource;
+				var lastActivity = resource;
 
                 ExecuteNode(dsfDataObject, update, ref resource, ref lastActivity);
 
@@ -317,8 +319,10 @@ namespace Dev2.Runtime.ESB.Execution
             {
                 Dev2Logger.Debug("Executing first node", dsfDataObject.ExecutionID?.ToString());
                 while (next != null)
-                {
-                    var current = next;
+				{
+					dsfDataObject.StateNotifier?.LogExecuteActivityStartState(next);
+
+					var current = next;
                     lastActivity = current;
                     next = ExecuteTool(dsfDataObject, current, update);
                     environment.AllErrors.UnionWith(environment.Errors);
@@ -338,10 +342,10 @@ namespace Dev2.Runtime.ESB.Execution
                 }
             }
             catch (Exception exception)
-            {
-                Dev2Logger.Error(exception.Message, dsfDataObject.ExecutionID?.ToString());
+			{
+				Dev2Logger.Error(exception.Message, dsfDataObject.ExecutionID?.ToString());
                 dsfDataObject.ExecutionException = new Exception(dsfDataObject.Environment.FetchErrors());
-                dsfDataObject.StateNotifier?.LogExecuteException(exception, lastActivity);
+                dsfDataObject.StateNotifier?.LogExecuteException(new SerializableException(exception), lastActivity);
             }
         }
 

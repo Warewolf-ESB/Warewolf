@@ -45,6 +45,8 @@ using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 using System.Activities.Statements;
 using Dev2.Common.State;
+using System.Runtime.Serialization;
+using Warewolf.Auditing;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
@@ -1057,7 +1059,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 dataObject.ExecutionException = ex;
             }
 
-            dataObject.StateNotifier?.LogExecuteException(ex, this);
+            dataObject.StateNotifier?.LogExecuteException(new SerializableException(ex), this);
             Dev2Logger.Error("DsfNativeActivity {serviceName} " + serviceName, ex, dataObject.ExecutionID?.ToString());
         }
 

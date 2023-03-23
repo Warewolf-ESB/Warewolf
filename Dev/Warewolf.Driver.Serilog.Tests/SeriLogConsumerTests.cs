@@ -12,6 +12,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Serilog;
 using System;
+using Warewolf.Auditing;
 using Warewolf.Data;
 using Warewolf.Driver.Serilog;
 using Warewolf.Interfaces.Auditing;
@@ -226,7 +227,7 @@ namespace Warewolf.Driver.Serilog.Tests
             public DateTime AuditDate { get; set; }
             public string AuditType { get; set; }
             public string Environment { get; set; }
-            public Exception Exception { get; set; }
+            public SerializableException Exception { get; set; }
             public string ExecutingUser { get; set; }
             public string ExecutionID { get; set; }
             public string CustomTransactionID  { get; set; }
