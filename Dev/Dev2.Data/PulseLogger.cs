@@ -97,11 +97,12 @@ namespace Dev2.Data
 
             if ((long)statusValue / byteConstants.OneGbValue < 1)
             {
-                return stringBuilder.Append(Dev2Logger.ByteConvertor((long)statusValue, byteConstants.OneMbValue) + "MB");
+                
+                return stringBuilder.Append(Utilities.ByteConvertor((long)statusValue, byteConstants.OneMbValue) + "MB");
             }
             else
             {
-                return stringBuilder.Append(Dev2Logger.ByteConvertor((long)statusValue, byteConstants.OneGbValue) + "GB");
+                return stringBuilder.Append(Utilities.ByteConvertor((long)statusValue, byteConstants.OneGbValue) + "GB");
             }   
         }
 

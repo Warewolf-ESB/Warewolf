@@ -162,15 +162,10 @@ namespace Dev2.Common
             {
                 //var logSize = appender.MaxFileSize / 1024 / 1024;
                 ByteConstants byteConstants = new ByteConstants();
-                var logSize = ByteConvertor(appender.MaxFileSize, byteConstants.OneMbValue);
+                var logSize = Utilities.ByteConvertor(appender.MaxFileSize, byteConstants.OneMbValue);
                 return (int)Math.Round((decimal)logSize, 0);
             }
             return 0;
-        }
-
-        public static long ByteConvertor(long longValue, long convertTo)
-        {
-            return longValue / convertTo;
         }
 
         public static void UpdateFileLoggerToProgramData(string settingsConfigFile)
