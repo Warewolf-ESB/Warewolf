@@ -17,6 +17,7 @@ using System.Net.Http;
 using Dev2.Runtime.WebServer.Handlers;
 using Dev2.Runtime.WebServer.Security;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.WebApiCompatShim;
 using Saxon.Hej.functions;
 
 namespace Dev2.Runtime.WebServer.Controllers
@@ -152,14 +153,12 @@ namespace Dev2.Runtime.WebServer.Controllers
         [Route("login")]
         public ActionResult ExecuteLoginWorkflow()
         {
-            using (var r = new System.Net.Http.HttpRequestMessage())
-            {
-                var requestVariables = new NameValueCollection();
-                var context = new WebServerContext(r, requestVariables) { Request = { User = User } };
-                var handler = CreateHandler<TokenRequestHandler>();
-                handler.ProcessRequest(context);
-                return context.ResponseMessage.ToActionResult();
-            }
+            var r = Request.HttpContext.GetHttpRequestMessage();
+            var requestVariables = new NameValueCollection();
+            var context = new WebServerContext(r, requestVariables) { Request = { User = User } };
+            var handler = CreateHandler<TokenRequestHandler>();
+            handler.ProcessRequest(context);
+            return context.ResponseMessage.ToActionResult();
         }
 
         [HttpGet]
