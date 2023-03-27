@@ -146,6 +146,46 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
         }
 
+        protected bool IsErrorHandled => !(this.IsEndedOnError || (string.IsNullOrEmpty(OnErrorVariable) && string.IsNullOrEmpty(OnErrorWorkflow)));
+
+        protected void RunOnErrorSteps(IDSFDataObject dataObject, ErrorResultTO allErrors, int update)
+        {
+            if(allErrors.HasErrors())
+            {
+                if (!string.IsNullOrEmpty(OnErrorVariable))
+                {
+                    //string.Join(Environment.NewLine, AllErrors.Union(Errors));
+                    var errorString = string.Join(Environment.NewLine, allErrors.FetchErrors());
+                    var errors = ErrorResultTO.MakeErrorResultFromDataListString(errorString, true);
+                    var upsertVariable = DataListUtil.AddBracketsToValueIfNotExist(OnErrorVariable);
+                    if (errors.HasErrors())
+                    {
+                        foreach (var error in errors.FetchErrors())
+                        {
+                            //TODO: duplicate check on the Recordset might hide the real issue, 
+                            //of multiple execution calls passing here which seems not to be the same on F7
+                            dataObject.Environment.Assign(upsertVariable, error, update);
+                        }
+                    }
+                    else
+                    {
+                        dataObject.Environment.Assign(upsertVariable, errorString, update);
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(OnErrorWorkflow))
+                {
+                    var esbChannel = dataObject.EsbChannel;
+                    esbChannel.ExecuteLogErrorRequest(dataObject, dataObject.WorkspaceID, OnErrorWorkflow, out ErrorResultTO tmpErrors, update);
+                    if (tmpErrors != null)
+                    {
+                        dataObject.Environment.AddError(tmpErrors.MakeDisplayReady());
+                    }
+                }
+            }
+
+        }
+
         protected void DoErrorHandling(IDSFDataObject dataObject, int update)
         {
             var env = dataObject.Environment;

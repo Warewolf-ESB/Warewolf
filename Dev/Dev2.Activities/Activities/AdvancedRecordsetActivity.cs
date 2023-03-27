@@ -94,13 +94,16 @@ namespace Dev2.Activities
             }
             finally
             {
+                RunOnErrorSteps(dataObject, allErrors, update);
                 var hasErrors = allErrors.HasErrors();
-
                 if (hasErrors)
                 {
-                    var errorString = allErrors.MakeDisplayReady();
-                    dataObject.Environment.AddError(errorString);
-                    DisplayAndWriteError(dataObject,DisplayName, allErrors);
+                    if(!this.IsErrorHandled)
+                    {
+                        var errorString = allErrors.MakeDisplayReady();
+                        dataObject.Environment.AddError(errorString);
+                        DisplayAndWriteError(dataObject,DisplayName, allErrors);
+                    }
                 }
                 if (dataObject.IsDebugMode())
                 {

@@ -395,7 +395,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 if (allErrors.HasErrors())
                 {
                     var env = dataObject.Environment;
-                    if (this.IsEndedOnError || (string.IsNullOrEmpty(OnErrorVariable) && string.IsNullOrEmpty(OnErrorWorkflow)))
+                    if (!this.IsErrorHandled)
                     {
                         foreach (var allError in allErrors.FetchErrors())
                         {

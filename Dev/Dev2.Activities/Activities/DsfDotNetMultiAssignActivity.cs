@@ -110,6 +110,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             finally
             {
                 HandleErrors(dataObject, update, allErrors);
+                RunOnErrorSteps(dataObject, allErrors, update);
             }
         }
 
@@ -185,16 +186,19 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         void HandleErrors(IDSFDataObject dataObject, int update, ErrorResultTO allErrors)
         {
-            var hasErrors = allErrors.HasErrors();
-            if (!hasErrors && dataObject.Environment.Errors.Any())
+            if(!this.IsErrorHandled)
             {
-                DisplayAndWriteError(dataObject, DisplayName, allErrors);
-            }
-            if (hasErrors)
-            {
-                var errorString = allErrors.MakeDisplayReady();
-                dataObject.Environment.AddError(errorString);
-                DisplayAndWriteError(dataObject, DisplayName, allErrors);
+                var hasErrors = allErrors.HasErrors();
+                if (!hasErrors && dataObject.Environment.Errors.Any())
+                {
+                    DisplayAndWriteError(dataObject, DisplayName, allErrors);
+                }
+                if (hasErrors)
+                {
+                    var errorString = allErrors.MakeDisplayReady();
+                    dataObject.Environment.AddError(errorString);
+                    DisplayAndWriteError(dataObject, DisplayName, allErrors);
+                }
             }
 
             if (dataObject.IsDebugMode())
