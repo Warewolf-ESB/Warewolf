@@ -157,6 +157,8 @@ namespace Dev2.Activities
 
                 DispatchDebugState(dataObject, StateType.Before, update);
                 DispatchDebugState(dataObject, StateType.After, update);
+
+                RunOnErrorSteps(dataObject, allErrors, update);
             }
         }
 
@@ -164,8 +166,11 @@ namespace Dev2.Activities
         {
             if (hasErrors)
             {
-                var errorString = allErrors.MakeDataListReady();
-                dataObject.Environment.AddError(errorString);
+                if (!this.IsErrorHandled)
+                {
+                    var errorString = allErrors.MakeDisplayReady();
+                    dataObject.Environment.AddError(errorString);
+                }
                 if (actualIndex > -1)
                 {
                     dataObject.Environment.Assign(ResultsCollection[actualIndex].OutputVariable, null, update);
