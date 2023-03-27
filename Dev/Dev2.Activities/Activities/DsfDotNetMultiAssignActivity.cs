@@ -126,7 +126,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             catch (Exception e)
             {
-                allErrors.AddError(e.Message  + " " + t.FieldName + ":" + t.FieldValue);
+                allErrors.AddError(e.Message + " " + t.FieldName + ":" + t.FieldValue);
             }
 
             return innerCount;
@@ -164,7 +164,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                     dataObject.Environment.AssignWithFrame(assignValue, update);
                 }
-            } catch (Exception e)
+            }
+            catch (Exception e)
             {
                 allErrors.AddError(e.Message);
             }
@@ -175,7 +176,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             if (dataObject.IsDebugMode())
             {
-                if (DataListUtil.IsValueRecordset(assignValue.Name) && DataListUtil.GetRecordsetIndexType(assignValue.Name) == enRecordsetIndexType.Blank &&  !assignValue.Name.Contains(DataListUtil.ObjectStartMarker))
+                if (DataListUtil.IsValueRecordset(assignValue.Name) && DataListUtil.GetRecordsetIndexType(assignValue.Name) == enRecordsetIndexType.Blank && !assignValue.Name.Contains(DataListUtil.ObjectStartMarker))
                 {
                     var length = dataObject.Environment.GetLength(DataListUtil.ExtractRecordsetNameFromValue(assignValue.Name));
                     assignValue = new AssignValue(DataListUtil.ReplaceRecordsetBlankWithIndex(assignValue.Name, length), assignValue.Value);
@@ -186,19 +187,19 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         void HandleErrors(IDSFDataObject dataObject, int update, ErrorResultTO allErrors)
         {
-            if(!this.IsErrorHandled)
+            var hasErrors = allErrors.HasErrors();
+            if (!hasErrors && dataObject.Environment.Errors.Any())
             {
-                var hasErrors = allErrors.HasErrors();
-                if (!hasErrors && dataObject.Environment.Errors.Any())
-                {
-                    DisplayAndWriteError(dataObject, DisplayName, allErrors);
-                }
-                if (hasErrors)
+                DisplayAndWriteError(dataObject, DisplayName, allErrors);
+            }
+            if (hasErrors)
+            {
+                if (!this.IsErrorHandled)
                 {
                     var errorString = allErrors.MakeDisplayReady();
                     dataObject.Environment.AddError(errorString);
-                    DisplayAndWriteError(dataObject, DisplayName, allErrors);
                 }
+                DisplayAndWriteError(dataObject, DisplayName, allErrors);
             }
 
             if (dataObject.IsDebugMode())

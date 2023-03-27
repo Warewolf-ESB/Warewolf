@@ -148,7 +148,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected bool IsErrorHandled => !(this.IsEndedOnError || (string.IsNullOrEmpty(OnErrorVariable) && string.IsNullOrEmpty(OnErrorWorkflow)));
 
-        protected void RunOnErrorSteps(IDSFDataObject dataObject, ErrorResultTO allErrors, int update)
+        protected void RunOnErrorSteps(IDSFDataObject dataObject, IErrorResultTO allErrors, int update)
         {
             if(allErrors.HasErrors())
             {
