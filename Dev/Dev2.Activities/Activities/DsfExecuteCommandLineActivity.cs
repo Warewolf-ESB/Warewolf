@@ -219,8 +219,11 @@ namespace Dev2.Activities
                 {
                     if(dataObject.Environment != null)
                     {
-                        var errorString = allErrors.MakeDisplayReady();
-                        dataObject.Environment.AddError(errorString);
+                        if (!this.IsErrorHandled)
+                        {
+                            var errorString = allErrors.MakeDisplayReady();
+                            dataObject.Environment.AddError(errorString);
+                        }
                         dataObject.Environment.Assign(CommandResult, null, update);
                     }
                     DisplayAndWriteError(dataObject,DisplayName, allErrors);
@@ -234,6 +237,8 @@ namespace Dev2.Activities
                     DispatchDebugState(dataObject, StateType.Before, update);
                     DispatchDebugState(dataObject, StateType.After, update);
                 }
+
+                RunOnErrorSteps(dataObject, allErrors, update);
             }
         }
 

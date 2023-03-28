@@ -424,6 +424,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             env.Assign(upsertVariable, errorString, update);
                         }
                     }
+
+                    if (!string.IsNullOrEmpty(OnErrorWorkflow))
+                    {
+                        var esbChannel = dataObject.EsbChannel;
+                        esbChannel.ExecuteLogErrorRequest(dataObject, dataObject.WorkspaceID, OnErrorWorkflow, out ErrorResultTO tmpErrors, update);
+                        if (tmpErrors != null)
+                        {
+                            dataObject.Environment.AddError(tmpErrors.MakeDisplayReady());
+                        }
+                    }
                     DisplayAndWriteError(dataObject,serviceName, allErrors);
                 }
             }

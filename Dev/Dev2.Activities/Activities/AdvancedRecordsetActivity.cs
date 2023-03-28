@@ -94,7 +94,6 @@ namespace Dev2.Activities
             }
             finally
             {
-                RunOnErrorSteps(dataObject, allErrors, update);
                 var hasErrors = allErrors.HasErrors();
                 if (hasErrors)
                 {
@@ -110,6 +109,7 @@ namespace Dev2.Activities
                     DispatchDebugState(dataObject, StateType.Before, update);
                     DispatchDebugState(dataObject, StateType.After, update);
                 }
+                RunOnErrorSteps(dataObject, allErrors, update);
             }
         }
 

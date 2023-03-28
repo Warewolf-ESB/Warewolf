@@ -261,9 +261,12 @@ namespace Dev2.Activities
                 // Handle Errors
                 if(allErrors.HasErrors())
                 {
-                    foreach(var err in allErrors.FetchErrors())
+                    if (!this.IsErrorHandled)
                     {
-                        dataObject.Environment.Errors.Add(err);
+                        foreach (var err in allErrors.FetchErrors())
+                        {
+                            dataObject.Environment.Errors.Add(err);
+                        }
                     }
                     UpsertResult(indexToUpsertTo, dataObject.Environment, null, update);
                     if(dataObject.IsDebugMode())
@@ -277,6 +280,8 @@ namespace Dev2.Activities
                     DispatchDebugState(dataObject, StateType.Before, update);
                     DispatchDebugState(dataObject, StateType.After, update);
                 }
+
+                RunOnErrorSteps(dataObject, allErrors, update);
             }
         }
 

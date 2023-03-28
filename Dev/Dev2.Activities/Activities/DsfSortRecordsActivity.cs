@@ -121,9 +121,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 if(allErrors.HasErrors())
                 {
-                    foreach(var error in allErrors.FetchErrors())
+                    if (!this.IsErrorHandled)
                     {
-                        dataObject.Environment.AddError(error);
+                        foreach (var error in allErrors.FetchErrors())
+                        {
+                            dataObject.Environment.AddError(error);
+                        }
                     }
                     DisplayAndWriteError(dataObject,DisplayName, allErrors);
                 }
@@ -134,6 +137,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     DispatchDebugState(dataObject, StateType.Before, update);
                     DispatchDebugState(dataObject, StateType.After, update);
                 }
+
+                RunOnErrorSteps(dataObject, allErrors, update);
             }
         }
 
