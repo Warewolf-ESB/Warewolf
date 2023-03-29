@@ -136,7 +136,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     if (!this.IsErrorHandled)
                     {
-                        var errorString = allErrors.MakeDisplayReady();
+                        var errorString = allErrors.MakeDataListReady();
                         dataObject.Environment.AddError(errorString);
                     }
                     DisplayAndWriteError(dataObject,DisplayName, allErrors);

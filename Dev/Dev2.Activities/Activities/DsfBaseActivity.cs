@@ -83,7 +83,7 @@ namespace Dev2.Activities
                 {
                     if (!this.IsErrorHandled)
                     {
-                        var errorString = allErrors.MakeDisplayReady();
+                        var errorString = allErrors.MakeDataListReady();
                         dataObject.Environment.AddError(errorString);
                     }
                     dataObject.Environment.Assign(Result, DisplayName.ToUpper().Contains("Dropbox".ToUpper()) ? GlobalConstants.DropBoxFailure : null, update);
