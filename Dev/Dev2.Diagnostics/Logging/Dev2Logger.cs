@@ -159,15 +159,15 @@ namespace Dev2.Common
             var h = (Hierarchy)LogManager.GetRepository();
             var rootLogger = h.Root;
             var appenderVals = LogManager.GetLogger("LogFileAppender").Logger.Repository.GetAppenders();
-            foreach(var appender in appenderVals)
-            {               
-                if(appender.Name=="rollingFile")
-                {                    
-                    RollingFileAppender rollAppender = (RollingFileAppender)appender;
-                    var logSize = rollAppender.MaxFileSize / 1024 / 1024;
+            foreach (var appender in appenderVals)
+            {
+                if (appender is RollingFileAppender rollingFileAppender)
+                {
+                    ByteConstants byteConstants = new ByteConstants();
+                    var logSize = Utilities.ByteConvertor(rollingFileAppender.MaxFileSize, byteConstants.OneMbValue);
                     return (int)Math.Round((decimal)logSize, 0);
                 }
-            } 
+            }
             return 0;
         }
 
@@ -458,6 +458,28 @@ namespace Dev2.Common
         public void Info(object message, Exception exception, string executionId)
         {
             Dev2Logger.Info(message, exception, executionId);
+        }
+    }
+
+    public class ByteConstants
+    {
+        private const long OneKb = 1024;
+        private const long OneMb = OneKb * 1024;
+        private const long OneGb = OneMb * 1024;
+
+        public long OneKbValue
+        {
+            get { return OneKb; }
+        }
+
+        public long OneMbValue
+        {
+            get { return OneMb; }
+        }
+
+        public long OneGbValue
+        {
+            get { return OneGb; }
         }
     }
 }
