@@ -44,66 +44,8 @@
 		<LangVersion>7.3</LangVersion>
 	</PropertyGroup>
 	<ItemGroup>
-		<!--<Reference Include="InfragisticsWPF4.Controls.Editors.XamComboEditor.v15.1, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
-			<SpecificVersion>False</SpecificVersion>
-			<HintPath>..\Binaries\InfragisticsWPF4.Controls.Editors.XamComboEditor.v15.1.dll</HintPath>
-		</Reference>-->
-		<!--<Reference Include="InfragisticsWPF4.Controls.Editors.XamComboEditor.v15.1.Design, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
-			<SpecificVersion>False</SpecificVersion>
-			<HintPath>..\Binaries\InfragisticsWPF4.Controls.Editors.XamComboEditor.v15.1.Design.dll</HintPath>
-		</Reference>-->
-		<!--<Reference Include="InfragisticsWPF4.Controls.Editors.XamRichTextEditor.v15.1, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
-			<SpecificVersion>False</SpecificVersion>
-			<HintPath>..\Binaries\InfragisticsWPF4.Controls.Editors.XamRichTextEditor.v15.1.dll</HintPath>
-		</Reference>-->
-		<!--<Reference Include="InfragisticsWPF4.Controls.Grids.XamGrid.v15.1, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
-			<SpecificVersion>False</SpecificVersion>
-			<HintPath>..\Binaries\InfragisticsWPF4.Controls.Grids.XamGrid.v15.1.dll</HintPath>
-		</Reference>-->
-		<!--<Reference Include="InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
-			<SpecificVersion>False</SpecificVersion>
-			<HintPath>..\Binaries\InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll</HintPath>
-		</Reference>-->
-		<!--<Reference Include="InfragisticsWPF4.Controls.Menus.XamDataTree.v15.1, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
-			<SpecificVersion>False</SpecificVersion>
-			<HintPath>..\Binaries\InfragisticsWPF4.Controls.Menus.XamDataTree.v15.1.dll</HintPath>
-		</Reference>-->
-		<!--<Reference Include="InfragisticsWPF4.Controls.Menus.XamMenu.v15.1, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
-			<SpecificVersion>False</SpecificVersion>
-			<HintPath>..\Binaries\InfragisticsWPF4.Controls.Menus.XamMenu.v15.1.dll</HintPath>
-		</Reference>-->
-		<!--<Reference Include="InfragisticsWPF4.DataManager.v15.1, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
-			<SpecificVersion>False</SpecificVersion>
-			<HintPath>..\Binaries\InfragisticsWPF4.DataManager.v15.1.dll</HintPath>
-		</Reference>-->
-		<!--<Reference Include="InfragisticsWPF4.DataPresenter.v15.1, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
-			<SpecificVersion>False</SpecificVersion>
-			<HintPath>..\Binaries\InfragisticsWPF4.DataPresenter.v15.1.dll</HintPath>
-		</Reference>-->
-		<!--<Reference Include="InfragisticsWPF4.DockManager.v15.1">
-			<HintPath>..\Binaries\InfragisticsWPF4.DockManager.v15.1.dll</HintPath>
-		</Reference>-->
-		<!--<Reference Include="InfragisticsWPF4.Documents.RichTextDocument.Html.v15.1, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
-			<SpecificVersion>False</SpecificVersion>
-			<HintPath>..\Binaries\InfragisticsWPF4.Documents.RichTextDocument.Html.v15.1.dll</HintPath>
-		</Reference>-->
-		<!--<Reference Include="InfragisticsWPF4.Documents.RichTextDocument.v15.1, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
-			<SpecificVersion>False</SpecificVersion>
-			<HintPath>..\Binaries\InfragisticsWPF4.Documents.RichTextDocument.v15.1.dll</HintPath>
-		</Reference>-->
-		<!--<Reference Include="InfragisticsWPF4.DragDrop.v15.1, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
-			<SpecificVersion>False</SpecificVersion>
-			<HintPath>..\Binaries\InfragisticsWPF4.DragDrop.v15.1.dll</HintPath>
-		</Reference>-->
-		<!--<Reference Include="InfragisticsWPF4.Editors.v15.1, Version=15.1.20151.2055, Culture=neutral, processorArchitecture=MSIL">
-			<SpecificVersion>False</SpecificVersion>
-			<HintPath>..\Binaries\InfragisticsWPF4.Editors.v15.1.dll</HintPath>
-		</Reference>-->
-		<!--<Reference Include="InfragisticsWPF4.v15.1, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
-			<SpecificVersion>False</SpecificVersion>
-			<HintPath>..\Binaries\InfragisticsWPF4.v15.1.dll</HintPath>
-		</Reference>-->
-		<PackageReference Include="Infragistics.WPF.Controls.Editors.XamComboEditor.Trial" Version="22.2.19" />
+		 
+		<!--<PackageReference Include="Infragistics.WPF.Controls.Editors.XamComboEditor.Trial" Version="22.2.19" />
 		<PackageReference Include="Infragistics.WPF.Controls.Editors.XamComboEditor.Trial" Version="22.2.19" />
 		<PackageReference Include="Infragistics.WPF.Controls.Editors.XamComboEditor.Trial" Version="22.2.19" />
 		<PackageReference Include="Infragistics.WPF.RichTextEditor.Trial" Version="22.2.19" />
@@ -112,21 +54,55 @@
 		<PackageReference Include="Infragistics.WPF.DialogWindow.Trial" Version="22.2.19" />
 		<PackageReference Include="Infragistics.WPF.DataTree.Trial" Version="22.2.19" />
 		<PackageReference Include="Infragistics.WPF.Menus.Trial" Version="22.2.19" />
-		<PackageReference Include="Infragistics.WPF.DataManager.Trial" Version="22.2.19" />
-		<PackageReference Include="Infragistics.WPF.DataGrids.Trial" Version="22.2.19" />
-		<PackageReference Include="Infragistics.WPF.DockManager.Trial" Version="22.2.19" />
+		<PackageReference Include="Infragistics.WPF.DataManager.Trial" Version="22.2.19" />-->
+		<!--<PackageReference Include="Infragistics.WPF.DataGrids.Trial" Version="22.2.19" />-->
+		<!--<PackageReference Include="Infragistics.WPF.DockManager.Trial" Version="22.2.19" />
 		<PackageReference Include="Infragistics.WPF.RichTextDocument.Html.Trial" Version="22.2.19" />
 		<PackageReference Include="Infragistics.WPF.RichTextDocument.Trial" Version="22.2.19" />
 		<PackageReference Include="Infragistics.WPF.DragDrop.Trial" Version="22.2.19" />
-		<PackageReference Include="Infragistics.WPF.Editors.Trial" Version="22.2.19" />
-		<PackageReference Include="Infragistics.WPF.Trial" Version="22.2.19" />
-		<!--<Reference Include="Microsoft.Windows.Design.Extensibility, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-			<SpecificVersion>False</SpecificVersion>
-			<HintPath>..\Binaries\Microsoft.Windows.Design.Extensibility.dll</HintPath>
-		</Reference>-->
-		<!--<Reference Include="MvvmFoundation.Wpf">
-			<HintPath>..\Binaries\MvvmFoundation.Wpf.dll</HintPath>
-		</Reference>-->
+		<PackageReference Include="Infragistics.WPF.Editors.Trial" Version="22.2.19" />	 
+		<PackageReference Include="Infragistics.WPF.Trial" Version="22.2.19" />-->	 
+		<Reference Include="InfragisticsWPF4.Controls.Editors.XamComboEditor.v15.1">
+		  <HintPath>..\Binaries\Infragistcs_Net6\InfragisticsWPF4.Controls.Editors.XamComboEditor.v15.1.dll</HintPath>
+		</Reference>	 
+		<Reference Include="InfragisticsWPF4.Controls.Editors.XamRichTextEditor.v15.1">
+		  <HintPath>..\Binaries\Infragistcs_Net6\InfragisticsWPF4.Controls.Editors.XamRichTextEditor.v15.1.dll</HintPath>
+		</Reference>	 
+		<Reference Include="InfragisticsWPF4.Controls.Grids.XamGrid.v15.1">
+		  <HintPath>..\Binaries\Infragistcs_Net6\InfragisticsWPF4.Controls.Grids.XamGrid.v15.1.dll</HintPath>
+		</Reference>	 
+		<Reference Include="InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1">
+		  <HintPath>..\Binaries\Infragistcs_Net6\InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll</HintPath>
+		</Reference>	 
+		<Reference Include="InfragisticsWPF4.Controls.Menus.XamDataTree.v15.1">
+		  <HintPath>..\Binaries\Infragistcs_Net6\InfragisticsWPF4.Controls.Menus.XamDataTree.v15.1.dll</HintPath>
+		</Reference>	 
+		<Reference Include="InfragisticsWPF4.Controls.Menus.XamMenu.v15.1">
+		  <HintPath>..\Binaries\Infragistcs_Net6\InfragisticsWPF4.Controls.Menus.XamMenu.v15.1.dll</HintPath>
+		</Reference>	 
+		<Reference Include="InfragisticsWPF4.DataManager.v15.1">
+		  <HintPath>..\Binaries\Infragistcs_Net6\InfragisticsWPF4.DataManager.v15.1.dll</HintPath>
+		</Reference>	 
+		<Reference Include="InfragisticsWPF4.DockManager.v15.1">
+		  <HintPath>..\Binaries\Infragistcs_Net6\InfragisticsWPF4.DockManager.v15.1.dll</HintPath>
+		</Reference>	 
+		<Reference Include="InfragisticsWPF4.Documents.RichTextDocument.Html.v15.1">
+		  <HintPath>..\Binaries\Infragistcs_Net6\InfragisticsWPF4.Documents.RichTextDocument.Html.v15.1.dll</HintPath>
+		</Reference>	 
+		<Reference Include="InfragisticsWPF4.Documents.RichTextDocument.v15.1">
+		  <HintPath>..\Binaries\Infragistcs_Net6\InfragisticsWPF4.Documents.RichTextDocument.v15.1.dll</HintPath>
+		</Reference>	 
+		<Reference Include="InfragisticsWPF4.DragDrop.v15.1">
+		  <HintPath>..\Binaries\Infragistcs_Net6\InfragisticsWPF4.DragDrop.v15.1.dll</HintPath>
+		</Reference>	 
+		<Reference Include="InfragisticsWPF4.Editors.v15.1">
+		  <HintPath>..\Binaries\Infragistcs_Net6\InfragisticsWPF4.Editors.v15.1.dll</HintPath>
+		</Reference>	 
+		<Reference Include="InfragisticsWPF4.v15.1">
+		  <HintPath>..\Binaries\Infragistcs_Net6\InfragisticsWPF4.v15.1.dll</HintPath>
+		</Reference>
+		 
+	 
 		<Reference Include="System.Activities" />
 		<Reference Include="System.Activities.Presentation" />
 		<Reference Include="System.ServiceModel.Activities" />
