@@ -295,7 +295,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected virtual void ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO tmpErrors, int update)
         {
-            esbChannel.ExecuteSubRequest(dataObject, dataObject.WorkspaceID, inputs, outputs, out tmpErrors, update, !String.IsNullOrEmpty(OnErrorVariable));
+            esbChannel.ExecuteSubRequest(dataObject, dataObject.WorkspaceID, inputs, outputs, out tmpErrors, update, 
+                (!String.IsNullOrEmpty(OnErrorVariable) || !String.IsNullOrEmpty(OnErrorWorkflow)));
         }
 
         public override IList<DsfForEachItem> GetForEachInputs() => throw new NotImplementedException();
@@ -394,7 +395,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 if (allErrors.HasErrors())
                 {
                     var env = dataObject.Environment;
-                    if (this.IsEndedOnError || string.IsNullOrEmpty(OnErrorVariable))
+                    if (!this.IsErrorHandled)
                     {
                         foreach (var allError in allErrors.FetchErrors())
                         {
@@ -406,7 +407,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     if (!String.IsNullOrEmpty(OnErrorVariable))
                     {
                         //string.Join(Environment.NewLine, AllErrors.Union(Errors));
-                        var errorString = string.Join(Environment.NewLine, allErrors.FetchErrors()); //env.FetchErrors();
+                        var errorString = string.Join(Environment.NewLine, allErrors.FetchErrors());
                         var errors = ErrorResultTO.MakeErrorResultFromDataListString(errorString, true);
                         var upsertVariable = DataListUtil.AddBracketsToValueIfNotExist(OnErrorVariable);
                         if (errors.HasErrors())
@@ -421,6 +422,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         else
                         {
                             env.Assign(upsertVariable, errorString, update);
+                        }
+                    }
+
+                    if (!string.IsNullOrEmpty(OnErrorWorkflow))
+                    {
+                        var esbChannel = dataObject.EsbChannel;
+                        esbChannel.ExecuteLogErrorRequest(dataObject, dataObject.WorkspaceID, OnErrorWorkflow, out ErrorResultTO tmpErrors, update);
+                        if (tmpErrors != null)
+                        {
+                            dataObject.Environment.AddError(tmpErrors.MakeDisplayReady());
                         }
                     }
                     DisplayAndWriteError(dataObject,serviceName, allErrors);

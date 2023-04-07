@@ -81,8 +81,11 @@ namespace Dev2.Activities
                 var hasErrors = allErrors.HasErrors();
                 if (hasErrors)
                 {
-                    var errorList = allErrors.MakeDataListReady();
-                    dataObject.Environment.AddError(errorList);
+                    if (!this.IsErrorHandled)
+                    {
+                        var errorString = allErrors.MakeDataListReady();
+                        dataObject.Environment.AddError(errorString);
+                    }
                     dataObject.Environment.Assign(Result, DisplayName.ToUpper().Contains("Dropbox".ToUpper()) ? GlobalConstants.DropBoxFailure : null, update);
                     DisplayAndWriteError(dataObject,DisplayName, allErrors);
                 }
@@ -91,6 +94,8 @@ namespace Dev2.Activities
                     DispatchDebugState(dataObject, StateType.Before, update);
                     DispatchDebugState(dataObject, StateType.After, update);
                 }
+
+                RunOnErrorSteps(dataObject, allErrors, update);
             }
         }
 

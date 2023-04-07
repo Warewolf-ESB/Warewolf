@@ -418,13 +418,11 @@ Scenario: Sending Error in error variable and calling webservice
     And assign error to variable "[[error]]"
     And call the web service "http://tst-ci-remote:3142/Public/ONERROR/OnError_WriteToFile.xml?errorLog=[[error]]"
     When the data split tool is executed
-    Then the execution has "AN" error
+    Then the execution has "NO" error
     And the result from the web service "http://tst-ci-remote:3142/Public/ONERROR/OnError_ReadFromFile.xml" will have the same data as variable "[[error]]"
     And the debug inputs as
 	| String to Split   | Process Direction | Skip blank rows | # |                       | With  | Using | Include | Escape |
 	| @!?><":}{+_)(*&^~ | Backward          | No              | 1 | [[vowels(*).chars]] = | Index | *     | No      |        |
-    And the debug output as
-	| # |                       |
 
 Scenario: Split negative record index as Input
 	Given A string to split with value "[[my(-1).var]]"

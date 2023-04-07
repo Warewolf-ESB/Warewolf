@@ -1,3 +1,12 @@
+Warewolf-2.8.3 (14 March 2023)
+======================
+
+Bug fixes
+----------
+- Updated the loading of the dependency graph to prevent it loading blank sometimes.
+- Patch a bug with loading certain date time formats.
+- The server max file size setting is respected more accurately.
+
 Warewolf-2.8.2.9 (3 March 2023)
 ======================
 

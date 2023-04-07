@@ -372,6 +372,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 dataObject.IsDebugNested = false;
                 HandleDebug(dataObject, serviceTestStep);
                 HandleErrors(dataObject, allErrors);
+                RunOnErrorSteps(dataObject, allErrors, update);
             }
         }
 
@@ -451,9 +452,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 dataObject.ParentInstanceID = _previousParentId;
                 dataObject.ForEachNestingLevel--;
                 dataObject.IsDebugNested = false;
-                foreach (var fetchError in allErrors.FetchErrors())
+                if (!this.IsErrorHandled)
                 {
-                    dataObject.Environment.AddError(fetchError);
+                    foreach (var fetchError in allErrors.FetchErrors())
+                    {
+                        dataObject.Environment.AddError(fetchError);
+                    }
                 }
                 dataObject.ParentInstanceID = _previousParentId;
                 DisplayAndWriteError(dataObject, DisplayName, allErrors);
