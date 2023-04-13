@@ -104,8 +104,6 @@
 			<HintPath>..\Binaries\InfragisticsWPF4.v15.1.dll</HintPath>
 		</Reference>-->
 		<PackageReference Include="Infragistics.WPF.Controls.Editors.XamComboEditor.Trial" Version="22.2.19" />
-		<PackageReference Include="Infragistics.WPF.Controls.Editors.XamComboEditor.Trial" Version="22.2.19" />
-		<PackageReference Include="Infragistics.WPF.Controls.Editors.XamComboEditor.Trial" Version="22.2.19" />
 		<PackageReference Include="Infragistics.WPF.RichTextEditor.Trial" Version="22.2.19" />
 		<PackageReference Include="Infragistics.WPF.Controls.Grids.XamGrid.Trial" Version="22.2.19" />
 		<PackageReference Include="Infragistics.WPF.DialogWindow.Trial" Version="22.2.19" />
