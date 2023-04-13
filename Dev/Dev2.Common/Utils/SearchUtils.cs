@@ -18,6 +18,8 @@ namespace Dev2.Common.Utils
     {
         public static bool FilterText(string valueToFilter, ISearch searchValue)
         {
+            if(valueToFilter == null) return false; 
+
             var searchInput = searchValue.SearchInput;
             var filterValue = valueToFilter;
             if (!searchValue.SearchOptions.IsMatchCaseSelected)

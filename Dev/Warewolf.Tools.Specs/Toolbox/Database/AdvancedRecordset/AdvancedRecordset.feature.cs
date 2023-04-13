@@ -11084,7 +11084,7 @@ this.ScenarioInitialize(scenarioInfo);
                             "value"});
                 table813.AddRow(new string[] {
                             "TableCopy().val",
-                            "12.86666666666670"});
+                            "12.866666666666667"});
 #line 3246
     testRunner.Then("recordset \"[[TableCopy(*).val]]\"  will be", ((string)(null)), table813, "Then ");
 #line hidden
@@ -11103,7 +11103,7 @@ this.ScenarioInitialize(scenarioInfo);
                 TechTalk.SpecFlow.Table table815 = new TechTalk.SpecFlow.Table(new string[] {
                             ""});
                 table815.AddRow(new string[] {
-                            "[[TableCopy(1).val]] = 12.86666666666670"});
+                            "[[TableCopy(1).val]] = 12.866666666666667"});
 #line 3253
     testRunner.And("the debug output as", ((string)(null)), table815, "And ");
 #line hidden

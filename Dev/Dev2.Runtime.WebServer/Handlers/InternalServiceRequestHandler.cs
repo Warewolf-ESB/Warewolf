@@ -198,7 +198,8 @@ namespace Dev2.Runtime.WebServer.Handlers
                 }
             }
 
-            DsfDataObject.ClientID = Guid.Parse(connectionId);
+            Guid.TryParse(connectionId, out Guid nclntid);
+            DsfDataObject.ClientID = nclntid;
             Common.Utilities.OrginalExecutingUser = ExecutingUser;
             DsfDataObject.ExecutingUser = ExecutingUser;
             return isManagementResource;

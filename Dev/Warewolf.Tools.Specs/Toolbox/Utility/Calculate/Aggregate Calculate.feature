@@ -358,7 +358,7 @@ Scenario Outline: Aggregated Calculation Assign by evaluating variables with fun
 	| 152 | TAN([[z]])                                                 | 0.6483608274590866                                                                           |
 	| 153 | TANH([[z]])                                                | 0.9999999958776927                                                                           |
 	| 154 | TEXT([[y]],[[rc(1).set]])                                  | 5                                                                                           |
-	| 155 | TIME(24,[[x]],[[x]])                                       | 0.000706018518518518                                                                        |
+	| 155 | TIME(24,[[x]],[[x]])                                       | 0.0007060185185185185                                                                        |
 	| 156 | TIMEVALUE("2:24 AM")                                       | 0.1                                                                                         |
 	| 157 | TODAY()                                                    | [Today]                                                                                     |
 	| 158 | TRIM(10)                                                   | 10                                                                                          |

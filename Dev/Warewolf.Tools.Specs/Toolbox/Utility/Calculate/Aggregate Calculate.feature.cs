@@ -3041,11 +3041,11 @@ this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("154", "TEXT(
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "155")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "155")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "TIME(24,[[x]],[[x]])")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "0.000706018518518518")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "0.0007060185185185185")]
         public void AggregatedCalculationAssignByEvaluatingVariablesWithFunctions_155()
         {
 #line 198
-this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("155", "TIME(24,[[x]],[[x]])", "0.000706018518518518", ((string[])(null)));
+this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("155", "TIME(24,[[x]],[[x]])", "0.0007060185185185185", ((string[])(null)));
 #line hidden
         }
         

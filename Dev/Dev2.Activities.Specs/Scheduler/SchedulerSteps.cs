@@ -35,6 +35,7 @@ using Dev2.Studio.Interfaces;
 using System.IO;
 using Dev2.Infrastructure.Tests;
 using Tulpep.ActiveDirectoryObjectPicker;
+using Dev2.Net6.Compatibility;
 
 namespace Dev2.Activities.Specs.Scheduler
 {
@@ -74,62 +75,65 @@ namespace Dev2.Activities.Specs.Scheduler
             _scenarioContext.Add("UserName", userName);
             _scenarioContext.Add("Password", password);
         }
-        
+
         [Given(@"""(.*)"" has a Schedule of")]
         public void GivenHasAScheduleOf(string scheduleName, Table table)
         {
-            AppUsageStats.LocalHost = "http://localhost:3142";
-            var mockServer = new Mock<IServer>();
-            var mockshell = new Mock<IShellViewModel>();
-            mockshell.Setup(a => a.ActiveServer).Returns(mockServer.Object);
-            mockshell.Setup(a => a.LocalhostServer).Returns(mockServer.Object);
-            mockServer.Setup(a => a.GetServerVersion()).Returns("1.0.0.0");
-            CustomContainer.Register(mockServer.Object);
-            CustomContainer.Register(mockshell.Object);
-            var mockPopupController = new Mock<IPopupController>();
-            mockPopupController.Setup(controller => controller.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
-            var serverRepository = ServerRepository.Instance;
-            var server = serverRepository.Source;
-            CustomContainer.Register(serverRepository);
-            var scheduler = new SchedulerViewModel(EventPublishers.Aggregator, new DirectoryObjectPickerDialog(), mockPopupController.Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, new Mock<IServer>().Object, a => new Mock<IServer>().Object);
-
-            var resourceId = table.Rows[0]["ResourceId"];
-
-            server.Connect();
-            scheduler.ScheduledResourceModel = new ClientScheduledResourceModel(server, () => { });
-            scheduler.CurrentEnvironment = server;
-            scheduler.CreateNewTask();
-            scheduler.SelectedTask.Name = _scenarioContext["ScheduleName"].ToString();
-            scheduler.SelectedTask.OldName = "bob";
-            scheduler.SelectedTask.UserName = _scenarioContext["UserName"].ToString();
-            scheduler.SelectedTask.Password = _scenarioContext["Password"].ToString();
-            scheduler.SelectedTask.WorkflowName = _scenarioContext["WorkFlow"].ToString();
-            scheduler.SelectedTask.ResourceId = string.IsNullOrEmpty(resourceId) ? new Guid("acb75027-ddeb-47d7-814e-a54c37247ec1") : new Guid(resourceId);
-            scheduler.SelectedTask.NumberOfHistoryToKeep = (int)_scenarioContext["HistoryCount"];
-            scheduler.SelectedTask.Status = (SchedulerStatus)_scenarioContext["TaskStatus"];
-            scheduler.Errors.ClearErrors();
-            var task = scheduler.SelectedTask;
-            UpdateTrigger(task, table);
-
-            var po = new Warewolf.Testing.PrivateObject(scheduler.CurrentEnvironment);
-            var mockAuth = new Mock<IAuthorizationService>();
-            mockAuth.Setup(a => a.IsAuthorized(It.IsAny<AuthorizationContext>(), null)).Returns(true);
-            po.SetFieldOrProperty("AuthorizationService", mockAuth.Object);
-            _scenarioContext["Scheduler"] = scheduler;
-            try
+            STAThreadExtensions.RunAsSTA(() =>
             {
-                scheduler.SaveCommand.Execute("");
-                if (scheduler.HasErrors)
+                AppUsageStats.LocalHost = "http://localhost:3142";
+                var mockServer = new Mock<IServer>();
+                var mockshell = new Mock<IShellViewModel>();
+                mockshell.Setup(a => a.ActiveServer).Returns(mockServer.Object);
+                mockshell.Setup(a => a.LocalhostServer).Returns(mockServer.Object);
+                mockServer.Setup(a => a.GetServerVersion()).Returns("1.0.0.0");
+                CustomContainer.Register(mockServer.Object);
+                CustomContainer.Register(mockshell.Object);
+                var mockPopupController = new Mock<IPopupController>();
+                mockPopupController.Setup(controller => controller.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
+                var serverRepository = ServerRepository.Instance;
+                var server = serverRepository.Source;
+                CustomContainer.Register(serverRepository);
+                var scheduler = new SchedulerViewModel(EventPublishers.Aggregator, new DirectoryObjectPickerDialog(), mockPopupController.Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, new Mock<IServer>().Object, a => new Mock<IServer>().Object);
+
+                var resourceId = table.Rows[0]["ResourceId"];
+
+                server.Connect();
+                scheduler.ScheduledResourceModel = new ClientScheduledResourceModel(server, () => { });
+                scheduler.CurrentEnvironment = server;
+                scheduler.CreateNewTask();
+                scheduler.SelectedTask.Name = _scenarioContext["ScheduleName"].ToString();
+                scheduler.SelectedTask.OldName = "bob";
+                scheduler.SelectedTask.UserName = _scenarioContext["UserName"].ToString();
+                scheduler.SelectedTask.Password = _scenarioContext["Password"].ToString();
+                scheduler.SelectedTask.WorkflowName = _scenarioContext["WorkFlow"].ToString();
+                scheduler.SelectedTask.ResourceId = string.IsNullOrEmpty(resourceId) ? new Guid("acb75027-ddeb-47d7-814e-a54c37247ec1") : new Guid(resourceId);
+                scheduler.SelectedTask.NumberOfHistoryToKeep = (int)_scenarioContext["HistoryCount"];
+                scheduler.SelectedTask.Status = (SchedulerStatus)_scenarioContext["TaskStatus"];
+                scheduler.Errors.ClearErrors();
+                var task = scheduler.SelectedTask;
+                UpdateTrigger(task, table);
+
+                var po = new Warewolf.Testing.PrivateObject(scheduler.CurrentEnvironment);
+                var mockAuth = new Mock<IAuthorizationService>();
+                mockAuth.Setup(a => a.IsAuthorized(It.IsAny<AuthorizationContext>(), null)).Returns(true);
+                po.SetFieldOrProperty("AuthorizationService", mockAuth.Object);
+                _scenarioContext["Scheduler"] = scheduler;
+                try
                 {
-                    _scenarioContext["Error"] = scheduler.Error;
-                    Console.WriteLine("Error creating schedule: " + scheduler.Error);
+                    scheduler.SaveCommand.Execute("");
+                    if (scheduler.HasErrors)
+                    {
+                        _scenarioContext["Error"] = scheduler.Error;
+                        Console.WriteLine("Error creating schedule: " + scheduler.Error);
+                    }
                 }
-            }
-            catch (Exception e)
-            {
-                _scenarioContext["Error"] = e.Message;
-                Console.WriteLine("Error creating schedule: " + e.Message);
-            }
+                catch (Exception e)
+                {
+                    _scenarioContext["Error"] = e.Message;
+                    Console.WriteLine("Error creating schedule: " + e.Message);
+                }
+            });
         }
 
         void UpdateTrigger(IScheduledResource task, Table table)
@@ -195,23 +199,25 @@ namespace Dev2.Activities.Specs.Scheduler
         {
             if (_scenarioContext["Scheduler"] is SchedulerViewModel scheduler)
             {
-                scheduler.ActiveItem = new TabItem { Header = "History" };
-                Thread.Sleep(12000);
-
-                var scheduledResource = scheduler.SelectedTask;
-                IList<IResourceHistory> x = scheduler.ScheduledResourceModel.CreateHistory(scheduledResource).ToList();
-
-
-                if (status == "Success")
+                STAThreadExtensions.RunAsSTA(() =>
                 {
-                    Assert.AreEqual(ScheduleRunStatus.Success, x[0].TaskHistoryOutput.Success, x[0].TaskHistoryOutput.FailureReason);
-                }
-                else
-                {
-                    Assert.IsTrue(x[0].TaskHistoryOutput.Success == ScheduleRunStatus.Error);
-                }
-                _scenarioContext["History"] = x;
+                    scheduler.ActiveItem = new TabItem { Header = "History" };
+                    Thread.Sleep(12000);
 
+                    var scheduledResource = scheduler.SelectedTask;
+                    IList<IResourceHistory> x = scheduler.ScheduledResourceModel.CreateHistory(scheduledResource).ToList();
+
+
+                    if (status == "Success")
+                    {
+                        Assert.AreEqual(ScheduleRunStatus.Success, x[0].TaskHistoryOutput.Success, x[0].TaskHistoryOutput.FailureReason);
+                    }
+                    else
+                    {
+                        Assert.IsTrue(x[0].TaskHistoryOutput.Success == ScheduleRunStatus.Error);
+                    }
+                    _scenarioContext["History"] = x;
+                });
             }
             else
             {
@@ -228,7 +234,7 @@ namespace Dev2.Activities.Specs.Scheduler
             var resources = _scenarioContext["History"] as IList<IResourceHistory>;
 
             var debug = resources.First().DebugOutput;
-            
+
             var debugTocompare = debug.Last();
             _commonSteps.ThenTheDebugOutputAs(table, debugTocompare.Outputs.SelectMany(s => s.ResultsList).ToList(), true);
         }
@@ -294,8 +300,8 @@ namespace Dev2.Activities.Specs.Scheduler
             {
                 var id = GetUserSecurityIdentifier(name);
                 accountExists = id.IsAccountSid();
-            }            
-            catch (Exception)            
+            }
+            catch (Exception)
             {
                 /* Invalid user account */
             }

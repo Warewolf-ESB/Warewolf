@@ -405,6 +405,7 @@
       <Project>{615EAE6D-040C-4364-B708-63DC8755CD4F}</Project>
       <Name>Dev2.Infrastructure</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Dev2.Net6.Compatibility\Dev2.Net6.Compatibility.csproj" />
     <ProjectReference Include="..\Dev2.Runtime.Configuration\Dev2.Runtime.Configuration.csproj">
       <Project>{9c43d5a2-fefd-4632-9bf2-ee0e4c05bebc}</Project>
       <Name>Dev2.Runtime.Configuration</Name>

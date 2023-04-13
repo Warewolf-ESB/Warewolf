@@ -33,7 +33,7 @@ Scenario: Executing Assign workflow with invalid variable
 			| d@teMonth | February |
 		When workflow "InvalidAssignedVariableWF" is saved "1" time
 		And I Debug "http://localhost:3142/secure/Acceptance%20Tests/InvalidAssignedVariableWF.debug?" in Browser
-		Then The Debug in Browser content contains has error messagge ""invalid variable assigned to d@teMonth""
+		Then The Debug in Browser content contains has error messagge ""invalid variable assigned to d@teMonth: { d@teMonth }""
 
 Scenario: Executing Hello World workflow
 		Given I have a workflow "Hello World"
@@ -132,13 +132,13 @@ Scenario: Executing Workflow with Execute Permissions and Nested Workflow With N
 	Given I have a workflow "OuterWorkflow"
 	And Public "Has" Permissions to Execute "OuterWorkflow"
 	And I Debug "http://localhost:3142/public/OuterWorkflow.json?" in Browser
-	Then Browser content is "Access has been denied for this request."
+	Then Browser content is "Authorization has been denied for this user."
 
 Scenario: Executing Workflow with No Execute Permissions
 	Given I have a workflow "Nested"
 	And Public "" Permissions to Execute "Nested"
 	And I Debug "http://localhost:3142/public/Nested.json?" in Browser
-	Then Browser content is "Access has been denied for this request."
+	Then Browser content is "Authorization has been denied for this user."
 
 Scenario: Executing a workflow should not error for logging
 		Given I have a workflow "AssignedWF"

@@ -557,7 +557,7 @@ this.InsertForAllFilterTypeAndFileProvider("3", "", "<myfile/><file><name/></fil
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "All")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "c:\\[[myfile]][[")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "13")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[file(*).name]],[[file().name]],[[myfile]],[[file(*)]],[[file()]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "c:\\[[myfile]][[")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default, File")]
@@ -565,7 +565,7 @@ this.InsertForAllFilterTypeAndFileProvider("3", "", "<myfile/><file><name/></fil
         public void InsertForAllFilterTypeAndFileProvider_4()
         {
 #line 32
-this.InsertForAllFilterTypeAndFileProvider("4", "", "<myfile/><file><name/></file>", "All", "c:\\[[myfile]][[", "13", "", "", "c:\\[[myfile]][[", "Default, File", "13", ((string[])(null)));
+this.InsertForAllFilterTypeAndFileProvider("4", "", "<myfile/><file><name/></file>", "All", "c:\\[[myfile]][[", "13", "[[file(*).name]],[[file().name]],[[myfile]],[[file(*)]],[[file()]]", "", "c:\\[[myfile]][[", "Default, File", "13", ((string[])(null)));
 #line hidden
         }
         
@@ -892,7 +892,7 @@ this.InsertForAllFilterTypeAndCalculateProvider("6", "<att/><sum><b/></sum>", "A
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "All")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "=[[b]]+b")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "8")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[b]],bin2dec,bin2hex,bin2oct")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[b]],bin2dec,bin2hex,bin2oct,binomdist")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[b]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "=[[b]]+[[b]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default, Calculate")]
@@ -900,7 +900,7 @@ this.InsertForAllFilterTypeAndCalculateProvider("6", "<att/><sum><b/></sum>", "A
         public void InsertForAllFilterTypeAndCalculateProvider_7()
         {
 #line 56
-this.InsertForAllFilterTypeAndCalculateProvider("7", "<a/><b/><c/>", "All", "=[[b]]+b", "8", "[[b]],bin2dec,bin2hex,bin2oct", "[[b]]", "=[[b]]+[[b]]", "Default, Calculate", "12", ((string[])(null)));
+this.InsertForAllFilterTypeAndCalculateProvider("7", "<a/><b/><c/>", "All", "=[[b]]+b", "8", "[[b]],bin2dec,bin2hex,bin2oct,binomdist", "[[b]]", "=[[b]]+[[b]]", "Default, Calculate", "12", ((string[])(null)));
 #line hidden
         }
         

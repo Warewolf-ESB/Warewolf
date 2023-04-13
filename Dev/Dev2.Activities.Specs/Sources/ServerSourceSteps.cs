@@ -202,7 +202,7 @@ namespace Dev2.Activities.Specs.Sources
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+            
         }
     }
 }

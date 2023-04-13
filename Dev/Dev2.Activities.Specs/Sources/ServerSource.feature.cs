@@ -210,7 +210,8 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.When("I Test the connection", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 29
- testRunner.Then("The result is \"Connection Error :Unauthorized\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("The result is \"Connection Error :One or more errors occurred. (Response status co" +
+                        "de does not indicate success: 401 (Unauthorized).)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();

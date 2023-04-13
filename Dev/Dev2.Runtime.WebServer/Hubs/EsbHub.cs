@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -38,8 +39,6 @@ using Microsoft.AspNetCore.SignalR;
 using Nest;
 using Warewolf.Resource.Errors;
 
-
-
 // Interface between the Studio and Server. Commands sent from the Studio come here to get processed, this is why methods are unused or only used in tests.
 
 namespace Dev2.Runtime.WebServer.Hubs
@@ -55,27 +54,32 @@ namespace Dev2.Runtime.WebServer.Hubs
         private readonly IHttpContextAccessor _httpContextAccessor;
         static readonly ConcurrentDictionary<Guid, StringBuilder> MessageCache = new ConcurrentDictionary<Guid, StringBuilder>();
         readonly Dev2JsonSerializer _serializer = new Dev2JsonSerializer();
-        static readonly Dictionary<Guid, string>  ResourceAffectedMessagesCache = new Dictionary<Guid, string>();
+        static readonly Dictionary<Guid, string> ResourceAffectedMessagesCache = new Dictionary<Guid, string>();
+        private IHubContext<EsbHub> _hubContext;
 
         [Microsoft.Extensions.DependencyInjection.ActivatorUtilitiesConstructor]
-        public EsbHub()
+        public EsbHub(IHubContext<EsbHub> hubContext = null, IHttpContextAccessor httpContextAccessor = null)
         {
+            _hubContext = hubContext;
+            _httpContextAccessor = httpContextAccessor;
             DebugDispatcher.Instance.Add(GlobalConstants.ServerWorkspaceID, this);
         }
 
-        public EsbHub(Server server)
+        public EsbHub(Server server, IHubContext<EsbHub> hubContext, IHttpContextAccessor httpContextAccessor = null)
             : base(server)
         {
+            _hubContext = hubContext;
+            _httpContextAccessor = httpContextAccessor;
             DebugDispatcher.Instance.Add(GlobalConstants.ServerWorkspaceID, this);
         }
 
         #region Implementation of IDebugWriter
-        
+
         public void WriteDebugState(IDebugState debugState)
         {
             SendDebugState(debugState as DebugState);
         }
-        
+
         public void Write(string serializeObject)
         {
             var debugState = _serializer.Deserialize<DebugState>(serializeObject);
@@ -92,9 +96,9 @@ namespace Dev2.Runtime.WebServer.Hubs
             {
                 addedItem.ServerId = HostSecurityProvider.Instance.ServerID;
                 var item = _serializer.Serialize(addedItem);
-                var hubCallerConnectionContext = Clients;
+                //var hubCallerConnectionContext = Clients;
                 //hubCallerConnectionContext.All.ItemAddedMessage(item);
-                hubCallerConnectionContext.All.SendAsync("ItemAddedMessage", item);
+                _hubContext.Clients.All.SendAsync("ItemAddedMessage", item);
             }
         }
 
@@ -107,15 +111,13 @@ namespace Dev2.Runtime.WebServer.Hubs
                 var resourceItem = ServerExplorerRepository.Instance.UpdateItem(resource);
                 AddItemMessage(resourceItem);
             }
-            
+
         }
 
         void PermissionsHaveBeenModified(object sender, PermissionsModifiedEventArgs permissionsModifiedEventArgs)
         {
             if (_httpContextAccessor.HttpContext == null)
-            {
                 return;
-            }
 
             try
             {
@@ -126,7 +128,9 @@ namespace Dev2.Runtime.WebServer.Hubs
                     ServerID = HostSecurityProvider.Instance.ServerID
                 };
                 var serializedMemo = _serializer.Serialize(permissionsMemo);
-                Clients.Caller.SendAsync("SendPermissionsMemo", serializedMemo);//Clients.Caller.SendPermissionsMemo(serializedMemo);
+                //Clients.Caller.SendPermissionsMemo(serializedMemo);
+                _hubContext.Clients.Group($"user_{_httpContextAccessor.HttpContext.User.Identity.Name}").SendAsync("SendPermissionsMemo", serializedMemo);
+
             }
             catch (Exception e)
             {
@@ -169,7 +173,7 @@ namespace Dev2.Runtime.WebServer.Hubs
 
         void SendResourcesAffectedMemo(Guid resourceId, IList<ICompileMessageTO> messages)
         {
-            
+
             var msgs = new CompileMessageList { Dependants = new List<string>() };
             messages.ToList().ForEach(s => msgs.Dependants.Add(s.ServiceName));
             msgs.MessageList = messages;
@@ -201,20 +205,24 @@ namespace Dev2.Runtime.WebServer.Hubs
             return null;
         }
 
-        public void SendDebugState(DebugState debugState)
+        public  void SendDebugState(DebugState debugState)
         {
             var debugSerializated = _serializer.Serialize(debugState);
 
-            var hubCallerConnectionContext = Clients;
+            //var hubCallerConnectionContext = Clients;
+            var hubCallerConnectionContext = _hubContext.Clients;
+
+
             try
             {
-                var user = hubCallerConnectionContext.User(_httpContextAccessor.HttpContext.User.Identity.Name);
-                user.SendAsync("SendDebugState", debugSerializated);//user.SendDebugState(debugSerializated);
+                //var user = hubCallerConnectionContext.User(Context.User.Identity.Name);
+                //user.SendAsync("SendDebugState", debugSerializated);//user.SendDebugState(debugSerializated);
+                hubCallerConnectionContext.Group($"user_{_httpContextAccessor.HttpContext.User.Identity.Name}").SendAsync("SendDebugState", debugSerializated).Wait();
+
             }
             catch (Exception ex)
             {
-                var user = hubCallerConnectionContext.Caller;
-                user.SendAsync("SendDebugState", debugSerializated);//user.SendDebugState(debugSerializated);
+                Dev2Logger.Error(this, ex, GlobalConstants.WarewolfError);
             }
 
         }
@@ -262,7 +270,7 @@ namespace Dev2.Runtime.WebServer.Hubs
             task.Start();
             await task.ConfigureAwait(true);
         }
-        
+
         public async Task<string> FetchExecutePayloadFragment(FutureReceipt receipt)
         {
             if (_httpContextAccessor.HttpContext.User.Identity.Name != null)
@@ -306,18 +314,18 @@ namespace Dev2.Runtime.WebServer.Hubs
                         var request = _serializer.Deserialize<EsbExecuteRequest>(sb);
 
                         var user = string.Empty;
-                        
+
                         var userPrinciple = _httpContextAccessor.HttpContext.User;
                         if (_httpContextAccessor.HttpContext.User.Identity != null)
-                        
+
                         {
                             user = _httpContextAccessor.HttpContext.User.Identity.Name;
                             userPrinciple = _httpContextAccessor.HttpContext.User;
                             Thread.CurrentPrincipal = userPrinciple;
-                            Dev2Logger.Debug("Execute Command Invoked For [ " + user + " : "+userPrinciple?.Identity?.AuthenticationType+" : "+userPrinciple?.Identity?.IsAuthenticated+" ] For Service [ " + request.ServiceName + " ]", GlobalConstants.WarewolfDebug);
+                            Dev2Logger.Debug("Execute Command Invoked For [ " + user + " : " + userPrinciple?.Identity?.AuthenticationType + " : " + userPrinciple?.Identity?.IsAuthenticated + " ] For Service [ " + request.ServiceName + " ]", GlobalConstants.WarewolfDebug);
                         }
                         StringBuilder processRequest = null;
-                        Common.Utilities.PerformActionInsideImpersonatedContext(userPrinciple, () => { processRequest = internalServiceRequestHandler.ProcessRequest(request, workspaceId, dataListId, _httpContextAccessor.HttpContext.Connection.Id); });
+                        Common.Utilities.PerformActionInsideImpersonatedContext(userPrinciple, () => { processRequest = internalServiceRequestHandler.ProcessRequest(request, workspaceId, dataListId, Context.ConnectionId); });
                         var future = new FutureReceipt
                         {
                             PartID = 0,
@@ -328,7 +336,7 @@ namespace Dev2.Runtime.WebServer.Hubs
                         var value = processRequest?.ToString();
                         if (!string.IsNullOrEmpty(value) && !ResultsCache.Instance.AddResult(future, value))
                         {
-                            Dev2Logger.Error(new Exception(string.Format(ErrorResource.FailedToBuildFutureReceipt, _httpContextAccessor.HttpContext.Connection.Id, value)), GlobalConstants.WarewolfError);
+                            Dev2Logger.Error(new Exception(string.Format(ErrorResource.FailedToBuildFutureReceipt, Context.ConnectionId, value)), GlobalConstants.WarewolfError);
                         }
 
                         return new Receipt { PartID = envelope.PartID, ResultParts = 1 };
@@ -360,13 +368,13 @@ namespace Dev2.Runtime.WebServer.Hubs
         //    return base.OnConnected();
         //}
 
-        public override Task OnConnectedAsync()
+        public override async Task OnConnectedAsync()
         {
-
+            await Groups.AddToGroupAsync(Context.ConnectionId, $"user_{_httpContextAccessor.HttpContext.User.Identity.Name}");
             ConnectionActions();
-            return base.OnConnectedAsync();
+            await base.OnConnectedAsync();
         }
-        
+
         ///// <summary>
         /////     Called when the connection reconnects to this hub instance.
         ///// </summary>
@@ -381,17 +389,19 @@ namespace Dev2.Runtime.WebServer.Hubs
 
         void ConnectionActions()
         {
-            
-            SetupEvents();
 
+            SetupEvents();
+            var connectionId = Context.ConnectionId;
             var t = new Task(() =>
             {
-                var workspaceId = Server.GetWorkspaceID(Context.User.Identity);
+                var workspaceId = Server.GetWorkspaceID(_httpContextAccessor.HttpContext.User.Identity);
                 ResourceCatalog.Instance.LoadServerActivityCache();
-                var hubCallerConnectionContext = Clients;
-                var user = hubCallerConnectionContext.User(Context.User.Identity.Name);
+
+                var user = _hubContext.Clients.Client(connectionId);
+
                 user.SendAsync("SendWorkspaceID", workspaceId);//user.SendWorkspaceID(workspaceId);
                 user.SendAsync("SendServerID", HostSecurityProvider.Instance.ServerID);//user.SendServerID(HostSecurityProvider.Instance.ServerID);
+
                 PermissionsHaveBeenModified(null, null);
             });
             t.Start();

@@ -108,7 +108,7 @@ Scenario: Test WF with PostGre Sql
 		And I have a workflow "PostGreTestWF"
 		And "PostGreTestWF" contains a postgre tool using "get_countries" with mappings for testing as
 		| ParameterName | ParameterValue |
-		| Prefix        | K              |  
+		| countrynamecontains        | K              |  
 		And I save workflow "PostGreTestWF"
 		Then the test builder is open with "PostGreTestWF"
 		And I click New Test

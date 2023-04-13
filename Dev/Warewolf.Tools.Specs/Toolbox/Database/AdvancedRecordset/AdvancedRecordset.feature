@@ -3245,14 +3245,14 @@ Scenario:  aggregate functions Select with AVG
     When Advanced Recordset tool is executed
     Then recordset "[[TableCopy(*).val]]"  will be
     | rs              | value             |
-    | TableCopy().val | 12.86666666666670 |
+    | TableCopy().val | 12.866666666666667 |
     And the execution has "NO" error
     And the debug inputs as
     | Query  | newName              |
     | String | [[avg_variable]] = 2 |
     And the debug output as
     |                                          |
-    | [[TableCopy(1).val]] = 12.86666666666670 |
+    | [[TableCopy(1).val]] = 12.866666666666667 |
 
 Scenario:  aggregate functions Select With MAX
     Given I have a recordset with this shape
