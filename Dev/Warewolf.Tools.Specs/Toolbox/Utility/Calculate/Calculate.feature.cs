@@ -2691,11 +2691,11 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("130", "RANDBETWEEN([[x]]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "131")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "131")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "RATE(360,-600,100000,0,1)")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "0.005045004045846503")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "0.005045004045846426")]
         public void CalculateAssignByEvaluatingVariablesWithFunctions_131()
         {
 #line 207
-this.CalculateAssignByEvaluatingVariablesWithFunctions("131", "RATE(360,-600,100000,0,1)", "0.005045004045846503", ((string[])(null)));
+this.CalculateAssignByEvaluatingVariablesWithFunctions("131", "RATE(360,-600,100000,0,1)", "0.005045004045846426", ((string[])(null)));
 #line hidden
         }
         

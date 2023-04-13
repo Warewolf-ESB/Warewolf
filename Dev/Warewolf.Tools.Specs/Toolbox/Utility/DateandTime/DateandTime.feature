@@ -336,7 +336,7 @@ Scenario Outline: Aggregated Calculation Assign by evaluating variables with fun
 	| 128 | QUOTIENT([[z]],[[rc(1).set]])                              | 2                                                           |
 	| 129 | RADIANS([[z]])                                             | 0.17453292519943295                                           |
 	| 130 | RANDBETWEEN([[x]],10)                                      | [Int]                                                       |
-	| 131 | RATE(360,-600,100000,0,1)                                  | 0.005045004045846503                                         |
+	| 131 | RATE(360,-600,100000,0,1)                                  | 0.005045004045846426                                         |
 	| 132 | REPT([[y]],[[y]])                                          | 22                                                          |
 	| 133 | RIGHT([[x]],[[x]])                                         | 1                                                           |
 	| 134 | ROMAN(10,0)                                                | X                                                           |

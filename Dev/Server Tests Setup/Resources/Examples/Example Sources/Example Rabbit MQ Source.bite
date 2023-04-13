@@ -1,0 +1,9 @@
+
+<Source ID="1a82a341-b678-4992-a25a-39cdd57198d4" Name="Example Rabbit MQ Source" ResourceType="RabbitMQSource" IsValid="false" ConnectionString="HostName=See WHAT DOES THIS DO?;Port=;UserName=warewolf;Password=;VirtualHost=/" Type="RabbitMQSource" ServerVersion="1.4.1.27" ServerID="693ca20d-fb17-4044-985a-df3051d6bac7">
+  <DisplayName>Example Rabbit MQ Source</DisplayName>
+  <AuthorRoles>
+  </AuthorRoles>
+  <ErrorMessages />
+  <TypeOf>RabbitMQSource</TypeOf>
+  <VersionInfo DateTimeStamp="2017-05-26T14:21:24.3247847+02:00" Reason="" User="NT AUTHORITY\SYSTEM" VersionNumber="3" ResourceId="1a82a341-b678-4992-a25a-39cdd57198d4" VersionId="b1a6de00-3cac-41cd-b0ed-9fac9bb61266" />
+</Source>

@@ -1,0 +1,1 @@
+{"EncryptDataSource":true,"PersistenceDataSource":{"Payload":"","Name":"","Value":"00000000-0000-0000-0000-000000000000"},"Enable":true,"PersistenceScheduler":null,"PrepareSchemaIfNecessary":true,"UseAsServer":true,"DashboardHostname":"http://localhost","DashboardPort":"5001","DashboardName":"hangfire","ServerName":""}

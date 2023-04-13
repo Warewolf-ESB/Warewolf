@@ -1,0 +1,10 @@
+
+<Source ID="5e919331-c7d5-440a-9bbd-b53d0e4de905" Name="Example Web Service Source" ResourceType="WebSource" IsValid="false" ConnectionString="Address=https://jsonplaceholder.typicode.com/;DefaultQuery=;AuthenticationType=Anonymous" Type="WebSource" ServerVersion="1.5.1.2" ServerID="5e919331-c7d5-440a-9bbd-b53d0e4de905">
+
+  <DisplayName>Example Web Service Source</DisplayName>
+  <AuthorRoles>
+  </AuthorRoles>
+  <ErrorMessages />
+  <TypeOf>WebSource</TypeOf>
+  <VersionInfo DateTimeStamp="2021-03-26T12:32:26.4950161+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="5e919331-c7d5-440a-9bbd-b53d0e4de905" VersionId="eadde33c-1a44-4d14-bf38-06c5e8d793d4" />
+</Source>

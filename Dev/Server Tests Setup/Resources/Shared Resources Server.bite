@@ -1,0 +1,10 @@
+
+<Source ID="f17a9dac-819e-40a5-91ac-2eb96e27d2df" Name="Shared Resources Server" ResourceType="Server" IsValid="false" ConnectionString="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAA0ANawE9+lUiIoe6YI8F/cgQAAAACAAAAAAAQZgAAAAEAACAAAAC6aQDsb+oIDsoNpCdwx8eb+mBMnA3dJ85Js8W2Y3+31wAAAAAOgAAAAAIAACAAAACyfQ66vyjWCU79myQVWof8p5+KkvJ8b6VaoKhi8bheY8AAAADYnOsd3zpbIbTJlszeGU8H6YIJqMbeFLjkqqrtfbhqpbAZa53Dms3sdnNbQOw3GXk7T4CkFJYHe8evRPfN8egfaevXrnTeA02HXb/c7qCMBZxDvaJWOkPegeAliazyS0VYSMS5l3yZlio2VudX/2SuZmD0twt/LWzaK30SiH+cNDVVBQIV80Gms63AlRgb2jqHb/IbQOuEg3TBtgkNKLcClNVTbZzZoSVcLOdKUf8WEXKep5Cj0Czsef/1zgVIRaRAAAAAjy9yWE0PfUwwfOvfLu6hl05HNiC/vMQs9qzkxnpZl2YCZEEyLDbG3YYfjnnKICLxJXYCiCUtkht/rjCMJv5M9w==" Type="Connection" ServerVersion="2.8.1.27" ServerID="1fcec9be-9137-4ab3-9c86-96fecdb022f2">
+  <DisplayName>Shared Resources Server</DisplayName>
+  <Category>Shared Resources Server</Category>
+  <AuthorRoles>
+  </AuthorRoles>
+  <ErrorMessages />
+  <TypeOf>Dev2Server</TypeOf>
+  <VersionInfo DateTimeStamp="2015-11-04T13:51:02.1105308+02:00" ResourceId="f17a9dac-819e-40a5-91ac-2eb96e27d2df" VersionId="00000000-0000-0000-0000-000000000000" />
+</Source>

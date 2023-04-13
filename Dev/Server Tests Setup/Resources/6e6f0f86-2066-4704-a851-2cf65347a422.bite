@@ -1,0 +1,9 @@
+
+<Source ID="6e7b1673-8ef4-4e05-87ef-fb9f3704d419" Name="6e6f0f86-2066-4704-a851-2cf65347a422" ResourceType="EmailSource" IsValid="false" ConnectionString="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAA0ANawE9+lUiIoe6YI8F/cgQAAAACAAAAAAADZgAAwAAAABAAAABeEBZZHunzKMqXiy0bcRDIAAAAAASAAACgAAAAEAAAAGVUE0kHMuW//2seg18DVHKYAAAATjHnsYSeWs5Er26LOKdnwQrvOSAFSoYcQWoF7DxxkZilEDSpovFwFJyEMA4E6uoffkr1IF1ZxP55PGzVfpHVSZWC0uGmeDF1TnkgRlH/rziNiu3t1JxL+e22jcC3aEEAhHPf7gOxfYAZsW5Iq9myB7FhT2k9VgEcgy0IB2DS6oWas8GHTvIu9dFqZypc+MCdfmQkr8TKBYsUAAAAlgLk9oUqL0V2SQxdFRI/8/WOSTI=" Type="EmailSource" ServerVersion="2.8.1.47" ServerID="00000000-0000-0000-0000-000000000000">
+  <DisplayName>6e6f0f86-2066-4704-a851-2cf65347a422</DisplayName>
+  <AuthorRoles>
+  </AuthorRoles>
+  <ErrorMessages />
+  <TypeOf>EmailSource</TypeOf>
+  <VersionInfo DateTimeStamp="2023-03-31T13:23:21.2786868+05:30" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="6e7b1673-8ef4-4e05-87ef-fb9f3704d419" VersionId="d6067482-53c1-4b34-8bf1-79d28c28d4da" />
+</Source>

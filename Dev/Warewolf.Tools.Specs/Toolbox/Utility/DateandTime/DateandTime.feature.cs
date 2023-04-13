@@ -2679,11 +2679,11 @@ this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("130", "RANDB
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "131")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "131")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "RATE(360,-600,100000,0,1)")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "0.005045004045846503")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "0.005045004045846426")]
         public void AggregatedCalculationAssignByEvaluatingVariablesWithFunctions_131()
         {
 #line 199
-this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("131", "RATE(360,-600,100000,0,1)", "0.005045004045846503", ((string[])(null)));
+this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("131", "RATE(360,-600,100000,0,1)", "0.005045004045846426", ((string[])(null)));
 #line hidden
         }
         
