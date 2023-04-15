@@ -11,7 +11,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Dev2.Data</RootNamespace>
     <AssemblyName>Dev2.Data</AssemblyName>
-    
+
     <RuntimeIdentifier>win</RuntimeIdentifier>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>
@@ -56,16 +56,19 @@
     <CodeAnalysisRuleSet>..\.sonarlint\warewolf_dotnet_frameworkcsharp.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-   
+
     <!--<Reference Include="IKVM.OpenJDK.XML.API, Version=7.2.4630.5, Culture=neutral, PublicKeyToken=13235d27fcbfff58, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\IKVM.OpenJDK.XML.API.dll</HintPath>
     </Reference>-->
- 
+<Reference Include="InfragisticsWPF4.v15.1">
+      <HintPath>..\Binaries\InfragisticsWPF4.v15.1.dll</HintPath>
+    </Reference>
     <Reference Include="InfragisticsWPF4.Calculations.XamCalculationManager.v15.1, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\InfragisticsWPF4.Calculations.XamCalculationManager.v15.1.dll</HintPath>
     </Reference>
+    
     <!--<Reference Include="saxon9he, Version=9.7.0.10, Culture=neutral, PublicKeyToken=e1fdd002d5083fe6, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\saxon9he.dll</HintPath>
@@ -74,19 +77,17 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\saxon9he-api.dll</HintPath>
     </Reference>-->
-	  
-	  <!--<PackageReference Include="Infragistics.WPF.CalculationManager.Trial" Version="22.2.19" />-->
+
+    <!--<PackageReference Include="Infragistics.WPF.CalculationManager.Trial" Version="22.2.19" />-->
     <!--<Reference Include="CalculationManager.WPF">
       <HintPath>..\Binaries\CalculationManager.WPF.dll</HintPath>
-    </Reference>
-    <Reference Include="InfragisticsWPF4.v15.1">
-      <HintPath>..\Binaries\InfragisticsWPF4.v15.1.dll</HintPath>
     </Reference>-->
+
     <Reference Include="System.Management" />
     <Reference Include="System.Runtime.Caching" />
-	  <Reference Include="Weave">
-		  <HintPath>..\Binaries\Weave.dll</HintPath>
-	  </Reference>
+    <Reference Include="Weave">
+      <HintPath>..\Binaries\Weave.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
