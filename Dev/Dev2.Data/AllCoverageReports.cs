@@ -56,7 +56,7 @@ namespace Dev2.Data
             return (sumAllOfReports / (totalReportCount == 1 ? totalReportCount * 100 : totalReportCount)) * 100;
         }
 
-        public IEnumerable<IWorkflowCoverageReportsTO> Calcute()
+        public IEnumerable<IWorkflowCoverageReportsTO> Calculate()
         {
             return WithTestReports
                    .Select(o => o.TryExecute());

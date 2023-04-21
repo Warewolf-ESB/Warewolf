@@ -44,7 +44,7 @@ namespace Dev2.Data
         public DateTime EndTime { get; set; }
         public DateTime StartTime { get; set; }
 
-        public void Calculte(ITestCoverageCatalog testCoverageCatalog, ITestCatalog testCatalog)
+        public void Calculate(ITestCoverageCatalog testCoverageCatalog, ITestCatalog testCatalog)
         {
             AllTestResults = new List<IServiceTestModelTO>();
             _allCoverageReports = new AllCoverageReports();
@@ -60,7 +60,7 @@ namespace Dev2.Data
                 SetWarewolfCoverageReports(testCoverageCatalog, coverageResource);
             }
 
-            var workflowCoverageReportsTOs = _allCoverageReports.Calcute();
+            var workflowCoverageReportsTOs = _allCoverageReports.Calculate();
 
             AllCoverageReports = workflowCoverageReportsTOs;
             TotalWorkflowNodesCoveredCount = workflowCoverageReportsTOs.Sum(o => o.CoveredWorkflowNodesIds.Count());
@@ -72,6 +72,7 @@ namespace Dev2.Data
 
         private void SetWarewolfCoverageReports(ITestCoverageCatalog testCoverageCatalog, IWarewolfWorkflow coverageResource)
         {
+            testCoverageCatalog.ReloadAllReports();
             var resourceId = coverageResource.ResourceID;
             var coverageReports = new WorkflowCoverageReports(coverageResource);
             if (!string.IsNullOrEmpty(_reportName) && _reportName != "*")

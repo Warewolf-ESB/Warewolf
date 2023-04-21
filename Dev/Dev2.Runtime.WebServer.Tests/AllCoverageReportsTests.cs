@@ -142,7 +142,7 @@ namespace Dev2.Runtime.WebServer.Tests
             coverageReports_1.Add(_test_One_CoverageModelTo);
             sut.Add(coverageReports_1);
 
-            var warewolfCoverageReportsTO = sut.Calcute();
+            var warewolfCoverageReportsTO = sut.Calculate();
 
             Assert.IsNotNull(sut.StartTime);
             Assert.IsNotNull(sut.EndTime);

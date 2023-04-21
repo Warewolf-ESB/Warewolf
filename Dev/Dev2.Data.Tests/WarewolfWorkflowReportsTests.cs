@@ -103,7 +103,7 @@ namespace Dev2.Data.Tests
                 });
 
             var sut = new WarewolfWorkflowReports(new List<IWarewolfWorkflow> { mockWarewolfWorkflow.Object }, default);
-            sut.Calculte(mockTestCoverageCatalog.Object, new Mock<ITestCatalog>().Object);
+            sut.Calculate(mockTestCoverageCatalog.Object, new Mock<ITestCatalog>().Object);
 
             Assert.AreEqual(3, sut.TotalWorkflowNodesCount);
         }
@@ -133,7 +133,7 @@ namespace Dev2.Data.Tests
                 });
 
             var sut = new WarewolfWorkflowReports(new List<IWarewolfWorkflow> { mockWarewolfWorkflow.Object }, string.Empty);
-            sut.Calculte(mockTestCoverageCatalog.Object, new Mock<ITestCatalog>().Object);
+            sut.Calculate(mockTestCoverageCatalog.Object, new Mock<ITestCatalog>().Object);
 
             Assert.AreEqual(0, sut.TotalWorkflowNodesCount);
             Assert.AreEqual(0, sut.TotalWorkflowNodesCoveredCount);
@@ -193,7 +193,7 @@ namespace Dev2.Data.Tests
                 });
 
             var sut = new WarewolfWorkflowReports(new List<IWarewolfWorkflow> { mockWarewolfWorkflow.Object }, string.Empty);
-            sut.Calculte(mockTestCoverageCatalog.Object, new Mock<ITestCatalog>().Object);
+            sut.Calculate(mockTestCoverageCatalog.Object, new Mock<ITestCatalog>().Object);
 
             Assert.AreEqual(3, sut.TotalWorkflowNodesCount);
             Assert.AreEqual(0, sut.TotalWorkflowNodesCoveredCount);
@@ -253,7 +253,7 @@ namespace Dev2.Data.Tests
                 });
 
             var sut = new WarewolfWorkflowReports(new List<IWarewolfWorkflow> { mockWarewolfWorkflow.Object }, string.Empty);
-            sut.Calculte(mockTestCoverageCatalog.Object, new Mock<ITestCatalog>().Object);
+            sut.Calculate(mockTestCoverageCatalog.Object, new Mock<ITestCatalog>().Object);
 
             Assert.AreEqual(3, sut.TotalWorkflowNodesCount);
             Assert.AreEqual(2, sut.TotalWorkflowNodesCoveredCount);
@@ -319,7 +319,7 @@ namespace Dev2.Data.Tests
                 });
 
             var sut = new WarewolfWorkflowReports(new List<IWarewolfWorkflow> { mockWarewolfWorkflow.Object }, reportName);
-            sut.Calculte(mockTestCoverageCatalog.Object, new Mock<ITestCatalog>().Object);
+            sut.Calculate(mockTestCoverageCatalog.Object, new Mock<ITestCatalog>().Object);
 
             Assert.AreEqual(3, sut.TotalWorkflowNodesCount);
             Assert.AreEqual(2, sut.TotalWorkflowNodesCoveredCount);
@@ -380,7 +380,7 @@ namespace Dev2.Data.Tests
                 });
 
             var sut = new WarewolfWorkflowReports(new List<IWarewolfWorkflow> { mockWarewolfWorkflow.Object }, reportName);
-            sut.Calculte(mockTestCoverageCatalog.Object, new Mock<ITestCatalog>().Object);
+            sut.Calculate(mockTestCoverageCatalog.Object, new Mock<ITestCatalog>().Object);
 
             Assert.AreEqual(3, sut.TotalWorkflowNodesCount);
             Assert.AreEqual(2, sut.TotalWorkflowNodesCoveredCount);
@@ -437,7 +437,7 @@ namespace Dev2.Data.Tests
                 });
 
             var sut = new WarewolfWorkflowReports(new List<IWarewolfWorkflow> { mockWarewolfWorkflow.Object }, reportName);
-            sut.Calculte(mockTestCoverageCatalog.Object, new Mock<ITestCatalog>().Object);
+            sut.Calculate(mockTestCoverageCatalog.Object, new Mock<ITestCatalog>().Object);
 
             Assert.AreEqual(2, sut.TotalWorkflowNodesCount);
             Assert.AreEqual(2, sut.TotalWorkflowNodesCoveredCount);

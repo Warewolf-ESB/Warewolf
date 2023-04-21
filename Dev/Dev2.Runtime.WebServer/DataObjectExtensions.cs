@@ -655,7 +655,7 @@ namespace Dev2.Runtime.WebServer
         private static WarewolfWorkflowReports RunListOfCoverage(ICoverageDataObject coverageData, ITestCoverageCatalog testCoverageCatalog, ITestCatalog testCatalog, Guid workspaceGuid, IResourceCatalog catalog)
         {
             var resourceReportTemp = new WarewolfWorkflowReports(coverageData.CoverageReportResources, coverageData.ReportName);
-            resourceReportTemp.Calculte(testCoverageCatalog, testCatalog);
+            resourceReportTemp.Calculate(testCoverageCatalog, testCatalog);
 
             resourceReportTemp.EndTime = DateTime.Now;
 
