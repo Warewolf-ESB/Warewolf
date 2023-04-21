@@ -49,7 +49,7 @@
   </PropertyGroup>
   <ItemGroup>   
      <Reference Include="CalculationManager.WPF">
-       <HintPath>..\Binaries\Infragistcs_Net6\CalculationManager.WPF.dll</HintPath>
+       <HintPath>..\Binaries\Infragistcs_Net6\Infragistics.Calculations.dll</HintPath>
      </Reference>   
      <Reference Include="Weave">
 		  <HintPath>..\Binaries\Weave.dll</HintPath>

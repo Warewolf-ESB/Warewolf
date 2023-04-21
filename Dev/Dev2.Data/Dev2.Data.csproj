@@ -58,10 +58,14 @@
   <ItemGroup>
    
    
-    <Reference Include="CalculationManager.WPF">
-      <HintPath>..\Binaries\Infragistcs_Net6\CalculationManager.WPF.dll</HintPath>
+ 
+   
+    <Reference Include="Infragistics.Calculations">
+      <HintPath>..\Binaries\Infragistcs_Net6\Infragistics.Calculations.dll</HintPath>
     </Reference>
    
+   
+ 
    
     <Reference Include="System.Management" />
     <Reference Include="System.Runtime.Caching" />

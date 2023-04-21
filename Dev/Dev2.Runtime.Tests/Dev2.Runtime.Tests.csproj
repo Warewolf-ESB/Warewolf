@@ -49,13 +49,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="CalculationManager.WPF">
-      <HintPath>..\Binaries\Infragistcs_Net6\CalculationManager.WPF.dll</HintPath>
+      <HintPath>..\Binaries\Infragistcs_Net6\Infragistics.Calculations.dll</HintPath>
     </Reference>
     <Reference Include="InfragisticsWPF4.Controls.Editors.XamSyntaxEditor.v15.1">
       <HintPath>..\Binaries\Infragistcs_Net6\InfragisticsWPF4.Controls.Editors.XamSyntaxEditor.v15.1.dll</HintPath>
     </Reference>
-    <Reference Include="InfragisticsWPF4.DataPresenter.CalculationAdapter.v15.1">
-      <HintPath>..\Binaries\Infragistcs_Net6\InfragisticsWPF4.DataPresenter.v15.1.v15.1.dll</HintPath>
+    <Reference Include="InfragisticsWPF4.DataPresenter.v15.1">
+      <HintPath>..\Binaries\Infragistcs_Net6\InfragisticsWPF4.DataPresenter.v15.1.dll</HintPath>
     </Reference>
     <Reference Include="InfragisticsWPF4.Math.Calculators.v15.1">
       <HintPath>..\Binaries\Infragistcs_Net6\InfragisticsWPF4.Math.Calculators.v15.1.dll</HintPath>
