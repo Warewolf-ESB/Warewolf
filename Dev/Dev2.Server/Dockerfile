@@ -16,7 +16,7 @@ ENV SERVER_USERNAME "WarewolfAdmin"
 ENV SERVER_PASSWORD "W@rEw0lf@dm1n"
 
 RUN mkdir "programdata\Warewolf"
-RUN xcopy /s /y \"Server\Resources - Release\*\" \"programdata\Warewolf\"
+RUN xcopy /s /y \"Server\\Resources - Release\\*\" \"programdata\\Warewolf\"
 
 COPY --from=pauseloopbuilder "c:\\gopath\\pauseloop\\pauseloop.exe" "c:\\windows\\system32\\pauseloop.exe"
 CMD .\Server\AddAdminFromEnvironmentVariablesAndStart.bat
