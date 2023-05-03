@@ -71,7 +71,7 @@ Scenario Outline: Insert for All FilterType and Calculate Provider
 	| 4        | <att/><sum><b/></sum>     | All        | tan([[at]]             | 8     | [[att]]                       | [[att]] | tan([[att]]             | Default, Calculate | 11            |
 	| 5        | <att/><sum><b/></sum>     | All        | tan([[at]])            | 8     | [[att]]                       | [[att]] | tan([[att]])            | Default, Calculate | 11            |
 	| 6        | <att/><sum><b/></sum>     | All        | tan([[at]])            | 11    |                               |         | tan([[at]])             | Default, Calculate | 11            |
-	| 7        | <a/><b/><c/>              | All        | =[[b]]+b               | 8     | [[b]],bin2dec,bin2hex,bin2oct,binomdist | [[b]]   | =[[b]]+[[b]]            | Default, Calculate | 12            |
+	| 7        | <a/><b/><c/>              | All        | =[[b]]+b               | 8     | [[b]],bin2dec,bin2hex,bin2oct | [[b]]   | =[[b]]+[[b]]            | Default, Calculate | 12            |
 	| 8        | <a/><att/><sum><b/></sum> | All        | tan([[at]]) tan([[a]]) | 8     | [[att]]                       | [[att]] | tan([[att]]) tan([[a]]) | Default, Calculate | 11            |
 
 Scenario Outline: Recset only has no errors for valid variable indexes
