@@ -31,3 +31,9 @@ Note: Make sure to run Warewolf Server.exe (server) before tests dependant on it
   a) Create new user "SecuritySpecsUser" with pwd "ASfas123@!fda" and make it member of "Public" and "Users" group
   
   b) Copy secure.config (found at the "Warewolf.Security.Specs_Setup" directory) file in the Directory "%Programdata%\Warewolf\Server Settings"
+
+
+8) Before running tests of Dev2.Activities.Specs project, setup as below
+
+  a) Execute en-ZA_Culture.ps1 (found at the same location of this Readme.txt) file in powershell command prompt
+
