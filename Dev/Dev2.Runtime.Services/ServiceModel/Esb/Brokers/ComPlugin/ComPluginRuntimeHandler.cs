@@ -41,7 +41,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
 
         public ComPluginRuntimeHandler()
         {
-            
+
         }
 
         public object Run(ComPluginInvokeArgs setupInfo)
@@ -71,7 +71,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
                 {
                     if (pluginResult is KeyValuePair<bool, string>)
                     {
-                        var pluginKeyValuePair = (KeyValuePair<bool, string>) pluginResult;
+                        var pluginKeyValuePair = (KeyValuePair<bool, string>)pluginResult;
                         serializedResult = "Exception: " + pluginKeyValuePair.Value;
                     }
                     else
@@ -142,6 +142,23 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
                             BindingFlags.InvokeMethod | BindingFlags.IgnoreCase | BindingFlags.Public, null,
                             valuedTypeList.ToArray(), CultureInfo.InvariantCulture);
                         return methodToRun;
+                    }
+                }
+                else
+                {
+                    try
+                    {
+                        pluginResult = type.InvokeMember(setupInfo.Method, BindingFlags.InvokeMethod | BindingFlags.IgnoreCase | BindingFlags.Public, null, instance, valuedTypeList.ToArray(), CultureInfo.InvariantCulture);
+                        return null;
+                    }
+                    catch(Exception ex)
+                    {
+                        Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
+
+                        //try executing method and get result from warewolf.comipc.exe
+                        var paramStrings = setupInfo.Parameters.Select(parameter => new ParameterInfoTO { Name = parameter.Name, DefaultValue = parameter.Value, TypeName = parameter.TypeName }).ToArray();
+                        pluginResult = IpcClient.GetIpcExecutor(_clientStreamWrapper).Invoke(setupInfo.ClsId.ToGuid(), setupInfo.Method, Execute.ExecuteSpecifiedMethod, paramStrings);
+                        return null;
                     }
                 }
             }

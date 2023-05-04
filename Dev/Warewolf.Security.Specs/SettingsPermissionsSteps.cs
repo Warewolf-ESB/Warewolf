@@ -42,7 +42,7 @@ namespace Dev2.Activities.Specs.Permissions
             this._scenarioContext = scenarioContext;
         }
 
-        private static bool _isCurrentPrincipalIdentitySet = false; 
+        private static bool _isCurrentPrincipalIdentitySet = false;
 
         [BeforeFeature("@Security")]
         public static void InitializeFeature(FeatureContext featureContext)
@@ -66,7 +66,7 @@ namespace Dev2.Activities.Specs.Permissions
             _featureContext.Add("initialSettings", currentSettings);
             var settings = new Data.Settings.Settings
             {
-                Security = new SecuritySettingsTO(new List<WindowsGroupPermission>())
+                Security = new SecuritySettingsTO(new List<WindowsGroupPermission>(){new WindowsGroupPermission{IsServer = false,WindowsGroup = "Public",View = false,Execute = false,Contribute = false,DeployTo = false,DeployFrom = false,Administrator = true}})
             };
 
             environmentModel.ResourceRepository.WriteSettings(environmentModel, settings);
@@ -401,7 +401,7 @@ namespace Dev2.Activities.Specs.Permissions
             //currentEnvironment?.Disconnect();
         }
 
-        
+
 
         [Given(@"I have a server ""(.*)""")]
         public void GivenIHaveAServer(string serverName)

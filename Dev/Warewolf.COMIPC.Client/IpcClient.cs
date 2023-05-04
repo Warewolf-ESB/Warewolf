@@ -62,7 +62,7 @@ namespace WarewolfCOMIPC.Client
             var token = Guid.NewGuid().ToString();            
             var currentAssemblyPath = Assembly.GetExecutingAssembly().Location;
             var currentAssemblyDirectoryPath = Path.GetDirectoryName(currentAssemblyPath);
-            var clientPath = Path.Combine(currentAssemblyDirectoryPath, "Warewolf.COMIPC.exe");
+            var clientPath = Path.Combine(currentAssemblyDirectoryPath, "Warewolf.COMIPC.exe_v4.8\\Warewolf.COMIPC.exe");
             var psi = new ProcessStartInfo(clientPath, token)
             {
                 Verb = "runas",
