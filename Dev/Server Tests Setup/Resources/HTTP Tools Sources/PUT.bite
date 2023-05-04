@@ -1,0 +1,9 @@
+
+<Source ID="b69d9560-52a7-4711-8d11-deb187baba89" Name="PUT" ResourceType="WebSource" IsValid="false" ConnectionString="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAA0ANawE9+lUiIoe6YI8F/cgQAAAACAAAAAAADZgAAwAAAABAAAADb45tJ8wpqRFagQTapIoasAAAAAASAAACgAAAAEAAAAJfUYTtlEmCYBaDSiFZW6fbQAAAAocSjWmw1+8amhXrAvjJOjeu2Kqw1h8YFpVKbCMYMlUVBOu0jm1IJmEvING06DkCw7rWVd8fqD1/AywtT/jLrpShouwUkuu6dxbpxOb9ruE3v+gUQjLzosFbGRJTpDDVDsJJQR6ko2w2cRuQ9J8owZlCz2eY7i8O7hdKhZQsIenEmDL4xLXH+XU0Bnx5gE9xGGzRaI3EXFetmP3LKnuBjvZvUogLpDAjfhzchQZkJOv+f4IbckHLuhjRIXV2NYaQo8IO2ff85TI+iTwfo4NIxEhQAAAAJ8E3XyVXP24vd5KsWkqW2z3YgrQ==" Type="WebSource" ServerVersion="2.8.1.47" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+  <DisplayName>PUT</DisplayName>
+  <AuthorRoles>
+  </AuthorRoles>
+  <ErrorMessages />
+  <TypeOf>WebSource</TypeOf>
+  <VersionInfo DateTimeStamp="2016-11-18T11:52:54.0178388+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="b69d9560-52a7-4711-8d11-deb187baba89" VersionId="8bd1ccfc-6113-450e-821f-49a1f522a154" />
+</Source>

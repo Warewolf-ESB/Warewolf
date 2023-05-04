@@ -1,0 +1,22 @@
+
+<Service ID="bd29fb3e-e947-4a45-ad57-690428a10a7e" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="WFWithForEachRecordsetNotentered" ResourceType="WorkflowService" IsValid="false" ServerVersion="2.8.1.47">
+  <DisplayName>WFWithForEachRecordsetNotentered</DisplayName>
+  <Category>Acceptance Tests\WFWithForEachRecordsetNotentered</Category>
+  <IsNewWorkflow>false</IsNewWorkflow>
+  <AuthorRoles>
+  </AuthorRoles>
+  <Comment>
+  </Comment>
+  <Tags>
+  </Tags>
+  <HelpLink>
+  </HelpLink>
+  <UnitTestTargetWorkflowService>
+  </UnitTestTargetWorkflowService>
+  <DataList />
+  <Action Name="InvokeWorkflow" Type="Workflow">
+    <XamlDefinition>&lt;Activity x:Class="{x:Null}" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:ddd="clr-namespace:Dev2.Data.Decision;assembly=Dev2.Data" xmlns:s="clr-namespace:System;assembly=System.Private.CoreLib" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:uaba="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Unlimited.Applications.BusinessDesignStudio.Activities" xmlns:uaba1="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Dev2.Activities" xmlns:uf="clr-namespace:Unlimited.Framework;assembly=Unlimited.Framework" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"&gt;&lt;x:Members&gt;&lt;x:Property Name="AmbientDataList" Type="InOutArgument(scg:List(x:String))" /&gt;&lt;x:Property Name="ParentWorkflowInstanceId" Type="InOutArgument(s:Guid)" /&gt;&lt;x:Property Name="ParentServiceName" Type="InOutArgument(x:String)" /&gt;&lt;/x:Members&gt;&lt;VisualBasic.Settings&gt;Assembly references and imported namespaces serialized as XML namespaces&lt;/VisualBasic.Settings&gt;&lt;Flowchart&gt;&lt;Flowchart.Variables&gt;&lt;Variable x:TypeArguments="scg:List(x:String)" Name="InstructionList" /&gt;&lt;Variable x:TypeArguments="x:String" Name="LastResult" /&gt;&lt;Variable x:TypeArguments="x:Boolean" Name="HasError" /&gt;&lt;Variable x:TypeArguments="x:String" Name="ExplicitDataList" /&gt;&lt;Variable x:TypeArguments="x:Boolean" Name="IsValid" /&gt;&lt;Variable x:TypeArguments="uaba1:Util" Name="t" /&gt;&lt;Variable x:TypeArguments="ddd:Dev2DataListDecisionHandler" Name="Dev2DecisionHandler" /&gt;&lt;/Flowchart.Variables&gt;&lt;Flowchart.StartNode&gt;&lt;FlowStep&gt;&lt;uaba1:DsfForEachActivity CsvIndexes="{x:Null}" CurrentResult="{x:Null}" ExplicitDataList="{x:Null}" ForEachElementName="{x:Null}" From="{x:Null}" FromDisplayName="{x:Null}" InputMapping="{x:Null}" InputTransformation="{x:Null}" NumOfExections="{x:Null}" OnErrorVariable="{x:Null}" OnErrorWorkflow="{x:Null}" OnResumeKeepList="{x:Null}" OutputMapping="{x:Null}" ParentServiceID="{x:Null}" ParentServiceName="{x:Null}" ParentWorkflowInstanceId="{x:Null}" ResultTransformation="{x:Null}" ScenarioID="{x:Null}" ScopingObject="{x:Null}" SimulationOutput="{x:Null}" To="{x:Null}" test="{x:Null}" Add="False" DatabindRecursive="False" DisplayName="ForEachTest1" FailOnFirstError="False" ForEachType="InRecordset" HasError="[HasError]" InstructionList="[InstructionList]" IsEndedOnError="False" IsService="False" IsSimulationEnabled="False" IsUIStep="False" IsValid="[IsValid]" IsWorkflow="False" OnResumeClearAmbientDataList="False" OnResumeClearTags="FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage" Recordset="" SimulationMode="OnDemand" UniqueID="3096c464-b0ac-44a1-ade2-76b3db730a11"&gt;&lt;uaba1:DsfForEachActivity.AmbientDataList&gt;&lt;InOutArgument x:TypeArguments="scg:List(x:String)" /&gt;&lt;/uaba1:DsfForEachActivity.AmbientDataList&gt;&lt;uaba1:DsfForEachActivity.DataFunc&gt;&lt;ActivityFunc x:TypeArguments="x:String, x:Boolean" DisplayName="Data Action"&gt;&lt;ActivityFunc.Argument&gt;&lt;DelegateInArgument x:TypeArguments="x:String" Name="explicitData_20230418115912" /&gt;&lt;/ActivityFunc.Argument&gt;&lt;/ActivityFunc&gt;&lt;/uaba1:DsfForEachActivity.DataFunc&gt;&lt;uaba1:DsfForEachActivity.ParentInstanceID&gt;&lt;InOutArgument x:TypeArguments="x:String" /&gt;&lt;/uaba1:DsfForEachActivity.ParentInstanceID&gt;&lt;/uaba1:DsfForEachActivity&gt;&lt;/FlowStep&gt;&lt;/Flowchart.StartNode&gt;&lt;/Flowchart&gt;&lt;/Activity&gt;</XamlDefinition>
+  </Action>
+  <ErrorMessages />
+  <VersionInfo DateTimeStamp="2023-04-18T11:59:12.4019945+05:30" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="bd29fb3e-e947-4a45-ad57-690428a10a7e" VersionId="0d124af0-2db7-4416-92c9-488d51c110f2" />
+</Service>

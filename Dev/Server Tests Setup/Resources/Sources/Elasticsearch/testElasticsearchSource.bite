@@ -1,5 +1,5 @@
 
-<Source ID="9fe9a5d8-4d6c-4cbc-ab8c-27d9154e4cfb" Name="testElasticsearchSource" ResourceType="ElasticsearchSource" IsValid="false" ConnectionString="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAA0ANawE9+lUiIoe6YI8F/cgQAAAACAAAAAAADZgAAwAAAABAAAACIfkWOuDK2PTxTATW5b3EsAAAAAASAAACgAAAAEAAAAA7LE93RNcj3BCp6zazjLvB4AAAA5IT0kPn40s8/3Fww66Pj6sjyozIEUfDniui2XigJNiN9ZgbdRAjG3dZRFqEv0C3EC4diLw7iychNkLOXj9MVtpUKNbO/Dhzbz+5pOsKapRY3CMLCX+vmrzxTdaZ2UY0OKBfgyQIMu90vJBme6zWgSn7DgScEbfhoFAAAAKOXKiKKe18upeot0QePd1uzh0Mj" Type="ElasticsearchSource" ServerVersion="2.8.1.47" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+<Source ID="9fe9a5d8-4d6c-4cbc-ab8c-27d9154e4cfb" Name="testElasticsearchSource" ResourceType="ElasticsearchSource" IsValid="false" ConnectionString="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAA0ANawE9+lUiIoe6YI8F/cgQAAAACAAAAAAADZgAAwAAAABAAAADYMyhpHYdVGQK3tcisJ4U4AAAAAASAAACgAAAAEAAAAA7UOW5tRkxGiGauaVaAnap4AAAAdtQsl7qorwvmjgnw1iEWHr5T1Q+RKLpKoBBPa5txe5b/t7WVjkkNdNc+5wgFotgcQOfpHfo7LYqK4fIuwHmPzUE6GEs1sW+zuay0bU2tq1FQqE5vwXALYKEjcGKcZ40XBVEPExRdc9QS7NizJ5WYILragHRih1uWFAAAAFUgvvQvlIy4u47KGaRWXpRyVlSw" Type="ElasticsearchSource" ServerVersion="2.8.1.47" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
   <DisplayName>testElasticsearchSource</DisplayName>
   <AuthorRoles>
   </AuthorRoles>

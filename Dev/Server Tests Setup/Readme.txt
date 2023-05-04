@@ -1,20 +1,29 @@
-1) Project "Dev2.Activities.Designers" should have testhost.config file.
-	Add "testhost.config" with contents of "Dev2.Activities.Designers.dll.config"
+1) Copy all required resources (all directories mentioned below) to ProgramData/Warewolf Directory
+   a) ServerSettings
+   b) Resources
+   c) VersionControl  
 
 
-2) Project "Dev2.Runtime.WebServer.Tests" should have testhost.config file.
-	Add "testhost.config" with contents of "Dev2.Runtime.WebServer.Tests.dll.config"
+2) Project "Dev2.Activities.Specs"
+	Copy below ones to Dev\Dev2.Activities.Specs\bin\Debug\net6.0-windows\win
+	a) Copy "Dev2.Activities.Specs.dll.config" and rename it to "testhost.dll.config" 
+	
+
+3) Project "Dev2.Runtime.WebServer.Tests".
+	Copy below ones to Dev\Dev2.Runtime.WebServer\bin\Debug\net6.0-windows\win
+	a) Copy "Dev2.Runtime.WebServer.Tests.dll.config" and rename it to "testhost.dll.config"
+	b) Add "Warewolf Server.exe.secureconfig"
+
+4) Project "Dev2.Runtime.Tests"
+	Copy below ones to Dev\Dev2.Runtime.Tests\bin\Debug\net6.0-windows\win
+	a) Copy "Dev2.Runtime.Tests.dll.config" and rename it to "testhost.dll.config" 
 
 
-3) Project "Dev2.Runtime.Tests" should have testhost.config file.
-	Add "testhost.config" with contents of "Dev2.Runtime.Tests.dll.config"
-
-
-4) Project "Warewolf.Tools.Specs" should have testhost.config file.
-	Add "testhost.config" with contents of "Warewolf.Tools.Specs.dll.config"
-
-
-5) Copy ServerSettings and Resources Directory from these directory to ProgramData/Warewolf Directory
+5) Project "Warewolf.Tools.Specs"
+	Copy below ones to Dev\Warewolf.Tools.Specs\bin\Debug\net6.0-windows\win
+	a) Copy "Warewolf.Tools.Specs.dll.config" and rename it to "testhost.dll.config" 
+	b) Add "Warewolf Server.exe.config"
+	c) Add sni.dll
 
 6) Copy SQLite.Interop.dll (found at the same location of this Readme.txt) to the following locations: 
 

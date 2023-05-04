@@ -1,0 +1,9 @@
+
+<Source ID="72f7ba25-275d-4bf1-a5b0-3676b6cadd21" Name="DELETE" ResourceType="WebSource" IsValid="false" ConnectionString="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAA0ANawE9+lUiIoe6YI8F/cgQAAAACAAAAAAADZgAAwAAAABAAAABsBnAqGw4q1LT12pzjvqjRAAAAAASAAACgAAAAEAAAANgY7hX0UedcEudsPeTwkZXQAAAAvxd5lxy/oW2Ch6j9aq5lWOOd4e+ScGb3IrI1WdlAHMPZRoxOzbKucx91XuUhNRnd4H+EpHLLW2CjcKNR/Gd83ocdwguMP/XUpAEMgFc0Wh4fwvDpClLBW9o/nnNExVPQwJYCnG+d7I8h6UEXJBZfqpAq/jbaGyzkcNCNXOr5rFxeubSMV7Q+csoySwKqgfIDy4ErIg3y80DnMS2p1/fSv0XnDKCE6Sp+Bl8p3t/g+DQDG5YCHCqsbqcXBpgS311JmT22jO5qmUDwmz9fP4MC1hQAAABjBXTuK0pVwcIT5YTnnxcbDDdiMA==" Type="WebSource" ServerVersion="2.8.1.47" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+  <DisplayName>DELETE</DisplayName>
+  <AuthorRoles>
+  </AuthorRoles>
+  <ErrorMessages />
+  <TypeOf>WebSource</TypeOf>
+  <VersionInfo DateTimeStamp="2016-11-18T11:54:40.5278326+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="72f7ba25-275d-4bf1-a5b0-3676b6cadd21" VersionId="023a1118-4c19-475b-88e7-05c875fcafdc" />
+</Source>
