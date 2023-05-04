@@ -1,5 +1,5 @@
 
-<Service ID="b153608c-b53d-406b-bdd5-5fa2ef8b24bc" Version="1.0" ServerID="1fcec9be-9137-4ab3-9c86-96fecdb022f2" Name="Resources - Com DLL" ResourceType="WorkflowService" IsValid="false" ServerVersion="2.8.1.27">
+<Service ID="b153608c-b53d-406b-bdd5-5fa2ef8b24bc" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Resources - Com DLL" ResourceType="WorkflowService" IsValid="false" ServerVersion="2.8.1.47">
   <DisplayName>Resources - Com DLL</DisplayName>
   <Category>Examples\Resources - Com DLL</Category>
   <IsNewWorkflow>false</IsNewWorkflow>

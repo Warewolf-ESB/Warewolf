@@ -1,0 +1,22 @@
+
+<Service ID="ca46f1d5-fc5f-437f-a5ab-29419f04febb" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="NoInputsWorkflow" ResourceType="WorkflowService" IsValid="false" ServerVersion="2.8.1.47">
+  <DisplayName>NoInputsWorkflow</DisplayName>
+  <Category>Acceptance Tests\NoInputsWorkflow</Category>
+  <IsNewWorkflow>false</IsNewWorkflow>
+  <AuthorRoles>
+  </AuthorRoles>
+  <Comment>
+  </Comment>
+  <Tags>
+  </Tags>
+  <HelpLink>
+  </HelpLink>
+  <UnitTestTargetWorkflowService>
+  </UnitTestTargetWorkflowService>
+  <DataList />
+  <Action Name="InvokeWorkflow" Type="Workflow">
+    <XamlDefinition>&lt;Activity x:Class="{x:Null}" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:ddd="clr-namespace:Dev2.Data.Decision;assembly=Dev2.Data" xmlns:s="clr-namespace:System;assembly=System.Private.CoreLib" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:uaba="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Unlimited.Applications.BusinessDesignStudio.Activities" xmlns:uaba1="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Dev2.Activities" xmlns:uf="clr-namespace:Unlimited.Framework;assembly=Unlimited.Framework" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"&gt;&lt;x:Members&gt;&lt;x:Property Name="AmbientDataList" Type="InOutArgument(scg:List(x:String))" /&gt;&lt;x:Property Name="ParentWorkflowInstanceId" Type="InOutArgument(s:Guid)" /&gt;&lt;x:Property Name="ParentServiceName" Type="InOutArgument(x:String)" /&gt;&lt;/x:Members&gt;&lt;VisualBasic.Settings&gt;Assembly references and imported namespaces serialized as XML namespaces&lt;/VisualBasic.Settings&gt;&lt;Flowchart&gt;&lt;Flowchart.Variables&gt;&lt;Variable x:TypeArguments="scg:List(x:String)" Name="InstructionList" /&gt;&lt;Variable x:TypeArguments="x:String" Name="LastResult" /&gt;&lt;Variable x:TypeArguments="x:Boolean" Name="HasError" /&gt;&lt;Variable x:TypeArguments="x:String" Name="ExplicitDataList" /&gt;&lt;Variable x:TypeArguments="x:Boolean" Name="IsValid" /&gt;&lt;Variable x:TypeArguments="uaba1:Util" Name="t" /&gt;&lt;Variable x:TypeArguments="ddd:Dev2DataListDecisionHandler" Name="Dev2DecisionHandler" /&gt;&lt;/Flowchart.Variables&gt;&lt;Flowchart.StartNode&gt;&lt;FlowStep /&gt;&lt;/Flowchart.StartNode&gt;&lt;/Flowchart&gt;&lt;/Activity&gt;</XamlDefinition>
+  </Action>
+  <ErrorMessages />
+  <VersionInfo DateTimeStamp="2023-03-31T12:29:53.527137+05:30" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="ca46f1d5-fc5f-437f-a5ab-29419f04febb" VersionId="74238334-bd3b-49c1-8994-f964f654dbcd" />
+</Service>

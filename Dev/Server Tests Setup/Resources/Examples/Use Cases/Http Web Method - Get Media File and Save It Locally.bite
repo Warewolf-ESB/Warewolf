@@ -1,5 +1,5 @@
 
-<Service ID="32191cf2-df76-4d11-8e33-99f0d30acd71" Version="1.0" ServerID="1fcec9be-9137-4ab3-9c86-96fecdb022f2" Name="Http Web Method - Get Media File and Save It Locally" ResourceType="WorkflowService" IsValid="false" ServerVersion="2.8.1.27">
+<Service ID="32191cf2-df76-4d11-8e33-99f0d30acd71" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Http Web Method - Get Media File and Save It Locally" ResourceType="WorkflowService" IsValid="false" ServerVersion="2.8.1.47">
   <DisplayName>Http Web Method - Get Media File and Save It Locally</DisplayName>
   <Category>Examples\Use Cases\Http Web Method - Get Media File and Save It Locally</Category>
   <IsNewWorkflow>false</IsNewWorkflow>

@@ -1,5 +1,5 @@
 
-<Service ID="82a1ead2-744d-416e-b1d2-fa6c833981d1" Version="1.0" ServerID="1fcec9be-9137-4ab3-9c86-96fecdb022f2" Name="Control Flow - Gate" ResourceType="WorkflowService" IsValid="false" ServerVersion="2.8.1.27">
+<Service ID="82a1ead2-744d-416e-b1d2-fa6c833981d1" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Control Flow - Gate" ResourceType="WorkflowService" IsValid="false" ServerVersion="2.8.1.47">
   <DisplayName>Control Flow - Gate</DisplayName>
   <Category>Examples\Control Flow - Gate</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
