@@ -131,9 +131,6 @@
     <None Include="AddAdminFromEnvironmentVariablesAndStart.bat">
      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="pauseloop\pauseloop.go" OutputPath="pauseloop\pauseloop.go">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <Compile Include="ServerLifecycleManager.cs" />
   </ItemGroup>
   <ItemGroup>
