@@ -171,7 +171,7 @@ namespace Warewolf.UnitTestAttributes
             }
             else if (_containerType == ContainerType.CIRemote || _containerType == ContainerType.AnonymousWarewolf)
             {
-                Container.IP = "102.37.115.89";
+                Container.IP = "4.221.39.39";
                 Container.Port = "3142";
             }
             else if (_containerType == ContainerType.MSSQL)
