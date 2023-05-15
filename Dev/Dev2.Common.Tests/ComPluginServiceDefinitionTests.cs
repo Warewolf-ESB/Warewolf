@@ -52,7 +52,7 @@ namespace Dev2.Common.Tests
 
             Assert.AreEqual(expectedName, comPluginServiceDefinition.Name);
             Assert.AreEqual(expectedGuid, comPluginServiceDefinition.Id);
-            Assert.AreEqual(mockComPluginSource.Object, comPluginServiceDefinition.Source);
+            Assert.IsTrue(mockComPluginSource.Object == comPluginServiceDefinition.Source, "Objects are not equal");
             Assert.AreEqual(expectedInputs, comPluginServiceDefinition.Inputs);
             Assert.AreEqual(1, comPluginServiceDefinition.Inputs.Count);
             Assert.AreEqual(expectedOutputMappings, comPluginServiceDefinition.OutputMappings);

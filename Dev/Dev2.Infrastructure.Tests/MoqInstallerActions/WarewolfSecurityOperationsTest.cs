@@ -24,6 +24,7 @@ namespace Dev2.Infrastructure.Tests.MoqInstallerActions
         // ReSharper disable InconsistentNaming
         [TestMethod]
         [Owner("Travis Frisinger")]
+        [DoNotParallelize]
         [TestCategory("WarewolfSecurityOperations_AddWarewolfGroup")]
         public void WarewolfSecurityOperations_AddWarewolfGroup_ExpectGroupAdded()
         {
@@ -37,6 +38,7 @@ namespace Dev2.Infrastructure.Tests.MoqInstallerActions
 
         [TestMethod]
         [Owner("Travis Frisinger")]
+        [DoNotParallelize]
         [TestCategory("WarewolfSecurityOperations_DoesWarewolfGroupExist")]
         public void WarewolfSecurityOperationsDoesWarewolfGroupExistWhenGroupDoesNotExistExpectFalse()
         {
@@ -53,6 +55,7 @@ namespace Dev2.Infrastructure.Tests.MoqInstallerActions
 
         [TestMethod]
         [Owner("Travis Frisinger")]
+        [DoNotParallelize]
         [TestCategory("WarewolfSecurityOperations_DoesWarewolfGroupExist")]
         public void WarewolfSecurityOperations_DoesWarewolfGroupExist_WhenGroupDoesExist_ExpectTrue()
         {
@@ -71,6 +74,7 @@ namespace Dev2.Infrastructure.Tests.MoqInstallerActions
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("WarewolfSecurityOperations_DeleteGroup")]
+        [DoNotParallelize]
         public void WarewolfSecurityOperations_DeleteGroupWorks_WhenGroupExist_ExpectGroupDeleted()
         {
             //------------Setup for test--------------------------
@@ -88,6 +92,7 @@ namespace Dev2.Infrastructure.Tests.MoqInstallerActions
 
         [TestMethod]
         [Owner("Travis Frisinger")]
+        [DoNotParallelize]
         [TestCategory("WarewolfSecurityOperations_AddWarewolfGroupToAdministrators")]
         public void WarewolfSecurityOperations_AddWarewolfGroupToAdministrators_WhenNotAMember_ExpectNotAdded()
         {
@@ -107,6 +112,7 @@ namespace Dev2.Infrastructure.Tests.MoqInstallerActions
 
         [TestMethod]
         [Owner("Travis Frisinger")]
+        [DoNotParallelize]
         [TestCategory("WarewolfSecurityOperations_AddWarewolfGroupToAdministrators")]
         public void WarewolfSecurityOperations_AddWarewolfGroupToAdministrators_WhenNotAlreadyMember_ExpectAdministratorsMemberOfWarewolf()
         {
@@ -129,6 +135,7 @@ namespace Dev2.Infrastructure.Tests.MoqInstallerActions
         [Owner("Travis Frisinger")]
         [TestCategory("WarewolfSecurityOperations_AddWarewolfGroupToAdministrators")]
         [ExpectedException(typeof(TargetInvocationException))]
+        [DoNotParallelize]
         public void WarewolfSecurityOperations_AddWarewolfGroupToAdministrators_WhenAlreadyMember_ExpectException()
         {
 
@@ -146,6 +153,7 @@ namespace Dev2.Infrastructure.Tests.MoqInstallerActions
 
         [TestMethod]
         [Owner("Travis Frisinger")]
+        [DoNotParallelize]
         [TestCategory("WarewolfSecurityOperations_DeleteGroup")]
         public void WarewolfSecurityOperations_AddUserToWarewolfGroup_WhenUserNotPresent_ExpectUserAdded()
         {
@@ -182,6 +190,7 @@ namespace Dev2.Infrastructure.Tests.MoqInstallerActions
 
         [TestMethod]
         [Owner("Travis Frisinger")]
+        [DoNotParallelize]
         [TestCategory("WarewolfSecurityOperations_DeleteGroup")]
         public void WarewolfSecurityOperations_AddLocalUserToWarewolfGroup_WhenUserNotPresent_ExpectUserAdded()
         {
@@ -238,6 +247,7 @@ namespace Dev2.Infrastructure.Tests.MoqInstallerActions
 
         [TestMethod]
         [Owner("Travis Frisinger")]
+        [DoNotParallelize]
         [TestCategory("WarewolfSecurityOperations_AddUserToWarewolf")]
         [ExpectedException(typeof(ArgumentNullException))]
         public void WarewolfSecurityOperations_AddUserToWarewolfGroup_WhenUserNull_ExpectException()
