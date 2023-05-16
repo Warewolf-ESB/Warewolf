@@ -53,19 +53,23 @@ namespace Warewolf.Storage
         public CommonFunctions.WarewolfEvalResult Eval(string exp, int update) => Eval(exp, update, false, false);
 
         public CommonFunctions.WarewolfEvalResult Eval(string exp, int update, bool throwsifnotexists) => Eval(exp, update, throwsifnotexists, false);
- 
+
         public bool CountChar(string source)
         {
             int counterInt = 0;
-            char toFind = '-';
+            const char toFind = '-';
             try
             {
-                char charToCount = toFind;
+
                 foreach (char c in source)
                 {
-                    if (c == charToCount)
+                    if (c == toFind)
                     {
                         counterInt++;
+                        if (counterInt > 2)
+                        {
+                            break;
+                        }
                     }
                 }
 
@@ -88,7 +92,7 @@ namespace Warewolf.Storage
 
             DateTime dateValue = DateTime.MinValue;
             try
-            {                 
+            {
                 if (DateTime.TryParse(newValue, out dateValue))
                 {
                     return dateValue.ToString("yyyy-MM-dd");
@@ -119,7 +123,7 @@ namespace Warewolf.Storage
                             exp = ConvertToEvalDate(strVals);
                         }
                     }
-                }                
+                }
                 return PublicFunctions.EvalEnvExpression(exp, update, shouldEscape, _env);
             }
             catch (IndexOutOfRangeException)
@@ -711,7 +715,7 @@ namespace Warewolf.Storage
             if (CountChar(EvaluationFunctions.evalToExpression(_env, update, exp).ToString()))
             {
                 return ConvertToEvalDate(EvaluationFunctions.evalToExpression(_env, update, exp));
-            }            
+            }
             return EvaluationFunctions.evalToExpression(_env, update, exp);
         }
 
