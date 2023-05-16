@@ -47,7 +47,11 @@ namespace Dev2.Core.Tests
         {
             var mockdataListViewModel = Dev2MockFactory.SetupDataListViewModel();
             DataListSingleton.SetDataList(mockdataListViewModel.Object);
-            Assert.AreEqual(DataListSingleton.ActiveDataList, mockdataListViewModel.Object);
+
+            var expected = DataListSingleton.ActiveDataList;
+            var actual = mockdataListViewModel.Object;
+
+            Assert.AreSame(expected, actual);
         }
 
         #endregion SetDataList Tests
