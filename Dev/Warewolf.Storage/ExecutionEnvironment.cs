@@ -19,12 +19,14 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml;
 using System.Xml.Linq;
 using Warewolf.Data;
+using Warewolf.Data.Decisions.Operations;
 using Warewolf.Exceptions;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage.Interfaces;
@@ -51,71 +53,31 @@ namespace Warewolf.Storage
         public CommonFunctions.WarewolfEvalResult Eval(string exp, int update) => Eval(exp, update, false, false);
 
         public CommonFunctions.WarewolfEvalResult Eval(string exp, int update, bool throwsifnotexists) => Eval(exp, update, throwsifnotexists, false);
-
-
-        public static bool hasSpecialChar(string input)
-        {
-            string specialChar = @":|!#$%&=?»«@£§€{}.;'<>_,";
-            foreach (var item in specialChar)
-            {
-                if (input.Contains(item)) return true;
-            }
-            return false;
-        }
-
+ 
         public bool CountChar(string source)
         {
-            int count = 0;
-            if (!hasSpecialChar(source))
+            int counterInt = 0;
+            char toFind = '-';
+            try
             {
-                char toFind = '-';
-                try
+                char charToCount = toFind;
+                foreach (char c in source)
                 {
-                    char charToCount = toFind;                    
-                    foreach (char c in source)
+                    if (c == charToCount)
                     {
-                        if (c == charToCount)
-                        {
-                            count++;
-                        }
+                        counterInt++;
                     }
-                    int counterInt = 0;
-                    if (count == 2)
-                    {
-                        string stringBeforeChar = source.Substring(0, source.IndexOf("-"));
-                        string[] arryVal = stringBeforeChar.Split(' ');
-                        string firstVal = string.Empty;
-                        
-                        if (arryVal.Length > 1)
-                        {
-                            firstVal = arryVal[arryVal.Length - 1].Replace(")", "").Replace("(", "").Replace("\"", "");
-                        }
-                        else
-                        {
-                            firstVal = arryVal[0].Replace(")", "").Replace("(", "").Replace("\"", "");
-                        }                     
-
-                        string stringBeforeChar2 = source.Substring(source.IndexOf(firstVal));
-                        string[] arryValCheck = stringBeforeChar2.Split('-');                        
-                        foreach (string val in arryValCheck)
-                        {
-                            if (int.TryParse(val.Replace(")", "").Replace("(", "").Replace("\"", ""), out int n))
-                            {
-                                counterInt++;
-                            }
-                        }
-                    }
-
-                    if(counterInt >= 2 && counterInt <= 3)
-                    {
-                        return true;
-                    }                   
-                   
                 }
-                catch (Exception)
+
+                if (counterInt == 2)
                 {
-                    throw;
+                    return true;
                 }
+
+            }
+            catch (Exception)
+            {
+                throw;
             }
             return false;
         }
@@ -123,24 +85,20 @@ namespace Warewolf.Storage
 
         public string ConvertToEvalDate(string newValue)
         {
+
             DateTime dateValue = DateTime.MinValue;
             try
-            {
-                string[] arrVals = newValue.ToString().Split(' ');
-                foreach (string dateString in arrVals)
+            {                 
+                if (DateTime.TryParse(newValue, out dateValue))
                 {
-                    var newString = dateString.Replace(")", "").Replace("(", "").Replace("\"", "");
-                    if (DateTime.TryParse(newString, out dateValue))
-                    {
-                        return dateValue.ToString("yyyy-MM-dd");
-                    }
+                    return dateValue.ToString("yyyy-MM-dd");
                 }
             }
             catch (Exception)
             {
                 throw;
             }
-            return dateValue.ToString();
+            return newValue.ToString();
         }
 
 
@@ -148,10 +106,20 @@ namespace Warewolf.Storage
         {
             try
             {
-                if (CountChar(PublicFunctions.EvalEnvExpression(exp, update, shouldEscape, _env).ToString()))
+                var ast = PublicFunctions.EvalEnvExpression(exp, update, shouldEscape, _env);
+                if (ast.IsWarewolfAtomResult)
                 {
-                    exp = ConvertToEvalDate(PublicFunctions.EvalEnvExpression(exp, update, shouldEscape, _env).ToString());
-                }
+                    var x = ast as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
+                    if (x.Item.IsDataString)
+                    {
+                        var val = x.Item as DataStorage.WarewolfAtom.DataString;
+                        string strVals = val.Item;
+                        if (CountChar(strVals))
+                        {
+                            exp = ConvertToEvalDate(strVals);
+                        }
+                    }
+                }                
                 return PublicFunctions.EvalEnvExpression(exp, update, shouldEscape, _env);
             }
             catch (IndexOutOfRangeException)
@@ -740,11 +708,10 @@ namespace Warewolf.Storage
 
         public string EvaluteDateField(DataStorage.WarewolfEnvironment _env, int update, string exp)
         {
-
             if (CountChar(EvaluationFunctions.evalToExpression(_env, update, exp).ToString()))
             {
                 return ConvertToEvalDate(EvaluationFunctions.evalToExpression(_env, update, exp));
-            }
+            }            
             return EvaluationFunctions.evalToExpression(_env, update, exp);
         }
 
