@@ -86,10 +86,13 @@ namespace Warewolf.COMIPC.Client
             {
                 var obj = serializer.Deserialize(jsonTextReader);
                 var result = obj.ToString();
-                var exception = JsonConvert.DeserializeObject<Exception>(result);
-                if (exception != null)
+                if (result.IndexOf("System.Exception", StringComparison.OrdinalIgnoreCase) > -1)
                 {
-                    throw exception;
+                    var exception = JsonConvert.DeserializeObject<Exception>(result);
+                    if (exception != null)
+                    {
+                        throw exception;
+                    }
                 }
                 return result;
             }

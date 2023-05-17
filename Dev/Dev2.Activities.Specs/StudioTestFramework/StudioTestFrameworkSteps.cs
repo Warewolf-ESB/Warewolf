@@ -607,6 +607,7 @@ namespace Dev2.Activities.Specs.TestFramework
             var externalProcessExecutor = new SpecExternalProcessExecutor();
             var first = debugItemResults.Select(result =>
             {
+                result.MoreLink =result.MoreLink.Replace("//Services", "/Services");
                 externalProcessExecutor.OpenInBrowser(new Uri(result.MoreLink));
                 var downloadStrings = externalProcessExecutor.WebResult[0];
                 return downloadStrings;

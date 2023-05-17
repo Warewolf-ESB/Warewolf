@@ -1,0 +1,9 @@
+
+<Source ID="47c0b407-f7c1-4435-aacf-4371919bce04" Name="Example DotNet Plugin Source" ResourceType="PluginSource" IsValid="false" AssemblyLocation="GAC:mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=AMD64" AssemblyName="" ConfigFilePath="" Type="PluginSource" ServerVersion="2.0.1.37" ServerID="6d8948f3-37ad-4952-87d5-c9c12fcc86c4">
+  <DisplayName>Example DotNet Plugin Source</DisplayName>
+  <AuthorRoles>
+  </AuthorRoles>
+  <ErrorMessages />
+  <TypeOf>PluginSource</TypeOf>
+  <VersionInfo DateTimeStamp="2018-09-13T15:18:48.3618906+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="47c0b407-f7c1-4435-aacf-4371919bce04" VersionId="9551174a-861c-46e7-acf3-0ada19bb51d5" />
+</Source>

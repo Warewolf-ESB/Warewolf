@@ -183,7 +183,7 @@ namespace Dev2.SignalR.Wrappers.New
             //_wrapped.Stop(timeSpan);
             try
             {
-                _wrapped.StopAsync();
+                _wrapped.StopAsync().Wait((int)timeSpan.TotalMilliseconds);
                 StateChanged?.Invoke(new StateChangeWrapped(_oldState, _wrapped.State));
                 _oldState = _wrapped.State;
             }

@@ -344,7 +344,7 @@ Scenario Outline: Calculate Assign by evaluating variables with functions
 	| 128 | QUOTIENT([[z]],[[rc(1).set]])                              | 2                                                           |
 	| 129 | RADIANS([[z]])                                             | 0.17453292519943295                                           |
 	| 130 | RANDBETWEEN([[x]],10)                                      | [Int]                                                       |
-	| 131 | RATE(360,-600,100000,0,1)                                  | 0.005045004045846503                                         |
+	| 131 | RATE(360,-600,100000,0,1)                                  | 0.005045004045846426                                         |
 	| 132 | REPT([[y]],[[y]])                                          | 22                                                          |
 	| 133 | RIGHT([[x]],[[x]])                                         | 1                                                           |
 	| 134 | ROMAN(10,0)                                                | X                                                           |
@@ -368,7 +368,7 @@ Scenario Outline: Calculate Assign by evaluating variables with functions
 	| 152 | TAN([[z]])                                                 | 0.6483608274590866                                           |
 	| 153 | TANH([[z]])                                                | 0.9999999958776927                                           |
 	| 154 | TEXT([[y]],[[rc(1).set]])                                  | 5                                                           |
-	| 155 | TIME(24,[[x]],[[x]])                                       | 0.000706018518518518                                        |
+	| 155 | TIME(24,[[x]],[[x]])                                       | 0.0007060185185185185                                        |
 	| 156 | TIMEVALUE("2:24 AM")                                       | 0.1                                                         |
 	| 157 | TODAY()                                                    | [Today]                                                     |
 	| 158 | TRIM(10)                                                   | 10                                                          |

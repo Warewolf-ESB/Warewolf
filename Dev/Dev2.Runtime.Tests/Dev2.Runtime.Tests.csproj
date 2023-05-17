@@ -48,19 +48,17 @@
     <LangVersion>7.3</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-   
-    <Reference Include="InfragisticsWPF4.Calculations.XamCalculationManager.v15.1, Version=15.1.20151.2055, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\InfragisticsWPF4.Calculations.XamCalculationManager.v15.1.dll</HintPath>
+    <Reference Include="CalculationManager.WPF">
+      <HintPath>..\Binaries\Infragistcs_Net6\Infragistics.Calculations.dll</HintPath>
     </Reference>
     <Reference Include="InfragisticsWPF4.Controls.Editors.XamSyntaxEditor.v15.1">
-      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Editors.XamSyntaxEditor.v15.1.dll</HintPath>
+      <HintPath>..\Binaries\Infragistcs_Net6\InfragisticsWPF4.Controls.Editors.XamSyntaxEditor.v15.1.dll</HintPath>
     </Reference>
-    <Reference Include="InfragisticsWPF4.DataPresenter.CalculationAdapter.v15.1">
-      <HintPath>..\Binaries\InfragisticsWPF4.DataPresenter.CalculationAdapter.v15.1.dll</HintPath>
+    <Reference Include="InfragisticsWPF4.DataPresenter.v15.1">
+      <HintPath>..\Binaries\Infragistcs_Net6\InfragisticsWPF4.DataPresenter.v15.1.dll</HintPath>
     </Reference>
     <Reference Include="InfragisticsWPF4.Math.Calculators.v15.1">
-      <HintPath>..\Binaries\InfragisticsWPF4.Math.Calculators.v15.1.dll</HintPath>
+      <HintPath>..\Binaries\Infragistcs_Net6\InfragisticsWPF4.Math.Calculators.v15.1.dll</HintPath>
     </Reference>
    
     <PackageReference Include="ServiceStack.Interfaces" Version="6.3.0" />
@@ -718,12 +716,11 @@
   </ItemGroup>
   <PropertyGroup>
     <PostBuildEvent>
-		taskkill /f /im Warewolf.COMIPC.exe /fi "STATUS eq RUNNING"
-		taskkill /f /im Warewolf.COMIPC.vshost.exe /fi "STATUS eq RUNNING"
-		if exist "$(SolutionDir)Dev2.Runtime.Tests\bin\Debug\net6.0-windows\win\Dev2.Runtime.Tests.dll" (
-		if not exist "$(SolutionDir)Dev2.Runtime.Tests\bin\Debug\net6.0-windows\win\Warewolf.COMIPC.exe" xcopy /Y "$(SolutionDir)Warewolf.COMIPC\bin\Debug\net6.0-windows\Warewolf.COMIPC.exe" "$(SolutionDir)Dev2.Runtime.Tests\bin\Debug\net6.0-windows\win"
-		if not exist "$(SolutionDir)Dev2.Runtime.Tests\bin\Debug\net6.0-windows\win\Warewolf.COMIPC.pdb" xcopy /Y "$(SolutionDir)Warewolf.COMIPC\bin\Debug\net6.0-windows\Warewolf.COMIPC.pdb" "$(SolutionDir)Dev2.Runtime.Tests\bin\Debug\net6.0-windows\win"
-		)</PostBuildEvent>
+      taskkill /f /im Warewolf.COMIPC.exe /fi "STATUS eq RUNNING"
+      taskkill /f /im Warewolf.COMIPC.vshost.exe /fi "STATUS eq RUNNING"
+      if exist "$(SolutionDir)Dev2.Runtime.Tests\bin\Debug\net6.0-windows\win\Dev2.Runtime.Tests.dll" (
+      echo D | xcopy /Y /E /F /D "$(SolutionDir)Binaries\Warewolf.COMIPC.exe_v4.8" "$(SolutionDir)Dev2.Runtime.Tests\bin\Debug\net6.0-windows\win\Warewolf.COMIPC.exe_v4.8"
+      )</PostBuildEvent>
   </PropertyGroup>
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />

@@ -60,7 +60,12 @@ namespace Warewolf.Security.Encryption
             }
             catch (Exception e)
             {
-                e.GetType().Should().Be(typeof(System.Security.Cryptography.CryptographicException));
+                //e.GetType().Should().Be(typeof(System.Security.Cryptography.CryptographicException));
+
+                // .NET 6 Throws Interal Exception Type named WindowsCryptographicException
+                // hence need to verify error message instead of exception type
+                e.Message.Should().Be("The data is invalid.");
+                e.TargetSite.Name.Should().Be("ProtectOrUnprotect");
             }
             try
             {

@@ -864,11 +864,11 @@ this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("2", "acos([[
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "acosh([[rc(1).set]])")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "2.29243166956118")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "2.2924316695611777")]
         public void AggregatedCalculationAssignByEvaluatingVariablesWithFunctions_3()
         {
 #line 199
-this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("3", "acosh([[rc(1).set]])", "2.29243166956118", ((string[])(null)));
+this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("3", "acosh([[rc(1).set]])", "2.2924316695611777", ((string[])(null)));
 #line hidden
         }
         
@@ -909,11 +909,11 @@ this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("5", "AND([[y
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "ASIN([[s]])")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "-1.57079632679490")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "-1.5707963267948966")]
         public void AggregatedCalculationAssignByEvaluatingVariablesWithFunctions_7()
         {
 #line 199
-this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("7", "ASIN([[s]])", "-1.57079632679490", ((string[])(null)));
+this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("7", "ASIN([[s]])", "-1.5707963267948966", ((string[])(null)));
 #line hidden
         }
         
@@ -924,11 +924,11 @@ this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("7", "ASIN([[
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "8")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "8")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "ASINH([[rc(1).set]])")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "2.312438341272750")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "2.3124383412727525")]
         public void AggregatedCalculationAssignByEvaluatingVariablesWithFunctions_8()
         {
 #line 199
-this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("8", "ASINH([[rc(1).set]])", "2.312438341272750", ((string[])(null)));
+this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("8", "ASINH([[rc(1).set]])", "2.3124383412727525", ((string[])(null)));
 #line hidden
         }
         
@@ -939,11 +939,11 @@ this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("8", "ASINH([
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "9")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "9")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "ATAN([[s]])")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "-0.785398163397448")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "-0.7853981633974483")]
         public void AggregatedCalculationAssignByEvaluatingVariablesWithFunctions_9()
         {
 #line 199
-this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("9", "ATAN([[s]])", "-0.785398163397448", ((string[])(null)));
+this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("9", "ATAN([[s]])", "-0.7853981633974483", ((string[])(null)));
 #line hidden
         }
         
@@ -954,11 +954,11 @@ this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("9", "ATAN([[
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "10")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "10")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "ATAN2([[x]],[[s]])")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "-0.785398163397448")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "-0.7853981633974483")]
         public void AggregatedCalculationAssignByEvaluatingVariablesWithFunctions_10()
         {
 #line 199
-this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("10", "ATAN2([[x]],[[s]])", "-0.785398163397448", ((string[])(null)));
+this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("10", "ATAN2([[x]],[[s]])", "-0.7853981633974483", ((string[])(null)));
 #line hidden
         }
         
@@ -999,11 +999,11 @@ this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("12", "AVEDEV
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "13")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "13")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "AVERAGE([[x]],[[y]],[[z]],[[rc(1).set]],[[s]],[[t]],[[e]])")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "145.285714285714")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "145.28571428571428")]
         public void AggregatedCalculationAssignByEvaluatingVariablesWithFunctions_13()
         {
 #line 199
-this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("13", "AVERAGE([[x]],[[y]],[[z]],[[rc(1).set]],[[s]],[[t]],[[e]])", "145.285714285714", ((string[])(null)));
+this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("13", "AVERAGE([[x]],[[y]],[[z]],[[rc(1).set]],[[s]],[[t]],[[e]])", "145.28571428571428", ((string[])(null)));
 #line hidden
         }
         
@@ -1179,11 +1179,11 @@ this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("24", "CONVER
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "25")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "25")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "COS([[[[a]]]])")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "-0.989992496600445")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "-0.9899924966004454")]
         public void AggregatedCalculationAssignByEvaluatingVariablesWithFunctions_25()
         {
 #line 199
-this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("25", "COS([[[[a]]]])", "-0.989992496600445", ((string[])(null)));
+this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("25", "COS([[[[a]]]])", "-0.9899924966004454", ((string[])(null)));
 #line hidden
         }
         
@@ -1194,11 +1194,11 @@ this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("25", "COS([[
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "26")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "26")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "COSH([[z]])")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "11013.232920103300")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "11013.232920103324")]
         public void AggregatedCalculationAssignByEvaluatingVariablesWithFunctions_26()
         {
 #line 199
-this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("26", "COSH([[z]])", "11013.232920103300", ((string[])(null)));
+this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("26", "COSH([[z]])", "11013.232920103324", ((string[])(null)));
 #line hidden
         }
         
@@ -1269,11 +1269,11 @@ this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("31", "DAYS36
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "32")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "32")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "DB([[e]],[[z]],12,12,12)")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "4.66024676978963")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "4.660246769789631")]
         public void AggregatedCalculationAssignByEvaluatingVariablesWithFunctions_32()
         {
 #line 199
-this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("32", "DB([[e]],[[z]],12,12,12)", "4.66024676978963", ((string[])(null)));
+this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("32", "DB([[e]],[[z]],12,12,12)", "4.660246769789631", ((string[])(null)));
 #line hidden
         }
         
@@ -1299,11 +1299,11 @@ this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("33", "DBNull
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "34")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "34")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "DDB([[e]],[[z]],12,12,[[x]])")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "31.9996025467397")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "31.99960254673971")]
         public void AggregatedCalculationAssignByEvaluatingVariablesWithFunctions_34()
         {
 #line 199
-this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("34", "DDB([[e]],[[z]],12,12,[[x]])", "31.9996025467397", ((string[])(null)));
+this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("34", "DDB([[e]],[[z]],12,12,[[x]])", "31.99960254673971", ((string[])(null)));
 #line hidden
         }
         
@@ -1359,11 +1359,11 @@ this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("37", "DEC2OC
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "38")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "38")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "DEGREES([[z]])")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "572.957795130823")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "572.9577951308232")]
         public void AggregatedCalculationAssignByEvaluatingVariablesWithFunctions_38()
         {
 #line 199
-this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("38", "DEGREES([[z]])", "572.957795130823", ((string[])(null)));
+this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("38", "DEGREES([[z]])", "572.9577951308232", ((string[])(null)));
 #line hidden
         }
         
@@ -1464,11 +1464,11 @@ this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("45", "EVEN([
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "46")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "46")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "EXP([[x]])")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "2.71828182845905")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "2.718281828459045")]
         public void AggregatedCalculationAssignByEvaluatingVariablesWithFunctions_46()
         {
 #line 199
-this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("46", "EXP([[x]])", "2.71828182845905", ((string[])(null)));
+this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("46", "EXP([[x]])", "2.718281828459045", ((string[])(null)));
 #line hidden
         }
         
@@ -1944,11 +1944,11 @@ this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("78", "INTRAT
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "79")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "79")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "IPMT(5,12,100,1000,2000,1)")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "-833.333358764648")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "-833.3333587646484")]
         public void AggregatedCalculationAssignByEvaluatingVariablesWithFunctions_79()
         {
 #line 199
-this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("79", "IPMT(5,12,100,1000,2000,1)", "-833.333358764648", ((string[])(null)));
+this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("79", "IPMT(5,12,100,1000,2000,1)", "-833.3333587646484", ((string[])(null)));
 #line hidden
         }
         
@@ -2184,11 +2184,11 @@ this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("95", "LEN([[
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "96")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "96")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "LN([[rc(1).set]])")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "1.6094379124341")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "1.6094379124341005")]
         public void AggregatedCalculationAssignByEvaluatingVariablesWithFunctions_96()
         {
 #line 199
-this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("96", "LN([[rc(1).set]])", "1.6094379124341", ((string[])(null)));
+this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("96", "LN([[rc(1).set]])", "1.6094379124341005", ((string[])(null)));
 #line hidden
         }
         
@@ -2199,11 +2199,11 @@ this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("96", "LN([[r
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "97")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "97")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "LOG([[z]],[[y]])")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "3.32192809488736")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "3.321928094887362")]
         public void AggregatedCalculationAssignByEvaluatingVariablesWithFunctions_97()
         {
 #line 199
-this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("97", "LOG([[z]],[[y]])", "3.32192809488736", ((string[])(null)));
+this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("97", "LOG([[z]],[[y]])", "3.321928094887362", ((string[])(null)));
 #line hidden
         }
         
@@ -2303,12 +2303,12 @@ this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("103", "MIN(1
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Utility")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "104")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "104")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "MINUTE([[[[a]]]])")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "MINUTE(\"[[[[a]]]]\")")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "0")]
         public void AggregatedCalculationAssignByEvaluatingVariablesWithFunctions_104()
         {
 #line 199
-this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("104", "MINUTE([[[[a]]]])", "0", ((string[])(null)));
+this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("104", "MINUTE(\"[[[[a]]]]\")", "0", ((string[])(null)));
 #line hidden
         }
         
@@ -2439,11 +2439,11 @@ this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("113", "NOW()
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "114")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "114")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "NPER(0.1, 100, 1000, 999,0)")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "-79.74911468163210")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "-79.74911468163207")]
         public void AggregatedCalculationAssignByEvaluatingVariablesWithFunctions_114()
         {
 #line 199
-this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("114", "NPER(0.1, 100, 1000, 999,0)", "-79.74911468163210", ((string[])(null)));
+this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("114", "NPER(0.1, 100, 1000, 999,0)", "-79.74911468163207", ((string[])(null)));
 #line hidden
         }
         
@@ -2619,11 +2619,11 @@ this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("126", "PRODU
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "127")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "127")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "PV(5,1,10,100,0)")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "-18.3333333333333")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "-18.333333333333336")]
         public void AggregatedCalculationAssignByEvaluatingVariablesWithFunctions_127()
         {
 #line 199
-this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("127", "PV(5,1,10,100,0)", "-18.3333333333333", ((string[])(null)));
+this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("127", "PV(5,1,10,100,0)", "-18.333333333333336", ((string[])(null)));
 #line hidden
         }
         
@@ -2649,11 +2649,11 @@ this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("128", "QUOTI
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "129")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "129")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "RADIANS([[z]])")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "0.174532925199433")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "0.17453292519943295")]
         public void AggregatedCalculationAssignByEvaluatingVariablesWithFunctions_129()
         {
 #line 199
-this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("129", "RADIANS([[z]])", "0.174532925199433", ((string[])(null)));
+this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("129", "RADIANS([[z]])", "0.17453292519943295", ((string[])(null)));
 #line hidden
         }
         
@@ -2679,11 +2679,11 @@ this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("130", "RANDB
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "131")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "131")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "RATE(360,-600,100000,0,1)")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "0.00504500404584643")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "0.005045004045846426")]
         public void AggregatedCalculationAssignByEvaluatingVariablesWithFunctions_131()
         {
 #line 199
-this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("131", "RATE(360,-600,100000,0,1)", "0.00504500404584643", ((string[])(null)));
+this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("131", "RATE(360,-600,100000,0,1)", "0.005045004045846426", ((string[])(null)));
 #line hidden
         }
         
@@ -2859,11 +2859,11 @@ this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("142", "SIGN(
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "143")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "143")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "SIN([[z]])")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "-0.54402111088937")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "-0.5440211108893698")]
         public void AggregatedCalculationAssignByEvaluatingVariablesWithFunctions_143()
         {
 #line 199
-this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("143", "SIN([[z]])", "-0.54402111088937", ((string[])(null)));
+this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("143", "SIN([[z]])", "-0.5440211108893698", ((string[])(null)));
 #line hidden
         }
         
@@ -2874,11 +2874,11 @@ this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("143", "SIN([
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "144")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "144")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "SINH([[z]])")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "11013.2328747034")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "11013.232874703392")]
         public void AggregatedCalculationAssignByEvaluatingVariablesWithFunctions_144()
         {
 #line 199
-this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("144", "SINH([[z]])", "11013.2328747034", ((string[])(null)));
+this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("144", "SINH([[z]])", "11013.232874703392", ((string[])(null)));
 #line hidden
         }
         
@@ -2919,11 +2919,11 @@ this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("146", "SQRT(
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "147")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "147")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "SQRTPI(16)")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "7.08981540362206")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "7.089815403622064")]
         public void AggregatedCalculationAssignByEvaluatingVariablesWithFunctions_147()
         {
 #line 199
-this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("147", "SQRTPI(16)", "7.08981540362206", ((string[])(null)));
+this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("147", "SQRTPI(16)", "7.089815403622064", ((string[])(null)));
 #line hidden
         }
         
@@ -2934,11 +2934,11 @@ this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("147", "SQRTP
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "148")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "148")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "STDEV(1,10,5)")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "4.50924975282289")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "4.509249752822894")]
         public void AggregatedCalculationAssignByEvaluatingVariablesWithFunctions_148()
         {
 #line 199
-this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("148", "STDEV(1,10,5)", "4.50924975282289", ((string[])(null)));
+this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("148", "STDEV(1,10,5)", "4.509249752822894", ((string[])(null)));
 #line hidden
         }
         
@@ -2994,11 +2994,11 @@ this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("151", "SYD(1
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "152")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "152")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "TAN([[z]])")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "0.648360827459087")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "0.6483608274590866")]
         public void AggregatedCalculationAssignByEvaluatingVariablesWithFunctions_152()
         {
 #line 199
-this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("152", "TAN([[z]])", "0.648360827459087", ((string[])(null)));
+this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("152", "TAN([[z]])", "0.6483608274590866", ((string[])(null)));
 #line hidden
         }
         
@@ -3009,11 +3009,11 @@ this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("152", "TAN([
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "153")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "153")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "TANH([[z]])")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "0.999999995877693")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "0.9999999958776927")]
         public void AggregatedCalculationAssignByEvaluatingVariablesWithFunctions_153()
         {
 #line 199
-this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("153", "TANH([[z]])", "0.999999995877693", ((string[])(null)));
+this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("153", "TANH([[z]])", "0.9999999958776927", ((string[])(null)));
 #line hidden
         }
         
@@ -3039,11 +3039,11 @@ this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("154", "TEXT(
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "155")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "155")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "TIME(24,[[x]],[[x]])")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "0.000706018518518518")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "0.0007060185185185185")]
         public void AggregatedCalculationAssignByEvaluatingVariablesWithFunctions_155()
         {
 #line 199
-this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("155", "TIME(24,[[x]],[[x]])", "0.000706018518518518", ((string[])(null)));
+this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("155", "TIME(24,[[x]],[[x]])", "0.0007060185185185185", ((string[])(null)));
 #line hidden
         }
         

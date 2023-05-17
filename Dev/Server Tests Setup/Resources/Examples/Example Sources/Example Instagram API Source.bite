@@ -1,0 +1,8 @@
+<Source ID="9317a98e-0c1c-4468-80cd-824eb9a1fce9" Name="Example Instagram API Source" ResourceType="WebSource" IsValid="false" ConnectionString="Address=https://api.instagram.com;DefaultQuery=/v1/media/{media-id}/comments/{comment-id}?access_token={AuthToken};AuthenticationType=Anonymous" Type="WebSource" ServerVersion="1.5.1.2" ServerID="693ca20d-fb17-4044-985a-df3051d6bac7">
+  <DisplayName>Example Instagram API Source</DisplayName>
+  <AuthorRoles>
+  </AuthorRoles>
+  <ErrorMessages />
+  <TypeOf>WebSource</TypeOf>
+  <VersionInfo DateTimeStamp="2017-05-26T14:20:07.1645901+02:00" Reason="" User="NT AUTHORITY\SYSTEM" VersionNumber="5" ResourceId="9317a98e-0c1c-4468-80cd-824eb9a1fce9" VersionId="07fea586-161c-4942-a204-8f8bf05c1da2" />
+</Source>

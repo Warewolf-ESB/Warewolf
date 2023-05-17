@@ -91,6 +91,9 @@
     <Compile Include="TypeExtentionTest.cs" />
     <Compile Include="Utils\Dev2XamlCleanerTest.cs" />
     <Compile Include="Weave\MockByteReaderWriter.cs" />
+    <Reference Include="Infragistics.Calculations">
+      <HintPath>..\Binaries\Infragistcs_Net6\Infragistics.Calculations.dll</HintPath>
+    </Reference>
     <!--<Reference Include="InfragisticsWPF4.Calculations.XamCalculationManager.v15.1, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\Binaries\InfragisticsWPF4.Calculations.XamCalculationManager.v15.1.dll</HintPath>
     </Reference>-->
@@ -125,7 +128,6 @@
     <ProjectReference Include="..\Warewolf.Testing\Warewolf.Testing.csproj" />
   </ItemGroup>
   <ItemGroup>
-	  <PackageReference Include="Infragistics.WPF.CalculationManager.Trial" Version="22.2.19" />
     <PackageReference Include="Moq">
       <Version>4.18.2</Version>
     </PackageReference>

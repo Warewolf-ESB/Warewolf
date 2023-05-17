@@ -254,7 +254,7 @@ namespace Dev2.Runtime.Hosting
             {
                 return;
             }
-            foreach (var resource in userServices)
+            foreach (var resource in userServices.ToList())
             {
                 try
                 {

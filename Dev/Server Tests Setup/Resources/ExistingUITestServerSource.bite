@@ -1,0 +1,9 @@
+
+<Source ID="a0478679-7a95-4248-8c6b-d05ecc5ee246" Name="ExistingUITestServerSource" ResourceType="Dev2Server" IsValid="false" ConnectionString="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAA0ANawE9+lUiIoe6YI8F/cgQAAAACAAAAAAADZgAAwAAAABAAAAC5J9KfVO2iLg6A9LU9IeIrAAAAAASAAACgAAAAEAAAAMM2HTxkyi+fbhIr6DQQc4qoAAAASOmBG5iKyzoIUei2M/vVx4A5MJ7SBS24xloiypcMxeopNtrd0kDEAAGSQkGGeb4wTmCFQH7JiIDXa9Zi74VekGwMbQWAqhEiAvWjewJNj3Ev9IO4e27Xz+SFk0ff9AwVQnccINt7JUm/rbNfu30vJEtNA8deW2EfWtEZPxX2ho8JsjZpWVYSW61Ww4jhB2cQj8enh2rb+WC34dXDYzu+XBs9yzx6VVMGFAAAAD0p35IM8zxuNDaLTBQTb2tSQ1sJ" Type="Connection" ServerVersion="2.8.1.47" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+  <DisplayName>ExistingUITestServerSource</DisplayName>
+  <AuthorRoles>
+  </AuthorRoles>
+  <ErrorMessages />
+  <TypeOf>Dev2Server</TypeOf>
+  <VersionInfo DateTimeStamp="2017-03-31T13:27:31.3083095+02:00" Reason="" User="DEV2\ashley.lewis" VersionNumber="2" ResourceId="a0478679-7a95-4248-8c6b-d05ecc5ee246" VersionId="76bb3d6e-e219-4d3c-83b5-fe893af2b969" />
+</Source>

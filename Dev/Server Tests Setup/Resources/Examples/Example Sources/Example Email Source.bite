@@ -1,0 +1,9 @@
+
+<Source ID="fb30c527-8a5f-4d91-9663-c2b850191323" Name="Example Email Source" ResourceType="EmailSource" IsValid="false" ConnectionString="Host=See WHAT DOES THIS DO? ;UserName=;Password=;Port=25;EnableSsl=false;Timeout=10000" Type="EmailSource" ServerVersion="1.5.1.2" ServerID="6ebec306-5ce3-4d2d-af8d-2ffa58996dd8">
+  <DisplayName>Example Email Source</DisplayName>
+  <AuthorRoles>
+  </AuthorRoles>
+  <ErrorMessages />
+  <TypeOf>EmailSource</TypeOf>
+  <VersionInfo DateTimeStamp="2017-05-26T10:41:55.462316+02:00" Reason="" User="NT AUTHORITY\SYSTEM" VersionNumber="2" ResourceId="fb30c527-8a5f-4d91-9663-c2b850191323" VersionId="8a1d39db-3cac-416e-94b2-0f87548c6cb9" />
+</Source>

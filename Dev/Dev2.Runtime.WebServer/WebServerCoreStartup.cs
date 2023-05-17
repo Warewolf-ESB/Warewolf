@@ -3,6 +3,7 @@ using Dev2.Runtime.WebServer.Security;
 using Microsoft.AspNetCore.Authentication.Negotiate;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.WebApiCompatShim;
 using Microsoft.AspNetCore.SignalR;
@@ -33,8 +34,9 @@ namespace Dev2.Runtime.WebServer
                 options.OutputFormatters.Insert(0, new HttpResponseMessageOutputFormatter());
                 //options.Filters.Add(new CustomActionFilter());
             }).AddApplicationPart(typeof(WebServerStartup).Assembly);
-            
-            
+
+
+
             #region Windows Authentication with UseWindowsAndAnonymousAuthenticationMiddleware
             // to use the UseWindowsAndAnonymousAuthenticationMiddleware uncomment below lines
             builder.Services.AddAuthentication(NegotiateDefaults.AuthenticationScheme).AddNegotiate();
@@ -43,8 +45,8 @@ namespace Dev2.Runtime.WebServer
             builder.Services.AddSignalR(options =>
             {
                 options.ClientTimeoutInterval = TimeSpan.FromSeconds(180);
-                options.KeepAliveInterval = TimeSpan.FromSeconds(10);
-                options.HandshakeTimeout = TimeSpan.FromSeconds(10);
+                options.KeepAliveInterval = TimeSpan.FromSeconds(15);
+                options.HandshakeTimeout = TimeSpan.FromSeconds(15);
                 options.MaximumReceiveMessageSize = null;
                 options.StreamBufferCapacity = 1000;
                 options.EnableDetailedErrors = true;
@@ -52,6 +54,7 @@ namespace Dev2.Runtime.WebServer
             {
                 huboptions.AddFilter<CustomHubFilter>();
             });
+            builder.Services.AddHttpContextAccessor();
 
 
             var app = builder.Build();

@@ -66,7 +66,7 @@ namespace Dev2.Activities.Specs.BrowserDebug
             var debugStates = GetDebugStates();
             var msg = debugStates[1].ErrorMessage;
             Assert.IsTrue(debugStates.Last().HasError);
-            Assert.AreEqual("invalid variable assigned to d@teMonth", msg);
+            Assert.AreEqual("invalid variable assigned to d@teMonth: { d@teMonth }", msg);
         }
 
         [Given(@"The Debug in Browser content contains has children with no Inputs and Ouputs")]

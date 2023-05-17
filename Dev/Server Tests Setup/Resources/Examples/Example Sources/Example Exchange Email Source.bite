@@ -1,0 +1,9 @@
+
+<Source ID="c47d3ff9-4d8c-40a0-853c-0a00d01f5027" Name="Example Exchange Email Source" ResourceType="ExchangeSource" IsValid="false" ConnectionString="AutoDiscoverURL=See WHAT DOES THIS DO?;UserName=;Password=;Timeout=10000" Type="ExchangeSource" ServerVersion="2.2.0.31" ServerID="6d8948f3-37ad-4952-87d5-c9c12fcc86c4">
+  <DisplayName>Example Exchange Email Source</DisplayName>
+  <AuthorRoles>
+  </AuthorRoles>
+  <ErrorMessages />
+  <TypeOf>ExchangeSource</TypeOf>
+  <VersionInfo DateTimeStamp="2018-09-25T12:04:26.5990621+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="c47d3ff9-4d8c-40a0-853c-0a00d01f5027" VersionId="0b8275f6-18ab-4490-bad0-779e2273451a" />
+</Source>

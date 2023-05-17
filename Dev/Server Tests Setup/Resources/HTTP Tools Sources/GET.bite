@@ -1,0 +1,9 @@
+
+<Source ID="09dbd47e-50cf-4741-9a35-3e7efc12133b" Name="GET" ResourceType="WebSource" IsValid="false" ConnectionString="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAA0ANawE9+lUiIoe6YI8F/cgQAAAACAAAAAAADZgAAwAAAABAAAACy30CarLOxbNfnHA33PGUOAAAAAASAAACgAAAAEAAAAPww1WzvgftYDt8Y2S9l89DQAAAA5HCjfAAga8eCRveBUJaEeLzkwheQPk5Tdy0IRvhdY8Gr41oPkD6iqz0z583OUUM3NR4zuVON6PIyEN9cy7DgCZ/MVOtkt2WP9uavFHNvqi07xCK56ir1Jqs6Y9n1v9Bvwf0xN5U69PLdUtDmXbA4em1IPexsoRUYa5APwjxTbFe6RQ7JD7rQuvgb5DaJZmV9xnhoTNRKqybrwu2XvTOLoPy9ORLtGQadBvE24G2XC/3H4FWxRMrJMVj8Uhm9gvsqs8fPkIrLCifOej12yPjrbRQAAAAHoGdqtUMsZy0vDmIUhJz7HwG3bw==" Type="WebSource" ServerVersion="2.8.1.47" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+  <DisplayName>GET</DisplayName>
+  <AuthorRoles>
+  </AuthorRoles>
+  <ErrorMessages />
+  <TypeOf>WebSource</TypeOf>
+  <VersionInfo DateTimeStamp="2016-11-18T11:52:13.8209079+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="09dbd47e-50cf-4741-9a35-3e7efc12133b" VersionId="a0129a7e-779c-4f7d-9fd4-a487df3cb45d" />
+</Source>

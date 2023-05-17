@@ -50,85 +50,87 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="InfragisticsWPF4.Calculations.XamCalculationManager.v15.1, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\InfragisticsWPF4.Calculations.XamCalculationManager.v15.1.dll</HintPath>
+    <Reference Include="CalculationManager.WPF">
+      <HintPath>..\Binaries\Infragistcs_Net6\Infragistics.Calculations.dll</HintPath>
     </Reference>
     <Reference Include="InfragisticsWPF4.Controls.Editors.XamComboEditor.v15.1, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Editors.XamComboEditor.v15.1.dll</HintPath>
+      <HintPath>..\Binaries\Infragistcs_Net6\InfragisticsWPF4.Controls.Editors.XamComboEditor.v15.1.dll</HintPath>
     </Reference>
     <Reference Include="InfragisticsWPF4.Controls.Editors.XamRichTextEditor.v15.1, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Editors.XamRichTextEditor.v15.1.dll</HintPath>
+      <HintPath>..\Binaries\Infragistcs_Net6\InfragisticsWPF4.Controls.Editors.XamRichTextEditor.v15.1.dll</HintPath>
     </Reference>
     <Reference Include="InfragisticsWPF4.Controls.Editors.XamSyntaxEditor.v15.1, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Editors.XamSyntaxEditor.v15.1.dll</HintPath>
+      <HintPath>..\Binaries\Infragistcs_Net6\InfragisticsWPF4.Controls.Editors.XamSyntaxEditor.v15.1.dll</HintPath>
     </Reference>
     <Reference Include="InfragisticsWPF4.Controls.Grids.DateTimeColumn.v15.1, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Grids.DateTimeColumn.v15.1.dll</HintPath>
+      <HintPath>..\Binaries\Infragistcs_Net6\InfragisticsWPF4.Controls.Grids.DateTimeColumn.v15.1.dll</HintPath>
     </Reference>
     <Reference Include="InfragisticsWPF4.Controls.Grids.MultiColumnComboColumn.v15.1, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Grids.MultiColumnComboColumn.v15.1.dll</HintPath>
+      <HintPath>..\Binaries\Infragistcs_Net6\InfragisticsWPF4.Controls.Grids.MultiColumnComboColumn.v15.1.dll</HintPath>
     </Reference>
     <Reference Include="InfragisticsWPF4.Controls.Grids.XamGrid.v15.1, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Grids.XamGrid.v15.1.dll</HintPath>
+      <HintPath>..\Binaries\Infragistcs_Net6\InfragisticsWPF4.Controls.Grids.XamGrid.v15.1.dll</HintPath>
     </Reference>
     <Reference Include="InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll</HintPath>
+      <HintPath>..\Binaries\Infragistcs_Net6\InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll</HintPath>
     </Reference>
     <Reference Include="InfragisticsWPF4.Controls.Interactions.XamSpellChecker.v15.1, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Interactions.XamSpellChecker.v15.1.dll</HintPath>
+      <HintPath>..\Binaries\Infragistcs_Net6\InfragisticsWPF4.Controls.Interactions.XamSpellChecker.v15.1.dll</HintPath>
     </Reference>
     <Reference Include="InfragisticsWPF4.Controls.Maps.XamNetworkNode.v15.1, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Maps.XamNetworkNode.v15.1.dll</HintPath>
+      <HintPath>..\Binaries\Infragistcs_Net6\InfragisticsWPF4.Controls.Maps.XamNetworkNode.v15.1.dll</HintPath>
     </Reference>
-    <Reference Include="InfragisticsWPF4.Controls.Menus.XamDataTree.v15.1, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+    <Reference Include="InfragisticsWPF4.Controls.Menus.XamDataTree.v15.1">
+      <HintPath>..\Binaries\Infragistcs_Net6\InfragisticsWPF4.Controls.Menus.XamDataTree.v15.1.dll</HintPath>
+    </Reference>
+    <!--<Reference Include="InfragisticsWPF4.Controls.Menus.XamDataTree.v15.1, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\InfragisticsWPF4.Controls.Menus.XamDataTree.v15.1.dll</HintPath>
-    </Reference>
+    </Reference>-->
     <Reference Include="InfragisticsWPF4.Controls.Menus.XamMenu.v15.1, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Menus.XamMenu.v15.1.dll</HintPath>
+      <HintPath>..\Binaries\Infragistcs_Net6\InfragisticsWPF4.Controls.Menus.XamMenu.v15.1.dll</HintPath>
     </Reference>
     <Reference Include="InfragisticsWPF4.DataManager.v15.1, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\InfragisticsWPF4.DataManager.v15.1.dll</HintPath>
+      <HintPath>..\Binaries\Infragistcs_Net6\InfragisticsWPF4.DataManager.v15.1.dll</HintPath>
     </Reference>
     <Reference Include="InfragisticsWPF4.DataPresenter.v15.1, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\InfragisticsWPF4.DataPresenter.v15.1.dll</HintPath>
+      <HintPath>..\Binaries\Infragistcs_Net6\InfragisticsWPF4.DataPresenter.v15.1.dll</HintPath>
     </Reference>
     <Reference Include="InfragisticsWPF4.DataVisualization.v15.1, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\InfragisticsWPF4.DataVisualization.v15.1.dll</HintPath>
+      <HintPath>..\Binaries\Infragistcs_Net6\InfragisticsWPF4.DataVisualization.v15.1.dll</HintPath>
     </Reference>
     <Reference Include="InfragisticsWPF4.DockManager.v15.1, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\InfragisticsWPF4.DockManager.v15.1.dll</HintPath>
+      <HintPath>..\Binaries\Infragistcs_Net6\InfragisticsWPF4.DockManager.v15.1.dll</HintPath>
     </Reference>
     <Reference Include="InfragisticsWPF4.Documents.RichTextDocument.Html.v15.1, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\InfragisticsWPF4.Documents.RichTextDocument.Html.v15.1.dll</HintPath>
+      <HintPath>..\Binaries\Infragistcs_Net6\InfragisticsWPF4.Documents.RichTextDocument.Html.v15.1.dll</HintPath>
     </Reference>
     <Reference Include="InfragisticsWPF4.Documents.RichTextDocument.v15.1, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\InfragisticsWPF4.Documents.RichTextDocument.v15.1.dll</HintPath>
+      <HintPath>..\Binaries\Infragistcs_Net6\InfragisticsWPF4.Documents.RichTextDocument.v15.1.dll</HintPath>
     </Reference>
     <Reference Include="InfragisticsWPF4.Editors.v15.1, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\InfragisticsWPF4.Editors.v15.1.dll</HintPath>
+      <HintPath>..\Binaries\Infragistcs_Net6\InfragisticsWPF4.Editors.v15.1.dll</HintPath>
     </Reference>
     <Reference Include="InfragisticsWPF4.v15.1, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\InfragisticsWPF4.v15.1.dll</HintPath>
+      <HintPath>..\Binaries\Infragistcs_Net6\InfragisticsWPF4.v15.1.dll</HintPath>
     </Reference>
     <!--<Reference Include="Microsoft.Windows.Design.Extensibility, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

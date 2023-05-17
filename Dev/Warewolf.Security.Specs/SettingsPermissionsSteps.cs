@@ -11,8 +11,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading;
 using Dev2.Activities.Specs.Scheduler;
 using Dev2.Network;
@@ -42,11 +42,15 @@ namespace Dev2.Activities.Specs.Permissions
             this._scenarioContext = scenarioContext;
         }
 
+        private static bool _isCurrentPrincipalIdentitySet = false;
 
         [BeforeFeature("@Security")]
         public static void InitializeFeature(FeatureContext featureContext)
         {
+            AppUsageStats.LocalHost = string.Format("http://{0}:3142", Environment.MachineName.ToLowerInvariant());
+
             _featureContext = featureContext;
+            _isCurrentPrincipalIdentitySet = SetTestPrincipalIfCurrentClaimsPrincipalIsNull();
             SetupUser();
             var securitySpecsUser = GetSecuritySpecsUser();
             var securitySpecsPassword = GetSecuritySpecsPassword();
@@ -62,14 +66,14 @@ namespace Dev2.Activities.Specs.Permissions
             _featureContext.Add("initialSettings", currentSettings);
             var settings = new Data.Settings.Settings
             {
-                Security = new SecuritySettingsTO(new List<WindowsGroupPermission>())
+                Security = new SecuritySettingsTO(new List<WindowsGroupPermission>(){new WindowsGroupPermission{IsServer = false,WindowsGroup = "Public",View = false,Execute = false,Contribute = false,DeployTo = false,DeployFrom = false,Administrator = true}})
             };
 
             environmentModel.ResourceRepository.WriteSettings(environmentModel, settings);
-            environmentModel.Disconnect();
+            //environmentModel.Disconnect();
             _featureContext.Add("environment", environmentModel);
 
-            var reconnectModel = new Server(Guid.NewGuid(), new ServerProxy($"http://localhost:3142", securitySpecsUser, securitySpecsPassword)) { Name = "Other Connection" };
+            var reconnectModel = new Server(Guid.NewGuid(), new ServerProxy(AppUsageStats.LocalHost, securitySpecsUser, securitySpecsPassword)) { Name = "Other Connection" };
             try
             {
                 reconnectModel.ConnectAsync().Wait(60000);
@@ -77,15 +81,45 @@ namespace Dev2.Activities.Specs.Permissions
             catch (UnauthorizedAccessException)
             {
                 Assert.Fail("Connection unauthorized when connecting to local Warewolf server as user who is part of '" + userGroup + "' user group.");
-			}
-			if (!reconnectModel.IsConnected)
-			{
-				Assert.Fail("Cannot connect to local Warewolf server.");
-			}
-			_featureContext.Add("currentEnvironment", reconnectModel);
+            }
+            if (!reconnectModel.IsConnected)
+            {
+                Assert.Fail("Cannot connect to local Warewolf server.");
+            }
+            _featureContext.Add("currentEnvironment", reconnectModel);
         }
 
-        static string GetUserGroup() => "Warewolf Administrators";
+
+        private static bool SetTestPrincipalIfCurrentClaimsPrincipalIsNull()
+        {
+            if (ClaimsPrincipal.Current == null)
+            {
+                ClaimsPrincipal.ClaimsPrincipalSelector = new Func<ClaimsPrincipal>(GetTestPrincipal);
+                return true;
+            }
+
+            return false;
+        }
+
+        private static ClaimsPrincipal GetTestPrincipal()
+        {
+            var testClaimsIdentity = new ClaimsIdentity(new Claim[] {
+                                        new Claim(ClaimTypes.NameIdentifier, GetSecuritySpecsUser()),
+                                        new Claim(ClaimTypes.Name, GetSecuritySpecsPassword())
+                                   }, "SecuritySpecsUserAuthentication");
+
+            var testClaimPrincipal = new ClaimsPrincipal(testClaimsIdentity);
+            return testClaimPrincipal;
+        }
+
+        private static void ResetCurrentPrincipal()
+        {
+            ClaimsPrincipal.ClaimsPrincipalSelector = () => null;
+
+            _isCurrentPrincipalIdentitySet = false;
+        }
+
+        static string GetUserGroup() => "Users"; //"Warewolf Administrators";
 
         static string GetSecuritySpecsPassword() => "ASfas123@!fda";
 
@@ -116,7 +150,7 @@ namespace Dev2.Activities.Specs.Permissions
             var environmentModel = _featureContext.Get<IServer>("environment");
             EnsureEnvironmentConnected(environmentModel);
             environmentModel.ResourceRepository.WriteSettings(environmentModel, settings);
-            environmentModel.Disconnect();
+            //environmentModel.Disconnect();
         }
 
         [Given(@"I have Public with ""(.*)""")]
@@ -144,7 +178,7 @@ namespace Dev2.Activities.Specs.Permissions
             var environmentModel = _featureContext.Get<IServer>("environment");
             EnsureEnvironmentConnected(environmentModel);
             environmentModel.ResourceRepository.WriteSettings(environmentModel, settings);
-            environmentModel.Disconnect();
+            //environmentModel.Disconnect();
         }
 
         [Given(@"I have Users with ""(.*)""")]
@@ -172,7 +206,7 @@ namespace Dev2.Activities.Specs.Permissions
             var environmentModel = _featureContext.Get<IServer>("environment");
             EnsureEnvironmentConnected(environmentModel);
             environmentModel.ResourceRepository.WriteSettings(environmentModel, settings);
-            environmentModel.Disconnect();
+            //environmentModel.Disconnect();
         }
 
 
@@ -210,7 +244,8 @@ namespace Dev2.Activities.Specs.Permissions
             var reconnectModel = new Server(Guid.NewGuid(), new ServerProxy(AppUsageStats.LocalHost, securitySpecsUser, GetSecuritySpecsPassword())) { Name = "Other Connection" };
             try
             {
-                reconnectModel.ConnectAsync().Wait(60000);
+                //reconnectModel.ConnectAsync().Wait(60000);
+                EnsureEnvironmentConnected(reconnectModel);
             }
             catch (UnauthorizedAccessException)
             {
@@ -223,21 +258,23 @@ namespace Dev2.Activities.Specs.Permissions
         {
             var environmentModel = _featureContext.Get<IServer>("currentEnvironment");
             EnsureEnvironmentConnected(environmentModel);
-			if (!environmentModel.IsConnected)
-			{
-				Assert.Fail("Cannot connect to local Warewolf server.");
-			}
-
-			if (!environmentModel.HasLoadedResources)
+            if (!environmentModel.IsConnected)
             {
-                environmentModel.ForceLoadResources();
-			}
-			if (!environmentModel.ResourceRepository.IsLoaded)
-			{
-				Assert.Fail("Cannot load resources for local Warewolf server.");
-			}
+                Assert.Fail("Cannot connect to local Warewolf server.");
+            }
 
-			return environmentModel;
+            //if (!environmentModel.HasLoadedResources)
+            //{
+
+            // always force load resources as this is called for every scenario hence resources need to be reloaded from the server as per the permissions setup
+            environmentModel.ForceLoadResources();
+            //}
+            if (!environmentModel.ResourceRepository.IsLoaded)
+            {
+                Assert.Fail("Cannot load resources for local Warewolf server.");
+            }
+
+            return environmentModel;
         }
 
         [Given(@"I have waited (.*) seconds for the rights to propogate to all the resources")]
@@ -342,6 +379,9 @@ namespace Dev2.Activities.Specs.Permissions
             _featureContext.TryGetValue("environment", out IServer server);
             _featureContext.TryGetValue("initialSettings", out Data.Settings.Settings currentSettings);
 
+            if (_isCurrentPrincipalIdentitySet)
+                ResetCurrentPrincipal();
+
             if (server != null)
             {
                 try
@@ -351,17 +391,21 @@ namespace Dev2.Activities.Specs.Permissions
                         server.ResourceRepository.WriteSettings(server, currentSettings);
                     }
                 }
-                finally { server.Disconnect(); }
+                finally
+                {
+                    //server.Disconnect(); 
+                }
 
 
             }
-            currentEnvironment?.Disconnect();
+            //currentEnvironment?.Disconnect();
         }
+
+
 
         [Given(@"I have a server ""(.*)""")]
         public void GivenIHaveAServer(string serverName)
         {
-            AppUsageStats.LocalHost = string.Format("http://{0}:3142", Environment.MachineName.ToLowerInvariant());
             var environmentModel = ServerRepository.Instance.Source;
             _scenarioContext.Add("environment", environmentModel);
         }

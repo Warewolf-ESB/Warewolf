@@ -28,6 +28,9 @@ namespace Dev2.Tests.Activities.ActivityTests
     {
         public TestContext TestContext { get; set; }
         public const string CommandLineToolName = "ConsoleAppToTestExecuteCommandLineActivity.exe";
+        public const string CommandLineToolDLL = "ConsoleAppToTestExecuteCommandLineActivity.dll";
+        public const string CommandLineToolConfig = "ConsoleAppToTestExecuteCommandLineActivity.runtimeconfig.json";
+
         static string _testDirectory;
 
         #region ClassInitialize
@@ -91,6 +94,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Timeout(60000)]
         [DeploymentItem(CommandLineToolName)]
+        [DeploymentItem(CommandLineToolDLL)]
+        [DeploymentItem(CommandLineToolConfig)]
         [DoNotParallelize]
         [TestCategory("CannotParallelize")]
         public void OnExecuteWhereConsoleDoesNothingExpectNothingForResult()
@@ -363,7 +368,9 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         [TestMethod]
         [Timeout(60000)]
-        [DeploymentItem(@"ConsoleAppToTestExecuteCommandLineActivity.exe")]
+        [DeploymentItem(CommandLineToolName)]
+        [DeploymentItem(CommandLineToolDLL)]
+        [DeploymentItem(CommandLineToolConfig)]
         public void OnExecuteWhereConsoleErrorsExpectErrorInDatalist()
         {
             // ------------Setup for test--------------------------

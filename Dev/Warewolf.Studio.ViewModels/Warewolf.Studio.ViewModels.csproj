@@ -45,15 +45,15 @@
 	<ItemGroup>
 		<Reference Include="InfragisticsWPF4.Controls.Editors.XamComboEditor.v15.1, Version=15.1.20151.2055, Culture=neutral, processorArchitecture=MSIL">
 			<SpecificVersion>False</SpecificVersion>
-			<HintPath>..\Binaries\InfragisticsWPF4.Controls.Editors.XamComboEditor.v15.1.dll</HintPath>
+			<HintPath>..\Binaries\Infragistcs_Net6\InfragisticsWPF4.Controls.Editors.XamComboEditor.v15.1.dll</HintPath>
 		</Reference>
 		<Reference Include="InfragisticsWPF4.DataManager.v15.1, Version=15.1.20151.2055, Culture=neutral, processorArchitecture=MSIL">
 			<SpecificVersion>False</SpecificVersion>
-			<HintPath>..\Binaries\InfragisticsWPF4.DataManager.v15.1.dll</HintPath>
+			<HintPath>..\Binaries\Infragistcs_Net6\InfragisticsWPF4.DataManager.v15.1.dll</HintPath>
 		</Reference>
 		<Reference Include="InfragisticsWPF4.v15.1, Version=15.1.20151.2055, Culture=neutral, processorArchitecture=MSIL">
 			<SpecificVersion>False</SpecificVersion>
-			<HintPath>..\Binaries\InfragisticsWPF4.v15.1.dll</HintPath>
+			<HintPath>..\Binaries\Infragistcs_Net6\InfragisticsWPF4.v15.1.dll</HintPath>
 		</Reference>
 		<!--<Reference Include="Microsoft.Practices.Unity">
       <HintPath>..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.dll</HintPath>

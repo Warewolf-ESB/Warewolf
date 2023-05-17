@@ -1,4 +1,5 @@
 ﻿@Security
+@mstest:donotparallelize
 Feature: Settings Permissions
 	In order to set permissions for my server
 	As a Warewolf user

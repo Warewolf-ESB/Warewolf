@@ -292,7 +292,7 @@ this.FeatureBackground();
                 TechTalk.SpecFlow.Table table619 = new TechTalk.SpecFlow.Table(new string[] {
                             ""});
                 table619.AddRow(new string[] {
-                            "[[PrimitiveReturnValue]] = 0"});
+                            "[[PrimitiveReturnValue]] = <PrimitiveReturnValue>0</PrimitiveReturnValue>"});
 #line 46
  testRunner.And("the \"Com DLL\" in Workflow \"Testing COM DLL Activity Execute\" debug outputs is", ((string)(null)), table619, "And ");
 #line hidden

@@ -502,7 +502,7 @@ this.FeatureBackground();
                             "ParameterName",
                             "ParameterValue"});
                 table941.AddRow(new string[] {
-                            "Prefix",
+                            "countrynamecontains",
                             "K"});
 #line 109
   testRunner.And("\"PostGreTestWF\" contains a postgre tool using \"get_countries\" with mappings for t" +

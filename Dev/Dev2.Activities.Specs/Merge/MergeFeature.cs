@@ -198,19 +198,25 @@ namespace Dev2.Activities.Specs.Merge
         [When(@"Merge Window is opened with local ""(.*)""")]
         public void WhenMergeWindowIsOpenedWithLocal(string p0)
         {
-            var localResourceVersion = _scenarioContext.Get<IContextualResourceModel>(localResourceVersionString);
-            var localResource = _scenarioContext.Get<IContextualResourceModel>(localResourceString);
-            var mergeVm = new MergeWorkflowViewModel(localResource, localResourceVersion, false);
-            _scenarioContext.Add(mergeVmString, mergeVm);
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
+            {
+                var localResourceVersion = _scenarioContext.Get<IContextualResourceModel>(localResourceVersionString);
+                var localResource = _scenarioContext.Get<IContextualResourceModel>(localResourceString);
+                var mergeVm = new MergeWorkflowViewModel(localResource, localResourceVersion, false);
+                _scenarioContext.Add(mergeVmString, mergeVm);
+            });
         }
 
         [When(@"Merge Window is opened with local version ""(.*)""")]
         public void WhenMergeWindowIsOpenedWithLocalVersion(string p0)
         {
-            var localResourceVersion = _scenarioContext.Get<IContextualResourceModel>(localResourceVersionString);
-            var localResource = _scenarioContext.Get<IContextualResourceModel>(localResourceString);
-            var mergeVm = new MergeWorkflowViewModel(localResourceVersion, localResource, true);
-            _scenarioContext.Add(mergeVmString, mergeVm);
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
+            {
+                var localResourceVersion = _scenarioContext.Get<IContextualResourceModel>(localResourceVersionString);
+                var localResource = _scenarioContext.Get<IContextualResourceModel>(localResourceString);
+                var mergeVm = new MergeWorkflowViewModel(localResourceVersion, localResource, true);
+                _scenarioContext.Add(mergeVmString, mergeVm);
+            });
         }
 
         [Then(@"I select Current Tool")]
@@ -249,10 +255,16 @@ namespace Dev2.Activities.Specs.Merge
         [Then(@"I select Different Arm")]
         public void ThenISelectDifferentArm()
         {
-            var mergeVm = _scenarioContext.Get<MergeWorkflowViewModel>(mergeVmString);
-            var mergeArmConnector = mergeVm.Conflicts.Where(a => a is ConnectorConflictRow && a.HasConflict && !a.Different.IsChecked).Cast<ConnectorConflictRow>().Select(p => p.DifferentArmConnector).FirstOrDefault() as IConnectorConflictItem;
-            Assert.IsNotNull(mergeArmConnector);
-            mergeArmConnector.IsChecked = true;
+            //Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
+            //{
+                System.Windows.Threading.Dispatcher.CurrentDispatcher.BeginInvoke(new Action(() =>
+                {
+                    var mergeVm = _scenarioContext.Get<MergeWorkflowViewModel>(mergeVmString);
+                    var mergeArmConnector = mergeVm.Conflicts.Where(a => a is ConnectorConflictRow && a.HasConflict && !a.Different.IsChecked).Cast<ConnectorConflictRow>().Select(p => p.DifferentArmConnector).FirstOrDefault() as IConnectorConflictItem;
+                    Assert.IsNotNull(mergeArmConnector);
+                    mergeArmConnector.IsChecked = true;
+                }));
+            //});
         }
 
         [Then(@"Save is enabled")]
@@ -442,9 +454,9 @@ namespace Dev2.Activities.Specs.Merge
                                      typeof(TestMockDecisionStep),
                                      typeof(TestMockSwitchStep),
                                      typeof(DsfAbstractMultipleFilesActivity)};
-            
+
             var allActivityTypes = dev2ActivityIOMapping.Assembly.GetTypes().Where(t => dev2ActivityIOMapping.IsAssignableFrom(t) && (!excludedTypes.Contains(t))).ToList();
-            
+
             var countOfAllTools = allActivityTypes.Count - DesignerAttributeMap.DeprecatedDesignerAttributes.Count;
             var currentDesignerTools = DesignerAttributeMap.DesignerAttributes.Count;
             Assert.AreEqual(countOfAllTools, currentDesignerTools, "Count mismatch between the assembly activities and the mapped activities in DesignerAttributeMap class.\nAll tools:\n" + string.Join("\n", allActivityTypes.Select(activityType => activityType.FullName)) + "\n\nCurrent Designer Tools:\n" + string.Join("\n", DesignerAttributeMap.DesignerAttributes.Keys.Select(activityType => activityType.FullName)) + "\n\nDeprecated Designer Tools:\n" + string.Join("\n", DesignerAttributeMap.DeprecatedDesignerAttributes.Keys.Select(activityType => activityType.FullName)));

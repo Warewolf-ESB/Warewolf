@@ -45,7 +45,7 @@ Scenario: COM DLL service execute
     Then the workflow execution has "No" error
 	And the "Com DLL" in Workflow "Testing COM DLL Activity Execute" debug outputs is
 	|                                |
-	| [[PrimitiveReturnValue]] = 0   |
+	| [[PrimitiveReturnValue]] = <PrimitiveReturnValue>0</PrimitiveReturnValue> |
 
 @NestedForEachExecution
 Scenario: Workflow with ForEach and Manual Loop

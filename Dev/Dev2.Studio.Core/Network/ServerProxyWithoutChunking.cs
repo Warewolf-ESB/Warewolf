@@ -287,7 +287,7 @@ namespace Dev2.Network
 
         public Task<bool> ConnectAsync(Guid id)
         {
-            return ConnectAsync(id, Timeout.InfiniteTimeSpan);
+            return ConnectAsync(id, TimeSpan.FromSeconds(60000));
         }
 
         static bool ValidateServerCertificate(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslpolicyerrors) => true;

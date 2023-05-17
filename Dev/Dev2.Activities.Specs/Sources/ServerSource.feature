@@ -26,7 +26,7 @@ Scenario: Create Bad User Server Source
 	| http://localhost:3142 | User               |
 	And User as "BadUser" and with "Dev2@dmin123" as password
 	When I Test the connection
-	Then The result is "Connection Error :Unauthorized"
+	Then The result is "Connection Error :One or more errors occurred. (Response status code does not indicate success: 401 (Unauthorized).)"
 
 Scenario: Create Public Server Source
 	Given I create a server source as

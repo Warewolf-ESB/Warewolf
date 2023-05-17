@@ -131,9 +131,6 @@
     <None Include="AddAdminFromEnvironmentVariablesAndStart.bat">
      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="pauseloop\pauseloop.go" OutputPath="pauseloop\pauseloop.go">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <Compile Include="ServerLifecycleManager.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -388,16 +385,13 @@
       echo D | xcopy /Y /E /F /D "$(SolutionDir)Resources - UITests" "$(SolutionDir)Dev2.Server\bin\Debug\net6.0-windows\Resources - UITests"
       echo D | xcopy /Y /E /F /D "$(SolutionDir)Resources - Load" "$(SolutionDir)Dev2.Server\bin\Debug\net6.0-windows\Resources - Load"
       if not exist "$(SolutionDir)Dev2.Server\bin\Debug\net6.0-windows\_PublishedWebsites\Dev2.Web" echo D | xcopy /Y /E /F /D "$(SolutionDir)Dev2.Web2" "$(SolutionDir)Dev2.Server\bin\Debug\net6.0-windows\_PublishedWebsites\Dev2.Web"
-      if not exist "$(SolutionDir)Dev2.Server\bin\Debug\net6.0-windows\Warewolf.COMIPC.exe" xcopy /Y "$(SolutionDir)Binaries\Warewolf.COMIPC.exe" "$(SolutionDir)Dev2.Server\bin\Debug\net6.0-windows"
-      if not exist "$(SolutionDir)Dev2.Server\bin\Debug\net6.0-windows\Warewolf.COMIPC.pdb" xcopy /Y "$(SolutionDir)Binaries\Warewolf.COMIPC.pdb" "$(SolutionDir)Dev2.Server\bin\Debug\net6.0-windows"
-      if not exist "$(SolutionDir)Dev2.Server\bin\Debug\net6.0-windows\Warewolf.COMIPC.config" xcopy /Y "$(SolutionDir)Binaries\Warewolf.COMIPC.exe.config" "$(SolutionDir)Dev2.Server\bin\Debug\net6.0-windows"
+      echo D | xcopy /Y /E /F /D "$(SolutionDir)Binaries\Warewolf.COMIPC.exe_v4.8" "$(SolutionDir)Dev2.Server\bin\Debug\net6.0-windows\Warewolf.COMIPC.exe_v4.8"
+
       )
       if exist "$(SolutionDir)Dev2.Server\bin\Release\net6.0-windows\Warewolf Server.exe" (
       echo D | xcopy /Y /E /F /D "$(SolutionDir)Resources - Release\Resources" "$(SolutionDir)Dev2.Server\bin\Release\net6.0-windows\Resources"
       echo D | xcopy /Y /E /F /D "$(SolutionDir)Resources - Release" "$(SolutionDir)Dev2.Server\bin\Release\net6.0-windows\Resources - Release"
-      if not exist "$(SolutionDir)Dev2.Server\bin\Release\net6.0-windows\Warewolf.COMIPC.exe" xcopy /Y "$(SolutionDir))Binaries\Warewolf.COMIPC.exe" "$(SolutionDir)Dev2.Server\bin\Release\net6.0-windows"
-      if not exist "$(SolutionDir)Dev2.Server\bin\Release\net6.0-windows\Warewolf.COMIPC.pdb" xcopy /Y "$(SolutionDir))Binaries\Warewolf.COMIPC.pdb" "$(SolutionDir)Dev2.Server\bin\Release\net6.0-windows"
-      if not exist "$(SolutionDir)Dev2.Server\bin\Release\net6.0-windows\Warewolf.COMIPC.config" xcopy /Y "$(SolutionDir))Binaries\Warewolf.COMIPC.exe.config" "$(SolutionDir)Dev2.Server\bin\Release\net6.0-windows"
+      echo D | xcopy /Y /E /F /D "$(SolutionDir)Binaries\Warewolf.COMIPC.exe_v4.8" "$(SolutionDir)Dev2.Server\bin\Release\net6.0-windows\Warewolf.COMIPC.exe_v4.8"
       )
       taskkill /f /im Warewolf.COMIPC.exe /fi "STATUS eq RUNNING"
       taskkill /f /im Warewolf.COMIPC.vshost.exe /fi "STATUS eq RUNNING"</PostBuildEvent>

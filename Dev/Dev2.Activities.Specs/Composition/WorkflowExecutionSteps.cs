@@ -4230,7 +4230,7 @@ namespace Dev2.Activities.Specs.Composition
 
             postGreActivity.Inputs = new List<IServiceInput>()
             {
-                new ServiceInput("Prefix", "K"),
+                new ServiceInput("countrynamecontains", "K"),
             };
             postGreActivity.Outputs = mappings;
             _commonSteps.AddVariableToVariableList("[[V1]]");

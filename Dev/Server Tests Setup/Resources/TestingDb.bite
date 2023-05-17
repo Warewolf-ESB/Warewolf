@@ -1,0 +1,22 @@
+
+<Source ID="ffa6880d-3b24-4d34-b829-a2db45e1c664" Name="TestingDb" ResourceType="SqlDatabase" IsValid="false" ServerType="SqlDatabase" Type="DbSource" ConnectionString="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAA0ANawE9+lUiIoe6YI8F/cgQAAAACAAAAAAADZgAAwAAAABAAAADHVV3AWSTM16QPkFJxGs9vAAAAAASAAACgAAAAEAAAAOPXp+uixFNJV5Y2iTRWQdh4AwAARE928yD8zY0GwN7iy0wiAyPYc2oSiEQFAg8br2dt+zhEDLZOH3jKoMYsNtTuKdisn5C5HLzL5l7XuBWu+VIo8hUD0lEUU+k0REnCxVCS8Ky8zXbSOj7E/jp7IpMOflmmyP4LWgfDpYAW7hPgjHzLuMt2WXQhEDxp7/h03mKvmcmOtgrWnLtXgjO36lDslw//L2K8XgLY9LNrzjvT4b0vqctE7YyZcHpqWGkb6skDB0N+gXIGSLFCgcjNAf+/uGh8fKcZrAjXCf4BefsBaj3c/xL6jIMn6ZUg0dPE6cAlwBA/VxOoDYngG/4QStqmkuzR5Ua1oGpaJjwLtg8/4jxcu/3TQSpFIBCDhZjYOgxMwCEkscD0+XgGLQ65F89fNkvtcPRaJeiyecKt9+cX1I4KrhngK61phQOtMIwaiTWuq+Pk0r/B3pXaZp5TYih5ZgrmsJPrlg/mOlD0OVhc52B45ic/7Pi99yikwsJvQi2856yDhvaf6y6C8aCHf1ZkZAEcURCL8JXkeG1KgSFdtZ9lKDBiObvQ+xDisxTVJIHod7CWajEGghqNla/SeDOEKPQD/PkqB/mEh4c4HgdI+USH83ZYhuPaKnAiKmcGwzWKsEJxMAYOG42oKgMgFUg44k4OF2v2U626pwHs9IWzLceI5UfKU12ZdgrawVOVVFa1C2U/wSbxic96nbsV9UmloZIzAR7itmQFCop0T0OjEaHAr3p/6mUK9Da9dRz9Muu4m7PqTjrFERUcaEADoaZFndUAzEdfNWQHeoO6kcvJKgIxiFCbQN9X3UI79bTXvWS4mbKIts6bIVnsF6ZlLICL6a8/NWnRB9zKmCQ+44iPELt/5US3SvIyrcp0+kuJTrMdVoVf8nlAA6rquoBFhI7m17fzSwIIpWnA9s9T7j8bXqKhMfRwAeBNnHc3ENBboKwRXTCqnNvEPEIN9ICIbm1fX5bkpVKIUcJEwtGzthbqLWxOLLrdNllGg2hLY4/ALJXtiH5cEz0bUaWOhdc572l02CBJ2V2IN5Uxq+lFr6v7elQ4E84+cENKUl++fzEucaYZFnzRY4WYIf9Di2eJigss2ddW+A/HsTinM7AQiHne8rd5QBOt2eVAI4XQKyDv3iVrp7RNDsxz6F8e+JYt5nqvdsY41J0WvTyOBUMjhJhcxtABNQdAD8W9qXh2FAAAAPXssBJMNPyd72bP/saLEe78suSe" ServerVersion="2.8.1.47" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+  <DisplayName>TestingDb</DisplayName>
+  <AuthorRoles>
+  </AuthorRoles>
+  <ErrorMessages />
+  <AuthorRoles>
+  </AuthorRoles>
+  <Comment>
+  </Comment>
+  <HelpLink>
+  </HelpLink>
+  <Tags>
+  </Tags>
+  <UnitTestTargetWorkflowService>
+  </UnitTestTargetWorkflowService>
+  <BizRule>
+  </BizRule>
+  <WorkflowActivityDef>
+  </WorkflowActivityDef>
+  <VersionInfo DateTimeStamp="2017-01-12T08:28:31.4692206+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="ffa6880d-3b24-4d34-b829-a2db45e1c664" VersionId="47f2ec5f-a20a-41de-bbea-5653cb87b60c" />
+</Source>

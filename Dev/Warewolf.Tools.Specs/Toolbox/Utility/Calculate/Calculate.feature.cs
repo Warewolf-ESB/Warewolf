@@ -2691,11 +2691,11 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("130", "RANDBETWEEN([[x]]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "131")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "131")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "RATE(360,-600,100000,0,1)")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "0.005045004045846503")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "0.005045004045846426")]
         public void CalculateAssignByEvaluatingVariablesWithFunctions_131()
         {
 #line 207
-this.CalculateAssignByEvaluatingVariablesWithFunctions("131", "RATE(360,-600,100000,0,1)", "0.005045004045846503", ((string[])(null)));
+this.CalculateAssignByEvaluatingVariablesWithFunctions("131", "RATE(360,-600,100000,0,1)", "0.005045004045846426", ((string[])(null)));
 #line hidden
         }
         
@@ -3051,11 +3051,11 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("154", "TEXT([[y]],[[rc(1
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "155")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "155")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "TIME(24,[[x]],[[x]])")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "0.000706018518518518")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "0.0007060185185185185")]
         public void CalculateAssignByEvaluatingVariablesWithFunctions_155()
         {
 #line 207
-this.CalculateAssignByEvaluatingVariablesWithFunctions("155", "TIME(24,[[x]],[[x]])", "0.000706018518518518", ((string[])(null)));
+this.CalculateAssignByEvaluatingVariablesWithFunctions("155", "TIME(24,[[x]],[[x]])", "0.0007060185185185185", ((string[])(null)));
 #line hidden
         }
         

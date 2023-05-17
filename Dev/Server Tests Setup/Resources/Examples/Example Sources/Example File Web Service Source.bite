@@ -1,0 +1,9 @@
+
+<Source ID="8d8dedd2-ed02-4e67-9de1-ac5dcf7ff6a1" Name="Example File Web Service Source" ResourceType="WebSource" IsValid="false" ConnectionString="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAA0ANawE9+lUiIoe6YI8F/cgQAAAACAAAAAAADZgAAwAAAABAAAABFizFSNQtJXiaOWyIA5XNqAAAAAASAAACgAAAAEAAAAHz6rhdHj7wB/Yk5SWVpUHUAAQAARhuhzR5bPnTgOQu1Ian3ofdsSGvMXDxvu3zlzdqAeCNtAfZY9WLmw58IOblNYPhXOsno7m7Sad7k3G5ndhjKRPMwBhDHAUc/tdHNUqsXj4xPE4mMTMmDKtXzilT/bTp8JR/Ai4I2vmeYYDjgywPwawLa4r4/crdH+xOpKJzZoZ0JZ63vtTY9KYUaBEcO5HBgFQx9MT4OSB28zwtmGxDlMqV5msbyzgbz1qGZGBoxiR1u2GH+S+odmS5Vr0ZGjM3azWgqH1PZXpeolySkyD6oTeaZg0wo1FXOtG5aYAdUHgdyEpL09w9D3b/oy/R60+x1+qvGpbk+/WGVaSCfRdVEwBQAAAB2Jz2QpwdvC909/RYLsi3d+AyGjw==" Type="WebSource" ServerVersion="2.8.1.47" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+  <DisplayName>Example File Web Service Source</DisplayName>
+  <AuthorRoles>
+  </AuthorRoles>
+  <ErrorMessages />
+  <TypeOf>WebSource</TypeOf>
+  <VersionInfo DateTimeStamp="2020-09-30T08:14:17.0802987+02:00" Reason="" User="PREMIER\Siphamandla.Dube" VersionNumber="2" ResourceId="8d8dedd2-ed02-4e67-9de1-ac5dcf7ff6a1" VersionId="ef351aa4-e245-4af5-a69a-dad705e6af53" />
+</Source>

@@ -80,6 +80,9 @@ namespace Warewolf.Security
         {
             try
             {
+                if(token.StartsWith("BEARER ", StringComparison.OrdinalIgnoreCase) && token.Length > 7)
+                    token = token.Substring(7).Trim();
+
                 var tokenHandler = new JwtSecurityTokenHandler();
                 var jwtToken = tokenHandler.ReadToken(token) as JwtSecurityToken;
 

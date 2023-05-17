@@ -255,7 +255,7 @@ this.ScenarioInitialize(scenarioInfo);
 #line hidden
 #line 36
   testRunner.Then("The Debug in Browser content contains has error messagge \"\"invalid variable assig" +
-                        "ned to d@teMonth\"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+                        "ned to d@teMonth: { d@teMonth }\"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -742,7 +742,7 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.And("I Debug \"http://localhost:3142/public/OuterWorkflow.json?\" in Browser", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 135
- testRunner.Then("Browser content is \"Access has been denied for this request.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("Browser content is \"Authorization has been denied for this user.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -777,7 +777,7 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.And("I Debug \"http://localhost:3142/public/Nested.json?\" in Browser", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 141
- testRunner.Then("Browser content is \"Access has been denied for this request.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("Browser content is \"Authorization has been denied for this user.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();

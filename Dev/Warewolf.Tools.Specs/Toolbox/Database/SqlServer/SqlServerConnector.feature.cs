@@ -838,8 +838,8 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.When("Sql Workflow \"SqlServerWorkflowForTimeout\" containing dbTool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 194
- testRunner.And("the workflow \"SqlServerWorkflowForTimeout\" execution has \"AN\" error \"SQL Error: E" +
-                        "xecution Timeout Expired\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the workflow \"SqlServerWorkflowForTimeout\" execution has \"AN\" error \"SQL Error: T" +
+                        "imeout expired\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 195
  testRunner.And("the workflow \"SqlServerWorkflowForTimeout\" error does not contain \"NewLine\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
