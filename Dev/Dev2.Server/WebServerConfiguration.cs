@@ -114,7 +114,7 @@ namespace Dev2
                 {
                     var httpsEndpoint = new IPEndPoint(IPAddress.Any, realWebServerSslPort);
                     var httpsUrl = $"https://*:{webServerSslPort}/";
-                    var canEnableSsl = HostSecurityProvider.Instance.EnsureSsl(_fileWrapper, sslCertPath, httpsEndpoint);
+                    var canEnableSsl = HostSecurityProvider.Instance.EnsureSsl(_fileWrapper, sslCertPath);
 
                     if (canEnableSsl)
                     {

@@ -26,64 +26,38 @@ namespace Dev2.Runtime.Security
         static string _location;
         static string Location => _location ?? (_location = Assembly.GetExecutingAssembly().Location);
 
-        const string MakeCertPath = @"\SSL Generation\CreateCertificate.bat";
-
-        public bool EnsureSslCertificate(string certPath, IPEndPoint endPoint)
-        {
-            var result = false;
-            var asmLoc = Location;
-            var exeBase = string.Empty;
-            var authName = AuthorityName();
-            var masterData = string.Empty;
-            var workingDir = string.Empty;
-
-            try
+        public bool EnsureSslCertificate(string certPath)
+		{
+			var result = false;
+			try
             {
-                if(!string.IsNullOrEmpty(asmLoc))
+				if (!File.Exists(certPath) && GenerateCert(certPath))
                 {
-                    asmLoc = Path.GetDirectoryName(asmLoc);
-                    workingDir = String.Concat(asmLoc, @"\SSL Generation");
-                    exeBase = string.Concat(asmLoc, MakeCertPath);
-                    masterData = File.ReadAllText(exeBase);
-                    var writeBack = string.Format(masterData, authName);
-
-                    File.WriteAllText(exeBase, writeBack);
-                }
-
-                if(ProcessHost.Invoke(workingDir, "CreateCertificate.bat", null, true))
-                {
-                    result = BindSslCertToPorts(endPoint, certPath);
+                    result = ImportCert(certPath);
                 }
             }
             catch(Exception e)
             {
                 Dev2Logger.Error(e, GlobalConstants.WarewolfError);
             }
-            finally
-            {
-                if(!string.IsNullOrEmpty(masterData))
-                {
-                    File.WriteAllText(exeBase, masterData);
-                }
-            }
 
             return result;
         }
 
-        static string AuthorityName() => Guid.NewGuid().ToString();
+		static bool GenerateCert(string sslCertPath)
+		{
+			var args = string.Format("dev-certs https --export-path \"C:\\Builds\\Warewolf Repo\\Dev\\Dev2.Server\\bin\\Debug\\net6.0-windows\\{0}\" --password 456123", 
+                sslCertPath);
+			return ProcessHost.Invoke(null, "dotnet", args);
+		}
 
-        public static bool BindSslCertToPorts(IPEndPoint endPoint, string sslCertPath)
+        public static bool ImportCert(string sslCertPath)
         {
-            //
-            // To verify run this at the command prompt:
-            //
-            // netsh http show sslcert ipport=0.0.0.0:1236
-            //
             var cert = new X509Certificate(sslCertPath);
             var certHash = cert.GetCertHashString();
-            var args = string.Format("http add sslcert ipport={0}:{1} appid={{12345678-db90-4b66-8b01-88f7af2e36bf}} certhash={2}",
-                    endPoint.Address, endPoint.Port, certHash);
-            return ProcessHost.Invoke(null, "netsh.exe", args);
+            var args = string.Format("dev-certs https --clean --import \"{0}\" --password 456123",
+					sslCertPath);
+            return ProcessHost.Invoke(null, "dotnet", args);
         }
     }
 }

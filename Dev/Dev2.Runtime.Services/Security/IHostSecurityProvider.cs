@@ -46,6 +46,6 @@ namespace Dev2.Runtime.Security
         /// <param name="certPath">The cert path.</param>
         /// <param name="endPoint"></param>
         /// <returns></returns>
-        bool EnsureSsl(IFile fileWrapper, string certPath, IPEndPoint endPoint);
+        bool EnsureSsl(IFile fileWrapper, string certPath);
     }
 }
