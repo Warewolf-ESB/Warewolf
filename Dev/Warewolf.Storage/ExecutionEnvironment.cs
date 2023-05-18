@@ -20,6 +20,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Drawing.Text;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -32,6 +33,7 @@ using Warewolf.Resource.Errors;
 using Warewolf.Storage.Interfaces;
 using WarewolfParserInterop;
 using static DataStorage;
+using static log4net.Appender.RollingFileAppender;
 
 namespace Warewolf.Storage
 {
@@ -39,6 +41,7 @@ namespace Warewolf.Storage
     {
         protected DataStorage.WarewolfEnvironment _env;
         readonly IBuildIndexMap _buildIndexMap;
+        private  static readonly char[] SpaceSplitter = new char[] { ' ' };
 
         public ExecutionEnvironment()
         {
@@ -91,11 +94,24 @@ namespace Warewolf.Storage
         {
 
             DateTime dateValue = DateTime.MinValue;
+            
             try
             {
+
                 if (DateTime.TryParse(newValue, out dateValue))
                 {
-                    return dateValue.ToString("yyyy-MM-dd");
+                    if (dateValue.TimeOfDay.TotalSeconds == 0)
+                    {
+                        return dateValue.ToString("yyyy-MM-dd");
+                    }
+                    else
+                    {
+                        var dateParts = newValue.Split(SpaceSplitter, StringSplitOptions.RemoveEmptyEntries);
+                        if (dateParts.Length == 2)
+                        {
+                            return String.Concat(dateValue.ToString("yyyy-MM-dd"), " ", dateParts[1]);
+                        }                       
+                    }
                 }
             }
             catch (Exception)
