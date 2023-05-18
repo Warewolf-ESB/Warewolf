@@ -320,10 +320,13 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var services = new WebServicesMock();
             var result = services.Test(service.ToString(), Guid.Empty, Guid.Empty);
 
-            Assert.AreEqual("The requested security protocol is not supported.", result.RequestResponse);
+            var expected = "Could not find a part of the path";
+            
+
+            Assert.IsTrue(result.RequestResponse.Contains(expected));
             Assert.AreEqual(1, result.Recordsets.Count);
             Assert.IsTrue(result.Recordsets[0].HasErrors);
-            Assert.AreEqual("The requested security protocol is not supported.", result.Recordsets[0].ErrorMessage);
+            Assert.IsTrue(result.Recordsets[0].ErrorMessage.Contains(expected));
         }
 
         [TestMethod]

@@ -144,8 +144,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
             mockWebClientWrapper.Setup(o => o.Headers).Returns(new WebHeaderCollection { "a:x", "b:e" });
             mockWebClientWrapper.Setup(o => o.DownloadData(It.IsAny<string>()))
-                //.Throws(new WebException("test: false webexception"));
-                  .Throws(new WebException("The requested security protocol is not supported."));
+                .Throws(new WebException("test: false webexception"));
 
             var source = new WebSource
             {
@@ -157,9 +156,8 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var handler = new WebSources();
             var result = handler.Test(source);
             Assert.IsFalse(result.IsValid, result.ErrorMessage);
-            //Assert.AreEqual("test: false webexception", result.ErrorMessage.Trim());
-            Assert.AreEqual("The requested security protocol is not supported.", result.ErrorMessage.Trim());
-            
+            Assert.AreEqual("test: false webexception", result.ErrorMessage.Trim());
+
         }
 
         [TestMethod]
