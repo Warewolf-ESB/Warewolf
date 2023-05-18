@@ -366,12 +366,12 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
                     }
                     Copy-Item -Path "$PSScriptRoot\Dev\.run\Job Shortcuts" "$PSScriptRoot\Bin\$OutputFolderName\Job Shortcuts" -Force -Recurse
                 }
-				if (!(Test-Path "$PSScriptRoot\Dev\Warewolf.COMIPC\bin\Debug\net48\win-x86\Warewolf.COMIPC.exe")) {
-					&"$MSBuildPath" "$PSScriptRoot\Dev\Warewolf.COMIPC\Warewolf.COMIPC.csproj" "/p:Platform=`"Any CPU`";Configuration=`"Debug`""
+				if (!(Test-Path "$PSScriptRoot\Dev\Warewolf.COMIPC\bin\Debug\net6.0-windows\Warewolf.COMIPC.exe")) {
+					&"$MSBuildPath" "$PSScriptRoot\Dev\Warewolf.COMIPC\Warewolf.COMIPC.csproj"
 				}
-				Copy-Item -Path "$PSScriptRoot\Dev\Warewolf.COMIPC\bin\Debug\net48\win-x86\Warewolf.COMIPC.exe" -Destination "$PSScriptRoot\Bin\$OutputFolderName\Warewolf.COMIPC.exe_v4.8" -Force
+				Copy-Item -Path "$PSScriptRoot\Dev\Warewolf.COMIPC\bin\Debug\net6.0-windows\Warewolf.COMIPC.exe" -Destination "$PSScriptRoot\Bin\$OutputFolderName\Warewolf.COMIPC.exe_v4.8" -Force
             } else {
-                Copy-Item -Path "$PSScriptRoot\Dev\Warewolf.COMIPC\bin\Debug\net48\win-x86\Warewolf.COMIPC.exe" -Destination "$PSScriptRoot\Dev\Dev2.Server\bin\Debug\net6.0-windows\Warewolf.COMIPC.exe_v4.8" -Force
+                Copy-Item -Path "$PSScriptRoot\Dev\Warewolf.COMIPC\bin\Debug\net6.0-windows\Warewolf.COMIPC.exe" -Destination "$PSScriptRoot\Dev\Dev2.Server\bin\Debug\net6.0-windows\Warewolf.COMIPC.exe_v4.8" -Force
 			}
         }
     }
