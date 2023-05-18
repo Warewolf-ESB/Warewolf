@@ -60,10 +60,10 @@ namespace Dev2.Common.Interfaces
         {
             unchecked
             {
-                var hashCode = Name?.GetHashCode() ?? 0;
-                hashCode = (hashCode * 397) ^ (Children?.GetHashCode() ?? 0);
-                hashCode = (hashCode * 397) ^ (FullName?.GetHashCode() ?? 0);
-                hashCode = (hashCode * 397) ^ IsDirectory.GetHashCode();
+                var hashCode = Name?.Length ?? 0;
+                hashCode += (Children?.ToString().Length ?? 0);
+                hashCode += (FullName?.Length ?? 0);
+                hashCode += IsDirectory.ToString().Length;
                 return hashCode;
             }
         }

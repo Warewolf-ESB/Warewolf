@@ -18,6 +18,7 @@ using Dev2.Runtime.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using ServiceStack;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -29,6 +30,7 @@ using Warewolf.Common.Interfaces.NetStandard20;
 using Warewolf.Common.NetStandard20;
 using Warewolf.Data.Options;
 using Warewolf.Options;
+using NameValue = Dev2.Common.Interfaces.NameValue;
 
 namespace Dev2.Tests.Runtime.ServiceModel
 {
@@ -142,7 +144,8 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
             mockWebClientWrapper.Setup(o => o.Headers).Returns(new WebHeaderCollection { "a:x", "b:e" });
             mockWebClientWrapper.Setup(o => o.DownloadData(It.IsAny<string>()))
-                .Throws(new WebException("test: false webexception"));
+                //.Throws(new WebException("test: false webexception"));
+                  .Throws(new WebException("The requested security protocol is not supported."));
 
             var source = new WebSource
             {
@@ -154,7 +157,9 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var handler = new WebSources();
             var result = handler.Test(source);
             Assert.IsFalse(result.IsValid, result.ErrorMessage);
-            Assert.AreEqual("test: false webexception", result.ErrorMessage.Trim());
+            //Assert.AreEqual("test: false webexception", result.ErrorMessage.Trim());
+            Assert.AreEqual("The requested security protocol is not supported.", result.ErrorMessage.Trim());
+            
         }
 
         [TestMethod]

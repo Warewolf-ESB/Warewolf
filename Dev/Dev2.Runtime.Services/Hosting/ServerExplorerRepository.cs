@@ -404,6 +404,8 @@ namespace Dev2.Runtime.Hosting
 
         public IExplorerRepositoryResult AddItem(IExplorerItem itemToAdd, Guid workSpaceId)
         {
+            var isMessagePublished = false;
+
             if (itemToAdd == null)
             {
                 Dev2Logger.Info("Invalid Item", GlobalConstants.WarewolfInfo);
@@ -432,7 +434,7 @@ namespace Dev2.Runtime.Hosting
                     {
                         _root.Children.Add(itemToAdd);
                     }
-                    _sync.AddItemMessage(itemToAdd);
+                    _sync.AddItemMessage(itemToAdd, ref isMessagePublished);
                     return new ExplorerRepositoryResult(ExecStatus.Success, "");
                 }
                 catch (Exception err)
@@ -445,7 +447,7 @@ namespace Dev2.Runtime.Hosting
             {
                 try
                 {
-                    _sync.AddItemMessage(itemToAdd);
+                    _sync.AddItemMessage(itemToAdd, ref isMessagePublished);
 
                     return new ExplorerRepositoryResult(ExecStatus.Success, "");
                 }

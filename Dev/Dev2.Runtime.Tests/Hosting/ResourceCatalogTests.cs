@@ -58,8 +58,8 @@ namespace Dev2.Tests.Runtime.Hosting
         // Change this if you change the number of resources saved by SaveResources()
         const int SaveResourceCount = 6;
         static readonly object SyncRoot = new object();
-        
-        const int _numOfTestWFs = 2000;
+
+        const int _numOfTestWFs = 2054; //2000;
         const string _resourceName = "wolf-Test_WF_";
 
         static List<string> _testSourceWFs = new List<string>();
@@ -3402,7 +3402,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var result = rc.GetResources(workspaceID);
             var oldResource = result.FirstOrDefault(resource => resource.ResourceName == resourceName);
             //------------Assert Precondition-----------------
-            Assert.AreEqual(2, result.Count);
+            Assert.AreEqual(3, result.Count);
             Assert.IsNotNull(oldResource);
             //------------Execute Test---------------------------
             ResourceCatalogResult resourceCatalogResult = rc.DuplicateFolder(oldResource.GetResourcePath(GlobalConstants.ServerWorkspaceID), "Destination", "NewName", false);

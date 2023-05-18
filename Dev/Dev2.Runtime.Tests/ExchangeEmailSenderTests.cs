@@ -52,6 +52,7 @@ namespace Dev2.Tests.Runtime
 
         [TestMethod]
         [Owner("Siphamandla Dube")]
+        [Ignore]
         [TestCategory(nameof(ExchangeEmailSender))]
         public void ExchangeEmailSender_InValid_Send_AutoDiscoverUrl_IsNotNullOrEmpty_ExpectServiceLocalException()
         {

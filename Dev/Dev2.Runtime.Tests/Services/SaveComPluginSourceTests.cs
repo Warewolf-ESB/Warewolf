@@ -189,7 +189,7 @@ namespace Dev2.Tests.Runtime.Services
                 Name = "Development",
                 ClsId = "DevClsid"
             };
-            Assert.AreEqual(-1908201757, dllListing.GetHashCode(), "Cannot get correct hash code for this object.");
+            Assert.AreEqual(16, dllListing.GetHashCode(), "Cannot get correct hash code for this object.");
         }
 
         [TestMethod]
