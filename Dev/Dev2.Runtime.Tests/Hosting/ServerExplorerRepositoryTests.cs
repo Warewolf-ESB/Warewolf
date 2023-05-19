@@ -763,9 +763,11 @@ namespace Dev2.Tests.Runtime.Hosting
             var catalogue = new Mock<IResourceCatalog>();
             var factory = new Mock<IExplorerItemFactory>();
             var dir = new Mock<IDirectory>();
+            var messagePublished = false;
+
             dir.Setup(a => a.Exists(It.IsAny<string>())).Returns(true);
             var sync = new Mock<IExplorerRepositorySync>();
-            sync.Setup(m => m.AddItemMessage(It.IsAny<IExplorerItem>())).Verifiable();
+            sync.Setup(m => m.AddItemMessage(It.IsAny<IExplorerItem>(), ref messagePublished)).Verifiable();
             var serverExplorerRepository = new ServerExplorerRepository(new Config(catalogue.Object, factory.Object, dir.Object, new FileWrapper(), testCatalogue.Object), sync.Object);
             var item = new ServerExplorerItem("a", Guid.NewGuid(), "Folder", null, Permissions.DeployFrom,
                                               "/bob/dave");
@@ -775,7 +777,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Results-------------------------
             Assert.AreEqual("Requested folder already exists on server.", result.Message);
             Assert.AreEqual(result.Status, ExecStatus.Fail);
-            sync.Verify(m => m.AddItemMessage(It.IsAny<IExplorerItem>()), Times.Never());
+            sync.Verify(m => m.AddItemMessage(It.IsAny<IExplorerItem>(), ref messagePublished), Times.Never());
         }
 
         [TestMethod]
@@ -788,9 +790,11 @@ namespace Dev2.Tests.Runtime.Hosting
             var catalogue = new Mock<IResourceCatalog>();
             var factory = new Mock<IExplorerItemFactory>();
             var dir = new Mock<IDirectory>();
+            var messagePublished = false;
+
             dir.Setup(a => a.Exists(It.IsAny<string>())).Returns(false);
             var sync = new Mock<IExplorerRepositorySync>();
-            sync.Setup(m => m.AddItemMessage(It.IsAny<IExplorerItem>())).Verifiable();
+            sync.Setup(m => m.AddItemMessage(It.IsAny<IExplorerItem>(), ref messagePublished)).Verifiable();
             var serverExplorerRepository = new ServerExplorerRepository(new Config(catalogue.Object, factory.Object, dir.Object, new FileWrapper(), testCatalogue.Object), sync.Object);
             var item = new ServerExplorerItem("a", Guid.NewGuid(), "ReservedService", null, Permissions.DeployFrom,
                                               "/bob/dave");
@@ -800,7 +804,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Results-------------------------
             Assert.AreEqual("Only user resources can be added from this repository", result.Message);
             Assert.AreEqual(result.Status, ExecStatus.Fail);
-            sync.Verify(m => m.AddItemMessage(It.IsAny<IExplorerItem>()), Times.Never());
+            sync.Verify(m => m.AddItemMessage(It.IsAny<IExplorerItem>(), ref messagePublished), Times.Never());
         }
 
 
@@ -813,9 +817,11 @@ namespace Dev2.Tests.Runtime.Hosting
             var testCatalogue = new Mock<ITestCatalog>();
             var catalogue = new Mock<IResourceCatalog>();
             var factory = new Mock<IExplorerItemFactory>();
+            var messagePublished = false;
+
             factory.Setup(itemFactory => itemFactory.CreateRootExplorerItem(It.IsAny<string>(), It.IsAny<Guid>())).Returns(new ServerExplorerItem("root",Guid.Empty, "Server",new List<IExplorerItem>(),Permissions.Administrator,""));
             var sync = new Mock<IExplorerRepositorySync>();
-            sync.Setup(m => m.AddItemMessage(It.IsAny<IExplorerItem>())).Verifiable();
+            sync.Setup(m => m.AddItemMessage(It.IsAny<IExplorerItem>(), ref messagePublished)).Verifiable();
             var dir = new Mock<IDirectory>();
             dir.Setup(a => a.Exists(It.IsAny<string>())).Returns(false);
             dir.Setup(a => a.CreateIfNotExists(It.IsAny<string>()));
@@ -831,7 +837,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual(result.Status, ExecStatus.Success);
             dir.Verify(a => a.Exists(It.IsAny<string>()));
             dir.Verify(a => a.CreateIfNotExists(It.IsAny<string>()));
-            sync.Verify(m => m.AddItemMessage(It.IsAny<IExplorerItem>()), Times.Once());
+            sync.Verify(m => m.AddItemMessage(It.IsAny<IExplorerItem>(), ref messagePublished), Times.Once());
         }
 
         [TestMethod]

@@ -56,6 +56,7 @@ namespace Dev2.Runtime.WebServer.Hubs
         readonly Dev2JsonSerializer _serializer = new Dev2JsonSerializer();
         static readonly Dictionary<Guid, string> ResourceAffectedMessagesCache = new Dictionary<Guid, string>();
         private IHubContext<EsbHub> _hubContext;
+        private bool isMessagePublished = false;
 
         [Microsoft.Extensions.DependencyInjection.ActivatorUtilitiesConstructor]
         public EsbHub(IHubContext<EsbHub> hubContext = null, IHttpContextAccessor httpContextAccessor = null)
@@ -90,15 +91,19 @@ namespace Dev2.Runtime.WebServer.Hubs
 
         #region Implementation of IExplorerRepositorySync
 
-        public void AddItemMessage(IExplorerItem addedItem)
+        public void AddItemMessage(IExplorerItem addedItem, ref bool messagePublished)
         {
             if (addedItem != null)
             {
                 addedItem.ServerId = HostSecurityProvider.Instance.ServerID;
                 var item = _serializer.Serialize(addedItem);
-                //var hubCallerConnectionContext = Clients;
-                //hubCallerConnectionContext.All.ItemAddedMessage(item);
-                _hubContext.Clients.All.SendAsync("ItemAddedMessage", item);
+                var hubCallerConnectionContext = Clients;
+                Task task = hubCallerConnectionContext.All.SendAsync("ItemAddedMessage", item);
+
+                if (task.IsCompleted)
+                {
+                    messagePublished = true;
+                }
             }
         }
 
@@ -109,7 +114,7 @@ namespace Dev2.Runtime.WebServer.Hubs
             if (ServerExplorerRepository.Instance != null)
             {
                 var resourceItem = ServerExplorerRepository.Instance.UpdateItem(resource);
-                AddItemMessage(resourceItem);
+                AddItemMessage(resourceItem, ref isMessagePublished);
             }
 
         }

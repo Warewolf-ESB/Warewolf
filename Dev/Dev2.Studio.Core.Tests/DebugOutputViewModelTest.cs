@@ -427,7 +427,7 @@ namespace Dev2.Core.Tests
             Assert.AreEqual(1, vm.RootItems.Count);
             var root = vm.RootItems.First() as DebugStateTreeViewItemViewModel;
             Assert.IsNotNull(root);
-            Assert.AreEqual(root.Content, mock1.Object, "Root item incorrectly appended");
+            Assert.IsTrue(root.Content == mock1.Object, "Root item incorrectly appended");
 
             var firstChild = root.Children.First() as DebugStateTreeViewItemViewModel;
             Assert.IsNotNull(firstChild);

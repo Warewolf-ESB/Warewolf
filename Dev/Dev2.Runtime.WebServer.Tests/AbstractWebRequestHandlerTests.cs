@@ -468,7 +468,7 @@ namespace Dev2.Tests.Runtime.WebServer
                 {
                     {"IsDebug", "true"}
                 },
-                WebServerUrl = ""
+                WebServerUrl = "http://rsaklfnkosinath:3142/public/.tests"
             };
 
             var responseWriter = handlerMock.CreateFromMock(webRequestTO, resourceName, null, new NameValueCollection(), principal.Object);
@@ -482,6 +482,7 @@ namespace Dev2.Tests.Runtime.WebServer
                 {
                     Headers = { ContentType = new MediaTypeHeaderValue("text/plain") }
                 },
+                RequestUri = new System.Uri(webRequestTO.WebServerUrl),
             };
             var boundVars = new NameValueCollection
             {
@@ -2333,7 +2334,7 @@ namespace Dev2.Tests.Runtime.WebServer
             var env = new Mock<IExecutionEnvironment>();
             env.SetupAllProperties();
             dataObject.SetupGet(o => o.Environment).Returns(env.Object);
-            dataObject.SetupGet(o => o.CustomTransactionID).Returns("");
+            //dataObject.SetupGet(o => o.CustomTransactionID).Returns("");
             dataObject.SetupGet(o => o.RawPayload).Returns(new StringBuilder("<raw>SomeData</raw>"));
             dataObject.Setup(p => p.ExecutingUser).Returns(principal.Object);
             var resourceCatalog = new Mock<IResourceCatalog>();

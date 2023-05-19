@@ -18,6 +18,7 @@ using Dev2.Runtime.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using ServiceStack;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -29,6 +30,7 @@ using Warewolf.Common.Interfaces.NetStandard20;
 using Warewolf.Common.NetStandard20;
 using Warewolf.Data.Options;
 using Warewolf.Options;
+using NameValue = Dev2.Common.Interfaces.NameValue;
 
 namespace Dev2.Tests.Runtime.ServiceModel
 {
@@ -155,6 +157,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var result = handler.Test(source);
             Assert.IsFalse(result.IsValid, result.ErrorMessage);
             Assert.AreEqual("test: false webexception", result.ErrorMessage.Trim());
+
         }
 
         [TestMethod]
@@ -946,8 +949,8 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var result = WebSources.Execute(source, WebRequestMethod.Post, headers: new string[] { }, "http://www.msn.com/", "", throwError: false, out var errors, new List<FormDataParameters> { }, settings: settings);
 
             Assert.IsTrue(errors.HasErrors(), "This error should now happen, the handling of the Content-Type for form-data request should no longer be done on the backend, the user should be able to edd his own");
-            Assert.AreEqual("The argument must not be null or empty and must contain non-whitespace characters must\r\nParameter name: Content-Type", errors.MakeDisplayReady());
-            
+            Assert.AreEqual("The argument must not be null or empty and must contain non-whitespace characters must (Parameter 'Content-Type')", errors.MakeDisplayReady());
+
             mockWebClientWrapper.Verify(o => o.UploadData(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<byte[]>()), Times.Never);
         }
 

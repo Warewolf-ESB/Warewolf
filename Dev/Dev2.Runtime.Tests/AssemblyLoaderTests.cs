@@ -191,7 +191,8 @@ namespace Dev2.Tests.Runtime
 
             var referencedAssemblies = load.GetReferencedAssemblies();
 
-            var a1 = referencedAssemblies.Single(name => name.FullName == "mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089");
+            //var a1 = referencedAssemblies.Single(name => name.FullName == "mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089");
+            var a1 = referencedAssemblies.Single(name => name.FullName == "System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a");
             AssemblyName[] assemblyNames = { a1 };
             var mock = new Mock<IAssemblyWrapper>();
             var path = Path.GetDirectoryName(location);

@@ -79,6 +79,10 @@ namespace Dev2.Runtime.ServiceModel
         public WebService Test(string args, Guid workspaceId, Guid dataListId)
         {
             var service = new WebService();
+
+            CancellationTokenSource source = new CancellationTokenSource();
+            CancellationToken token = source.Token;
+
             try
             {
                 service = JsonConvert.DeserializeObject<WebService>(args);
@@ -109,7 +113,8 @@ namespace Dev2.Runtime.ServiceModel
 
                     if (!jsonMapTask.IsCompleted)
                     {
-                        jsonMapTaskThread?.Abort();
+                        //jsonMapTaskThread?.Abort();
+                        token.ThrowIfCancellationRequested();
 
                         service.Recordsets = preTestRsData;
                         service.RequestMessage = GlobalConstants.WebServiceTimeoutMessage;

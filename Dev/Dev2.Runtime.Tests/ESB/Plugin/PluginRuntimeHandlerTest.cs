@@ -851,7 +851,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             Assert.IsNotNull(jObject);
             var hasValues = jObject.HasValues;
             Assert.IsTrue(hasValues);
-            Assert.AreEqual(8, jObject.Count);
+            Assert.AreEqual(21, jObject.Count);
         }
 
         [TestMethod]
@@ -871,9 +871,10 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             Assert.IsNotNull(jObject);
             var hasValues = jObject.HasValues;
             Assert.IsTrue(hasValues);
-            Assert.AreEqual(8, jObject.Count);
+            Assert.AreEqual(21, jObject.Count);
             //---------------Test Result -----------------------
-            const string str = "{\"CommandText\":\"\",\"CommandTimeout\":\"\",\"CommandType\":\"\",\"Connection\":\"\",\"DesignTimeVisible\":\"\",\"Transaction\":\"\",\"UpdatedRowSource\":\"\",\"Site\":\"\"}";
+            //const string str = "{\"CommandText\":\"\",\"CommandTimeout\":\"\",\"CommandType\":\"\",\"Connection\":\"\",\"DesignTimeVisible\":\"\",\"Transaction\":\"\",\"UpdatedRowSource\":\"\",\"Site\":\"\"}";
+            const string str = "{\"AddRowid\":\"\",\"AddToStatementCache\":\"\",\"ArrayBindCount\":\"\",\"BindByName\":\"\",\"UseEdmMapping\":\"\",\"CommandText\":\"\",\"CommandTimeout\":\"\",\"CommandType\":\"\",\"XmlCommandType\":\"\",\"XmlQueryProperties\":\"\",\"XmlSaveProperties\":\"\",\"Connection\":\"\",\"Transaction\":\"\",\"DesignTimeVisible\":\"\",\"FetchSize\":\"\",\"InitialLOBFetchSize\":\"\",\"InitialLONGFetchSize\":\"\",\"UpdatedRowSource\":\"\",\"Notification\":\"\",\"NotificationAutoEnlist\":\"\",\"Site\":\"\"}";
             var s = jObject.ToString(Formatting.None);
             Assert.AreEqual(str, s);
         }

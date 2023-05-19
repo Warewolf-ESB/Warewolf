@@ -33,29 +33,22 @@ namespace Dev2.Tests.Runtime.WebServer.Hubs
         public void EsbHub_AddItemMessage_ItemHasData_ItemAddedMessageIsPublished()
         {
             //------------Setup for test--------------------------
-            var hub = new MockEsbHub();
-            
-            //var mockClients = new Mock<IHubCallerConnectionContext<dynamic>>();
+            var hub = new MockEsbHub();            
             var mockClients = new Mock<IHubCallerClients>();
-            
-            var mockContext = new Mock<HubCallerContext>();
             hub.Clients = mockClients.Object;
             var messagePublished = false;
-            //dynamic all = new ExpandoObject();            
+            var mockClientProxy = new Mock<IClientProxy>();
+            mockClientProxy.Object.SendAsync("ItemAddedMessage", messagePublished);
 
-            //all.ItemAddedMessage = new Action<string>(serialisedItem =>
-            //{
-            //    messagePublished = true;
-            //});
-            var all = new Mock<IClientProxy>().Object;
-            mockClients.Setup(m => m.All).Returns(all);
+            mockClients.Setup(m => m.All).Returns(mockClientProxy.Object);
             //------------Execute Test---------------------------
             hub.AddItemMessage(new ServerExplorerItem
-                {
-                    DisplayName = "Testing",
-                    ResourcePath = "Root\\Sub Folder",
-                    WebserverUri = "http://localhost"
-                });
+            {
+                DisplayName = "Testing",
+                ResourcePath = "Root\\Sub Folder",
+                WebserverUri = "http://localhost"
+            }, ref messagePublished);
+
             //------------Assert Results-------------------------
             Assert.IsTrue(messagePublished);
         }
@@ -69,15 +62,12 @@ namespace Dev2.Tests.Runtime.WebServer.Hubs
             var hub = new MockEsbHub();
             var mockClients = new Mock<IHubCallerClients>();
             hub.Clients = mockClients.Object;
-            dynamic all = new ExpandoObject();
             var messagePublished = false;
-            all.ItemAddedMessage = new Action<string>(serialisedItem =>
-            {
-                messagePublished = true;
-            });
-            mockClients.Setup(m => m.All).Returns(all);
+            var mockClientProxy = new Mock<IClientProxy>();
+            mockClientProxy.Object.SendAsync("ItemAddedMessage", messagePublished);
+            mockClients.Setup(m => m.All).Returns(mockClientProxy.Object);
             //------------Execute Test---------------------------
-            hub.AddItemMessage(null);
+            hub.AddItemMessage(null, ref messagePublished);
             //------------Assert Results-------------------------
             Assert.IsFalse(messagePublished);
         }

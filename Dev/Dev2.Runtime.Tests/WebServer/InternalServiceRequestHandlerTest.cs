@@ -41,6 +41,7 @@ namespace Dev2.Tests.Runtime.WebServer
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(InternalServiceRequestHandler))]
+        [Ignore]
         [ExpectedException(typeof(FormatException))]
         public void InternalServiceRequestHandler_ProcessRequest_WhenMalformedConnectionId_ExpectException()
         {

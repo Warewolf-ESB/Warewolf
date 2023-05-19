@@ -320,10 +320,13 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var services = new WebServicesMock();
             var result = services.Test(service.ToString(), Guid.Empty, Guid.Empty);
 
-            Assert.AreEqual("Illegal characters in path.", result.RequestResponse);
+            var expected = "Could not find a part of the path";
+            
+
+            Assert.IsTrue(result.RequestResponse.Contains(expected));
             Assert.AreEqual(1, result.Recordsets.Count);
             Assert.IsTrue(result.Recordsets[0].HasErrors);
-            Assert.AreEqual("Illegal characters in path.", result.Recordsets[0].ErrorMessage);
+            Assert.IsTrue(result.Recordsets[0].ErrorMessage.Contains(expected));
         }
 
         [TestMethod]

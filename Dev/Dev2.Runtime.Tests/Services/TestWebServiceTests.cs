@@ -48,7 +48,7 @@ namespace Dev2.Tests.Runtime.Services
 
             Assert.IsNotNull(result);
             Assert.IsTrue(executeMessage.HasError);
-            Assert.IsTrue(executeMessage.Message.Contains("Parameter name: WebService"));
+            Assert.IsTrue(executeMessage.Message.Contains("Parameter 'WebService'"));
         }
 
         [TestMethod]
@@ -71,7 +71,7 @@ namespace Dev2.Tests.Runtime.Services
 
             Assert.IsNotNull(result);
             Assert.IsTrue(executeMessage.HasError);
-            Assert.IsTrue(executeMessage.Message.Contains("Parameter name: source"));
+            Assert.IsTrue(executeMessage.Message.Contains("Parameter 'source'"));
         }
 
         [TestMethod]

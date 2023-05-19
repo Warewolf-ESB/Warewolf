@@ -176,7 +176,7 @@ namespace Dev2.Tests.Runtime.Services
             var result = serializer.Deserialize<ExecuteMessage>(jsonResult);
             //---------------Test Result -----------------------
             Assert.IsTrue(result.HasError);
-            Assert.AreEqual("Value cannot be null.\r\nParameter name: source", result.Message.ToString());
+            Assert.AreEqual("Value cannot be null. (Parameter 'source')", result.Message.ToString());
         }
 
 
@@ -210,7 +210,7 @@ namespace Dev2.Tests.Runtime.Services
             var stringBuilder = SavePluginService.Execute(inputs, ws.Object);
             //------------Assert Results-------------------------
             var msg = serializer.Deserialize<ExecuteMessage>(stringBuilder);
-            Assert.AreEqual("Value cannot be null.\r\nParameter name: source", msg.Message.ToString());
+            Assert.AreEqual("Value cannot be null. (Parameter 'source')", msg.Message.ToString());
         } 
     }
 }

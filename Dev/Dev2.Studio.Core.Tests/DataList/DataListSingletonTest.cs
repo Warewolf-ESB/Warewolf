@@ -9,6 +9,7 @@
 */
 
 using System.Threading;
+using Dev2.Common;
 using Dev2.Studio.Core;
 using Dev2.Studio.Interfaces.DataList;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -47,7 +48,11 @@ namespace Dev2.Core.Tests
         {
             var mockdataListViewModel = Dev2MockFactory.SetupDataListViewModel();
             DataListSingleton.SetDataList(mockdataListViewModel.Object);
-            Assert.AreEqual(DataListSingleton.ActiveDataList, mockdataListViewModel.Object);
+
+            var expected = DataListSingleton.ActiveDataList;
+            var actual = mockdataListViewModel.Object;
+
+            Assert.IsTrue(expected == actual, "Objects are not equal");
         }
 
         #endregion SetDataList Tests
