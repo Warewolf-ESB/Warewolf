@@ -66,6 +66,15 @@
 	<PackageReference Include="System.Data.SQLite.Core" Version="1.0.117" />
 	<PackageReference Include="MSTest.TestAdapter" Version="3.0.2" />
   </ItemGroup>
+  <PropertyGroup>
+    <PostBuildEvent>
+      taskkill /f /im Warewolf.COMIPC.exe /fi "STATUS eq RUNNING"
+      taskkill /f /im Warewolf.COMIPC.vshost.exe /fi "STATUS eq RUNNING"
+      if exist "$(SolutionDir)Warewolf.COMIPC.Tests\bin\Debug\net6.0-windows\win-x86\Warewolf.COMIPC.Tests.dll" (
+      echo D | xcopy /Y /E /F /D "$(SolutionDir)Binaries\Warewolf.COMIPC.exe_v4.8" "$(SolutionDir)Warewolf.COMIPC.Tests\bin\Debug\net6.0-windows\win-x86\Warewolf.COMIPC.exe_v4.8"
+      )
+    </PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
