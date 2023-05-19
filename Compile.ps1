@@ -369,9 +369,15 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
 				if (!(Test-Path "$PSScriptRoot\Dev\Warewolf.COMIPC\bin\Debug\net6.0-windows\Warewolf.COMIPC.exe")) {
 					&"$MSBuildPath" "$PSScriptRoot\Dev\Warewolf.COMIPC\Warewolf.COMIPC.csproj"
 				}
-				Copy-Item -Path "$PSScriptRoot\Dev\Warewolf.COMIPC\bin\Debug\net6.0-windows\Warewolf.COMIPC.exe" -Destination "$PSScriptRoot\Bin\$OutputFolderName\Warewolf.COMIPC.exe_v4.8" -Force
+				if (!(Test-Path "$PSScriptRoot\Bin\ServerTests\Warewolf.COMIPC.exe_v4.8")) {
+					mkdir "$PSScriptRoot\Bin\ServerTests\Warewolf.COMIPC.exe_v4.8"
+				}
+				Copy-Item -Path "$PSScriptRoot\Dev\Warewolf.COMIPC\bin\Debug\net6.0-windows\Warewolf.COMIPC.exe" -Destination "$PSScriptRoot\Bin\$OutputFolderName\Warewolf.COMIPC.exe_v4.8\Warewolf.COMIPC.exe" -Force
             } else {
-                Copy-Item -Path "$PSScriptRoot\Dev\Warewolf.COMIPC\bin\Debug\net6.0-windows\Warewolf.COMIPC.exe" -Destination "$PSScriptRoot\Dev\Dev2.Server\bin\Debug\net6.0-windows\Warewolf.COMIPC.exe_v4.8" -Force
+				if (!(Test-Path "$PSScriptRoot\Dev\Dev2.Server\bin\Debug\net6.0-windows\Warewolf.COMIPC.exe_v4.8")) {
+					mkdir "$PSScriptRoot\Dev\Dev2.Server\bin\Debug\net6.0-windows\Warewolf.COMIPC.exe_v4.8"
+				}
+                Copy-Item -Path "$PSScriptRoot\Dev\Warewolf.COMIPC\bin\Debug\net6.0-windows\Warewolf.COMIPC.exe" -Destination "$PSScriptRoot\Dev\Dev2.Server\bin\Debug\net6.0-windows\Warewolf.COMIPC.exe_v4.8\Warewolf.COMIPC.exe" -Force
 			}
         }
     }
