@@ -11,6 +11,7 @@ Param(
   [switch]$Server,
   [switch]$Studio,
   [switch]$StudioProject,
+  [switch]$COMIPCProject,
   [switch]$Release,
   [switch]$Web,
   [switch]$NewServerNet6,
@@ -27,8 +28,9 @@ $KnownSolutionFiles = "Dev\AcceptanceTesting.sln",
                       "Dev\Web.sln",
                       "Dev\NewServerNet6.sln",
                       "Dev\ServerTests.sln",
-                      "Dev\Dev2.Studio\Dev2.Studio.csproj"
-$NoSolutionParametersPresent = !($AcceptanceTesting.IsPresent) -and !($UITesting.IsPresent) -and !($Server.IsPresent) -and !($Studio.IsPresent) -and !($Release.IsPresent) -and !($Web.IsPresent) -and !($RegenerateSpecFlowFeatureFiles.IsPresent) -and !($NewServerNet6.IsPresent) -and !($ServerTests.IsPresent) -and !($StudioProject.IsPresent)
+                      "Dev\Dev2.Studio\Dev2.Studio.csproj",
+                      "Dev\Warewolf.COMIPC\Warewolf.COMIPC.csproj"
+$NoSolutionParametersPresent = !($AcceptanceTesting.IsPresent) -and !($UITesting.IsPresent) -and !($Server.IsPresent) -and !($Studio.IsPresent) -and !($Release.IsPresent) -and !($Web.IsPresent) -and !($RegenerateSpecFlowFeatureFiles.IsPresent) -and !($NewServerNet6.IsPresent) -and !($ServerTests.IsPresent) -and !($StudioProject.IsPresent) -and !($COMIPCProject.IsPresent)
 if ($Target -ne "") {
     $Target = "/t:" + $Target
 }
@@ -308,6 +310,9 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
         }
         if ($OutputFolderName -eq "ServerTest") {
             $OutputFolderName = "ServerTests"
+        }
+        if ($OutputFolderName -eq "Warewolf.COMIPC") {
+            $OutputFolderName = "COMIPCProject"
         }
         if ((Get-Variable "$OutputFolderName*" -ValueOnly).IsPresent.Length -gt 1) {
             $SolutionParameterIsPresent = (Get-Variable "$OutputFolderName*" -ValueOnly).IsPresent[0]
