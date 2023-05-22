@@ -46,7 +46,7 @@ namespace Dev2.Runtime.Security
 
         static bool GenerateCert(string sslCertPath)
         {
-            var args = string.Format("dev-certs https --export-path \"C:\\Builds\\Warewolf Repo\\Dev\\Dev2.Server\\bin\\Debug\\net6.0-windows\\{0}\" --password 456123", 
+            var args = string.Format("dev-certs https --export-path \"{0}\" --password 456123", 
                 sslCertPath);
             return ProcessHost.Invoke(null, "dotnet", args);
         }
