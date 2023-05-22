@@ -27,11 +27,11 @@ namespace Dev2.Runtime.Security
         static string Location => _location ?? (_location = Assembly.GetExecutingAssembly().Location);
 
         public bool EnsureSslCertificate(string certPath)
-		{
-			var result = false;
-			try
+        {
+            var result = false;
+            try
             {
-				if (!File.Exists(certPath) && GenerateCert(certPath))
+                if (!File.Exists(certPath) && GenerateCert(certPath))
                 {
                     result = ImportCert(certPath);
                 }
@@ -44,19 +44,17 @@ namespace Dev2.Runtime.Security
             return result;
         }
 
-		static bool GenerateCert(string sslCertPath)
-		{
-			var args = string.Format("dev-certs https --export-path \"C:\\Builds\\Warewolf Repo\\Dev\\Dev2.Server\\bin\\Debug\\net6.0-windows\\{0}\" --password 456123", 
+        static bool GenerateCert(string sslCertPath)
+        {
+            var args = string.Format("dev-certs https --export-path \"C:\\Builds\\Warewolf Repo\\Dev\\Dev2.Server\\bin\\Debug\\net6.0-windows\\{0}\" --password 456123", 
                 sslCertPath);
-			return ProcessHost.Invoke(null, "dotnet", args);
-		}
+            return ProcessHost.Invoke(null, "dotnet", args);
+        }
 
         public static bool ImportCert(string sslCertPath)
         {
-            var cert = new X509Certificate(sslCertPath);
-            var certHash = cert.GetCertHashString();
             var args = string.Format("dev-certs https --clean --import \"{0}\" --password 456123",
-					sslCertPath);
+                    sslCertPath);
             return ProcessHost.Invoke(null, "dotnet", args);
         }
     }
