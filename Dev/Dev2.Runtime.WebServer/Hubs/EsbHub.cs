@@ -23,6 +23,7 @@ using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Infrastructure;
+using Dev2.Common.Interfaces.Infrastructure.Communication;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
 using Dev2.Communication;
 using Dev2.Data.ServiceModel.Messages;
@@ -56,7 +57,6 @@ namespace Dev2.Runtime.WebServer.Hubs
         readonly Dev2JsonSerializer _serializer = new Dev2JsonSerializer();
         static readonly Dictionary<Guid, string> ResourceAffectedMessagesCache = new Dictionary<Guid, string>();
         private IHubContext<EsbHub> _hubContext;
-        private bool isMessagePublished = false;
 
         [Microsoft.Extensions.DependencyInjection.ActivatorUtilitiesConstructor]
         public EsbHub(IHubContext<EsbHub> hubContext = null, IHttpContextAccessor httpContextAccessor = null)
@@ -91,20 +91,23 @@ namespace Dev2.Runtime.WebServer.Hubs
 
         #region Implementation of IExplorerRepositorySync
 
-        public void AddItemMessage(IExplorerItem addedItem, ref bool messagePublished)
+        public void AddItemMessage(IExplorerItem addedItem)
         {
             if (addedItem != null)
             {
                 addedItem.ServerId = HostSecurityProvider.Instance.ServerID;
                 var item = _serializer.Serialize(addedItem);
                 var hubCallerConnectionContext = Clients;
-                Task task = hubCallerConnectionContext.All.SendAsync("ItemAddedMessage", item);
-
-                if (task.IsCompleted)
-                {
-                    messagePublished = true;
-                }
+                hubCallerConnectionContext.All.SendAsync("ItemAddedMessage", item);
             }
+        }
+
+        public IEsbMessage IsMessagePublished(IEsbMessage esbMessage)
+        {
+            esbMessage = new EsbMessage();
+            esbMessage.MessagePublished = true;
+         
+            return esbMessage;
         }
 
         #endregion
@@ -114,7 +117,8 @@ namespace Dev2.Runtime.WebServer.Hubs
             if (ServerExplorerRepository.Instance != null)
             {
                 var resourceItem = ServerExplorerRepository.Instance.UpdateItem(resource);
-                AddItemMessage(resourceItem, ref isMessagePublished);
+                var esbMessage = new EsbMessage();
+                AddItemMessage(resourceItem);
             }
 
         }

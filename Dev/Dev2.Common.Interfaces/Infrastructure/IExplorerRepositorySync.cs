@@ -10,10 +10,11 @@
 
 using Dev2.Common.Interfaces.Explorer;
 
+
 namespace Dev2.Common.Interfaces.Infrastructure
 {
     public interface IExplorerRepositorySync
     {
-        void AddItemMessage(IExplorerItem addedItem, ref bool messagePublished);
+        void AddItemMessage(IExplorerItem addedItem);
     }
 }

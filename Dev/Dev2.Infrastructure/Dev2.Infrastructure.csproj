@@ -67,6 +67,7 @@
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
     <Compile Include="Communication\EsbExecuteRequest.cs" />
+    <Compile Include="Communication\EsbMessage.cs" />
     <Compile Include="Communication\ExecuteMessage.cs" />
     <Compile Include="Communication\FutureReceipt.cs" />
     <Compile Include="Communication\PermissionsModifiedMemo.cs" />
