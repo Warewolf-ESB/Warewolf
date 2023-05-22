@@ -12,7 +12,9 @@ using System;
 using System.Collections.Generic;
 using System.Dynamic;
 using Dev2.Common.Interfaces.Communication;
+using Dev2.Common.Interfaces.Infrastructure.Communication;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
+using Dev2.Communication;
 using Dev2.Explorer;
 using Dev2.Runtime.WebServer.Hubs;
 //using Microsoft.AspNet.SignalR.Hubs;
@@ -36,21 +38,34 @@ namespace Dev2.Tests.Runtime.WebServer.Hubs
             var hub = new MockEsbHub();            
             var mockClients = new Mock<IHubCallerClients>();
             hub.Clients = mockClients.Object;
-            var messagePublished = false;
+
+            IEsbMessage esbMessage = new EsbMessage
+            {
+                MessagePublished = false
+            };
+
             var mockClientProxy = new Mock<IClientProxy>();
-            mockClientProxy.Object.SendAsync("ItemAddedMessage", messagePublished);
+            mockClientProxy.Object.SendAsync("ItemAddedMessage", esbMessage.MessagePublished);
 
             mockClients.Setup(m => m.All).Returns(mockClientProxy.Object);
             //------------Execute Test---------------------------
-            hub.AddItemMessage(new ServerExplorerItem
+
+            var serverExplorerItem = new ServerExplorerItem
             {
                 DisplayName = "Testing",
                 ResourcePath = "Root\\Sub Folder",
                 WebserverUri = "http://localhost"
-            }, ref messagePublished);
+            };
+
+            hub.AddItemMessage(serverExplorerItem);
+
+            if (serverExplorerItem != null)
+            {
+                esbMessage = hub.IsMessagePublished(esbMessage);
+            }
 
             //------------Assert Results-------------------------
-            Assert.IsTrue(messagePublished);
+            Assert.IsTrue(esbMessage.MessagePublished);
         }
 
         [TestMethod]
@@ -62,14 +77,27 @@ namespace Dev2.Tests.Runtime.WebServer.Hubs
             var hub = new MockEsbHub();
             var mockClients = new Mock<IHubCallerClients>();
             hub.Clients = mockClients.Object;
-            var messagePublished = false;
+
+            IEsbMessage esbMessage = new EsbMessage
+            {
+                MessagePublished = false
+            };
+
             var mockClientProxy = new Mock<IClientProxy>();
-            mockClientProxy.Object.SendAsync("ItemAddedMessage", messagePublished);
+            mockClientProxy.Object.SendAsync("ItemAddedMessage", esbMessage.MessagePublished);
             mockClients.Setup(m => m.All).Returns(mockClientProxy.Object);
             //------------Execute Test---------------------------
-            hub.AddItemMessage(null, ref messagePublished);
+            ServerExplorerItem serverExplorerItem = null;
+
+            hub.AddItemMessage(serverExplorerItem);
+
+            if (serverExplorerItem != null)
+            {
+                esbMessage = hub.IsMessagePublished(esbMessage);
+            }
+
             //------------Assert Results-------------------------
-            Assert.IsFalse(messagePublished);
+            Assert.IsFalse(esbMessage.MessagePublished);
         }
     }
 

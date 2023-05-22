@@ -21,6 +21,7 @@ using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.Runtime;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
+using Dev2.Communication;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.Security;
 using Dev2.Services.Security;
@@ -404,8 +405,6 @@ namespace Dev2.Runtime.Hosting
 
         public IExplorerRepositoryResult AddItem(IExplorerItem itemToAdd, Guid workSpaceId)
         {
-            var isMessagePublished = false;
-
             if (itemToAdd == null)
             {
                 Dev2Logger.Info("Invalid Item", GlobalConstants.WarewolfInfo);
@@ -434,7 +433,7 @@ namespace Dev2.Runtime.Hosting
                     {
                         _root.Children.Add(itemToAdd);
                     }
-                    _sync.AddItemMessage(itemToAdd, ref isMessagePublished);
+                    _sync.AddItemMessage(itemToAdd);
                     return new ExplorerRepositoryResult(ExecStatus.Success, "");
                 }
                 catch (Exception err)
@@ -447,7 +446,7 @@ namespace Dev2.Runtime.Hosting
             {
                 try
                 {
-                    _sync.AddItemMessage(itemToAdd, ref isMessagePublished);
+                    _sync.AddItemMessage(itemToAdd);
 
                     return new ExplorerRepositoryResult(ExecStatus.Success, "");
                 }

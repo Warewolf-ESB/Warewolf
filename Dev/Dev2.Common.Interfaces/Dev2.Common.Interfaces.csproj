@@ -218,6 +218,7 @@
     <Compile Include="IManageWcfSourceViewModel.cs" />
     <Compile Include="IManageWebserviceSourceViewModel.cs" />
     <Compile Include="IMenuView.cs" />
+    <Compile Include="Infrastructure\Communication\IEsbMessage.cs" />
     <Compile Include="IOptionsWithNotifier.cs" />
     <Compile Include="IRedisServiceSource.cs" />
     <Compile Include="IRedisSourceViewModel.cs" />
