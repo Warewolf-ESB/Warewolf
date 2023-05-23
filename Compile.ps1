@@ -11,6 +11,7 @@ Param(
   [switch]$Server,
   [switch]$Studio,
   [switch]$StudioProject,
+  [switch]$COMIPCProject,
   [switch]$Release,
   [switch]$Web,
   [switch]$NewServerNet6,
@@ -25,10 +26,11 @@ $KnownSolutionFiles = "Dev\AcceptanceTesting.sln",
                       "Dev\Studio.sln",
                       "Dev\Release.sln",
                       "Dev\Web.sln",
-					  "Dev\NewServerNet6.sln",
-					  "Dev\ServerTests.sln",
-					  "Dev\Dev2.Studio\Dev2.Studio.csproj"
-$NoSolutionParametersPresent = !($AcceptanceTesting.IsPresent) -and !($UITesting.IsPresent) -and !($Server.IsPresent) -and !($Studio.IsPresent) -and !($Release.IsPresent) -and !($Web.IsPresent) -and !($RegenerateSpecFlowFeatureFiles.IsPresent) -and !($NewServerNet6.IsPresent) -and !($ServerTests.IsPresent) -and !($StudioProject.IsPresent)
+                      "Dev\NewServerNet6.sln",
+                      "Dev\ServerTests.sln",
+                      "Dev\Dev2.Studio\Dev2.Studio.csproj",
+                      "Dev\Warewolf.COMIPC\Warewolf.COMIPC.csproj"
+$NoSolutionParametersPresent = !($AcceptanceTesting.IsPresent) -and !($UITesting.IsPresent) -and !($Server.IsPresent) -and !($Studio.IsPresent) -and !($Release.IsPresent) -and !($Web.IsPresent) -and !($RegenerateSpecFlowFeatureFiles.IsPresent) -and !($NewServerNet6.IsPresent) -and !($ServerTests.IsPresent) -and !($StudioProject.IsPresent) -and !($COMIPCProject.IsPresent)
 if ($Target -ne "") {
     $Target = "/t:" + $Target
 }
@@ -39,72 +41,72 @@ if ("$PSScriptRoot" -eq "" -or $PSScriptRoot -eq $null) {
 }
 
 if (!($InContainer.IsPresent)) {
-	#Find Local NuGet
-	if ("$NuGet" -eq "" -or !(Test-Path "$NuGet" -ErrorAction SilentlyContinue)) {
-		$NuGetCommand = Get-Command NuGet -ErrorAction SilentlyContinue
-		if ($NuGetCommand) {
-			$NuGet = $NuGetCommand.Path
-		}
-	}
-	if (("$NuGet" -eq "" -or !(Test-Path "$NuGet" -ErrorAction SilentlyContinue)) -and (Test-Path "$env:windir")) {
-		wget "https://dist.nuget.org/win-x86-commandline/latest/nuget.exe" -OutFile "$env:windir\nuget.exe"
-		$NuGet = "$env:windir\nuget.exe"
-	}
-	if ("$NuGet" -eq "" -or !(Test-Path "$NuGet" -ErrorAction SilentlyContinue)) {
-		Write-Host NuGet not found. Download from: https://dist.nuget.org/win-x86-commandline/latest/nuget.exe to: c:\windows\nuget.exe. If you do not have permission to create c:\windows\nuget.exe use the -NuGet switch.
-		sleep 10
-		exit 1
-	}
-	
-	#Find Local Compiler
-	if (!(Test-Path "$MSBuildPath" -ErrorAction SilentlyContinue)) {
-		$GetMSBuildCommand = Get-Command MSBuild -ErrorAction SilentlyContinue
-		if ($GetMSBuildCommand) {
-			$MSBuildPath = $GetMSBuildCommand.Path
-		}
-	}
-	if ($MSBuildPath -ne $null -and !(Test-Path "$MSBuildPath" -ErrorAction SilentlyContinue)) {
-		$GetvswhereCommand = Get-Command vswhere -ErrorAction SilentlyContinue
-		if ($GetvswhereCommand) {
-			$VswherePath = $GetvswhereCommand.Path
-		} else {
-			if (Test-Path "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe") {
-				$VswherePath = "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe"
-			} else {
-				&"$NuGet" install vswhere -ExcludeVersion -NonInteractive -OutputDirectory "$env:windir"
-				$VswherePath = "$env:windir\vswhere\tools\vswhere.exe"
-			}
-		}
-		[xml]$GetMSBuildPath = &$VswherePath -latest -requires Microsoft.Component.MSBuild -version 15.0 -format xml    
-		if ($GetMSBuildPath -ne $null) {
-			$MSBuildPath = $GetMSBuildPath.instances.instance.installationPath + "\MSBuild\15.0\Bin\MSBuild.exe"
-		}
-	}
-	if (!(Test-Path "$MSBuildPath" -ErrorAction SilentlyContinue)) {
-		if (Test-Path $MSBuildPath.Replace("Enterprise", "Professional")) {
-			$MSBuildPath = $MSBuildPath.Replace("Enterprise", "Professional")
-		}
-		if (Test-Path $MSBuildPath.Replace("Enterprise", "Community")) {
-			$MSBuildPath = $MSBuildPath.Replace("Enterprise", "Community")
-		}
-		if (Test-Path $MSBuildPath.Replace("Enterprise", "BuildTools")) {
-			$MSBuildPath = $MSBuildPath.Replace("Enterprise", "BuildTools")
-		}
-		if ("$env:MSBuildPath" -ne "" -and (Test-Path "$env:MSBuildPath")) {
-			$MSBuildPath = $env:MSBuildPath
-		}
-	}
-	if (!(Test-Path "$MSBuildPath" -ErrorAction SilentlyContinue)) {
-		$env:MSBuildPath = Read-Host 'Please enter the path to MSBuild.exe. For example: C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\MSBuild.exe. Or change the value of the MSBuildPath environment variable to be the path to MSBuild.exe'
-		if ("$env:MSBuildPath" -ne "" -and (Test-Path "$env:MSBuildPath")) {
-			$MSBuildPath = $env:MSBuildPath
-			[System.Environment]::SetEnvironmentVariable("MSBuildPath", $MSBuildPath, "Machine")
-		} else {
-			Write-Host MSBuild not found. Download from: https://aka.ms/vs/15/release/vs_buildtools.exe
-			sleep 10
-			exit 1
-		}
-	}
+    #Find Local NuGet
+    if ("$NuGet" -eq "" -or !(Test-Path "$NuGet" -ErrorAction SilentlyContinue)) {
+        $NuGetCommand = Get-Command NuGet -ErrorAction SilentlyContinue
+        if ($NuGetCommand) {
+            $NuGet = $NuGetCommand.Path
+        }
+    }
+    if (("$NuGet" -eq "" -or !(Test-Path "$NuGet" -ErrorAction SilentlyContinue)) -and (Test-Path "$env:windir")) {
+        wget "https://dist.nuget.org/win-x86-commandline/latest/nuget.exe" -OutFile "$env:windir\nuget.exe"
+        $NuGet = "$env:windir\nuget.exe"
+    }
+    if ("$NuGet" -eq "" -or !(Test-Path "$NuGet" -ErrorAction SilentlyContinue)) {
+        Write-Host NuGet not found. Download from: https://dist.nuget.org/win-x86-commandline/latest/nuget.exe to: c:\windows\nuget.exe. If you do not have permission to create c:\windows\nuget.exe use the -NuGet switch.
+        sleep 10
+        exit 1
+    }
+    
+    #Find Local Compiler
+    if (!(Test-Path "$MSBuildPath" -ErrorAction SilentlyContinue)) {
+        $GetMSBuildCommand = Get-Command MSBuild -ErrorAction SilentlyContinue
+        if ($GetMSBuildCommand) {
+            $MSBuildPath = $GetMSBuildCommand.Path
+        }
+    }
+    if ($MSBuildPath -ne $null -and !(Test-Path "$MSBuildPath" -ErrorAction SilentlyContinue)) {
+        $GetvswhereCommand = Get-Command vswhere -ErrorAction SilentlyContinue
+        if ($GetvswhereCommand) {
+            $VswherePath = $GetvswhereCommand.Path
+        } else {
+            if (Test-Path "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe") {
+                $VswherePath = "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe"
+            } else {
+                &"$NuGet" install vswhere -ExcludeVersion -NonInteractive -OutputDirectory "$env:windir"
+                $VswherePath = "$env:windir\vswhere\tools\vswhere.exe"
+            }
+        }
+        [xml]$GetMSBuildPath = &$VswherePath -latest -requires Microsoft.Component.MSBuild -version 15.0 -format xml    
+        if ($GetMSBuildPath -ne $null) {
+            $MSBuildPath = $GetMSBuildPath.instances.instance.installationPath + "\MSBuild\15.0\Bin\MSBuild.exe"
+        }
+    }
+    if (!(Test-Path "$MSBuildPath" -ErrorAction SilentlyContinue)) {
+        if (Test-Path $MSBuildPath.Replace("Enterprise", "Professional")) {
+            $MSBuildPath = $MSBuildPath.Replace("Enterprise", "Professional")
+        }
+        if (Test-Path $MSBuildPath.Replace("Enterprise", "Community")) {
+            $MSBuildPath = $MSBuildPath.Replace("Enterprise", "Community")
+        }
+        if (Test-Path $MSBuildPath.Replace("Enterprise", "BuildTools")) {
+            $MSBuildPath = $MSBuildPath.Replace("Enterprise", "BuildTools")
+        }
+        if ("$env:MSBuildPath" -ne "" -and (Test-Path "$env:MSBuildPath")) {
+            $MSBuildPath = $env:MSBuildPath
+        }
+    }
+    if (!(Test-Path "$MSBuildPath" -ErrorAction SilentlyContinue)) {
+        $env:MSBuildPath = Read-Host 'Please enter the path to MSBuild.exe. For example: C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\MSBuild.exe. Or change the value of the MSBuildPath environment variable to be the path to MSBuild.exe'
+        if ("$env:MSBuildPath" -ne "" -and (Test-Path "$env:MSBuildPath")) {
+            $MSBuildPath = $env:MSBuildPath
+            [System.Environment]::SetEnvironmentVariable("MSBuildPath", $MSBuildPath, "Machine")
+        } else {
+            Write-Host MSBuild not found. Download from: https://aka.ms/vs/15/release/vs_buildtools.exe
+            sleep 10
+            exit 1
+        }
+    }
 }
 
 #Version
@@ -113,8 +115,8 @@ if ($AutoVersion.IsPresent -or $CustomVersion -ne "") {
     Write-Host Writing C# and F# versioning files...
 
     if ($GitCredential -ne "") {
-		git -C "$PSScriptRoot" remote set-url origin https://$GitCredential@gitlab.com/warewolf/warewolf
-	}
+        git -C "$PSScriptRoot" remote set-url origin https://$GitCredential@gitlab.com/warewolf/warewolf
+    }
     # Get all the latest version tags from server repo.
     git -C "$PSScriptRoot" fetch --all --tags -f
 
@@ -156,11 +158,11 @@ if ($AutoVersion.IsPresent -or $CustomVersion -ne "") {
             Write-Host This version is not tagged, generating new tag...
             # Get last known version
             $AllTags = git -C "$PSScriptRoot" tag -l --sort=-version:refname
-			if ($AllTags[0] -ne "2.5.3l") {
-				$FullVersionString = $AllTags[0]
-			} else {
-				$FullVersionString = $AllTags[1]
-			}
+            if ($AllTags[0] -ne "2.5.3l") {
+                $FullVersionString = $AllTags[0]
+            } else {
+                $FullVersionString = $AllTags[1]
+            }
             if ([string]::IsNullOrEmpty($FullVersionString)) {
                 Write-Host No local tags found in git history. 
                 exit 1
@@ -309,6 +311,9 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
         if ($OutputFolderName -eq "ServerTest") {
             $OutputFolderName = "ServerTests"
         }
+        if ($OutputFolderName -eq "Warewolf.COMIPC") {
+            $OutputFolderName = "COMIPCProject"
+        }
         if ((Get-Variable "$OutputFolderName*" -ValueOnly).IsPresent.Length -gt 1) {
             $SolutionParameterIsPresent = (Get-Variable "$OutputFolderName*" -ValueOnly).IsPresent[0]
         } else {
@@ -340,31 +345,47 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
                 Write-Host Build failed. Check your pending changes. If you do not have any pending changes then you can try running 'dev\scorch.bat' to thoroughly clean your workspace. Compiling Warewolf requires at at least MSBuild 15.0, download from: https://aka.ms/vs/15/release/vs_buildtools.exe and FSharp 4.0, download from http://download.microsoft.com/download/9/1/2/9122D406-F1E3-4880-A66D-D6C65E8B1545/FSharp_Bundle.exe
                 exit 1
             }
-            if (!($ProjectSpecificOutputs.IsPresent) -and ($Target -eq "/t:Debug" -or $Target -eq "")) {
-                if (Test-Path "$PSScriptRoot\Bin\$OutputFolderName\SQLite.Interop.dll") {
-                    Remove-Item -Path "$PSScriptRoot\Bin\$OutputFolderName\SQLite.Interop.dll" -Force
-                }
-                if (Test-Path "$env:userprofile\.nuget\packages\mstest.testadapter\2.1.2\build\_common\Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll") {
-                    Copy-Item -Path "$env:userprofile\.nuget\packages\mstest.testadapter\2.1.2\build\_common\Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll" -Destination "$PSScriptRoot\Bin\$OutputFolderName\Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll" -Force
-                }
-                if (Test-Path "$env:userprofile\.nuget\packages\mstest.testadapter\2.1.2\build\_common\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll") {
-                    Copy-Item -Path "$env:userprofile\.nuget\packages\mstest.testadapter\2.1.2\build\_common\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll" -Destination "$PSScriptRoot\Bin\$OutputFolderName\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll" -Force
-                }
-                if (Test-Path "$env:userprofile\.nuget\packages\mstest.testadapter\2.1.2\build\_common\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.Interface.dll") {
-                    Copy-Item -Path "$env:userprofile\.nuget\packages\mstest.testadapter\2.1.2\build\_common\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.Interface.dll" -Destination "$PSScriptRoot\Bin\$OutputFolderName\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.Interface.dll" -Force
-                }
-                if (Test-Path "$env:userprofile\.nuget\packages\mstest.testadapter\2.1.2\build\_common\Microsoft.VisualStudio.TestPlatform.TestFramework.dll") {
-                    Copy-Item -Path "$env:userprofile\.nuget\packages\mstest.testadapter\2.1.2\build\_common\Microsoft.VisualStudio.TestPlatform.TestFramework.dll" -Destination "$PSScriptRoot\Bin\$OutputFolderName\Microsoft.VisualStudio.TestPlatform.TestFramework.dll" -Force
-                }
-                Copy-Item -Path "$PSScriptRoot\Dev\Resources - Release" -Destination "$PSScriptRoot\Bin\$OutputFolderName" -Force -Recurse
-                Copy-Item -Path "$PSScriptRoot\Dev\Resources - ServerTests" -Destination "$PSScriptRoot\Bin\$OutputFolderName" -Force -Recurse
-                Copy-Item -Path "$PSScriptRoot\Dev\Resources - UITests" -Destination "$PSScriptRoot\Bin\$OutputFolderName" -Force -Recurse
-                Copy-Item -Path "$PSScriptRoot\Dev\Resources - Load" -Destination "$PSScriptRoot\Bin\$OutputFolderName" -Force -Recurse
-                if (!(Test-Path "$PSScriptRoot\Bin\$OutputFolderName\_PublishedWebsites\Dev2.Web")) {
-                    Copy-Item -Path "$PSScriptRoot\Dev\Dev2.Web2" "$PSScriptRoot\Bin\$OutputFolderName\_PublishedWebsites\Dev2.Web" -Force -Recurse
-                }
-                Copy-Item -Path "$PSScriptRoot\Dev\.run\Job Shortcuts" "$PSScriptRoot\Bin\$OutputFolderName\Job Shortcuts" -Force -Recurse
-            }
+			if ($OutputFolderName -ne "COMIPCProject" -and $OutputFolderName -ne "StudioProject") {
+				if (!($ProjectSpecificOutputs.IsPresent)) {
+					if ($Target -eq "/t:Debug" -or $Target -eq "") {
+						if (Test-Path "$PSScriptRoot\Bin\$OutputFolderName\SQLite.Interop.dll") {
+							Remove-Item -Path "$PSScriptRoot\Bin\$OutputFolderName\SQLite.Interop.dll" -Force
+						}
+						if (Test-Path "$env:userprofile\.nuget\packages\mstest.testadapter\2.1.2\build\_common\Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll") {
+							Copy-Item -Path "$env:userprofile\.nuget\packages\mstest.testadapter\2.1.2\build\_common\Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll" -Destination "$PSScriptRoot\Bin\$OutputFolderName\Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll" -Force
+						}
+						if (Test-Path "$env:userprofile\.nuget\packages\mstest.testadapter\2.1.2\build\_common\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll") {
+							Copy-Item -Path "$env:userprofile\.nuget\packages\mstest.testadapter\2.1.2\build\_common\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll" -Destination "$PSScriptRoot\Bin\$OutputFolderName\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll" -Force
+						}
+						if (Test-Path "$env:userprofile\.nuget\packages\mstest.testadapter\2.1.2\build\_common\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.Interface.dll") {
+							Copy-Item -Path "$env:userprofile\.nuget\packages\mstest.testadapter\2.1.2\build\_common\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.Interface.dll" -Destination "$PSScriptRoot\Bin\$OutputFolderName\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.Interface.dll" -Force
+						}
+						if (Test-Path "$env:userprofile\.nuget\packages\mstest.testadapter\2.1.2\build\_common\Microsoft.VisualStudio.TestPlatform.TestFramework.dll") {
+							Copy-Item -Path "$env:userprofile\.nuget\packages\mstest.testadapter\2.1.2\build\_common\Microsoft.VisualStudio.TestPlatform.TestFramework.dll" -Destination "$PSScriptRoot\Bin\$OutputFolderName\Microsoft.VisualStudio.TestPlatform.TestFramework.dll" -Force
+						}
+						Copy-Item -Path "$PSScriptRoot\Dev\Resources - Release" -Destination "$PSScriptRoot\Bin\$OutputFolderName" -Force -Recurse
+						Copy-Item -Path "$PSScriptRoot\Dev\Resources - ServerTests" -Destination "$PSScriptRoot\Bin\$OutputFolderName" -Force -Recurse
+						Copy-Item -Path "$PSScriptRoot\Dev\Resources - UITests" -Destination "$PSScriptRoot\Bin\$OutputFolderName" -Force -Recurse
+						Copy-Item -Path "$PSScriptRoot\Dev\Resources - Load" -Destination "$PSScriptRoot\Bin\$OutputFolderName" -Force -Recurse
+						if (!(Test-Path "$PSScriptRoot\Bin\$OutputFolderName\_PublishedWebsites\Dev2.Web")) {
+							Copy-Item -Path "$PSScriptRoot\Dev\Dev2.Web2" "$PSScriptRoot\Bin\$OutputFolderName\_PublishedWebsites\Dev2.Web" -Force -Recurse
+						}
+						Copy-Item -Path "$PSScriptRoot\Dev\.run\Job Shortcuts" "$PSScriptRoot\Bin\$OutputFolderName\Job Shortcuts" -Force -Recurse
+					}
+					if (!(Test-Path "$PSScriptRoot\Dev\Warewolf.COMIPC\bin\Debug\net6.0-windows\Warewolf.COMIPC.exe")) {
+						&"$MSBuildPath" "$PSScriptRoot\Dev\Warewolf.COMIPC\Warewolf.COMIPC.csproj"
+					}
+					if (!(Test-Path "$PSScriptRoot\Bin\$OutputFolderName\Warewolf.COMIPC.exe_v4.8")) {
+						mkdir "$PSScriptRoot\Bin\$OutputFolderName\Warewolf.COMIPC.exe_v4.8"
+					}
+					Copy-Item -Path "$PSScriptRoot\Dev\Warewolf.COMIPC\bin\Debug\net6.0-windows\Warewolf.COMIPC.exe" -Destination "$PSScriptRoot\Bin\$OutputFolderName\Warewolf.COMIPC.exe_v4.8\Warewolf.COMIPC.exe" -Force
+				} else {
+					if (!(Test-Path "$PSScriptRoot\Dev\Dev2.Server\bin\Debug\net6.0-windows\Warewolf.COMIPC.exe_v4.8")) {
+						mkdir "$PSScriptRoot\Dev\Dev2.Server\bin\Debug\net6.0-windows\Warewolf.COMIPC.exe_v4.8"
+					}
+					Copy-Item -Path "$PSScriptRoot\Dev\Warewolf.COMIPC\bin\Debug\net6.0-windows\Warewolf.COMIPC.exe" -Destination "$PSScriptRoot\Dev\Dev2.Server\bin\Debug\net6.0-windows\Warewolf.COMIPC.exe_v4.8\Warewolf.COMIPC.exe" -Force
+				}
+			}
         }
     }
 }

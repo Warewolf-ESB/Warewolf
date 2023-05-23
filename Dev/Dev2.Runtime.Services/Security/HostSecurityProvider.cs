@@ -173,7 +173,7 @@ namespace Dev2.Runtime.Security
 
         #region EnsureSSL
 
-        public bool EnsureSsl(IFile fileWrapper, string certPath, IPEndPoint endPoint)
+        public bool EnsureSsl(IFile fileWrapper, string certPath)
         {
             var result = false;
 
@@ -182,7 +182,7 @@ namespace Dev2.Runtime.Security
                 try
                 {
                     var certificateBuilder = new SslCertificateBuilder();
-                    certificateBuilder.EnsureSslCertificate(certPath, endPoint);
+                    certificateBuilder.EnsureSslCertificate(certPath);
                     result = fileWrapper.Exists(certPath);
                 }
                 catch (Exception e)
@@ -192,7 +192,7 @@ namespace Dev2.Runtime.Security
             }
             else
             {
-                result = SslCertificateBuilder.BindSslCertToPorts(endPoint, certPath);
+                result = SslCertificateBuilder.ImportCert(certPath);
             }
 
             return result;

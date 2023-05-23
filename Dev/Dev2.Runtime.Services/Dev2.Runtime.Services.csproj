@@ -442,15 +442,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Dev2.Runtime.Services.ruleset" />
-    <None Include="SSL Generation\CreateCertificate.bat">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <AdditionalFiles Include="..\.sonarlint\warewolf_dotnet_framework\CSharp\SonarLint.xml" Link="SonarLint.xml" />
-    <Content Include="SSL Generation\makecert.exe">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
@@ -508,9 +502,6 @@
     <PackageReference Include="TxFileManager" Version="1.5.0.1" />
     <PackageReference Include="Microsoft.Windows.Compatibility" Version="6.0.0" />
 	 <PackageReference Include="System.Reactive.Core" Version="5.0.0" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Triggers\" />
   </ItemGroup>
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
