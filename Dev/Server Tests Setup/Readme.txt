@@ -48,3 +48,8 @@ Note: Make sure to run Warewolf Server.exe (server) before tests dependant on it
 8) Before running tests of Dev2.TaskScheduler.Wrappers.Tests project, setup as below
 
   a) Create new user "LocalSchedulerAdmin" with pwd "987Sched#@!"
+
+9) Project "Dev2.IntegrationTests"
+	Copy below ones to Dev\Dev2.IntegrationTests\bin\Debug\net6.0-windows\win
+	a) Add sni.dll
+	b) Copy "Dev2.Integration.Tests.dll.config" and rename it to "testhost.dll.config" 
