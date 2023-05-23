@@ -34,6 +34,7 @@ c) Dev\Warewolf.Tools.Specs\bin\Debug\net6.0-windows\win
 d) Dev\Warewolf.COMIPC.Tests\bin\Debug\net6.0-windows\win-x86
 e) Dev\Dev2.Activities.Tests\bin\Debug\net6.0-windows\win
 f) Dev\Dev2.Runtime.Tests\bin\Debug\net6.0-windows\win
+g) Dev\Dev2.Sql.Tests\bin\Debug\net6.0-windows\win
 
 Note: Make sure to run Warewolf Server.exe (server) before tests dependant on it are executed.
 

@@ -67,7 +67,7 @@ namespace Dev2.Sql.Tests
 		[TestMethod]
 		[Owner("Candice Daniel")]
 		[TestCategory("SqliteServer_Connect")]
-		[DeploymentItem(@"x86\SQLite.Interop.dll")]
+		//[DeploymentItem(@"x86\SQLite.Interop.dll")]
 		public void SqliteServer_Connect_CommandTextIsNull_ThrowsArgumentNullException()
 		{
 			//------------Setup for test--------------------------

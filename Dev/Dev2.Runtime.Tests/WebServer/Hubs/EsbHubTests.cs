@@ -58,11 +58,7 @@ namespace Dev2.Tests.Runtime.WebServer.Hubs
             };
 
             hub.AddItemMessage(serverExplorerItem);
-
-            if (serverExplorerItem != null)
-            {
-                esbMessage = hub.IsMessagePublished(esbMessage);
-            }
+            esbMessage = hub.IsMessagePublished(serverExplorerItem, esbMessage);
 
             //------------Assert Results-------------------------
             Assert.IsTrue(esbMessage.MessagePublished);
@@ -90,12 +86,8 @@ namespace Dev2.Tests.Runtime.WebServer.Hubs
             ServerExplorerItem serverExplorerItem = null;
 
             hub.AddItemMessage(serverExplorerItem);
-
-            if (serverExplorerItem != null)
-            {
-                esbMessage = hub.IsMessagePublished(esbMessage);
-            }
-
+            esbMessage = hub.IsMessagePublished(serverExplorerItem, esbMessage);
+        
             //------------Assert Results-------------------------
             Assert.IsFalse(esbMessage.MessagePublished);
         }
