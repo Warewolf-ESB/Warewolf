@@ -102,11 +102,13 @@ namespace Dev2.Runtime.WebServer.Hubs
             }
         }
 
-        public IEsbMessage IsMessagePublished(IEsbMessage esbMessage)
+        public IEsbMessage IsMessagePublished(IExplorerItem addedItem, IEsbMessage esbMessage)
         {
-            esbMessage = new EsbMessage();
-            esbMessage.MessagePublished = true;
-         
+            if (addedItem != null)
+            {
+                esbMessage = new EsbMessage();
+                esbMessage.MessagePublished = true;
+            }
             return esbMessage;
         }
 
