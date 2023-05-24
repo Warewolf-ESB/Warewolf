@@ -19,7 +19,7 @@ namespace Dev2.Runtime.WebServer.Security
 
         }
 
-        public CustomHubFilter(Services.Security.IAuthorizationService authorizationService)
+        public CustomHubFilter(Dev2.Services.Security.IAuthorizationService authorizationService)
         {
             VerifyArgument.IsNotNull("AuthorizationService", authorizationService);
             Service = authorizationService;

@@ -188,8 +188,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     {
                         AddDebugOutputItem(new DebugItemStaticDataParams("", Result, ""));
                     }
-                    var errorString = allErrors.MakeDisplayReady();
-                    dataObject.Environment.AddError(errorString);
+                    if(!this.IsErrorHandled)
+                    {
+                        var errorString = allErrors.MakeDisplayReady();
+                        dataObject.Environment.AddError(errorString);
+                    }
                     dataObject.Environment.Assign(Result, null, update);
                     DisplayAndWriteError(dataObject,DisplayName, allErrors);
                 }
@@ -199,6 +202,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     DispatchDebugState(dataObject, StateType.Before, update);
                     DispatchDebugState(dataObject, StateType.After, update);
                 }
+
+                RunOnErrorSteps(dataObject, allErrors, update);
             }
         }
 

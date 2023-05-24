@@ -407,10 +407,10 @@ namespace Dev2.UI
 
         void ValidateText(string text)
         {
-            if (!HasError)
-            {
+            //if (!HasError)
+            //{
                 _originalToolTip = ToolTip;
-            }
+            //}
             var error = IntellisenseStringProvider.parseLanguageExpressionAndValidate(text);
             if (FilterType != enIntellisensePartType.JsonObject)
             {
@@ -420,7 +420,15 @@ namespace Dev2.UI
             {
                 if (error.Item2 != string.Empty)
                 {
-                    ToolTip = error.Item2;
+                    if (_originalToolTip == null)
+                    {
+                        ToolTip = error.Item2;
+                    }
+                    else
+                    {
+                        ToolTip = _originalToolTip;
+                    }
+                    //ToolTip = error.Item2;                    
                     HasError = true;
                 }
                 else
@@ -452,7 +460,15 @@ namespace Dev2.UI
             {
                 if (error.Item2 != string.Empty)
                 {
-                    ToolTip = error.Item2;
+                    if (_originalToolTip == null)
+                    {
+                        ToolTip = error.Item2;
+                    }
+                    else
+                    {
+                        ToolTip = _originalToolTip;
+                    }
+                    //ToolTip = error.Item2;                    
                     HasError = true;
                 }
                 else

@@ -153,8 +153,11 @@ namespace Dev2.Activities.Scripting
             {
                 if (allErrors.HasErrors())
                 {
-                    var errorString = allErrors.MakeDisplayReady();
-                    dataObject.Environment.AddError(errorString);
+                    if (!this.IsErrorHandled)
+                    {
+                        var errorString = allErrors.MakeDisplayReady();
+                        dataObject.Environment.AddError(errorString);
+                    }
                     DisplayAndWriteError(dataObject, DisplayName, allErrors);
                 }
 
@@ -168,6 +171,8 @@ namespace Dev2.Activities.Scripting
                     DispatchDebugState(dataObject, StateType.Before, update);
                     DispatchDebugState(dataObject, StateType.After, update);
                 }
+
+                RunOnErrorSteps(dataObject, allErrors, update);
             }
         }
 

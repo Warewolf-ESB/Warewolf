@@ -33,7 +33,7 @@ namespace Warewolf.Auditing
         public string WorkflowOutput { get; set; }
         public IExecutionInfo ExecutionInfo { get; set; }
         public string UserName { get; set; }
-        public Exception Exception { get; set; }
+        public SerializableException Exception { get; set; }
         public string AuditType { get; set; } = "ExecutionLog";
         public LogLevel LogLevel { get; set; } = LogLevel.Info;
     }

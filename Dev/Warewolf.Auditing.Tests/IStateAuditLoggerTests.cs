@@ -17,6 +17,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json;
 using System;
+using System.Runtime.Serialization;
 using System.Security.Principal;
 using Warewolf.Interfaces.Auditing;
 using Warewolf.Storage;
@@ -45,7 +46,8 @@ namespace Warewolf.Auditing.Tests
 
             var notifier = new StateNotifier();
             var stateLoggerMock = new Mock<IStateListener>();
-            stateLoggerMock.Setup(o => o.LogExecuteException(exception, nextActivity)).Verifiable();
+			var actualExceptionMessage = string.Empty;
+			stateLoggerMock.Setup(o => o.LogExecuteException(It.IsAny<SerializableException>(), nextActivity)).Callback<SerializableException, Object>((ex, act) => { actualExceptionMessage = ex.Message; }).Verifiable();
             stateLoggerMock.Setup(o => o.LogAdditionalDetail(message, detailMethodName)).Verifiable();
             stateLoggerMock.Setup(o => o.LogExecuteCompleteState(nextActivity)).Verifiable();
             stateLoggerMock.Setup(o => o.LogExecuteActivityCompleteState(nextActivity)).Verifiable();
@@ -54,14 +56,15 @@ namespace Warewolf.Auditing.Tests
             // test
             notifier.Subscribe(listener);
             
-            notifier.LogExecuteException(exception, nextActivity);
+            notifier.LogExecuteException(new SerializableException(exception), nextActivity);
             notifier.LogAdditionalDetail(message, detailMethodName);
             notifier.LogExecuteCompleteState(nextActivity);
             notifier.LogExecuteActivityCompleteState(nextActivity);
             notifier.LogStopExecutionState(nextActivity);
 
-            // verify
-            stateLoggerMock.Verify();
+			// verify
+			Assert.AreEqual(exception.Message, actualExceptionMessage, "Wrong exception message logged.");
+			stateLoggerMock.Verify();
             notifier.Dispose();
         }
 
@@ -180,7 +183,7 @@ namespace Warewolf.Auditing.Tests
             TestAuditSetupWithAssignedInputs(expectedWorkflowId, expectedWorkflowName, out _stateAuditLogger, out _activity, mockWebSocketPool.Object);
 
             //------------------------------Act------------------------------------
-            _stateAuditLogger.NewStateListener(_dSFDataObject).LogExecuteException(expectedException, mockNextActivity.Object);
+            _stateAuditLogger.NewStateListener(_dSFDataObject).LogExecuteException(new SerializableException(expectedException), mockNextActivity.Object);
             var expectedJsonAudit = "{\"Id\":0,\"WorkflowID\":\"4b412ed9-dac0-47ce-bd04-f8f55826b835\",\"ExecutionID\":\"f15124b5-df69-47c2-b1c8-af6629b05e5c\",\"ExecutionOrigin\":0,\"IsSubExecution\":false,\"IsRemoteWorkflow\":false,\"WorkflowName\":\"LogExecuteCompleteState_Workflow\",\"AuditType\":\"LogExecuteException\",\"PreviousActivity\":null,\"PreviousActivityType\":\"Castle.Proxies.IDev2ActivityProxy\",\"PreviousActivityID\":null,\"NextActivity\":null,\"NextActivityType\":null,\"NextActivityID\":null,\"ServerID\":\"00000000-0000-0000-0000-000000000000\",\"ParentID\":\"00000000-0000-0000-0000-000000000000\",\"ExecutingUser\":\"Mock<IPrincipal:1>.Object\",\"ExecutionOriginDescription\":null,\"ExecutionToken\":\"null\",\"AdditionalDetail\":\"this is a test exception message\",\"Environment\":\"{\\\"Environment\\\":{\\\"scalars\\\":{},\\\"record_sets\\\":{},\\\"json_objects\\\":{}},\\\"Errors\\\":[],\\\"AllErrors\\\":[]}\",\"VersionNumber\":\"0\",\"AuditDate\":\"2019-09-19T11:49:15.7016208+02:00\",\"Exception\":{\"ClassName\":\"System.Exception\",\"Message\":\"this is a test exception message\",\"Data\":null,\"InnerException\":null,\"HelpURL\":null,\"StackTraceString\":null,\"RemoteStackTraceString\":null,\"RemoteStackIndex\":0,\"ExceptionMethod\":null,\"HResult\":-2146233088,\"Source\":null,\"WatsonBuckets\":null}}";
             var actualAudit = JsonConvert.DeserializeObject<Audit>(expectedJsonAudit);
 

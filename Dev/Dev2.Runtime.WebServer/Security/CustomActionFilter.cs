@@ -29,12 +29,12 @@ namespace Dev2.Runtime.WebServer.Security
         {
 
         }
-        public CustomActionFilter(Services.Security.IAuthorizationService authorizationService)
+        public CustomActionFilter(Dev2.Services.Security.IAuthorizationService authorizationService)
         {
             VerifyArgument.IsNotNull("AuthorizationService", authorizationService);
             Service = authorizationService;
         }
-        public Services.Security.IAuthorizationService Service { get; private set; }
+        public Dev2.Services.Security.IAuthorizationService Service { get; private set; }
 
         public override void OnActionExecuting(ActionExecutingContext objContext)
         {

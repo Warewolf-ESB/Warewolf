@@ -154,8 +154,8 @@ namespace Dev2.Activities
 
             }
             catch (Exception e)
-            {
-                _stateNotifier?.LogExecuteException(e, this);
+			{
+				_stateNotifier?.LogExecuteException(new SerializableException(e), this);
                 throw;
             }
             finally

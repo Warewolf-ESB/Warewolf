@@ -191,7 +191,7 @@ namespace Dev2.Activities
 
         private void LogException(Exception ex, ErrorResultTO allErrors)
         {
-            _stateNotifier?.LogExecuteException(ex, this);
+            _stateNotifier?.LogExecuteException(new SerializableException(ex), this);
             Dev2Logger.Error(DisplayName, ex, GlobalConstants.WarewolfError);
             _dataObject.ExecutionException = ex;
             allErrors.AddError(ex.Message);

@@ -79,10 +79,13 @@ namespace Dev2.Activities
             {
                 if (execErrors.HasErrors())
                 {
-                    var fetchErrors = execErrors.FetchErrors();
-                    foreach (var error in fetchErrors)
+                    if (!this.IsErrorHandled)
                     {
-                        dataObject.Environment.Errors.Add(error);
+                        var fetchErrors = execErrors.FetchErrors();
+                        foreach (var error in fetchErrors)
+                        {
+                            dataObject.Environment.Errors.Add(error);
+                        }
                     }
                 }
 

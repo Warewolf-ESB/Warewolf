@@ -166,8 +166,13 @@ if ($WarewolfServerService) {
 }
 sc.exe start "Warewolf Server"
 if ($NoExit.IsPresent) {
-	if (Test-Path "C:\Windows\System32\pauseloop.exe") {
+	if (Test-Path "C:\Windows\System32\pauseloop.exe") {	
 		Write-Host Warewolf Server started successfully.
+
+		Write-Host 5. Read Server Logs started.
+		Get-Content -Path "C:\ProgramData\Warewolf\Server Log\wareWolf-Server.log" -Tail 5 -Wait
+		Write-Host 6. Read Server Logs ended.
+		
 		&"C:\Windows\System32\pauseloop.exe"
 	} else {
 		if (Test-Path "$PSScriptRoot\pauseloop.exe") {

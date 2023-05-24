@@ -19,17 +19,21 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Drawing.Text;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml;
 using System.Xml.Linq;
 using Warewolf.Data;
+using Warewolf.Data.Decisions.Operations;
 using Warewolf.Exceptions;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage.Interfaces;
 using WarewolfParserInterop;
 using static DataStorage;
+using static log4net.Appender.RollingFileAppender;
 
 namespace Warewolf.Storage
 {
@@ -37,6 +41,7 @@ namespace Warewolf.Storage
     {
         protected DataStorage.WarewolfEnvironment _env;
         readonly IBuildIndexMap _buildIndexMap;
+        private  static readonly char[] SpaceSplitter = new char[] { ' ' };
 
         public ExecutionEnvironment()
         {
@@ -52,10 +57,89 @@ namespace Warewolf.Storage
 
         public CommonFunctions.WarewolfEvalResult Eval(string exp, int update, bool throwsifnotexists) => Eval(exp, update, throwsifnotexists, false);
 
+        public bool CountChar(string source)
+        {
+            int counterInt = 0;
+            const char toFind = '-';
+            try
+            {
+
+                foreach (char c in source)
+                {
+                    if (c == toFind)
+                    {
+                        counterInt++;
+                        if (counterInt > 2)
+                        {
+                            break;
+                        }
+                    }
+                }
+
+                if (counterInt == 2)
+                {
+                    return true;
+                }
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return false;
+        }
+
+
+        public string ConvertToEvalDate(string newValue)
+        {
+
+            DateTime dateValue = DateTime.MinValue;
+            
+            try
+            {
+
+                if (DateTime.TryParse(newValue, out dateValue))
+                {
+                    if (dateValue.TimeOfDay.TotalSeconds == 0)
+                    {
+                        return dateValue.ToString("yyyy-MM-dd");
+                    }
+                    else
+                    {
+                        var dateParts = newValue.Split(SpaceSplitter, StringSplitOptions.RemoveEmptyEntries);
+                        if (dateParts.Length == 2)
+                        {
+                            return String.Concat(dateValue.ToString("yyyy-MM-dd"), " ", dateParts[1]);
+                        }                       
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return newValue.ToString();
+        }
+
+
         public CommonFunctions.WarewolfEvalResult Eval(string exp, int update, bool throwsifnotexists, bool shouldEscape)
         {
             try
             {
+                var ast = PublicFunctions.EvalEnvExpression(exp, update, shouldEscape, _env);
+                if (ast.IsWarewolfAtomResult)
+                {
+                    var x = ast as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
+                    if (x.Item.IsDataString)
+                    {
+                        var val = x.Item as DataStorage.WarewolfAtom.DataString;
+                        string strVals = val.Item;
+                        if (CountChar(strVals))
+                        {
+                            exp = ConvertToEvalDate(strVals);
+                        }
+                    }
+                }
                 return PublicFunctions.EvalEnvExpression(exp, update, shouldEscape, _env);
             }
             catch (IndexOutOfRangeException)
@@ -68,7 +152,7 @@ namespace Warewolf.Storage
                 {
                     if (e is NullValueInVariableException variableException && e.Message.Contains("variable not found"))
                     {
-                        throw new WarewolfExecutionEnvironmentException("variable { "+ DataListUtilBase.StripLeadingAndTrailingBracketsFromValue(variableException.VariableName) +" } not found");
+                        throw new WarewolfExecutionEnvironmentException("variable { " + DataListUtilBase.StripLeadingAndTrailingBracketsFromValue(variableException.VariableName) + " } not found");
                     }
 
                     if (e is IndexOutOfRangeException || e.Message.Contains(@"index was not an int"))
@@ -76,7 +160,7 @@ namespace Warewolf.Storage
                         throw;
                     }
 
-                    throw new WarewolfExecutionEnvironmentException(e.Message + "{ "+ DataListUtilBase.StripLeadingAndTrailingBracketsFromValue(exp) +" }");
+                    throw new WarewolfExecutionEnvironmentException(e.Message + "{ " + DataListUtilBase.StripLeadingAndTrailingBracketsFromValue(exp) + " }");
                 }
 
                 return CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(DataStorage.WarewolfAtom.Nothing);
@@ -223,7 +307,7 @@ namespace Warewolf.Storage
                     throw new WarewolfExecutionEnvironmentException(msg);
                 }
                 //NOTE:This have a possibility to duplicate error add if caller is also catching exceptions and adding error, use with caution
-                Errors.Add(msg +": " + "{ " + DataListUtilBase.StripLeadingAndTrailingBracketsFromValue(exp) + " }"); 
+                Errors.Add(msg + ": " + "{ " + DataListUtilBase.StripLeadingAndTrailingBracketsFromValue(exp) + " }");
             }
         }
 
@@ -258,7 +342,7 @@ namespace Warewolf.Storage
 
             if (!_env.RecordSets.ContainsKey(recordSetName.Trim()))
                 return -1;
-            
+
             return _env.RecordSets[recordSetName.Trim()].LastIndex;
         }
 
@@ -316,7 +400,7 @@ namespace Warewolf.Storage
             var result = Eval(expression, update);
             if (result.IsWarewolfAtomResult && result is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult x)
             {
-                return new List<string> {WarewolfAtomToString(x.Item)};
+                return new List<string> { WarewolfAtomToString(x.Item) };
             }
 
             if (result.IsWarewolfRecordSetResult && result is CommonFunctions.WarewolfEvalResult.WarewolfRecordSetResult recSetResult)
@@ -548,7 +632,7 @@ namespace Warewolf.Storage
             if (result.IsWarewolfAtomResult && result is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult warewolfAtomResult)
             {
                 var item = warewolfAtomResult.Item;
-                return new List<DataStorage.WarewolfAtom> {item};
+                return new List<DataStorage.WarewolfAtom> { item };
             }
 
             if (result.IsWarewolfRecordSetResult && result is CommonFunctions.WarewolfEvalResult.WarewolfRecordSetResult recSetResult)
@@ -616,8 +700,8 @@ namespace Warewolf.Storage
                 else if (errorsString.IsJToken(out JToken outputJObject))
                 {
                     var jsonInnerErrors = outputJObject.ToObject(typeof(List<string>)) as List<string>;
-                    if(jsonInnerErrors != null)
-                        foreach(var error in jsonInnerErrors)
+                    if (jsonInnerErrors != null)
+                        foreach (var error in jsonInnerErrors)
                         {
                             Errors.AddItem(error);
                         }
@@ -640,7 +724,16 @@ namespace Warewolf.Storage
 
         public bool HasErrors() => Errors.Any(s => !string.IsNullOrEmpty(s)) || AllErrors.Any(s => !string.IsNullOrEmpty(s));
 
-        public string EvalToExpression(string exp, int update) => string.IsNullOrEmpty(exp) ? string.Empty : EvaluationFunctions.evalToExpression(_env, update, exp);
+        public string EvalToExpression(string exp, int update) => string.IsNullOrEmpty(exp) ? string.Empty : EvaluteDateField(_env, update, exp);
+
+        public string EvaluteDateField(DataStorage.WarewolfEnvironment _env, int update, string exp)
+        {
+            if (CountChar(EvaluationFunctions.evalToExpression(_env, update, exp).ToString()))
+            {
+                return ConvertToEvalDate(EvaluationFunctions.evalToExpression(_env, update, exp));
+            }
+            return EvaluationFunctions.evalToExpression(_env, update, exp);
+        }
 
         public static string ConvertToIndex(string outputVar, int i)
         {
@@ -835,7 +928,7 @@ namespace Warewolf.Storage
         public IExecutionEnvironment Snapshot()
         {
             var clonedExecutionEnvironment = MemberwiseClone() as ExecutionEnvironment;
-            if(clonedExecutionEnvironment != null)
+            if (clonedExecutionEnvironment != null)
             {
                 clonedExecutionEnvironment.Id = Guid.NewGuid();
                 clonedExecutionEnvironment.ParentId = Id;
@@ -881,13 +974,13 @@ namespace Warewolf.Storage
                 }
                 return sb.ToString();
             }
-            
+
             private static bool IsNumeric(string val)
             {
                 decimal result = 0;
                 return Decimal.TryParse(val, out result);
             }
-            
+
             private static bool IsBool(string val)
             {
                 var result = false;
@@ -920,7 +1013,7 @@ namespace Warewolf.Storage
 
             public void Dispose()
             {
-                ((IDisposable) _jsonWriter).Dispose();
+                ((IDisposable)_jsonWriter).Dispose();
                 _stream.Dispose();
             }
 
@@ -950,7 +1043,7 @@ namespace Warewolf.Storage
                     return;
                 }
 
-                var env = (JObject) jsonEnv.Property("Environment")?.Value;
+                var env = (JObject)jsonEnv.Property("Environment")?.Value;
                 var jsonScalars = env?.Property("scalars")?.Value as JObject;
                 var jsonRecSets = env?.Property("record_sets")?.Value as JObject;
                 var jsonJObjects = env?.Property("json_objects")?.Value as JObject;
@@ -1011,7 +1104,7 @@ namespace Warewolf.Storage
 
                 foreach (var scalarObj in jsonScalars.Properties())
                 {
-                    environment.Assign($"[[{scalarObj.Name}]]", (string) scalarObj.Value, 0);
+                    environment.Assign($"[[{scalarObj.Name}]]", (string)scalarObj.Value, 0);
                 }
             }
 

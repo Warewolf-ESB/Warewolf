@@ -77,10 +77,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 				// Handle Errors
 				if (allErrors.HasErrors())
 				{
-					foreach (var err in allErrors.FetchErrors())
+					if (!this.IsErrorHandled)
 					{
-						dataObject.Environment.Errors.Add(err);
-					}
+						foreach (var err in allErrors.FetchErrors())
+						{
+							dataObject.Environment.Errors.Add(err);
+						}
+                    }
+					RunOnErrorSteps(dataObject, allErrors, update);
 					DisplayAndWriteError(dataObject,DisplayName, allErrors);
 					foreach (var region in DataListCleaningUtils.SplitIntoRegions(Result))
 					{
@@ -139,7 +143,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 if (output.OutPutDescription == GlobalConstants.ErrorPayload)
                 {
-                    errors.AddError(value);
+					errors.AddError(value);
                 }
                 else
                 {

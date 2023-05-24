@@ -152,9 +152,12 @@ namespace Dev2.Activities
                 var hasErrors = allErrors.HasErrors();
                 if(hasErrors)
                 {
-                    foreach(var error in allErrors.FetchErrors())
+                    if (!this.IsErrorHandled)
                     {
-                        dataObject.Environment.AddError(error);
+                        foreach (var error in allErrors.FetchErrors())
+                        {
+                            dataObject.Environment.AddError(error);
+                        }
                     }
                     DisplayAndWriteError(dataObject,DisplayName, allErrors);
                 }
@@ -164,6 +167,8 @@ namespace Dev2.Activities
                     DispatchDebugState(dataObject, StateType.Before, update);
                     DispatchDebugState(dataObject, StateType.After, update);
                 }
+
+                RunOnErrorSteps(dataObject, allErrors, update);
             }
         }
 

@@ -69,18 +69,18 @@ namespace HangfireServer
             var backgroundJob = context.BackgroundJob;
             var result = context.Result?.ToString();
             if (context.Exception != null)
-            {
-                LogJobPerfomedOnSchedulerException(backgroundJob, context.Exception, "HasException", result);
+			{
+				LogJobPerfomedOnSchedulerException(backgroundJob, new SerializableException(context.Exception), "HasException", result);
                 //PBI: this can be handled better later with the testing, refactor of this class
                 Throw(backgroundJob.Id, context.Exception?.Message, "Resumption service returned Exception");
             }
             if (context.Canceled)
             {
-                LogJobPerfomedOnSchedulerException(backgroundJob, context.Exception, "WasCanceled", result);
+                LogJobPerfomedOnSchedulerException(backgroundJob, new SerializableException(context.Exception), "WasCanceled", result);
             }
             if (context.ExceptionHandled)
             {
-                LogJobPerfomedOnSchedulerException(backgroundJob, context.Exception, "ExceptionHandled", result);
+                LogJobPerfomedOnSchedulerException(backgroundJob, new SerializableException(context.Exception), "ExceptionHandled", result);
             }
 
         }
@@ -97,7 +97,7 @@ namespace HangfireServer
 
                 if (IsReapiting(context.TraversedStates, "Failed"))
                 {
-                    LogJobPerfomedOnSchedulerException(context.BackgroundJob, failedState.Exception, context.CandidateState.ToString(), context.TraversedStates.ToString());
+                    LogJobPerfomedOnSchedulerException(context.BackgroundJob, new SerializableException(failedState.Exception), context.CandidateState.ToString(), context.TraversedStates.ToString());
                     _logger.Warn("Job {" + context.BackgroundJob.Id + "} has been failed before and again now due to {" + failedState.Exception + "}, TraversedStates: {" + context.TraversedStates.ToString() + "}");
                 }
             }
@@ -140,7 +140,7 @@ namespace HangfireServer
             throw exception;
         }
 
-        private void LogJobPerfomedOnSchedulerException(BackgroundJob backgroundJob, Exception exception, string schedulerState, string schedulerAdditionalDetail)
+        private void LogJobPerfomedOnSchedulerException(BackgroundJob backgroundJob, SerializableException exception, string schedulerState, string schedulerAdditionalDetail)
         {
             var jobArg = backgroundJob.Job.Args[0];
             var values = jobArg as Dictionary<string, StringBuilder>;

@@ -31,7 +31,7 @@ namespace Warewolf.Auditing
         public LogLevel LogLevel { get; set; }
         public string OutputTemplate { get; set; }
         public object[] Args { get; set; }
-        public Exception Exception { get; set; }
+        public SerializableException Exception { get; set; }
         public string AuditType { get; set; }
 
         public LogEntry(LogLevel logLevel, string outputTemplate, object[] args)

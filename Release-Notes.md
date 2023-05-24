@@ -1,3 +1,25 @@
+Warewolf-2.8.3 (14 March 2023)
+======================
+
+Bug fixes
+----------
+- Updated the loading of the dependency graph to prevent it loading blank sometimes.
+- Patch a bug with loading certain date time formats.
+- The server max file size setting is respected more accurately.
+
+Warewolf-2.8.2.9 (3 March 2023)
+======================
+
+Enhancements
+----------
+- A warning is logged if there is less than 10% total memory available.
+
+Bug fixes
+----------
+- Reduced the installer size.
+- patched about "PointCollection".
+- Deleted Demo workflows no longer come back when the server restarts.
+
 Warewolf-2.8.2 (16 February 2023)
 ======================
 

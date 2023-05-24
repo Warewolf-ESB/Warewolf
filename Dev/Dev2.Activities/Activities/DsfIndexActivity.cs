@@ -143,8 +143,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 var hasErrors = allErrors.HasErrors();
                 if (hasErrors)
                 {
-                    var errorString = allErrors.MakeDisplayReady();
-                    dataObject.Environment.AddError(errorString);
+                    if(!this.IsErrorHandled)
+                    {
+                        var errorString = allErrors.MakeDisplayReady();
+                        dataObject.Environment.AddError(errorString);
+                    }
                     DisplayAndWriteError(dataObject,DisplayName, allErrors);
                 }
 
@@ -157,6 +160,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     DispatchDebugState(dataObject, StateType.Before, update);
                     DispatchDebugState(dataObject, StateType.After, update);
                 }
+                RunOnErrorSteps(dataObject, allErrors, update);
             }
         }
 

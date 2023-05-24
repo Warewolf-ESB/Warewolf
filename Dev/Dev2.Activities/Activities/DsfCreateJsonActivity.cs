@@ -156,6 +156,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             finally
             {
                 HandleErrors(dataObject, update, allErrors);
+                RunOnErrorSteps(dataObject, allErrors, update);
             }
         }
 
@@ -169,8 +170,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             if (hasErrors)
             {
-                var errorString = allErrors.MakeDataListReady();
-                dataObject.Environment.AddError(errorString);
+                if(!this.IsErrorHandled)
+                {
+                    var errorString = allErrors.MakeDataListReady();
+                    dataObject.Environment.AddError(errorString);
+                }
                 DisplayAndWriteError(dataObject, DisplayName, allErrors);
             }
 

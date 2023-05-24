@@ -44,37 +44,36 @@ type FilterOption =
     | RecordSetNames
     | All
 
-let rec parseLanguageExpressionAndValidate (lang : string) : LanguageExpression * string =     
+let rec parseLanguageExpressionAndValidate (lang : string) : LanguageExpression * string =  
     if (lang.Contains "[[") then 
-        try 
-            let lexbuf = LexBuffer<string>.FromString lang
-            let buffer = Parser.start Lexer.tokenstream lexbuf
-            let res = buffer |> Clean
-            match res with
-            | RecordSetExpression e -> (res, validateRecordsetIndex e.Index)
-            | RecordSetNameExpression e -> (res, validateRecordsetIndex e.Index)
-            | ScalarExpression _ -> (res, validateScalar res)
-            | ComplexExpression x -> verifyComplexExpression (x)
-            | WarewolfAtomExpression _ -> (res, "")
-            | JsonIdentifierExpression _ -> (res, "")
-        with ex -> 
-          if ex.Message.ToLower() = "parse error" then
-            if (lang.Length > 2 && lang.StartsWith("[[")) then 
-                let startswithNum, _ = System.Int32.TryParse(lang.[2].ToString())
-                match startswithNum with
-                | true -> 
-                    (WarewolfAtomExpression(DataStorage.DataString lang), 
-                     "Variable name " + lang + " begins with a number")
-                | false -> 
-                    (WarewolfAtomExpression(DataStorage.DataString lang), 
-                     "Variable name " + lang + " contains invalid character(s). Only use alphanumeric _ and - ")
-            else 
-                (WarewolfAtomExpression(DataStorage.DataString lang), 
-                 "Variable name " + lang + " contains invalid character(s). Only use alphanumeric _ and - ")
-          else
-            (WarewolfAtomExpression(DataStorage.DataString lang), ex.Message)                           
-    else (WarewolfAtomExpression(parseAtom lang), "")
-
+           try 
+               let lexbuf = LexBuffer<string>.FromString lang
+               let buffer = Parser.start Lexer.tokenstream lexbuf
+               let res = buffer |> Clean
+               match res with
+               | RecordSetExpression e -> (res, validateRecordsetIndex e.Index)
+               | RecordSetNameExpression e -> (res, validateRecordsetIndex e.Index)
+               | ScalarExpression _ -> (res, validateScalar res)
+               | ComplexExpression x -> verifyComplexExpression (x)
+               | WarewolfAtomExpression _ -> (res, "")
+               | JsonIdentifierExpression _ -> (res, "")
+           with ex -> 
+             if ex.Message.ToLower() = "parse error" then
+               if (lang.Length > 2 && lang.StartsWith("[[")) then 
+                   let startswithNum, _ = System.Int32.TryParse(lang.[2].ToString())
+                   match startswithNum with
+                   | true -> 
+                       (WarewolfAtomExpression(DataStorage.DataString lang), 
+                        "Variable name " + lang + " begins with a number")
+                   | false -> 
+                       (WarewolfAtomExpression(DataStorage.DataString lang), 
+                        "Variable name " + lang + " contains invalid character(s). Only use alphanumeric _ and - ")
+               else 
+                   (WarewolfAtomExpression(DataStorage.DataString lang), 
+                    "Variable name " + lang + " contains invalid character(s). Only use alphanumeric _ and - ")
+             else
+               (WarewolfAtomExpression(DataStorage.DataString lang), ex.Message)                           
+       else (WarewolfAtomExpression(parseAtom lang), "")    
 and validateScalar (lang: LanguageExpression) =
     let stringValue = languageExpressionToString lang
     if (stringValue.Length > 2) then 

@@ -54,7 +54,7 @@ namespace Warewolf.Tests
         {
             var executionID = Guid.NewGuid();
             var mockDataObject = SetupDataObjectWithAssignedInputs(executionID);
-            var auditLog = new Audit(mockDataObject.Object, "LogAdditionalDetail", "Test", null, null, new Exception());
+            var auditLog = new Audit(mockDataObject.Object, "LogAdditionalDetail", "Test", null, null, new SerializableException());
             Assert.AreEqual(Logging.LogLevel.Error, auditLog.LogLevel);
         }
 
