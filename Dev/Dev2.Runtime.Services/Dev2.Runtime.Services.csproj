@@ -116,6 +116,7 @@
     <Compile Include="ESB\Management\Services\GetServerIformation.cs" />
     <Compile Include="ESB\Management\Services\GetMinSupportedServerVersion.cs" />
     <Compile Include="ESB\Management\Services\GetServerInformationalVersion.cs" />
+    <Compile Include="ESB\Management\Services\GetServiceExecutionResult.cs" />
     <Compile Include="ESB\Management\Services\GetSharepointListFields.cs" />
     <Compile Include="ESB\Management\Services\GetServerVersion.cs" />
     <Compile Include="ESB\Management\Services\GetSharepointListService.cs" />
@@ -238,6 +239,7 @@
     <Compile Include="Compiler\ServiceModelCompiler.cs" />
     <Compile Include="ResourceCatalogImpl\Common.cs" />
     <Compile Include="ResourceCatalogImpl\ResourceDeleteProvider.cs" />
+    <Compile Include="ResourceCatalogImpl\ResourceDependentProvider.cs" />
     <Compile Include="ResourceCatalogImpl\ResourceDuplicateProvider.cs" />
     <Compile Include="ResourceCatalogImpl\ResourceLoadProvider.cs" />
     <Compile Include="ResourceCatalogImpl\ResourceNameProvider.cs" />

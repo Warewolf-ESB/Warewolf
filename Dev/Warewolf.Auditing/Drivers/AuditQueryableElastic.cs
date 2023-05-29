@@ -114,7 +114,7 @@ namespace Warewolf.Auditing.Drivers
                                     executionHistory.UserName = items.Value.ToString();
                                     break;
                                 case "Exception":
-                                    executionHistory.Exception = items.Value as Exception;
+                                    executionHistory.Exception = items.Value as SerializableException;
                                     break;
                                 case "LogLevel":
                                     Enum.TryParse((string) items.Value, true, out LogLevel logLevel);
@@ -310,7 +310,7 @@ namespace Warewolf.Auditing.Drivers
                                         auditHistory.AuditDate = DateTime.Parse(items.Value.ToString());
                                         break;
                                     case "Exception":
-                                        auditHistory.Exception = items.Value as Exception;
+                                        auditHistory.Exception = items.Value as SerializableException;
                                         break;
                                     case "AuditType":
                                         auditHistory.AuditType = items.Value.ToString();

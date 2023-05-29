@@ -112,20 +112,20 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-                TechTalk.SpecFlow.Table table1975 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table1974 = new TechTalk.SpecFlow.Table(new string[] {
                             "rs",
                             "val"});
-                table1975.AddRow(new string[] {
+                table1974.AddRow(new string[] {
                             "rs().row",
                             "1"});
-                table1975.AddRow(new string[] {
+                table1974.AddRow(new string[] {
                             "rs().row",
                             "2"});
-                table1975.AddRow(new string[] {
+                table1974.AddRow(new string[] {
                             "rs().row",
                             "3"});
 #line 9
- testRunner.Given("I have the following recordset", ((string)(null)), table1975, "Given ");
+ testRunner.Given("I have the following recordset", ((string)(null)), table1974, "Given ");
 #line hidden
 #line 14
  testRunner.And("I delete a record \"[[rs()]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -136,41 +136,41 @@ this.ScenarioInitialize(scenarioInfo);
 #line 16
  testRunner.Then("the delete result should be \"Success\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table1976 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table1975 = new TechTalk.SpecFlow.Table(new string[] {
                             "rs",
                             "val"});
-                table1976.AddRow(new string[] {
+                table1975.AddRow(new string[] {
                             "rs().row",
                             "1"});
-                table1976.AddRow(new string[] {
+                table1975.AddRow(new string[] {
                             "rs().row",
                             "2"});
 #line 17
- testRunner.And("the recordset \"[[rs(*).row]]\" will be as follows", ((string)(null)), table1976, "And ");
+ testRunner.And("the recordset \"[[rs(*).row]]\" will be as follows", ((string)(null)), table1975, "And ");
 #line hidden
 #line 21
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table1977 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table1976 = new TechTalk.SpecFlow.Table(new string[] {
                             "Records"});
-                table1977.AddRow(new string[] {
+                table1976.AddRow(new string[] {
                             "[[rs(3).row]] = 3"});
 #line 22
- testRunner.And("the debug inputs as", ((string)(null)), table1977, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1976, "And ");
+#line hidden
+                TechTalk.SpecFlow.Table table1977 = new TechTalk.SpecFlow.Table(new string[] {
+                            ""});
+                table1977.AddRow(new string[] {
+                            "[[result]] = Success"});
+#line 25
+ testRunner.And("the debug output as", ((string)(null)), table1977, "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table1978 = new TechTalk.SpecFlow.Table(new string[] {
                             ""});
                 table1978.AddRow(new string[] {
                             "[[result]] = Success"});
-#line 25
- testRunner.And("the debug output as", ((string)(null)), table1978, "And ");
-#line hidden
-                TechTalk.SpecFlow.Table table1979 = new TechTalk.SpecFlow.Table(new string[] {
-                            ""});
-                table1979.AddRow(new string[] {
-                            "[[result]] = Success"});
 #line 28
- testRunner.And("the debug output as", ((string)(null)), table1979, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1978, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -195,20 +195,20 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-                TechTalk.SpecFlow.Table table1980 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table1979 = new TechTalk.SpecFlow.Table(new string[] {
                             "rs",
                             "val"});
-                table1980.AddRow(new string[] {
+                table1979.AddRow(new string[] {
                             "rs().row",
                             "1"});
-                table1980.AddRow(new string[] {
+                table1979.AddRow(new string[] {
                             "rs().row",
                             "2"});
-                table1980.AddRow(new string[] {
+                table1979.AddRow(new string[] {
                             "rs().row",
                             "3"});
 #line 33
- testRunner.Given("I have the following recordset", ((string)(null)), table1980, "Given ");
+ testRunner.Given("I have the following recordset", ((string)(null)), table1979, "Given ");
 #line hidden
 #line 38
  testRunner.And("I delete a record \"[[GG()]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -222,19 +222,19 @@ this.ScenarioInitialize(scenarioInfo);
 #line 41
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table1981 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table1980 = new TechTalk.SpecFlow.Table(new string[] {
                             "Records"});
-                table1981.AddRow(new string[] {
+                table1980.AddRow(new string[] {
                             "[[GG()]] ="});
 #line 42
- testRunner.And("the debug inputs as", ((string)(null)), table1981, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1980, "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table1982 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table1981 = new TechTalk.SpecFlow.Table(new string[] {
                             ""});
-                table1982.AddRow(new string[] {
+                table1981.AddRow(new string[] {
                             "[[result]] = Failure"});
 #line 45
- testRunner.And("the debug output as", ((string)(null)), table1982, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1981, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -259,20 +259,20 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-                TechTalk.SpecFlow.Table table1983 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table1982 = new TechTalk.SpecFlow.Table(new string[] {
                             "rs",
                             "val"});
-                table1983.AddRow(new string[] {
+                table1982.AddRow(new string[] {
                             "rs().row",
                             "1"});
-                table1983.AddRow(new string[] {
+                table1982.AddRow(new string[] {
                             "rs().row",
                             "2"});
-                table1983.AddRow(new string[] {
+                table1982.AddRow(new string[] {
                             "rs().row",
                             "3"});
 #line 50
- testRunner.Given("I have the following recordset", ((string)(null)), table1983, "Given ");
+ testRunner.Given("I have the following recordset", ((string)(null)), table1982, "Given ");
 #line hidden
 #line 55
  testRunner.And("I delete a record \"[[rs(1)]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -283,34 +283,34 @@ this.ScenarioInitialize(scenarioInfo);
 #line 57
  testRunner.Then("the delete result should be \"Success\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table1984 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table1983 = new TechTalk.SpecFlow.Table(new string[] {
                             "rs",
                             "val"});
-                table1984.AddRow(new string[] {
+                table1983.AddRow(new string[] {
                             "rs().row",
                             "2"});
-                table1984.AddRow(new string[] {
+                table1983.AddRow(new string[] {
                             "rs().row",
                             "3"});
 #line 58
- testRunner.And("the recordset \"[[rs(*).row]]\" will be as follows", ((string)(null)), table1984, "And ");
+ testRunner.And("the recordset \"[[rs(*).row]]\" will be as follows", ((string)(null)), table1983, "And ");
 #line hidden
 #line 62
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table1985 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table1984 = new TechTalk.SpecFlow.Table(new string[] {
                             "Records"});
-                table1985.AddRow(new string[] {
+                table1984.AddRow(new string[] {
                             "[[rs(1).row]] = 1"});
 #line 63
- testRunner.And("the debug inputs as", ((string)(null)), table1985, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1984, "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table1986 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table1985 = new TechTalk.SpecFlow.Table(new string[] {
                             ""});
-                table1986.AddRow(new string[] {
+                table1985.AddRow(new string[] {
                             "[[result]] = Success"});
 #line 66
- testRunner.And("the debug output as", ((string)(null)), table1986, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1985, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -335,20 +335,20 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-                TechTalk.SpecFlow.Table table1987 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table1986 = new TechTalk.SpecFlow.Table(new string[] {
                             "rs",
                             "val"});
-                table1987.AddRow(new string[] {
+                table1986.AddRow(new string[] {
                             "rs().row",
                             "1"});
-                table1987.AddRow(new string[] {
+                table1986.AddRow(new string[] {
                             "rs().row",
                             "6"});
-                table1987.AddRow(new string[] {
+                table1986.AddRow(new string[] {
                             "rs().row",
                             "3"});
 #line 71
- testRunner.Given("I have the following recordset", ((string)(null)), table1987, "Given ");
+ testRunner.Given("I have the following recordset", ((string)(null)), table1986, "Given ");
 #line hidden
 #line 76
  testRunner.And("an index \"[[index]]\" exists with a value \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -362,34 +362,34 @@ this.ScenarioInitialize(scenarioInfo);
 #line 79
  testRunner.Then("the delete result should be \"Success\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table1988 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table1987 = new TechTalk.SpecFlow.Table(new string[] {
                             "rs",
                             "val"});
-                table1988.AddRow(new string[] {
+                table1987.AddRow(new string[] {
                             "rs().row",
                             "1"});
-                table1988.AddRow(new string[] {
+                table1987.AddRow(new string[] {
                             "rs().row",
                             "3"});
 #line 80
- testRunner.And("the recordset \"[[rs(*).row]]\" will be as follows", ((string)(null)), table1988, "And ");
+ testRunner.And("the recordset \"[[rs(*).row]]\" will be as follows", ((string)(null)), table1987, "And ");
 #line hidden
 #line 84
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table1989 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table1988 = new TechTalk.SpecFlow.Table(new string[] {
                             "Records"});
-                table1989.AddRow(new string[] {
+                table1988.AddRow(new string[] {
                             "[[rs(2).row]] = 6"});
 #line 85
- testRunner.And("the debug inputs as", ((string)(null)), table1989, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1988, "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table1990 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table1989 = new TechTalk.SpecFlow.Table(new string[] {
                             ""});
-                table1990.AddRow(new string[] {
+                table1989.AddRow(new string[] {
                             "[[result]] = Success"});
 #line 88
- testRunner.And("the debug output as", ((string)(null)), table1990, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1989, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -414,20 +414,20 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-                TechTalk.SpecFlow.Table table1991 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table1990 = new TechTalk.SpecFlow.Table(new string[] {
                             "rs",
                             "val"});
-                table1991.AddRow(new string[] {
+                table1990.AddRow(new string[] {
                             "rs().row",
                             "1"});
-                table1991.AddRow(new string[] {
+                table1990.AddRow(new string[] {
                             "rs().row",
                             "2"});
-                table1991.AddRow(new string[] {
+                table1990.AddRow(new string[] {
                             "rs().row",
                             "3"});
 #line 93
- testRunner.Given("I have the following recordset", ((string)(null)), table1991, "Given ");
+ testRunner.Given("I have the following recordset", ((string)(null)), table1990, "Given ");
 #line hidden
 #line 98
  testRunner.And("I delete a record \"[[rs(*)]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -438,32 +438,32 @@ this.ScenarioInitialize(scenarioInfo);
 #line 100
  testRunner.Then("the delete result should be \"Success\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table1992 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table1991 = new TechTalk.SpecFlow.Table(new string[] {
                             "rs",
                             "val"});
 #line 101
- testRunner.And("the recordset \"[[rs(*).row]]\" will be as follows", ((string)(null)), table1992, "And ");
+ testRunner.And("the recordset \"[[rs(*).row]]\" will be as follows", ((string)(null)), table1991, "And ");
 #line hidden
 #line 103
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table1993 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table1992 = new TechTalk.SpecFlow.Table(new string[] {
                             "Records"});
-                table1993.AddRow(new string[] {
+                table1992.AddRow(new string[] {
                             "[[rs(1).row]] = 1"});
-                table1993.AddRow(new string[] {
+                table1992.AddRow(new string[] {
                             "[[rs(2).row]] = 2"});
-                table1993.AddRow(new string[] {
+                table1992.AddRow(new string[] {
                             "[[rs(3).row]] = 3"});
 #line 104
- testRunner.And("the debug inputs as", ((string)(null)), table1993, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1992, "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table1994 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table1993 = new TechTalk.SpecFlow.Table(new string[] {
                             ""});
-                table1994.AddRow(new string[] {
+                table1993.AddRow(new string[] {
                             "[[result]] = Success"});
 #line 109
- testRunner.And("the debug output as", ((string)(null)), table1994, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1993, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -488,6 +488,30 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
+                TechTalk.SpecFlow.Table table1994 = new TechTalk.SpecFlow.Table(new string[] {
+                            "rs",
+                            "val"});
+                table1994.AddRow(new string[] {
+                            "rs().row",
+                            "1"});
+                table1994.AddRow(new string[] {
+                            "rs().row",
+                            "2"});
+                table1994.AddRow(new string[] {
+                            "rs().row",
+                            "3"});
+#line 114
+ testRunner.Given("I have the following recordset", ((string)(null)), table1994, "Given ");
+#line hidden
+#line 119
+ testRunner.And("I delete a record \"[[rs(-1)]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 120
+ testRunner.When("the delete tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 121
+ testRunner.Then("the delete result should be \"Failure\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
                 TechTalk.SpecFlow.Table table1995 = new TechTalk.SpecFlow.Table(new string[] {
                             "rs",
                             "val"});
@@ -500,49 +524,25 @@ this.ScenarioInitialize(scenarioInfo);
                 table1995.AddRow(new string[] {
                             "rs().row",
                             "3"});
-#line 114
- testRunner.Given("I have the following recordset", ((string)(null)), table1995, "Given ");
-#line hidden
-#line 119
- testRunner.And("I delete a record \"[[rs(-1)]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 120
- testRunner.When("the delete tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 121
- testRunner.Then("the delete result should be \"Failure\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-                TechTalk.SpecFlow.Table table1996 = new TechTalk.SpecFlow.Table(new string[] {
-                            "rs",
-                            "val"});
-                table1996.AddRow(new string[] {
-                            "rs().row",
-                            "1"});
-                table1996.AddRow(new string[] {
-                            "rs().row",
-                            "2"});
-                table1996.AddRow(new string[] {
-                            "rs().row",
-                            "3"});
 #line 122
- testRunner.And("the recordset \"[[rs(*).row]]\" will be as follows", ((string)(null)), table1996, "And ");
+ testRunner.And("the recordset \"[[rs(*).row]]\" will be as follows", ((string)(null)), table1995, "And ");
 #line hidden
 #line 127
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table1997 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table1996 = new TechTalk.SpecFlow.Table(new string[] {
                             "Records"});
-                table1997.AddRow(new string[] {
+                table1996.AddRow(new string[] {
                             "[[rs(-1)]]  ="});
 #line 128
- testRunner.And("the debug inputs as", ((string)(null)), table1997, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1996, "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table1998 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table1997 = new TechTalk.SpecFlow.Table(new string[] {
                             ""});
-                table1998.AddRow(new string[] {
+                table1997.AddRow(new string[] {
                             "[[result]] = Failure"});
 #line 131
- testRunner.And("the debug output as", ((string)(null)), table1998, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1997, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -567,6 +567,30 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
+                TechTalk.SpecFlow.Table table1998 = new TechTalk.SpecFlow.Table(new string[] {
+                            "rs",
+                            "val"});
+                table1998.AddRow(new string[] {
+                            "rs().row",
+                            "1"});
+                table1998.AddRow(new string[] {
+                            "rs().row",
+                            "2"});
+                table1998.AddRow(new string[] {
+                            "rs().row",
+                            "3"});
+#line 136
+ testRunner.Given("I have the following recordset", ((string)(null)), table1998, "Given ");
+#line hidden
+#line 141
+ testRunner.And("I delete a record \"[[rs(5)]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 142
+ testRunner.When("the delete tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 143
+ testRunner.Then("the delete result should be \"Failure\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
                 TechTalk.SpecFlow.Table table1999 = new TechTalk.SpecFlow.Table(new string[] {
                             "rs",
                             "val"});
@@ -579,49 +603,25 @@ this.ScenarioInitialize(scenarioInfo);
                 table1999.AddRow(new string[] {
                             "rs().row",
                             "3"});
-#line 136
- testRunner.Given("I have the following recordset", ((string)(null)), table1999, "Given ");
-#line hidden
-#line 141
- testRunner.And("I delete a record \"[[rs(5)]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 142
- testRunner.When("the delete tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 143
- testRunner.Then("the delete result should be \"Failure\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-                TechTalk.SpecFlow.Table table2000 = new TechTalk.SpecFlow.Table(new string[] {
-                            "rs",
-                            "val"});
-                table2000.AddRow(new string[] {
-                            "rs().row",
-                            "1"});
-                table2000.AddRow(new string[] {
-                            "rs().row",
-                            "2"});
-                table2000.AddRow(new string[] {
-                            "rs().row",
-                            "3"});
 #line 144
- testRunner.And("the recordset \"[[rs(*).row]]\" will be as follows", ((string)(null)), table2000, "And ");
+ testRunner.And("the recordset \"[[rs(*).row]]\" will be as follows", ((string)(null)), table1999, "And ");
 #line hidden
 #line 149
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table2001 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table2000 = new TechTalk.SpecFlow.Table(new string[] {
                             "Records"});
-                table2001.AddRow(new string[] {
+                table2000.AddRow(new string[] {
                             "[[rs(5)]]  ="});
 #line 150
- testRunner.And("the debug inputs as", ((string)(null)), table2001, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table2000, "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table2002 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table2001 = new TechTalk.SpecFlow.Table(new string[] {
                             ""});
-                table2002.AddRow(new string[] {
+                table2001.AddRow(new string[] {
                             "[[result]] = Failure"});
 #line 153
- testRunner.And("the debug output as", ((string)(null)), table2002, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table2001, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -646,11 +646,11 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-                TechTalk.SpecFlow.Table table2003 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table2002 = new TechTalk.SpecFlow.Table(new string[] {
                             "rs",
                             "row"});
 #line 158
- testRunner.Given("I have the following recordset", ((string)(null)), table2003, "Given ");
+ testRunner.Given("I have the following recordset", ((string)(null)), table2002, "Given ");
 #line hidden
 #line 160
  testRunner.And("I delete a record \"[[rs()]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -664,19 +664,19 @@ this.ScenarioInitialize(scenarioInfo);
 #line 163
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table2004 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table2003 = new TechTalk.SpecFlow.Table(new string[] {
                             "Records"});
-                table2004.AddRow(new string[] {
+                table2003.AddRow(new string[] {
                             "[[rs()]]  ="});
 #line 164
- testRunner.And("the debug inputs as", ((string)(null)), table2004, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table2003, "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table2005 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table2004 = new TechTalk.SpecFlow.Table(new string[] {
                             ""});
-                table2005.AddRow(new string[] {
+                table2004.AddRow(new string[] {
                             "[[result]] = Failure"});
 #line 167
- testRunner.And("the debug output as", ((string)(null)), table2005, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table2004, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -716,17 +716,17 @@ this.ScenarioInitialize(scenarioInfo);
 #line 176
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table2006 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table2005 = new TechTalk.SpecFlow.Table(new string[] {
                             "Records"});
 #line 177
- testRunner.And("the debug inputs as", ((string)(null)), table2006, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table2005, "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table2007 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table2006 = new TechTalk.SpecFlow.Table(new string[] {
                             ""});
-                table2007.AddRow(new string[] {
+                table2006.AddRow(new string[] {
                             "[[result]] = Failure"});
 #line 179
- testRunner.And("the debug output as", ((string)(null)), table2007, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table2006, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -751,23 +751,23 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-                TechTalk.SpecFlow.Table table2008 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table2007 = new TechTalk.SpecFlow.Table(new string[] {
                             "rs",
                             "val"});
-                table2008.AddRow(new string[] {
+                table2007.AddRow(new string[] {
                             "rs().row",
                             "1"});
-                table2008.AddRow(new string[] {
+                table2007.AddRow(new string[] {
                             "rs().row",
                             "2"});
-                table2008.AddRow(new string[] {
+                table2007.AddRow(new string[] {
                             "ws().row",
                             "3"});
-                table2008.AddRow(new string[] {
+                table2007.AddRow(new string[] {
                             "ws().row",
                             "4"});
 #line 184
- testRunner.Given("I have the following recordset", ((string)(null)), table2008, "Given ");
+ testRunner.Given("I have the following recordset", ((string)(null)), table2007, "Given ");
 #line hidden
 #line 190
  testRunner.And("I delete a record \"[[rs(*)]],[[ws(*)]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -778,44 +778,44 @@ this.ScenarioInitialize(scenarioInfo);
 #line 192
  testRunner.Then("the delete result should be \"Failure\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
+                TechTalk.SpecFlow.Table table2008 = new TechTalk.SpecFlow.Table(new string[] {
+                            "rs",
+                            "row"});
+                table2008.AddRow(new string[] {
+                            "[[rs(1).row]]",
+                            "1"});
+                table2008.AddRow(new string[] {
+                            "[[rs(1).row]]",
+                            "2"});
+#line 193
+ testRunner.And("the recordset \"[[rs(*).row]]\" will be as follows", ((string)(null)), table2008, "And ");
+#line hidden
                 TechTalk.SpecFlow.Table table2009 = new TechTalk.SpecFlow.Table(new string[] {
                             "rs",
                             "row"});
                 table2009.AddRow(new string[] {
-                            "[[rs(1).row]]",
-                            "1"});
-                table2009.AddRow(new string[] {
-                            "[[rs(1).row]]",
-                            "2"});
-#line 193
- testRunner.And("the recordset \"[[rs(*).row]]\" will be as follows", ((string)(null)), table2009, "And ");
-#line hidden
-                TechTalk.SpecFlow.Table table2010 = new TechTalk.SpecFlow.Table(new string[] {
-                            "rs",
-                            "row"});
-                table2010.AddRow(new string[] {
                             "[[ws(1).row]]",
                             "3"});
-                table2010.AddRow(new string[] {
+                table2009.AddRow(new string[] {
                             "[[ws(2).row]]",
                             "4"});
 #line 197
- testRunner.And("the recordset \"[[ws(*).row]]\" will be as follows", ((string)(null)), table2010, "And ");
+ testRunner.And("the recordset \"[[ws(*).row]]\" will be as follows", ((string)(null)), table2009, "And ");
 #line hidden
 #line 201
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table2011 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table2010 = new TechTalk.SpecFlow.Table(new string[] {
                             "Records"});
 #line 202
- testRunner.And("the debug inputs as", ((string)(null)), table2011, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table2010, "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table2012 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table2011 = new TechTalk.SpecFlow.Table(new string[] {
                             ""});
-                table2012.AddRow(new string[] {
+                table2011.AddRow(new string[] {
                             "[[result]] = Failure"});
 #line 204
- testRunner.And("the debug output as", ((string)(null)), table2012, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table2011, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -840,23 +840,23 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-                TechTalk.SpecFlow.Table table2013 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table2012 = new TechTalk.SpecFlow.Table(new string[] {
                             "rs",
                             "val"});
-                table2013.AddRow(new string[] {
+                table2012.AddRow(new string[] {
                             "rs().row",
                             "1"});
-                table2013.AddRow(new string[] {
+                table2012.AddRow(new string[] {
                             "rs().row",
                             "2"});
-                table2013.AddRow(new string[] {
+                table2012.AddRow(new string[] {
                             "rs().row",
                             "3"});
-                table2013.AddRow(new string[] {
+                table2012.AddRow(new string[] {
                             "rs().row",
                             "4"});
 #line 209
- testRunner.Given("I have the following recordset", ((string)(null)), table2013, "Given ");
+ testRunner.Given("I have the following recordset", ((string)(null)), table2012, "Given ");
 #line hidden
 #line 215
  testRunner.And("I delete a record \"[[rs(1).a]],[[rs(4).a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -867,38 +867,38 @@ this.ScenarioInitialize(scenarioInfo);
 #line 217
  testRunner.Then("the delete result should be \"Failure\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table2014 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table2013 = new TechTalk.SpecFlow.Table(new string[] {
                             "rs",
                             "row"});
-                table2014.AddRow(new string[] {
+                table2013.AddRow(new string[] {
                             "[[rs().row]]",
                             "1"});
-                table2014.AddRow(new string[] {
+                table2013.AddRow(new string[] {
                             "[[rs().row]]",
                             "2"});
-                table2014.AddRow(new string[] {
+                table2013.AddRow(new string[] {
                             "[[rs().row]]",
                             "3"});
-                table2014.AddRow(new string[] {
+                table2013.AddRow(new string[] {
                             "[[rs().row]]",
                             "4"});
 #line 218
- testRunner.And("the recordset \"[[rs(*).row]]\" will be as follows", ((string)(null)), table2014, "And ");
+ testRunner.And("the recordset \"[[rs(*).row]]\" will be as follows", ((string)(null)), table2013, "And ");
 #line hidden
 #line 224
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table2015 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table2014 = new TechTalk.SpecFlow.Table(new string[] {
                             "Records"});
 #line 225
- testRunner.And("the debug inputs as", ((string)(null)), table2015, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table2014, "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table2016 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table2015 = new TechTalk.SpecFlow.Table(new string[] {
                             ""});
-                table2016.AddRow(new string[] {
+                table2015.AddRow(new string[] {
                             "[[result]] = Failure"});
 #line 227
- testRunner.And("the debug output as", ((string)(null)), table2016, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table2015, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -935,17 +935,17 @@ this.ScenarioInitialize(scenarioInfo);
 #line 236
  testRunner.Then(string.Format("the delete result should be \"{0}\"", message), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table2017 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table2016 = new TechTalk.SpecFlow.Table(new string[] {
                             "Records"});
 #line 237
- testRunner.And("the debug inputs as", ((string)(null)), table2017, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table2016, "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table2018 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table2017 = new TechTalk.SpecFlow.Table(new string[] {
                             ""});
-                table2018.AddRow(new string[] {
+                table2017.AddRow(new string[] {
                             "[[result]] = Failure"});
 #line 239
- testRunner.And("the debug output as", ((string)(null)), table2018, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table2017, "And ");
 #line hidden
 #line 242
  testRunner.And(string.Format("the execution has \"{0}\" error", error), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");

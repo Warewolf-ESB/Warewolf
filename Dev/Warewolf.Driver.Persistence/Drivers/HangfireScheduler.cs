@@ -315,7 +315,7 @@ namespace Warewolf.Driver.Persistence.Drivers
             }
             catch (Exception ex)
             {
-                _stateNotifier?.LogExecuteException(ex, this);
+                _stateNotifier?.LogExecuteException(new SerializableException(ex), this);
                 Dev2Logger.Error(nameof(ResumeJob), ex, GlobalConstants.WarewolfError);
                 throw ex;
             }
@@ -371,7 +371,7 @@ namespace Warewolf.Driver.Persistence.Drivers
             }
             catch (Exception ex)
             {
-                _stateNotifier?.LogExecuteException(ex, this);
+                _stateNotifier?.LogExecuteException(new SerializableException(ex), this);
                 Dev2Logger.Error(nameof(ManualResumeWithOverrideJob), ex, GlobalConstants.WarewolfError);
                 throw ex;
             }
@@ -392,7 +392,7 @@ namespace Warewolf.Driver.Persistence.Drivers
             }
             catch (Exception ex)
             {
-                _stateNotifier?.LogExecuteException(ex, this);
+                _stateNotifier?.LogExecuteException(new SerializableException(ex), this);
                 Dev2Logger.Error(nameof(ScheduleJob), ex, GlobalConstants.WarewolfError);
                 throw ex;
             }

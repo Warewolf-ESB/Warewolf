@@ -49,7 +49,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         IList<AssignObjectDTO> _fieldsCollection;
 
         public IList<AssignObjectDTO> FieldsCollection
-        
+
         {
             get
             {
@@ -105,13 +105,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             catch (Exception e)
             {
-                //Dev2Logger.Error(e, GlobalConstants.WarewolfError);
                 allErrors.AddError(e.Message);
             }
             finally
             {
                 // Handle Errors
                 HandleErrors(dataObject, update, allErrors);
+                RunOnErrorSteps(dataObject, allErrors, update);
             }
         }
 
@@ -123,7 +123,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             catch (Exception e)
             {
-                //Dev2Logger.Error(e, GlobalConstants.WarewolfError);
                 allErrors.AddError(e.Message);
             }
 
@@ -176,10 +175,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             var hasErrors = allErrors.HasErrors();
             if (hasErrors)
             {
-                var errorString = allErrors.MakeDisplayReady();
-                dataObject.Environment.AddError(errorString);
-                DisplayAndWriteError(dataObject,DisplayName, allErrors);
+                if (!this.IsErrorHandled)
+                {
+                    var errorString = allErrors.MakeDisplayReady();
+                    dataObject.Environment.AddError(errorString);
+                }
+                DisplayAndWriteError(dataObject, DisplayName, allErrors);
             }
+
             if (dataObject.IsDebugMode())
             {
                 DispatchDebugState(dataObject, StateType.Before, update);
@@ -490,7 +493,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             eq &= UpdateAllOccurrences.Equals(other.UpdateAllOccurrences);
             eq &= CreateBookmark.Equals(other.CreateBookmark);
-            if (!(ServiceHost is null)) {
+            if (!(ServiceHost is null))
+            {
                 eq &= ServiceHost.Equals(other.ServiceHost);
             }
 

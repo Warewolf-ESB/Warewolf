@@ -50,7 +50,7 @@ namespace Warewolf.Auditing
                     Audit = auditLog,
                     Type = "LogEntry"
                 };
-                var jsonLogEntry = JsonConvert.SerializeObject(auditCommand);
+				var jsonLogEntry = JsonConvert.SerializeObject(auditCommand);
                 SendMessage(jsonLogEntry);
             }
         }

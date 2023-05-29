@@ -9,13 +9,14 @@
 */
 
 using System;
+using Warewolf.Auditing;
 using Warewolf.Logging;
 
 namespace Warewolf.Interfaces.Auditing
 {
     public interface IAuditEntry
     {
-        Exception Exception { get; set; }
+        SerializableException Exception { get; set; }
         string AuditType { get; set; }
         LogLevel LogLevel { get; set; }
     }

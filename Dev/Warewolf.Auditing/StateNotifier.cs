@@ -48,17 +48,33 @@ namespace Warewolf.Auditing
             {
                 stateListener.LogAdditionalDetail(detail, callerName);
             }
-        }
+		}
 
-        public void LogExecuteCompleteState(object activity)
+		public void LogExecuteStartState(object activity)
+		{
+			foreach (var stateListener in _stateListeners)
+			{
+				stateListener.LogExecuteStartState(activity);
+			}
+		}
+
+		public void LogExecuteCompleteState(object activity)
         {
             foreach (var stateListener in _stateListeners)
             {
                 stateListener.LogExecuteCompleteState(activity);
             }
-        }
+		}
 
-        public void LogExecuteActivityCompleteState(object activity)
+		public void LogExecuteActivityStartState(object activity)
+		{
+			foreach (var stateListener in _stateListeners)
+			{
+				stateListener.LogExecuteActivityStartState(activity);
+			}
+		}
+
+		public void LogExecuteActivityCompleteState(object activity)
         {
             foreach (var stateListener in _stateListeners)
             {
@@ -66,7 +82,7 @@ namespace Warewolf.Auditing
             }
         }
 
-        public void LogExecuteException(Exception e, object activity)
+        public void LogExecuteException(SerializableException e, object activity)
         {
             foreach (var stateListener in _stateListeners)
             {

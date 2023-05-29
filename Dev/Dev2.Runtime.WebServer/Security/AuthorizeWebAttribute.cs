@@ -42,13 +42,13 @@ namespace Dev2.Runtime.WebServer.Security
         {
         }
 
-        public AuthorizeWebAttribute(Services.Security.IAuthorizationService authorizationService)
+        public AuthorizeWebAttribute(Dev2.Services.Security.IAuthorizationService authorizationService)
         {
             VerifyArgument.IsNotNull("AuthorizationService", authorizationService);
             Service = authorizationService;
         }
 
-        public Services.Security.IAuthorizationService Service { get; private set; }
+        public Dev2.Services.Security.IAuthorizationService Service { get; private set; }
 
         public void OnAuthorization()
         {

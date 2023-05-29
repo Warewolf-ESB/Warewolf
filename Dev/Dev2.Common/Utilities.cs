@@ -112,5 +112,10 @@ namespace Dev2.Common
             get;
             set;
         }
+
+        public static long ByteConvertor(long longValue, long convertTo)
+        {
+            return longValue / convertTo;
+        }
     }
 }

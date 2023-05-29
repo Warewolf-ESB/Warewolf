@@ -154,8 +154,11 @@ namespace Dev2.Activities.DateAndTime
             {
                 if (allErrors.HasErrors())
                 {
-                    var errorString = allErrors.MakeDisplayReady();
-                    dataObject.Environment.AddError(errorString);
+                    if (!this.IsErrorHandled)
+                    {
+                        var errorString = allErrors.MakeDisplayReady();
+                        dataObject.Environment.AddError(errorString);
+                    }
                     dataObject.Environment.Assign(Result, null, update);
                     DisplayAndWriteError(dataObject,DisplayName, allErrors);
                 }
@@ -164,6 +167,8 @@ namespace Dev2.Activities.DateAndTime
                     DispatchDebugState(dataObject, StateType.Before, update);
                     DispatchDebugState(dataObject, StateType.After, update);
                 }
+
+                RunOnErrorSteps(dataObject, allErrors, update);
             }
         }
 

@@ -20,6 +20,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         public Guid ResourceID { get; set; }
         public String ResourceName { get; set; }
         public string ResourceType { get; set; }
+        public IResource Resource { get; set; }
 
         #region Overrides of Object
 
