@@ -162,7 +162,7 @@ namespace Dev2.Runtime.WebServer.Executor
                 return ExtractKeyValuePairs(pairs, ctx.Request.BoundVariables);
             }
 
-            var data = reader.ReadToEnd();
+            var data = reader.ReadToEndAsync().Result;
 
             if (data.IsXml(out XDocument _))
             {
