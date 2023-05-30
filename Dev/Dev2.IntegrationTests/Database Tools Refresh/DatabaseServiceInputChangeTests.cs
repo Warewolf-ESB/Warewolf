@@ -11,6 +11,7 @@ using Dev2.Studio.Core;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.ViewModels.DataList;
+using Dev2.Tests;
 using Dev2.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -121,7 +122,7 @@ namespace Dev2.Integration.Tests.Database_Tools_Refresh
 
                 Setup(cleanProcName);
 
-                var mockSource = new Mock<IDbSource>();
+                var mockSource = new Mock<IDbSource>().Create();
 
                 IDatabaseInputRegion databaseInputRegion = new DatabaseInputRegion(_modelItem, _dbActionRegion);
                 Assert.AreEqual(1, databaseInputRegion.Inputs.Count);
