@@ -836,9 +836,6 @@
 	  <PackageReference Include="FontAwesome6.Fonts" Version="2.3.0" />
 	  <PackageReference Include="FontAwesome6.Fonts.WinUI" Version="2.3.0" />
 	  <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
-	<PackageReference Include="Microsoft.Web.WebView2">
-	  <Version>1.0.1072.54</Version>
-	</PackageReference>
   </ItemGroup>
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
