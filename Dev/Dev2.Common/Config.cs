@@ -311,6 +311,15 @@ namespace Dev2.Common
             }
         }
 
+        public string AuditLogMaxSize
+        {            
+            get => _settings.AuditLogMaxSize;
+            set
+            {
+                _settings.AuditLogMaxSize = value;
+            }
+        }
+
         private string GetAuditFilePath()
         {
             if (_settings.AuditFilePath != null )
@@ -461,6 +470,6 @@ namespace Dev2.Common
             {
                 _settings.IncludeEnvironmentVariable = value;
             }
-        }
+        }       
     }
 }
