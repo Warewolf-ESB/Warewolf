@@ -112,11 +112,11 @@ namespace Dev2.Data.Parsers
                 var current = list.Current;
                 if (current is XdmNode realElm)
                 {
-                    if (realElm.NodeKind == XdmNodeKind.Attribute)
+                    if (realElm.NodeKind == XmlNodeType.Attribute)
                     {
                         stringList.Add(realElm.StringValue);
                     }
-                    else if (realElm.NodeKind == XdmNodeKind.Element)
+                    else if (realElm.NodeKind == XmlNodeType.Element)
 
                     {
                         var xElement = XElement.Parse(current.ToString());

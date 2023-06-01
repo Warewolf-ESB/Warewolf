@@ -18,7 +18,6 @@ using Dev2.Runtime.WebServer.Handlers;
 using Dev2.Runtime.WebServer.Security;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.WebApiCompatShim;
-using Saxon.Hej.functions;
 
 namespace Dev2.Runtime.WebServer.Controllers
 {
