@@ -53,3 +53,8 @@ Note: Make sure to run Warewolf Server.exe (server) before tests dependant on it
 	Copy below ones to Dev\Dev2.IntegrationTests\bin\Debug\net6.0-windows\win
 	a) Add sni.dll
 	b) Copy "Dev2.Integration.Tests.dll.config" and rename it to "testhost.dll.config" 
+	c) Following tests requires Warewolf Server Windows Service (.NET 6) installed and running
+		Test: Run_a_workflow_to_test_server_startup_when_programdata_resources_directory_does_not_exist
+		Setup:	1) Uninstall existing "Warewolf Server" Windows Service (.NET 4.8 one if any)
+			2) open powershell as administrator and execute ".\StartAsService.ps1" file. StartAsService.ps1 file exists in deployment directory
+

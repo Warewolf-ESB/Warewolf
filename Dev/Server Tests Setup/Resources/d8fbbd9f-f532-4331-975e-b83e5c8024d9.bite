@@ -1,9 +1,0 @@
-
-<Source ID="3a225739-e548-4537-b341-5327bb7fdc51" Name="d8fbbd9f-f532-4331-975e-b83e5c8024d9" ResourceType="ExchangeSource" IsValid="false" ConnectionString="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAA0ANawE9+lUiIoe6YI8F/cgQAAAACAAAAAAADZgAAwAAAABAAAADMaDdNivsk5pV6fiyL7DD3AAAAAASAAACgAAAAEAAAAKoLP3yvOjYCzU/4t9PnCk8YAQAA4VbWGsRSELvAFcLZfri39r/HTiUK8iWq9X0a9hutYraJPvfvnBCvs5R9VUkr2GHUdWJDaufUv3GzGwBfdMws6sJovVdiQ9gMUnMx6OmK8vw1+2obiMpYPXjn4IIp8lTrNI+AzbSPcH4UayvUr+e7+Di4RSBZsjQSnzRR/wOXh2MQetYmTzPz6nwCN/Sw5wt70K0Xo93kwhr8JXiZ+84QnC2CchaG/y8isIYsZJ7qs3laPnrJuNxEsXh+k160nQWqxyW9DqmayZHHK+I+SLLDuZm50OGLQ4YfmRC5UDvamMdE/5NPo1z0sRPUtlv9ustws9/CxEBp4HLoyeDVSU9gLuK60jogPLAXBgYEkj3b3kYfi8NrMLrGRhQAAABfMKISBbLWFoLZr21JCrCnwWheEg==" Type="ExchangeSource" ServerVersion="2.8.1.47" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
-  <DisplayName>d8fbbd9f-f532-4331-975e-b83e5c8024d9</DisplayName>
-  <AuthorRoles>
-  </AuthorRoles>
-  <ErrorMessages />
-  <TypeOf>ExchangeSource</TypeOf>
-  <VersionInfo DateTimeStamp="2023-04-12T13:48:13.7779146+05:30" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="3a225739-e548-4537-b341-5327bb7fdc51" VersionId="cfbbc2f0-5677-42e4-a91b-16ad58b716d3" />
-</Source>
