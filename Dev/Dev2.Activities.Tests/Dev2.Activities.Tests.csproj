@@ -13,8 +13,7 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Dev2.Tests.Activities</RootNamespace>
-    <AssemblyName>Dev2.Activities.Tests</AssemblyName>
-    
+    <AssemblyName>Dev2.Activities.Tests</AssemblyName>    
     <RuntimeIdentifier>win</RuntimeIdentifier>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -31,6 +30,12 @@
     <SonarQubeExclude>True</SonarQubeExclude>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
+  <PropertyGroup>
+    <ContentSQLiteInteropFiles>true</ContentSQLiteInteropFiles>
+    <CopySQLiteInteropFiles>false</CopySQLiteInteropFiles>
+    <CleanSQLiteInteropFiles>false</CleanSQLiteInteropFiles>
+    <CollectSQLiteInteropFiles>false</CollectSQLiteInteropFiles>
+ </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
@@ -532,6 +537,13 @@
     <PackageReference Include="TSQL.Parser" Version="2.6.0" />
   </ItemGroup>
   <ItemGroup />
+  <PropertyGroup>
+    <PostBuildEvent>
+      if exist "$(SolutionDir)Dev\Dev2.Activities.Tests\bin\Debug\net6.0-windows\win\Dev2.Activities.Tests.dll" (
+      echo D | xcopy /Y /E /F /D "$(SolutionDir)Server Tests Setup\SQLite.Interop.dll" "$(SolutionDir)Dev\Dev2.Activities.Tests\bin\Debug\net6.0-windows\win"
+      )
+    </PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

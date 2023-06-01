@@ -51,6 +51,12 @@
     <StartupObject>Dev2.EntryPoint</StartupObject>
   </PropertyGroup>
   <PropertyGroup>
+    <ContentSQLiteInteropFiles>true</ContentSQLiteInteropFiles>
+    <CopySQLiteInteropFiles>false</CopySQLiteInteropFiles>
+    <CleanSQLiteInteropFiles>false</CleanSQLiteInteropFiles>
+    <CollectSQLiteInteropFiles>false</CollectSQLiteInteropFiles>
+ </PropertyGroup>
+  <PropertyGroup>
     <ManifestCertificateThumbprint>E0E1E9A356E095CC89E4164299ED65ED12690217</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
@@ -380,23 +386,24 @@
   </ItemGroup>
   <PropertyGroup>
     <PostBuildEvent>
-      if exist "$(SolutionDir)Dev2.Server\bin\Debug\net6.0-windows\Warewolf Server.exe" (
-      echo D | xcopy /Y /E /F /D "$(SolutionDir)Resources - Release\Resources" "$(SolutionDir)Dev2.Server\bin\Debug\net6.0-windows\Resources"
-      echo D | xcopy /Y /E /F /D "$(SolutionDir)Resources - Release" "$(SolutionDir)Dev2.Server\bin\Debug\net6.0-windows\Resources - Release"
-      echo D | xcopy /Y /E /F /D "$(SolutionDir)Resources - ServerTests" "$(SolutionDir)Dev2.Server\bin\Debug\net6.0-windows\Resources - ServerTests"
-      echo D | xcopy /Y /E /F /D "$(SolutionDir)Resources - UITests" "$(SolutionDir)Dev2.Server\bin\Debug\net6.0-windows\Resources - UITests"
-      echo D | xcopy /Y /E /F /D "$(SolutionDir)Resources - Load" "$(SolutionDir)Dev2.Server\bin\Debug\net6.0-windows\Resources - Load"
-      if not exist "$(SolutionDir)Dev2.Server\bin\Debug\net6.0-windows\_PublishedWebsites\Dev2.Web" echo D | xcopy /Y /E /F /D "$(SolutionDir)Dev2.Web2" "$(SolutionDir)Dev2.Server\bin\Debug\net6.0-windows\_PublishedWebsites\Dev2.Web"
-      echo D | xcopy /Y /E /F /D "$(SolutionDir)Binaries\Warewolf.COMIPC.exe_v4.8" "$(SolutionDir)Dev2.Server\bin\Debug\net6.0-windows\Warewolf.COMIPC.exe_v4.8"
-
-      )
-      if exist "$(SolutionDir)Dev2.Server\bin\Release\net6.0-windows\Warewolf Server.exe" (
-      echo D | xcopy /Y /E /F /D "$(SolutionDir)Resources - Release\Resources" "$(SolutionDir)Dev2.Server\bin\Release\net6.0-windows\Resources"
-      echo D | xcopy /Y /E /F /D "$(SolutionDir)Resources - Release" "$(SolutionDir)Dev2.Server\bin\Release\net6.0-windows\Resources - Release"
-      echo D | xcopy /Y /E /F /D "$(SolutionDir)Binaries\Warewolf.COMIPC.exe_v4.8" "$(SolutionDir)Dev2.Server\bin\Release\net6.0-windows\Warewolf.COMIPC.exe_v4.8"
-      )
-      taskkill /f /im Warewolf.COMIPC.exe /fi "STATUS eq RUNNING"
-      taskkill /f /im Warewolf.COMIPC.vshost.exe /fi "STATUS eq RUNNING"</PostBuildEvent>
+    if exist "$(SolutionDir)Dev2.Server\bin\Debug\net6.0-windows\Warewolf Server.exe" (
+    echo D | xcopy /Y /E /F /D "$(SolutionDir)Resources - Release\Resources" "$(SolutionDir)Dev2.Server\bin\Debug\net6.0-windows\Resources"
+    echo D | xcopy /Y /E /F /D "$(SolutionDir)Resources - Release" "$(SolutionDir)Dev2.Server\bin\Debug\net6.0-windows\Resources - Release"
+    echo D | xcopy /Y /E /F /D "$(SolutionDir)Resources - ServerTests" "$(SolutionDir)Dev2.Server\bin\Debug\net6.0-windows\Resources - ServerTests"
+    echo D | xcopy /Y /E /F /D "$(SolutionDir)Resources - UITests" "$(SolutionDir)Dev2.Server\bin\Debug\net6.0-windows\Resources - UITests"
+    echo D | xcopy /Y /E /F /D "$(SolutionDir)Resources - Load" "$(SolutionDir)Dev2.Server\bin\Debug\net6.0-windows\Resources - Load"
+    if not exist "$(SolutionDir)Dev2.Server\bin\Debug\net6.0-windows\_PublishedWebsites\Dev2.Web" echo D | xcopy /Y /E /F /D "$(SolutionDir)Dev2.Web2" "$(SolutionDir)Dev2.Server\bin\Debug\net6.0-windows\_PublishedWebsites\Dev2.Web"
+    echo D | xcopy /Y /E /F /D "$(SolutionDir)Binaries\Warewolf.COMIPC.exe_v4.8" "$(SolutionDir)Dev2.Server\bin\Debug\net6.0-windows\Warewolf.COMIPC.exe_v4.8"
+    echo D | xcopy /Y /E /F /D "$(SolutionDir)Server Tests Setup\SQLite.Interop.dll" "$(SolutionDir)Dev\Dev2.Server\bin\Debug\net6.0-windows"
+    )
+    if exist "$(SolutionDir)Dev2.Server\bin\Release\net6.0-windows\Warewolf Server.exe" (
+    echo D | xcopy /Y /E /F /D "$(SolutionDir)Resources - Release\Resources" "$(SolutionDir)Dev2.Server\bin\Release\net6.0-windows\Resources"
+    echo D | xcopy /Y /E /F /D "$(SolutionDir)Resources - Release" "$(SolutionDir)Dev2.Server\bin\Release\net6.0-windows\Resources - Release"
+    echo D | xcopy /Y /E /F /D "$(SolutionDir)Binaries\Warewolf.COMIPC.exe_v4.8" "$(SolutionDir)Dev2.Server\bin\Release\net6.0-windows\Warewolf.COMIPC.exe_v4.8"
+    echo D | xcopy /Y /E /F /D "$(SolutionDir)Server Tests Setup\SQLite.Interop.dll" "$(SolutionDir)Dev\Dev2.Server\bin\Release\net6.0-windows"
+    )
+    taskkill /f /im Warewolf.COMIPC.exe /fi "STATUS eq RUNNING"
+    taskkill /f /im Warewolf.COMIPC.vshost.exe /fi "STATUS eq RUNNING"</PostBuildEvent>
     <StartupObject>Dev2.Program</StartupObject>
     <IsTestProject>false</IsTestProject>
     <UserSecretsId>61f81da6-a240-4f74-ac27-c901cbc2e6bd</UserSecretsId>

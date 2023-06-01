@@ -34,6 +34,12 @@
     <SonarQubeExclude>True</SonarQubeExclude>
     <SonarQubeTestProject>True</SonarQubeTestProject>
   </PropertyGroup>
+  <PropertyGroup>
+    <ContentSQLiteInteropFiles>true</ContentSQLiteInteropFiles>
+    <CopySQLiteInteropFiles>false</CopySQLiteInteropFiles>
+    <CleanSQLiteInteropFiles>false</CleanSQLiteInteropFiles>
+    <CollectSQLiteInteropFiles>false</CollectSQLiteInteropFiles>
+ </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
@@ -656,6 +662,7 @@
 
     <PackageReference Include="System.Data.SQLite.Core">
       <Version>1.0.117</Version>
+      <PrivateAssets>none</PrivateAssets>
     </PackageReference>
     <PackageReference Include="TaskSchedulerEditor">
       <Version>2.10.1</Version>
@@ -717,11 +724,13 @@
   </ItemGroup>
   <PropertyGroup>
     <PostBuildEvent>
-      taskkill /f /im Warewolf.COMIPC.exe /fi "STATUS eq RUNNING"
-      taskkill /f /im Warewolf.COMIPC.vshost.exe /fi "STATUS eq RUNNING"
-      if exist "$(SolutionDir)Dev2.Runtime.Tests\bin\Debug\net6.0-windows\win\Dev2.Runtime.Tests.dll" (
-      echo D | xcopy /Y /E /F /D "$(SolutionDir)Binaries\Warewolf.COMIPC.exe_v4.8" "$(SolutionDir)Dev2.Runtime.Tests\bin\Debug\net6.0-windows\win\Warewolf.COMIPC.exe_v4.8"
-      )</PostBuildEvent>
+		taskkill /f /im Warewolf.COMIPC.exe /fi "STATUS eq RUNNING"
+		taskkill /f /im Warewolf.COMIPC.vshost.exe /fi "STATUS eq RUNNING"
+		if exist "$(SolutionDir)Dev2.Runtime.Tests\bin\Debug\net6.0-windows\win\Dev2.Runtime.Tests.dll" (
+		echo D | xcopy /Y /E /F /D "$(SolutionDir)Binaries\Warewolf.COMIPC.exe_v4.8" "$(SolutionDir)Dev2.Runtime.Tests\bin\Debug\net6.0-windows\win\Warewolf.COMIPC.exe_v4.8"
+		echo D | xcopy /Y /E /F /D "$(SolutionDir)Server Tests Setup\SQLite.Interop.dll" "$(SolutionDir)Dev2.Runtime.Tests\bin\Debug\net6.0-windows\win"
+		)
+	</PostBuildEvent>
   </PropertyGroup>
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />

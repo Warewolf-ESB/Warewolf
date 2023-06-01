@@ -32,6 +32,12 @@
     <SonarQubeExclude>True</SonarQubeExclude>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
+  <PropertyGroup>
+    <ContentSQLiteInteropFiles>true</ContentSQLiteInteropFiles>
+    <CopySQLiteInteropFiles>false</CopySQLiteInteropFiles>
+    <CleanSQLiteInteropFiles>false</CleanSQLiteInteropFiles>
+    <CollectSQLiteInteropFiles>false</CollectSQLiteInteropFiles>
+ </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
@@ -537,6 +543,9 @@
   </ItemGroup>
   <PropertyGroup>
     <PostBuildEvent>
+      if exist "$(SolutionDir)Dev\Dev2.Activities.Specs\bin\Debug\net6.0-windows\win\Dev2.Activities.Specs.dll" (
+        echo D | xcopy /Y /E /F /D "$(SolutionDir)Server Tests Setup\SQLite.Interop.dll" "$(SolutionDir)Dev\Dev2.Activities.Specs\bin\Debug\net6.0-windows\win"
+      )
     </PostBuildEvent>
   </PropertyGroup>
 </Project>

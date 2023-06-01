@@ -4,6 +4,12 @@
     <Configurations>Debug</Configurations>
   </PropertyGroup>
   <PropertyGroup>
+    <ContentSQLiteInteropFiles>true</ContentSQLiteInteropFiles>
+    <CopySQLiteInteropFiles>false</CopySQLiteInteropFiles>
+    <CleanSQLiteInteropFiles>false</CleanSQLiteInteropFiles>
+    <CollectSQLiteInteropFiles>false</CollectSQLiteInteropFiles>
+ </PropertyGroup>
+  <PropertyGroup>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <RootNamespace>Warewolf.Tests</RootNamespace>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>

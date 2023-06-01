@@ -12,8 +12,7 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Dev2</RootNamespace>
-    <AssemblyName>Warewolf Studio</AssemblyName>
-    
+    <AssemblyName>Warewolf Studio</AssemblyName>    
     <RuntimeIdentifiers>win-x86;win-x64</RuntimeIdentifiers>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
@@ -46,6 +45,12 @@
     <UseWpf>true</UseWpf>
     <CodeAnalysisRuleSet>..\.sonarlint\warewolf_dotnet_frameworkcsharp.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+  <PropertyGroup>
+    <ContentSQLiteInteropFiles>true</ContentSQLiteInteropFiles>
+    <CopySQLiteInteropFiles>false</CopySQLiteInteropFiles>
+    <CleanSQLiteInteropFiles>false</CleanSQLiteInteropFiles>
+    <CollectSQLiteInteropFiles>false</CollectSQLiteInteropFiles>
+ </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>Warewolf.ico</ApplicationIcon>
   </PropertyGroup>
