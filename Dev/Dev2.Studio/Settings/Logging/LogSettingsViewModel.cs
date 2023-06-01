@@ -63,7 +63,7 @@ namespace Dev2.Settings.Logging
 
         private string _serverLogMaxSize;
         private string _studioLogMaxSize;
-        private string _auditLogMaxSize;
+        private long _auditLogMaxSize;
         private string _selectedLoggingType;
         private LogLevel _serverEventLogLevel;
         private LogLevel _studioEventLogLevel;
@@ -119,7 +119,6 @@ namespace Dev2.Settings.Logging
             {
                 _studioEventLogLevel = studioEventLogLevel;
             }
-            //_auditLogMaxSize = Dev2Logger.GetLogMaxSize().ToString(CultureInfo.InvariantCulture);
             _studioLogMaxSize = Dev2Logger.GetLogMaxSize().ToString(CultureInfo.InvariantCulture);
             var serverSettingsData = _resourceRepository.GetServerSettings(CurrentEnvironment);
 
@@ -247,7 +246,7 @@ namespace Dev2.Settings.Logging
 
                 var savedAuditFilePath = string.Empty;
                 var savedEndpoint = string.Empty;
-                var savedAuditLogMaxSize = string.Empty;
+                long savedAuditLogMaxSize = 0;
                 LegacySettingsData legacySettingsData;
                 switch (savedSink)
                 {
@@ -255,7 +254,7 @@ namespace Dev2.Settings.Logging
                         var auditingSettingsData = _resourceRepository.GetAuditingSettings<AuditingSettingsData>(CurrentEnvironment);
                         savedResourceId = auditingSettingsData.LoggingDataSource.Value;
                         savedEncryptDataSource = auditingSettingsData.EncryptDataSource;
-                        savedIncludeEnvironmentVariable = auditingSettingsData.IncludeEnvironmentVariable;                       
+                        savedIncludeEnvironmentVariable = auditingSettingsData.IncludeEnvironmentVariable;
                         break;
 
                     case DEFAULT_SINK:
@@ -367,7 +366,7 @@ namespace Dev2.Settings.Logging
             var data = new AuditingSettingsData
             {
                 EncryptDataSource = _encryptDataSource,
-                IncludeEnvironmentVariable = _includeEnvironmentVariable,                
+                IncludeEnvironmentVariable = _includeEnvironmentVariable,
                 LoggingDataSource = new NamedGuidWithEncryptedPayload
                 {
                     Name = _selectedAuditingSource.ResourceName,
@@ -495,24 +494,14 @@ namespace Dev2.Settings.Logging
             }
         }
 
-        public string AuditLogMaxSize
+        public long AuditLogMaxSize
         {
             get => _auditLogMaxSize;
             set
             {
-                if (string.IsNullOrEmpty(value) && string.IsNullOrEmpty(_auditLogMaxSize))
-                {
-                    _auditLogMaxSize = "0";
-                }
-                else
-                {
-                    if (StringExtension.IsWholeNumber(value, out int val))
-                    {
-                        IsDirty = !Equals(Item);
-                        _auditLogMaxSize = value;
-                        OnPropertyChanged();
-                    }
-                }
+                IsDirty = !Equals(Item);
+                _auditLogMaxSize = value;
+                OnPropertyChanged();
             }
         }
 
@@ -649,9 +638,9 @@ namespace Dev2.Settings.Logging
             equalsSeq &= string.Equals(_studioFileLogLevel.ToString(), other._studioFileLogLevel.ToString());
             equalsSeq &= Equals(_selectedLoggingType, other._selectedLoggingType);
             equalsSeq &= int.Parse(_serverLogMaxSize) == int.Parse(other._serverLogMaxSize);
-            equalsSeq &= int.Parse(_studioLogMaxSize) == int.Parse(other._studioLogMaxSize);          
+            equalsSeq &= int.Parse(_studioLogMaxSize) == int.Parse(other._studioLogMaxSize);
             equalsSeq &= string.Equals(_auditFilePath, other._auditFilePath);
-            equalsSeq &= string.Equals(_auditLogMaxSize, other._auditLogMaxSize);
+            equalsSeq &= _auditLogMaxSize == other._auditLogMaxSize;
             equalsSeq &= _includeEnvironmentVariable == other._includeEnvironmentVariable;
             equalsSeq &= string.Equals(_sink, other._sink);
             equalsSeq &= Equals(_resourceSourceId, other._resourceSourceId);
