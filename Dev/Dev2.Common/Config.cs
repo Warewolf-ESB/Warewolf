@@ -279,7 +279,7 @@ namespace Dev2.Common
         public static string DefaultAuditPath => Path.Combine(Config.AppDataPath, @"Audits");
         public static string DefaultEndpoint => "ws://127.0.0.1:5000/ws";
 
-        public static long DefaultAuditLogMaxSize => 2000;
+        public const long DefaultAuditLogMaxSize = 2000;
 
         public LegacySettings()
             : this(SettingsPath, new FileWrapper(), new DirectoryWrapper())
