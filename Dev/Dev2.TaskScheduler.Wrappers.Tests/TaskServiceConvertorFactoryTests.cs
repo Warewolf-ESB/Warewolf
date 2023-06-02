@@ -364,7 +364,7 @@ namespace Dev2.TaskScheduler.Wrappers.Test
                 }
                 catch(Exception ex1)
                 {
-                    Assert.AreEqual("The network path was not found. (Exception from HRESULT: 0x80070035)",ex1.Message);
+                    Assert.AreEqual("The user name or password is incorrect.", ex1.Message);
                 }
             }
           
