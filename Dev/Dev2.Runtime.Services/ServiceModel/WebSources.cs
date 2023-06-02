@@ -462,7 +462,7 @@ namespace Dev2.Runtime.ServiceModel
             {
                 foreach (var header in headers)
                 {
-                    if (header != ":" && !header.ToLower().StartsWith("content-type:"))
+                    if (header != ":" && !header.ToLower().StartsWith("content-type:") && !header.ToLower().Contains(":bearer"))
                     {
                         wr.AddHeader(header.Trim());
                     }
