@@ -1,9 +1,0 @@
-
-<Source ID="f20f2125-a6e5-4ac2-b89e-403c3915c819" Name="b7ada98f-c93b-4841-bc03-c3798584f0cb" ResourceType="ExchangeSource" IsValid="false" ConnectionString="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAA0ANawE9+lUiIoe6YI8F/cgQAAAACAAAAAAADZgAAwAAAABAAAACq862tBZdRb2o06NTeka7NAAAAAASAAACgAAAAEAAAAEquHTlFc2sXL4AAHNylTtAYAQAAvXiISPEqM633FbkUKoKOz4mpNv7WQeYOFNfD08WgM8ASX02su5LwYLsuJPcRJNhm1gvfvXFmhX7EATFVSbe7yTMAhCh8ahYnUK7lpzUJYQi7abKXRi+DuDtVrsBLNXHg12fgYArtnUvvIzgXSYEwn4wz2fvbSDy+Z6wuK1S83e/veVwZP4gGVaIM8lwH9eeEMMfEDdO09KQxqkhl5Ddw/kemrfER7QjbxdY4hmHANySCWzltBAtSnl6tUsjee219Uv8aOMEUHXj+oI5b/Apb69NExy5kMPvRFmj8i1M9DAyZZemDdpixCcAIQQGzBia5BC92xs7QTOjPmsZRzzMWtinTxA5bQL2/THNugge9ekzyXOgLfet0AxQAAACfPKHZXAtWnQ0zfm4OAIDSv2Ehug==" Type="ExchangeSource" ServerVersion="2.8.1.47" ServerID="00000000-0000-0000-0000-000000000000">
-  <DisplayName>b7ada98f-c93b-4841-bc03-c3798584f0cb</DisplayName>
-  <AuthorRoles>
-  </AuthorRoles>
-  <ErrorMessages />
-  <TypeOf>ExchangeSource</TypeOf>
-  <VersionInfo DateTimeStamp="2023-03-31T13:23:32.9753296+05:30" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="f20f2125-a6e5-4ac2-b89e-403c3915c819" VersionId="83772f69-a327-41d2-a52c-7c08496e5cab" />
-</Source>

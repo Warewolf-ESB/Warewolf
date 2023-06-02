@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Threading;
@@ -525,17 +526,37 @@ namespace Warewolf.UnitTestAttributes
 
         public static void RefreshServer()
         {
-            using (WebClient client = new WebClient())
+            //using (WebClient client = new WebClient())
+            //{
+            //    client.Credentials = CredentialCache.DefaultNetworkCredentials;
+            //    try
+            //    {
+            //        Console.WriteLine(client.DownloadString(
+            //            "http://localhost:3142/services/FetchExplorerItemsService.json?ReloadResourceCatalogue=true"));
+            //    }
+            //    catch (WebException e)
+            //    {
+            //        Console.WriteLine($"Cannot refresh server to redirect server sources. {e.Message}");
+            //    }
+            //}
+
+            using (HttpClientHandler handler = new HttpClientHandler())
             {
-                client.Credentials = CredentialCache.DefaultNetworkCredentials;
-                try
+                handler.UseDefaultCredentials = true;
+
+                using (HttpClient client = new HttpClient(handler))
                 {
-                    Console.WriteLine(client.DownloadString(
-                        "http://localhost:3142/services/FetchExplorerItemsService.json?ReloadResourceCatalogue=true"));
-                }
-                catch (WebException e)
-                {
-                    Console.WriteLine($"Cannot refresh server to redirect server sources. {e.Message}");
+                    string url = "http://localhost:3142/services/FetchExplorerItemsService.json?ReloadResourceCatalogue=true";
+
+                    try
+                    {
+                        string content = client.GetStringAsync(url).GetAwaiter().GetResult();
+                        Console.WriteLine(content);
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine($"Cannot refresh server to redirect server sources. {e.Message}");
+                    }
                 }
             }
         }

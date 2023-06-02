@@ -125,6 +125,39 @@ namespace Dev2.Runtime.WebServer.Hubs
 
         }
 
+
+
+        void NotifyPermissionsHaveBeenModified(IClientProxy clientCaller, System.Security.Claims.ClaimsPrincipal user)
+        {
+            if (null == user && _httpContextAccessor.HttpContext != null)
+            {
+                user = _httpContextAccessor.HttpContext.User;
+                if (null == user) return;
+            }
+
+            try
+            {
+                var permissionsMemo = new PermissionsModifiedMemo
+                {
+                    ModifiedPermissions = ServerAuthorizationService.Instance.GetPermissions(user),
+                    ServerID = HostSecurityProvider.Instance.ServerID
+                };
+                var serializedMemo = _serializer.Serialize(permissionsMemo);
+                //Clients.Caller.SendPermissionsMemo(serializedMemo);
+
+                if (clientCaller != null)
+                    clientCaller.SendAsync("SendPermissionsMemo", serializedMemo);
+                else
+                    _hubContext.Clients.Group($"user_{user.Identity.Name}").SendAsync("SendPermissionsMemo", serializedMemo);
+
+            }
+            catch (Exception e)
+            {
+                Dev2Logger.Warn($"unable to notify remote client with PermissionsMemo, error: {e.Message}", GlobalConstants.WarewolfWarn);
+            }
+        }
+
+
         void PermissionsHaveBeenModified(object sender, PermissionsModifiedEventArgs permissionsModifiedEventArgs)
         {
             if (_httpContextAccessor.HttpContext == null)
@@ -216,7 +249,7 @@ namespace Dev2.Runtime.WebServer.Hubs
             return null;
         }
 
-        public  void SendDebugState(DebugState debugState)
+        public void SendDebugState(DebugState debugState)
         {
             var debugSerializated = _serializer.Serialize(debugState);
 
@@ -408,12 +441,12 @@ namespace Dev2.Runtime.WebServer.Hubs
                 var workspaceId = Server.GetWorkspaceID(_httpContextAccessor.HttpContext.User.Identity);
                 ResourceCatalog.Instance.LoadServerActivityCache();
 
-                var user = _hubContext.Clients.Client(connectionId);
+                var clientCaller = _hubContext.Clients.Client(connectionId);
 
-                user.SendAsync("SendWorkspaceID", workspaceId);//user.SendWorkspaceID(workspaceId);
-                user.SendAsync("SendServerID", HostSecurityProvider.Instance.ServerID);//user.SendServerID(HostSecurityProvider.Instance.ServerID);
+                clientCaller.SendAsync("SendWorkspaceID", workspaceId);//clientCaller.SendWorkspaceID(workspaceId);
+                clientCaller.SendAsync("SendServerID", HostSecurityProvider.Instance.ServerID);//clientCaller.SendServerID(HostSecurityProvider.Instance.ServerID);
 
-                PermissionsHaveBeenModified(null, null);
+                NotifyPermissionsHaveBeenModified(clientCaller, _httpContextAccessor.HttpContext.User);//PermissionsHaveBeenModified(null, null);
             });
             t.Start();
         }

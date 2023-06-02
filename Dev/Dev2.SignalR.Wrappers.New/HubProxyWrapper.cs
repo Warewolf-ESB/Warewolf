@@ -189,8 +189,8 @@ namespace Dev2.SignalR.Wrappers.New
 
         public StateChangeWrapped(HubConnectionState oldState, HubConnectionState newState)
         {
-            OldState = (ConnectionStateWrapped)oldState;
-            NewState = (ConnectionStateWrapped)newState;
+            OldState = oldState.ToConnectionStateWrapped();
+            NewState = newState.ToConnectionStateWrapped();
         }
 
         //public StateChangeWrapped(StateChange change)

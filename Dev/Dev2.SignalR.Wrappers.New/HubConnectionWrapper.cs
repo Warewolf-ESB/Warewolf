@@ -36,8 +36,8 @@ namespace Dev2.SignalR.Wrappers.New
             _wrapped.Reconnecting += exception =>
             {
                 _connectNotify.Reset();
-                
-                if(exception != null && Error != null)
+
+                if (exception != null && Error != null)
                     Error.Invoke(exception);
 
                 return Task.CompletedTask;
@@ -54,7 +54,7 @@ namespace Dev2.SignalR.Wrappers.New
             _wrapped.Closed += exception =>
             {
                 _connectNotify.Reset();
-                
+
                 if (exception != null && Error != null)
                     Error.Invoke(exception);
 
@@ -161,10 +161,10 @@ namespace Dev2.SignalR.Wrappers.New
             //return _wrapped.Start(serverSentEventsTransport);
             try
             {
-                 _wrapped.StartAsync().Wait();
+                _wrapped.StartAsync().Wait();
                 StateChanged?.Invoke(new StateChangeWrapped(_oldState, _wrapped.State));
 
-                if(_wrapped.State == HubConnectionState.Connected)
+                if (_wrapped.State == HubConnectionState.Connected)
                     _connectNotify.Set();
 
                 _oldState = _wrapped.State;
@@ -183,7 +183,8 @@ namespace Dev2.SignalR.Wrappers.New
             //_wrapped.Stop(timeSpan);
             try
             {
-                _wrapped.StopAsync().Wait((int)timeSpan.TotalMilliseconds);
+                _wrapped.StopAsync().Wait();
+                //_wrapped.StopAsync().Wait((int)timeSpan.TotalMilliseconds);
                 StateChanged?.Invoke(new StateChangeWrapped(_oldState, _wrapped.State));
                 _oldState = _wrapped.State;
             }

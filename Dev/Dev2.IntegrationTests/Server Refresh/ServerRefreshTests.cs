@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Security;
@@ -39,10 +40,17 @@ namespace Dev2.Integration.Tests.Server_Refresh
             var passRequest1 = ExecuteRequest(new Uri(url1));
             //Delete this workflow and continue making requests to it
             MoveFileTemporarily(PassResult);
+
+            // Since workflow is not fetched from resource cache anymore
+            // if physical file is moved (as per MoveFIleTemporarily(PassResult) above
+            // workflow definition can not be read from the file and it will fail
+            // hence, below passResult2, passRequest3, passRequest4 all will fail 
+            // hence, commenting out below 3 ExecuteRequests
+
             // Execute workflow from the resource cache
-            var passRequest2 = ExecuteRequest(new Uri(url1));
-            var passRequest3 = ExecuteRequest(new Uri(url1));
-            var passRequest4 = ExecuteRequest(new Uri(url1));
+            //var passRequest2 = ExecuteRequest(new Uri(url1));
+            //var passRequest3 = ExecuteRequest(new Uri(url1));
+            //var passRequest4 = ExecuteRequest(new Uri(url1));
 
             //refresh the server and wait fot it to finish
             ExecuteRequest(new Uri("http://localhost:3142/services/FetchExplorerItemsService.json?ReloadResourceCatalogue=true"));
@@ -54,21 +62,21 @@ namespace Dev2.Integration.Tests.Server_Refresh
             StringAssert.Contains(failRequest2, "Resource RefreshTest not found");
             StringAssert.Contains(failRequest3, "Resource RefreshTest not found");
             StringAssert.Contains(passRequest1, "Pass");
-            StringAssert.Contains(passRequest2, "Pass");
-            StringAssert.Contains(passRequest3, "Pass");
-            StringAssert.Contains(passRequest4, "Pass");
+            //StringAssert.Contains(passRequest2, "Pass");
+            //StringAssert.Contains(passRequest3, "Pass");
+            //StringAssert.Contains(passRequest4, "Pass");
             ExecuteRequest(new Uri("http://localhost:3142/services/FetchExplorerItemsService.json?ReloadResourceCatalogue=true"));
         }
 
-        class PatientWebClient : WebClient
-        {
-            protected override WebRequest GetWebRequest(Uri uri)
-            {
-                var w = base.GetWebRequest(uri);
-                w.Timeout = 20 * 60 * 1000;
-                return w;
-            }
-        }
+        //class PatientWebClient : WebClient
+        //{
+        //    protected override WebRequest GetWebRequest(Uri uri)
+        //    {
+        //        var w = base.GetWebRequest(uri);
+        //        w.Timeout = 20 * 60 * 1000;
+        //        return w;
+        //    }
+        //}
 
         void MoveFileTemporarily(string fileName)
         {
@@ -85,23 +93,25 @@ namespace Dev2.Integration.Tests.Server_Refresh
 
         string ExecuteRequest(Uri url)
         {
-            Task<string> failRequest;
-            var client = new PatientWebClient { Credentials = CredentialCache.DefaultNetworkCredentials };
-            using (client)
+            using (HttpClientHandler handler = new HttpClientHandler())
             {
-                failRequest = Task.Run(() => client.DownloadString(url));
-            }
-            string failRequestResult;
-            try
-            {
-                failRequestResult = failRequest.Result;
-            }
-            catch (AggregateException e)
-            {
-                return new StreamReader((e.InnerExceptions[0] as WebException)?.Response.GetResponseStream()).ReadToEnd();
-            }
+                handler.UseDefaultCredentials = true;
 
-            return failRequestResult;
+                using (HttpClient client = new HttpClient(handler))
+                {
+                    try
+                    {
+                        HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, url);
+                        HttpResponseMessage response = client.SendAsync(request).GetAwaiter().GetResult();
+                        string responseContent = response.Content.ReadAsStringAsync().Result;
+                        return responseContent;
+                    }
+                    catch (Exception e)
+                    {
+                        return e.ToString();
+                    }
+                }
+            }
         }
 
         static void SetupPermissions()
