@@ -29,7 +29,7 @@ namespace Warewolf.Auditing.Tests
         string connstring = @"C:\ProgramData\Warewolf\Audits\AuditTestDB.db";
         string sqlMessage = "SELECT * FROM (SELECT json_extract(Properties, '$.Data') AS Message, Level, TimeStamp FROM Logs) WHERE json_extract(Message, '$.Url') <> '' ";
         [ClassInitialize]
-        [DeploymentItem(@"x86\SQLite.Interop.dll")]
+        //[DeploymentItem(@"x86\SQLite.Interop.dll")]
         public static void TestFixtureSetup(TestContext context)
         {
             var testDBPath = @"C:\ProgramData\Warewolf\Audits\AuditTestDB.db";
@@ -55,7 +55,7 @@ namespace Warewolf.Auditing.Tests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AuditQueryableSqlite))]
-        [DeploymentItem(@"x86\SQLite.Interop.dll")]
+        //[DeploymentItem(@"x86\SQLite.Interop.dll")]
         public void AuditQueryableSqlite_QueryLogData_FilterBy_NoParameters()
         {
             var auditQueryable = new AuditQueryableSqlite(connstring);
@@ -70,7 +70,7 @@ namespace Warewolf.Auditing.Tests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AuditQueryableSqlite))]
-        [DeploymentItem(@"x86\SQLite.Interop.dll")]
+        //[DeploymentItem(@"x86\SQLite.Interop.dll")]
         public void AuditQueryableSqlite_QueryLogData_FilterBy_ExecutionId_EventLevel()
         {
             var executionID = Guid.NewGuid();
@@ -90,7 +90,7 @@ namespace Warewolf.Auditing.Tests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AuditQueryableSqlite))]
-        [DeploymentItem(@"x86\SQLite.Interop.dll")]
+        //[DeploymentItem(@"x86\SQLite.Interop.dll")]
         public void AuditQueryableSqlite_QueryLogData_FilterBy_EventLevel_IncorrectLevel()
         {
             var query = new Dictionary<string, StringBuilder>
@@ -107,7 +107,7 @@ namespace Warewolf.Auditing.Tests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AuditQueryableSqlite))]
-        [DeploymentItem(@"x86\SQLite.Interop.dll")]
+        //[DeploymentItem(@"x86\SQLite.Interop.dll")]
         public void AuditQueryableSqlite_QueryLogData_FilterBy_ExecutionId()
         {
             var executionID = Guid.NewGuid();
@@ -125,7 +125,7 @@ namespace Warewolf.Auditing.Tests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AuditQueryableSqlite))]
-        [DeploymentItem(@"x86\SQLite.Interop.dll")]
+        //[DeploymentItem(@"x86\SQLite.Interop.dll")]
         public void AuditQueryableSqlite_QueryLogData_FilterBy_EventLevel_Debug()
         {
             var query = new Dictionary<string, StringBuilder>
@@ -143,7 +143,7 @@ namespace Warewolf.Auditing.Tests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AuditQueryableSqlite))]
-        [DeploymentItem(@"x86\SQLite.Interop.dll")]
+        //[DeploymentItem(@"x86\SQLite.Interop.dll")]
         public void AuditQueryableSqlite_QueryLogData_FilterBy_EventLevel_Information()
         {
             var query = new Dictionary<string, StringBuilder>
@@ -162,7 +162,7 @@ namespace Warewolf.Auditing.Tests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AuditQueryableSqlite))]
-        [DeploymentItem(@"x86\SQLite.Interop.dll")]
+        //[DeploymentItem(@"x86\SQLite.Interop.dll")]
         public void AuditQueryableSqlite_QueryLogData_FilterBy_EventLevel_Warning()
         {
             var query = new Dictionary<string, StringBuilder>
@@ -181,7 +181,7 @@ namespace Warewolf.Auditing.Tests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AuditQueryableSqlite))]
-        [DeploymentItem(@"x86\SQLite.Interop.dll")]
+        //[DeploymentItem(@"x86\SQLite.Interop.dll")]
         public void AuditQueryableSqlite_QueryLogData_FilterBy_EventLevel_Error()
         {
             var query = new Dictionary<string, StringBuilder>
@@ -199,7 +199,7 @@ namespace Warewolf.Auditing.Tests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AuditQueryableSqlite))]
-        [DeploymentItem(@"x86\SQLite.Interop.dll")]
+        //[DeploymentItem(@"x86\SQLite.Interop.dll")]
         public void AuditQueryableSqlite_QueryLogData_FilterBy_EventLevel_Fatal()
         {
             var query = new Dictionary<string, StringBuilder>
@@ -217,7 +217,7 @@ namespace Warewolf.Auditing.Tests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AuditQueryableSqlite))]
-        [DeploymentItem(@"x86\SQLite.Interop.dll")]
+        //[DeploymentItem(@"x86\SQLite.Interop.dll")]
         public void AuditQueryableSqlite_AuditQueryableSqlite_QueryLogData_FilterBy_DateTime()
         {
             var StartDateTime = DateTime.Now;
@@ -238,7 +238,7 @@ namespace Warewolf.Auditing.Tests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AuditQueryableSqlite))]
-        [DeploymentItem(@"x86\SQLite.Interop.dll")]
+        //[DeploymentItem(@"x86\SQLite.Interop.dll")]
         public void AuditQueryableSqlite_AuditQueryableSqlite_QueryLogData_DateTime_EventLevel()
         {
             var StartDateTime = DateTime.Now;
@@ -260,7 +260,7 @@ namespace Warewolf.Auditing.Tests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AuditQueryableSqlite))]
-        [DeploymentItem(@"x86\SQLite.Interop.dll")]
+        //[DeploymentItem(@"x86\SQLite.Interop.dll")]
         public void AuditQueryableSqlite_AuditQueryableSqlite_QueryLogData_FilterBy_DateTime_EventLevel_executionID()
         {
             var executionID = Guid.NewGuid();
@@ -283,7 +283,7 @@ namespace Warewolf.Auditing.Tests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AuditQueryableSqlite))]
-        [DeploymentItem(@"x86\SQLite.Interop.dll")]
+        //[DeploymentItem(@"x86\SQLite.Interop.dll")]
         public void AuditQueryableSqlite_AuditQueryableSqlite_QueryLogData_FilterBy_DateTime_On_UrlEncoded_DateTime_EventLevel_and_executionID_Should_Not_Break()
         {
             var executionID = Guid.NewGuid();
