@@ -59,10 +59,9 @@ namespace Dev2.Core.Tests
         [TestCategory("HelpViewModel_OnViewLoaded")]
         public void HelpViewModel_LoadBrowserUri_HasInternetConnection_NavigatesToUrl()
         {
-            //------------Setup for test--------------------------
-            const string uri = "http://community.warewolf.io/";
-            new Application().Dispatcher.Invoke(async () =>
-            {
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(async ()=> {
+                //------------Setup for test--------------------------
+                const string uri = "http://community.warewolf.io/";
                 var helpViewWrapper = new Mock<IHelpViewWrapper>();
                 var webBrowser = new Frame();
                 helpViewWrapper.SetupGet(m => m.WebBrowser).Returns(webBrowser);
