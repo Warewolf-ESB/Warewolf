@@ -418,56 +418,59 @@ namespace Dev2.Core.Tests
         [TestCategory("MergeViewModel_DoDeactivate")]
         public void MergeViewModel_DoDeactivate_CanSave_MessageBoxYes()
         {
-            //------------Setup for test--------------------------
-            _firstResource = CreateResource(ResourceType.WorkflowService);
+            new Application().Dispatcher.BeginInvoke(new System.Action(() =>
+            {
+                //------------Setup for test--------------------------
+                _firstResource = CreateResource(ResourceType.WorkflowService);
 
-            var mockWorkSurfaceViewModel = new Mock<IMergePreviewWorkflowDesignerViewModel>();
-            mockWorkSurfaceViewModel.Setup(model => model.Server).Returns(_environmentModel.Object);
-            mockWorkSurfaceViewModel.Setup(model => model.ResourceModel).Returns(_firstResource.Object);
+                var mockWorkSurfaceViewModel = new Mock<IMergePreviewWorkflowDesignerViewModel>();
+                mockWorkSurfaceViewModel.Setup(model => model.Server).Returns(_environmentModel.Object);
+                mockWorkSurfaceViewModel.Setup(model => model.ResourceModel).Returns(_firstResource.Object);
 
-            var currentTree = new List<ConflictTreeNode>();
-            var diffTree = new List<ConflictTreeNode>();
+                var currentTree = new List<ConflictTreeNode>();
+                var diffTree = new List<ConflictTreeNode>();
 
-            _mockParseServiceForDifferences.Setup(parser =>
-                parser.GetDifferences(It.IsAny<IContextualResourceModel>(), It.IsAny<IContextualResourceModel>(),
-                    false)).Returns((currentTree, diffTree));
+                _mockParseServiceForDifferences.Setup(parser =>
+                    parser.GetDifferences(It.IsAny<IContextualResourceModel>(), It.IsAny<IContextualResourceModel>(),
+                        false)).Returns((currentTree, diffTree));
 
-            //------------Execute Test---------------------------
+                //------------Execute Test---------------------------
 
-            var popupController = new Mock<IPopupController>();
-            popupController.Setup(controller => controller.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), MessageBoxImage.Information, "", false, false, true, false, false, false)).Returns(MessageBoxResult.Yes);
-            CustomContainer.Register(popupController.Object);
+                var popupController = new Mock<IPopupController>();
+                popupController.Setup(controller => controller.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), MessageBoxImage.Information, "", false, false, true, false, false, false)).Returns(MessageBoxResult.Yes);
+                CustomContainer.Register(popupController.Object);
 
-            var mockConflictRow = new Mock<IToolConflictRow>();
-            mockConflictRow.Setup(cr => cr.HasConflict).Returns(true);
-            var conflicts = new List<IToolConflictRow>();
-            conflicts.Add(mockConflictRow.Object);
+                var mockConflictRow = new Mock<IToolConflictRow>();
+                mockConflictRow.Setup(cr => cr.HasConflict).Returns(true);
+                var conflicts = new List<IToolConflictRow>();
+                conflicts.Add(mockConflictRow.Object);
 
-            var viewModel = new Mock<IMergeWorkflowViewModel>();
-            viewModel.Setup(model => model.MergePreviewWorkflowDesignerViewModel).Returns(mockWorkSurfaceViewModel.Object);
-            var vm = new MergeViewModel(_eventAggregator.Object, viewModel.Object, popupController.Object, new Mock<IView>().Object);
+                var viewModel = new Mock<IMergeWorkflowViewModel>();
+                viewModel.Setup(model => model.MergePreviewWorkflowDesignerViewModel).Returns(mockWorkSurfaceViewModel.Object);
+                var vm = new MergeViewModel(_eventAggregator.Object, viewModel.Object, popupController.Object, new Mock<IView>().Object);
 
-            Assert.IsNotNull(vm);
-            Assert.IsFalse(vm.HasVariables);
-            Assert.IsFalse(vm.HasDebugOutput);
-            Assert.IsNull(vm.DisplayName);
-            Assert.AreEqual("MergeConflicts", vm.ResourceType);
-            Assert.IsNull(vm.HelpText);
-            Assert.IsFalse(vm.IsDirty);
+                Assert.IsNotNull(vm);
+                Assert.IsFalse(vm.HasVariables);
+                Assert.IsFalse(vm.HasDebugOutput);
+                Assert.IsNull(vm.DisplayName);
+                Assert.AreEqual("MergeConflicts", vm.ResourceType);
+                Assert.IsNull(vm.HelpText);
+                Assert.IsFalse(vm.IsDirty);
 
-            var mergeWorkflowViewModel = new MergeWorkflowViewModel(_firstResource.Object, _firstResource.Object, false);
-            mergeWorkflowViewModel.Conflicts = conflicts;
-            mergeWorkflowViewModel.HasMergeStarted = true;
-            mergeWorkflowViewModel.DisplayName = "Merge";
+                var mergeWorkflowViewModel = new MergeWorkflowViewModel(_firstResource.Object, _firstResource.Object, false);
+                mergeWorkflowViewModel.Conflicts = conflicts;
+                mergeWorkflowViewModel.HasMergeStarted = true;
+                mergeWorkflowViewModel.DisplayName = "Merge";
 
-            vm.ViewModel = mergeWorkflowViewModel;
+                vm.ViewModel = mergeWorkflowViewModel;
 
-            vm.DoDeactivate(true);
+                vm.DoDeactivate(true);
 
-            //------------Assert Results-------------------------
+                //------------Assert Results-------------------------
 
-            Assert.IsTrue(vm.IsDirty);
-            Assert.IsNull(vm.HelpText);
+                Assert.IsTrue(vm.IsDirty);
+                Assert.IsNull(vm.HelpText);
+            }));
         }
 
         [TestMethod]
