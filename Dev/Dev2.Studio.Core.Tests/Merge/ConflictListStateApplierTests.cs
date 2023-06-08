@@ -8,10 +8,12 @@ namespace Dev2.Core.Tests.Merge
     {
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        public void MergePreviewWorkflowStateApplier_Constructor()
+        public void ConflictListStateApplier_Constructor()
         {
-            var conflictListStateApplier = CreateConflictListStateApplier();
-            Assert.IsNotNull(conflictListStateApplier);
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(()=> {
+                var conflictListStateApplier = CreateConflictListStateApplier();
+                Assert.IsNotNull(conflictListStateApplier);
+            });
         }
     }
 }

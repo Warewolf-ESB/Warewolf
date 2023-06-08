@@ -220,36 +220,39 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
         [TestCategory("IntellisenseTextBox_OnPreviewKeyDown")]
         public void GivenAnExpression_IntellisenseTextBox_AddBracketsToExpression_ShouldAddBrackets()
         {
-            //------------Setup for test--------------------------
-            var textBox = new IntellisenseTextBox
-            {
-                FilterType = enIntellisensePartType.ScalarsOnly
-                ,
-                WrapInBrackets = true
-            };
-            //------------Execute Test---------------------------
-            var bracketsToExpression = textBox.AddBracketsToExpression("Person");
-            //------------Assert Results-------------------------
-            Assert.IsNotNull(bracketsToExpression);
-            Assert.AreEqual("[[Person]]", bracketsToExpression);
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(()=> {
+                //------------Setup for test--------------------------
+                var textBox = new IntellisenseTextBox
+                {
+                    FilterType = enIntellisensePartType.ScalarsOnly
+                    ,
+                    WrapInBrackets = true
+                };
+                //------------Execute Test---------------------------
+                var bracketsToExpression = textBox.AddBracketsToExpression("Person");
+                //------------Assert Results-------------------------
+                Assert.IsNotNull(bracketsToExpression);
+                Assert.AreEqual("[[Person]]", bracketsToExpression);
+            });
         }
-
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("IntellisenseTextBox_OnPreviewKeyDown")]
         public void GivenAnExpression_IntellisenseTextBox_SetAppendTextBasedOnSelection()
         {
-            //------------Setup for test--------------------------
-            var textBox = new IntellisenseTextBox
-            {
-                FilterType = enIntellisensePartType.ScalarsOnly
-                ,
-                WrapInBrackets = true
-            };
-            //------------Execute Test---------------------------
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(()=> {
+                //------------Setup for test--------------------------
+                var textBox = new IntellisenseTextBox
+                {
+                    FilterType = enIntellisensePartType.ScalarsOnly
+                    ,
+                    WrapInBrackets = true
+                };
+                //------------Execute Test---------------------------
 
-            //------------Assert Results-------------------------
+                //------------Assert Results-------------------------
+            });
         }
 
         [TestMethod]
@@ -257,18 +260,20 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
         [TestCategory("IntellisenseTextBox_OnPreviewKeyDown")]
         public void GivenJsonExpression_IntellisenseTextBox_AddBracketsToExpression_ShouldAddBrackets()
         {
-            //------------Setup for test--------------------------
-            var textBox = new IntellisenseTextBox
-            {
-                FilterType = enIntellisensePartType.JsonObject
-                ,
-                WrapInBrackets = true
-            };
-            //------------Execute Test---------------------------
-            var bracketsToExpression = textBox.AddBracketsToExpression("Person");
-            //------------Assert Results-------------------------
-            Assert.IsNotNull(bracketsToExpression);
-            Assert.AreEqual("[[@Person]]", bracketsToExpression);
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(()=> {
+                //------------Setup for test--------------------------
+				var textBox = new IntellisenseTextBox
+				{
+					FilterType = enIntellisensePartType.JsonObject
+					,
+					WrapInBrackets = true
+				};
+				//------------Execute Test---------------------------
+				var bracketsToExpression = textBox.AddBracketsToExpression("Person");
+				//------------Assert Results-------------------------
+				Assert.IsNotNull(bracketsToExpression);
+				Assert.AreEqual("[[@Person]]", bracketsToExpression);
+            });
         }
 
 
@@ -475,20 +480,22 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
         [TestCategory("IntellisenseTextBox_Text")]
         public void IntellisenseTextBox_Text_NotLatinCharacter_ShowMessageBox_TextMadeEmpty()
         {
-            //------------Setup for test--------------------------            
-            CustomContainer.DeRegister<IPopupController>();
-            var mockPopupController = new Mock<IPopupController>();
-            mockPopupController.Setup(controller => controller.ShowInvalidCharacterMessage(It.IsAny<string>()));
-            CustomContainer.Register(mockPopupController.Object);
-            var intellisenseProvider = new Mock<IIntellisenseProvider>();
-            intellisenseProvider.Setup(a => a.HandlesResultInsertion).Returns(false);
-            //------------Execute Test---------------------------
-            var textBox = new IntellisenseTextBox();
-            var checkHasUnicodeInText = textBox.CheckHasUnicodeInText("أَبْجَدِي");
-            //------------Assert Results-------------------------
-            Assert.IsTrue(checkHasUnicodeInText);
-            Assert.AreEqual("", textBox.Text);
-            mockPopupController.Verify(controller => controller.ShowInvalidCharacterMessage(It.IsAny<string>()), Times.AtLeastOnce());
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(()=> {
+                //------------Setup for test--------------------------            
+                CustomContainer.DeRegister<IPopupController>();
+                var mockPopupController = new Mock<IPopupController>();
+                mockPopupController.Setup(controller => controller.ShowInvalidCharacterMessage(It.IsAny<string>()));
+                CustomContainer.Register(mockPopupController.Object);
+                var intellisenseProvider = new Mock<IIntellisenseProvider>();
+                intellisenseProvider.Setup(a => a.HandlesResultInsertion).Returns(false);
+                //------------Execute Test---------------------------
+                var textBox = new IntellisenseTextBox();
+                var checkHasUnicodeInText = textBox.CheckHasUnicodeInText("أَبْجَدِي");
+                //------------Assert Results-------------------------
+                Assert.IsTrue(checkHasUnicodeInText);
+                Assert.AreEqual("", textBox.Text);
+                mockPopupController.Verify(controller => controller.ShowInvalidCharacterMessage(It.IsAny<string>()), Times.AtLeastOnce());
+            });
         }
 
         [TestMethod]
@@ -575,22 +582,25 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
         [TestMethod]
         public void IntellisenseBox_OnPreviewKeyDown_Given_EnterKey_And_AllowInsertLineIsTrueButLineCountIsEqualToMaximumLine_ShouldNotAddLine()
         {
-            var mockPresentationSource = new Mock<PresentationSource>();
-            var textBox = new Mock<TextBox>();
-            textBox.Object.MinLines = 5;
-            var givenText = textBox.Object.Text = "Var";
-            Assert.IsFalse(givenText.Contains("\r\n"));
-            var testHelper = new IntellisenseTextBoxTestHelper
-            {
-                AllowUserInsertLine = true,
-                TextBox = textBox.Object,
-                MinLines = textBox.Object.MinLines,
-                LineCount = 5
-            };
-            testHelper.OnPreviewKeyDown(new KeyEventArgs(Keyboard.PrimaryDevice, mockPresentationSource.Object, 0, Key.Enter));
-            Assert.IsFalse(testHelper.HasError);
-            Assert.IsFalse(testHelper.TextBox.Text.Contains("\r\n"));
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(()=> {
+                var mockPresentationSource = new Mock<PresentationSource>();
+                var textBox = new Mock<TextBox>();
+                textBox.Object.MinLines = 5;
+                var givenText = textBox.Object.Text = "Var";
+                Assert.IsFalse(givenText.Contains("\r\n"));
+                var testHelper = new IntellisenseTextBoxTestHelper
+                {
+                    AllowUserInsertLine = true,
+                    TextBox = textBox.Object,
+                    MinLines = textBox.Object.MinLines,
+                    LineCount = 5
+                };
+                testHelper.OnPreviewKeyDown(new KeyEventArgs(Keyboard.PrimaryDevice, mockPresentationSource.Object, 0, Key.Enter));
+                Assert.IsFalse(testHelper.HasError);
+                Assert.IsFalse(testHelper.TextBox.Text.Contains("\r\n"));
+            });
         }
+		
         [TestMethod]
         public void IntellisenseBox_OnPreviewKeyDown_GivenI_Hit_Tab_Key_Should_AppendText()
         {
