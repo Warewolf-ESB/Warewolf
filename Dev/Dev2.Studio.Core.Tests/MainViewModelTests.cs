@@ -3080,57 +3080,55 @@ namespace Dev2.Core.Tests
         [Owner("Leon Rajindrapersadh")]
         public void MainViewModel_OnStudioClosing_ClosesRemoteEnvironmants()
         {
-            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(()=> {
-                var viewModel = new Mock<IShellViewModel>();
-                var server = (IServer)CustomContainer.Get(typeof(IServer));
-                var mockEnvironmentConnection = SetupMockConnection();
-                server.Connection = mockEnvironmentConnection.Object;
-                viewModel.SetupGet(model => model.ActiveServer).Returns(server);
+            var viewModel = new Mock<IShellViewModel>();
+            var server = (IServer)CustomContainer.Get(typeof(IServer));
+            var mockEnvironmentConnection = SetupMockConnection();
+            server.Connection = mockEnvironmentConnection.Object;
+            viewModel.SetupGet(model => model.ActiveServer).Returns(server);
 
-                CustomContainer.Register(viewModel.Object);
+            CustomContainer.Register(viewModel.Object);
 
-                var eventPublisher = new Mock<IEventAggregator>();
-                var environmentRepository = new Mock<IServerRepository>();
-                var serverMock = new Mock<IServer>();
-                serverMock.Setup(it => it.Connection).Returns(mockEnvironmentConnection.Object);
-                environmentRepository.Setup(repo => repo.Source).Returns(serverMock.Object);
-                CustomContainer.Register(environmentRepository.Object);
-                var connected1 = new Mock<IServer>();
-                var connected2 = new Mock<IServer>();
-                var notConnected = new Mock<IServer>();
-                notConnected.Setup(it => it.Connection).Returns(mockEnvironmentConnection.Object);
-                connected1.Setup(a => a.IsConnected).Returns(true).Verifiable();
-                connected1.Setup(a => a.Disconnect()).Verifiable();
-                connected1.Setup(it => it.Connection).Returns(mockEnvironmentConnection.Object);
-                connected2.Setup(a => a.IsConnected).Returns(true).Verifiable();
-                connected2.Setup(a => a.Disconnect()).Verifiable();
-                connected2.Setup(it => it.Connection).Returns(mockEnvironmentConnection.Object);
-                notConnected.Setup(a => a.IsConnected).Returns(false).Verifiable();
-                IList<IServer> lst = new List<IServer> { connected1.Object, connected2.Object, notConnected.Object };
+            var eventPublisher = new Mock<IEventAggregator>();
+            var environmentRepository = new Mock<IServerRepository>();
+            var serverMock = new Mock<IServer>();
+            serverMock.Setup(it => it.Connection).Returns(mockEnvironmentConnection.Object);
+            environmentRepository.Setup(repo => repo.Source).Returns(serverMock.Object);
+            CustomContainer.Register(environmentRepository.Object);
+            var connected1 = new Mock<IServer>();
+            var connected2 = new Mock<IServer>();
+            var notConnected = new Mock<IServer>();
+            notConnected.Setup(it => it.Connection).Returns(mockEnvironmentConnection.Object);
+            connected1.Setup(a => a.IsConnected).Returns(true).Verifiable();
+            connected1.Setup(a => a.Disconnect()).Verifiable();
+            connected1.Setup(it => it.Connection).Returns(mockEnvironmentConnection.Object);
+            connected2.Setup(a => a.IsConnected).Returns(true).Verifiable();
+            connected2.Setup(a => a.Disconnect()).Verifiable();
+            connected2.Setup(it => it.Connection).Returns(mockEnvironmentConnection.Object);
+            notConnected.Setup(a => a.IsConnected).Returns(false).Verifiable();
+            IList<IServer> lst = new List<IServer> { connected1.Object, connected2.Object, notConnected.Object };
 
-                environmentRepository.Setup(repo => repo.All()).Returns(lst);
-                environmentRepository.Setup(a => a.Get(It.IsAny<Guid>())).Returns(connected1.Object);
-                var versionChecker = new Mock<IVersionChecker>();
-                var asyncWorker = new Mock<IAsyncWorker>();
-                asyncWorker.Setup(w => w.Start(It.IsAny<System.Action>(), It.IsAny<System.Action>())).Verifiable();
-                var vieFactory = new Mock<IViewFactory>();
-                var viewMock = new Mock<IView>();
-                vieFactory.Setup(factory => factory.GetViewGivenServerResourceType(It.IsAny<string>())).Returns(viewMock.Object);
+            environmentRepository.Setup(repo => repo.All()).Returns(lst);
+            environmentRepository.Setup(a => a.Get(It.IsAny<Guid>())).Returns(connected1.Object);
+            var versionChecker = new Mock<IVersionChecker>();
+            var asyncWorker = new Mock<IAsyncWorker>();
+            asyncWorker.Setup(w => w.Start(It.IsAny<System.Action>(), It.IsAny<System.Action>())).Verifiable();
+            var vieFactory = new Mock<IViewFactory>();
+            var viewMock = new Mock<IView>();
+            vieFactory.Setup(factory => factory.GetViewGivenServerResourceType(It.IsAny<string>())).Returns(viewMock.Object);
 
-                var popup = new Mock<Common.Interfaces.Studio.Controller.IPopupController>();
-                popup.Setup(a => a.Show(StringResources.Unsaved_Changes, StringResources.CloseHeader,
-                                   MessageBoxButton.YesNoCancel, MessageBoxImage.Information, @"", false, false, true, false, false, false)).Returns(MessageBoxResult.Yes).Verifiable();
-                var mvm = new ShellViewModel(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, vieFactory.Object, false, null, popup.Object);
+            var popup = new Mock<Common.Interfaces.Studio.Controller.IPopupController>();
+            popup.Setup(a => a.Show(StringResources.Unsaved_Changes, StringResources.CloseHeader,
+                               MessageBoxButton.YesNoCancel, MessageBoxImage.Information, @"", false, false, true, false, false, false)).Returns(MessageBoxResult.Yes).Verifiable();
+            var mvm = new ShellViewModel(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, vieFactory.Object, false, null, popup.Object);
 
-                var scheduler = new SchedulerViewModel(EventPublishers.Aggregator, new DirectoryObjectPickerDialog(), popup.Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IServer>().Object) { WorkSurfaceContext = WorkSurfaceContext.Scheduler };
-                var task = new Mock<IScheduledResource>();
-                task.Setup(a => a.IsDirty).Returns(false);
-                scheduler.SelectedTask = task.Object;
-                var vm = new WorkSurfaceContextViewModel(new Mock<IEventAggregator>().Object, new WorkSurfaceKey(), scheduler, new Mock<Common.Interfaces.Studio.Controller.IPopupController>().Object, (a, b, c) => { });
+            var scheduler = new SchedulerViewModel(EventPublishers.Aggregator, new DirectoryObjectPickerDialog(), popup.Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IServer>().Object) { WorkSurfaceContext = WorkSurfaceContext.Scheduler };
+            var task = new Mock<IScheduledResource>();
+            task.Setup(a => a.IsDirty).Returns(false);
+            scheduler.SelectedTask = task.Object;
+            var vm = new WorkSurfaceContextViewModel(new Mock<IEventAggregator>().Object, new WorkSurfaceKey(), scheduler, new Mock<Common.Interfaces.Studio.Controller.IPopupController>().Object, (a, b, c) => { });
 
-                mvm.Items.Add(vm);
-                Assert.IsTrue(mvm.OnStudioClosing());   // assert that the studio closes
-            });
+            mvm.Items.Add(vm);
+            Assert.IsTrue(mvm.OnStudioClosing());   // assert that the studio closes
         }
 
         [TestMethod]

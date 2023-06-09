@@ -70,20 +70,22 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
         [TestMethod]
         public void IntellisenseBoxDoesntCrashWhenInsertingResultsGivenAProviderThatThrowsAnException()
         {
-            var intellisenseProvider = new Mock<IIntellisenseProvider>();
-            intellisenseProvider.Setup(
-                a => a.PerformResultInsertion(It.IsAny<string>(), It.IsAny<IntellisenseProviderContext>()))
-                                .Throws(new Exception());
-            intellisenseProvider.Setup(a => a.HandlesResultInsertion).Returns(true);
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(()=> {
+				var intellisenseProvider = new Mock<IIntellisenseProvider>();
+				intellisenseProvider.Setup(
+					a => a.PerformResultInsertion(It.IsAny<string>(), It.IsAny<IntellisenseProviderContext>()))
+									.Throws(new Exception());
+				intellisenseProvider.Setup(a => a.HandlesResultInsertion).Returns(true);
 
-            var intellisenseProviderResult =
-                new IntellisenseProviderResult(intellisenseProvider.Object, "City", "cake");
+				var intellisenseProviderResult =
+					new IntellisenseProviderResult(intellisenseProvider.Object, "City", "cake");
 
-            var textBox = new IntellisenseTextBox();
-            textBox.InsertItem(intellisenseProviderResult, true);
-            // When exepctions are thrown, no results are to be displayed
-            Assert.AreEqual(0, textBox.View.Count, "Expected [ 0 ] But got [ " + textBox.View.Count + " ]");
-            //The desired result is that an exception isn't thrown
+				var textBox = new IntellisenseTextBox();
+				textBox.InsertItem(intellisenseProviderResult, true);
+				// When exepctions are thrown, no results are to be displayed
+				Assert.AreEqual(0, textBox.View.Count, "Expected [ 0 ] But got [ " + textBox.View.Count + " ]");
+				//The desired result is that an exception isn't thrown
+            });
         }
 
         [TestMethod]
@@ -175,18 +177,20 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
         [TestCategory("IntellisenseTextBoxTests_SetText")]
         public void IntellisenseTextBoxTests_SetText_FilterTypeIsRecordsetFieldsButTextIsScalar_ToolTipHasErrorMessage()
         {
-            var mockDataListViewModel = new Mock<IDataListViewModel>();
-            mockDataListViewModel.Setup(model => model.Resource).Returns(new Mock<IResourceModel>().Object);
-            DataListSingleton.SetDataList(mockDataListViewModel.Object);
-            var intellisenseProvider = new Mock<IIntellisenseProvider>();
-            intellisenseProvider.Setup(a => a.HandlesResultInsertion).Returns(true);
-            intellisenseProvider.Setup(a => a.GetIntellisenseResults(It.IsAny<IntellisenseProviderContext>()))
-                .Returns(default(IList<IntellisenseProviderResult>));
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(()=> {
+				var mockDataListViewModel = new Mock<IDataListViewModel>();
+				mockDataListViewModel.Setup(model => model.Resource).Returns(new Mock<IResourceModel>().Object);
+				DataListSingleton.SetDataList(mockDataListViewModel.Object);
+				var intellisenseProvider = new Mock<IIntellisenseProvider>();
+				intellisenseProvider.Setup(a => a.HandlesResultInsertion).Returns(true);
+				intellisenseProvider.Setup(a => a.GetIntellisenseResults(It.IsAny<IntellisenseProviderContext>()))
+					.Returns(default(IList<IntellisenseProviderResult>));
 
-            var textBox = new IntellisenseTextBox { FilterType = enIntellisensePartType.RecordsetFields, IntellisenseProvider = intellisenseProvider.Object };
-            textBox.Text = "[[var]]";
-            textBox.EnsureIntellisenseResults("[[var]]", false, IntellisenseDesiredResultSet.Default);
-            Assert.IsTrue(textBox.HasError);
+				var textBox = new IntellisenseTextBox { FilterType = enIntellisensePartType.RecordsetFields, IntellisenseProvider = intellisenseProvider.Object };
+				textBox.Text = "[[var]]";
+				textBox.EnsureIntellisenseResults("[[var]]", false, IntellisenseDesiredResultSet.Default);
+				Assert.IsTrue(textBox.HasError);
+			});
         }
 
         [TestMethod]
@@ -194,9 +198,11 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
         [TestCategory("IntellisenseTextBoxTests_SetText")]
         public void IntellisenseTextBoxTests_SetText_FilterTypeIsRecordsetFieldsAndTextIsRecordset_ToolTipHasNoErrorMessage()
         {
-            var textBox = new IntellisenseTextBox { FilterType = enIntellisensePartType.RecordsetFields };
-            textBox.EnsureIntellisenseResults("[[var()]]", false, IntellisenseDesiredResultSet.Default);
-            Assert.IsFalse(textBox.HasError);
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(()=> {
+				var textBox = new IntellisenseTextBox { FilterType = enIntellisensePartType.RecordsetFields };
+				textBox.EnsureIntellisenseResults("[[var()]]", false, IntellisenseDesiredResultSet.Default);
+				Assert.IsFalse(textBox.HasError);
+			});
         }
 
         [TestMethod]
@@ -282,9 +288,10 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
         [TestCategory("IntellisenseTextBox_KeyDown")]
         public void IntellisenseTextBox_KeyDown_CannotCauseWrapInBrackets_WhenWrapInBrackets()
         {
-
-            RunWrappedKeyPress(Key.F6);
-            RunWrappedKeyPress(Key.F7);
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(()=> {
+				RunWrappedKeyPress(Key.F6);
+				RunWrappedKeyPress(Key.F7);
+            });
         }
 
         static void RunWrappedKeyPress(Key key)
@@ -302,12 +309,14 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
         [TestCategory("IntellisenseTextBox_KeyDown")]
         public void IntellisenseTextBox_KeyDown_CannotCauseWrapInBrackets_WhenNotWrapInBrackets()
         {
-            //------------Setup for test--------------------------
-            var textBox = new IntellisenseTextBox { FilterType = enIntellisensePartType.RecordsetFields, WrapInBrackets = false, Text = "var()" };
-            //------------Execute Test---------------------------
-            textBox.HandleWrapInBrackets(Key.F6);
-            //------------Assert Results-------------------------
-            Assert.AreEqual("var()", textBox.Text);
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(()=> {
+				//------------Setup for test--------------------------
+				var textBox = new IntellisenseTextBox { FilterType = enIntellisensePartType.RecordsetFields, WrapInBrackets = false, Text = "var()" };
+				//------------Execute Test---------------------------
+				textBox.HandleWrapInBrackets(Key.F6);
+				//------------Assert Results-------------------------
+				Assert.AreEqual("var()", textBox.Text);
+            });
         }
 
 
@@ -376,9 +385,11 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
         [TestCategory("IntellisenseTextBoxTests_SetText")]
         public void IntellisenseTextBoxTests_SetText_FilterTypeIsScalarsOnlyAndTextIsScalar_ToolTipHasNoErrorMessage()
         {
-            var textBox = new IntellisenseTextBox { FilterType = enIntellisensePartType.ScalarsOnly };
-            textBox.EnsureIntellisenseResults("[[var]]", false, IntellisenseDesiredResultSet.Default);
-            Assert.IsFalse(textBox.HasError);
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(()=> {
+				var textBox = new IntellisenseTextBox { FilterType = enIntellisensePartType.ScalarsOnly };
+				textBox.EnsureIntellisenseResults("[[var]]", false, IntellisenseDesiredResultSet.Default);
+				Assert.IsFalse(textBox.HasError);
+            });
         }
 
 
@@ -555,28 +566,32 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
         [TestMethod]
         public void IntellisenseBox_GivenWrappedInBrackets_AStringWithNoBrackets_Should_AddBrackets()
         {
-            var textBoxTest = new IntellisenseTextBoxTestHelper { WrapInBrackets = true };
-            textBoxTest.Text = "Variable";
-            textBoxTest.HandleWrapInBrackets(Key.F6);
-            Assert.IsFalse(textBoxTest.HasError);
-            Assert.AreEqual("[[Variable]]", textBoxTest.Text);
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(()=> {
+				var textBoxTest = new IntellisenseTextBoxTestHelper { WrapInBrackets = true };
+				textBoxTest.Text = "Variable";
+				textBoxTest.HandleWrapInBrackets(Key.F6);
+				Assert.IsFalse(textBoxTest.HasError);
+				Assert.AreEqual("[[Variable]]", textBoxTest.Text);
+            });
         }
 
         [TestMethod]
         public void IntellisenseBox_OnPreviewKeyDown_GivenI_Hit_Enter_Key_And_AlloInsertLine_Is_True_Should_AddLine()
         {
-            var mockPresentationSource = new Mock<PresentationSource>();
-            var textBox = new Mock<TextBox>();
-            textBox.Object.MinLines = 5;
-            textBox.Object.Text = "Var";
-            var testHelper = new IntellisenseTextBoxTestHelper
-            {
-                AllowUserInsertLine = true,
-                TextBox = textBox.Object,
-                MinLines = textBox.Object.MinLines
-            };
-            testHelper.OnPreviewKeyDown(new KeyEventArgs(Keyboard.PrimaryDevice, mockPresentationSource.Object, 0, Key.Enter));
-            Assert.IsFalse(testHelper.HasError);
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(()=> {
+				var mockPresentationSource = new Mock<PresentationSource>();
+				var textBox = new Mock<TextBox>();
+				textBox.Object.MinLines = 5;
+				textBox.Object.Text = "Var";
+				var testHelper = new IntellisenseTextBoxTestHelper
+				{
+					AllowUserInsertLine = true,
+					TextBox = textBox.Object,
+					MinLines = textBox.Object.MinLines
+				};
+				testHelper.OnPreviewKeyDown(new KeyEventArgs(Keyboard.PrimaryDevice, mockPresentationSource.Object, 0, Key.Enter));
+				Assert.IsFalse(testHelper.HasError);
+            });
         }
 
         [TestMethod]
@@ -604,60 +619,68 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
         [TestMethod]
         public void IntellisenseBox_OnPreviewKeyDown_GivenI_Hit_Tab_Key_Should_AppendText()
         {
-            var mockPresentationSource = new Mock<PresentationSource>();
-            var textBox = new Mock<TextBox>();
-            textBox.Object.MinLines = 5;
-            var givenText = textBox.Object.Text = "Var";
-            Assert.IsFalse(givenText.Contains("\r\n"));
-            var testHelper = new IntellisenseTextBoxTestHelper
-            {
-                AllowUserInsertLine = true,
-                TextBox = textBox.Object,
-                IsDropDownOpen = true,
-            };
-            testHelper.OnPreviewKeyDown(new KeyEventArgs(Keyboard.PrimaryDevice, mockPresentationSource.Object, 0, Key.Tab));
-            Assert.IsFalse(testHelper.HasError);
-            Assert.IsFalse(testHelper.TextBox.Text.Contains("\r\n"));
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(()=> {
+				var mockPresentationSource = new Mock<PresentationSource>();
+				var textBox = new Mock<TextBox>();
+				textBox.Object.MinLines = 5;
+				var givenText = textBox.Object.Text = "Var";
+				Assert.IsFalse(givenText.Contains("\r\n"));
+				var testHelper = new IntellisenseTextBoxTestHelper
+				{
+					AllowUserInsertLine = true,
+					TextBox = textBox.Object,
+					IsDropDownOpen = true,
+				};
+				testHelper.OnPreviewKeyDown(new KeyEventArgs(Keyboard.PrimaryDevice, mockPresentationSource.Object, 0, Key.Tab));
+				Assert.IsFalse(testHelper.HasError);
+				Assert.IsFalse(testHelper.TextBox.Text.Contains("\r\n"));
+            });
         }        
 
         [TestMethod]
         public void IntellisenseBox_GivenMultipleValidVariables_HasNoError()
         {
-            var textBoxTest = new IntellisenseTextBoxTestHelper { AllowMultipleVariables = true };
-            textBoxTest.Text = "\"[[Var]]\", \"[[Var()]]\"";
-            textBoxTest.EnsureErrorStatus();
-            Assert.IsFalse(textBoxTest.HasError);
-            Assert.AreEqual(textBoxTest.DefaultText, textBoxTest.ToolTip);
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(()=> {
+				var textBoxTest = new IntellisenseTextBoxTestHelper { AllowMultipleVariables = true };
+				textBoxTest.Text = "\"[[Var]]\", \"[[Var()]]\"";
+				textBoxTest.EnsureErrorStatus();
+				Assert.IsFalse(textBoxTest.HasError);
+				Assert.AreEqual(textBoxTest.DefaultText, textBoxTest.ToolTip);
+            });
         }
 
         [TestMethod]
         public void IntellisenseBox_GivenInvalidVariables_ScalarHasError_LogsTracking()
         {
-            const string expectTooltipError = "Variable name \"[[Var!]]\" contains invalid character(s). Only use alphanumeric _ and - ";
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(()=> {
+				const string expectTooltipError = "Variable name \"[[Var!]]\" contains invalid character(s). Only use alphanumeric _ and - ";
 
-            var textBoxTest = new IntellisenseTextBox { AllowMultipleVariables = true };
-            textBoxTest.Text = "\"[[Var!]]\"";
+				var textBoxTest = new IntellisenseTextBox { AllowMultipleVariables = true };
+				textBoxTest.Text = "\"[[Var!]]\"";
 
-            var privateObj = new Warewolf.Testing.PrivateObject(textBoxTest);
-            var results = privateObj.Invoke("LostFocusImpl");
+				var privateObj = new Warewolf.Testing.PrivateObject(textBoxTest);
+				var results = privateObj.Invoke("LostFocusImpl");
 
-            Assert.IsTrue(textBoxTest.HasError);
-            Assert.AreEqual(expectTooltipError, textBoxTest.ToolTip);
+				Assert.IsTrue(textBoxTest.HasError);
+				Assert.AreEqual(expectTooltipError, textBoxTest.ToolTip);
+            });
         }
 
         [TestMethod]
         public void IntellisenseBox_GivenInvalidVariables_RecordsetHasError_LogsTracking()
         {
-            const string expectTooltipError = "Variable name \"[[Var()!]]\" contains invalid character(s). Only use alphanumeric _ and - ";
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(()=> {
+				const string expectTooltipError = "Variable name \"[[Var()!]]\" contains invalid character(s). Only use alphanumeric _ and - ";
 
-            var textBoxTest = new IntellisenseTextBox { AllowMultipleVariables = true };
-            textBoxTest.Text = "\"[[Var()!]]\"";
+				var textBoxTest = new IntellisenseTextBox { AllowMultipleVariables = true };
+				textBoxTest.Text = "\"[[Var()!]]\"";
 
-            var privateObj = new Warewolf.Testing.PrivateObject(textBoxTest);
-            var results = privateObj.Invoke("LostFocusImpl");
+				var privateObj = new Warewolf.Testing.PrivateObject(textBoxTest);
+				var results = privateObj.Invoke("LostFocusImpl");
 
-            Assert.IsTrue(textBoxTest.HasError);
-            Assert.AreEqual(expectTooltipError, textBoxTest.ToolTip);
+				Assert.IsTrue(textBoxTest.HasError);
+				Assert.AreEqual(expectTooltipError, textBoxTest.ToolTip);
+            });
         }
 
         [TestMethod]
@@ -680,12 +703,14 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
         [TestMethod]
         public void IntellisenseBox_Function_HasIsCalcMode_SetTo_True()
         {
-            var textBoxTest = new IntellisenseTextBoxTestHelper { AllowUserCalculateMode = true };
-            textBoxTest.EnsureIntellisenseResults(null, false,IntellisenseDesiredResultSet.Default);
-            Assert.IsTrue(string.IsNullOrEmpty(textBoxTest.Text));
-            var input = textBoxTest.Text = "=Sum(5,5)";
-            textBoxTest.EnsureIntellisenseResults(input,false,IntellisenseDesiredResultSet.Default);
-            Assert.IsTrue(textBoxTest.IsInCalculateMode);
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(()=> {
+				var textBoxTest = new IntellisenseTextBoxTestHelper { AllowUserCalculateMode = true };
+				textBoxTest.EnsureIntellisenseResults(null, false,IntellisenseDesiredResultSet.Default);
+				Assert.IsTrue(string.IsNullOrEmpty(textBoxTest.Text));
+				var input = textBoxTest.Text = "=Sum(5,5)";
+				textBoxTest.EnsureIntellisenseResults(input,false,IntellisenseDesiredResultSet.Default);
+				Assert.IsTrue(textBoxTest.IsInCalculateMode);
+            });
         }
 
         [TestMethod]
@@ -693,9 +718,11 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
         [TestCategory("IntellisenseTextBoxTests_SetText")]
         public void IntellisenseTextBoxTests_SetText_FilterTypeIsAllAndTextIsRecordset_ToolTipHasNoErrorMessage()
         {
-            var textBox = new IntellisenseTextBox { FilterType = enIntellisensePartType.None };
-            textBox.Text = "[[People(*)]]";
-            Assert.IsFalse(textBox.HasError);
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(()=> {
+				var textBox = new IntellisenseTextBox { FilterType = enIntellisensePartType.None };
+				textBox.Text = "[[People(*)]]";
+				Assert.IsFalse(textBox.HasError);
+            });
         }
 
         [TestMethod]
@@ -703,13 +730,15 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
         [TestCategory("IntellisenseTextBoxTests_SetText")]
         public void IntellisenseTextBoxTests_SetText_FilterTypeIsRecodsetFieldsAndTextMultipleRecordSetFields_ToolTipHasNoErrorMessage()
         {
-            var textBox = new IntellisenseTextBox
-            {
-                FilterType = enIntellisensePartType.RecordsetFields,
-                AllowMultipleVariables = true
-            };
-            textBox.Text = "[[rec(*).warewolf]],[[rec(*).soa]]";
-            Assert.IsFalse(textBox.HasError);
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(()=> {
+				var textBox = new IntellisenseTextBox
+				{
+					FilterType = enIntellisensePartType.RecordsetFields,
+					AllowMultipleVariables = true
+				};
+				textBox.Text = "[[rec(*).warewolf]],[[rec(*).soa]]";
+				Assert.IsFalse(textBox.HasError);
+            });
         }
         
 
@@ -718,9 +747,11 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
         [TestCategory("IntellisenseTextBoxTests_ValidateText")]
         public void IntellisenseTextBoxTests_ValidateText_FilterTypeIsJsonObjectAndTextIsJson_ToolTipHasNoErrorMessage()
         {
-            var textBox = new IntellisenseTextBox { FilterType = enIntellisensePartType.JsonObject };
-            textBox.Text = "[[@City]]";
-            Assert.IsFalse(textBox.HasError);
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(()=> {
+				var textBox = new IntellisenseTextBox { FilterType = enIntellisensePartType.JsonObject };
+				textBox.Text = "[[@City]]";
+				Assert.IsFalse(textBox.HasError);
+            });
         }
 
         [TestMethod]
@@ -728,10 +759,12 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
         [TestCategory("IntellisenseTextBoxTests_ValidateText")]
         public void IntellisenseTextBoxTests_ValidateText_FilterTypeIsJsonObjectAndTextIsScalar_ToolTipHasNoErrorMessage()
         {
-            var mockPresentationSource =new Mock<PresentationSource>();
-            var testHelper = new IntellisenseTextBoxTestHelper();
-            testHelper.OnKeyDown(new KeyEventArgs(null, mockPresentationSource.Object, 0, Key.Escape));
-            Assert.IsFalse(testHelper.IsDropDownOpen);
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(()=> {
+				var mockPresentationSource =new Mock<PresentationSource>();
+				var testHelper = new IntellisenseTextBoxTestHelper();
+				testHelper.OnKeyDown(new KeyEventArgs(null, mockPresentationSource.Object, 0, Key.Escape));
+				Assert.IsFalse(testHelper.IsDropDownOpen);
+            });
         }
 
 
@@ -740,18 +773,20 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
         [TestCategory("IntellisenseTextBoxTests_SetText")]
         public void IntellisenseTextBoxTests_SetText_InvalidJsonArrayIndex_ShouldError()
         {
-            var mockDataListViewModel = new Mock<IDataListViewModel>();
-            mockDataListViewModel.Setup(model => model.Resource).Returns(new Mock<IResourceModel>().Object);
-            DataListSingleton.SetDataList(mockDataListViewModel.Object);
-            var intellisenseProvider = new Mock<IIntellisenseProvider>();
-            intellisenseProvider.Setup(a => a.HandlesResultInsertion).Returns(true);
-            intellisenseProvider.Setup(a => a.GetIntellisenseResults(It.IsAny<IntellisenseProviderContext>()))
-                .Returns(default(IList<IntellisenseProviderResult>));
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(()=> {
+				var mockDataListViewModel = new Mock<IDataListViewModel>();
+				mockDataListViewModel.Setup(model => model.Resource).Returns(new Mock<IResourceModel>().Object);
+				DataListSingleton.SetDataList(mockDataListViewModel.Object);
+				var intellisenseProvider = new Mock<IIntellisenseProvider>();
+				intellisenseProvider.Setup(a => a.HandlesResultInsertion).Returns(true);
+				intellisenseProvider.Setup(a => a.GetIntellisenseResults(It.IsAny<IntellisenseProviderContext>()))
+					.Returns(default(IList<IntellisenseProviderResult>));
 
-            var textBox = new IntellisenseTextBox { FilterType = enIntellisensePartType.JsonObject, IntellisenseProvider = intellisenseProvider.Object };
-            textBox.Text = "[[@this.new(1).val(x).s]]";
-            Assert.IsTrue(textBox.HasError);
-            Assert.AreEqual("Variable name [[@this.new(1).val(x).s]] contains invalid character(s). Only use alphanumeric _ and - ", textBox.ToolTip.ToString());
+				var textBox = new IntellisenseTextBox { FilterType = enIntellisensePartType.JsonObject, IntellisenseProvider = intellisenseProvider.Object };
+				textBox.Text = "[[@this.new(1).val(x).s]]";
+				Assert.IsTrue(textBox.HasError);
+				Assert.AreEqual("Variable name [[@this.new(1).val(x).s]] contains invalid character(s). Only use alphanumeric _ and - ", textBox.ToolTip.ToString());
+			});
         }
     }
 
