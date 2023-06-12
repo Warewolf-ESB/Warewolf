@@ -5,9 +5,11 @@ using System.Windows.Controls;
 using System.Windows.Navigation;
 using Dev2.Common.Interfaces;
 using mshtml;
-using Microsoft.Practices.Prism.Mvvm;
+using Microsoft.AspNetCore.Mvc.ViewEngines;
 using Warewolf.Studio.Core;
 using Warewolf.Studio.ViewModels;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Warewolf.Studio.Views
 {
@@ -39,7 +41,9 @@ namespace Warewolf.Studio.Views
 
         ManageOAuthSourceViewModel ViewModel { get; set; }
 
-        void HideScriptErrors(WebBrowser wb, bool hide)
+		public string Path => throw new NotImplementedException();
+
+		void HideScriptErrors(WebBrowser wb, bool hide)
         {
             var fiComWebBrowser = typeof(WebBrowser).GetField("_axIWebBrowser2", BindingFlags.Instance | BindingFlags.NonPublic);
 
@@ -83,6 +87,11 @@ namespace Warewolf.Studio.Views
 
         public bool GetControlEnabled(string controlName) => false;
 
-        #endregion
-    }
+		public Task RenderAsync(ViewContext context)
+		{
+			throw new NotImplementedException();
+		}
+
+		#endregion
+	}
 }

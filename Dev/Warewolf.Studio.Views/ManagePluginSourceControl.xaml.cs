@@ -9,18 +9,22 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using Dev2.Common.Interfaces;
 using Dev2.UI;
-using Microsoft.Practices.Prism.Mvvm;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.ViewEngines;
 using Warewolf.Studio.ViewModels;
 
 namespace Warewolf.Studio.Views
 {
     public partial class ManagePluginSourceControl : IView, ICheckControlEnabledView
     {
-        public ManagePluginSourceControl() => InitializeComponent();
+		public string Path => throw new System.NotImplementedException();
+
+		public ManagePluginSourceControl() => InitializeComponent();
 
         public string GetHeaderText()
         {
@@ -79,5 +83,10 @@ namespace Warewolf.Studio.Views
                 }
             }
         }
-    }
+
+		public Task RenderAsync(ViewContext context)
+		{
+			throw new System.NotImplementedException();
+		}
+	}
 }

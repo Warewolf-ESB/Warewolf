@@ -18,15 +18,19 @@ using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.Practices.Prism.Mvvm;
 using Warewolf.Studio.ViewModels;
 using Dev2.Common;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Warewolf.Studio.Views
 {
-    /// <summary>
-    /// Interaction logic for ManageServerControl.xaml
-    /// </summary>
-    public partial class ManageServerControl : IView, ICheckControlEnabledView
-    {
-        public ManageServerControl()
+	/// <summary>
+	/// Interaction logic for ManageServerControl.xaml
+	/// </summary>
+    public partial class ManageServerControl : Microsoft.AspNetCore.Mvc.ViewEngines.IView, ICheckControlEnabledView
+	{
+		public string Path => throw new NotImplementedException();
+
+		public ManageServerControl()
         {
             InitializeComponent();
         }
@@ -153,11 +157,16 @@ namespace Warewolf.Studio.Views
             var be = ErrorTextBlock.GetBindingExpression(TextBox.TextProperty);
             be?.UpdateTarget();
             return ErrorTextBlock.Text;
-        }
+		}
 
-        #region Implementation of ICheckControlEnabledView
+		public Task RenderAsync(ViewContext context)
+		{
+			throw new NotImplementedException();
+		}
 
-        public bool GetControlEnabled(string controlName)
+		#region Implementation of ICheckControlEnabledView
+
+		public bool GetControlEnabled(string controlName)
         {
             switch (controlName)
             {
@@ -172,6 +181,6 @@ namespace Warewolf.Studio.Views
             return false;
         }
 
-        #endregion
-    }
+		#endregion
+	}
 }

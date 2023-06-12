@@ -2,7 +2,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using Dev2.Studio.Core;
-using Microsoft.Practices.Prism.Mvvm;
+using Microsoft.AspNetCore.Mvc.ViewEngines;
 using Warewolf.Studio.Views;
 
 namespace Dev2
@@ -28,12 +28,12 @@ namespace Dev2
             _viewMap.TryAdd("ComPluginSource", () => new ManageComPluginSourceControl());
             _viewMap.TryAdd("PluginSource", () => new ManagePluginSourceControl());
             _viewMap.TryAdd("WebSource", () => new ManageWebserviceSourceControl());
-   //         _viewMap.TryAdd("MySqlDatabase", () => new ManageDatabaseSourceControl());
-   //         _viewMap.TryAdd("PostgreSQL", () => new ManageDatabaseSourceControl());
-   //         _viewMap.TryAdd("Oracle", () => new ManageDatabaseSourceControl());
-   //         _viewMap.TryAdd("ODBC", () => new ManageDatabaseSourceControl());
-   //         _viewMap.TryAdd("SqlDatabase", () => new ManageDatabaseSourceControl());
-			//_viewMap.TryAdd("SqliteDatabase", () => new ManageDatabaseSourceControl());
+            _viewMap.TryAdd("MySqlDatabase", () => new ManageDatabaseSourceControl());
+            _viewMap.TryAdd("PostgreSQL", () => new ManageDatabaseSourceControl());
+            _viewMap.TryAdd("Oracle", () => new ManageDatabaseSourceControl());
+            _viewMap.TryAdd("ODBC", () => new ManageDatabaseSourceControl());
+            _viewMap.TryAdd("SqlDatabase", () => new ManageDatabaseSourceControl());
+			_viewMap.TryAdd("SqliteDatabase", () => new ManageDatabaseSourceControl());
 		}
 
         public IView GetViewGivenServerResourceType(string resourceModel)

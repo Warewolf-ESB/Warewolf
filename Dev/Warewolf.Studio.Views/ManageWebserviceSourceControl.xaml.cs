@@ -9,6 +9,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -16,7 +17,8 @@ using System.Windows.Documents;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
-using Microsoft.Practices.Prism.Mvvm;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.ViewEngines;
 using Warewolf.Studio.ViewModels;
 
 namespace Warewolf.Studio.Views
@@ -26,7 +28,9 @@ namespace Warewolf.Studio.Views
     /// </summary>
     public partial class ManageWebserviceSourceControl : IView, ICheckControlEnabledView
     {
-        public ManageWebserviceSourceControl()
+		public string Path => throw new System.NotImplementedException();
+
+		public ManageWebserviceSourceControl()
         {
             InitializeComponent();
             ServerTextBox.Focus();
@@ -156,5 +160,10 @@ namespace Warewolf.Studio.Views
                 }
             }
         }
-    }
+
+		public Task RenderAsync(ViewContext context)
+		{
+			throw new System.NotImplementedException();
+		}
+	}
 }
