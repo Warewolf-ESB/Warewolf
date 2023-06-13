@@ -2,7 +2,8 @@
    a) ServerSettings
    b) Resources
    c) VersionControl  
-   d) Execute en-ZA_Culture.ps1 (found at the same location of this Readme.txt) file in powershell command prompt
+   d) Tests
+   e) Execute en-ZA_Culture.ps1 (found at the same location of this Readme.txt) file in powershell command prompt
 	Note: Time Zone must be set to "(UTC+02:00) Harare, Pretoria" (if not set, we can manually set it from Settings->Date & Time -> Time Zone 	
 
 2) Project "Dev2.Activities.Specs"
