@@ -31,17 +31,19 @@ namespace Dev2.Core.Tests.Merge
         [Owner("Pieter Terblanche")]
         public void ToolConflictItem_SetUserInterface()
         {
-            //------------Setup for test--------------------------
-            var toolConflictItem = CreateToolConflictItem();
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(()=> {
+                //------------Setup for test--------------------------
+                var toolConflictItem = CreateToolConflictItem();
 
-            var imageSource = new DrawingImage();
-            var instance = new MultiAssignDesignerViewModel(_modelItem);
-            toolConflictItem.MergeIcon = imageSource;
-            toolConflictItem.ActivityDesignerViewModel = instance;
-            //------------Execute Test---------------------------
-            //------------Assert Results-------------------------
-            Assert.AreEqual(imageSource, toolConflictItem.MergeIcon);
-            Assert.AreEqual(instance, toolConflictItem.ActivityDesignerViewModel);
+                var imageSource = new DrawingImage();
+                var instance = new MultiAssignDesignerViewModel(_modelItem);
+                toolConflictItem.MergeIcon = imageSource;
+                toolConflictItem.ActivityDesignerViewModel = instance;
+                //------------Execute Test---------------------------
+                //------------Assert Results-------------------------
+                Assert.AreEqual(imageSource, toolConflictItem.MergeIcon);
+                Assert.AreEqual(instance, toolConflictItem.ActivityDesignerViewModel);
+            });
         }
 
         [TestMethod]

@@ -103,24 +103,26 @@ namespace Dev2.Core.Tests.Merge
         [Owner("Nkosinathi Sangweni")]
         public void ConflictModelFactory_GivenAssignConflictNode_ShouldReturnMergeToolModel()
         {
-            //------------Setup for test--------------------------
-            var adapter = new Mock<IApplicationAdaptor>();
-            adapter.Setup(p => p.TryFindResource(It.IsAny<object>())).Returns(new object());
-            CustomContainer.Register(adapter.Object);
-            var node = new Mock<IConflictTreeNode>();
-            var contextualResource = new Mock<IContextualResourceModel>();
-            var value = new DsfMultiAssignActivity();
-            var assignStep = new FlowStep
-            {
-                Action = value
-            };
-            node.Setup(p => p.Activity).Returns(value);
-            var toolConflictItem = new ToolConflictItem(new ViewModels.Merge.Utils.ConflictRowList(new Mock<IConflictModelFactory>().Object, new Mock<IConflictModelFactory>().Object,new List<ConflictTreeNode>(), new List<ConflictTreeNode>()),ViewModels.Merge.Utils.ConflictRowList.Column.Current);
-            //------------Execute Test---------------------------
-            var completeConflict = new ConflictModelFactory(toolConflictItem, contextualResource.Object, node.Object);
-            //------------Assert Results-------------------------
-            Assert.IsNotNull(completeConflict);
-            adapter.Verify(p => p.TryFindResource(It.IsAny<object>()));
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(()=> {
+				//------------Setup for test--------------------------
+				var adapter = new Mock<IApplicationAdaptor>();
+				adapter.Setup(p => p.TryFindResource(It.IsAny<object>())).Returns(new object());
+				CustomContainer.Register(adapter.Object);
+				var node = new Mock<IConflictTreeNode>();
+				var contextualResource = new Mock<IContextualResourceModel>();
+				var value = new DsfMultiAssignActivity();
+				var assignStep = new FlowStep
+				{
+					Action = value
+				};
+				node.Setup(p => p.Activity).Returns(value);
+				var toolConflictItem = new ToolConflictItem(new ViewModels.Merge.Utils.ConflictRowList(new Mock<IConflictModelFactory>().Object, new Mock<IConflictModelFactory>().Object,new List<ConflictTreeNode>(), new List<ConflictTreeNode>()),ViewModels.Merge.Utils.ConflictRowList.Column.Current);
+				//------------Execute Test---------------------------
+				var completeConflict = new ConflictModelFactory(toolConflictItem, contextualResource.Object, node.Object);
+				//------------Assert Results-------------------------
+				Assert.IsNotNull(completeConflict);
+				adapter.Verify(p => p.TryFindResource(It.IsAny<object>()));
+            });
         }
 
 
@@ -128,65 +130,69 @@ namespace Dev2.Core.Tests.Merge
         [Owner("Nkosinathi Sangweni")]
         public void GetDataList_GivenResourceModel_ShouldReturnMergeToolModel()
         {
-            //------------Setup for test--------------------------
-            var adapter = new Mock<IApplicationAdaptor>();
-            adapter.Setup(p => p.TryFindResource(It.IsAny<object>())).Returns(new object());
-            CustomContainer.Register(adapter.Object);
-            var node = new Mock<IConflictTreeNode>();
-            var contextualResource = new Mock<IContextualResourceModel>();
-            var value = new DsfMultiAssignActivity();
-            var assignStep = new FlowStep
-            {
-                Action = value
-            };
-            node.Setup(p => p.Activity).Returns(value);
-            var assignExample = XML.XmlResource.Fetch("Utility - Assign");
-            var jsonSerializer = new Dev2JsonSerializer();
-            var currentResourceModel = Dev2MockFactory.SetupResourceModelMock();
-            var assignExampleBuilder = new StringBuilder(assignExample.ToString(System.Xml.Linq.SaveOptions.DisableFormatting));
-            currentResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(assignExampleBuilder);
-            currentResourceModel.Setup(resModel => resModel.DisplayName).Returns("Hello World");
-            var toolConflictItem = new ToolConflictItem(new ViewModels.Merge.Utils.ConflictRowList(new Mock<IConflictModelFactory>().Object, new Mock<IConflictModelFactory>().Object, new List<ConflictTreeNode>(), new List<ConflictTreeNode>()), ViewModels.Merge.Utils.ConflictRowList.Column.Current);
-            //------------Execute Test---------------------------
-            var completeConflict = new ConflictModelFactory(toolConflictItem, contextualResource.Object, node.Object);
-            //------------Assert Results-------------------------
-            Assert.IsNotNull(completeConflict);
-            completeConflict.GetDataList(currentResourceModel.Object);
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(()=> {
+                //------------Setup for test--------------------------
+                var adapter = new Mock<IApplicationAdaptor>();
+                adapter.Setup(p => p.TryFindResource(It.IsAny<object>())).Returns(new object());
+                CustomContainer.Register(adapter.Object);
+                var node = new Mock<IConflictTreeNode>();
+                var contextualResource = new Mock<IContextualResourceModel>();
+                var value = new DsfMultiAssignActivity();
+                var assignStep = new FlowStep
+                {
+                    Action = value
+                };
+                node.Setup(p => p.Activity).Returns(value);
+                var assignExample = XML.XmlResource.Fetch("Utility - Assign");
+                var jsonSerializer = new Dev2JsonSerializer();
+                var currentResourceModel = Dev2MockFactory.SetupResourceModelMock();
+                var assignExampleBuilder = new StringBuilder(assignExample.ToString(System.Xml.Linq.SaveOptions.DisableFormatting));
+                currentResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(assignExampleBuilder);
+                currentResourceModel.Setup(resModel => resModel.DisplayName).Returns("Hello World");
+                var toolConflictItem = new ToolConflictItem(new ViewModels.Merge.Utils.ConflictRowList(new Mock<IConflictModelFactory>().Object, new Mock<IConflictModelFactory>().Object, new List<ConflictTreeNode>(), new List<ConflictTreeNode>()), ViewModels.Merge.Utils.ConflictRowList.Column.Current);
+                //------------Execute Test---------------------------
+                var completeConflict = new ConflictModelFactory(toolConflictItem, contextualResource.Object, node.Object);
+                //------------Assert Results-------------------------
+                Assert.IsNotNull(completeConflict);
+                completeConflict.GetDataList(currentResourceModel.Object);
 
-            Assert.AreEqual(7, completeConflict.DataListViewModel.DataList.Count);
+                Assert.AreEqual(7, completeConflict.DataListViewModel.DataList.Count);
+            });
         }
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void GetDataList_GivenEmptyResourceModel_ShouldReturnReturnEmpty()
         {
-            //------------Setup for test--------------------------
-            var adapter = new Mock<IApplicationAdaptor>();
-            adapter.Setup(p => p.TryFindResource(It.IsAny<object>())).Returns(new object());
-            CustomContainer.Register(adapter.Object);
-            var node = new Mock<IConflictTreeNode>();
-            var contextualResource = new Mock<IContextualResourceModel>();
-            var value = new DsfMultiAssignActivity();
-            var assignStep = new FlowStep
-            {
-                Action = value
-            };
-            node.Setup(p => p.Activity).Returns(value);
-            var assignExample = XML.XmlResource.Fetch("AssignOutput");
-            var jsonSerializer = new Dev2JsonSerializer();
-            var currentResourceModel = Dev2MockFactory.SetupResourceModelMock();
-            var assignExampleBuilder = new StringBuilder(assignExample.ToString(System.Xml.Linq.SaveOptions.DisableFormatting));
-            currentResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(assignExampleBuilder);
-            currentResourceModel.Setup(resModel => resModel.DisplayName).Returns("Hello World");
-            currentResourceModel.Setup(resModel => resModel.DataList).Returns("");
-            var toolConflictItem = new ToolConflictItem(new ViewModels.Merge.Utils.ConflictRowList(new Mock<IConflictModelFactory>().Object, new Mock<IConflictModelFactory>().Object, new List<ConflictTreeNode>(), new List<ConflictTreeNode>()), ViewModels.Merge.Utils.ConflictRowList.Column.Current);
-            //------------Execute Test---------------------------
-            var completeConflict = new ConflictModelFactory(toolConflictItem, contextualResource.Object, node.Object);
-            //------------Assert Results-------------------------
-            Assert.IsNotNull(completeConflict);
-            completeConflict.GetDataList(currentResourceModel.Object);
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(()=> {
+				//------------Setup for test--------------------------
+				var adapter = new Mock<IApplicationAdaptor>();
+				adapter.Setup(p => p.TryFindResource(It.IsAny<object>())).Returns(new object());
+				CustomContainer.Register(adapter.Object);
+				var node = new Mock<IConflictTreeNode>();
+				var contextualResource = new Mock<IContextualResourceModel>();
+				var value = new DsfMultiAssignActivity();
+				var assignStep = new FlowStep
+				{
+					Action = value
+				};
+				node.Setup(p => p.Activity).Returns(value);
+				var assignExample = XML.XmlResource.Fetch("AssignOutput");
+				var jsonSerializer = new Dev2JsonSerializer();
+				var currentResourceModel = Dev2MockFactory.SetupResourceModelMock();
+				var assignExampleBuilder = new StringBuilder(assignExample.ToString(System.Xml.Linq.SaveOptions.DisableFormatting));
+				currentResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(assignExampleBuilder);
+				currentResourceModel.Setup(resModel => resModel.DisplayName).Returns("Hello World");
+				currentResourceModel.Setup(resModel => resModel.DataList).Returns("");
+				var toolConflictItem = new ToolConflictItem(new ViewModels.Merge.Utils.ConflictRowList(new Mock<IConflictModelFactory>().Object, new Mock<IConflictModelFactory>().Object, new List<ConflictTreeNode>(), new List<ConflictTreeNode>()), ViewModels.Merge.Utils.ConflictRowList.Column.Current);
+				//------------Execute Test---------------------------
+				var completeConflict = new ConflictModelFactory(toolConflictItem, contextualResource.Object, node.Object);
+				//------------Assert Results-------------------------
+				Assert.IsNotNull(completeConflict);
+				completeConflict.GetDataList(currentResourceModel.Object);
 
-            Assert.AreEqual(2, completeConflict.DataListViewModel.DataList.Count);
+				Assert.AreEqual(2, completeConflict.DataListViewModel.DataList.Count);
+            });
         }
 
         [TestMethod]
@@ -237,66 +243,70 @@ namespace Dev2.Core.Tests.Merge
         [Owner("Nkosinathi Sangweni")]
         public void ConflictModelFactory_GivenServiceConflictNode_ShouldReturnMergeToolModel()
         {
-            //------------Setup for test--------------------------
-            var adapter = new Mock<IApplicationAdaptor>();
-            var severRepo = new Mock<IServerRepository>();
-            severRepo.Setup(p => p.ActiveServer).Returns(new Mock<IServer>().Object);
-            CustomContainer.Register(severRepo.Object);
-            adapter.Setup(p => p.TryFindResource(It.IsAny<object>())).Returns(new object());
-            CustomContainer.Register(adapter.Object);
-            var node = new Mock<IConflictTreeNode>();
-            var contextualResource = new Mock<IContextualResourceModel>();
-            var value = new DsfActivity();
-            var assignStep = new FlowStep
-            {
-                Action = value
-            };
-            var currentResourceModel = Dev2MockFactory.SetupResourceModelMock();
-            node.Setup(p => p.Activity).Returns(value);
-            contextualResource.Setup(p => p.Environment.ResourceRepository.LoadContextualResourceModel(It.IsAny<Guid>())).Returns(currentResourceModel.Object);
-            var toolConflictItem = new ToolConflictItem(new ViewModels.Merge.Utils.ConflictRowList(new Mock<IConflictModelFactory>().Object, new Mock<IConflictModelFactory>().Object, new List<ConflictTreeNode>(), new List<ConflictTreeNode>()), ViewModels.Merge.Utils.ConflictRowList.Column.Current);
-            //------------Execute Test---------------------------
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(()=> {
+				//------------Setup for test--------------------------
+				var adapter = new Mock<IApplicationAdaptor>();
+				var severRepo = new Mock<IServerRepository>();
+				severRepo.Setup(p => p.ActiveServer).Returns(new Mock<IServer>().Object);
+				CustomContainer.Register(severRepo.Object);
+				adapter.Setup(p => p.TryFindResource(It.IsAny<object>())).Returns(new object());
+				CustomContainer.Register(adapter.Object);
+				var node = new Mock<IConflictTreeNode>();
+				var contextualResource = new Mock<IContextualResourceModel>();
+				var value = new DsfActivity();
+				var assignStep = new FlowStep
+				{
+					Action = value
+				};
+				var currentResourceModel = Dev2MockFactory.SetupResourceModelMock();
+				node.Setup(p => p.Activity).Returns(value);
+				contextualResource.Setup(p => p.Environment.ResourceRepository.LoadContextualResourceModel(It.IsAny<Guid>())).Returns(currentResourceModel.Object);
+				var toolConflictItem = new ToolConflictItem(new ViewModels.Merge.Utils.ConflictRowList(new Mock<IConflictModelFactory>().Object, new Mock<IConflictModelFactory>().Object, new List<ConflictTreeNode>(), new List<ConflictTreeNode>()), ViewModels.Merge.Utils.ConflictRowList.Column.Current);
+				//------------Execute Test---------------------------
 
-            var completeConflict = new ConflictModelFactory(toolConflictItem, contextualResource.Object, node.Object);
-            //------------Assert Results-------------------------
-            Assert.IsNotNull(completeConflict);
-            adapter.Verify(p => p.TryFindResource(It.IsAny<object>()));
-            var mergeToolModel = completeConflict.CreateModelItem(toolConflictItem, node.Object);
-            Assert.AreEqual("DsfActivity", mergeToolModel.MergeDescription);
-            Assert.AreEqual(typeof(ServiceDesignerViewModel).FullName, ((ToolConflictItem)mergeToolModel).ActivityDesignerViewModel.GetType().FullName);
+				var completeConflict = new ConflictModelFactory(toolConflictItem, contextualResource.Object, node.Object);
+				//------------Assert Results-------------------------
+				Assert.IsNotNull(completeConflict);
+				adapter.Verify(p => p.TryFindResource(It.IsAny<object>()));
+				var mergeToolModel = completeConflict.CreateModelItem(toolConflictItem, node.Object);
+				Assert.AreEqual("DsfActivity", mergeToolModel.MergeDescription);
+                Assert.AreEqual(typeof(ServiceDesignerViewModel).FullName, ((ToolConflictItem)mergeToolModel).ActivityDesignerViewModel.GetType().FullName);
+            });
         }
         
         [TestMethod]
         [Owner("Candice Daniel")]
         public void ConflictModelFactory_GivenServiceConflictNode_NullResourceID()
         {
-            //------------Setup for test--------------------------
-            var adapter = new Mock<IApplicationAdaptor>();
-            var severRepo = new Mock<IServerRepository>();
-            severRepo.Setup(p => p.ActiveServer).Returns(new Mock<IServer>().Object);
-            CustomContainer.Register(severRepo.Object);
-            adapter.Setup(p => p.TryFindResource(It.IsAny<object>())).Returns(new object());
-            CustomContainer.Register(adapter.Object);
-            var node = new Mock<IConflictTreeNode>();
-            var contextualResource = new Mock<IContextualResourceModel>();
-            var value = new DsfActivity();
-            var assignStep = new FlowStep
-            {
-                Action = value
-            };
-            var currentResourceModel = Dev2MockFactory.SetupResourceModelMock();
-            node.Setup(p => p.Activity).Returns(value);
-            contextualResource.Setup(r => r.Environment.ResourceRepository.LoadContextualResourceModel(Guid.Empty)).Returns((IContextualResourceModel)null);
-            var toolConflictItem = new ToolConflictItem(new ViewModels.Merge.Utils.ConflictRowList(new Mock<IConflictModelFactory>().Object, new Mock<IConflictModelFactory>().Object, new List<ConflictTreeNode>(), new List<ConflictTreeNode>()), ViewModels.Merge.Utils.ConflictRowList.Column.Current);
-            //------------Execute Test---------------------------
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(()=> {
+				//------------Setup for test--------------------------
+				var adapter = new Mock<IApplicationAdaptor>();
+				var severRepo = new Mock<IServerRepository>();
+				severRepo.Setup(p => p.ActiveServer).Returns(new Mock<IServer>().Object);
+				CustomContainer.Register(severRepo.Object);
+				adapter.Setup(p => p.TryFindResource(It.IsAny<object>())).Returns(new object());
+				CustomContainer.Register(adapter.Object);
+				var node = new Mock<IConflictTreeNode>();
+				var contextualResource = new Mock<IContextualResourceModel>();
+				var value = new DsfActivity();
+				var assignStep = new FlowStep
+				{
+					Action = value
+				};
+				var currentResourceModel = Dev2MockFactory.SetupResourceModelMock();
+				node.Setup(p => p.Activity).Returns(value);
+				contextualResource.Setup(r => r.Environment.ResourceRepository.LoadContextualResourceModel(Guid.Empty)).Returns((IContextualResourceModel)null);
+				var toolConflictItem = new ToolConflictItem(new ViewModels.Merge.Utils.ConflictRowList(new Mock<IConflictModelFactory>().Object, new Mock<IConflictModelFactory>().Object, new List<ConflictTreeNode>(), new List<ConflictTreeNode>()), ViewModels.Merge.Utils.ConflictRowList.Column.Current);
+				//------------Execute Test---------------------------
 
-            var completeConflict = new ConflictModelFactory(toolConflictItem, contextualResource.Object, node.Object);
-            //------------Assert Results-------------------------
-            Assert.IsNotNull(completeConflict);
-            adapter.Verify(p => p.TryFindResource(It.IsAny<object>()));
-            var mergeToolModel = completeConflict.CreateModelItem(toolConflictItem, node.Object);
-            Assert.AreEqual("DsfActivity", mergeToolModel.MergeDescription);
-            Assert.AreEqual(typeof(ServiceDesignerViewModel).FullName, ((ToolConflictItem)mergeToolModel).ActivityDesignerViewModel.GetType().FullName);
+				var completeConflict = new ConflictModelFactory(toolConflictItem, contextualResource.Object, node.Object);
+				//------------Assert Results-------------------------
+				Assert.IsNotNull(completeConflict);
+				adapter.Verify(p => p.TryFindResource(It.IsAny<object>()));
+				var mergeToolModel = completeConflict.CreateModelItem(toolConflictItem, node.Object);
+				Assert.AreEqual("DsfActivity", mergeToolModel.MergeDescription);
+				Assert.AreEqual(typeof(ServiceDesignerViewModel).FullName, ((ToolConflictItem)mergeToolModel).ActivityDesignerViewModel.GetType().FullName);
+			});
         }
 
         [TestMethod]
