@@ -1851,7 +1851,7 @@ namespace Dev2.Studio.ViewModels
         public  void ActivateItem(IWorkSurfaceContextViewModel item)
         {
             _previousActive = ActiveItem;
-            //base.ActivateItem(item);
+            base.ActivateItemAsync(item);
             ActiveItemChanged?.Invoke(item);
             if (item?.ContextualResourceModel == null)
             {

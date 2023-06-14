@@ -445,6 +445,8 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void MainViewModel_CloseWorkSurfaceContext_CloseFalse_PreviousItemActivatedAndAllItemsPResent()
         {
+            CustomContainer.Register(new Mock<IPopupController>().Object);
+
             CreateFullExportsAndVm();
             AddAdditionalContext();
             Assert.AreEqual(3, _shellViewModel.Items.Count);
@@ -465,6 +467,8 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void MainViewModel_CloseWorkSurfaceContext_CloseTrue_PreviousItemActivatedAndOneLessItem()
         {
+            CustomContainer.Register(new Mock<IPopupController>().Object);
+
             CreateFullExportsAndVm();
             AddAdditionalContext();
             Assert.AreEqual(3, _shellViewModel.Items.Count);
