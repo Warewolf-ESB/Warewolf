@@ -40,7 +40,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfPathCopy_UpdateForEachInputs")]
-        [DeploymentItem(@"x86\SQLite.Interop.dll")]
+        //[DeploymentItem(@"x86\SQLite.Interop.dll")]
         public void DsfPathCopy_UpdateForEachInputs_NullUpdates_DoesNothing()
         {
             //------------Setup for test--------------------------

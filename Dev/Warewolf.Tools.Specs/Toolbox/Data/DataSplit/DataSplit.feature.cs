@@ -30,8 +30,7 @@ namespace Warewolf.Tools.Specs.Toolbox.Data.DataSplit
         
         private static string[] featureTags = new string[] {
                 "Data",
-                "MSTest:DeploymentItem:EnableDocker.txt",
-                "MSTest:DeploymentItem:x86\\SQLite.Interop.dll"};
+                "MSTest:DeploymentItem:EnableDocker.txt"};
         
 #line 1 "DataSplit.feature"
 #line hidden
@@ -101,7 +100,6 @@ namespace Warewolf.Tools.Specs.Toolbox.Data.DataSplit
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         public void SplitTextToARecordsetUsingIndexUsingStarNotation()
         {
             string[] tagsOfScenario = ((string[])(null));
@@ -204,7 +202,6 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         public void SplitTextToAScalar()
         {
             string[] tagsOfScenario = ((string[])(null));
@@ -251,7 +248,6 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         public void SplitTextToARecordsetUsingIndexUsingAppendNotation()
         {
             string[] tagsOfScenario = ((string[])(null));
@@ -354,7 +350,6 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         public void SplitCharactersUsingIndexGoingBackwardsUsingStarNotation()
         {
             string[] tagsOfScenario = ((string[])(null));
@@ -448,7 +443,6 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         public void SplitCharactersUsingIndexGoingBackwardsUsingAppendNotation()
         {
             string[] tagsOfScenario = ((string[])(null));
@@ -542,7 +536,6 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         public void SplitCharactersUsingIndexGoingForwardUsingStarNotation()
         {
             string[] tagsOfScenario = ((string[])(null));
@@ -636,7 +629,6 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         public void SplitCharactersUsingIndexGoingForwardUsingAppendNotation()
         {
             string[] tagsOfScenario = ((string[])(null));
@@ -730,7 +722,6 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         public void SplitTextUsingAllSplitTypes_SomeWithIncludeSelected()
         {
             string[] tagsOfScenario = ((string[])(null));
@@ -890,7 +881,6 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         public void SplitTextUsingAllSplitTypes_SomeWithIncludeSelectedUsingAStarNotation()
         {
             string[] tagsOfScenario = ((string[])(null));
@@ -1050,7 +1040,6 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         public void SplitCSVFileFormatIntoRecordset_SomeFieldsBlank()
         {
             string[] tagsOfScenario = ((string[])(null));
@@ -1252,7 +1241,6 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         public void SplitCSVFileFormatIntoRecordset_SkipBlankRowsSelected()
         {
             string[] tagsOfScenario = ((string[])(null));
@@ -1457,7 +1445,6 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         public void SplitBlankTextUsingAllSplitTypes()
         {
             string[] tagsOfScenario = ((string[])(null));
@@ -1594,7 +1581,6 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         public void SplitTextUsingIndexWhereAndSpace()
         {
             string[] tagsOfScenario = ((string[])(null));
@@ -1678,7 +1664,6 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         public void SplitTextUsingCharAndEscapeCharacter()
         {
             string[] tagsOfScenario = ((string[])(null));
@@ -1757,7 +1742,6 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         public void SplitBlankText()
         {
             string[] tagsOfScenario = ((string[])(null));
@@ -1824,7 +1808,6 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         public void SplitTextToARecordsetUsingANegativeIndex()
         {
             string[] tagsOfScenario = ((string[])(null));
@@ -1891,7 +1874,6 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         public void SplitTextIntoNegativeRecordsetIndexAsTheIndexToSplitAt()
         {
             string[] tagsOfScenario = ((string[])(null));
@@ -1929,7 +1911,6 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         public void SplitTextUsingAIndexWithAndSpace()
         {
             string[] tagsOfScenario = ((string[])(null));
@@ -1971,7 +1952,6 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         public void SplitTextUsingIndexWhereIndexIsNotNumeric_Variable()
         {
             string[] tagsOfScenario = ((string[])(null));
@@ -2021,7 +2001,6 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         public void SplitTextUsingIndexWhereIndexProvided()
         {
             string[] tagsOfScenario = ((string[])(null));
@@ -2068,7 +2047,6 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         public void SendingErrorInErrorVariableAndCallingWebservice()
         {
             string[] tagsOfScenario = ((string[])(null));
@@ -2146,7 +2124,6 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         public void SplitNegativeRecordIndexAsInput()
         {
             string[] tagsOfScenario = ((string[])(null));
@@ -2213,7 +2190,6 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         public void SplitTextIntoNegativeRecordsetIndex()
         {
             string[] tagsOfScenario = ((string[])(null));
@@ -2343,7 +2319,6 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Type", "")]
@@ -2359,7 +2334,6 @@ this.SplitTextUsingTypeIndexButIndexIsInvalid("1", "", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Type", "[[%$]]")]
@@ -2438,7 +2412,6 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 0")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec().a]]=]]")]
@@ -2454,7 +2427,6 @@ this.DebugOutputValidationErrors("1", "[[rec().a]]=]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec\"()\".a]]")]
@@ -2470,7 +2442,6 @@ this.DebugOutputValidationErrors("2", "[[rec\"()\".a]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec\"()\".a]]")]
@@ -2486,7 +2457,6 @@ this.DebugOutputValidationErrors("3", "[[rec\"()\".a]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec\".a]]")]
@@ -2502,7 +2472,6 @@ this.DebugOutputValidationErrors("4", "[[rec\".a]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec.a]]")]
@@ -2518,7 +2487,6 @@ this.DebugOutputValidationErrors("5", "[[rec.a]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec()*.a]]")]
@@ -2534,7 +2502,6 @@ this.DebugOutputValidationErrors("6", "[[rec()*.a]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "9")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec().a]]*")]
@@ -2550,7 +2517,6 @@ this.DebugOutputValidationErrors("9", "[[rec().a]]*", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "10")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[1]]")]
@@ -2566,7 +2532,6 @@ this.DebugOutputValidationErrors("10", "[[1]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 8")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "11")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[@]]")]
@@ -2582,7 +2547,6 @@ this.DebugOutputValidationErrors("11", "[[@]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 9")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "13")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var]]00]]")]
@@ -2598,7 +2562,6 @@ this.DebugOutputValidationErrors("13", "[[var]]00]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 10")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "14")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var]]@]]")]
@@ -2614,7 +2577,6 @@ this.DebugOutputValidationErrors("14", "[[var]]@]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 11")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "15")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var.()]]")]
@@ -2630,7 +2592,6 @@ this.DebugOutputValidationErrors("15", "[[var.()]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 12")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "16")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[]]")]
@@ -2646,7 +2607,6 @@ this.DebugOutputValidationErrors("16", "[[]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 13")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "17")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[()]]")]
@@ -2662,7 +2622,6 @@ this.DebugOutputValidationErrors("17", "[[()]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 14")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "28")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var[[]]")]
@@ -2678,7 +2637,6 @@ this.DebugOutputValidationErrors("28", "[[var[[]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 15")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "29")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var1.a]]")]
@@ -2694,7 +2652,6 @@ this.DebugOutputValidationErrors("29", "[[var1.a]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 16")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "20")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec()!a]]")]
@@ -2710,7 +2667,6 @@ this.DebugOutputValidationErrors("20", "[[rec()!a]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 17")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "21")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec()         a]]")]
@@ -2726,7 +2682,6 @@ this.DebugOutputValidationErrors("21", "[[rec()         a]]", ((string[])(null))
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 18")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "22")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[{{rec(_).a}}]]]")]
@@ -2742,7 +2697,6 @@ this.DebugOutputValidationErrors("22", "[[{{rec(_).a}}]]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 19")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "23")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec(23).[[var*]]]]")]
@@ -2758,7 +2712,6 @@ this.DebugOutputValidationErrors("23", "[[rec(23).[[var*]]]]", ((string[])(null)
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 20")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "24")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec()")]
@@ -2774,7 +2727,6 @@ this.DebugOutputValidationErrors("24", "[[rec()", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 21")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "25")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "a[[rec([[[[b]]]]).a]]@")]
@@ -2790,7 +2742,6 @@ this.DebugOutputValidationErrors("25", "a[[rec([[[[b]]]]).a]]@", ((string[])(nul
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 22")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "26")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var  ]]")]
@@ -2806,7 +2757,6 @@ this.DebugOutputValidationErrors("26", "[[var  ]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 23")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "27")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var@]]")]
@@ -2822,7 +2772,6 @@ this.DebugOutputValidationErrors("27", "[[var@]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 24")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "29")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var]]]]")]
@@ -2838,7 +2787,6 @@ this.DebugOutputValidationErrors("29", "[[var]]]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 25")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "30")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[(1var)]]")]
@@ -2854,7 +2802,6 @@ this.DebugOutputValidationErrors("30", "[[(1var)]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 26")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "31")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[1var)]]")]
@@ -2870,7 +2817,6 @@ this.DebugOutputValidationErrors("31", "[[1var)]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 27")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "32")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var.()]]")]
@@ -2886,7 +2832,6 @@ this.DebugOutputValidationErrors("32", "[[var.()]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 28")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "33")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var  ]]")]
@@ -2902,7 +2847,6 @@ this.DebugOutputValidationErrors("33", "[[var  ]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 29")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "34")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var~]]")]
@@ -2918,7 +2862,6 @@ this.DebugOutputValidationErrors("34", "[[var~]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 30")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "35")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var+]]")]
@@ -2934,7 +2877,6 @@ this.DebugOutputValidationErrors("35", "[[var+]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 31")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "36")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var]a]]")]
@@ -2950,7 +2892,6 @@ this.DebugOutputValidationErrors("36", "[[var]a]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 32")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "37")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var[a]]")]
@@ -2966,7 +2907,6 @@ this.DebugOutputValidationErrors("37", "[[var[a]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 33")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "38")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var 1]]")]
@@ -2982,7 +2922,6 @@ this.DebugOutputValidationErrors("38", "[[var 1]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 34")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "39")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var[[]]")]
@@ -2998,7 +2937,6 @@ this.DebugOutputValidationErrors("39", "[[var[[]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 35")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "40")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var[[1]]]]")]
@@ -3014,7 +2952,6 @@ this.DebugOutputValidationErrors("40", "[[var[[1]]]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 36")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "41")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var.a]]")]
@@ -3030,7 +2967,6 @@ this.DebugOutputValidationErrors("41", "[[var.a]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 37")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "42")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var1.a]]")]
@@ -3046,7 +2982,6 @@ this.DebugOutputValidationErrors("42", "[[var1.a]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 38")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "43")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[[[a]].[[b]]]]cd]]")]
@@ -3062,7 +2997,6 @@ this.DebugOutputValidationErrors("43", "[[[[a]].[[b]]]]cd]]", ((string[])(null))
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 39")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "44")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var*]]")]
@@ -3078,7 +3012,6 @@ this.DebugOutputValidationErrors("44", "[[var*]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 40")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "46")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[#var]]")]
@@ -3094,7 +3027,6 @@ this.DebugOutputValidationErrors("46", "[[#var]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 41")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "47")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var]](var)]]")]
@@ -3110,7 +3042,6 @@ this.DebugOutputValidationErrors("47", "[[var]](var)]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 42")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "48")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var,]]")]
@@ -3126,7 +3057,6 @@ this.DebugOutputValidationErrors("48", "[[var,]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 43")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "49")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[:var 1]]")]
@@ -3142,7 +3072,6 @@ this.DebugOutputValidationErrors("49", "[[:var 1]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 44")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "50")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[,var]]")]
@@ -3158,7 +3087,6 @@ this.DebugOutputValidationErrors("50", "[[,var]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 45")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "51")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[test,var]]")]
@@ -3174,7 +3102,6 @@ this.DebugOutputValidationErrors("51", "[[test,var]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 46")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "52")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[test. var]]")]
@@ -3190,7 +3117,6 @@ this.DebugOutputValidationErrors("52", "[[test. var]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 47")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "53")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[test.var]]")]
@@ -3206,7 +3132,6 @@ this.DebugOutputValidationErrors("53", "[[test.var]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 48")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "54")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[test. 1]]")]
@@ -3222,7 +3147,6 @@ this.DebugOutputValidationErrors("54", "[[test. 1]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 49")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "55")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec(*).&]]")]
@@ -3238,7 +3162,6 @@ this.DebugOutputValidationErrors("55", "[[rec(*).&]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 50")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "56")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec(),a]]")]
@@ -3254,7 +3177,6 @@ this.DebugOutputValidationErrors("56", "[[rec(),a]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 51")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "57")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec()         a]]")]
@@ -3270,7 +3192,6 @@ this.DebugOutputValidationErrors("57", "[[rec()         a]]", ((string[])(null))
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 52")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "58")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec(1).[[rec().1]]]]")]
@@ -3286,7 +3207,6 @@ this.DebugOutputValidationErrors("58", "[[rec(1).[[rec().1]]]]", ((string[])(nul
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 53")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "59")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec(a).[[rec().a]]]]")]
@@ -3302,7 +3222,6 @@ this.DebugOutputValidationErrors("59", "[[rec(a).[[rec().a]]]]", ((string[])(nul
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 54")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "60")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[{{rec(_).a}}]]]")]
@@ -3318,7 +3237,6 @@ this.DebugOutputValidationErrors("60", "[[{{rec(_).a}}]]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 55")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "61")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[*[{{rec(_).a}}]]]")]
@@ -3334,7 +3252,6 @@ this.DebugOutputValidationErrors("61", "[[*[{{rec(_).a}}]]]", ((string[])(null))
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 56")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "62")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec(23).[[var}]]]]")]
@@ -3350,7 +3267,6 @@ this.DebugOutputValidationErrors("62", "[[rec(23).[[var}]]]]", ((string[])(null)
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 57")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "63")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec(23).[[var*]]]]")]
@@ -3366,7 +3282,6 @@ this.DebugOutputValidationErrors("63", "[[rec(23).[[var*]]]]", ((string[])(null)
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 58")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec(23).[[var%^&%]]]]")]
@@ -3382,7 +3297,6 @@ this.DebugOutputValidationErrors("64", "[[rec(23).[[var%^&%]]]]", ((string[])(nu
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 59")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "65")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec().a]]234234]]")]
@@ -3398,7 +3312,6 @@ this.DebugOutputValidationErrors("65", "[[rec().a]]234234]]", ((string[])(null))
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 60")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "66")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec().a]]=]]")]
@@ -3414,7 +3327,6 @@ this.DebugOutputValidationErrors("66", "[[rec().a]]=]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 61")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "67")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec()..]]")]
@@ -3430,7 +3342,6 @@ this.DebugOutputValidationErrors("67", "[[rec()..]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 62")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "68")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec().a.b]]")]
@@ -3446,7 +3357,6 @@ this.DebugOutputValidationErrors("68", "[[rec().a.b]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 63")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "69")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec().a]].a]]")]
@@ -3462,7 +3372,6 @@ this.DebugOutputValidationErrors("69", "[[rec().a]].a]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "70")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec(@).a]]")]
@@ -3478,7 +3387,6 @@ this.DebugOutputValidationErrors("70", "[[rec(@).a]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 65")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "71")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec(().a]]")]
@@ -3494,7 +3402,6 @@ this.DebugOutputValidationErrors("71", "[[rec(().a]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 66")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "72")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec()).a]]")]
@@ -3510,7 +3417,6 @@ this.DebugOutputValidationErrors("72", "[[rec()).a]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 67")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "73")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec(+).a]]")]
@@ -3526,7 +3432,6 @@ this.DebugOutputValidationErrors("73", "[[rec(+).a]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 68")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "74")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec(-).a]]")]
@@ -3542,7 +3447,6 @@ this.DebugOutputValidationErrors("74", "[[rec(-).a]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 69")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "75")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec(!).a]]")]
@@ -3558,7 +3462,6 @@ this.DebugOutputValidationErrors("75", "[[rec(!).a]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 70")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "76")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec(q).a]]")]
@@ -3574,7 +3477,6 @@ this.DebugOutputValidationErrors("76", "[[rec(q).a]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 71")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "77")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec(w).a]]")]
@@ -3590,7 +3492,6 @@ this.DebugOutputValidationErrors("77", "[[rec(w).a]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 72")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "78")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec(.).a]]")]
@@ -3606,7 +3507,6 @@ this.DebugOutputValidationErrors("78", "[[rec(.).a]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 73")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "79")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec(:).a]]")]
@@ -3622,7 +3522,6 @@ this.DebugOutputValidationErrors("79", "[[rec(:).a]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 74")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "80")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec(,).a]]")]
@@ -3638,7 +3537,6 @@ this.DebugOutputValidationErrors("80", "[[rec(,).a]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 75")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "81")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec\"()\".a]]")]
@@ -3654,7 +3552,6 @@ this.DebugOutputValidationErrors("81", "[[rec\"()\".a]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 76")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "82")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec\"()\".a]]")]
@@ -3670,7 +3567,6 @@ this.DebugOutputValidationErrors("82", "[[rec\"()\".a]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 77")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "83")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec\").a]]")]
@@ -3686,7 +3582,6 @@ this.DebugOutputValidationErrors("83", "[[rec\").a]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 78")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "84")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec{a]]")]
@@ -3702,7 +3597,6 @@ this.DebugOutputValidationErrors("84", "[[rec{a]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 79")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "85")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec{a}]]")]
@@ -3718,7 +3612,6 @@ this.DebugOutputValidationErrors("85", "[[rec{a}]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 80")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "86")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec()*.a]]")]
@@ -3734,7 +3627,6 @@ this.DebugOutputValidationErrors("86", "[[rec()*.a]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 81")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "89")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec(-1).a")]
@@ -3750,7 +3642,6 @@ this.DebugOutputValidationErrors("89", "[[rec(-1).a", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 82")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "90")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[r(q).a]][[r()..]][[r\"]][[r()]][[]][[1]]")]
@@ -3834,7 +3725,6 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:String", "[[var]]")]
@@ -3855,7 +3745,6 @@ this.SplitDataUsingScalarsAndRecordsets("1", "[[var]]", "\"\"", "Index", "1", ""
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:String", "Warewolf")]
@@ -3876,7 +3765,6 @@ this.SplitDataUsingScalarsAndRecordsets("2", "Warewolf", "[[var]]", "", "1", "",
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:String", "Warewolf")]
@@ -3931,7 +3819,6 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec().a]]")]
@@ -3947,7 +3834,6 @@ this.DebugOutputValidationErrorsX("1", "[[rec().a]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         public void SplitTextFormatIntoRecordset_WithEscapeValue()
         {
             string[] tagsOfScenario = ((string[])(null));
@@ -4044,7 +3930,6 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         public void SplitTextFormatIntoRecordset_WithNewLineValue()
         {
             string[] tagsOfScenario = ((string[])(null));

@@ -97,8 +97,7 @@ namespace Dev2.Runtime.WebServer.Hubs
             {
                 addedItem.ServerId = HostSecurityProvider.Instance.ServerID;
                 var item = _serializer.Serialize(addedItem);
-                var hubCallerConnectionContext = Clients;
-                hubCallerConnectionContext.All.SendAsync("ItemAddedMessage", item);
+                _hubContext.Clients.All.SendAsync("ItemAddedMessage", item);
             }
         }
 
@@ -147,7 +146,7 @@ namespace Dev2.Runtime.WebServer.Hubs
 
                 if (clientCaller != null)
                     clientCaller.SendAsync("SendPermissionsMemo", serializedMemo);
-                else
+                else if(null != user)
                     _hubContext.Clients.Group($"user_{user.Identity.Name}").SendAsync("SendPermissionsMemo", serializedMemo);
 
             }
@@ -446,7 +445,7 @@ namespace Dev2.Runtime.WebServer.Hubs
                 clientCaller.SendAsync("SendWorkspaceID", workspaceId);//clientCaller.SendWorkspaceID(workspaceId);
                 clientCaller.SendAsync("SendServerID", HostSecurityProvider.Instance.ServerID);//clientCaller.SendServerID(HostSecurityProvider.Instance.ServerID);
 
-                NotifyPermissionsHaveBeenModified(clientCaller, _httpContextAccessor.HttpContext.User);//PermissionsHaveBeenModified(null, null);
+                NotifyPermissionsHaveBeenModified(clientCaller, _httpContextAccessor.HttpContext == null ? null : _httpContextAccessor.HttpContext.User);//PermissionsHaveBeenModified(null, null);
             });
             t.Start();
         }

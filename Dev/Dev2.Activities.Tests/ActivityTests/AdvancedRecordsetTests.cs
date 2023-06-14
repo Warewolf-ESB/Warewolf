@@ -99,7 +99,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory("AdvancedRecordset")]
-        [DeploymentItem(@"x86\SQLite.Interop.dll")]
+        //[DeploymentItem(@"x86\SQLite.Interop.dll")]
         public void AdvancedRecordset_ConvertDataTableToRecordset_ExpectDataInIEnvironment()
         {
             string returnRecordsetName = "person";
@@ -135,7 +135,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory("AdvancedRecordset")]
-        [DeploymentItem(@"x86\SQLite.Interop.dll")]
+        //[DeploymentItem(@"x86\SQLite.Interop.dll")]
         public void AdvancedRecordset_Converter_CanRunSimpleQuery()
         {
             string query = "select * from person";
@@ -150,7 +150,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory("AdvancedRecordset")]
-        [DeploymentItem(@"x86\SQLite.Interop.dll")]
+        //[DeploymentItem(@"x86\SQLite.Interop.dll")]
         public void AdvancedRecordset_Converter_CanRunQueryContainingAlias()
         {
             string query = "select name as username from person";
@@ -165,7 +165,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory("AdvancedRecordset")]
-        [DeploymentItem(@"x86\SQLite.Interop.dll")]
+        //[DeploymentItem(@"x86\SQLite.Interop.dll")]
         public void AdvancedRecordset_Converter_CanRunJoinQuery_ExpectAllResults()
         {
             var worker = CreatePersonAddressWorkers();
@@ -182,7 +182,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory("AdvancedRecordset")]
-        [DeploymentItem(@"x86\SQLite.Interop.dll")]
+        //[DeploymentItem(@"x86\SQLite.Interop.dll")]
         public void AdvancedRecordset_SelectStatementWithAllias_Join_ReturnOutputs()
         {
             //------------Setup for test--------------------------
@@ -204,7 +204,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory("AdvancedRecordset")]
-        [DeploymentItem(@"x86\SQLite.Interop.dll")]
+        //[DeploymentItem(@"x86\SQLite.Interop.dll")]
         public void AdvancedRecordset_Converter_CanRunWhereQuery_ExpectFilteredResults()
         {
             string query = "select * from person p join address a on p.address_id=a.id where a.addr=\"11 test lane\" order by Name";
@@ -226,7 +226,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory("AdvancedRecordset")]
-        [DeploymentItem(@"x86\SQLite.Interop.dll")]
+        //[DeploymentItem(@"x86\SQLite.Interop.dll")]
         public void AdvancedRecordset_Converter_CanRunWhereQuery_ExpectNoResults()
         {
             string query = "select * from person p join address a on p.address_id=a.id where p.Name=\"zak\"";
@@ -269,7 +269,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory("AdvancedRecordset")]
-        [DeploymentItem(@"x86\SQLite.Interop.dll")]
+        //[DeploymentItem(@"x86\SQLite.Interop.dll")]
         public void AdvancedRecordset_Converter_ExpectUpdateAffectedRows()
         {
             var worker = CreatePersonAddressWorkers();
@@ -293,7 +293,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory("AdvancedRecordset")]
-        [DeploymentItem(@"x86\SQLite.Interop.dll")]
+        //[DeploymentItem(@"x86\SQLite.Interop.dll")]
         public void AdvancedRecordset_ExecuteScalar()
         {
             var worker = CreatePersonAddressWorkers();
@@ -307,7 +307,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory("AdvancedRecordset")]
-        [DeploymentItem(@"x86\SQLite.Interop.dll")]
+        //[DeploymentItem(@"x86\SQLite.Interop.dll")]
         public void AdvancedRecordset_ExecuteScalar_Exception()
         {
             string query = "select from person";
@@ -319,7 +319,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory("AdvancedRecordset")]
-        [DeploymentItem(@"x86\SQLite.Interop.dll")]
+        //[DeploymentItem(@"x86\SQLite.Interop.dll")]
         public void AdvancedRecordset_ExecuteNonQuery_ExpectBadSQLToError()
         {
             string query = "select from person";
@@ -330,7 +330,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory("AdvancedRecordset")]
-        [DeploymentItem(@"x86\SQLite.Interop.dll")]
+        //[DeploymentItem(@"x86\SQLite.Interop.dll")]
         public void AdvancedRecordset_Converter_ExpectBadSQLToError()
         {
             string query = "select from person";
@@ -345,7 +345,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory("AdvancedRecordset")]
-        [DeploymentItem(@"x86\SQLite.Interop.dll")]
+        //[DeploymentItem(@"x86\SQLite.Interop.dll")]
         public void AdvancedRecordset_ReturnSql()
         {
             List<TSQLStatement> statements = TSQLStatementReader.ParseStatements("select * from person;", includeWhitespace: true);
@@ -354,7 +354,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var sql = Worker.ReturnSql(select.Tokens);
             Assert.AreEqual("select   *   from   person", sql);
         }
-        [TestMethod, DeploymentItem(@"x86\SQLite.Interop.dll")]
+        [TestMethod]//, DeploymentItem(@"x86\SQLite.Interop.dll")]
         [Owner("Candice Daniel")]
         [TestCategory("AdvancedRecordset")]
         public void AdvancedRecordset_SetRecordsetName()
@@ -363,7 +363,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("TestRecordsetName", advancedRecordset.RecordsetName);
         }
 
-        [TestMethod, DeploymentItem(@"x86\SQLite.Interop.dll")]
+        [TestMethod]//, DeploymentItem(@"x86\SQLite.Interop.dll")]
         [Owner("Candice Daniel")]
         [TestCategory("AdvancedRecordset")]
         public void AdvancedRecordset_Environment()
@@ -375,7 +375,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             };
             Assert.AreEqual(env, advancedRecordset.Environment);
         }
-        [TestMethod, DeploymentItem(@"x86\SQLite.Interop.dll")]
+        [TestMethod]//, DeploymentItem(@"x86\SQLite.Interop.dll")]
         [Owner("Candice Daniel")]
         [TestCategory("AdvancedRecordset")]
         public void AdvancedRecordset_CreateVariableTable()
@@ -391,7 +391,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 Assert.IsTrue(false, "CreateVariableTable Failed");
             }
         }
-        [TestMethod, DeploymentItem(@"x86\SQLite.Interop.dll")]
+        [TestMethod]//, DeploymentItem(@"x86\SQLite.Interop.dll")]
         [Owner("Candice Daniel")]
         [TestCategory("AdvancedRecordset")]
         public void AdvancedRecordset_InsertIntoVariableTable()
@@ -408,7 +408,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 Assert.IsTrue(false, "InsertIntoVariableTable");
             }
         }
-        [TestMethod, DeploymentItem(@"x86\SQLite.Interop.dll")]
+        [TestMethod]//, DeploymentItem(@"x86\SQLite.Interop.dll")]
         [Owner("Candice Daniel")]
         [TestCategory("AdvancedRecordset")]
         public void AdvancedRecordset_GetVariableValue_String()
@@ -425,7 +425,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 Assert.IsTrue(false, "GetVariableValue");
             }
         }
-        [TestMethod, DeploymentItem(@"x86\SQLite.Interop.dll")]
+        [TestMethod]//, DeploymentItem(@"x86\SQLite.Interop.dll")]
         [Owner("Candice Daniel")]
         [TestCategory("AdvancedRecordset")]
         public void AdvancedRecordset_GetVariableValue_Int()
@@ -442,7 +442,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 Assert.IsTrue(false, "GetVariableValue");
             }
         }
-        [TestMethod, DeploymentItem(@"x86\SQLite.Interop.dll")]
+        [TestMethod]//, DeploymentItem(@"x86\SQLite.Interop.dll")]
         [Owner("Candice Daniel")]
         [TestCategory("AdvancedRecordset")]
         public void AdvancedRecordset_GetVariableValue_Double()
@@ -459,7 +459,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 Assert.IsTrue(false, "GetVariableValue");
             }
         }
-        [TestMethod, DeploymentItem(@"x86\SQLite.Interop.dll")]
+        [TestMethod]//, DeploymentItem(@"x86\SQLite.Interop.dll")]
         [Owner("Candice Daniel")]
         [TestCategory("AdvancedRecordset")]
         public void AdvancedRecordset_BuildInsertStatement()
@@ -476,7 +476,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 Assert.IsTrue(false, "GetVariableValue");
             }
         }
-        [TestMethod, DeploymentItem(@"x86\SQLite.Interop.dll")]
+        [TestMethod]//, DeploymentItem(@"x86\SQLite.Interop.dll")]
         [Owner("Candice Daniel")]
         [TestCategory("AdvancedRecordset")]
         public void AdvancedRecordset_BuildInsertStatement_Array()
@@ -497,7 +497,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory("AdvancedRecordset")]
-        [DeploymentItem(@"x86\SQLite.Interop.dll")]
+        //[DeploymentItem(@"x86\SQLite.Interop.dll")]
         public void AdvancedRecordset_ApplyResultToEnvironment_updatedTrue()
         {
             string returnRecordsetName = "person";
@@ -535,7 +535,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory("AdvancedRecordset")]
-        [DeploymentItem(@"x86\SQLite.Interop.dll")]
+        //[DeploymentItem(@"x86\SQLite.Interop.dll")]
         public void AdvancedRecordset_ApplyScalarResultToEnvironment_updatedTrue()
         {
             var worker = CreatePersonAddressWorkers();
@@ -562,7 +562,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory("AdvancedRecordset")]
-        [DeploymentItem(@"x86\SQLite.Interop.dll")]
+        //[DeploymentItem(@"x86\SQLite.Interop.dll")]
         public void AdvancedRecordset_AddRecordsetAsTable_ExecuteStatement_Select()
         {
             var l = new List<string>();
@@ -584,7 +584,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory("AdvancedRecordset")]
-        [DeploymentItem(@"x86\SQLite.Interop.dll")]
+        //[DeploymentItem(@"x86\SQLite.Interop.dll")]
         public void AdvancedRecordset_AddRecordsetAsTable_ExecuteStatement_Insert()
         {
             var l = new List<string>();
@@ -606,7 +606,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory("AdvancedRecordset")]
-        [DeploymentItem(@"x86\SQLite.Interop.dll")]
+        //[DeploymentItem(@"x86\SQLite.Interop.dll")]
         public void AdvancedRecordset_LoadRecordsetAsTable_LoadIntoSqliteDb_BuildInsertStatement_colTypeTests()
         {
             var personRecordsetName = "person";

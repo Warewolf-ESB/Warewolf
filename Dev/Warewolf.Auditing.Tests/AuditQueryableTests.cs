@@ -41,7 +41,7 @@ namespace Warewolf.Auditing.Tests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AuditQueryable))]
-        [DeploymentItem(@"x86\SQLite.Interop.dll")]
+        //[DeploymentItem(@"x86\SQLite.Interop.dll")]
         public void AuditQueryable_AuditQueryableSqlite_QueryLogData()
         {
             var executionID = Guid.NewGuid();
