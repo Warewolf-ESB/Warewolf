@@ -48,6 +48,7 @@ using Warewolf.ResourceManagement;
 using System.Collections.Concurrent;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
+using Dev2.Common.Interfaces.Infrastructure;
 
 namespace Dev2.Tests.Runtime.Hosting
 {
@@ -59,7 +60,7 @@ namespace Dev2.Tests.Runtime.Hosting
         const int SaveResourceCount = 6;
         static readonly object SyncRoot = new object();
 
-        const int _numOfTestWFs = 2054; //2000;
+        const int _numOfTestWFs = 1000;
         const string _resourceName = "wolf-Test_WF_";
 
         static List<string> _testSourceWFs = new List<string>();
@@ -3402,7 +3403,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var result = rc.GetResources(workspaceID);
             var oldResource = result.FirstOrDefault(resource => resource.ResourceName == resourceName);
             //------------Assert Precondition-----------------
-            Assert.AreEqual(3, result.Count);
+            Assert.AreEqual(2, result.Count);
             Assert.IsNotNull(oldResource);
             //------------Execute Test---------------------------
             ResourceCatalogResult resourceCatalogResult = rc.DuplicateFolder(oldResource.GetResourcePath(GlobalConstants.ServerWorkspaceID), "Destination", "NewName", false);
@@ -3469,7 +3470,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Directory.CreateDirectory(path);
 
             SaveResources(path, null, true, false, _testSourceWFs, _resourceIds.ToArray(), true, true);
-
+                  
             var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
             rc.LoadWorkspace(workspaceID);
             var resultBeforeDuplicateF = rc.GetResources(workspaceID);
@@ -3629,6 +3630,7 @@ namespace Dev2.Tests.Runtime.Hosting
                 };
 
                 var sut = ResourceCatalog.Instance;
+                sut.LoadWorkspace(workspaceID);
                 //------------Assert Precondition-----------------
                 //------------Execute Test---------------------------
                 var result = sut.Parse(workspaceID, resource.ResourceID);

@@ -55,6 +55,7 @@ namespace Dev2.Services.Security
         EsbWrite,
         ESbWriteDebugState,
         ResourcesSendMemo,
-        WebExecuteInternalService
+        WebExecuteInternalService,
+        EsbIsMessagePublished
     }
 }
