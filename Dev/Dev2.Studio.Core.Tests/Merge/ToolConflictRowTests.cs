@@ -10,14 +10,16 @@ namespace Dev2.Core.Tests.Merge
         [Owner("Pieter Terblanche")]
         public void ToolConflictRow_CreateConflictRow()
         {
-            var conflictRow = CreateConflictRow();
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(()=> {
+				var conflictRow = CreateConflictRow();
 
-            Assert.IsNotNull(conflictRow.Current);
-            Assert.IsNotNull(conflictRow.Different);
-            Assert.IsNotNull(conflictRow.Connectors);
+				Assert.IsNotNull(conflictRow.Current);
+				Assert.IsNotNull(conflictRow.Different);
+				Assert.IsNotNull(conflictRow.Connectors);
 
-            Assert.AreNotEqual(conflictRow.Current, conflictRow.Different);
-            Assert.AreNotEqual(conflictRow.Different, conflictRow.Current);
+				Assert.AreNotEqual(conflictRow.Current, conflictRow.Different);
+                Assert.AreNotEqual(conflictRow.Different, conflictRow.Current);
+            });
         }
 
         [TestMethod]

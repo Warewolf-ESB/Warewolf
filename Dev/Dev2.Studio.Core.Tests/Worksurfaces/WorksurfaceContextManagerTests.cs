@@ -22,7 +22,7 @@ using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Dev2.Studio.Interfaces;
-using Microsoft.Practices.Prism.Mvvm;
+using Microsoft.AspNetCore.Mvc.ViewEngines;
 using Dev2.Studio.Core;
 using Warewolf.Data;
 using Action = System.Action;

@@ -2,7 +2,8 @@
    a) ServerSettings
    b) Resources
    c) VersionControl  
-   d) Execute en-ZA_Culture.ps1 (found at the same location of this Readme.txt) file in powershell command prompt
+   d) Tests
+   e) Execute en-ZA_Culture.ps1 (found at the same location of this Readme.txt) file in powershell command prompt
 	Note: Time Zone must be set to "(UTC+02:00) Harare, Pretoria" (if not set, we can manually set it from Settings->Date & Time -> Time Zone 	
 
 2) Project "Dev2.Activities.Specs"
@@ -37,6 +38,7 @@ e) Dev\Dev2.Activities.Tests\bin\Debug\net6.0-windows\win
 f) Dev\Dev2.Runtime.Tests\bin\Debug\net6.0-windows\win
 g) Dev\Dev2.Sql.Tests\bin\Debug\net6.0-windows\win
 
+
 Note: Make sure to run Warewolf Server.exe (server) before tests dependant on it are executed.
 
 
@@ -59,3 +61,5 @@ Note: Make sure to run Warewolf Server.exe (server) before tests dependant on it
 		Setup:	1) Uninstall existing "Warewolf Server" Windows Service (.NET 4.8 one if any)
 			2) open powershell as administrator and execute ".\StartAsService.ps1" file. StartAsService.ps1 file exists in deployment directory
 
+10) Copy EnableDocker.txt (this file is not found anywhere, hence copying a blank text file) at the following location:
+	Dev\Dev2.Activities.Tests\bin\Debug\net6.0-windows\win

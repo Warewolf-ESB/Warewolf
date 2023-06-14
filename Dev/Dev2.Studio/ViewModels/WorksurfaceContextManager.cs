@@ -51,8 +51,8 @@ using Dev2.Threading;
 using Dev2.Utils;
 using Dev2.ViewModels;
 using Infragistics.Windows.DockManager.Events;
-using Microsoft.Practices.Prism.Mvvm;
-//using ServiceStack.Net30.Collections.Concurrent;
+using Microsoft.AspNetCore.Mvc.ViewEngines;
+using System.Collections.Concurrent;
 using Warewolf.Studio.ViewModels;
 using Warewolf.Studio.Views;
 using Dev2.ViewModels.Merge;
@@ -890,38 +890,38 @@ namespace Dev2.Studio.ViewModels
                 return;
             }
 
-            //if (_editHandler.TryGetValue(resourceModel.ServerResourceType, out Action<IContextualResourceModel, IView> editAction))
-            //{
-            //    editAction.Invoke(resourceModel, resourceModel.GetView(() => ViewFactoryProvider.GetViewGivenServerResourceType(resourceModel.ServerResourceType)));
-            //}
-            //else
-            //{
-            //    AddWorkSurfaceContext(resourceModel);
-            //}
+            if (_editHandler.TryGetValue(resourceModel.ServerResourceType, out Action<IContextualResourceModel, IView> editAction))
+            {
+                editAction.Invoke(resourceModel, resourceModel.GetView(() => ViewFactoryProvider.GetViewGivenServerResourceType(resourceModel.ServerResourceType)));
+            }
+            else
+            {
+                AddWorkSurfaceContext(resourceModel);
+            }
         }
 
-        //readonly ConcurrentDictionary<string, Action<IContextualResourceModel, IView>> _editHandler = new ConcurrentDictionary<string, Action<IContextualResourceModel, IView>>();
+        readonly ConcurrentDictionary<string, Action<IContextualResourceModel, IView>> _editHandler = new ConcurrentDictionary<string, Action<IContextualResourceModel, IView>>();
 
         void SetUpEditHandlers()
         {
-            //_editHandler.TryAdd("Server", EditServer);
-            //_editHandler.TryAdd("Dev2Server", EditServer);
-            //_editHandler.TryAdd("ServerSource", EditServer);
-            //_editHandler.TryAdd("RabbitMQSource", EditRabbitMQSource);
-            //_editHandler.TryAdd("OauthSource", EditDropBoxSource);
-            //_editHandler.TryAdd("SharepointServerSource", EditSharePointSource);
-            //_editHandler.TryAdd("DropBoxSource", EditDropBoxSource);
-            //_editHandler.TryAdd("ExchangeSource", EditExchangeSource);
-            //_editHandler.TryAdd("EmailSource", EditEmailSource);
-            //_editHandler.TryAdd("WcfSource", EditWcfSource);
-            //_editHandler.TryAdd("ComPluginSource", EditComPluginSource);
-            //_editHandler.TryAdd("PluginSource", EditPluginSource);
-            //_editHandler.TryAdd("WebSource", EditWebSource);
-            //_editHandler.TryAdd("MySqlDatabase", EditMySqlSource);
-            //_editHandler.TryAdd("PostgreSQL", EditPostgreSqlSource);
-            //_editHandler.TryAdd("Oracle", EditOracleSource);
-            //_editHandler.TryAdd("ODBC", EditOdbcSource);
-            //_editHandler.TryAdd("SqlDatabase", EditSqlServerSource);
+            _editHandler.TryAdd("Server", EditServer);
+            _editHandler.TryAdd("Dev2Server", EditServer);
+            _editHandler.TryAdd("ServerSource", EditServer);
+            _editHandler.TryAdd("RabbitMQSource", EditRabbitMQSource);
+            _editHandler.TryAdd("OauthSource", EditDropBoxSource);
+            _editHandler.TryAdd("SharepointServerSource", EditSharePointSource);
+            _editHandler.TryAdd("DropBoxSource", EditDropBoxSource);
+            _editHandler.TryAdd("ExchangeSource", EditExchangeSource);
+            _editHandler.TryAdd("EmailSource", EditEmailSource);
+            _editHandler.TryAdd("WcfSource", EditWcfSource);
+            _editHandler.TryAdd("ComPluginSource", EditComPluginSource);
+            _editHandler.TryAdd("PluginSource", EditPluginSource);
+            _editHandler.TryAdd("WebSource", EditWebSource);
+            _editHandler.TryAdd("MySqlDatabase", EditMySqlSource);
+            _editHandler.TryAdd("PostgreSQL", EditPostgreSqlSource);
+            _editHandler.TryAdd("Oracle", EditOracleSource);
+            _editHandler.TryAdd("ODBC", EditOdbcSource);
+            _editHandler.TryAdd("SqlDatabase", EditSqlServerSource);
         }
 
         public void EditSqlServerSource(IContextualResourceModel resourceModel, IView view)

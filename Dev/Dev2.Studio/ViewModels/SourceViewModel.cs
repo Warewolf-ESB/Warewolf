@@ -7,7 +7,6 @@ using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Studio.Core;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.ViewModels.WorkSurface;
-using Microsoft.Practices.Prism.Mvvm;
 using Warewolf.Studio.ViewModels;
 
 
@@ -20,7 +19,7 @@ namespace Dev2.ViewModels
         readonly IPopupController _popupController;
         readonly IServer _server;
 
-        public SourceViewModel(IEventAggregator eventPublisher, SourceBaseImpl<T> vm, IPopupController popupController,IView view,IServer server)
+        public SourceViewModel(IEventAggregator eventPublisher, SourceBaseImpl<T> vm, IPopupController popupController, Microsoft.AspNetCore.Mvc.ViewEngines.IView view, IServer server)
             : base(eventPublisher)
         {
             ViewModel = vm;
@@ -78,7 +77,7 @@ namespace Dev2.ViewModels
 
         protected override void OnViewLoaded(object view)
         {
-            if (view is IView loadedView)
+            if (view is Microsoft.Practices.Prism.Mvvm.IView loadedView)
             {
                 loadedView.DataContext = ViewModel;
                 base.OnViewLoaded(loadedView);
@@ -105,7 +104,7 @@ namespace Dev2.ViewModels
 
         public string HelpText { get; set; }
         public SourceBaseImpl<T> ViewModel { get; set; }
-        public IView View { get; set; }
+        public Microsoft.AspNetCore.Mvc.ViewEngines.IView View { get; set; }
 
         #endregion
 

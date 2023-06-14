@@ -48,7 +48,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             return advancedRecordset;
         }
 
-        [TestMethod, DeploymentItem(@"x86\SQLite.Interop.dll")]
+        [TestMethod]// DeploymentItem(@"x86\SQLite.Interop.dll")]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AdvancedRecordsetActivity))]
         public void AdvancedRecordsetActivity_Equal_OtherIsNull()
@@ -58,7 +58,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.IsFalse(advancedRecordsetActivityEqual);
         }
 
-        [TestMethod, DeploymentItem(@"x86\SQLite.Interop.dll")]
+        [TestMethod]//, DeploymentItem(@"x86\SQLite.Interop.dll")]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AdvancedRecordsetActivity))]
         public void AdvancedRecordsetActivity_Equal_OtherisEqual()
@@ -69,7 +69,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.IsTrue(advancedRecordsetActivityEqual);
         }
 
-        [TestMethod, DeploymentItem(@"x86\SQLite.Interop.dll")]
+        [TestMethod]//, DeploymentItem(@"x86\SQLite.Interop.dll")]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AdvancedRecordsetActivity))]
         public void AdvancedRecordsetActivity_Equal_OtherisObjectofAdvancedRecordsetActivity()
@@ -80,7 +80,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.IsFalse(advancedRecordsetActivityEqual);
         }
 
-        [TestMethod, DeploymentItem(@"x86\SQLite.Interop.dll")]
+        [TestMethod]//, DeploymentItem(@"x86\SQLite.Interop.dll")]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AdvancedRecordsetActivity))]
         public void AdvancedRecordsetActivity_Equal_BothareObjects()
@@ -91,7 +91,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.IsFalse(advancedRecordsetActivityEqual);
         }
 
-        [TestMethod, DeploymentItem(@"x86\SQLite.Interop.dll")]
+        [TestMethod]//, DeploymentItem(@"x86\SQLite.Interop.dll")]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AdvancedRecordsetActivity))]
         public void AdvancedRecordsetActivity_SetGet_RecordsetName()
@@ -102,7 +102,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             }
         }
 
-        [TestMethod, DeploymentItem(@"x86\SQLite.Interop.dll")]
+        [TestMethod]//, DeploymentItem(@"x86\SQLite.Interop.dll")]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AdvancedRecordsetActivity))]
         public void AdvancedRecordsetActivity_SetGet_SqlQuery()
@@ -113,7 +113,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             }
         }
 
-        [TestMethod, DeploymentItem(@"x86\SQLite.Interop.dll")]
+        [TestMethod]//, DeploymentItem(@"x86\SQLite.Interop.dll")]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AdvancedRecordsetActivity))]
         public void AdvancedRecordsetActivity_SetGet_DeclareVariables()
@@ -125,7 +125,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             }
         }
 
-        [TestMethod, DeploymentItem(@"x86\SQLite.Interop.dll")]
+        [TestMethod]//, DeploymentItem(@"x86\SQLite.Interop.dll")]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AdvancedRecordsetActivity))]
         public void AdvancedRecordsetActivity_SetGet_ExecuteActionString()
@@ -137,7 +137,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             }
         }
 
-        [TestMethod, DeploymentItem(@"x86\SQLite.Interop.dll")]
+        [TestMethod]//, DeploymentItem(@"x86\SQLite.Interop.dll")]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AdvancedRecordsetActivity))]
         public void AdvancedRecordsetActivity_GetFindMissingType_Expect_DataGridActivity()
@@ -149,7 +149,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             }
         }
 
-        [TestMethod, DeploymentItem(@"x86\SQLite.Interop.dll")]
+        [TestMethod]//, DeploymentItem(@"x86\SQLite.Interop.dll")]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AdvancedRecordsetActivity))]
         public void AdvancedRecordsetActivity_GetHashCode()
@@ -162,7 +162,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
        
-        [TestMethod, DeploymentItem(@"x86\SQLite.Interop.dll")]
+        [TestMethod]//, DeploymentItem(@"x86\SQLite.Interop.dll")]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AdvancedRecordsetActivity))]
         public void AdvancedRecordsetActivity_Worker_LoadRecordset()
@@ -174,7 +174,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             mockAdvancedRecordset.Verify(o => o.LoadRecordsetAsTable(It.IsAny<string>()));
         }
 
-        [TestMethod, DeploymentItem(@"x86\SQLite.Interop.dll")]
+        [TestMethod]//, DeploymentItem(@"x86\SQLite.Interop.dll")]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AdvancedRecordsetActivity))]
         public void AdvancedRecordsetActivity_Worker_AddDeclarations()
@@ -189,7 +189,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             mockAdvancedRecordset.Verify(o => o.InsertIntoVariableTable(It.IsAny<string>(), It.IsAny<string>()));
         }
 
-        [TestMethod, DeploymentItem(@"x86\SQLite.Interop.dll")]
+        [TestMethod]//, DeploymentItem(@"x86\SQLite.Interop.dll")]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AdvancedRecordsetActivity))]
         public void AdvancedRecordsetActivity_Worker_Dispose()
@@ -204,7 +204,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             mockAdvancedRecordset.Verify(r => r.Dispose());
         }
        
-        [TestMethod, DeploymentItem(@"x86\SQLite.Interop.dll")]
+        [TestMethod]//, DeploymentItem(@"x86\SQLite.Interop.dll")]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AdvancedRecordsetActivity))]
         public void AdvancedRecordsetActivity_GetDebugInputs()
@@ -231,7 +231,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(1, getDebugInputs.Count);
         }
 
-        [TestMethod, DeploymentItem(@"x86\SQLite.Interop.dll")]
+        [TestMethod]//, DeploymentItem(@"x86\SQLite.Interop.dll")]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AdvancedRecordsetActivity))]
         public void AdvancedRecordsetActivity_GetOutputs_OutputsisNull()
@@ -247,7 +247,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("[[weather().Location]]", outputs[0]);
         }
 
-        [TestMethod, DeploymentItem(@"x86\SQLite.Interop.dll")]
+        [TestMethod]//, DeploymentItem(@"x86\SQLite.Interop.dll")]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AdvancedRecordsetActivity))]
         public void AdvancedRecordsetActivity_GetOutputs_OutputsnotNull()
@@ -258,7 +258,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(0, outputs.Count);
         }
 
-        [TestMethod, DeploymentItem(@"x86\SQLite.Interop.dll")]
+        [TestMethod]//, DeploymentItem(@"x86\SQLite.Interop.dll")]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AdvancedRecordsetActivity))]
         public void AdvancedRecordsetActivity_GetOutputs_OutputsIsObject()
@@ -271,7 +271,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(1, outputs.Count);
         }
 
-        [TestMethod, DeploymentItem(@"x86\SQLite.Interop.dll")]
+        [TestMethod]//, DeploymentItem(@"x86\SQLite.Interop.dll")]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AdvancedRecordsetActivity))]
         public void AdvancedRecordsetActivity_ExecuteSql()
@@ -287,7 +287,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //TODO: this is failing as it needs a mock of the recorset
             // workerInvoker.ExecuteSql(0, ref started);
         }
-        [TestMethod, DeploymentItem(@"x86\SQLite.Interop.dll")]
+        [TestMethod]//, DeploymentItem(@"x86\SQLite.Interop.dll")]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(AdvancedRecordsetActivity))]
         public void AdvancedRecordsetActivity_ExecuteRecordset_GIVEN_DataString_ShouldSuccess()
@@ -331,7 +331,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("bob", ExecutionEnvironment.WarewolfEvalResultToString(result));
         }
 
-        [TestMethod, DeploymentItem(@"x86\SQLite.Interop.dll")]
+        [TestMethod]//, DeploymentItem(@"x86\SQLite.Interop.dll")]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(AdvancedRecordsetActivity))]
         public void AdvancedRecordsetActivity_ExecuteRecordset_GIVEN_JsonObject_ShouldSuccess()
@@ -377,7 +377,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("bob", ExecutionEnvironment.WarewolfEvalResultToString(result));
         }
 
-        [TestMethod, DeploymentItem(@"x86\SQLite.Interop.dll")]
+        [TestMethod]//, DeploymentItem(@"x86\SQLite.Interop.dll")]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AdvancedRecordsetActivity))]
         public void AdvancedRecordsetActivity_OnExecute()

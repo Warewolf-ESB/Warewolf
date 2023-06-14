@@ -33,7 +33,7 @@ using Dev2.Workspaces;
 using Moq;
 using Newtonsoft.Json;
 using Dev2.Studio.Interfaces.Enums;
-using Microsoft.Practices.Prism.Mvvm;
+using Microsoft.AspNetCore.Mvc.ViewEngines;
 using Dev2.Tests;
 
 namespace Dev2.Core.Tests

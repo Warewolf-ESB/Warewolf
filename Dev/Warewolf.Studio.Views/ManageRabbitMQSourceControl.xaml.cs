@@ -10,10 +10,12 @@
 */
 
 using System;
+using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Data;
 using Dev2.Common.Interfaces;
-using Microsoft.Practices.Prism.Mvvm;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.ViewEngines;
 using Warewolf.Studio.ViewModels;
 
 namespace Warewolf.Studio.Views
@@ -24,7 +26,9 @@ namespace Warewolf.Studio.Views
     
     public partial class ManageRabbitMQSourceControl : IView, ICheckControlEnabledView
     {
-        public ManageRabbitMQSourceControl()
+		public string Path => throw new NotImplementedException();
+
+		public ManageRabbitMQSourceControl()
         {
             InitializeComponent();
         }
@@ -96,5 +100,10 @@ namespace Warewolf.Studio.Views
             var viewModel = DataContext as ManageRabbitMQSourceViewModel;
             viewModel?.OkCommand.Execute(null);
         }
-    }
+
+		public Task RenderAsync(ViewContext context)
+		{
+			throw new NotImplementedException();
+		}
+	}
 }

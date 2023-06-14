@@ -17,7 +17,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Scripting
         [TestMethod]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
-        [DeploymentItem(@"x86\SQLite.Interop.dll")]
+        //[DeploymentItem(@"x86\SQLite.Interop.dll")]
         public void UniqueIDEquals_EmptyJavascript_Object_IsEqual()
         {
             //---------------Set up test pack-------------------

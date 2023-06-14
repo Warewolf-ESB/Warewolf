@@ -51,7 +51,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfActivity_BeforeExecutionStart")]
-        [DeploymentItem(@"x86\SQLite.Interop.dll")]
+        //[DeploymentItem(@"x86\SQLite.Interop.dll")]
         public void DsfActivity_BeforeExecutionStart_NullResourceID_DoesNothing()
         {
             //------------Setup for test--------------------------
