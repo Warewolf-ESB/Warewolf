@@ -69,8 +69,8 @@ namespace Dev2.Triggers.QueueEvents
 
             AddWorkflowCommand = new DelegateCommand(OpenResourcePicker);
 
-            //_source = new EnvironmentViewModel(server, CustomContainer.Get<IShellViewModel>(), true);
-            _currentResourcePicker = resourcePickerDialog ?? CreateResourcePickerDialog();
+            var source = new EnvironmentViewModel(server, CustomContainer.Get<IShellViewModel>(), true);
+            _currentResourcePicker = resourcePickerDialog ?? CreateResourcePickerDialog(source);
             InitializeHelp();
             PopupController = CustomContainer.Get<IPopupController>();
 
@@ -118,10 +118,10 @@ namespace Dev2.Triggers.QueueEvents
             }
         }
 
-        IResourcePickerDialog CreateResourcePickerDialog()
+        IResourcePickerDialog CreateResourcePickerDialog(EnvironmentViewModel source)
         {
-            var res = new ResourcePickerDialog(enDsfActivityType.All, null);
-            ResourcePickerDialog.CreateAsync(enDsfActivityType.Workflow, null).ContinueWith(a => _currentResourcePicker = a.Result);
+            var res = new ResourcePickerDialog(enDsfActivityType.All, source);
+            ResourcePickerDialog.CreateAsync(enDsfActivityType.Workflow, source).ContinueWith(a => _currentResourcePicker = a.Result);
             return res;
         }
 

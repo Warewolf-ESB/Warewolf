@@ -22,6 +22,7 @@ using Dev2.Triggers;
 using Warewolf.Trigger.Queue;
 using System.Collections.Generic;
 using Warewolf.Triggers;
+using Dev2.Common;
 
 namespace Dev2.Core.Tests.Triggers
 {
@@ -89,8 +90,8 @@ namespace Dev2.Core.Tests.Triggers
                 return mockEnvironment.Object;
             });
 
-            Assert.AreEqual(mockServer.Object, triggersViewModel.Server);
-            Assert.AreEqual(mockEnvironment.Object, triggersViewModel.CurrentEnvironment);
+            Assert.IsTrue(mockServer.Object == triggersViewModel.Server, "Objects are not equal");
+            Assert.IsTrue(mockEnvironment.Object == triggersViewModel.CurrentEnvironment, "Objects are not equal");
             Assert.AreEqual("Triggers - TestServer", triggersViewModel.DisplayName);
             Assert.AreEqual("Queues", triggersViewModel.QueueEventsHeader);
             Assert.AreEqual("Scheduler", triggersViewModel.SchedulerHeader);
@@ -149,11 +150,13 @@ namespace Dev2.Core.Tests.Triggers
         [TestCategory(nameof(TriggersViewModel))]
         public void TriggersViewModel_NewQueueEventCommand()
         {
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
+            {
+                var triggersViewModel = CreateTriggerViewModel();
+                triggersViewModel.NewQueueEventCommand.Execute(null);
 
-            var triggersViewModel = CreateTriggerViewModel();
-            triggersViewModel.NewQueueEventCommand.Execute(null);
-
-            Assert.AreEqual(2, triggersViewModel.QueueEventsViewModel.Queues.Count); // The other item is the 'New Queue' item
+                Assert.AreEqual(2, triggersViewModel.QueueEventsViewModel.Queues.Count); // The other item is the 'New Queue' item
+            });
         }
        
         [TestMethod]
@@ -285,9 +288,12 @@ namespace Dev2.Core.Tests.Triggers
         [TestCategory(nameof(TriggersViewModel))]
         public void TriggersViewModel_DoDeactivate_ShowMessage_True_Expect_True()
         {
-            var triggersViewModel = CreateTriggerViewModel();
-            var value = triggersViewModel.DoDeactivate(false);
-            Assert.IsTrue(value);
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
+            {
+                var triggersViewModel = CreateTriggerViewModel();
+                var value = triggersViewModel.DoDeactivate(false);
+                Assert.IsTrue(value);
+            });
         }
 
         [TestMethod]

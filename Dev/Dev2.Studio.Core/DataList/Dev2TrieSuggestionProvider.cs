@@ -268,7 +268,7 @@ namespace Dev2.Studio.Core.DataList
                 }
 
                 var textTrimmedRight = originalText.Substring(0, caretPosition);
-                var start = textTrimmedRight.LastIndexOf(textTrimmedRight.Split(_tokenisers).Last(), StringComparison.Ordinal);
+                var start = textTrimmedRight.LastIndexOf(textTrimmedRight.Split(_tokenisers).Last(), StringComparison.Ordinal) - 1;
                 filter = textTrimmedRight.Substring(start);
             }
             else

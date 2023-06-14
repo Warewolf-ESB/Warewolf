@@ -185,29 +185,32 @@ namespace Dev2.Core.Tests.Triggers.QueueEvents
         [Owner("Pieter Terblanche")]
         public void QueueEventsViewModel_Queues()
         {
-            Mock<IServer> mockServer = SetupForTriggerQueueView(null);
-            var queueEventsViewModel = new QueueEventsViewModel(mockServer.Object);
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
+            {
+                Mock<IServer> mockServer = SetupForTriggerQueueView(null);
+                var queueEventsViewModel = new QueueEventsViewModel(mockServer.Object);
 
-            Assert.IsNotNull(queueEventsViewModel.Queues);
-            Assert.AreEqual(2, queueEventsViewModel.Queues.Count);
-            Assert.IsNull(queueEventsViewModel.SelectedQueue);
+                Assert.IsNotNull(queueEventsViewModel.Queues);
+                Assert.AreEqual(2, queueEventsViewModel.Queues.Count);
+                Assert.IsNull(queueEventsViewModel.SelectedQueue);
 
-            var queue1 = new TriggerQueueViewForTesting(mockServer.Object);
-            var queue2 = new TriggerQueueViewForTesting(mockServer.Object);
+                var queue1 = new TriggerQueueViewForTesting(mockServer.Object);
+                var queue2 = new TriggerQueueViewForTesting(mockServer.Object);
 
-            queueEventsViewModel.Queues = new ObservableCollection<TriggerQueueView>
+                queueEventsViewModel.Queues = new ObservableCollection<TriggerQueueView>
             {
                 queue1,
                 queue2
             };
 
-            queueEventsViewModel.SelectedQueue = queue2;
+                queueEventsViewModel.SelectedQueue = queue2;
 
-            Assert.IsNotNull(queueEventsViewModel.Queues);
-            Assert.AreEqual(2, queueEventsViewModel.Queues.Count);
+                Assert.IsNotNull(queueEventsViewModel.Queues);
+                Assert.AreEqual(2, queueEventsViewModel.Queues.Count);
 
-            Assert.IsNotNull(queueEventsViewModel.SelectedQueue);
-            Assert.AreEqual(queue2, queueEventsViewModel.SelectedQueue);
+                Assert.IsNotNull(queueEventsViewModel.SelectedQueue);
+                Assert.AreEqual(queue2, queueEventsViewModel.SelectedQueue);
+            });
         }
 
         [TestMethod]
@@ -362,21 +365,24 @@ namespace Dev2.Core.Tests.Triggers.QueueEvents
         [TestCategory(nameof(QueueEventsViewModel))]
         public void QueueEventsViewModel_ConnectionError_SetAndClearError_ValidErrorSetAndClear()
         {
-            //------------Setup for test--------------------------
-            Mock<IServer> mockServer = SetupForTriggerQueueView(null);
-            var queueEventsViewModel = new QueueEventsViewModel(mockServer.Object);
-            var triggerQueueView = new TriggerQueueViewForTesting(mockServer.Object);
-            queueEventsViewModel.SelectedQueue = triggerQueueView;
-            //------------Execute Test---------------------------
-            queueEventsViewModel.SetConnectionError();
-            //------------Assert Results-------------------------
-            Assert.AreEqual(Warewolf.Studio.Resources.Languages.Core.QueueConnectionError, queueEventsViewModel.ConnectionError);
-            Assert.IsTrue(queueEventsViewModel.HasConnectionError);
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
+            {
+                //------------Setup for test--------------------------
+                Mock<IServer> mockServer = SetupForTriggerQueueView(null);
+                var queueEventsViewModel = new QueueEventsViewModel(mockServer.Object);
+                var triggerQueueView = new TriggerQueueViewForTesting(mockServer.Object);
+                queueEventsViewModel.SelectedQueue = triggerQueueView;
+                //------------Execute Test---------------------------
+                queueEventsViewModel.SetConnectionError();
+                //------------Assert Results-------------------------
+                Assert.AreEqual(Warewolf.Studio.Resources.Languages.Core.QueueConnectionError, queueEventsViewModel.ConnectionError);
+                Assert.IsTrue(queueEventsViewModel.HasConnectionError);
 
-            queueEventsViewModel.ClearConnectionError();
+                queueEventsViewModel.ClearConnectionError();
 
-            Assert.AreEqual("", queueEventsViewModel.ConnectionError);
-            Assert.IsFalse(queueEventsViewModel.HasConnectionError);
+                Assert.AreEqual("", queueEventsViewModel.ConnectionError);
+                Assert.IsFalse(queueEventsViewModel.HasConnectionError);
+            });
         }
 
         [TestMethod]

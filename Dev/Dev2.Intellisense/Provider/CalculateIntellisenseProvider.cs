@@ -82,8 +82,8 @@ namespace Dev2.Studio.InterfaceImplementors
 
         public string PerformResultInsertion(string input, IntellisenseProviderContext context)
         {
-            //throw new NotSupportedException();
-            return "";
+            throw new NotSupportedException();
+            //return "";
         }
 
         public IList<IntellisenseProviderResult> GetIntellisenseResults(IntellisenseProviderContext context)
