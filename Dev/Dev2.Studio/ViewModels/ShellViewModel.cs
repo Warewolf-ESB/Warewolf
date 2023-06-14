@@ -1711,11 +1711,11 @@ namespace Dev2.Studio.ViewModels
 
         protected  void ChangeActiveItem(IWorkSurfaceContextViewModel newItem, bool closePrevious)
         {
-            //base.ChangeActiveItem(newItem, closePrevious);
+            base.ChangeActiveItemAsync(newItem, closePrevious).GetAwaiter().GetResult();
             RefreshActiveServer();
         }
 
-        public void BaseDeactivateItem(IWorkSurfaceContextViewModel item, bool close) { }// => base.DeactivateItem(item, close);
+        public void BaseDeactivateItem(IWorkSurfaceContextViewModel item, bool close) => base.DeactivateItemAsync(item, close).GetAwaiter().GetResult();
         public bool DontPrompt { get; set; }
 
         public  void DeactivateItem(IWorkSurfaceContextViewModel item, bool close)
@@ -1738,7 +1738,7 @@ namespace Dev2.Studio.ViewModels
                     ActivateItem(_previousActive);
                 }
 
-                //base.DeactivateItem(item, close);
+                base.DeactivateItemAsync(item, close).GetAwaiter().GetResult();
                 item.Dispose();
                 CloseCurrent = true;
             }
@@ -1755,7 +1755,7 @@ namespace Dev2.Studio.ViewModels
                 PersistTabs();
             }
 
-            //base.OnDeactivate(close);
+            base.OnDeactivateAsync(close, default(CancellationToken));
         }
 
         protected override void OnActivationProcessed(IWorkSurfaceContextViewModel item, bool success)
@@ -1851,7 +1851,7 @@ namespace Dev2.Studio.ViewModels
         public  void ActivateItem(IWorkSurfaceContextViewModel item)
         {
             _previousActive = ActiveItem;
-            //base.ActivateItem(item);
+            base.ActivateItemAsync(item).GetAwaiter().GetResult();
             ActiveItemChanged?.Invoke(item);
             if (item?.ContextualResourceModel == null)
             {
