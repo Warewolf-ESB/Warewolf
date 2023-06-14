@@ -10,7 +10,9 @@
 
 using Dev2.Common.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
-using Microsoft.Practices.Prism.Mvvm;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.ViewEngines;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using Warewolf.Studio.ViewModels;
@@ -22,7 +24,9 @@ namespace Warewolf.Studio.Views
     /// </summary>
     public partial class ElasticsearchSourceControl : IView, ICheckControlEnabledView
     {
-        public ElasticsearchSourceControl()
+		public string Path => throw new System.NotImplementedException();
+
+		public ElasticsearchSourceControl()
         {
             InitializeComponent();
             ElasticsearchHostNameTextbox.Focus();
@@ -121,5 +125,10 @@ namespace Warewolf.Studio.Views
                 PasswordRadioButton.IsChecked = true;
             }
         }
-    }
+
+		public Task RenderAsync(ViewContext context)
+		{
+			throw new System.NotImplementedException();
+		}
+	}
 }

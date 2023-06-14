@@ -158,7 +158,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                 {
                     try
                     {
-                        using(var tx = new TransactionScope(TransactionScopeOption.RequiresNew))
+                        using(var tx = new TransactionScope(TransactionScopeOption.RequiresNew, TimeSpan.FromMinutes(150)))
                         {
                             FixReferences(duplicatedResourcesMap);
                             tx.Complete();

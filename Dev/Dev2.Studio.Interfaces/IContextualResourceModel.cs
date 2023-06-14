@@ -12,8 +12,7 @@
 using System;
 using System.ComponentModel;
 using System.Text;
-using Microsoft.Practices.Prism.Mvvm;
-//using Microsoft.AspNetCore.Mvc.ViewEngines;
+using Microsoft.AspNetCore.Mvc.ViewEngines;
 
 
 

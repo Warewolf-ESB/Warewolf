@@ -54,7 +54,7 @@ using Dev2.Threading;
 using Dev2.Util;
 using Dev2.Utilities;
 using Dev2.Workspaces;
-using Microsoft.Practices.Prism.Mvvm;
+using Microsoft.AspNetCore.Mvc.ViewEngines;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Dev2.ViewModels;

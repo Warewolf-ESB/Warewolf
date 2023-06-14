@@ -99,11 +99,11 @@ namespace Dev2.Tests.Runtime.ServiceModel
                 var handler = new RedisSources();
                 var result = handler.Test(source);
                 Assert.IsFalse(result.IsValid);
-                Assert.AreEqual("could not connect to redis Instance at ddd:222:6379\r\nNo such host is known", result.ErrorMessage);
+                Assert.AreEqual("Exceeded timeout of 00:00:10\r\nNo such host is known.", result.ErrorMessage);
             }
             catch (Exception e)
             {
-                if (e.Message.Contains("could not connect to redis Instance"))
+                if (e.Message.Contains("Exceeded timeout"))
                 {
                     Assert.Inconclusive(e.Message);
                 }

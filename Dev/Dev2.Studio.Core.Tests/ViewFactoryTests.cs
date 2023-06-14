@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using Dev2.Studio.Core;
-using Microsoft.Practices.Prism.Mvvm;
+using Microsoft.AspNetCore.Mvc.ViewEngines;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Core.Tests

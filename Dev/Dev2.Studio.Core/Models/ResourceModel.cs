@@ -33,8 +33,7 @@ using Dev2.Services.Security;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.Enums;
-using Microsoft.Practices.Prism.Mvvm;
-//using Microsoft.AspNetCore.Mvc.ViewEngines;
+using Microsoft.AspNetCore.Mvc.ViewEngines;
 using Warewolf.Data;
 using Warewolf.Resource.Errors;
 
