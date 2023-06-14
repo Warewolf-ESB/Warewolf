@@ -63,3 +63,7 @@ Note: Make sure to run Warewolf Server.exe (server) before tests dependant on it
 
 10) Copy EnableDocker.txt (this file is not found anywhere, hence copying a blank text file) at the following location:
 	Dev\Dev2.Activities.Tests\bin\Debug\net6.0-windows\win
+
+11) Project "Dev2.Studio.Core.Tests".
+	Copy below one to Dev2.Studio.Core.Tests\bin\Debug\net6.0-windows\win
+		a) Copy "Dev2.Studio.Core.Tests.dll.config" and rename it to "testhost.dll.config"

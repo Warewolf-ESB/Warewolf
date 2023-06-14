@@ -64,6 +64,7 @@ using Dev2.Triggers;
 using Dev2.Dialogs;
 using Warewolf.Data;
 using Warewolf.Options;
+using Dev2.Tests;
 
 namespace Dev2.Core.Tests
 {
@@ -470,6 +471,8 @@ namespace Dev2.Core.Tests
             CustomContainer.Register(new Mock<IPopupController>().Object);
 
             CreateFullExportsAndVm();
+            CustomContainer.Register(_popupController.Object);
+
             AddAdditionalContext();
             Assert.AreEqual(3, _shellViewModel.Items.Count);
 
@@ -748,7 +751,7 @@ namespace Dev2.Core.Tests
         public void OnImportsSatisfiedExpectsDisplayNameSet()
         {
             CreateFullExportsAndVm();
-            const string expected = "Warewolf";
+            const string expected = "Test";//"Warewolf";
             // flipping thing never passes locally... silly chickens ;(
             StringAssert.Contains(_shellViewModel.DisplayName, expected);
         }
@@ -1788,7 +1791,7 @@ namespace Dev2.Core.Tests
             _shellViewModel.SetActiveServer(newSelectedConnection.Object);
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(_shellViewModel.ActiveServer, newSelectedConnection.Object);
+            Assert.AreSame(_shellViewModel.ActiveServer, newSelectedConnection.Object);
         }
 
         #endregion

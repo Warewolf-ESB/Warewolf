@@ -129,7 +129,7 @@ namespace Dev2.Intellisense.Helper
                 var t = 2 == level ? typeof(ShareInfo2) : typeof(ShareInfo1);
                 var offset = Marshal.SizeOf(t);
 
-                for (int i = 0, lpItem = pBuffer.ToInt32(); i < entriesRead; i++, lpItem += offset)
+                for (long i = 0, lpItem = pBuffer.ToInt64(); i < entriesRead; i++, lpItem += offset)
                 {
                     var pItem = new IntPtr(lpItem);
                     if (1 == level)
