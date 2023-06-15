@@ -150,6 +150,8 @@ namespace Dev2.Core.Tests
         {
             //------------Setup for test--------------------------
             AppUsageStats.LocalHost = "http://localhost";
+            var explorerToolTips = new Mock<IExplorerTooltips>();
+            CustomContainer.Register<IExplorerTooltips>(explorerToolTips.Object);
             var data = new ExplorerItemViewModel(new Mock<IServer>().Object, new Mock<IExplorerTreeItem>().Object, a => { }, new Mock<IShellViewModel>().Object, new Mock<IPopupController>().Object) { ResourceType = "WorkflowService" };
             var dataContext = new Mock<IWorkflowDesignerViewModel>();
 
@@ -171,7 +173,8 @@ namespace Dev2.Core.Tests
         {
             //------------Setup for test--------------------------
             var dragDropHelpers = new DragDropHelpers(GetMockWorkflowDesignerView());
-
+            var explorerToolTips = new Mock<IExplorerTooltips>();
+            CustomContainer.Register<IExplorerTooltips>(explorerToolTips.Object);
             var data = new ExplorerItemViewModel(new Mock<IServer>().Object, new Mock<IExplorerTreeItem>().Object, a => { }, new Mock<IShellViewModel>().Object, new Mock<IPopupController>().Object);
             data.ResourceType = "DbSource";
             //------------Execute Test---------------------------
@@ -188,6 +191,8 @@ namespace Dev2.Core.Tests
             //------------Setup for test--------------------------
             AppUsageStats.LocalHost = "http://localhost";
             var resourceId = Guid.NewGuid();
+            var explorerToolTips = new Mock<IExplorerTooltips>();
+            CustomContainer.Register<IExplorerTooltips>(explorerToolTips.Object);
             var data = new ExplorerItemViewModel(new Mock<IServer>().Object, new Mock<IExplorerTreeItem>().Object,
                 a => { }, new Mock<IShellViewModel>().Object, new Mock<IPopupController>().Object)
             {

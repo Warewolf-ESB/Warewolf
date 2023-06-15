@@ -841,6 +841,8 @@
 	  <PackageReference Include="FontAwesome6.Fonts" Version="2.3.0" />
 	  <PackageReference Include="FontAwesome6.Fonts.WinUI" Version="2.3.0" />
 	  <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
+    <PackageReference Include="System.Security.Permissions" Version="7.0.0" />
+
   </ItemGroup>
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />

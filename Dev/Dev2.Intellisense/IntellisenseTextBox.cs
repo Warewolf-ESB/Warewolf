@@ -43,7 +43,7 @@ namespace Dev2.UI
             CustomSelection = true;
             ItemsSource = IntellisenseResults;
             _desiredResultSet = IntellisenseDesiredResultSet.EntireSet;
-            DataObject.AddPastingHandler(this, OnPaste);
+            //DataObject.AddPastingHandler(this, OnPaste); // does not fire event for TextBox.Paste()
         }
 
         void OnPaste(object sender, DataObjectPastingEventArgs dataObjectPastingEventArgs)
@@ -962,7 +962,20 @@ namespace Dev2.UI
 
         public void Paste()
         {
-            TextBox?.Paste();
+            if (TextBox != null)
+            {
+                OnPaste(Clipboard.GetText());
+                TextBox.Paste();
+            }
+        }
+
+        void OnPaste(string clipboardText)
+        {
+            if (clipboardText.Contains("\t"))
+            {
+                var args = new RoutedEventArgs(TabInsertedEvent, this);
+                RaiseEvent(args);
+            }
         }
     }
 }

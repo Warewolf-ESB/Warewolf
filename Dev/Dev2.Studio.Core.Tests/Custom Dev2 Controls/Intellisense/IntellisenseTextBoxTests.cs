@@ -108,8 +108,8 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
                 System.Windows.Clipboard.SetText("Cake\t");
 
                 var textBox = new IntellisenseTextBox();
-				textBox.SelectionAdapter = new SelectorSelectionAdapter(new InputsDataGrid());
-				textBox.CreateVisualTree();
+                textBox.CreateVisualTree();
+                textBox.TextBox = new TextBox();
 
                 textBox.Paste();
 
