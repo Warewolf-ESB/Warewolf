@@ -25,6 +25,7 @@ using Moq;
 using Dev2.Common.Interfaces;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.DataList;
+using Warewolf.UI;
 
 namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
 {
@@ -106,14 +107,15 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
                 System.Windows.Clipboard.SetText("Cake\t");
 
                 var textBox = new IntellisenseTextBox();
-                textBox.CreateVisualTree();
+				textBox.SelectionAdapter = new SelectorSelectionAdapter(new InputsDataGrid());
+				textBox.CreateVisualTree();
 
                 textBox.Paste();
 
                 Assert.IsTrue(eventRaised,
                               "The 'IntellisenseTextBox.TabInsertedEvent' wasn't raised when text containing a tab was pasted into the IntellisenseTextBox.");
                 Assert.AreEqual(textBox, sender,
-                                "The IntellisenseTextBox in which the text containg a tab was pasted was different from the one which raised teh event.");
+                                "The IntellisenseTextBox in which the text containg a tab was pasted was different from the one which raised the event.");
 			});
 
 		}
@@ -169,7 +171,8 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
                     new IntellisenseProviderResult(intellisenseProvider.Object, ExpectedText, "cake");
 
                 var textBox = new IntellisenseTextBox();
-                textBox.CreateVisualTree();
+				textBox.SelectionAdapter = new SelectorSelectionAdapter(new InputsDataGrid());
+				textBox.CreateVisualTree();
                 textBox.InsertItem(intellisenseProviderResult, true);
 
                 Thread.Sleep(250);
@@ -350,6 +353,7 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
                     new IntellisenseProviderResult(intellisenseProvider.Object, ExpectedText, "cake");
 
                 var textBox = new IntellisenseTextBox();
+                textBox.SelectionAdapter = new SelectorSelectionAdapter(new InputsDataGrid());
                 textBox.CreateVisualTree();
                 textBox.InsertItem(intellisenseProviderResult, true);
 
@@ -383,7 +387,8 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
                     new IntellisenseProviderResult(intellisenseProvider.Object, ExpectedText, "cake");
 
                 var textBox = new IntellisenseTextBox();
-                textBox.CreateVisualTree();
+				textBox.SelectionAdapter = new SelectorSelectionAdapter(new InputsDataGrid());
+				textBox.CreateVisualTree();
                 textBox.InsertItem(intellisenseProviderResult, true);
 
                 Thread.Sleep(250);
@@ -445,10 +450,12 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
                     new IntellisenseProviderResult(intellisenseProvider.Object, "yyyy", "yyyy");
                 //------------Execute Test---------------------------
                 var textBox = new IntellisenseTextBox();
-                textBox.CreateVisualTree();
+				textBox.SelectionAdapter = new SelectorSelectionAdapter(new InputsDataGrid());
+				textBox.CreateVisualTree();
                 textBox.IsDropDownOpen = true;
                 textBox.Text = "ddyy";
-                textBox.CaretIndex = 4;
+				textBox.TextBox = new TextBox();
+				textBox.CaretIndex = 4;
                 textBox.InsertItem(intellisenseProviderResult, true);
                 //------------Assert Results-------------------------
                 Assert.AreEqual("ddyyyy", textBox.Text);
@@ -472,10 +479,12 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
                     new IntellisenseProviderResult(intellisenseProvider.Object, "yyyy", "yyyy");
                 //------------Execute Test---------------------------
                 var textBox = new IntellisenseTextBox();
-                textBox.CreateVisualTree();
+				textBox.SelectionAdapter = new SelectorSelectionAdapter(new InputsDataGrid());
+				textBox.CreateVisualTree();
                 textBox.IsDropDownOpen = true;
                 textBox.Text = "dd yy";
-                textBox.CaretIndex = 5;
+				textBox.TextBox = new TextBox();
+				textBox.CaretIndex = 5;
                 textBox.InsertItem(intellisenseProviderResult, true);
                 //------------Assert Results-------------------------
                 Assert.AreEqual("dd yyyy", textBox.Text);
@@ -499,9 +508,11 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
                     new IntellisenseProviderResult(intellisenseProvider.Object, "yyyy", "yyyy");
                 //------------Execute Test---------------------------
                 var textBox = new IntellisenseTextBox();
-                textBox.CreateVisualTree();
+				textBox.SelectionAdapter = new SelectorSelectionAdapter(new InputsDataGrid());
+				textBox.CreateVisualTree();
                 textBox.IsDropDownOpen = true;
                 textBox.Text = "dd YY";
+                textBox.TextBox = new TextBox();
                 textBox.CaretIndex = 5;
                 textBox.InsertItem(intellisenseProviderResult, true);
                 //------------Assert Results-------------------------
@@ -549,10 +560,12 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
                     new IntellisenseProviderResult(intellisenseProvider.Object, "DW", "DW");
                 //------------Execute Test---------------------------
                 var textBox = new IntellisenseTextBox();
-                textBox.CreateVisualTree();
+				textBox.SelectionAdapter = new SelectorSelectionAdapter(new InputsDataGrid());
+				textBox.CreateVisualTree();
                 textBox.IsDropDownOpen = true;
                 textBox.Text = "d YY mm";
-                textBox.CaretIndex = 1;
+				textBox.TextBox = new TextBox();
+				textBox.CaretIndex = 1;
                 textBox.InsertItem(intellisenseProviderResult, true);
                 //------------Assert Results-------------------------
                 Assert.AreEqual("DW YY mm", textBox.Text);
