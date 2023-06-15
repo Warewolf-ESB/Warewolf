@@ -1287,8 +1287,8 @@ namespace Dev2.Core.Tests.Settings
         [ExpectedException(typeof(ArgumentNullException))]
         [Timeout(300000)]
         public void SecurityViewModel_Save_NullPermissions_ThrowsArgumentNullException()
-		{
-            Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
+        {
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
             {
                 //------------Setup for test--------------------------
                 var viewModel = new SecurityViewModel(new SecuritySettingsTO(new WindowsGroupPermission[0]), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
@@ -1305,8 +1305,8 @@ namespace Dev2.Core.Tests.Settings
         [TestCategory(nameof(SecurityViewModel))]
         [Timeout(300000)]
         public void SecurityViewModel_Save_InvalidPermissions_InvalidPermissionsAreRemoved()
-		{
-            Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
+        {
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
             {
                 //------------Setup for test--------------------------
                 var permissions = CreatePermissions();
@@ -1381,8 +1381,8 @@ namespace Dev2.Core.Tests.Settings
         [TestCategory(nameof(SecurityViewModel))]
         [Timeout(300000)]
         public void SecurityViewModel_HasInvalidResourcePermission_Given_Invalid_Resource_That_Is_Being_Deleted_ReturnsFalse()
-		{
-            Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
+        {
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
             {
                 //------------Setup for test--------------------------
                 var securityViewModel = new SecurityViewModel(new SecuritySettingsTO(), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
@@ -1406,9 +1406,10 @@ namespace Dev2.Core.Tests.Settings
         [TestCategory(nameof(SecurityViewModel))]
         [Timeout(300000)]
         public void SecurityViewModel_HasInvalidResourcePermission_Given_Resource_And_No_Group_ReturnsTrue()
-		{
-            Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
+        {
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
             {
+
                 //------------Setup for test--------------------------
                 var securityViewModel = new SecurityViewModel(new SecuritySettingsTO(), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
                 securityViewModel.ResourcePermissions.Add(new WindowsGroupPermission
@@ -1429,8 +1430,8 @@ namespace Dev2.Core.Tests.Settings
         [TestCategory(nameof(SecurityViewModel))]
         [Timeout(300000)]
         public void SecurityViewModel_HasInvalidResourcePermission_Given_Group_And_No_Resource_ReturnsTrue()
-		{
-            Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
+        {
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
             {
                 //------------Setup for test--------------------------
                 var securityViewModel = new SecurityViewModel(new SecuritySettingsTO(), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
@@ -1452,8 +1453,8 @@ namespace Dev2.Core.Tests.Settings
         [TestCategory(nameof(SecurityViewModel))]
         [Timeout(300000)]
         public void SecurityViewModel_ServerDuplicates_NoDuplicates_ReturnsFalse()
-		{
-            Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
+        {
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
             {
                 //------------Setup for test--------------------------
                 var securityViewModel = new SecurityViewModel(new SecuritySettingsTO(), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
@@ -1482,9 +1483,10 @@ namespace Dev2.Core.Tests.Settings
         [TestCategory(nameof(SecurityViewModel))]
         [Timeout(300000)]
         public void SecurityViewModel_ServerDuplicates_HasDuplicatesDeleted_ReturnsFalse()
-		{
-            Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
+        {
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
             {
+
                 //------------Setup for test--------------------------
                 var securityViewModel = new SecurityViewModel(new SecuritySettingsTO(), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
                 securityViewModel.ServerPermissions.Add(new WindowsGroupPermission
@@ -1514,9 +1516,10 @@ namespace Dev2.Core.Tests.Settings
         [TestCategory(nameof(SecurityViewModel))]
         [Timeout(300000)]
         public void SecurityViewModel_ServerDuplicates_Duplicates_ReturnsTrue()
-		{
-            Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
+        {
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
             {
+
                 //------------Setup for test--------------------------
                 var securityViewModel = new SecurityViewModel(new SecuritySettingsTO(), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
                 securityViewModel.ServerPermissions.Add(new WindowsGroupPermission
@@ -1544,8 +1547,8 @@ namespace Dev2.Core.Tests.Settings
         [TestCategory(nameof(SecurityViewModel))]
         [Timeout(300000)]
         public void SecurityViewModel_HasDuplicateResourcePermissions_NoDuplicatesResourceID_ReturnsFalse()
-		{
-            Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
+        {
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
             {
                 //------------Setup for test--------------------------
                 var securityViewModel = new SecurityViewModel(new SecuritySettingsTO(), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
@@ -1574,8 +1577,8 @@ namespace Dev2.Core.Tests.Settings
         [TestCategory(nameof(SecurityViewModel))]
         [Timeout(300000)]
         public void SecurityViewModel_HasDuplicateResourcePermissions_NoDuplicatesWindowsGroup_ReturnsFalse()
-		{
-            Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
+        {
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
             {
                 //------------Setup for test--------------------------
                 var securityViewModel = new SecurityViewModel(new SecuritySettingsTO(), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
@@ -1637,8 +1640,8 @@ namespace Dev2.Core.Tests.Settings
         [TestCategory(nameof(SecurityViewModel))]
         [Timeout(300000)]
         public void SecurityViewModel_ResourcePermissionsCompare_IsDeleted_ReturnsTrue()
-		{
-            Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
+        {
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
             {
                 //------------Setup for test--------------------------
                 var securityViewModel = new SecurityViewModel(new SecuritySettingsTO(), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
@@ -1678,8 +1681,8 @@ namespace Dev2.Core.Tests.Settings
         [TestCategory(nameof(SecurityViewModel))]
         [Timeout(300000)]
         public void SecurityViewModel_ServerPermissionsCompare_IsDeleted_ReturnsTrue()
-		{
-            Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
+        {
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
             {
                 //------------Setup for test--------------------------
                 var securityViewModel = new SecurityViewModel(new SecuritySettingsTO(), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
@@ -1719,8 +1722,8 @@ namespace Dev2.Core.Tests.Settings
         [TestCategory(nameof(SecurityViewModel))]
         [Timeout(300000)]
         public void SecurityViewModel_HasDuplicateResourcePermissions_DuplicateNotDeleted_ReturnsTrue()
-		{
-            Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
+        {
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
             {
                 //------------Setup for test--------------------------
                 var securityViewModel = new SecurityViewModel(new SecuritySettingsTO(), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
@@ -1750,8 +1753,8 @@ namespace Dev2.Core.Tests.Settings
         [TestCategory(nameof(SecurityViewModel))]
         [Timeout(300000)]
         public void SecurityViewModel_PickOverrideResourceCommand_Sets_OverrideResource_Null()
-		{
-            Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
+        {
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
             {
                 //------------Setup for test--------------------------
                 var resourceId = Guid.NewGuid();
@@ -1816,8 +1819,8 @@ namespace Dev2.Core.Tests.Settings
         [TestCategory(nameof(SecurityViewModel))]
         [Timeout(300000)]
         public void SecurityViewModel_PickOverrideResourceCommand_IsValidOverrideWorkflow_True()
-		{
-            Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
+        {
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
             {
                 //------------Setup for test--------------------------
                 var overrideResourceId = Guid.NewGuid();
@@ -1905,9 +1908,10 @@ namespace Dev2.Core.Tests.Settings
         [TestCategory(nameof(SecurityViewModel))]
         [Timeout(300000)]
         public void SecurityViewModel_PickOverrideResourceCommand_IsValidOverrideWorkflow_GivenNoPublicPermissions_ExpectFalse()
-		{
-            Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
+        {
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
             {
+
                 //------------Setup for test--------------------------
                 var overrideResourceId = Guid.NewGuid();
                 var resourceId = Guid.NewGuid();
@@ -1987,8 +1991,8 @@ namespace Dev2.Core.Tests.Settings
         [TestCategory(nameof(SecurityViewModel))]
         [Timeout(300000)]
         public void SecurityViewModel_PickOverrideResourceCommand_IsValidOverrideWorkflow_False()
-		{
-            Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
+        {
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
             {
                 //------------Setup for test--------------------------
                 var overrideResourceId = Guid.NewGuid();
@@ -2080,8 +2084,8 @@ namespace Dev2.Core.Tests.Settings
         [TestCategory(nameof(SecurityViewModel))]
         [Timeout(300000)]
         public void SecurityViewModel_ShowDirectoryObjectPickerDialog()
-		{
-            Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
+        {
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
             {
                 var popupMessage = new PopupMessage
                 {
@@ -2110,8 +2114,8 @@ namespace Dev2.Core.Tests.Settings
         [TestCategory(nameof(SecurityViewModel))]
         [Timeout(300000)]
         public void SecurityViewModel_CreateResourcePickerDialog()
-		{
-            Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
+        {
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
             {
                 var mockShellViewModel = new Mock<IShellViewModel>();
                 mockShellViewModel.Setup(o => o.ActiveServer).Returns(new Mock<IServer>().Object);
@@ -2169,8 +2173,8 @@ namespace Dev2.Core.Tests.Settings
         [TestCategory(nameof(SecurityViewModel))]
         [Timeout(300000)]
         public void SecurityViewModel_Equals_ServerPermissions_WindowsGroup()
-		{
-            Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
+        {
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
             {
                 var viewModel = PermissionsValidation();
 
@@ -2187,8 +2191,8 @@ namespace Dev2.Core.Tests.Settings
         [TestCategory(nameof(SecurityViewModel))]
         [Timeout(300000)]
         public void SecurityViewModel_Equals_ServerPermissions_DeployTo()
-		{
-            Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
+        {
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
             {
                 var viewModel = PermissionsValidation();
 
@@ -2204,8 +2208,8 @@ namespace Dev2.Core.Tests.Settings
         [TestCategory(nameof(SecurityViewModel))]
         [Timeout(300000)]
         public void SecurityViewModel_Equals_ServerPermissions_DeployFrom()
-		{
-            Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
+        {
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
             {
                 var viewModel = PermissionsValidation();
 
@@ -2221,8 +2225,8 @@ namespace Dev2.Core.Tests.Settings
         [TestCategory(nameof(SecurityViewModel))]
         [Timeout(300000)]
         public void SecurityViewModel_Equals_ServerPermissions_Administrator()
-		{
-            Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
+        {
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
             {
                 var viewModel = PermissionsValidation();
 
@@ -2239,12 +2243,15 @@ namespace Dev2.Core.Tests.Settings
         [Timeout(300000)]
         public void SecurityViewModel_Equals_ServerPermissions_View()
         {
-            var viewModel = PermissionsValidation();
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
+            {
+                var viewModel = PermissionsValidation();
 
-            Assert.AreEqual(3, viewModel.ItemServerPermissions.Count);
-            Assert.IsFalse(viewModel.IsDirty);
-            viewModel.ItemServerPermissions[0].View = true;
-            Assert.IsTrue(viewModel.IsDirty);
+                Assert.AreEqual(3, viewModel.ItemServerPermissions.Count);
+                Assert.IsFalse(viewModel.IsDirty);
+                viewModel.ItemServerPermissions[0].View = true;
+                Assert.IsTrue(viewModel.IsDirty);
+            });
         }
 
         [TestMethod]
@@ -2253,12 +2260,15 @@ namespace Dev2.Core.Tests.Settings
         [Timeout(300000)]
         public void SecurityViewModel_Equals_ServerPermissions_Execute()
         {
-            var viewModel = PermissionsValidation();
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
+            {
+                var viewModel = PermissionsValidation();
 
-            Assert.AreEqual(3, viewModel.ItemServerPermissions.Count);
-            Assert.IsFalse(viewModel.IsDirty);
-            viewModel.ItemServerPermissions[0].Execute = true;
-            Assert.IsTrue(viewModel.IsDirty);
+                Assert.AreEqual(3, viewModel.ItemServerPermissions.Count);
+                Assert.IsFalse(viewModel.IsDirty);
+                viewModel.ItemServerPermissions[0].Execute = true;
+                Assert.IsTrue(viewModel.IsDirty);
+            });
         }
 
         [TestMethod]
@@ -2266,8 +2276,8 @@ namespace Dev2.Core.Tests.Settings
         [TestCategory(nameof(SecurityViewModel))]
         [Timeout(300000)]
         public void SecurityViewModel_Equals_ServerPermissions_Contribute()
-		{
-            Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
+        {
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
             {
                 var viewModel = PermissionsValidation();
 
@@ -2284,12 +2294,15 @@ namespace Dev2.Core.Tests.Settings
         [Timeout(300000)]
         public void SecurityViewModel_Equals_ServerPermissions_IsDeleted()
         {
-            var viewModel = PermissionsValidation();
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
+            {
+                var viewModel = PermissionsValidation();
 
-            Assert.AreEqual(3, viewModel.ItemServerPermissions.Count);
-            Assert.IsFalse(viewModel.IsDirty);
-            viewModel.ItemServerPermissions[0].IsDeleted = true;
-            Assert.IsTrue(viewModel.IsDirty);
+                Assert.AreEqual(3, viewModel.ItemServerPermissions.Count);
+                Assert.IsFalse(viewModel.IsDirty);
+                viewModel.ItemServerPermissions[0].IsDeleted = true;
+                Assert.IsTrue(viewModel.IsDirty);
+            });
         }
 
         private static SecurityViewModel PermissionsValidation()
@@ -2329,8 +2342,8 @@ namespace Dev2.Core.Tests.Settings
         [TestCategory(nameof(SecurityViewModel))]
         [Timeout(300000)]
         public void SecurityViewModel_Equals_ResourcePermissions_ResourceName()
-		{
-            Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
+        {
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
             {
                 var viewModel = PermissionsValidation();
 
@@ -2363,8 +2376,8 @@ namespace Dev2.Core.Tests.Settings
         [TestCategory(nameof(SecurityViewModel))]
         [Timeout(300000)]
         public void SecurityViewModel_Equals_ResourcePermissions_View()
-		{
-            Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
+        {
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
             {
                 var viewModel = PermissionsValidation();
 
@@ -2380,8 +2393,8 @@ namespace Dev2.Core.Tests.Settings
         [TestCategory(nameof(SecurityViewModel))]
         [Timeout(300000)]
         public void SecurityViewModel_Equals_ResourcePermissions_Execute()
-		{
-            Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
+        {
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
             {
                 var viewModel = PermissionsValidation();
 
@@ -2397,8 +2410,8 @@ namespace Dev2.Core.Tests.Settings
         [TestCategory(nameof(SecurityViewModel))]
         [Timeout(300000)]
         public void SecurityViewModel_Equals_ResourcePermissions_Contribute()
-		{
-            Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
+        {
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
             {
                 var viewModel = PermissionsValidation();
 
@@ -2414,8 +2427,8 @@ namespace Dev2.Core.Tests.Settings
         [TestCategory(nameof(SecurityViewModel))]
         [Timeout(300000)]
         public void SecurityViewModel_Equals_ResourcePermissions_DeployTo()
-		{
-            Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
+        {
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
             {
                 var viewModel = PermissionsValidation();
 
@@ -2431,8 +2444,8 @@ namespace Dev2.Core.Tests.Settings
         [TestCategory(nameof(SecurityViewModel))]
         [Timeout(300000)]
         public void SecurityViewModel_Equals_ResourcePermissions_DeployFrom()
-		{
-            Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
+        {
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
             {
                 var viewModel = PermissionsValidation();
 
@@ -2448,8 +2461,8 @@ namespace Dev2.Core.Tests.Settings
         [TestCategory(nameof(SecurityViewModel))]
         [Timeout(300000)]
         public void SecurityViewModel_Equals_ResourcePermissions_Administrator()
-		{
-            Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
+        {
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
             {
                 var viewModel = PermissionsValidation();
 
