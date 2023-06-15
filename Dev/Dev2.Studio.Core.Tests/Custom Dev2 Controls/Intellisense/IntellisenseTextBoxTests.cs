@@ -118,29 +118,31 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
         [TestMethod]
         public void TextContaningNoTabIsPasedIntoAnIntellisenseTextBoxExpectedTabInsertedEventNotRaised()
         {
-            var preserveClipboard = System.Windows.Clipboard.GetText();
-            try
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
             {
-                var eventRaised = false;
-                EventManager.RegisterClassHandler(typeof(IntellisenseTextBox), IntellisenseTextBox.TabInsertedEvent,
-                                                  new RoutedEventHandler((s, e) =>
-                                                  {
-                                                      eventRaised = true;
-                                                  }));
+                var preserveClipboard = System.Windows.Clipboard.GetText();
+                try
+                {
+                    var eventRaised = false;
+                    EventManager.RegisterClassHandler(typeof(IntellisenseTextBox), IntellisenseTextBox.TabInsertedEvent,
+                                                      new RoutedEventHandler((s, e) =>
+                                                      {
+                                                          eventRaised = true;
+                                                      }));
 
-                System.Windows.Clipboard.SetText("Cake");
+                    System.Windows.Clipboard.SetText("Cake");
 
-                var textBox = new IntellisenseTextBox();
-                textBox.Paste();
+                    var textBox = new IntellisenseTextBox();
+                    textBox.Paste();
 
-                Assert.IsFalse(eventRaised,
-                               "The 'IntellisenseTextBox.TabInsertedEvent' was raised when text that didn't contain a tab was pasted into the IntellisenseTextBox.");
-            }
-            finally
-            {
-                System.Windows.Clipboard.SetText(preserveClipboard);
-            }
-
+                    Assert.IsFalse(eventRaised,
+                                   "The 'IntellisenseTextBox.TabInsertedEvent' was raised when text that didn't contain a tab was pasted into the IntellisenseTextBox.");
+                }
+                finally
+                {
+                    System.Windows.Clipboard.SetText(preserveClipboard);
+                }
+            });
         }
 
         #endregion Test Initialization
