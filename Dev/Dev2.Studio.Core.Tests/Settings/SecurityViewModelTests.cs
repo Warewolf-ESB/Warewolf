@@ -1194,16 +1194,18 @@ namespace Dev2.Core.Tests.Settings
         [Timeout(300000)]
         public void SecurityViewModel_Save_NullPermissions_ThrowsArgumentNullException()
         {
+            var viewModel = new SecurityViewModel();
             Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
             {
                 //------------Setup for test--------------------------
-                var viewModel = new SecurityViewModel(new SecuritySettingsTO(new WindowsGroupPermission[0]), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
-
-                //------------Execute Test---------------------------
-                viewModel.Save(null);
-
-                //------------Assert Results-------------------------
+                viewModel = new SecurityViewModel(new SecuritySettingsTO(new WindowsGroupPermission[0]), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
             });
+            
+            //------------Execute Test---------------------------
+            viewModel.Save(null);
+
+            //------------Assert Results-------------------------
+            //});
         }
 
         [TestMethod]
