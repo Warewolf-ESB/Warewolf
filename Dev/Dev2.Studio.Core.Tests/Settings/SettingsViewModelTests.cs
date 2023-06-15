@@ -355,8 +355,7 @@ namespace Dev2.Core.Tests.Settings
                 Assert.IsTrue(viewModel.IsDirty);
                 Assert.IsFalse(viewModel.IsSaved);
                 Assert.IsTrue(viewModel.HasErrors);
-                Assert.AreEqual(@"Error while saving: You don't have permission to change settings on this server.
-    You need Administrator permission.", viewModel.Errors);
+                Assert.AreEqual(@"Error while saving: You don't have permission to change settings on this server." + Environment.NewLine + "You need Administrator permission.", viewModel.Errors);
                 popupController.Verify(controller => controller.ShowSaveSettingsPermissionsErrorMsg(), Times.Once);
 			});
 		}

@@ -37,6 +37,7 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
         {
             var mockDataListViewModel = new Mock<IDataListViewModel>();
             mockDataListViewModel.Setup(model => model.Resource).Returns(new Mock<IResourceModel>().Object);
+            mockDataListViewModel.Setup(model => model.Provider).Returns(new Mock<ISuggestionProvider>().Object);
             DataListSingleton.SetDataList(mockDataListViewModel.Object);
             SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
             CustomContainer.Register(new Mock<IPopupController>().Object);
