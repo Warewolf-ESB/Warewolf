@@ -541,197 +541,219 @@ You need Administrator permission.", viewModel.Errors);
         [Timeout(300000)]
         public void SettingsViewModel_IsDirty_SecurityViewModelIsDirtyPropertyChanged_IsDirtyIsTrue()
         {
-            //------------Setup for test--------------------------
-            var viewModel = CreateSettingsViewModel(CreateSettings().ToString());
-            Assert.IsFalse(viewModel.IsDirty);
+			Net6.Compatibility.STAThreadExtensions.RunAsSTA(() => {
+				//------------Setup for test--------------------------
+				var viewModel = CreateSettingsViewModel(CreateSettings().ToString());
+                Assert.IsFalse(viewModel.IsDirty);
 
-            //------------Execute Test---------------------------
-            viewModel.SecurityViewModel.ResourcePermissions[0].WindowsGroup = "xxx";
+                //------------Execute Test---------------------------
+                viewModel.SecurityViewModel.ResourcePermissions[0].WindowsGroup = "xxx";
 
-            //------------Assert Results-------------------------
-            Assert.IsTrue(viewModel.IsDirty);
-        }
+                //------------Assert Results-------------------------
+                Assert.IsTrue(viewModel.IsDirty);
+			});
+		}
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("SettingsViewModel_IsDirty")]
         [Timeout(300000)]
         public void SettingsViewModel_IsDirty_TrueSecurityNameHasStar()
-        {
-            //------------Setup for test--------------------------
-            var viewModel = CreateSettingsViewModel(CreateSettings().ToString());
+		{
+			Net6.Compatibility.STAThreadExtensions.RunAsSTA(() => {
+				//------------Setup for test--------------------------
+				var viewModel = CreateSettingsViewModel(CreateSettings().ToString());
 
-            //------------Execute Test---------------------------
-            viewModel.SecurityViewModel.ResourcePermissions[0].WindowsGroup = "xxx";
+                //------------Execute Test---------------------------
+                viewModel.SecurityViewModel.ResourcePermissions[0].WindowsGroup = "xxx";
 
-            //------------Assert Results-------------------------
-            Assert.IsTrue(viewModel.IsDirty);
-            Assert.AreEqual("SECURITY *", viewModel.SecurityHeader);
-        }
+                //------------Assert Results-------------------------
+                Assert.IsTrue(viewModel.IsDirty);
+                Assert.AreEqual("SECURITY *", viewModel.SecurityHeader);
+			});
+		}
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("SettingsViewModel_IsDirty")]
         [Timeout(300000)]
         public void SettingsViewModel_WhenIsDirtySecurityModelFiresPropertyChange_SetsSettingsViewModelIsDirty()
-        {
-            //------------Setup for test--------------------------
-            var viewModel = CreateSettingsViewModel(CreateSettings().ToString());
-            var _wasCalled = false;
-            viewModel.SecurityViewModel.PropertyChanged += (sender, args) =>
-            {
-                if (args.PropertyName == "IsDirty")
+		{
+			Net6.Compatibility.STAThreadExtensions.RunAsSTA(() => {
+				//------------Setup for test--------------------------
+				var viewModel = CreateSettingsViewModel(CreateSettings().ToString());
+                var _wasCalled = false;
+                viewModel.SecurityViewModel.PropertyChanged += (sender, args) =>
                 {
-                    _wasCalled = true;
-                }
-            };
-            //------------Execute Test---------------------------
-            viewModel.SecurityViewModel.IsDirty = true;
+                    if (args.PropertyName == "IsDirty")
+                    {
+                        _wasCalled = true;
+                    }
+                };
+                //------------Execute Test---------------------------
+                viewModel.SecurityViewModel.IsDirty = true;
 
-            //------------Assert Results-------------------------
-            Assert.IsTrue(_wasCalled);
-            Assert.IsTrue(viewModel.IsDirty);
-        }
+                //------------Assert Results-------------------------
+                Assert.IsTrue(_wasCalled);
+                Assert.IsTrue(viewModel.IsDirty);
+			});
+		}
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("SettingsViewModel_IsDirty")]
         [Timeout(300000)]
         public void SettingsViewModel_WhenIsDirtyPerfCounterModelFiresPropertyChange_SetsSettingsViewModelIsDirty()
-        {
-            //------------Setup for test--------------------------
-            var viewModel = CreateSettingsViewModel(CreateSettings().ToString());
-            var _wasCalled = false;
-            viewModel.PerfmonViewModel.PropertyChanged += (sender, args) =>
-            {
-                if (args.PropertyName == "IsDirty")
+		{
+			Net6.Compatibility.STAThreadExtensions.RunAsSTA(() => {
+				//------------Setup for test--------------------------
+				var viewModel = CreateSettingsViewModel(CreateSettings().ToString());
+                var _wasCalled = false;
+                viewModel.PerfmonViewModel.PropertyChanged += (sender, args) =>
                 {
-                    _wasCalled = true;
-                }
-            };
-            //------------Execute Test---------------------------
-            viewModel.PerfmonViewModel.IsDirty = true;
+                    if (args.PropertyName == "IsDirty")
+                    {
+                        _wasCalled = true;
+                    }
+                };
+                //------------Execute Test---------------------------
+                viewModel.PerfmonViewModel.IsDirty = true;
 
-            //------------Assert Results-------------------------
-            Assert.IsTrue(_wasCalled);
-            Assert.IsTrue(viewModel.IsDirty);
-        }
+                //------------Assert Results-------------------------
+                Assert.IsTrue(_wasCalled);
+                Assert.IsTrue(viewModel.IsDirty);
+			});
+		}
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("SettingsViewModel_IsDirty")]
         [Timeout(300000)]
         public void SettingsViewModel_IsSecurityDirty_FalseSecurityNameHasNoStar()
-        {
-            //------------Setup for test--------------------------
-            var viewModel = CreateSettingsViewModel(CreateSettings().ToString());
+		{
+			Net6.Compatibility.STAThreadExtensions.RunAsSTA(() => {
+				//------------Setup for test--------------------------
+				var viewModel = CreateSettingsViewModel(CreateSettings().ToString());
 
-            //------------Execute Test---------------------------
-            viewModel.SecurityViewModel.ResourcePermissions[0].WindowsGroup = "xxx";
-            Assert.IsTrue(viewModel.IsDirty);
-            viewModel.SecurityViewModel.IsDirty = false;
-            //------------Assert Results-------------------------
-            Assert.AreEqual("SECURITY", viewModel.SecurityHeader);
-        }
+                //------------Execute Test---------------------------
+                viewModel.SecurityViewModel.ResourcePermissions[0].WindowsGroup = "xxx";
+                Assert.IsTrue(viewModel.IsDirty);
+                viewModel.SecurityViewModel.IsDirty = false;
+                //------------Assert Results-------------------------
+                Assert.AreEqual("SECURITY", viewModel.SecurityHeader);
+			});
+		}
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("SettingsViewModel_IsDirty")]
         [Timeout(300000)]
         public void SettingsViewModel_IsLoggingDirty_FalseLoggingNameHasNoStar()
-        {
-            //------------Setup for test--------------------------
-            var viewModel = CreateSettingsViewModel(CreateSettings().ToString());
+		{
+			Net6.Compatibility.STAThreadExtensions.RunAsSTA(() => {
+				//------------Setup for test--------------------------
+				var viewModel = CreateSettingsViewModel(CreateSettings().ToString());
 
-            //------------Execute Test---------------------------
-            viewModel.LogSettingsViewModel.ServerLogMaxSize = "10";
-            Assert.IsTrue(viewModel.IsDirty);
-            viewModel.LogSettingsViewModel.IsDirty = false;
-            //------------Assert Results-------------------------
-            Assert.AreEqual("LOGGING", viewModel.LogHeader);
-        }
+                //------------Execute Test---------------------------
+                viewModel.LogSettingsViewModel.ServerLogMaxSize = "10";
+                Assert.IsTrue(viewModel.IsDirty);
+                viewModel.LogSettingsViewModel.IsDirty = false;
+                //------------Assert Results-------------------------
+                Assert.AreEqual("LOGGING", viewModel.LogHeader);
+			});
+		}
 
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory("SettingsViewModel_IsDirty")]
         [Timeout(300000)]
         public void SettingsViewModel_IsPersistenceDirty_FalsePersistenceNameHasNoStar()
-        {
-            //------------Setup for test--------------------------
-            var viewModel = CreateSettingsViewModel(CreateSettings().ToString());
+		{
+			Net6.Compatibility.STAThreadExtensions.RunAsSTA(() => {
+				//------------Setup for test--------------------------
+				var viewModel = CreateSettingsViewModel(CreateSettings().ToString());
 
-            //------------Execute Test---------------------------
-            viewModel.PersistenceSettingsViewModel.Enable = true;
-            Assert.IsTrue(viewModel.IsDirty);
-            viewModel.PersistenceSettingsViewModel.IsDirty = false;
-            //------------Assert Results-------------------------
-            Assert.AreEqual("PERSISTENCE", viewModel.PersistenceHeader);
-        }
+                //------------Execute Test---------------------------
+                viewModel.PersistenceSettingsViewModel.Enable = true;
+                Assert.IsTrue(viewModel.IsDirty);
+                viewModel.PersistenceSettingsViewModel.IsDirty = false;
+                //------------Assert Results-------------------------
+                Assert.AreEqual("PERSISTENCE", viewModel.PersistenceHeader);
+			});
+		}
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("SettingsViewModel_IsDirty")]
         [Timeout(300000)]
         public void SettingsViewModel_IsLoggingDirty_TrueLoggingNameHasStar()
-        {
-            //------------Setup for test--------------------------
-            var viewModel = CreateSettingsViewModel(CreateSettings().ToString());
+		{
+			Net6.Compatibility.STAThreadExtensions.RunAsSTA(() => {
+				//------------Setup for test--------------------------
+				var viewModel = CreateSettingsViewModel(CreateSettings().ToString());
 
-            //------------Execute Test---------------------------
-            viewModel.LogSettingsViewModel.ServerLogMaxSize = "10";
-            Assert.IsTrue(viewModel.IsDirty);
-            //------------Assert Results-------------------------
-            Assert.AreEqual("LOGGING *", viewModel.LogHeader);
-        }
+                //------------Execute Test---------------------------
+                viewModel.LogSettingsViewModel.ServerLogMaxSize = "10";
+                Assert.IsTrue(viewModel.IsDirty);
+                //------------Assert Results-------------------------
+                Assert.AreEqual("LOGGING *", viewModel.LogHeader);
+		    });
+	    }
 
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory("SettingsViewModel_IsDirty")]
         [Timeout(300000)]
         public void SettingsViewModel_IsPersistenceDirty_TruePersistenceNameHasStar()
-        {
-            //------------Setup for test--------------------------
-            var viewModel = CreateSettingsViewModel(CreateSettings().ToString());
+		{
+			Net6.Compatibility.STAThreadExtensions.RunAsSTA(() => {
+				//------------Setup for test--------------------------
+				var viewModel = CreateSettingsViewModel(CreateSettings().ToString());
 
-            //------------Execute Test---------------------------
-            viewModel.PersistenceSettingsViewModel.Enable = true;
-            Assert.IsTrue(viewModel.IsDirty);
-            //------------Assert Results-------------------------
-            Assert.AreEqual("PERSISTENCE *", viewModel.PersistenceHeader);
-        }
+                //------------Execute Test---------------------------
+                viewModel.PersistenceSettingsViewModel.Enable = true;
+                Assert.IsTrue(viewModel.IsDirty);
+                //------------Assert Results-------------------------
+                Assert.AreEqual("PERSISTENCE *", viewModel.PersistenceHeader);
+			});
+		}
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("SettingsViewModel_IsDirty")]
         [Timeout(300000)]
         public void SettingsViewModel_IsPerfCounterDirty_FalsePerfCounterNameHasNoStar()
-        {
-            //------------Setup for test--------------------------
-            var viewModel = CreateSettingsViewModel(CreateSettings().ToString());
+	    {
+		    Net6.Compatibility.STAThreadExtensions.RunAsSTA(() => {
+			    //------------Setup for test--------------------------
+			    var viewModel = CreateSettingsViewModel(CreateSettings().ToString());
 
-            //------------Execute Test---------------------------
-            viewModel.PerfmonViewModel.ResourceCounters[0].TotalErrors = true;
-            Assert.IsTrue(viewModel.IsDirty);
-            viewModel.PerfmonViewModel.IsDirty = false;
-            //------------Assert Results-------------------------
-            Assert.AreEqual("PERFORMANCE COUNTERS", viewModel.PerfmonHeader);
-        }
+                //------------Execute Test---------------------------
+                viewModel.PerfmonViewModel.ResourceCounters[0].TotalErrors = true;
+                Assert.IsTrue(viewModel.IsDirty);
+                viewModel.PerfmonViewModel.IsDirty = false;
+                //------------Assert Results-------------------------
+                Assert.AreEqual("PERFORMANCE COUNTERS", viewModel.PerfmonHeader);
+			});
+		}
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("SettingsViewModel_IsDirty")]
         [Timeout(300000)]
         public void SettingsViewModel_IsPerfCounterDirty_TruePerfCounterNameHasStar()
-        {
-            //------------Setup for test--------------------------
-            var viewModel = CreateSettingsViewModel(CreateSettings().ToString());
+		{
+			Net6.Compatibility.STAThreadExtensions.RunAsSTA(() => {
+				//------------Setup for test--------------------------
+				var viewModel = CreateSettingsViewModel(CreateSettings().ToString());
 
-            //------------Execute Test---------------------------
-            viewModel.PerfmonViewModel.ResourceCounters[0].TotalErrors = true;
-            Assert.IsTrue(viewModel.IsDirty);
-            //------------Assert Results-------------------------
-            Assert.AreEqual("PERFORMANCE COUNTERS *", viewModel.PerfmonHeader);
-        }
+                //------------Execute Test---------------------------
+                viewModel.PerfmonViewModel.ResourceCounters[0].TotalErrors = true;
+                Assert.IsTrue(viewModel.IsDirty);
+                //------------Assert Results-------------------------
+                Assert.AreEqual("PERFORMANCE COUNTERS *", viewModel.PerfmonHeader);
+			});
+		}
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
