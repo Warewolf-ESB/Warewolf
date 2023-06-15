@@ -15,6 +15,7 @@ using System.Linq;
 using Dev2.Common.Interfaces;
 using Dev2.Data.Util;
 using Gma.DataStructures.StringSearch;
+using KGySoft.CoreLibraries;
 using static DataStorage;
 
 namespace Dev2.Studio.Core.DataList
@@ -268,7 +269,8 @@ namespace Dev2.Studio.Core.DataList
                 }
 
                 var textTrimmedRight = originalText.Substring(0, caretPosition);
-                var start = textTrimmedRight.LastIndexOf(textTrimmedRight.Split(_tokenisers).Last(), StringComparison.Ordinal) - 1;
+                var tokenizerLastPart = textTrimmedRight.Split(_tokenisers).Last();
+                var start = string.IsNullOrEmpty(tokenizerLastPart) ? textTrimmedRight.LastIndexOf(tokenizerLastPart, StringComparison.Ordinal) - 1 : textTrimmedRight.LastIndexOf(tokenizerLastPart, StringComparison.Ordinal);
                 filter = textTrimmedRight.Substring(start);
             }
             else
