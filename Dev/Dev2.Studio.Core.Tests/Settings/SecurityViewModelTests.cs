@@ -2128,6 +2128,9 @@ namespace Dev2.Core.Tests.Settings
         {
             Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
             {
+                var serverRepository = new Mock<IServerRepository>();
+                serverRepository.Setup(sr => sr.All()).Returns(new List<IServer>());
+                CustomContainer.Register<IServerRepository>(serverRepository.Object);
                 var mockShellViewModel = new Mock<IShellViewModel>();
                 mockShellViewModel.Setup(o => o.ActiveServer).Returns(new Mock<IServer>().Object);
                 CustomContainer.Register(mockShellViewModel.Object);

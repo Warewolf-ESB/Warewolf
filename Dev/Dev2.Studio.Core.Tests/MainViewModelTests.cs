@@ -1572,6 +1572,10 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void MainViewModelOnDeactivateWithTrueExpectedSavesResourceModels_WhenEnvironmentNotConnectedDoesNotCallSave()
         {
+            var serverRepository = new Mock<IServerRepository>();
+            serverRepository.Setup(sr => sr.All()).Returns(new List<IServer>());
+            CustomContainer.Register<IServerRepository>(serverRepository.Object);
+
             var wsiRepo = new Mock<IWorkspaceItemRepository>();
             wsiRepo.Setup(r => r.WorkspaceItems).Returns(() => new List<IWorkspaceItem>());
 
@@ -1660,6 +1664,10 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void MainViewModelConstructorWithNullBrowserPopupControllerExpectedCreatesExternalBrowserPopupController()
         {
+            var serverRepository = new Mock<IServerRepository>();
+            serverRepository.Setup(sr => sr.All()).Returns(new List<IServer>());
+            CustomContainer.Register<IServerRepository>(serverRepository.Object);
+
             var mockEventAggregator = new Mock<IEventAggregator>();
             var envRepo = new Mock<IServerRepository>();
             CustomContainer.Register(new Mock<IWindowManager>().Object);
