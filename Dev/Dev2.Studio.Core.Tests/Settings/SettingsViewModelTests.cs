@@ -266,27 +266,30 @@ namespace Dev2.Core.Tests.Settings
         [TestCategory("SettingsViewModel_SaveCommand")]
         [Timeout(300000)]
         public void SettingsViewModel_SaveCommand_InvokesSaveOnSecurityViewModel_Done()
-        {
-            //------------Setup for test--------------------------
-            var securityViewModel = new TestSecurityViewModel {IsDirty = true};
-            var viewModel = CreateSettingsViewModel(CreateSettings().ToString(), "success", securityViewModel);
-            viewModel.IsDirty = true;
-            var environment = new Mock<IServer>();
-            environment.Setup(e => e.IsConnected).Returns(true);
-            var authService = new Mock<IAuthorizationService>();
-            authService.Setup(c => c.IsAuthorized(It.IsAny<AuthorizationContext>(), null)).Returns(true);
-            environment.Setup(c => c.AuthorizationService).Returns(authService.Object);
-            var repo = new Mock<IResourceRepository>();
-            environment.Setup(a => a.ResourceRepository).Returns(repo.Object);
-            viewModel.CurrentEnvironment = environment.Object;
-            var propertyInfo = typeof(SettingsViewModel).GetProperty("SecurityViewModel", BindingFlags.Public | BindingFlags.Instance);
-            Assert.IsNotNull(propertyInfo, "Cannot get private property.");
-            propertyInfo.SetValue(viewModel, securityViewModel);
-            //------------Execute Test---------------------------
-            viewModel.SaveCommand.Execute(null);
+		{
+            Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
+            {
+                //------------Setup for test--------------------------
+                var securityViewModel = new TestSecurityViewModel { IsDirty = true };
+                var viewModel = CreateSettingsViewModel(CreateSettings().ToString(), "success", securityViewModel);
+                viewModel.IsDirty = true;
+                var environment = new Mock<IServer>();
+                environment.Setup(e => e.IsConnected).Returns(true);
+                var authService = new Mock<IAuthorizationService>();
+                authService.Setup(c => c.IsAuthorized(It.IsAny<AuthorizationContext>(), null)).Returns(true);
+                environment.Setup(c => c.AuthorizationService).Returns(authService.Object);
+                var repo = new Mock<IResourceRepository>();
+                environment.Setup(a => a.ResourceRepository).Returns(repo.Object);
+                viewModel.CurrentEnvironment = environment.Object;
+                var propertyInfo = typeof(SettingsViewModel).GetProperty("SecurityViewModel", BindingFlags.Public | BindingFlags.Instance);
+                Assert.IsNotNull(propertyInfo, "Cannot get private property.");
+                propertyInfo.SetValue(viewModel, securityViewModel);
+                //------------Execute Test---------------------------
+                viewModel.SaveCommand.Execute(null);
 
-            //------------Assert Results-------------------------
-            Assert.AreEqual(1, securityViewModel.SaveHitCount);
+                //------------Assert Results-------------------------
+                Assert.AreEqual(1, securityViewModel.SaveHitCount);
+            });
         }
 
         [TestMethod]
@@ -294,30 +297,33 @@ namespace Dev2.Core.Tests.Settings
         [TestCategory("SettingsViewModel_SaveCommand")]
         [Timeout(300000)]
         public void SettingsViewModel_SaveCommand_ResultIsNull_HasErrorsIsTrue()
-        {
-            //------------Setup for test--------------------------
-            var securityViewModel = new TestSecurityViewModel {IsDirty = true};
-            var viewModel = CreateSettingsViewModel(CreateSettings().ToString(), null, securityViewModel);
-            viewModel.IsDirty = true;
+		{
+            Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
+            {
+                //------------Setup for test--------------------------
+                var securityViewModel = new TestSecurityViewModel { IsDirty = true };
+                var viewModel = CreateSettingsViewModel(CreateSettings().ToString(), null, securityViewModel);
+                viewModel.IsDirty = true;
 
-            var environment = new Mock<IServer>();
-            environment.Setup(e => e.IsConnected).Returns(true);
-            var authService = new Mock<IAuthorizationService>();
-            authService.Setup(c => c.IsAuthorized(It.IsAny<AuthorizationContext>(), null)).Returns(true);
-            environment.Setup(c => c.AuthorizationService).Returns(authService.Object);
-            var repo = new Mock<IResourceRepository>();
-            environment.Setup(a => a.ResourceRepository).Returns(repo.Object);
-            viewModel.CurrentEnvironment = environment.Object;
+                var environment = new Mock<IServer>();
+                environment.Setup(e => e.IsConnected).Returns(true);
+                var authService = new Mock<IAuthorizationService>();
+                authService.Setup(c => c.IsAuthorized(It.IsAny<AuthorizationContext>(), null)).Returns(true);
+                environment.Setup(c => c.AuthorizationService).Returns(authService.Object);
+                var repo = new Mock<IResourceRepository>();
+                environment.Setup(a => a.ResourceRepository).Returns(repo.Object);
+                viewModel.CurrentEnvironment = environment.Object;
 
-            //------------Execute Test---------------------------
-            viewModel.SaveCommand.Execute(null);
+                //------------Execute Test---------------------------
+                viewModel.SaveCommand.Execute(null);
 
-            //------------Assert Results-------------------------
+                //------------Assert Results-------------------------
 
-            Assert.IsTrue(viewModel.IsDirty);
-            Assert.IsFalse(viewModel.IsSaved);
-            Assert.IsTrue(viewModel.HasErrors);
-            Assert.AreEqual(string.Format(GlobalConstants.NetworkCommunicationErrorTextFormat, "WriteSettings"), viewModel.Errors);
+                Assert.IsTrue(viewModel.IsDirty);
+                Assert.IsFalse(viewModel.IsSaved);
+                Assert.IsTrue(viewModel.HasErrors);
+                Assert.AreEqual(string.Format(GlobalConstants.NetworkCommunicationErrorTextFormat, "WriteSettings"), viewModel.Errors);
+            });
         }
 
         [TestMethod]
@@ -325,215 +331,230 @@ namespace Dev2.Core.Tests.Settings
         [TestCategory("SettingsViewModel_SaveCommand")]
         [Timeout(300000)]
         public void SettingsViewModel_SaveCommand_NoAuth_HasErrorsIsTrueCorrectErrorMessage()
-        {
-            //------------Setup for test--------------------------
-            var securityViewModel = new TestSecurityViewModel {IsDirty = true};
-            var popupController = new Mock<IPopupController>();
-            popupController.Setup(controller => controller.Show()).Returns(MessageBoxResult.Yes);
-            var viewModel = CreateSettingsViewModel(popupController.Object, CreateSettings().ToString(), null, securityViewModel);
+		{
+			Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
+			{
+				//------------Setup for test--------------------------
+				var securityViewModel = new TestSecurityViewModel {IsDirty = true};
+                var popupController = new Mock<IPopupController>();
+                popupController.Setup(controller => controller.Show()).Returns(MessageBoxResult.Yes);
+                var viewModel = CreateSettingsViewModel(popupController.Object, CreateSettings().ToString(), null, securityViewModel);
 
-            var environment = new Mock<IServer>();
-            environment.Setup(e => e.IsConnected).Returns(true);
-            var authService = new Mock<IAuthorizationService>();
-            authService.Setup(c => c.IsAuthorized(It.IsAny<AuthorizationContext>(), It.IsAny<Guid>())).Returns(false);
-            environment.Setup(c => c.AuthorizationService).Returns(authService.Object);
-            viewModel.CurrentEnvironment = environment.Object;
-            viewModel.IsDirty = true;
+                var environment = new Mock<IServer>();
+                environment.Setup(e => e.IsConnected).Returns(true);
+                var authService = new Mock<IAuthorizationService>();
+                authService.Setup(c => c.IsAuthorized(It.IsAny<AuthorizationContext>(), It.IsAny<Guid>())).Returns(false);
+                environment.Setup(c => c.AuthorizationService).Returns(authService.Object);
+                viewModel.CurrentEnvironment = environment.Object;
+                viewModel.IsDirty = true;
 
-            //------------Execute Test---------------------------
-            viewModel.SaveCommand.Execute(null);
+                //------------Execute Test---------------------------
+                viewModel.SaveCommand.Execute(null);
 
-            //------------Assert Results-------------------------
-            Assert.IsTrue(viewModel.IsDirty);
-            Assert.IsFalse(viewModel.IsSaved);
-            Assert.IsTrue(viewModel.HasErrors);
-            Assert.AreEqual(@"Error while saving: You don't have permission to change settings on this server.
-You need Administrator permission.", viewModel.Errors);
-            popupController.Verify(controller => controller.ShowSaveSettingsPermissionsErrorMsg(), Times.Once);
-        }
+                //------------Assert Results-------------------------
+                Assert.IsTrue(viewModel.IsDirty);
+                Assert.IsFalse(viewModel.IsSaved);
+                Assert.IsTrue(viewModel.HasErrors);
+                Assert.AreEqual(@"Error while saving: You don't have permission to change settings on this server.
+    You need Administrator permission.", viewModel.Errors);
+                popupController.Verify(controller => controller.ShowSaveSettingsPermissionsErrorMsg(), Times.Once);
+			});
+		}
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("SettingsViewModel_SaveCommand")]
         [Timeout(300000)]
         public void SettingsViewModel_SaveCommand_DuplicateServerPermissions_HasErrorsIsTrueCorrectErrorMessage()
-        {
-            //------------Setup for test--------------------------
-            var securityViewModel = new TestSecurityViewModel {IsDirty = true};
-            securityViewModel.ServerPermissions.Add(new WindowsGroupPermission
-            {
-                WindowsGroup = "Some Group",
-                ResourceID = Guid.Empty,
-                IsServer = true
-            });
-
-            securityViewModel.ServerPermissions.Add(new WindowsGroupPermission
-            {
-                WindowsGroup = "Some Group",
-                ResourceID = Guid.Empty,
-                IsServer = true
-            });
-            var popupController = new Mock<IPopupController>();
-            popupController.Setup(controller => controller.Show()).Returns(MessageBoxResult.Yes);
-            var viewModel = CreateSettingsViewModel(popupController.Object, CreateSettings().ToString(), null, securityViewModel);
-
-            var environment = new Mock<IServer>();
-            environment.Setup(e => e.IsConnected).Returns(true);
-            var authService = new Mock<IAuthorizationService>();
-            authService.Setup(c => c.IsAuthorized(It.IsAny<AuthorizationContext>(), null)).Returns(true);
-            environment.Setup(c => c.AuthorizationService).Returns(authService.Object);
-            viewModel.CurrentEnvironment = environment.Object;
-            viewModel.IsDirty = true;
-            viewModel.SecurityViewModel.GetType().GetProperty("ServerPermissions", BindingFlags.Public | BindingFlags.Instance)?.SetValue(viewModel.SecurityViewModel,new ObservableCollection<WindowsGroupPermission>()
-            {
-                new WindowsGroupPermission
+		{
+			Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
+			{
+				//------------Setup for test--------------------------
+				var securityViewModel = new TestSecurityViewModel {IsDirty = true};
+                securityViewModel.ServerPermissions.Add(new WindowsGroupPermission
                 {
                     WindowsGroup = "Some Group",
                     ResourceID = Guid.Empty,
                     IsServer = true
-                },
-                new WindowsGroupPermission
+                });
+
+                securityViewModel.ServerPermissions.Add(new WindowsGroupPermission
                 {
                     WindowsGroup = "Some Group",
                     ResourceID = Guid.Empty,
                     IsServer = true
-                }
-            });
+                });
+                var popupController = new Mock<IPopupController>();
+                popupController.Setup(controller => controller.Show()).Returns(MessageBoxResult.Yes);
+                var viewModel = CreateSettingsViewModel(popupController.Object, CreateSettings().ToString(), null, securityViewModel);
 
-            //------------Execute Test---------------------------
-            viewModel.SaveCommand.Execute(null);
+                var environment = new Mock<IServer>();
+                environment.Setup(e => e.IsConnected).Returns(true);
+                var authService = new Mock<IAuthorizationService>();
+                authService.Setup(c => c.IsAuthorized(It.IsAny<AuthorizationContext>(), null)).Returns(true);
+                environment.Setup(c => c.AuthorizationService).Returns(authService.Object);
+                viewModel.CurrentEnvironment = environment.Object;
+                viewModel.IsDirty = true;
+                viewModel.SecurityViewModel.GetType().GetProperty("ServerPermissions", BindingFlags.Public | BindingFlags.Instance)?.SetValue(viewModel.SecurityViewModel,new ObservableCollection<WindowsGroupPermission>()
+                {
+                    new WindowsGroupPermission
+                    {
+                        WindowsGroup = "Some Group",
+                        ResourceID = Guid.Empty,
+                        IsServer = true
+                    },
+                    new WindowsGroupPermission
+                    {
+                        WindowsGroup = "Some Group",
+                        ResourceID = Guid.Empty,
+                        IsServer = true
+                    }
+                });
 
-            //------------Assert Results-------------------------
-            Assert.IsTrue(viewModel.IsDirty);
-            Assert.IsFalse(viewModel.IsSaved);
-            Assert.IsTrue(viewModel.HasErrors);
-            var expected = StringResources.SaveSettingsDuplicateServerPermissions;
-            Assert.AreEqual(expected, viewModel.Errors);
-            popupController.Verify(controller => controller.ShowHasDuplicateServerPermissions(), Times.Once);
-        }
+                //------------Execute Test---------------------------
+                viewModel.SaveCommand.Execute(null);
+
+                //------------Assert Results-------------------------
+                Assert.IsTrue(viewModel.IsDirty);
+                Assert.IsFalse(viewModel.IsSaved);
+                Assert.IsTrue(viewModel.HasErrors);
+                var expected = StringResources.SaveSettingsDuplicateServerPermissions;
+                Assert.AreEqual(expected, viewModel.Errors);
+                popupController.Verify(controller => controller.ShowHasDuplicateServerPermissions(), Times.Once);
+			});
+		}
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("SettingsViewModel_SaveCommand")]
         [Timeout(300000)]
         public void SettingsViewModel_SaveCommand_DuplicateResourcePermissions_HasErrorsIsTrueCorrectErrorMessage()
-        {
-            //------------Setup for test--------------------------
-            var securityViewModel = new TestSecurityViewModel {IsDirty = true};
-            var resourceId = Guid.NewGuid();
-            securityViewModel.ResourcePermissions.Add(new WindowsGroupPermission
-            {
-                WindowsGroup = "Some Group",
-                ResourceID = resourceId,
-                IsServer = false
-            });
-
-            securityViewModel.ResourcePermissions.Add(new WindowsGroupPermission
-            {
-                WindowsGroup = "Some Group",
-                ResourceID = resourceId,
-                IsServer = false,
-            });
-            var popupController = new Mock<IPopupController>();
-            popupController.Setup(controller => controller.Show()).Returns(MessageBoxResult.Yes);
-            var viewModel = CreateSettingsViewModel(popupController.Object, CreateSettings().ToString(), null, securityViewModel);
-            var environment = new Mock<IServer>();
-            environment.Setup(e => e.IsConnected).Returns(true);
-            var authService = new Mock<IAuthorizationService>();
-            authService.Setup(c => c.IsAuthorized(It.IsAny<AuthorizationContext>(), It.IsAny<Guid>())).Returns(true);
-            environment.Setup(c => c.AuthorizationService).Returns(authService.Object);
-            //viewModel.CurrentEnvironment = environment.Object;
-            viewModel.IsDirty = true;
-            viewModel.SecurityViewModel.GetType().GetProperty("ResourcePermissions", BindingFlags.Public | BindingFlags.Instance)?.SetValue(viewModel.SecurityViewModel,new ObservableCollection<WindowsGroupPermission>()
-            {
-                new WindowsGroupPermission
+		{
+			Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
+			{
+				//------------Setup for test--------------------------
+				var securityViewModel = new TestSecurityViewModel {IsDirty = true};
+                var resourceId = Guid.NewGuid();
+                securityViewModel.ResourcePermissions.Add(new WindowsGroupPermission
                 {
                     WindowsGroup = "Some Group",
                     ResourceID = resourceId,
                     IsServer = false
-                },
-                new WindowsGroupPermission
+                });
+
+                securityViewModel.ResourcePermissions.Add(new WindowsGroupPermission
                 {
                     WindowsGroup = "Some Group",
                     ResourceID = resourceId,
-                    IsServer = false
-                }
-            });
+                    IsServer = false,
+                });
+                var popupController = new Mock<IPopupController>();
+                popupController.Setup(controller => controller.Show()).Returns(MessageBoxResult.Yes);
+                var viewModel = CreateSettingsViewModel(popupController.Object, CreateSettings().ToString(), null, securityViewModel);
+                var environment = new Mock<IServer>();
+                environment.Setup(e => e.IsConnected).Returns(true);
+                var authService = new Mock<IAuthorizationService>();
+                authService.Setup(c => c.IsAuthorized(It.IsAny<AuthorizationContext>(), It.IsAny<Guid>())).Returns(true);
+                environment.Setup(c => c.AuthorizationService).Returns(authService.Object);
+                //viewModel.CurrentEnvironment = environment.Object;
+                viewModel.IsDirty = true;
+                viewModel.SecurityViewModel.GetType().GetProperty("ResourcePermissions", BindingFlags.Public | BindingFlags.Instance)?.SetValue(viewModel.SecurityViewModel,new ObservableCollection<WindowsGroupPermission>()
+                {
+                    new WindowsGroupPermission
+                    {
+                        WindowsGroup = "Some Group",
+                        ResourceID = resourceId,
+                        IsServer = false
+                    },
+                    new WindowsGroupPermission
+                    {
+                        WindowsGroup = "Some Group",
+                        ResourceID = resourceId,
+                        IsServer = false
+                    }
+                });
 
-            //------------Execute Test---------------------------
-            viewModel.SaveCommand.Execute(null);
+                //------------Execute Test---------------------------
+                viewModel.SaveCommand.Execute(null);
 
-            //------------Assert Results-------------------------
-            Assert.IsTrue(viewModel.IsDirty);
-            Assert.IsFalse(viewModel.IsSaved);
-            Assert.IsTrue(viewModel.HasErrors);
-            Assert.AreEqual(StringResources.SaveSettingsDuplicateResourcePermissions, viewModel.Errors);
-            popupController.Verify(controller => controller.ShowHasDuplicateResourcePermissions(), Times.Once);
-        }
+                //------------Assert Results-------------------------
+                Assert.IsTrue(viewModel.IsDirty);
+                Assert.IsFalse(viewModel.IsSaved);
+                Assert.IsTrue(viewModel.HasErrors);
+                Assert.AreEqual(StringResources.SaveSettingsDuplicateResourcePermissions, viewModel.Errors);
+                popupController.Verify(controller => controller.ShowHasDuplicateResourcePermissions(), Times.Once);
+				});
+		}
 
         [TestMethod]
         [Owner("Massimo Guerrera")]
         [TestCategory("SettingsViewModel_SaveCommand")]
         [Timeout(300000)]
         public void SettingsViewModel_SaveCommand_NotConnected_HasErrorsIsTrueCorrectErrorMessage()
-        {
-            //------------Setup for test--------------------------
-            var securityViewModel = new TestSecurityViewModel {IsDirty = true};
-            var popupController = new Mock<IPopupController>();
-            popupController.Setup(controller => controller.Show()).Returns(MessageBoxResult.Yes);
-            var viewModel = CreateSettingsViewModel(popupController.Object, CreateSettings().ToString(), null, securityViewModel);
+		{
+			Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
+			{
+				//------------Setup for test--------------------------
+				var securityViewModel = new TestSecurityViewModel {IsDirty = true};
+                var popupController = new Mock<IPopupController>();
+                popupController.Setup(controller => controller.Show()).Returns(MessageBoxResult.Yes);
+                var viewModel = CreateSettingsViewModel(popupController.Object, CreateSettings().ToString(), null, securityViewModel);
 
-            var environment = new Mock<IServer>();
-            environment.Setup(e => e.IsConnected).Returns(false);
-            var authService = new Mock<IAuthorizationService>();
-            authService.Setup(c => c.IsAuthorized(It.IsAny<AuthorizationContext>(), It.IsAny<Guid>())).Returns(true);
-            environment.Setup(c => c.AuthorizationService).Returns(authService.Object);
-            viewModel.CurrentEnvironment = environment.Object;
-            viewModel.IsDirty = true;
+                var environment = new Mock<IServer>();
+                environment.Setup(e => e.IsConnected).Returns(false);
+                var authService = new Mock<IAuthorizationService>();
+                authService.Setup(c => c.IsAuthorized(It.IsAny<AuthorizationContext>(), It.IsAny<Guid>())).Returns(true);
+                environment.Setup(c => c.AuthorizationService).Returns(authService.Object);
+                viewModel.CurrentEnvironment = environment.Object;
+                viewModel.IsDirty = true;
 
-            //------------Execute Test---------------------------
-            viewModel.SaveCommand.Execute(null);
+                //------------Execute Test---------------------------
+                viewModel.SaveCommand.Execute(null);
 
-            //------------Assert Results-------------------------
-            Assert.IsTrue(viewModel.IsDirty);
-            Assert.IsFalse(viewModel.IsSaved);
-            Assert.IsTrue(viewModel.HasErrors);
-            Assert.AreEqual("Error while saving: Server unreachable.", viewModel.Errors);
-            popupController.Verify(controller => controller.ShowSaveServerNotReachableErrorMsg(), Times.Once);
-        }
+                //------------Assert Results-------------------------
+                Assert.IsTrue(viewModel.IsDirty);
+                Assert.IsFalse(viewModel.IsSaved);
+                Assert.IsTrue(viewModel.HasErrors);
+                Assert.AreEqual("Error while saving: Server unreachable.", viewModel.Errors);
+                popupController.Verify(controller => controller.ShowSaveServerNotReachableErrorMsg(), Times.Once);
+				});
+		}
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("SettingsViewModel_SaveCommand")]
         [Timeout(300000)]
         public void SettingsViewModel_SaveCommand_ResultIsError_HasErrorsIsTrue()
-        {
-            //------------Setup for test--------------------------
-            const string ErrorMessage = "A message that is not just the word Success.";
+		{
+			Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
+			{
+				//------------Setup for test--------------------------
+				const string ErrorMessage = "A message that is not just the word Success.";
 
-            var securityViewModel = new TestSecurityViewModel {IsDirty = true};
-            var viewModel = CreateSettingsViewModel(CreateSettings().ToString(), ErrorMessage, securityViewModel);
-            var environment = new Mock<IServer>();
-            environment.Setup(e => e.IsConnected).Returns(true);
-            var authService = new Mock<IAuthorizationService>();
-            authService.Setup(c => c.IsAuthorized(It.IsAny<AuthorizationContext>(), null)).Returns(true);
-            environment.Setup(c => c.AuthorizationService).Returns(authService.Object);
-            var repo = new Mock<IResourceRepository>();
-            environment.Setup(a => a.ResourceRepository).Returns(repo.Object);
-            viewModel.CurrentEnvironment = environment.Object;
-            repo.Setup(a => a.WriteSettings(It.IsAny<IServer>(), It.IsAny<Data.Settings.Settings>())).Returns(new ExecuteMessage() {HasError = true, Message = new StringBuilder(ErrorMessage)});
-            viewModel.IsDirty = true;
+                var securityViewModel = new TestSecurityViewModel {IsDirty = true};
+                var viewModel = CreateSettingsViewModel(CreateSettings().ToString(), ErrorMessage, securityViewModel);
+                var environment = new Mock<IServer>();
+                environment.Setup(e => e.IsConnected).Returns(true);
+                var authService = new Mock<IAuthorizationService>();
+                authService.Setup(c => c.IsAuthorized(It.IsAny<AuthorizationContext>(), null)).Returns(true);
+                environment.Setup(c => c.AuthorizationService).Returns(authService.Object);
+                var repo = new Mock<IResourceRepository>();
+                environment.Setup(a => a.ResourceRepository).Returns(repo.Object);
+                viewModel.CurrentEnvironment = environment.Object;
+                repo.Setup(a => a.WriteSettings(It.IsAny<IServer>(), It.IsAny<Data.Settings.Settings>())).Returns(new ExecuteMessage() {HasError = true, Message = new StringBuilder(ErrorMessage)});
+                viewModel.IsDirty = true;
 
-            //------------Execute Test---------------------------
-            viewModel.SaveCommand.Execute(null);
+                //------------Execute Test---------------------------
+                viewModel.SaveCommand.Execute(null);
 
-            //------------Assert Results-------------------------
-            Assert.IsTrue(viewModel.IsDirty);
-            Assert.IsTrue(viewModel.IsDirty);
-            Assert.IsFalse(viewModel.IsSaved);
-            Assert.IsTrue(viewModel.HasErrors);
-            Assert.AreEqual(ErrorMessage, viewModel.Errors);
-        }
+                //------------Assert Results-------------------------
+                Assert.IsTrue(viewModel.IsDirty);
+                Assert.IsTrue(viewModel.IsDirty);
+                Assert.IsFalse(viewModel.IsSaved);
+                Assert.IsTrue(viewModel.HasErrors);
+                Assert.AreEqual(ErrorMessage, viewModel.Errors);
+				});
+		}
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
@@ -541,311 +562,351 @@ You need Administrator permission.", viewModel.Errors);
         [Timeout(300000)]
         public void SettingsViewModel_IsDirty_SecurityViewModelIsDirtyPropertyChanged_IsDirtyIsTrue()
         {
-            //------------Setup for test--------------------------
-            var viewModel = CreateSettingsViewModel(CreateSettings().ToString());
-            Assert.IsFalse(viewModel.IsDirty);
+			Net6.Compatibility.STAThreadExtensions.RunAsSTA(() => {
+				//------------Setup for test--------------------------
+				var viewModel = CreateSettingsViewModel(CreateSettings().ToString());
+                Assert.IsFalse(viewModel.IsDirty);
 
-            //------------Execute Test---------------------------
-            viewModel.SecurityViewModel.ResourcePermissions[0].WindowsGroup = "xxx";
+                //------------Execute Test---------------------------
+                viewModel.SecurityViewModel.ResourcePermissions[0].WindowsGroup = "xxx";
 
-            //------------Assert Results-------------------------
-            Assert.IsTrue(viewModel.IsDirty);
-        }
+                //------------Assert Results-------------------------
+                Assert.IsTrue(viewModel.IsDirty);
+			});
+		}
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("SettingsViewModel_IsDirty")]
         [Timeout(300000)]
         public void SettingsViewModel_IsDirty_TrueSecurityNameHasStar()
-        {
-            //------------Setup for test--------------------------
-            var viewModel = CreateSettingsViewModel(CreateSettings().ToString());
+		{
+			Net6.Compatibility.STAThreadExtensions.RunAsSTA(() => {
+				//------------Setup for test--------------------------
+				var viewModel = CreateSettingsViewModel(CreateSettings().ToString());
 
-            //------------Execute Test---------------------------
-            viewModel.SecurityViewModel.ResourcePermissions[0].WindowsGroup = "xxx";
+                //------------Execute Test---------------------------
+                viewModel.SecurityViewModel.ResourcePermissions[0].WindowsGroup = "xxx";
 
-            //------------Assert Results-------------------------
-            Assert.IsTrue(viewModel.IsDirty);
-            Assert.AreEqual("SECURITY *", viewModel.SecurityHeader);
-        }
+                //------------Assert Results-------------------------
+                Assert.IsTrue(viewModel.IsDirty);
+                Assert.AreEqual("SECURITY *", viewModel.SecurityHeader);
+			});
+		}
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("SettingsViewModel_IsDirty")]
         [Timeout(300000)]
         public void SettingsViewModel_WhenIsDirtySecurityModelFiresPropertyChange_SetsSettingsViewModelIsDirty()
-        {
-            //------------Setup for test--------------------------
-            var viewModel = CreateSettingsViewModel(CreateSettings().ToString());
-            var _wasCalled = false;
-            viewModel.SecurityViewModel.PropertyChanged += (sender, args) =>
-            {
-                if (args.PropertyName == "IsDirty")
+		{
+			Net6.Compatibility.STAThreadExtensions.RunAsSTA(() => {
+				//------------Setup for test--------------------------
+				var viewModel = CreateSettingsViewModel(CreateSettings().ToString());
+                var _wasCalled = false;
+                viewModel.SecurityViewModel.PropertyChanged += (sender, args) =>
                 {
-                    _wasCalled = true;
-                }
-            };
-            //------------Execute Test---------------------------
-            viewModel.SecurityViewModel.IsDirty = true;
+                    if (args.PropertyName == "IsDirty")
+                    {
+                        _wasCalled = true;
+                    }
+                };
+                //------------Execute Test---------------------------
+                viewModel.SecurityViewModel.IsDirty = true;
 
-            //------------Assert Results-------------------------
-            Assert.IsTrue(_wasCalled);
-            Assert.IsTrue(viewModel.IsDirty);
-        }
+                //------------Assert Results-------------------------
+                Assert.IsTrue(_wasCalled);
+                Assert.IsTrue(viewModel.IsDirty);
+			});
+		}
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("SettingsViewModel_IsDirty")]
         [Timeout(300000)]
         public void SettingsViewModel_WhenIsDirtyPerfCounterModelFiresPropertyChange_SetsSettingsViewModelIsDirty()
-        {
-            //------------Setup for test--------------------------
-            var viewModel = CreateSettingsViewModel(CreateSettings().ToString());
-            var _wasCalled = false;
-            viewModel.PerfmonViewModel.PropertyChanged += (sender, args) =>
-            {
-                if (args.PropertyName == "IsDirty")
+		{
+			Net6.Compatibility.STAThreadExtensions.RunAsSTA(() => {
+				//------------Setup for test--------------------------
+				var viewModel = CreateSettingsViewModel(CreateSettings().ToString());
+                var _wasCalled = false;
+                viewModel.PerfmonViewModel.PropertyChanged += (sender, args) =>
                 {
-                    _wasCalled = true;
-                }
-            };
-            //------------Execute Test---------------------------
-            viewModel.PerfmonViewModel.IsDirty = true;
+                    if (args.PropertyName == "IsDirty")
+                    {
+                        _wasCalled = true;
+                    }
+                };
+                //------------Execute Test---------------------------
+                viewModel.PerfmonViewModel.IsDirty = true;
 
-            //------------Assert Results-------------------------
-            Assert.IsTrue(_wasCalled);
-            Assert.IsTrue(viewModel.IsDirty);
-        }
+                //------------Assert Results-------------------------
+                Assert.IsTrue(_wasCalled);
+                Assert.IsTrue(viewModel.IsDirty);
+			});
+		}
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("SettingsViewModel_IsDirty")]
         [Timeout(300000)]
         public void SettingsViewModel_IsSecurityDirty_FalseSecurityNameHasNoStar()
-        {
-            //------------Setup for test--------------------------
-            var viewModel = CreateSettingsViewModel(CreateSettings().ToString());
+		{
+			Net6.Compatibility.STAThreadExtensions.RunAsSTA(() => {
+				//------------Setup for test--------------------------
+				var viewModel = CreateSettingsViewModel(CreateSettings().ToString());
 
-            //------------Execute Test---------------------------
-            viewModel.SecurityViewModel.ResourcePermissions[0].WindowsGroup = "xxx";
-            Assert.IsTrue(viewModel.IsDirty);
-            viewModel.SecurityViewModel.IsDirty = false;
-            //------------Assert Results-------------------------
-            Assert.AreEqual("SECURITY", viewModel.SecurityHeader);
-        }
+                //------------Execute Test---------------------------
+                viewModel.SecurityViewModel.ResourcePermissions[0].WindowsGroup = "xxx";
+                Assert.IsTrue(viewModel.IsDirty);
+                viewModel.SecurityViewModel.IsDirty = false;
+                //------------Assert Results-------------------------
+                Assert.AreEqual("SECURITY", viewModel.SecurityHeader);
+			});
+		}
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("SettingsViewModel_IsDirty")]
         [Timeout(300000)]
         public void SettingsViewModel_IsLoggingDirty_FalseLoggingNameHasNoStar()
-        {
-            //------------Setup for test--------------------------
-            var viewModel = CreateSettingsViewModel(CreateSettings().ToString());
+		{
+			Net6.Compatibility.STAThreadExtensions.RunAsSTA(() => {
+				//------------Setup for test--------------------------
+				var viewModel = CreateSettingsViewModel(CreateSettings().ToString());
 
-            //------------Execute Test---------------------------
-            viewModel.LogSettingsViewModel.ServerLogMaxSize = "10";
-            Assert.IsTrue(viewModel.IsDirty);
-            viewModel.LogSettingsViewModel.IsDirty = false;
-            //------------Assert Results-------------------------
-            Assert.AreEqual("LOGGING", viewModel.LogHeader);
-        }
+                //------------Execute Test---------------------------
+                viewModel.LogSettingsViewModel.ServerLogMaxSize = "10";
+                Assert.IsTrue(viewModel.IsDirty);
+                viewModel.LogSettingsViewModel.IsDirty = false;
+                //------------Assert Results-------------------------
+                Assert.AreEqual("LOGGING", viewModel.LogHeader);
+			});
+		}
 
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory("SettingsViewModel_IsDirty")]
         [Timeout(300000)]
         public void SettingsViewModel_IsPersistenceDirty_FalsePersistenceNameHasNoStar()
-        {
-            //------------Setup for test--------------------------
-            var viewModel = CreateSettingsViewModel(CreateSettings().ToString());
+		{
+			Net6.Compatibility.STAThreadExtensions.RunAsSTA(() => {
+				//------------Setup for test--------------------------
+				var viewModel = CreateSettingsViewModel(CreateSettings().ToString());
 
-            //------------Execute Test---------------------------
-            viewModel.PersistenceSettingsViewModel.Enable = true;
-            Assert.IsTrue(viewModel.IsDirty);
-            viewModel.PersistenceSettingsViewModel.IsDirty = false;
-            //------------Assert Results-------------------------
-            Assert.AreEqual("PERSISTENCE", viewModel.PersistenceHeader);
-        }
+                //------------Execute Test---------------------------
+                viewModel.PersistenceSettingsViewModel.Enable = true;
+                Assert.IsTrue(viewModel.IsDirty);
+                viewModel.PersistenceSettingsViewModel.IsDirty = false;
+                //------------Assert Results-------------------------
+                Assert.AreEqual("PERSISTENCE", viewModel.PersistenceHeader);
+			});
+		}
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("SettingsViewModel_IsDirty")]
         [Timeout(300000)]
         public void SettingsViewModel_IsLoggingDirty_TrueLoggingNameHasStar()
-        {
-            //------------Setup for test--------------------------
-            var viewModel = CreateSettingsViewModel(CreateSettings().ToString());
+		{
+			Net6.Compatibility.STAThreadExtensions.RunAsSTA(() => {
+				//------------Setup for test--------------------------
+				var viewModel = CreateSettingsViewModel(CreateSettings().ToString());
 
-            //------------Execute Test---------------------------
-            viewModel.LogSettingsViewModel.ServerLogMaxSize = "10";
-            Assert.IsTrue(viewModel.IsDirty);
-            //------------Assert Results-------------------------
-            Assert.AreEqual("LOGGING *", viewModel.LogHeader);
-        }
+                //------------Execute Test---------------------------
+                viewModel.LogSettingsViewModel.ServerLogMaxSize = "10";
+                Assert.IsTrue(viewModel.IsDirty);
+                //------------Assert Results-------------------------
+                Assert.AreEqual("LOGGING *", viewModel.LogHeader);
+		    });
+	    }
 
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory("SettingsViewModel_IsDirty")]
         [Timeout(300000)]
         public void SettingsViewModel_IsPersistenceDirty_TruePersistenceNameHasStar()
-        {
-            //------------Setup for test--------------------------
-            var viewModel = CreateSettingsViewModel(CreateSettings().ToString());
+		{
+			Net6.Compatibility.STAThreadExtensions.RunAsSTA(() => {
+				//------------Setup for test--------------------------
+				var viewModel = CreateSettingsViewModel(CreateSettings().ToString());
 
-            //------------Execute Test---------------------------
-            viewModel.PersistenceSettingsViewModel.Enable = true;
-            Assert.IsTrue(viewModel.IsDirty);
-            //------------Assert Results-------------------------
-            Assert.AreEqual("PERSISTENCE *", viewModel.PersistenceHeader);
-        }
+                //------------Execute Test---------------------------
+                viewModel.PersistenceSettingsViewModel.Enable = true;
+                Assert.IsTrue(viewModel.IsDirty);
+                //------------Assert Results-------------------------
+                Assert.AreEqual("PERSISTENCE *", viewModel.PersistenceHeader);
+			});
+		}
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("SettingsViewModel_IsDirty")]
         [Timeout(300000)]
         public void SettingsViewModel_IsPerfCounterDirty_FalsePerfCounterNameHasNoStar()
-        {
-            //------------Setup for test--------------------------
-            var viewModel = CreateSettingsViewModel(CreateSettings().ToString());
+	    {
+		    Net6.Compatibility.STAThreadExtensions.RunAsSTA(() => {
+			    //------------Setup for test--------------------------
+			    var viewModel = CreateSettingsViewModel(CreateSettings().ToString());
 
-            //------------Execute Test---------------------------
-            viewModel.PerfmonViewModel.ResourceCounters[0].TotalErrors = true;
-            Assert.IsTrue(viewModel.IsDirty);
-            viewModel.PerfmonViewModel.IsDirty = false;
-            //------------Assert Results-------------------------
-            Assert.AreEqual("PERFORMANCE COUNTERS", viewModel.PerfmonHeader);
-        }
+                //------------Execute Test---------------------------
+                viewModel.PerfmonViewModel.ResourceCounters[0].TotalErrors = true;
+                Assert.IsTrue(viewModel.IsDirty);
+                viewModel.PerfmonViewModel.IsDirty = false;
+                //------------Assert Results-------------------------
+                Assert.AreEqual("PERFORMANCE COUNTERS", viewModel.PerfmonHeader);
+			});
+		}
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("SettingsViewModel_IsDirty")]
         [Timeout(300000)]
         public void SettingsViewModel_IsPerfCounterDirty_TruePerfCounterNameHasStar()
-        {
-            //------------Setup for test--------------------------
-            var viewModel = CreateSettingsViewModel(CreateSettings().ToString());
+		{
+			Net6.Compatibility.STAThreadExtensions.RunAsSTA(() => {
+				//------------Setup for test--------------------------
+				var viewModel = CreateSettingsViewModel(CreateSettings().ToString());
 
-            //------------Execute Test---------------------------
-            viewModel.PerfmonViewModel.ResourceCounters[0].TotalErrors = true;
-            Assert.IsTrue(viewModel.IsDirty);
-            //------------Assert Results-------------------------
-            Assert.AreEqual("PERFORMANCE COUNTERS *", viewModel.PerfmonHeader);
-        }
+                //------------Execute Test---------------------------
+                viewModel.PerfmonViewModel.ResourceCounters[0].TotalErrors = true;
+                Assert.IsTrue(viewModel.IsDirty);
+                //------------Assert Results-------------------------
+                Assert.AreEqual("PERFORMANCE COUNTERS *", viewModel.PerfmonHeader);
+			});
+		}
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("SettingsViewModel_OnDeactivate")]
         [Timeout(300000)]
         public void SettingsViewModel_OnDeactivate_DirtyFalse_ShouldShowPopup()
-        {
-            //------------Setup for test--------------------------
-            var mockPopupController = new Mock<IPopupController>();
-            mockPopupController.SetupAllProperties();
-            var viewModel = CreateSettingsViewModel(mockPopupController.Object, CreateSettings().ToString());
-            //------------Execute Test---------------------------
-            viewModel.SecurityViewModel.ResourcePermissions[0].WindowsGroup = "xxx";
-            Assert.IsTrue(viewModel.IsDirty);
-            viewModel.CallDeactivate();
-            //------------Assert Results-------------------------
-            VerifySavePopup(mockPopupController);
-        }
+		{
+			Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
+			{
+				//------------Setup for test--------------------------
+				var mockPopupController = new Mock<IPopupController>();
+                mockPopupController.SetupAllProperties();
+                var viewModel = CreateSettingsViewModel(mockPopupController.Object, CreateSettings().ToString());
+                //------------Execute Test---------------------------
+                viewModel.SecurityViewModel.ResourcePermissions[0].WindowsGroup = "xxx";
+                Assert.IsTrue(viewModel.IsDirty);
+                viewModel.CallDeactivate();
+                //------------Assert Results-------------------------
+                VerifySavePopup(mockPopupController);
+			});
+		}
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("SettingsViewModel_OnDeactivate")]
         [Timeout(300000)]
         public void SettingsViewModel_OnDeactivate_DirtyFalse_PopResultYes()
-        {
-            //------------Setup for test--------------------------
-            var mockPopupController = new Mock<IPopupController>();
-            mockPopupController.SetupAllProperties();
-            mockPopupController.Setup(controller => controller.ShowSettingsCloseConfirmation()).Returns(MessageBoxResult.Yes);
-            var viewModel = CreateSettingsViewModel(mockPopupController.Object, CreateSettings().ToString(), "Success");
-            //------------Execute Test---------------------------
-            viewModel.SecurityViewModel.ResourcePermissions[0].WindowsGroup = "xxx";
-            Assert.IsTrue(viewModel.IsDirty);
-            viewModel.CallDeactivate();
-            //------------Assert Results-------------------------
-            VerifySavePopup(mockPopupController);
-            Assert.IsFalse(viewModel.IsDirty);
-        }
+		{
+			Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
+			{
+				//------------Setup for test--------------------------
+				var mockPopupController = new Mock<IPopupController>();
+                mockPopupController.SetupAllProperties();
+                mockPopupController.Setup(controller => controller.ShowSettingsCloseConfirmation()).Returns(MessageBoxResult.Yes);
+                var viewModel = CreateSettingsViewModel(mockPopupController.Object, CreateSettings().ToString(), "Success");
+                //------------Execute Test---------------------------
+                viewModel.SecurityViewModel.ResourcePermissions[0].WindowsGroup = "xxx";
+                Assert.IsTrue(viewModel.IsDirty);
+                viewModel.CallDeactivate();
+                //------------Assert Results-------------------------
+                VerifySavePopup(mockPopupController);
+                Assert.IsFalse(viewModel.IsDirty);
+			});
+		}
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("SettingsViewModel_OnDeactivate")]
         [Timeout(300000)]
         public void SettingsViewModel_OnDeactivate_RequestCloseFalse_NoPopup()
-        {
-            //------------Setup for test--------------------------
-            var securityViewModel = new TestSecurityViewModel();
-            var mockPopupController = new Mock<IPopupController>();
-            mockPopupController.SetupAllProperties();
-            mockPopupController.Setup(controller => controller.Show()).Returns(MessageBoxResult.No);
-            var viewModel = CreateSettingsViewModel(mockPopupController.Object, CreateSettings().ToString(), "success", securityViewModel);
-            //------------Execute Test---------------------------
-            viewModel.SecurityViewModel.ResourcePermissions[0].WindowsGroup = "xxx";
-            Assert.IsTrue(viewModel.IsDirty);
-            viewModel.CallDeactivate();
-            //------------Assert Results-------------------------
-            VerifySavePopup(mockPopupController);
-            Assert.IsTrue(viewModel.IsDirty);
-        }
+		{
+			Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
+			{
+				//------------Setup for test--------------------------
+				var securityViewModel = new TestSecurityViewModel();
+                var mockPopupController = new Mock<IPopupController>();
+                mockPopupController.SetupAllProperties();
+                mockPopupController.Setup(controller => controller.Show()).Returns(MessageBoxResult.No);
+                var viewModel = CreateSettingsViewModel(mockPopupController.Object, CreateSettings().ToString(), "success", securityViewModel);
+                //------------Execute Test---------------------------
+                viewModel.SecurityViewModel.ResourcePermissions[0].WindowsGroup = "xxx";
+                Assert.IsTrue(viewModel.IsDirty);
+                viewModel.CallDeactivate();
+                //------------Assert Results-------------------------
+                VerifySavePopup(mockPopupController);
+                Assert.IsTrue(viewModel.IsDirty);
+			});
+		}
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory("SettingsViewModel_ReturnsFalse")]
         [Timeout(300000)]
         public void SettingsViewModel_HasVariables_ReturnsFalse()
-        {
-            //------------Setup for test--------------------------
-            var securityViewModel = new TestSecurityViewModel();
-            var mockPopupController = new Mock<IPopupController>();
-            mockPopupController.SetupAllProperties();
-            mockPopupController.Setup(controller => controller.Show()).Returns(MessageBoxResult.No);
-            var viewModel = CreateSettingsViewModel(mockPopupController.Object, CreateSettings().ToString(), "success", securityViewModel);
-            //------------Execute Test---------------------------
-            //------------Assert Results-------------------------
-            Assert.IsFalse(viewModel.HasVariables);
-        }
+		{
+			Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
+			{
+				//------------Setup for test--------------------------
+				var securityViewModel = new TestSecurityViewModel();
+                var mockPopupController = new Mock<IPopupController>();
+                mockPopupController.SetupAllProperties();
+                mockPopupController.Setup(controller => controller.Show()).Returns(MessageBoxResult.No);
+                var viewModel = CreateSettingsViewModel(mockPopupController.Object, CreateSettings().ToString(), "success", securityViewModel);
+                //------------Execute Test---------------------------
+                //------------Assert Results-------------------------
+                Assert.IsFalse(viewModel.HasVariables);
+			});
+		}
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory("SettingsViewModel_ReturnsFalse")]
         [Timeout(300000)]
         public void SettingsViewModel_HasDebugOutput_ReturnsFalse()
-        {
-            //------------Setup for test--------------------------
-            var securityViewModel = new TestSecurityViewModel();
-            var mockPopupController = new Mock<IPopupController>();
-            mockPopupController.SetupAllProperties();
-            mockPopupController.Setup(controller => controller.Show()).Returns(MessageBoxResult.No);
-            var viewModel = CreateSettingsViewModel(mockPopupController.Object, CreateSettings().ToString(), "success", securityViewModel);
-            //------------Execute Test---------------------------
-            //------------Assert Results-------------------------
-            Assert.IsFalse(viewModel.HasDebugOutput);
-        }
+		{
+			Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
+			{
+				//------------Setup for test--------------------------
+				var securityViewModel = new TestSecurityViewModel();
+                var mockPopupController = new Mock<IPopupController>();
+                mockPopupController.SetupAllProperties();
+                mockPopupController.Setup(controller => controller.Show()).Returns(MessageBoxResult.No);
+                var viewModel = CreateSettingsViewModel(mockPopupController.Object, CreateSettings().ToString(), "success", securityViewModel);
+                //------------Execute Test---------------------------
+                //------------Assert Results-------------------------
+                Assert.IsFalse(viewModel.HasDebugOutput);
+			});
+		}
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("SettingsViewModel_OnDeactivate")]
         [Timeout(300000)]
         public void SettingsViewModel_OnDeactivate_DirtyFalse_PopResultNo()
-        {
-            //------------Setup for test--------------------------
-            var securityViewModel = new TestSecurityViewModel();
-            var mockPopupController = new Mock<IPopupController>();
-            mockPopupController.SetupAllProperties();
-            mockPopupController.Setup(controller => controller.Show()).Returns(MessageBoxResult.No);
-            var viewModel = CreateSettingsViewModel(mockPopupController.Object, CreateSettings().ToString(), "success", securityViewModel);
-            //------------Execute Test---------------------------
-            viewModel.SecurityViewModel.ResourcePermissions[0].WindowsGroup = "xxx";
-            Assert.AreEqual("Settings", viewModel.ResourceType);
-            Assert.IsTrue(viewModel.IsDirty);
-            viewModel.CallDeactivate();
-            //------------Assert Results-------------------------
-            VerifySavePopup(mockPopupController);
-            Assert.IsTrue(viewModel.IsDirty);
+		{
+            Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
+            {
+                //------------Setup for test--------------------------
+                var securityViewModel = new TestSecurityViewModel();
+                var mockPopupController = new Mock<IPopupController>();
+                mockPopupController.SetupAllProperties();
+                mockPopupController.Setup(controller => controller.Show()).Returns(MessageBoxResult.No);
+                var viewModel = CreateSettingsViewModel(mockPopupController.Object, CreateSettings().ToString(), "success", securityViewModel);
+                //------------Execute Test---------------------------
+                viewModel.SecurityViewModel.ResourcePermissions[0].WindowsGroup = "xxx";
+                Assert.AreEqual("Settings", viewModel.ResourceType);
+                Assert.IsTrue(viewModel.IsDirty);
+                viewModel.CallDeactivate();
+                //------------Assert Results-------------------------
+                VerifySavePopup(mockPopupController);
+                Assert.IsTrue(viewModel.IsDirty);
+            });
         }
 
         static void VerifySavePopup(Mock<IPopupController> popupController, bool showShown = true)
@@ -1017,75 +1078,84 @@ You need Administrator permission.", viewModel.Errors);
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("SettingsViewModel_DoDeactivate")]
         public void SettingsViewModel_DoDeactivate_YesSavesChanges()
-        {
-            //------------Setup for test--------------------------
+		{
+            Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
+            {
+                //------------Setup for test--------------------------
 
-            var mockPopupController = new Mock<IPopupController>();
-            mockPopupController.SetupAllProperties();
-            mockPopupController.Setup(controller => controller.ShowSettingsCloseConfirmation()).Returns(MessageBoxResult.Yes);
-            var securityViewModel = new TestSecurityViewModel {IsDirty = true};
-            var viewModel = CreateSettingsViewModel(mockPopupController.Object, CreateSettings().ToString(), "Success", securityViewModel);
-            viewModel.IsDirty = true;
-            //------------Execute Test---------------------------
-            var result = viewModel.DoDeactivate(true);
-            //------------Assert Results-------------------------
+                var mockPopupController = new Mock<IPopupController>();
+                mockPopupController.SetupAllProperties();
+                mockPopupController.Setup(controller => controller.ShowSettingsCloseConfirmation()).Returns(MessageBoxResult.Yes);
+                var securityViewModel = new TestSecurityViewModel { IsDirty = true };
+                var viewModel = CreateSettingsViewModel(mockPopupController.Object, CreateSettings().ToString(), "Success", securityViewModel);
+                viewModel.IsDirty = true;
+                //------------Execute Test---------------------------
+                var result = viewModel.DoDeactivate(true);
+                //------------Assert Results-------------------------
 
-            Assert.IsTrue(result);
-            Assert.IsFalse(viewModel.IsDirty);
+                Assert.IsTrue(result);
+                Assert.IsFalse(viewModel.IsDirty);
+            });
         }
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("SettingsViewModel_DoDeactivate")]
         public void SettingsViewModel_DoDeactivate_NoSavesChanges()
-        {
-            //------------Setup for test--------------------------
+		{
+			Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
+			{
+				//------------Setup for test--------------------------
 
-            var mockPopupController = new Mock<IPopupController>();
-            mockPopupController.SetupAllProperties();
-            mockPopupController.Setup(controller => controller.ShowSettingsCloseConfirmation()).Returns(MessageBoxResult.No);
-            var securityViewModel = new TestSecurityViewModel {IsDirty = true};
-            var viewModel = CreateSettingsViewModel(mockPopupController.Object, CreateSettings().ToString(), "Success", securityViewModel);
-            viewModel.IsDirty = true;
-            var propertyChanged = false;
-            const string propertyName = "SecurityHeader";
-            //------------Execute Test---------------------------
-            viewModel.PropertyChanged += (sender, args) =>
-            {
-                if (args.PropertyName == propertyName)
+				var mockPopupController = new Mock<IPopupController>();
+                mockPopupController.SetupAllProperties();
+                mockPopupController.Setup(controller => controller.ShowSettingsCloseConfirmation()).Returns(MessageBoxResult.No);
+                var securityViewModel = new TestSecurityViewModel {IsDirty = true};
+                var viewModel = CreateSettingsViewModel(mockPopupController.Object, CreateSettings().ToString(), "Success", securityViewModel);
+                viewModel.IsDirty = true;
+                var propertyChanged = false;
+                const string propertyName = "SecurityHeader";
+                //------------Execute Test---------------------------
+                viewModel.PropertyChanged += (sender, args) =>
                 {
-                    propertyChanged = true;
-                }
-            };
+                    if (args.PropertyName == propertyName)
+                    {
+                        propertyChanged = true;
+                    }
+                };
 
-            var result = viewModel.DoDeactivate(true);
-            //------------Assert Results-------------------------
+                var result = viewModel.DoDeactivate(true);
+                //------------Assert Results-------------------------
 
-            Assert.IsTrue(result);
-            Assert.IsFalse(viewModel.IsDirty);
-            Assert.IsTrue(propertyChanged);
-            Assert.IsFalse(viewModel.SecurityViewModel.IsDirty);
-        }
+                Assert.IsTrue(result);
+                Assert.IsFalse(viewModel.IsDirty);
+                Assert.IsTrue(propertyChanged);
+                Assert.IsFalse(viewModel.SecurityViewModel.IsDirty);
+			});
+		}
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("SettingsViewModel_DoDeactivate")]
         public void SettingsViewModel_DoDeactivate_CancelNoReturnsTrue()
-        {
-            //------------Setup for test--------------------------
-            var mockPopupController = new Mock<IPopupController>();
-            mockPopupController.SetupAllProperties();
-            mockPopupController.Setup(controller => controller.ShowSettingsCloseConfirmation()).Returns(MessageBoxResult.Cancel);
-            var securityViewModel = new TestSecurityViewModel {IsDirty = true};
-            var viewModel = CreateSettingsViewModel(mockPopupController.Object, CreateSettings().ToString(), "success", securityViewModel);
+		{
+			Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
+			{
+				//------------Setup for test--------------------------
+				var mockPopupController = new Mock<IPopupController>();
+                mockPopupController.SetupAllProperties();
+                mockPopupController.Setup(controller => controller.ShowSettingsCloseConfirmation()).Returns(MessageBoxResult.Cancel);
+                var securityViewModel = new TestSecurityViewModel {IsDirty = true};
+                var viewModel = CreateSettingsViewModel(mockPopupController.Object, CreateSettings().ToString(), "success", securityViewModel);
 
-            viewModel.IsDirty = true;
-            //------------Execute Test---------------------------
-            var result = viewModel.DoDeactivate(true);
-            //------------Assert Results-------------------------
+                viewModel.IsDirty = true;
+                //------------Execute Test---------------------------
+                var result = viewModel.DoDeactivate(true);
+                //------------Assert Results-------------------------
 
-            Assert.IsFalse(result);
-        }
+                Assert.IsFalse(result);
+			});
+		}
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]

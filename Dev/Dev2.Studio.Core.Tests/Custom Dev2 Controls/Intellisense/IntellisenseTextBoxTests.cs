@@ -25,6 +25,7 @@ using Moq;
 using Dev2.Common.Interfaces;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.DataList;
+using Warewolf.UI;
 
 namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
 {
@@ -91,29 +92,33 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
         [TestMethod]
         [TestCategory("Intellisense Textbox Visual Tree")]
         public void TextContaningTabIsPasedIntoAnIntellisenseTextBoxExpectedTabInsertedEventIsRaised()
-        {
-            var eventRaised = false;
-            IntellisenseTextBox sender = null;
-            EventManager.RegisterClassHandler(typeof(IntellisenseTextBox), IntellisenseTextBox.TabInsertedEvent,
-                                              new RoutedEventHandler((s, e) =>
-                                              {
-                                                  eventRaised = true;
-                                                  sender = s as IntellisenseTextBox;
-                                              }));
+		{
+			Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
+			{
+				var eventRaised = false;
+                IntellisenseTextBox sender = null;
+                EventManager.RegisterClassHandler(typeof(IntellisenseTextBox), IntellisenseTextBox.TabInsertedEvent,
+                                                  new RoutedEventHandler((s, e) =>
+                                                  {
+                                                      eventRaised = true;
+                                                      sender = s as IntellisenseTextBox;
+                                                  }));
 
-            System.Windows.Clipboard.SetText("Cake\t");
+                System.Windows.Clipboard.SetText("Cake\t");
 
-            var textBox = new IntellisenseTextBox();
-            textBox.CreateVisualTree();
+                var textBox = new IntellisenseTextBox();
+				textBox.SelectionAdapter = new SelectorSelectionAdapter(new InputsDataGrid());
+				textBox.CreateVisualTree();
 
-            textBox.Paste();
+                textBox.Paste();
 
-            Assert.IsTrue(eventRaised,
-                          "The 'IntellisenseTextBox.TabInsertedEvent' wasn't raised when text containing a tab was pasted into the IntellisenseTextBox.");
-            Assert.AreEqual(textBox, sender,
-                            "The IntellisenseTextBox in which the text containg a tab was pasted was different from the one which raised teh event.");
+                Assert.IsTrue(eventRaised,
+                              "The 'IntellisenseTextBox.TabInsertedEvent' wasn't raised when text containing a tab was pasted into the IntellisenseTextBox.");
+                Assert.AreEqual(textBox, sender,
+                                "The IntellisenseTextBox in which the text containg a tab was pasted was different from the one which raised the event.");
+			});
 
-        }
+		}
 
         [TestMethod]
         public void TextContaningNoTabIsPasedIntoAnIntellisenseTextBoxExpectedTabInsertedEventNotRaised()
@@ -150,29 +155,33 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
         [TestMethod]
         [TestCategory("Intellisense Textbox Visual Tree")]
         public void InsertItemExpectedTextboxTextChangedAndErrorStatusUpdated()
-        {
-            var mockDataListViewModel = new Mock<IDataListViewModel>();
-            mockDataListViewModel.Setup(model => model.Resource).Returns(new Mock<IResourceModel>().Object);
-            DataListSingleton.SetDataList(mockDataListViewModel.Object);
-            const string ExpectedText = "[[City()";
-            var intellisenseProvider = new Mock<IIntellisenseProvider>();
-            intellisenseProvider.Setup(a => a.HandlesResultInsertion).Returns(true);
-            intellisenseProvider.Setup(
-                a => a.PerformResultInsertion(It.IsAny<string>(), It.IsAny<IntellisenseProviderContext>())).Returns(ExpectedText);
+		{
+			Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
+			{
+				var mockDataListViewModel = new Mock<IDataListViewModel>();
+                mockDataListViewModel.Setup(model => model.Resource).Returns(new Mock<IResourceModel>().Object);
+                DataListSingleton.SetDataList(mockDataListViewModel.Object);
+                const string ExpectedText = "[[City()";
+                var intellisenseProvider = new Mock<IIntellisenseProvider>();
+                intellisenseProvider.Setup(a => a.HandlesResultInsertion).Returns(true);
+                intellisenseProvider.Setup(
+                    a => a.PerformResultInsertion(It.IsAny<string>(), It.IsAny<IntellisenseProviderContext>())).Returns(ExpectedText);
 
-            var intellisenseProviderResult =
-                new IntellisenseProviderResult(intellisenseProvider.Object, ExpectedText, "cake");
+                var intellisenseProviderResult =
+                    new IntellisenseProviderResult(intellisenseProvider.Object, ExpectedText, "cake");
 
-            var textBox = new IntellisenseTextBox();
-            textBox.CreateVisualTree();
-            textBox.InsertItem(intellisenseProviderResult, true);
+                var textBox = new IntellisenseTextBox();
+				textBox.SelectionAdapter = new SelectorSelectionAdapter(new InputsDataGrid());
+				textBox.CreateVisualTree();
+                textBox.InsertItem(intellisenseProviderResult, true);
 
-            Thread.Sleep(250);
-            Thread.Sleep(100);
+                Thread.Sleep(250);
+                Thread.Sleep(100);
 
-            Assert.AreEqual(ExpectedText, textBox.Text, "Expected [ " + ExpectedText + " ] But got [ " + textBox.Text + " ]");
-            Assert.AreEqual(true, textBox.HasError, "Expected [ True ] But got [ " + textBox.HasError + " ]");
-        }
+                Assert.AreEqual(ExpectedText, textBox.Text, "Expected [ " + ExpectedText + " ] But got [ " + textBox.Text + " ]");
+                Assert.AreEqual(true, textBox.HasError, "Expected [ True ] But got [ " + textBox.HasError + " ]");
+			});
+		}
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
@@ -325,62 +334,70 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
         [TestMethod]
         [TestCategory("Intellisense Textbox Visual Tree")]
         public void InsertItemExpectedTextboxTextChanged_InvalidSyntax_ErrorStatusUpdated()
-        {
-            const string ExpectedText = "[[City(1.Name]]";
-            var mockResourceModel = new Mock<IResourceModel>();
-            mockResourceModel.Setup(model => model.DataList).Returns("<ADL><City><Name></Name></City></ADL>");
+		{
+			Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
+			{
+				const string ExpectedText = "[[City(1.Name]]";
+                var mockResourceModel = new Mock<IResourceModel>();
+                mockResourceModel.Setup(model => model.DataList).Returns("<ADL><City><Name></Name></City></ADL>");
 
-            var dataListViewModel = new DataListViewModel();
-            dataListViewModel.InitializeDataListViewModel(mockResourceModel.Object);
-            DataListSingleton.SetDataList(dataListViewModel);
-            var intellisenseProvider = new Mock<IIntellisenseProvider>();
-            intellisenseProvider.Setup(a => a.HandlesResultInsertion).Returns(true);
-            intellisenseProvider.Setup(
-                a => a.PerformResultInsertion(It.IsAny<string>(), It.IsAny<IntellisenseProviderContext>())).Returns(ExpectedText);
+                var dataListViewModel = new DataListViewModel();
+                dataListViewModel.InitializeDataListViewModel(mockResourceModel.Object);
+                DataListSingleton.SetDataList(dataListViewModel);
+                var intellisenseProvider = new Mock<IIntellisenseProvider>();
+                intellisenseProvider.Setup(a => a.HandlesResultInsertion).Returns(true);
+                intellisenseProvider.Setup(
+                    a => a.PerformResultInsertion(It.IsAny<string>(), It.IsAny<IntellisenseProviderContext>())).Returns(ExpectedText);
 
-            var intellisenseProviderResult =
-                new IntellisenseProviderResult(intellisenseProvider.Object, ExpectedText, "cake");
+                var intellisenseProviderResult =
+                    new IntellisenseProviderResult(intellisenseProvider.Object, ExpectedText, "cake");
 
-            var textBox = new IntellisenseTextBox();
-            textBox.CreateVisualTree();
-            textBox.InsertItem(intellisenseProviderResult, true);
+                var textBox = new IntellisenseTextBox();
+                textBox.SelectionAdapter = new SelectorSelectionAdapter(new InputsDataGrid());
+                textBox.CreateVisualTree();
+                textBox.InsertItem(intellisenseProviderResult, true);
 
-            Thread.Sleep(250);
-            Thread.Sleep(100);
+                Thread.Sleep(250);
+                Thread.Sleep(100);
 
-            Assert.AreEqual(ExpectedText, textBox.Text, "Expected [ " + ExpectedText + " ] But got [ " + textBox.Text + " ]");
-            Assert.IsTrue(textBox.HasError, "Expected [ True ] But got [ " + textBox.HasError + " ]");
-        }
+                Assert.AreEqual(ExpectedText, textBox.Text, "Expected [ " + ExpectedText + " ] But got [ " + textBox.Text + " ]");
+                Assert.IsTrue(textBox.HasError, "Expected [ True ] But got [ " + textBox.HasError + " ]");
+			});
+		}
 
         [TestMethod]
         [TestCategory("Intellisense Textbox Visual Tree")]
         public void InsertItemExpectedTextboxTextChanged_SpaceInFieldName_ErrorStatusUpdated()
-        {
-            const string ExpectedText = "[[City(). Name]]";
-            var mockResourceModel = new Mock<IResourceModel>();
-            mockResourceModel.Setup(model => model.DataList).Returns("<ADL><City><Name></Name></City></ADL>");
+		{
+			Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
+			{
+				const string ExpectedText = "[[City(). Name]]";
+                var mockResourceModel = new Mock<IResourceModel>();
+                mockResourceModel.Setup(model => model.DataList).Returns("<ADL><City><Name></Name></City></ADL>");
 
-            var dataListViewModel = new DataListViewModel();
-            dataListViewModel.InitializeDataListViewModel(mockResourceModel.Object);
-            DataListSingleton.SetDataList(dataListViewModel);
-            var intellisenseProvider = new Mock<IIntellisenseProvider>();
-            intellisenseProvider.Setup(a => a.HandlesResultInsertion).Returns(true);
-            intellisenseProvider.Setup(
-                a => a.PerformResultInsertion(It.IsAny<string>(), It.IsAny<IntellisenseProviderContext>())).Returns(ExpectedText);
+                var dataListViewModel = new DataListViewModel();
+                dataListViewModel.InitializeDataListViewModel(mockResourceModel.Object);
+                DataListSingleton.SetDataList(dataListViewModel);
+                var intellisenseProvider = new Mock<IIntellisenseProvider>();
+                intellisenseProvider.Setup(a => a.HandlesResultInsertion).Returns(true);
+                intellisenseProvider.Setup(
+                    a => a.PerformResultInsertion(It.IsAny<string>(), It.IsAny<IntellisenseProviderContext>())).Returns(ExpectedText);
 
-            var intellisenseProviderResult =
-                new IntellisenseProviderResult(intellisenseProvider.Object, ExpectedText, "cake");
+                var intellisenseProviderResult =
+                    new IntellisenseProviderResult(intellisenseProvider.Object, ExpectedText, "cake");
 
-            var textBox = new IntellisenseTextBox();
-            textBox.CreateVisualTree();
-            textBox.InsertItem(intellisenseProviderResult, true);
+                var textBox = new IntellisenseTextBox();
+				textBox.SelectionAdapter = new SelectorSelectionAdapter(new InputsDataGrid());
+				textBox.CreateVisualTree();
+                textBox.InsertItem(intellisenseProviderResult, true);
 
-            Thread.Sleep(250);
-            Thread.Sleep(100);
+                Thread.Sleep(250);
+                Thread.Sleep(100);
 
-            Assert.AreEqual(ExpectedText, textBox.Text, "Expected [ " + ExpectedText + " ] But got [ " + textBox.Text + " ]");
-            Assert.IsTrue(textBox.HasError, "Expected [ True ] But got [ " + textBox.HasError + " ]");
-        }
+                Assert.AreEqual(ExpectedText, textBox.Text, "Expected [ " + ExpectedText + " ] But got [ " + textBox.Text + " ]");
+                Assert.IsTrue(textBox.HasError, "Expected [ True ] But got [ " + textBox.HasError + " ]");
+			});
+		}
 
          [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
@@ -421,72 +438,87 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
         [TestCategory("IntellisenseTextBox_InsertItem")]
         [TestCategory("Intellisense Textbox Visual Tree")]
         public void IntellisenseTextBox_InsertItem_InsertDateTimeParts_InsertsCorrectly()
-        {
-            //------------Setup for test--------------------------            
-            var intellisenseProvider = new Mock<IIntellisenseProvider>();
+		{
+			Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
+			{
+				//------------Setup for test--------------------------            
+				var intellisenseProvider = new Mock<IIntellisenseProvider>();
 
-            intellisenseProvider.Setup(a => a.HandlesResultInsertion).Returns(false);
+                intellisenseProvider.Setup(a => a.HandlesResultInsertion).Returns(false);
 
-            var intellisenseProviderResult =
-                new IntellisenseProviderResult(intellisenseProvider.Object, "yyyy", "yyyy");
-            //------------Execute Test---------------------------
-            var textBox = new IntellisenseTextBox();
-            textBox.CreateVisualTree();
-            textBox.IsDropDownOpen = true;
-            textBox.Text = "ddyy";
-            textBox.CaretIndex = 4;
-            textBox.InsertItem(intellisenseProviderResult, true);
-            //------------Assert Results-------------------------
-            Assert.AreEqual("ddyyyy", textBox.Text);
-        }
+                var intellisenseProviderResult =
+                    new IntellisenseProviderResult(intellisenseProvider.Object, "yyyy", "yyyy");
+                //------------Execute Test---------------------------
+                var textBox = new IntellisenseTextBox();
+				textBox.SelectionAdapter = new SelectorSelectionAdapter(new InputsDataGrid());
+				textBox.CreateVisualTree();
+                textBox.IsDropDownOpen = true;
+                textBox.Text = "ddyy";
+				textBox.TextBox = new TextBox();
+				textBox.CaretIndex = 4;
+                textBox.InsertItem(intellisenseProviderResult, true);
+                //------------Assert Results-------------------------
+                Assert.AreEqual("ddyyyy", textBox.Text);
+			});
+		}
 
         [TestMethod]
         [Owner("Massimo Guerrera")]
         [TestCategory("IntellisenseTextBox_InsertItem")]
         [TestCategory("Intellisense Textbox Visual Tree")]
         public void IntellisenseTextBox_InsertItem_AppendDateTimePartsWithSpace_InsertsCorrectly()
-        {
-            //------------Setup for test--------------------------            
-            var intellisenseProvider = new Mock<IIntellisenseProvider>();
+		{
+			Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
+			{
+				//------------Setup for test--------------------------            
+				var intellisenseProvider = new Mock<IIntellisenseProvider>();
 
-            intellisenseProvider.Setup(a => a.HandlesResultInsertion).Returns(false);
+                intellisenseProvider.Setup(a => a.HandlesResultInsertion).Returns(false);
 
-            var intellisenseProviderResult =
-                new IntellisenseProviderResult(intellisenseProvider.Object, "yyyy", "yyyy");
-            //------------Execute Test---------------------------
-            var textBox = new IntellisenseTextBox();
-            textBox.CreateVisualTree();
-            textBox.IsDropDownOpen = true;
-            textBox.Text = "dd yy";
-            textBox.CaretIndex = 5;
-            textBox.InsertItem(intellisenseProviderResult, true);
-            //------------Assert Results-------------------------
-            Assert.AreEqual("dd yyyy", textBox.Text);
-        }
+                var intellisenseProviderResult =
+                    new IntellisenseProviderResult(intellisenseProvider.Object, "yyyy", "yyyy");
+                //------------Execute Test---------------------------
+                var textBox = new IntellisenseTextBox();
+				textBox.SelectionAdapter = new SelectorSelectionAdapter(new InputsDataGrid());
+				textBox.CreateVisualTree();
+                textBox.IsDropDownOpen = true;
+                textBox.Text = "dd yy";
+				textBox.TextBox = new TextBox();
+				textBox.CaretIndex = 5;
+                textBox.InsertItem(intellisenseProviderResult, true);
+                //------------Assert Results-------------------------
+                Assert.AreEqual("dd yyyy", textBox.Text);
+			});
+		}
 
         [TestMethod]
         [Owner("Massimo Guerrera")]
         [TestCategory("IntellisenseTextBox_InsertItem")]
         [TestCategory("Intellisense Textbox Visual Tree")]
         public void IntellisenseTextBox_InsertItem_AppendDateTimePartsWithDifferentCase_InsertsCorrectly()
-        {
-            //------------Setup for test--------------------------            
-            var intellisenseProvider = new Mock<IIntellisenseProvider>();
+		{
+			Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
+			{
+				//------------Setup for test--------------------------            
+				var intellisenseProvider = new Mock<IIntellisenseProvider>();
 
-            intellisenseProvider.Setup(a => a.HandlesResultInsertion).Returns(false);
+                intellisenseProvider.Setup(a => a.HandlesResultInsertion).Returns(false);
 
-            var intellisenseProviderResult =
-                new IntellisenseProviderResult(intellisenseProvider.Object, "yyyy", "yyyy");
-            //------------Execute Test---------------------------
-            var textBox = new IntellisenseTextBox();
-            textBox.CreateVisualTree();
-            textBox.IsDropDownOpen = true;
-            textBox.Text = "dd YY";
-            textBox.CaretIndex = 5;
-            textBox.InsertItem(intellisenseProviderResult, true);
-            //------------Assert Results-------------------------
-            Assert.AreEqual("dd yyyy", textBox.Text);
-        }
+                var intellisenseProviderResult =
+                    new IntellisenseProviderResult(intellisenseProvider.Object, "yyyy", "yyyy");
+                //------------Execute Test---------------------------
+                var textBox = new IntellisenseTextBox();
+				textBox.SelectionAdapter = new SelectorSelectionAdapter(new InputsDataGrid());
+				textBox.CreateVisualTree();
+                textBox.IsDropDownOpen = true;
+                textBox.Text = "dd YY";
+                textBox.TextBox = new TextBox();
+                textBox.CaretIndex = 5;
+                textBox.InsertItem(intellisenseProviderResult, true);
+                //------------Assert Results-------------------------
+                Assert.AreEqual("dd yyyy", textBox.Text);
+			});
+		}
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
@@ -516,24 +548,29 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
         [TestCategory("IntellisenseTextBox_InsertItem")]
         [TestCategory("Intellisense Textbox Visual Tree")]
         public void IntellisenseTextBox_InsertItem_InsertDateTimePartsIn_InsertsCorrectly()
-        {
-            //------------Setup for test--------------------------            
-            var intellisenseProvider = new Mock<IIntellisenseProvider>();
+		{
+			Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
+			{
+				//------------Setup for test--------------------------            
+				var intellisenseProvider = new Mock<IIntellisenseProvider>();
 
-            intellisenseProvider.Setup(a => a.HandlesResultInsertion).Returns(false);
+                intellisenseProvider.Setup(a => a.HandlesResultInsertion).Returns(false);
 
-            var intellisenseProviderResult =
-                new IntellisenseProviderResult(intellisenseProvider.Object, "DW", "DW");
-            //------------Execute Test---------------------------
-            var textBox = new IntellisenseTextBox();
-            textBox.CreateVisualTree();
-            textBox.IsDropDownOpen = true;
-            textBox.Text = "d YY mm";
-            textBox.CaretIndex = 1;
-            textBox.InsertItem(intellisenseProviderResult, true);
-            //------------Assert Results-------------------------
-            Assert.AreEqual("DW YY mm", textBox.Text);
-        }
+                var intellisenseProviderResult =
+                    new IntellisenseProviderResult(intellisenseProvider.Object, "DW", "DW");
+                //------------Execute Test---------------------------
+                var textBox = new IntellisenseTextBox();
+				textBox.SelectionAdapter = new SelectorSelectionAdapter(new InputsDataGrid());
+				textBox.CreateVisualTree();
+                textBox.IsDropDownOpen = true;
+                textBox.Text = "d YY mm";
+				textBox.TextBox = new TextBox();
+				textBox.CaretIndex = 1;
+                textBox.InsertItem(intellisenseProviderResult, true);
+                //------------Assert Results-------------------------
+                Assert.AreEqual("DW YY mm", textBox.Text);
+			});
+		}
 
 
         [TestMethod]
