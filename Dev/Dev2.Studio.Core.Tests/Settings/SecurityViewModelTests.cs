@@ -1194,13 +1194,16 @@ namespace Dev2.Core.Tests.Settings
         [Timeout(300000)]
         public void SecurityViewModel_Save_NullPermissions_ThrowsArgumentNullException()
         {
-            //------------Setup for test--------------------------
-            var viewModel = new SecurityViewModel(new SecuritySettingsTO(new WindowsGroupPermission[0]), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
+            {
+                //------------Setup for test--------------------------
+                var viewModel = new SecurityViewModel(new SecuritySettingsTO(new WindowsGroupPermission[0]), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
 
-            //------------Execute Test---------------------------
-            viewModel.Save(null);
+                //------------Execute Test---------------------------
+                viewModel.Save(null);
 
-            //------------Assert Results-------------------------
+                //------------Assert Results-------------------------
+            });
         }
 
         [TestMethod]
@@ -1209,33 +1212,36 @@ namespace Dev2.Core.Tests.Settings
         [Timeout(300000)]
         public void SecurityViewModel_Save_InvalidPermissions_InvalidPermissionsAreRemoved()
         {
-            //------------Setup for test--------------------------
-            var permissions = CreatePermissions();
-
-            var invalidPermission = permissions[permissions.Count - 1];
-            invalidPermission.WindowsGroup = "";
-
-            var viewModel = new SecurityViewModel(new SecuritySettingsTO(permissions), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
-
-            var target = new SecuritySettingsTO();
-
-            var expectedCount = permissions.Count - 1;
-            var expectedResourceCount = viewModel.ResourcePermissions.Count - 1;
-
-            //------------Execute Test---------------------------
-            viewModel.Save(target);
-
-            //------------Assert Results-------------------------
-            Assert.AreEqual(expectedCount, target.WindowsGroupPermissions.Count);
-            Assert.AreEqual(expectedResourceCount, viewModel.ResourcePermissions.Count);
-            foreach (var permission in target.WindowsGroupPermissions)
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
             {
-                Assert.IsTrue(permission.IsValid);
-                Assert.IsFalse(permission.IsNew);
-            }
+                //------------Setup for test--------------------------
+                var permissions = CreatePermissions();
 
-            Assert.AreEqual(1, viewModel.ResourcePermissions.Count(p => p.IsNew));
-            Assert.AreEqual(1, viewModel.ServerPermissions.Count(p => p.IsNew));
+                var invalidPermission = permissions[permissions.Count - 1];
+                invalidPermission.WindowsGroup = "";
+
+                var viewModel = new SecurityViewModel(new SecuritySettingsTO(permissions), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
+
+                var target = new SecuritySettingsTO();
+
+                var expectedCount = permissions.Count - 1;
+                var expectedResourceCount = viewModel.ResourcePermissions.Count - 1;
+
+                //------------Execute Test---------------------------
+                viewModel.Save(target);
+
+                //------------Assert Results-------------------------
+                Assert.AreEqual(expectedCount, target.WindowsGroupPermissions.Count);
+                Assert.AreEqual(expectedResourceCount, viewModel.ResourcePermissions.Count);
+                foreach (var permission in target.WindowsGroupPermissions)
+                {
+                    Assert.IsTrue(permission.IsValid);
+                    Assert.IsFalse(permission.IsNew);
+                }
+
+                Assert.AreEqual(1, viewModel.ResourcePermissions.Count(p => p.IsNew));
+                Assert.AreEqual(1, viewModel.ServerPermissions.Count(p => p.IsNew));
+            });
         }
 
         [TestMethod]
@@ -1279,19 +1285,22 @@ namespace Dev2.Core.Tests.Settings
         [Timeout(300000)]
         public void SecurityViewModel_HasInvalidResourcePermission_Given_Invalid_Resource_That_Is_Being_Deleted_ReturnsFalse()
         {
-            //------------Setup for test--------------------------
-            var securityViewModel = new SecurityViewModel(new SecuritySettingsTO(), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
-            securityViewModel.ResourcePermissions.Add(new WindowsGroupPermission
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
             {
-                ResourceName = "Resource1",
-                WindowsGroup = "",
-                IsDeleted = true,
-                IsServer = false
+                //------------Setup for test--------------------------
+                var securityViewModel = new SecurityViewModel(new SecuritySettingsTO(), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
+                securityViewModel.ResourcePermissions.Add(new WindowsGroupPermission
+                {
+                    ResourceName = "Resource1",
+                    WindowsGroup = "",
+                    IsDeleted = true,
+                    IsServer = false
+                });
+                //------------Execute Test---------------------------
+                var hasDuplicateServerPermissions = securityViewModel.HasInvalidResourcePermission();
+                //------------Assert Results-------------------------
+                Assert.IsFalse(hasDuplicateServerPermissions);
             });
-            //------------Execute Test---------------------------
-            var hasDuplicateServerPermissions = securityViewModel.HasInvalidResourcePermission();
-            //------------Assert Results-------------------------
-            Assert.IsFalse(hasDuplicateServerPermissions);
         }
 
 
@@ -1301,18 +1310,22 @@ namespace Dev2.Core.Tests.Settings
         [Timeout(300000)]
         public void SecurityViewModel_HasInvalidResourcePermission_Given_Resource_And_No_Group_ReturnsTrue()
         {
-            //------------Setup for test--------------------------
-            var securityViewModel = new SecurityViewModel(new SecuritySettingsTO(), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
-            securityViewModel.ResourcePermissions.Add(new WindowsGroupPermission
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
             {
-                ResourceName = "Resource1",
-                WindowsGroup = "",
-                IsServer = false
+
+                //------------Setup for test--------------------------
+                var securityViewModel = new SecurityViewModel(new SecuritySettingsTO(), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
+                securityViewModel.ResourcePermissions.Add(new WindowsGroupPermission
+                {
+                    ResourceName = "Resource1",
+                    WindowsGroup = "",
+                    IsServer = false
+                });
+                //------------Execute Test---------------------------
+                var hasDuplicateServerPermissions = securityViewModel.HasInvalidResourcePermission();
+                //------------Assert Results-------------------------
+                Assert.IsTrue(hasDuplicateServerPermissions);
             });
-            //------------Execute Test---------------------------
-            var hasDuplicateServerPermissions = securityViewModel.HasInvalidResourcePermission();
-            //------------Assert Results-------------------------
-            Assert.IsTrue(hasDuplicateServerPermissions);
         }
 
         [TestMethod]
@@ -1321,18 +1334,21 @@ namespace Dev2.Core.Tests.Settings
         [Timeout(300000)]
         public void SecurityViewModel_HasInvalidResourcePermission_Given_Group_And_No_Resource_ReturnsTrue()
         {
-            //------------Setup for test--------------------------
-            var securityViewModel = new SecurityViewModel(new SecuritySettingsTO(), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
-            securityViewModel.ResourcePermissions.Add(new WindowsGroupPermission
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
             {
-                WindowsGroup = "Some Group",
-                ResourceName = string.Empty,
-                IsServer = false
+                //------------Setup for test--------------------------
+                var securityViewModel = new SecurityViewModel(new SecuritySettingsTO(), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
+                securityViewModel.ResourcePermissions.Add(new WindowsGroupPermission
+                {
+                    WindowsGroup = "Some Group",
+                    ResourceName = string.Empty,
+                    IsServer = false
+                });
+                //------------Execute Test---------------------------
+                var hasDuplicateServerPermissions = securityViewModel.HasInvalidResourcePermission();
+                //------------Assert Results-------------------------
+                Assert.IsTrue(hasDuplicateServerPermissions);
             });
-            //------------Execute Test---------------------------
-            var hasDuplicateServerPermissions = securityViewModel.HasInvalidResourcePermission();
-            //------------Assert Results-------------------------
-            Assert.IsTrue(hasDuplicateServerPermissions);
         }
 
         [TestMethod]
@@ -1341,25 +1357,28 @@ namespace Dev2.Core.Tests.Settings
         [Timeout(300000)]
         public void SecurityViewModel_ServerDuplicates_NoDuplicates_ReturnsFalse()
         {
-            //------------Setup for test--------------------------
-            var securityViewModel = new SecurityViewModel(new SecuritySettingsTO(), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
-            securityViewModel.ServerPermissions.Add(new WindowsGroupPermission
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
             {
-                WindowsGroup = "Some Group",
-                ResourceID = Guid.Empty,
-                IsServer = true
-            });
+                //------------Setup for test--------------------------
+                var securityViewModel = new SecurityViewModel(new SecuritySettingsTO(), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
+                securityViewModel.ServerPermissions.Add(new WindowsGroupPermission
+                {
+                    WindowsGroup = "Some Group",
+                    ResourceID = Guid.Empty,
+                    IsServer = true
+                });
 
-            securityViewModel.ServerPermissions.Add(new WindowsGroupPermission
-            {
-                WindowsGroup = "Some Group2",
-                ResourceID = Guid.Empty,
-                IsServer = true
+                securityViewModel.ServerPermissions.Add(new WindowsGroupPermission
+                {
+                    WindowsGroup = "Some Group2",
+                    ResourceID = Guid.Empty,
+                    IsServer = true
+                });
+                //------------Execute Test---------------------------
+                var hasDuplicateServerPermissions = securityViewModel.HasDuplicateServerPermissions();
+                //------------Assert Results-------------------------
+                Assert.IsFalse(hasDuplicateServerPermissions);
             });
-            //------------Execute Test---------------------------
-            var hasDuplicateServerPermissions = securityViewModel.HasDuplicateServerPermissions();
-            //------------Assert Results-------------------------
-            Assert.IsFalse(hasDuplicateServerPermissions);
         }
 
         [TestMethod]
@@ -1368,26 +1387,30 @@ namespace Dev2.Core.Tests.Settings
         [Timeout(300000)]
         public void SecurityViewModel_ServerDuplicates_HasDuplicatesDeleted_ReturnsFalse()
         {
-            //------------Setup for test--------------------------
-            var securityViewModel = new SecurityViewModel(new SecuritySettingsTO(), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
-            securityViewModel.ServerPermissions.Add(new WindowsGroupPermission
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
             {
-                WindowsGroup = "Some Group",
-                ResourceID = Guid.Empty,
-                IsServer = true
-            });
 
-            securityViewModel.ServerPermissions.Add(new WindowsGroupPermission
-            {
-                WindowsGroup = "Some Group",
-                ResourceID = Guid.Empty,
-                IsServer = true,
-                IsDeleted = true
+                //------------Setup for test--------------------------
+                var securityViewModel = new SecurityViewModel(new SecuritySettingsTO(), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
+                securityViewModel.ServerPermissions.Add(new WindowsGroupPermission
+                {
+                    WindowsGroup = "Some Group",
+                    ResourceID = Guid.Empty,
+                    IsServer = true
+                });
+
+                securityViewModel.ServerPermissions.Add(new WindowsGroupPermission
+                {
+                    WindowsGroup = "Some Group",
+                    ResourceID = Guid.Empty,
+                    IsServer = true,
+                    IsDeleted = true
+                });
+                //------------Execute Test---------------------------
+                var hasDuplicateServerPermissions = securityViewModel.HasDuplicateServerPermissions();
+                //------------Assert Results-------------------------
+                Assert.IsFalse(hasDuplicateServerPermissions);
             });
-            //------------Execute Test---------------------------
-            var hasDuplicateServerPermissions = securityViewModel.HasDuplicateServerPermissions();
-            //------------Assert Results-------------------------
-            Assert.IsFalse(hasDuplicateServerPermissions);
         }
 
 
@@ -1397,25 +1420,29 @@ namespace Dev2.Core.Tests.Settings
         [Timeout(300000)]
         public void SecurityViewModel_ServerDuplicates_Duplicates_ReturnsTrue()
         {
-            //------------Setup for test--------------------------
-            var securityViewModel = new SecurityViewModel(new SecuritySettingsTO(), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
-            securityViewModel.ServerPermissions.Add(new WindowsGroupPermission
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
             {
-                WindowsGroup = "Some Group",
-                ResourceID = Guid.Empty,
-                IsServer = true
-            });
 
-            securityViewModel.ServerPermissions.Add(new WindowsGroupPermission
-            {
-                WindowsGroup = "Some Group",
-                ResourceID = Guid.Empty,
-                IsServer = true
+                //------------Setup for test--------------------------
+                var securityViewModel = new SecurityViewModel(new SecuritySettingsTO(), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
+                securityViewModel.ServerPermissions.Add(new WindowsGroupPermission
+                {
+                    WindowsGroup = "Some Group",
+                    ResourceID = Guid.Empty,
+                    IsServer = true
+                });
+
+                securityViewModel.ServerPermissions.Add(new WindowsGroupPermission
+                {
+                    WindowsGroup = "Some Group",
+                    ResourceID = Guid.Empty,
+                    IsServer = true
+                });
+                //------------Execute Test---------------------------
+                var hasDuplicateServerPermissions = securityViewModel.HasDuplicateServerPermissions();
+                //------------Assert Results-------------------------
+                Assert.IsTrue(hasDuplicateServerPermissions);
             });
-            //------------Execute Test---------------------------
-            var hasDuplicateServerPermissions = securityViewModel.HasDuplicateServerPermissions();
-            //------------Assert Results-------------------------
-            Assert.IsTrue(hasDuplicateServerPermissions);
         }
 
         [TestMethod]
@@ -1424,25 +1451,28 @@ namespace Dev2.Core.Tests.Settings
         [Timeout(300000)]
         public void SecurityViewModel_HasDuplicateResourcePermissions_NoDuplicatesResourceID_ReturnsFalse()
         {
-            //------------Setup for test--------------------------
-            var securityViewModel = new SecurityViewModel(new SecuritySettingsTO(), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
-            securityViewModel.ResourcePermissions.Add(new WindowsGroupPermission
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
             {
-                WindowsGroup = "Some Group",
-                ResourceID = Guid.NewGuid(),
-                IsServer = false
-            });
+                //------------Setup for test--------------------------
+                var securityViewModel = new SecurityViewModel(new SecuritySettingsTO(), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
+                securityViewModel.ResourcePermissions.Add(new WindowsGroupPermission
+                {
+                    WindowsGroup = "Some Group",
+                    ResourceID = Guid.NewGuid(),
+                    IsServer = false
+                });
 
-            securityViewModel.ResourcePermissions.Add(new WindowsGroupPermission
-            {
-                WindowsGroup = "Some Group",
-                ResourceID = Guid.NewGuid(),
-                IsServer = false
+                securityViewModel.ResourcePermissions.Add(new WindowsGroupPermission
+                {
+                    WindowsGroup = "Some Group",
+                    ResourceID = Guid.NewGuid(),
+                    IsServer = false
+                });
+                //------------Execute Test---------------------------
+                var hasDuplicateResourcePermissions = securityViewModel.HasDuplicateResourcePermissions();
+                //------------Assert Results-------------------------
+                Assert.IsFalse(hasDuplicateResourcePermissions);
             });
-            //------------Execute Test---------------------------
-            var hasDuplicateResourcePermissions = securityViewModel.HasDuplicateResourcePermissions();
-            //------------Assert Results-------------------------
-            Assert.IsFalse(hasDuplicateResourcePermissions);
         }
 
         [TestMethod]
@@ -1451,26 +1481,29 @@ namespace Dev2.Core.Tests.Settings
         [Timeout(300000)]
         public void SecurityViewModel_HasDuplicateResourcePermissions_NoDuplicatesWindowsGroup_ReturnsFalse()
         {
-            //------------Setup for test--------------------------
-            var securityViewModel = new SecurityViewModel(new SecuritySettingsTO(), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
-            var resourceId = Guid.NewGuid();
-            securityViewModel.ResourcePermissions.Add(new WindowsGroupPermission
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
             {
-                WindowsGroup = "Some Group",
-                ResourceID = resourceId,
-                IsServer = false
-            });
+                //------------Setup for test--------------------------
+                var securityViewModel = new SecurityViewModel(new SecuritySettingsTO(), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
+                var resourceId = Guid.NewGuid();
+                securityViewModel.ResourcePermissions.Add(new WindowsGroupPermission
+                {
+                    WindowsGroup = "Some Group",
+                    ResourceID = resourceId,
+                    IsServer = false
+                });
 
-            securityViewModel.ResourcePermissions.Add(new WindowsGroupPermission
-            {
-                WindowsGroup = "Some Group2",
-                ResourceID = resourceId,
-                IsServer = false
+                securityViewModel.ResourcePermissions.Add(new WindowsGroupPermission
+                {
+                    WindowsGroup = "Some Group2",
+                    ResourceID = resourceId,
+                    IsServer = false
+                });
+                //------------Execute Test---------------------------
+                var hasDuplicateResourcePermissions = securityViewModel.HasDuplicateResourcePermissions();
+                //------------Assert Results-------------------------
+                Assert.IsFalse(hasDuplicateResourcePermissions);
             });
-            //------------Execute Test---------------------------
-            var hasDuplicateResourcePermissions = securityViewModel.HasDuplicateResourcePermissions();
-            //------------Assert Results-------------------------
-            Assert.IsFalse(hasDuplicateResourcePermissions);
         }
 
         [TestMethod]
@@ -1508,23 +1541,25 @@ namespace Dev2.Core.Tests.Settings
         [Timeout(300000)]
         public void SecurityViewModel_ResourcePermissionsCompare_IsDeleted_ReturnsTrue()
         {
-            //------------Setup for test--------------------------
-            var securityViewModel = new SecurityViewModel(new SecuritySettingsTO(), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
-            var resourceId = Guid.NewGuid();
-
-            var groupPermission = new WindowsGroupPermission
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
             {
-                WindowsGroup = "Some Group",
-                ResourceID = resourceId,
-                IsServer = false,
-                IsDeleted = false,
-                ResourceName = "a"
-            };
-            securityViewModel.ResourcePermissions.Clear();
-            securityViewModel.ResourcePermissions.Add(groupPermission);
-            var methodInfo = typeof(SecurityViewModel).GetMethod("ResourcePermissionsCompare", BindingFlags.Instance | BindingFlags.NonPublic);
-            //------------Execute Test---------------------------
-            var groupPermissions = new ObservableCollection<WindowsGroupPermission>()
+                //------------Setup for test--------------------------
+                var securityViewModel = new SecurityViewModel(new SecuritySettingsTO(), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
+                var resourceId = Guid.NewGuid();
+
+                var groupPermission = new WindowsGroupPermission
+                {
+                    WindowsGroup = "Some Group",
+                    ResourceID = resourceId,
+                    IsServer = false,
+                    IsDeleted = false,
+                    ResourceName = "a"
+                };
+                securityViewModel.ResourcePermissions.Clear();
+                securityViewModel.ResourcePermissions.Add(groupPermission);
+                var methodInfo = typeof(SecurityViewModel).GetMethod("ResourcePermissionsCompare", BindingFlags.Instance | BindingFlags.NonPublic);
+                //------------Execute Test---------------------------
+                var groupPermissions = new ObservableCollection<WindowsGroupPermission>()
             {
                 new WindowsGroupPermission
                 {
@@ -1535,9 +1570,10 @@ namespace Dev2.Core.Tests.Settings
                     ResourceName = "a"
                 }
             };
-            var invoke = methodInfo.Invoke(securityViewModel, new object[] {groupPermissions, true});
-            //------------Assert Results-------------------------
-            Assert.IsFalse(bool.Parse(invoke.ToString()));
+                var invoke = methodInfo.Invoke(securityViewModel, new object[] { groupPermissions, true });
+                //------------Assert Results-------------------------
+                Assert.IsFalse(bool.Parse(invoke.ToString()));
+            });
         }
 
         [TestMethod]
@@ -1546,23 +1582,25 @@ namespace Dev2.Core.Tests.Settings
         [Timeout(300000)]
         public void SecurityViewModel_ServerPermissionsCompare_IsDeleted_ReturnsTrue()
         {
-            //------------Setup for test--------------------------
-            var securityViewModel = new SecurityViewModel(new SecuritySettingsTO(), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
-            var resourceId = Guid.NewGuid();
-
-            var groupPermission = new WindowsGroupPermission
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
             {
-                WindowsGroup = "Some Group",
-                ResourceID = resourceId,
-                IsServer = false,
-                IsDeleted = false,
-                ResourceName = "a"
-            };
-            securityViewModel.ResourcePermissions.Clear();
-            securityViewModel.ResourcePermissions.Add(groupPermission);
-            var methodInfo = typeof(SecurityViewModel).GetMethod("ServerPermissionsCompare", BindingFlags.Instance | BindingFlags.NonPublic);
-            //------------Execute Test---------------------------
-            var groupPermissions = new ObservableCollection<WindowsGroupPermission>()
+                //------------Setup for test--------------------------
+                var securityViewModel = new SecurityViewModel(new SecuritySettingsTO(), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
+                var resourceId = Guid.NewGuid();
+
+                var groupPermission = new WindowsGroupPermission
+                {
+                    WindowsGroup = "Some Group",
+                    ResourceID = resourceId,
+                    IsServer = false,
+                    IsDeleted = false,
+                    ResourceName = "a"
+                };
+                securityViewModel.ResourcePermissions.Clear();
+                securityViewModel.ResourcePermissions.Add(groupPermission);
+                var methodInfo = typeof(SecurityViewModel).GetMethod("ServerPermissionsCompare", BindingFlags.Instance | BindingFlags.NonPublic);
+                //------------Execute Test---------------------------
+                var groupPermissions = new ObservableCollection<WindowsGroupPermission>()
             {
                 new WindowsGroupPermission
                 {
@@ -1573,9 +1611,10 @@ namespace Dev2.Core.Tests.Settings
                     ResourceName = "a"
                 }
             };
-            var invoke = methodInfo.Invoke(securityViewModel, new object[] {groupPermissions, true});
-            //------------Assert Results-------------------------
-            Assert.IsFalse(bool.Parse(invoke.ToString()));
+                var invoke = methodInfo.Invoke(securityViewModel, new object[] { groupPermissions, true });
+                //------------Assert Results-------------------------
+                Assert.IsFalse(bool.Parse(invoke.ToString()));
+            });
         }
 
         [TestMethod]
@@ -1584,26 +1623,29 @@ namespace Dev2.Core.Tests.Settings
         [Timeout(300000)]
         public void SecurityViewModel_HasDuplicateResourcePermissions_DuplicateNotDeleted_ReturnsTrue()
         {
-            //------------Setup for test--------------------------
-            var securityViewModel = new SecurityViewModel(new SecuritySettingsTO(), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
-            var resourceId = Guid.NewGuid();
-            securityViewModel.ResourcePermissions.Add(new WindowsGroupPermission
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
             {
-                WindowsGroup = "Some Group",
-                ResourceID = resourceId,
-                IsServer = false
-            });
+                //------------Setup for test--------------------------
+                var securityViewModel = new SecurityViewModel(new SecuritySettingsTO(), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
+                var resourceId = Guid.NewGuid();
+                securityViewModel.ResourcePermissions.Add(new WindowsGroupPermission
+                {
+                    WindowsGroup = "Some Group",
+                    ResourceID = resourceId,
+                    IsServer = false
+                });
 
-            securityViewModel.ResourcePermissions.Add(new WindowsGroupPermission
-            {
-                WindowsGroup = "Some Group",
-                ResourceID = resourceId,
-                IsServer = false,
+                securityViewModel.ResourcePermissions.Add(new WindowsGroupPermission
+                {
+                    WindowsGroup = "Some Group",
+                    ResourceID = resourceId,
+                    IsServer = false,
+                });
+                //------------Execute Test---------------------------
+                var hasDuplicateResourcePermissions = securityViewModel.HasDuplicateResourcePermissions();
+                //------------Assert Results-------------------------
+                Assert.IsTrue(hasDuplicateResourcePermissions);
             });
-            //------------Execute Test---------------------------
-            var hasDuplicateResourcePermissions = securityViewModel.HasDuplicateResourcePermissions();
-            //------------Assert Results-------------------------
-            Assert.IsTrue(hasDuplicateResourcePermissions);
         }
 
         [TestMethod]
@@ -1612,61 +1654,64 @@ namespace Dev2.Core.Tests.Settings
         [Timeout(300000)]
         public void SecurityViewModel_PickOverrideResourceCommand_Sets_OverrideResource_Null()
         {
-            //------------Setup for test--------------------------
-            var resourceId = Guid.NewGuid();
-            const string resourceName = "Cat\\Resource";
-            var permission = new WindowsGroupPermission
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
             {
-                IsServer = false,
-                WindowsGroup = "Deploy Admins",
-                View = false,
-                Execute = false,
-                Contribute = false,
-                DeployTo = true,
-                DeployFrom = true,
-                Administrator = false,
-                ResourceID = resourceId,
-                ResourceName = resourceName
-            };
-            var overrrideResourceId = Guid.NewGuid();
-            var overrideResourceName = "AuthWorkflow";
-            NamedGuid authenticationOverrideWorkflow = new NamedGuid
-            {
-                Value = overrrideResourceId,
-                Name = overrideResourceName
-            };
-            var authResource = new NamedGuid()
-            {
-                Value = overrrideResourceId,
-                Name = overrideResourceName
-            };
-            _serverRepo = GetEnvironmentRepository();
-            _popupController = new Mock<IPopupController>();
-            _resourceRepo = new Mock<IResourceRepository>();
+                //------------Setup for test--------------------------
+                var resourceId = Guid.NewGuid();
+                const string resourceName = "Cat\\Resource";
+                var permission = new WindowsGroupPermission
+                {
+                    IsServer = false,
+                    WindowsGroup = "Deploy Admins",
+                    View = false,
+                    Execute = false,
+                    Contribute = false,
+                    DeployTo = true,
+                    DeployFrom = true,
+                    Administrator = false,
+                    ResourceID = resourceId,
+                    ResourceName = resourceName
+                };
+                var overrrideResourceId = Guid.NewGuid();
+                var overrideResourceName = "AuthWorkflow";
+                NamedGuid authenticationOverrideWorkflow = new NamedGuid
+                {
+                    Value = overrrideResourceId,
+                    Name = overrideResourceName
+                };
+                var authResource = new NamedGuid()
+                {
+                    Value = overrrideResourceId,
+                    Name = overrideResourceName
+                };
+                _serverRepo = GetEnvironmentRepository();
+                _popupController = new Mock<IPopupController>();
+                _resourceRepo = new Mock<IResourceRepository>();
 
-            _firstResource = CreateResource(ResourceType.WorkflowService, overrideResourceName, overrrideResourceId);
-            var coll = new Collection<IResourceModel> {_firstResource.Object};
-            _resourceRepo.Setup(c => c.All()).Returns(coll);
-            _environmentModel.Setup(m => m.ResourceRepository).Returns(_resourceRepo.Object);
-            var secretKey = GenerateSecretKey();
-            var viewModel = new SecurityViewModel(
-                new SecuritySettingsTO(
-                    new[]
-                    {
+                _firstResource = CreateResource(ResourceType.WorkflowService, overrideResourceName, overrrideResourceId);
+                var coll = new Collection<IResourceModel> { _firstResource.Object };
+                _resourceRepo.Setup(c => c.All()).Returns(coll);
+                _environmentModel.Setup(m => m.ResourceRepository).Returns(_resourceRepo.Object);
+                var secretKey = GenerateSecretKey();
+                var viewModel = new SecurityViewModel(
+                    new SecuritySettingsTO(
+                        new[]
+                        {
                         permission
-                    },
-                    authenticationOverrideWorkflow,
-                    secretKey),
-                new Mock<DirectoryObjectPickerDialog>().Object,
-                new Mock<IWin32Window>().Object,
-                _environmentModel.Object, () => new Mock<IResourcePickerDialog>().Object);
+                        },
+                        authenticationOverrideWorkflow,
+                        secretKey),
+                    new Mock<DirectoryObjectPickerDialog>().Object,
+                    new Mock<IWin32Window>().Object,
+                    _environmentModel.Object, () => new Mock<IResourcePickerDialog>().Object);
 
-            //------------Execute Test---------------------------
-            viewModel.PickOverrideResourceCommand.Execute(null);
+                //------------Execute Test---------------------------
+                viewModel.PickOverrideResourceCommand.Execute(null);
 
-            //------------Assert Results-------------------------
-            Assert.AreEqual(overrrideResourceId, viewModel.OverrideResource.Value);
-            Assert.AreEqual(overrideResourceName, viewModel.OverrideResource.Name);
+                //------------Assert Results-------------------------
+                Assert.AreEqual(overrrideResourceId, viewModel.OverrideResource.Value);
+                Assert.AreEqual(overrideResourceName, viewModel.OverrideResource.Name);
+            });
         }
 
         [TestMethod]
@@ -1675,84 +1720,87 @@ namespace Dev2.Core.Tests.Settings
         [Timeout(300000)]
         public void SecurityViewModel_PickOverrideResourceCommand_IsValidOverrideWorkflow_True()
         {
-            //------------Setup for test--------------------------
-            var overrideResourceId = Guid.NewGuid();
-            var resourceId = Guid.NewGuid();
-            const string overrideResourceName = "AuthWorkflow";
-            const string resourceName = "Workflow";
-            var permission = new WindowsGroupPermission
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
             {
-                IsServer = false,
-                WindowsGroup = "Deploy Admins",
-                View = false,
-                Execute = false,
-                Contribute = false,
-                DeployTo = true,
-                DeployFrom = true,
-                Administrator = false,
-                ResourceID = resourceId,
-                ResourceName = resourceName
-            };
-            var publicPermission = new WindowsGroupPermission
-            {
-                IsServer = false,
-                WindowsGroup = "Public",
-                Execute = true,
-                View = true,
-                ResourceID = overrideResourceId,
-                ResourceName = overrideResourceName,
-            };
+                //------------Setup for test--------------------------
+                var overrideResourceId = Guid.NewGuid();
+                var resourceId = Guid.NewGuid();
+                const string overrideResourceName = "AuthWorkflow";
+                const string resourceName = "Workflow";
+                var permission = new WindowsGroupPermission
+                {
+                    IsServer = false,
+                    WindowsGroup = "Deploy Admins",
+                    View = false,
+                    Execute = false,
+                    Contribute = false,
+                    DeployTo = true,
+                    DeployFrom = true,
+                    Administrator = false,
+                    ResourceID = resourceId,
+                    ResourceName = resourceName
+                };
+                var publicPermission = new WindowsGroupPermission
+                {
+                    IsServer = false,
+                    WindowsGroup = "Public",
+                    Execute = true,
+                    View = true,
+                    ResourceID = overrideResourceId,
+                    ResourceName = overrideResourceName,
+                };
 
-            var authenticationOverrideWorkflow = new NamedGuid
-            {
-                Value = resourceId,
-                Name = resourceName
-            };
-            var authResource = new NamedGuid
-            {
-                Value = overrideResourceId,
-                Name = overrideResourceName
-            };
-            var mockExplorerTreeItem = new Mock<IExplorerTreeItem>();
-            var mockResourcePickerDialog = new Mock<IResourcePickerDialog>();
-            var mockPopup = new Mock<IPopupController>();
+                var authenticationOverrideWorkflow = new NamedGuid
+                {
+                    Value = resourceId,
+                    Name = resourceName
+                };
+                var authResource = new NamedGuid
+                {
+                    Value = overrideResourceId,
+                    Name = overrideResourceName
+                };
+                var mockExplorerTreeItem = new Mock<IExplorerTreeItem>();
+                var mockResourcePickerDialog = new Mock<IResourcePickerDialog>();
+                var mockPopup = new Mock<IPopupController>();
 
-            _serverRepo = GetEnvironmentRepository();
+                _serverRepo = GetEnvironmentRepository();
 
-            var dataListItem = new DataListItem {Recordset = "UserGroups", Field = "Name"};
-            var dataListItems = new OptomizedObservableCollection<IDataListItem> {dataListItem};
+                var dataListItem = new DataListItem { Recordset = "UserGroups", Field = "Name" };
+                var dataListItems = new OptomizedObservableCollection<IDataListItem> { dataListItem };
 
-            var mockShellViewModel = new Mock<IShellViewModel>();
-            mockShellViewModel.Setup(o => o.GetOutputsFromWorkflow(overrideResourceId)).Returns(dataListItems);
-            CustomContainer.Register(mockShellViewModel.Object);
+                var mockShellViewModel = new Mock<IShellViewModel>();
+                mockShellViewModel.Setup(o => o.GetOutputsFromWorkflow(overrideResourceId)).Returns(dataListItems);
+                CustomContainer.Register(mockShellViewModel.Object);
 
-            _firstResource = CreateResource(ResourceType.WorkflowService, overrideResourceName, overrideResourceId);
-            var coll = new Collection<IResourceModel> {_firstResource.Object};
-            _resourceRepo.Setup(c => c.All()).Returns(coll);
-            _environmentModel.Setup(m => m.ResourceRepository).Returns(_resourceRepo.Object);
+                _firstResource = CreateResource(ResourceType.WorkflowService, overrideResourceName, overrideResourceId);
+                var coll = new Collection<IResourceModel> { _firstResource.Object };
+                _resourceRepo.Setup(c => c.All()).Returns(coll);
+                _environmentModel.Setup(m => m.ResourceRepository).Returns(_resourceRepo.Object);
 
-            mockExplorerTreeItem.Setup(explorerItem => explorerItem.ResourceId).Returns(overrideResourceId);
-            mockExplorerTreeItem.Setup(explorerItem => explorerItem.ResourcePath).Returns(overrideResourceName);
-            mockExplorerTreeItem.Setup(explorerItem => explorerItem.ResourceName).Returns(overrideResourceName);
-            CustomContainer.Register(mockExplorerTreeItem.Object);
-            mockResourcePickerDialog.Setup(resourcePicker => resourcePicker.SelectedResource).Returns(mockExplorerTreeItem.Object);
-            mockResourcePickerDialog.Setup(resourcePicker => resourcePicker.ShowDialog(_environmentModel.Object)).Returns(true);
-            CustomContainer.Register(mockResourcePickerDialog.Object);
-            mockPopup.Setup(c => c.Show(It.IsAny<string>(), It.IsAny<string>(), MessageBoxButton.OK, MessageBoxImage.Error, "", false, false, true, false, false, false));
-            var secretKey = GenerateSecretKey();
-            var viewModel = new SecurityViewModel(
-                new SecuritySettingsTO(new[] {permission, publicPermission}, authenticationOverrideWorkflow,secretKey),
-                new Mock<DirectoryObjectPickerDialog>().Object,
-                new Mock<IWin32Window>().Object,
-                _environmentModel.Object, () => mockResourcePickerDialog.Object);
+                mockExplorerTreeItem.Setup(explorerItem => explorerItem.ResourceId).Returns(overrideResourceId);
+                mockExplorerTreeItem.Setup(explorerItem => explorerItem.ResourcePath).Returns(overrideResourceName);
+                mockExplorerTreeItem.Setup(explorerItem => explorerItem.ResourceName).Returns(overrideResourceName);
+                CustomContainer.Register(mockExplorerTreeItem.Object);
+                mockResourcePickerDialog.Setup(resourcePicker => resourcePicker.SelectedResource).Returns(mockExplorerTreeItem.Object);
+                mockResourcePickerDialog.Setup(resourcePicker => resourcePicker.ShowDialog(_environmentModel.Object)).Returns(true);
+                CustomContainer.Register(mockResourcePickerDialog.Object);
+                mockPopup.Setup(c => c.Show(It.IsAny<string>(), It.IsAny<string>(), MessageBoxButton.OK, MessageBoxImage.Error, "", false, false, true, false, false, false));
+                var secretKey = GenerateSecretKey();
+                var viewModel = new SecurityViewModel(
+                    new SecuritySettingsTO(new[] { permission, publicPermission }, authenticationOverrideWorkflow, secretKey),
+                    new Mock<DirectoryObjectPickerDialog>().Object,
+                    new Mock<IWin32Window>().Object,
+                    _environmentModel.Object, () => mockResourcePickerDialog.Object);
 
-            //------------Execute Test---------------------------
-            viewModel.PickOverrideResourceCommand.Execute(authResource);
+                //------------Execute Test---------------------------
+                viewModel.PickOverrideResourceCommand.Execute(authResource);
 
-            //------------Assert Results-------------------------
-            Assert.AreEqual(overrideResourceId, viewModel.OverrideResource.Value);
-            Assert.AreEqual(overrideResourceName, viewModel.OverrideResource.Name);
-            mockShellViewModel.Verify(o => o.GetOutputsFromWorkflow(overrideResourceId), Times.Once);
+                //------------Assert Results-------------------------
+                Assert.AreEqual(overrideResourceId, viewModel.OverrideResource.Value);
+                Assert.AreEqual(overrideResourceName, viewModel.OverrideResource.Name);
+                mockShellViewModel.Verify(o => o.GetOutputsFromWorkflow(overrideResourceId), Times.Once);
+            });
         }
 
         [TestMethod]
@@ -1761,77 +1809,81 @@ namespace Dev2.Core.Tests.Settings
         [Timeout(300000)]
         public void SecurityViewModel_PickOverrideResourceCommand_IsValidOverrideWorkflow_GivenNoPublicPermissions_ExpectFalse()
         {
-            //------------Setup for test--------------------------
-            var overrideResourceId = Guid.NewGuid();
-            var resourceId = Guid.NewGuid();
-            const string overrideResourceName = "AuthWorkflow";
-            const string resourceName = "Workflow";
-            var permission = new WindowsGroupPermission
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
             {
-                IsServer = false,
-                WindowsGroup = "Deploy Admins",
-                View = false,
-                Execute = false,
-                Contribute = false,
-                DeployTo = true,
-                DeployFrom = true,
-                Administrator = false,
-                ResourceID = resourceId,
-                ResourceName = resourceName
-            };
 
-            var authenticationOverrideWorkflow = new NamedGuid
-            {
-                Value = resourceId,
-                Name = resourceName
-            };
-            var authResource = new NamedGuid
-            {
-                Value = overrideResourceId,
-                Name = overrideResourceName
-            };
-            var mockExplorerTreeItem = new Mock<IExplorerTreeItem>();
-            var mockResourcePickerDialog = new Mock<IResourcePickerDialog>();
-            var mockPopup = new Mock<IPopupController>();
+                //------------Setup for test--------------------------
+                var overrideResourceId = Guid.NewGuid();
+                var resourceId = Guid.NewGuid();
+                const string overrideResourceName = "AuthWorkflow";
+                const string resourceName = "Workflow";
+                var permission = new WindowsGroupPermission
+                {
+                    IsServer = false,
+                    WindowsGroup = "Deploy Admins",
+                    View = false,
+                    Execute = false,
+                    Contribute = false,
+                    DeployTo = true,
+                    DeployFrom = true,
+                    Administrator = false,
+                    ResourceID = resourceId,
+                    ResourceName = resourceName
+                };
 
-            _serverRepo = GetEnvironmentRepository();
+                var authenticationOverrideWorkflow = new NamedGuid
+                {
+                    Value = resourceId,
+                    Name = resourceName
+                };
+                var authResource = new NamedGuid
+                {
+                    Value = overrideResourceId,
+                    Name = overrideResourceName
+                };
+                var mockExplorerTreeItem = new Mock<IExplorerTreeItem>();
+                var mockResourcePickerDialog = new Mock<IResourcePickerDialog>();
+                var mockPopup = new Mock<IPopupController>();
 
-            var dataListItem = new DataListItem {Recordset = "UserGroups", Field = "Name"};
-            var dataListItems = new OptomizedObservableCollection<IDataListItem> {dataListItem};
+                _serverRepo = GetEnvironmentRepository();
 
-            var mockShellViewModel = new Mock<IShellViewModel>();
-            mockShellViewModel.Setup(o => o.GetOutputsFromWorkflow(overrideResourceId)).Returns(dataListItems);
-            CustomContainer.Register(mockShellViewModel.Object);
+                var dataListItem = new DataListItem { Recordset = "UserGroups", Field = "Name" };
+                var dataListItems = new OptomizedObservableCollection<IDataListItem> { dataListItem };
 
-            _firstResource = CreateResource(ResourceType.WorkflowService, overrideResourceName, overrideResourceId);
-            var coll = new Collection<IResourceModel> {_firstResource.Object};
-            _resourceRepo.Setup(c => c.All()).Returns(coll);
-            _environmentModel.Setup(m => m.ResourceRepository).Returns(_resourceRepo.Object);
+                var mockShellViewModel = new Mock<IShellViewModel>();
+                mockShellViewModel.Setup(o => o.GetOutputsFromWorkflow(overrideResourceId)).Returns(dataListItems);
+                CustomContainer.Register(mockShellViewModel.Object);
 
-            mockExplorerTreeItem.Setup(explorerItem => explorerItem.ResourceId).Returns(overrideResourceId);
-            mockExplorerTreeItem.Setup(explorerItem => explorerItem.ResourcePath).Returns(overrideResourceName);
-            mockExplorerTreeItem.Setup(explorerItem => explorerItem.ResourceName).Returns(overrideResourceName);
-            CustomContainer.Register(mockExplorerTreeItem.Object);
-            mockResourcePickerDialog.Setup(resourcePicker => resourcePicker.SelectedResource).Returns(mockExplorerTreeItem.Object);
-            mockResourcePickerDialog.Setup(resourcePicker => resourcePicker.ShowDialog(_environmentModel.Object)).Returns(true);
-            CustomContainer.Register(mockResourcePickerDialog.Object);
-            mockPopup.Setup(c => c.Show(It.IsAny<string>(), It.IsAny<string>(), MessageBoxButton.OK, MessageBoxImage.Error, "", false, false, true, false, false, false));
-            CustomContainer.Register<IPopupController>(mockPopup.Object);
-            var secretKey = GenerateSecretKey();
-            var viewModel = new SecurityViewModel(
-                new SecuritySettingsTO(new[] {permission}, authenticationOverrideWorkflow,secretKey),
-                new Mock<DirectoryObjectPickerDialog>().Object,
-                new Mock<IWin32Window>().Object,
-                _environmentModel.Object, () => mockResourcePickerDialog.Object);
+                _firstResource = CreateResource(ResourceType.WorkflowService, overrideResourceName, overrideResourceId);
+                var coll = new Collection<IResourceModel> { _firstResource.Object };
+                _resourceRepo.Setup(c => c.All()).Returns(coll);
+                _environmentModel.Setup(m => m.ResourceRepository).Returns(_resourceRepo.Object);
 
-            //------------Execute Test---------------------------
-            viewModel.PickOverrideResourceCommand.Execute(authResource);
+                mockExplorerTreeItem.Setup(explorerItem => explorerItem.ResourceId).Returns(overrideResourceId);
+                mockExplorerTreeItem.Setup(explorerItem => explorerItem.ResourcePath).Returns(overrideResourceName);
+                mockExplorerTreeItem.Setup(explorerItem => explorerItem.ResourceName).Returns(overrideResourceName);
+                CustomContainer.Register(mockExplorerTreeItem.Object);
+                mockResourcePickerDialog.Setup(resourcePicker => resourcePicker.SelectedResource).Returns(mockExplorerTreeItem.Object);
+                mockResourcePickerDialog.Setup(resourcePicker => resourcePicker.ShowDialog(_environmentModel.Object)).Returns(true);
+                CustomContainer.Register(mockResourcePickerDialog.Object);
+                mockPopup.Setup(c => c.Show(It.IsAny<string>(), It.IsAny<string>(), MessageBoxButton.OK, MessageBoxImage.Error, "", false, false, true, false, false, false));
+                CustomContainer.Register<IPopupController>(mockPopup.Object);
+                var secretKey = GenerateSecretKey();
+                var viewModel = new SecurityViewModel(
+                    new SecuritySettingsTO(new[] { permission }, authenticationOverrideWorkflow, secretKey),
+                    new Mock<DirectoryObjectPickerDialog>().Object,
+                    new Mock<IWin32Window>().Object,
+                    _environmentModel.Object, () => mockResourcePickerDialog.Object);
 
-            //------------Assert Results-------------------------
-            Assert.AreEqual(resourceId, viewModel.OverrideResource.Value);
-            Assert.AreEqual(resourceName, viewModel.OverrideResource.Name);
-            mockShellViewModel.Verify(o => o.GetOutputsFromWorkflow(overrideResourceId), Times.Never);
-            mockPopup.Verify(o => o.Show(It.IsAny<IPopupMessage>()), Times.Once);
+                //------------Execute Test---------------------------
+                viewModel.PickOverrideResourceCommand.Execute(authResource);
+
+                //------------Assert Results-------------------------
+                Assert.AreEqual(resourceId, viewModel.OverrideResource.Value);
+                Assert.AreEqual(resourceName, viewModel.OverrideResource.Name);
+                mockShellViewModel.Verify(o => o.GetOutputsFromWorkflow(overrideResourceId), Times.Never);
+                mockPopup.Verify(o => o.Show(It.IsAny<IPopupMessage>()), Times.Once);
+            });
         }
 
         [TestMethod]
@@ -1840,88 +1892,91 @@ namespace Dev2.Core.Tests.Settings
         [Timeout(300000)]
         public void SecurityViewModel_PickOverrideResourceCommand_IsValidOverrideWorkflow_False()
         {
-            //------------Setup for test--------------------------
-            var overrideResourceId = Guid.NewGuid();
-            var resourceId = Guid.NewGuid();
-            const string overrideResourceName = "AuthWorkflow";
-            const string resourceName = "Workflow";
-            var permission = new WindowsGroupPermission
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
             {
-                IsServer = false,
-                WindowsGroup = "Deploy Admins",
-                View = false,
-                Execute = false,
-                Contribute = false,
-                DeployTo = true,
-                DeployFrom = true,
-                Administrator = false,
-                ResourceID = resourceId,
-                ResourceName = resourceName
-            };
-            var publicPermission = new WindowsGroupPermission
-            {
-                IsServer = false,
-                WindowsGroup = "Public",
-                Execute = true,
-                View = true,
-                ResourceID = overrideResourceId,
-                ResourceName = overrideResourceName,
-            };
+                //------------Setup for test--------------------------
+                var overrideResourceId = Guid.NewGuid();
+                var resourceId = Guid.NewGuid();
+                const string overrideResourceName = "AuthWorkflow";
+                const string resourceName = "Workflow";
+                var permission = new WindowsGroupPermission
+                {
+                    IsServer = false,
+                    WindowsGroup = "Deploy Admins",
+                    View = false,
+                    Execute = false,
+                    Contribute = false,
+                    DeployTo = true,
+                    DeployFrom = true,
+                    Administrator = false,
+                    ResourceID = resourceId,
+                    ResourceName = resourceName
+                };
+                var publicPermission = new WindowsGroupPermission
+                {
+                    IsServer = false,
+                    WindowsGroup = "Public",
+                    Execute = true,
+                    View = true,
+                    ResourceID = overrideResourceId,
+                    ResourceName = overrideResourceName,
+                };
 
-            var authenticationOverrideWorkflow = new NamedGuid
-            {
-                Value = resourceId,
-                Name = resourceName
-            };
-            var authResource = new NamedGuid
-            {
-                Value = overrideResourceId,
-                Name = overrideResourceName
-            };
-            var mockExplorerTreeItem = new Mock<IExplorerTreeItem>();
-            var mockResourcePickerDialog = new Mock<IResourcePickerDialog>();
+                var authenticationOverrideWorkflow = new NamedGuid
+                {
+                    Value = resourceId,
+                    Name = resourceName
+                };
+                var authResource = new NamedGuid
+                {
+                    Value = overrideResourceId,
+                    Name = overrideResourceName
+                };
+                var mockExplorerTreeItem = new Mock<IExplorerTreeItem>();
+                var mockResourcePickerDialog = new Mock<IResourcePickerDialog>();
 
-            _serverRepo = GetEnvironmentRepository();
+                _serverRepo = GetEnvironmentRepository();
 
-            var dataListItem = new DataListItem {Recordset = "NoGroups", Field = "Name"};
-            var dataListItems = new OptomizedObservableCollection<IDataListItem> {dataListItem};
+                var dataListItem = new DataListItem { Recordset = "NoGroups", Field = "Name" };
+                var dataListItems = new OptomizedObservableCollection<IDataListItem> { dataListItem };
 
-            var mockShellViewModel = new Mock<IShellViewModel>();
-            mockShellViewModel.Setup(o => o.GetOutputsFromWorkflow(overrideResourceId)).Returns(dataListItems);
-            CustomContainer.Register(mockShellViewModel.Object);
+                var mockShellViewModel = new Mock<IShellViewModel>();
+                mockShellViewModel.Setup(o => o.GetOutputsFromWorkflow(overrideResourceId)).Returns(dataListItems);
+                CustomContainer.Register(mockShellViewModel.Object);
 
-            _firstResource = CreateResource(ResourceType.WorkflowService, overrideResourceName, overrideResourceId);
-            var coll = new Collection<IResourceModel> {_firstResource.Object};
-            _resourceRepo.Setup(c => c.All()).Returns(coll);
-            _environmentModel.Setup(m => m.ResourceRepository).Returns(_resourceRepo.Object);
+                _firstResource = CreateResource(ResourceType.WorkflowService, overrideResourceName, overrideResourceId);
+                var coll = new Collection<IResourceModel> { _firstResource.Object };
+                _resourceRepo.Setup(c => c.All()).Returns(coll);
+                _environmentModel.Setup(m => m.ResourceRepository).Returns(_resourceRepo.Object);
 
-            mockExplorerTreeItem.Setup(explorerItem => explorerItem.ResourceId).Returns(overrideResourceId);
-            mockExplorerTreeItem.Setup(explorerItem => explorerItem.ResourcePath).Returns(overrideResourceName);
-            mockExplorerTreeItem.Setup(explorerItem => explorerItem.ResourceName).Returns(overrideResourceName);
-            CustomContainer.Register(mockExplorerTreeItem.Object);
-            mockResourcePickerDialog.Setup(resourcePicker => resourcePicker.SelectedResource).Returns(mockExplorerTreeItem.Object);
-            mockResourcePickerDialog.Setup(resourcePicker => resourcePicker.ShowDialog(_environmentModel.Object)).Returns(true);
-            CustomContainer.Register(mockResourcePickerDialog.Object);
+                mockExplorerTreeItem.Setup(explorerItem => explorerItem.ResourceId).Returns(overrideResourceId);
+                mockExplorerTreeItem.Setup(explorerItem => explorerItem.ResourcePath).Returns(overrideResourceName);
+                mockExplorerTreeItem.Setup(explorerItem => explorerItem.ResourceName).Returns(overrideResourceName);
+                CustomContainer.Register(mockExplorerTreeItem.Object);
+                mockResourcePickerDialog.Setup(resourcePicker => resourcePicker.SelectedResource).Returns(mockExplorerTreeItem.Object);
+                mockResourcePickerDialog.Setup(resourcePicker => resourcePicker.ShowDialog(_environmentModel.Object)).Returns(true);
+                CustomContainer.Register(mockResourcePickerDialog.Object);
 
-            var mockPopupController = new Mock<IPopupController>();
-            mockPopupController.Setup(c => c.Show(It.IsAny<PopupMessage>()));
-            CustomContainer.Register(mockPopupController.Object);
+                var mockPopupController = new Mock<IPopupController>();
+                mockPopupController.Setup(c => c.Show(It.IsAny<PopupMessage>()));
+                CustomContainer.Register(mockPopupController.Object);
 
-            var secretKey = GenerateSecretKey();
-            var viewModel = new SecurityViewModel(
-                new SecuritySettingsTO(new[] {permission, publicPermission}, authenticationOverrideWorkflow,secretKey),
-                new Mock<DirectoryObjectPickerDialog>().Object,
-                new Mock<IWin32Window>().Object,
-                _environmentModel.Object, () => mockResourcePickerDialog.Object);
+                var secretKey = GenerateSecretKey();
+                var viewModel = new SecurityViewModel(
+                    new SecuritySettingsTO(new[] { permission, publicPermission }, authenticationOverrideWorkflow, secretKey),
+                    new Mock<DirectoryObjectPickerDialog>().Object,
+                    new Mock<IWin32Window>().Object,
+                    _environmentModel.Object, () => mockResourcePickerDialog.Object);
 
-            //------------Execute Test---------------------------
-            viewModel.PickOverrideResourceCommand.Execute(authResource);
+                //------------Execute Test---------------------------
+                viewModel.PickOverrideResourceCommand.Execute(authResource);
 
-            //------------Assert Results-------------------------
-            Assert.AreEqual(resourceId, viewModel.OverrideResource.Value);
-            Assert.AreEqual(resourceName, viewModel.OverrideResource.Name);
-            mockShellViewModel.Verify(o => o.GetOutputsFromWorkflow(overrideResourceId), Times.Once);
-            mockPopupController.Verify(o => o.Show(It.IsAny<PopupMessage>()), Times.Once);
+                //------------Assert Results-------------------------
+                Assert.AreEqual(resourceId, viewModel.OverrideResource.Value);
+                Assert.AreEqual(resourceName, viewModel.OverrideResource.Name);
+                mockShellViewModel.Verify(o => o.GetOutputsFromWorkflow(overrideResourceId), Times.Once);
+                mockPopupController.Verify(o => o.Show(It.IsAny<PopupMessage>()), Times.Once);
+            });
         }
 
         [TestMethod]
@@ -1930,25 +1985,28 @@ namespace Dev2.Core.Tests.Settings
         [Timeout(300000)]
         public void SecurityViewModel_ShowDirectoryObjectPickerDialog()
         {
-            var popupMessage = new PopupMessage
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
             {
-                Description = "An error occured while trying to open the Windows Group Picker dialog. Please ensure that you are part of a Domain to use this feature.",
-                Image = MessageBoxImage.Error,
-                Buttons = MessageBoxButton.OK,
-                IsError = true,
-                Header = @"Error"
-            };
+                var popupMessage = new PopupMessage
+                {
+                    Description = "An error occured while trying to open the Windows Group Picker dialog. Please ensure that you are part of a Domain to use this feature.",
+                    Image = MessageBoxImage.Error,
+                    Buttons = MessageBoxButton.OK,
+                    IsError = true,
+                    Header = @"Error"
+                };
 
-            var mockPopupController = new Mock<IPopupController>();
-            mockPopupController.Setup(o => o.Show(popupMessage)).Verifiable();
-            CustomContainer.Register(mockPopupController.Object);
+                var mockPopupController = new Mock<IPopupController>();
+                mockPopupController.Setup(o => o.Show(popupMessage)).Verifiable();
+                CustomContainer.Register(mockPopupController.Object);
 
-            var mockWin32Window = new Mock<IWin32Window>();
-            var securityViewModel = new SecurityViewModel(new SecuritySettingsTO(), new Mock<DirectoryObjectPickerDialog>().Object, mockWin32Window.Object, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
+                var mockWin32Window = new Mock<IWin32Window>();
+                var securityViewModel = new SecurityViewModel(new SecuritySettingsTO(), new Mock<DirectoryObjectPickerDialog>().Object, mockWin32Window.Object, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
 
-            var dialogResult = securityViewModel.ShowDirectoryObjectPickerDialog(mockWin32Window.Object);
-            Assert.AreEqual(DialogResult.Cancel, dialogResult);
-            Assert.IsNotNull(securityViewModel.GetSelectedObjectsFromDirectoryObjectPickerDialog());
+                var dialogResult = securityViewModel.ShowDirectoryObjectPickerDialog(mockWin32Window.Object);
+                Assert.AreEqual(DialogResult.Cancel, dialogResult);
+                Assert.IsNotNull(securityViewModel.GetSelectedObjectsFromDirectoryObjectPickerDialog());
+            });
         }
 
         [TestMethod]
@@ -1957,15 +2015,18 @@ namespace Dev2.Core.Tests.Settings
         [Timeout(300000)]
         public void SecurityViewModel_CreateResourcePickerDialog()
         {
-            var mockShellViewModel = new Mock<IShellViewModel>();
-            mockShellViewModel.Setup(o => o.ActiveServer).Returns(new Mock<IServer>().Object);
-            CustomContainer.Register(mockShellViewModel.Object);
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
+            {
+                var mockShellViewModel = new Mock<IShellViewModel>();
+                mockShellViewModel.Setup(o => o.ActiveServer).Returns(new Mock<IServer>().Object);
+                CustomContainer.Register(mockShellViewModel.Object);
 
-            var mockWin32Window = new Mock<IWin32Window>();
-            var securityViewModel = new SecurityViewModel(new SecuritySettingsTO(), new Mock<DirectoryObjectPickerDialog>().Object, mockWin32Window.Object, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
+                var mockWin32Window = new Mock<IWin32Window>();
+                var securityViewModel = new SecurityViewModel(new SecuritySettingsTO(), new Mock<DirectoryObjectPickerDialog>().Object, mockWin32Window.Object, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
 
-            var resourcePicker = securityViewModel.CreateResourcePickerDialog();
-            Assert.IsNotNull(resourcePicker);
+                var resourcePicker = securityViewModel.CreateResourcePickerDialog();
+                Assert.IsNotNull(resourcePicker);
+            });
         }
 
         [TestMethod]
@@ -2004,13 +2065,16 @@ namespace Dev2.Core.Tests.Settings
         [Timeout(300000)]
         public void SecurityViewModel_Equals_ServerPermissions_WindowsGroup()
         {
-            var viewModel = PermissionsValidation();
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
+            {
+                var viewModel = PermissionsValidation();
 
-            Assert.AreEqual(3, viewModel.ItemServerPermissions.Count);
-            Assert.IsFalse(viewModel.IsDirty);
+                Assert.AreEqual(3, viewModel.ItemServerPermissions.Count);
+                Assert.IsFalse(viewModel.IsDirty);
 
-            viewModel.ItemServerPermissions[0].WindowsGroup = "User";
-            Assert.IsTrue(viewModel.IsDirty);
+                viewModel.ItemServerPermissions[0].WindowsGroup = "User";
+                Assert.IsTrue(viewModel.IsDirty);
+            });
         }
 
         [TestMethod]
@@ -2019,12 +2083,15 @@ namespace Dev2.Core.Tests.Settings
         [Timeout(300000)]
         public void SecurityViewModel_Equals_ServerPermissions_DeployTo()
         {
-            var viewModel = PermissionsValidation();
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
+            {
+                var viewModel = PermissionsValidation();
 
-            Assert.AreEqual(3, viewModel.ItemServerPermissions.Count);
-            Assert.IsFalse(viewModel.IsDirty);
-            viewModel.ItemServerPermissions[0].DeployTo = false;
-            Assert.IsTrue(viewModel.IsDirty);
+                Assert.AreEqual(3, viewModel.ItemServerPermissions.Count);
+                Assert.IsFalse(viewModel.IsDirty);
+                viewModel.ItemServerPermissions[0].DeployTo = false;
+                Assert.IsTrue(viewModel.IsDirty);
+            });
         }
 
         [TestMethod]
@@ -2033,12 +2100,15 @@ namespace Dev2.Core.Tests.Settings
         [Timeout(300000)]
         public void SecurityViewModel_Equals_ServerPermissions_DeployFrom()
         {
-            var viewModel = PermissionsValidation();
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
+            {
+                var viewModel = PermissionsValidation();
 
-            Assert.AreEqual(3, viewModel.ItemServerPermissions.Count);
-            Assert.IsFalse(viewModel.IsDirty);
-            viewModel.ItemServerPermissions[0].DeployFrom = false;
-            Assert.IsTrue(viewModel.IsDirty);
+                Assert.AreEqual(3, viewModel.ItemServerPermissions.Count);
+                Assert.IsFalse(viewModel.IsDirty);
+                viewModel.ItemServerPermissions[0].DeployFrom = false;
+                Assert.IsTrue(viewModel.IsDirty);
+            });
         }
 
         [TestMethod]
@@ -2047,12 +2117,15 @@ namespace Dev2.Core.Tests.Settings
         [Timeout(300000)]
         public void SecurityViewModel_Equals_ServerPermissions_Administrator()
         {
-            var viewModel = PermissionsValidation();
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
+            {
+                var viewModel = PermissionsValidation();
 
-            Assert.AreEqual(3, viewModel.ItemServerPermissions.Count);
-            Assert.IsFalse(viewModel.IsDirty);
-            viewModel.ItemServerPermissions[0].Administrator = false;
-            Assert.IsTrue(viewModel.IsDirty);
+                Assert.AreEqual(3, viewModel.ItemServerPermissions.Count);
+                Assert.IsFalse(viewModel.IsDirty);
+                viewModel.ItemServerPermissions[0].Administrator = false;
+                Assert.IsTrue(viewModel.IsDirty);
+            });
         }
 
         [TestMethod]
@@ -2061,12 +2134,15 @@ namespace Dev2.Core.Tests.Settings
         [Timeout(300000)]
         public void SecurityViewModel_Equals_ServerPermissions_View()
         {
-            var viewModel = PermissionsValidation();
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
+            {
+                var viewModel = PermissionsValidation();
 
-            Assert.AreEqual(3, viewModel.ItemServerPermissions.Count);
-            Assert.IsFalse(viewModel.IsDirty);
-            viewModel.ItemServerPermissions[0].View = true;
-            Assert.IsTrue(viewModel.IsDirty);
+                Assert.AreEqual(3, viewModel.ItemServerPermissions.Count);
+                Assert.IsFalse(viewModel.IsDirty);
+                viewModel.ItemServerPermissions[0].View = true;
+                Assert.IsTrue(viewModel.IsDirty);
+            });
         }
 
         [TestMethod]
@@ -2075,12 +2151,15 @@ namespace Dev2.Core.Tests.Settings
         [Timeout(300000)]
         public void SecurityViewModel_Equals_ServerPermissions_Execute()
         {
-            var viewModel = PermissionsValidation();
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
+            {
+                var viewModel = PermissionsValidation();
 
-            Assert.AreEqual(3, viewModel.ItemServerPermissions.Count);
-            Assert.IsFalse(viewModel.IsDirty);
-            viewModel.ItemServerPermissions[0].Execute = true;
-            Assert.IsTrue(viewModel.IsDirty);
+                Assert.AreEqual(3, viewModel.ItemServerPermissions.Count);
+                Assert.IsFalse(viewModel.IsDirty);
+                viewModel.ItemServerPermissions[0].Execute = true;
+                Assert.IsTrue(viewModel.IsDirty);
+            });
         }
 
         [TestMethod]
@@ -2089,12 +2168,15 @@ namespace Dev2.Core.Tests.Settings
         [Timeout(300000)]
         public void SecurityViewModel_Equals_ServerPermissions_Contribute()
         {
-            var viewModel = PermissionsValidation();
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
+            {
+                var viewModel = PermissionsValidation();
 
-            Assert.AreEqual(3, viewModel.ItemServerPermissions.Count);
-            Assert.IsFalse(viewModel.IsDirty);
-            viewModel.ItemServerPermissions[0].Contribute = false;
-            Assert.IsTrue(viewModel.IsDirty);
+                Assert.AreEqual(3, viewModel.ItemServerPermissions.Count);
+                Assert.IsFalse(viewModel.IsDirty);
+                viewModel.ItemServerPermissions[0].Contribute = false;
+                Assert.IsTrue(viewModel.IsDirty);
+            });
         }
 
         [TestMethod]
@@ -2103,12 +2185,15 @@ namespace Dev2.Core.Tests.Settings
         [Timeout(300000)]
         public void SecurityViewModel_Equals_ServerPermissions_IsDeleted()
         {
-            var viewModel = PermissionsValidation();
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
+            {
+                var viewModel = PermissionsValidation();
 
-            Assert.AreEqual(3, viewModel.ItemServerPermissions.Count);
-            Assert.IsFalse(viewModel.IsDirty);
-            viewModel.ItemServerPermissions[0].IsDeleted = true;
-            Assert.IsTrue(viewModel.IsDirty);
+                Assert.AreEqual(3, viewModel.ItemServerPermissions.Count);
+                Assert.IsFalse(viewModel.IsDirty);
+                viewModel.ItemServerPermissions[0].IsDeleted = true;
+                Assert.IsTrue(viewModel.IsDirty);
+            });
         }
 
         private static SecurityViewModel PermissionsValidation()
@@ -2149,12 +2234,15 @@ namespace Dev2.Core.Tests.Settings
         [Timeout(300000)]
         public void SecurityViewModel_Equals_ResourcePermissions_ResourceName()
         {
-            var viewModel = PermissionsValidation();
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
+            {
+                var viewModel = PermissionsValidation();
 
-            Assert.AreEqual(1, viewModel.ItemResourcePermissions.Count);
-            Assert.IsFalse(viewModel.IsDirty);
-            viewModel.ItemResourcePermissions[0].ResourceName = "someName";
-            Assert.IsTrue(viewModel.IsDirty);
+                Assert.AreEqual(1, viewModel.ItemResourcePermissions.Count);
+                Assert.IsFalse(viewModel.IsDirty);
+                viewModel.ItemResourcePermissions[0].ResourceName = "someName";
+                Assert.IsTrue(viewModel.IsDirty);
+            });
         }
 
         [TestMethod]
@@ -2177,12 +2265,15 @@ namespace Dev2.Core.Tests.Settings
         [Timeout(300000)]
         public void SecurityViewModel_Equals_ResourcePermissions_View()
         {
-            var viewModel = PermissionsValidation();
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
+            {
+                var viewModel = PermissionsValidation();
 
-            Assert.AreEqual(1, viewModel.ItemResourcePermissions.Count);
-            Assert.IsFalse(viewModel.IsDirty);
-            viewModel.ItemResourcePermissions[0].View = true;
-            Assert.IsTrue(viewModel.IsDirty);
+                Assert.AreEqual(1, viewModel.ItemResourcePermissions.Count);
+                Assert.IsFalse(viewModel.IsDirty);
+                viewModel.ItemResourcePermissions[0].View = true;
+                Assert.IsTrue(viewModel.IsDirty);
+            });
         }
 
         [TestMethod]
@@ -2191,12 +2282,15 @@ namespace Dev2.Core.Tests.Settings
         [Timeout(300000)]
         public void SecurityViewModel_Equals_ResourcePermissions_Execute()
         {
-            var viewModel = PermissionsValidation();
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
+            {
+                var viewModel = PermissionsValidation();
 
-            Assert.AreEqual(1, viewModel.ItemResourcePermissions.Count);
-            Assert.IsFalse(viewModel.IsDirty);
-            viewModel.ItemResourcePermissions[0].Execute = true;
-            Assert.IsTrue(viewModel.IsDirty);
+                Assert.AreEqual(1, viewModel.ItemResourcePermissions.Count);
+                Assert.IsFalse(viewModel.IsDirty);
+                viewModel.ItemResourcePermissions[0].Execute = true;
+                Assert.IsTrue(viewModel.IsDirty);
+            });
         }
 
         [TestMethod]
@@ -2205,12 +2299,15 @@ namespace Dev2.Core.Tests.Settings
         [Timeout(300000)]
         public void SecurityViewModel_Equals_ResourcePermissions_Contribute()
         {
-            var viewModel = PermissionsValidation();
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
+            {
+                var viewModel = PermissionsValidation();
 
-            Assert.AreEqual(1, viewModel.ItemResourcePermissions.Count);
-            Assert.IsFalse(viewModel.IsDirty);
-            viewModel.ItemResourcePermissions[0].Contribute = false;
-            Assert.IsTrue(viewModel.IsDirty);
+                Assert.AreEqual(1, viewModel.ItemResourcePermissions.Count);
+                Assert.IsFalse(viewModel.IsDirty);
+                viewModel.ItemResourcePermissions[0].Contribute = false;
+                Assert.IsTrue(viewModel.IsDirty);
+            });
         }
 
         [TestMethod]
@@ -2219,12 +2316,15 @@ namespace Dev2.Core.Tests.Settings
         [Timeout(300000)]
         public void SecurityViewModel_Equals_ResourcePermissions_DeployTo()
         {
-            var viewModel = PermissionsValidation();
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
+            {
+                var viewModel = PermissionsValidation();
 
-            Assert.AreEqual(1, viewModel.ItemResourcePermissions.Count);
-            Assert.IsFalse(viewModel.IsDirty);
-            viewModel.ItemResourcePermissions[0].DeployTo = false;
-            Assert.IsTrue(viewModel.IsDirty);
+                Assert.AreEqual(1, viewModel.ItemResourcePermissions.Count);
+                Assert.IsFalse(viewModel.IsDirty);
+                viewModel.ItemResourcePermissions[0].DeployTo = false;
+                Assert.IsTrue(viewModel.IsDirty);
+            });
         }
 
         [TestMethod]
@@ -2233,12 +2333,15 @@ namespace Dev2.Core.Tests.Settings
         [Timeout(300000)]
         public void SecurityViewModel_Equals_ResourcePermissions_DeployFrom()
         {
-            var viewModel = PermissionsValidation();
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
+            {
+                var viewModel = PermissionsValidation();
 
-            Assert.AreEqual(1, viewModel.ItemResourcePermissions.Count);
-            Assert.IsFalse(viewModel.IsDirty);
-            viewModel.ItemResourcePermissions[0].DeployFrom = false;
-            Assert.IsTrue(viewModel.IsDirty);
+                Assert.AreEqual(1, viewModel.ItemResourcePermissions.Count);
+                Assert.IsFalse(viewModel.IsDirty);
+                viewModel.ItemResourcePermissions[0].DeployFrom = false;
+                Assert.IsTrue(viewModel.IsDirty);
+            });
         }
 
         [TestMethod]
@@ -2247,12 +2350,15 @@ namespace Dev2.Core.Tests.Settings
         [Timeout(300000)]
         public void SecurityViewModel_Equals_ResourcePermissions_Administrator()
         {
-            var viewModel = PermissionsValidation();
+            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
+            {
+                var viewModel = PermissionsValidation();
 
-            Assert.AreEqual(1, viewModel.ItemResourcePermissions.Count);
-            Assert.IsFalse(viewModel.IsDirty);
-            viewModel.ItemResourcePermissions[0].Administrator = false;
-            Assert.IsTrue(viewModel.IsDirty);
+                Assert.AreEqual(1, viewModel.ItemResourcePermissions.Count);
+                Assert.IsFalse(viewModel.IsDirty);
+                viewModel.ItemResourcePermissions[0].Administrator = false;
+                Assert.IsTrue(viewModel.IsDirty);
+            });
         }
 
         static List<WindowsGroupPermission> CreatePermissions()
