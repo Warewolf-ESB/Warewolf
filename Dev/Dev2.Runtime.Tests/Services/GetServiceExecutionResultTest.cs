@@ -64,6 +64,7 @@ namespace Dev2.Tests.Runtime.Services
 			loggingProcessMonitor.Start();
 			var checkLogServerConnectionTask = Task.Run(() =>
 			{
+				Thread.Sleep(9000);
 				var webSocketWrapper = webSocketPool.Acquire(Config.Auditing.Endpoint);
 				return webSocketWrapper.IsOpen();
 			});
