@@ -388,7 +388,7 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
 					Copy-Item -Path "$PSScriptRoot\Dev\Warewolf.COMIPC\bin\$Config\net6.0-windows\Warewolf.COMIPC.exe" -Destination "$PSScriptRoot\Dev\Dev2.Server\bin\$Config\net6.0-windows\Warewolf.COMIPC.exe_v4.8\Warewolf.COMIPC.exe" -Force
 				}
 			}
-			if ($TesthostConfig -ne "") {
+			if ($TesthostConfig -ne "" -and Test-Path "$PSScriptRoot\Bin\$OutputFolderName\$TesthostConfig") {
 				if (!(Test-Path "$PSScriptRoot\Bin\$OutputFolderName\testhost.dll.config")) {
 					Rename-Item -Path "$PSScriptRoot\Bin\$OutputFolderName\$TesthostConfig" -NewName "$PSScriptRoot\Bin\$OutputFolderName\testhost.dll.config"
 				} else {
