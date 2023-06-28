@@ -67,7 +67,7 @@ namespace Dev2.Tests.Runtime.Services
 				var webSocketWrapper = webSocketPool.Acquire(Config.Auditing.Endpoint);
 				return webSocketWrapper.IsOpen();
 			});
-			var loggingServerCheckDelay = Task.Delay(TimeSpan.FromSeconds(10000));
+			var loggingServerCheckDelay = Task.Delay(TimeSpan.FromSeconds(300));
 			var result = Task.WaitAny(new[] { checkLogServerConnectionTask, loggingServerCheckDelay });
 			var isConnectedOkay = !checkLogServerConnectionTask.IsCanceled && !checkLogServerConnectionTask.IsFaulted && checkLogServerConnectionTask.Result == true;
 			var logServerConnectedOkayNoTimeout = result == 0 && isConnectedOkay;
