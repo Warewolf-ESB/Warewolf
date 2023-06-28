@@ -63,13 +63,13 @@ namespace Dev2.Tests.Runtime.Services
 			var loggingProcessMonitor = config.LoggingServiceMonitor;
 			loggingProcessMonitor.Start();
 			bool isConnectedOkay;
-                        do
-                                    {
-                                                    var webSocketWrapper = webSocketPool.Acquire(Config.Auditing.Endpoint);
-                                                                    isConnectedOkay = webSocketWrapper.IsOpen();
-                                                                                } while (!isConnectedOkay);
-                                                                                            			Assert.IsTrue(isConnectedOkay);
-                                                                                                        
+            do
+            {
+                var webSocketWrapper = webSocketPool.Acquire(Config.Auditing.Endpoint);
+                isConnectedOkay = webSocketWrapper.IsOpen();
+            } while (!isConnectedOkay);
+            Assert.IsTrue(isConnectedOkay);
+            
 			_dev2StateAuditLogger = TestAuditSetupWithAssignedInputs(expectedWorkflowId, expectedWorkflowName, expectedExecutionId);
 			_dev2StateAuditLogger.LogExecuteCompleteState(new Audit()
 			{
