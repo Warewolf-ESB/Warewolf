@@ -68,8 +68,6 @@ namespace Dev2.Tests.Runtime.Services
                                                     var webSocketWrapper = webSocketPool.Acquire(Config.Auditing.Endpoint);
                                                                     isConnectedOkay = webSocketWrapper.IsOpen();
                                                                                 } while (!isConnectedOkay);
-
-                                                                                            File.AppendAllText("C:\\programdata\\warewolf\\Server Log\\warewolflogger.log", "\nTest connection to " + Config.Auditing.Endpoint + ": " + isConnectedOkay.ToString());
                                                                                             			Assert.IsTrue(isConnectedOkay);
                                                                                                         
 			_dev2StateAuditLogger = TestAuditSetupWithAssignedInputs(expectedWorkflowId, expectedWorkflowName, expectedExecutionId);
