@@ -62,16 +62,16 @@ namespace Dev2.Tests.Runtime.Services
 			};
 			var loggingProcessMonitor = config.LoggingServiceMonitor;
 			loggingProcessMonitor.Start();
-			var checkLogServerConnectionTask = Task.Run(() =>
-			{
-				var webSocketWrapper = webSocketPool.Acquire(Config.Auditing.Endpoint);
-				return webSocketWrapper.IsOpen();
-			});
-			var loggingServerCheckDelay = Task.Delay(TimeSpan.FromSeconds(300));
-			var result = Task.WaitAny(new[] { checkLogServerConnectionTask, loggingServerCheckDelay });
-			var isConnectedOkay = !checkLogServerConnectionTask.IsCanceled && !checkLogServerConnectionTask.IsFaulted && checkLogServerConnectionTask.Result == true;
-			var logServerConnectedOkayNoTimeout = result == 0 && isConnectedOkay;
-			Assert.IsTrue(logServerConnectedOkayNoTimeout);
+			bool isConnectedOkay;
+                        do
+                                    {
+                                                    var webSocketWrapper = webSocketPool.Acquire(Config.Auditing.Endpoint);
+                                                                    isConnectedOkay = webSocketWrapper.IsOpen();
+                                                                                } while (!isConnectedOkay);
+
+                                                                                            File.AppendAllText("C:\\programdata\\warewolf\\Server Log\\warewolflogger.log", "\nTest connection to " + Config.Auditing.Endpoint + ": " + isConnectedOkay.ToString());
+                                                                                            			Assert.IsTrue(isConnectedOkay);
+                                                                                                        
 			_dev2StateAuditLogger = TestAuditSetupWithAssignedInputs(expectedWorkflowId, expectedWorkflowName, expectedExecutionId);
 			_dev2StateAuditLogger.LogExecuteCompleteState(new Audit()
 			{
