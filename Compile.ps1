@@ -379,7 +379,7 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
 						mkdir "$PSScriptRoot\Bin\$OutputFolderName\Warewolf.COMIPC.exe_v4.8"
 					}
 					Copy-Item -Path "$PSScriptRoot\Dev\Warewolf.COMIPC\bin\Debug\net6.0-windows\Warewolf.COMIPC.exe" -Destination "$PSScriptRoot\Bin\$OutputFolderName\Warewolf.COMIPC.exe_v4.8\Warewolf.COMIPC.exe" -Force
-					Copy-Item -Path "$PSScriptRoot\Dev\Server Tests Setup\SQLite.Interop.dll" -Destination "$PSScriptRoot\Bin\$OutputFolderName\SQLite.Interop.dll" -Force
+					Copy-Item -Path "$PSScriptRoot\Bin\$OutputFolderName\runtimes\win-x64\native\SQLite.Interop.dll" -Destination "$PSScriptRoot\Bin\$OutputFolderName\SQLite.Interop.dll" -Force
 				} else {
 					if (!(Test-Path "$PSScriptRoot\Dev\Dev2.Server\bin\$Config\net6.0-windows\Warewolf.COMIPC.exe_v4.8")) {
 						mkdir "$PSScriptRoot\Dev\Dev2.Server\bin\$Config\net6.0-windows\Warewolf.COMIPC.exe_v4.8"
