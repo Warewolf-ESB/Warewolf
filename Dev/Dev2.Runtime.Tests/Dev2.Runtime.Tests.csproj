@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <DependsOnNETStandard>true</DependsOnNETStandard>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -660,7 +660,7 @@
     </PackageReference>-->
     <PackageReference Include="Prism.Core" Version="8.1.97" />
 
-    <PackageReference Include="System.Data.SQLite.Core">
+    <PackageReference Include="System.Data.SQLite">
       <Version>1.0.117</Version>
       <PrivateAssets>none</PrivateAssets>
     </PackageReference>
