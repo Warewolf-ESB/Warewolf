@@ -358,12 +358,12 @@ if __name__ == '__main__':
 	if ($TestsToRun) {
 		if ($PreTestRunScript) {
 			"&.\$PreTestRunScript" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
-			"&`"$VSTestPath\Extensions\TestPlatform\vstest.console.exe`" /logger:trx $AssembliesArg /Tests:`"$TestsToRun`" $STAArg" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
+			"&`"$VSTestPath\Extensions\TestPlatform\vstest.console.exe`" /logger:trx /platform:x64 $AssembliesArg /Tests:`"$TestsToRun`" $STAArg" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
 		} else {
 			if ($Coverage.IsPresent -and !($PreTestRunScript)) {
-				"&`"$VSTestPath\Extensions\TestPlatform\vstest.console.exe`" /logger:trx $AssembliesArg /Tests:`"$TestsToRun`" $STAArg /EnableCodeCoverage" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
+				"&`"$VSTestPath\Extensions\TestPlatform\vstest.console.exe`" /logger:trx /platform:x64 $AssembliesArg /Tests:`"$TestsToRun`" $STAArg /EnableCodeCoverage" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
 			} else {
-				"&`"$VSTestPath\Extensions\TestPlatform\vstest.console.exe`" /logger:trx $AssembliesArg /Tests:`"$TestsToRun`" $STAArg" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
+				"&`"$VSTestPath\Extensions\TestPlatform\vstest.console.exe`" /logger:trx /platform:x64 $AssembliesArg /Tests:`"$TestsToRun`" $STAArg" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
 			}
 		}
 	} else {
@@ -388,12 +388,12 @@ if __name__ == '__main__':
 		}
 		if ($PreTestRunScript) {
 			"&.\$PreTestRunScript" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
-			"&`"$VSTestPath\Extensions\TestPlatform\vstest.console.exe`" /logger:trx $AssembliesArg $CategoryArg $STAArg" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
+			"&`"$VSTestPath\Extensions\TestPlatform\vstest.console.exe`" /logger:trx /platform:x64 $AssembliesArg $CategoryArg $STAArg" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
 		} else {
 			if ($Coverage.IsPresent -and !($PreTestRunScript)) {
-				"&`"$VSTestPath\Extensions\TestPlatform\vstest.console.exe`" /logger:trx $AssembliesArg $CategoryArg $STAArg /EnableCodeCoverage" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
+				"&`"$VSTestPath\Extensions\TestPlatform\vstest.console.exe`" /logger:trx /platform:x64 $AssembliesArg $CategoryArg $STAArg /EnableCodeCoverage" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
 			} else {
-				"&`"$VSTestPath\Extensions\TestPlatform\vstest.console.exe`" /logger:trx $AssembliesArg $CategoryArg $STAArg" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
+				"&`"$VSTestPath\Extensions\TestPlatform\vstest.console.exe`" /logger:trx /platform:x64 $AssembliesArg $CategoryArg $STAArg" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
 			}
 		}
 	}
