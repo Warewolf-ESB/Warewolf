@@ -1187,11 +1187,11 @@ this.FeatureBackground();
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Test WF with Xpath")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "StudioTestFrameworkWithUtilityTools")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("StudioTestFrameworkWithUtilityTools")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("COMIPCSaxonCSandStudioTests")]
         public void TestWFWithXpath()
         {
             string[] tagsOfScenario = new string[] {
-                    "StudioTestFrameworkWithUtilityTools"};
+                    "COMIPCSaxonCSandStudioTests"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Test WF with Xpath", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 292
@@ -2382,11 +2382,11 @@ this.FeatureBackground();
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Test Workflow which contains COM DLL")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "StudioTestFrameworkWithUtilityTools")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("StudioTestFrameworkWithUtilityTools")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("COMIPCSaxonCSandStudioTests")]
         public void TestWorkflowWhichContainsCOMDLL()
         {
             string[] tagsOfScenario = new string[] {
-                    "StudioTestFrameworkWithUtilityTools"};
+                    "COMIPCSaxonCSandStudioTests"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Test Workflow which contains COM DLL", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 596

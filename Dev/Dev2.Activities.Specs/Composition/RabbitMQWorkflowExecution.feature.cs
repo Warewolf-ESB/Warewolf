@@ -259,11 +259,11 @@ this.FeatureBackground();
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("COM DLL service execute")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "RabbitMQWorkflowExecution")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("RabbitMQWorkflowExecution")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("COMIPCSaxonCSandStudioTests")]
         public void COMDLLServiceExecute()
         {
             string[] tagsOfScenario = new string[] {
-                    "RabbitMQWorkflowExecution"};
+                    "COMIPCSaxonCSandStudioTests"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("COM DLL service execute", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 42

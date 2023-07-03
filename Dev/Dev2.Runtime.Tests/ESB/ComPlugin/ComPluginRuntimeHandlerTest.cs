@@ -258,6 +258,7 @@ namespace Dev2.Tests.Runtime.ESB.ComPlugin
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("ComPluginRuntimeHandler_ListMethods")]
         [DeploymentItem("Warewolf.COMIPC.exe"),DeploymentItem("Warewolf.COMIPC.pdb")]
+        [TestCategory("COMIPCSaxonCSandStudioTests")]
         public void ComPluginRuntimeHandler_ListMethods_WhenValidLocation_ExpectResults()
         {
             //------------Setup for test--------------------------
@@ -277,6 +278,7 @@ namespace Dev2.Tests.Runtime.ESB.ComPlugin
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("ComPluginRuntimeHandler_Run")]
+        [TestCategory("COMIPCSaxonCSandStudioTests")]
         public void ComPluginRuntimeHandler_Run_WhenInvalidMethod_ExpectNoReturn()
         {
             //------------Setup for test--------------------------
@@ -294,6 +296,7 @@ namespace Dev2.Tests.Runtime.ESB.ComPlugin
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("ComPluginRuntimeHandler_Test")]
+        [TestCategory("COMIPCSaxonCSandStudioTests")]
         public void ComPluginRuntimeHandler_Test_WhenInvalidMethod_ExpectNoReturn()
         {
             //------------Setup for test--------------------------

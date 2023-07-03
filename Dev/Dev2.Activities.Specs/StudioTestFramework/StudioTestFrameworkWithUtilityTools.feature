@@ -288,7 +288,7 @@ Scenario: Test WF with Calculate No outPuts
 	Then The "DeleteConfirmation" popup is shown I click Ok
 	Then workflow "CalculateTestNoOutputsWF" is deleted as cleanup
 
-@StudioTestFrameworkWithUtilityTools
+@COMIPCSaxonCSandStudioTests
 Scenario: Test WF with Xpath
 	Given I have a workflow "XPathTestWF"
 	And "XPathTestWF" contains XPath \"XPathTest" with source "//XPATH-EXAMPLE/CUSTOMER[@id='2' or @type='C']/text()"
@@ -592,7 +592,7 @@ Scenario: Run a passing Test with RabbitMq Object return
 	When I delete "Test 1"
 	Then The "DeleteConfirmation" popup is shown I click Ok
 
-@StudioTestFrameworkWithUtilityTools
+@COMIPCSaxonCSandStudioTests
 Scenario:Test Workflow which contains COM DLL
 	Given I have a workflow "TestWFCOMDLL"
 	And "TestWFCOMDLL" contains an COM DLL "COMService" as

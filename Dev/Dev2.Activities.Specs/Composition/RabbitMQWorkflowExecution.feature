@@ -38,7 +38,7 @@ Scenario:WF with RabbitMq Consume with no timeout
 	And the "RabbitMqConsumeNotimeout" has a start and end duration
 	And "RabbitMqConsumeNotimeout" Duration is less or equal to 60 seconds
 
-@RabbitMQWorkflowExecution
+@COMIPCSaxonCSandStudioTests
 Scenario: COM DLL service execute
 	Given I have a server at "localhost" with workflow "Testing COM DLL Activity Execute"
 	When "localhost" is the active environment used to execute "Testing COM DLL Activity Execute"

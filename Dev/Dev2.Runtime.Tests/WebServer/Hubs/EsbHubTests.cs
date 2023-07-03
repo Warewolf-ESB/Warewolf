@@ -32,6 +32,7 @@ namespace Dev2.Tests.Runtime.WebServer.Hubs
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("EsbHub_AddItemMessage")]
+        [TestCategory("COMIPCSaxonCSandStudioTests")]
         public void EsbHub_AddItemMessage_ItemHasData_ItemAddedMessageIsPublished()
         {
             //------------Setup for test--------------------------

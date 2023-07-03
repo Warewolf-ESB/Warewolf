@@ -1,9 +1,9 @@
-﻿@WorkflowMerging
-Feature: MergeExecution
+﻿Feature: MergeExecution
 	In order to avoid silly mistakes
 	As a math idiot
 	I want to be told the sum of two numbers
 
+@COMIPCSaxonCSandStudioTests
 Scenario: Merge AssignOnlyWithNoOutput Workflow with Same Version
 	 Given I Load workflow "AssignOnlyWithNoOutput" from "localhost"
 	 And I Load workflow "AssignOnlyWithNoOutput" from "Remote Connection Integration"	 
@@ -16,7 +16,7 @@ Scenario: Merge AssignOnlyWithNoOutput Workflow with Same Version
 	 And Merge variable conflicts is false
 	 And Merge window has no Conflicting tools
 
-
+@COMIPCSaxonCSandStudioTests
 Scenario: Merge VersionHelloWorld Workflow 
 	 Given I Load workflow "MergeHelloWorld" from "localhost"
 	 And I Load workflow "VersionHelloWorld" from "Remote Connection Integration"	 
@@ -29,6 +29,7 @@ Scenario: Merge VersionHelloWorld Workflow
 	 And Merge variable conflicts is false
 	 And Merge window has "1" Conflicting tools
 
+@WorkflowMerging
 Scenario: Merge WorkFlowWithOneScalar different input mapping
 	 Given I Load workflow "WorkFlowWithOneScalar" from "localhost"
 	 And I Load workflow version of WorkFlowWithOneScalar
@@ -41,6 +42,7 @@ Scenario: Merge WorkFlowWithOneScalar different input mapping
 	 And Merge variable conflicts is false
 	 And Merge window has "2" Conflicting tools
 
+@WorkflowMerging
 Scenario: Merge WorkFlowWithOneRecordSet different input mapping
 	 Given I Load workflow "WorkFlowWithOneRecordSet" from "localhost"
 	 And I Load workflow version of WorkFlowWithOneRecordSet
@@ -53,6 +55,7 @@ Scenario: Merge WorkFlowWithOneRecordSet different input mapping
 	 And Merge variable conflicts is false
 	 And Merge window has "2" Conflicting tools
 
+@WorkflowMerging
 Scenario: Merge WorkFlowWithOneObject different input mapping
 	 Given I Load workflow "WorkFlowWithOneObject" from "localhost"
 	 And I Load workflow version of WorkFlowWithOneObject
@@ -65,6 +68,7 @@ Scenario: Merge WorkFlowWithOneObject different input mapping
 	 And Merge variable conflicts is false
 	 And Merge window has "2" Conflicting tools
 
+@COMIPCSaxonCSandStudioTests
 Scenario: Merge Workflow with Assign tool As First Tool And Split tool as Second tool count
 	 Given I Load workflow "WorkflowWithDifferentToolSequence" from "localhost"
 	 And I Load workflow "WorkflowWithDifferentToolSequence" from "Remote Connection Integration"	 
@@ -76,6 +80,7 @@ Scenario: Merge Workflow with Assign tool As First Tool And Split tool as Second
 	 And Merge conflicts count is "5"
 	 And Merge variable conflicts is false
 
+@WorkflowMerging
 Scenario: Merge Workflow Containing SequenceTool With Different Children Counts Equals One
 	 Given I Load workflow "WorkflowWithSequenceToolWithDifferentChildren" from "localhost"
 	 And I Load workflow version "1" of "WorkflowWithSequenceToolWithDifferentChildren" from "localhost"
@@ -87,6 +92,7 @@ Scenario: Merge Workflow Containing SequenceTool With Different Children Counts 
 	 And Merge conflicts count is "3"
 	 And Merge variable conflicts is false
 
+@WorkflowMerging
 Scenario: Merge Workflow Containing SequenceTool With Different Children Sequence
 	 Given I Load workflow "WorkflowWithSequenceToolWithChildrenInDifferentOrder" from "localhost"
 	 And I Load workflow version "1" of "WorkflowWithSequenceToolWithChildrenInDifferentOrder" from "localhost"
@@ -98,6 +104,7 @@ Scenario: Merge Workflow Containing SequenceTool With Different Children Sequenc
 	 And Merge conflicts count is "3"
 	 And Merge variable conflicts is false
 
+@COMIPCSaxonCSandStudioTests
 Scenario: Merge Workflow Containing Same tools But disconnected Arms
 	 Given I Load workflow "WorkflowWithAssignToolsWithDisconnectedArms" from "localhost"
 	 And I Load workflow "WorkflowWithAssignToolsWithDisconnectedArms" from "Remote Connection Integration"	 
@@ -109,6 +116,7 @@ Scenario: Merge Workflow Containing Same tools But disconnected Arms
 	 And Merge conflicts count is "4"
 	 And Merge variable conflicts is false
 
+@WorkflowMerging
 Scenario: Merge Workflow Containing Removed tool with same Variable List
 	 Given I Load workflow "MergeRemovedTool" from "localhost"
 	 And I Load workflow version of MergeRemovedTool
@@ -124,6 +132,7 @@ Scenario: Merge Workflow Containing Removed tool with same Variable List
 	 And I select Current Arm
 	 Then Save is enabled
 
+@WorkflowMerging
 Scenario: Merge Workflow Containing Switch tool
 	 Given I Load workflow "MergeSwitchTool" from "localhost"
 	 And I Load workflow version of MergeSwitchTool
@@ -148,6 +157,7 @@ Scenario: Merge Workflow Containing Switch tool
 	 And I select Current Arm
 	 Then Save is enabled
 
+@WorkflowMerging
 Scenario: Merge Workflow Containing Position Change tools
 	 Given I Load workflow "MergeToolPositionChange" from "localhost"
 	 And I Load workflow version conflict MergeToolPositionChange
@@ -179,6 +189,7 @@ Scenario: Merge Workflow Containing Position Change tools
 	 And I select Different Arm
 	 Then Save is enabled
 
+@WorkflowMerging
 Scenario: Merge Workflow Version Containing Position Change tools
 	 Given I Load workflow "MergeToolPositionChange" from "localhost"
 	 And I Load workflow version conflict MergeToolPositionChange
@@ -210,6 +221,6 @@ Scenario: Merge Workflow Version Containing Position Change tools
 	 And I select Current Arm
 	 Then Save is enabled
 
-
+@WorkflowMerging
 Scenario: Merge Validate All tools are mapped
 	 Given I Load All tools and expect all tools to be mapped
