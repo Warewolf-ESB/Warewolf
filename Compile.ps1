@@ -18,8 +18,7 @@ Param(
   [switch]$ServerTests,
   [switch]$RegenerateSpecFlowFeatureFiles,
   [switch]$InContainer,
-  [string]$GitCredential,
-  [string]$TesthostConfig
+  [string]$GitCredential
 )
 $KnownSolutionFiles = "Dev\AcceptanceTesting.sln",
                       "Dev\UITesting.sln",
@@ -382,22 +381,69 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
 					Copy-Item -Path "$PSScriptRoot\Dev\Warewolf.COMIPC\bin\Debug\net6.0-windows\Warewolf.COMIPC.exe" -Destination "$PSScriptRoot\Bin\$OutputFolderName\Warewolf.COMIPC.exe_v4.8\Warewolf.COMIPC.exe" -Force
 					Copy-Item -Path "$PSScriptRoot\Bin\$OutputFolderName\runtimes\win-x64\native\SQLite.Interop.dll" -Destination "$PSScriptRoot\Bin\$OutputFolderName\SQLite.Interop.dll" -Force
 					Copy-Item -Path "$PSScriptRoot\Dev\Server Tests Setup\sni.dll" -Destination "$PSScriptRoot\Bin\$OutputFolderName\sni.dll" -Force
+					if (!(Test-Path "$PSScriptRoot\Bin\$OutputFolderName\testhost.dll.config")) {
+						@"
+<?xml version="1.0" encoding="utf-8"?>
+
+<configuration>
+    <configSections>
+        <section name="secureSettings" type="System.Configuration.NameValueSectionHandler" />
+        <section name="entityFramework"
+                 type="System.Data.Entity.Internal.ConfigFile.EntityFrameworkSection, EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
+                 requirePermission="false" />
+    </configSections>
+    <runtime>
+        <assemblyBinding xmlns="urn:schemas-microsoft-com:asm.v1">
+            <dependentAssembly>
+                <assemblyIdentity name="Newtonsoft.Json" publicKeyToken="30ad4fe6b2a6aeed" culture="neutral" />
+                <bindingRedirect oldVersion="0.0.0.0-13.0.0.0" newVersion="13.0.0.0" />
+            </dependentAssembly>
+        </assemblyBinding>
+    </runtime>
+    <secureSettings>
+        <add key="ServerID" value="d53bbcc5-4794-4dfa-b096-3aa815692e66" />
+        <add key="ServerKey"
+             value="BwIAAACkAABSU0EyAAQAAAEAAQBBgKRIdzPGpaPt3hJ7Kxm8iVrKpfu4wfsJJf/3gBG5qhiS0rs5j5HqkLazdO5az9oPWnSTmNnww03WvCJhz8nhaJjXHoEK6xtcWL++IY+R3E27xaHaPQJSDvGg3j1Jvm0QKUGmzZX75tGDC4s17kQSCpsVW3vEuZ5gBdMLMi3UqaVW9EO7qOcEvVO9Cym7lxViqUhvq6c0nLzp6C6zrtZGjLtFqo9KDj7PMkq10Xc0JkzE1ptRz/YytMRacIDn8tptbHbxM8AtObeeiZ7V6Tznmi82jcAm2Jugr0D97Da2MXZuqEKLL5uPagL4RUHite3kT/puSNbTtqZLdqMtV5HGqVmn2a64JU3b8TIW8rKd5rKucG4KwoXRNQihJzX1it8vcqt6tjDnJZdJkuyDjdd6BKCYHWeX9mqDwKJ3EY+TRZmsl9RILyV/XviyrpTYBdDDmdQ9YLSLt0LtdpPpcRzciwMsBEfMH5NPFOtqSF/151Sl/DBdEJxOINXDl1qdO5MtgL7rXkfiGwu66n4hokRdVlj6TTcXTCn6YrUbzOts6IZJnQ9cwK693u9yMJ3Di0hp49L6LWnoWmW334ys+iOfob0i4eM+M3XNw7wGN/jd6t2KYemVZEnTcl5Lon5BpdoFlxa7Y1n+kXbaeSAwTJIe9HM6uoXIH61VCIk0ac69oZcG2/FhSeBO/DcGIQQqdFvuFqJY0g2qbt7+hmEZDZBehr3KpoRTgB5xPW/ThVhuaoZxlpEb4hFmKoj900knnQk=" />
+        <add key="SystemKey"
+             value="BgIAAACkAABSU0ExAAQAAAEAAQBzb9y6JXoJj70+TVeUgRc7hPjb6tTJR7B/ZHZKFQsTLkhQLHo+93x/f30Lj/FToE2xXqnuZPk9IV94L4ekt+5jgEFcf1ReuJT/G1dVb1POiEC0upGdagwW10T3PcBK+UzfSXz5kD0SiGhXamPnT/zuHiTtVjv87W+5WuvU1vsrsQ==" />
+    </secureSettings>
+    <appSettings>
+        <add key="webServerPort" value="1234" />
+        <add key="webServerSslPort" value="1236" />
+        <add key="webServerEnabled" value="true" />
+        <add key="SupportedFileExtensions" value=".js,.css,.jpg,.jpeg,.bmp,.bm,.gif,.ico,.tiff,.png" />
+        <add key="Hello World" value="acb75027-ddeb-47d7-814e-a54c37247ec1" />
+        <add key="ForEachWithHelloWorldTest" value="c5381f15-c5e5-41a9-b322-ab7b2a891aa5" />
+        <add key="Control Flow - Sequence" value="0bdc3207-ff6b-4c01-a5eb-c7060222f75d" />
+        <add key="Loop Constructs - For Each" value="8ba79b49-226e-4c67-a732-4657fd0edb6b" />
+        <add key="Loop Constructs - Select and Apply" value="ea916fa6-76ca-4243-841c-74fa18dd8c14" />
+        <add key="Select and Apply" value="b65bd0c2-4b17-426d-a515-3891ab8c4a93" />
+        <add key="DllSourceForExecutionSpecs" value="D9017469-ADAD-40F9-AAD2-F1F0A0D2614B" />
+        <add key="testRabbitMQSource" value="78899836-7c8f-4a8e-8c0a-b45eba3a522e" />
+        <add key="SharePoint Test Server" value="94d4b4ca-31e1-494d-886b-cd94224c9a8b" />
+        <add key="SecuritySpecsUser" value="SecuritySpecsUser" />
+        <add key="SecuritySpecsPassword" value="ASfas123@!fda" />
+        <add key="userGroup" value="Administrators" />
+
+    </appSettings>
+    <connectionStrings>
+        <add name="Persistence"
+             connectionString="Server=RSAKLFSVRDEV;Database=WFPersistenceStore;Integrated Security=true" />
+    </connectionStrings>
+    
+
+</configuration>
+"@ | Out-File -LiteralPath "$PSScriptRoot\Bin\$OutputFolderName\testhost.dll.config" -Encoding utf8 -Force
+				}
+			} else {
+				Write-Host File testhost.dll.config already exists!
+			}
 				} else {
 					if (!(Test-Path "$PSScriptRoot\Dev\Dev2.Server\bin\$Config\net6.0-windows\Warewolf.COMIPC.exe_v4.8")) {
 						mkdir "$PSScriptRoot\Dev\Dev2.Server\bin\$Config\net6.0-windows\Warewolf.COMIPC.exe_v4.8"
 					}
 					Copy-Item -Path "$PSScriptRoot\Dev\Warewolf.COMIPC\bin\$Config\net6.0-windows\Warewolf.COMIPC.exe" -Destination "$PSScriptRoot\Dev\Dev2.Server\bin\$Config\net6.0-windows\Warewolf.COMIPC.exe_v4.8\Warewolf.COMIPC.exe" -Force
 				}
-			}
-			if ($TesthostConfig -ne "" -and (Test-Path "$PSScriptRoot\Bin\$OutputFolderName\$TesthostConfig")) {
-				if (!(Test-Path "$PSScriptRoot\Bin\$OutputFolderName\testhost.dll.config")) {
-					Copy-Item -Path "$PSScriptRoot\Bin\$OutputFolderName\$TesthostConfig" -Destination "$PSScriptRoot\Bin\$OutputFolderName\testhost.dll.config"
-				} else {
-					Write-Host File testhost.dll.config already exists!
-				}
-				Write-Host testhost.dll.config contents:
-				$TestHostFileDump = Get-Content "$PSScriptRoot\Bin\$OutputFolderName\testhost.dll.config"
-				Write-Host $TestHostFileDump
 			}
         }
     }
