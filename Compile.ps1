@@ -391,7 +391,7 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
 			}
 			if ($TesthostConfig -ne "" -and (Test-Path "$PSScriptRoot\Bin\$OutputFolderName\$TesthostConfig")) {
 				if (!(Test-Path "$PSScriptRoot\Bin\$OutputFolderName\testhost.dll.config")) {
-					Rename-Item -Path "$PSScriptRoot\Bin\$OutputFolderName\$TesthostConfig" -NewName "$PSScriptRoot\Bin\$OutputFolderName\testhost.dll.config"
+					Copy-Item -Path "$PSScriptRoot\Bin\$OutputFolderName\$TesthostConfig" -Destination "$PSScriptRoot\Bin\$OutputFolderName\testhost.dll.config"
 				} else {
 					Write-Host File testhost.dll.config already exists!
 				}
