@@ -434,10 +434,9 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
 
 </configuration>
 "@ | Out-File -LiteralPath "$PSScriptRoot\Bin\$OutputFolderName\testhost.dll.config" -Encoding utf8 -Force
-				}
-			} else {
-				Write-Host File testhost.dll.config already exists!
-			}
+					} else {
+						Write-Host File testhost.dll.config already exists!
+					}
 				} else {
 					if (!(Test-Path "$PSScriptRoot\Dev\Dev2.Server\bin\$Config\net6.0-windows\Warewolf.COMIPC.exe_v4.8")) {
 						mkdir "$PSScriptRoot\Dev\Dev2.Server\bin\$Config\net6.0-windows\Warewolf.COMIPC.exe_v4.8"
