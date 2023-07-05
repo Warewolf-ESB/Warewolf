@@ -105,6 +105,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         [TestMethod]
         [Timeout(60000)]
+        [TestCategory("COMIPCSaxonCSandStudioTests")]
         public void ScalarExpectedPathsAndInsertToScalarLastValue()
         {
             _resultsCollection.Add(new XPathDTO("[[OutVar1]]", "//type/method", 1));
