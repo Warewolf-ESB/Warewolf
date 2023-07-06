@@ -1,9 +1,9 @@
-﻿@Utility
-Feature: XPath
+﻿Feature: XPath
 	In order to run a query against xml
 	As a Warewolf user
 	I want a tool that I can use to execute xpath queries
 
+@COMIPCSaxonCSandStudioTests
 Scenario: Use XPath to get data off XML - Id = 1
 	Given I have this xml "<root><number id="1">One</number><number id="2">Two</number><number id="3">Three</number></root>"
 	And I have a variable "[[firstNum]]" output with xpath "//root/number[@id="1"]/text()"
@@ -17,6 +17,7 @@ Scenario: Use XPath to get data off XML - Id = 1
 	| # |                    |
 	| 1 | [[firstNum]] = One |       
 
+@COMIPCSaxonCSandStudioTests
 Scenario: Use XPath to get data off XML - Id = 2
 	Given I have this xml "<root><number id="1">One</number><number id="2">Two</number><number id="3">Three</number></root>"
 	And I have a variable "[[firstNum]]" output with xpath "//root/number[@id="2"]/text()"
@@ -30,6 +31,7 @@ Scenario: Use XPath to get data off XML - Id = 2
 	| # |                    |
 	| 1 | [[firstNum]] = Two |
 
+@COMIPCSaxonCSandStudioTests
 Scenario: Use XPath to build a recordset with 2 fields
 	Given I have this xml "<root><number id="1">One</number><number id="2">Two</number><number id="3">Three</number></root>"
 	And I have a variable "[[rec(*).id]]" output with xpath "//root/number/@id"
@@ -59,6 +61,7 @@ Scenario: Use XPath to build a recordset with 2 fields
 	|   | [[rec2(2).text]] = Two   |
 	|   | [[rec2(3).text]] = Three |  
 
+@Utility
 Scenario: Use XPath that does not exist
 	Given I have this xml "<root><number id="1">One</number><number id="2">Two</number><number id="3">Three</number></root>"	
 	And I have a variable "[[ids]]" output with xpath "//root/num/@id"
@@ -72,6 +75,7 @@ Scenario: Use XPath that does not exist
 	| # |           |
 	| 1 | [[ids]] = |
 
+@Utility
 Scenario: Use invalid xpath query
 	Given I have this xml "<root><number id="1">One</number><number id="2">Two</number><number id="3">Three</number></root>" in a variable '[[myxml]]'
 	And I assign the variable "[[myxml]]" as xml input
@@ -86,6 +90,7 @@ Scenario: Use invalid xpath query
 	| # |           |
 	| 1 | [[ids]] = | 
 
+@COMIPCSaxonCSandStudioTests
 Scenario: Use XPath with append notation should add
 	Given I have this xml "<root><number id="1">One</number><number id="2">Two</number><number id="3">Three</number></root>" in a variable '[[rec().set]]'
 	And I assign the variable "[[rec().set]]" as xml input
@@ -108,6 +113,7 @@ Scenario: Use XPath with append notation should add
 	|   | [[rec(3).set]] = 2                                                                                                |
 	|   | [[rec(4).set]] = 3                                                                                                |  
 
+@Utility
 Scenario: Use XPath with invalid XML as input inside a 
 	Given I have this xml "<start></end>" in a variable '[[myxml]]'
 	And I assign the variable "[[myxml]]" as xml input
@@ -122,6 +128,7 @@ Scenario: Use XPath with invalid XML as input inside a
 	| # |           |
 	| 1 | [[ids]] = |
 	
+@Utility
 Scenario: Use XPath with no  result but valid xpath
 	Given I have this xml "<root><number id="1">One</number><number id="2">Two</number><number id="3">Three</number></root>"
 	And I have a variable "" output with xpath "//root/number/@id"
@@ -131,6 +138,7 @@ Scenario: Use XPath with no  result but valid xpath
 	| XML                                                                                              | # |  |
 	| <root><number id="1">One</number><number id="2">Two</number><number id="3">Three</number></root> |   |  |
 
+@COMIPCSaxonCSandStudioTests
 Scenario: Use XPath to get multiple results into a scalar is last result
 	Given I have this xml "<root><number id="1">One</number><number id="2">Two</number><number id="3">Three</number></root>"
 	And I have a variable "[[ids]]" output with xpath "//root/number/@id"
@@ -144,6 +152,7 @@ Scenario: Use XPath to get multiple results into a scalar is last result
 	| # |                 |
 	| 1 | [[ids]] = 3 | 
 
+@Utility
 Scenario: Use the XPath to process blank XML
 	Given I have this xml ""
 	And I have a variable "[[ids]]" output with xpath "//root/number/@id"
@@ -151,6 +160,7 @@ Scenario: Use the XPath to process blank XML
 	Then the variable "[[ids]]" should have a value ""
 	And the execution has "NO" error	
 
+@Utility
 Scenario: Use the XPath without any xpath query
 	Given I have this xml "<root><number id="1">One</number><number id="2">Two</number><number id="3">Three</number></root>"
 	And I have a variable "[[ids]]" output with xpath ""
@@ -164,6 +174,7 @@ Scenario: Use the XPath without any xpath query
 	| # |           |
 	| 1 | [[ids]] = | 
 	
+@Utility
 Scenario: Use XPath with blank  as XML input	
 	Given I have this xml "" in a variable '[[myxml]]'
 	And I assign the variable "[[myxml]]" as xml input
@@ -179,6 +190,7 @@ Scenario: Use XPath with blank  as XML input
 	| 1 | [[ids]] = |
 
 
+@Utility
 Scenario: Use XPath with negative recordset index as output 
 	Given I have this xml "<root><number id="1">One</number><number id="2">Two</number><number id="3">Three</number></root>" in a variable '[[xml]]'
 	And I assign the variable "[[xml]]" as xml input
@@ -192,6 +204,7 @@ Scenario: Use XPath with negative recordset index as output
 	| # |                   |
 	| 1 | [[rec(-1).ids]] = |
 
+@COMIPCSaxonCSandStudioTests
 Scenario: Use XPath to with a comment in it
 	Given I have this xml "<?xml version="1.0" encoding="utf-8"?><!-- Generated by Warewolf --><root><number id="1">One</number><number id="2">Two</number><number id="3">Three</number></root>" in a variable '[[xml]]'
 	And I assign the variable "[[xml]]" as xml input
