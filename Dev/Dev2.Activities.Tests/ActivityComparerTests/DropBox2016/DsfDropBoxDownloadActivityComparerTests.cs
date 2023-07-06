@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using Dev2.Activities.DropBox2016;
 using Dev2.Activities.DropBox2016.DownloadActivity;
@@ -801,6 +802,14 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
                     mockFile.VerifyAll();
                     Assert.AreEqual(1, list.Count);
                     Assert.AreEqual("Success", list[0]);
+                }
+                var loopTimeout = 0;
+                while (task.Status != TaskStatus.RanToCompletion &&
+                task.Status != TaskStatus.Faulted &&
+                task.Status != TaskStatus.Canceled &&
+                loopTimeout++ <= 120)
+                {
+                    Thread.Sleep(1000);
                 }
             }
         }
