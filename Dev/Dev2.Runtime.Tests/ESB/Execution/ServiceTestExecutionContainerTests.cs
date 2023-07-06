@@ -1039,7 +1039,8 @@ Test Failed because of some reasons
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(ServiceTestExecutionContainer))]
-		[DoNotParallelize]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void ServiceTestExecutionContainer_Execute_AddTestInputsToJsonOrRecordset_NullValue_Should_Not_Fail()
         {
             //------------Setup for test-------------------------
