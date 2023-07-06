@@ -4,6 +4,7 @@ Feature: ServerSource
 	As a Warewolf user
 	I want to be able to use three authentication types
 
+@COMIPCSaxonCSandStudioTests
 Scenario: Create Windows Server Source
 	Given I create a server source as
 	| Address               | AuthenticationType |

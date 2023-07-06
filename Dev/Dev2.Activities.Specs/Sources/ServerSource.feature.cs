@@ -97,12 +97,14 @@ namespace Dev2.Activities.Specs.Sources
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Create Windows Server Source")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "ServerSource")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ServerSourceTests")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("COMIPCSaxonCSandStudioTests")]
         public void CreateWindowsServerSource()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "COMIPCSaxonCSandStudioTests"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create Windows Server Source", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 7
+#line 8
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -118,19 +120,19 @@ this.ScenarioInitialize(scenarioInfo);
                 table866.AddRow(new string[] {
                             "http://localhost:3142",
                             "Windows"});
-#line 8
+#line 9
  testRunner.Given("I create a server source as", ((string)(null)), table866, "Given ");
 #line hidden
-#line 11
+#line 12
  testRunner.And("I save as \"WinServerSource\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 12
+#line 13
  testRunner.When("I Test \"WinServerSource\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 13
+#line 14
  testRunner.Then("The result is \"success\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 14
+#line 15
  testRunner.And("I delete serversource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
@@ -148,7 +150,7 @@ this.ScenarioInitialize(scenarioInfo);
                     "COMIPCSaxonCSandStudioTests"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create User Server Source", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 17
+#line 18
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -164,13 +166,13 @@ this.ScenarioInitialize(scenarioInfo);
                 table867.AddRow(new string[] {
                             "http://tst-ci-remote.premier.local:3142",
                             "Public"});
-#line 18
+#line 19
  testRunner.Given("I create a server source as", ((string)(null)), table867, "Given ");
 #line hidden
-#line 21
+#line 22
  testRunner.When("I Test the connection", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 22
+#line 23
  testRunner.Then("The result is \"success\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -186,7 +188,7 @@ this.ScenarioInitialize(scenarioInfo);
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create Bad User Server Source", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 24
+#line 25
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -202,16 +204,16 @@ this.ScenarioInitialize(scenarioInfo);
                 table868.AddRow(new string[] {
                             "http://localhost:3142",
                             "User"});
-#line 25
+#line 26
  testRunner.Given("I create a server source as", ((string)(null)), table868, "Given ");
 #line hidden
-#line 28
+#line 29
  testRunner.And("User as \"BadUser\" and with \"Dev2@dmin123\" as password", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 29
+#line 30
  testRunner.When("I Test the connection", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 30
+#line 31
  testRunner.Then("The result is \"Connection Error :One or more errors occurred. (Response status co" +
                         "de does not indicate success: 401 (Unauthorized).)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -230,7 +232,7 @@ this.ScenarioInitialize(scenarioInfo);
                     "COMIPCSaxonCSandStudioTests"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create Public Server Source", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 33
+#line 34
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -246,13 +248,13 @@ this.ScenarioInitialize(scenarioInfo);
                 table869.AddRow(new string[] {
                             "http://wolfs-den.premier.local:3142",
                             "Public"});
-#line 34
+#line 35
  testRunner.Given("I create a server source as", ((string)(null)), table869, "Given ");
 #line hidden
-#line 37
+#line 38
  testRunner.When("I Test the connection", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 38
+#line 39
  testRunner.Then("The result is \"success\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
