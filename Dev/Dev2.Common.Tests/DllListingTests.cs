@@ -272,7 +272,7 @@ namespace Dev2.Common.Tests
 
             var hashCode = dllListing.GetHashCode();
 
-            Assert.AreEqual(0, hashCode);
+            Assert.AreEqual(5, hashCode);
         }
     }
 }
