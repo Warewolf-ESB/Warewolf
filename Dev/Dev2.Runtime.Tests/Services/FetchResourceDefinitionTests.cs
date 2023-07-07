@@ -185,6 +185,7 @@ namespace Dev2.Tests.Runtime.Services
         [Owner("Hagashen Naidu")]
         [TestCategory("FetchResourceDefinition_Execute")]
 		[DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void FetchResourceDefinition_Execute_WhenForDeployment_ShouldDecryptPassword()
         {
             var parser = new Mock<IActivityParser>();
