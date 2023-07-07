@@ -13,6 +13,6 @@ ENV SERVER_USERNAME "WarewolfAdmin"
 ENV SERVER_PASSWORD "W@rEw0lf@dm1n"
 
 RUN mkdir "programdata\Warewolf"
-RUN xcopy /s /y \"C:\Server\Resources - Release\\" \"%SERVER_WORKINGDIR%\"
+RUN xcopy /s /y "C:\Server\Resources - Release\\" "%SERVER_WORKINGDIR%"
 
 CMD .\Server\AddAdminFromEnvironmentVariablesAndStart.bat
