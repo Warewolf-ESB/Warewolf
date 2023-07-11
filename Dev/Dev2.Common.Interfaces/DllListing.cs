@@ -60,12 +60,22 @@ namespace Dev2.Common.Interfaces
         {
             unchecked
 			{
-                var hashCode = Name?.Length ?? 0;
-                hashCode += (Children?.ToString().Length ?? 0);
-                hashCode += (FullName?.Length ?? 0);
-                hashCode += IsDirectory.ToString().Length;
+
+
+
+                //var hashCode = Name?.Length ?? 0;
+                //hashCode += (Children?.ToString().Length ?? 0);
+                //hashCode += (FullName?.Length ?? 0);
+                //hashCode += IsDirectory.ToString().Length;
+                //return hashCode;
+
+                var child = Children?.Count ?? 0;
+                var hashCode = Name?.GetDeterministicHashCode() ?? 0;
+                hashCode = (hashCode * 397) ^ (child.ToString().GetDeterministicHashCode());                
+                hashCode = (hashCode * 397) ^ (FullName?.GetDeterministicHashCode() ?? 0);                
+                hashCode = (hashCode * 397) ^ (IsDirectory ? IsDirectory.ToString().GetDeterministicHashCode() : 0);
                 return hashCode;
-			}
+            }
         }
 
         public static bool operator ==(DllListing left, DllListing right) => Equals(left, right);
@@ -78,5 +88,31 @@ namespace Dev2.Common.Interfaces
         public bool IsDirectory { get; set; }
         public bool Is32Bit { get; set; }
         public string ClsId { get; set; }
+
     }
+
+
+
+    public static class FindHashCode
+    {
+        public static int GetDeterministicHashCode(this string str)
+        {
+            unchecked
+            {
+                int hash1 = 352654597;
+                int hash2 = hash1;
+
+                for (int i = 0; i < str.Length; i += 2)
+                {
+                    hash1 = ((hash1 << 5) + hash1) ^ str[i];
+                    if (i == str.Length - 1)
+                        break;
+                    hash2 = ((hash2 << 5) + hash2) ^ str[i + 1];
+                }
+
+                return hash1 + (hash2 * 1566083941);
+            }
+        }
+    }
+
 }
