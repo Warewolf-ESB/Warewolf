@@ -18,7 +18,7 @@ Scenario:WF with DsfRabbitMq Consume timeout 5
 	And the "RabbitMqConsume5mintimeout" has a start and end duration
 	And "RabbitMqConsume5mintimeout" Duration is greater or equal to 5 seconds
 
-@RabbitMQWorkflowExecution
+@WFWithRabbitMqConsumeTimeout5 
 Scenario:WF with RabbitMq Consume timeout 5
 	Given I depend on a valid RabbitMQ server
 	And I have a workflow "RabbitMqConsume5mintimeout"

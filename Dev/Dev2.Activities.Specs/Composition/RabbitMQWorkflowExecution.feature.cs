@@ -160,11 +160,11 @@ this.FeatureBackground();
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("WF with RabbitMq Consume timeout 5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "RabbitMQWorkflowExecution")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("RabbitMQWorkflowExecution")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WFWithRabbitMqConsumeTimeout5")]
         public void WFWithRabbitMqConsumeTimeout5()
         {
             string[] tagsOfScenario = new string[] {
-                    "RabbitMQWorkflowExecution"};
+                    "WFWithRabbitMqConsumeTimeout5"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("WF with RabbitMq Consume timeout 5", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 22
