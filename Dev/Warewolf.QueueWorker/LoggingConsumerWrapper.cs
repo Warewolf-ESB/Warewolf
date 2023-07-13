@@ -72,31 +72,31 @@ namespace QueueWorker
                 else
                 {
                     _logger.Error($"Failed to execute {_resourceId + " [" + executionId + "] " + strBody}");
-                    CreateExecutionError(task, executionId, startDate, endDate, duration,
+                    CreateExecutionError(task.Exception ?? new Exception("<no exception found in response received>"), executionId, startDate, endDate, duration,
                         customTransactionID);
                 }
                 
                 return Task.Run(() => ConsumerResult.Success);
             }
-            catch (Exception)
+            catch (Exception reqException)
             {
                 var endDate = DateTime.UtcNow;
                 var duration = endDate - startDate;
                 _logger.Warn($"[{executionId}] - {customTransactionID} failure processing body {strBody}");
-                CreateExecutionError(task, executionId, startDate, endDate, duration,
+                CreateExecutionError(task.Exception ?? reqException, executionId, startDate, endDate, duration,
                     customTransactionID);
                 
                 return Task.Run(() => ConsumerResult.Failed);
             }
         }
 
-        private void CreateExecutionError(Task<ConsumerResult> requestForwarderResult, Guid executionId,
+        private void CreateExecutionError(Exception requestForwarderResultException, Guid executionId,
             DateTime startDate, DateTime endDate, TimeSpan duration, string customTransactionID)
         {
             var executionInfo = new ExecutionInfo(startDate, duration, endDate, Warewolf.Triggers.QueueRunStatus.Error,
                 executionId, customTransactionID);
             var executionEntry = new ExecutionHistory(_resourceId, "", executionInfo, _userName);
-            executionEntry.Exception = new SerializableException(requestForwarderResult.Exception);
+            executionEntry.Exception = new SerializableException(requestForwarderResultException);
             executionEntry.AuditType = "ExecutionLog";
             executionEntry.LogLevel = LogLevel.Fatal;
             _logger.ExecutionFailed(executionEntry);
