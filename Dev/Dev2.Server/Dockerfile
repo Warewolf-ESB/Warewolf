@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/windows/servercore:ltsc2019
+FROM mcr.microsoft.com/dotnet/runtime:6.0
 USER ContainerAdministrator
 
 EXPOSE 3142
