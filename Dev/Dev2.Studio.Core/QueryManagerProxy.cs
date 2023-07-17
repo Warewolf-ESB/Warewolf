@@ -205,8 +205,7 @@ namespace Dev2.Studio.Core
         }
 
         public IList<IDbAction> FetchDbActions(IDbSource source)
-        {
-            
+        {            
             var serializer = new Dev2JsonSerializer();
             var comsController = CommunicationControllerFactory.CreateController(nameof(FetchDbActions));
             comsController.AddPayloadArgument(nameof(source), serializer.SerializeToBuilder(source));
