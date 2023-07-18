@@ -68,7 +68,6 @@ Dev/SonarQube/SolutionBinding.sqconfig
 /Dev/*.bat
 *.tmp_proj
 /Dev/PrecompiledWeb/**
-/Dev/.run/Job Shortcuts/installer
 
 ####################################################################################
 # DotCover

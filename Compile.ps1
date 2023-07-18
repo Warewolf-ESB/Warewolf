@@ -370,7 +370,7 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
 						if (!(Test-Path "$PSScriptRoot\Bin\$OutputFolderName\_PublishedWebsites\Dev2.Web")) {
 							Copy-Item -Path "$PSScriptRoot\Dev\Dev2.Web2" "$PSScriptRoot\Bin\$OutputFolderName\_PublishedWebsites\Dev2.Web" -Force -Recurse
 						}
-						Copy-Item -Path "$PSScriptRoot\Dev\.run\Job Shortcuts" "$PSScriptRoot\Bin\$OutputFolderName\Job Shortcuts" -Force -Recurse
+						Copy-Item -Path "$PSScriptRoot\TestRun.ps1" "$PSScriptRoot\Bin\$OutputFolderName\TestRun.ps1" -Force
 					}
 					if (!(Test-Path "$PSScriptRoot\Dev\Warewolf.COMIPC\bin\Debug\net6.0-windows\Warewolf.COMIPC.exe")) {
 						&"$MSBuildPath" "$PSScriptRoot\Dev\Warewolf.COMIPC\Warewolf.COMIPC.csproj"
