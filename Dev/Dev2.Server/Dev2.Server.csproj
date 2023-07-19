@@ -383,12 +383,11 @@
   <PropertyGroup>
     <PostBuildEvent>
     if exist "$(SolutionDir)Dev2.Server\bin\Debug\net6.0-windows\Warewolf Server.exe" (
-    if not exist "$(SolutionDir)Dev2.Server\bin\Debug\net6.0-windows\_PublishedWebsites\Dev2.Web" echo D | xcopy /Y /E /F /D "$(SolutionDir)Dev2.Web2" "$(SolutionDir)Dev2.Server\bin\Debug\net6.0-windows\_PublishedWebsites\Dev2.Web"
-    echo D | xcopy /Y /E /F /D "$(SolutionDir)Server Tests Setup\SQLite.Interop.dll" "$(SolutionDir)Dev\Dev2.Server\bin\Debug\net6.0-windows"
+    echo D | xcopy /Y /E /F /D "$(SolutionDir)Dev2.Server\bin\Debug\net6.0-windows\runtimes\win-x64\native\SQLite.Interop.dll" "$(SolutionDir)Dev\Dev2.Server\bin\Debug\net6.0-windows"
     )
     if exist "$(SolutionDir)Dev2.Server\bin\Release\net6.0-windows\Warewolf Server.exe" (
     echo D | xcopy /Y /E /F /D "$(SolutionDir)Resources - Release" "$(SolutionDir)Dev2.Server\bin\Release\net6.0-windows\Resources - Release"
-    echo D | xcopy /Y /E /F /D "$(SolutionDir)Server Tests Setup\SQLite.Interop.dll" "$(SolutionDir)Dev\Dev2.Server\bin\Release\net6.0-windows"
+    echo D | xcopy /Y /E /F /D "$(SolutionDir)Dev2.Server\bin\Release\net6.0-windows\runtimes\win-x64\native\SQLite.Interop.dll" "$(SolutionDir)Dev\Dev2.Server\bin\Release\net6.0-windows"
     )
     </PostBuildEvent>
     <StartupObject>Dev2.Program</StartupObject>
