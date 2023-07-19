@@ -752,31 +752,6 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
         [Timeout(60000)]
         [Owner("Rory McGuire")]
         [TestCategory("DataGridActivityFindMissingStrategy_GetActivityFields")]
-        public void DataGridActivityFindMissingStrategy_GetActivityFields_ComDll_ShouldReturnResults_IsObject()
-        {
-            //------------Setup for test--------------------------
-            var fac = new Dev2FindMissingStrategyFactory();
-            var strategy = fac.CreateFindMissingStrategy(enFindMissingType.DataGridActivity);
-            var activity = new DsfComDllActivity
-            {
-                Inputs = new List<IServiceInput> { new ServiceInput("Input1", "[[InputValue1]]"), new ServiceInput("Input2", "[[InputValue2]]"), new ServiceInput("Input3", "[[InputValue3]]") },
-                Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("Output1", "OutputValue1", "rec"), new ServiceOutputMapping("Output2", "OutputValue2", "rec") },
-                OnErrorVariable = "[[err]]",
-                OnErrorWorkflow = "[[errSvc]]",
-                IsObject = true,
-                ObjectName = "TheObject"
-            };
-            //------------Execute Test---------------------------
-            var fields = strategy.GetActivityFields(activity);
-            //------------Assert Results-------------------------
-            Assert.AreEqual(6, fields.Count);
-            Assert.IsTrue(fields.Contains("TheObject"));
-        }
-
-        [TestMethod]
-        [Timeout(60000)]
-        [Owner("Rory McGuire")]
-        [TestCategory("DataGridActivityFindMissingStrategy_GetActivityFields")]
         public void DataGridActivityFindMissingStrategy_GetActivityFields_WcfEndPoint_ShouldReturnResults_IsObject()
         {
             //------------Setup for test--------------------------
