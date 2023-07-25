@@ -30,6 +30,7 @@ using Warewolf.OS;
 using Warewolf.Streams;
 using Warewolf.Trigger.Queue;
 using Warewolf.Triggers;
+using WarewolfCOMIPC.Client;
 
 namespace Dev2.Server.Tests
 {
@@ -139,6 +140,7 @@ namespace Dev2.Server.Tests
         {
             //------------------------Arrange------------------------
             var mockEnvironmentPreparer = new Mock<IServerEnvironmentPreparer>();
+            var mockIpcClient = new Mock<IIpcClient>();
             var mockAssemblyLoader = new Mock<IAssemblyLoader>();
             var mockDirectory = new Mock<IDirectory>();
             var mockResourceCatalogFactory = new Mock<IResourceCatalogFactory>();
@@ -160,6 +162,9 @@ namespace Dev2.Server.Tests
 
             EnvironmentVariables.IsServerOnline = true;
 
+            mockIpcClient.Setup(o => o.GetIpcExecutor(It.IsAny<INamedPipeClientStreamWrapper>()))
+                .Returns(mockIpcClient.Object);
+
             mockResourceCatalogFactory.Setup(o => o.New()).Returns(mockResourceCatalog.Object);
             mockServerLifeCycleWorker.Setup(o => o.Execute()).Verifiable();
             mockAssemblyLoader.Setup(o => o.AssemblyNames(It.IsAny<Assembly>())).Returns(new[] {new AssemblyName {Name = "testAssemblyName"}});
@@ -177,6 +182,7 @@ namespace Dev2.Server.Tests
             var config = new StartupConfiguration
             {
                 ServerEnvironmentPreparer = mockEnvironmentPreparer.Object,
+                IpcClient = mockIpcClient.Object,
                 AssemblyLoader = mockAssemblyLoader.Object,
                 Directory = mockDirectory.Object,
                 ResourceCatalogFactory = mockResourceCatalogFactory.Object,
@@ -206,6 +212,7 @@ namespace Dev2.Server.Tests
             mockWriter.Verify(o => o.Write("Loading triggers catalog...  "), Times.Once);
             mockWriter.Verify(o => o.Write("Exiting with exitcode 0"), Times.Once);
 
+            mockIpcClient.Verify(o => o.GetIpcExecutor(It.IsAny<INamedPipeClientStreamWrapper>()), Times.Once);
             mockSystemInformation.Verify(o => o.GetWareWolfVersion(), Times.Once);
             mockExecutionLoggerFactory.Verify(o => o.New(It.IsAny<ISerializer>(), mockWebSocketPool.Object), Times.Once);
             mockExecutionLogPublisher.Verify(o => o.Info("Warewolf Server Started Version: 1.1.1.1"), Times.Once);
@@ -222,6 +229,7 @@ namespace Dev2.Server.Tests
         {
             //------------------------Arrange------------------------
             var mockEnvironmentPreparer = new Mock<IServerEnvironmentPreparer>();
+            var mockIpcClient = new Mock<IIpcClient>();
             var mockAssemblyLoader = new Mock<IAssemblyLoader>();
             var mockDirectory = new Mock<IDirectory>();
             var mockResourceCatalogFactory = new Mock<IResourceCatalogFactory>();
@@ -255,6 +263,7 @@ namespace Dev2.Server.Tests
             var config = new StartupConfiguration
             {
                 ServerEnvironmentPreparer = mockEnvironmentPreparer.Object,
+                IpcClient = mockIpcClient.Object,
                 AssemblyLoader = mockAssemblyLoader.Object,
                 Directory = mockDirectory.Object,
                 ResourceCatalogFactory = mockResourceCatalogFactory.Object,
@@ -293,6 +302,7 @@ namespace Dev2.Server.Tests
         {
             //------------------------Arrange------------------------
             var mockEnvironmentPreparer = new Mock<IServerEnvironmentPreparer>();
+            var mockIpcClient = new Mock<IIpcClient>();
             var mockAssemblyLoader = new Mock<IAssemblyLoader>();
             var mockDirectory = new Mock<IDirectory>();
             var mockResourceCatalogFactory = new Mock<IResourceCatalogFactory>();
@@ -315,6 +325,8 @@ namespace Dev2.Server.Tests
 
             EnvironmentVariables.IsServerOnline = true;
             Config.Persistence.Enable = true;
+            mockIpcClient.Setup(o => o.GetIpcExecutor(It.IsAny<INamedPipeClientStreamWrapper>()))
+                .Returns(mockIpcClient.Object);
 
             mockResourceCatalogFactory.Setup(o => o.New()).Returns(mockResourceCatalog.Object);
             mockServerLifeCycleWorker.Setup(o => o.Execute()).Verifiable();
@@ -333,6 +345,7 @@ namespace Dev2.Server.Tests
             var config = new StartupConfiguration
             {
                 ServerEnvironmentPreparer = mockEnvironmentPreparer.Object,
+                IpcClient = mockIpcClient.Object,
                 AssemblyLoader = mockAssemblyLoader.Object,
                 Directory = mockDirectory.Object,
                 ResourceCatalogFactory = mockResourceCatalogFactory.Object,
@@ -362,6 +375,7 @@ namespace Dev2.Server.Tests
             mockWriter.Verify(o => o.Write("Loading test catalog...  "), Times.Once);
             mockWriter.Verify(o => o.Write("Loading triggers catalog...  "), Times.Once);
             mockWriter.Verify(o => o.Write("Exiting with exitcode 0"), Times.Once);
+            mockIpcClient.Verify(o => o.GetIpcExecutor(It.IsAny<INamedPipeClientStreamWrapper>()), Times.Once);
             mockQueueProcessMonitor.Verify(o => o.Start(), Times.Once);
             mockServerLifeCycleWorker.Verify();
         }
@@ -374,6 +388,7 @@ namespace Dev2.Server.Tests
         {
             //------------------------Arrange------------------------
             var mockEnvironmentPreparer = new Mock<IServerEnvironmentPreparer>();
+            var mockIpcClient = new Mock<IIpcClient>();
             var mockAssemblyLoader = new Mock<IAssemblyLoader>();
             var mockDirectory = new Mock<IDirectory>();
             var mockResourceCatalogFactory = new Mock<IResourceCatalogFactory>();
@@ -400,6 +415,7 @@ namespace Dev2.Server.Tests
             var config = new StartupConfiguration
             {
                 ServerEnvironmentPreparer = mockEnvironmentPreparer.Object,
+                IpcClient = mockIpcClient.Object,
                 AssemblyLoader = mockAssemblyLoader.Object,
                 Directory = mockDirectory.Object,
                 ResourceCatalogFactory = mockResourceCatalogFactory.Object,
@@ -434,6 +450,7 @@ namespace Dev2.Server.Tests
         {
             //------------------------Arrange------------------------
             var mockEnvironmentPreparer = new Mock<IServerEnvironmentPreparer>();
+            var mockIpcClient = new Mock<IIpcClient>();
             var mockAssemblyLoader = new Mock<IAssemblyLoader>();
             var mockDirectory = new Mock<IDirectory>();
             var mockResourceCatalogFactory = new Mock<IResourceCatalogFactory>();
@@ -460,6 +477,7 @@ namespace Dev2.Server.Tests
             var config = new StartupConfiguration
             {
                 ServerEnvironmentPreparer = mockEnvironmentPreparer.Object,
+                IpcClient = mockIpcClient.Object,
                 AssemblyLoader = mockAssemblyLoader.Object,
                 Directory = mockDirectory.Object,
                 ResourceCatalogFactory = mockResourceCatalogFactory.Object,
@@ -485,6 +503,7 @@ namespace Dev2.Server.Tests
         {
             //------------------------Arrange------------------------
             var mockEnvironmentPreparer = new Mock<IServerEnvironmentPreparer>();
+            var mockIpcClient = new Mock<IIpcClient>();
             var mockAssemblyLoader = new Mock<IAssemblyLoader>();
             var mockDirectory = new Mock<IDirectory>();
             var mockResourceCatalogFactory = new Mock<IResourceCatalogFactory>();
@@ -509,6 +528,9 @@ namespace Dev2.Server.Tests
 
             EnvironmentVariables.IsServerOnline = true;
 
+            mockIpcClient.Setup(o => o.GetIpcExecutor(It.IsAny<INamedPipeClientStreamWrapper>()))
+                .Returns(mockIpcClient.Object);
+
             mockResourceCatalogFactory.Setup(o => o.New()).Returns(mockResourceCatalog.Object);
             mockServerLifeCycleWorker.Setup(o => o.Execute()).Verifiable();
             mockAssemblyLoader.Setup(o => o.AssemblyNames(It.IsAny<Assembly>())).Returns(new[] { new AssemblyName { Name = "testAssemblyName" } });
@@ -526,6 +548,7 @@ namespace Dev2.Server.Tests
             var config = new StartupConfiguration
             {
                 ServerEnvironmentPreparer = mockEnvironmentPreparer.Object,
+                IpcClient = mockIpcClient.Object,
                 AssemblyLoader = mockAssemblyLoader.Object,
                 Directory = mockDirectory.Object,
                 ResourceCatalogFactory = mockResourceCatalogFactory.Object,
@@ -559,6 +582,7 @@ namespace Dev2.Server.Tests
             mockWriter.Verify(o => o.Write("Loading triggers catalog...  "), Times.Once);
             mockWriter.Verify(o => o.Write("Exiting with exitcode 0"), Times.Once);
             mockWriter.Verify(o => o.WriteLine("hangfire server exited"), Times.Once); //we might need to use the write like the above, inverstigate.
+            mockIpcClient.Verify(o => o.GetIpcExecutor(It.IsAny<INamedPipeClientStreamWrapper>()), Times.Once);
             mockServerLifeCycleWorker.Verify();
         }
 
@@ -569,6 +593,7 @@ namespace Dev2.Server.Tests
         {
             //------------------------Arrange------------------------
             var mockEnvironmentPreparer = new Mock<IServerEnvironmentPreparer>();
+            var mockIpcClient = new Mock<IIpcClient>();
             var mockAssemblyLoader = new Mock<IAssemblyLoader>();
             var mockDirectory = new Mock<IDirectory>();
             var mockResourceCatalogFactory = new Mock<IResourceCatalogFactory>();
@@ -593,6 +618,9 @@ namespace Dev2.Server.Tests
 
             EnvironmentVariables.IsServerOnline = true;
 
+            mockIpcClient.Setup(o => o.GetIpcExecutor(It.IsAny<INamedPipeClientStreamWrapper>()))
+                .Returns(mockIpcClient.Object);
+
             mockResourceCatalogFactory.Setup(o => o.New()).Returns(mockResourceCatalog.Object);
             mockServerLifeCycleWorker.Setup(o => o.Execute()).Verifiable();
             mockAssemblyLoader.Setup(o => o.AssemblyNames(It.IsAny<Assembly>())).Returns(new[] { new AssemblyName { Name = "testAssemblyName" } });
@@ -610,6 +638,7 @@ namespace Dev2.Server.Tests
             var config = new StartupConfiguration
             {
                 ServerEnvironmentPreparer = mockEnvironmentPreparer.Object,
+                IpcClient = mockIpcClient.Object,
                 AssemblyLoader = mockAssemblyLoader.Object,
                 Directory = mockDirectory.Object,
                 ResourceCatalogFactory = mockResourceCatalogFactory.Object,
@@ -639,6 +668,7 @@ namespace Dev2.Server.Tests
             mockWriter.Verify(o => o.Write("Loading triggers catalog...  "), Times.Once);
             mockWriter.Verify(o => o.Write("Exiting with exitcode 0"), Times.Once);
             mockWriter.Verify(o => o.WriteLine("hangfire server exited"), Times.Never); //we might need to add a Hangfire Server starting... and (done) for started or Loading like the above, inverstigate.
+            mockIpcClient.Verify(o => o.GetIpcExecutor(It.IsAny<INamedPipeClientStreamWrapper>()), Times.Once);
             mockServerLifeCycleWorker.Verify();
         }
 
@@ -649,6 +679,7 @@ namespace Dev2.Server.Tests
         {
             //------------------------Arrange------------------------
             var mockEnvironmentPreparer = new Mock<IServerEnvironmentPreparer>();
+            var mockIpcClient = new Mock<IIpcClient>();
             var mockAssemblyLoader = new Mock<IAssemblyLoader>();
             var mockDirectory = new Mock<IDirectory>();
             var mockResourceCatalogFactory = new Mock<IResourceCatalogFactory>();
@@ -673,6 +704,9 @@ namespace Dev2.Server.Tests
 
             EnvironmentVariables.IsServerOnline = true;
 
+            mockIpcClient.Setup(o => o.GetIpcExecutor(It.IsAny<INamedPipeClientStreamWrapper>()))
+                .Returns(mockIpcClient.Object);
+
             mockResourceCatalogFactory.Setup(o => o.New()).Returns(mockResourceCatalog.Object);
             mockServerLifeCycleWorker.Setup(o => o.Execute()).Verifiable();
             mockAssemblyLoader.Setup(o => o.AssemblyNames(It.IsAny<Assembly>())).Returns(new[] { new AssemblyName { Name = "testAssemblyName" } });
@@ -690,6 +724,7 @@ namespace Dev2.Server.Tests
             var config = new StartupConfiguration
             {
                 ServerEnvironmentPreparer = mockEnvironmentPreparer.Object,
+                IpcClient = mockIpcClient.Object,
                 AssemblyLoader = mockAssemblyLoader.Object,
                 Directory = mockDirectory.Object,
                 ResourceCatalogFactory = mockResourceCatalogFactory.Object,
@@ -720,6 +755,7 @@ namespace Dev2.Server.Tests
             mockWriter.Verify(o => o.Write("Loading triggers catalog...  "), Times.Once);
             mockWriter.Verify(o => o.Write("Exiting with exitcode 0"), Times.Once);
             mockWriter.Verify(o => o.WriteLine("logging service exited"), Times.Once); //we might need to use the write like the above, inverstigate.
+            mockIpcClient.Verify(o => o.GetIpcExecutor(It.IsAny<INamedPipeClientStreamWrapper>()), Times.Once);
             mockServerLifeCycleWorker.Verify();
         }
 
@@ -730,6 +766,7 @@ namespace Dev2.Server.Tests
         {
             //------------------------Arrange------------------------
             var mockEnvironmentPreparer = new Mock<IServerEnvironmentPreparer>();
+            var mockIpcClient = new Mock<IIpcClient>();
             var mockAssemblyLoader = new Mock<IAssemblyLoader>();
             var mockDirectory = new Mock<IDirectory>();
             var mockResourceCatalogFactory = new Mock<IResourceCatalogFactory>();
@@ -754,6 +791,9 @@ namespace Dev2.Server.Tests
 
             EnvironmentVariables.IsServerOnline = true;
 
+            mockIpcClient.Setup(o => o.GetIpcExecutor(It.IsAny<INamedPipeClientStreamWrapper>()))
+                .Returns(mockIpcClient.Object);
+
             mockResourceCatalogFactory.Setup(o => o.New()).Returns(mockResourceCatalog.Object);
             mockServerLifeCycleWorker.Setup(o => o.Execute()).Verifiable();
             mockAssemblyLoader.Setup(o => o.AssemblyNames(It.IsAny<Assembly>())).Returns(new[] { new AssemblyName { Name = "testAssemblyName" } });
@@ -771,6 +811,7 @@ namespace Dev2.Server.Tests
             var config = new StartupConfiguration
             {
                 ServerEnvironmentPreparer = mockEnvironmentPreparer.Object,
+                IpcClient = mockIpcClient.Object,
                 AssemblyLoader = mockAssemblyLoader.Object,
                 Directory = mockDirectory.Object,
                 ResourceCatalogFactory = mockResourceCatalogFactory.Object,
@@ -800,6 +841,7 @@ namespace Dev2.Server.Tests
             mockWriter.Verify(o => o.Write("Loading triggers catalog...  "), Times.Once);
             mockWriter.Verify(o => o.Write("Exiting with exitcode 0"), Times.Once);
             mockWriter.Verify(o => o.WriteLine("logging service exited"), Times.Never); //we might need to add a Hangfire Server starting... and (done) for started or Loading like the above, inverstigate.
+            mockIpcClient.Verify(o => o.GetIpcExecutor(It.IsAny<INamedPipeClientStreamWrapper>()), Times.Once);
             mockServerLifeCycleWorker.Verify();
         }
         
@@ -810,6 +852,7 @@ namespace Dev2.Server.Tests
         {
             //------------------------Arrange------------------------
             var mockEnvironmentPreparer = new Mock<IServerEnvironmentPreparer>();
+            var mockIpcClient = new Mock<IIpcClient>();
             var mockAssemblyLoader = new Mock<IAssemblyLoader>();
             var mockDirectory = new Mock<IDirectory>();
             var mockResourceCatalogFactory = new Mock<IResourceCatalogFactory>();
@@ -858,6 +901,9 @@ namespace Dev2.Server.Tests
 
             EnvironmentVariables.IsServerOnline = true;
 
+            mockIpcClient.Setup(o => o.GetIpcExecutor(It.IsAny<INamedPipeClientStreamWrapper>()))
+                .Returns(mockIpcClient.Object);
+
             mockResourceCatalogFactory.Setup(o => o.New()).Returns(mockResourceCatalog.Object);
             mockServerLifeCycleWorker.Setup(o => o.Execute()).Verifiable();
             mockAssemblyLoader.Setup(o => o.AssemblyNames(It.IsAny<Assembly>())).Returns(new[] { new AssemblyName { Name = "testAssemblyName" } });
@@ -875,6 +921,7 @@ namespace Dev2.Server.Tests
             var config = new StartupConfiguration
             {
                 ServerEnvironmentPreparer = mockEnvironmentPreparer.Object,
+                IpcClient = mockIpcClient.Object,
                 AssemblyLoader = mockAssemblyLoader.Object,
                 Directory = mockDirectory.Object,
                 ResourceCatalogFactory = mockResourceCatalogFactory.Object,
@@ -930,6 +977,7 @@ namespace Dev2.Server.Tests
         {
             //------------------------Arrange------------------------
             var mockEnvironmentPreparer = new Mock<IServerEnvironmentPreparer>();
+            var mockIpcClient = new Mock<IIpcClient>();
             var mockAssemblyLoader = new Mock<IAssemblyLoader>();
             var mockDirectory = new Mock<IDirectory>();
             var mockResourceCatalogFactory = new Mock<IResourceCatalogFactory>();
@@ -960,6 +1008,9 @@ namespace Dev2.Server.Tests
 
             EnvironmentVariables.IsServerOnline = true;
 
+            mockIpcClient.Setup(o => o.GetIpcExecutor(It.IsAny<INamedPipeClientStreamWrapper>()))
+                .Returns(mockIpcClient.Object);
+
             mockResourceCatalogFactory.Setup(o => o.New()).Returns(mockResourceCatalog.Object);
             mockServerLifeCycleWorker.Setup(o => o.Execute()).Verifiable();
             mockAssemblyLoader.Setup(o => o.AssemblyNames(It.IsAny<Assembly>())).Returns(new[] { new AssemblyName { Name = "testAssemblyName" } });
@@ -977,6 +1028,7 @@ namespace Dev2.Server.Tests
             var config = new StartupConfiguration
             {
                 ServerEnvironmentPreparer = mockEnvironmentPreparer.Object,
+                IpcClient = mockIpcClient.Object,
                 AssemblyLoader = mockAssemblyLoader.Object,
                 Directory = mockDirectory.Object,
                 ResourceCatalogFactory = mockResourceCatalogFactory.Object,
@@ -1007,6 +1059,7 @@ namespace Dev2.Server.Tests
             mockWriter.Verify(o => o.Write("Loading triggers catalog...  "), Times.Once);
             mockWriter.Verify(o => o.Write("Exiting with exitcode 0"), Times.Once);
             mockWriter.Verify(o => o.WriteLine($"queue process died: {expectedResourceName}({expectedId})"), Times.Never); //we might need to add a Hangfire Server starting... and (done) for started or Loading like the above, inverstigate.
+            mockIpcClient.Verify(o => o.GetIpcExecutor(It.IsAny<INamedPipeClientStreamWrapper>()), Times.Once);
             mockServerLifeCycleWorker.Verify();
         }
 

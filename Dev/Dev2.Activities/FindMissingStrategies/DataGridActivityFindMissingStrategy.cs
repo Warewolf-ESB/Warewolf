@@ -114,6 +114,10 @@ namespace Dev2.FindMissingStrategies
             {
                 return GetDsfEnhancedDotNetDllActivityFields(activity);
             }
+            else if (activityType == typeof(DsfComDllActivity))
+            {
+                return GetDsfComDllActivityFields(activity);
+            }
             else if (activityType == typeof(DsfWcfEndPointActivity))
             {
                 return GetDsfWcfEndPointActivityFields(activity);
@@ -165,6 +169,41 @@ namespace Dev2.FindMissingStrategies
                 else
                 {
 
+                    if (maAct.Outputs != null)
+                    {
+                        results.AddRange(InternalFindMissing(maAct.Outputs));
+                    }
+                }
+                if (!string.IsNullOrEmpty(maAct.OnErrorWorkflow))
+                {
+                    results.Add(maAct.OnErrorWorkflow);
+                }
+            }
+            return results;
+        }
+
+        List<string> GetDsfComDllActivityFields(object activity)
+        {
+            var results = new List<string>();
+            if (activity is DsfComDllActivity maAct)
+            {
+                if (maAct.Inputs != null)
+                {
+                    results.AddRange(InternalFindMissing(maAct.Inputs));
+                }
+                if (!string.IsNullOrEmpty(maAct.OnErrorVariable))
+                {
+                    results.Add(maAct.OnErrorVariable);
+                }
+                if (maAct.IsObject)
+                {
+                    if (!string.IsNullOrEmpty(maAct.ObjectName))
+                    {
+                        results.Add(maAct.ObjectName);
+                    }
+                }
+                else
+                {
                     if (maAct.Outputs != null)
                     {
                         results.AddRange(InternalFindMissing(maAct.Outputs));

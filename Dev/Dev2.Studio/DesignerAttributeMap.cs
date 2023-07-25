@@ -207,6 +207,7 @@ namespace Dev2
             {typeof(DsfExchangeEmailActivity), typeof(ExchangeEmailDesignerViewModel)},
             {typeof(DsfExchangeEmailNewActivity), typeof(ExchangeNewEmailDesignerViewModel)},
             {typeof(DsfEnhancedDotNetDllActivity), typeof(DotNetDllEnhancedViewModel)},
+            {typeof(DsfComDllActivity), typeof(ComDllViewModel)},
             {typeof(WebGetActivity), typeof(WebGetActivityViewModel)},
             {typeof(WebPostActivityNew), typeof(WebPostActivityViewModelNew)},
             {typeof(DsfWebDeleteActivity), typeof(WebServiceDeleteViewModel)},

@@ -86,6 +86,8 @@
   <ItemGroup>
     <Compile Include="AppUsageStatsTests.cs" />
     <Compile Include="AssemblyLoaderTests.cs" />
+    <Compile Include="ESB\ComPlugin\ComPluginRuntimeHandlerTest.cs" />
+    <Compile Include="ESB\ComPlugin\ComPluginServiceExecutionFactoryTest.cs" />
     <Compile Include="ESB\Control\EnvironmentOutputMappingManagerTests.cs" />
     <Compile Include="ESB\Control\EsbServiceInvokerTests.cs" />
     <Compile Include="ESB\Control\EsbServicesEndpointTests.cs" />
@@ -119,6 +121,7 @@
     <Compile Include="Search\ResourceSearcherTests.cs" />
     <Compile Include="Search\TestSearcherTests.cs" />
     <Compile Include="Search\VariableListSearcherTests.cs" />
+    <Compile Include="ServiceModel\ComPluginServicesTest.cs" />
     <Compile Include="ServiceModel\Data\ComPluginSourceTests.cs" />
     <Compile Include="ServiceModel\Data\DropBoxSourceTests.cs" />
     <Compile Include="ServiceModel\Data\ExchangeSourceTests.cs" />
@@ -151,6 +154,7 @@
     <Compile Include="Services\DuplicateFolderServiceTests.cs" />
     <Compile Include="Services\DuplicateResourceServiceTests.cs" />
     <Compile Include="Services\FetchPluginActionsWithReturnsTypesTests.cs" />
+    <Compile Include="Services\FetchComPluginActionsTests.cs" />
     <Compile Include="Services\FetchExplorerIDuplicatesTests.cs" />
     <Compile Include="Services\FetchExplorerItemsTest.cs" />
     <Compile Include="Services\FetchPerformanceCountersTests.cs" />
@@ -389,6 +393,10 @@
       <Project>{2C4E3DC6-2195-4486-894D-8351B066D8CA}</Project>
       <Name>Warewolf.Auditing</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.COMIPC.Client\Warewolf.COMIPC.Client.csproj">
+      <Project>{bca6f2b3-c102-45b5-8f64-f0cce2533f1f}</Project>
+      <Name>Warewolf.COMIPC.Client</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Warewolf.Common.Framework48\Warewolf.Common.Framework48.csproj">
       <Project>{bc059e85-358e-49cf-a2e8-e79249c9bf51}</Project>
       <Name>Warewolf.Common.Framework48</Name>
@@ -473,6 +481,7 @@
     <EmbeddedResource Include="Json\Sequence.json" />
     <EmbeddedResource Include="Json\UnAuthorizedHelloWorld.json" />
     <EmbeddedResource Include="Json\AssignWithRecSet.json" />
+    <EmbeddedResource Include="ESB\ComPlugin\SystemWOW6432NodeCLSIDadodbConnection.reg" />
     <EmbeddedResource Include="Security\secure.config" />
     <None Include="XML\ReadMe.txt" />
   </ItemGroup>

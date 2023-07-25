@@ -193,6 +193,7 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfExchangeEmailActivity),typeof(ExchangeEmailDesigner) },
                 { typeof(DsfExchangeEmailNewActivity),typeof(Activities.Designers2.ExchangeNewEmail.ExchangeEmailDesigner) },
                 { typeof(DsfEnhancedDotNetDllActivity), typeof(Activities.Designers2.Net_Dll_Enhanced.DotNetDllDesigner) },
+                { typeof(DsfComDllActivity), typeof(ComDllDesigner) },
                 { typeof(WebGetActivity), typeof(WebGetActivityDesigner) },
                 { typeof(WebPostActivityNew), typeof(WebPostActivityDesignerNew) },
                 { typeof(DsfWebDeleteActivity), typeof(WebServiceDeleteDesigner) },

@@ -91,6 +91,9 @@
     <Compile Include="ESB\Management\Services\DirectDeploy.cs" />
     <Compile Include="ESB\Management\Services\DuplicateFolderService.cs" />
     <Compile Include="ESB\Management\Services\DuplicateResourceService.cs" />
+    <Compile Include="ESB\Management\Services\FetchComPluginActions.cs" />
+    <Compile Include="ESB\Management\Services\FetchComPluginNameSpaces.cs" />
+    <Compile Include="ESB\Management\Services\FetchComPluginSources.cs" />
     <Compile Include="ESB\Management\Services\FetchDbActions.cs" />
     <Compile Include="ESB\Management\Services\FetchDbSources.cs" />
     <Compile Include="ESB\Management\Services\FetchExchangeSources.cs" />
@@ -176,6 +179,7 @@
     <Compile Include="ESB\Management\Services\SecurityWrite.cs" />
     <Compile Include="ESB\Management\Services\SettingsRead.cs" />
     <Compile Include="ESB\Management\Services\SettingsWrite.cs" />
+    <Compile Include="ESB\Management\Services\TestComPluginService.cs" />
     <Compile Include="ESB\Management\Services\TestConnectionService.cs" />
     <Compile Include="ESB\Management\Services\TestDbService.cs" />
     <Compile Include="ESB\Management\Services\TestDbSourceService.cs" />
@@ -258,6 +262,7 @@
     <Compile Include="Security\ProcessHost.cs" />
     <Compile Include="Security\ServerSecurityService.cs" />
     <Compile Include="Security\SSLCertificateBuilder.cs" />
+    <Compile Include="ServiceModel\ComPluginServices.cs" />
     <Compile Include="ServiceModel\Data\ComPluginService.cs" />
     <Compile Include="ServiceModel\Data\ConstructorParameter.cs" />
     <Compile Include="ServiceModel\Data\SqliteDBService.cs" />
@@ -272,6 +277,11 @@
     <Compile Include="ServiceModel\Data\WcfSource.cs" />
     <Compile Include="ServiceModel\Data\WebService.cs" />
     <Compile Include="ServiceModel\ElasticsearchSources.cs" />
+    <Compile Include="ServiceModel\Esb\Brokers\ComPlugin\ComPluginBroker.cs" />
+    <Compile Include="ServiceModel\Esb\Brokers\ComPlugin\ComPluginRuntimeHandler.cs" />
+    <Compile Include="ServiceModel\Esb\Brokers\ComPlugin\IRuntime.cs" />
+    <Compile Include="ServiceModel\Esb\Brokers\ComPlugin\ComPluginInvokeArgs.cs" />
+    <Compile Include="ServiceModel\Esb\Brokers\ComPlugin\ComPluginServiceExecutionFactory.cs" />
     <Compile Include="ServiceModel\Esb\Brokers\MySqlDatabaseBroker.cs" />
     <Compile Include="ServiceModel\Esb\Brokers\ODBCDatabaseBroker.cs" />
     <Compile Include="ServiceModel\Esb\Brokers\OracleDatabaseBroker.cs" />
@@ -387,6 +397,10 @@
     <ProjectReference Include="..\Warewolf.Auditing\Warewolf.Auditing.csproj">
       <Project>{2c4e3dc6-2195-4486-894d-8351b066d8ca}</Project>
       <Name>Warewolf.Auditing</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.COMIPC.Client\Warewolf.COMIPC.Client.csproj">
+      <Project>{bca6f2b3-c102-45b5-8f64-f0cce2533f1f}</Project>
+      <Name>Warewolf.COMIPC.Client</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.Common.NetStandard20\Warewolf.Common.NetStandard20.csproj" />
     <ProjectReference Include="..\Warewolf.Common\Warewolf.Common.csproj">

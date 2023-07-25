@@ -19,6 +19,7 @@ using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.Security;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Runtime.ServiceModel.Esb.Brokers;
+using Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin;
 using Dev2.Runtime.ServiceModel.Utils;
 using Dev2.Services.Security;
 using Warewolf.Resource.Errors;
@@ -343,6 +344,26 @@ namespace Dev2.Runtime.ServiceModel
 
                 }
             }
+        }
+
+        protected virtual RecordsetList FetchRecordset(ComPluginService pluginService, bool addFields)
+        {
+            if (pluginService == null)
+            {
+                throw new ArgumentNullException(nameof(pluginService));
+            }
+            var broker = new ComPluginBroker();
+            var outputDescription = broker.TestPlugin(pluginService);
+            var dataSourceShape = outputDescription.DataSourceShapes[0];
+            var recSet = outputDescription.ToRecordsetList(pluginService.Recordsets, GlobalConstants.PrimitiveReturnValueTag);
+            if (recSet != null)
+            {
+                foreach (var recordset in recSet)
+                {
+                    FetchRecordsetFields_ComPluginService(dataSourceShape, recordset);
+                }
+            }
+            return recSet;
         }
 
         private static void FetchRecordsetFields_ComPluginService(Common.Interfaces.Core.Graph.IDataSourceShape dataSourceShape, Recordset recordset)

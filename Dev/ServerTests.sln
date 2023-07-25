@@ -131,6 +131,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Driver.RabbitMQ", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Common.NetStandard20", "Warewolf.Common.NetStandard20\Warewolf.Common.NetStandard20.csproj", "{DD70DAA9-89FD-40DD-819A-81ACC31FCD5B}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.COMIPC.Client", "Warewolf.COMIPC.Client\Warewolf.COMIPC.Client.csproj", "{BCA6F2B3-C102-45B5-8F64-F0CCE2533F1F}"
+EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Core", "Warewolf.Core\Warewolf.Core.csproj", "{8FD23CE0-02BB-48E1-A914-BA467938CE78}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dev2.Services.Sql", "Dev2.Services.Sql\Dev2.Services.Sql.csproj", "{FF3115B2-370E-4E40-99C5-7D239BC28679}"
@@ -207,11 +209,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Studio.Views", "Wa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.UnitTestAttributes", "Warewolf.UnitTestAttributes\Warewolf.UnitTestAttributes.csproj", "{265E4E60-0B4C-4EFB-A4EB-3F4F278F239D}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.COMIPC", "Warewolf.COMIPC\Warewolf.COMIPC.csproj", "{D58AB24F-C45B-4DF1-9CDE-54AFF7995513}"
+EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dev2.Net6.Compatibility", "Dev2.Net6.Compatibility\Dev2.Net6.Compatibility.csproj", "{0ACEC0AE-78B7-4173-98DA-305DD89C80FD}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GACManagerApi", "GACManagerApi\GACManagerApi.csproj", "{96ABF278-3598-4462-B678-3458DB19C5E3}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dev2.Sql.Tests", "Dev2.Sql.Tests\Dev2.Sql.Tests.csproj", "{B27B3F88-100B-496F-B574-04684F612BB9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.COMIPC.Tests", "Warewolf.COMIPC.Tests\Warewolf.COMIPC.Tests.csproj", "{9BED6B93-8BFF-4331-9DD7-98ED81ABFABA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dev2.Integration.Tests", "Dev2.IntegrationTests\Dev2.Integration.Tests.csproj", "{2C7F0E32-C4C4-422D-A767-92F3B3510392}"
 EndProject
@@ -458,6 +464,10 @@ Global
 		{DD70DAA9-89FD-40DD-819A-81ACC31FCD5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DD70DAA9-89FD-40DD-819A-81ACC31FCD5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DD70DAA9-89FD-40DD-819A-81ACC31FCD5B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BCA6F2B3-C102-45B5-8F64-F0CCE2533F1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BCA6F2B3-C102-45B5-8F64-F0CCE2533F1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BCA6F2B3-C102-45B5-8F64-F0CCE2533F1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BCA6F2B3-C102-45B5-8F64-F0CCE2533F1F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8FD23CE0-02BB-48E1-A914-BA467938CE78}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8FD23CE0-02BB-48E1-A914-BA467938CE78}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8FD23CE0-02BB-48E1-A914-BA467938CE78}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -606,6 +616,10 @@ Global
 		{265E4E60-0B4C-4EFB-A4EB-3F4F278F239D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{265E4E60-0B4C-4EFB-A4EB-3F4F278F239D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{265E4E60-0B4C-4EFB-A4EB-3F4F278F239D}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{D58AB24F-C45B-4DF1-9CDE-54AFF7995513}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D58AB24F-C45B-4DF1-9CDE-54AFF7995513}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D58AB24F-C45B-4DF1-9CDE-54AFF7995513}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D58AB24F-C45B-4DF1-9CDE-54AFF7995513}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0ACEC0AE-78B7-4173-98DA-305DD89C80FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0ACEC0AE-78B7-4173-98DA-305DD89C80FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0ACEC0AE-78B7-4173-98DA-305DD89C80FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -617,6 +631,9 @@ Global
 		{B27B3F88-100B-496F-B574-04684F612BB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B27B3F88-100B-496F-B574-04684F612BB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B27B3F88-100B-496F-B574-04684F612BB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9BED6B93-8BFF-4331-9DD7-98ED81ABFABA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9BED6B93-8BFF-4331-9DD7-98ED81ABFABA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9BED6B93-8BFF-4331-9DD7-98ED81ABFABA}.Release|Any CPU.ActiveCfg = Debug|Any CPU
 		{2C7F0E32-C4C4-422D-A767-92F3B3510392}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2C7F0E32-C4C4-422D-A767-92F3B3510392}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2C7F0E32-C4C4-422D-A767-92F3B3510392}.Release|Any CPU.ActiveCfg = Release|Any CPU

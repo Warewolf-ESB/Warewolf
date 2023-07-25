@@ -164,6 +164,7 @@
     <Compile Include="Activities\DsfDotNetAggregateCalculateActivity.cs" />
     <Compile Include="Activities\DsfDotNetCalculateActivity.cs" />
     <Compile Include="Activities\DsfDecision.cs" />
+    <Compile Include="Activities\DsfComDllActivity.cs" />
     <Compile Include="Activities\DsfDeleteRecordActivity.cs" />
     <Compile Include="Activities\DsfDotNetDllActivity.cs" />
     <Compile Include="Activities\DsfCreateJsonActivity.cs" />
