@@ -501,7 +501,7 @@
     <PackageReference Include="ServiceStack.Common" Version="6.2.0" />
     <PackageReference Include="ServiceStack.Redis" Version="6.2.0" />
     <PackageReference Include="System.Data.SQLite">
-      <Version>1.0.117</Version>
+      <Version>1.0.118</Version>
     </PackageReference>
     <PackageReference Include="System.ServiceModel.Federation" Version="4.9.0" />
     <PackageReference Include="Caliburn.Micro" Version="4.0.212" />

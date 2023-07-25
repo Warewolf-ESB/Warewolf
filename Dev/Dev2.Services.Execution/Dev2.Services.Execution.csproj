@@ -152,7 +152,7 @@
       <Version>13.0.2</Version>
     </PackageReference>
     <PackageReference Include="System.Data.SQLite">
-      <Version>1.0.117</Version>
+      <Version>1.0.118</Version>
     </PackageReference>
     <PackageReference Include="MySql.Data" Version="6.10.9" />
     <PackageReference Include="Npgsql" Version="3.2.7" />

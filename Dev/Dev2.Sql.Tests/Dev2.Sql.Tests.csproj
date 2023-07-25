@@ -95,7 +95,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="System.Data.SQLite.Core">
-      <Version>1.0.117</Version>
+      <Version>1.0.118</Version>
     </PackageReference>
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="6.0.1" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.4.1" />
@@ -107,8 +107,8 @@
   </ItemGroup>
   <PropertyGroup>
     <PostBuildEvent>
-      if exist "$(SolutionDir)Dev\Dev2.Sql.Tests\bin\Debug\net6.0-windows\win\Dev2.Sql.Tests.dll" (
-      echo D | xcopy /Y /E /F /D "$(SolutionDir)Server Tests Setup\SQLite.Interop.dll" "$(SolutionDir)Dev\Dev2.Sql.Tests\bin\Debug\net6.0-windows\win"
+      if exist "$(SolutionDir)Dev2.Sql.Tests\bin\Debug\net6.0-windows\win\Dev2.Sql.Tests.dll" and not exist "$(SolutionDir)Dev2.Sql.Tests\bin\Debug\net6.0-windows\win\SQLite.Interop.dll" (
+      echo D | xcopy /Y /E /F /D "$(SolutionDir)Dev2.Server\bin\Debug\net6.0-windows\runtimes\win-x64\native\SQLite.Interop.dll" "$(SolutionDir)Dev2.Sql.Tests\bin\Debug\net6.0-windows\win"
       )
     </PostBuildEvent>
   </PropertyGroup>

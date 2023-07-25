@@ -466,15 +466,6 @@
     <PackageReference Include="MSTest.TestAdapter" Version="3.0.2" />    
     <PackageReference Include="coverlet.collector" Version="3.2.0" />
   </ItemGroup>
-  <ItemGroup />
-  <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
-  </PropertyGroup>
-  <PropertyGroup>
-    <PreBuildEvent>
-    </PreBuildEvent>
-  </PropertyGroup>
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>

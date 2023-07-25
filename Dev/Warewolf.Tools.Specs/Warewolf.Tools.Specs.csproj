@@ -893,7 +893,7 @@
       <Version>3.9.74</Version>
     </PackageReference>
     <PackageReference Include="System.Data.SQLite.Core">
-      <Version>1.0.117</Version>
+      <Version>1.0.118</Version>
     </PackageReference>
     <PackageReference Include="System.Threading.Tasks.Extensions">
       <Version>4.5.4</Version>
@@ -901,17 +901,11 @@
   </ItemGroup>
   <ItemGroup />
   <PropertyGroup>
-    <PreBuildEvent>
-    if exist "$(SolutionDir)Warewolf.Tools.Specs\Toolbox\FileAndFolder\AddGuidToPaths.ps1" (
-    powershell.exe -ExecutionPolicy RemoteSigned -nologo -noprofile -file "$(SolutionDir)Warewolf.Tools.Specs\Toolbox\FileAndFolder\AddGuidToPaths.ps1"
+    <PostBuildEvent>
+    if exist "$(SolutionDir)Warewolf.Tools.Specs\bin\Debug\net6.0-windows\win\Warewolf.Tools.Specs.dll" and not exist "$(SolutionDir)Warewolf.Tools.Specs\bin\Debug\net6.0-windows\win\SQLite.Interop.dll" (
+    echo D | xcopy /Y /E /F /D "$(SolutionDir)Dev2.Server\bin\Debug\net6.0-windows\runtimes\win-x64\native\SQLite.Interop.dll" "$(SolutionDir)Warewolf.Tools.Specs\bin\Debug\net6.0-windows\win"
     )
-    if exist "$(SolutionDir)Toolbox\FileAndFolder\AddGuidToPaths.ps1" (
-    powershell.exe -ExecutionPolicy RemoteSigned -nologo -noprofile -file "$(SolutionDir)Toolbox\FileAndFolder\AddGuidToPaths.ps1"
-    )
-    if exist "$(SolutionDir)Dev\Warewolf.Tools.Specs\bin\Debug\net6.0-windows\win\Warewolf.Tools.Specs.dll" (
-    echo D | xcopy /Y /E /F /D "$(SolutionDir)Server Tests Setup\SQLite.Interop.dll" "$(SolutionDir)Dev\Warewolf.Tools.Specs\bin\Debug\net6.0-windows\win"
-    )
-  </PreBuildEvent>
+  </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

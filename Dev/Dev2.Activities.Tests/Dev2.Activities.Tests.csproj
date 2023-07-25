@@ -523,7 +523,7 @@
       <Version>5.1.2</Version>
     </PackageReference>
     <PackageReference Include="System.Data.SQLite.Core">
-      <Version>1.0.117</Version>
+      <Version>1.0.118</Version>
     </PackageReference>
     <PackageReference Include="System.Runtime">
       <Version>4.3.1</Version>
@@ -539,8 +539,8 @@
   <ItemGroup />
   <PropertyGroup>
     <PostBuildEvent>
-      if exist "$(SolutionDir)Dev\Dev2.Activities.Tests\bin\Debug\net6.0-windows\win\Dev2.Activities.Tests.dll" (
-      echo D | xcopy /Y /E /F /D "$(SolutionDir)Server Tests Setup\SQLite.Interop.dll" "$(SolutionDir)Dev\Dev2.Activities.Tests\bin\Debug\net6.0-windows\win"
+      if exist "$(SolutionDir)Dev2.Activities.Tests\bin\Debug\net6.0-windows\win\Dev2.Activities.Tests.dll" and not exist "$(SolutionDir)Dev2.Activities.Tests\bin\Debug\net6.0-windows\win\SQLite.Interop.dll" (
+      echo D | xcopy /Y /E /F /D "$(SolutionDir)Dev2.Server\bin\Debug\net6.0-windows\runtimes\win-x64\native\SQLite.Interop.dll" "$(SolutionDir)Dev2.Activities.Tests\bin\Debug\net6.0-windows\win"
       )
     </PostBuildEvent>
   </PropertyGroup>
