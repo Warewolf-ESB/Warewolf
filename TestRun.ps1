@@ -299,177 +299,186 @@ if ($STA.IsPresent) {
 </RunSettings>
 "@ | Out-File -LiteralPath "$TestResultsPath\STA.runsettings" -Encoding utf8 -Force
 }
-for ($LoopCounter=0; $LoopCounter -le $RetryCount; $LoopCounter++) {
+if ($Projects.Length -gt 0) {
+	for ($LoopCounter=0; $LoopCounter -le $RetryCount; $LoopCounter++) {
+		if ($StartFTPServer.IsPresent) {
+			Start-FTPServer
+		}
+		if ($StartFTPSServer.IsPresent) {
+			Start-FTPSServer
+		}
+		if ($RetryRebuild.IsPresent) {
+			if (Test-Path "$PWD\..\..\Compile.ps1") {
+				&"$PWD\..\..\Compile.ps1" "-AcceptanceTesting -NuGet `"$NuGet`" -MSBuildPath `"$MSBuildPath`""
+			} else {
+				if (Test-Path "$PWD\Compile.ps1") {
+					&"$PWD\Compile.ps1" "-AcceptanceTesting -NuGet `"$NuGet`" -MSBuildPath `"$MSBuildPath`""
+					Set-Location "$PWD\bin\AcceptanceTesting"
+				}
+			}
+		} else {
+			if (!(Test-Path "$PWD\*tests.dll") -and $InContainerCommitID -eq "latest") {
+				Write-Error "This script expects to be run from a directory containing test assemblies. (Files with names that end in tests.dll)"
+				exit 1
+			}
+		}
+		$AllAssemblies = @()
+		foreach ($project in $Projects) {
+			$AllAssemblies += @(Get-ChildItem ".\$project.dll" -Recurse)
+		}
+		if ($AllAssemblies.Count -le 0) {
+			$ShowError = "Could not find any assemblies in the current environment directory matching the project definition of: " + ($Projects -join ",")
+			Write-Error $ShowError
+		}
+		$AssembliesList = @()
+		for ($i = 0; $i -lt $AllAssemblies.Count; $i++) 
+		{
+			if ([array]::indexof($ExcludeProjects, $AllAssemblies[$i].Name.TrimEnd(".dll")) -eq -1) {
+				$AssembliesList += @($AllAssemblies[$i].Name)
+			}
+		}
+		if (Test-Path "$VSTestPath\Extensions\TestPlatform\TestResults\*.trx") {
+			Remove-Item "$VSTestPath\Extensions\TestPlatform\TestResults" -Force -Recurse
+		}
+		New-Item -ItemType Directory "$TestResultsPath" -ErrorAction SilentlyContinue
+		if (Test-Path "$TestResultsPath\RunTests.ps1") {
+			Move-Item "$TestResultsPath\RunTests.ps1" "$TestResultsPath\RunTests($LoopCounter).ps1"
+		}
+		if (Test-Path "$TestResultsPath\warewolf-server.log") {
+			Move-Item "$TestResultsPath\warewolf-server.log" "$TestResultsPath\warewolf-server($LoopCounter).ps1"
+		}
+		if (Test-Path "$TestResultsPath\Snapshot.coverage") {
+			Move-Item "$TestResultsPath\Snapshot.coverage" "$TestResultsPath\Snapshot($LoopCounter).coverage"
+		}
+		if (Test-Path "$TestResultsPath\Snapshot_Backup.coverage") {
+			Move-Item "$TestResultsPath\Snapshot_Backup.coverage" "$TestResultsPath\Snapshot_Backup($LoopCounter).coverage"
+		}
+		$AssembliesArg = ".\" + ($AssembliesList -join " .\")
+		if ($UNCPassword) {
+			"net use \\DEVOPSPDC.premier.local\FileSystemShareTestingSite /user:Administrator $UNCPassword" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
+		}
+		if ($STA.IsPresent) {
+			$STAArg = "--settings:`"$TestResultsPath\STA.runsettings`""
+		} else {
+			$STAArg = ""
+		}
+		if ($TestsToRun) {
+			if ($PreTestRunScript) {
+				"&.\$PreTestRunScript" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
+				"&`"$VSTestPath\Extensions\TestPlatform\vstest.console.exe`" /logger:trx /platform:x64 $AssembliesArg /Tests:`"$TestsToRun`" $STAArg" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
+			} else {
+				if ($Coverage.IsPresent -and !($PreTestRunScript)) {
+					"&`"$VSTestPath\Extensions\TestPlatform\vstest.console.exe`" /logger:trx /platform:x64 $AssembliesArg /Tests:`"$TestsToRun`" $STAArg /EnableCodeCoverage" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
+				} else {
+					"&`"$VSTestPath\Extensions\TestPlatform\vstest.console.exe`" /logger:trx /platform:x64 $AssembliesArg /Tests:`"$TestsToRun`" $STAArg" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
+				}
+			}
+		} else {
+			$CategoryArg = ""
+			if ($ExcludeCategories -ne $null -and $ExcludeCategories -ne @()) {
+				if ($ExcludeCategories.Count -eq 1 -and $ExcludeCategories[0].Contains(",")) {
+					$ExcludeCategories = $ExcludeCategories[0] -split ","
+				}
+				$CategoryArg = "/TestCaseFilter:`"(TestCategory!="
+				$CategoryArg += $ExcludeCategories -join ")&(TestCategory!="
+				$CategoryArg += ")`""
+			} else {
+				if ($Category -ne $null -and $Category -ne "") {
+					$CategoryArg = "/TestCaseFilter:`"(TestCategory=" + $Category + ")`""
+				} else {
+					if ($Categories -ne $null -and $Categories.Count -ne 0) {
+						$CategoryArg = "/TestCaseFilter:`"(TestCategory="
+						$CategoryArg += $Categories -join ")|(TestCategory="
+						$CategoryArg += ")`""
+					}
+				}
+			}
+			if ($PreTestRunScript) {
+				"&.\$PreTestRunScript" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
+				"&`"$VSTestPath\Extensions\TestPlatform\vstest.console.exe`" /logger:trx /platform:x64 $AssembliesArg $CategoryArg $STAArg" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
+			} else {
+				if ($Coverage.IsPresent -and !($PreTestRunScript)) {
+					"&`"$VSTestPath\Extensions\TestPlatform\vstest.console.exe`" /logger:trx /platform:x64 $AssembliesArg $CategoryArg $STAArg /EnableCodeCoverage" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
+				} else {
+					"&`"$VSTestPath\Extensions\TestPlatform\vstest.console.exe`" /logger:trx /platform:x64 $AssembliesArg $CategoryArg $STAArg" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
+				}
+			}
+		}
+		if ($PostTestRunScript) {
+			"&.\$PostTestRunScript" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
+		}
+		if ($UNCPassword) {
+			"net use \\DEVOPSPDC.premier.local\FileSystemShareTestingSite /delete" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
+		}
+		Get-Content "$TestResultsPath\RunTests.ps1"
+		if (!($InContainer.IsPresent) -and $InContainerCommitID -eq "latest" -and $InContainerVersion -eq "latest") {
+			&"$TestResultsPath\RunTests.ps1"
+		} else {
+			if ($InContainerCommitID -eq "latest") {
+				docker run -i --rm --memory 4g -v "${PWD}:C:\BuildUnderTest" registry.gitlab.com/warewolf/vstest:$InContainerVersion powershell -Command Set-Location .\BuildUnderTest`;`&.\TestResults\RunTests.ps1
+			} else {
+				docker run -i --rm --memory 4g -v "${PWD}\TestResults:C:\BuildUnderTest\TestResults" registry.gitlab.com/warewolf/vstest:$InContainerCommitID powershell -Command Set-Location .\BuildUnderTest`;`&.\TestResults\RunTests.ps1
+			}
+		}
+		if (Test-Path "$VSTestPath\Extensions\TestPlatform\TestResults\*.trx") {
+			Copy-Item "$VSTestPath\Extensions\TestPlatform\TestResults\*.trx" "$TestResultsPath" -Force -Recurse
+		}
+		if (Test-Path "$TestResultsPath\*.trx") {
+			[System.Collections.ArrayList]$getXMLFiles = @(Get-ChildItem "$TestResultsPath\*.trx")
+			if ($getXMLFiles.Count -gt 1) {
+				$MaxCount = 0
+				$MaxCountIndex = 0
+				$CountIndex = 0
+				$getXMLFiles | % {
+					$getXML = [xml](Get-Content $_.FullName)
+					if ([int]$getXML.TestRun.ResultSummary.Counters.total -gt $MaxCount) {
+						$MaxCount = $getXML.TestRun.ResultSummary.Counters.total
+						$MaxCountIndex = $CountIndex
+					}
+					$CountIndex++
+				}
+				$BaseXMLFile = $getXMLFiles[$MaxCountIndex]
+				$getBaseXML = [xml](Get-Content $BaseXMLFile.FullName)
+				$getXMLFiles.RemoveAt($MaxCountIndex)
+				$getXMLFiles | % {
+					$getXML = [xml](Get-Content $_.FullName)
+					$getXMl.TestRun.Results.UnitTestResult | % {
+						$RetryUnitTestResult = $_
+						$getBaseXMl.TestRun.Results.UnitTestResult | % {
+							if ($RetryUnitTestResult.testName -eq $_.testName -and $RetryUnitTestResult.outcome -eq 'Passed' -and $_.outcome -eq 'Failed') {
+								[void]$_.ParentNode.AppendChild($getBaseXMl.ImportNode($RetryUnitTestResult, $true))
+								$_.ParentNode.ParentNode.ResultSummary.Counters.SetAttribute("passed", [int]($_.ParentNode.ParentNode.ResultSummary.Counters.passed) + 1)
+								$_.ParentNode.ParentNode.ResultSummary.Counters.SetAttribute("failed", [int]($_.ParentNode.ParentNode.ResultSummary.Counters.failed) - 1)
+								[void]$_.ParentNode.RemoveChild($_)
+							}
+						}
+					}
+					Remove-Item $_.FullName
+				}
+				$getBaseXML.Save($BaseXMLFile.FullName)
+			} else {
+				$getBaseXML = [xml](Get-Content $getXMLFiles[0].FullName)
+			}
+			if ($getBaseXML.TestRun.ResultSummary.Counters.passed -ne $getBaseXML.TestRun.ResultSummary.Counters.executed) {
+				$TestsToRun = ($getBaseXML.TestRun.Results.UnitTestResult | Where-Object {$_.outcome -ne "Passed"}).testName -join ","
+			} else {
+				break
+			}
+		} else {
+			Write-Error "No test results found."
+			exit 1
+		}
+		if ($StartFTPServer.IsPresent -or $StartFTPSServer.IsPresent) {
+			taskkill /im pythonw.exe /f
+			taskkill /im pythonw3.10.exe /f
+		}
+	}
+} else {
 	if ($StartFTPServer.IsPresent) {
 		Start-FTPServer
 	}
 	if ($StartFTPSServer.IsPresent) {
 		Start-FTPSServer
-	}
-    if ($RetryRebuild.IsPresent) {
-		if (Test-Path "$PWD\..\..\Compile.ps1") {
-			&"$PWD\..\..\Compile.ps1" "-AcceptanceTesting -NuGet `"$NuGet`" -MSBuildPath `"$MSBuildPath`""
-		} else {
-			if (Test-Path "$PWD\Compile.ps1") {
-				&"$PWD\Compile.ps1" "-AcceptanceTesting -NuGet `"$NuGet`" -MSBuildPath `"$MSBuildPath`""
-				Set-Location "$PWD\bin\AcceptanceTesting"
-			}
-		}
-	} else {
-		if (!(Test-Path "$PWD\*tests.dll") -and $InContainerCommitID -eq "latest") {
-			Write-Error "This script expects to be run from a directory containing test assemblies. (Files with names that end in tests.dll)"
-			exit 1
-		}
-	}
-	$AllAssemblies = @()
-	foreach ($project in $Projects) {
-		$AllAssemblies += @(Get-ChildItem ".\$project.dll" -Recurse)
-	}
-	if ($AllAssemblies.Count -le 0) {
-		$ShowError = "Could not find any assemblies in the current environment directory matching the project definition of: " + ($Projects -join ",")
-		Write-Error $ShowError
-	}
-	$AssembliesList = @()
-	for ($i = 0; $i -lt $AllAssemblies.Count; $i++) 
-	{
-		if ([array]::indexof($ExcludeProjects, $AllAssemblies[$i].Name.TrimEnd(".dll")) -eq -1) {
-			$AssembliesList += @($AllAssemblies[$i].Name)
-		}
-	}
-    if (Test-Path "$VSTestPath\Extensions\TestPlatform\TestResults\*.trx") {
-        Remove-Item "$VSTestPath\Extensions\TestPlatform\TestResults" -Force -Recurse
-    }
-	New-Item -ItemType Directory "$TestResultsPath" -ErrorAction SilentlyContinue
-	if (Test-Path "$TestResultsPath\RunTests.ps1") {
-		Move-Item "$TestResultsPath\RunTests.ps1" "$TestResultsPath\RunTests($LoopCounter).ps1"
-	}
-	if (Test-Path "$TestResultsPath\warewolf-server.log") {
-		Move-Item "$TestResultsPath\warewolf-server.log" "$TestResultsPath\warewolf-server($LoopCounter).ps1"
-	}
-	if (Test-Path "$TestResultsPath\Snapshot.coverage") {
-		Move-Item "$TestResultsPath\Snapshot.coverage" "$TestResultsPath\Snapshot($LoopCounter).coverage"
-	}
-	if (Test-Path "$TestResultsPath\Snapshot_Backup.coverage") {
-		Move-Item "$TestResultsPath\Snapshot_Backup.coverage" "$TestResultsPath\Snapshot_Backup($LoopCounter).coverage"
-	}
-	$AssembliesArg = ".\" + ($AssembliesList -join " .\")
-	if ($UNCPassword) {
-		"net use \\DEVOPSPDC.premier.local\FileSystemShareTestingSite /user:Administrator $UNCPassword" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
-	}
-	if ($STA.IsPresent) {
-		$STAArg = "--settings:`"$TestResultsPath\STA.runsettings`""
-	} else {
-		$STAArg = ""
-	}
-	if ($TestsToRun) {
-		if ($PreTestRunScript) {
-			"&.\$PreTestRunScript" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
-			"&`"$VSTestPath\Extensions\TestPlatform\vstest.console.exe`" /logger:trx /platform:x64 $AssembliesArg /Tests:`"$TestsToRun`" $STAArg" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
-		} else {
-			if ($Coverage.IsPresent -and !($PreTestRunScript)) {
-				"&`"$VSTestPath\Extensions\TestPlatform\vstest.console.exe`" /logger:trx /platform:x64 $AssembliesArg /Tests:`"$TestsToRun`" $STAArg /EnableCodeCoverage" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
-			} else {
-				"&`"$VSTestPath\Extensions\TestPlatform\vstest.console.exe`" /logger:trx /platform:x64 $AssembliesArg /Tests:`"$TestsToRun`" $STAArg" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
-			}
-		}
-	} else {
-		$CategoryArg = ""
-		if ($ExcludeCategories -ne $null -and $ExcludeCategories -ne @()) {
-			if ($ExcludeCategories.Count -eq 1 -and $ExcludeCategories[0].Contains(",")) {
-				$ExcludeCategories = $ExcludeCategories[0] -split ","
-			}
-			$CategoryArg = "/TestCaseFilter:`"(TestCategory!="
-			$CategoryArg += $ExcludeCategories -join ")&(TestCategory!="
-			$CategoryArg += ")`""
-		} else {
-			if ($Category -ne $null -and $Category -ne "") {
-			    $CategoryArg = "/TestCaseFilter:`"(TestCategory=" + $Category + ")`""
-			} else {
-				if ($Categories -ne $null -and $Categories.Count -ne 0) {
-					$CategoryArg = "/TestCaseFilter:`"(TestCategory="
-					$CategoryArg += $Categories -join ")|(TestCategory="
-					$CategoryArg += ")`""
-				}
-			}
-		}
-		if ($PreTestRunScript) {
-			"&.\$PreTestRunScript" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
-			"&`"$VSTestPath\Extensions\TestPlatform\vstest.console.exe`" /logger:trx /platform:x64 $AssembliesArg $CategoryArg $STAArg" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
-		} else {
-			if ($Coverage.IsPresent -and !($PreTestRunScript)) {
-				"&`"$VSTestPath\Extensions\TestPlatform\vstest.console.exe`" /logger:trx /platform:x64 $AssembliesArg $CategoryArg $STAArg /EnableCodeCoverage" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
-			} else {
-				"&`"$VSTestPath\Extensions\TestPlatform\vstest.console.exe`" /logger:trx /platform:x64 $AssembliesArg $CategoryArg $STAArg" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
-			}
-		}
-	}
-	if ($PostTestRunScript) {
-		"&.\$PostTestRunScript" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
-	}
-	if ($UNCPassword) {
-		"net use \\DEVOPSPDC.premier.local\FileSystemShareTestingSite /delete" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
-	}
-	Get-Content "$TestResultsPath\RunTests.ps1"
-	if (!($InContainer.IsPresent) -and $InContainerCommitID -eq "latest" -and $InContainerVersion -eq "latest") {
-		&"$TestResultsPath\RunTests.ps1"
-	} else {
-		if ($InContainerCommitID -eq "latest") {
-			docker run -i --rm --memory 4g -v "${PWD}:C:\BuildUnderTest" registry.gitlab.com/warewolf/vstest:$InContainerVersion powershell -Command Set-Location .\BuildUnderTest`;`&.\TestResults\RunTests.ps1
-		} else {
-			docker run -i --rm --memory 4g -v "${PWD}\TestResults:C:\BuildUnderTest\TestResults" registry.gitlab.com/warewolf/vstest:$InContainerCommitID powershell -Command Set-Location .\BuildUnderTest`;`&.\TestResults\RunTests.ps1
-		}
-	}
-    if (Test-Path "$VSTestPath\Extensions\TestPlatform\TestResults\*.trx") {
-        Copy-Item "$VSTestPath\Extensions\TestPlatform\TestResults\*.trx" "$TestResultsPath" -Force -Recurse
-    }
-	if (Test-Path "$TestResultsPath\*.trx") {
-		[System.Collections.ArrayList]$getXMLFiles = @(Get-ChildItem "$TestResultsPath\*.trx")
-		if ($getXMLFiles.Count -gt 1) {
-			$MaxCount = 0
-			$MaxCountIndex = 0
-			$CountIndex = 0
-			$getXMLFiles | % {
-				$getXML = [xml](Get-Content $_.FullName)
-				if ([int]$getXML.TestRun.ResultSummary.Counters.total -gt $MaxCount) {
-					$MaxCount = $getXML.TestRun.ResultSummary.Counters.total
-					$MaxCountIndex = $CountIndex
-				}
-				$CountIndex++
-			}
-			$BaseXMLFile = $getXMLFiles[$MaxCountIndex]
-			$getBaseXML = [xml](Get-Content $BaseXMLFile.FullName)
-			$getXMLFiles.RemoveAt($MaxCountIndex)
-			$getXMLFiles | % {
-				$getXML = [xml](Get-Content $_.FullName)
-				$getXMl.TestRun.Results.UnitTestResult | % {
-					$RetryUnitTestResult = $_
-					$getBaseXMl.TestRun.Results.UnitTestResult | % {
-						if ($RetryUnitTestResult.testName -eq $_.testName -and $RetryUnitTestResult.outcome -eq 'Passed' -and $_.outcome -eq 'Failed') {
-							[void]$_.ParentNode.AppendChild($getBaseXMl.ImportNode($RetryUnitTestResult, $true))
-							$_.ParentNode.ParentNode.ResultSummary.Counters.SetAttribute("passed", [int]($_.ParentNode.ParentNode.ResultSummary.Counters.passed) + 1)
-							$_.ParentNode.ParentNode.ResultSummary.Counters.SetAttribute("failed", [int]($_.ParentNode.ParentNode.ResultSummary.Counters.failed) - 1)
-							[void]$_.ParentNode.RemoveChild($_)
-						}
-					}
-				}
-				Remove-Item $_.FullName
-			}
-			$getBaseXML.Save($BaseXMLFile.FullName)
-		} else {
-			$getBaseXML = [xml](Get-Content $getXMLFiles[0].FullName)
-		}
-		if ($getBaseXML.TestRun.ResultSummary.Counters.passed -ne $getBaseXML.TestRun.ResultSummary.Counters.executed) {
-			$TestsToRun = ($getBaseXML.TestRun.Results.UnitTestResult | Where-Object {$_.outcome -ne "Passed"}).testName -join ","
-		} else {
-			break
-		}
-	} else {
-		Write-Error "No test results found."
-		exit 1
-	}
-	if ($StartFTPServer.IsPresent -or $StartFTPSServer.IsPresent) {
-		taskkill /im pythonw.exe /f
-		taskkill /im pythonw3.10.exe /f
 	}
 }
 if ($Coverage.IsPresent) {

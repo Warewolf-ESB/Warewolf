@@ -42,7 +42,7 @@ namespace Dev2.Runtime.ServiceModel
                     {
                         return context.RunImpersonated<HubConnection>(() =>
                         {
-                            return CreateHubProxyInternal(connection);
+                            return CreateHubProxyInternal(connection, false);
                         });
                     }
                 }
@@ -56,12 +56,49 @@ namespace Dev2.Runtime.ServiceModel
             }
             else
             {
-                return CreateHubProxyInternal(connection);
+                return CreateHubProxyInternal(connection, false);
             }
             return null;
         }
 
-        private HubConnection CreateHubProxyInternal(Connection connection)
+        public HubConnection GetTestHubConnection(Connection connection)
+        {
+            var serverUser = Common.Utilities.OrginalExecutingUser;
+            var principle = serverUser;
+
+            var identity = principle.Identity as WindowsIdentity;
+            WindowsIdentity context = null;
+
+            if (identity != null && connection.AuthenticationType == AuthenticationType.Windows)
+            {
+                context = identity.Impersonate();
+                try
+                {
+
+                    if (context != null)
+                    {
+                        return context.RunImpersonated<HubConnection>(() =>
+                        {
+                            return CreateHubProxyInternal(connection, true);
+                        });
+                    }
+                }
+                finally
+                {
+                    if (context != null && connection.AuthenticationType == AuthenticationType.Windows)
+                    {
+                        //context.Dispose(); Should not dispose identity passed.
+                    }
+                }
+            }
+            else
+            {
+                return CreateHubProxyInternal(connection, true);
+            }
+            return null;
+        }
+
+        private HubConnection CreateHubProxyInternal(Connection connection, bool isCalledForTestConnectionService)
         {
             try
             {
@@ -73,29 +110,42 @@ namespace Dev2.Runtime.ServiceModel
                     }
                     else
                     {
-                        client.UseDefaultCredentials = false;
-
                         //// we to default to the hidden public user name of \, silly know but that is how to get around ntlm auth ;)
                         if (connection.AuthenticationType == AuthenticationType.Public)
                         {
-                            connection.UserName = GlobalConstants.PublicUsername;
-                            connection.Password = string.Empty;
+                            if (isCalledForTestConnectionService)
+                                client.UseDefaultCredentials = true;
+                            else
+                            {
+                                client.UseDefaultCredentials = false;
+
+                                connection.UserName = GlobalConstants.PublicUsername;
+                                connection.Password = string.Empty;
+                                
+                                client.Credentials = new NetworkCredential(connection.UserName, connection.Password);
+                            }
                         }
 
-                        client.Credentials = new NetworkCredential(connection.UserName, connection.Password);
                     }
 
+
+                    var credentials = new NetworkCredential(connection.UserName, connection.Password);
                     var connectionAddress = connection.FetchTestConnectionAddress();
                     var hubConnection = new HubConnectionBuilder().WithUrl(connectionAddress, options =>
                     {
+                        options.Transports = Microsoft.AspNetCore.Http.Connections.HttpTransportType.ServerSentEvents;
                         options.Credentials = client.Credentials;
                     }).Build();
 
+
                     ServicePointManager.ServerCertificateValidationCallback = (sender, certificate, chain, errors) => true;
+
+
                     if (!hubConnection.StartAsync().Wait(GlobalConstants.NetworkTimeOut))
                     {
                         throw new Net6.Compatibility.HttpClientException(new HttpResponseMessage(HttpStatusCode.GatewayTimeout));
                     }
+
                     return hubConnection;
                 }
             }

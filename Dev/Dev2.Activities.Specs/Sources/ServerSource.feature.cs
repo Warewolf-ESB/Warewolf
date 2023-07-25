@@ -246,7 +246,7 @@ this.ScenarioInitialize(scenarioInfo);
                             "Address",
                             "AuthenticationType"});
                 table869.AddRow(new string[] {
-                            "http://wolfs-den.premier.local:3142",
+                            "http://localhost:3142",
                             "Public"});
 #line 35
  testRunner.Given("I create a server source as", ((string)(null)), table869, "Given ");

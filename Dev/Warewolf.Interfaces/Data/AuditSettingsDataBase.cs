@@ -12,7 +12,7 @@ namespace Warewolf.Data
 {
     public class AuditSettingsDataBase: BindableBase
     {
-        public string Endpoint { get; internal set; }
+        public string Endpoint { get; set; }
         public bool IncludeEnvironmentVariable { get; set; }
 
         public bool Equals(AuditSettingsDataBase other)

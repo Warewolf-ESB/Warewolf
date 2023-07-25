@@ -403,7 +403,7 @@
     echo D | xcopy /Y /E /F /D "$(SolutionDir)Resources - Release" "$(SolutionDir)Dev2.Server\bin\Release\net6.0-windows\Resources - Release"
 	echo D | xcopy /Y /E /F /D "$(SolutionDir)Binaries\Warewolf.COMIPC.exe_v4.8" "$(SolutionDir)Dev2.Server\bin\Release\net6.0-windows\Warewolf.COMIPC.exe_v4.8"
 	if not exist "$(SolutionDir)Dev2.Server\bin\Release\net6.0-windows\SQLite.Interop.dll" (
-		echo D | xcopy /Y /E /F /D "$(SolutionDir)Dev2.Server\bin\Debug\net6.0-windows\runtimes\win-x64\native\SQLite.Interop.dll" "$(SolutionDir)Dev2.Server\bin\Release\net6.0-windows"
+		echo D | xcopy /Y /E /F /D "$(SolutionDir)Dev2.Server\bin\Release\net6.0-windows\runtimes\win-x64\native\SQLite.Interop.dll" "$(SolutionDir)Dev2.Server\bin\Release\net6.0-windows"
 		)
     )
     taskkill /f /im Warewolf.COMIPC.exe /fi "STATUS eq RUNNING"
