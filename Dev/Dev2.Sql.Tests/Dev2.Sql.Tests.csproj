@@ -88,10 +88,6 @@
       <Project>{2b734597-c85d-4295-9782-c722f4645ed9}</Project>
       <Name>Dev2.Sql</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Dev2.Server\Dev2.Server.csproj">
-      <Project>{87aefd04-29f3-45b6-a7c6-4161f9190876}</Project>
-      <Name>Dev2.Server</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Warewolf.Testing\Warewolf.Testing.csproj" />
   </ItemGroup>
   <ItemGroup>
@@ -111,7 +107,7 @@
   </ItemGroup>
   <PropertyGroup>
     <PostBuildEvent>
-      if exist "$(SolutionDir)Dev2.Sql.Tests\bin\Debug\net6.0-windows\win\Dev2.Sql.Tests.dll" and not exist "$(SolutionDir)Dev2.Sql.Tests\bin\Debug\net6.0-windows\win\SQLite.Interop.dll" (
+      if exist "$(SolutionDir)Dev2.Sql.Tests\bin\Debug\net6.0-windows\win\Dev2.Sql.Tests.dll" if not exist "$(SolutionDir)Dev2.Sql.Tests\bin\Debug\net6.0-windows\win\SQLite.Interop.dll" (
       echo D | xcopy /Y /E /F /D "$(SolutionDir)Dev2.Server\bin\Debug\net6.0-windows\runtimes\win-x64\native\SQLite.Interop.dll" "$(SolutionDir)Dev2.Sql.Tests\bin\Debug\net6.0-windows\win"
       )
     </PostBuildEvent>

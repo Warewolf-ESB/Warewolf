@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.2.32630.192
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dev2.Activities.Tests", "Dev2.Activities.Tests\Dev2.Activities.Tests.csproj", "{2A8088A6-8F8D-42FD-B877-D809C494C561}"
+	ProjectSection(ProjectDependencies) = postProject
+		{87AEFD04-29F3-45B6-A7C6-4161F9190876} = {87AEFD04-29F3-45B6-A7C6-4161F9190876}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dev2.Common.Tests", "Dev2.Common.Tests\Dev2.Common.Tests.csproj", "{B0564C7A-9DA8-4751-B5D4-D446138E0987}"
 EndProject
@@ -216,6 +219,9 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GACManagerApi", "GACManagerApi\GACManagerApi.csproj", "{96ABF278-3598-4462-B678-3458DB19C5E3}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dev2.Sql.Tests", "Dev2.Sql.Tests\Dev2.Sql.Tests.csproj", "{B27B3F88-100B-496F-B574-04684F612BB9}"
+	ProjectSection(ProjectDependencies) = postProject
+		{87AEFD04-29F3-45B6-A7C6-4161F9190876} = {87AEFD04-29F3-45B6-A7C6-4161F9190876}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.COMIPC.Tests", "Warewolf.COMIPC.Tests\Warewolf.COMIPC.Tests.csproj", "{9BED6B93-8BFF-4331-9DD7-98ED81ABFABA}"
 EndProject
