@@ -479,6 +479,10 @@
       <Project>{7925b0c6-88dc-49a4-bbe1-c0550987f63a}</Project>
       <Name>Warewolf.TestingDotnetDllCascading</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Dev2.Server\Dev2.Server.csproj">
+      <Project>{87aefd04-29f3-45b6-a7c6-4161f9190876}</Project>
+      <Name>Dev2.Server</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Dev2.Studio\App.config">

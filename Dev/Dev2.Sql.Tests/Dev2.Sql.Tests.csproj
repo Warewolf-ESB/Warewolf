@@ -88,6 +88,10 @@
       <Project>{2b734597-c85d-4295-9782-c722f4645ed9}</Project>
       <Name>Dev2.Sql</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Dev2.Server\Dev2.Server.csproj">
+      <Project>{87aefd04-29f3-45b6-a7c6-4161f9190876}</Project>
+      <Name>Dev2.Server</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Warewolf.Testing\Warewolf.Testing.csproj" />
   </ItemGroup>
   <ItemGroup>
