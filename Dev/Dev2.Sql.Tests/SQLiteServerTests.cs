@@ -27,7 +27,6 @@ namespace Dev2.Sql.Tests
 		[TestMethod]
 		[Owner("Candice Daniel")]
 		[TestCategory("SqliteServer_Connect")]
-		//[DeploymentItem(@"x86\SQLite.Interop.dll")]
 		public void SqliteServer_Connect_ConnectionStringIsNull_ThrowsArgumentNullException()
 		{
 			//------------Setup for test--------------------------
@@ -47,7 +46,6 @@ namespace Dev2.Sql.Tests
 		[TestMethod]
 		[Owner("Candice Daniel")]
 		[TestCategory("SqliteServer_Connect")]
-		//[DeploymentItem(@"x86\SQLite.Interop.dll")]
 		public void SqliteServer_Connect_ConnectionStringIsInvalid_ThrowsArgumentException()
 		{
 			//------------Setup for test--------------------------
@@ -55,7 +53,7 @@ namespace Dev2.Sql.Tests
 			try
 			{
 				//------------Execute Test---------------------------
-				Assert.ThrowsException<ArgumentNullException>(() => sqliteServer.Connect("xxx", CommandType.Text, null));
+				Assert.ThrowsException<ArgumentException>(() => sqliteServer.Connect("xxx", CommandType.Text, null));
 				//------------Assert Results-------------------------
 			}
 			finally
@@ -67,7 +65,6 @@ namespace Dev2.Sql.Tests
 		[TestMethod]
 		[Owner("Candice Daniel")]
 		[TestCategory("SqliteServer_Connect")]
-		//[DeploymentItem(@"x86\SQLite.Interop.dll")]
 		public void SqliteServer_Connect_CommandTextIsNull_ThrowsArgumentNullException()
 		{
 			//------------Setup for test--------------------------
@@ -75,7 +72,7 @@ namespace Dev2.Sql.Tests
 			try
 			{
 				//------------Execute Test---------------------------
-				Assert.ThrowsException<ArgumentNullException>(() => sqliteServer.Connect(":memory:", CommandType.Text, null));
+				Assert.ThrowsException<ArgumentNullException>(() => sqliteServer.Connect("Data Source=/path/to/your/database.db;Version=3;", CommandType.Text, null));
 				//------------Assert Results-------------------------
 			}
 			finally
@@ -89,7 +86,6 @@ namespace Dev2.Sql.Tests
 		[TestMethod]
 		[Owner("Candice Daniel")]
 		[TestCategory("SqliteServer_CreateCommand")]
-		//[DeploymentItem(@"x86\SQLite.Interop.dll")]
 		public void SqliteServer_CreateCommand_ConnectionNotInitialized_ThrowsConnectFirstException()
 		{
 			//------------Setup for test--------------------------
@@ -109,7 +105,6 @@ namespace Dev2.Sql.Tests
 		[TestMethod]
 		[Owner("Candice Daniel")]
 		[TestCategory("SqliteServer_CreateCommand")]
-		//[DeploymentItem(@"x86\SQLite.Interop.dll")]
 		public void SqliteServer_CreateCommand_CommandIsNull_ThrowsArgumentNullException()
 		{
 			//------------Setup for test--------------------------
@@ -131,7 +126,6 @@ namespace Dev2.Sql.Tests
 		[TestMethod]
 		[Owner("Candice Daniel")]
 		[TestCategory("SqliteServer_ParseTSQL")]
-		//[DeploymentItem(@"x86\SQLite.Interop.dll")]
 		public void SqliteServer_ParseTSQL_SelectStatement_ReturnTableNames()
 		{
 			List<TSQLStatement> statements = TSQLStatementReader.ParseStatements(
@@ -204,7 +198,6 @@ namespace Dev2.Sql.Tests
 		[TestMethod]
 		[Owner("Candice Daniel")]
 		[TestCategory("SqliteServer_ParseTSQL")]
-		//[DeploymentItem(@"x86\SQLite.Interop.dll")]
 		public void SqliteServer_ParseTSQL_UnknownStatement_MissingFirstToken()
 		{
 			//------------Setup for test--------------------------
@@ -231,7 +224,6 @@ namespace Dev2.Sql.Tests
 		[TestMethod]
 		[Owner("Candice Daniel")]
 		[TestCategory("SqliteServer_ParseTSQL")]
-		//[DeploymentItem(@"x86\SQLite.Interop.dll")]
 		public void SqliteServer_ParseTSQL_SelectStatement_SelectLiteral()
 		{
 			//------------Setup for test--------------------------
@@ -279,7 +271,6 @@ namespace Dev2.Sql.Tests
 		[TestMethod]
 		[Owner("Candice Daniel")]
 		[TestCategory("SqliteServer_ParseTSQL")]
-		//[DeploymentItem(@"x86\SQLite.Interop.dll")]
 		public void SqliteServer_ParseTSQL_SelectStatement_TwoLiteralSelects()
 		{
 			List<TSQLStatement> statements = TSQLStatementReader.ParseStatements(
@@ -307,7 +298,6 @@ namespace Dev2.Sql.Tests
 		[TestMethod]
 		[Owner("Candice Daniel")]
 		[TestCategory("SqliteServer_ParseTSQL")]
-		//[DeploymentItem(@"x86\SQLite.Interop.dll")]
 		public void SqliteServer_ParseTSQL_SelectStatement_CorrelatedSelect()
 		{
 			List<TSQLStatement> statements = TSQLStatementReader.ParseStatements(
@@ -331,7 +321,6 @@ namespace Dev2.Sql.Tests
 		[TestMethod]
 		[Owner("Candice Daniel")]
 		[TestCategory("SqliteServer_ParseTSQL")]
-		//[DeploymentItem(@"x86\SQLite.Interop.dll")]
 		public void SqliteServer_ParseTSQL_SelectStatement_CommonSelect()
 		{
 			List<TSQLStatement> statements = TSQLStatementReader.ParseStatements(
@@ -374,7 +363,6 @@ namespace Dev2.Sql.Tests
 		[TestMethod]
 		[Owner("Candice Daniel")]
 		[TestCategory("SqliteServer_ParseTSQL")]
-		//[DeploymentItem(@"x86\SQLite.Interop.dll")]
 		public void SqliteServer_ParseTSQL_SelectStatement_MultipleSelectsWithoutSemicolon()
 		{
 			List<TSQLStatement> statements = TSQLStatementReader.ParseStatements(
@@ -394,7 +382,6 @@ namespace Dev2.Sql.Tests
 		[TestMethod]
 		[Owner("Candice Daniel")]
 		[TestCategory("SqliteServer_ParseTSQL")]
-		//[DeploymentItem(@"x86\SQLite.Interop.dll")]
 		public void SqliteServer_ParseTSQL_SelectStatement_Option()
 		{
 			List<TSQLStatement> statements = TSQLStatementReader.ParseStatements(
@@ -417,7 +404,6 @@ namespace Dev2.Sql.Tests
 		[TestMethod]
 		[Owner("Candice Daniel")]
 		[TestCategory("SqliteServer_ParseTSQL")]
-		//[DeploymentItem(@"x86\SQLite.Interop.dll")]
 		public void SqliteServer_ParseTSQL_SelectStatement_DontEatFinalDescAsKeyword()
 		{
 			List<TSQLStatement> statements = TSQLStatementReader.ParseStatements(
