@@ -32,18 +32,18 @@ namespace Dev2.Runtime.WebServer.Controllers
     {
         protected virtual HttpResponseMessage ProcessRequest<TRequestHandler>(NameValueCollection requestVariables, bool isUrlWithTokenPrefix)
             where TRequestHandler : class, IRequestHandler, new()
-        {
-            ClaimsPrincipal user;
-            if (requestVariables["isPublic"] != null && ServerAuthorizationService.Instance.GetPermissions(GlobalConstants.GenericPrincipal).Any(p => p.Execute && p.WindowsGroup == "Public"))
-            {
-                user = new ClaimsPrincipal(GlobalConstants.GenericPrincipal);
-            }
-            else
-            {
-                user = User;
-            }
+		{
+			ClaimsPrincipal user;
+			if (requestVariables["isPublic"] != null && ServerAuthorizationService.Instance.GetPermissions(GlobalConstants.GenericPrincipal).Any(p => p.Execute && p.WindowsGroup == "Public"))
+			{
+				user = new ClaimsPrincipal(GlobalConstants.GenericPrincipal);
+			}
+			else
+			{
+				user = User;
+			}
 
-            var requestMessage = Request.HttpContext.GetHttpRequestMessage();
+			var requestMessage = Request.HttpContext.GetHttpRequestMessage();
             try
             {
                 if (isUrlWithTokenPrefix)
@@ -55,7 +55,7 @@ namespace Dev2.Runtime.WebServer.Controllers
                 }
                 else
                 {
-                    if (!IsAuthenticated(user))
+					if (!IsAuthenticated(user))
                     {
                         return requestMessage.CreateWarewolfErrorResponse(new WarewolfErrorResponseArgs { StatusCode = HttpStatusCode.Unauthorized, Title = GlobalConstants.USER_UNAUTHORIZED, Message = ErrorResource.AuthorizationDeniedForThisUser });
                     }
