@@ -11,7 +11,6 @@
 using System;
 using System.Collections.Specialized;
 using System.Net.Http;
-using System.Security.Claims;
 using Dev2.Runtime.WebServer;
 using Dev2.Runtime.WebServer.Controllers;
 using Dev2.Runtime.WebServer.Handlers;
@@ -67,7 +66,7 @@ namespace Dev2.Tests.Runtime.WebServer.Controllers
             return handler.Object;
         }
 
-        protected override bool IsAuthenticated(ClaimsPrincipal user)
+        protected override bool IsAuthenticated()
         {
             return true;
         }
