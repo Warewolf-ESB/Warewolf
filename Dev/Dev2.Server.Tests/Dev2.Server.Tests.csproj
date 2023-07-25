@@ -88,10 +88,6 @@
       <Project>{87aefd04-29f3-45b6-a7c6-4161f9190876}</Project>
       <Name>Dev2.Server</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Warewolf.COMIPC.Client\Warewolf.COMIPC.Client.csproj">
-      <Project>{BCA6F2B3-C102-45B5-8F64-F0CCE2533F1F}</Project>
-      <Name>Warewolf.COMIPC.Client</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Warewolf.Common\Warewolf.Common.csproj">
       <Project>{6C6D687D-EC18-4AB9-8F2E-07C9FBDBCA97}</Project>
       <Name>Warewolf.Common</Name>

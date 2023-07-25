@@ -11,7 +11,6 @@ Param(
   [switch]$Server,
   [switch]$Studio,
   [switch]$StudioProject,
-  [switch]$COMIPCProject,
   [switch]$Release,
   [switch]$Web,
   [switch]$NewServerNet6,
@@ -28,9 +27,8 @@ $KnownSolutionFiles = "Dev\AcceptanceTesting.sln",
                       "Dev\Web.sln",
                       "Dev\NewServerNet6.sln",
                       "Dev\ServerTests.sln",
-                      "Dev\Dev2.Studio\Dev2.Studio.csproj",
-                      "Dev\Warewolf.COMIPC\Warewolf.COMIPC.csproj"
-$NoSolutionParametersPresent = !($AcceptanceTesting.IsPresent) -and !($UITesting.IsPresent) -and !($Server.IsPresent) -and !($Studio.IsPresent) -and !($Release.IsPresent) -and !($Web.IsPresent) -and !($RegenerateSpecFlowFeatureFiles.IsPresent) -and !($NewServerNet6.IsPresent) -and !($ServerTests.IsPresent) -and !($StudioProject.IsPresent) -and !($COMIPCProject.IsPresent)
+                      "Dev\Dev2.Studio\Dev2.Studio.csproj"
+$NoSolutionParametersPresent = !($AcceptanceTesting.IsPresent) -and !($UITesting.IsPresent) -and !($Server.IsPresent) -and !($Studio.IsPresent) -and !($Release.IsPresent) -and !($Web.IsPresent) -and !($RegenerateSpecFlowFeatureFiles.IsPresent) -and !($NewServerNet6.IsPresent) -and !($ServerTests.IsPresent) -and !($StudioProject.IsPresent)
 if ($Target -ne "") {
     $Target = "/t:" + $Target
 }
@@ -311,9 +309,6 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
         if ($OutputFolderName -eq "ServerTest") {
             $OutputFolderName = "ServerTests"
         }
-        if ($OutputFolderName -eq "Warewolf.COMIPC") {
-            $OutputFolderName = "COMIPCProject"
-        }
         if ((Get-Variable "$OutputFolderName*" -ValueOnly).IsPresent.Length -gt 1) {
             $SolutionParameterIsPresent = (Get-Variable "$OutputFolderName*" -ValueOnly).IsPresent[0]
         } else {
@@ -345,7 +340,7 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
                 Write-Host Build failed. Check your pending changes. If you do not have any pending changes then you can try running 'dev\scorch.bat' to thoroughly clean your workspace. Compiling Warewolf requires at at least MSBuild 15.0, download from: https://aka.ms/vs/15/release/vs_buildtools.exe and FSharp 4.0, download from http://download.microsoft.com/download/9/1/2/9122D406-F1E3-4880-A66D-D6C65E8B1545/FSharp_Bundle.exe
                 exit 1
             }
-			if ($OutputFolderName -ne "COMIPCProject" -and $OutputFolderName -ne "StudioProject") {
+			if ($OutputFolderName -ne "StudioProject") {
 				if (!($ProjectSpecificOutputs.IsPresent)) {
 					if ($Target -eq "/t:Debug" -or $Target -eq "") {
 						if (Test-Path "$PSScriptRoot\Bin\$OutputFolderName\SQLite.Interop.dll") {
@@ -372,13 +367,6 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
 						}
 						Copy-Item -Path "$PSScriptRoot\TestRun.ps1" "$PSScriptRoot\Bin\$OutputFolderName\TestRun.ps1" -Force
 					}
-					if (!(Test-Path "$PSScriptRoot\Dev\Warewolf.COMIPC\bin\Debug\net6.0-windows\Warewolf.COMIPC.exe")) {
-						&"$MSBuildPath" "$PSScriptRoot\Dev\Warewolf.COMIPC\Warewolf.COMIPC.csproj"
-					}
-					if (!(Test-Path "$PSScriptRoot\Bin\$OutputFolderName\Warewolf.COMIPC.exe_v4.8")) {
-						mkdir "$PSScriptRoot\Bin\$OutputFolderName\Warewolf.COMIPC.exe_v4.8"
-					}
-					Copy-Item -Path "$PSScriptRoot\Dev\Warewolf.COMIPC\bin\Debug\net6.0-windows\Warewolf.COMIPC.exe" -Destination "$PSScriptRoot\Bin\$OutputFolderName\Warewolf.COMIPC.exe_v4.8\Warewolf.COMIPC.exe" -Force
 					Copy-Item -Path "$PSScriptRoot\Bin\$OutputFolderName\runtimes\win-x64\native\SQLite.Interop.dll" -Destination "$PSScriptRoot\Bin\$OutputFolderName\SQLite.Interop.dll" -Force
 					Copy-Item -Path "$PSScriptRoot\Dev\Server Tests Setup\sni.dll" -Destination "$PSScriptRoot\Bin\$OutputFolderName\sni.dll" -Force
 					if (!(Test-Path "$PSScriptRoot\Bin\$OutputFolderName\testhost.dll.config")) {
@@ -435,11 +423,6 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
 </configuration>
 "@ | Out-File -LiteralPath "$PSScriptRoot\Bin\$OutputFolderName\testhost.dll.config" -Encoding utf8 -Force
 					}
-				} else {
-					if (!(Test-Path "$PSScriptRoot\Dev\Dev2.Server\bin\$Config\net6.0-windows\Warewolf.COMIPC.exe_v4.8")) {
-						mkdir "$PSScriptRoot\Dev\Dev2.Server\bin\$Config\net6.0-windows\Warewolf.COMIPC.exe_v4.8"
-					}
-					Copy-Item -Path "$PSScriptRoot\Dev\Warewolf.COMIPC\bin\$Config\net6.0-windows\Warewolf.COMIPC.exe" -Destination "$PSScriptRoot\Dev\Dev2.Server\bin\$Config\net6.0-windows\Warewolf.COMIPC.exe_v4.8\Warewolf.COMIPC.exe" -Force
 				}
 			}
         }

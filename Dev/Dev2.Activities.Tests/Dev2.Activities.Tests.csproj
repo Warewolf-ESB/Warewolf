@@ -70,7 +70,6 @@
     <Compile Include="Activities\ActivityParserTests.cs" />
     <Compile Include="Activities\DropBox2016\DsfDropBoxBaseActivityTests.cs" />
     <Compile Include="Activities\DsfWebGetRequestWithTimeoutActivity\DsfWebGetRequestWithTimeoutActivityTests.cs" />
-    <Compile Include="Activities\DsfComDllActivityTests.cs" />
     <Compile Include="Activities\EmailSenderTests.cs" />
     <Compile Include="Activities\DsfPluginActivityTests.cs" />
     <Compile Include="Activities\WcfEndPoint\DsfWcfEndPointActivityTests.cs" />
@@ -122,7 +121,6 @@
     <Compile Include="ActivityComparerTests\DotNet Dll\DsfDotNetDllActivityComparerTests.cs" />
     <Compile Include="ActivityComparerTests\BaseConvert\DsfBaseConvertActivityEquatableTests.cs" />
     <Compile Include="ActivityComparerTests\Calculate\DsfCalculateActivityEquatableTests.cs" />
-    <Compile Include="ActivityComparerTests\ComDll\DsfComDllActivityEqualityTests.cs" />
     <Compile Include="ActivityComparerTests\DsfDecision\DsfDecisionEqualityTests.cs" />
     <Compile Include="ActivityComparerTests\ForEach\DsfForEachActivityComparerTests.cs" />
     <Compile Include="ActivityComparerTests\Sharepoint\SharepointDeleteFileActivityEqualityTests.cs" />

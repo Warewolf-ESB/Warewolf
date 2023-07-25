@@ -20,6 +20,9 @@ using Microsoft.AspNetCore.Mvc;
 using Warewolf.Resource.Errors;
 using Warewolf.Security;
 using Microsoft.AspNetCore.Mvc.WebApiCompatShim;
+using System.Security.Claims;
+using Dev2.Runtime.Security;
+using System.Linq;
 
 namespace Dev2.Runtime.WebServer.Controllers
 {
@@ -30,7 +33,16 @@ namespace Dev2.Runtime.WebServer.Controllers
         protected virtual HttpResponseMessage ProcessRequest<TRequestHandler>(NameValueCollection requestVariables, bool isUrlWithTokenPrefix)
             where TRequestHandler : class, IRequestHandler, new()
         {
-            var user = User;
+            ClaimsPrincipal user;
+            if (requestVariables["isPublic"] != null && ServerAuthorizationService.Instance.GetPermissions(GlobalConstants.GenericPrincipal).Any(p => p.Execute && p.WindowsGroup == "Public"))
+            {
+                user = new ClaimsPrincipal(GlobalConstants.GenericPrincipal);
+            }
+            else
+            {
+                user = User;
+            }
+
             var requestMessage = Request.HttpContext.GetHttpRequestMessage();
             try
             {
@@ -43,7 +55,7 @@ namespace Dev2.Runtime.WebServer.Controllers
                 }
                 else
                 {
-                    if (!IsAuthenticated())
+                    if (!IsAuthenticated(user))
                     {
                         return requestMessage.CreateWarewolfErrorResponse(new WarewolfErrorResponseArgs { StatusCode = HttpStatusCode.Unauthorized, Title = GlobalConstants.USER_UNAUTHORIZED, Message = ErrorResource.AuthorizationDeniedForThisUser });
                     }
@@ -86,7 +98,7 @@ namespace Dev2.Runtime.WebServer.Controllers
         {
             var requestMessage = Request.HttpContext.GetHttpRequestMessage();
 
-            if (!IsAuthenticated())
+            if (!IsAuthenticated(User))
             {
                 return requestMessage.CreateWarewolfErrorResponse(new WarewolfErrorResponseArgs { StatusCode = HttpStatusCode.Unauthorized, Title = GlobalConstants.USER_UNAUTHORIZED, Message = ErrorResource.AuthorizationDeniedForThisUser });
             }
@@ -98,7 +110,7 @@ namespace Dev2.Runtime.WebServer.Controllers
             return context.ResponseMessage;
         }
 
-        protected virtual bool IsAuthenticated() => User.IsAuthenticated();
+        protected virtual bool IsAuthenticated(ClaimsPrincipal user) => user.IsAuthenticated();
 
         protected virtual TRequestHandler CreateHandler<TRequestHandler>()
             where TRequestHandler : class, IRequestHandler, new() => Activator.CreateInstance<TRequestHandler>();
