@@ -28,7 +28,7 @@
 	b) Add "Warewolf Server.exe.config"
 	c) Add sni.dll
 
-6) Copy SQLite.Interop.dll (found at the same location of this Readme.txt) to the following locations: 
+6) Copy SQLite.Interop.dll (found at Dev2.Server\bin\Debug\net6.0-windows\runtimes\win-x64\native\SQLite.Interop.dll) to the following locations: 
 
 a) Dev\Dev2.Server\bin\Debug\net6.0-windows
 b) Dev\Dev2.Activities.Specs\bin\Debug\net6.0-windows\win
