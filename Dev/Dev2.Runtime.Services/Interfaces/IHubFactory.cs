@@ -7,5 +7,6 @@ namespace Dev2.Runtime.Interfaces
     {
         //IHubProxy CreateHubProxy(Data.ServiceModel.Connection connection);
         HubConnection GetHubConnection(Data.ServiceModel.Connection connection);
+        HubConnection GetTestHubConnection(Data.ServiceModel.Connection connection);
     }
 }

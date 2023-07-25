@@ -46,6 +46,16 @@ namespace Dev2.Runtime.ServiceModel
 
         public ValidationResult CanConnectToServer(Dev2.Data.ServiceModel.Connection connection)
         {
+            return CanConnectToServerInternal(connection, false);
+        }
+
+        public ValidationResult CanConnectToTestServer(Dev2.Data.ServiceModel.Connection connection)
+        {
+            return CanConnectToServerInternal(connection, true);
+        }
+
+        public ValidationResult CanConnectToServerInternal(Dev2.Data.ServiceModel.Connection connection, bool isTestServer)
+        {
             var result = new ValidationResult
             {
                 ErrorFields = new ArrayList(new[] { "address" }),
@@ -58,7 +68,7 @@ namespace Dev2.Runtime.ServiceModel
                 new Uri(connection.Address);
 #pragma warning restore S1848 // Objects should not be created to be dropped immediately without being used
 
-                var connectResult = ConnectToServer(connection);
+                var connectResult = ConnectToServer(connection, isTestServer);
                 if (!string.IsNullOrEmpty(connectResult) && connectResult.Contains("FatalError"))
                 {
                     var error = XElement.Parse(connectResult);
@@ -103,10 +113,14 @@ namespace Dev2.Runtime.ServiceModel
 
         public HubConnection GetHubConnection(Dev2.Data.ServiceModel.Connection connection) => _hubFactory.GetHubConnection(connection);
 
-        protected virtual string ConnectToServer(Dev2.Data.ServiceModel.Connection connection)
+
+        public HubConnection GetTestHubConnection(Dev2.Data.ServiceModel.Connection connection) => _hubFactory.GetTestHubConnection(connection);
+
+        protected virtual string ConnectToServer(Dev2.Data.ServiceModel.Connection connection, bool isCalledForTestConnectionService)
         {
             // we need to grab the principle and impersonate to properly execute in context of the requesting user ;)
-            var proxy = GetHubConnection(connection);
+            //var proxy = GetHubConnection(connection);
+            var proxy = isCalledForTestConnectionService ? _hubFactory.GetTestHubConnection(connection) : _hubFactory.GetHubConnection(connection);
             return "Success";
         }
     }

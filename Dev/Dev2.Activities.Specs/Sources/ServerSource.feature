@@ -34,6 +34,6 @@ Scenario: Create Bad User Server Source
 Scenario: Create Public Server Source
 	Given I create a server source as
 	| Address                             | AuthenticationType |
-	| http://wolfs-den.premier.local:3142 | Public             |
+	| http://localhost:3142 | Public             |
 	When I Test the connection
 	Then The result is "success"

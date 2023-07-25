@@ -56,7 +56,7 @@ namespace Dev2.Runtime.WebServer.Security
                 return null;
             }
 
-            if (user == null && (actionName == "ExecutePublicWorkflow" || actionName == "ExecuteGetRootLevelApisJson"))
+            if ((user == null || !user.IsAuthenticated()) && (actionName == "ExecutePublicWorkflow" || actionName == "ExecuteGetRootLevelApisJson"))
             {
                 user = GlobalConstants.GenericPrincipal as System.Security.Claims.ClaimsPrincipal;
                 //actionContext.HttpContext.RequestContext.Principal = user;
