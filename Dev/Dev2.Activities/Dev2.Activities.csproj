@@ -27,7 +27,6 @@
     <SonarQubeTestProject>False</SonarQubeTestProject>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
-    <RestoreAdditionalProjectSource>https://www.myget.org/F/uipath-dev/api/v3/index.json</RestoreAdditionalProjectSource>
   </PropertyGroup>
   <PropertyGroup>
     <ContentSQLiteInteropFiles>true</ContentSQLiteInteropFiles>
