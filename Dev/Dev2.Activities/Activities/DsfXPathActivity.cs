@@ -124,7 +124,7 @@ namespace Dev2.Activities
             _isDebugMode = dataObject.IsDebugMode();
             var errors = new ErrorResultTO();
             var allErrors = new ErrorResultTO();
-            var parser = new XPathParser();
+            var parser = new XPathParserNetCore();
             var i = 0;
 
             InitializeDebug(dataObject);
@@ -217,7 +217,7 @@ namespace Dev2.Activities
             }
         }
 
-        int Process(IDSFDataObject dataObject, int update, int i, XPathParser parser, ErrorResultTO allErrors, ErrorResultTO errors)
+        int Process(IDSFDataObject dataObject, int update, int i, XPathParserNetCore parser, ErrorResultTO allErrors, ErrorResultTO errors)
         {
             if (!string.IsNullOrEmpty(SourceString))
             {
@@ -234,7 +234,7 @@ namespace Dev2.Activities
             return i;
         }
 
-        int ProcessResultsCollection(IDSFDataObject dataObject, int update, XPathParser parser, ErrorResultTO allErrors, string c)
+        int ProcessResultsCollection(IDSFDataObject dataObject, int update, XPathParserNetCore parser, ErrorResultTO allErrors, string c)
         {
             int i;
             for (i = 0; i < ResultsCollection.Count; i++)
@@ -248,7 +248,7 @@ namespace Dev2.Activities
             return i;
         }
 
-        void IterateOverXPath(IDSFDataObject dataObject, int update, XPathParser parser, ErrorResultTO allErrors, string c, int i)
+        void IterateOverXPath(IDSFDataObject dataObject, int update, XPathParserNetCore parser, ErrorResultTO allErrors, string c, int i)
         {
             var xpathEntry = dataObject.Environment.Eval(ResultsCollection[i].XPath, update);
             var xpathIterator = new WarewolfIterator(xpathEntry);

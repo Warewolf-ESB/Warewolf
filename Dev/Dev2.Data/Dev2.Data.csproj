@@ -102,6 +102,7 @@
     <Compile Include="Dev2DecisionComparer.cs" />
     <Compile Include="Dev2WorkflowSettingsTO.cs" />
     <Compile Include="NativeMethods.cs" />
+    <Compile Include="Parsers\XPathParserNetCore.cs" />
     <Compile Include="PathOperations\ActivityIOBrokerMainDriver.cs" />
     <Compile Include="PathOperations\ActivityIOBrokerBaseDriver.cs" />
     <Compile Include="PathOperations\ActivityIOBrokerValidatorDriver.cs" />

@@ -105,7 +105,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         [TestMethod]
         [Timeout(60000)]
-        [TestCategory("COMIPCSaxonCSandStudioTests")]
+        //[TestCategory("COMIPCSaxonCSandStudioTests")]
         public void ScalarExpectedPathsAndInsertToScalarLastValue()
         {
             _resultsCollection.Add(new XPathDTO("[[OutVar1]]", "//type/method", 1));
@@ -128,7 +128,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         [TestMethod]
         [Timeout(60000)]
-        [TestCategory("COMIPCSaxonCSandStudioTests")]
+        //[TestCategory("COMIPCSaxonCSandStudioTests")]
         public void ScalarExpectedWithXPathInScalarPathsAndInsertToScalarLastValue()
         {
             _resultsCollection.Add(new XPathDTO("[[OutVar1]]", "[[xpath]]", 1));
@@ -154,7 +154,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [Timeout(60000)]
         [Owner("Travis Frisinger")]
         [TestCategory("XPathActivity_OnExecute")]
-        [TestCategory("COMIPCSaxonCSandStudioTests")]
+        //[TestCategory("COMIPCSaxonCSandStudioTests")]
         public void XPathActivity_Execute_MultipleScalars_XPathExecuteAndInsertMutipleScalars()
         {
 
@@ -183,7 +183,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [Timeout(60000)]
         [Owner("Travis Frisinger")]
         [TestCategory("XPathActivity_OnExecute")]
-        [TestCategory("COMIPCSaxonCSandStudioTests")]
+        //[TestCategory("COMIPCSaxonCSandStudioTests")]
         public void XPathActivity_Execute_ScalarWithXPathInRecset_XPathExecuteAndInsertMutipleScalars()
         {
 
@@ -210,7 +210,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         [TestMethod]
         [Timeout(60000)]
-        [TestCategory("COMIPCSaxonCSandStudioTests")]
+        //[TestCategory("COMIPCSaxonCSandStudioTests")]
         public void RecsetWithXPathInRecsetExpectedXPathExecuteAndInsertMutipleScalars()
         {
 
@@ -232,7 +232,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [Timeout(60000)]
         [Owner("Travis Frisinger")]
         [TestCategory("XPathActivity_OnExecute")]
-        [TestCategory("COMIPCSaxonCSandStudioTests")]
+        //[TestCategory("COMIPCSaxonCSandStudioTests")]
         public void MixedScalarsAndRecordsetWithIndexExpectedXPathEvalInsertMutipleScalarAndRecordsets()
         {
             _resultsCollection.Add(new XPathDTO("[[OutVar1]]", "//type/method/@name", 1));
@@ -263,7 +263,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [Timeout(60000)]
         [Owner("Travis Frisinger")]
         [TestCategory("XPathActivity_OnExecute")]
-        [TestCategory("COMIPCSaxonCSandStudioTests")]
+        //[TestCategory("COMIPCSaxonCSandStudioTests")]
         public void XPathActivity_Execute_MixedScalarsAndRecordsetWithoutIndex_XPathValuesToEndInsertingMutipleScalarAndRecordsets()
         {
 
@@ -298,7 +298,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         [TestMethod]
         [Timeout(60000)]
-        [TestCategory("COMIPCSaxonCSandStudioTests")]
+        //[TestCategory("COMIPCSaxonCSandStudioTests")]
         public void MutiRecsetsWithNoIndexExpectedXPathResultsAppendToTheRecordsets()
         {
             _resultsCollection.Add(new XPathDTO("[[recset1().rec1]]", "//type/method/@name", 1));
@@ -328,7 +328,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         [TestMethod]
         [Timeout(60000)]
-        [TestCategory("COMIPCSaxonCSandStudioTests")]
+        //[TestCategory("COMIPCSaxonCSandStudioTests")]
         public void RecsetWithStarExpectedXPathsResultsOverwriteRecordsFromIndex1()
         {
 
@@ -357,7 +357,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         [TestMethod]
         [Timeout(60000)]
-        [TestCategory("COMIPCSaxonCSandStudioTests")]
+        //[TestCategory("COMIPCSaxonCSandStudioTests")]
         public void RecsetWithStarExpectedXPaths_InsideForEach_ShouldRespect_UpdateValueForRecordsetIndex()
         {
 
@@ -412,7 +412,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Timeout(60000)]
         [TestCategory("XPathActivity_Execution")]
-        [TestCategory("COMIPCSaxonCSandStudioTests")]
+        //[TestCategory("COMIPCSaxonCSandStudioTests")]
         [Description("XPathActivity execute upserts one result only")]
         [Owner("Ashley Lewis")]
         public void XPath_Execute_RecordsetWithStar_OneXPathResultUpserted()

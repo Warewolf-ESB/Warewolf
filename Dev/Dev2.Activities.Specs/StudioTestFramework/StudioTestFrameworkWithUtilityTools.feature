@@ -288,7 +288,7 @@ Scenario: Test WF with Calculate No outPuts
 	Then The "DeleteConfirmation" popup is shown I click Ok
 	Then workflow "CalculateTestNoOutputsWF" is deleted as cleanup
 
-@COMIPCSaxonCSandStudioTests
+#@COMIPCSaxonCSandStudioTests
 Scenario: Test WF with Xpath
 	Given I have a workflow "XPathTestWF"
 	And "XPathTestWF" contains XPath \"XPathTest" with source "//XPATH-EXAMPLE/CUSTOMER[@id='2' or @type='C']/text()"
