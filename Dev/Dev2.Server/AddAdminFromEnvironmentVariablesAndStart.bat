@@ -10,8 +10,7 @@ echo 3. Add new Warewolf Administrator to Administrators group.
 NET localgroup "Administrators" "%SERVER_USERNAME%" /ADD
 echo 4. Add new Warewolf Administrator to Warewolf Administrators group.
 NET localgroup "Warewolf Administrators" "%SERVER_USERNAME%" /ADD
-echo 5. Remove environment variables.
-REG delete "HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" /F /V SERVER_USERNAME
-REG delete "HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" /F /V SERVER_PASSWORD
-echo 6. Start Warewolf server.
-"C:\Program Files\dotnet\dotnet.exe" "%~dp0Warewolf Server.dll" --interactive
+echo 5. Start Warewolf server.
+sc create "Warewolf Server" binPath= "\"C:\Program Files\dotnet\dotnet.exe\" \"C:\server\Warewolf Server.dll\""
+sc start "Warewolf Server"
+powershell -Command Get-Content "C:\programdata\Warewolf\Server` Log\warewolf-server.log" -Wait
