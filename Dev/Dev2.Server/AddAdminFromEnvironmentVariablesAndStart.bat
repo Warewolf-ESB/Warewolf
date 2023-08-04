@@ -14,4 +14,4 @@ echo 5. Remove environment variables.
 REG delete "HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" /F /V SERVER_USERNAME
 REG delete "HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" /F /V SERVER_PASSWORD
 echo 6. Start Warewolf server.
-"%~dp0\Warewolf Server.exe"
+"C:\Program Files\dotnet\dotnet.exe" "%~dp0Warewolf Server.dll" --interactive
