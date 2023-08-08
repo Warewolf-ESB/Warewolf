@@ -110,22 +110,15 @@ namespace Dev2.Runtime.ServiceModel
                     }
                     else
                     {
-                        //// we to default to the hidden public user name of \, silly know but that is how to get around ntlm auth ;)
+                        client.UseDefaultCredentials = false;
                         if (connection.AuthenticationType == AuthenticationType.Public)
                         {
-                            if (isCalledForTestConnectionService)
-                                client.UseDefaultCredentials = true;
-                            else
-                            {
-                                client.UseDefaultCredentials = false;
+                            //// we to default to the hidden public user name of \, silly know but that is how to get around ntlm auth ;)
+                            connection.UserName = GlobalConstants.PublicUsername;
+                            connection.Password = string.Empty;
 
-                                connection.UserName = GlobalConstants.PublicUsername;
-                                connection.Password = string.Empty;
-                                
-                                client.Credentials = new NetworkCredential(connection.UserName, connection.Password);
-                            }
                         }
-
+                        client.Credentials = new NetworkCredential(connection.UserName, connection.Password);
                     }
 
 
@@ -133,6 +126,7 @@ namespace Dev2.Runtime.ServiceModel
                     var connectionAddress = connection.FetchTestConnectionAddress();
                     var hubConnection = new HubConnectionBuilder().WithUrl(connectionAddress, options =>
                     {
+                        options.UseDefaultCredentials = client.UseDefaultCredentials;
                         options.Transports = Microsoft.AspNetCore.Http.Connections.HttpTransportType.ServerSentEvents;
                         options.Credentials = client.Credentials;
                     }).Build();

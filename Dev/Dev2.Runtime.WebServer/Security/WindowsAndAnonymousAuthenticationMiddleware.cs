@@ -35,8 +35,8 @@ namespace Dev2.Runtime.WebServer.Security
             }
 
             var isAuthenticated = context.User.Identity?.IsAuthenticated;
-
-            if ((isAuthenticated ?? false) || GetAuthenticationScheme(context) == AuthenticationSchemes.Anonymous)
+            
+            if ((isAuthenticated ?? false) || context.User.IsAnonymous() || GetAuthenticationScheme(context) == AuthenticationSchemes.Anonymous)
             //if (GetAuthenticationScheme(context) == AuthenticationSchemes.Anonymous)
             {
                 await next(context);

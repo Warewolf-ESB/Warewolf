@@ -189,16 +189,19 @@ namespace Dev2.Activities.Specs.Merge
         [When(@"Merge Window is opened with remote ""(.*)""")]
         public void WhenMergeWindowIsOpenedWithRemote(string p0)
         {
-            var remoteResource = _scenarioContext.Get<IContextualResourceModel>(remoteResourceString);
-            var localResource = _scenarioContext.Get<IContextualResourceModel>(localResourceString);
-            var mergeVm = new MergeWorkflowViewModel(localResource, remoteResource, true);
-            _scenarioContext.Add(mergeVmString, mergeVm);
+            Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
+            {
+                var remoteResource = _scenarioContext.Get<IContextualResourceModel>(remoteResourceString);
+                var localResource = _scenarioContext.Get<IContextualResourceModel>(localResourceString);
+                var mergeVm = new MergeWorkflowViewModel(localResource, remoteResource, true);
+                _scenarioContext.Add(mergeVmString, mergeVm);
+            });
         }
 
         [When(@"Merge Window is opened with local ""(.*)""")]
         public void WhenMergeWindowIsOpenedWithLocal(string p0)
         {
-            Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
+            Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
             {
                 var localResourceVersion = _scenarioContext.Get<IContextualResourceModel>(localResourceVersionString);
                 var localResource = _scenarioContext.Get<IContextualResourceModel>(localResourceString);
@@ -257,13 +260,13 @@ namespace Dev2.Activities.Specs.Merge
         {
             //Dev2.Net6.Compatibility.STAThreadExtensions.RunAsSTA(() =>
             //{
-                System.Windows.Threading.Dispatcher.CurrentDispatcher.BeginInvoke(new Action(() =>
-                {
-                    var mergeVm = _scenarioContext.Get<MergeWorkflowViewModel>(mergeVmString);
-                    var mergeArmConnector = mergeVm.Conflicts.Where(a => a is ConnectorConflictRow && a.HasConflict && !a.Different.IsChecked).Cast<ConnectorConflictRow>().Select(p => p.DifferentArmConnector).FirstOrDefault() as IConnectorConflictItem;
-                    Assert.IsNotNull(mergeArmConnector);
-                    mergeArmConnector.IsChecked = true;
-                }));
+            System.Windows.Threading.Dispatcher.CurrentDispatcher.BeginInvoke(new Action(() =>
+            {
+                var mergeVm = _scenarioContext.Get<MergeWorkflowViewModel>(mergeVmString);
+                var mergeArmConnector = mergeVm.Conflicts.Where(a => a is ConnectorConflictRow && a.HasConflict && !a.Different.IsChecked).Cast<ConnectorConflictRow>().Select(p => p.DifferentArmConnector).FirstOrDefault() as IConnectorConflictItem;
+                Assert.IsNotNull(mergeArmConnector);
+                mergeArmConnector.IsChecked = true;
+            }));
             //});
         }
 

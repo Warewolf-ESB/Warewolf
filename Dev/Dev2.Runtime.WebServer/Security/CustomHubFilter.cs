@@ -57,7 +57,7 @@ namespace Dev2.Runtime.WebServer.Security
 
             var httpContext = hubLifeTimeContext.Context.GetHttpContext();
 
-            return httpContext.User.IsAuthenticated() && Service.IsAuthorized(hubLifeTimeContext.GetAuthorizationRequest());
+            return (httpContext.User.IsAuthenticated() || httpContext.User.IsAnonymous()) && Service.IsAuthorized(hubLifeTimeContext.GetAuthorizationRequest());
         }
 
         public bool AuthorizeHubMethodInvocation(HubInvocationContext invocationContext)
@@ -68,10 +68,11 @@ namespace Dev2.Runtime.WebServer.Security
             
             VerifyArgument.IsNotNull(nameof(httpContext), httpContext);
 
-            return httpContext != null && httpContext.User.IsAuthenticated() && Service.IsAuthorized(invocationContext.GetAuthorizationRequest());
+            return httpContext != null && (httpContext.User.IsAuthenticated() || httpContext.User.IsAnonymous()) && Service.IsAuthorized(invocationContext.GetAuthorizationRequest());
+
         }
 
-      
+
 
         public Task OnDisconnectedAsync(
             HubLifetimeContext context, Exception exception, Func<HubLifetimeContext, Exception, Task> next)

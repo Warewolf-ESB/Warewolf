@@ -37,6 +37,18 @@ namespace Dev2.Runtime.WebServer
             return user != null && user.Identity.IsAuthenticated;
         }
 
+        public static bool IsAnonymous(this IPrincipal user)
+        {
+            bool isAnonymous = false;
+
+            if (user.Identity != null && user.Identity is WindowsIdentity userWindowsIdentity)
+            {
+                isAnonymous = userWindowsIdentity.IsAnonymous;
+            }
+
+            return isAnonymous;
+        }
+
         public static Encoding GetContentEncoding(this HttpContent content)
         {
             var encoding = content == null ? String.Empty : content.Headers.ContentEncoding.FirstOrDefault();

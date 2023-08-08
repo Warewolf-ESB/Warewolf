@@ -429,7 +429,7 @@ Scenario: Split text using Index where index > provided
 	 | [[var]] | 123   |
      And the execution has "NO" error
 
-@COMIPCSaxonCSandStudioTests
+#@COMIPCSaxonCSandStudioTests
 Scenario: Sending Error in error variable and calling webservice
     Given remote server container has started
     And A string to split with value "@!?><":}{+_)(*&^~"

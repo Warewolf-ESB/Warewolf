@@ -97,11 +97,9 @@ namespace Dev2.Activities.Specs.Sources
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Create Windows Server Source")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "ServerSource")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ServerSourceTests")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("COMIPCSaxonCSandStudioTests")]
         public void CreateWindowsServerSource()
         {
-            string[] tagsOfScenario = new string[] {
-                    "COMIPCSaxonCSandStudioTests"};
+            string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create Windows Server Source", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 8
@@ -143,11 +141,9 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Create User Server Source")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "ServerSource")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ServerSourceTests")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("COMIPCSaxonCSandStudioTests")]
         public void CreateUserServerSource()
         {
-            string[] tagsOfScenario = new string[] {
-                    "COMIPCSaxonCSandStudioTests"};
+            string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create User Server Source", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 18
@@ -225,11 +221,9 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Create Public Server Source")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "ServerSource")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ServerSourceTests")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("COMIPCSaxonCSandStudioTests")]
         public void CreatePublicServerSource()
         {
-            string[] tagsOfScenario = new string[] {
-                    "COMIPCSaxonCSandStudioTests"};
+            string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create Public Server Source", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 34
@@ -246,7 +240,7 @@ this.ScenarioInitialize(scenarioInfo);
                             "Address",
                             "AuthenticationType"});
                 table869.AddRow(new string[] {
-                            "http://localhost:3142",
+                            "http://wolfs-den.premier.local:3142",
                             "Public"});
 #line 35
  testRunner.Given("I create a server source as", ((string)(null)), table869, "Given ");
