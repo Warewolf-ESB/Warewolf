@@ -39,7 +39,6 @@ namespace Dev2.Data.Tests
 
         [TestMethod]
         [DoNotParallelize]
-        //[TestCategory("COMIPCSaxonCSandStudioTests")]
         public void ExecutePathSaxonWhereGivenXMLDocumentExpectXMLReturned()
         {
             //------------Setup for test--------------------------
@@ -53,7 +52,6 @@ namespace Dev2.Data.Tests
         }
 
         [TestMethod]
-        //[TestCategory("COMIPCSaxonCSandStudioTests")]
         public void ExecutePathSaxonWhereGivenXPathWithBooleanFunctionShouldReturnTrue()
         {
             //------------Setup for test--------------------------
@@ -67,7 +65,6 @@ namespace Dev2.Data.Tests
         }
 
         [TestMethod]
-        //[TestCategory("COMIPCSaxonCSandStudioTests")]
         public void ExecutePathWhereGivenXMLDocumentExpectXMLReturned()
         {
             //------------Setup for test--------------------------
@@ -83,7 +80,6 @@ namespace Dev2.Data.Tests
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("XPathParser_Parser")]
-        //[TestCategory("COMIPCSaxonCSandStudioTests")]
         public void XPathParser_Parser_WhenXPathingAttributes_ExpectValidDataWithoutAttributeName()
         {
             //------------Setup for test--------------------------
@@ -221,7 +217,6 @@ namespace Dev2.Data.Tests
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("XPathParser_Parser")]
-        //[TestCategory("COMIPCSaxonCSandStudioTests")]
         public void XPathParser_Parser_WhenXPathingElements_ExpectValidData()
         {
             //------------Setup for test--------------------------
@@ -377,7 +372,6 @@ namespace Dev2.Data.Tests
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("XPathParser_Parser")]
-        //[TestCategory("COMIPCSaxonCSandStudioTests")]
         public void XPathParser_Parser_WhenXPathingElementsWithAttributes_ExpectValidData()
         {
             //------------Setup for test--------------------------
@@ -516,7 +510,6 @@ namespace Dev2.Data.Tests
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("XPathParser_Parser")]
-        //[TestCategory("COMIPCSaxonCSandStudioTests")]
         public void XPathParser_Parser_WhenXPathingAttributesFromTFSWithoutNamespace_ExpectValidDataWithoutAttributeName()
         {
             //------------Setup for test--------------------------
@@ -538,7 +531,6 @@ namespace Dev2.Data.Tests
         }
 
         [TestMethod]
-        //[TestCategory("COMIPCSaxonCSandStudioTests")]
         public void ExecutePathWhereGivenXMLDocumentExpectXMLReturnedTestXML()
         {
             //------------Setup for test--------------------------
@@ -552,7 +544,6 @@ namespace Dev2.Data.Tests
         }
 
         [TestMethod]
-        //[TestCategory("COMIPCSaxonCSandStudioTests")]
         public void ExecutePathWhereGivenXMLDataExpectXMLReturned()
         {
             //------------Setup for test--------------------------
@@ -566,7 +557,6 @@ namespace Dev2.Data.Tests
         }
 
         [TestMethod]
-        //[TestCategory("COMIPCSaxonCSandStudioTests")]
         public void ExecutePathWhereRootNodeInXPathGivenXMLDataExpectXMLReturned()
         {
             //------------Setup for test--------------------------
@@ -582,7 +572,6 @@ namespace Dev2.Data.Tests
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("XPathParser_Parser")]
-        //[TestCategory("COMIPCSaxonCSandStudioTests")]
         public void XPathParser_ExecutePath_AttrXPathGivenXMLData_XMLReturned()
         {
             //------------Setup for test--------------------------
@@ -598,7 +587,6 @@ namespace Dev2.Data.Tests
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("XPathParser_Parser")]
-        //[TestCategory("COMIPCSaxonCSandStudioTests")]
         public void XPathParser_ExecutePath_OrXPathGivenXMLData_XMLReturned()
         {
             //------------Setup for test--------------------------
@@ -659,7 +647,6 @@ namespace Dev2.Data.Tests
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("XPathParser_ExecuteXPath")]
-        //[TestCategory("COMIPCSaxonCSandStudioTests")]
         public void XPathParser_ExecuteXPath_XmlHasNamespaces_ShouldStillWork()
         {
             //------------Setup for test--------------------------
