@@ -300,10 +300,10 @@ namespace Dev2.Controller
                 ServicePayload.ServiceName = ServiceName;
                 var toSend = serializer.SerializeToBuilder(ServicePayload);
                 var payload = await connection.ExecuteCommandAsync(toSend, workspaceId).ConfigureAwait(true);
-
+                string message = null;
                 try
                 {
-                    var message = serializer.Deserialize<CompressedExecuteMessage>(payload).GetDecompressedMessage();
+                    message = serializer.Deserialize<CompressedExecuteMessage>(payload).GetDecompressedMessage();
                     return serializer.Deserialize<T>(message);
                 }
                 catch (NullReferenceException e)
@@ -314,10 +314,19 @@ namespace Dev2.Controller
                 }
                 catch (Newtonsoft.Json.JsonReaderException e)
 				{
-					Dev2Logger.Error("Unable to deserialize response from server " + connection.WebServerUri.ToString(), e, "Warewolf Error");
+                    if (message != null)
+					{
+						Dev2Logger.Error($"Unable to deserialize response \"{message}\" from server \"{connection.WebServerUri.ToString()}\"", e, "Warewolf Error");
+					}
+                    else
+					{
+						Dev2Logger.Error($"Unable to deserialize and compressed response \"{payload}\" from server \"{connection.WebServerUri.ToString()}\"", e, "Warewolf Error");
+
+					}
                     throw e;
 				}
-            }
+
+			}
             return default(T);
         }
 
