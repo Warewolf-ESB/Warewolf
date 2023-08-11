@@ -308,11 +308,15 @@ namespace Dev2.Controller
                 }
                 catch (NullReferenceException e)
                 {
-
                     Dev2Logger.Debug("fallback to non compressed", e, "Warewolf Debug");
                     var val = serializer.Deserialize<T>(payload);
                     return val;
                 }
+                catch (Newtonsoft.Json.JsonReaderException e)
+				{
+					Dev2Logger.Error("Unable to deserialize response from server " + connection.WebServerUri.ToString(), e, "Warewolf Error");
+                    throw e;
+				}
             }
             return default(T);
         }
