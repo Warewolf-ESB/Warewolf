@@ -59,7 +59,13 @@ namespace Warewolf.OS
 
         private readonly IChildProcessTracker _childProcessTracker;
 
-        public bool IsAlive => _thread?.IsAlive ?? false;
+        public bool IsAlive
+        {
+            get
+            {
+                return (_thread?.IsAlive ?? false) && !(Process?.HasExited ?? false);
+            }
+        }
 
         protected ProcessMonitor(IChildProcessTracker childProcessTracker, IProcessFactory processFactory,
             IJobConfig config)

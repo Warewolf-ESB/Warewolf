@@ -20,17 +20,9 @@ namespace Warewolf.Tools.Specs.BaseTypes
     [Binding]
     public class FileToolsBase : RecordSetBases
     {
-        readonly ScenarioContext scenarioContext;
-
         public FileToolsBase(ScenarioContext scenarioContext)
             : base(scenarioContext)
         {
-            if (scenarioContext == null)
-            {
-                throw new ArgumentNullException("scenarioContext");
-            }
-
-            this.scenarioContext = scenarioContext;
         }
 
         #region Overrides of RecordSetBases

@@ -46,6 +46,7 @@ using JsonSerializer = Warewolf.Streams.JsonSerializer;
 using System.Diagnostics;
 using Dev2.Runtime.Subscription;
 using Warewolf.Execution;
+using Dev2.Runtime.Security;
 
 namespace Dev2
 {
@@ -156,7 +157,7 @@ namespace Dev2
             _usageLogger = startupConfiguration.UsageLogger;
             _usageTrackerWrapper = startupConfiguration.UsageTracker;
 
-            _pulseLogger = new PulseLogger(60000).Start();
+            _pulseLogger = new PulseLogger(60000, startupConfiguration.LoggerFactory.New(new JsonSerializer(), new WebSocketPool())).Start();
             _pulseTracker = new PulseTracker(TimeSpan.FromDays(1).TotalMilliseconds).Start();
             _serverEnvironmentPreparer.PrepareEnvironment();
             _startWebServer = startupConfiguration.StartWebServer;
@@ -237,20 +238,24 @@ namespace Dev2
                             _loggingProcessMonitor.Start();
                             var loggingServerCheckDelay = Task.Delay(TimeSpan.FromSeconds(300));
 
-                            _loadResources = new LoadResources("Resources", _writer, _startUpDirectory, _startupResourceCatalogFactory);
-                            LoadSubscriptionProvider();
-                            _loadResources.CheckExampleResources();
-                            _loadResources.MigrateOldTests();
-                            var webServerConfig = _webServerConfiguration;
-                            webServerConfig.Execute();
-                            new LoadRuntimeConfigurations(_writer).Execute();
-                            OpenCOMStream(null);
-                            _loadResources.LoadResourceCatalog();
-                            _timer = new Timer((state) => GetComputerNames.GetComputerNamesList(), null, 1000, GlobalConstants.NetworkComputerNameQueryFreq);
-                            _loadResources.LoadServerWorkspace();
-                            _loadResources.LoadActivityCache(_assemblyLoader);
-                            LoadTestCatalog();
-                            LoadTriggersCatalog();
+                    _loadResources = new LoadResources("Resources", _writer, _startUpDirectory, _startupResourceCatalogFactory);
+                    LoadHostSecurityProvider();
+
+                    //Disable download of example resources. In future include this for new installations only
+                    //_loadResources.CheckExampleResources();
+
+                    _loadResources.MigrateOldTests();
+                    LoadSubscriptionProvider();
+                    var webServerConfig = _webServerConfiguration;
+                    webServerConfig.Execute();
+                    new LoadRuntimeConfigurations(_writer).Execute();
+                    OpenCOMStream(null);
+                    _loadResources.LoadResourceCatalog();
+                    _timer = new Timer((state) => GetComputerNames.GetComputerNamesList(), null, 1000, GlobalConstants.NetworkComputerNameQueryFreq);
+                    _loadResources.LoadServerWorkspace();
+                    _loadResources.LoadActivityCache(_assemblyLoader);
+                    LoadTestCatalog();
+                    LoadTriggersCatalog();
 
                             _startWebServer.Execute(webServerConfig, _pauseHelper);
                             _queueProcessMonitor.Start();
@@ -500,9 +505,19 @@ namespace Dev2
             _writer.Write("Loading test catalog...  ");
             TestCatalog.Instance.Load();
             _writer.WriteLine("done.");
-        }
+		}
 
-        void LoadSubscriptionProvider()
+		void LoadHostSecurityProvider()
+		{
+			_writer.Write("Loading security provider...  ");
+			var instance = HostSecurityProvider.Instance;
+			if (instance != null)
+			{
+				_writer.WriteLine("done.");
+			}
+		}
+
+		void LoadSubscriptionProvider()
         {
             _writer.Write("Loading subscription provider...  ");
             _subscriptionDataInstance = SubscriptionProvider.Instance;

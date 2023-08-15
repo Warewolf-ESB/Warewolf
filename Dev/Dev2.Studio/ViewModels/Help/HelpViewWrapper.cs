@@ -17,47 +17,47 @@ using Dev2.Studio.Views.Help;
 
 namespace Dev2.ViewModels.Help
 {
-    public class HelpViewWrapper : IHelpViewWrapper
-    {
-        public HelpViewWrapper(HelpView view)
-        {
-            HelpView = view;
-        }
+	public class HelpViewWrapper : IHelpViewWrapper
+	{
+		public HelpViewWrapper(HelpView view)
+		{
+			HelpView = view;
+		}
 
-        public HelpView HelpView { get; private set; }
+		public HelpView HelpView { get; private set; }
 
-        public Frame WebBrowser => HelpView.WebBrowserHost;
+		public Frame WebBrowser => HelpView.WebBrowserHost;
 
-        public CircularProgressBar CircularProgressBar => HelpView.CircularProgressBar;
+		public CircularProgressBar CircularProgressBar => HelpView.CircularProgressBar;
 
-        public Visibility WebBrowserVisibility  
-        {
-            get
-            {
-                return WebBrowser.Visibility;
-            }
-            set
-            {
-                WebBrowser.Visibility = value;
-            }
-        }
+		public Visibility WebBrowserVisibility
+		{
+			get
+			{
+				return WebBrowser.Visibility;
+			}
+			set
+			{
+				WebBrowser.Visibility = value;
+			}
+		}
 
-         public Visibility CircularProgressBarVisibility  
-        {
-            get
-            {
-                return CircularProgressBar.Visibility;
-            }
-            set
-            {
-                CircularProgressBar.Visibility = value;
-            }
-        }
+		public Visibility CircularProgressBarVisibility
+		{
+			get
+			{
+				return CircularProgressBar.Visibility;
+			}
+			set
+			{
+				CircularProgressBar.Visibility = value;
+			}
+		}
 
-        public void Navigate(string uri)
-        {
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Ssl3;
-            HelpView.WebBrowserHost.Source = new Uri(uri, UriKind.Absolute);
-        }
-    }
+		public void Navigate(string uri)
+		{
+			ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Ssl3;
+			HelpView.WebBrowserHost.Source = new Uri(uri, UriKind.Absolute);
+		}
+	}
 }

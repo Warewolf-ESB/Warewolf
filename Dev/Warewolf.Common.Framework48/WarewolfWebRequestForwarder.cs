@@ -8,12 +8,19 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Dev2.Common.ExtMethods;
 using System.Linq;
+using System.Net;
+using System.Net.Http.Headers;
+using System.Threading;
+using Dev2.Common.Serializers;
+using Dev2.Runtime.ServiceModel;
+using Warewolf.Common.NetStandard20;
 using Warewolf.Data;
 using Warewolf.Streams;
 
@@ -50,7 +57,7 @@ namespace Warewolf.Common
         public async Task<ConsumerResult> Consume(byte[] body, object parameters)
         {
             var postBody = BuildPostBody(body);
-            var execution = await SendEventToWarewolf(_url, postBody, parameters as Headers);
+            var execution = await SendEventToWarewolf(_url, postBody, parameters as Headers, body);
             if (!execution.IsSuccessStatusCode)
             {
                 _publisher.Publish(Encoding.UTF8.GetBytes(postBody));
@@ -68,9 +75,22 @@ namespace Warewolf.Common
             return mappedData;
         }
 
-        private async Task<HttpResponseMessage> SendEventToWarewolf(string uri, string postData, Headers headers)
+        private async Task<HttpResponseMessage> SendEventToWarewolf(string uri, string postData, Headers headers, byte[] body = null)
         {
             var client = _httpClientFactory.New(uri, _username, _password, headers);
+            client.SetTimeout(Timeout.InfiniteTimeSpan);
+            var input = _valueKeys.FirstOrDefault();
+            //if there is only one input and it is an object, send through the request as form data
+            if (_mapEntireMessage && body != null && input != null && input.Name.StartsWith("@"))
+            {
+                using (var multipartFormContent = new MultipartFormDataContent())
+                {
+                    var content = new ByteArrayContent(body);
+                    multipartFormContent.Add(content, input.Name);
+                    return await client.PostAsync(uri, multipartFormContent);
+                }
+            }
+
             return await client.PostAsync(uri, postData);
         }
     }

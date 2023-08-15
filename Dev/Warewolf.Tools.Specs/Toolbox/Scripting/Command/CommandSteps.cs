@@ -24,17 +24,9 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Command
     [Binding]
     public class CommandSteps : RecordSetBases
     {
-        readonly ScenarioContext scenarioContext;
-
         public CommandSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
         {
-            if (scenarioContext == null)
-            {
-                throw new ArgumentNullException("scenarioContext");
-            }
-
-            this.scenarioContext = scenarioContext;
         }
 
         protected override void BuildDataList()

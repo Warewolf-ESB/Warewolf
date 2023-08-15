@@ -216,21 +216,21 @@ namespace Dev2.Runtime.WebServer.Executor
             return new StringResponseWriter(_executePayload ?? string.Empty, formatter.ContentType);
         }
 
-        private IResponseWriter ExecuteAsCoverage(WebRequestTO webRequest, string serviceName, IWarewolfResource resource)
-        {
-            try
+            private IResponseWriter ExecuteAsCoverage(WebRequestTO webRequest, string serviceName, IWarewolfResource resource)
             {
-                var coverageDataContext = new CoverageDataContext(_dataObject.ResourceID, _dataObject.ReturnType, webRequest.WebServerUrl);
-                coverageDataContext.SetTestCoverageResourceIds(_resourceCatalog.NewContextualResourceCatalog(_authorizationService, _workspaceGuid), webRequest, serviceName, resource);
-                var formatter = ServiceTestCoverageExecutor.GetTestCoverageReports(coverageDataContext, _workspaceGuid, _serializer, _testCoverageCatalog, _testCatalog, _resourceCatalog, out _executePayload);
-                return new StringResponseWriter(_executePayload ?? string.Empty, formatter.ContentType);
+                try
+                {
+                    var coverageDataContext = new CoverageDataContext(_dataObject.ResourceID, _dataObject.ReturnType, webRequest.WebServerUrl, _dataObject.TestName);
+                    coverageDataContext.SetTestCoverageResourceIds(_resourceCatalog.NewContextualResourceCatalog(_authorizationService, _workspaceGuid), webRequest, serviceName, resource);
+                    var formatter = ServiceTestCoverageExecutor.GetTestCoverageReports(coverageDataContext, _workspaceGuid, _serializer, _testCoverageCatalog, _testCatalog, _resourceCatalog, out _executePayload);
+                    return new StringResponseWriter(_executePayload ?? string.Empty, formatter.ContentType);
+                }
+                finally
+                {
+                    Dev2DataListDecisionHandler.Instance.RemoveEnvironment(_dataObject.DataListID);
+                    _dataObject.Environment = null;
+                }
             }
-            finally
-            {
-                Dev2DataListDecisionHandler.Instance.RemoveEnvironment(_dataObject.DataListID);
-                _dataObject.Environment = null;
-            }
-        }
 
         public abstract IResponseWriter BuildResponse(WebRequestTO webRequest, string serviceName);
 

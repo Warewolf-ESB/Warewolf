@@ -98,13 +98,13 @@ namespace Warewolf.Tools.Specs.Toolbox.Database
             environmentModel?.ResourceRepository?.DeleteResource(resourceModel);
         }
 
-        [BeforeScenario("@OpeningSavedWorkflowWithPostgresServerTool", "@ChangeTheSourceOnExistingPostgresql", "@ChangeTheActionOnExistingPostgresql", "@ChangeTheRecordsetOnExistingPostgresqlTool", "@ChangingSqlServerFunctions", "@CreatingOracleToolInstance", "@ChangingOracleActions")]
+        [BeforeScenario("@Database")]
         public void InitChangingFunction()
         {
-            var mock = new Mock<IDataListViewModel>();
-            mock.Setup(model => model.ScalarCollection).Returns(new ObservableCollection<IScalarItemModel>());
             if (DataListSingleton.ActiveDataList == null)
             {
+                var mock = new Mock<IDataListViewModel>();
+                mock.Setup(model => model.ScalarCollection).Returns(new ObservableCollection<IScalarItemModel>());
                 DataListSingleton.SetDataList(mock.Object);
             }
         }

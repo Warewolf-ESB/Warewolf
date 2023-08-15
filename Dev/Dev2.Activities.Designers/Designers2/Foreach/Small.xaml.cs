@@ -27,7 +27,6 @@ namespace Dev2.Activities.Designers2.Foreach
         void DoDrop(object sender, DragEventArgs e)
         {
             var dataObject = e.Data;
-
             if (_dropEnabledActivityDesignerUtils != null)
             {
                 var dropEnabled = _dropEnabledActivityDesignerUtils.LimitDragDropOptions(dataObject);

@@ -33,17 +33,9 @@ namespace Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach
     [Binding]
     public class ForEachSteps : RecordSetBases
     {
-        readonly ScenarioContext scenarioContext;
-
         public ForEachSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
         {
-            if (scenarioContext == null)
-            {
-                throw new ArgumentNullException("scenarioContext");
-            }
-
-            this.scenarioContext = scenarioContext;
         }
 
         const string ResultRecordsetVariable = "[[r().v]]";

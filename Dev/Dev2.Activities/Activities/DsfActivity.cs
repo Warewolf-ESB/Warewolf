@@ -207,8 +207,25 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         IAuthorizationService _authorizationService;
         public override void UpdateDebugParentID(IDSFDataObject dataObject)
         {
+            IDev2Activity currentGate;
+            RetryState retryState;
+            var gates = dataObject.Gates;
+
+            if (this is GateActivity)
+            {
+                currentGate = gates.Keys.FirstOrDefault(o => o.UniqueID == UniqueID);
+
+                if (currentGate != null)
+                {
+                    retryState = gates[currentGate].Item1;
+                    UniqueID = retryState != null ? retryState.GateToRetry.UniqueID : UniqueID;
+                }
+            }
+            else
+            {
+                UniqueID = dataObject.ForEachNestingLevel > 0 ? Guid.NewGuid().ToString() : UniqueID;
+            }
             WorkSurfaceMappingId = Guid.Parse(UniqueID);
-            UniqueID = dataObject.ForEachNestingLevel > 0 ? Guid.NewGuid().ToString() : UniqueID;
         }
 
        internal IAuthorizationService AuthorizationService
@@ -278,7 +295,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected virtual void ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO tmpErrors, int update)
         {
-            esbChannel.ExecuteSubRequest(dataObject, dataObject.WorkspaceID, inputs, outputs, out tmpErrors, update, !String.IsNullOrEmpty(OnErrorVariable));
+            esbChannel.ExecuteSubRequest(dataObject, dataObject.WorkspaceID, inputs, outputs, out tmpErrors, update, 
+                (!String.IsNullOrEmpty(OnErrorVariable) || !String.IsNullOrEmpty(OnErrorWorkflow)));
         }
 
         public override IList<DsfForEachItem> GetForEachInputs() => throw new NotImplementedException();
@@ -377,15 +395,19 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 if (allErrors.HasErrors())
                 {
                     var env = dataObject.Environment;
-                    foreach (var allError in allErrors.FetchErrors())
+                    if (!this.IsErrorHandled)
                     {
-                        env.AddError(allError);
+                        foreach (var allError in allErrors.FetchErrors())
+                        {
+                            env.AddError(allError);
+                        }
                     }
 
                     // add to datalist in variable specified
                     if (!String.IsNullOrEmpty(OnErrorVariable))
                     {
-                        var errorString = env.FetchErrors();
+                        //string.Join(Environment.NewLine, AllErrors.Union(Errors));
+                        var errorString = string.Join(Environment.NewLine, allErrors.FetchErrors());
                         var errors = ErrorResultTO.MakeErrorResultFromDataListString(errorString, true);
                         var upsertVariable = DataListUtil.AddBracketsToValueIfNotExist(OnErrorVariable);
                         if (errors.HasErrors())
@@ -400,6 +422,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         else
                         {
                             env.Assign(upsertVariable, errorString, update);
+                        }
+                    }
+
+                    if (!string.IsNullOrEmpty(OnErrorWorkflow))
+                    {
+                        var esbChannel = dataObject.EsbChannel;
+                        esbChannel.ExecuteLogErrorRequest(dataObject, dataObject.WorkspaceID, OnErrorWorkflow, out ErrorResultTO tmpErrors, update);
+                        if (tmpErrors != null)
+                        {
+                            dataObject.Environment.AddError(tmpErrors.MakeDisplayReady());
                         }
                     }
                     DisplayAndWriteError(dataObject,serviceName, allErrors);

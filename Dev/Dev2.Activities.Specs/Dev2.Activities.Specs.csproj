@@ -59,9 +59,6 @@
     <LangVersion>7.3</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <AdditionalFiles Include="..\SonarQube\SonarLint.xml">
-      <Visible>False</Visible>
-    </AdditionalFiles>
     <Compile Include="ActivityUtils.cs" />
     <Compile Include="BrowserDebug\BrowserDebugSteps.cs" />
     <Compile Include="BrowserDebug\BrowserDebug.feature.cs">
@@ -84,6 +81,7 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Composition\SubworkflowExecution.feature.cs" />
     <Compile Include="Composition\WorkflowExecutionLogging.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -98,11 +96,6 @@
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Hooks\ConnectAndLoadServerResourcesHooks.cs" />
     <Compile Include="MergeExecutionSteps.cs" />
-    <Compile Include="Composition\SubworkflowExecution.feature.cs">
-      <DependentUpon>SubworkflowExecution.feature</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="Composition\WorkflowExecution.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -279,22 +272,19 @@
       <Version>1.3.0.7</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
-      <Version>12.0.3</Version>
+      <Version>13.0.2</Version>
     </PackageReference>
     <PackageReference Include="Prism.Mvvm">
       <Version>1.1.1</Version>
     </PackageReference>
     <PackageReference Include="SharpZipLib">
-      <Version>0.86.0</Version>
+      <Version>1.3.3</Version>
     </PackageReference>
     <PackageReference Include="SpecFlow">
-      <Version>2.3.2</Version>
+      <Version>3.9.22</Version>
     </PackageReference>
     <PackageReference Include="SpecFlow.MsTest">
-      <Version>2.3.2</Version>
-    </PackageReference>
-    <PackageReference Include="SpecFlow.Tools.MsBuild.Generation">
-      <Version>2.3.2</Version>
+      <Version>3.9.22</Version>
     </PackageReference>
     <PackageReference Include="System.Data.SQLite.Core">
       <Version>1.0.112</Version>
@@ -319,111 +309,81 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="BrowserDebug\BrowserDebug.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>BrowserDebug.feature.cs</LastGenOutput>
     </None>
     <None Include="Composition\DatabaseWorkflowExecution.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>DatabaseWorkflowExecution.feature.cs</LastGenOutput>
     </None>
     <None Include="Composition\ExampleWorkflowExecution.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>ExampleWorkflowExecution.feature.cs</LastGenOutput>
     </None>
     <None Include="Composition\AssignWorkflowExecution.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>AssignWorkflowExecution.feature.cs</LastGenOutput>
     </None>
     <None Include="Composition\CompositionLoadTests.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>CompositionLoadTests.feature.cs</LastGenOutput>
     </None>
     <None Include="Composition\RabbitMQWorkflowExecution.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>RabbitMQWorkflowExecution.feature.cs</LastGenOutput>
     </None>
     <None Include="Composition\WorkflowExecutionLogging.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>WorkflowExecutionLogging.feature.cs</LastGenOutput>
     </None>
     <None Include="Composition\WorkflowResume.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>WorkflowResume.feature.cs</LastGenOutput>
     </None>
     <None Include="Merge\MergeExecution.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>MergeExecution.feature.cs</LastGenOutput>
     </None>
-    <None Include="Composition\SubworkflowExecution.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>SubworkflowExecution.feature.cs</LastGenOutput>
-    </None>
     <None Include="Composition\WorkflowExecution.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>WorkflowExecution.feature.cs</LastGenOutput>
     </None>
     <None Include="Deploy\Deploy Feature.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Deploy Feature.feature.cs</LastGenOutput>
     </None>
     <None Include="Scheduler\Scheduler.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Scheduler.feature.cs</LastGenOutput>
     </None>
     <None Include="Search\Search.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Search.feature.cs</LastGenOutput>
     </None>
     <None Include="Sources\ServerSource.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>ServerSource.feature.cs</LastGenOutput>
     </None>
     <None Include="StudioTestFramework\StudioTestFrameworkAdvancedRecordset.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>StudioTestFrameworkAdvancedRecordset.feature.cs</LastGenOutput>
     </None>
     <None Include="StudioTestFramework\StudioTestFrameworkWithDeletedResources.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>StudioTestFrameworkWithDeletedResources.feature.cs</LastGenOutput>
     </None>
     <None Include="StudioTestFramework\StudioTestFrameworkWithHelloWorldWorkflow.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>StudioTestFrameworkWithHelloWorldWorkflow.feature.cs</LastGenOutput>
     </None>
     <None Include="StudioTestFramework\StudioTestFrameworkWithSharepointTools.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>StudioTestFrameworkWithSharepointTools.feature.cs</LastGenOutput>
     </None>
     <None Include="StudioTestFramework\StudioTestFrameworkWithSubworkflow.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>StudioTestFrameworkWithSubworkflow.feature.cs</LastGenOutput>
     </None>
     <None Include="StudioTestFramework\StudioTestFrameworkWithDatabaseTools.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>StudioTestFrameworkWithDatabaseTools.feature.cs</LastGenOutput>
     </None>
     <None Include="StudioTestFramework\StudioTestFrameworkWithDataTools.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>StudioTestFrameworkWithDataTools.feature.cs</LastGenOutput>
     </None>
     <None Include="StudioTestFramework\StudioTestFrameworkWithHTTPWebTools.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>StudioTestFrameworkWithHTTPWebTools.feature.cs</LastGenOutput>
     </None>
     <None Include="StudioTestFramework\StudioTestFrameworkWithScriptingTools.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>StudioTestFrameworkWithScriptingTools.feature.cs</LastGenOutput>
     </None>
     <None Include="StudioTestFramework\StudioTestFrameworkWithUtilityTools.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>StudioTestFrameworkWithUtilityTools.feature.cs</LastGenOutput>
     </None>
     <None Include="StudioTestFramework\StudioTestFrameworkWithFileAndFolderTools.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>StudioTestFrameworkWithFileAndFolderTools.feature.cs</LastGenOutput>
     </None>
     <None Include="StudioTestFramework\StudioTestFramework.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>StudioTestFramework.feature.cs</LastGenOutput>
     </None>
   </ItemGroup>

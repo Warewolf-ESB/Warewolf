@@ -621,7 +621,7 @@ namespace Dev2.Core.Tests
         [TestCategory("FileSystemQuery_ShareCollection")]
         public void FileSystemQuery_ShareCollection()
         {
-            var shareCollection = new ShareCollection(@"\\DEVOPSPDC.premier.local\");
+            var shareCollection = new ShareCollection(@"\\localhost\");
             //------------Assert Results-------------------------
             Assert.IsTrue(shareCollection.Count > 0, "Cannot get shared directory information.");
         }

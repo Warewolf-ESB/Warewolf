@@ -19,9 +19,15 @@ namespace Warewolf.UIBindingTests.Variables
     [Binding]
     public class VariableListSteps
     {
+        static FeatureContext _featureContext;
+        ScenarioContext _scenarioContext;
+
+        public VariableListSteps(ScenarioContext scenarioContext) => _scenarioContext = scenarioContext;
+        
         [BeforeFeature("VariableList")]
-        public static void SetupForFeature()
+        public static void SetupForFeature(FeatureContext featureContext)
         {
+            _featureContext = featureContext;
             Utils.SetupResourceDictionary();
             var mockEventAggregator = new Mock<IEventAggregator>();
             IView manageVariableListViewControl = new DataListView();
@@ -30,25 +36,25 @@ namespace Warewolf.UIBindingTests.Variables
             manageVariableListViewControl.DataContext = viewModel;
 
             Utils.ShowTheViewForTesting(manageVariableListViewControl);
-            FeatureContext.Current.Add(Utils.ViewNameKey, manageVariableListViewControl);
-            FeatureContext.Current.Add(Utils.ViewModelNameKey, viewModel);
-            FeatureContext.Current.Add("eventAggregator", mockEventAggregator);
+            _featureContext.Add(Utils.ViewNameKey, manageVariableListViewControl);
+            _featureContext.Add(Utils.ViewModelNameKey, viewModel);
+            _featureContext.Add("eventAggregator", mockEventAggregator);
         }
 
         [BeforeScenario("VariableList")]
         public void SetupForScenerio()
         {
   
-            ScenarioContext.Current.Add(Utils.ViewNameKey, FeatureContext.Current.Get<DataListView>(Utils.ViewNameKey));
-            var dataListViewModel = FeatureContext.Current.Get<DataListViewModel>(Utils.ViewModelNameKey);
+            _scenarioContext.Add(Utils.ViewNameKey, _featureContext.Get<DataListView>(Utils.ViewNameKey));
+            var dataListViewModel = _featureContext.Get<DataListViewModel>(Utils.ViewModelNameKey);
             dataListViewModel.SearchText = "";
-            ScenarioContext.Current.Add(Utils.ViewModelNameKey, dataListViewModel);
+            _scenarioContext.Add(Utils.ViewModelNameKey, dataListViewModel);
         }
 
         [Given(@"I have variables as")]
         public void GivenIHaveVariablesAs(Table table)
         {
-            var variableListViewModel = Utils.GetViewModel<DataListViewModel>();
+            var variableListViewModel = Utils.GetViewModel<DataListViewModel>(_scenarioContext);
             var rows = table.Rows;
             foreach (var tableRow in rows)
             {
@@ -115,13 +121,13 @@ namespace Warewolf.UIBindingTests.Variables
         [Then(@"""(.*)"" is ""(.*)""")]
         public void ThenIs(string controlName, string enabledString)
         {
-            Utils.CheckControlEnabled(controlName, enabledString, ScenarioContext.Current.Get<ICheckControlEnabledView>(Utils.ViewNameKey), Utils.ViewNameKey);
+            Utils.CheckControlEnabled(controlName, enabledString, _scenarioContext.Get<ICheckControlEnabledView>(Utils.ViewNameKey), Utils.ViewNameKey);
         }
 
         [When(@"I delete unassigned variables")]
         public void WhenIDeleteUnassignedVariables()
         {
-            var sourceControl = ScenarioContext.Current.Get<DataListViewModel>(Utils.ViewModelNameKey);
+            var sourceControl = _scenarioContext.Get<DataListViewModel>(Utils.ViewModelNameKey);
             sourceControl.RemoveUnusedDataListItems();
         }
 
@@ -136,8 +142,8 @@ namespace Warewolf.UIBindingTests.Variables
         [Given(@"I click delete for ""(.*)""")]
         public void ThenIClickDeleteFor(string variableName)
         {
-            var sourceControl = ScenarioContext.Current.Get<DataListViewModel>(Utils.ViewModelNameKey);
-            var sourceViewControl = ScenarioContext.Current.Get<DataListView>(Utils.ViewNameKey);
+            var sourceControl = _scenarioContext.Get<DataListViewModel>(Utils.ViewModelNameKey);
+            var sourceViewControl = _scenarioContext.Get<DataListView>(Utils.ViewNameKey);
             string varName;
             string parentName;
             if (DataListUtil.IsValueRecordset(variableName))
@@ -179,8 +185,8 @@ namespace Warewolf.UIBindingTests.Variables
         [When(@"I clear the filter")]
         public void WhenIClearTheFilter()
         {
-            var variableListViewModel = Utils.GetView<DataListViewModel>();
-            var sourceControl = ScenarioContext.Current.Get<DataListViewModel>(Utils.ViewModelNameKey);
+            var variableListViewModel = Utils.GetView<DataListViewModel>(_scenarioContext);
+            var sourceControl = _scenarioContext.Get<DataListViewModel>(Utils.ViewModelNameKey);
             sourceControl.SearchText = "";
             variableListViewModel.SearchText = string.Empty;
         }
@@ -189,22 +195,14 @@ namespace Warewolf.UIBindingTests.Variables
         [Then(@"I click ""(.*)""")]
         public void WhenIClick(string command)
         {
-            var sourceControl = ScenarioContext.Current.Get<DataListView>(Utils.ViewNameKey);
+            var sourceControl = _scenarioContext.Get<DataListView>(Utils.ViewNameKey);
         }
 
         [When(@"I Sort the variables")]
         public void WhenISortTheVariables()
         {
-            var sourceControl = ScenarioContext.Current.Get<DataListViewModel>(Utils.ViewModelNameKey);
+            var sourceControl = _scenarioContext.Get<DataListViewModel>(Utils.ViewModelNameKey);
             Assert.IsTrue(sourceControl.SortCommand.CanExecute(sourceControl.CanSortItems));
-        }
-
-        [Then(@"variables filter box is ""(.*)""")]
-        public void ThenVariablesFilterBoxIs(string visibleString)
-        {
-            var view = Utils.GetView<DataListView>();
-            //var visibility = view.GetFilterBoxVisibility();
-            //Assert.AreEqual(visibleString.ToLowerInvariant() == "visible" ? Visibility.Visible : Visibility.Collapsed, visibility);
         }
 
         [Then(@"the Variable Names are")]
@@ -212,7 +210,7 @@ namespace Warewolf.UIBindingTests.Variables
         [Given(@"the Variable Names are")]
         public void ThenTheVariableNamesAre(Table table)
         {
-            var sourceControl = ScenarioContext.Current.Get<DataListViewModel>(Utils.ViewModelNameKey);
+            var sourceControl = _scenarioContext.Get<DataListViewModel>(Utils.ViewModelNameKey);
             var variableListViewScalarCollection = sourceControl.ScalarCollection;
             var rows = table.Rows;
             var i = 0;
@@ -244,7 +242,7 @@ namespace Warewolf.UIBindingTests.Variables
         [Given(@"the Recordset Names are")]
         public void ThenTheRecordsetNamesAre(Table table)
         {
-            var sourceControl = ScenarioContext.Current.Get<DataListViewModel>(Utils.ViewModelNameKey);
+            var sourceControl = _scenarioContext.Get<DataListViewModel>(Utils.ViewModelNameKey);
             var variableListViewRecsetCollection = sourceControl.RecsetCollection;
             if (variableListViewRecsetCollection.Count > 0)
             {
@@ -303,7 +301,7 @@ namespace Warewolf.UIBindingTests.Variables
         [Given(@"I remove variable ""(.*)""")]
         public void GivenIRemoveVariable(string variableName)
         {
-            var sourceControl = ScenarioContext.Current.Get<DataListViewModel>(Utils.ViewModelNameKey);
+            var sourceControl = _scenarioContext.Get<DataListViewModel>(Utils.ViewModelNameKey);
             var variableListViewScalarCollection = sourceControl.ScalarCollection.FirstOrDefault(model => model.DisplayName == variableName);
             Assert.IsTrue(sourceControl.DeleteCommand.CanExecute(variableListViewScalarCollection));
         }
@@ -323,41 +321,40 @@ namespace Warewolf.UIBindingTests.Variables
         [When(@"I press the clear filter button")]
         public void WhenIPressTheClearFilterButton()
         {
-            var sourceControl = ScenarioContext.Current.Get<DataListViewModel>(Utils.ViewModelNameKey);
+            var sourceControl = _scenarioContext.Get<DataListViewModel>(Utils.ViewModelNameKey);
             sourceControl.ClearSearchTextCommand.Execute(null);
         }
 
         [When(@"I press ""(.*)""")]
         public void WhenIPress(string p0)
         {
-            ScenarioContext.Current.Pending();
+            _scenarioContext.Pending();
         }
 
         [When(@"the Debug Input window is opened")]
         public void WhenTheDebugInputWindowIsOpened()
         {
-            var sourceControl = ScenarioContext.Current.Get<DataListViewModel>(Utils.ViewModelNameKey);
-            //sourceControl.DebugInputWindowsIsVisible
-            ScenarioContext.Current.Pending();
+            var sourceControl = _scenarioContext.Get<DataListViewModel>(Utils.ViewModelNameKey);
+            _scenarioContext.Pending();
         }
 
         [When(@"I save workflow as ""(.*)""")]
         public void WhenISaveWorkflowAs(string p0)
         {
-            var variableListViewModel = Utils.GetViewModel<DataListViewModel>();
-            ScenarioContext.Current.Pending();
+            var variableListViewModel = Utils.GetViewModel<DataListViewModel>(_scenarioContext);
+            _scenarioContext.Pending();
         }
 
         [When(@"create variable ""(.*)"" equals """"(.*)""""")]
         public void WhenCreateVariableEquals(string p0, string p1)
         {
-            ScenarioContext.Current.Pending();
+            _scenarioContext.Pending();
         }
 
         [Then(@"cursor focus is '(.*)'")]
         public void ThenCursorFocusIs(string p0)
         {
-            ScenarioContext.Current.Pending();
+            _scenarioContext.Pending();
         }
     }
 }

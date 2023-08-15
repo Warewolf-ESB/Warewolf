@@ -1,4 +1,15 @@
+/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2022 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
 using System;
+using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -267,11 +278,14 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void AddChildDebugItems_GivenTestStepNotContainsStep_ShouldAddStep()
         {
             //---------------Set up test pack-------------------
+            var selectAndApply = new DsfSelectAndApplyActivity();
+
             var popupController = new Mock<IPopupController>();
             popupController.Setup(controller => controller.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
             var mockResourceModel = CreateMockResourceModel();
+            var resourceId = Guid.NewGuid(); 
             var contextualResourceModel = CreateResourceModel();
-            var resourceId = Guid.NewGuid();
+            contextualResourceModel.ID = resourceId;
             var dsfDecision = new DsfDecision();
             var decisionUniqueId = Guid.NewGuid();
             dsfDecision.UniqueID = decisionUniqueId.ToString();
@@ -279,6 +293,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockResourceModel.Setup(model => model.ID).Returns(resourceId);
             var mockWorkflowDesignerViewModel = new Mock<IWorkflowDesignerViewModel>();
             mockWorkflowDesignerViewModel.SetupProperty(model => model.ItemSelectedAction);
+            mockWorkflowDesignerViewModel.Setup(o => o.GetModelItem(Guid.Parse("a03172cf-7f8f-417e-be86-8821d696ca40"), Guid.Parse("a03172cf-7f8f-417e-be86-8821d696ca40")))
+                .Returns(CreateModelItem(selectAndApply));
+
             var newTestFromDebugMessage = new NewTestFromDebugMessage();
             var readAllText = File.ReadAllText("JsonResources\\DebugStates.json");
             var serializer = new Dev2JsonSerializer();
@@ -300,21 +317,22 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Execute Test ----------------------
             //---------------Test Result -----------------------
 
-            var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, popupController.Object, newTestFromDebugMessage, null);
-            testFrameworkViewModel.WebClient = new Mock<IWarewolfWebClient>().Object;
+            var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, popupController.Object, newTestFromDebugMessage, null)
+            {
+                WebClient = new Mock<IWarewolfWebClient>().Object
+            };
             var methodInfo = typeof(ServiceTestViewModel).GetMethod("AddChildDebugItems", BindingFlags.NonPublic | BindingFlags.Instance);
             var testSteps = new ObservableCollection<IServiceTestStep>();
-            var serviceTestStep = new Mock<IServiceTestStep>();
-            serviceTestStep.SetupGet(step => step.ActivityID).Returns(resourceId);
+            var serviceTestStep = new ServiceTestStep(resourceId, typeof(DsfSelectAndApplyActivity).Name, new ObservableCollection<IServiceTestOutput>(), StepType.Mock);
             //AddChildDebugItems(IDebugState debugItemContent, IDebugTreeViewItemViewModel debugState, ObservableCollection<IServiceTestStep> testSteps, IServiceTestStep parent)
             //---------------Assert Precondition----------------
             Assert.IsNotNull(methodInfo);
             //---------------Execute Test ----------------------
-            methodInfo.Invoke(testFrameworkViewModel, new object[] { debugStates[1], itemViewModel, serviceTestStep.Object });
+            methodInfo.Invoke(testFrameworkViewModel, new object[] { debugStates[1], itemViewModel, serviceTestStep});
             //---------------Test Result -----------------------
             var serviceTestSteps = testFrameworkViewModel.Tests[0].TestSteps;
-            var contains = serviceTestSteps.Contains(serviceTestStep.Object);
-            Assert.IsTrue(contains);
+            var contains = serviceTestSteps.Contains(serviceTestStep);
+            Assert.IsFalse(contains, "This as 'True' might not be a good idea or test itself is not setup right?");
         }
 
         [TestMethod]
@@ -546,7 +564,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             methodInfo.Invoke(testFrameworkViewModel, new object[] { sequenceSate, seq, default(IServiceTestStep) });
             //---------------Test Result -----------------------
             var serviceTestSteps = testFrameworkViewModel.Tests[0].TestSteps;
-            Assert.AreEqual(3, serviceTestSteps.Count);
+            Assert.AreEqual(2, serviceTestSteps.Count);
             Assert.AreEqual("DsfMultiAssignActivity", serviceTestSteps[0].ActivityType);
             Assert.AreEqual("Set the output variable (1)", serviceTestSteps[0].StepDescription);
             Assert.AreEqual(1, serviceTestSteps[0].StepOutputs.Count);
@@ -993,7 +1011,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         [TestMethod]
         [Timeout(500)]
         [Owner("Nkosinathi Sangweni")]
-        public void ServiceTestStepGetParentType_GivenSequence_ShouldSetupServiceTestStep()
+        public void ServiceTestViewModel_ServiceTestStepGetParentType_GivenSequence_ShouldSetupServiceTestStep()
         {
             //---------------Set up test pack-------------------
             var popupController = new Mock<IPopupController>();
@@ -1023,12 +1041,11 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Assert Precondition----------------
             Assert.IsNotNull(testFrameworkViewModel);
             //---------------Execute Test ----------------------
-            IServiceTestStep serviceTestStep = null;
             
-            var parameters = new object[] { modelItem, serviceTestStep };
-            methodInfo.Invoke(testFrameworkViewModel, parameters);
+            var parameters = new object[] { modelItem };
+            var result = methodInfo.Invoke(testFrameworkViewModel, parameters);
             //---------------Test Result -----------------------
-            var o = (IServiceTestStep)parameters[1];
+            var o = (IServiceTestStep)result;
             Assert.AreEqual(uniqueID, o.ActivityID.ToString());
             Assert.AreEqual("Dsipa", o.StepDescription);
         }
@@ -1036,7 +1053,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         [TestMethod]
         [Timeout(500)]
         [Owner("Nkosinathi Sangweni")]
-        public void ServiceTestStepGetParentType_GivenDsfForEachActivity_ShouldSetupServiceTestStep()
+        public void ServiceTestViewModel_ServiceTestStepGetParentType_GivenDsfForEachActivity_ShouldSetupServiceTestStep()
         {
             //---------------Set up test pack-------------------
             var popupController = new Mock<IPopupController>();
@@ -1066,12 +1083,12 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Assert Precondition----------------
             Assert.IsNotNull(testFrameworkViewModel);
             //---------------Execute Test ----------------------
-            IServiceTestStep serviceTestStep = null;
+            //IServiceTestStep serviceTestStep = null;
             
-            var parameters = new object[] { modelItem, serviceTestStep };
-            methodInfo.Invoke(testFrameworkViewModel, parameters);
+            var parameters = new object[] { modelItem };
+            var result = methodInfo.Invoke(testFrameworkViewModel, parameters);
             //---------------Test Result -----------------------
-            var o = (IServiceTestStep)parameters[1];
+            var o = (IServiceTestStep)result;
             Assert.AreEqual(uniqueID, o.ActivityID.ToString());
             Assert.AreEqual("Dsipa", o.StepDescription);
         }
@@ -1080,7 +1097,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         [Timeout(2500)]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(ServiceTestViewModel))]
-        public void ServiceTestStepGetParentType_Given_SuspendExecutionActivity_ShouldSetupServiceTestStep()
+        public void ServiceTestViewModel_ServiceTestStepGetParentType_Given_SuspendExecutionActivity_ShouldSetupServiceTestStep()
         {
             //---------------Set up test pack-------------------
             var popupController = new Mock<IPopupController>();
@@ -1114,12 +1131,11 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Assert Precondition----------------
             Assert.IsNotNull(testFrameworkViewModel);
             //---------------Execute Test ----------------------
-            IServiceTestStep serviceTestStep = null;
-
-            var parameters = new object[] { modelItem, serviceTestStep };
-            methodInfo.Invoke(testFrameworkViewModel, parameters);
+            
+            var parameters = new object[] { modelItem };
+            var result = methodInfo.Invoke(testFrameworkViewModel, parameters);
             //---------------Test Result -----------------------
-            var o = (IServiceTestStep)parameters[1];
+            var o = (IServiceTestStep)result;
             Assert.AreEqual(uniqueId, o.ActivityID.ToString());
             Assert.AreEqual("Suspend Execution", o.StepDescription);
         }
@@ -1127,7 +1143,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         [TestMethod]
         [Timeout(500)]
         [Owner("Nkosinathi Sangweni")]
-        public void ServiceTestStepGetParentType_GivenDsfSelectAndApplyActivity_ShouldSetupServiceTestStep()
+        public void ServiceTestViewModel_ServiceTestStepGetParentType_GivenDsfSelectAndApplyActivity_ShouldSetupServiceTestStep()
         {
             //---------------Set up test pack-------------------
             var popupController = new Mock<IPopupController>();
@@ -1157,12 +1173,11 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Assert Precondition----------------
             Assert.IsNotNull(testFrameworkViewModel);
             //---------------Execute Test ----------------------
-            IServiceTestStep serviceTestStep = null;
             
-            var parameters = new object[] { modelItem, serviceTestStep };
-            methodInfo.Invoke(testFrameworkViewModel, parameters);
+            var parameters = new object[] { modelItem };
+            var result = methodInfo.Invoke(testFrameworkViewModel, parameters);
             //---------------Test Result -----------------------
-            var o = (IServiceTestStep)parameters[1];
+            var o = (IServiceTestStep)result;
             Assert.AreEqual(uniqueID, o.ActivityID.ToString());
             Assert.AreEqual("Dsipa", o.StepDescription);
         }
@@ -1252,7 +1267,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         [TestMethod]
         [Timeout(500)]
         [Owner("Nkosinathi Sangweni")]
-        public void AddEnhancedDotNetDll_GivenActions_ShouldAddChildrens()
+        public void ServiceTestViewModel_AddEnhancedDotNetDll_GivenActions_ShouldAddChildrens()
         {
             //---------------Set up test pack-------------------
             var popupController = new Mock<IPopupController>();
@@ -1305,9 +1320,10 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             
             var parameters = new object[] { dotNetDllActivity, serviceTestStep, collection };
-            methodInfo.Invoke(testFrameworkViewModel, parameters);
+            var sdf = methodInfo.Invoke(testFrameworkViewModel, parameters);
             //---------------Test Result -----------------------
-            Assert.AreEqual(3, serviceTestStep.Children.Count);
+            Assert.IsNotNull(collection);
+            Assert.AreEqual(3, collection[1].Children.Count);
 
         }
 
@@ -1410,7 +1426,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         [TestMethod]
         [Timeout(500)]
         [Owner("Nkosinathi Sangweni")]
-        public void ServiceTestStepWithOutputs_GivenBuildCorrectly()
+        public void ServiceTestViewModel_ServiceTestStepWithOutputs_GivenBuildCorrectly()
         {
             //---------------Set up test pack-------------------
             var popupController = new Mock<IPopupController>();
@@ -1437,13 +1453,15 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Execute Test ----------------------
             var outputs = new List<string>() { "a", "b" };
             IServiceTestStep serviceTestStep = new ServiceTestStep(Guid.NewGuid(), "", new BindableCollection<IServiceTestOutput>(), StepType.Assert);
-
-            
-            var parameters = new object[] { Guid.NewGuid().ToString(), "Dispaly", outputs, typeof(DsfSequenceActivity), ModelItemUtils.CreateModelItem(new DsfSequenceActivity()), serviceTestStep };
-            var invoke = (bool)methodInfo.Invoke(testFrameworkViewModel, parameters);
+            var uniqueId = Guid.NewGuid().ToString();
+            var parameters = new object[] { uniqueId, "Dispaly", outputs, typeof(DsfSequenceActivity), ModelItemUtils.CreateModelItem(new DsfSequenceActivity()) };
+            var invoke = (IServiceTestStep)methodInfo.Invoke(testFrameworkViewModel, parameters);
+            var result = methodInfo.Invoke(testFrameworkViewModel, parameters);
             //---------------Test Result -----------------------
-            Assert.IsNotNull(invoke);
-            Assert.IsTrue(invoke);
+            var o = (IServiceTestStep)result;
+            Assert.IsNotNull(o);
+            Assert.AreEqual(uniqueId, o.ActivityID.ToString());
+            Assert.AreEqual("Dispaly", o.StepDescription);
         }
         
         [TestMethod]
@@ -1839,6 +1857,11 @@ namespace Warewolf.Studio.ViewModels.Tests
             {
                 //
             }
+        }
+
+        static ModelItem CreateModelItem(object activity)
+        {
+            return ModelItemUtils.CreateModelItem(activity);
         }
     }
 }

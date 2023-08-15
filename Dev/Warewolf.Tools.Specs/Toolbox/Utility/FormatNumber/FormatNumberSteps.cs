@@ -23,17 +23,9 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.FormatNumber
     [Binding]
     public class FormatNumberSteps : RecordSetBases
     {
-        readonly ScenarioContext scenarioContext;
-
         public FormatNumberSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
         {
-            if (scenarioContext == null)
-            {
-                throw new ArgumentNullException("scenarioContext");
-            }
-
-            this.scenarioContext = scenarioContext;
         }
 
         protected override void BuildDataList()

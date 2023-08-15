@@ -23,17 +23,9 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Switch
     [Binding]
     public class SwitchSteps : RecordSetBases
     {
-        readonly ScenarioContext scenarioContext;
-
         public SwitchSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
         {
-            if (scenarioContext == null)
-            {
-                throw new ArgumentNullException("scenarioContext");
-            }
-
-            this.scenarioContext = scenarioContext;
         }
 
         protected override void BuildDataList()

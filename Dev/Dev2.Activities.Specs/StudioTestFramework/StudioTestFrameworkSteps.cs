@@ -85,11 +85,11 @@ namespace Dev2.Activities.Specs.TestFramework
         }
 
         [AfterScenario("StudioTestFrameworkWithDropboxTools")]
-        public static void DropboxScenarioCleaning()
+        public static void DropboxScenarioCleaning(ScenarioContext scenarioContext)
         {
-            if (ScenarioContext.Current.ContainsKey("localFileUniqueNameGuid"))
+            if (scenarioContext.ContainsKey("localFileUniqueNameGuid"))
             {
-                var localFileUniqueNameGuid = ScenarioContext.Current.Get<string>("localFileUniqueNameGuid");
+                var localFileUniqueNameGuid = scenarioContext.Get<string>("localFileUniqueNameGuid");
                 var localFile = "C:\\Home.Delete";
                 if (File.Exists(localFile))
                 {
@@ -129,6 +129,7 @@ namespace Dev2.Activities.Specs.TestFramework
             {
                 if (value is ResourceModel resource)
                 {
+                    Assert.IsNotNull(_environmentModel);
                     ((ResourceRepository)_environmentModel.ResourceRepository).DeleteResource(resource);
                 }
             }
@@ -164,6 +165,7 @@ namespace Dev2.Activities.Specs.TestFramework
 
             DirectoryWrapperInstance().CleanUp(EnvironmentVariables.TestPath);
             var commsController = new CommunicationController { ServiceName = "ReloadAllTests" };
+            Assert.IsNotNull(_environmentModel);
             commsController.ExecuteCommand<ExecuteMessage>(_environmentModel.Connection, GlobalConstants.ServerWorkspaceID);
         }
 
@@ -271,7 +273,7 @@ namespace Dev2.Activities.Specs.TestFramework
 
             _environmentModel.ResourceRepository.SaveToServer(resourceModel);
 
-            ScenarioContext.Current.Add(resourceName + "id", resourceId);
+            MyContext.Add(resourceName + "id", resourceId);
         }
 
         string _resourceForTests = "";
@@ -567,8 +569,9 @@ namespace Dev2.Activities.Specs.TestFramework
         {
             var serviceTestViewModel = GetTestFrameworkFromContext();
             var debugForTest = serviceTestViewModel.SelectedServiceTest.DebugForTest;
-
-            var debugItemResults = debugForTest.LastOrDefault(state => state.StateType == StateType.End).AssertResultList.First().ResultsList;
+            var lastOrDefault = debugForTest.LastOrDefault(state => state.StateType == StateType.End);
+            Assert.IsNotNull(lastOrDefault);
+            var debugItemResults = lastOrDefault.AssertResultList.First().ResultsList;
 
             var actualAssetMessage = debugItemResults.Select(result => result.Value).First();
             StringAssert.Contains(actualAssetMessage.ToLower(), assertString.ToLower());
@@ -582,7 +585,9 @@ namespace Dev2.Activities.Specs.TestFramework
             var serviceTestViewModel = GetTestFrameworkFromContext();
             var debugForTest = serviceTestViewModel.SelectedServiceTest.DebugForTest;
 
-            var debugItemResults = debugForTest.LastOrDefault(state => state.StateType == StateType.TestAggregate).AssertResultList.First().ResultsList;
+            var lastOrDefault = debugForTest.LastOrDefault(state => state.StateType == StateType.TestAggregate);
+            Assert.IsNotNull(lastOrDefault);
+            var debugItemResults = lastOrDefault.AssertResultList.First().ResultsList;
 
             var actualAssetMessage = debugItemResults.Select(result => result.Value).First();
             StringAssert.Contains(actualAssetMessage.ToLower(), assertString.ToLower());
@@ -596,7 +601,9 @@ namespace Dev2.Activities.Specs.TestFramework
             var serviceTestViewModel = GetTestFrameworkFromContext();
             var debugForTest = serviceTestViewModel.SelectedServiceTest.DebugForTest;
 
-            var debugItemResults = debugForTest.LastOrDefault(state => state.StateType == StateType.TestAggregate).AssertResultList.First().ResultsList;
+            var lastOrDefault = debugForTest.LastOrDefault(state => state.StateType == StateType.TestAggregate);
+            Assert.IsNotNull(lastOrDefault);
+            var debugItemResults = lastOrDefault.AssertResultList.First().ResultsList;
             var externalProcessExecutor = new SpecExternalProcessExecutor();
             var first = debugItemResults.Select(result =>
             {
@@ -1083,13 +1090,18 @@ namespace Dev2.Activities.Specs.TestFramework
                             foreach (var resultPairs in jObject)
                             {
                                 var testObj = resultPairs as JObject;
-
-                                var testName = testObj.Property("Test Name").Value.ToString();
+                                Assert.IsNotNull(testObj);
+                                var property = testObj.Property("Test Name");
+                                Assert.IsNotNull(property);
+                                var testName = property.Value.ToString();
                                 if (testName != tableRow["Test Name"])
                                 {
                                     continue;
                                 }
-                                var testResult = testObj.Property("Result").Value.ToString();
+
+                                var jProperty = testObj.Property("Result");
+                                Assert.IsNotNull(jProperty);
+                                var testResult = jProperty.Value.ToString();
                                 Assert.AreEqual(tableRow["Result"], testResult, "Result message dont match for Test - " + testName);
                                 var hasMessage = testObj.TryGetValue("Message", out JToken testMessageToken);
                                 if (hasMessage)
@@ -1118,7 +1130,9 @@ namespace Dev2.Activities.Specs.TestFramework
 
                                 if (resultPairs.Key == "Message")
                                 {
-                                    Assert.AreEqual(tableRow["Message"], resultPairs.Value.ToString().Replace("\n", "").Replace("\r", "").Replace(Environment.NewLine, ""), "error message dont match");
+                                    var resultPairsValue = resultPairs.Value;
+                                    Assert.IsNotNull(resultPairsValue);
+                                    Assert.AreEqual(tableRow["Message"], resultPairsValue.ToString().Replace("\n", "").Replace("\r", "").Replace(Environment.NewLine, ""), "error message dont match");
                                 }
                             }
                         }
@@ -1194,7 +1208,7 @@ namespace Dev2.Activities.Specs.TestFramework
         {
             var serviceTest = GetTestFrameworkFromContext();
             serviceTest?.Dispose();
-            ScenarioContext.Current.Remove("testFramework");
+            MyContext.Remove("testFramework");
         }
 
         [Then(@"Inputs are empty")]
@@ -1647,7 +1661,7 @@ namespace Dev2.Activities.Specs.TestFramework
             var builder = workflowHelper.CreateWorkflow(resourceName);
             resourceModel.WorkflowXaml = workflowHelper.GetXamlDefinition(builder);
             _environmentModel.ResourceRepository.SaveToServer(resourceModel);
-            ScenarioContext.Current.Add(resourceName + "id", resourceId);
+            MyContext.Add(resourceName + "id", resourceId);
         }
 
         [Given(@"I add ""(.*)"" to ""(.*)""")]
@@ -1862,7 +1876,7 @@ namespace Dev2.Activities.Specs.TestFramework
                         if (foundNode != null)
                         {
                             var decisionNode = foundNode as FlowDecision;
-
+                            Assert.IsNotNull(decisionNode);
                             var condition = decisionNode.Condition;
                             var activity = (DsfFlowNodeActivity<bool>)condition;
                             var expression = activity.ExpressionText;
@@ -1902,7 +1916,7 @@ namespace Dev2.Activities.Specs.TestFramework
                             return false;
                         });
                         var decisionNode = foundNode as FlowStep;
-
+                        Assert.IsNotNull(decisionNode);
                         var action = decisionNode.Action;
                         var activity = (DsfActivityAbstract<string>)action;
                         var var = tableRow["Output Variable"];
@@ -1932,6 +1946,7 @@ namespace Dev2.Activities.Specs.TestFramework
             {
                 var modelItem = ModelItemUtils.CreateModelItem(flowNode);
                 var methodInfo = typeof(ServiceTestViewModel).GetMethod("ItemSelectedAction", BindingFlags.Instance | BindingFlags.NonPublic);
+                Assert.IsNotNull(methodInfo);
                 methodInfo.Invoke(serviceTest, new object[] { modelItem });
             }
         }
@@ -1986,6 +2001,7 @@ namespace Dev2.Activities.Specs.TestFramework
                     {
                         var modelItem = ModelItemUtils.CreateModelItem(searchNode.Action);
                         var methodInfo = typeof(ServiceTestViewModel).GetMethod("ItemSelectedAction", BindingFlags.Instance | BindingFlags.NonPublic);
+                        Assert.IsNotNull(methodInfo);
                         methodInfo.Invoke(serviceTest, new object[] { modelItem });
                         searchNode = null;
                     }
@@ -2014,6 +2030,7 @@ namespace Dev2.Activities.Specs.TestFramework
                     {
                         var modelItem = ModelItemUtils.CreateModelItem(searchNode);
                         var methodInfo = typeof(ServiceTestViewModel).GetMethod("ItemSelectedAction", BindingFlags.Instance | BindingFlags.NonPublic);
+                        Assert.IsNotNull(methodInfo);
                         methodInfo.Invoke(serviceTest, new object[] { modelItem });
                         break;
                     }
@@ -2069,6 +2086,7 @@ namespace Dev2.Activities.Specs.TestFramework
                     {
                         var modelItem = ModelItemUtils.CreateModelItem(searchNode.Action);
                         var methodInfo = typeof(ServiceTestViewModel).GetMethod("ItemSelectedAction", BindingFlags.Instance | BindingFlags.NonPublic);
+                        Assert.IsNotNull(methodInfo);
                         methodInfo.Invoke(serviceTest, new object[] { modelItem });
                         searchNode = null;
                     }
@@ -2101,6 +2119,7 @@ namespace Dev2.Activities.Specs.TestFramework
                     {
                         var modelItem = ModelItemUtils.CreateModelItem(searchNode);
                         var methodInfo = typeof(ServiceTestViewModel).GetMethod("ItemSelectedAction", BindingFlags.Instance | BindingFlags.NonPublic);
+                        Assert.IsNotNull(methodInfo);
                         methodInfo.Invoke(serviceTest, new object[] { modelItem });
                         break;
                     }
@@ -2130,6 +2149,7 @@ namespace Dev2.Activities.Specs.TestFramework
                 {
                     var modelItem = ModelItemUtils.CreateModelItem(flowNode);
                     var methodInfo = typeof(ServiceTestViewModel).GetMethod("ItemSelectedAction", BindingFlags.Instance | BindingFlags.NonPublic);
+                    Assert.IsNotNull(methodInfo);
                     methodInfo.Invoke(serviceTest, new object[] { modelItem });
                 }
             }
@@ -2149,6 +2169,7 @@ namespace Dev2.Activities.Specs.TestFramework
         {
             var serviceTest = AddTestStep(actNameToFind);
             var serviceTestStep = serviceTest.SelectedServiceTest.TestSteps.FirstOrDefault(p => p.StepDescription == actNameToFind);
+            Assert.IsNotNull(serviceTestStep);
             serviceTestStep.StepOutputs = new BindableCollection<IServiceTestOutput>();
             foreach (var tableRow in table.Rows)
             {
@@ -2181,11 +2202,9 @@ namespace Dev2.Activities.Specs.TestFramework
                     var isCorr = searchNode.Action.DisplayName.TrimEnd(' ').Equals(actNameToFind, StringComparison.InvariantCultureIgnoreCase);
                     if (isCorr)
                     {
-
-
-
                         var modelItem = ModelItemUtils.CreateModelItem(searchNode.Action);
                         var methodInfo = typeof(ServiceTestViewModel).GetMethod("ItemSelectedAction", BindingFlags.Instance | BindingFlags.NonPublic);
+                        Assert.IsNotNull(methodInfo);
                         methodInfo.Invoke(serviceTest, new object[] { modelItem });
                         searchNode = null;
                     }
@@ -2205,6 +2224,7 @@ namespace Dev2.Activities.Specs.TestFramework
                     {
                         var modelItem = ModelItemUtils.CreateModelItem(flowNode);
                         var methodInfo = typeof(ServiceTestViewModel).GetMethod("ItemSelectedAction", BindingFlags.Instance | BindingFlags.NonPublic);
+                        Assert.IsNotNull(methodInfo);
                         methodInfo.Invoke(serviceTest, new object[] { modelItem });
                         break;
                     }
@@ -2355,7 +2375,7 @@ namespace Dev2.Activities.Specs.TestFramework
                         if (foundNode != null)
                         {
                             var decisionNode = foundNode as FlowDecision;
-
+                            Assert.IsNotNull(decisionNode);
                             var condition = decisionNode.Condition;
                             var activity = (DsfFlowNodeActivity<bool>)condition;
                             var expression = activity.ExpressionText;
@@ -2386,7 +2406,7 @@ namespace Dev2.Activities.Specs.TestFramework
                             return false;
                         });
                         var decisionNode = foundNode as FlowStep;
-
+                        Assert.IsNotNull(decisionNode);
                         var action = decisionNode.Action;
                         var activity = (DsfActivityAbstract<string>)action;
                         var var = tableRow["Output Variable"];

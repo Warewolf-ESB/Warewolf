@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2022 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -64,7 +64,7 @@ namespace Dev2.Common.Tests
             var mockDirectoryWrapper = new Mock<IDirectory>();
 
             var settings = new ServerSettings("", mockFileWrapper.Object, mockDirectoryWrapper.Object);
-            Assert.AreEqual(10, settings.GetType().GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance).Length);
+            Assert.AreEqual(11, settings.GetType().GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance).Length);
 
             Assert.AreEqual((ushort) 0, settings.WebServerPort);
             Assert.AreEqual((ushort) 0, settings.WebServerSslPort);
@@ -74,7 +74,6 @@ namespace Dev2.Common.Tests
             Assert.AreEqual(true, settings.EnableDetailedLogging);
             Assert.AreEqual(LogLevel.DEBUG.ToString(), settings.ExecutionLogLevel);
             Assert.AreEqual(200, settings.LogFlushInterval);
-            Assert.AreEqual("C:\\ProgramData\\Warewolf\\Audits", settings.AuditFilePath);
             Assert.AreEqual(nameof(LegacySettingsData), settings.Sink);
         }
 
@@ -97,7 +96,6 @@ namespace Dev2.Common.Tests
             Assert.AreEqual(true, settings.EnableDetailedLogging);
             Assert.AreEqual(LogLevel.DEBUG.ToString(), settings.ExecutionLogLevel);
             Assert.AreEqual(200, settings.LogFlushInterval);
-            Assert.AreEqual("C:\\ProgramData\\Warewolf\\Audits", settings.AuditFilePath);
             Assert.AreEqual(nameof(LegacySettingsData), settings.Sink);
         }
 
@@ -146,12 +144,11 @@ namespace Dev2.Common.Tests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ServerSettings))]
-        public void ServerSettingsData_SinkNotInFile_AuditFilePathIsNotNull_SetSinkEqualLegacySettingsData()
+        public void ServerSettingsData_SinkNotInFile_SetSinkEqualLegacySettingsData()
         {
             Config.Server.Sink = null;
             var serverSettings = Config.Server.Get();
             Assert.AreEqual(nameof(LegacySettingsData), serverSettings.Sink);
-            Assert.AreEqual(LegacySettings.DefaultAuditPath, serverSettings.AuditFilePath);
         }
     }
 }

@@ -88,8 +88,17 @@ namespace Warewolf.Auditing
         {
             if (!IsOpen())
             {
-                Task.Run(async () => { await ConnectAsync(); }).Wait();
-                return this;
+                try
+                {
+                    Task.Run(async () => { await ConnectAsync(); }).Wait();
+                    return this;
+                }
+                catch(Exception e)
+                {
+                    Dev2Logger.Error("Unable to connect to logging server - " + e.Message, e, GlobalConstants.WarewolfError); 
+                    return this;
+                }
+                
             }
             else
             {

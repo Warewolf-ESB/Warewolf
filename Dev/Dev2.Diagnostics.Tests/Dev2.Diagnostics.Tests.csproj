@@ -57,9 +57,6 @@
     <Compile Include="DebugMessageRepoTests.cs" />
     <Compile Include="ExtensionsTests.cs" />
     <Compile Include="Debug\WebDebugMessageRepoTests.cs" />
-    <AdditionalFiles Include="..\SonarQube\SonarLint.xml">
-      <Visible>False</Visible>
-    </AdditionalFiles>
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="PerfCounterBuilderTest.cs" />
     <Compile Include="PerfCountersOpsTests.cs" />
@@ -117,6 +114,7 @@
       <Project>{926CF512-B3FD-410D-AA83-EBDF4C4868DE}</Project>
       <Name>Warewolf.Interfaces</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Testing\Warewolf.Testing.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="log4net">
@@ -135,7 +133,7 @@
       <Version>2.1.2</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
-      <Version>12.0.3</Version>
+      <Version>13.0.2</Version>
     </PackageReference>
     <PackageReference Include="Caliburn.Micro">
       <Version>1.4.1</Version>

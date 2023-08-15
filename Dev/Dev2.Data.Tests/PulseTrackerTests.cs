@@ -10,7 +10,7 @@ namespace Dev2.Data
         {
             var pulseTracker =new PulseTracker(50);
             Assert.IsNotNull(pulseTracker);
-            var prObj = new PrivateObject(pulseTracker);
+            var prObj = new Warewolf.Testing.PrivateObject(pulseTracker);
             Assert.IsNotNull(prObj);
             var start = pulseTracker.Start();
             Assert.IsNotNull(start);

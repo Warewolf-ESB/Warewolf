@@ -47,7 +47,7 @@ namespace Dev2.Tests.Runtime.Services
             //---------------Assert Precondition----------------
             Assert.IsNotNull(comPluginActions);
             //---------------Execute Test ----------------------
-            var privateObject = new PrivateObject(comPluginActions);
+            var privateObject = new Warewolf.Testing.PrivateObject(comPluginActions);
             var invoke = privateObject.Invoke("BuildServiceInputName", "Class2", "Project1.Class2&, Project1, Version=5.0.0.0, Culture=neutral, PublicKeyToken=null");
             //---------------Test Result -----------------------
             Assert.AreEqual("Class2 (Project1.Class2)", invoke.ToString());
@@ -62,7 +62,7 @@ namespace Dev2.Tests.Runtime.Services
             //---------------Assert Precondition----------------
             Assert.IsNotNull(comPluginActions);
             //---------------Execute Test ----------------------
-            var privateObject = new PrivateObject(comPluginActions);
+            var privateObject = new Warewolf.Testing.PrivateObject(comPluginActions);
 
             var typeConverter = TypeDescriptor.GetConverter("ADODB.CursorLocationEnum, ADODB, Version=6.1.0.0, Culture=neutral, PublicKeyToken=null");
 

@@ -45,11 +45,10 @@ namespace Dev2.Diagnostics.Test
         public void GetMappingElement_Scenerio_Result()
         {
             //------------Setup for test-------------------------
-            var pr = new PrivateType(typeof(Dev2Logger));
-            var value = pr.InvokeStatic("GetMappingElement", "Level0", "ERROR");
+            var pr = new Warewolf.Testing.PrivateObject(typeof(Dev2Logger));
+            var value = pr.Invoke("GetMappingElement", true, "Level0", "ERROR");
             //------------Execute Test---------------------------
             //------------Assert Results-------------------------
-            Assert.IsNotNull(value);
             Assert.IsNotNull(value);
             Assert.AreEqual(value.ToString(), @"<mapping>
   <level value=""Level0"" />

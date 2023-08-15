@@ -13,13 +13,48 @@ param(
   [String] $PreTestRunScript,
   [String] $PostTestRunScript,
   [switch] $InContainer,
+  [String] $InContainerVersion="latest",
+  [String] $InContainerCommitID="latest",
   [switch] $Coverage,
   [switch] $RetryRebuild,
-  [String] $UNCPassword
+  [String] $UNCPassword,
+  [switch] $StartFTPServer,
+  [switch] $StartFTPSServer,
+  [switch] $CreateUNCPath,
+  [switch] $UseRegionalSettings,
+  [switch] $CreateLocalSchedulerAdmin
 )
 if (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
 	Write-Error "This script expects to be run as Administrator. (Right click run as administrator)"
 	exit 1
+}
+if ($ExcludeProjects.Length -eq 1 -and $ExcludeProjects[0].Contains(",")) {
+    $SplitExcludeProjects = $ExcludeProjects[0]
+    $ExcludeProjects = New-Object string[] $SplitExcludeProjects.Split(",").Count
+    for ($j=0; $j -le $SplitExcludeProjects.Split(",").Count-1; $j++) {
+        $ExcludeProjects[$j] = $SplitExcludeProjects.Split(",")[$j]
+    }
+}
+if ($Projects.Length -eq 1 -and $Projects[0].Contains(",")) {
+    $SplitProjects = $Projects[0]
+    $Projects = New-Object string[] $SplitProjects.Split(",").Count
+    for ($j=0; $j -le $SplitProjects.Split(",").Count-1; $j++) {
+        $Projects[$j] = $SplitProjects.Split(",")[$j]
+    }
+}
+if ($ExcludeCategories.Length -eq 1 -and $ExcludeCategories[0].Contains(",")) {
+    $SplitExcludeCategories = $ExcludeCategories[0]
+    $ExcludeCategories = New-Object string[] $SplitExcludeCategories.Split(",").Count
+    for ($j=0; $j -le $SplitExcludeCategories.Split(",").Count-1; $j++) {
+        $ExcludeCategories[$j] = $SplitExcludeCategories.Split(",")[$j]
+    }
+}
+if ($Categories.Length -eq 1 -and $Categories[0].Contains(",")) {
+    $SplitCategories = $Categories[0]
+    $Categories = New-Object string[] $SplitCategories.Split(",").Count
+    for ($j=0; $j -le $SplitCategories.Split(",").Count-1; $j++) {
+        $Categories[$j] = $SplitCategories.Split(",")[$j]
+    }
 }
 if ($PreTestRunScript -and $Coverage.IsPresent -and !($PreTestRunScript.Contains("-Coverage"))) {
 	$PreTestRunScript += " -Coverage"
@@ -34,12 +69,12 @@ if (Test-Path "$TestResultsPath") {
 if ($VSTestPath -eq $null -or $VSTestPath -eq "" -or !(Test-Path "$VSTestPath\Extensions\TestPlatform\vstest.console.exe")) {
 	$VSTestPath = ".\Microsoft.TestPlatform\tools\net451\common7\ide"
 } else {
-	if ($InContainer.IsPresent) {
-		Write-Warning -Message "Ignoring VSTestPath parameter because it cannot be used with the -InContainer parameter."
+	if ($InContainer.IsPresent -or $InContainerCommitID -ne "latest" -or $InContainerVersion -ne "latest") {
+		Write-Warning -Message "Ignoring VSTestPath parameter because it cannot be used with the -InContainer or -ContainerID parameters."
 		$VSTestPath = ".\Microsoft.TestPlatform\tools\net451\Common7\IDE"
 	}
 }
-if (!(Test-Path "$VSTestPath\Extensions\TestPlatform\vstest.console.exe") -or ($Coverage.IsPresent -and !(Test-Path ".\JetBrains.dotCover.CommandLineTools\tools\dotCover.exe"))) {
+if (!(Test-Path "$VSTestPath\Extensions\TestPlatform\vstest.console.exe")) {
 	#Find NuGet
 	if ("$NuGet" -eq "" -or !(Test-Path "$NuGet" -ErrorAction SilentlyContinue)) {
 		$NuGetCommand = Get-Command NuGet -ErrorAction SilentlyContinue
@@ -64,26 +99,193 @@ if (!(Test-Path "$VSTestPath\Extensions\TestPlatform\vstest.console.exe")) {
 		exit 1
 	}
 }
-if ($Coverage.IsPresent -and !(Test-Path ".\JetBrains.dotCover.CommandLineTools\tools\dotCover.exe")) {
-	&"nuget.exe" "install" "JetBrains.dotCover.CommandLineTools" "-ExcludeVersion" "-NonInteractive" "-OutputDirectory" "."
-	if (!(Test-Path ".\JetBrains.dotCover.CommandLineTools\tools\dotCover.exe")) {
-		Write-Error "Cannot install coverage runner using nuget."
-		exit 1
-	}
-}
 if ($Coverage.IsPresent) {
-	Write-Host Removing existing DotCover Coverage Report
-	if (Test-Path "$TestResultsPath\MergedDotCover.dcvr") {
-		Remove-Item "$TestResultsPath\MergedDotCover.dcvr"
+	Write-Host Removing existing Coverage Reports
+	if (Test-Path "$TestResultsPath\Merged.coveragexml") {
+		Remove-Item "$TestResultsPath\Merged.coveragexml"
 	}
-	if (Test-Path "$TestResultsPath\DotCover-Coverage-Report.html") {
-		Remove-Item "$TestResultsPath\DotCover-Coverage-Report.html"
+	if (Test-Path "$TestResultsPath\Cobertura.xml") {
+		Remove-Item "$TestResultsPath\Cobertura.xml"
 	}
-	if (Test-Path "$TestResultsPath\DotCover-Coverage-Report") {
-		Remove-Item "$TestResultsPath\DotCover-Coverage-Report"
-	}
+	$CoverageConfigPath = ".\Microsoft.TestPlatform\tools\net451\Team Tools\Dynamic Code Coverage Tools\CodeCoverage.config"
+	(Get-Content $CoverageConfigPath).replace('<UseVerifiableInstrumentation>true</UseVerifiableInstrumentation>', '<UseVerifiableInstrumentation>false</UseVerifiableInstrumentation>') | Set-Content $CoverageConfigPath
+}
+if ($CreateLocalSchedulerAdmin.IsPresent) {
+	cmd /c NET user "LocalSchedulerAdmin" "987Sched#@!" /ADD /Y
+	Add-LocalGroupMember -Group 'Administrators' -Member ('LocalSchedulerAdmin') -Verbose
+	Add-LocalGroupMember -Group 'Warewolf Administrators' -Member ('LocalSchedulerAdmin') -Verbose
+}
+if ($UseRegionalSettings.IsPresent) {
+	$culture = [System.Globalization.CultureInfo]::CreateSpecificCulture("en-ZA")      
+    $assembly = [System.Reflection.Assembly]::Load("System.Management.Automation")
+    $type = $assembly.GetType("Microsoft.PowerShell.NativeCultureResolver")
+    $field = $type.GetField("m_uiCulture", [Reflection.BindingFlags]::NonPublic -bor [Reflection.BindingFlags]::Static)
+    $field.SetValue($null, $culture)      
+    Set-Culture en-ZA
+    Get-ChildItem -Path 'Microsoft.PowerShell.Core\Registry::HKEY_USERS' | % { $SubKeyName = $_.Name;if (!($SubKeyName.EndsWith('-500_Classes'))) { Set-ItemProperty -Path "Microsoft.PowerShell.Core\Registry::$SubKeyName\Control Panel\International" -Name sTimeFormat -Value 'hh:mm:ss tt' } }
+    Get-ChildItem -Path 'Microsoft.PowerShell.Core\Registry::HKEY_USERS' | % { $SubKeyName = $_.Name;if (!($SubKeyName.EndsWith('-500_Classes'))) { Set-ItemProperty -Path "Microsoft.PowerShell.Core\Registry::$SubKeyName\Control Panel\International" -Name sShortTime -Value 'hh:mm tt' } }
+    Get-ChildItem -Path 'Microsoft.PowerShell.Core\Registry::HKEY_USERS' | % { $SubKeyName = $_.Name;if (!($SubKeyName.EndsWith('-500_Classes'))) { Set-ItemProperty -Path "Microsoft.PowerShell.Core\Registry::$SubKeyName\Control Panel\International" -Name sLongDate -Value 'dddd, dd MMMM yyyy' } }
+    Get-ChildItem -Path 'Microsoft.PowerShell.Core\Registry::HKEY_USERS' | % { $SubKeyName = $_.Name;if (!($SubKeyName.EndsWith('-500_Classes'))) { Set-ItemProperty -Path "Microsoft.PowerShell.Core\Registry::$SubKeyName\Control Panel\International" -Name sShortDate -Value 'yyyy/MM/dd' } }
+    Get-ChildItem -Path 'Microsoft.PowerShell.Core\Registry::HKEY_USERS' | % { $SubKeyName = $_.Name;if (!($SubKeyName.EndsWith('-500_Classes'))) { Set-ItemProperty -Path "Microsoft.PowerShell.Core\Registry::$SubKeyName\Control Panel\International" -Name sDecimal -Value '.' } }
+    Get-ChildItem -Path 'Microsoft.PowerShell.Core\Registry::HKEY_USERS' | % { $SubKeyName = $_.Name;if (!($SubKeyName.EndsWith('-500_Classes'))) { Set-ItemProperty -Path "Microsoft.PowerShell.Core\Registry::$SubKeyName\Control Panel\International" -Name s1159 -Value 'AM' } }
+    Get-ChildItem -Path 'Microsoft.PowerShell.Core\Registry::HKEY_USERS' | % { $SubKeyName = $_.Name;if (!($SubKeyName.EndsWith('-500_Classes'))) { Set-ItemProperty -Path "Microsoft.PowerShell.Core\Registry::$SubKeyName\Control Panel\International" -Name s2359 -Value 'PM' } }
+    Set-ItemProperty -Path 'Microsoft.PowerShell.Core\Registry::HKEY_CURRENT_USER\Control Panel\International' -Name sTimeFormat -Value 'hh:mm:ss tt'
+    Set-ItemProperty -Path 'Microsoft.PowerShell.Core\Registry::HKEY_CURRENT_USER\Control Panel\International' -Name sShortTime -Value 'hh:mm tt'
+    Set-ItemProperty -Path 'Microsoft.PowerShell.Core\Registry::HKEY_CURRENT_USER\Control Panel\International' -Name sLongDate -Value 'dddd, dd MMMM yyyy'
+    Set-ItemProperty -Path 'Microsoft.PowerShell.Core\Registry::HKEY_CURRENT_USER\Control Panel\International' -Name sShortDate -Value 'yyyy/MM/dd'
+    Set-ItemProperty -Path 'Microsoft.PowerShell.Core\Registry::HKEY_CURRENT_USER\Control Panel\International' -Name sDecimal -Value '.'
+    Set-ItemProperty -Path 'Microsoft.PowerShell.Core\Registry::HKEY_CURRENT_USER\Control Panel\International' -Name s1159 -Value 'AM'
+    Set-ItemProperty -Path 'Microsoft.PowerShell.Core\Registry::HKEY_CURRENT_USER\Control Panel\International' -Name s2359 -Value 'PM'
+}
+if ($CreateUNCPath.IsPresent) {	
+    mkdir C:\FileSystemShareTestingSite\ReadFileSharedTestingSite
+    "file contents to read" | Out-File -LiteralPath "C:\FileSystemShareTestingSite\ReadFileSharedTestingSite\filetoread.txt" -Encoding utf8 -Force
+    New-SmbShare -Path C:\FileSystemShareTestingSite -FullAccess Everyone -Name FileSystemShareTestingSite
 }
 for ($LoopCounter=0; $LoopCounter -le $RetryCount; $LoopCounter++) {
+	if ($StartFTPServer.IsPresent) {
+		if (!(Test-Path "C:\ftp_home\dev2\FORUNZIPTESTING")) {
+			mkdir "C:\ftp_home\dev2\FORUNZIPTESTING"
+		}
+		pip install pyftpdlib
+		if (!(Test-Path "C:\ftp_entrypoint.py")) {
+@"
+import os, random, string
+
+from pyftpdlib.authorizers import DummyAuthorizer
+from pyftpdlib.handlers import FTPHandler
+from pyftpdlib.servers import FTPServer
+
+PASSIVE_PORTS = '17000-17007'
+
+def main():
+	authorizer = DummyAuthorizer()
+	user_dir = "C:/ftp_home/dev2"
+	if not os.path.isdir(user_dir):
+		os.mkdir(user_dir)
+	authorizer.add_user("dev2", "Q/ulw&]", user_dir, perm="elradfmw")
+
+	handler = FTPHandler
+	handler.authorizer = authorizer
+	handler.permit_foreign_addresses = True
+
+	passive_ports = list(map(int, PASSIVE_PORTS.split('-')))
+	handler.passive_ports = range(passive_ports[0], passive_ports[1])
+
+	server = FTPServer(('0.0.0.0', 21), handler)
+	server.serve_forever()
+	
+if __name__ == '__main__':
+	main()
+"@ | Out-File -LiteralPath "C:\ftp_entrypoint.py" -Encoding utf8 -Force
+		}
+		pythonw -u "C:\ftp_entrypoint.py"
+	}
+	if ($StartFTPSServer.IsPresent) {
+		if (!(Test-Path "C:\ftps_home\dev2\FORFILERENAMETESTING")) {
+			mkdir "C:\ftps_home\dev2\FORFILERENAMETESTING"
+		}
+		if (!(Test-Path "C:\ftps_home\dev2\FORUNZIPTESTING")) {
+			mkdir "C:\ftps_home\dev2\FORUNZIPTESTING"
+		}
+		if (!(Test-Path "C:\cert.crt")) {
+@"
+-----BEGIN CERTIFICATE-----
+MIID+TCCAuGgAwIBAgIUMjnF+Uh4NhKoRO425/Sgjbs7xs0wDQYJKoZIhvcNAQEL
+BQAwgYsxCzAJBgNVBAYTAlpBMQwwCgYDVQQIDANLWk4xEjAQBgNVBAcMCUhpbGxj
+cmVzdDERMA8GA1UECgwIV2FyZXdvbGYxDzANBgNVBAsMBkRldk9wczEUMBIGA1UE
+AwwLb3Bzd29sZi5jb20xIDAeBgkqhkiG9w0BCQEWEWFkbWluQG9wc3dvbGYuY29t
+MB4XDTIxMDQxODA2MzYzMVoXDTIyMDQxODA2MzYzMVowgYsxCzAJBgNVBAYTAlpB
+MQwwCgYDVQQIDANLWk4xEjAQBgNVBAcMCUhpbGxjcmVzdDERMA8GA1UECgwIV2Fy
+ZXdvbGYxDzANBgNVBAsMBkRldk9wczEUMBIGA1UEAwwLb3Bzd29sZi5jb20xIDAe
+BgkqhkiG9w0BCQEWEWFkbWluQG9wc3dvbGYuY29tMIIBIjANBgkqhkiG9w0BAQEF
+AAOCAQ8AMIIBCgKCAQEA2eWOl6OjY/V6xPKYKC8NwrtOYfmr04KYR+5xuzZhNPXV
+ICDZrHg3UfidSU9yiB8hRrZYlQ1YZw6kdfxYFiBqQV+450CHS2R9RbvPQTGxL0/I
+lO4LQVodiTW7Khiemye0OId04Ak6yVz6wF+UScPb2HLRM7dW2OMbDpUcb/6QSCBK
+1zdr6Co8O+okDdlXFSmqVuK5gIfT6lOKiny2XLaO6zPni4o6E5HzsX47YJiaTLCZ
+J9X5oCWhB0wIVgX7vkdBxiwXACaHWlN32//wya1h1dQQpGUvttzEHl+wc0Fk6R9f
+HKmP9owzuw40PPjdoOXhzqr7hCqszp/aTCqVFJU9xQIDAQABo1MwUTAdBgNVHQ4E
+FgQUk+fn8dM59dkM0u6ZWnRp70TDupwwHwYDVR0jBBgwFoAUk+fn8dM59dkM0u6Z
+WnRp70TDupwwDwYDVR0TAQH/BAUwAwEB/zANBgkqhkiG9w0BAQsFAAOCAQEAR05k
+Ab9atURsGOHKZbKPFnwj6oKak3CcDSeB0wGAu75hKeGFBqisDg+s5pTcAlGgq8Md
+fv6AzFtmskYeHqzt3TtZ091kLXGPrEf4Gv0zYdJ5kEi5RKIxNz57BnntlG/YA1FC
+DAFen4U8zhavo4tQk04LkgnV4sHPutUMKqNNX64GAIfmeltr7yBaWs34nZ3+4OiF
+c5/UqCGPmHgd2paDzQ3qc5tpCy86mY0zy7FreP/Z8VrnoOKIoH8ULjQAxiopl6zg
+6bCLcDayKmfwBKrCgJobb76B7HJ5SKWpQCmgJeI/pFiQv67SsF63xtsPwtdmaY+T
+SfOUJf/1oE9T9vp1yQ==
+-----END CERTIFICATE-----
+"@ | Out-File -LiteralPath "C:\cert.crt" -Encoding ascii -Force
+		}
+		if (!(Test-Path "C:\cert.key")) {
+@"
+-----BEGIN PRIVATE KEY-----
+MIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQDZ5Y6Xo6Nj9XrE
+8pgoLw3Cu05h+avTgphH7nG7NmE09dUgINmseDdR+J1JT3KIHyFGtliVDVhnDqR1
+/FgWIGpBX7jnQIdLZH1Fu89BMbEvT8iU7gtBWh2JNbsqGJ6bJ7Q4h3TgCTrJXPrA
+X5RJw9vYctEzt1bY4xsOlRxv/pBIIErXN2voKjw76iQN2VcVKapW4rmAh9PqU4qK
+fLZcto7rM+eLijoTkfOxfjtgmJpMsJkn1fmgJaEHTAhWBfu+R0HGLBcAJodaU3fb
+//DJrWHV1BCkZS+23MQeX7BzQWTpH18cqY/2jDO7DjQ8+N2g5eHOqvuEKqzOn9pM
+KpUUlT3FAgMBAAECggEAVzFN8w4vRsOnggIVsxbJKeBsCDaxdGzw5O/coO6szVWG
+GFos4KAmeu3CeuCI00GpvjMflV2Gv46TbwcwdII6IrjcM+WVfizTGEGEOPFalrUV
+bcsnw9n8sbhHkhvR9AJaUriZo0DuPj+vs6VLoIz4f0/KuSgnX5jZbedrPsGeGM3e
+HYGY/eCB1D6JzbDrW8jHe63SOPOizVA9m/c2CoH/YbL4rVN6+8aSAJaWnVzSUvPD
+mRdY15EtF9VURU3C549Pw4C1RC0op2xvP8vlOFGsWDd2HHzxuo13UXd8NIes5zAE
+VKIhLsEFkFIRwp7rTVaf9n6KCvvVuuG6N1Kxyv2roQKBgQD1Md/8BJIieFfd/fbq
+zL+uAttBGuM88IUgx8c9usldWGYXvDOkmMQvkH7lnxFpOyZDynZyIw4ILrnh1T2+
+f5g/qHxEabU59//aAbYoBAXxUUI7ZdBwzmn0yL6KU9hILDhRsEbVLOROC1tmUbUk
+GIqTNMFBUimfy7LJJGTdxciouQKBgQDjf7kMijEbqP8bLUATdtlVoiOfuqOlMHYm
+FzKsp75+rxSAjUyGvzBNe+HzSlfwPlD6bSYIm3Do80FVG+AawPN7uBApsTb32Lmj
+nB1b1GUuN7VGQYJNxmrYe1m8VdLHN5kNM8hwOCpyYMdkFf6aYXAEtEO+iL9ghn1N
++tmW9e8fbQKBgQDIaFGIrTu8TNyUp4Vv+JYa5l7K4e0l2/kUB/YDsG3xi9U2RS94
+sxx3PAVcLR2QAzaNZihVte08JuTrft2OnL+WGGIpkLT9goRubcOzBUbOLPqTje5G
+pY/Y8VM7wLgglXQa4JekmaKpX4L/KH2D2UM6en4So9M9tsKUwNhoo8YUkQKBgQDQ
+KQfrP28bvhBej5L3vGG0hz1NY/tkpOkWhVdqv7oANLbvwVpqWPobi+T9NeMtAfga
+jFCmw4QWwq3e8DiogjDH3W18mJiRQ47o82mxorBKD9MgS8Ss4YbWOlerimPowSib
++evHMr00FvWa0L08CTf0NfVem8Vwzt5MweDiznlUKQKBgQCb/2zy03hepOHmr8oZ
+2gUv8764Y865wFryfXoOlb+664sgMkNKJGzX/v97NQIeM4vFUb6FMVQO9z4pcXVq
+w+jDPTUUugs8MOyE1bUNJutBgEjkeKN8bQt3mQlIhC6HSuwS+NHcku5sKobvjohj
+SxVGgsgXs58fKq0k6khAOa4asQ==
+-----END PRIVATE KEY-----
+"@ | Out-File -LiteralPath "C:\cert.key" -Encoding ascii -Force
+		}
+		pip install pyftpdlib
+		pip install 'cryptography==38.0.4'
+		pip install 'pyOpenSSL==22.0.0'
+		if (!(Test-Path "C:\ftps_entrypoint.py")) {
+@"
+import os, random, string
+
+from pyftpdlib.authorizers import DummyAuthorizer
+from pyftpdlib.handlers import TLS_FTPHandler
+from pyftpdlib.servers import FTPServer
+
+PASSIVE_PORTS = '56001-56008'
+
+def main():
+	user_dir = "C:/ftps_home/dev2"
+	if not os.path.isdir(user_dir):
+		os.mkdir(user_dir)
+	authorizer = DummyAuthorizer()
+	authorizer.add_user('dev2', 'Q/ulw&]', user_dir, perm="elradfmw")
+
+	handler = TLS_FTPHandler
+	handler.authorizer = authorizer
+	handler.permit_foreign_addresses = True
+	handler.certfile = 'C:/cert.crt'
+	handler.keyfile = 'C:/cert.key'
+
+	passive_ports = list(map(int, PASSIVE_PORTS.split('-')))
+	handler.passive_ports = range(passive_ports[0], passive_ports[1])
+
+	server = FTPServer(('0.0.0.0', 1010), handler)
+	server.serve_forever()
+	
+if __name__ == '__main__':
+	main()
+"@ | Out-File -LiteralPath "C:\ftps_entrypoint.py" -Encoding utf8 -Force
+		}
+		pythonw -u "C:\ftps_entrypoint.py"
+	}
     if ($RetryRebuild.IsPresent) {
 		if (Test-Path "$PWD\..\..\Compile.ps1") {
 			&"$PWD\..\..\Compile.ps1" "-AcceptanceTesting -NuGet `"$NuGet`" -MSBuildPath `"$MSBuildPath`""
@@ -94,7 +296,7 @@ for ($LoopCounter=0; $LoopCounter -le $RetryCount; $LoopCounter++) {
 			}
 		}
 	} else {
-		if (!(Test-Path "$PWD\*tests.dll")) {
+		if (!(Test-Path "$PWD\*tests.dll") -and $InContainerCommitID -eq "latest") {
 			Write-Error "This script expects to be run from a directory containing test assemblies. (Files with names that end in tests.dll)"
 			exit 1
 		}
@@ -124,38 +326,25 @@ for ($LoopCounter=0; $LoopCounter -le $RetryCount; $LoopCounter++) {
 	if (Test-Path "$TestResultsPath\warewolf-server.log") {
 		Move-Item "$TestResultsPath\warewolf-server.log" "$TestResultsPath\warewolf-server($LoopCounter).ps1"
 	}
-	if ($Coverage.IsPresent -and !($PreTestRunScript)) {
-		if (Test-Path "$TestResultsPath\DotCover Runner.xml") {
-			Move-Item "$TestResultsPath\DotCover Runner.xml" "$TestResultsPath\DotCover Runner($LoopCounter).xml"
-		}
-		if (Test-Path "$TestResultsPath\DotCover.dcvr") {
-			Move-Item "$TestResultsPath\DotCover.dcvr" "$TestResultsPath\DotCover($LoopCounter).dcvr"
-		}
-		if (Test-Path "$TestResultsPath\DotCover.log") {
-			Move-Item "$TestResultsPath\DotCover.log" "$TestResultsPath\DotCover($LoopCounter).log"
-		}
-		"<AnalyseParams>" | Out-File "$TestResultsPath\DotCover Runner.xml"
-		$HandleRelativePath = $VSTestPath
-		if ($VSTestPath.StartsWith(".\")) {
-			$HandleRelativePath = "." + $VSTestPath
-		}
-		"  <TargetExecutable>$HandleRelativePath\Extensions\TestPlatform\vstest.console.exe</TargetExecutable>" | Out-File "$TestResultsPath\DotCover Runner.xml" -Append
-		$AssembliesArg = "..\" + ($AssembliesList -join " ..\")
-	} else {
-		$AssembliesArg = ".\" + ($AssembliesList -join " .\")
+	if (Test-Path "$TestResultsPath\Snapshot.coverage") {
+		Move-Item "$TestResultsPath\Snapshot.coverage" "$TestResultsPath\Snapshot($LoopCounter).coverage"
 	}
+	if (Test-Path "$TestResultsPath\Snapshot_Backup.coverage") {
+		Move-Item "$TestResultsPath\Snapshot_Backup.coverage" "$TestResultsPath\Snapshot_Backup($LoopCounter).coverage"
+	}
+	$AssembliesArg = ".\" + ($AssembliesList -join " .\")
 	if ($UNCPassword) {
 		"net use \\DEVOPSPDC.premier.local\FileSystemShareTestingSite /user:Administrator $UNCPassword" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
 	}
 	if ($TestsToRun) {
 		if ($PreTestRunScript) {
 			"&.\$PreTestRunScript" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
-			"&`"$VSTestPath\Extensions\TestPlatform\vstest.console.exe`" /Parallel /logger:trx $AssembliesArg /Tests:`"$TestsToRun`"" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
+			"&`"$VSTestPath\Extensions\TestPlatform\vstest.console.exe`" /logger:trx $AssembliesArg /Tests:`"$TestsToRun`"" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
 		} else {
 			if ($Coverage.IsPresent -and !($PreTestRunScript)) {
-				"  <TargetArguments>/logger:trx $AssembliesArg /Tests:`"$TestsToRun`"</TargetArguments>" | Out-File "$TestResultsPath\DotCover Runner.xml" -Append
+				"&`"$VSTestPath\Extensions\TestPlatform\vstest.console.exe`" /logger:trx $AssembliesArg /Tests:`"$TestsToRun`" /EnableCodeCoverage" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
 			} else {
-				"&`"$VSTestPath\Extensions\TestPlatform\vstest.console.exe`" /Parallel /logger:trx $AssembliesArg /Tests:`"$TestsToRun`"" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
+				"&`"$VSTestPath\Extensions\TestPlatform\vstest.console.exe`" /logger:trx $AssembliesArg /Tests:`"$TestsToRun`"" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
 			}
 		}
 	} else {
@@ -172,8 +361,8 @@ for ($LoopCounter=0; $LoopCounter -le $RetryCount; $LoopCounter++) {
 			    $CategoryArg = "/TestCaseFilter:`"(TestCategory=" + $Category + ")`""
 			} else {
 				if ($Categories -ne $null -and $Categories.Count -ne 0) {
-					$CategoryArg = "/TestCaseFilter:`"("
-					$CategoryArg += $Categories -join ")&(TestCategory="
+					$CategoryArg = "/TestCaseFilter:`"(TestCategory="
+					$CategoryArg += $Categories -join ")|(TestCategory="
 					$CategoryArg += ")`""
 				}
 			}
@@ -182,55 +371,28 @@ for ($LoopCounter=0; $LoopCounter -le $RetryCount; $LoopCounter++) {
 			"&.\$PreTestRunScript" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
 			"&`"$VSTestPath\Extensions\TestPlatform\vstest.console.exe`" /logger:trx $AssembliesArg $CategoryArg" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
 		} else {
-			if ($Coverage.IsPresent) {
-				$XmlSafeCategory = $CategoryArg -replace "`&","`&amp;"
-				"  <TargetArguments>/Parallel /logger:trx $AssembliesArg $XmlSafeCategory</TargetArguments>" | Out-File "$TestResultsPath\DotCover Runner.xml" -Append
+			if ($Coverage.IsPresent -and !($PreTestRunScript)) {
+				"&`"$VSTestPath\Extensions\TestPlatform\vstest.console.exe`" /logger:trx $AssembliesArg $CategoryArg /EnableCodeCoverage" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
 			} else {
-				"&`"$VSTestPath\Extensions\TestPlatform\vstest.console.exe`" /Parallel /logger:trx $AssembliesArg $CategoryArg" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
+				"&`"$VSTestPath\Extensions\TestPlatform\vstest.console.exe`" /logger:trx $AssembliesArg $CategoryArg" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
 			}
 		}
 	}
 	if ($PostTestRunScript) {
 		"&.\$PostTestRunScript" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
 	}
-	if ($Coverage.IsPresent -and !($PreTestRunScript)) {
-		"  <Output>.$TestResultsPath\DotCover.dcvr</Output>" | Out-File "$TestResultsPath\DotCover Runner.xml" -Append
-		"  <Scope>" | Out-File "$TestResultsPath\DotCover Runner.xml" -Append
-		"    <ScopeEntry>..\Warewolf*.dll</ScopeEntry>" | Out-File "$TestResultsPath\DotCover Runner.xml" -Append
-		"    <ScopeEntry>..\Warewolf*.exe</ScopeEntry>" | Out-File "$TestResultsPath\DotCover Runner.xml" -Append
-		"    <ScopeEntry>..\Dev2.*.dll</ScopeEntry>" | Out-File "$TestResultsPath\DotCover Runner.xml" -Append
-		"  </Scope>" | Out-File "$TestResultsPath\DotCover Runner.xml" -Append
-		"  <Filters>" | Out-File "$TestResultsPath\DotCover Runner.xml" -Append
-		"    <ExcludeFilters>" | Out-File "$TestResultsPath\DotCover Runner.xml" -Append
-		"      <FilterEntry>" | Out-File "$TestResultsPath\DotCover Runner.xml" -Append
-		"        <ModuleMask>*tests</ModuleMask>" | Out-File "$TestResultsPath\DotCover Runner.xml" -Append
-		"        <ModuleMask>*specs</ModuleMask>" | Out-File "$TestResultsPath\DotCover Runner.xml" -Append
-		"        <ModuleMask>*Tests</ModuleMask>" | Out-File "$TestResultsPath\DotCover Runner.xml" -Append
-		"        <ModuleMask>*Specs</ModuleMask>" | Out-File "$TestResultsPath\DotCover Runner.xml" -Append
-		"        <ModuleMask>Warewolf.UIBindingTests*</ModuleMask>" | Out-File "$TestResultsPath\DotCover Runner.xml" -Append
-		"      </FilterEntry>" | Out-File "$TestResultsPath\DotCover Runner.xml" -Append
-		"    </ExcludeFilters>" | Out-File "$TestResultsPath\DotCover Runner.xml" -Append
-		"    <AttributeFilters>" | Out-File "$TestResultsPath\DotCover Runner.xml" -Append
-		"      <AttributeFilterEntry>" | Out-File "$TestResultsPath\DotCover Runner.xml" -Append
-		"        <ClassMask>System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute</ClassMask>" | Out-File "$TestResultsPath\DotCover Runner.xml" -Append
-		"      </AttributeFilterEntry>" | Out-File "$TestResultsPath\DotCover Runner.xml" -Append
-		"    </AttributeFilters>" | Out-File "$TestResultsPath\DotCover Runner.xml" -Append
-		"  </Filters>" | Out-File "$TestResultsPath\DotCover Runner.xml" -Append
-		"</AnalyseParams>" | Out-File "$TestResultsPath\DotCover Runner.xml" -Append
-		Get-Content "$TestResultsPath\DotCover Runner.xml"
-		"&`".\JetBrains.dotCover.CommandLineTools\tools\dotCover.exe`" cover `"$TestResultsPath\DotCover Runner.xml`" /LogFile=`"$TestResultsPath\DotCover.log`" --DisableNGen" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
-	}
-	if ($Coverage.IsPresent) {
-		"Wait-Process -Name `"DotCover`" -ErrorAction SilentlyContinue" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
-	}
 	if ($UNCPassword) {
 		"net use \\DEVOPSPDC.premier.local\FileSystemShareTestingSite /delete" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
 	}
 	Get-Content "$TestResultsPath\RunTests.ps1"
-	if (!($InContainer.IsPresent)) {
+	if (!($InContainer.IsPresent) -and $InContainerCommitID -eq "latest" -and $InContainerVersion -eq "latest") {
 		&"$TestResultsPath\RunTests.ps1"
 	} else {
-		docker run -i --rm -v "${PWD}:C:\BuildUnderTest" --entrypoint="powershell -Command Set-Location .\BuildUnderTest;&.\TestResults\RunTests.ps1" registry.gitlab.com/warewolf/vstest
+		if ($InContainerCommitID -eq "latest") {
+			docker run -i --rm --memory 4g -v "${PWD}:C:\BuildUnderTest" registry.gitlab.com/warewolf/vstest:$InContainerVersion powershell -Command Set-Location .\BuildUnderTest`;`&.\TestResults\RunTests.ps1
+		} else {
+			docker run -i --rm --memory 4g -v "${PWD}\TestResults:C:\BuildUnderTest\TestResults" registry.gitlab.com/warewolf/vstest:$InContainerCommitID powershell -Command Set-Location .\BuildUnderTest`;`&.\TestResults\RunTests.ps1
+		}
 	}
     if (Test-Path "$VSTestPath\Extensions\TestPlatform\TestResults\*.trx") {
         Copy-Item "$VSTestPath\Extensions\TestPlatform\TestResults\*.trx" "$TestResultsPath" -Force -Recurse
@@ -280,9 +442,37 @@ for ($LoopCounter=0; $LoopCounter -le $RetryCount; $LoopCounter++) {
 		Write-Error "No test results found."
 		exit 1
 	}
+	if ($StartFTPServer.IsPresent -or $StartFTPSServer.IsPresent) {
+		taskkill /im pythonw.exe /f
+		taskkill /im pythonw3.10.exe /f
+	}
 }
 if ($Coverage.IsPresent) {
-	$MergedSnapshotPath = "$TestResultsPath\MergedDotCover.dcvr"
-	&".\JetBrains.dotCover.CommandLineTools\tools\dotCover.exe" merge --Sources="$TestResultsPath\DotCover*.dcvr" --Output=$MergedSnapshotPath
-	&".\JetBrains.dotCover.CommandLineTools\tools\dotCover.exe" report --Source=$MergedSnapshotPath --Output="$TestResultsPath\DotCover-Coverage-Report.html" --ReportType=HTML
+	$MergedSnapshotPath = "$TestResultsPath\Merged.coveragexml"
+	$CoverageToolPath = ".\Microsoft.TestPlatform\tools\net451\Team Tools\Dynamic Code Coverage Tools\CodeCoverage.exe"
+	$GetSnapshots = Get-ChildItem "$TestResultsPath\**\*.coverage"
+	if ($GetSnapshots.count -le 0) {
+		$GetSnapshots = Get-ChildItem "$TestResultsPath\*.coverage"
+	}
+	if ($GetSnapshots.count -le 0) {
+		Write-Host Cannot find snapshots in $TestResultsPath
+		exit 1
+	}
+	Write-Host `&`"$CoverageToolPath`" analyze /output:`"$MergedSnapshotPath`" @GetSnapshots
+	&"$CoverageToolPath" analyze /output:"$MergedSnapshotPath" @GetSnapshots
+	$reportGeneratorExecutable = ".\reportgenerator.exe"
+
+    if (!(Test-Path "$reportGeneratorExecutable")) {
+        dotnet tool install dotnet-reportgenerator-globaltool --tool-path "."
+    }
+    
+    $reportGeneratorCoberturaParams = @(
+        "-reports:$MergedSnapshotPath",
+        "-targetdir:$TestResultsPath",
+        "-reporttypes:Cobertura"
+    )
+    
+    Write-Output "Executing Report Generator with following parameters: $reportGeneratorCoberturaParams."
+    &"$reportGeneratorExecutable" @reportGeneratorCoberturaParams
 }
+exit 0

@@ -178,8 +178,8 @@ namespace Dev2.Services.Security
 
         public ISecurityService SecurityService => _securityService;
 
-        public abstract bool IsAuthorized(AuthorizationContext context, Guid resource);
-        public abstract bool IsAuthorized(AuthorizationContext context, IWarewolfResource resource);
+        public abstract bool IsAuthorized(Dev2.Common.Interfaces.Enums.AuthorizationContext context, Guid resource);
+        public abstract bool IsAuthorized(Dev2.Common.Interfaces.Enums.AuthorizationContext context, IWarewolfResource resource);
         public abstract bool IsAuthorized(IAuthorizationRequest request);
 
         protected virtual void RaisePermissionsChanged()

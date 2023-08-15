@@ -93,9 +93,6 @@
     <Compile Include="PerformanceCounters\WarewolfCurrentExecutionsPerformanceCounterTests.cs" />
     <Compile Include="SharedModels\CompileMessageListTests.cs" />
     <Compile Include="XML\XmlResource.cs" />
-    <AdditionalFiles Include="..\SonarQube\SonarLint.xml">
-      <Visible>False</Visible>
-    </AdditionalFiles>
     <Compile Include="Collections\ObservableReadOnlyListTests.cs" />
     <Compile Include="Communication\FutureRecieptTest.cs" />
     <Compile Include="Communication\Dev2JsonSerializerTests.cs" />
@@ -173,6 +170,7 @@
       <Project>{926cf512-b3fd-410d-aa83-ebdf4c4868de}</Project>
       <Name>Warewolf.Interfaces</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Testing\Warewolf.Testing.csproj" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="XML\Utility - Assign.xml" />
@@ -185,7 +183,7 @@
       <Version>2.4.1</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Owin.Security">
-      <Version>4.1.1</Version>
+      <Version>4.2.2</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.TestPlatform.ObjectModel">
       <Version>16.11.0</Version>
@@ -200,7 +198,7 @@
       <Version>2.1.2</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
-      <Version>12.0.3</Version>
+      <Version>13.0.2</Version>
     </PackageReference>
     <PackageReference Include="System.Threading.Tasks.Extensions">
       <Version>4.5.4</Version>

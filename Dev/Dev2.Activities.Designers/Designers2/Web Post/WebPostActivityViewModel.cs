@@ -519,12 +519,17 @@ namespace Dev2.Activities.Designers2.Web_Post
             var formDataParameters = new List<IFormDataParameters>();
             foreach (var item in ConditionExpressionOptions.Options)
             {
-                if (!(item as FormDataOptionConditionExpression).IsEmptyRow)
+                if (!(item is FormDataOptionConditionExpression exp))
                 {
-                    var expression = new FormDataConditionExpression();
-                    expression.FromOption(item);
-                    formDataParameters.Add(expression.ToFormDataParameter());
+                    continue;
                 }
+                if (exp.IsEmptyRow)
+                {
+                    continue;
+                }
+                var expression = new FormDataConditionExpression();
+                expression.FromOption(item);
+                formDataParameters.Add(expression.ToFormDataParameter());
             }
             return formDataParameters;
         }

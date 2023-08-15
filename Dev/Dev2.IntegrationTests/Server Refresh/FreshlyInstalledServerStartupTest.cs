@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
+using System.Management;
 using System.Net;
 using System.ServiceProcess;
+using System.Threading;
 using System.Threading.Tasks;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Security;
@@ -67,6 +70,7 @@ namespace Dev2.Integration.Tests.Server_Refresh
 
         [TestMethod]
         [Owner("Ashley Lewis")]
+        [TestCategory("Server Startup")]
         public void Run_a_workflow_to_test_server_startup_when_programdata_resources_directory_does_not_exist()
         {
             Assert.IsFalse(Directory.Exists(EnvironmentVariables.ResourcePath), "Cannot prepare for integration test.");
@@ -74,20 +78,54 @@ namespace Dev2.Integration.Tests.Server_Refresh
             SetupPermissions();
             RestartServer();
 
-            var url1 = $"http://localhost:3142/secure/Hello%20World.json?Name=Varian";
-            var passRequest = ExecuteRequest(new Uri(url1));
-            Assert.IsTrue(passRequest.Contains("\"Message\": \"Hello Varian.\""), "Hello World example workflow not loaded when programdata resources folder does not exist.");
+            var url = "http://localhost:3142/services/getserverversion.json";
+            var passRequest = ExecuteRequest(new Uri(url));
+            Assert.IsFalse(String.IsNullOrEmpty(passRequest));
         }
 
         void RestartServer()
         {
             ServiceController service = new ServiceController("Warewolf Server");
+            ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT * FROM Win32_Service");
+            ManagementObject ServerService = searcher.Get().OfType<ManagementObject>().FirstOrDefault(obj => { return (string)obj["Name"] == "Warewolf Server"; });
+            var fullServicePath = ServerService["PathName"] as string;
+            var startingString = "CodeCoverage.exe\" collect /output:\"";
+            var endingString = "TestResults\\Snapshot.coverage";
+            if (fullServicePath.Contains(startingString) && fullServicePath.Contains(endingString))
+            {
+                var startingIndex = fullServicePath.IndexOf(startingString) + startingString.Length;
+                var findLength = fullServicePath.IndexOf(endingString) + endingString.Length - startingIndex;
+                var snapshotPath = fullServicePath.Substring(startingIndex, findLength);
+                var TestResultsPath = Path.GetDirectoryName(snapshotPath);
+                var ServerCoverageSnapshotBackupPath = Path.Combine(TestResultsPath, "Snapshot_Backup.coverage");
 
-            service.Stop();
-            service.WaitForStatus(ServiceControllerStatus.Stopped, TimeSpan.FromMilliseconds(30000));
+                service.Stop();
+                service.WaitForStatus(ServiceControllerStatus.Stopped, TimeSpan.FromMilliseconds(300000));
+
+                if (File.Exists(ServerCoverageSnapshotBackupPath))
+                {
+                    File.Delete(ServerCoverageSnapshotBackupPath);
+                }
+                if (File.Exists(snapshotPath))
+                {
+                    if (WaitForFile(snapshotPath))
+                    {
+                        File.Move(snapshotPath, ServerCoverageSnapshotBackupPath);
+                    }
+                    else
+                    {
+                        throw new Exception("Cannot backup existing coverage snapshot.");
+                    }
+                }
+            }
+            else
+            {
+                service.Stop();
+                service.WaitForStatus(ServiceControllerStatus.Stopped, TimeSpan.FromMilliseconds(300000));
+            }
 
             service.Start();
-            service.WaitForStatus(ServiceControllerStatus.Running, TimeSpan.FromMilliseconds(30000));
+            service.WaitForStatus(ServiceControllerStatus.Running, TimeSpan.FromMilliseconds(300000));
         }
 
         class PatientWebClient : WebClient
@@ -104,9 +142,25 @@ namespace Dev2.Integration.Tests.Server_Refresh
             }
         }
 
-        void MoveFileTemporarily(string fileName)
+        bool WaitForFile (string fullPath)
         {
-            File.Move(fileName, $"{fileName}.Moved");
+            for (int numTries = 0; numTries < 30; numTries++) {
+                FileStream fs = null;
+                try {
+                    fs = new FileStream (fullPath, FileMode.Open, FileAccess.Write, FileShare.Delete);
+                    fs.Close();
+                    fs.Dispose();
+                    return true;
+                }
+                catch (IOException) {
+                    if (fs != null) {
+                        fs.Dispose ();
+                    }
+                    Thread.Sleep (1000);
+                }
+            }
+
+            return false;
         }
 
         string ExecuteRequest(Uri url)

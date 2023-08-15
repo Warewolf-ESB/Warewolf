@@ -19,6 +19,7 @@ namespace Warewolf.Configuration
         private bool? _encryptDataSource;
         private bool? _enable;
         private bool? _prepareSchemaIfNecessary;
+        private bool? _useAsServer;
         private string _dashboardHostname;
         private string _dashboardPort;
         private string _dashboardName;
@@ -35,6 +36,12 @@ namespace Warewolf.Configuration
         {
             get => _prepareSchemaIfNecessary ?? true;
             set => SetProperty(ref _prepareSchemaIfNecessary, value);
+        }
+
+        public bool? UseAsServer
+        {
+            get => _useAsServer ?? true;
+            set => SetProperty(ref _useAsServer, value);
         }
 
         public NamedGuidWithEncryptedPayload PersistenceDataSource
@@ -99,6 +106,7 @@ namespace Warewolf.Configuration
                 equals &= DashboardName == other.DashboardName;
                 equals &= ServerName == other.ServerName;
                 equals &= PrepareSchemaIfNecessary == other.PrepareSchemaIfNecessary;
+                equals &= UseAsServer == other.UseAsServer;
                 return equals;
             }
 

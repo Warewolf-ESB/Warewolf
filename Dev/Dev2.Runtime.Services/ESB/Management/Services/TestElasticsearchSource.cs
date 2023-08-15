@@ -39,7 +39,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                 var elasticsearchServiceSourceDefinition = serializer.Deserialize<ElasticsearchSourceDefinition>(resourceDefinition);
                 var con = new ElasticsearchSources();
-                var result = con.Test(new ElasticsearchSource
+                using (var elasticsearchSource = new ElasticsearchSource
                 {
                     HostName = elasticsearchServiceSourceDefinition.HostName,
                     Port = elasticsearchServiceSourceDefinition.Port,
@@ -47,10 +47,13 @@ namespace Dev2.Runtime.ESB.Management.Services
                     Username = elasticsearchServiceSourceDefinition.Username,
                     AuthenticationType = elasticsearchServiceSourceDefinition.AuthenticationType,
                     SearchIndex = elasticsearchServiceSourceDefinition.SearchIndex
-                });
-                msg.HasError = false;
-                msg.Message = new StringBuilder(result.IsValid ? serializer.Serialize(result.Result) : result.ErrorMessage);
-                msg.HasError = !result.IsValid;
+                })
+                {
+                    var result = con.Test(elasticsearchSource);
+                    msg.HasError = false;
+                    msg.Message = new StringBuilder(result.IsValid ? serializer.Serialize(result.Result) : result.ErrorMessage);
+                    msg.HasError = !result.IsValid;
+                }
             }
             catch (Exception err)
             {

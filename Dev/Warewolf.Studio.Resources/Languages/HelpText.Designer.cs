@@ -19,7 +19,7 @@ namespace Warewolf.Studio.Resources.Languages {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class HelpText {
@@ -1732,6 +1732,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select the Include Environment Variables with your execution logs, to enable a more detailed view of the state of your system during an execution session.&lt;br/&gt;&lt;br/&gt;These logs will be available with your selected logging driver above eg: Default on your local C:\ drive or Elasticsearch instance if you have setup an Elasticsearch source.&lt;br/&gt;&lt;br/&gt; &lt;b&gt;NOTE:&lt;/b&gt; Use this feature with caution as this can expose sensitive personal and system data. Ensure relevant security is in place within your cluster..
+        /// </summary>
+        public static string IncludeEnvironmentVariableHelpText {
+            get {
+                return ResourceManager.GetString("IncludeEnvironmentVariableHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The variable or the value that you want passed into this action..
         /// </summary>
         public static string InputDefaultValueHelp {
@@ -2785,6 +2794,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string PersistenceViewSchedulerHelpText {
             get {
                 return ResourceManager.GetString("PersistenceViewSchedulerHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show the additional data to use hangfire as a server if checkbox is checked.
+        /// </summary>
+        public static string PersistenceViewUseAsServerHelpText {
+            get {
+                return ResourceManager.GetString("PersistenceViewUseAsServerHelpText", resourceCulture);
             }
         }
         

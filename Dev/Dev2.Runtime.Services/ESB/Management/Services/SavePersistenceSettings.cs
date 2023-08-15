@@ -38,6 +38,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 Config.Persistence.EncryptDataSource = updatedPersistenceSettings?.EncryptDataSource ?? false;
                 Config.Persistence.Enable = updatedPersistenceSettings.Enable ?? false;
                 Config.Persistence.PrepareSchemaIfNecessary = updatedPersistenceSettings.PrepareSchemaIfNecessary ?? true;
+                Config.Persistence.UseAsServer = updatedPersistenceSettings.UseAsServer ?? true;
                 Config.Persistence.PersistenceScheduler = updatedPersistenceSettings.PersistenceScheduler;
                 Config.Persistence.DashboardHostname = updatedPersistenceSettings.DashboardHostname;
                 Config.Persistence.DashboardName = updatedPersistenceSettings.DashboardName;

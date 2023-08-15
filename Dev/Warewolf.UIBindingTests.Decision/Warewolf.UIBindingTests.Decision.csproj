@@ -61,14 +61,10 @@
     <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
-    <AdditionalFiles Include="..\SonarQube\SonarLint.xml">
-      <Visible>False</Visible>
-    </AdditionalFiles>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="DecDialog.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>DecDialog.feature.cs</LastGenOutput>
     </None>
   </ItemGroup>
@@ -146,16 +142,13 @@
       <Version>2.1.2</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
-      <Version>12.0.3</Version>
+      <Version>13.0.2</Version>
     </PackageReference>
     <PackageReference Include="SpecFlow">
-      <Version>2.3.2</Version>
+      <Version>3.9.22</Version>
     </PackageReference>
     <PackageReference Include="SpecFlow.MsTest">
-      <Version>2.3.2</Version>
-    </PackageReference>
-    <PackageReference Include="SpecFlow.Tools.MsBuild.Generation">
-      <Version>2.3.2</Version>
+      <Version>3.9.22</Version>
     </PackageReference>
     <PackageReference Include="System.Threading.Tasks.Extensions">
       <Version>4.5.4</Version>

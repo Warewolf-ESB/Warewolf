@@ -41,14 +41,6 @@ namespace Dev2.Activities.Specs.Sources
             environmentModel.Connect();
         }
 
-        string GetIPAddress(string server)
-        {
-            var serverName = server.Replace("http://", "").Replace(":3142", "").Replace(":3144", "").Replace(":" + declaredDependency.Container.Port, "");
-            var ipHostInfo = Dns.GetHostEntry(serverName);
-            var ipAddress = ipHostInfo.AddressList[0];
-            return ipAddress.ToString();
-        }
-
         private static void IsServerOnline(string server, string port)
         {
             using (var ping = new TcpClient())
@@ -67,7 +59,7 @@ namespace Dev2.Activities.Specs.Sources
         [AfterScenario]
         public void Cleanup()
         {
-            ScenarioContext.Current.TryGetValue("resourceModel", out IResourceModel resourceModel);
+            scenarioContext.TryGetValue("resourceModel", out IResourceModel resourceModel);
             if (resourceModel != null)
             {
                 environmentModel.ResourceRepository.DeleteResource(resourceModel);
@@ -92,8 +84,7 @@ namespace Dev2.Activities.Specs.Sources
             }
             if (!address.Contains("localhost"))
             {
-                var ipAddress = GetIPAddress(address);
-                IsServerOnline(ipAddress, declaredDependency.Container.Port);
+                IsServerOnline(address.Replace("http://", "").Replace(":3142", "").Replace(":3144", "").Replace(":" + declaredDependency.Container.Port, ""), declaredDependency.Container.Port);
             }
             var authenticationType = table.Rows[0]["AuthenticationType"];
             Enum.TryParse(authenticationType, true, out AuthenticationType result);
@@ -103,7 +94,7 @@ namespace Dev2.Activities.Specs.Sources
                 Address = address,
                 AuthenticationType = result
             };
-            ScenarioContext.Current.Add("serverSource", serverSource);
+            scenarioContext.Add("serverSource", serverSource);
         }
 
         [Given(@"I save as ""(.*)""")]
@@ -112,7 +103,7 @@ namespace Dev2.Activities.Specs.Sources
             var buildManageNewServerSourceModel = BuildManageNewServerSourceModel();
             var manageNewServerSourceModel = buildManageNewServerSourceModel.Item1;
             var server = buildManageNewServerSourceModel.Item2;
-            var serverSource = ScenarioContext.Current.Get<IServerSource>("serverSource");
+            var serverSource = scenarioContext.Get<IServerSource>("serverSource");
             serverSource.Name = p0;
             try
             {
@@ -120,7 +111,7 @@ namespace Dev2.Activities.Specs.Sources
             }
             catch (WarewolfSaveException e)
             {
-                ScenarioContext.Current.Add("result", e.Message);
+                scenarioContext.Add("result", e.Message);
                 Console.WriteLine(e.StackTrace);
                 return;
             }
@@ -130,8 +121,9 @@ namespace Dev2.Activities.Specs.Sources
             var explorerItem = load.Result;
             var explorerItems = explorerItem.Children.Flatten(item => item.Children ?? new List<IExplorerItem>());
             var firstOrDefault = explorerItems.FirstOrDefault(item => item.DisplayName.Equals(p0, StringComparison.InvariantCultureIgnoreCase));
+            Assert.IsNotNull(firstOrDefault);
             IResourceModel resourceModel = server.ResourceRepository.LoadContextualResourceModel(firstOrDefault.ResourceId);
-            ScenarioContext.Current.Add("resourceModel", resourceModel);
+            scenarioContext.Add("resourceModel", resourceModel);
             server.ResourceRepository.ReLoadResources();
         }
 
@@ -139,12 +131,12 @@ namespace Dev2.Activities.Specs.Sources
         public void WhenITest(string p0)
         {
             var manageNewServerSourceModel = BuildManageNewServerSourceModel().Item1;
-            var resourceModel = ScenarioContext.Current.Get<IResourceModel>("resourceModel");
+            var resourceModel = scenarioContext.Get<IResourceModel>("resourceModel");
             var resourceModelWorkflowXaml = resourceModel.WorkflowXaml;
             Console.WriteLine(resourceModelWorkflowXaml);
             var source = manageNewServerSourceModel.FetchSource(resourceModel.ID);
             manageNewServerSourceModel.TestConnection(source);
-            ScenarioContext.Current.Add("result", "success");
+            scenarioContext.Add("result", "success");
         }
 
         [When(@"I Test the connection")]
@@ -152,23 +144,23 @@ namespace Dev2.Activities.Specs.Sources
         {
             try
             {
-                var serverSource = ScenarioContext.Current.Get<IServerSource>("serverSource");
+                var serverSource = scenarioContext.Get<IServerSource>("serverSource");
                 var manageNewServerSourceModel = BuildManageNewServerSourceModel().Item1;
                 manageNewServerSourceModel.TestConnection(serverSource);
-                ScenarioContext.Current.Add("result", "success");
+                scenarioContext.Add("result", "success");
             }
             catch (Exception ex)
             {
-                ScenarioContext.Current.Add("result", ex.Message);
+                scenarioContext.Add("result", ex.Message);
             }
         }
 
-        static Tuple<ManageNewServerSourceModel, IServer, QueryManagerProxy> BuildManageNewServerSourceModel()
+        Tuple<ManageNewServerSourceModel, IServer, QueryManagerProxy> BuildManageNewServerSourceModel()
         {
             ICommunicationControllerFactory factory = new CommunicationControllerFactory();
 
             var instanceSource = ServerRepository.Instance.Source;
-            var serverSource = ScenarioContext.Current.Get<IServerSource>("serverSource");
+            var serverSource = scenarioContext.Get<IServerSource>("serverSource");
             var environmentConnection = instanceSource.Connection;
             var studioResourceUpdateManager = new StudioResourceUpdateManager(factory, environmentConnection);
             var queryManagerProxy = new QueryManagerProxy(factory, environmentConnection);
@@ -181,7 +173,7 @@ namespace Dev2.Activities.Specs.Sources
         [Then(@"I delete serversource")]
         public void ThenIDeleteServersource()
         {
-            var resourceModel = ScenarioContext.Current.Get<IResourceModel>("resourceModel");
+            var resourceModel = scenarioContext.Get<IResourceModel>("resourceModel");
             var server = BuildManageNewServerSourceModel().Item2;
             server.ResourceRepository.DeleteResource(resourceModel);
         }
@@ -189,19 +181,19 @@ namespace Dev2.Activities.Specs.Sources
         [Then(@"The result is ""(.*)""")]
         public void ThenTheResultIs(string p0)
         {
-            var result = ScenarioContext.Current.Get<string>("result");
+            var result = scenarioContext.Get<string>("result");
             Assert.AreEqual(p0, result);
         }
 
         [Given(@"User as ""(.*)"" and with ""(.*)"" as password")]
         public void GivenUserAsWithPassword(string username, string password) => AddUserToServerSource(username, password);
 
-        private static void AddUserToServerSource(string username, string password)
+        void AddUserToServerSource(string username, string password)
         {
-            var serverSource = ScenarioContext.Current.Get<IServerSource>("serverSource");
+            var serverSource = scenarioContext.Get<IServerSource>("serverSource");
             serverSource.UserName = username;
             serverSource.Password = password;
-            ScenarioContext.Current.Set(serverSource, "serverSource");
+            scenarioContext.Set(serverSource, "serverSource");
         }
 
         protected override void BuildDataList() => throw new NotImplementedException();

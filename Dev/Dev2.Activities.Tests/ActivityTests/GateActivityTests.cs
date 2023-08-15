@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -13,12 +13,12 @@ using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
+using System.Activities;
 using System.Collections.Generic;
 using System.Linq;
+using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Auditing;
-using Warewolf.Data;
 using Warewolf.Data.Options;
-using Warewolf.Data.Options.Enums;
 using Warewolf.Options;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
@@ -138,7 +138,42 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             Assert.AreEqual(expectedNextActivity.Object, result);
         }
-        
+
+        [TestMethod]
+        [Timeout(60000)]
+        [Owner("Siphamandla Dube")]
+        public void GateActivity_GetChildrenNodes_Given_Activities_ActivityTools()
+        {
+            //---------------Set up test pack-------------------
+            var uniqueId = Guid.NewGuid().ToString();
+            var childNode = new GateActivity
+            {
+                DisplayName = "Gate inside a Gate",
+                DataFunc = new ActivityFunc<string, bool>
+                {
+                    DisplayName = "test inner inner activity",
+                    Handler = new DsfSwitch { }
+                }
+            };
+
+            var activity = new GateActivity()
+            {
+                UniqueID = uniqueId,
+                DataFunc = new ActivityFunc<string, bool>
+                {
+                    DisplayName = "test display name",
+                    Handler = childNode
+                }
+            };
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(activity.GetChildrenNodes());
+            //---------------Execute Test ----------------------
+            var nodes = activity.GetChildrenNodes();
+            //---------------Test Result -----------------------
+            Assert.AreEqual(1, nodes.Count());
+            Assert.AreEqual("Gate inside a Gate", childNode.DisplayName);
+        }
+
         [TestMethod]
         [Timeout(60000)]
         [Owner("Pieter Terblanche")]
@@ -165,7 +200,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("Allow If", inputs[0].ResultsList[0].Label);
             Assert.AreEqual("[[a]] Is NULL\n AND \n[[a]] is greater than 1 and less than 10", inputs[0].ResultsList[0].Value);
         }
-        
+
         [TestMethod]
         [Timeout(60000)]
         [Owner("Pieter Terblanche")]
@@ -259,7 +294,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             Assert.AreEqual(1, dataObject.Gates[expectedRetryActivity].Item1.NumberOfRetries);
         }
-        
+
         [TestMethod]
         [Timeout(60000)]
         [Owner("Rory McGuire")]
@@ -295,7 +330,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             dataObject.Gates[expectedRetryActivity] = (new RetryState(), null);
 
             var result = act.Execute(dataObject, 0);
-            
+
             Assert.IsTrue(dataObject.Environment.HasErrors());
             var errors = dataObject.Environment.Errors.ToArray();
             Assert.AreEqual(2, errors.Length);
@@ -303,7 +338,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("cannot update retry state of a non-resumable gate", errors[1]);
 
             Assert.IsNull(result, "execution should not proceed to RetryEntryPoint if entrypoint is not resumable");
-            
+
             Assert.AreEqual(0, dataObject.Gates[expectedRetryActivity].Item1.NumberOfRetries);
         }
 
@@ -479,7 +514,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Rory McGuire")]
+        [Owner("Siphamandla Dube")]
         [TestCategory(nameof(GateActivity))]
         public void GateActivity_Execute_GivenPassingConditionsOnFirstGateAndFailingSecondGate_ExpectDetailedLog()
         {
@@ -491,8 +526,10 @@ namespace Dev2.Tests.Activities.ActivityTests
                 Left = "[[somebob]]",
                 Cond = new ConditionMatch { MatchType = enDecisionType.IsEqual, Right = "notbob" }
             };
-            var failingConditions = new List<ConditionExpression>();
-            failingConditions.Add(failingCondition);
+            var failingConditions = new List<ConditionExpression>
+            {
+                failingCondition
+            };
 
             var thirdNode = new Mock<IDev2Activity>().Object;
             var secondGate = new GateActivity
@@ -509,8 +546,10 @@ namespace Dev2.Tests.Activities.ActivityTests
                 Left = "[[a]]",
                 Cond = new ConditionMatch { MatchType = enDecisionType.IsEqual, Right = "bob" }
             };
-            var passingConditions = new List<ConditionExpression>();
-            passingConditions.Add(passingCondition);
+            var passingConditions = new List<ConditionExpression>
+            {
+                passingCondition
+            };
 
             //------------Setup for test--------------------------
             var firstGate = new GateActivity
@@ -523,18 +562,18 @@ namespace Dev2.Tests.Activities.ActivityTests
                     GateOpts = new Continue()
                 }
             };
-            
+
             var mockStateNotifier = new Mock<IStateNotifier>();
             mockStateNotifier.Setup(stateNotifier => stateNotifier.LogActivityExecuteState(It.IsAny<IDev2Activity>()));
-            
+
             firstGate.SetStateNotifier(mockStateNotifier.Object);
 
             var dataObject = new DsfDataObject("", Guid.NewGuid());
             dataObject.Environment.Assign("[[a]]", "bob", 0);
 
             var result = firstGate.Execute(dataObject, 0);
-            dataObject.Environment.Assign("[[a]]", "ralph", 0);
-
+            dataObject.Environment.Assign("[[a]]", "ralph", 0);  
+            
             Assert.AreEqual("ralph", dataObject.Environment.EvalAsListOfStrings("[[a]]", 0)[0]);
             Assert.AreEqual(secondGate, result);
 
@@ -544,7 +583,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             result = result.Execute(dataObject, 0);
 
-            Assert.AreEqual("bob", dataObject.Environment.EvalAsListOfStrings("[[a]]", 0)[0]);
+            Assert.AreEqual("ralph", dataObject.Environment.EvalAsListOfStrings("[[a]]", 0)[0], "should use the same environment to keep up with each execution enviroment variable changes");
             Assert.AreEqual(secondGate, result);
 
             dataObject.Environment.Assign("[[somebob]]", "notbob", 0);
@@ -552,8 +591,114 @@ namespace Dev2.Tests.Activities.ActivityTests
             result = result.Execute(dataObject, 0);
 
             Assert.AreEqual(thirdNode, result);
-            
+
             mockStateNotifier.Verify(o => o.LogActivityExecuteState(It.IsAny<IDev2Activity>()), Times.Exactly(2));
+        }
+
+
+        [TestMethod]
+        [Timeout(60000)]
+        [Owner("Yogesh Rajpurohit")]
+        [TestCategory(nameof(GateActivity))]
+        public void GateActivity_Execute_GivenPassingConditionsOnFirstGateAndFailingSecondGate_DebugOutput()
+        {
+            var firstGateId = Guid.NewGuid();
+            var secondGateId = Guid.NewGuid();
+
+            var failingCondition = new ConditionExpression
+            {
+                Left = "[[somebob]]",
+                Cond = new ConditionMatch { MatchType = enDecisionType.IsEqual, Right = "notbob" }
+            };
+            var failingConditions = new List<ConditionExpression>
+            {
+                failingCondition
+            };
+
+            var thirdNode = new Mock<IDev2Activity>().Object;
+            var secondGate = new GateActivity
+            {
+                DisplayName = "Gate2",
+                UniqueID = secondGateId.ToString(),
+                RetryEntryPointId = firstGateId,
+                Conditions = failingConditions,
+                NextNodes = new List<IDev2Activity> { thirdNode },
+            };
+
+            //---------------Set up test pack-------------------
+            var passingCondition = new ConditionExpression
+            {
+                Left = "[[a]]",
+                Cond = new ConditionMatch { MatchType = enDecisionType.IsEqual, Right = "bob" }
+            };
+            var passingConditions = new List<ConditionExpression>
+            {
+                passingCondition
+            };
+
+            //------------Setup for test--------------------------
+            var firstGate = new GateActivity
+            {
+                DisplayName = "Gate1",
+                UniqueID = firstGateId.ToString(),
+                Conditions = passingConditions,
+                DataFunc = new ActivityFunc<string, bool> { Handler = new DsfDotNetMultiAssignActivity { FieldsCollection = new List<ActivityDTO> { new ActivityDTO { FieldName = "InnerNode" , FieldValue = "InnderValue"  } } } },
+                NextNodes = new List<IDev2Activity> { secondGate },
+                GateOptions = new GateOptions()
+                {
+                    GateOpts = new Continue()
+                }
+            };
+            var mockStateNotifier = new Mock<IStateNotifier>();
+            mockStateNotifier.Setup(stateNotifier => stateNotifier.LogActivityExecuteState(It.IsAny<IDev2Activity>()));
+
+            firstGate.SetStateNotifier(mockStateNotifier.Object);             
+
+            var env = CreateExecutionEnvironment();
+            var dataObject = new Mock<IDSFDataObject>();
+            dataObject.Setup(o => o.IsDebugMode()).Returns(true);
+            dataObject.Setup(o => o.Environment).Returns(env);
+            dataObject.Setup(o => o.Settings.EnableDetailedLogging).Returns(true);
+
+            dataObject.Object.Environment.Assign("[[a]]", "bob", 0);
+
+            var gatesList = new Dictionary<IDev2Activity, (RetryState, IEnumerator<bool>)>();
+            dataObject.Setup(o => o.Gates).Returns(gatesList);
+
+            //Executing First Gate
+            var result = firstGate.Execute(dataObject.Object, 0);
+            Assert.AreEqual("Gate2", result.GetDisplayName());
+            Assert.AreEqual(1, gatesList.Count);          
+            var outputFirst = firstGate.GetDebugOutputs(dataObject.Object.Environment, 0);
+            Assert.AreEqual("Conditions passed", outputFirst[0].ResultsList[0].Value);
+            Assert.AreEqual("Executing", outputFirst[1].ResultsList[0].Value);
+
+            //Executing Second Gate with failed condition
+            result = result.Execute(dataObject.Object, 0);
+            Assert.AreEqual("Gate1", result.GetDisplayName());
+            Assert.AreEqual(2, gatesList.Count);            
+            var outputSecond = secondGate.GetDebugOutputs(dataObject.Object.Environment, 0);
+            Assert.AreEqual("Conditions failed", outputSecond[0].ResultsList[0].Value);
+            Assert.AreEqual("Retry gate", outputSecond[1].ResultsList[0].Value);
+
+            //Check Inner Nodes
+            var innerNodes = result.GetChildrenNodes();
+            Assert.AreEqual(1, innerNodes.Count());
+            Assert.AreEqual("Assign", innerNodes.First().GetDisplayName());
+
+
+
+            //Executing First Gate again.
+            result = result.Execute(dataObject.Object, 0);
+            Assert.AreEqual("Gate2", result.GetDisplayName());
+            Assert.AreEqual(2, gatesList.Count);            
+            var outputThird = firstGate.GetDebugOutputs(dataObject.Object.Environment, 0);
+            Assert.AreEqual("Retry: 1", outputThird[0].ResultsList[0].Value);
+            Assert.AreEqual("ExecuteRetry", outputThird[1].ResultsList[0].Value);
+
+            //Executing Second Gate again.
+            dataObject.Object.Environment.Assign("[[somebob]]", "notbob", 0);
+            result = result.Execute(dataObject.Object, 0);        
         }
     }
 }

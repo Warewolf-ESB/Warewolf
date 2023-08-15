@@ -147,8 +147,11 @@ namespace Dev2.Activities
             {
                 if (allErrors.HasErrors())
                 {
-                    var errorString = allErrors.MakeDisplayReady();
-                    dataObject.Environment.AddError(errorString);
+                    if (!this.IsErrorHandled)
+                    {
+                        var errorString = allErrors.MakeDisplayReady();
+                        dataObject.Environment.AddError(errorString);
+                    }
                     DisplayAndWriteError(dataObject,DisplayName, allErrors);
                     var expression = Result;
                     PushResultsToDataList(expression, null, dataObject,update);
@@ -158,6 +161,8 @@ namespace Dev2.Activities
                     DispatchDebugState(dataObject, StateType.Before,update);
                     DispatchDebugState(dataObject, StateType.After,update);
                 }
+
+                RunOnErrorSteps(dataObject, allErrors, update);
             }
         }
 

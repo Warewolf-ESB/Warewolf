@@ -1579,6 +1579,127 @@ namespace BusinessDesignStudio.Unit.Tests
             //------------Assert Results-------------------------
         }
 
+
+
+        [TestMethod]
+        [Owner("Yogesh Rajpurohit")]
+        [TestCategory("ResourceRepository_DeleteResourceTestCoverage")]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void ResourceRepository_DeleteResourceTestCoverage_WhenResourceIdIsNull_ExpectNothing()
+        {
+            //------------Setup for test--------------------------
+            var env = new Mock<IServer>();
+            var con = new Mock<IEnvironmentConnection>();
+            con.Setup(c => c.IsConnected).Returns(true);
+            env.Setup(e => e.Connection).Returns(con.Object);
+
+
+            var serviceTestModel = new ServiceTestModelTO();
+            var jsonSerializer = new Dev2JsonSerializer();
+            var payload = jsonSerializer.Serialize(serviceTestModel);
+            var message = new CompressedExecuteMessage();
+            message.SetMessage(payload);
+
+            var msgResult = jsonSerializer.Serialize(message);
+            con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(msgResult.ToStringBuilder);
+
+            //------------Execute Test---------------------------
+            var result = new ResourceRepository(env.Object);
+            result.DeleteResourceTestCoverage(Guid.Empty);
+            //------------Assert Results-------------------------
+        }
+
+
+        [TestMethod]
+        [Owner("Yogesh Rajpurohit")]
+        [TestCategory("ResourceRepository_DeleteResourceTestCoverage")]
+        public void ResourceRepository_DeleteResourceTestCoverage_WhenGetCommunicationControllerNull_ExpectException()
+        {
+            //------------Setup for test--------------------------
+            var env = new Mock<IServer>();
+            var con = new Mock<IEnvironmentConnection>();
+            con.Setup(c => c.IsConnected).Returns(true);
+            env.Setup(e => e.Connection).Returns(con.Object);
+
+            var serviceTestModel = new ServiceTestModelTO();
+            var jsonSerializer = new Dev2JsonSerializer();
+            var payload = jsonSerializer.Serialize(serviceTestModel);
+            var message = new CompressedExecuteMessage();
+            message.SetMessage(payload);
+
+            var msgResult = jsonSerializer.Serialize(message);
+            con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(msgResult.ToStringBuilder);
+
+            //------------Execute Test---------------------------
+            var resourceId = Guid.Parse("1fe780a0-282a-4477-85da-c0e41832ed25");
+            var result = new ResourceRepository(env.Object)
+            {
+                GetCommunicationController = null
+            };
+
+            Assert.ThrowsException<NullReferenceException>(() => result.DeleteResourceTestCoverage(resourceId), "Cannot delete resource test coverage. Cannot get Communication Controller.");
+            //------------Assert Results-------------------------
+            // No Result for positive scenario
+        }
+
+
+        [TestMethod]
+        [Owner("Yogesh Rajpurohit")]
+        [TestCategory("ResourceRepository_DeleteResourceTestCoverage")]
+        public void ResourceRepository_DeleteResourceTestCoverage_WhenPassResourceId_CoverageReportDeleted()
+        {
+            //------------Setup for test--------------------------
+            var env = new Mock<IServer>();
+            var con = new Mock<IEnvironmentConnection>();
+            con.Setup(c => c.IsConnected).Returns(true);
+            env.Setup(e => e.Connection).Returns(con.Object);
+
+            var serviceTestModel = new ServiceTestModelTO();
+            var jsonSerializer = new Dev2JsonSerializer();
+            var payload = jsonSerializer.Serialize(serviceTestModel);
+            var message = new CompressedExecuteMessage();
+            message.SetMessage(payload);
+
+            var msgResult = jsonSerializer.Serialize(message);
+            con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(msgResult.ToStringBuilder);
+
+            //------------Execute Test---------------------------
+            var resourceId = Guid.Parse("1fe780a0-282a-4477-85da-c0e41832ed25");
+            var result = new ResourceRepository(env.Object);
+            result.DeleteResourceTestCoverage(resourceId);
+            //------------Assert Results-------------------------
+            //No Result for positive scenario
+        }
+
+        [TestMethod]
+        [Owner("Yogesh Rajpurohit")]
+        [TestCategory("ResourceRepository_DeleteResourceTestCoverage")]
+        public void ResourceRepository_DeleteResourceTestCoverage_WhenResultHasError_ExpectNothing()
+        {
+            //------------Setup for test--------------------------
+            var env = new Mock<IServer>();
+            var con = new Mock<IEnvironmentConnection>();
+            con.Setup(c => c.IsConnected).Returns(true);
+            env.Setup(e => e.Connection).Returns(con.Object);
+
+
+            var msg = new StringBuilder("Error occured");
+            var jsonSerializer = new Dev2JsonSerializer();
+            var payload = jsonSerializer.Serialize(msg);
+            var message = new CompressedExecuteMessage();
+            message.SetMessage(payload);
+            message.HasError = true;
+
+            var msgResult = jsonSerializer.Serialize(message);
+            con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(msgResult.ToStringBuilder);
+
+            //------------Execute Test---------------------------
+            var result = new ResourceRepository(env.Object);
+            Assert.ThrowsException<Exception>(() => result.DeleteResourceTestCoverage(Guid.NewGuid()), "Error occured");
+            //------------Assert Results-------------------------
+        }
+
+
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("ResourceRepository_LoadResourceTests")]
@@ -1869,7 +1990,7 @@ namespace BusinessDesignStudio.Unit.Tests
             var resourceRepository = GetResourceRepository();
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            var privateObject = new PrivateObject(resourceRepository);
+            var privateObject = new Warewolf.Testing.PrivateObject(resourceRepository);
             var invoke = privateObject.Invoke("CreateServiceName", typeof(DropBoxSource));
             //---------------Test Result -----------------------
             var serviceName = invoke.ToString();
@@ -2442,7 +2563,7 @@ namespace BusinessDesignStudio.Unit.Tests
             testEnvironmentModel2.Setup(e => e.ResourceRepository).Returns(resRepo);
 
             var perm = new WindowsGroupPermission {ResourceID = testResources.First().ID};
-            var p = new PrivateObject(resRepo);
+            var p = new Warewolf.Testing.PrivateObject(resRepo);
             p.Invoke("ReceivePermissionsModified", new List<WindowsGroupPermission> {perm});
         }
 
@@ -2481,7 +2602,7 @@ namespace BusinessDesignStudio.Unit.Tests
             testEnvironmentModel2.Setup(e => e.ResourceRepository).Returns(resRepo);
 
             var perm = new WindowsGroupPermission {ResourceID = testResources.First().ID};
-            var p = new PrivateObject(resRepo);
+            var p = new Warewolf.Testing.PrivateObject(resRepo);
             p.Invoke("ReceivePermissionsModified", new List<WindowsGroupPermission> {perm});
         }
 
@@ -2524,7 +2645,7 @@ namespace BusinessDesignStudio.Unit.Tests
 
             testEnvironmentModel2.Setup(e => e.ResourceRepository).Returns(resRepo);
 
-            var p = new PrivateObject(resRepo);
+            var p = new Warewolf.Testing.PrivateObject(resRepo);
             p.Invoke("ReceivePermissionsModified", new List<WindowsGroupPermission> {perm, perm2});
         }
 
@@ -2550,7 +2671,7 @@ namespace BusinessDesignStudio.Unit.Tests
             _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
 
             _repo.SaveToServer(_resourceModel.Object);
-            var p = new PrivateObject(_repo);
+            var p = new Warewolf.Testing.PrivateObject(_repo);
             Assert.AreEqual(1, ((List<IResourceModel>) p.GetField("_resourceModels")).Count);
         }
 
@@ -2579,7 +2700,7 @@ namespace BusinessDesignStudio.Unit.Tests
 
         [TestMethod]
         [ExpectedException(typeof(WarewolfSaveException))]
-        public void SaveAuditingSettings_OutputNull()
+        public void ResourceRepository_SaveAuditingSettings_OutputNull()
         {
             //Arrange
             Setup();
@@ -2591,6 +2712,83 @@ namespace BusinessDesignStudio.Unit.Tests
             _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
             var auditingSettingsDataSettingsData = new LegacySettingsData() {AuditFilePath = "somePath"};
             _repo.SaveAuditingSettings(_environmentModel.Object, auditingSettingsDataSettingsData);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory("SaveAuditingSettings")]
+        public void ResourceRepository_SaveAuditingSettings_OutputNotNull_ShouldSuccess()
+        {
+            //Arrange
+            Setup();
+            var conn = SetupConnection();
+
+            var serializer = new Dev2JsonSerializer();
+            var returnedPayLoad = serializer.SerializeToBuilder(new ExecuteMessage
+            {
+                HasError = false,
+                Message = new StringBuilder("test_payload")
+            });
+
+            var sentPayLoad = new StringBuilder();
+            conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>()))
+                .Callback((StringBuilder o, Guid g1) => { sentPayLoad = o; })
+                .Returns(returnedPayLoad);
+
+            _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
+            var auditingSettingsDataSettingsData = new AuditingSettingsData
+            {
+                Endpoint = "someEndpoint",
+                IncludeEnvironmentVariable = true,
+                EncryptDataSource = true,
+                LoggingDataSource = new NamedGuidWithEncryptedPayload
+                {
+                    Name = "some-name",
+                    Payload = "some-payload",
+                    Value = Guid.NewGuid()
+                }
+            };
+            var result = _repo.SaveAuditingSettings(_environmentModel.Object, auditingSettingsDataSettingsData);
+
+            Assert.IsFalse(result.HasError);
+            Assert.AreEqual("test_payload", result.Message.ToString());
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory("SaveAuditingSettings")]
+        public void ResourceRepository_SaveAuditingSettings_OutputNotNull_ShouldSuccess1()
+        {
+            //Arrange
+            Setup();
+            var conn = SetupConnection();
+
+            var serializer = new Dev2JsonSerializer();
+            var returnedPayLoad = serializer.SerializeToBuilder(new ExecuteMessage
+            {
+                HasError = false,
+                Message = new StringBuilder("test_payload")
+            });
+
+            var sentPayLoad = new StringBuilder();
+            conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>()))
+                .Callback((StringBuilder o, Guid g1) => { sentPayLoad = o; })
+                .Returns(returnedPayLoad);
+
+            _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
+            var auditingSettingsDataSettingsData = new TestAuditSettingsDataUnknown
+            {
+                Endpoint = "someEndpoint",
+                IncludeEnvironmentVariable = true,
+            };
+            var result = _repo.SaveAuditingSettings(_environmentModel.Object, auditingSettingsDataSettingsData);
+
+            Assert.IsTrue(result.HasError);
+            Assert.AreEqual("SettingsDataType: TestAuditSettingsDataUnknown unknown.", result.Message.ToString());
+        }
+
+        internal class TestAuditSettingsDataUnknown : AuditSettingsDataBase
+        { 
         }
 
         [TestMethod]

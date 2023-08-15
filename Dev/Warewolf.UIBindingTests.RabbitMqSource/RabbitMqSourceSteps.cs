@@ -25,10 +25,15 @@ namespace Warewolf.UIBindingTests.RabbitMqSource
     {
         string failedNoneOfTheSpecifiedEndpointsWereReachable = "Failed: None of the specified endpoints were reachable";
         public static Depends _containerOps;
+        static FeatureContext _featureContext;
+        readonly ScenarioContext _scenarioContext;
+
+        public RabbitMqSourceSteps(ScenarioContext scenarioContext) => _scenarioContext = scenarioContext;
 
         [BeforeFeature("RabbitMqSource")]
-        public static void SetupForSystem()
+        public static void SetupForSystem(FeatureContext featureContext)
         {
+            _featureContext = featureContext;
             Utils.SetupResourceDictionary();
             var manageRabbitMqSourceControl = new ManageRabbitMQSourceControl();
             var mockStudioUpdateManager = new Mock<IRabbitMQSourceModel>();
@@ -39,21 +44,21 @@ namespace Warewolf.UIBindingTests.RabbitMqSource
             var manageRabbitMqSourceViewModel = new ManageRabbitMQSourceViewModel(mockStudioUpdateManager.Object, task);
             manageRabbitMqSourceControl.DataContext = manageRabbitMqSourceViewModel;
             Utils.ShowTheViewForTesting(manageRabbitMqSourceControl);
-            FeatureContext.Current.Add(Utils.ViewNameKey, manageRabbitMqSourceControl);
-            FeatureContext.Current.Add(Utils.ViewModelNameKey, manageRabbitMqSourceViewModel);
-            FeatureContext.Current.Add("updateManager", mockStudioUpdateManager);
-            FeatureContext.Current.Add("requestServiceNameViewModel", mockRequestServiceNameViewModel);
-            FeatureContext.Current.Add("externalProcessExecutor", mockExecutor);
+            _featureContext.Add(Utils.ViewNameKey, manageRabbitMqSourceControl);
+            _featureContext.Add(Utils.ViewModelNameKey, manageRabbitMqSourceViewModel);
+            _featureContext.Add("updateManager", mockStudioUpdateManager);
+            _featureContext.Add("requestServiceNameViewModel", mockRequestServiceNameViewModel);
+            _featureContext.Add("externalProcessExecutor", mockExecutor);
         }
 
         [BeforeScenario("RabbitMqSource")]
         public void SetupForRabbitMqSource()
         {
-            ScenarioContext.Current.Add(Utils.ViewNameKey, FeatureContext.Current.Get<ManageRabbitMQSourceControl>(Utils.ViewNameKey));
-            ScenarioContext.Current.Add("updateManager", FeatureContext.Current.Get<Mock<IRabbitMQSourceModel>>("updateManager"));
-            ScenarioContext.Current.Add("requestServiceNameViewModel", FeatureContext.Current.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel"));
-            ScenarioContext.Current.Add("externalProcessExecutor", FeatureContext.Current.Get<Mock<IExternalProcessExecutor>>("externalProcessExecutor"));
-            ScenarioContext.Current.Add(Utils.ViewModelNameKey, FeatureContext.Current.Get<ManageRabbitMQSourceViewModel>(Utils.ViewModelNameKey));
+            _scenarioContext.Add(Utils.ViewNameKey, _featureContext.Get<ManageRabbitMQSourceControl>(Utils.ViewNameKey));
+            _scenarioContext.Add("updateManager", _featureContext.Get<Mock<IRabbitMQSourceModel>>("updateManager"));
+            _scenarioContext.Add("requestServiceNameViewModel", _featureContext.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel"));
+            _scenarioContext.Add("externalProcessExecutor", _featureContext.Get<Mock<IExternalProcessExecutor>>("externalProcessExecutor"));
+            _scenarioContext.Add(Utils.ViewModelNameKey, _featureContext.Get<ManageRabbitMQSourceViewModel>(Utils.ViewModelNameKey));
         }
 
         [AfterScenario]
@@ -62,22 +67,22 @@ namespace Warewolf.UIBindingTests.RabbitMqSource
         [Given(@"I open New RabbitMq Source")]
         public void GivenIOpenNewRabbitMqSource()
         {
-            var manageRabbitMqSourceControl = ScenarioContext.Current.Get<ManageRabbitMQSourceControl>(Utils.ViewNameKey);
+            var manageRabbitMqSourceControl = _scenarioContext.Get<ManageRabbitMQSourceControl>(Utils.ViewNameKey);
             Assert.IsNotNull(manageRabbitMqSourceControl);
         }
 
         [Then(@"""(.*)"" tab is opened")]
         public void ThenTabIsOpened(string headerText)
         {
-            var viewModel = ScenarioContext.Current.Get<IDockAware>("viewModel");
+            var viewModel = _scenarioContext.Get<IDockAware>("viewModel");
             Assert.AreEqual(headerText, viewModel.Header);
         }
 
         [Then(@"the title is ""(.*)""")]
         public void ThenTheTitleIs(string title)
         {
-            var manageRabbitMqSourceControl = ScenarioContext.Current.Get<ManageRabbitMQSourceControl>(Utils.ViewNameKey);
-            var viewModel = ScenarioContext.Current.Get<ManageRabbitMQSourceViewModel>("viewModel");
+            var manageRabbitMqSourceControl = _scenarioContext.Get<ManageRabbitMQSourceControl>(Utils.ViewNameKey);
+            var viewModel = _scenarioContext.Get<ManageRabbitMQSourceViewModel>("viewModel");
             Assert.AreEqual(title, viewModel.HeaderText);
             Assert.AreEqual(title, manageRabbitMqSourceControl.GetHeaderText());
         }
@@ -85,14 +90,14 @@ namespace Warewolf.UIBindingTests.RabbitMqSource
         [Then(@"""(.*)"" input is ""(.*)""")]
         public void ThenInputIs(string controlName, string value)
         {
-            var manageRabbitMqSourceControl = ScenarioContext.Current.Get<ManageRabbitMQSourceControl>(Utils.ViewNameKey);
+            var manageRabbitMqSourceControl = _scenarioContext.Get<ManageRabbitMQSourceControl>(Utils.ViewNameKey);
             Assert.AreEqual(value, manageRabbitMqSourceControl.GetInputValue(controlName));
         }
 
         [Then(@"""(.*)"" is ""(.*)""")]
         public void ThenIs(string controlName, string enabledString)
         {
-            Utils.CheckControlEnabled(controlName, enabledString, ScenarioContext.Current.Get<ICheckControlEnabledView>(Utils.ViewNameKey), Utils.ViewNameKey);
+            Utils.CheckControlEnabled(controlName, enabledString, _scenarioContext.Get<ICheckControlEnabledView>(Utils.ViewNameKey), Utils.ViewNameKey);
         }
 
         [Then(@"I type Host as ""(.*)""")]
@@ -102,34 +107,34 @@ namespace Warewolf.UIBindingTests.RabbitMqSource
             {
                 _containerOps = new Depends(Depends.ContainerType.RabbitMQ);
             }
-            var manageRabbitMqSourceControl = ScenarioContext.Current.Get<ManageRabbitMQSourceControl>(Utils.ViewNameKey);
+            var manageRabbitMqSourceControl = _scenarioContext.Get<ManageRabbitMQSourceControl>(Utils.ViewNameKey);
             manageRabbitMqSourceControl.EnterHostName(hostname);
-            var viewModel = ScenarioContext.Current.Get<ManageRabbitMQSourceViewModel>("viewModel");
+            var viewModel = _scenarioContext.Get<ManageRabbitMQSourceViewModel>("viewModel");
             Assert.AreEqual(hostname, viewModel.HostName);
         }
 
         [Then(@"I type Username as ""(.*)""")]
         public void ThenITypeUsernameAs(string username)
         {
-            var manageRabbitMqSourceControl = ScenarioContext.Current.Get<ManageRabbitMQSourceControl>(Utils.ViewNameKey);
+            var manageRabbitMqSourceControl = _scenarioContext.Get<ManageRabbitMQSourceControl>(Utils.ViewNameKey);
             manageRabbitMqSourceControl.EnterUserName(username);
-            var viewModel = ScenarioContext.Current.Get<ManageRabbitMQSourceViewModel>("viewModel");
+            var viewModel = _scenarioContext.Get<ManageRabbitMQSourceViewModel>("viewModel");
             Assert.AreEqual(username, viewModel.UserName);
         }
 
         [Then(@"I type Password as ""(.*)""")]
         public void ThenITypePasswordAs(string password)
         {
-            var manageRabbitMqSourceControl = ScenarioContext.Current.Get<ManageRabbitMQSourceControl>(Utils.ViewNameKey);
+            var manageRabbitMqSourceControl = _scenarioContext.Get<ManageRabbitMQSourceControl>(Utils.ViewNameKey);
             manageRabbitMqSourceControl.EnterPassword(password);
-            var viewModel = ScenarioContext.Current.Get<ManageRabbitMQSourceViewModel>("viewModel");
+            var viewModel = _scenarioContext.Get<ManageRabbitMQSourceViewModel>("viewModel");
             Assert.AreEqual(password, viewModel.Password);
         }
 
         [When(@"I click ""(.*)""")]
         public void WhenIClick(string control)
         {
-            var manageRabbitMqSourceControl = ScenarioContext.Current.Get<ManageRabbitMQSourceControl>(Utils.ViewNameKey);
+            var manageRabbitMqSourceControl = _scenarioContext.Get<ManageRabbitMQSourceControl>(Utils.ViewNameKey);
             manageRabbitMqSourceControl.TestPublish();
         }
 
@@ -137,7 +142,7 @@ namespace Warewolf.UIBindingTests.RabbitMqSource
         [Then(@"Send is ""(.*)""")]
         public void WhenSendIs(string successString)
         {
-            var mockUpdateManager = ScenarioContext.Current.Get<Mock<IRabbitMQSourceModel>>("updateManager");
+            var mockUpdateManager = _scenarioContext.Get<Mock<IRabbitMQSourceModel>>("updateManager");
             var isSuccess = String.Equals(successString, "Successful", StringComparison.InvariantCultureIgnoreCase);
             if (isSuccess)
             {
@@ -148,24 +153,24 @@ namespace Warewolf.UIBindingTests.RabbitMqSource
                 mockUpdateManager.Setup(model => model.TestSource(It.IsAny<IRabbitMQServiceSourceDefinition>()))
                     .Throws(new WarewolfTestException(failedNoneOfTheSpecifiedEndpointsWereReachable, new Exception(failedNoneOfTheSpecifiedEndpointsWereReachable)));
             }
-            var manageRabbitMqSourceControl = ScenarioContext.Current.Get<ManageRabbitMQSourceControl>(Utils.ViewNameKey);
+            var manageRabbitMqSourceControl = _scenarioContext.Get<ManageRabbitMQSourceControl>(Utils.ViewNameKey);
             manageRabbitMqSourceControl.TestPublish();
         }
 
         [When(@"I save as ""(.*)""")]
         public void WhenISaveAs(string resourceName)
         {
-            var mockRequestServiceNameViewModel = ScenarioContext.Current.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel");
+            var mockRequestServiceNameViewModel = _scenarioContext.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel");
             mockRequestServiceNameViewModel.Setup(model => model.ResourceName).Returns(new ResourceName("", resourceName));
             mockRequestServiceNameViewModel.Setup(model => model.ShowSaveDialog()).Returns(MessageBoxResult.OK);
-            var manageRabbitMqSourceControl = ScenarioContext.Current.Get<ManageRabbitMQSourceControl>(Utils.ViewNameKey);
+            var manageRabbitMqSourceControl = _scenarioContext.Get<ManageRabbitMQSourceControl>(Utils.ViewNameKey);
             manageRabbitMqSourceControl.PerformSave();
         }
 
         [When(@"the save dialog is opened")]
         public void WhenTheSaveDialogIsOpened()
         {
-            var mockRequestServiceNameViewModel = ScenarioContext.Current.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel");
+            var mockRequestServiceNameViewModel = _scenarioContext.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel");
             mockRequestServiceNameViewModel.Verify();
         }
 
@@ -175,7 +180,7 @@ namespace Warewolf.UIBindingTests.RabbitMqSource
             errorMessage = "Exception: " + failedNoneOfTheSpecifiedEndpointsWereReachable + Environment.NewLine +
                            Environment.NewLine + "Inner Exception: " + failedNoneOfTheSpecifiedEndpointsWereReachable;
 
-            var viewModel = ScenarioContext.Current.Get<ManageRabbitMQSourceViewModel>("viewModel");
+            var viewModel = _scenarioContext.Get<ManageRabbitMQSourceViewModel>("viewModel");
             Assert.AreEqual(errorMessage, viewModel.TestErrorMessage);
         }
 
@@ -183,17 +188,17 @@ namespace Warewolf.UIBindingTests.RabbitMqSource
         public void Cleanup()
         {
             var mockExecutor = new Mock<IExternalProcessExecutor>();
-            var mockUpdateManager = ScenarioContext.Current.Get<Mock<IRabbitMQSourceModel>>("updateManager");
-            var mockRequestServiceNameViewModel = ScenarioContext.Current.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel");
+            var mockUpdateManager = _scenarioContext.Get<Mock<IRabbitMQSourceModel>>("updateManager");
+            var mockRequestServiceNameViewModel = _scenarioContext.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel");
             var task = new Task<IRequestServiceNameViewModel>(() => mockRequestServiceNameViewModel.Object);
             task.Start();
             var viewModel = new ManageRabbitMQSourceViewModel(mockUpdateManager.Object, task);
-            var manageRabbitMqSourceControl = ScenarioContext.Current.Get<ManageRabbitMQSourceControl>(Utils.ViewNameKey);
+            var manageRabbitMqSourceControl = _scenarioContext.Get<ManageRabbitMQSourceControl>(Utils.ViewNameKey);
             manageRabbitMqSourceControl.DataContext = viewModel;
-            FeatureContext.Current.Remove("viewModel");
-            FeatureContext.Current.Add("viewModel", viewModel);
-            FeatureContext.Current.Remove("externalProcessExecutor");
-            FeatureContext.Current.Add("externalProcessExecutor", mockExecutor);
+            _featureContext.Remove("viewModel");
+            _featureContext.Add("viewModel", viewModel);
+            _featureContext.Remove("externalProcessExecutor");
+            _featureContext.Add("externalProcessExecutor", mockExecutor);
 
         }
     }

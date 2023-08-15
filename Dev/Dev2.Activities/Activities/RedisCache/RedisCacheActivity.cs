@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2022 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -39,31 +39,33 @@ using System.Globalization;
 using Dev2.Data.Interfaces.Enums;
 using Warewolf.Data;
 using Warewolf.Exceptions;
+using Unlimited.Applications.BusinessDesignStudio.Activities;
+using System.Threading;
 
 namespace Dev2.Activities.RedisCache
 {
     [ToolDescriptorInfo(nameof(RedisCache), "Redis Cache", ToolType.Native, "416eb671-64df-4c82-c6f0-43e48172a799", "Dev2.Activities", "1.0.0.0", "Legacy", "Database", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Database_RedisCache")]
-    public class RedisCacheActivity : DsfBaseActivity, IEquatable<RedisCacheActivity>
+    public class RedisCacheActivity : DsfBaseActivity, IEquatable<RedisCacheActivity>, IDisposable
     {
-        string _result = "Success";
+        readonly string _result = "Success";
         private readonly ISerializer _serializer;
         private string _key;
         private IDSFDataObject _dataObject;
-        private RedisCacheBase _redisCache;
+        private IRedisCache _redisCache;
         internal readonly List<string> _messages = new List<string>();
 
 
         public RedisCacheActivity()
-            : this(Runtime.Hosting.ResourceCatalog.Instance, new ResponseManager(), null)
+            : this(Runtime.Hosting.ResourceCatalog.Instance, new ResponseManager(), null, new Dev2JsonSerializer())
         {
         }
 
-        public RedisCacheActivity(IResourceCatalog resourceCatalog, RedisCacheBase redisCache)
-            : this(resourceCatalog, new ResponseManager(), redisCache)
+        public RedisCacheActivity(IResourceCatalog resourceCatalog, IRedisCache redisCache)
+            : this(resourceCatalog, new ResponseManager(), redisCache, new Dev2JsonSerializer())
         {
         }
 
-        public RedisCacheActivity(IResourceCatalog resourceCatalog, ResponseManager responseManager, RedisCacheBase redisCache)
+        public RedisCacheActivity(IResourceCatalog resourceCatalog, ResponseManager responseManager, IRedisCache redisCache, ISerializer serializer)
         {
             ResponseManager = responseManager;
             _redisCache = redisCache;
@@ -76,7 +78,7 @@ namespace Dev2.Activities.RedisCache
                 Argument = new DelegateInArgument<string>($"explicitData_{DateTime.Now:yyyyMMddhhmmss}")
             };
 
-            _serializer = new Dev2JsonSerializer();
+            _serializer = serializer;
         }
 
         public Guid SourceId { get; set; }
@@ -111,6 +113,17 @@ namespace Dev2.Activities.RedisCache
         public static bool ShouldSerializeConnection() => false;
 
         public ActivityFunc<string, bool> ActivityFunc { get; set; }
+
+        public override IEnumerable<IDev2Activity> GetChildrenNodes()
+        {
+            var act = ActivityFunc.Handler as IDev2ActivityIOMapping;
+            if (act == null)
+            {
+                return new List<IDev2Activity>();
+            }
+            var childNodes = new List<IDev2Activity> { act };
+            return childNodes;
+        }
 
         public override IEnumerable<StateVariable> GetState()
         {
@@ -153,18 +166,28 @@ namespace Dev2.Activities.RedisCache
 
         private TimeSpan CacheTTL => TimeSpan.FromSeconds(TTL);
 
+        private SemaphoreSlim _execution = new SemaphoreSlim(1, 1);
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
-            _dataObject = dataObject;
-            _update = update;
-            base.ExecuteTool(_dataObject, update);
+            try
+            {
+                _execution.Wait();
+                
+                _dataObject = dataObject;
+                _update = update;
+                base.ExecuteTool(_dataObject, update);
+            }
+            finally
+            {
+                _execution.Release();
+            }
         }
 
         protected override List<string> PerformExecution(Dictionary<string, string> evaluatedValues)
         {
+              
             _errorsTo = new ErrorResultTO();
-
             try
             {
                 RedisSource = ResourceCatalog.GetResource<RedisSource>(GlobalConstants.ServerWorkspaceID, SourceId);
@@ -174,7 +197,7 @@ namespace Dev2.Activities.RedisCache
                     return _messages;
                 }
 
-                _redisCache = new RedisCacheImpl(RedisSource.HostName, Convert.ToInt32(RedisSource.Port), RedisSource.Password);
+                _redisCache = _redisCache ?? new RedisCacheImpl(RedisSource.HostName, Convert.ToInt32(RedisSource.Port), RedisSource.Password);
                 _innerActivity = ActivityFunc.Handler as IDev2Activity;
                 if (_innerActivity is null)
                 {
@@ -191,12 +214,33 @@ namespace Dev2.Activities.RedisCache
                 if (cachedData != null)
                 {
                     _debugOutputs.Clear();
+                    var debugItemFound = new DebugItem();
+                    AddDebugItem(new DebugItemStaticDataParams("", "Redis key { " + keyValue + " } found"), debugItemFound);
+                    _debugOutputs.Add(debugItemFound);
 
-                    var debugItem = new DebugItem();
-                    AddDebugItem(new DebugItemStaticDataParams("", "Redis key { " + keyValue + " } found"), debugItem);
-                    _debugOutputs.Add(debugItem);
+                    var isKeyExists = LoadCacheIntoEnvironment(cachedData);
+                    if (!isKeyExists)
+                    {
+                        _debugOutputs.Clear();
+                        var debugItemNotFound = new DebugItem();
+                        AddDebugItem(new DebugItemStaticDataParams("", "Redis key { " + keyValue + " } found but object is empty"), debugItemNotFound);
+                        _debugOutputs.Add(debugItemNotFound);
 
-                    LoadCacheIntoEnvironment(cachedData);
+                        try
+                        {
+                            var isRemoved = _redisCache.Remove(keyValue);
+                            if (!isRemoved)
+                            {
+                                Dev2Logger.Error(nameof(RedisCacheActivity), new Exception("Redis Cache not removing KeyValue { " + KeyValue + " }"), GlobalConstants.WarewolfError);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+
+                            Dev2Logger.Error(nameof(RedisCacheActivity), ex, GlobalConstants.WarewolfError);
+                        }
+                    }
+
                 }
                 else
                 {
@@ -228,7 +272,7 @@ namespace Dev2.Activities.RedisCache
             }
         }
 
-        private void LoadCacheIntoEnvironment(IDictionary<string, string> cachedData)
+        private bool LoadCacheIntoEnvironment(IDictionary<string, string> cachedData)
         {
             var outputs = _innerActivity.GetOutputs();
             foreach (var outputVar in outputs)
@@ -237,6 +281,10 @@ namespace Dev2.Activities.RedisCache
                 {
                     var key = outputVar;
                     var value = cachedData.Where(kvp => kvp.Key == key).Select(kvp => kvp.Value).FirstOrDefault();
+                    if (value == null)
+                    {
+                        return false;
+                    }
                     var assignValuesList = _serializer.Deserialize<List<AssignValue>>(value);
                     var counter = 1;
                     foreach (var assignValue in assignValuesList)
@@ -251,6 +299,7 @@ namespace Dev2.Activities.RedisCache
                     }
                 }
             }
+            return true;
         }
 
         private IDictionary<string, string> GetCachedOutputs(string keyValue)
@@ -260,7 +309,6 @@ namespace Dev2.Activities.RedisCache
             {
                 return null;
             }
-
             var outputs = _serializer.Deserialize<IDictionary<string, string>>(cachedData);
             return outputs;
         }
@@ -526,5 +574,19 @@ namespace Dev2.Activities.RedisCache
         }
 
         public override enFindMissingType GetFindMissingType() => enFindMissingType.RedisCache;
+
+        public void Dispose()
+        {
+            _execution.Dispose();
+            GC.SuppressFinalize(this);
+        }
+
+        public void ExecuteWait()
+        {
+            if (_execution.CurrentCount >= 1)
+            {
+                _execution.Wait();
+            }
+        }
     }
 }

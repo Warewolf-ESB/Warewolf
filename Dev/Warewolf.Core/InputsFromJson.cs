@@ -30,6 +30,10 @@ namespace Warewolf.Core
             }
             catch (JsonReaderException jre)
             {
+                Dev2Logger.Error($"Error Reading: {serializedEnv}", jre, GlobalConstants.WarewolfError);
+            }
+            catch (JsonSerializationException jre)
+            {
                 Dev2Logger.Error($"Error Deserializing: {serializedEnv}", jre, GlobalConstants.WarewolfError);
             }
 

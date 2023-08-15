@@ -103,6 +103,35 @@ namespace Warewolf.Auditing.Drivers
                 foreach (var result in results)
                 {
                     var audit = JsonConvert.DeserializeObject<Audit>(result);
+                    if (audit.ExecutionTime == null)
+                    {
+                        audit.ExecutionTime = (audit.CompletedDateTime - audit.StartDateTime).ToString();
+                    }
+                    if (audit.Status == null)
+					{
+                        var trimStart = "LogExecute";
+						if (audit.AuditType.StartsWith(trimStart))
+						{
+							audit.Status = audit.AuditType.Substring(trimStart.Length);
+						}
+						else
+						{
+							trimStart = "Log";
+							if (audit.AuditType.StartsWith(trimStart))
+							{
+								audit.Status = audit.AuditType.Substring(trimStart.Length);
+							}
+							else
+							{
+								audit.Status = audit.AuditType;
+							}
+						}
+                        var trimEnd = "State";
+                        if (audit.Status.EndsWith(trimEnd))
+                        {
+							audit.Status = audit.Status.Substring(0, audit.Status.Length - trimEnd.Length);
+						}
+                    }
                     if (audit != null)
                     {
                         yield return audit;
@@ -117,51 +146,40 @@ namespace Warewolf.Auditing.Drivers
 
         private void BuildQuery(string executionId, string startTime, string endTime, LogLevel eventLevel = LogLevel.None)
         {
-            var sb = new StringBuilder($"SELECT * FROM (SELECT json_extract(Properties, '$.Message') AS Message, Level, TimeStamp FROM Logs) ");
+            var sb = new StringBuilder($"SELECT * FROM (SELECT json_extract(Properties, '$.Data') AS Message, Level, TimeStamp FROM Logs) WHERE json_extract(Message, '$.Url') <> '' ");
 
             if (eventLevel != LogLevel.None)
             {
                 switch (eventLevel)
                 {
                     case LogLevel.Debug:
-                        sb.Append("WHERE Level = 'Debug' ");
+                        sb.Append("AND Level = 'Debug' ");
                         break;
                     case LogLevel.Info:
-                        sb.Append("WHERE Level = 'Information' ");
+                        sb.Append("AND Level = 'Information' ");
                         break;
                     case LogLevel.Warn:
-                        sb.Append("WHERE Level = 'Warning' ");
+                        sb.Append("AND Level = 'Warning' ");
                         break;
                     case LogLevel.Error:
-                        sb.Append("WHERE Level = 'Error' ");
+                        sb.Append("AND Level = 'Error' ");
                         break;
                     case LogLevel.Fatal:
-                        sb.Append("WHERE Level = 'Fatal' ");
+                        sb.Append("AND Level = 'Fatal' ");
                         break;
                     default:
                         break;
                 }
             }
 
-            if (eventLevel != LogLevel.None && !string.IsNullOrEmpty(executionId))
+            if (!string.IsNullOrEmpty(executionId))
             {
                 sb.Append("AND json_extract(Message, '$.ExecutionID') = '" + executionId + "' ");
             }
 
-            if (eventLevel == LogLevel.None && !string.IsNullOrEmpty(executionId))
-            {
-                sb.Append("WHERE json_extract(Message, '$.ExecutionID') = '" + executionId + "' ");
-            }
-
-            if ((eventLevel != LogLevel.None || !string.IsNullOrEmpty(executionId)) && !string.IsNullOrEmpty(startTime) && !string.IsNullOrEmpty(endTime))
+            if (!string.IsNullOrEmpty(startTime) && !string.IsNullOrEmpty(endTime))
             {
                 sb.Append("AND (Timestamp >= '" + startTime + "' ");
-                sb.Append("AND Timestamp <= '" + endTime + "') ");
-            }
-
-            if ((eventLevel == LogLevel.None && string.IsNullOrEmpty(executionId)) && !string.IsNullOrEmpty(startTime) && !string.IsNullOrEmpty(endTime))
-            {
-                sb.Append("WHERE (Timestamp >= '" + startTime + "' ");
                 sb.Append("AND Timestamp <= '" + endTime + "') ");
             }
 
@@ -185,7 +203,7 @@ namespace Warewolf.Auditing.Drivers
                         while (reader.Read())
                         {
                             var results = reader.GetValues();
-                            ret.Add(results.GetValues("Message")[0]); // TODO: should not just hope that the Message key exists
+                            ret.Add(results.GetValues("Message")[0]);
                         }
 
                         return ret.ToArray();

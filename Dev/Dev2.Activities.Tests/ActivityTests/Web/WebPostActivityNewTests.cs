@@ -158,7 +158,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             dataObjectMock.Setup(o => o.Environment).Returns(environment);
             dataObjectMock.Setup(o => o.EsbChannel).Returns(new Mock<IEsbChannel>().Object);
 
-            using(var service = new WebService(XmlResource.Fetch("WebService")) { RequestResponse = response })
+            using (var service = new WebService(XmlResource.Fetch("WebService")) { RequestResponse = response })
             {
                 var settings = new List<INameValue>();
                 settings.Add(new NameValue("IsManualChecked", "true"));
@@ -292,7 +292,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
 
             var settings = new List<INameValue>();
             settings.Add(new NameValue("IsManualChecked", "true"));
-            using(var service = new WebService(XmlResource.Fetch("WebService")) { RequestResponse = response })
+            using (var service = new WebService(XmlResource.Fetch("WebService")) { RequestResponse = response })
             {
                 var webPostActivityNew = new TestWebPostActivityNew
                 {
@@ -356,7 +356,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
 
             var settings = new List<INameValue>();
             settings.Add(new NameValue("IsManualChecked", "true"));
-            using(var service = new WebService(XmlResource.Fetch("WebService")) { RequestResponse = response })
+            using (var service = new WebService(XmlResource.Fetch("WebService")) { RequestResponse = response })
             {
                 var webPostActivityNew = new TestWebPostActivityNew
                 {
@@ -420,7 +420,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
 
             var settings = new List<INameValue>();
             settings.Add(new NameValue("IsManualChecked", "true"));
-            using(var service = new WebService(XmlResource.Fetch("WebService")) { RequestResponse = response })
+            using (var service = new WebService(XmlResource.Fetch("WebService")) { RequestResponse = response })
             {
                 var webPostActivityNew = new TestWebPostActivityNew
                 {
@@ -531,7 +531,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
 
             var settings = new List<INameValue>();
             settings.Add(new NameValue("IsManualChecked", "true"));
-            using(var service = new WebService(XmlResource.Fetch("WebService")) { RequestResponse = string.Empty })
+            using (var service = new WebService(XmlResource.Fetch("WebService")) { RequestResponse = string.Empty })
             {
                 var webPostActivityNew = new TestWebPostActivityNew
                 {
@@ -586,7 +586,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
 
             var settings = new List<INameValue>();
             settings.Add(new NameValue("IsFormDataChecked", "true"));
-            using(var service = new WebService(XmlResource.Fetch("WebService")) { RequestResponse = string.Empty })
+            using (var service = new WebService(XmlResource.Fetch("WebService")) { RequestResponse = string.Empty })
             {
                 var webPostActivityNew = new TestWebPostActivityNew
                 {
@@ -632,7 +632,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
                 var item4First = item4.First();
                 Assert.AreEqual(1, item4.Count);
                 Assert.AreEqual("Parameters", item4First.Label);
-                Assert.AreEqual("\nKey: testTextKey Text: testTextValue\nKey: testFileKey File Content: this can be any file type conve", item4First.Value);
+                Assert.AreEqual("\nKey: testTextKey Text: testTextValue\nKey: testFileKey File Content: this can be any file type converted to base64 string, if it ware to be pasted into this textbox File Name: testFileName.ext", item4First.Value);
             }
         }
 
@@ -658,7 +658,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
 
             var settings = new List<INameValue>();
             settings.Add(new NameValue("IsUrlEncodedChecked", "true"));
-            using(var service = new WebService(XmlResource.Fetch("WebService")) { RequestResponse = string.Empty })
+            using (var service = new WebService(XmlResource.Fetch("WebService")) { RequestResponse = string.Empty })
             {
                 var webPostActivityNew = new TestWebPostActivityNew
                 {
@@ -725,7 +725,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
 
             var settings = new List<INameValue>();
             settings.Add(new NameValue("IsFormDataChecked", "true"));
-            using(var service = new WebService(XmlResource.Fetch("WebService")) { RequestResponse = string.Empty })
+            using (var service = new WebService(XmlResource.Fetch("WebService")) { RequestResponse = string.Empty })
             {
                 var webPostActivityNew = new TestWebPostActivityNew
                 {
@@ -755,7 +755,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
                 StringAssert.Contains(item2[1].Value, "Content-Type : multipart/form-data; boundary=----------");
             }
         }
-        
+
         [TestMethod]
         [Timeout(60000)]
         [Owner("Njabulo Nxele")]
@@ -782,7 +782,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
 
             var settings = new List<INameValue>();
             settings.Add(new NameValue("IsFormDataChecked", "true"));
-            using(var service = new WebService(XmlResource.Fetch("WebService")) { RequestResponse = string.Empty })
+            using (var service = new WebService(XmlResource.Fetch("WebService")) { RequestResponse = string.Empty })
             {
                 var webPostActivityNew = new TestWebPostActivityNew
                 {
@@ -837,7 +837,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
 
             var settings = new List<INameValue>();
             settings.Add(new NameValue("IsFormDataChecked", "true"));
-            using(var service = new WebService(XmlResource.Fetch("WebService")) { RequestResponse = string.Empty })
+            using (var service = new WebService(XmlResource.Fetch("WebService")) { RequestResponse = string.Empty })
             {
                 var webPostActivityNew = new TestWebPostActivityNew
                 {
@@ -867,7 +867,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
                 StringAssert.Contains(item2[1].Value, "Content-Type : multipart/form-data; boundary=----------");
             }
         }
-        
+
         [TestMethod]
         [Timeout(60000)]
         [Owner("Njabulo Nxele")]
@@ -892,7 +892,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
 
             var settings = new List<INameValue>();
             settings.Add(new NameValue("IsFormDataChecked", "true"));
-            using(var service = new WebService(XmlResource.Fetch("WebService")) { RequestResponse = string.Empty })
+            using (var service = new WebService(XmlResource.Fetch("WebService")) { RequestResponse = string.Empty })
             {
                 var webPostActivityNew = new TestWebPostActivityNew
                 {
@@ -929,7 +929,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         [TestCategory(nameof(WebPostActivityNew))]
         public void WebPostActivityNew_Execute_ErrorResponse_ShouldSetVariables()
         {
-            using(var dependency = new Depends(Depends.ContainerType.HTTPVerbsApi))
+            using (var dependency = new Depends(Depends.ContainerType.HTTPVerbsApi))
             {
                 //------------Setup for test--------------------------
                 const string response = "{\"Message\":\"Error\"}";
@@ -950,22 +950,22 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
 
                 var settings = new List<INameValue>();
                 settings.Add(new NameValue("IsManualChecked", "true"));
-                using(var service = new WebService(XmlResource.Fetch("WebService")) { RequestResponse = response })
+                using (var service = new WebService(XmlResource.Fetch("WebService")) { RequestResponse = response })
                 {
                     var webPostActivityNew
                         = new TestWebPostActivityNew
-                    {
-                        ResourceID = InArgument<Guid>.FromValue(Guid.Empty),
-                        ResourceCatalog = mockResourceCatalog.Object,
-                        Settings = settings,
-                        Outputs = new List<IServiceOutputMapping>
+                        {
+                            ResourceID = InArgument<Guid>.FromValue(Guid.Empty),
+                            ResourceCatalog = mockResourceCatalog.Object,
+                            Settings = settings,
+                            Outputs = new List<IServiceOutputMapping>
                         {
                             new ServiceOutputMapping("Message", "[[Message]]", "")
                         },
 
-                        OutputDescription = new OutputDescription
-                        {
-                            DataSourceShapes = new List<IDataSourceShape>
+                            OutputDescription = new OutputDescription
+                            {
+                                DataSourceShapes = new List<IDataSourceShape>
                             {
                                 new DataSourceShape
                                 {
@@ -979,12 +979,12 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
                                     }
                                 }
                             }
-                        },
-                        ResponseFromWeb = response,
-                        QueryString = "Error",
-                        SourceId = Guid.Empty,
-                        Headers = new List<INameValue>()
-                    };
+                            },
+                            ResponseFromWeb = response,
+                            QueryString = "Error",
+                            SourceId = Guid.Empty,
+                            Headers = new List<INameValue>()
+                        };
 
                     //------------Execute Test---------------------------
                     webPostActivityNew
@@ -1013,7 +1013,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
 
             var settings = new List<INameValue>();
             settings.Add(new NameValue("IsManualChecked", "true"));
-            using(var service = new WebService(XmlResource.Fetch("WebService")) { RequestResponse = response })
+            using (var service = new WebService(XmlResource.Fetch("WebService")) { RequestResponse = response })
             {
                 mockDSFDataObject.Setup(o => o.Environment).Returns(environment);
                 mockDSFDataObject.Setup(o => o.EsbChannel).Returns(new Mock<IEsbChannel>().Object);
@@ -1059,7 +1059,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
 
             var errorResultTO = new ErrorResultTO();
 
-            using(var service = new WebService(XmlResource.Fetch("WebService")) { RequestResponse = response })
+            using (var service = new WebService(XmlResource.Fetch("WebService")) { RequestResponse = response })
             {
                 mockDSFDataObject.Setup(o => o.Environment).Returns(environment);
                 mockDSFDataObject.Setup(o => o.EsbChannel).Returns(new Mock<IEsbChannel>().Object);
@@ -1188,7 +1188,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
 
             var settings = new List<INameValue>();
             settings.Add(new NameValue("IsManualChecked", "true"));
-            using(var service = new WebService(XmlResource.Fetch("WebService")))
+            using (var service = new WebService(XmlResource.Fetch("WebService")))
             {
                 mockDSFDataObject.Setup(o => o.Environment).Returns(environment);
                 mockDSFDataObject.Setup(o => o.EsbChannel).Returns(new Mock<IEsbChannel>().Object);
@@ -1230,7 +1230,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
 
             var settings = new List<INameValue>();
             settings.Add(new NameValue("IsFormDataChecked", "true"));
-            using(var service = new WebService(XmlResource.Fetch("WebService")) { RequestResponse = string.Empty })
+            using (var service = new WebService(XmlResource.Fetch("WebService")) { RequestResponse = string.Empty })
             {
                 mockDSFDataObject.Setup(o => o.Environment).Returns(environment);
                 mockDSFDataObject.Setup(o => o.EsbChannel).Returns(new Mock<IEsbChannel>().Object);
@@ -1281,7 +1281,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
 
             var settings = new List<INameValue>();
             settings.Add(new NameValue("IsUrlEncodedChecked", "true"));
-            using(var service = new WebService(XmlResource.Fetch("WebService")) { RequestResponse = string.Empty })
+            using (var service = new WebService(XmlResource.Fetch("WebService")) { RequestResponse = string.Empty })
             {
                 mockDSFDataObject.Setup(o => o.Environment).Returns(environment);
                 mockDSFDataObject.Setup(o => o.EsbChannel).Returns(new Mock<IEsbChannel>().Object);
@@ -1310,6 +1310,59 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
                 Assert.AreEqual("Response", paths.First().DisplayPath);
                 Assert.AreEqual(string.Empty, paths.First().OutputExpression);
                 Assert.AreEqual(string.Empty, paths.First().SampleData);
+            }
+        }
+
+        [TestMethod]
+        [Timeout(60000)]
+        [Owner("Njabulo Nxele")]
+        [TestCategory(nameof(WebPostActivityNew))]
+        public void WebPostActivityNew_ExecutionImpl_ResponseManager_PushResponseIntoEnvironment_EscapedJsonString_ShouldSucess()
+        {
+            //-----------------------Arrange-------------------------
+            const string json = "\"{\\\"val1\\\":\\\"A\\\", \\\"val2\\\":\\\"B\\\"}\"";
+            var response = Convert.ToBase64String(json.ToBytesArray());
+            const string varName = "[[retVal]]";
+
+            var environment = new ExecutionEnvironment();
+
+            var mockEsbChannel = new Mock<IEsbChannel>();
+            var mockDSFDataObject = new Mock<IDSFDataObject>();
+            var mockExecutionEnvironment = new Mock<IExecutionEnvironment>();
+
+            var errorResultTO = new ErrorResultTO();
+
+            using (var service = new WebService(XmlResource.Fetch("WebService")) { RequestResponse = response })
+            {
+                mockDSFDataObject.Setup(o => o.Environment).Returns(environment);
+                mockDSFDataObject.Setup(o => o.EsbChannel).Returns(new Mock<IEsbChannel>().Object);
+
+                var settings = new List<INameValue>();
+                settings.Add(new NameValue("IsManualChecked", "true"));
+                var dsfWebPostActivity = new TestWebPostActivityNew
+                {
+                    ResourceCatalog = new Mock<IResourceCatalog>().Object,
+                    OutputDescription = service.GetOutputDescription(),
+                    ResourceID = InArgument<Guid>.FromValue(Guid.Empty),
+                    QueryString = "test Query",
+                    Headers = new List<INameValue>(),
+                    ResponseFromWeb = response,
+                    IsObject = false,
+                    ObjectName = varName,
+                    Outputs = new List<IServiceOutputMapping>
+                    {
+                        new ServiceOutputMapping("retVal", varName, "")
+                    },
+                    Settings = settings
+                };
+                //-----------------------Act-----------------------------
+                dsfWebPostActivity.TestExecutionImpl(mockEsbChannel.Object, mockDSFDataObject.Object, "Test Inputs", "Test Outputs", out errorResultTO, 0);
+                //-----------------------Assert--------------------------
+                Assert.IsFalse(errorResultTO.HasErrors());
+
+
+                var retVal = ExecutionEnvironment.WarewolfEvalResultToString(environment.Eval("[[retVal]]", 0));
+                Assert.AreEqual("\"{\\\"val1\\\":\\\"A\\\", \\\"val2\\\":\\\"B\\\"}\"", retVal);
             }
         }
     }
@@ -1345,7 +1398,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             QueryRes = webPostOptions.Query;
             FormDataParametersValue = webPostOptions.Parameters;
             PostValue = webPostOptions.PostData;
-            
+
             if (!string.IsNullOrWhiteSpace(HasErrorMessage))
             {
                 base._errorsTo = new ErrorResultTO();

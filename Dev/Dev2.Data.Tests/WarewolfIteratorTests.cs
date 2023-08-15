@@ -140,7 +140,7 @@ namespace Dev2.Data.Tests
             var listResult = CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(DataStorage.WarewolfAtom.Nothing);
             var atomIterator = new WarewolfIterator(listResult);
             Assert.IsNotNull(atomIterator);
-            var privateObj = new PrivateObject(atomIterator);
+            var privateObj = new Warewolf.Testing.PrivateObject(atomIterator);
             var maxVal = (int) privateObj.GetField("_maxValue");
             Assert.IsNotNull(maxVal);
             var length = atomIterator.GetLength();
@@ -155,7 +155,7 @@ namespace Dev2.Data.Tests
             var listResult = CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(DataStorage.WarewolfAtom.Nothing);
             var atomIterator = new WarewolfIterator(listResult);
             Assert.IsNotNull(atomIterator);
-            var privateObj = new PrivateObject(atomIterator);
+            var privateObj = new Warewolf.Testing.PrivateObject(atomIterator);
             var assigns = new List<IAssignValue>
              {
                  new AssignValue("[[rec(25).a]]", "25"),

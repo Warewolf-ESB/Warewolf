@@ -77,9 +77,9 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             mockServiceInputViewModel.SetupAllProperties();
             var sqlServerDesignerViewModel = new SqlServerDatabaseDesignerViewModel(modelItem, mockDbServiceModel.Object, new SynchronousAsyncWorker(), new ViewPropertyBuilder());
 
-            ScenarioContext.Current.Add("viewModel", sqlServerDesignerViewModel);
-            ScenarioContext.Current.Add("mockServiceInputViewModel", mockServiceInputViewModel);
-            ScenarioContext.Current.Add("mockDbServiceModel", mockDbServiceModel);
+            _scenarioContext.Add("viewModel", sqlServerDesignerViewModel);
+            _scenarioContext.Add("mockServiceInputViewModel", mockServiceInputViewModel);
+            _scenarioContext.Add("mockDbServiceModel", mockDbServiceModel);
         }
 
         [When(@"Source is changed from to ""(.*)""")]
@@ -310,9 +310,9 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             mockServiceInputViewModel.SetupAllProperties();
             var sqlServerDesignerViewModel = new SqlServerDatabaseDesignerViewModel(modelItem, mockDbServiceModel.Object, new SynchronousAsyncWorker(), new ViewPropertyBuilder());
 
-            ScenarioContext.Current.Add("viewModel", sqlServerDesignerViewModel);
-            ScenarioContext.Current.Add("mockServiceInputViewModel", mockServiceInputViewModel);
-            ScenarioContext.Current.Add("mockDbServiceModel", mockDbServiceModel);
+            _scenarioContext.Add("viewModel", sqlServerDesignerViewModel);
+            _scenarioContext.Add("mockServiceInputViewModel", mockServiceInputViewModel);
+            _scenarioContext.Add("mockDbServiceModel", mockDbServiceModel);
         }
 
         [Given(@"Sql Server Source is ""(.*)""")]
@@ -483,7 +483,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             var dbSources = new ObservableCollection<IDbSource> { _testingDbSource, _sqlsource };
             mockDbServiceModel.Setup(model => model.RetrieveSources()).Returns(dbSources);
 
-            var privateObject = new PrivateObject(sqlServerActivity);
+            var privateObject = new Warewolf.Testing.PrivateObject(sqlServerActivity);
 
             mockDbServiceModel.Setup(model => model.GetActions(It.IsAny<IDbSource>())).Returns(new List<IDbAction> { _getCountriesAction, _importOrderAction });
             mockServiceInputViewModel.SetupAllProperties();

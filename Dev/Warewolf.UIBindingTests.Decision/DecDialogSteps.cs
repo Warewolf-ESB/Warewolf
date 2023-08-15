@@ -17,21 +17,27 @@ namespace Warewolf.UIBindingTests.Decision
     [Binding]
     public sealed class DecDialogSteps
     {
+        static FeatureContext _featureContext;
+        ScenarioContext _scenarioContext;
+
+        public DecDialogSteps(ScenarioContext scenarioContext) => _scenarioContext = scenarioContext;
+        
         [BeforeFeature()]
-        public static void SetupForSystem()
+        public static void SetupForSystem(FeatureContext featureContext)
         {
+            _featureContext = featureContext;
             Utils.SetupResourceDictionaryActivities();
             var tos = new List<DecisionTO>();
-            FeatureContext.Current["Tos"] = tos;
+            _featureContext["Tos"] = tos;
             var stack = new Dev2DecisionStack();
             var mi = CreateModelItem(tos);
-            FeatureContext.Current["modelItem"] = mi;
+            _featureContext["modelItem"] = mi;
             var mockView = new Mock<IView>();
 
-            FeatureContext.Current.Add("view", mockView.Object);
+            _featureContext.Add("view", mockView.Object);
             
             var vm = new DecisionDesignerViewModel(mi);
-            FeatureContext.Current["viewModel"] = vm;
+            _featureContext["viewModel"] = vm;
             var dataContext = vm;
             mockView.SetupGet(view => view.DataContext).Returns(dataContext);
             Utils.ShowTheViewForTesting(mockView.Object);
@@ -41,7 +47,7 @@ namespace Warewolf.UIBindingTests.Decision
         {
             var dec = new DsfDecision();
             var modelItem = ModelItemUtils.CreateModelItem(dec);
-            FeatureContext.Current["decision"] = dec;
+            _featureContext["decision"] = dec;
             modelItem.SetProperty("DisplayName", displayName);
             return modelItem;
         }
@@ -49,10 +55,10 @@ namespace Warewolf.UIBindingTests.Decision
         [Given(@"drop a Decision tool onto the design surface")]
         public void GivenDropADecisionToolOntoTheDesignSurface()
         {
-            var view = FeatureContext.Current.Get<IView>("view");
-            ScenarioContext.Current.Add("view", view);
-            var vm = FeatureContext.Current.Get<DecisionDesignerViewModel>("viewModel");
-            ScenarioContext.Current.Add("viewModel", vm);
+            var view = _featureContext.Get<IView>("view");
+            _scenarioContext.Add("view", view);
+            var vm = _featureContext.Get<DecisionDesignerViewModel>("viewModel");
+            _scenarioContext.Add("viewModel", vm);
         }
 
         [Given(@"I have a workflow New Workflow")]
@@ -63,8 +69,8 @@ namespace Warewolf.UIBindingTests.Decision
         [Then(@"the Decision window is opened")]
         public void ThenTheDecisionWindowIsOpened()
         {
-            //var decisionDesignerViewModel = ScenarioContext.Current.Get<DecisionDesignerViewModel>("viewModel");
-            var view = ScenarioContext.Current.Get<IView>("view");
+            //var decisionDesignerViewModel = _scenarioContext.Get<DecisionDesignerViewModel>("viewModel");
+            var view = _scenarioContext.Get<IView>("view");
             Assert.IsNotNull(view);
         }
 
@@ -72,19 +78,19 @@ namespace Warewolf.UIBindingTests.Decision
         public void ThenFieldsAre(string p0, string p1)
         {
             var tuple = new Tuple<string, string>(p0, p1);
-            ScenarioContext.Current.Add("fields", tuple);
+            _scenarioContext.Add("fields", tuple);
         }
 
         [Then(@"an empty row has been added")]
         public void ThenAnEmptyRowHasBeenAdded()
         {
-            ScenarioContext.Current.Pending();
+            _scenarioContext.Pending();
         }
 
         [Then(@"the decision match variables ""(.*)""and match ""(.*)"" and to match""(.*)""")]
         public void ThenTheDecisionMatchVariablesAndMatchAndToMatch(string p0, string p1, string p2)
         {
-            var vm = (DecisionDesignerViewModel)FeatureContext.Current["viewModel"];
+            var vm = (DecisionDesignerViewModel)_featureContext["viewModel"];
             ((DecisionTO)vm.Tos[0]).MatchValue = p0;
             ((DecisionTO)vm.Tos[0]).From = p1;
             ((DecisionTO)vm.Tos[0]).To = p2;
@@ -93,14 +99,14 @@ namespace Warewolf.UIBindingTests.Decision
         [Then(@"MatchType  is ""(.*)""")]
         public void ThenMatchTypeIs(string p0)
         {
-            var vm = (DecisionDesignerViewModel)FeatureContext.Current["viewModel"];
+            var vm = (DecisionDesignerViewModel)_featureContext["viewModel"];
             ((DecisionTO)vm.Tos[0]).SearchType = p0;
         }
 
         [Then(@"the inputs are ""(.*)""")]
         public void ThenTheInputsAre(string p0)
         {
-            var vm = (DecisionDesignerViewModel)FeatureContext.Current["viewModel"];
+            var vm = (DecisionDesignerViewModel)_featureContext["viewModel"];
             var to = ((DecisionTO)vm.Tos[0]);
             var vis = p0.Split(new[] { ',' });
             switch (vis.Length)
@@ -135,51 +141,51 @@ namespace Warewolf.UIBindingTests.Decision
         [Then(@"the Decision tool window is closed")]
         public void ThenTheDecisionToolWindowIsClosed()
         {
-            var vm = (DecisionDesignerViewModel)FeatureContext.Current["viewModel"];
+            var vm = (DecisionDesignerViewModel)_featureContext["viewModel"];
             vm.Collapse();
         }
 
         [Then(@"""(.*)"" is ""(.*)""")]
         public void ThenIs(string p0, string p1)
         {
-            ScenarioContext.Current.Pending();
+            _scenarioContext.Pending();
         }
 
         [When(@"I change decision variable position ""(.*)"" to ""(.*)""")]
         public void WhenIChangeDecisionVariablePositionTo(int p0, string p1)
         {
-            ScenarioContext.Current.Pending();
+            _scenarioContext.Pending();
         }
 
         [When(@"""(.*)"" is selected")]
         public void WhenIsSelected(string p0)
         {
-            ScenarioContext.Current.Pending();
+            _scenarioContext.Pending();
         }
         [Then(@"I open the Decision tool window")]
         public void ThenIOpenTheDecisionToolWindow()
         {
-            ScenarioContext.Current.Pending();
+            _scenarioContext.Pending();
         }
         [Then(@"decision variable ""(.*)"" is not visible")]
         public void ThenDecisionVariableIsNotVisible(string p0)
         {
-            ScenarioContext.Current.Pending();
+            _scenarioContext.Pending();
         }
         [Then(@"""(.*)"" is visible in Match field")]
         public void ThenIsVisibleInMatchField(string p0)
         {
-            ScenarioContext.Current.Pending();
+            _scenarioContext.Pending();
         }
         [Then(@"""(.*)"" has a value of ""(.*)""")]
         public void ThenHasAValueOf(string p0, string p1)
         {
-            ScenarioContext.Current.Pending();
+            _scenarioContext.Pending();
         }
         [Given(@"a decision variable ""(.*)"" value ""(.*)""")]
         public void GivenADecisionVariableValue(string p0, string p1)
         {
-            var vm = (DecisionDesignerViewModel)FeatureContext.Current["viewModel"];
+            var vm = (DecisionDesignerViewModel)_featureContext["viewModel"];
             vm.ExpressionText = p0;
             vm.DisplayText = p1;
         }
@@ -187,25 +193,25 @@ namespace Warewolf.UIBindingTests.Decision
         [Given(@"Match Type equals ""(.*)""")]
         public void GivenMatchTypeEquals(string p0)
         {
-            ScenarioContext.Current.Pending();
+            _scenarioContext.Pending();
         }
 
         [Given(@"""(.*)"" is selected")]
         public void GivenIsSelected(string p0)
         {
-            ScenarioContext.Current.Pending();
+            _scenarioContext.Pending();
         }
 
         [Given(@"the Decision window is opened")]
         public void GivenTheDecisionWindowIsOpened()
         {
-            ScenarioContext.Current.Pending();
+            _scenarioContext.Pending();
         }
 
         [Given(@"I select the ""(.*)"" menu")]
         public void GivenISelectTheMenu(string p0)
         {
-            ScenarioContext.Current.Pending();
+            _scenarioContext.Pending();
         }
 
     }

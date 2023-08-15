@@ -589,7 +589,7 @@ The window will be reloaded when you click OK.</value>
 Please contact your Windows System Administrator.</value>
   </data>
   <data name="SchedulerExecutePermissionError" xml:space="preserve">
-    <value>This Workflow requires that you have Execute permission on the '{0}' Workflow. 
+    <value>This Workflow requires that you have Execute permission on the '{0}' Workflow.
 Please contact your Warewolf System Administrator.</value>
   </data>
   <data name="SchedulerInvalidCharactersError" xml:space="preserve">
@@ -635,6 +635,9 @@ Please note that tabs are fully supported at runtime, in variables and when read
   </data>
   <data name="RevulyticsSdkError" xml:space="preserve">
     <value>Revulytics Sdk Error</value>
+  </data>
+  <data name="CommentDropNotAllowedMessage" xml:space="preserve">
+    <value>The Comment tool cannot be dropped onto this tool.</value>
   </data>
   <data name="WarewolfUnRegisteredError" xml:space="preserve">
     <value>Warewolf is not registered. To start a trial version, please click 'Yes'.</value>

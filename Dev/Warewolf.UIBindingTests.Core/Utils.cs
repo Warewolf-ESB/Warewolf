@@ -103,15 +103,15 @@ namespace Warewolf.UIBindingTests.Core
             app.Resources.MergedDictionaries.Add(themeDictionary);
         }
 
-        public static T GetViewModel<T>()
+        public static T GetViewModel<T>(ScenarioContext scenarioContext)
         {
-            var viewModel = ScenarioContext.Current.Get<T>(ViewModelNameKey);
+            var viewModel = scenarioContext.Get<T>(ViewModelNameKey);
             return viewModel;
         }
 
-        public static T GetView<T>()
+        public static T GetView<T>(ScenarioContext scenarioContext)
         {
-            var view = ScenarioContext.Current.Get<T>(ViewNameKey);
+            var view = scenarioContext.Get<T>(ViewNameKey);
             return view;
         }
 

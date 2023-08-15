@@ -156,7 +156,7 @@ namespace Dev2.Runtime.ServiceModel
         }
 
         // POST: Service/PluginServices/MethodsWithReturns
-        public ServiceMethodList MethodsWithReturns(PluginService service, Guid workspaceId, Guid dataListId)
+        public ServiceMethodList MethodsWithReturns(PluginService service)
         {
             var result = new ServiceMethodList();
             try

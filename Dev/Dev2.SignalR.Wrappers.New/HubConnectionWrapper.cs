@@ -340,7 +340,9 @@ namespace Dev2.SignalR.Wrappers.New
             {
                 if((_threadWorker.ThreadState & ThreadState.Suspended) != 0)
                 {
+#pragma warning disable CS0618 // Type or member is obsolete
                     _threadWorker.Resume();
+#pragma warning restore CS0618 // Type or member is obsolete
                 }
                 else if((_threadWorker.ThreadState & ThreadState.Unstarted) != 0)
                 {
@@ -360,7 +362,9 @@ namespace Dev2.SignalR.Wrappers.New
             internal void Suspend()
             {
                 HubConnection.Stop(TimeSpan.Zero);
+#pragma warning disable CS0618 // Type or member is obsolete
                 _threadWorker.Suspend();
+#pragma warning restore CS0618 // Type or member is obsolete
             }
         }
     }

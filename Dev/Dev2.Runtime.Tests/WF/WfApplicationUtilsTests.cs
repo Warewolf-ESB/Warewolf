@@ -39,7 +39,7 @@ namespace Dev2.Tests.Runtime.WF
         {
             //---------------Set up test pack-------------------
             var wfApplicationUtils = new WfApplicationUtils();
-            var privateObject = new PrivateObject(wfApplicationUtils);
+            var privateObject = new Warewolf.Testing.PrivateObject(wfApplicationUtils);
             var objMock = new Mock<IDSFDataObject>();
             IList<IDev2Definition> definitions = new List<IDev2Definition>
             {
@@ -62,7 +62,7 @@ namespace Dev2.Tests.Runtime.WF
         {
             //---------------Set up test pack-------------------
             var wfApplicationUtils = new WfApplicationUtils();
-            var privateObject = new PrivateObject(wfApplicationUtils);
+            var privateObject = new Warewolf.Testing.PrivateObject(wfApplicationUtils);
             var objMock = new Mock<IDSFDataObject>();
             IList<IDev2Definition> definitions = new List<IDev2Definition>
             {
@@ -85,7 +85,7 @@ namespace Dev2.Tests.Runtime.WF
         {
             //---------------Set up test pack-------------------
             var wfApplicationUtils = new WfApplicationUtils();
-            var privateObject = new PrivateObject(wfApplicationUtils);
+            var privateObject = new Warewolf.Testing.PrivateObject(wfApplicationUtils);
             var objMock = new Mock<IDSFDataObject>();
             IList<IDev2Definition> definitions = new List<IDev2Definition>
             {
@@ -109,7 +109,7 @@ namespace Dev2.Tests.Runtime.WF
         {
             //---------------Set up test pack-------------------
             var wfApplicationUtils = new WfApplicationUtils();
-            var privateObject = new PrivateObject(wfApplicationUtils);
+            var privateObject = new Warewolf.Testing.PrivateObject(wfApplicationUtils);
             var objMock = new Mock<IDSFDataObject>();
             IList<IDev2Definition> definitions = new List<IDev2Definition>
             {
@@ -147,7 +147,7 @@ namespace Dev2.Tests.Runtime.WF
             var errorResultTO = new ErrorResultTO();
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            var privateObject = new PrivateObject(wfApplicationUtils);
+            var privateObject = new Warewolf.Testing.PrivateObject(wfApplicationUtils);
             var debugItems = privateObject.Invoke("GetDebugValues", definitions, mockDSFDataObject.Object, errorResultTO) as List<DebugItem>;
             //---------------Test Result -----------------------
             Assert.IsNotNull(debugItems);
@@ -178,7 +178,7 @@ namespace Dev2.Tests.Runtime.WF
             var errorResultTO = new ErrorResultTO();
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            var privateObject = new PrivateObject(wfApplicationUtils);
+            var privateObject = new Warewolf.Testing.PrivateObject(wfApplicationUtils);
             var debugItems = privateObject.Invoke("GetDebugValues", definitions, mockDSFDataObject.Object, errorResultTO) as List<DebugItem>;
             //---------------Test Result -----------------------
             Assert.IsNotNull(debugItems);
@@ -194,7 +194,7 @@ namespace Dev2.Tests.Runtime.WF
         {
             //---------------Set up test pack-------------------
             var wfApplicationUtils = new WfApplicationUtils();
-            var privateObject = new PrivateObject(wfApplicationUtils);
+            var privateObject = new Warewolf.Testing.PrivateObject(wfApplicationUtils);
             var catLog = new Mock<IResourceCatalog>();
             catLog.Setup(catalog => catalog.GetResource(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(default(IResource));
             privateObject.SetField("_lazyCat", catLog.Object);
@@ -213,7 +213,7 @@ namespace Dev2.Tests.Runtime.WF
         {
             //---------------Set up test pack-------------------
             var wfApplicationUtils = new WfApplicationUtils();
-            var privateObject = new PrivateObject(wfApplicationUtils);
+            var privateObject = new Warewolf.Testing.PrivateObject(wfApplicationUtils);
             var catLog = new Mock<IResourceCatalog>();
             IResource dropBoxSource = new DropBoxSource
             {
@@ -297,7 +297,7 @@ namespace Dev2.Tests.Runtime.WF
             var mockObj = new Mock<IDSFDataObject>();
             mockObj.Setup(o => o.Environment).Returns(envMock.Object);
             mockObj.Setup(o => o.IsDebugMode()).Returns(true);
-            var privateObject = new PrivateObject(wfApplicationUtils);
+            var privateObject = new Warewolf.Testing.PrivateObject(wfApplicationUtils);
             privateObject.SetField("_getDebugDispatcher", mock.Object);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
@@ -341,7 +341,7 @@ namespace Dev2.Tests.Runtime.WF
             mockDSFDataObject.Setup(o => o.IsDebugMode()).Returns(true);
             mockDSFDataObject.Setup(o => o.ResourceID).Returns(new Guid("fa4b4786-67d9-414f-8c2e-17673fdcef48"));
 
-            var privateObject = new PrivateObject(wfApplicationUtils);
+            var privateObject = new Warewolf.Testing.PrivateObject(wfApplicationUtils);
             privateObject.SetField("_getDebugDispatcher", mockDebugDispatcherFunc.Object);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
@@ -386,7 +386,7 @@ namespace Dev2.Tests.Runtime.WF
             mockDSFDataObject.Setup(o => o.ResourceID).Returns(new Guid("fa4b4786-67d9-414f-8c2e-17673fdcef48"));
             mockDSFDataObject.Setup(o => o.Environment.HasErrors()).Returns(true);
 
-            var privateObject = new PrivateObject(wfApplicationUtils);
+            var privateObject = new Warewolf.Testing.PrivateObject(wfApplicationUtils);
             privateObject.SetField("_getDebugDispatcher", mockDebugDispatcherFunc.Object);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
@@ -424,7 +424,7 @@ namespace Dev2.Tests.Runtime.WF
             var mockObj = new Mock<IDSFDataObject>();
             mockObj.Setup(o => o.Environment).Returns(envMock.Object);
             mockObj.Setup(o => o.IsDebugMode()).Returns(true);
-            var privateObject = new PrivateObject(wfApplicationUtils);
+            var privateObject = new Warewolf.Testing.PrivateObject(wfApplicationUtils);
             privateObject.SetField("_getDebugDispatcher", mock.Object);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
@@ -471,7 +471,7 @@ namespace Dev2.Tests.Runtime.WF
             var mockObj = new Mock<IDSFDataObject>();
             mockObj.Setup(o => o.Environment).Returns(envMock.Object);
             mockObj.Setup(o => o.IsDebugMode()).Returns(true);
-            var privateObject = new PrivateObject(wfApplicationUtils);
+            var privateObject = new Warewolf.Testing.PrivateObject(wfApplicationUtils);
             privateObject.SetField("_getDebugDispatcher", mock.Object);
             privateObject.SetField("_lazyCat", catLog.Object);
             //---------------Assert Precondition----------------

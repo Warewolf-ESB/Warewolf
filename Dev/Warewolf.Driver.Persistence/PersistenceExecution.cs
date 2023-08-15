@@ -27,7 +27,7 @@ namespace Warewolf.Driver.Persistence
         [ExcludeFromCodeCoverage]
         public PersistenceExecution()
         {
-
+            _persistenceScheduler = GetScheduler();
         }
         public PersistenceExecution(IPersistenceScheduler persistenceScheduler)
         {

@@ -507,7 +507,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Setup for test--------------------------
             _envConnection.Setup(model => model.IsLocalHost).Returns(false);
             var server = new Server(Guid.Empty, _envConnection.Object);
-            var privateObj = new PrivateObject(server);
+            var privateObj = new Warewolf.Testing.PrivateObject(server);
             var info = new Dictionary<string, string>();
             info.Add("information", "value for inforamtion");
             privateObj.SetField("_serverInformation", info);
@@ -523,7 +523,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Setup for test--------------------------
             _envConnection.Setup(model => model.IsLocalHost).Returns(false);
             var server = new Server(Guid.Empty, _envConnection.Object);
-            var privateObj = new PrivateObject(server);
+            var privateObj = new Warewolf.Testing.PrivateObject(server);
             privateObj.SetField("_version", "0.0.0.1");
             var version = server.GetServerVersion();
             Assert.IsNotNull(version);

@@ -23,17 +23,9 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Read_Folder
     [Binding]
     public class ReadFolderSteps : FileToolsBase
     {
-        readonly ScenarioContext scenarioContext;
-
         public ReadFolderSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
         {
-            if (scenarioContext == null)
-            {
-                throw new ArgumentNullException("scenarioContext");
-            }
-
-            this.scenarioContext = scenarioContext;
         }
 
         [Given(@"Read is ""(.*)""")]

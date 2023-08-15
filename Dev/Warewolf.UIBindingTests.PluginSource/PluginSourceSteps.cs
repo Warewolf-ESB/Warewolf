@@ -24,10 +24,15 @@ namespace Warewolf.UIBindingTests.PluginSource
     {
         static DllListing _dllListingForGac;
         static DllListing _dllListingForFile;
+        static FeatureContext _featureContext;
+        ScenarioContext _scenarioContext;
+
+        public PluginSourceSteps(ScenarioContext scenarioContext) => _scenarioContext = scenarioContext;
 
         [BeforeFeature("PluginSource")]
-        public static void SetupForSystem()
+        public static void SetupForSystem(FeatureContext featureContext)
         {
+            _featureContext = featureContext;
             Utils.SetupResourceDictionary();
             var sourceControl = new ManagePluginSourceControl();
             var pluginSourceModel = new Mock<IManagePluginSourceModel>();
@@ -48,13 +53,13 @@ namespace Warewolf.UIBindingTests.PluginSource
             var viewModel = new ManagePluginSourceViewModel(pluginSourceModel.Object, task, mockEventAggregator.Object, new SynchronousAsyncWorker());
             sourceControl.DataContext = viewModel;
             Utils.ShowTheViewForTesting(sourceControl);
-            FeatureContext.Current.Add(Utils.ViewNameKey, sourceControl);
-            FeatureContext.Current.Add(Utils.ViewModelNameKey, viewModel);
-            FeatureContext.Current.Add("updateManager", pluginSourceModel);
-            FeatureContext.Current.Add("requestServiceNameViewModel", mockRequestServiceNameViewModel);
-            FeatureContext.Current.Add("externalProcessExecutor", mockExecutor);
-            FeatureContext.Current.Add("eventAggregator", mockEventAggregator);
-            FeatureContext.Current.Add("synchronousAsyncWorker", mockSynchronousAsyncWorker);
+            _featureContext.Add(Utils.ViewNameKey, sourceControl);
+            _featureContext.Add(Utils.ViewModelNameKey, viewModel);
+            _featureContext.Add("updateManager", pluginSourceModel);
+            _featureContext.Add("requestServiceNameViewModel", mockRequestServiceNameViewModel);
+            _featureContext.Add("externalProcessExecutor", mockExecutor);
+            _featureContext.Add("eventAggregator", mockEventAggregator);
+            _featureContext.Add("synchronousAsyncWorker", mockSynchronousAsyncWorker);
         }
 
         static IList<IFileListing> BuildBaseListing()
@@ -155,32 +160,32 @@ namespace Warewolf.UIBindingTests.PluginSource
         [BeforeScenario("PluginSource")]
         public void SetupForPluginSource()
         {
-            ScenarioContext.Current.Add(Utils.ViewNameKey, FeatureContext.Current.Get<ManagePluginSourceControl>(Utils.ViewNameKey));
-            ScenarioContext.Current.Add("updateManager", FeatureContext.Current.Get<Mock<IManagePluginSourceModel>>("updateManager"));
-            ScenarioContext.Current.Add("requestServiceNameViewModel", FeatureContext.Current.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel"));
-            ScenarioContext.Current.Add(Utils.ViewModelNameKey, FeatureContext.Current.Get<ManagePluginSourceViewModel>(Utils.ViewModelNameKey));
+            _scenarioContext.Add(Utils.ViewNameKey, _featureContext.Get<ManagePluginSourceControl>(Utils.ViewNameKey));
+            _scenarioContext.Add("updateManager", _featureContext.Get<Mock<IManagePluginSourceModel>>("updateManager"));
+            _scenarioContext.Add("requestServiceNameViewModel", _featureContext.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel"));
+            _scenarioContext.Add(Utils.ViewModelNameKey, _featureContext.Get<ManagePluginSourceViewModel>(Utils.ViewModelNameKey));
         }
 
         [Given(@"I open New Plugin Source")]
         [When(@"I open New Plugin Source")]
         public void GivenIOpenNewPluginSource()
         {
-            var sourceControl = ScenarioContext.Current.Get<ManagePluginSourceControl>(Utils.ViewNameKey);
+            var sourceControl = _scenarioContext.Get<ManagePluginSourceControl>(Utils.ViewNameKey);
             Assert.IsNotNull(sourceControl);
         }
 
         [Then(@"""(.*)"" tab is opened")]
         public void ThenTabIsOpened(string headerText)
         {
-            var viewModel = ScenarioContext.Current.Get<IDockAware>("viewModel");
+            var viewModel = _scenarioContext.Get<IDockAware>("viewModel");
             Assert.AreEqual(headerText, viewModel.Header);
         }
 
         [Then(@"title is ""(.*)""")]
         public void ThenTitleIs(string title)
         {
-            var sourceControl = ScenarioContext.Current.Get<ManagePluginSourceControl>(Utils.ViewNameKey);
-            var viewModel = ScenarioContext.Current.Get<ManagePluginSourceViewModel>("viewModel");
+            var sourceControl = _scenarioContext.Get<ManagePluginSourceControl>(Utils.ViewNameKey);
+            var viewModel = _scenarioContext.Get<ManagePluginSourceViewModel>("viewModel");
             Assert.AreEqual(title, viewModel.HeaderText);
             Assert.AreEqual(title, sourceControl.GetHeaderText());
         }
@@ -190,13 +195,13 @@ namespace Warewolf.UIBindingTests.PluginSource
         [Then(@"""(.*)"" is ""(.*)""")]
         public void GivenIs(string controlName, string enabledString)
         {
-            Utils.CheckControlEnabled(controlName, enabledString, ScenarioContext.Current.Get<ICheckControlEnabledView>(Utils.ViewNameKey), Utils.ViewNameKey);
+            Utils.CheckControlEnabled(controlName, enabledString, _scenarioContext.Get<ICheckControlEnabledView>(Utils.ViewNameKey), Utils.ViewNameKey);
         }
 
         [Then(@"ConfigFile textbox is ""(.*)""")]
         public void ThenConfigFileTextboxIs(string enabledString)
         {
-            var viewModel = ScenarioContext.Current.Get<ManagePluginSourceViewModel>("viewModel");
+            var viewModel = _scenarioContext.Get<ManagePluginSourceViewModel>("viewModel");
             switch (enabledString)
             {
                 case "Enabled":
@@ -213,7 +218,7 @@ namespace Warewolf.UIBindingTests.PluginSource
         [Then(@"ConfigFileButton button is ""(.*)""")]
         public void ThenConfigFileButtonButtonIs(string enabledString)
         {
-            var viewModel = ScenarioContext.Current.Get<ManagePluginSourceViewModel>("viewModel");
+            var viewModel = _scenarioContext.Get<ManagePluginSourceViewModel>("viewModel");
             switch (enabledString)
             {
                 case "Enabled":
@@ -232,8 +237,8 @@ namespace Warewolf.UIBindingTests.PluginSource
         public void ThenITypeIn(string input, string controlName)
         {
             string assemblyNameOnViewModel = null;
-            var viewModel = ScenarioContext.Current.Get<ManagePluginSourceViewModel>("viewModel");
-            var sourceControl = ScenarioContext.Current.Get<ManagePluginSourceControl>(Utils.ViewNameKey);
+            var viewModel = _scenarioContext.Get<ManagePluginSourceViewModel>("viewModel");
+            var sourceControl = _scenarioContext.Get<ManagePluginSourceControl>(Utils.ViewNameKey);
             switch (controlName)
             {
                 case "AssemblyName":
@@ -284,7 +289,7 @@ namespace Warewolf.UIBindingTests.PluginSource
         [Then(@"""(.*)"" value is ""(.*)""")]
         public void ThenValueIs(string controlName, string assemblyName)
         {
-            var viewModel = ScenarioContext.Current.Get<ManagePluginSourceViewModel>("viewModel");
+            var viewModel = _scenarioContext.Get<ManagePluginSourceViewModel>("viewModel");
             switch (controlName)
             {
                 case "AssemblyName":
@@ -304,17 +309,17 @@ namespace Warewolf.UIBindingTests.PluginSource
         [Then(@"the save dialog is opened")]
         public void ThenTheSaveDialogIsOpened()
         {
-            var mockRequestServiceNameViewModel = ScenarioContext.Current.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel");
+            var mockRequestServiceNameViewModel = _scenarioContext.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel");
             mockRequestServiceNameViewModel.Verify();
         }
 
         [When(@"I save as ""(.*)""")]
         public void WhenISaveAs(string resourceName)
         {
-            var mockRequestServiceNameViewModel = ScenarioContext.Current.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel");
+            var mockRequestServiceNameViewModel = _scenarioContext.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel");
             mockRequestServiceNameViewModel.Setup(model => model.ResourceName).Returns(new ResourceName("", resourceName));
             mockRequestServiceNameViewModel.Setup(model => model.ShowSaveDialog()).Returns(MessageBoxResult.OK);
-            var manageWebserviceSourceControl = ScenarioContext.Current.Get<ManagePluginSourceControl>(Utils.ViewNameKey);
+            var manageWebserviceSourceControl = _scenarioContext.Get<ManagePluginSourceControl>(Utils.ViewNameKey);
             manageWebserviceSourceControl.PerformSave();
 
         }
@@ -333,18 +338,18 @@ namespace Warewolf.UIBindingTests.PluginSource
             pluginSrc.GACAssemblyName = _dllListingForGac.FullName;
             pluginSrc.FileSystemAssemblyName = _dllListingForFile.FullName;
 
-            var managePluginSourceControl = ScenarioContext.Current.Get<ManagePluginSourceControl>(Utils.ViewNameKey);
-            var mockStudioUpdateManager = FeatureContext.Current.Get<Mock<IManagePluginSourceModel>>("updateManager").Object;
-            var mockEventAggregator = FeatureContext.Current.Get<Mock<IEventAggregator>>("eventAggregator").Object;
-            var mockSynchronousAsyncWorker = FeatureContext.Current.Get<Mock<SynchronousAsyncWorker>>("synchronousAsyncWorker").Object;
+            var managePluginSourceControl = _scenarioContext.Get<ManagePluginSourceControl>(Utils.ViewNameKey);
+            var mockStudioUpdateManager = _featureContext.Get<Mock<IManagePluginSourceModel>>("updateManager").Object;
+            var mockEventAggregator = _featureContext.Get<Mock<IEventAggregator>>("eventAggregator").Object;
+            var mockSynchronousAsyncWorker = _featureContext.Get<Mock<SynchronousAsyncWorker>>("synchronousAsyncWorker").Object;
 
             try
             {
                 var managePluginSourceViewModel = new ManagePluginSourceViewModel(mockStudioUpdateManager, mockEventAggregator, pluginSrc, new SynchronousAsyncWorker());
 
                 managePluginSourceControl.DataContext = managePluginSourceViewModel;
-                ScenarioContext.Current.Remove("viewModel");
-                ScenarioContext.Current.Add("viewModel", managePluginSourceViewModel);
+                _scenarioContext.Remove("viewModel");
+                _scenarioContext.Add("viewModel", managePluginSourceViewModel);
             }
             catch (Exception)
             {
@@ -355,9 +360,9 @@ namespace Warewolf.UIBindingTests.PluginSource
         [When(@"I save Plugin source")]
         public void WhenISavePluginSource()
         {
-            var mockRequestServiceNameViewModel = ScenarioContext.Current.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel");
+            var mockRequestServiceNameViewModel = _scenarioContext.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel");
             mockRequestServiceNameViewModel.Setup(model => model.ShowSaveDialog()).Verifiable();
-            var managePluginSourceControl = ScenarioContext.Current.Get<ManagePluginSourceControl>(Utils.ViewNameKey);
+            var managePluginSourceControl = _scenarioContext.Get<ManagePluginSourceControl>(Utils.ViewNameKey);
             managePluginSourceControl.PerformSave();
         }
 
@@ -365,20 +370,20 @@ namespace Warewolf.UIBindingTests.PluginSource
         public void Cleanup()
         {
             var mockExecutor = new Mock<IExternalProcessExecutor>();
-            var mockUpdateManager = ScenarioContext.Current.Get<Mock<IManagePluginSourceModel>>("updateManager");
+            var mockUpdateManager = _scenarioContext.Get<Mock<IManagePluginSourceModel>>("updateManager");
             mockUpdateManager.Setup(model => model.GetDllListings(null)).Returns(BuildBaseListing());
-            var mockRequestServiceNameViewModel = ScenarioContext.Current.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel");
+            var mockRequestServiceNameViewModel = _scenarioContext.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel");
             var mockEventAggregator = new Mock<IEventAggregator>();
-            var mockViewModel = ScenarioContext.Current.Get<ManagePluginSourceViewModel>(Utils.ViewModelNameKey);
+            var mockViewModel = _scenarioContext.Get<ManagePluginSourceViewModel>(Utils.ViewModelNameKey);
             var task = new Task<IRequestServiceNameViewModel>(() => mockRequestServiceNameViewModel.Object);
             task.Start();
             var viewModel = new ManagePluginSourceViewModel(mockUpdateManager.Object, task, mockEventAggregator.Object, new SynchronousAsyncWorker());
-            var managePluginSourceControl = ScenarioContext.Current.Get<ManagePluginSourceControl>(Utils.ViewNameKey);
+            var managePluginSourceControl = _scenarioContext.Get<ManagePluginSourceControl>(Utils.ViewNameKey);
             managePluginSourceControl.DataContext = viewModel;
-            FeatureContext.Current.Remove("viewModel");
-            FeatureContext.Current.Add("viewModel", viewModel);
-            FeatureContext.Current.Remove("externalProcessExecutor");
-            FeatureContext.Current.Add("externalProcessExecutor", mockExecutor);
+            _featureContext.Remove("viewModel");
+            _featureContext.Add("viewModel", viewModel);
+            _featureContext.Remove("externalProcessExecutor");
+            _featureContext.Add("externalProcessExecutor", mockExecutor);
         }
     }
 }

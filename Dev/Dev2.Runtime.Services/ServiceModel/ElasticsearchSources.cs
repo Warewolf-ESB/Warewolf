@@ -85,26 +85,29 @@ namespace Dev2.Runtime.ServiceModel
             try
             {
                 var uri = new Uri(source.HostName + ":" + source.Port);  
-                var isValid = false; 
+                bool isValid; 
                 var errorMessage = "";
-                var settings = new ConnectionSettings(uri).RequestTimeout(TimeSpan.FromMinutes(2));
-                if (source.AuthenticationType == AuthenticationType.Password)
+                using (var connectionSettings = new ConnectionSettings(uri))
                 {
-                    settings.BasicAuthentication(source.Username, source.Password);
-                }
+                    var settings = connectionSettings.RequestTimeout(TimeSpan.FromMinutes(2));
+                    if (source.AuthenticationType == AuthenticationType.Password)
+                    {
+                        settings.BasicAuthentication(source.Username, source.Password);
+                    }
 
-                var client = new ElasticClient(settings);
-                var result = client.Ping();
-                isValid = result.IsValid;
-                if (!isValid)
-                {
-                    errorMessage = "could not connect to elasticsearch Instance";
+                    var client = new ElasticClient(settings);
+                    var result = client.Ping();
+                    isValid = result.IsValid;
+                    if (!isValid)
+                    {
+                        errorMessage = "could not connect to elasticsearch Instance";
+                    }
+                    return new ValidationResult
+                    {
+                        IsValid = isValid,
+                        ErrorMessage = errorMessage
+                    };
                 }
-                return new ValidationResult
-                {
-                    IsValid = isValid,
-                    ErrorMessage = errorMessage
-                };
             }
             catch (Exception e)
             {

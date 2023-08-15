@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net48</TargetFramework>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -6,11 +6,12 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <DisableImplicitFSharpCoreReference>true</DisableImplicitFSharpCoreReference>
     <OutputType>Library</OutputType>
-    <FsLexToolPath>%userprofile%\.nuget\packages\fslexyacc\10.2.0\build\fslex\netcoreapp3.1</FsLexToolPath>
-    <FsYaccToolPath>%userprofile%\.nuget\packages\fslexyacc\10.2.0\build\fsyacc\netcoreapp3.1</FsYaccToolPath>
+    <FsLexToolPath>%userprofile%\.nuget\packages\fslexyacc\11.0.1\build\fslex\net6.0</FsLexToolPath>
+    <FsYaccToolPath>%userprofile%\.nuget\packages\fslexyacc\11.0.1\build\fsyacc\net6.0</FsYaccToolPath>
     <FsLexToolExe>fslex.dll</FsLexToolExe>
     <FsYaccToolExe>fsyacc.dll</FsYaccToolExe>
     <FsLexYaccToolRunner>dotnet </FsLexYaccToolRunner>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\AssemblyCommonInfo.fs" Condition="Exists('..\AssemblyCommonInfo.fs')">
@@ -61,16 +62,16 @@
       <Version>10.2.3</Version>
     </PackageReference>
     <PackageReference Include="FsLexYacc">
-      <Version>10.2.0</Version>
+      <Version>11.0.1</Version>
     </PackageReference>
     <PackageReference Include="FsLexYacc.Runtime">
-      <Version>10.2.0</Version>
+      <Version>11.0.1</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
-      <Version>12.0.3</Version>
+      <Version>13.0.2</Version>
     </PackageReference>
     <PackageReference Include="FSharp.Core">
-      <Version>4.5.2</Version>
+      <Version>4.6.2</Version>
     </PackageReference>
   </ItemGroup>
 </Project>

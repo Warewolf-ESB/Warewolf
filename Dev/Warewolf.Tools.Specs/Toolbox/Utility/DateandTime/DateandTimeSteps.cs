@@ -25,20 +25,11 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTime
     [Binding]
     public class DateandTimeSteps : RecordSetBases
     {
-        readonly ScenarioContext scenarioContext;
-
         public DateandTimeSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
         {
-            if (scenarioContext == null)
-            {
-                throw new ArgumentNullException("scenarioContext");
-            }
-
-            this.scenarioContext = scenarioContext;
-
-            System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-ZA");
-            System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("en-ZA");
+            System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo("en-ZA");
+            System.Threading.Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-ZA");
 
             Assert.AreEqual("en-ZA", System.Threading.Thread.CurrentThread.CurrentCulture.Name);
             Assert.AreEqual("en-ZA", System.Threading.Thread.CurrentThread.CurrentUICulture.Name);

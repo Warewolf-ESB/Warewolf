@@ -91,6 +91,7 @@ namespace Dev2.Tests.Runtime.ESB
             public ICredentials Credentials { get; set; }
             public Uri RequestUri { get; set; }
             public int GetResponseCallCount { get; private set; }
+            public int Timeout { get; set; }
 
             public Stream GetRequestStream()
             {
@@ -112,6 +113,11 @@ namespace Dev2.Tests.Runtime.ESB
             {
                 GetResponseCallCount++;
                 return new TestWebResponse();
+            }
+
+            public void AddHeader(string header)
+            {
+                Headers.Add(header);
             }
         }
 

@@ -49,6 +49,7 @@
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <BootstrapperComponentsLocation>Relative</BootstrapperComponentsLocation>
+	<CodeAnalysisRuleSet>..\.sonarlint\warewolf_dotnet_frameworkcsharp.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestCertificateThumbprint>E0E1E9A356E095CC89E4164299ED65ED12690217</ManifestCertificateThumbprint>
@@ -69,7 +70,6 @@
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\Debug\</OutputPath>
     <PlatformTarget>AnyCPU</PlatformTarget>
-    <CodeAnalysisRuleSet>Dev2.Server.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>false</Prefer32Bit>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
     <Optimize>false</Optimize>
@@ -84,7 +84,6 @@
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <PlatformTarget>AnyCPU</PlatformTarget>
-    <CodeAnalysisRuleSet>Dev2.Server.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>false</Prefer32Bit>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <WarningsAsErrors>CC0091, S1226, S100, CC0044, CC0021, S1449, S1541, S1067, S3235, CC0015, S107, S2292, S1450, S105, CC0074, S1135, S101, S3776, CS0168, S2339, CC0031, S3240, CC0020, CS0108, S1694, S1481, CC0008, S2328, S2696, S1643, CS0659, CS0067, CC0030, CA2202, S3376, S1185, CS0219, S3253, S1066, CC0075, S3459, S1871, S1125, CS0649, S2737, S1858, CC0082, CC0001, S3241, S2223, S1301, S2955, S1944, CS4014, S3052, S2674, S2344, S1939, S1210, CC0033, CC0002, S3458, S3254, S3220, S2197, S1905, S1699, S1659, S1155, CS0105, CC0019, S3626, S3604, S3440, S3256, S2692, S2345, S1109, FS0058, CS1998, CS0661, CS0660, CS0162, CC0089, CC0032, CC0011, CA1001</WarningsAsErrors>
@@ -227,6 +226,7 @@
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
     <Compile Include="AssemblyLoader.cs" />
+    <Compile Include="CoverageEntryPoint.cs" />
     <Compile Include="HangfireServerMonitor.cs" />
     <Compile Include="NullProcessMonitor.cs" />
     <Compile Include="IQueueConfigLoader.cs" />
@@ -237,9 +237,6 @@
     <Compile Include="LoggingServiceMonitor.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="IServerLifecycleWorker.cs" />
-    <AdditionalFiles Include="..\SonarQube\SonarLint.xml">
-      <Visible>False</Visible>
-    </AdditionalFiles>
     <Compile Include="LoadRuntimeConfigurations.cs" />
     <Compile Include="QueueConfigLoader.cs" />
     <Compile Include="QueueProcessorMonitor.cs" />
@@ -249,7 +246,6 @@
     <Compile Include="WebServerConfiguration.cs" />
     <Compile Include="TempFileDeleter.cs" />
     <Compile Include="ServerLifeCycleWorkers\RegisterDependenciesWorker.cs" />
-    <None Include="Dev2.Server.ruleset" />
     <None Include="Dockerfile">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -429,6 +425,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <AdditionalFiles Include="..\.sonarlint\warewolf_dotnet_framework\CSharp\SonarLint.xml" Link="SonarLint.xml" />
     <Content Include="Main.ico" />
   </ItemGroup>
   <ItemGroup>
@@ -444,7 +441,10 @@
       <Version>6.15.0</Version>
     </PackageReference>
     <PackageReference Include="FsLexYacc">
-      <Version>10.2.0</Version>
+      <Version>11.0.1</Version>
+    </PackageReference>
+    <PackageReference Include="IKVM.OpenJDK.XML.WebServices">
+      <Version>7.2.4630.5</Version>
     </PackageReference>
     <PackageReference Include="log4net">
       <Version>2.0.12</Version>
@@ -465,22 +465,22 @@
       <Version>2.2.0</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Owin.Cors">
-      <Version>4.1.0</Version>
+      <Version>4.2.2</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Owin.Host.HttpListener">
-      <Version>4.1.0</Version>
+      <Version>4.2.2</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Owin.Security">
-      <Version>4.1.1</Version>
+      <Version>4.2.2</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Owin.SelfHost">
-      <Version>4.1.0</Version>
+      <Version>4.2.2</Version>
     </PackageReference>
     <PackageReference Include="MySql.Data">
       <Version>6.9.9</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
-      <Version>12.0.3</Version>
+      <Version>13.0.2</Version>
     </PackageReference>
     <PackageReference Include="Npgsql">
       <Version>3.0.5</Version>
@@ -495,14 +495,22 @@
       <Version>2.5.20</Version>
     </PackageReference>
     <PackageReference Include="TSQL.Parser">
-      <Version>1.1.1</Version>
+      <Version>2.6.0</Version>
     </PackageReference>
     <PackageReference Include="TxFileManager">
       <Version>1.3.0</Version>
     </PackageReference>
   </ItemGroup>
+  <ItemGroup Condition="'$(Configuration)' == 'Debug'">
+    <PackageReference Include="Microsoft.NET.Test.Sdk">
+      <Version>16.8.3</Version>
+    </PackageReference>
+    <PackageReference Include="MSTest.TestFramework">
+      <Version>2.1.2</Version>
+    </PackageReference>
+  </ItemGroup>
   <ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
-    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="4.7.1" />
+    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.0.0" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework'">
     <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="5.0.0" />
@@ -519,9 +527,6 @@
       if not exist "$(SolutionDir)Dev2.Server\bin\Debug\net48\win\Warewolf.COMIPC.exe" xcopy /Y "$(SolutionDir)Warewolf.COMIPC\bin\Debug\net48\win-x86\Warewolf.COMIPC.exe" "$(SolutionDir)Dev2.Server\bin\Debug\net48\win"
       if not exist "$(SolutionDir)Dev2.Server\bin\Debug\net48\win\Warewolf.COMIPC.pdb" xcopy /Y "$(SolutionDir)Warewolf.COMIPC\bin\Debug\net48\win-x86\Warewolf.COMIPC.pdb" "$(SolutionDir)Dev2.Server\bin\Debug\net48\win"
       if not exist "$(SolutionDir)Dev2.Server\bin\Debug\net48\win\Warewolf.COMIPC.config" xcopy /Y "$(SolutionDir)Warewolf.COMIPC\bin\Debug\net48\win-x86\Warewolf.COMIPC.config" "$(SolutionDir)Dev2.Server\bin\Debug\net48\win"
-      if not exist "$(SolutionDir)Dev2.Server\bin\Debug\net48\win\Trackerbird.x64.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.x64.dll" "$(SolutionDir)Dev2.Server\bin\Debug\net48\win"
-      if not exist "$(SolutionDir)Dev2.Server\bin\Debug\net48\win\Trackerbird.x86.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.x86.dll" "$(SolutionDir)Dev2.Server\bin\Debug\net48\win"
-      if not exist "$(SolutionDir)Dev2.Server\bin\Debug\net48\win\Trackerbird.Tracker.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.Tracker.dll" "$(SolutionDir)Dev2.Server\bin\Debug\net48\win"
       )
       if exist "$(SolutionDir)Dev2.Server\bin\Release\net48\win\Warewolf Server.exe" (
       echo D | xcopy /Y /E /F /D "$(SolutionDir)Resources - Release\Resources" "$(SolutionDir)Dev2.Server\bin\Release\net48\win\Resources"
@@ -529,9 +534,6 @@
       if not exist "$(SolutionDir)Dev2.Server\bin\Release\net48\win\Warewolf.COMIPC.exe" xcopy /Y "$(SolutionDir)Warewolf.COMIPC\bin\Release\net48\win-x86\Warewolf.COMIPC.exe" "$(SolutionDir)Dev2.Server\bin\Release\net48\win"
       if not exist "$(SolutionDir)Dev2.Server\bin\Release\net48\win\Warewolf.COMIPC.pdb" xcopy /Y "$(SolutionDir)Warewolf.COMIPC\bin\Release\net48\win-x86\Warewolf.COMIPC.pdb" "$(SolutionDir)Dev2.Server\bin\Release\net48\win"
       if not exist "$(SolutionDir)Dev2.Server\bin\Release\net48\win\Warewolf.COMIPC.config" xcopy /Y "$(SolutionDir)Warewolf.COMIPC\bin\Release\net48\win-x86\Warewolf.COMIPC.exe.config" "$(SolutionDir)Dev2.Server\bin\Release\net48\win"
-      if not exist "$(SolutionDir)Dev2.Server\bin\Release\net48\win\Trackerbird.x64.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.x64.dll" "$(SolutionDir)Dev2.Server\bin\Release\net48\win"
-      if not exist "$(SolutionDir)Dev2.Server\bin\Release\net48\win\Trackerbird.x86.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.x86.dll" "$(SolutionDir)Dev2.Server\bin\Release\net48\win"
-      if not exist "$(SolutionDir)Dev2.Server\bin\Release\net48\win\Trackerbird.Tracker.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.Tracker.dll" "$(SolutionDir)Dev2.Server\bin\Release\net48\win"
       )
       taskkill /f /im Warewolf.COMIPC.exe /fi "STATUS eq RUNNING"
       taskkill /f /im Warewolf.COMIPC.vshost.exe /fi "STATUS eq RUNNING"</PostBuildEvent>

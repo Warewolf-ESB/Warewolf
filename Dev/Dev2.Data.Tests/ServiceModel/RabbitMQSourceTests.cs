@@ -9,10 +9,15 @@
 */
 
 using System;
+using System.Text;
 using System.Xml.Linq;
+using Dev2.Common.Interfaces;
 using Dev2.Data.ServiceModel;
+using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using RabbitMQ.Client.Exceptions;
+using Warewolf.Studio.ViewModels;
 using Warewolf.UnitTestAttributes;
 
 namespace Dev2.Data.Tests.ServiceModel
@@ -132,6 +137,37 @@ namespace Dev2.Data.Tests.ServiceModel
             Assert.AreEqual("localhost", rabbitMqSource.HostName);
             Assert.AreEqual("warewolf", rabbitMqSource.UserName);
             Assert.AreEqual("test123", rabbitMqSource.Password);
+            Assert.AreEqual("hostyhost/", rabbitMqSource.VirtualHost);
+        }
+
+        [TestMethod]
+        [Owner("Yogesh Rajpurohit")]
+        [TestCategory(nameof(RabbitMQSource))]
+        public void RabbitMQSource_GivenXElement_WithValues_ValidatePassword_DefaultValues()
+        {
+            const string xmlString = @"<Source ID=""1a82a341-b678-4992-a25a-39cdd57198d4"" Name=""Example Rabbit MQ Source"" ResourceType=""RabbitMQSource"" IsValid=""false"" 
+                                               ConnectionString=""HostName=localhost;Port=;UserName=warewolf;Password=[>kU?{8Y3Lw%XbT&),;VirtualHost=hostyhost/"" Type=""RabbitMQSource"" ServerVersion=""1.4.1.27"" ServerID=""693ca20d-fb17-4044-985a-df3051d6bac7"">
+                                          <DisplayName>Example Rabbit MQ Source</DisplayName>
+                                          <AuthorRoles>
+                                          </AuthorRoles>
+                                          <ErrorMessages />
+                                          <TypeOf>RabbitMQSource</TypeOf>
+                                          <VersionInfo DateTimeStamp=""2017-05-26T14:21:24.3247847+02:00"" Reason="""" User=""NT AUTHORITY\SYSTEM"" VersionNumber=""3"" ResourceId=""1a82a341-b678-4992-a25a-39cdd57198d4"" VersionId=""b1a6de00-3cac-41cd-b0ed-9fac9bb61266"" />
+                                        </Source>";
+
+
+            StringBuilder sb = new StringBuilder();
+            sb.Append(xmlString);
+            StringBuilder stVals = ManageRabbitMQSourceModel.EscapeValue(sb);
+            
+
+            var xElement = XElement.Parse(stVals.ToString());
+            var rabbitMqSource = new RabbitMQSource(xElement);
+            Assert.AreEqual(nameof(RabbitMQSource), rabbitMqSource.ResourceType);
+            Assert.AreEqual(5672, rabbitMqSource.Port);
+            Assert.AreEqual("localhost", rabbitMqSource.HostName);
+            Assert.AreEqual("warewolf", rabbitMqSource.UserName);
+            Assert.AreEqual("[>kU?{8Y3Lw%XbT&),", rabbitMqSource.Password);
             Assert.AreEqual("hostyhost/", rabbitMqSource.VirtualHost);
         }
 

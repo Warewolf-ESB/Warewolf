@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2022 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -23,10 +23,14 @@ namespace Warewolf.Configuration
         public string ExecutionLogLevel{ get; set; }
         public int? LogFlushInterval { get; set; }
         
-        [Obsolete("AuditFilePath is deprecated. It will be deleted in future releases.")]
-        public string AuditFilePath { get; set; }
+        public bool IncludeEnvironmentVariable { get; set; }
+
         public bool Equals(ServerSettingsData other)
         {
+            if(other == null)
+            {
+                return false;
+            }
             var equals = WebServerPort == other.WebServerPort;
             equals &= WebServerSslPort == other.WebServerSslPort;
             equals &= string.Equals(SslCertificateName, other.SslCertificateName, StringComparison.InvariantCultureIgnoreCase);
@@ -35,7 +39,7 @@ namespace Warewolf.Configuration
             equals &= EnableDetailedLogging == other.EnableDetailedLogging;
             equals &= ExecutionLogLevel == other.ExecutionLogLevel;
             equals &= LogFlushInterval == other.LogFlushInterval;
-            equals &= AuditFilePath == other.AuditFilePath;
+            equals &= IncludeEnvironmentVariable == other.IncludeEnvironmentVariable;
             equals &= Sink == other.Sink;
             return equals;
         }

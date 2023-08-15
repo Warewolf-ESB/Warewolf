@@ -21,6 +21,8 @@ namespace Warewolf.Data
         string StepDescription { get; }
         bool MockSelected { get; }
         List<IWorkflowNode> NextNodes { get; }
+        List<IWorkflowNode> ChildNodes { get; }
+
         void Add(IWorkflowNode workflowNode);
     }
 }

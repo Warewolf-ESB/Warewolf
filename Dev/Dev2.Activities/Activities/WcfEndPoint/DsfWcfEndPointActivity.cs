@@ -92,6 +92,17 @@ namespace Dev2.Activities.WcfEndPoint
                             ? null
                             : injectVal;
 
+                        if(method.Inputs != null && method.Inputs.Count > 0)
+                        {
+                            for (int i = 0; i < method.Inputs.Count; i++)
+                            {
+                                if(method.Inputs[i].Name == param.Name && method.Inputs[i].TypeName == param.TypeName)
+                                {
+                                    method.Inputs[i].Value = param.Value;
+                                }
+                            }
+                        }
+
                         pos++;
                     }
 

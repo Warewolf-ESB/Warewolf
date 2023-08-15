@@ -34,6 +34,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         bool IsFormDataChecked { get; set; }
         bool IsManualChecked { get; set; }
         bool IsUrlEncodedChecked { get; set; }
+        int Timeout { get; set; }
     }
     
     public class WebPostOptions : IWebPostOptions
@@ -49,6 +50,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         public bool IsFormDataChecked { get; set; }
         public bool IsManualChecked { get; set; }
         public bool IsUrlEncodedChecked { get; set; }
+        public int Timeout { get; set; }
     }
     
     public class WebSource : Resource, IDisposable, IResourceSource, IWebSource

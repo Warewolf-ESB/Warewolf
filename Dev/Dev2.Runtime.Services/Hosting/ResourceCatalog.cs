@@ -19,6 +19,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
@@ -34,6 +35,7 @@ using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using Warewolf.ResourceManagement;
 using Dev2.Common.Interfaces.Wrappers;
+using Dev2.Runtime.ResourceCatalogImpl;
 using Dev2.Services.Security;
 using Warewolf.Data;
 using Warewolf.Services;
@@ -79,6 +81,25 @@ namespace Dev2.Runtime.Hosting
             _catalogPluginContainer = new ResourceCatalogPluginContainer(_serverVersionRepository, WorkspaceResources, managementServices);
             _catalogPluginContainer.Build(this);
         }
+        
+        public ResourceCatalog(ConcurrentDictionary<Guid, List<IResource>> resources, IServerVersionRepository serverVersionRepository,
+            ResourceCatalogPluginContainer catalogPluginContainer)
+        {
+            WorkspaceResources = resources;
+            _serverVersionRepository = serverVersionRepository;
+            _catalogPluginContainer = catalogPluginContainer;
+        }
+
+        public IServerVersionRepository GetServerVersionRepository()
+        {
+            return _serverVersionRepository;
+        }
+        
+        public ResourceCatalogPluginContainer GetCatalogPluginContainer()
+        {
+            return _catalogPluginContainer;
+        }
+
 
         public IContextualResourceCatalog NewContextualResourceCatalog(IAuthorizationService authService, Guid workspaceId)
         {
@@ -127,7 +148,6 @@ namespace Dev2.Runtime.Hosting
             }
         }
         public ConcurrentDictionary<Guid, List<IResource>> WorkspaceResources { get; private set; }
-
         public int GetResourceCount(Guid workspaceID) => _catalogPluginContainer.LoadProvider.GetResourceCount(workspaceID);
         public IResource GetResource(Guid workspaceID, string resourceName) => _catalogPluginContainer.LoadProvider.GetResource(workspaceID, resourceName, "Unknown", null);
         public IResource GetResource(Guid workspaceID, string resourceName, string resourceType, string version)
@@ -236,7 +256,15 @@ namespace Dev2.Runtime.Hosting
             }
             foreach (var resource in userServices)
             {
-                AddToActivityCache(resource);
+                try
+                {
+                    AddToActivityCache(resource);
+                }
+                catch(System.Xml.XmlException xmlEx)
+                {
+                    Dev2Logger.Error("Error reading resource definition for \"" + resource.FilePath + "\". See full error under \"Error Starting Server\":", GlobalConstants.WarewolfError);
+                    throw xmlEx;
+                }
             }
         }
 
@@ -425,6 +453,15 @@ namespace Dev2.Runtime.Hosting
             return result;
         }
 
+        public void RemoveFromResourceActivityCache(Guid workspaceID, Guid resourceId)
+        {
+            if (resourceId != Guid.Empty)
+            {
+                var resource =  GetResource(GlobalConstants.ServerWorkspaceID, resourceId);
+                RemoveFromResourceActivityCache(workspaceID, resource);
+            }
+        }
+
         public void RemoveFromResourceActivityCache(Guid workspaceID, IResource resource)
         {
             if (_parsers != null && _parsers.TryGetValue(workspaceID, out IResourceActivityCache parser) && resource != null)
@@ -436,6 +473,11 @@ namespace Dev2.Runtime.Hosting
 
         public void Dispose()
         {
+            DisposeAsync();
+        }
+
+        private async Task DisposeAsync()
+        {
             lock (_loadLock)
             {
                 WorkspaceLocks.Clear();
@@ -443,8 +485,11 @@ namespace Dev2.Runtime.Hosting
             lock (_loadLock)
             {
                 WorkspaceResources.Clear();
+                WorkspaceResources = new ConcurrentDictionary<Guid, List<IResource>>();
             }
             _parsers = new ConcurrentDictionary<Guid, IResourceActivityCache>();
+            
+            GC.SuppressFinalize(this);
         }
 
         static ConcurrentDictionary<Guid, IResourceActivityCache> _parsers = new ConcurrentDictionary<Guid, IResourceActivityCache>();
@@ -499,22 +544,44 @@ namespace Dev2.Runtime.Hosting
             {
                 var sa = service.Actions.FirstOrDefault();
                 MapServiceActionDependencies(workspaceID, sa);
-                ServiceActionRepo.Instance.AddToCache(resourceID, service);
+                
+                if(ServiceActionRepo.Instance.ReadCache(resourceID) == null)
+                    ServiceActionRepo.Instance.AddToCache(resourceID, service);
+                
                 var activity = GetActivity(sa);
                 if (parser != null)
                 {
-                    return parser.Parse(activity, resourceID);
+                    return parser.ParseWithoutCache(activity, resourceID, true);
                 }
             }
 
             return null;
         }
 
+        private bool _isReloading = false;
         public void Reload()
         {
-            LoadWorkspace(GlobalConstants.ServerWorkspaceID);
-            _parsers.TryRemove(GlobalConstants.ServerWorkspaceID, out IResourceActivityCache removedCache);
-            LoadServerActivityCache();
+            while (_isReloading)
+            {
+                Thread.Sleep(100);
+            }
+            
+            try
+            {
+                _isReloading = true;
+                LoadWorkspace(GlobalConstants.ServerWorkspaceID);
+                _parsers.TryRemove(GlobalConstants.ServerWorkspaceID, out IResourceActivityCache removedCache);
+                LoadServerActivityCache();
+            }
+            finally
+            {
+                _isReloading = false;
+            }
+        }
+
+        public void ReloadResource()
+        {
+            
         }
 
         public ResourceCatalogDuplicateResult DuplicateResource(Guid resourceId, string sourcePath, string destinationPath) => _catalogPluginContainer.DuplicateProvider.DuplicateResource(resourceId, sourcePath, destinationPath);

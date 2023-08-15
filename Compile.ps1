@@ -1,5 +1,5 @@
 Param(
-  [string]$MSBuildPath="C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\MSBuild.exe",
+  [string]$MSBuildPath="C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin\MSBuild.exe",
   [string]$Target="",
   [string]$CustomVersion="",
   [string]$NuGet="",
@@ -13,7 +13,8 @@ Param(
   [switch]$Release,
   [switch]$Web,
   [switch]$RegenerateSpecFlowFeatureFiles,
-  [switch]$InContainer
+  [switch]$InContainer,
+  [string]$GitCredential
 )
 $KnownSolutionFiles = "Dev\AcceptanceTesting.sln",
                       "Dev\UITesting.sln",
@@ -105,6 +106,9 @@ $GitCommitID = git -C "$PSScriptRoot" rev-parse HEAD
 if ($AutoVersion.IsPresent -or $CustomVersion -ne "") {
     Write-Host Writing C# and F# versioning files...
 
+    if ($GitCredential -ne "") {
+		git -C "$PSScriptRoot" remote set-url origin https://$GitCredential@gitlab.com/warewolf/warewolf
+	}
     # Get all the latest version tags from server repo.
     git -C "$PSScriptRoot" fetch --all --tags -f
 
@@ -303,7 +307,7 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
                 npm install --add-python-to-path='true' --global --production windows-build-tools
             }
             if ($OutputFolderName -eq "AcceptanceTesting" -and !($ProjectSpecificOutputs.IsPresent)) {
-                &"$NuGet" install Microsoft.TestPlatform -ExcludeVersion -NonInteractive -OutputDirectory "$PSScriptRoot\Bin\$OutputFolderName"
+                &"$NuGet" install Microsoft.TestPlatform -ExcludeVersion -NonInteractive -OutputDirectory "$PSScriptRoot\Bin\$OutputFolderName" -Version "17.2.0"
             }
             if ($ProjectSpecificOutputs.IsPresent) {
                 $OutputProperty = ""
@@ -347,6 +351,7 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
                 if (!(Test-Path "$PSScriptRoot\Bin\$OutputFolderName\_PublishedWebsites\Dev2.Web")) {
                     Copy-Item -Path "$PSScriptRoot\Dev\Dev2.Web2" "$PSScriptRoot\Bin\$OutputFolderName\_PublishedWebsites\Dev2.Web" -Force -Recurse
                 }
+                Copy-Item -Path "$PSScriptRoot\Dev\.run\Job Shortcuts" "$PSScriptRoot\Bin\$OutputFolderName\Job Shortcuts" -Force -Recurse
             }
         }
     }

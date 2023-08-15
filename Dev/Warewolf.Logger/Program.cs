@@ -13,10 +13,9 @@ using CommandLine;
 using Fleck;
 using System.Collections.Generic;
 using System.Threading;
-using Dev2.Network;
-using Warewolf.Common;
 using Warewolf.Interfaces.Auditing;
 using Warewolf.Logging;
+using Dev2.Common;
 
 namespace Warewolf.Logger
 {
@@ -81,19 +80,31 @@ namespace Warewolf.Logger
 
                     if (_context.Source != null)
                     {
-                        _writer.WriteLine("Connecting to logging server.. ");
+                        if (Config.Server.ExecutionLogLevel.ConvertToLogLevelEnum() >= Dev2.Data.Interfaces.Enums.LogLevel.INFO)
+                        {
+                            _writer.WriteLine("Connecting to logging server.. ");
+                        }
                         var logServer = _logServerFactory.New(_webSocketServerFactory, _writer, _context);
                         logServer.Start(new List<IWebSocketConnection>());
-                        _writer.WriteLine("Logging Server Started.");
+                        if (Config.Server.ExecutionLogLevel.ConvertToLogLevelEnum() >= Dev2.Data.Interfaces.Enums.LogLevel.INFO)
+                        {
+                            _writer.WriteLine("Logging Server Started.");
+                        }
                     }
                     else
                     {
-                        _writer.WriteLine("Failed to start logging server: Invalid or missing Logging Data Source.");
+                        if (Config.Server.ExecutionLogLevel.ConvertToLogLevelEnum() >= Dev2.Data.Interfaces.Enums.LogLevel.ERROR)
+                        {
+                            _writer.WriteLine("Failed to start logging server: Invalid or missing Logging Data Source.");
+                        }
                     }
                 }
                 catch (Exception ex)
                 {
-                    _writer.WriteLine($"Logging Server OnError, Error details:{ex.Message}");
+                    if (Config.Server.ExecutionLogLevel.ConvertToLogLevelEnum() >= Dev2.Data.Interfaces.Enums.LogLevel.ERROR)
+                    {
+                        _writer.WriteLine($"Logging Server OnError, Error details:{ex.Message}");
+                    }
                 }
             }
 

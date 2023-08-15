@@ -101,7 +101,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             var errors = new ErrorResultTO();
             errors.AddError("Error");
             var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object);
-            var privateObject = new PrivateObject(invoker);
+            var privateObject = new Warewolf.Testing.PrivateObject(invoker);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             privateObject.Invoke("DispatchDebugErrors", errors, obj.Object, StateType.Start);
@@ -157,7 +157,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
 
 
             var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object, executeRequest);
-            var privateObject = new PrivateObject(invoker);
+            var privateObject = new Warewolf.Testing.PrivateObject(invoker);
             privateObject.SetField("_serviceLocator", locater.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(invoker);
@@ -202,7 +202,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
 
 
             var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object, executeRequest);
-            var privateObject = new PrivateObject(invoker);
+            var privateObject = new Warewolf.Testing.PrivateObject(invoker);
             privateObject.SetField("_serviceLocator", locater.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(invoker);
@@ -250,7 +250,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
 
 
             var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object, executeRequest);
-            var privateObject = new PrivateObject(invoker);
+            var privateObject = new Warewolf.Testing.PrivateObject(invoker);
             privateObject.SetField("_serviceLocator", locater.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(invoker);
@@ -295,7 +295,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
 
 
             var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object, executeRequest);
-            var privateObject = new PrivateObject(invoker);
+            var privateObject = new Warewolf.Testing.PrivateObject(invoker);
             privateObject.SetField("_serviceLocator", locater.Object);
             privateObject.SetField("_cache", _cache);
             //---------------Assert Precondition----------------
@@ -342,7 +342,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
 
 
             var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object, executeRequest);
-            var privateObject = new PrivateObject(invoker);
+            var privateObject = new Warewolf.Testing.PrivateObject(invoker);
             privateObject.SetField("_serviceLocator", locater.Object);
             privateObject.SetField("_cache", _cache);
             //---------------Assert Precondition----------------
@@ -403,7 +403,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
 
 
             var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object, executeRequest);
-            var privateObject = new PrivateObject(invoker);
+            var privateObject = new Warewolf.Testing.PrivateObject(invoker);
             privateObject.SetField("_serviceLocator", locater.Object);
             privateObject.SetField("_cache", _cache);
             //---------------Assert Precondition----------------
@@ -450,7 +450,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
 
 
             var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object, executeRequest);
-            var privateObject = new PrivateObject(invoker);
+            var privateObject = new Warewolf.Testing.PrivateObject(invoker);
             privateObject.SetField("_serviceLocator", locater.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(invoker);
@@ -486,7 +486,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
 
 
             var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object, executeRequest);
-            var privateObject = new PrivateObject(invoker);
+            var privateObject = new Warewolf.Testing.PrivateObject(invoker);
             privateObject.SetField("_serviceLocator", locater.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(invoker);
@@ -530,7 +530,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
 
 
             var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object, executeRequest);
-            var privateObject = new PrivateObject(invoker);
+            var privateObject = new Warewolf.Testing.PrivateObject(invoker);
             privateObject.SetField("_serviceLocator", locater.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(invoker);
@@ -574,7 +574,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
 
 
             var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object, executeRequest);
-            var privateObject = new PrivateObject(invoker);
+            var privateObject = new Warewolf.Testing.PrivateObject(invoker);
             privateObject.SetField("_serviceLocator", locater.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(invoker);
@@ -612,7 +612,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
 
 
             var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object, executeRequest);
-            var privateObject = new PrivateObject(invoker);
+            var privateObject = new Warewolf.Testing.PrivateObject(invoker);
             privateObject.SetField("_serviceLocator", locater.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(invoker);
@@ -652,7 +652,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
 
 
             var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object, executeRequest);
-            var privateObject = new PrivateObject(invoker);
+            var privateObject = new Warewolf.Testing.PrivateObject(invoker);
             privateObject.SetField("_serviceLocator", locater.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(invoker);
@@ -719,7 +719,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
 
 
             var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object, executeRequest);
-            var privateObject = new PrivateObject(invoker);
+            var privateObject = new Warewolf.Testing.PrivateObject(invoker);
             privateObject.SetField("_serviceLocator", locater.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(invoker);
@@ -767,7 +767,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
 
 
             var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object, executeRequest);
-            var privateObject = new PrivateObject(invoker);
+            var privateObject = new Warewolf.Testing.PrivateObject(invoker);
             privateObject.SetField("_serviceLocator", locater.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(invoker);
@@ -818,7 +818,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
 
 
             var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object, executeRequest);
-            var privateObject = new PrivateObject(invoker);
+            var privateObject = new Warewolf.Testing.PrivateObject(invoker);
             privateObject.SetField("_serviceLocator", locater.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(invoker);
@@ -891,7 +891,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
 
 
             var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object, executeRequest);
-            var privateObject = new PrivateObject(invoker);
+            var privateObject = new Warewolf.Testing.PrivateObject(invoker);
             privateObject.SetField("_serviceLocator", locater.Object);
             privateObject.SetField("_cache", _cache);
             //---------------Assert Precondition----------------
@@ -947,7 +947,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
 
 
             var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object, executeRequest);
-            var privateObject = new PrivateObject(invoker);
+            var privateObject = new Warewolf.Testing.PrivateObject(invoker);
             privateObject.SetField("_serviceLocator", locater.Object);
             privateObject.SetField("_cache", _cache);
             //---------------Assert Precondition----------------
@@ -999,7 +999,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
 
 
             var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object, executeRequest);
-            var privateObject = new PrivateObject(invoker);
+            var privateObject = new Warewolf.Testing.PrivateObject(invoker);
             privateObject.SetField("_serviceLocator", locater.Object);
             privateObject.SetField("_cache", _cache);
             //---------------Assert Precondition----------------
@@ -1051,7 +1051,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
 
 
             var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object, executeRequest);
-            var privateObject = new PrivateObject(invoker);
+            var privateObject = new Warewolf.Testing.PrivateObject(invoker);
             privateObject.SetField("_serviceLocator", locater.Object);
             privateObject.SetField("_cache", _cache);
             //---------------Assert Precondition----------------
@@ -1106,7 +1106,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
                 Actions = new List<ServiceAction> { new ServiceAction { ActionType = enActionType.Workflow } }
             });
 
-            var privateObject = new PrivateObject(invoker);
+            var privateObject = new Warewolf.Testing.PrivateObject(invoker);
             obj.SetupGet(o => o.ResourceID).Returns(newGuid);
             privateObject.SetField("_serviceLocator", locater.Object);
             //---------------Assert Precondition----------------

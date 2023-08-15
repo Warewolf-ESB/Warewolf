@@ -145,7 +145,7 @@ namespace Dev2
                                                                    {
                                                                        "DsfAbstractFileActivity", new StringTransform
                                                                                                   {
-                                                                                                      SearchRegex = new Regex(@"&lt;([a-zA-Z0-9]+:)?(DsfFileWrite|DsfFileRead|DsfFolderRead|DsfPathCopy|DsfPathCreate|DsfPathDelete|DsfPathMove|DsfPathRename|DsfZip|DsfUnzip) .*?Password=""([^""]+)"" .*?&gt;"),
+                                                                                                      SearchRegex = new Regex(@"&lt;([a-zA-Z0-9]+:)?(FileReadWithBase64|DsfFileWrite|DsfFileRead|DsfFolderRead|DsfPathCopy|DsfPathCreate|DsfPathDelete|DsfPathMove|DsfPathRename|DsfZip|DsfUnzip) .*?Password=""([^""]+)"" .*?&gt;"),
                                                                                                       GroupNumbers = new[] { 3 },
                                                                                                       TransformFunction = DpapiWrapper.DecryptIfEncrypted
                                                                                                   }

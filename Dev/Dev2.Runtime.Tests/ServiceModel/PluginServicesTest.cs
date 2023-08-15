@@ -149,7 +149,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         public void PluginServicesMethodsWithReturnsNullArgsExpectedReturnsEmptyList()
         {
             var services = new PluginServices();
-            var result = services.MethodsWithReturns(null, Guid.Empty, Guid.Empty);
+            var result = services.MethodsWithReturns(null);
             Assert.AreEqual(0, result.Count);
         }
 
@@ -166,7 +166,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         public void PluginServicesMethodsWithReturnsWithInvalidArgsExpectedReturnsEmptyList()
         {
             var services = new PluginServices();
-            var result = services.MethodsWithReturns(new PluginService(), Guid.Empty, Guid.Empty);
+            var result = services.MethodsWithReturns(new PluginService());
             Assert.AreEqual(0, result.Count);
         }
 
@@ -194,7 +194,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             EnvironmentVariables.GetWorkspacePath(workspaceID);
 
             var services = new PluginServices();
-            var result = services.MethodsWithReturns(service, workspaceID, Guid.Empty);
+            var result = services.MethodsWithReturns(service);
 
             Assert.AreEqual(7, result.Count);
         }

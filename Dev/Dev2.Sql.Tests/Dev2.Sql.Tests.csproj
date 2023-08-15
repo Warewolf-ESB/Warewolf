@@ -60,9 +60,6 @@
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
-    <AdditionalFiles Include="..\SonarQube\SonarLint.xml">
-      <Visible>False</Visible>
-    </AdditionalFiles>
     <Compile Include="ExtensiosnTests.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="OracleServerTests.cs" />
@@ -91,6 +88,7 @@
       <Project>{2b734597-c85d-4295-9782-c722f4645ed9}</Project>
       <Name>Dev2.Sql</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Testing\Warewolf.Testing.csproj" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\WorkflowResult.xml" />
@@ -115,7 +113,7 @@
       <Version>4.5.4</Version>
     </PackageReference>
     <PackageReference Include="TSQL.Parser">
-      <Version>1.1.1</Version>
+      <Version>2.6.0</Version>
     </PackageReference>
   </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

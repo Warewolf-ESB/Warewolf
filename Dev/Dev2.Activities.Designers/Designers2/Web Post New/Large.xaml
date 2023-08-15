@@ -15,14 +15,15 @@
                                xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
                                xmlns:controls="clr-namespace:Dev2.Activities.Designers2.Core.Controls"
                                xmlns:ui1="clr-namespace:Warewolf.UI;assembly=Warewolf.UI"
+                               xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
                                MinWidth="430"
                                Width="430"
                                MinHeight="553"
-                               Height="533"
+                               Height="650"
                                MaxWidth="Infinity"
                                mc:Ignorable="d"
-                               d:DesignHeight="300"
-                               d:DesignWidth="350"
+                               d:DesignHeight="650"
+                               d:DesignWidth="500"
                                d:DataContext="{d:DesignInstance webPost:WebPostActivityViewModelNew}">
 
     <core:ActivityDesignerTemplate.Resources>
@@ -58,8 +59,8 @@
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*" MinHeight="287"/>
-                    <RowDefinition>
+                    <RowDefinition Height="*" MinHeight="350"/>
+                    <RowDefinition Height="*" MinHeight="120">
                         <RowDefinition.Style>
                             <Style>
                                 <Style.Triggers>
@@ -81,24 +82,24 @@
                 <!-- INPUTS -->
                 <Grid Grid.Row="1">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*" MinHeight="125"/>
                         <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*" MinHeight="100"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
                     <Grid Grid.Row="0">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
                         <TextBlock x:Name="HeadersLabel" Text="Headers" Grid.Column="0" Grid.Row="0" />
 
                         <controls:Dev2DataGrid x:Name="Headers"
                                    Grid.Row="1" 
+                                   Height="Auto"
                                    ItemsSource="{Binding InputArea.Headers, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                    Style="{StaticResource ActivityMappingDataGridStyle}"
-                                   Height="Auto"
                                    IsEnabled="{Binding InputArea.IsEnabled}"
                                    ColumnWidth="*"
                                    Margin="{StaticResource ControlBorderTop}">
@@ -228,7 +229,7 @@
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*" MinHeight="60"/>
                         </Grid.RowDefinitions>
 
                         <TextBlock x:Name="BodyLabel" Text="Body" Grid.Row="0" />
@@ -239,7 +240,6 @@
                                  HorizontalAlignment="Stretch"
                                  AcceptsReturn="True"
                                  Height="Auto"
-                                 MinHeight="60"
                                  IsEnabled="{Binding InputArea.IsEnabled}"
                                  VerticalContentAlignment="Top"
                                  TextWrapping="Wrap"
@@ -347,6 +347,7 @@
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
+                            <RowDefinition />
                         </Grid.RowDefinitions>
                         <TextBlock Grid.Column="0" x:Name="UrlLabel" Text="URL" />
                         <TextBlock Grid.Row="0" Grid.Column="1" x:Name="AddressLabel" Text="{Binding InputArea.RequestUrl}" TextTrimming="CharacterEllipsis" />
@@ -368,8 +369,29 @@
                                                      Target="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                             </i:Interaction.Behaviors>
                         </ui:IntellisenseTextBox>
+                        
+                        <TextBlock Grid.Column="0"  x:Name="TimeoutLabel" Grid.Row="2" Text="Timeout (Seconds)" />
+                        <xctk:IntegerUpDown Grid.Column="1" Grid.Row="2"
+                                            Margin="{StaticResource ControlBorderTop}"
+                                            ToolTip="{x:Static languages:Tooltips.RabbitMQToolTipPrefetch}"
+                                            TextAlignment="Left"
+                                            Minimum="0"
+                                            DefaultValue="600"
+                                            DisplayDefaultValueOnEmptyText="True"
+                                            ShowButtonSpinner="False"
+                                            ParsingNumberStyle="Integer"                                                      
+                                            Text="{Binding InputArea.Timeout, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                            <i:Interaction.Behaviors>
+                                <core1:HelpSetter Text="{x:Static languages:HelpText.WebServiceRequestUrlHelp}" DataContext="{Binding}" />
+                                <errors:ErrorsSetter Source="{Binding}"
+                                                     SourcePropertyName="Prefetch"
+                                                     SourcePropertyValue="{Binding InputArea.Timeout, UpdateSourceTrigger=PropertyChanged}"
+                                                     Target="{Binding}" />
+                            </i:Interaction.Behaviors>
+                        </xctk:IntegerUpDown>
+                        
                         <Button x:Name="TestInputButton"
-                                Grid.Row="2"
+                                Grid.Row="3"
                                 Grid.Column="1"
                                 Content="Generate Outputs"
                                 Width="Auto"

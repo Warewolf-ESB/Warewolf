@@ -49,7 +49,7 @@ namespace Dev2.TaskScheduler.Wrappers.Test
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("TaskShedulerWrapper_Dev2TaskServiceTest_Constructor")]
+        [TestCategory("LocalSchedulerAdmin")]
         public void TaskShedulerWrapper_Dev2TaskServiceTest_Constructor()
         {
             var service = new Dev2TaskService(new TaskServiceConvertorFactory());
@@ -58,7 +58,7 @@ namespace Dev2.TaskScheduler.Wrappers.Test
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("TaskShedulerWrapper_Dev2TaskServiceTest_PassThrough")]
+        [TestCategory("LocalSchedulerAdmin")]
         public void TaskShedulerWrapper_Dev2TaskServiceTest_PassThrough()
         {
             using (var service = new Dev2TaskService(new TaskServiceConvertorFactory()))
@@ -71,7 +71,7 @@ namespace Dev2.TaskScheduler.Wrappers.Test
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        [TestCategory("TaskShedulerWrapper_Dev2TaskServiceTest_GetUnexistingFolder")]
+        [TestCategory("LocalSchedulerAdmin")]
         public void TaskShedulerWrapper_Dev2TaskServiceTest_GetUnexistingFolder()
         {
             using (var service = new Dev2TaskService(new TaskServiceConvertorFactory()))
@@ -84,7 +84,7 @@ namespace Dev2.TaskScheduler.Wrappers.Test
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("TaskShedulerWrapper_Dev2TaskServiceTest_GetFolder")]
+        [TestCategory("LocalSchedulerAdmin")]
         public void TaskShedulerWrapper_Dev2TaskServiceTest_GetFolder()
         {
             using (var service = new Dev2TaskService(new TaskServiceConvertorFactory()))
@@ -95,7 +95,7 @@ namespace Dev2.TaskScheduler.Wrappers.Test
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("TaskShedulerWrapper_Dev2TaskServiceTest_GetTask")]
+        [TestCategory("LocalSchedulerAdmin")]
         public void TaskShedulerWrapper_Dev2TaskServiceTest_GetTask()
         {
             using (var service = new Dev2TaskService(new TaskServiceConvertorFactory()))

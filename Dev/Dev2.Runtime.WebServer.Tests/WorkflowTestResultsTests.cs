@@ -11,14 +11,49 @@
 using Dev2.Common.Interfaces;
 using Dev2.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using Warewolf.Data;
 
 namespace Dev2.Runtime.WebServer.Tests
 {
     [TestClass]
     public class WorkflowTestResultsTests
     {
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(WorkflowTestResults))]
+        public void WorkflowTestResults_CTOR_Add_TestInvalid_When_TestStep_IsNull()
+        {
+            var resourceId = Guid.NewGuid();
+            var invalid_test = new ServiceTestModelTO
+            {
+                TestName = "Invalid test",
+            };
+
+            var mockWarewolfResource = new Mock<IWarewolfResource>();
+            mockWarewolfResource.Setup(o => o.ResourceID)
+                .Returns(resourceId);
+
+            var mockTestCatalog = new Mock<ITestCatalog>();
+            mockTestCatalog.Setup(o => o.Fetch(resourceId))
+                .Returns(new List<IServiceTestModelTO> 
+                {
+                    invalid_test
+                });
+
+            var sut = new WorkflowTestResults(mockTestCatalog.Object, mockWarewolfResource.Object);
+
+            var result = sut.Results;
+
+            Assert.IsTrue(result.First().TestInvalid);
+            Assert.AreEqual(RunResult.TestInvalid, result.First().Result.RunTestResult);
+            Assert.AreEqual("Test has no selected nodes", result.First().Result.Message);
+
+        }
+
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(WorkflowTestResults))]

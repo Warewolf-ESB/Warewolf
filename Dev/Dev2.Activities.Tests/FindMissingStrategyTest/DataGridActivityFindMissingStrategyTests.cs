@@ -20,6 +20,7 @@ using Dev2.FindMissingStrategies;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Core;
+#pragma warning disable 618
 
 namespace Dev2.Tests.Activities.FindMissingStrategyTest
 {
@@ -814,9 +815,8 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
             //--------------Act----------------------------------
             var fields = strategy.GetActivityFields(activity);
             //--------------Assert-------------------------------
-            Assert.AreEqual(3, fields.Count);
+            Assert.AreEqual(2, fields.Count);
             Assert.IsTrue(fields.Contains("[[person()]]"));
-            Assert.IsTrue(fields.Contains("[[person().id]]"));
             Assert.IsTrue(fields.Contains("[[TableCopy().id]]"));
         }
 

@@ -24,23 +24,14 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTimeDifference
     [Binding]
     public class DateandTimeDifferenceSteps : RecordSetBases
     {
-        readonly ScenarioContext scenarioContext;
-
         public DateandTimeDifferenceSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
         {
-            if (scenarioContext == null)
-            {
-                throw new ArgumentNullException("scenarioContext");
-            }
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("en-ZA");
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-ZA");
 
-            this.scenarioContext = scenarioContext;
-
-            System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-ZA");
-            System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("en-ZA");
-
-            Assert.AreEqual("en-ZA", System.Threading.Thread.CurrentThread.CurrentCulture.Name);
-            Assert.AreEqual("en-ZA", System.Threading.Thread.CurrentThread.CurrentUICulture.Name);
+            Assert.AreEqual("en-ZA", Thread.CurrentThread.CurrentCulture.Name);
+            Assert.AreEqual("en-ZA", Thread.CurrentThread.CurrentUICulture.Name);
         }
 
         protected override void BuildDataList()

@@ -625,7 +625,7 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
             var textBoxTest = new IntellisenseTextBox { AllowMultipleVariables = true };
             textBoxTest.Text = "\"[[Var!]]\"";
 
-            var privateObj = new PrivateObject(textBoxTest);
+            var privateObj = new Warewolf.Testing.PrivateObject(textBoxTest);
             var results = privateObj.Invoke("LostFocusImpl");
 
             Assert.IsTrue(textBoxTest.HasError);
@@ -640,7 +640,7 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
             var textBoxTest = new IntellisenseTextBox { AllowMultipleVariables = true };
             textBoxTest.Text = "\"[[Var()!]]\"";
 
-            var privateObj = new PrivateObject(textBoxTest);
+            var privateObj = new Warewolf.Testing.PrivateObject(textBoxTest);
             var results = privateObj.Invoke("LostFocusImpl");
 
             Assert.IsTrue(textBoxTest.HasError);
@@ -655,7 +655,7 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
             var textBoxTest = new IntellisenseTextBox { FilterType = enIntellisensePartType.JsonObject };
             textBoxTest.Text = "\"[[obj!]]\"";
 
-            var privateObj = new PrivateObject(textBoxTest);
+            var privateObj = new Warewolf.Testing.PrivateObject(textBoxTest);
             var results = privateObj.Invoke("LostFocusImpl");
 
             Assert.IsTrue(textBoxTest.HasError);

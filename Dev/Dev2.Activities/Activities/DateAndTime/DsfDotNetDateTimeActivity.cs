@@ -98,7 +98,7 @@ namespace Dev2.Activities.DateAndTime
             TimeModifierAmount = 0;
             Result = string.Empty;
         }
-        
+
         protected override void OnExecute(NativeActivityContext context)
         {
             var dataObject = context.GetExtension<IDSFDataObject>();
@@ -126,8 +126,11 @@ namespace Dev2.Activities.DateAndTime
                 var hasErrors = allErrors.HasErrors();
                 if (hasErrors)
                 {
-                    var errorString = allErrors.MakeDisplayReady();
-                    dataObject.Environment.AddError(errorString);
+                    if (!this.IsErrorHandled)
+                    {
+                        var errorString = allErrors.MakeDisplayReady();
+                        dataObject.Environment.AddError(errorString);
+                    }
                     DisplayAndWriteError(dataObject,DisplayName, allErrors);
                 }
                 if (dataObject.IsDebugMode())
@@ -139,6 +142,8 @@ namespace Dev2.Activities.DateAndTime
                     DispatchDebugState(dataObject, StateType.Before, update);
                     DispatchDebugState(dataObject, StateType.After, update);
                 }
+
+                RunOnErrorSteps(dataObject, allErrors, update);
             }
         }
 
@@ -157,7 +162,13 @@ namespace Dev2.Activities.DateAndTime
         void UpdateEnvironmentAndDebugOutput(IDSFDataObject dataObject, int update, ErrorResultTO allErrors)
         {
             var colItr = new WarewolfListIterator();
-
+            bool isDateTimeEmpty = false;
+            if (string.IsNullOrEmpty(DateTime))
+            {
+                isDateTimeEmpty = true;
+                DateTime = string.IsNullOrEmpty(DateTime) ? System.DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss") : DateTime;
+            }          
+            
             var dtItr = CreateDataListEvaluateIterator(DateTime, dataObject.Environment, update);
             colItr.AddVariableToIterateOn(dtItr);
             var ifItr = CreateDataListEvaluateIterator(string.IsNullOrEmpty(InputFormat) ? GlobalConstants.Dev2DotNetDefaultDateTimeFormat : InputFormat, dataObject.Environment, update);
@@ -198,6 +209,10 @@ namespace Dev2.Activities.DateAndTime
                     AddDebugOutputItem(resDebug);
                 }
             }
+            if (isDateTimeEmpty)
+            {
+                DateTime = string.Empty;
+            }
         }
 
         void AddValidationErrors(ErrorResultTO allErrors)
@@ -223,7 +238,7 @@ namespace Dev2.Activities.DateAndTime
                 if (!string.IsNullOrEmpty(DateTime))
                 {
                     AddDebugInputItem(new DebugEvalResult(DateTime, "Input", dataObject.Environment, update));
-                }                
+                }
 
                 var dateTimePattern = string.Format("{0}", GlobalConstants.Dev2DotNetDefaultDateTimeFormat);
 

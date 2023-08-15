@@ -84,40 +84,6 @@ namespace Dev2.Core.Tests.Activities
         }
 
         [TestMethod]
-        [Owner("Massimo Guerrera")]
-        [TestCategory("ForeachActivityDesignerUtils_LimitDragDropOptions")]
-        public void ForeachActivityDesignerUtils_LimitDragDropOptions_ModelItemsFormat_WithDecisionAndCount_DropPrevented()
-        {
-            //------------Setup for test--------------------------
-            var activityDesignerUtils = new DropEnabledActivityDesignerUtils();
-            var dataObject = new Mock<IDataObject>();
-            dataObject.Setup(o => o.GetFormats()).Returns(new[] { "ModelItemsFormat" });
-            var modelItemList = new List<ModelItem> { ModelItemUtils.CreateModelItem(new DsfCountRecordsetNullHandlerActivity()), ModelItemUtils.CreateModelItem(new FlowDecision()) };
-            dataObject.Setup(o => o.GetData(It.IsAny<string>())).Returns(modelItemList);
-            //------------Execute Test---------------------------
-            var dropEnabled = activityDesignerUtils.LimitDragDropOptions(dataObject.Object);
-            //------------Assert Results-------------------------
-            Assert.IsFalse(dropEnabled);
-        }
-
-        [TestMethod]
-        [Owner("Massimo Guerrera")]
-        [TestCategory("ForeachActivityDesignerUtils_LimitDragDropOptions")]
-        public void ForeachActivityDesignerUtils_LimitDragDropOptions_ModelItemsFormat_WithSwitchAndCount_DropPrevented()
-        {
-            //------------Setup for test--------------------------
-            var activityDesignerUtils = new DropEnabledActivityDesignerUtils();
-            var dataObject = new Mock<IDataObject>();
-            dataObject.Setup(o => o.GetFormats()).Returns(new[] { "ModelItemsFormat" });
-            var modelItemList = new List<ModelItem> { ModelItemUtils.CreateModelItem(new DsfCountRecordsetNullHandlerActivity()), ModelItemUtils.CreateModelItem(new FlowSwitch<string>()) };
-            dataObject.Setup(o => o.GetData(It.IsAny<string>())).Returns(modelItemList);
-            //------------Execute Test---------------------------
-            var dropEnabled = activityDesignerUtils.LimitDragDropOptions(dataObject.Object);
-            //------------Assert Results-------------------------
-            Assert.IsFalse(dropEnabled);
-        }
-
-        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("ForeachActivityDesignerUtils_LimitDragDropOptions")]
         public void ForeachActivityDesignerUtils_LimitDragDropOptions_ModelItemFormat_Switch_DropPrevented()

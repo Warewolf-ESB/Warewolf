@@ -26,10 +26,15 @@ namespace Warewolf.UIBindingTests.SharepointSource
     public class SharepointSteps
     {
         string unableToContactServerTestFailedValueDoesNotFallWithinTheExpectedRange = "Unable to contact Server : Test Failed: Value does not fall within the expected range.";
+        static FeatureContext _featureContext;
+        readonly ScenarioContext _scenarioContext;
+
+        public SharepointSteps(ScenarioContext scenarioContext) => _scenarioContext = scenarioContext;
 
         [BeforeFeature("SharepointSource")]
-        public static void SetupForSystem()
+        public static void SetupForSystem(FeatureContext featureContext)
         {
+            _featureContext = featureContext;
             Utils.SetupResourceDictionary();
             var manageSharepointServerSource = new SharepointServerSource();
             var mockStudioUpdateManager = new Mock<ISharePointSourceModel>();
@@ -41,42 +46,42 @@ namespace Warewolf.UIBindingTests.SharepointSource
             var manageSharepointServerSourceViewModel = new SharepointServerSourceViewModel(mockStudioUpdateManager.Object, task, mockEventAggregator.Object, new SynchronousAsyncWorker(), mockEnvironmentModel.Object);
             manageSharepointServerSource.DataContext = manageSharepointServerSourceViewModel;
             Utils.ShowTheViewForTesting(manageSharepointServerSource);
-            FeatureContext.Current.Add(Utils.ViewNameKey, manageSharepointServerSource);
-            FeatureContext.Current.Add(Utils.ViewModelNameKey, manageSharepointServerSourceViewModel);
-            FeatureContext.Current.Add("updateManager", mockStudioUpdateManager);
-            FeatureContext.Current.Add("requestServiceNameViewModel", mockRequestServiceNameViewModel);
-            FeatureContext.Current.Add("mockEnvironmentModel", mockEnvironmentModel);
+            _featureContext.Add(Utils.ViewNameKey, manageSharepointServerSource);
+            _featureContext.Add(Utils.ViewModelNameKey, manageSharepointServerSourceViewModel);
+            _featureContext.Add("updateManager", mockStudioUpdateManager);
+            _featureContext.Add("requestServiceNameViewModel", mockRequestServiceNameViewModel);
+            _featureContext.Add("mockEnvironmentModel", mockEnvironmentModel);
         }
 
         [BeforeScenario("SharepointSource")]
         public void SetupForSharepointSource()
         {
-            ScenarioContext.Current.Add(Utils.ViewNameKey, FeatureContext.Current.Get<SharepointServerSource>(Utils.ViewNameKey));
-            ScenarioContext.Current.Add("updateManager", FeatureContext.Current.Get<Mock<ISharePointSourceModel>>("updateManager"));
-            ScenarioContext.Current.Add("requestServiceNameViewModel", FeatureContext.Current.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel"));
-            ScenarioContext.Current.Add("mockEnvironmentModel", FeatureContext.Current.Get<Mock<IServer>>("mockEnvironmentModel"));
-            ScenarioContext.Current.Add(Utils.ViewModelNameKey, FeatureContext.Current.Get<SharepointServerSourceViewModel>(Utils.ViewModelNameKey));
+            _scenarioContext.Add(Utils.ViewNameKey, _featureContext.Get<SharepointServerSource>(Utils.ViewNameKey));
+            _scenarioContext.Add("updateManager", _featureContext.Get<Mock<ISharePointSourceModel>>("updateManager"));
+            _scenarioContext.Add("requestServiceNameViewModel", _featureContext.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel"));
+            _scenarioContext.Add("mockEnvironmentModel", _featureContext.Get<Mock<IServer>>("mockEnvironmentModel"));
+            _scenarioContext.Add(Utils.ViewModelNameKey, _featureContext.Get<SharepointServerSourceViewModel>(Utils.ViewModelNameKey));
         }
 
         [Given(@"I open New Sharepoint Source")]
         public void GivenIOpenNewSharepointSource()
         {
-            var manageSharepointServerSource = ScenarioContext.Current.Get<SharepointServerSource>(Utils.ViewNameKey);
+            var manageSharepointServerSource = _scenarioContext.Get<SharepointServerSource>(Utils.ViewNameKey);
             Assert.IsNotNull(manageSharepointServerSource);
         }
 
         [Then(@"""(.*)"" tab is opened")]
         public void ThenTabIsOpened(string headerText)
         {
-            var viewModel = ScenarioContext.Current.Get<IDockAware>("viewModel");
+            var viewModel = _scenarioContext.Get<IDockAware>("viewModel");
             Assert.AreEqual(headerText, viewModel.Header);
         }
 
         [Then(@"title is ""(.*)""")]
         public void ThenTitleIs(string title)
         {
-            var manageSharepointServerSource = ScenarioContext.Current.Get<SharepointServerSource>(Utils.ViewNameKey);
-            var viewModel = ScenarioContext.Current.Get<SharepointServerSourceViewModel>("viewModel");
+            var manageSharepointServerSource = _scenarioContext.Get<SharepointServerSource>(Utils.ViewNameKey);
+            var viewModel = _scenarioContext.Get<SharepointServerSourceViewModel>("viewModel");
             Assert.AreEqual(title, viewModel.HeaderText);
             Assert.AreEqual(title, manageSharepointServerSource.GetHeaderText());
         }
@@ -86,9 +91,9 @@ namespace Warewolf.UIBindingTests.SharepointSource
         [Given(@"I type Address as ""(.*)""")]
         public void ThenITypeAddressAs(string serverName)
         {
-            var manageSharepointServerSource = ScenarioContext.Current.Get<SharepointServerSource>(Utils.ViewNameKey);
+            var manageSharepointServerSource = _scenarioContext.Get<SharepointServerSource>(Utils.ViewNameKey);
             manageSharepointServerSource.EnterServerName(serverName);
-            var viewModel = ScenarioContext.Current.Get<SharepointServerSourceViewModel>("viewModel");
+            var viewModel = _scenarioContext.Get<SharepointServerSourceViewModel>("viewModel");
             Assert.AreEqual(serverName, viewModel.ServerName);
         }
 
@@ -97,7 +102,7 @@ namespace Warewolf.UIBindingTests.SharepointSource
         [Given(@"""(.*)"" is ""(.*)""")]
         public void ThenIs(string controlName, string enabledString)
         {
-            Utils.CheckControlEnabled(controlName, enabledString, ScenarioContext.Current.Get<ICheckControlEnabledView>(Utils.ViewNameKey), Utils.ViewNameKey);
+            Utils.CheckControlEnabled(controlName, enabledString, _scenarioContext.Get<ICheckControlEnabledView>(Utils.ViewNameKey), Utils.ViewNameKey);
         }
 
         [Then(@"I Select Authentication Type as ""(.*)""")]
@@ -110,7 +115,7 @@ namespace Warewolf.UIBindingTests.SharepointSource
                 ? AuthenticationType.Windows
                 : AuthenticationType.User;
 
-            var manageSharepointServerSource = ScenarioContext.Current.Get<SharepointServerSource>(Utils.ViewNameKey);
+            var manageSharepointServerSource = _scenarioContext.Get<SharepointServerSource>(Utils.ViewNameKey);
             manageSharepointServerSource.SetAuthenticationType(authenticationType);
         }
 
@@ -121,7 +126,7 @@ namespace Warewolf.UIBindingTests.SharepointSource
         {
             var expectedVisibility = String.Equals(visibility, "Collapsed", StringComparison.InvariantCultureIgnoreCase) ? Visibility.Collapsed : Visibility.Visible;
 
-            var manageSharepointServerSource = ScenarioContext.Current.Get<SharepointServerSource>(Utils.ViewNameKey);
+            var manageSharepointServerSource = _scenarioContext.Get<SharepointServerSource>(Utils.ViewNameKey);
             var databaseDropDownVisibility = manageSharepointServerSource.GetUsernameVisibility();
             Assert.AreEqual(expectedVisibility, databaseDropDownVisibility);
         }
@@ -133,7 +138,7 @@ namespace Warewolf.UIBindingTests.SharepointSource
         {
             var expectedVisibility = String.Equals(visibility, "Collapsed", StringComparison.InvariantCultureIgnoreCase) ? Visibility.Collapsed : Visibility.Visible;
 
-            var manageSharepointServerSource = ScenarioContext.Current.Get<SharepointServerSource>(Utils.ViewNameKey);
+            var manageSharepointServerSource = _scenarioContext.Get<SharepointServerSource>(Utils.ViewNameKey);
             var databaseDropDownVisibility = manageSharepointServerSource.GetPasswordVisibility();
             Assert.AreEqual(expectedVisibility, databaseDropDownVisibility);
         }
@@ -145,14 +150,14 @@ namespace Warewolf.UIBindingTests.SharepointSource
                            Environment.NewLine + Environment.NewLine + "Inner Exception: " +
                            unableToContactServerTestFailedValueDoesNotFallWithinTheExpectedRange;
 
-            var viewModel = ScenarioContext.Current.Get<SharepointServerSourceViewModel>("viewModel");
+            var viewModel = _scenarioContext.Get<SharepointServerSourceViewModel>("viewModel");
             Assert.AreEqual(errorMessage, viewModel.TestMessage);
         }
 
         [When(@"Test Connecton is ""(.*)""")]
         public void WhenTestConnectonIs(string successString)
         {
-            var mockUpdateManager = ScenarioContext.Current.Get<Mock<ISharePointSourceModel>>("updateManager");
+            var mockUpdateManager = _scenarioContext.Get<Mock<ISharePointSourceModel>>("updateManager");
             var isSuccess = String.Equals(successString, "Successful", StringComparison.InvariantCultureIgnoreCase);
             var isLongRunning = String.Equals(successString, "Long Running", StringComparison.InvariantCultureIgnoreCase);
             if (isSuccess)
@@ -161,7 +166,7 @@ namespace Warewolf.UIBindingTests.SharepointSource
             }
             else if (isLongRunning)
             {
-                var viewModel = ScenarioContext.Current.Get<SharepointServerSourceViewModel>("viewModel");
+                var viewModel = _scenarioContext.Get<SharepointServerSourceViewModel>("viewModel");
                 mockUpdateManager.Setup(manager => manager.TestConnection(It.IsAny<ISharepointServerSource>()));
                 viewModel.AsyncWorker = new AsyncWorker();
             }
@@ -171,24 +176,24 @@ namespace Warewolf.UIBindingTests.SharepointSource
                 mockUpdateManager.Setup(manager => manager.TestConnection(It.IsAny<ISharepointServerSource>()))
                     .Throws(new WarewolfTestException(unableToContactServerTestFailedValueDoesNotFallWithinTheExpectedRange, new Exception(unableToContactServerTestFailedValueDoesNotFallWithinTheExpectedRange)));
             }
-            var manageSharepointServerSource = ScenarioContext.Current.Get<SharepointServerSource>(Utils.ViewNameKey);
+            var manageSharepointServerSource = _scenarioContext.Get<SharepointServerSource>(Utils.ViewNameKey);
             manageSharepointServerSource.PerformTestConnection();
         }
 
         [When(@"I save as ""(.*)""")]
         public void WhenISaveAs(string resourceName)
         {
-            var mockRequestServiceNameViewModel = ScenarioContext.Current.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel");
+            var mockRequestServiceNameViewModel = _scenarioContext.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel");
             mockRequestServiceNameViewModel.Setup(model => model.ShowSaveDialog()).Returns(MessageBoxResult.OK).Verifiable();
             mockRequestServiceNameViewModel.Setup(a => a.ResourceName).Returns(new ResourceName("", resourceName));
-            var manageSharepointServerSource = ScenarioContext.Current.Get<SharepointServerSource>(Utils.ViewNameKey);
+            var manageSharepointServerSource = _scenarioContext.Get<SharepointServerSource>(Utils.ViewNameKey);
             manageSharepointServerSource.PerformSave();
         }
 
         [Then(@"the save dialog is opened")]
         public void ThenTheSaveDialogIsOpened()
         {
-            var mockRequestServiceNameViewModel = ScenarioContext.Current.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel");
+            var mockRequestServiceNameViewModel = _scenarioContext.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel");
             mockRequestServiceNameViewModel.Verify();
         }
 
@@ -196,8 +201,8 @@ namespace Warewolf.UIBindingTests.SharepointSource
         [When(@"Validation message is thrown")]
         public void ThenValidationMessageIsThrown()
         {
-            var manageSharepointServerSource = ScenarioContext.Current.Get<SharepointServerSource>(Utils.ViewNameKey);
-            var viewModel = ScenarioContext.Current.Get<SharepointServerSourceViewModel>("viewModel");
+            var manageSharepointServerSource = _scenarioContext.Get<SharepointServerSource>(Utils.ViewNameKey);
+            var viewModel = _scenarioContext.Get<SharepointServerSourceViewModel>("viewModel");
             var errorMessageFromControl = manageSharepointServerSource.GetErrorMessage();
             var errorMessageOnViewModel = viewModel.TestMessage;
             Assert.IsFalse(string.IsNullOrEmpty(errorMessageFromControl));
@@ -208,8 +213,8 @@ namespace Warewolf.UIBindingTests.SharepointSource
         [Then(@"Validation message is ""(.*)""")]
         public void ThenValidationMessageIs(string message)
         {
-            var manageSharepointServerSource = ScenarioContext.Current.Get<SharepointServerSource>(Utils.ViewNameKey);
-            var viewModel = ScenarioContext.Current.Get<SharepointServerSourceViewModel>("viewModel");
+            var manageSharepointServerSource = _scenarioContext.Get<SharepointServerSource>(Utils.ViewNameKey);
+            var viewModel = _scenarioContext.Get<SharepointServerSourceViewModel>("viewModel");
             var errorMessageFromControl = manageSharepointServerSource.GetErrorMessage();
             var errorMessageOnViewModel = viewModel.TestMessage;
             var isErrorMessageOnControl = errorMessageFromControl.Equals(message, StringComparison.OrdinalIgnoreCase);
@@ -221,8 +226,8 @@ namespace Warewolf.UIBindingTests.SharepointSource
         [When(@"Validation message is Not thrown")]
         public void WhenValidationMessageIsNotThrown()
         {
-            var manageSharepointServerSource = ScenarioContext.Current.Get<SharepointServerSource>(Utils.ViewNameKey);
-            var viewModel = ScenarioContext.Current.Get<SharepointServerSourceViewModel>("viewModel");
+            var manageSharepointServerSource = _scenarioContext.Get<SharepointServerSource>(Utils.ViewNameKey);
+            var viewModel = _scenarioContext.Get<SharepointServerSourceViewModel>("viewModel");
             var errorMessageFromControl = manageSharepointServerSource.GetErrorMessage();
             var errorMessageOnViewModel = viewModel.TestMessage;
             var isErrorMessageOnViewModel = errorMessageOnViewModel.Contains("Passed");
@@ -234,16 +239,16 @@ namespace Warewolf.UIBindingTests.SharepointSource
         [When(@"I Cancel the Test")]
         public void WhenICancelTheTest()
         {
-            var manageSharepointServerSource = ScenarioContext.Current.Get<SharepointServerSource>(Utils.ViewNameKey);
+            var manageSharepointServerSource = _scenarioContext.Get<SharepointServerSource>(Utils.ViewNameKey);
             manageSharepointServerSource.CancelTest();
         }
 
         [Given(@"I type Username as ""(.*)""")]
         public void GivenITypeUsernameAs(string userName)
         {
-            var manageSharepointServerSource = ScenarioContext.Current.Get<SharepointServerSource>(Utils.ViewNameKey);
+            var manageSharepointServerSource = _scenarioContext.Get<SharepointServerSource>(Utils.ViewNameKey);
             manageSharepointServerSource.EnterUserName(userName);
-            var viewModel = ScenarioContext.Current.Get<SharepointServerSourceViewModel>("viewModel");
+            var viewModel = _scenarioContext.Get<SharepointServerSourceViewModel>("viewModel");
             Assert.AreEqual(userName, viewModel.UserName);
         }
 
@@ -251,17 +256,17 @@ namespace Warewolf.UIBindingTests.SharepointSource
         public void GivenITypePassword()
         {
             var password = "I73573r0";
-            var manageSharepointServerSource = ScenarioContext.Current.Get<SharepointServerSource>(Utils.ViewNameKey);
+            var manageSharepointServerSource = _scenarioContext.Get<SharepointServerSource>(Utils.ViewNameKey);
             manageSharepointServerSource.EnterPassword(password);
-            var viewModel = ScenarioContext.Current.Get<SharepointServerSourceViewModel>("viewModel");
+            var viewModel = _scenarioContext.Get<SharepointServerSourceViewModel>("viewModel");
             Assert.AreEqual(password, viewModel.Password);
         }
 
         [When(@"Username field as ""(.*)""")]
         public void WhenUsernameFieldAs(string userName)
         {
-            var manageSharepointServerSource = ScenarioContext.Current.Get<SharepointServerSource>(Utils.ViewNameKey);
-            var viewModel = ScenarioContext.Current.Get<SharepointServerSourceViewModel>("viewModel");
+            var manageSharepointServerSource = _scenarioContext.Get<SharepointServerSource>(Utils.ViewNameKey);
+            var viewModel = _scenarioContext.Get<SharepointServerSourceViewModel>("viewModel");
             Assert.AreEqual(userName, viewModel.UserName);
             Assert.AreEqual(userName, manageSharepointServerSource.GetUsername());
         }
@@ -269,8 +274,8 @@ namespace Warewolf.UIBindingTests.SharepointSource
         [When(@"Password field as ""(.*)""")]
         public void WhenPasswordFieldAs(string password)
         {
-            var manageSharepointServerSource = ScenarioContext.Current.Get<SharepointServerSource>(Utils.ViewNameKey);
-            var viewModel = ScenarioContext.Current.Get<SharepointServerSourceViewModel>("viewModel");
+            var manageSharepointServerSource = _scenarioContext.Get<SharepointServerSource>(Utils.ViewNameKey);
+            var viewModel = _scenarioContext.Get<SharepointServerSourceViewModel>("viewModel");
             Assert.AreEqual(password, viewModel.Password);
             Assert.AreEqual(password, manageSharepointServerSource.GetPassword());
         }
@@ -278,16 +283,16 @@ namespace Warewolf.UIBindingTests.SharepointSource
         [When(@"I save the source")]
         public void WhenISaveTheSource()
         {
-            var mockRequestServiceNameViewModel = ScenarioContext.Current.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel");
+            var mockRequestServiceNameViewModel = _scenarioContext.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel");
             mockRequestServiceNameViewModel.Setup(model => model.ShowSaveDialog()).Verifiable();
-            var manageSharepointServerSource = ScenarioContext.Current.Get<SharepointServerSource>(Utils.ViewNameKey);
+            var manageSharepointServerSource = _scenarioContext.Get<SharepointServerSource>(Utils.ViewNameKey);
             manageSharepointServerSource.PerformSave();
         }
 
         [Given(@"I open ""(.*)"" Sharepoint source")]
         public void GivenIOpenSharepointSource(string p0)
         {
-            var manageSharepointServerSource = ScenarioContext.Current.Get<SharepointServerSource>(Utils.ViewNameKey);
+            var manageSharepointServerSource = _scenarioContext.Get<SharepointServerSource>(Utils.ViewNameKey);
             var mockStudioUpdateManager = new Mock<ISharePointSourceModel>();
 
             mockStudioUpdateManager.Setup(model => model.ServerName).Returns("localhost");
@@ -306,15 +311,15 @@ namespace Warewolf.UIBindingTests.SharepointSource
                 .Returns(sharePointServiceSourceDefinition);
             var manageSharepointServerSourceViewModel = new SharepointServerSourceViewModel(mockStudioUpdateManager.Object, mockEventAggregator.Object, sharePointServiceSourceDefinition, new SynchronousAsyncWorker(), mockExecutor.Object);
             manageSharepointServerSource.DataContext = manageSharepointServerSourceViewModel;
-            ScenarioContext.Current.Remove("viewModel");
-            ScenarioContext.Current.Add("viewModel", manageSharepointServerSourceViewModel);
+            _scenarioContext.Remove("viewModel");
+            _scenarioContext.Add("viewModel", manageSharepointServerSourceViewModel);
         }
 
         [Then(@"Address is ""(.*)""")]
         public void ThenAddressIs(string address)
         {
-            var manageSharepointServerSource = ScenarioContext.Current.Get<SharepointServerSource>(Utils.ViewNameKey);
-            var viewModel = ScenarioContext.Current.Get<SharepointServerSourceViewModel>("viewModel");
+            var manageSharepointServerSource = _scenarioContext.Get<SharepointServerSource>(Utils.ViewNameKey);
+            var viewModel = _scenarioContext.Get<SharepointServerSourceViewModel>("viewModel");
             Assert.AreEqual(address, viewModel.ServerName);
             Assert.AreEqual(address, manageSharepointServerSource.GetAddress());
         }
@@ -322,7 +327,7 @@ namespace Warewolf.UIBindingTests.SharepointSource
         [Then(@"Authentication Type is ""(.*)""")]
         public void ThenAuthenticationTypeIs(string authenticationType)
         {
-            var viewModel = ScenarioContext.Current.Get<SharepointServerSourceViewModel>("viewModel");
+            var viewModel = _scenarioContext.Get<SharepointServerSourceViewModel>("viewModel");
             Assert.AreEqual(authenticationType, viewModel.AuthenticationType.ToString());
         }
 
@@ -330,18 +335,18 @@ namespace Warewolf.UIBindingTests.SharepointSource
         public void Cleanup()
         {
             var mockExecutor = new Mock<IServer>();
-            var mockUpdateManager = ScenarioContext.Current.Get<Mock<ISharePointSourceModel>>("updateManager");
-            var mockRequestServiceNameViewModel = ScenarioContext.Current.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel");
+            var mockUpdateManager = _scenarioContext.Get<Mock<ISharePointSourceModel>>("updateManager");
+            var mockRequestServiceNameViewModel = _scenarioContext.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel");
             var mockEventAggregator = new Mock<IEventAggregator>();
             var task = new Task<IRequestServiceNameViewModel>(() => mockRequestServiceNameViewModel.Object);
             task.Start();
             var viewModel = new SharepointServerSourceViewModel(mockUpdateManager.Object, task, mockEventAggregator.Object, new SynchronousAsyncWorker(), mockExecutor.Object);
-            var manageWebserviceSourceControl = ScenarioContext.Current.Get<SharepointServerSource>(Utils.ViewNameKey);
+            var manageWebserviceSourceControl = _scenarioContext.Get<SharepointServerSource>(Utils.ViewNameKey);
             manageWebserviceSourceControl.DataContext = viewModel;
-            FeatureContext.Current.Remove("viewModel");
-            FeatureContext.Current.Add("viewModel", viewModel);
-            FeatureContext.Current.Remove("externalProcessExecutor");
-            FeatureContext.Current.Add("externalProcessExecutor", mockExecutor);
+            _featureContext.Remove("viewModel");
+            _featureContext.Add("viewModel", viewModel);
+            _featureContext.Remove("externalProcessExecutor");
+            _featureContext.Add("externalProcessExecutor", mockExecutor);
 
         }
 

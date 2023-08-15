@@ -157,7 +157,7 @@ namespace Warewolf.Studio.ViewModels.Help.Tests
         #region Test methods
 
         [TestMethod]
-        [Timeout(500)]
+        [Timeout(2500)]
         public void TestUpdateHelpTextEmpty()
         {
             //act

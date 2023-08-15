@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29519.181
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dev2.Activities.Specs", "Dev2.Activities.Specs\Dev2.Activities.Specs.csproj", "{A03004BE-79B5-47AF-88EF-112197619A5F}"
 EndProject
@@ -263,8 +263,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dev2.Services.Execution", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dev2.Runtime", "Dev2.Runtime\Dev2.Runtime.csproj", "{9623C7DD-85EE-41AB-89B1-1A9784A97DA7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dev2.Web", "Dev2.Web2\Dev2.Web.csproj", "{76467C57-4F15-4FD6-90BD-68443ADB838D}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleAppToTestExecuteCommandLineActivity", "ConsoleAppToTestExecuteCommandLineActivity\ConsoleAppToTestExecuteCommandLineActivity.csproj", "{DF3CA7CD-16B7-465E-A7DB-91951DFC330F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dev2.Infrastructure.Tests", "Dev2.Infrastructure.Tests\Dev2.Infrastructure.Tests.csproj", "{D754B817-A714-4E6E-BD46-8C4FFFFBDACB}"
@@ -316,8 +314,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Auditing", "Warewolf.Auditing\Warewolf.Auditing.csproj", "{2C4E3DC6-2195-4486-894D-8351B066D8CA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Auditing.Tests", "Warewolf.Auditing.Tests\Warewolf.Auditing.Tests.csproj", "{CB78B4CF-9B54-4491-9B17-B35199A95970}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dev2.Web.Tests", "Dev2.Web.Tests\Dev2.Web.Tests.csproj", "{35A58032-9521-487D-89DC-C521C3845410}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Driver.Redis", "Warewolf.Driver.Redis\Warewolf.Driver.Redis.csproj", "{86DF54BB-E37D-4559-8014-13D6030A2242}"
 EndProject
@@ -1078,14 +1074,6 @@ Global
 		{9623C7DD-85EE-41AB-89B1-1A9784A97DA7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9623C7DD-85EE-41AB-89B1-1A9784A97DA7}.Release|x86.ActiveCfg = Release|Any CPU
 		{9623C7DD-85EE-41AB-89B1-1A9784A97DA7}.Release|x86.Build.0 = Release|Any CPU
-		{76467C57-4F15-4FD6-90BD-68443ADB838D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{76467C57-4F15-4FD6-90BD-68443ADB838D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{76467C57-4F15-4FD6-90BD-68443ADB838D}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{76467C57-4F15-4FD6-90BD-68443ADB838D}.Debug|x86.Build.0 = Debug|Any CPU
-		{76467C57-4F15-4FD6-90BD-68443ADB838D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{76467C57-4F15-4FD6-90BD-68443ADB838D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{76467C57-4F15-4FD6-90BD-68443ADB838D}.Release|x86.ActiveCfg = Release|Any CPU
-		{76467C57-4F15-4FD6-90BD-68443ADB838D}.Release|x86.Build.0 = Release|Any CPU
 		{DF3CA7CD-16B7-465E-A7DB-91951DFC330F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DF3CA7CD-16B7-465E-A7DB-91951DFC330F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DF3CA7CD-16B7-465E-A7DB-91951DFC330F}.Debug|x86.ActiveCfg = Debug|Any CPU
@@ -1230,6 +1218,7 @@ Global
 		{2D8E1CD4-9997-47BD-8F75-62023FC05DB4}.Debug|x86.Build.0 = Debug|Any CPU
 		{2D8E1CD4-9997-47BD-8F75-62023FC05DB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2D8E1CD4-9997-47BD-8F75-62023FC05DB4}.Release|x86.ActiveCfg = Release|Any CPU
+		{2D8E1CD4-9997-47BD-8F75-62023FC05DB4}.Release|x86.Build.0 = Release|Any CPU
 		{76F7A7F3-1153-49C0-BE56-77973867F974}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{76F7A7F3-1153-49C0-BE56-77973867F974}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{76F7A7F3-1153-49C0-BE56-77973867F974}.Debug|x86.ActiveCfg = Debug|Any CPU

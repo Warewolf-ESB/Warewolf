@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2022 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -9,32 +9,37 @@
 */
 
 using System;
-using System.Collections.Concurrent;
-using ServiceStack.Redis;
+using StackExchange.Redis;
 using Warewolf.Interfaces;
 
 namespace Warewolf.Driver.Redis
 {
     public class RedisConnection : IRedisConnection
     {
-        private static readonly ConcurrentDictionary<(string, int, string), RedisClient> RedisConnectionPool = new ConcurrentDictionary<(string, int, string), RedisClient>();
-
         public RedisConnection(string hostName, int port, string password)
         {
-            try
-            {
-                RedisClient client = RedisConnectionPool.GetOrAdd((hostName, port, password), !string.IsNullOrWhiteSpace(password) ? new RedisClient(hostName, port, password) : new RedisClient(hostName, port));
+            var client = GetClient(hostName, port, password);
+            Cache = new RedisCache(client);
+        }
 
-                if (client.ServerVersion != null)
-                {
-                    Cache = new RedisCache(client);
-                }
-            }
-            catch
+        private static IDatabase GetClient(string hostName, int port, string password)
+        {
+            var config = new ConfigurationOptions
             {
-                RedisConnectionPool.TryRemove((hostName, port, password), out RedisClient redisClient);
-                throw;
-            }
+                ClientName = hostName,
+                Password = password,
+                AbortOnConnectFail = false,
+                ConnectRetry = 3,
+                SyncTimeout = 50000,
+                EndPoints =
+                {
+                    { hostName, port }
+                }
+            };
+
+            var redis = ConnectionMultiplexer.Connect(config);
+            var db = redis.GetDatabase();
+            return db;
         }
 
         public IRedisCache Cache { get; private set; }
@@ -42,29 +47,41 @@ namespace Warewolf.Driver.Redis
 
     internal class RedisCache : IRedisCache
     {
-        private readonly IRedisClient _client;
-        public RedisCache(IRedisClient client)
+        private readonly IDatabase _database;
+
+        public RedisCache(IDatabase database)
         {
-            _client = client;
+            _database = database;
         }
 
-        public string Get(string key) => _client.Get<string>(key);
+        public string Get(string key)
+        {
+            return _database.StringGet(key);
+        }
 
-        public bool Set(string key, string value, TimeSpan timeSpan) => timeSpan.TotalSeconds == 0 ? _client.Set(key, value) : _client.Set(key, value, timeSpan);
+        public bool Set(string key, string value, TimeSpan timeSpan)
+        {
+            if (timeSpan.TotalSeconds == 0)
+            {
+                return _database.StringSet(key, value);
+            }
+
+            return _database.StringSet(key, value, timeSpan);
+        }
 
         public bool Remove(string key)
         {
-            return _client.Remove(key);
+            return _database.KeyDelete(key);
         }
 
         public long Increment(string key, string value)
         {
-            return _client.Increment(key, uint.Parse(value));
+            return _database.StringIncrement(key, uint.Parse(value));
         }
 
         public long Decrement(string key, string value)
         {
-            return _client.Decrement(key, uint.Parse(value));
+            return _database.StringDecrement(key, uint.Parse(value));
         }
     }
 }

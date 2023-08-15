@@ -27,12 +27,16 @@ namespace HangfireServer
                 Authorization = new[] { new HangFireAuthorizationFilter () },
                 IgnoreAntiforgeryToken = true
             });
-            app.UseHangfireServer(new BackgroundJobServerOptions()
+            
+            if(Dev2.Common.Config.Persistence.UseAsServer)
             {
-                ServerName = Dev2.Common.Config.Persistence.ServerName,
-                ServerTimeout = TimeSpan.FromMinutes(10),
-                WorkerCount = Environment.ProcessorCount * 2
-            });
+                app.UseHangfireServer(new BackgroundJobServerOptions()
+                {
+                    ServerName = Dev2.Common.Config.Persistence.ServerName,
+                    ServerTimeout = TimeSpan.FromMinutes(10),
+                    WorkerCount = Environment.ProcessorCount
+                });
+            }
         }
     }
 }

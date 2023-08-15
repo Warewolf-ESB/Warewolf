@@ -788,7 +788,7 @@ namespace Dev2.Data.Tests.Util
             };
             Assert.IsNotNull(definitions);
             var innerExecEnv = new ExecutionEnvironment();
-            var prObj = new PrivateObject(innerExecEnv);
+            var prObj = new Warewolf.Testing.PrivateObject(innerExecEnv);
             var warewolfEnvironment = prObj.GetField("_env") as DataStorage.WarewolfEnvironment;
             Assert.IsTrue(warewolfEnvironment != null && warewolfEnvironment.Scalar.Count == 0);
             commonDataUtils.CreateObjectInputs(outerExeEnv, definitions, innerExecEnv, 0);
@@ -813,7 +813,7 @@ namespace Dev2.Data.Tests.Util
             };
             Assert.IsNotNull(definitions);
             var innerExecEnv = new ExecutionEnvironment();
-            var prObj = new PrivateObject(innerExecEnv);
+            var prObj = new Warewolf.Testing.PrivateObject(innerExecEnv);
             var warewolfEnvironment = prObj.GetField("_env") as DataStorage.WarewolfEnvironment;
             Assert.IsTrue(warewolfEnvironment != null && warewolfEnvironment.Scalar.Count == 0);
             commonDataUtils.CreateObjectInputs(outerExeEnv, definitions, innerExecEnv, 0);
@@ -838,7 +838,7 @@ namespace Dev2.Data.Tests.Util
             };
             Assert.IsNotNull(definitions);
             var innerExecEnv = new ExecutionEnvironment();
-            var prObj = new PrivateObject(innerExecEnv);
+            var prObj = new Warewolf.Testing.PrivateObject(innerExecEnv);
             var warewolfEnvironment = prObj.GetField("_env") as DataStorage.WarewolfEnvironment;
             Assert.IsTrue(warewolfEnvironment != null && warewolfEnvironment.JsonObjects.Count == 0);
             commonDataUtils.CreateObjectInputs(outerExeEnv, definitions, innerExecEnv, 0);
@@ -867,7 +867,7 @@ namespace Dev2.Data.Tests.Util
             Assert.IsNotNull(inputScalarList);
             var innerExecEnv = new ExecutionEnvironment();
             Assert.IsNotNull(innerExecEnv);
-            var prObj = new PrivateObject(innerExecEnv);
+            var prObj = new Warewolf.Testing.PrivateObject(innerExecEnv);
             var warewolfEnvironment = prObj.GetField("_env") as DataStorage.WarewolfEnvironment;
             Assert.AreEqual(0, warewolfEnvironment.Scalar.Count);
             commonDataUtils.CreateScalarInputs(outerExeEnv, inputScalarList, innerExecEnv, 0);

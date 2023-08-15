@@ -40,16 +40,19 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                 var redisServiceSourceDefinition = serializer.Deserialize<RedisSourceDefinition>(resourceDefinition);
                 var con = new RedisSources();
-                var result = con.Test(new RedisSource
+                using (var redisSource = new RedisSource
                 {
                     HostName = redisServiceSourceDefinition.HostName,
                     Port = redisServiceSourceDefinition.Port,
                     AuthenticationType = redisServiceSourceDefinition.AuthenticationType,
                     Password = redisServiceSourceDefinition.Password
-                });
-                msg.HasError = false;
-                msg.Message = new StringBuilder(result.IsValid ? serializer.Serialize(result.Result) : result.ErrorMessage);
-                msg.HasError = !result.IsValid;
+                })
+                {
+                    var result = con.Test(redisSource);
+                    msg.HasError = false;
+                    msg.Message = new StringBuilder(result.IsValid ? serializer.Serialize(result.Result) : result.ErrorMessage);
+                    msg.HasError = !result.IsValid;
+                }
             }
             catch (Exception err)
             {

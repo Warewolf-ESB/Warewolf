@@ -67,26 +67,12 @@
                                     Text="{x:Static languages:HelpText.PersistenceViewSchedulerHelpText}"
                                     DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                             </i:Interaction.Behaviors>
-                        </ComboBox>
+                        </ComboBox>                        
 
-                        <TextBlock x:Name="ServerTextBlock" Text="Server" Grid.Column="0" Grid.Row="1" Margin="{StaticResource ControlBorderTop}" />
-                        <TextBox x:Name="ServerTextBox"
-                                 Grid.Column="1"
-                                 Grid.Row="1"
-                                 Margin="{StaticResource ControlBorderTop}"
-                                 Text="{Binding ServerName, UpdateSourceTrigger=PropertyChanged}"
-                                 ToolTip="{x:Static languages:Tooltips.PersistenceServerNameTooltip}"
-                                 Focusable="True">
-                            <i:Interaction.Behaviors>
-                                <core:HelpSetter Text="{x:Static languages:HelpText.PersistenceServerNameHelp}"
-                                                 DataContext="{Binding}" />
-                            </i:Interaction.Behaviors>
-                        </TextBox>
-
-                        <TextBlock x:Name="PersistenceDataSourcesTextBlock" Text="Data Source" Grid.Column="0" Grid.Row="2" Margin="{StaticResource ControlBorderTop}" />
+                        <TextBlock x:Name="PersistenceDataSourcesTextBlock" Text="Data Source" Grid.Column="0" Grid.Row="1" Margin="{StaticResource ControlBorderTop}" />
                         <ComboBox x:Name="PersistenceDataSourcesComboBox"
                                   Grid.Column="1"
-                                  Grid.Row="2"
+                                  Grid.Row="1"
                                   Margin="{StaticResource ControlBorderTop}"
                                   DisplayMemberPath="ResourceName"
                                   SelectedItem="{Binding SelectedPersistenceDataSource, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -98,6 +84,21 @@
                                     DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                             </i:Interaction.Behaviors>
                         </ComboBox>
+
+                        <TextBlock x:Name="ServerTextBlock" Text="Server" Grid.Column="0" Grid.Row="2" Margin="{StaticResource ControlBorderTop}" />
+                        <TextBox x:Name="ServerTextBox"
+                                 Grid.Column="1"
+                                 Grid.Row="2"
+                                 Margin="{StaticResource ControlBorderTop}"
+                                 Text="{Binding ServerName, UpdateSourceTrigger=PropertyChanged}"
+                                 ToolTip="{x:Static languages:Tooltips.PersistenceServerNameTooltip}"
+                                 Focusable="True">
+
+                            <i:Interaction.Behaviors>
+                                <core:HelpSetter Text="{x:Static languages:HelpText.PersistenceServerNameHelp}"
+                                                 DataContext="{Binding}" />
+                            </i:Interaction.Behaviors>
+                        </TextBox>
 
                         <StackPanel Grid.Column="1" Grid.Row="3" Orientation="Horizontal">
                             <CheckBox Content="Encrypt"
@@ -114,6 +115,14 @@
                                       ToolTip="{x:Static languages:Tooltips.PersistenceViewPrepareSchemaIfNecessaryToolTip}">
                                 <i:Interaction.Behaviors>
                                     <core:HelpSetter Text="{x:Static languages:HelpText.PersistenceViewPrepareSchemaIfNecessaryHelpText}"
+                                                     DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                </i:Interaction.Behaviors>
+                            </CheckBox>
+                            <CheckBox Content="Use As Server" Name="UseAsServerCheckBox"
+                                      IsChecked="{Binding UseAsServer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      ToolTip="{x:Static languages:Tooltips.PersistenceViewUseAsServerToolTip}">
+                                <i:Interaction.Behaviors>
+                                    <core:HelpSetter Text="{x:Static languages:HelpText.PersistenceViewUseAsServerHelpText}"
                                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                 </i:Interaction.Behaviors>
                             </CheckBox>

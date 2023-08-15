@@ -454,6 +454,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             {
                 resource.Dependencies?.ForEach(tree =>
                 {
+                    tree.Resource = ResourceCatalog.Instance.GetResource(workspaceID, tree.ResourceID);
                     if (tree.ResourceID == resourceId)
                     {
                         dependants.Add(CreateResourceForTree(resource, tree));
@@ -462,7 +463,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             }
             return dependants.ToList();
         }
-
+               
         public IList<IResource> GetResourceList(Guid workspaceId)
         {
             var workspaceResources = GetResources(workspaceId);
@@ -832,7 +833,8 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             UniqueID = tree.UniqueID,
             ResourceID = resource.ResourceID,
             ResourceName = resource.ResourceName,
-            ResourceType = resource.ResourceType
+            ResourceType = resource.ResourceType,
+            Resource = resource
         };
 
         List<DynamicServiceObjectBase> GenerateObjectGraph(IResource resource)

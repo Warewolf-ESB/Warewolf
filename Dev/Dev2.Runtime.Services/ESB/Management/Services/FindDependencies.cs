@@ -14,11 +14,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
+using System.Xml.Linq;
 using Dev2.Common;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Enums;
+using Dev2.Common.Interfaces.Versioning;
+using Dev2.Common.Wrappers;
 using Dev2.Communication;
 using Dev2.DynamicServices;
+using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
+using Dev2.Runtime.ResourceCatalogImpl;
 using Dev2.Workspaces;
 using ServiceStack.Common.Extensions;
 using Warewolf.Resource.Errors;
@@ -62,6 +68,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     throw new InvalidDataContractException(ErrorResource.ResourceIdNotAGUID);
                 }
                 var resource = ResourceCatalog.GetResource(theWorkspace.ID, resId);
+
                 if (!string.IsNullOrEmpty(dependsOnMeString) && !bool.TryParse(dependsOnMeString, out dependsOnMe))
                 {
                     dependsOnMe = false;
@@ -76,8 +83,35 @@ namespace Dev2.Runtime.ESB.Management.Services
                 }
                 else
                 {
+                    List<IResource> resourceList = new List<IResource>();
+                    var count = 0;
+                    resourceList.Add(resource);
+
+                    while (count != -1)
+                    {
+                        List<IResourceForTree> resourceForTrees = new List<IResourceForTree>();
+                        var dependencies = resourceList[count]?.Dependencies;
+                        if (dependencies != null && dependencies.Count > 0)
+                        {
+                            dependencies.ToList().ForEach(c =>
+                            {
+                                c.Resource = ResourceCatalog.GetResource(GlobalConstants.ServerWorkspaceID, c.ResourceID);
+
+                                resourceList.Add(c.Resource);
+                                resourceForTrees.Add(c);
+
+                                count++;    
+                            });
+                        }
+                        else
+                        {
+                            count = -1;
+                        }
+                    }
+                    resource = resourceList[0];
+
                     result.Message.Append($"<graph title=\"Dependency Graph Of {resourceId}\">");
-                    result.Message.Append(FindDependenciesRecursive(resource.ResourceID, theWorkspace.ID, new List<Guid>()));
+                    result.Message.Append(FindDependenciesRecursive(resource, theWorkspace.ID, new List<Guid>()));
                     result.Message.Append("</graph>");
                 }
 
@@ -134,11 +168,10 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         #region Private Methods
 
-        StringBuilder FindDependenciesRecursive(Guid resourceGuid, Guid workspaceId, List<Guid> seenResource)
+        StringBuilder FindDependenciesRecursive(IResource resource, Guid workspaceId, List<Guid> seenResource)
         {
             var sb = new StringBuilder();
 
-            var resource = ResourceCatalog.GetResource(workspaceId, resourceGuid);
             var dependencies = resource?.Dependencies;
             if (dependencies != null)
             {
@@ -147,12 +180,12 @@ namespace Dev2.Runtime.ESB.Management.Services
                 dependencies.ForEach(c => sb.Append($"<dependency id=\"{c.ResourceID}\" />"));
 
                 sb.Append("</node>");
-                seenResource.Add(resourceGuid);
+                seenResource.Add(resource.ResourceID);
                 dependencies.ToList().ForEach(c =>
                 {
                     if (!seenResource.Contains(c.ResourceID))
                     {
-                        var findDependenciesRecursive = FindDependenciesRecursive(c.ResourceID, workspaceId, seenResource);
+                        var findDependenciesRecursive = FindDependenciesRecursive(c.Resource, workspaceId, seenResource);
                         sb.Append(findDependenciesRecursive);
                     }
                 });

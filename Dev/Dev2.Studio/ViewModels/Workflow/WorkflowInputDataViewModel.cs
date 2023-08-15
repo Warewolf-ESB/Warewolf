@@ -86,7 +86,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                     ? input.ResourceModel.DataList
                     : @"<DataList></DataList>",
                 ServiceName = input.ResourceModel.ResourceName,
-                WorkflowID = input.ResourceModel.ResourceName,
+                WorkflowID = input.ResourceModel.Category ?? input.ResourceModel.ResourceName,
                 WorkflowXaml = string.Empty,
                 XmlData = input.ServiceInputData,
                 ResourceID = input.ResourceModel.ID,
@@ -242,6 +242,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             SetXmlData();
             DebugTo.XmlData = XmlData;
+            DebugTo.JsonData = JsonData;
             DebugTo.RememberInputs = RememberInputs;
             if (DebugTo.DataList != null)
             {
@@ -269,6 +270,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             dataList.Add(new XElement(@"BDSDebugMode", DebugTo.IsDebugMode));
             dataList.Add(new XElement(@"DebugSessionID", DebugTo.SessionID));
             dataList.Add(new XElement(@"EnvironmentID", _resourceModel.Environment.EnvironmentID));
+            dataList.Add(new XElement(@"JsonData", DebugTo.JsonData));
             OnDebugExecutionStart();
             SendExecuteRequest(dataList);
         }
@@ -405,6 +407,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             DebugTo = Broker.InitDebugSession(DebugTo);
             SetInputData();
             XmlData = DebugTo.XmlData;
+            JsonData = DebugTo.JsonData;
             RememberInputs = DebugTo.RememberInputs;
             DataList = DebugTo.BinaryDataList;
 
@@ -433,6 +436,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
                     DebugTo.XmlData = prevDoc.InnerXml;
                     DebugTo.BinaryDataList = new DataListModel();
+                    DebugTo.BinaryDataList.JsonData = DebugTo.JsonData;
                     DebugTo.BinaryDataList.Create(DebugTo.XmlData, DebugTo.DataList);
                 }
                 catch (Exception ex)
@@ -578,7 +582,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public void SetXmlData(bool includeBlank)
         {
-            var dataListString = new AddToDatalistObject(this).DataListObject(includeBlank);
+            var dataListString = new AddToDatalistObject(this).DataListObject(includeBlank);           
             JsonData = dataListString;
             var xml = JsonConvert.DeserializeXNode(dataListString, @"DataList", true);
 

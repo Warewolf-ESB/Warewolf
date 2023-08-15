@@ -6,6 +6,7 @@ using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Data.ServiceModel;
 using Dev2.Studio.Interfaces;
+using System.Text;
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -14,6 +15,7 @@ namespace Warewolf.Studio.ViewModels
         readonly IStudioUpdateManager _updateManager;
         readonly IQueryManager _queryManager;
         readonly IShellViewModel _shellViewModel;
+        const string passwordAttr = "Password=";
 
         public ManageRabbitMQSourceModel(IStudioUpdateManager updateManager, IQueryManager queryManager, IShellViewModel shellViewModel)
         {
@@ -37,11 +39,34 @@ namespace Warewolf.Studio.ViewModels
         public IRabbitMQServiceSourceDefinition FetchSource(Guid resourceID)
         {
             var xaml = _queryManager.FetchResourceXaml(resourceID);
+            xaml = EscapeValue(xaml);
             var source = new RabbitMQSource(xaml.ToXElement());
             var def = new RabbitMQServiceSourceDefinition(source);
             return def;
         }
 
+
+        public static StringBuilder EscapeValue(StringBuilder xml)
+        {
+            try
+            {                
+                if (xml.Contains(passwordAttr))
+                {
+                    var firstIndexPOS = xml.ToString().IndexOf(passwordAttr) + passwordAttr.Length;
+                    var secondIndexPOS = xml.ToString().IndexOf("VirtualHost=") - 1;
+                    var indexLength = secondIndexPOS - firstIndexPOS;
+                    var tmpStr = xml.ToString().Substring(firstIndexPOS, indexLength);
+                    tmpStr = tmpStr.Replace("&", "&amp;").Replace("'", "&apos;").Replace("\"", "&quot;").Replace(">", "&gt;").Replace("<", "&lt;");
+                    xml = xml.Remove(firstIndexPOS, indexLength);
+                    xml = xml.Insert(firstIndexPOS, tmpStr);
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return xml;
+        }
         #endregion Implementation of IRabbitMQSourceModel
     }
 }

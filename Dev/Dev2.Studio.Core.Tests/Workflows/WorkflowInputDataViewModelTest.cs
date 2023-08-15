@@ -40,6 +40,7 @@ namespace Dev2.Core.Tests.Workflows
         readonly Guid _resourceID = Guid.Parse("2b975c6d-670e-49bb-ac4d-fb1ce578f66a");
         readonly Guid _serverID = Guid.Parse("51a58300-7e9d-4927-a57b-e5d700b11b55");
         const string ResourceName = "TestWorkflow";
+        const string Category = "New Folder/TestWorkflow";
 
         public TestContext TestContext { get; set; }
 
@@ -790,6 +791,59 @@ namespace Dev2.Core.Tests.Workflows
             }
         }
 
+
+        [TestMethod]
+        [Owner("Yogesh Rajpurohit")]
+        [TestCategory(nameof(WorkflowInputDataViewModel))]
+        public void WorkflowInputDataViewModel_SetXmlData_GetJsonData()
+        {
+            //------------Setup for test--------------------------
+            const string Shape = @"<DataList><obj Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""Input""><a Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None""></a><b Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None""></b></obj></DataList>";
+
+            var rm = new Mock<IContextualResourceModel>();
+            rm.Setup(r => r.ServerID).Returns(_serverID);
+            rm.Setup(r => r.ResourceName).Returns(ResourceName);
+            rm.Setup(r => r.WorkflowXaml).Returns(new StringBuilder(StringResourcesTest.DebugInputWindow_WorkflowXaml));
+            rm.Setup(r => r.ID).Returns(_resourceID);
+            rm.Setup(r => r.DataList).Returns(Shape);
+
+            var mockDataListViewModel = new Mock<IDataListViewModel>();
+            var objObject = new ComplexObjectItemModel("obj", null, enDev2ColumnArgumentDirection.Input);
+            objObject.Children.Add(new ComplexObjectItemModel("a", objObject, enDev2ColumnArgumentDirection.Input));
+            objObject.Children.Add(new ComplexObjectItemModel("b", objObject, enDev2ColumnArgumentDirection.Input));
+            
+            var objObject2 = new ComplexObjectItemModel("JsonData", null, enDev2ColumnArgumentDirection.Input);
+            objObject2.Children.Add(new ComplexObjectItemModel("{\"obj\": {\"c\": 1}}", objObject, enDev2ColumnArgumentDirection.Input));
+
+            var complexObjectItemModels = new ObservableCollection<IComplexObjectItemModel> { objObject, objObject2 };
+            mockDataListViewModel.Setup(model => model.ComplexObjectCollection).Returns(complexObjectItemModels);
+            DataListSingleton.SetDataList(mockDataListViewModel.Object);
+            var serviceDebugInfoModel = new ServiceDebugInfoModel
+            {
+                DebugModeSetting = DebugMode.DebugInteractive,
+                RememberInputs = true,
+                ResourceModel = rm.Object,
+                ServiceInputData = "<DataList><obj><c>1</c></obj></DataList>"
+            };
+
+            var debugVM = CreateDebugOutputViewModel();
+
+            using (var workflowInputDataViewModel = new WorkflowInputDataViewModel(serviceDebugInfoModel, debugVM.SessionID))
+            {
+                //------------Execute Test---------------------------
+                workflowInputDataViewModel.DebugTo.JsonData = "{\"obj\": {\"c\": 1,    \"a\": \"\",    \"b\": \"\"  }}";
+                workflowInputDataViewModel.LoadWorkflowInputs();
+                workflowInputDataViewModel.SetXmlData();
+                
+                //------------Assert Results-------------------------
+                Assert.AreEqual("{  \"obj\": {    \"c\": 1,    \"a\": \"\",    \"b\": \"\"  }}", workflowInputDataViewModel.JsonData.Replace(Environment.NewLine, ""));
+            }
+        }
+
+
+
+
+
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory(nameof(WorkflowInputDataViewModel))]
@@ -852,6 +906,19 @@ namespace Dev2.Core.Tests.Workflows
                 workflowInputDataviewModel.ViewClosed();
                 Assert.AreEqual(DebugStatus.Finished, debugVM.DebugStatus);
             }
+        }
+        
+        [TestMethod]
+        [Owner("Njabulo Nxele")]
+        [TestCategory(nameof(WorkflowInputDataViewModel))]
+        public void WorkflowInputDataViewModel_ValidateWorkflowID()
+        {
+            var debugVM = CreateDebugOutputViewModel();
+            var mockResouce = GetMockResource();
+            var serviceDebugInfo = GetMockServiceDebugInfo(mockResouce);
+
+            var workflowInputDataviewModel = new WorkflowInputDataViewModelMock(serviceDebugInfo.Object, debugVM);
+            Assert.AreEqual(Category, workflowInputDataviewModel.DebugTo.WorkflowID);
         }
 
         [TestMethod]
@@ -937,6 +1004,7 @@ namespace Dev2.Core.Tests.Workflows
                 payload.Add(new XElement("BDSDebugMode", workflowInputDataViewModel.DebugTo.IsDebugMode));
                 payload.Add(new XElement("DebugSessionID", workflowInputDataViewModel.DebugTo.SessionID));
                 payload.Add(new XElement("EnvironmentID", Guid.Empty));
+                payload.Add(new XElement("JsonData", workflowInputDataViewModel.DebugTo.JsonData));
 
                 var expectedPayload = payload.ToString(SaveOptions.None);
                 var actualPayload = workflowInputDataViewModel.SendExecuteRequestPayload.ToString(SaveOptions.None);
@@ -1273,6 +1341,7 @@ namespace Dev2.Core.Tests.Workflows
             var mockResource = new Mock<IContextualResourceModel>();
             mockResource.SetupGet(r => r.ServerID).Returns(_serverID);
             mockResource.SetupGet(r => r.ResourceName).Returns(ResourceName);
+            mockResource.SetupGet(r => r.Category).Returns(Category);
             mockResource.SetupGet(r => r.WorkflowXaml).Returns(new StringBuilder(StringResourcesTest.DebugInputWindow_WorkflowXaml));
             mockResource.SetupGet(r => r.ID).Returns(_resourceID);
             mockResource.SetupGet(r => r.DataList).Returns(StringResourcesTest.DebugInputWindow_NoInputs_XMLData);

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -36,7 +36,6 @@ namespace Dev2.Core.Tests.Settings
         [TestInitialize]
         public void Setup()
         {
-
             AppUsageStats.LocalHost = "http://localhost:3142";
             _mockEnvironment = new Mock<IServer>();
             _mockConnection = new Mock<IEnvironmentConnection>();
@@ -50,7 +49,8 @@ namespace Dev2.Core.Tests.Settings
         }
 
         [TestMethod]
-        [TestCategory("PerfcounterViewModel_Constructor")]
+        [TestCategory("PerfcounterViewModel")]
+        [Timeout(300000)]
         public void PerfcounterViewModel_ServerCountersCompare_Given_Null_Server_Counters_Returns_False()
         {
             CommonSetupHelper.RegisterServerRepository();
@@ -64,17 +64,23 @@ namespace Dev2.Core.Tests.Settings
             _mockEnvironment.Setup(model => model.AuthorizationService).Returns(authorizationService.Object);
             var activeServer = new Server(Guid.NewGuid(), _mockConnection.Object);
             ServerRepository.Instance.ActiveServer = activeServer;
-            var counters = new PrivateType(typeof(PerfcounterViewModel));
+            CustomContainer.Register<IExplorerTooltips>(new ExplorerTooltips());
+            var mockPerformanceCounters = new Mock<IPerformanceCounterTo>();
+            mockPerformanceCounters.Setup(counter=>counter.NativeCounters).Returns(new List<IPerformanceCounter>());
+            mockPerformanceCounters.Setup(counter=>counter.ResourceCounters).Returns(new List<IResourcePerformanceCounter>());
+            var privateCounters = new PerfcounterViewModel(mockPerformanceCounters.Object, new Mock<IServer>().Object);
+            var counters = new Warewolf.Testing.PrivateObject(privateCounters);
             CustomContainer.Register(new Mock<IExplorerTooltips>().Object);
             //------------Setup for test------------------------
             //------------Execute Test--------------------------
-            var invokeStatic = counters.InvokeStatic("GetEnvironment");
+            var invokeStatic = counters.Invoke("GetEnvironment", true);
             //------------Assert Results-------------------------
             Assert.IsNotNull(invokeStatic);
         }
 
         [TestMethod]
-        [TestCategory("PerfcounterViewModel_Constructor")]
+        [TestCategory("PerfcounterViewModel")]
+        [Timeout(300000)]
         public void PerfcounterViewModel_Equals_Given_Null_Server_Counters_Returns_False()
         {
             CommonSetupHelper.RegisterServerRepository();
@@ -83,17 +89,18 @@ namespace Dev2.Core.Tests.Settings
             perfCounterTo.Setup(to => to.ResourceCounters).Returns(new List<IResourcePerformanceCounter>());
             perfCounterTo.Setup(to => to.NativeCounters).Returns(new List<IPerformanceCounter>());
             var perfcounterViewModel = new PerfcounterViewModel(perfCounterTo.Object, new Mock<IServer>().Object);
-            var counters = new PrivateObject(perfcounterViewModel);
+            var counters = new Warewolf.Testing.PrivateObject(perfcounterViewModel);
             //------------Setup for test--------------------------
             var ItemServerCounters = perfcounterViewModel.ServerCounters = null;
             //------------Execute Test---------------------------
-            var areEqual = counters.Invoke("Equals", args: new object[] { null, ItemServerCounters });
+            var areEqual = counters.Invoke("Equals", new object[] { null, ItemServerCounters });
             //------------Assert Results-------------------------
             Assert.IsFalse(areEqual.Equals(true));
         }
 
         [TestMethod]
-        [TestCategory("PerfcounterViewModel_Constructor")]
+        [TestCategory("PerfcounterViewModel")]
+        [Timeout(300000)]
         public void PerfcounterViewModel_Equals_Given_Null_Resource_Counters_Returns_False()
         {
             CommonSetupHelper.RegisterServerRepository();
@@ -102,21 +109,22 @@ namespace Dev2.Core.Tests.Settings
             perfCounterTo.Setup(to => to.ResourceCounters).Returns(new List<IResourcePerformanceCounter>());
             perfCounterTo.Setup(to => to.NativeCounters).Returns(new List<IPerformanceCounter>());
             var perfcounterViewModel = new PerfcounterViewModel(perfCounterTo.Object, new Mock<IServer>().Object);
-            var counters = new PrivateObject(perfcounterViewModel);
+            var counters = new Warewolf.Testing.PrivateObject(perfcounterViewModel);
 
             var ItemServerCounters = new List<IPerformanceCountersByMachine>();
             var ItemResourceCounters = perfcounterViewModel.ResourceCounters = null;
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            var areEqual = counters.Invoke("Equals", args: new object[] { ItemServerCounters, ItemResourceCounters });
+            var areEqual = counters.Invoke("Equals", new object[] { ItemServerCounters, ItemResourceCounters });
             //------------Assert Results-------------------------
             Assert.IsFalse(areEqual.Equals(true));
         }
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("PerfcounterViewModel_Constructor")]
+        [TestCategory("PerfcounterViewModel")]
         [ExpectedException(typeof(ArgumentNullException))]
+        [Timeout(300000)]
         public void PerfcounterViewModel_Constructor_NullPerfCounters_ThrowsException()
         {
             //------------Setup for test--------------------------
@@ -129,8 +137,9 @@ namespace Dev2.Core.Tests.Settings
         
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("PerfcounterViewModel_Constructor")]
+        [TestCategory("PerfcounterViewModel")]
         [ExpectedException(typeof(ArgumentNullException))]
+        [Timeout(300000)]
         public void PerfcounterViewModel_Constructor_NullEnvironment_ThrowsException()
         {
             //------------Setup for test--------------------------
@@ -143,7 +152,8 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("PerfcounterViewModel_Constructor")]
+        [TestCategory("PerfcounterViewModel")]
+        [Timeout(300000)]
         public void PerfcounterViewModel_Constructor_ResourcePickerFunction_ShouldCreateResourcePicker()
         {
             //------------Setup for test--------------------------
@@ -157,7 +167,8 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("PerfcounterViewModel_Constructor")]
+        [TestCategory("PerfcounterViewModel")]
+        [Timeout(300000)]
         public void PerfcounterViewModel_Constructor_WithPerfCounters_ShouldSetupCollections()
         {
             //------------Setup for test--------------------------
@@ -196,7 +207,8 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("PerfcounterViewModel_Constructor")]
+        [TestCategory("PerfcounterViewModel")]
+        [Timeout(300000)]
         public void PerfcounterViewModel_UpdatePerfCounter_ShouldFirePropertyChange()
         {
             //------------Setup for test--------------------------
@@ -232,7 +244,8 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("PerfcounterViewModel_Constructor")]
+        [TestCategory("PerfcounterViewModel")]
+        [Timeout(300000)]
         public void PerfcounterViewModel_UpdatePerfCounter_ResourceCounterSetCounterNameEmpty_ShouldRemoveCounter()
         {
             //------------Setup for test--------------------------
@@ -263,7 +276,8 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("PerfcounterViewModel_Constructor")]
+        [TestCategory("PerfcounterViewModel")]
+        [Timeout(300000)]
         public void PerfcounterViewModel_UpdatePerfCounter_ResourceCounterSetCounterNameNull_ShouldRemoveCounter()
         {
             //------------Setup for test--------------------------
@@ -294,7 +308,8 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        [TestCategory("PerfcounterViewModel_Constructor")]
+        [TestCategory("PerfcounterViewModel")]
+        [Timeout(300000)]
         public void PerfcounterViewModel_UpdatePerfCounter_ResourceCounterSetCounterNameNull_IsDirtyFalse()
         {
             //------------Setup for test--------------------------
@@ -327,7 +342,8 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("PerfcounterViewModel_Constructor")]
+        [TestCategory("PerfcounterViewModel")]
+        [Timeout(300000)]
         public void PerfcounterViewModel_Save_ShouldUpdatePerfCounterTo()
         {
             //------------Setup for test--------------------------
@@ -387,7 +403,8 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("PerfcounterViewModel_Constructor")]
+        [TestCategory("PerfcounterViewModel")]
+        [Timeout(300000)]
         public void PerfcounterViewModel_UpdatePerfCounter_ResourceCounterSetDeleted_ShouldNotSaveCounter()
         {
             //------------Setup for test--------------------------
@@ -420,7 +437,8 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("PerfcounterViewModel_ResetCounters")]
+        [TestCategory("PerfcounterViewModel")]
+        [Timeout(300000)]
         public void PerfcounterViewModel_ResetCounters_Command_NoError_ShouldCallCommunicationsController()
         {
             //------------Setup for test--------------------------
@@ -449,7 +467,8 @@ namespace Dev2.Core.Tests.Settings
         
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("PerfcounterViewModel_ResetCounters")]
+        [TestCategory("PerfcounterViewModel")]
+        [Timeout(300000)]
         public void PerfcounterViewModel_ResetCounters_Command_Error_ShouldCallCommunicationsController()
         {
             //------------Setup for test--------------------------
@@ -478,7 +497,8 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("PerfcounterViewModel_PickResource")]
+        [TestCategory("PerfcounterViewModel")]
+        [Timeout(300000)]
         public void PerfcounterViewModel_PickResource_WhenCounterNull_DoesNothing()
         {
             //------------Setup for test--------------------------
@@ -497,7 +517,8 @@ namespace Dev2.Core.Tests.Settings
         
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("PerfcounterViewModel_PickResource")]
+        [TestCategory("PerfcounterViewModel")]
+        [Timeout(300000)]
         public void PerfcounterViewModel_PickResource_WhenNotCounterPassed_DoesNothing()
         {
             //------------Setup for test--------------------------
@@ -516,7 +537,8 @@ namespace Dev2.Core.Tests.Settings
         
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("PerfcounterViewModel_PickResource")]
+        [TestCategory("PerfcounterViewModel")]
+        [Timeout(300000)]
         public void PerfcounterViewModel_PickResource_WhenCounterPassed_SetsBasedOnResource()
         {
             //------------Setup for test--------------------------
@@ -546,7 +568,8 @@ namespace Dev2.Core.Tests.Settings
         
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("PerfcounterViewModel_PickResource")]
+        [TestCategory("PerfcounterViewModel")]
+        [Timeout(300000)]
         public void PerfcounterViewModel_PickResource_WhenNoResource_DoesNothing()
         {
             //------------Setup for test--------------------------
@@ -575,7 +598,8 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("PerfcounterViewModel_UpdateHelpDescriptor")]
+        [TestCategory("PerfcounterViewModel")]
+        [Timeout(300000)]
         public void PerfcounterViewModel_UpdateHelpDescriptor_HelpText_ShouldCallUpdateHelpText()
         {
             //------------Setup for test--------------------------

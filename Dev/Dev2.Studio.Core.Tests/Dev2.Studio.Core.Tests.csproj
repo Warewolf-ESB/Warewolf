@@ -118,9 +118,6 @@
     <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
-    <AdditionalFiles Include="..\SonarQube\SonarLint.xml">
-      <Visible>False</Visible>
-    </AdditionalFiles>
     <Compile Include="Activities\Services\DesignerManagementServiceTests.cs" />
     <Compile Include="Activities\WorkerServicePropertyInterigatorTest.cs" />
     <Compile Include="Activities\WorkflowPropertyInterigatorTest.cs" />
@@ -498,6 +495,7 @@
     </PackageReference>
     <PackageReference Include="MSTest.TestFramework" Version="2.1.2" />
     <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.4" />
+	<PackageReference Include="Microsoft.Web.WebView2" Version="1.0.1072.54" />
   </ItemGroup>
   <ItemGroup />
   <PropertyGroup>

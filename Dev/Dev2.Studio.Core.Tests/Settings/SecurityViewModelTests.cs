@@ -110,6 +110,7 @@ namespace Dev2.Core.Tests.Settings
         [Owner("Trevor Williams-Ros")]
         [TestCategory(nameof(SecurityViewModel))]
         [ExpectedException(typeof(ArgumentNullException))]
+        [Timeout(300000)]
         public void SecurityViewModel_Constructor_DirectoryObjectPickerDialogIsNull_ThrowsArgumentNullException()
         {
             //------------Setup for test--------------------------
@@ -126,6 +127,7 @@ namespace Dev2.Core.Tests.Settings
         [Owner("Trevor Williams-Ros")]
         [TestCategory(nameof(SecurityViewModel))]
         [ExpectedException(typeof(ArgumentNullException))]
+        [Timeout(300000)]
         public void SecurityViewModel_Constructor_ParentWindowIsNull_ThrowsArgumentNullException()
         {
             //------------Setup for test--------------------------
@@ -142,6 +144,7 @@ namespace Dev2.Core.Tests.Settings
         [Owner("Trevor Williams-Ros")]
         [TestCategory(nameof(SecurityViewModel))]
         [ExpectedException(typeof(ArgumentNullException))]
+        [Timeout(300000)]
         public void SecurityViewModel_Constructor_EnvironmentIsNull_ThrowsArgumentNullException()
         {
             //------------Setup for test--------------------------
@@ -157,6 +160,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory(nameof(SecurityViewModel))]
+        [Timeout(300000)]
         public void SecurityViewModel_Constructor_SecuritySettingsIsNull_PropertiesInitialized()
         {
             Verify_Constructor_InitializesProperties(null);
@@ -165,6 +169,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory(nameof(SecurityViewModel))]
+        [Timeout(300000)]
         public void SecurityViewModel_Constructor_AllParametersValid_PropertiesInitialized()
         {
             //------------Setup for test--------------------------
@@ -240,6 +245,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory(nameof(SecurityViewModel))]
+        [Timeout(300000)]
         public void SecurityViewModel_OnPermissionPropertyChanged_PermissionChanged_IsDirtyIsTrue()
         {
             //------------Setup for test--------------------------
@@ -268,6 +274,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory(nameof(SecurityViewModel))]
+        [Timeout(300000)]
         public void SecurityViewModel_OnPermissionPropertyChanged_MakeContributeTrue_MakesViewExecuteTrue()
         {
             //------------Setup for test--------------------------
@@ -295,6 +302,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory(nameof(SecurityViewModel))]
+        [Timeout(300000)]
         public void SecurityViewModel_OnPermissionPropertyChanged_WithContributeTrue_MakeViewFalse_MakesContributeFalse()
         {
             //------------Setup for test--------------------------
@@ -322,6 +330,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory(nameof(SecurityViewModel))]
+        [Timeout(300000)]
         public void SecurityViewModel_OnPermissionPropertyChanged_WithContributeTrue_MakeExecuteFalse_MakesContributeFalse()
         {
             //------------Setup for test--------------------------
@@ -349,6 +358,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory(nameof(SecurityViewModel))]
+        [Timeout(300000)]
         public void SecurityViewModel_OnPermissionPropertyChanged_MakeAdministratorTrue_MakesAllOtherPermissionsTrue()
         {
             //------------Setup for test--------------------------
@@ -382,6 +392,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory(nameof(SecurityViewModel))]
+        [Timeout(300000)]
         public void SecurityViewModel_OnPermissionPropertyChanged_MakeDeployFromFalse_MakesAdministratorPermissionFalse()
         {
             //------------Setup for test--------------------------
@@ -415,6 +426,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory(nameof(SecurityViewModel))]
+        [Timeout(300000)]
         public void SecurityViewModel_OnPermissionPropertyChanged_MakeDeployToFalse_MakesAdministratorPermissionFalse()
         {
             //------------Setup for test--------------------------
@@ -448,6 +460,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory(nameof(SecurityViewModel))]
+        [Timeout(300000)]
         public void SecurityViewModel_OnPermissionPropertyChanged_MakeContributeFalse_MakesAdministratorPermissionFalse()
         {
             //------------Setup for test--------------------------
@@ -481,6 +494,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory(nameof(SecurityViewModel))]
+        [Timeout(300000)]
         public void SecurityViewModel_OnPermissionPropertyChanged_MakeViewFalse_MakesAdministratorPermissionFalse()
         {
             //------------Setup for test--------------------------
@@ -514,6 +528,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory(nameof(SecurityViewModel))]
+        [Timeout(300000)]
         public void SecurityViewModel_OnPermissionPropertyChanged_MakeExecuteFalse_MakesAdministratorPermissionFalse()
         {
             //------------Setup for test--------------------------
@@ -547,6 +562,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory(nameof(SecurityViewModel))]
+        [Timeout(300000)]
         public void SecurityViewModel_OnPermissionPropertyChanged_ServerPermissionWindowsGroupChangedToNonEmptyAndIsNew_NewServerPermissionIsAdded()
         {
             //------------Setup for test--------------------------
@@ -568,6 +584,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory(nameof(SecurityViewModel))]
+        [Timeout(300000)]
         public void SecurityViewModel_OnPermissionPropertyChanged_ServerPermissionWindowsGroupChangedToEmptyAndIsNotNew_ServerPermissionIsRemoved()
         {
             //------------Setup for test--------------------------
@@ -602,6 +619,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory(nameof(SecurityViewModel))]
+        [Timeout(300000)]
         public void SecurityViewModel_OnPermissionPropertyChanged_ResourcePermissionWindowsGroupAndResourceNameChangedToNonEmptyAndIsNew_NewResourcePermissionIsAdded()
         {
             //------------Setup for test--------------------------
@@ -624,6 +642,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory(nameof(SecurityViewModel))]
+        [Timeout(300000)]
         public void SecurityViewModel_OnPermissionPropertyChanged_ResourcePermissionWindowsGroupChangedToEmptyAndIsNotNew_ResourcePermissionIsRemoved()
         {
             //------------Setup for test--------------------------
@@ -658,6 +677,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory(nameof(SecurityViewModel))]
+        [Timeout(300000)]
         public void SecurityViewModel_PickWindowsGroupCommand_DialogResultIsNotOK_DoesNothing()
         {
             //------------Setup for test--------------------------
@@ -688,6 +708,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory(nameof(SecurityViewModel))]
+        [Timeout(300000)]
         public void SecurityViewModel_PickWindowsGroupCommand_DialogResultIsOKAndNothingSelected_DoesNothing()
         {
             //------------Setup for test--------------------------
@@ -718,6 +739,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory(nameof(SecurityViewModel))]
+        [Timeout(300000)]
         public void SecurityViewModel_PickWindowsGroupCommand_PermissionIsNull_DoesNothing()
         {
             //------------Setup for test--------------------------
@@ -748,6 +770,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory(nameof(SecurityViewModel))]
+        [Timeout(300000)]
         public void SecurityViewModel_PickWindowsGroupCommand_ResultIsNull_PermissionWindowsGroupIsNotUpdated()
         {
             //------------Setup for test--------------------------
@@ -779,6 +802,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory(nameof(SecurityViewModel))]
+        [Timeout(300000)]
         public void SecurityViewModel_PickWindowsGroupCommand_ResultIsNotNull_PermissionWindowsGroupIsUpdated()
         {
             //------------Setup for test--------------------------
@@ -813,6 +837,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory(nameof(SecurityViewModel))]
+        [Timeout(300000)]
         public void SecurityViewModel_PickWindowsGroupCommand_ResultIsEmptyArray_DoesNothing()
         {
             //------------Setup for test--------------------------
@@ -844,6 +869,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory(nameof(SecurityViewModel))]
+        [Timeout(300000)]
         public void SecurityViewModel_PickResourceCommand_PermissionIsNull_DoesNothing()
         {
             //------------Setup for test--------------------------
@@ -879,6 +905,7 @@ namespace Dev2.Core.Tests.Settings
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(SecurityViewModel))]
         [ExpectedException(typeof(Exception), "Server does not exist")]
+        [Timeout(300000)]
         public void SecurityViewModel_PickResourceCommand_WindowsGroupPermission_ExpectException()
         {
             //------------Setup for test--------------------------
@@ -913,6 +940,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(SecurityViewModel))]
+        [Timeout(300000)]
         public void SecurityViewModel_PickResourceCommand_WindowsGroupPermission()
         {
             //------------Setup for test--------------------------
@@ -965,6 +993,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(SecurityViewModel))]
+        [Timeout(300000)]
         public void SecurityViewModel_PickResourceCommand_EnvironmentViewModel()
         {
             //------------Setup for test--------------------------
@@ -1022,6 +1051,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(SecurityViewModel))]
+        [Timeout(300000)]
         public void SecurityViewModel_PickResourceCommand_ExplorerItemViewModel()
         {
             //------------Setup for test--------------------------
@@ -1077,6 +1107,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory(nameof(SecurityViewModel))]
+        [Timeout(300000)]
         public void SecurityViewModel_HelpText_IsResourceHelpVisibleIsTrue_ContainsResourceHelpText()
         {
             //------------Setup for test--------------------------
@@ -1093,6 +1124,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory(nameof(SecurityViewModel))]
+        [Timeout(300000)]
         public void SecurityViewModel_IsServerHelpVisible_ChangedToTrueAndIsResourceHelpVisibleIsTrue_IsResourceHelpVisibleIsFalse()
         {
             //------------Setup for test--------------------------
@@ -1108,6 +1140,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory(nameof(SecurityViewModel))]
+        [Timeout(300000)]
         public void SecurityViewModel_IsResourceHelpVisible_ChangedToTrueAndIsServerHelpVisibleIsTrue_IsServerHelpVisibleIsFalse()
         {
             //------------Setup for test--------------------------
@@ -1123,6 +1156,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory(nameof(SecurityViewModel))]
+        [Timeout(300000)]
         public void SecurityViewModel_CloseHelpCommand_IsServerHelpVisibleIsTrue_IsServerHelpVisibleIsFalse()
         {
             //------------Setup for test--------------------------
@@ -1139,6 +1173,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory(nameof(SecurityViewModel))]
+        [Timeout(300000)]
         public void SecurityViewModel_CloseHelpCommand_IsResourceHelpVisibleIsTrue_IsResourceHelpVisibleIsFalse()
         {
             //------------Setup for test--------------------------
@@ -1156,6 +1191,7 @@ namespace Dev2.Core.Tests.Settings
         [Owner("Trevor Williams-Ros")]
         [TestCategory(nameof(SecurityViewModel))]
         [ExpectedException(typeof(ArgumentNullException))]
+        [Timeout(300000)]
         public void SecurityViewModel_Save_NullPermissions_ThrowsArgumentNullException()
         {
             //------------Setup for test--------------------------
@@ -1170,6 +1206,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory(nameof(SecurityViewModel))]
+        [Timeout(300000)]
         public void SecurityViewModel_Save_InvalidPermissions_InvalidPermissionsAreRemoved()
         {
             //------------Setup for test--------------------------
@@ -1204,6 +1241,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory(nameof(SecurityViewModel))]
+        [Timeout(300000)]
         public void SecurityViewModel_Save_DeletedPermissions_DeletedPermissionsAreRemoved()
         {
             //------------Setup for test--------------------------
@@ -1238,6 +1276,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Sanele Mthembu")]
         [TestCategory(nameof(SecurityViewModel))]
+        [Timeout(300000)]
         public void SecurityViewModel_HasInvalidResourcePermission_Given_Invalid_Resource_That_Is_Being_Deleted_ReturnsFalse()
         {
             //------------Setup for test--------------------------
@@ -1259,6 +1298,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Sanele Mthembu")]
         [TestCategory(nameof(SecurityViewModel))]
+        [Timeout(300000)]
         public void SecurityViewModel_HasInvalidResourcePermission_Given_Resource_And_No_Group_ReturnsTrue()
         {
             //------------Setup for test--------------------------
@@ -1278,6 +1318,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Sanele Mthembu")]
         [TestCategory(nameof(SecurityViewModel))]
+        [Timeout(300000)]
         public void SecurityViewModel_HasInvalidResourcePermission_Given_Group_And_No_Resource_ReturnsTrue()
         {
             //------------Setup for test--------------------------
@@ -1297,6 +1338,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory(nameof(SecurityViewModel))]
+        [Timeout(300000)]
         public void SecurityViewModel_ServerDuplicates_NoDuplicates_ReturnsFalse()
         {
             //------------Setup for test--------------------------
@@ -1323,6 +1365,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory(nameof(SecurityViewModel))]
+        [Timeout(300000)]
         public void SecurityViewModel_ServerDuplicates_HasDuplicatesDeleted_ReturnsFalse()
         {
             //------------Setup for test--------------------------
@@ -1351,6 +1394,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory(nameof(SecurityViewModel))]
+        [Timeout(300000)]
         public void SecurityViewModel_ServerDuplicates_Duplicates_ReturnsTrue()
         {
             //------------Setup for test--------------------------
@@ -1377,6 +1421,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory(nameof(SecurityViewModel))]
+        [Timeout(300000)]
         public void SecurityViewModel_HasDuplicateResourcePermissions_NoDuplicatesResourceID_ReturnsFalse()
         {
             //------------Setup for test--------------------------
@@ -1403,6 +1448,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory(nameof(SecurityViewModel))]
+        [Timeout(300000)]
         public void SecurityViewModel_HasDuplicateResourcePermissions_NoDuplicatesWindowsGroup_ReturnsFalse()
         {
             //------------Setup for test--------------------------
@@ -1430,6 +1476,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory(nameof(SecurityViewModel))]
+        [Timeout(300000)]
         public void SecurityViewModel_HasDuplicateResourcePermissions_DuplicateDeleted_ReturnsFalse()
         {
             //------------Setup for test--------------------------
@@ -1458,6 +1505,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory(nameof(SecurityViewModel))]
+        [Timeout(300000)]
         public void SecurityViewModel_ResourcePermissionsCompare_IsDeleted_ReturnsTrue()
         {
             //------------Setup for test--------------------------
@@ -1495,6 +1543,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory(nameof(SecurityViewModel))]
+        [Timeout(300000)]
         public void SecurityViewModel_ServerPermissionsCompare_IsDeleted_ReturnsTrue()
         {
             //------------Setup for test--------------------------
@@ -1532,6 +1581,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory(nameof(SecurityViewModel))]
+        [Timeout(300000)]
         public void SecurityViewModel_HasDuplicateResourcePermissions_DuplicateNotDeleted_ReturnsTrue()
         {
             //------------Setup for test--------------------------
@@ -1559,6 +1609,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(SecurityViewModel))]
+        [Timeout(300000)]
         public void SecurityViewModel_PickOverrideResourceCommand_Sets_OverrideResource_Null()
         {
             //------------Setup for test--------------------------
@@ -1621,6 +1672,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(SecurityViewModel))]
+        [Timeout(300000)]
         public void SecurityViewModel_PickOverrideResourceCommand_IsValidOverrideWorkflow_True()
         {
             //------------Setup for test--------------------------
@@ -1706,6 +1758,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(SecurityViewModel))]
+        [Timeout(300000)]
         public void SecurityViewModel_PickOverrideResourceCommand_IsValidOverrideWorkflow_GivenNoPublicPermissions_ExpectFalse()
         {
             //------------Setup for test--------------------------
@@ -1784,6 +1837,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(SecurityViewModel))]
+        [Timeout(300000)]
         public void SecurityViewModel_PickOverrideResourceCommand_IsValidOverrideWorkflow_False()
         {
             //------------Setup for test--------------------------
@@ -1873,6 +1927,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(SecurityViewModel))]
+        [Timeout(300000)]
         public void SecurityViewModel_ShowDirectoryObjectPickerDialog()
         {
             var popupMessage = new PopupMessage
@@ -1899,6 +1954,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(SecurityViewModel))]
+        [Timeout(300000)]
         public void SecurityViewModel_CreateResourcePickerDialog()
         {
             var mockShellViewModel = new Mock<IShellViewModel>();
@@ -1916,6 +1972,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(SecurityViewModel))]
+        [Timeout(300000)]
         public void SecurityViewModel_Equals_ResourcePermissions_Null()
         {
             var groupPermission = new WindowsGroupPermission
@@ -1945,6 +2002,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(SecurityViewModel))]
+        [Timeout(300000)]
         public void SecurityViewModel_Equals_ServerPermissions_WindowsGroup()
         {
             var viewModel = PermissionsValidation();
@@ -1959,6 +2017,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(SecurityViewModel))]
+        [Timeout(300000)]
         public void SecurityViewModel_Equals_ServerPermissions_DeployTo()
         {
             var viewModel = PermissionsValidation();
@@ -1972,6 +2031,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(SecurityViewModel))]
+        [Timeout(300000)]
         public void SecurityViewModel_Equals_ServerPermissions_DeployFrom()
         {
             var viewModel = PermissionsValidation();
@@ -1985,6 +2045,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(SecurityViewModel))]
+        [Timeout(300000)]
         public void SecurityViewModel_Equals_ServerPermissions_Administrator()
         {
             var viewModel = PermissionsValidation();
@@ -1998,6 +2059,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(SecurityViewModel))]
+        [Timeout(300000)]
         public void SecurityViewModel_Equals_ServerPermissions_View()
         {
             var viewModel = PermissionsValidation();
@@ -2011,6 +2073,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(SecurityViewModel))]
+        [Timeout(300000)]
         public void SecurityViewModel_Equals_ServerPermissions_Execute()
         {
             var viewModel = PermissionsValidation();
@@ -2024,6 +2087,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(SecurityViewModel))]
+        [Timeout(300000)]
         public void SecurityViewModel_Equals_ServerPermissions_Contribute()
         {
             var viewModel = PermissionsValidation();
@@ -2037,6 +2101,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(SecurityViewModel))]
+        [Timeout(300000)]
         public void SecurityViewModel_Equals_ServerPermissions_IsDeleted()
         {
             var viewModel = PermissionsValidation();
@@ -2082,6 +2147,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(SecurityViewModel))]
+        [Timeout(300000)]
         public void SecurityViewModel_Equals_ResourcePermissions_ResourceName()
         {
             var viewModel = PermissionsValidation();
@@ -2095,6 +2161,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(SecurityViewModel))]
+        [Timeout(300000)]
         public void SecurityViewModel_Equals_ResourcePermissions_WindowsGroup()
         {
             var viewModel = PermissionsValidation();
@@ -2108,6 +2175,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(SecurityViewModel))]
+        [Timeout(300000)]
         public void SecurityViewModel_Equals_ResourcePermissions_View()
         {
             var viewModel = PermissionsValidation();
@@ -2121,6 +2189,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(SecurityViewModel))]
+        [Timeout(300000)]
         public void SecurityViewModel_Equals_ResourcePermissions_Execute()
         {
             var viewModel = PermissionsValidation();
@@ -2134,6 +2203,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(SecurityViewModel))]
+        [Timeout(300000)]
         public void SecurityViewModel_Equals_ResourcePermissions_Contribute()
         {
             var viewModel = PermissionsValidation();
@@ -2147,6 +2217,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(SecurityViewModel))]
+        [Timeout(300000)]
         public void SecurityViewModel_Equals_ResourcePermissions_DeployTo()
         {
             var viewModel = PermissionsValidation();
@@ -2160,6 +2231,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(SecurityViewModel))]
+        [Timeout(300000)]
         public void SecurityViewModel_Equals_ResourcePermissions_DeployFrom()
         {
             var viewModel = PermissionsValidation();
@@ -2173,6 +2245,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(SecurityViewModel))]
+        [Timeout(300000)]
         public void SecurityViewModel_Equals_ResourcePermissions_Administrator()
         {
             var viewModel = PermissionsValidation();

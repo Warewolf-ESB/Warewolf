@@ -283,8 +283,8 @@ namespace Dev2.Runtime.Hosting
 
         private static void EnsureFileClosed(string filepath)
         {
-            bool fileClosed = false;
-            int retries = 20;
+            var fileClosed = false;
+            var retries = 20;
             const int delay = 500; // Max time spent here = retries*delay milliseconds
 
             if (!File.Exists(filepath))
@@ -299,9 +299,12 @@ namespace Dev2.Runtime.Hosting
                     fs.Close();
                     fileClosed = true; // success
                 }
+#pragma warning disable CC0004
                 catch (IOException)
                 {
+                    //File already closed
                 }
+#pragma warning restore CC0004
                 
                 retries--;
 

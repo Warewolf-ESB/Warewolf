@@ -115,7 +115,7 @@ namespace Dev2.Tests.Diagnostics
         }
 
         [TestMethod]
-        [Owner("Pieter Terblanche")]
+        [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DebugItem))]
         public void DebugItem_TruncateItemResultIfNeeded_With_ValueGreaterThanMaxCharDispatchCount_Expected_TruncatesValueToActCharDispatchCount()
         {
@@ -124,7 +124,8 @@ namespace Dev2.Tests.Diagnostics
             var debugState = new DebugItem();
             debugState.TruncateItemResultIfNeeded(item);
 
-            Assert.AreEqual(DebugItem.ActCharDispatchCount, item.Value.Length);
+            Assert.AreNotEqual(DebugItem.ActCharDispatchCount, item.Value.Length, "To ensure that only the UI components are truncating the value we needed to add the TruncateValue property");
+            Assert.AreEqual(DebugItem.ActCharDispatchCount, item.TruncatedValue.Length);
         }
 
         [TestMethod]
@@ -301,7 +302,7 @@ namespace Dev2.Tests.Diagnostics
         }
 
         [TestMethod]
-        [Owner("Pieter Terblanche")]
+        [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DebugItem))]
         public void DebugItem_GroupIndex_Less_Than_MaxItemDispatchCount()
         {
@@ -311,7 +312,8 @@ namespace Dev2.Tests.Diagnostics
             Assert.AreEqual(5, item.ResultsList[0].GroupIndex);
             Assert.AreEqual("Hello", item.ResultsList[0].GroupName);
             Assert.IsFalse(item.ResultsList[0].HasError);
-            Assert.AreEqual("Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore", item.ResultsList[0].Value);
+            Assert.AreNotEqual("Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore", item.ResultsList[0].Value, "To ensure that only the UI components are truncating the value we needed to add the TruncateValue property");
+            Assert.AreEqual("Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore", item.ResultsList[0].TruncatedValue);
             Assert.IsTrue(item.ResultsList[0].MoreLink.StartsWith("http://localhost:3142/Services/FetchDebugItemFileService?DebugItemFilePath=C:\\ProgramData\\Warewolf\\Temp\\Warewolf\\Debug\\", StringComparison.Ordinal), "Expected " + item.ResultsList[0].MoreLink);
         }
 

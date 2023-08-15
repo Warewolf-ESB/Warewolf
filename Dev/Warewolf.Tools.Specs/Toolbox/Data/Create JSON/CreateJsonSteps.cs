@@ -14,17 +14,9 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Create_JSON
 {
     public class CreateJsonSteps : RecordSetBases
     {
-        readonly ScenarioContext scenarioContext;
-
         public CreateJsonSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
         {
-            if (scenarioContext == null)
-            {
-                throw new ArgumentNullException("scenarioContext");
-            }
-
-            this.scenarioContext = scenarioContext;
         }
 
         [Given(@"I select variable ""(.*)"" with name ""(.*)""")]

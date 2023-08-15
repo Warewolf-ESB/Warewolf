@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2022 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -112,6 +112,16 @@ namespace Dev2.Common
             }
         }
 
+        public bool UseAsServer
+        {
+            get => _settings?.UseAsServer ?? true;
+            set
+            {
+                _settings.UseAsServer = value;
+                Save();
+            }
+        }
+
         public string DashboardHostname
         {
             get => _settings.DashboardHostname ?? DefaultDashboardHostname;
@@ -166,26 +176,20 @@ namespace Dev2.Common
             set
             {
                 _settings.ExecutionLogLevel = value;
-                Save();
             }
         }
+
         public string Sink
         {
             get => GetSink();
             set
             {
                 _settings.Sink = value;
-                Save();
             }
         }
 
         private string GetSink()
         {
-            if (_settings.Sink == null && _settings.AuditFilePath != null)
-            {
-                return nameof(LegacySettingsData);
-            }
-
             if (_settings.Sink != null )
             {
                 {
@@ -194,9 +198,18 @@ namespace Dev2.Common
             }
             return DefaultSink;
         }
-
+        
         [Obsolete("AuditFilePath is deprecated. It will be deleted in future releases.")]
-        public string AuditFilePath => _settings.AuditFilePath ?? LegacySettings.DefaultAuditPath;
+        public string AuditFilePath => LegacySettings.DefaultAuditPath;
+
+        public bool IncludeEnvironmentVariable
+        {
+            get => _settings.IncludeEnvironmentVariable;
+            set
+            {
+                _settings.IncludeEnvironmentVariable = value;
+            }
+        }
 
         public ushort WebServerPort => _settings.WebServerPort ?? 0;
         public ushort WebServerSslPort => _settings.WebServerSslPort ?? 0;
@@ -266,6 +279,8 @@ namespace Dev2.Common
         public static string DefaultAuditPath => Path.Combine(Config.AppDataPath, @"Audits");
         public static string DefaultEndpoint => "ws://127.0.0.1:5000/ws";
 
+        public const long DefaultAuditLogMaxSize = 2000;
+
         public LegacySettings()
             : this(SettingsPath, new FileWrapper(), new DirectoryWrapper())
         {
@@ -295,17 +310,22 @@ namespace Dev2.Common
             set
             {
                 _settings.AuditFilePath = value;
-                Save();
             }
         }
 
+        public long AuditLogMaxSize
+        {             
+            get => (_settings.AuditLogMaxSize == 0) ? DefaultAuditLogMaxSize : _settings.AuditLogMaxSize;
+            set
+            {
+                _settings.AuditLogMaxSize = value;
+            }
+        }
+
+
+
         private string GetAuditFilePath()
         {
-            if (_settings.AuditFilePath == null && Config.Server.AuditFilePath != null)
-            {
-                return Config.Server.AuditFilePath;
-            }
-
             if (_settings.AuditFilePath != null )
             {
                 {
@@ -314,9 +334,19 @@ namespace Dev2.Common
             }
             return DefaultAuditPath;
         }
+        
         public string Endpoint
         {
             get => _settings.Endpoint ?? DefaultEndpoint;
+        }
+
+        public bool IncludeEnvironmentVariable
+        {
+            get => _settings.IncludeEnvironmentVariable;
+            set
+            {
+                _settings.IncludeEnvironmentVariable = value;
+            }
         }
 
         public bool SaveLoggingPath(string auditsFilePath)
@@ -422,7 +452,7 @@ namespace Dev2.Common
             set
             {
                 _settings.EncryptDataSource = value;
-                Save();
+                //Save();
             }
         }
         public NamedGuidWithEncryptedPayload LoggingDataSource
@@ -431,10 +461,19 @@ namespace Dev2.Common
             set
             {
                 _settings.LoggingDataSource = value;
-                Save();
+                //Save();
             }
         }
 
         public string Endpoint => _settings.Endpoint ?? DefaultEndpoint;
+
+        public bool IncludeEnvironmentVariable 
+        { 
+            get => _settings.IncludeEnvironmentVariable;
+            set
+            {
+                _settings.IncludeEnvironmentVariable = value;
+            }
+        }       
     }
 }

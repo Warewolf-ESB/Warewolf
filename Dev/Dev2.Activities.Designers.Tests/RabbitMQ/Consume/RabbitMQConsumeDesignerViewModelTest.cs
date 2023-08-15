@@ -130,7 +130,7 @@ namespace Dev2.Activities.Designers.Tests.RabbitMQ.Consume
 
             //------------Execute Test---------------------------
             var vm = new RabbitMQConsumeDesignerViewModel(CreateModelItem(), model.Object);
-            var privateObject = new PrivateObject(vm);
+            var privateObject = new Warewolf.Testing.PrivateObject(vm);
             privateObject.Invoke("NewRabbitMQSource");
 
             //------------Assert Results-------------------------

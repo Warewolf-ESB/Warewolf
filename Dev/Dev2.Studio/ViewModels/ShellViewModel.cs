@@ -61,6 +61,7 @@ using Dev2.Data.ServiceModel;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.Enums;
 using System.IO;
+using System.Threading;
 using Dev2.Webs;
 using Dev2.Common.Wrappers;
 using Dev2.Common.Interfaces.Wrappers;
@@ -260,12 +261,12 @@ namespace Dev2.Studio.ViewModels
             {
                 if (!SubscriptionData.IsLicensed || ActiveItem is null)
                 {
-                    return new AuthorizeCommand(AuthorizationContext.None, p => { }, param => false);
+                    return new AuthorizeCommand(Dev2.Common.Interfaces.Enums.AuthorizationContext.None, p => { }, param => false);
                 }
 
                 if (ActiveItem.WorkSurfaceKey.WorkSurfaceContext != WorkSurfaceContext.Workflow && ActiveItem.WorkSurfaceViewModel is IStudioTab vm)
                 {
-                    return new AuthorizeCommand(AuthorizationContext.Any, o => vm.DoDeactivate(false), o => vm.IsDirty);
+                    return new AuthorizeCommand(Dev2.Common.Interfaces.Enums.AuthorizationContext.Any, o => vm.DoDeactivate(false), o => vm.IsDirty);
                 }
 
                 return ActiveItem.SaveCommand;
@@ -274,22 +275,22 @@ namespace Dev2.Studio.ViewModels
 
         public IAuthorizeCommand DebugCommand
         {
-            get => ActiveItem == null ? new AuthorizeCommand(AuthorizationContext.None, p => { }, param => false) : ActiveItem.DebugCommand;
+            get => ActiveItem == null ? new AuthorizeCommand(Dev2.Common.Interfaces.Enums.AuthorizationContext.None, p => { }, param => false) : ActiveItem.DebugCommand;
         }
 
         public IAuthorizeCommand QuickDebugCommand
         {
-            get => ActiveItem == null ? new AuthorizeCommand(AuthorizationContext.None, p => { }, param => false) : ActiveItem.QuickDebugCommand;
+            get => ActiveItem == null ? new AuthorizeCommand(Dev2.Common.Interfaces.Enums.AuthorizationContext.None, p => { }, param => false) : ActiveItem.QuickDebugCommand;
         }
 
         public IAuthorizeCommand QuickViewInBrowserCommand
         {
-            get => ActiveItem == null ? new AuthorizeCommand(AuthorizationContext.None, p => { }, param => false) : ActiveItem.QuickViewInBrowserCommand;
+            get => ActiveItem == null ? new AuthorizeCommand(Dev2.Common.Interfaces.Enums.AuthorizationContext.None, p => { }, param => false) : ActiveItem.QuickViewInBrowserCommand;
         }
 
         public IAuthorizeCommand ViewInBrowserCommand
         {
-            get => ActiveItem == null ? new AuthorizeCommand(AuthorizationContext.None, p => { }, param => false) : ActiveItem.ViewInBrowserCommand;
+            get => ActiveItem == null ? new AuthorizeCommand(Dev2.Common.Interfaces.Enums.AuthorizationContext.None, p => { }, param => false) : ActiveItem.ViewInBrowserCommand;
         }
 
         public ICommand ShowStartPageCommand
@@ -307,7 +308,7 @@ namespace Dev2.Studio.ViewModels
             get
             {
                 return _settingsCommand ?? (_settingsCommand =
-                    new AuthorizeCommand(AuthorizationContext.Administrator, param => _worksurfaceContextManager.AddSettingsWorkSurface(), param => IsActiveServerConnected()));
+                    new AuthorizeCommand(Dev2.Common.Interfaces.Enums.AuthorizationContext.Administrator, param => _worksurfaceContextManager.AddSettingsWorkSurface(), param => IsActiveServerConnected()));
             }
         }
 
@@ -444,102 +445,102 @@ namespace Dev2.Studio.ViewModels
 
         public IAuthorizeCommand SchedulerCommand
         {
-            get => _schedulerCommand ?? (_schedulerCommand = new AuthorizeCommand(AuthorizationContext.Administrator, param => _worksurfaceContextManager.AddSchedulerWorkSurface(), param => IsActiveServerConnected()));
+            get => _schedulerCommand ?? (_schedulerCommand = new AuthorizeCommand(Dev2.Common.Interfaces.Enums.AuthorizationContext.Administrator, param => _worksurfaceContextManager.AddSchedulerWorkSurface(), param => IsActiveServerConnected()));
         }
 
         public IAuthorizeCommand QueueEventsCommand
         {
-            get => _queueEventsCommand ?? (_queueEventsCommand = new AuthorizeCommand(AuthorizationContext.Administrator, param => _worksurfaceContextManager.AddQueuesWorkSurface(), param => IsActiveServerConnected()));
+            get => _queueEventsCommand ?? (_queueEventsCommand = new AuthorizeCommand(Dev2.Common.Interfaces.Enums.AuthorizationContext.Administrator, param => _worksurfaceContextManager.AddQueuesWorkSurface(), param => IsActiveServerConnected()));
         }
 
         public IAuthorizeCommand TasksCommand
         {
-            get => _tasksCommand ?? (_tasksCommand = new AuthorizeCommand(AuthorizationContext.Administrator, param => _worksurfaceContextManager.AddTriggersWorkSurface(), param => IsActiveServerConnected()));
+            get => _tasksCommand ?? (_tasksCommand = new AuthorizeCommand(Dev2.Common.Interfaces.Enums.AuthorizationContext.Administrator, param => _worksurfaceContextManager.AddTriggersWorkSurface(), param => IsActiveServerConnected()));
         }
 
         public IAuthorizeCommand<string> NewServiceCommand
         {
-            get => _newServiceCommand ?? (_newServiceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewService(@""), param => IsActiveServerConnected()));
+            get => _newServiceCommand ?? (_newServiceCommand = new AuthorizeCommand<string>(Dev2.Common.Interfaces.Enums.AuthorizationContext.Contribute, param => NewService(@""), param => IsActiveServerConnected()));
         }
 
         public IAuthorizeCommand<string> NewPluginSourceCommand
         {
-            get => _newPluginSourceCommand ?? (_newPluginSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewPluginSource(@""), param => IsActiveServerConnected()));
+            get => _newPluginSourceCommand ?? (_newPluginSourceCommand = new AuthorizeCommand<string>(Dev2.Common.Interfaces.Enums.AuthorizationContext.Contribute, param => NewPluginSource(@""), param => IsActiveServerConnected()));
         }
 
         public IAuthorizeCommand<string> NewSqlServerSourceCommand
         {
-            get => _newSqlServerSourceCommand ?? (_newSqlServerSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewSqlServerSource(@""), param => IsActiveServerConnected()));
+            get => _newSqlServerSourceCommand ?? (_newSqlServerSourceCommand = new AuthorizeCommand<string>(Dev2.Common.Interfaces.Enums.AuthorizationContext.Contribute, param => NewSqlServerSource(@""), param => IsActiveServerConnected()));
         }
 
         public IAuthorizeCommand<string> NewMySqlSourceCommand
         {
-            get => _newMySqlSourceCommand ?? (_newMySqlSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewMySqlSource(@""), param => IsActiveServerConnected()));
+            get => _newMySqlSourceCommand ?? (_newMySqlSourceCommand = new AuthorizeCommand<string>(Dev2.Common.Interfaces.Enums.AuthorizationContext.Contribute, param => NewMySqlSource(@""), param => IsActiveServerConnected()));
         }
 
         public IAuthorizeCommand<string> NewPostgreSqlSourceCommand
         {
-            get => _newPostgreSqlSourceCommand ?? (_newPostgreSqlSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewPostgreSqlSource(@""), param => IsActiveServerConnected()));
+            get => _newPostgreSqlSourceCommand ?? (_newPostgreSqlSourceCommand = new AuthorizeCommand<string>(Dev2.Common.Interfaces.Enums.AuthorizationContext.Contribute, param => NewPostgreSqlSource(@""), param => IsActiveServerConnected()));
         }
 
         public IAuthorizeCommand<string> NewOracleSourceCommand
         {
-            get => _newOracleSourceCommand ?? (_newOracleSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewOracleSource(@""), param => IsActiveServerConnected()));
+            get => _newOracleSourceCommand ?? (_newOracleSourceCommand = new AuthorizeCommand<string>(Dev2.Common.Interfaces.Enums.AuthorizationContext.Contribute, param => NewOracleSource(@""), param => IsActiveServerConnected()));
         }
 
         public IAuthorizeCommand<string> NewOdbcSourceCommand
         {
-            get => _newOdbcSourceCommand ?? (_newOdbcSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewOdbcSource(@""), param => IsActiveServerConnected()));
+            get => _newOdbcSourceCommand ?? (_newOdbcSourceCommand = new AuthorizeCommand<string>(Dev2.Common.Interfaces.Enums.AuthorizationContext.Contribute, param => NewOdbcSource(@""), param => IsActiveServerConnected()));
         }
 
         public IAuthorizeCommand<string> NewWebSourceCommand
         {
-            get => _newWebSourceCommand ?? (_newWebSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewWebSource(@""), param => IsActiveServerConnected()));
+            get => _newWebSourceCommand ?? (_newWebSourceCommand = new AuthorizeCommand<string>(Dev2.Common.Interfaces.Enums.AuthorizationContext.Contribute, param => NewWebSource(@""), param => IsActiveServerConnected()));
         }
 
         public IAuthorizeCommand<string> NewRedisSourceCommand
         {
-            get => _newRedisSourceCommand ?? (_newRedisSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewRedisSource(@""), param => IsActiveServerConnected()));
+            get => _newRedisSourceCommand ?? (_newRedisSourceCommand = new AuthorizeCommand<string>(Dev2.Common.Interfaces.Enums.AuthorizationContext.Contribute, param => NewRedisSource(@""), param => IsActiveServerConnected()));
         }
 
         public IAuthorizeCommand<string> NewElasticsearchSourceCommand
         {
-            get => _newElasticsearchSourceCommand ?? (_newElasticsearchSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewElasticsearchSource(@""), param => IsActiveServerConnected()));
+            get => _newElasticsearchSourceCommand ?? (_newElasticsearchSourceCommand = new AuthorizeCommand<string>(Dev2.Common.Interfaces.Enums.AuthorizationContext.Contribute, param => NewElasticsearchSource(@""), param => IsActiveServerConnected()));
         }
 
         public IAuthorizeCommand<string> NewServerSourceCommand
         {
-            get => _newServerSourceCommand ?? (_newServerSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewServerSource(@""), param => IsActiveServerConnected()));
+            get => _newServerSourceCommand ?? (_newServerSourceCommand = new AuthorizeCommand<string>(Dev2.Common.Interfaces.Enums.AuthorizationContext.Contribute, param => NewServerSource(@""), param => IsActiveServerConnected()));
         }
 
         public IAuthorizeCommand<string> NewEmailSourceCommand
         {
-            get => _newEmailSourceCommand ?? (_newEmailSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewEmailSource(@""), param => IsActiveServerConnected()));
+            get => _newEmailSourceCommand ?? (_newEmailSourceCommand = new AuthorizeCommand<string>(Dev2.Common.Interfaces.Enums.AuthorizationContext.Contribute, param => NewEmailSource(@""), param => IsActiveServerConnected()));
         }
 
         public IAuthorizeCommand<string> NewExchangeSourceCommand
         {
-            get => _newExchangeSourceCommand ?? (_newExchangeSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewExchangeSource(@""), param => IsActiveServerConnected()));
+            get => _newExchangeSourceCommand ?? (_newExchangeSourceCommand = new AuthorizeCommand<string>(Dev2.Common.Interfaces.Enums.AuthorizationContext.Contribute, param => NewExchangeSource(@""), param => IsActiveServerConnected()));
         }
 
         public IAuthorizeCommand<string> NewRabbitMQSourceCommand
         {
-            get => _newRabbitMQSourceCommand ?? (_newRabbitMQSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewRabbitMQSource(@""), param => IsActiveServerConnected()));
+            get => _newRabbitMQSourceCommand ?? (_newRabbitMQSourceCommand = new AuthorizeCommand<string>(Dev2.Common.Interfaces.Enums.AuthorizationContext.Contribute, param => NewRabbitMQSource(@""), param => IsActiveServerConnected()));
         }
 
         public IAuthorizeCommand<string> NewSharepointSourceCommand
         {
-            get => _newSharepointSourceCommand ?? (_newSharepointSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewSharepointSource(@""), param => IsActiveServerConnected()));
+            get => _newSharepointSourceCommand ?? (_newSharepointSourceCommand = new AuthorizeCommand<string>(Dev2.Common.Interfaces.Enums.AuthorizationContext.Contribute, param => NewSharepointSource(@""), param => IsActiveServerConnected()));
         }
 
         public IAuthorizeCommand<string> NewDropboxSourceCommand
         {
-            get => _newDropboxSourceCommand ?? (_newDropboxSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewDropboxSource(@""), param => IsActiveServerConnected()));
+            get => _newDropboxSourceCommand ?? (_newDropboxSourceCommand = new AuthorizeCommand<string>(Dev2.Common.Interfaces.Enums.AuthorizationContext.Contribute, param => NewDropboxSource(@""), param => IsActiveServerConnected()));
         }
 
         public IAuthorizeCommand<string> NewWcfSourceCommand
         {
-            get => _newWcfSourceCommand ?? (_newWcfSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewWcfSource(@""), param => IsActiveServerConnected()));
+            get => _newWcfSourceCommand ?? (_newWcfSourceCommand = new AuthorizeCommand<string>(Dev2.Common.Interfaces.Enums.AuthorizationContext.Contribute, param => NewWcfSource(@""), param => IsActiveServerConnected()));
         }
 
         public ICommand ExitCommand
@@ -2007,49 +2008,68 @@ namespace Dev2.Studio.ViewModels
         }
 
         readonly Func<IWorkspaceItemRepository> _getWorkspaceItemRepository = () => WorkspaceItemRepository.Instance;
-
+        
+        private SemaphoreSlim throttler = new SemaphoreSlim(1, 1);
         protected virtual void AddWorkspaceItems(IPopupController popupController)
         {
-            if (ServerRepository == null)
+            try
             {
-                return;
-            }
-
-            var workspaceItemsToRemove = new HashSet<IWorkspaceItem>();
-            for (int i = 0; i < _getWorkspaceItemRepository().WorkspaceItems.Count; i++)
-            {
-                var item = _getWorkspaceItemRepository().WorkspaceItems[i];
-                Dev2Logger.Info($"Start Proccessing WorkspaceItem: {item.ServiceName}", GlobalConstants.WarewolfInfo);
-                var environment = ServerRepository.All().Where(env => env.IsConnected).TakeWhile(env => env.Connection != null).FirstOrDefault(env => env.EnvironmentID == item.EnvironmentID);
-
-                if (environment?.ResourceRepository == null)
+                throttler.Wait();
+                
+                if (ServerRepository == null)
                 {
-                    Dev2Logger.Info(@"Environment Not Found", GlobalConstants.WarewolfInfo);
-                    if (environment != null && item.EnvironmentID == environment.EnvironmentID)
+                    return;
+                }
+
+                var workspaceItemsToRemove = new HashSet<IWorkspaceItem>();
+                for (int i = 0; i < _getWorkspaceItemRepository().WorkspaceItems.Count; i++)
+                {
+                    var item = _getWorkspaceItemRepository().WorkspaceItems[i];
+                    Dev2Logger.Info($"Start Proccessing WorkspaceItem: {item.ServiceName}",
+                        GlobalConstants.WarewolfInfo);
+                    var environment = ServerRepository.All().Where(env => env.IsConnected)
+                        .TakeWhile(env => env.Connection != null)
+                        .FirstOrDefault(env => env.EnvironmentID == item.EnvironmentID);
+
+                    if (environment?.ResourceRepository == null)
+                    {
+                        Dev2Logger.Info(@"Environment Not Found", GlobalConstants.WarewolfInfo);
+                        if (environment != null && item.EnvironmentID == environment.EnvironmentID)
+                        {
+                            workspaceItemsToRemove.Add(item);
+                        }
+                    }
+
+                    if (environment != null)
+                    {
+                        Dev2Logger.Info(
+                            $"Proccessing WorkspaceItem: {item.ServiceName} for Environment: {environment.DisplayName}",
+                            GlobalConstants.WarewolfInfo);
+                        if (environment.ResourceRepository != null)
+                        {
+                            environment.ResourceRepository.LoadResourceFromWorkspace(item.ID, item.WorkspaceID);
+                            var resource = environment.ResourceRepository?.All().FirstOrDefault(rm =>
+                            {
+                                return EnvironmentContainsResourceModel(rm, item, environment);
+                            }) as IContextualResourceModel;
+                            AddResourcesAsWorkSurfaceItem(workspaceItemsToRemove, item, environment, resource,
+                                popupController);
+                        }
+                    }
+                    else
                     {
                         workspaceItemsToRemove.Add(item);
                     }
                 }
 
-                if (environment != null)
+                foreach (IWorkspaceItem workspaceItem in workspaceItemsToRemove)
                 {
-                    Dev2Logger.Info($"Proccessing WorkspaceItem: {item.ServiceName} for Environment: {environment.DisplayName}", GlobalConstants.WarewolfInfo);
-                    if (environment.ResourceRepository != null)
-                    {
-                        environment.ResourceRepository.LoadResourceFromWorkspace(item.ID, item.WorkspaceID);
-                        var resource = environment.ResourceRepository?.All().FirstOrDefault(rm => { return EnvironmentContainsResourceModel(rm, item, environment); }) as IContextualResourceModel;
-                        AddResourcesAsWorkSurfaceItem(workspaceItemsToRemove, item, environment, resource, popupController);
-                    }
-                }
-                else
-                {
-                    workspaceItemsToRemove.Add(item);
+                    _getWorkspaceItemRepository().WorkspaceItems.Remove(workspaceItem);
                 }
             }
-
-            foreach (IWorkspaceItem workspaceItem in workspaceItemsToRemove)
+            finally
             {
-                _getWorkspaceItemRepository().WorkspaceItems.Remove(workspaceItem);
+                throttler.Release();
             }
         }
 

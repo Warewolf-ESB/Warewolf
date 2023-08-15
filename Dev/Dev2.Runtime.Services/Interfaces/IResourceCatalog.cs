@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Versioning;
 using Dev2.DynamicServices;
 using Dev2.Runtime.Hosting;
 using Dev2.Services.Security;
@@ -44,6 +45,7 @@ namespace Dev2.Runtime.Interfaces
         void CleanUpOldVersionControlStructure();
         IResourceActivityCache GetResourceActivityCache(Guid workspaceID);
         void RemoveFromResourceActivityCache(Guid workspaceID, IResource resource);
+        void RemoveFromResourceActivityCache(Guid workspaceID, Guid resourceId);
         string SetResourceFilePath(Guid workspaceID, IResource resource, ref string savedPath);
         ResourceCatalogResult SaveImpl(Guid workspaceID, IResource resource, StringBuilder contents);
         ResourceCatalogResult SaveImpl(Guid workspaceID, IResource resource, StringBuilder contents, string savedPath);
@@ -56,6 +58,8 @@ namespace Dev2.Runtime.Interfaces
         IContextualResourceCatalog NewContextualResourceCatalog(IAuthorizationService authService, Guid workspaceId);
         IWarewolfWorkflow GetWorkflow(Guid resourceId);
         ResourceCatalogResult SaveResources(Guid serverWorkspaceID, List<DuplicateResourceTO> resourceMaps, bool overrideExisting);
+        IServerVersionRepository GetServerVersionRepository();
+        ResourceCatalogPluginContainer GetCatalogPluginContainer();
     }
 
     public interface IResourceCatalogFactory

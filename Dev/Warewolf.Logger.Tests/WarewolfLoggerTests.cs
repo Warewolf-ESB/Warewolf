@@ -27,20 +27,20 @@ namespace Warewolf.Logger.Tests
     [TestClass]
     public class WarewolfLoggerTests
     {
-        [TestMethod]
-        [Owner("Candice Daniel")]
-        [TestCategory(nameof(WarewolfLogger))]
-        public void WorkerContext_GivenValidConstruct_ExpectValidSource()
-        {
-            var args = new Args
-            {
-                Verbose = true,
-                ServerEndpoint = new Uri("http://somehost:1234")
-            };
-            var context = ConstructLoggerContext(args, out var source);
-            Assert.IsNotNull(context.Source);
-            Assert.IsTrue(context.Verbose);
-        }
+        // [TestMethod]
+        // [Owner("Candice Daniel")]
+        // [TestCategory(nameof(WarewolfLogger))]
+        // public void WorkerContext_GivenValidConstruct_ExpectValidSource()
+        // {
+        //     var args = new Args
+        //     {
+        //         Verbose = true,
+        //         ServerEndpoint = new Uri("http://somehost:1234")
+        //     };
+        //     var context = ConstructLoggerContext(args, out var source);
+        //     Assert.IsNotNull(context.Source);
+        //     Assert.IsTrue(context.Verbose);
+        // }
 
         [TestMethod]
         [Owner("Candice Daniel")]

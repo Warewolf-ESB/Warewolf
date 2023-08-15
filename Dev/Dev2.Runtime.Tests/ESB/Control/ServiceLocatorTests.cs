@@ -98,7 +98,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             var recCat = new Mock<IResourceCatalog>();
             recCat.Setup(catalog => catalog.GetDynamicObjects<DynamicService>(Guid.Empty, "service")).Returns(new List<DynamicService> { null });
             var locator = new ServiceLocator();
-            var privateObject = new PrivateObject(locator);
+            var privateObject = new Warewolf.Testing.PrivateObject(locator);
             privateObject.SetField("_resourceCatalog", recCat.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(locator);
@@ -118,7 +118,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             var service = new DynamicService();
             recCat.Setup(catalog => catalog.GetDynamicObjects<DynamicService>(Guid.Empty, "service")).Returns(new List<DynamicService> {service});
             var locator = new ServiceLocator();
-            var privateObject = new PrivateObject(locator);
+            var privateObject = new Warewolf.Testing.PrivateObject(locator);
             privateObject.SetField("_resourceCatalog", recCat.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(locator);
@@ -151,7 +151,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             recCat.Setup(catalog => catalog.GetResource(Guid.Empty, "service")).Returns(res.Object);
             ServiceActionRepo.Instance.AddToCache(resourceId, new DynamicService());
             var locator = new ServiceLocator();
-            var privateObject = new PrivateObject(locator);
+            var privateObject = new Warewolf.Testing.PrivateObject(locator);
             privateObject.SetField("_resourceCatalog", recCat.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(locator);
@@ -173,7 +173,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             recCat.Setup(catalog => catalog.GetDynamicObjects<DynamicService>(Guid.Empty, resourceId)).Returns(new List<DynamicService>() { new DynamicService() });
             ServiceActionRepo.Instance.AddToCache(resourceId,new DynamicService());
             var locator = new ServiceLocator();
-            var privateObject = new PrivateObject(locator);
+            var privateObject = new Warewolf.Testing.PrivateObject(locator);
             privateObject.SetField("_resourceCatalog", recCat.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(locator);
@@ -204,7 +204,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             var recCat = new Mock<IResourceCatalog>();
             recCat.Setup(catalog => catalog.GetDynamicObjects<DynamicService>(Guid.Empty, resourceId)).Returns(new List<DynamicService> { null });
             var locator = new ServiceLocator();
-            var privateObject = new PrivateObject(locator);
+            var privateObject = new Warewolf.Testing.PrivateObject(locator);
             privateObject.SetField("_resourceCatalog", recCat.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(locator);
@@ -257,7 +257,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             service.Actions = new List<ServiceAction> { serviceAction };
             recCat.Setup(catalog => catalog.GetDynamicObjects<DynamicService>(Guid.Empty, newGuid)).Returns(new List<DynamicService> {service});
             var locator = new ServiceLocator();
-            var privateObject = new PrivateObject(locator);
+            var privateObject = new Warewolf.Testing.PrivateObject(locator);
             privateObject.SetField("_resourceCatalog", recCat.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(locator);
@@ -307,7 +307,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             const string resourceName = "SourceName";
             recCat.Setup(catalog => catalog.GetDynamicObjects<Source>(Guid.Empty, resourceName)).Returns(new List<Source>() {new Source()  });
             var locator = new ServiceLocator();
-            var privateObject = new PrivateObject(locator);
+            var privateObject = new Warewolf.Testing.PrivateObject(locator);
             privateObject.SetField("_resourceCatalog", recCat.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(locator);

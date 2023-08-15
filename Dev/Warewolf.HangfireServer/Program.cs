@@ -73,6 +73,7 @@ namespace HangfireServer
             private readonly IPauseHelper _pause;
             private readonly IHangfireContext _hangfireContext;
             private readonly IEventWaitHandle _eventWaitHandlerFactory = EventWaitHandleFactory.CreateInstance();
+            private readonly Dev2.Data.Interfaces.Enums.LogLevel _logLevel = Config.Server.ExecutionLogLevel.ConvertToLogLevelEnum();
             public Implementation(IHangfireContext hangfireContext, ConfigImpl implConfig)
             {
                 _logger = implConfig.ExecutionLoggerFactory.New(new JsonSerializer(), new WebSocketPool());
@@ -101,14 +102,20 @@ namespace HangfireServer
                         _ = new ConsoleWindow();
                     }
 
-                    _writer.WriteLine("Starting Hangfire server...");
-                    _logger.Debug("Starting Hangfire server...");
+                    if (_logLevel >= Dev2.Data.Interfaces.Enums.LogLevel.DEBUG)
+                    {
+                        _writer.WriteLine("Starting Hangfire server...");
+                        _logger.Debug("Starting Hangfire server...");
+                    }
 
                     var connectionString = ConnectionString();
                     if (string.IsNullOrEmpty(connectionString))
                     {
                         _logger.Error("Fatal Error: Could not find persistence config file. Hangfire server is unable to start.");
-                        _writer.WriteLine("Fatal Error: Could not find persistence config file. Hangfire server is unable to start.");
+                        if (Config.Server.ExecutionLogLevel == "INFO" || Config.Server.ExecutionLogLevel == "DEBUG" || Config.Server.ExecutionLogLevel == "TRACE")
+                        {
+                            _writer.WriteLine("Fatal Error: Could not find persistence config file. Hangfire server is unable to start.");
+                        }
                         _writer.Write("Press any key to exit...");
                         return;
                     }
@@ -118,20 +125,32 @@ namespace HangfireServer
                     var options = new StartOptions();
                     options.Urls.Add(dashboardEndpoint);
                     WebApp.Start<Dashboard>(options);
-                    _writer.WriteLine("Hangfire dashboard started...");
-                    _logger.Debug("Hangfire dashboard started...");
+
+                    if (_logLevel >= Dev2.Data.Interfaces.Enums.LogLevel.DEBUG)
+                    {
+                        _writer.WriteLine("Hangfire dashboard started...");
+                        _logger.Debug("Hangfire dashboard started...");
+                    }
+
                     // var backgroundJobServerOptions = new BackgroundJobServerOptions
                     // {
                     //     WorkerCount = Environment.ProcessorCount * 5
                     // };
                     // _ = new BackgroundJobServer(backgroundJobServerOptions);
-                    _writer.WriteLine("Hangfire server started...");
-                    _logger.Info("Hangfire server started...");
+                    
+                    if (_logLevel >= Dev2.Data.Interfaces.Enums.LogLevel.INFO)
+                    {
+                        _writer.WriteLine("Hangfire server started...");
+                        _logger.Info("Hangfire server started...");
+                    }
                 }
                 catch (Exception ex)
                 {
                     _logger.Error($"Hangfire Server OnError, Error details:{ex.Message}");
-                    _writer.WriteLine($"Hangfire Server OnError, Error details:{ex.Message}");
+                    if (Config.Server.ExecutionLogLevel == "INFO" || Config.Server.ExecutionLogLevel == "DEBUG" || Config.Server.ExecutionLogLevel == "TRACE")
+                    {
+                        _writer.WriteLine($"Hangfire Server OnError, Error details:{ex.Message}");
+                    }
                 }
             }
 

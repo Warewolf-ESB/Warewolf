@@ -276,6 +276,9 @@ namespace Dev2
                 foreach (var prop in propsMatching)
                 {
                     var value = prop.Value;
+                    
+                    value = GetJSONValue(inputObject, inputName, value);
+
                     var tokenType = value.Type;
                     if (tokenType == JTokenType.Object)
                     {
@@ -291,6 +294,22 @@ namespace Dev2
                     }
                 }
             }
+        }
+
+        private static JToken GetJSONValue(JObject inputObject, string inputName, JToken value)
+        {
+            //Get value from JsonData object
+            if (inputObject.Properties().Where(property => property.Name == "JsonData").FirstOrDefault() != null)
+            {
+                var jsonData = JObject.Parse(inputObject.Properties()
+                    .Where(property => property.Name == "JsonData").FirstOrDefault().Value.ToString());
+
+                var jsonValue = jsonData.Properties().Where(property => property.Name == inputName).FirstOrDefault();
+
+                value = jsonValue.Value;
+            }
+
+            return value;
         }
 
         private static void PerformRecordsetUpdate(IDSFDataObject dataObject, JToken value, List<string> processedRecsets, string input, List<string> recSets, string inputName, bool isValueRecordset)

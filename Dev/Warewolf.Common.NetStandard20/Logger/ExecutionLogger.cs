@@ -53,7 +53,7 @@ namespace Warewolf.Common.NetStandard20
             var command = new AuditCommand
             {
                 Type = executionHistory.AuditType,
-                ExecutionHistory = executionHistory
+                ExecutionHistory = executionHistory as ExecutionHistory
             };
             Publish(Serializer.Serialize(command));
         }

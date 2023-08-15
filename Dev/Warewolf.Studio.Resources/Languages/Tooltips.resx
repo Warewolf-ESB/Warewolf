@@ -2514,6 +2514,9 @@ To create a SFTP Key, put the full path and file or folder name here.</value>
   <data name="LoggingViewAuditsFilePathToolTip" xml:space="preserve">
     <value>Audits Folder Path</value>
   </data>
+	<data name="IncludeEnvironmentVariableToolTip" xml:space="preserve">
+    <value>Select the Include Environment Variables with your execution logs, for more detailed diagnostics.</value>
+  </data>
   <data name="LoggingViewAuditsDataSourceToolTip" xml:space="preserve">
     <value>Auditing Data Source</value>
   </data>
@@ -2618,6 +2621,9 @@ To create a SFTP Key, put the full path and file or folder name here.</value>
   </data>
   <data name="PersistenceViewPrepareSchemaIfNecessaryToolTip" xml:space="preserve">
     <value>Create the tables and index in the database if they dont already exist</value>
+  </data>
+	<data name="PersistenceViewUseAsServerToolTip" xml:space="preserve">
+    <value>Show the additional data to use hangfire as a server if checkbox is checked</value>
   </data>
   <data name="IsPutDataBase64Tooltip" xml:space="preserve">
     <value>Check this to send a base64 formatted body data.</value>

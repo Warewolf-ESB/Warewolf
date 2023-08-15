@@ -1,4 +1,5 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<RuleSet Name="SonarQube - Warewolf-ESB Sonar way" ToolsVersion="15.0">
-  <Include Path="..\sonarqube\warewolf-esbcsharp.ruleset" Action="Default" />
+<?xml version="1.0" encoding="utf-8"?>
+<RuleSet Name="SonarQube - Warewolf_DotNet_Framework Dev2 way" ToolsVersion="17.0">
+    <Include Path="..\.sonarlint\warewolf_dotnet_frameworkcsharp.ruleset" Action="Default" />
+    <Include Path="Dev2.Intellisense.ruleset" Action="Default" />
 </RuleSet>

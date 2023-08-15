@@ -19,6 +19,8 @@ using log4net;
 using log4net.Appender;
 using log4net.Repository.Hierarchy;
 using Dev2.Common.Interfaces.Logging;
+using System.Runtime.CompilerServices;
+using Microsoft.SharePoint.Client.Discovery;
 
 namespace Dev2.Common
 {
@@ -29,62 +31,92 @@ namespace Dev2.Common
 
         public static void Debug(object message, string executionId)
         {
-            var customMessage = UpdateCustomMessage(message, executionId);
-            _log.Debug(customMessage);
+            if (Config.Server.ExecutionLogLevel.ConvertToLogLevelEnum() >= Dev2.Data.Interfaces.Enums.LogLevel.DEBUG)
+            {
+                var customMessage = UpdateCustomMessage(message, executionId);
+                _log.Debug(customMessage);
+            }
         }
 
         public static void Debug(object message, Exception exception, string executionId)
         {
-            var customMessage = UpdateCustomMessage(message, executionId);
-            _log.Debug(customMessage, exception);
+            if (Config.Server.ExecutionLogLevel.ConvertToLogLevelEnum() >= Dev2.Data.Interfaces.Enums.LogLevel.DEBUG)
+            {
+                var customMessage = UpdateCustomMessage(message, executionId);
+                _log.Debug(customMessage, exception);
+            }
         }
 
         public static void Error(object message, string executionId)
         {
-            var customMessage = UpdateCustomMessage(message, executionId);
-            _log.Error(customMessage);
+            if (Config.Server.ExecutionLogLevel.ConvertToLogLevelEnum() >= Dev2.Data.Interfaces.Enums.LogLevel.ERROR)
+            {
+                var customMessage = UpdateCustomMessage(message, executionId);
+                _log.Error(customMessage);
+            }
         }
 
         public static void Error(object message, Exception exception, string executionId)
         {
-            var customMessage = UpdateCustomMessage(message, executionId);
-            _log.Error(customMessage, exception);
+            if (Config.Server.ExecutionLogLevel.ConvertToLogLevelEnum() >= Dev2.Data.Interfaces.Enums.LogLevel.ERROR)
+            {
+                var customMessage = UpdateCustomMessage(message, executionId);
+                _log.Error(customMessage, exception);
+            }
         }
 
         public static void Warn(object message, string executionId)
         {
-            var customMessage = UpdateCustomMessage(message, executionId);
-            _log.Warn(customMessage);
+            if (Config.Server.ExecutionLogLevel.ConvertToLogLevelEnum() >= Dev2.Data.Interfaces.Enums.LogLevel.WARN)
+            {
+                var customMessage = UpdateCustomMessage(message, executionId);
+                _log.Warn(customMessage);
+            }
         }
 
         public static void Warn(object message, Exception exception, string executionId)
         {
-            var customMessage = UpdateCustomMessage(message, executionId);
-            _log.Warn(customMessage, exception);
+            if (Config.Server.ExecutionLogLevel.ConvertToLogLevelEnum() >= Dev2.Data.Interfaces.Enums.LogLevel.WARN)
+            {
+                var customMessage = UpdateCustomMessage(message, executionId);
+                _log.Warn(customMessage, exception);
+            }
         }
 
         public static void Fatal(object message, string executionId)
         {
-            var customMessage = UpdateCustomMessage(message, executionId);
-            _log.Fatal(customMessage);
+            if (Config.Server.ExecutionLogLevel.ConvertToLogLevelEnum() >= Dev2.Data.Interfaces.Enums.LogLevel.FATAL)
+            {
+                var customMessage = UpdateCustomMessage(message, executionId);
+                _log.Fatal(customMessage);
+            }
         }
 
         public static void Fatal(object message, Exception exception, string executionId)
         {
-            var customMessage = UpdateCustomMessage(message, executionId);
-            _log.Fatal(customMessage, exception);
+            if (Config.Server.ExecutionLogLevel.ConvertToLogLevelEnum() >= Dev2.Data.Interfaces.Enums.LogLevel.FATAL)
+            {
+                var customMessage = UpdateCustomMessage(message, executionId);
+                _log.Fatal(customMessage, exception);
+            }
         }
 
         public static void Info(object message, string executionId)
         {
-            var customMessage = UpdateCustomMessage(message, executionId);
-            _log.Info(customMessage);
+            if (Config.Server.ExecutionLogLevel.ConvertToLogLevelEnum() >= Dev2.Data.Interfaces.Enums.LogLevel.INFO)
+            {
+                var customMessage = UpdateCustomMessage(message, executionId);
+                _log.Info(customMessage);
+            }
         }
 
         public static void Info(object message, Exception exception, string executionId)
         {
-            var customMessage = UpdateCustomMessage(message, executionId);
-            _log.Info(customMessage, exception);
+            if (Config.Server.ExecutionLogLevel.ConvertToLogLevelEnum() >= Dev2.Data.Interfaces.Enums.LogLevel.INFO)
+            {
+                var customMessage = UpdateCustomMessage(message, executionId);
+                _log.Info(customMessage, exception);
+            }
         }
 
         static string UpdateCustomMessage(object message, string executionId) => $"[{executionId}] - {message}";
@@ -126,10 +158,15 @@ namespace Dev2.Common
         {
             var h = (Hierarchy)LogManager.GetRepository();
             var rootLogger = h.Root;
-            if (rootLogger.GetAppender("LogFileAppender") is RollingFileAppender appender)
+            var appenderVals = LogManager.GetLogger("LogFileAppender").Logger.Repository.GetAppenders();
+            foreach (var appender in appenderVals)
             {
-                var logSize = appender.MaxFileSize / 1024 / 1024;
-                return (int)Math.Round((decimal)logSize, 0);
+                if (appender is RollingFileAppender rollingFileAppender)
+                {
+                    ByteConstants byteConstants = new ByteConstants();
+                    var logSize = Utilities.ByteConvertor(rollingFileAppender.MaxFileSize, byteConstants.OneMbValue);
+                    return (int)Math.Round((decimal)logSize, 0);
+                }
             }
             return 0;
         }
@@ -254,7 +291,7 @@ namespace Dev2.Common
 
         static void UpdateFileSizeForFileLogAppender(string maxLogSize, IList<XElement> appenders)
         {
-            var fileAppender = appenders.FirstOrDefault(element => element.Attribute("name").Value == "LogFileAppender");
+            var fileAppender = appenders.FirstOrDefault(element => element.Attribute("name").Value == "rollingFile");
             var maxFileSizeElement = fileAppender?.Element("maximumFileSize");
             var maxFileSizeElementValueAttrib = maxFileSizeElement?.Attribute("value");
             if (maxFileSizeElementValueAttrib != null)
@@ -333,6 +370,42 @@ namespace Dev2.Common
             errorMappingElement.Add(new XElement("eventLogEntryType", new XAttribute("value", eventLogType)));
             return errorMappingElement;
         }
+
+        public static Dev2.Data.Interfaces.Enums.LogLevel ConvertToLogLevelEnum(this string LogLevelString)
+        {
+            if (LogLevelString == Dev2.Data.Interfaces.Enums.LogLevel.OFF.ToString())
+            {
+                return Dev2.Data.Interfaces.Enums.LogLevel.OFF;
+            }
+            else if (LogLevelString == Dev2.Data.Interfaces.Enums.LogLevel.FATAL.ToString())
+            {
+                return Dev2.Data.Interfaces.Enums.LogLevel.FATAL;
+            }
+            else if (LogLevelString == Dev2.Data.Interfaces.Enums.LogLevel.ERROR.ToString())
+            {
+                return Dev2.Data.Interfaces.Enums.LogLevel.ERROR;
+            }
+            else if (LogLevelString == Dev2.Data.Interfaces.Enums.LogLevel.TRACE.ToString())
+            {
+                return Dev2.Data.Interfaces.Enums.LogLevel.TRACE;
+            }
+            else if (LogLevelString == Dev2.Data.Interfaces.Enums.LogLevel.WARN.ToString())
+            {
+                return Dev2.Data.Interfaces.Enums.LogLevel.WARN;
+            }
+            else if (LogLevelString == Dev2.Data.Interfaces.Enums.LogLevel.DEBUG.ToString())
+            {
+                return Dev2.Data.Interfaces.Enums.LogLevel.DEBUG;
+            }
+            else if (LogLevelString == Dev2.Data.Interfaces.Enums.LogLevel.INFO.ToString())
+            {
+                return Dev2.Data.Interfaces.Enums.LogLevel.INFO;
+            }
+            else
+            {
+                throw new ArgumentOutOfRangeException("String must be a recognized log level.");
+            }
+        }
     }
 
     class DefaultLogger : ILogger
@@ -385,6 +458,28 @@ namespace Dev2.Common
         public void Info(object message, Exception exception, string executionId)
         {
             Dev2Logger.Info(message, exception, executionId);
+        }
+    }
+
+    public class ByteConstants
+    {
+        private const long OneKb = 1024;
+        private const long OneMb = OneKb * 1024;
+        private const long OneGb = OneMb * 1024;
+
+        public long OneKbValue
+        {
+            get { return OneKb; }
+        }
+
+        public long OneMbValue
+        {
+            get { return OneMb; }
+        }
+
+        public long OneGbValue
+        {
+            get { return OneGb; }
         }
     }
 }

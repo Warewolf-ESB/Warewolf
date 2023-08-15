@@ -283,7 +283,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
             var context = new ScriptingEngineRepo();
             var scriptingContext = context.CreateEngine(enScriptType.Ruby, new StringScriptSources()) as RubyContext;
             Assert.IsNotNull(scriptingContext);
-            var prObject = new PrivateObject(scriptingContext);
+            var prObject = new Warewolf.Testing.PrivateObject(scriptingContext);
             Assert.IsNotNull(prObject);
             Assert.IsNull(scriptingContext.RuntimeSetup);
             prObject.Invoke("CreateRubyEngine");

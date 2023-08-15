@@ -346,9 +346,9 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             var channel = new Mock<IEsbChannel>();
             var esbExecuteRequest = new EsbExecuteRequest();
             var serviceTestExecutionContainer = new ExecutingEvaluator(dsfObj.Object, resourceCat.Object, workSpace.Object, esbExecuteRequest);
-            var testObj = new PrivateType(serviceTestExecutionContainer.GetType());
+            var testObj = new Warewolf.Testing.PrivateObject(serviceTestExecutionContainer);
             var test = SetupServiceTestSteps();
-            testObj.InvokeStatic("UpdateTestWithStepValues", test.Object);
+            testObj.Invoke("UpdateTestWithStepValues", true, test.Object);
             //------------Execute Test---------------------------            
             var expectedMessage = @"Failed Step:  
 Message: Test Failed because of some reasons
@@ -362,7 +362,7 @@ Test Failed because of some reasons
             //------------Assert Results-------------------------
             test.VerifySet(to =>
             {
-                to.FailureMessage = expectedMessage.ToString();
+                to.FailureMessage = expectedMessage;
             }, Times.AtLeastOnce);
         }
 

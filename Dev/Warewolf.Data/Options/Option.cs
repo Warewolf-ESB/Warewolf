@@ -834,7 +834,7 @@ namespace Warewolf.Options
         public bool IsMultiPart
         {
             get => _isMultiPart;
-            set { _isMultiPart = value; OnPropertyChanged(); }
+            set { _isMultiPart = value; RaisePropertyChanged(); }
         }
 
         public bool IsTripleOperand => TableType.IsTripleOperand();

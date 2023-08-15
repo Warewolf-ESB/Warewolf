@@ -680,7 +680,18 @@ namespace Warewolf.Resource.Errors {
                 return ResourceManager.GetString("DecisionFalseArmTextNotNullErrorTest", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to &apos;FalseArmText&apos; Cannot be null.
+        /// </summary>
+        public static string DecisionMatchTypeNotNullErrorTest
+        {
+            get
+            {
+                return ResourceManager.GetString("DecisionMatchTypeNotNullErrorTest", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to &apos;TrueArmText&apos; Cannot be null.
         /// </summary>

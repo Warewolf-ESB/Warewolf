@@ -18,6 +18,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -26,10 +27,12 @@ using Dev2.Common.Interfaces;
 using Dev2.Runtime;
 using Dev2.Runtime.Subscription;
 using Warewolf.Common.NetStandard20;
+using Warewolf.Data.Serializers;
 using Warewolf.Execution;
 using Warewolf.Interfaces.Auditing;
 using Warewolf.OS;
 using Warewolf.Streams;
+using Warewolf.Trigger.Queue;
 using Warewolf.Triggers;
 using Warewolf.Usage;
 using WarewolfCOMIPC.Client;
@@ -519,6 +522,8 @@ namespace Dev2.Server.Tests
             mockAssemblyLoader.Setup(o => o.AssemblyNames(It.IsAny<Assembly>())).Returns(new[] {new AssemblyName {Name = "testAssemblyName"}});
             mockWebServerConfiguration.Setup(o => o.EndPoints).Returns(new[] {new Dev2Endpoint(new IPEndPoint(0x40E9BB63, 8080), "Url", "path")});
 
+            var mockLoggerFactory = new Mock<ExecutionLogger.IExecutionLoggerFactory>();
+
             //------------------------Act----------------------------
             var config = new StartupConfiguration
             {
@@ -532,7 +537,8 @@ namespace Dev2.Server.Tests
                 StartWebServer = mockStartWebServer.Object,
                 SecurityIdentityFactory = mockSecurityIdentityFactory.Object,
                 LoggingServiceMonitor = mockLoggingServiceMonitorWithRestart,
-                HangfireServerMonitor = mockHangfireServerMonitorWithRestart
+                HangfireServerMonitor = mockHangfireServerMonitorWithRestart,
+                LoggerFactory = mockLoggerFactory.Object
             };
             using (var serverLifeCycleManager = new ServerLifecycleManager(config))
             {
@@ -577,6 +583,8 @@ namespace Dev2.Server.Tests
             mockAssemblyLoader.Setup(o => o.AssemblyNames(It.IsAny<Assembly>())).Returns(new[] {new AssemblyName {Name = "testAssemblyName"}});
             mockWebServerConfiguration.Setup(o => o.EndPoints).Returns(new[] {new Dev2Endpoint(new IPEndPoint(0x40E9BB63, 8080), "Url", "path")});
 
+            var mockLoggerFactory = new Mock<ExecutionLogger.IExecutionLoggerFactory>();
+
             //------------------------Act----------------------------
             var config = new StartupConfiguration
             {
@@ -589,7 +597,8 @@ namespace Dev2.Server.Tests
                 Writer = mockWriter.Object,
                 StartWebServer = mockStartWebServer.Object,
                 SecurityIdentityFactory = mockSecurityIdentityFactory.Object,
-                LoggingServiceMonitor = mockLoggingServiceMonitorWithRestart
+                LoggingServiceMonitor = mockLoggingServiceMonitorWithRestart,
+                LoggerFactory = mockLoggerFactory.Object
             };
             using (var serverLifeCycleManager = new ServerLifecycleManager(config))
             {
@@ -943,6 +952,131 @@ namespace Dev2.Server.Tests
             mockIpcClient.Verify(o => o.GetIpcExecutor(It.IsAny<INamedPipeClientStreamWrapper>()), Times.Once);
             mockServerLifeCycleWorker.Verify();
         }
+        
+        [TestMethod]
+        [Owner("Njabulo Nxele")]
+        [TestCategory(nameof(ServerLifecycleManager))]
+        public void ServerLifecycleManager_Validate_Concurrency()
+        {
+            //------------------------Arrange------------------------
+            var mockEnvironmentPreparer = new Mock<IServerEnvironmentPreparer>();
+            var mockIpcClient = new Mock<IIpcClient>();
+            var mockAssemblyLoader = new Mock<IAssemblyLoader>();
+            var mockDirectory = new Mock<IDirectory>();
+            var mockResourceCatalogFactory = new Mock<IResourceCatalogFactory>();
+            var mockWebServerConfiguration = new Mock<IWebServerConfiguration>();
+            var mockWriter = new Mock<IWriter>();
+            var mockServerLifeCycleWorker = new Mock<IServerLifecycleWorker>();
+            var mockResourceCatalog = new Mock<IResourceCatalog>();
+            var mockStartWebServer = new Mock<IStartWebServer>();
+            var mockSecurityIdentityFactory = new Mock<ISecurityIdentityFactory>();
+
+            var mockQueueConfigLoader = new Mock<IQueueConfigLoader>();
+            var triggerList = new List<TriggerQueue>(); 
+            triggerList.Add(new TriggerQueue()
+            {
+                Name = "Test",
+                QueueName = "Test",
+                WorkflowName = "Test",
+                Concurrency = 5
+            });
+            mockQueueConfigLoader.Setup(o => o.Configs).Returns(triggerList);
+            
+            var mockLoggingServiceMonitorWithRestart = new LoggingServiceMonitorWithRestart(new Mock<ChildProcessTrackerWrapper>().Object, new Mock<ProcessWrapperFactory>().Object);
+            var mockHangfireServerMonitorWithRestart = new HangfireServerMonitorWithRestart(new Mock<IChildProcessTracker>().Object, new Mock<IProcessFactory>().Object);
+            var expectedId = Guid.NewGuid();
+            var mockConfig = new Mock<IJobConfig>();
+            const string expectedResourceName = "Test Resource";
+            mockConfig.Setup(o => o.Name).Returns(expectedResourceName).Verifiable();
+            mockConfig.Setup(o => o.Id).Returns(expectedId).Verifiable();
+            var process = new ProcessThreadForTesting(mockConfig.Object);
+            var mockQueueWorkerMonitorWithRestart = new QueueWorkerMonitorTest(new Mock<IProcessFactory>().Object, new Mock<IQueueConfigLoader>().Object, new Mock<ITriggersCatalog>().Object, new Mock<IChildProcessTracker>().Object, process);
+            
+            var mockConfigNew = new Mock<IJobConfig>();
+            mockConfigNew.Setup(o => o.Name).Returns(expectedResourceName).Verifiable();
+            mockConfigNew.Setup(o => o.Id).Returns(expectedId).Verifiable();
+            mockConfigNew.Setup(o => o.Concurrency).Returns(5).Verifiable();
+            var processNew = new ProcessThreadForTesting(mockConfigNew.Object);
+            var mockQueueWorkerMonitorWithRestartNew = new QueueWorkerMonitorTest(new Mock<IProcessFactory>().Object, mockQueueConfigLoader.Object, new Mock<ITriggersCatalog>().Object, new Mock<IChildProcessTracker>().Object, processNew);
+
+            var mockWebSocketPool = new Mock<IWebSocketPool>();
+            var mockWebSocketWrapper = new Mock<IWebSocketWrapper>();
+            var mockSystemInformation = new Mock<IGetSystemInformation>();
+            var mockExecutionLoggerFactory = new Mock<ExecutionLogger.IExecutionLoggerFactory>();
+            var mockExecutionLogPublisher = new Mock<IExecutionLogPublisher>();
+
+            var items = new List<IServerLifecycleWorker> { mockServerLifeCycleWorker.Object };
+
+            EnvironmentVariables.IsServerOnline = true;
+
+            mockIpcClient.Setup(o => o.GetIpcExecutor(It.IsAny<INamedPipeClientStreamWrapper>()))
+                .Returns(mockIpcClient.Object);
+
+            mockResourceCatalogFactory.Setup(o => o.New()).Returns(mockResourceCatalog.Object);
+            mockServerLifeCycleWorker.Setup(o => o.Execute()).Verifiable();
+            mockAssemblyLoader.Setup(o => o.AssemblyNames(It.IsAny<Assembly>())).Returns(new[] { new AssemblyName { Name = "testAssemblyName" } });
+            mockWebServerConfiguration.Setup(o => o.EndPoints).Returns(new[] { new Dev2Endpoint(new IPEndPoint(0x40E9BB63, 8080), "Url", "path") });
+
+            mockWebSocketWrapper.Setup(o => o.IsOpen()).Returns(true);
+            mockWebSocketPool.Setup(o => o.Acquire(It.IsAny<string>())).Returns(mockWebSocketWrapper.Object);
+
+            mockSystemInformation.Setup(o => o.GetWareWolfVersion()).Returns("1.1.1.1");
+            mockExecutionLogPublisher.Setup(o => o.Info("Warewolf Server Started Version: 1.1.1.1")).Verifiable();
+            mockExecutionLoggerFactory.Setup(o => o.New(It.IsAny<ISerializer>(), mockWebSocketPool.Object))
+                .Returns(mockExecutionLogPublisher.Object);
+
+            //------------------------Act----------------------------
+            var config = new StartupConfiguration
+            {
+                ServerEnvironmentPreparer = mockEnvironmentPreparer.Object,
+                IpcClient = mockIpcClient.Object,
+                AssemblyLoader = mockAssemblyLoader.Object,
+                Directory = mockDirectory.Object,
+                ResourceCatalogFactory = mockResourceCatalogFactory.Object,
+                WebServerConfiguration = mockWebServerConfiguration.Object,
+                Writer = mockWriter.Object,
+                StartWebServer = mockStartWebServer.Object,
+                SecurityIdentityFactory = mockSecurityIdentityFactory.Object,
+                LoggingServiceMonitor = mockLoggingServiceMonitorWithRestart,
+                HangfireServerMonitor = mockHangfireServerMonitorWithRestart,
+                QueueWorkerMonitor = mockQueueWorkerMonitorWithRestart,
+                WebSocketPool = mockWebSocketPool.Object,
+                SystemInformationHelper = mockSystemInformation.Object,
+                LoggerFactory = mockExecutionLoggerFactory.Object
+            };
+            using (var serverLifeCycleManager = new ServerLifecycleManager(config))
+            {
+                serverLifeCycleManager.Run(items).Wait();
+
+                var monitor = config.QueueWorkerMonitor;
+                MethodInfo dynMethod = monitor.GetType().GetMethod("GetConfigs", BindingFlags.NonPublic | BindingFlags.Instance);
+                var retVal = dynMethod?.Invoke(monitor, new object[] { });
+                var queues = (IEnumerable<ITrigger>)retVal;
+                
+                //------------------------Assert-------------------------
+                Assert.AreEqual(0, queues?.Count());
+
+                serverLifeCycleManager.Stop(false, 0, false);
+            }
+
+            config.QueueWorkerMonitor = mockQueueWorkerMonitorWithRestartNew;
+            using (var serverLifeCycleManager = new ServerLifecycleManager(config))
+            {
+                serverLifeCycleManager.Run(items).Wait();
+                config.QueueWorkerMonitor.Start();
+
+                var monitor = config.QueueWorkerMonitor;
+                var dynMethod = monitor.GetType().GetMethod("GetConfigs", BindingFlags.NonPublic | BindingFlags.Instance);
+                var retVal = dynMethod?.Invoke(monitor, new object[] { });
+                var queues = (IEnumerable<ITrigger>)retVal;
+                
+                //------------------------Assert-------------------------
+                Assert.AreEqual(1, queues?.Count());
+                Assert.AreEqual(5, queues?.First().Concurrency);
+
+                serverLifeCycleManager.Stop(false, 0, false);
+            }
+        }
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
@@ -1100,6 +1234,11 @@ namespace Dev2.Server.Tests
                 : base(processFactory, queueConfigLoader, triggersCatalog, childProcessTracker)
             {
                 _processThread = processThread;
+            }
+            
+            protected override IEnumerable<IJobConfig> GetConfigs()
+            {
+                return base.GetConfigs();
             }
 
             protected override ProcessThreadList NewThreadList(IJobConfig config)

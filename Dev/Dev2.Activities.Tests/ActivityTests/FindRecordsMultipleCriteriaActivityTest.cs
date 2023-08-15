@@ -364,7 +364,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //------------Setup for test-------------------------
             var activity = new DsfFindRecordsMultipleCriteriaActivity();
-            var privateObject = new PrivateObject(activity);
+            var privateObject = new Warewolf.Testing.PrivateObject(activity);
             IEnumerable<FindRecordsTO> resultsCollection = new List<FindRecordsTO>
             {
                 new FindRecordsTO {SearchCriteria = "1", IndexNumber = 1, SearchType = "="}

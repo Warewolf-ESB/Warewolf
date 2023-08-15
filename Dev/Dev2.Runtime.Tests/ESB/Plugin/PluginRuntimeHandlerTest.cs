@@ -38,7 +38,8 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
 
         [TestMethod]
         [Owner("Travis Frisinger")]
-        [TestCategory("PluginRuntimeHandler_FetchNamespaceListObject")]
+        [TestCategory("PluginRuntimeHandler")]
+        [Timeout(30000)]
         public void PluginRuntimeHandler_FetchNamespaceListObject_WhenValidDll_ExpectNamespaces()
         {
             //------------Setup for test--------------------------
@@ -271,7 +272,8 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        [TestCategory("PluginRuntimeHandler_ListMethods")]
+        [TestCategory("PluginRuntimeHandler")]
+        [Timeout(30000)]
         public void PluginRuntimeHandler_ListMethods_WhenValidLocation_ExpectResults()
         {
             //------------Setup for test--------------------------
@@ -287,7 +289,8 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        [TestCategory("PluginRuntimeHandler_ListMethods")]
+        [TestCategory("PluginRuntimeHandler")]
+        [Timeout(30000)]
         public void PluginRuntimeHandler_ListConstructors_WhenValidLocation_ExpectResults()
         {
             //------------Setup for test--------------------------
@@ -303,7 +306,8 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        [TestCategory("PluginRuntimeHandler_ListMethodsWithReturns")]
+        [TestCategory("PluginRuntimeHandler")]
+        [Timeout(30000)]
         public void PluginRuntimeHandler_ListMethodsWithReturns_WhenValidLocation_ExpectResults()
         {
             //------------Setup for test--------------------------
@@ -319,7 +323,8 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        [TestCategory("PluginRuntimeHandler_ListMethodsWithReturns")]
+        [TestCategory("PluginRuntimeHandler")]
+        [Timeout(30000)]
         public void PluginRuntimeHandler_ListMethodsWithReturns_WhenValidLocationAndVoid_ExpectResultsWithVoidMethod()
         {
             //------------Setup for test--------------------------
@@ -336,7 +341,8 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        [TestCategory("PluginRuntimeHandler_ListMethodsWithReturns")]
+        [TestCategory("PluginRuntimeHandler")]
+        [Timeout(30000)]
         public void PluginRuntimeHandler_ListMethodsWithReturns_WhenValidLocationAndIsProperty_ExpectResultsWithPropertyMethod()
         {
             //------------Setup for test--------------------------
@@ -353,7 +359,8 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        [TestCategory("PluginRuntimeHandler_ListMethodsWithReturns")]
+        [TestCategory("PluginRuntimeHandler")]
+        [Timeout(30000)]
         public void PluginRuntimeHandler_ListMethodsWithReturns_WhenListFoods_ExpectJSonArrayReturnType()
         {
             //------------Setup for test--------------------------
@@ -830,13 +837,13 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
         public void GetPropertiesJObject_GivenOracleCommand_ShouldRetunWithTwoProperties()
         {
             //---------------Set up test pack-------------------
-            var runtimeHandler = typeof(PluginRuntimeHandler);
-            var type = new PrivateType(runtimeHandler);
+            var runtimeHandler = new PluginRuntimeHandler();
+            var type = new Warewolf.Testing.PrivateObject(runtimeHandler);
 #pragma warning disable 618
             var type1 = typeof(OracleCommand);
 #pragma warning restore 618
             //---------------Assert Precondition----------------
-            var invokeStatic = type.InvokeStatic("GetPropertiesJObject", type1);
+            var invokeStatic = type.Invoke("GetPropertiesJObject", true, type1);
             //---------------Execute Test ----------------------
             var jObject = invokeStatic as JObject;
             //---------------Test Result -----------------------
@@ -851,13 +858,13 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
         public void GetPropertiesJObject_GivenOracleCommand_ShouldHaveCorrectShape()
         {
             //---------------Set up test pack-------------------
-            var runtimeHandler = typeof(PluginRuntimeHandler);
-            var type = new PrivateType(runtimeHandler);
+            var runtimeHandler = new PluginRuntimeHandler();
+            var type = new Warewolf.Testing.PrivateObject(runtimeHandler);
 #pragma warning disable 618
             var type1 = typeof(OracleCommand);
 #pragma warning restore 618
             //---------------Assert Precondition----------------
-            var invokeStatic = type.InvokeStatic("GetPropertiesJObject", type1);
+            var invokeStatic = type.Invoke("GetPropertiesJObject", true, type1);
             //---------------Execute Test ----------------------
             var jObject = invokeStatic as JObject;
             Assert.IsNotNull(jObject);
@@ -876,17 +883,16 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
         public void PluginRuntimeHandler_AdjustPluginResult_WhenClassIsSealed_ExpectRunsCorrectly()
         {
             //------------Setup for test--------------------------
-
             var type = typeof(PluginRuntimeHandler);
-
             var methodInfo = type.GetMethod("AdjustPluginResult", BindingFlags.NonPublic | BindingFlags.Instance);
             var human = new Human();
             var memberInfo = human.GetType().GetMethod("ToString", BindingFlags.Instance | BindingFlags.Public);
             object result = "string";
             //------------Execute Test---------------------------
             var runtimeHandler = new PluginRuntimeHandler();
-            var resultAdgusted = methodInfo.Invoke(runtimeHandler, new[] { result, memberInfo });
-            Assert.AreEqual("<PrimitiveReturnValue>string</PrimitiveReturnValue>", resultAdgusted);
+            Assert.IsNotNull(methodInfo);
+            var resultAdjusted = methodInfo.Invoke(runtimeHandler, new[] { result, memberInfo });
+            Assert.AreEqual("<PrimitiveReturnValue>string</PrimitiveReturnValue>", resultAdjusted);
         }
 
 

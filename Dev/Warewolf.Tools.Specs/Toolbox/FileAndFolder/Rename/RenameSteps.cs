@@ -36,17 +36,9 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Rename
     [Binding]
     public class RenameSteps : FileToolsBase
     {
-        readonly ScenarioContext scenarioContext;
-
         public RenameSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
         {
-            if (scenarioContext == null)
-            {
-                throw new ArgumentNullException("scenarioContext");
-            }
-
-            this.scenarioContext = scenarioContext;
         }
 
         [When(@"the rename file tool is executed")]

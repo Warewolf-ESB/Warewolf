@@ -317,7 +317,7 @@ namespace Dev2.Tests.Activities.DsfWebGetRequestWithTimeoutActivityTests
             dsfDataObject.EsbChannel = new MockEsb();
 
             bool timeoutSecondsError = false;
-            PrivateObject obj = new PrivateObject(activity);
+            Warewolf.Testing.PrivateObject obj = new Warewolf.Testing.PrivateObject(activity);
             object[] args = new object[] { dsfDataObject, 0, errorResultTO, timeoutSecondsError };
 
             //------------Execute Test---------------------------

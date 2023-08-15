@@ -12,6 +12,7 @@
 using Dev2.Interfaces;
 using Dev2.Web;
 using System;
+using Warewolf.Data;
 
 namespace Dev2.InterfaceImplementors
 {
@@ -20,8 +21,10 @@ namespace Dev2.InterfaceImplementors
         private readonly string _originalWebServerUrl;
         public EmitionTypes ReturnType { get; }
         public Guid ResourceID { get; }
-        public Guid[] CoverageReportResourceIds { get; set; }
-        public bool IsMultipleWorkflowReport { get; }
+        public IWarewolfWorkflow[] CoverageReportResources { get; set; }
+        public bool IsMultipleWorkflowReport { get; }       
+
+        public string ReportName { get; set; }
 
         public CoverageDataContext(Guid resourceID, EmitionTypes emissionType, string originalWebServerUrl)
         {
@@ -29,6 +32,12 @@ namespace Dev2.InterfaceImplementors
             ResourceID = resourceID;
             ReturnType = emissionType;
             _originalWebServerUrl = originalWebServerUrl;
+        }
+
+        public CoverageDataContext(Guid resourceID, EmitionTypes emissionType, string originalWebServerUrl, string reportName) 
+            : this(resourceID,emissionType,originalWebServerUrl)
+        {            
+            ReportName = reportName;
         }
 
         public string GetAllTestsUrl()

@@ -111,7 +111,7 @@ namespace Dev2.Activities.Specs.Scheduler
             var task = scheduler.SelectedTask;
             UpdateTrigger(task, table);
 
-            var po = new PrivateObject(scheduler.CurrentEnvironment);
+            var po = new Warewolf.Testing.PrivateObject(scheduler.CurrentEnvironment);
             var mockAuth = new Mock<IAuthorizationService>();
             mockAuth.Setup(a => a.IsAuthorized(It.IsAny<AuthorizationContext>(), null)).Returns(true);
             po.SetFieldOrProperty("AuthorizationService", mockAuth.Object);

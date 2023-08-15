@@ -25,9 +25,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.Activities;
-using System.DirectoryServices;
-using System.DirectoryServices.AccountManagement;
-using System.Globalization;
 using System.Linq;
 using System.Security.Principal;
 using System.Threading;
@@ -93,8 +90,8 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"workflow execution entry point detailed logs are created and logged")]
         public void GivenWorkflowExecutionEntryPointDetailedLogsAreCreatedAndLogged()
         {
-            Given(@"an existing workflow ""Hello World""");
-            When(@"a ""Hello World"" workflow request is received");
+            GivenAnExistingWorkflow("Hello World");
+            WhenAWorkflowRequestIsReceived("Hello World");
 
             _scenarioContext.TryGetValue<bool>("expectException", out bool expectException);
             var table = new Table("key", "value");
@@ -107,7 +104,7 @@ namespace Dev2.Activities.Specs.Composition
                 table.AddRow("DsfDecision", "If [[Name]] <> (Not Equal)");
             }
 
-            Then(@"a detailed entry log is created", table);
+            ThenADetailedLogEntryIsCreated(table);
         }
 
         [Given(@"a workflow stops on error has no logs")]
@@ -153,8 +150,12 @@ namespace Dev2.Activities.Specs.Composition
         private Mock<IStateNotifier> SetupMockStateNotifier()
         {
             var mockStateNotifier = new Mock<IStateNotifier>();
-            _scenarioContext.Add(nameof(mockStateNotifier), mockStateNotifier);
-            return mockStateNotifier;
+			mockStateNotifier.Setup(o => o.LogExecuteException(It.IsAny<SerializableException>(), It.IsAny<IDev2Activity>())).Callback<SerializableException, Object>((ex, act) => 
+            {
+				_scenarioContext.Add("actualExceptionMessage", ex.Message);
+			}).Verifiable();
+			_scenarioContext.Add(nameof(mockStateNotifier), mockStateNotifier);
+			return mockStateNotifier;
         }
 
         private static DsfDataObject BuildDataObject(IResourceModel workflow, IPrincipal principal, IStateNotifier stateNotifier, IExecutionEnvironment environment, bool stopOnError)
@@ -269,7 +270,7 @@ namespace Dev2.Activities.Specs.Composition
             var mockStateNotifier = _scenarioContext.Get<Mock<IStateNotifier>>("mockStateNotifier");
             var resource = _scenarioContext.Get<DsfDecision>("resource");
 
-            mockStateNotifier.Verify(o => o.LogStopExecutionState(resource), Times.Once);
+            mockStateNotifier.Verify(o => o.LogStopExecutionState(It.IsAny<IDev2Activity>()), Times.Once);
         }
 
         [Then(@"execution is complete")]
@@ -300,8 +301,9 @@ namespace Dev2.Activities.Specs.Composition
         {
             var mockStateNotifier = _scenarioContext.Get<Mock<IStateNotifier>>("mockStateNotifier");
             var activityMock = _scenarioContext.Get<IDev2Activity>("activityMock");
-
-            mockStateNotifier.Verify(o => o.LogExecuteException(_falseException, activityMock));
+			var actualExceptionMessage = _scenarioContext.Get<string>("actualExceptionMessage");
+			Assert.AreEqual(_falseException.Message, actualExceptionMessage, "Wrong exception message was thrown.");
+            mockStateNotifier.Verify(o => o.LogExecuteException(It.IsAny<SerializableException>(), activityMock));
         }
 
         [Then(@"a detailed execution exception log entry is created")]

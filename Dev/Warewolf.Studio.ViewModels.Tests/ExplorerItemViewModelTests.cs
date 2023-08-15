@@ -1656,7 +1656,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var child = new Mock<IExplorerItemViewModel>();
             _target.Children.Add(child.Object);
 
-            var privateObject = new PrivateObject(_target);
+            var privateObject = new Warewolf.Testing.PrivateObject(_target);
             privateObject.SetField("_explorerRepository", mock.Object);
             //act
             _target.Delete();
@@ -1810,7 +1810,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         [TestMethod]
         [Timeout(100)]
-        public void TestRemoveChild()
+        public void ExplorerItemViewModel_RemoveChild()
         {
             //arrange
             var child = new Mock<IExplorerItemViewModel>().Object;

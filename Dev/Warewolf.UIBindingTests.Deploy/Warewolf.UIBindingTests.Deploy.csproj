@@ -65,14 +65,10 @@
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
     <Compile Include="GlobalSuppressions.cs" />
-    <AdditionalFiles Include="..\SonarQube\SonarLint.xml">
-      <Visible>False</Visible>
-    </AdditionalFiles>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="DeployTab.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>DeployTab.feature.cs</LastGenOutput>
     </None>
   </ItemGroup>
@@ -113,6 +109,7 @@
       <Project>{62247A80-2266-4295-A8F6-A05507E2796E}</Project>
       <Name>Dev2.Studio</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Testing\Warewolf.Testing.csproj" />
     <ProjectReference Include="..\Warewolf.UIBindingTests.Core\Warewolf.UIBindingTests.Core.csproj">
       <Project>{CB0F5535-5E1D-41F9-A23C-F59FDC816B75}</Project>
       <Name>Warewolf.UIBindingTests.Core</Name>
@@ -172,7 +169,7 @@
       <Version>2.1.2</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
-      <Version>12.0.3</Version>
+      <Version>13.0.2</Version>
     </PackageReference>
     <PackageReference Include="Prism">
       <Version>5.0.0</Version>
@@ -181,13 +178,10 @@
       <Version>1.1.1</Version>
     </PackageReference>
     <PackageReference Include="SpecFlow">
-      <Version>2.3.2</Version>
+      <Version>3.9.22</Version>
     </PackageReference>
     <PackageReference Include="SpecFlow.MsTest">
-      <Version>2.3.2</Version>
-    </PackageReference>
-    <PackageReference Include="SpecFlow.Tools.MsBuild.Generation">
-      <Version>2.3.2</Version>
+      <Version>3.9.22</Version>
     </PackageReference>
     <PackageReference Include="System.Threading.Tasks.Extensions">
       <Version>4.5.4</Version>

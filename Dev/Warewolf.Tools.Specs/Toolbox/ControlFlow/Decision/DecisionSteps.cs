@@ -37,13 +37,11 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Decision
     [Binding]
     public class DecisionSteps : RecordSetBases
     {
-        readonly ScenarioContext scenarioContext;
         internal static readonly IDictionary<Guid, IExecutionEnvironment> _environments = new ConcurrentDictionary<Guid, IExecutionEnvironment>();
 
         public DecisionSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
         {
-            this.scenarioContext = scenarioContext ?? throw new ArgumentNullException("scenarioContext");
         }
 
         protected override void BuildDataList()

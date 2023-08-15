@@ -44,6 +44,7 @@ namespace Dev2.Settings.Persistence
         private bool _encryptDataSource;
         private bool _enable;
         private bool _prepareSchemaIfNecessary;
+        private bool _useAsServer;
         private string _dashboardHostname;
         private string _dashboardPort;
         private string _dashboardName;
@@ -84,6 +85,7 @@ namespace Dev2.Settings.Persistence
             _encryptDataSource = settingsData.EncryptDataSource ?? true;
             _enable = settingsData.Enable ?? false;
             _prepareSchemaIfNecessary = settingsData.PrepareSchemaIfNecessary ?? true;
+            _useAsServer = settingsData.UseAsServer ?? true;
             _dashboardName = settingsData.DashboardName;
             _dashboardHostname = settingsData.DashboardHostname;
             _dashboardPort = settingsData.DashboardPort;
@@ -147,6 +149,17 @@ namespace Dev2.Settings.Persistence
             {
                 IsDirty = !Equals(Item);
                 _prepareSchemaIfNecessary = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool UseAsServer
+        {
+            get => _useAsServer;
+            set
+            {
+                IsDirty = !Equals(Item);
+                _useAsServer = value;
                 OnPropertyChanged();
             }
         }
@@ -306,6 +319,7 @@ namespace Dev2.Settings.Persistence
                 DashboardPort = _dashboardPort,
                 PersistenceScheduler = _selectedPersistenceScheduler,
                 PrepareSchemaIfNecessary = _prepareSchemaIfNecessary,
+                UseAsServer = _useAsServer,
                 PersistenceDataSource = new NamedGuidWithEncryptedPayload
                 {
                     Name = _selectedPersistenceDatabaseSource.ResourceName,
@@ -398,6 +412,7 @@ namespace Dev2.Settings.Persistence
             var equalsSeq = string.Equals(_enable.ToString(), other._enable.ToString());
             equalsSeq &= Equals(_encryptDataSource, other._encryptDataSource);
             equalsSeq &= Equals(_prepareSchemaIfNecessary, other._prepareSchemaIfNecessary);
+            equalsSeq &= Equals(_useAsServer, other._useAsServer);
             equalsSeq &= Equals(_serverName, other._serverName);
             equalsSeq &= Equals(_dashboardHostname, other._dashboardHostname);
             equalsSeq &= Equals(_dashboardName, other._dashboardName);

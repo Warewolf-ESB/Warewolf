@@ -388,6 +388,7 @@ namespace Dev2.Activities.Designers.Tests.Decision
                 TrueArmText = "",
                 FalseArmText = ""
             };
+            viewModel.Collection.RemoveAt(0);
             //------------Execute Test---------------------------
             viewModel.Validate();
             //------------Assert Results-------------------------
@@ -410,6 +411,7 @@ namespace Dev2.Activities.Designers.Tests.Decision
                 TrueArmText = "some text",
                 FalseArmText = "some text"
             };
+            viewModel.Collection.RemoveAt(0);
             //------------Execute Test---------------------------
             viewModel.Validate();
             //------------Assert Results-------------------------
@@ -433,6 +435,7 @@ namespace Dev2.Activities.Designers.Tests.Decision
                 TrueArmText = "",
                 FalseArmText = "some text"
             };
+            viewModel.Collection.RemoveAt(0);
             //------------Execute Test---------------------------
             viewModel.Validate();
             //------------Assert Results-------------------------
@@ -456,6 +459,7 @@ namespace Dev2.Activities.Designers.Tests.Decision
                 TrueArmText = "some text",
                 FalseArmText = ""
             };
+            viewModel.Collection.RemoveAt(0);
             //------------Execute Test---------------------------
             viewModel.Validate();
             //------------Assert Results-------------------------
@@ -466,6 +470,25 @@ namespace Dev2.Activities.Designers.Tests.Decision
             Assert.IsTrue(viewModel.IsFalseArmFocused);
         }
 
+        [TestMethod]
+        [Owner("Ashley Lewis")]
+        [TestCategory(nameof(DecisionDesignerViewModel))]
+        public void DecisionDesignerViewModel_Validate_MatchType()
+        {
+            //------------Setup for test--------------------------
+            var viewModel = new DecisionDesignerViewModel(CreateModelItem())
+            {
+                DisplayText = "text",
+                TrueArmText = "some text",
+                FalseArmText = "some text"
+            };
+            //------------Execute Test---------------------------
+            viewModel.Validate();
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(viewModel.Errors);
+            Assert.AreEqual(1, viewModel.Errors.Count);
+            Assert.AreEqual(Warewolf.Resource.Errors.ErrorResource.DecisionMatchTypeNotNullErrorTest, viewModel.Errors[0].Message);
+        }
 
         [TestMethod]
         [Owner("Hagashen Naidu")]

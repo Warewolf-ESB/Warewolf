@@ -63,9 +63,6 @@
     <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
-    <AdditionalFiles Include="..\SonarQube\SonarLint.xml">
-      <Visible>False</Visible>
-    </AdditionalFiles>
     <Compile Include="BaseTypes\CommonSteps.cs" />
     <Compile Include="BaseTypes\FileToolsBase.cs" />
     <Compile Include="BaseTypes\RecordSetBase.cs" />
@@ -500,286 +497,216 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
     <None Include="Toolbox\ControlFlow\Decision\Decision.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Decision.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\ControlFlow\Sequence\Sequence.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Sequence.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\ControlFlow\Switch\Switch.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Switch.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Database\AdvancedRecordset\AdvancedRecordset.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>AdvancedRecordset.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Data\AssignObject\AssignObject.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>AssignObject.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Data\Assign\Assign.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Assign.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Data\BaseConversion\BaseConversion.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>BaseConversion.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Data\CaseConversion\CaseConversion.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>CaseConversion.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Data\Create JSON\CreateJSON.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>CreateJSON.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Data\DataMerge\DataMerge.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>DataMerge.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Data\DataSplit\DataSplit.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>DataSplit.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Data\DotNetAssign\DotNetAssign.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>DotNetAssign.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Data\FindIndex\FindIndex.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>FindIndex.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Data\Replace\Replace.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Replace.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Email\Exchange\ExchangeEmail.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>ExchangeEmail.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Exchange\ExchangeEmail.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>ExchangeEmail.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\FileAndFolder\AddGuidToPaths.ps1" />
     <None Include="Toolbox\FileAndFolder\Copy\Copy.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Copy.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\FileAndFolder\Create\Create.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Create.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\FileAndFolder\Delete\Delete.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Delete.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\FileAndFolder\Move\Move.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Move.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\FileAndFolder\Read File\Read File.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Read File.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\FileAndFolder\ReadFolderNew\Read Folder New.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Read Folder New.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\FileAndFolder\Read Folder\Read Folder.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Read Folder.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\FileAndFolder\Rename\Rename.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Rename.feature.cs</LastGenOutput>
     </None>
     <EmbeddedResource Include="Toolbox\FileAndFolder\Unzip\Test.zip" />
     <EmbeddedResource Include="Toolbox\FileAndFolder\Unzip\TestFile.zip" />
     <None Include="Toolbox\FileAndFolder\Unzip\Unzip.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Unzip.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\FileAndFolder\Write File\Write File.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Write File.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\FileAndFolder\Zip\Zip.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Zip.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\LoopConstructs\ForEach\ForEach.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>ForEach.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\LoopConstructs\Select And Apply\SelectAndApply.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>SelectAndApply.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Resources\Web\WebGet.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>WebGet.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Utility\DateandTime\DateandTime.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>DateandTime.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Utility\RabbitMQ\Consume\ConsumeRabbitMQ.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>ConsumeRabbitMQ.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Utility\RabbitMQ\Publish\PublishRabbitMQ.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>PublishRabbitMQ.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Recordset\CountNullHandler\CountNullHandler.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>CountNullHandler.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Recordset\Count\Count.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Count.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Recordset\DeleteNullHandler\Delete.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Delete.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Recordset\Delete\Delete.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Delete.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Recordset\FindRecordIndexMultiple\FindRecordsetIndexMultiple.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>FindRecordsetIndexMultiple.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Recordset\LengthNullHandler\Length.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Length.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Recordset\Length\Length.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Length.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Recordset\Sort\Sort.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Sort.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Database\SqlBulkInsert\SqlBulkInsert.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>SqlBulkInsert.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Recordset\Unique\Unique.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Unique.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Database\SqlServer\SqlServerConnector.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>SqlServerConnector.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Database\MySQL\MySqlConnector.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>MySqlConnector.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Database\PostgresSql\PostgresSqlConnector.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>PostgresSqlConnector.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Database\ODBC\ODBCConnector.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>ODBCConnector.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Database\Oracle\OracleServerConnector.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>OracleServerConnector.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Resources\Web\DeleteWebConnectorTool.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>DeleteWebConnectorTool.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Resources\Web\PutWebConnectorTool.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>PutWebConnectorTool.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Scripting\Command\Command.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Command.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Scripting\javascript\Javascript.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Javascript.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Scripting\Python\Python.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Python.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Scripting\ruby\Ruby.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Ruby.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Scripting\Script\Script.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Script.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Storage\Dropbox\DeleteDropbox.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>DeleteDropbox.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Storage\Dropbox\DownloadDropbox.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>DownloadDropbox.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Storage\Dropbox\ReadDropbox.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>ReadDropbox.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Storage\Dropbox\UploadDropbox.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>UploadDropbox.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Utility\Calculate\Aggregate Calculate.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Aggregate Calculate.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Utility\Calculate\Calculate.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Calculate.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Utility\DateandTimeDifference\DateandTimeDifference.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>DateandTimeDifference.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Email\Email\Email.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Email.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Utility\FormatNumber\FormatNumber.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>FormatNumber.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Utility\GatherSystemInformation\GatherSystemInformation.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>GatherSystemInformation.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Utility\Random\Random.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Random.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Utility\Redis\Cache\CacheRedis.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>CacheRedis.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Utility\WebRequest\WebRequest.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>WebRequest.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Utility\XPath\XPath.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>XPath.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Resources\WcfService\WcfServiceConnector.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>WcfServiceConnector.feature.cs</LastGenOutput>
     </None>
   </ItemGroup>
@@ -968,19 +895,16 @@
       <Version>1.3.0.7</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
-      <Version>12.0.3</Version>
+      <Version>13.0.2</Version>
     </PackageReference>
     <PackageReference Include="Prism.Mvvm">
       <Version>1.1.1</Version>
     </PackageReference>
     <PackageReference Include="SpecFlow">
-      <Version>2.3.2</Version>
+      <Version>3.9.22</Version>
     </PackageReference>
     <PackageReference Include="SpecFlow.MsTest">
-      <Version>2.3.2</Version>
-    </PackageReference>
-    <PackageReference Include="SpecFlow.Tools.MsBuild.Generation">
-      <Version>2.3.2</Version>
+      <Version>3.9.22</Version>
     </PackageReference>
     <PackageReference Include="System.Data.SQLite.Core">
       <Version>1.0.112</Version>

@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -178,6 +178,27 @@ namespace Warewolf.Data.Options
         }
     }
 
+    public static class ConditionExpressionExtention
+    {
+        public static IEnumerable<Condition> ToConditions(this IList<ConditionExpression> conditionExpressions)
+        {
+            var conditions = new List<Condition>();
+
+            conditions = conditionExpressions.Where(o => o.Cond.MatchType != enDecisionType.Choose)
+                        .SelectMany(oo => ToCondition(oo))
+                        .ToList();
+
+            return conditions;
+
+            List<Condition> ToCondition(ConditionExpression exp)
+            {
+                return exp.ToOptions()
+                            .Select(o => exp.FromOptionToCondition(o))
+                            .ToList();
+            }
+        }
+    }
+
     public class ConditionExpression : IOptionConvertable
     {
         [HelpText(nameof(Studio.Resources.Languages.HelpText.OptionConditionLeftHelpText))]
@@ -223,6 +244,24 @@ namespace Warewolf.Data.Options
                 }
             }
         }
+
+        public Condition FromOptionToCondition(IOption option)
+        {
+            if (option is OptionConditionExpression optionConditionExpression)
+            {
+                this.Left = optionConditionExpression.Left;
+                if (optionConditionExpression.IsBetween)
+                {
+                    this.Cond = ConditionBetween.FromOption(optionConditionExpression);
+                }
+                else
+                {
+                    this.Cond = ConditionMatch.FromOption(optionConditionExpression);
+                }
+            }
+            return this.Cond;
+        }
+
         public bool Eval(Func<string, string, string, IEnumerable<string[]>> getArgumentsFunc, bool hasError)
         {
             if (string.IsNullOrWhiteSpace(Left))
@@ -244,6 +283,8 @@ namespace Warewolf.Data.Options
             sb.Append(Left);
             Cond?.RenderDescription(sb);
         }
+
+
     }
 
     public abstract class Condition
@@ -260,6 +301,8 @@ namespace Warewolf.Data.Options
     {
         [HelpText(nameof(Studio.Resources.Languages.HelpText.OptionConditionRightHelpText))]
         public string Right { get; set; }
+        public string Left { get; private set; }
+
         public override void SetOptions(OptionConditionExpression option)
         {
             option.MatchType = MatchType;
@@ -272,6 +315,7 @@ namespace Warewolf.Data.Options
             {
                 MatchType = optionConditionExpression.MatchType,
                 Right = optionConditionExpression.Right,
+                Left = optionConditionExpression.Left
             };
         }
 
@@ -288,7 +332,7 @@ namespace Warewolf.Data.Options
                 return !hasError;
             }
             IList<bool> ret = new List<bool>();
-            
+
             var items = getArgumentsFunc(left, Right, null);
             foreach (var arguments in items)
             {
@@ -320,6 +364,7 @@ namespace Warewolf.Data.Options
 
     public class ConditionBetween : Condition
     {
+        public string Left { get; private set; }
         public string From { get; set; }
         public string To { get; set; }
         public override void SetOptions(OptionConditionExpression option)
@@ -334,6 +379,7 @@ namespace Warewolf.Data.Options
             return new ConditionBetween
             {
                 MatchType = optionConditionExpression.MatchType,
+                Left = optionConditionExpression.Left,
                 From = optionConditionExpression.From,
                 To = optionConditionExpression.To,
             };
@@ -368,7 +414,7 @@ namespace Warewolf.Data.Options
             }
             return ret.All(o => o);
         }
-        
+
         public override void RenderDescription(StringBuilder sb)
         {
             if (MatchType == enDecisionType.IsBetween)

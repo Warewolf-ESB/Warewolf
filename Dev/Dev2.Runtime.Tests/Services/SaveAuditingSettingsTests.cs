@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2022 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -95,7 +95,7 @@ namespace Dev2.Tests.Runtime.Services
                 AuditFilePath = @"C:\ProgramData\Warewolf\Audits",
             };
             var requestArgs = new Dictionary<string, StringBuilder>();
-            requestArgs.Add("AuditingSettings", new StringBuilder(serializer.SerializeToBuilder(settingsData).ToString()));
+            requestArgs.Add(nameof(LegacySettings), new StringBuilder(serializer.SerializeToBuilder(settingsData).ToString()));
             requestArgs.Add("SinkType", new StringBuilder("LegacySettingsData"));
 
             var saveAuditingSettings = new SaveAuditingSettings();
@@ -104,6 +104,33 @@ namespace Dev2.Tests.Runtime.Services
             var result = serializer.Deserialize<ExecuteMessage>(jsonResult);
             //------------Assert Results-------------------------
             Assert.IsFalse(result.HasError);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(SaveAuditingSettings))]
+        public void SaveAuditingSettings_Execute_GIVEN_SettingsDataType_Unknown()
+        {
+            //------------Setup for test--------------------------
+            var serializer = new Dev2JsonSerializer();
+            var workspaceMock = new Mock<IWorkspace>();
+            var settingsData = new LegacySettingsData()
+            {
+                AuditFilePath = @"C:\ProgramData\Warewolf\Audits",
+            };
+            var requestArgs = new Dictionary<string, StringBuilder>
+            {
+                { nameof(LegacySettings), new StringBuilder(serializer.SerializeToBuilder(settingsData).ToString()) },
+                { "SinkType", new StringBuilder("SettingsData_Unknown") }
+            };
+
+            var saveAuditingSettings = new SaveAuditingSettings();
+            //------------Execute Test---------------------------
+            var jsonResult = saveAuditingSettings.Execute(requestArgs, workspaceMock.Object);
+            var result = serializer.Deserialize<ExecuteMessage>(jsonResult);
+            //------------Assert Results-------------------------
+            Assert.IsTrue(result.HasError);
+            Assert.AreEqual("SinkType: SettingsData_Unknown unknown", result.Message.ToString());
         }
 
         [TestMethod]

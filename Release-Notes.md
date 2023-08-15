@@ -1,3 +1,276 @@
+Warewolf-2.8.3 (14 March 2023)
+======================
+
+Bug fixes
+----------
+- Updated the loading of the dependency graph to prevent it loading blank sometimes.
+- Patch a bug with loading certain date time formats.
+- The server max file size setting is respected more accurately.
+
+Warewolf-2.8.2.9 (3 March 2023)
+======================
+
+Enhancements
+----------
+- A warning is logged if there is less than 10% total memory available.
+
+Bug fixes
+----------
+- Reduced the installer size.
+- patched about "PointCollection".
+- Deleted Demo workflows no longer come back when the server restarts.
+
+Warewolf-2.8.2 (16 February 2023)
+======================
+
+Enhancements
+----------
+- Don’t throw error and from sub workflow if error is handled in main workflow
+
+Bug fixes
+----------
+- Fix POST tool reading escaped JSON into string
+- Patched for my.warewolf.io missing some data
+
+Warewolf-2.8.1.63 (19 January 2023)
+======================
+
+Bug fixes
+----------
+- Fix POST tool not reading custom headers issue
+
+Warewolf-2.8.1.54 (13 December 2022)
+======================
+ 
+Enhancements
+----------
+- Add timeout option to POST activity
+ 
+Bug fixes
+----------
+- Fix PointCollection error on workflow
+
+Warewolf-2.8.1.46 (09 December 2022)
+======================
+ 
+Enhancements
+----------
+- Add checkbox to enable/disable trigger
+- Default prefetch count on queue trigger to 1
+ 
+Bug fixes
+----------
+- Increase timeout on queue trigger process to cater for long running workflows
+
+
+Warewolf-2.8.1.42 (16 November 2022)
+======================
+
+Bug fixes
+----------
+- Fixed a threading issue on POST tool which was causing duplicate transactions under heavy load/multiple threads	
+- Decision with blank match type shows as invalid.
+- Advanced Recordset tool SQL validation shows errors in error dialog
+
+2.8.1.21 (17 October 2022)
+======================
+
+Bug fixes
+----------
+- Patch for Studio crash when dropping a comment into a For Each or Select and Apply tool.
+- Patch for errors logged when saving an existing WCF source.
+
+2.8.1 (27 September 2022)
+======================
+
+Enhancements
+----------
+- Add functionality to be able to support assigning a variable from object property.
+
+Bug fixes
+----------
+- Fixed bug where WCF Tool would crash warewolf server.
+- Fixed bug with WCF Tool where service would not return data or translate variables.
+- Passwords in file tools are no longer scrambled on deploy.
+- The advanced recordset tool is now threadsafe.
+- The server text log file only shows messages above the threshold set in the studio settings.
+- Patched an error that was showing on the studio start page help video.
+- Studio connection to the server is more stable at high memory usages.
+
+2.8 (22 July 2022)
+======================
+
+Enhancements
+----------
+- Add prefetch value to help with RabbitMQ consumer performance using trigger queues
+- Log data at the DEBUG logging level is now more detailed.
+
+Bug Fixes 
+----------
+- JSON data input using the debug input window no longer  adds quotes around all property values.
+
+2.7.10 (27 June 2022)
+======================
+
+Bug Fixes
+----------
+- Patched an error starting Warewolf server when ElasticSearch server is not already started.
+- Patched redis cache to work with jmeter.
+
+2.7.9 (17 June 2022)
+======================
+
+Bug Fixes
+----------
+- ElasticSearch logging errorlevel has changed to a more detailed level.
+- Performance and memory improvements to the suspend tool.
+
+2.7.8 (31 May 2022)
+======================
+
+Bug Fixes
+----------
+- Date/Time tool shows the correct date in the put field of the debug output view.
+- Fixed issue where elasticsearch logging wasn't working on source with credentials.
+
+2.7.7 (16 May 2022)
+======================
+
+Bug Fixes
+----------
+- Creating a test from debug defaults to the correct assert and mocks.
+
+Enhancements
+----------
+- Allow hangfire persistence server to be used as a client or server using a checkbox in the persistance settings.
+
+2.7.6 (2 May 2022)
+======================
+
+Bug Fixes
+----------
+- Patch for logging source settings sometimes not saving.
+- Patch for workflow test input values blank sometimes.
+- Patch for RabbitMQ tool sometimes not loading password value.
+
+2.7.5.32 (21 April 2022)
+======================
+
+Bug Fixes
+----------
+- Changes to address Suspend tool memory spiking and general improvements to suspend tool.
+
+2.7.5 (31 March 2022)
+======================
+
+Bug Fixes
+----------
+- Patched the debug output for workflows with multiple gate tools. The output appends to the correct gate tool now.
+- Suspend tool shouldn't throw a colleciton modified error when processing large amounts of transactions.
+
+2.7.4 (23 March 2022)
+======================
+
+Bug Fixes
+----------
+- Patch bug when using recordset indexes in a ForEach on CSV.
+- RabbitMQ trigger can now pass object type variables to Warewolf workflows.
+- Trigger queues default concurrency to 0 when saved with a blank concurrency.
+
+2.7.3 (04 March 2022)
+======================
+
+Enhancements
+----------
+- Tests can now be written that manually resume workflows under tests that suspend their execution.
+
+Bug Fixes
+----------
+Gate Tool
+- Number of executions are now in line with the number of retries on failure.
+
+2.7.2.1 (28 February 2022)
+======================
+
+Bug Fixes
+----------
+- Low level performance and stability improvements to the suspend tool.
+
+2.7.1 (11 February 2022)
+======================
+
+Enhancements
+----------
+- Execution variables can now be included with our execution logs when this fearure is enabled.
+
+Bug fixes
+----------
+- New Test added will now alway be the selected test 
+
+2.7 (21 January 2022)
+======================
+
+Bug fixes
+----------
+- Studio is persistenting the correct input values for workflow with the same name
+
+8 December 2021
+======================
+
+Bug fixes
+----------
+- Hotfix for RabbitMQ connections dropping due to incorrect number concurrent connections being openned
+
+6 December 2021
+======================
+
+Enhancements
+----------------
+Test Coverage
+- Coverage summary can now show all the nodes contained by each workflow on a folder path selected on .coverage and .coverage.json
+- Child nodes are now included with our coverage percentage and denoted similarly to the Decision tool on our HTML render .coverage
+
+23 November 2021
+======================
+
+Bug fixes
+----------
+- Patched UI for inner activities for workflow tests not rendering
+- The error 500 on .coverage run has been resolved for tests containing Switch and Decision nodes
+- The manual selection of nodes into test node list and debug output generated tests are now sharing constant behavior
+- The Gate tool can be added to a Sequence tool
+
+Enhancements
+----------------
+Test Coverage
+- Child nodes are now include with our coverage percentage and denoted similarly to Decision tool on our HTML render .coverage
+- Coverage report shows total mocked nodes count
+- Can now run coverage for a single test
+- Mocked node now show as covered nodes
+- Gate tool can now be added as child node with tools like the Sequence tool, etc. 7
+- All tools have been adjusted to toggle the Mock and Assert option.
+
+05 November 2021
+======================
+
+Bug fixes
+----------
+- Deleted workflow tests no longer contribute to overall test coverage
+- Fixed a crash that happenned in RabbitMQ queue workers when changing the number of concurrent RabbitMQ queues
+
+Enhancements
+------------
+- Coverage shows not covered node count
+
+25 October 2021
+======================
+
+Bug fixes
+----------
+- Gate and suspend tools contribute to overall test coverage percentage if they are executed during a test
+- @ symbol doesn't get stripped out of assign object tool after the first execution
+- Post tool recognizes variables in it's inputs and result textboxes
+
 27 September 2021
 ======================
 

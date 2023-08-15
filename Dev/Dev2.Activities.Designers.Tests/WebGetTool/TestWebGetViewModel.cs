@@ -31,6 +31,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Unlimited.Framework.Converters.Graph.String.Xml;
 using Warewolf.Core;
+#pragma warning disable 618
 
 
 

@@ -17,12 +17,14 @@
              xmlns:attachedProperties="clr-namespace:Dev2.Activities.AttachedProperties;assembly=Dev2.Activities.Designers"
              xmlns:ui1="clr-namespace:Warewolf.UI;assembly=Warewolf.UI"
              xmlns:customControls1="clr-namespace:Warewolf.Studio.CustomControls;assembly=Warewolf.Studio.CustomControls"
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              d:DesignHeight="300"
              d:DesignWidth="300"
              mc:Ignorable="d" 
              x:Name="QueuesUserControl"
              d:DataContext="{d:DesignInstance queueEvents:QueueEventsViewModel}"
-             AutomationProperties.AutomationId="UI_QueueEventsView_AutoID">
+             AutomationProperties.AutomationId="UI_QueueEventsView_AutoID"
+             LostFocus="Concurrency_OnLostFocus">
 
     <UserControl.Resources>
         <ui1:OptionViewDataTemplateSelector x:Key="OptionViewDataTemplateSelector"/>
@@ -201,6 +203,8 @@
                                         <RowDefinition Height="Auto" />
                                         <RowDefinition Height="Auto" />
                                         <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition />
                                     </Grid.RowDefinitions>
 
                                     <TextBlock Text="Name" Grid.Row="0" Grid.Column="0" Margin="{StaticResource ControlBorderTop}"/>
@@ -342,25 +346,66 @@
                                             </Style>
                                         </TextBlock.Style>
                                     </TextBlock>
+                                    
+                                    <CheckBox Grid.Column="0" Grid.Row="4" 
+                                              HorizontalAlignment="Left" 
+                                              Margin="0,0,0,0"
+                                              Content="Trigger Enabled"
+                                              IsChecked="{Binding TriggerEnabled}">
+                                    </CheckBox>
 
-                                    <TextBlock Text="Concurrency" Grid.Row="4" Grid.Column="0" Margin="{StaticResource ControlBorderTop}" />
-                                    <TextBox Grid.Row="4" 
-                                         Grid.Column="1"
-                                         Margin="{StaticResource ControlBorderTop}"
-                                         ToolTip="{x:Static languages:Tooltips.QueueConcurrencyTooltip}"
-                                         Text="{Binding Concurrency, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                    <TextBlock Grid.Column="0" Grid.Row="5" Text="Prefetch" Margin="{StaticResource ControlBorderTop}" />
+                                    <xctk:IntegerUpDown Grid.Column="1" Grid.Row="5"
+                                            Margin="{StaticResource ControlBorderTop}"
+                                            ToolTip="{x:Static languages:Tooltips.RabbitMQToolTipPrefetch}"
+                                            TextAlignment="Left"
+                                            Minimum="1"
+                                            DefaultValue="1"
+                                            DisplayDefaultValueOnEmptyText="True"
+                                            ShowButtonSpinner="False"
+                                            ParsingNumberStyle="Integer"    
+                                            IsEnabled="{Binding TriggerEnabled}"
+                                            Text="{Binding Prefetch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                        <i:Interaction.Behaviors>
+                                            <core:HelpSetter Text="{x:Static languages:HelpText.RabbitMQHelpPrefetch}" DataContext="{Binding}" />
+                                            <errors:ErrorsSetter Source="{Binding}"
+                                            SourcePropertyName="Prefetch"
+                                            SourcePropertyValue="{Binding Prefetch, UpdateSourceTrigger=PropertyChanged}"
+                                            Target="{Binding}" />
+                                        </i:Interaction.Behaviors>
+                                    </xctk:IntegerUpDown>
+                                    
+                                    <TextBlock Text="Concurrency" Grid.Row="6" Grid.Column="0" Margin="{StaticResource ControlBorderTop}" />
+
+                                    <xctk:IntegerUpDown Grid.Row="6"
+                                                        Grid.Column="1"
+                                                        Name="ConcurrencyIntegerUpDown"
+                                                        Margin="{StaticResource ControlBorderTop}"
+                                                        ToolTip="{x:Static languages:Tooltips.QueueConcurrencyTooltip}"
+                                                        TextAlignment="Left"
+                                                        Minimum="0"
+                                                        DefaultValue="0"
+                                                        DisplayDefaultValueOnEmptyText="True"
+                                                        ShowButtonSpinner="False"
+                                                        ParsingNumberStyle="Integer"
+                                                        PreviewTextInput="Concurrency_OnPreviewTextInput"
+                                                        KeyDown="Concurrency_OnKeyDown"
+                                                        LostFocus="Concurrency_OnLostFocus"
+                                                        IsEnabled="{Binding TriggerEnabled}"
+                                                        Text="{Binding Concurrency, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }">
                                         <i:Interaction.Behaviors>
                                             <core:HelpSetter Text="{x:Static languages:HelpText.QueueConcurrencyHelp}"
-                                                         DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                                             DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                         </i:Interaction.Behaviors>
-                                    </TextBox>
+                                    </xctk:IntegerUpDown>
 
-                                    <StackPanel Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" Margin="{StaticResource ControlBorderTop}">
+
+                                    <StackPanel Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" Margin="{StaticResource ControlBorderTop}">
                                         <TextBlock Text="Run as the following user account " FontWeight="Bold"/>
                                     </StackPanel>
 
-                                    <TextBlock Text="Username" x:Name="UsernameTextBlock" Grid.Row="6" Grid.Column="0"/>
-                                    <TextBox Grid.Row="6"
+                                    <TextBlock Text="Username" x:Name="UsernameTextBlock" Grid.Row="8" Grid.Column="0"/>
+                                    <TextBox Grid.Row="8"
                                          Grid.Column="1"
                                          AutomationProperties.AutomationId="UI_UserNameTextBox"
                                          ToolTip="{x:Static languages:Tooltips.QueueSettingsToolTipUsername}"
@@ -372,9 +417,9 @@
                                         </i:Interaction.Behaviors>
                                     </TextBox>
 
-                                    <TextBlock Text="Password" Grid.Row="7" Grid.Column="0" Margin="{StaticResource ControlBorderTop}" />
+                                    <TextBlock Text="Password" Grid.Row="9" Grid.Column="0" Margin="{StaticResource ControlBorderTop}" />
                                     <customControls1:PasswordBoxUserControl Grid.Column="1"
-                                        Grid.Row="7"
+                                        Grid.Row="9"
                                         AutomationProperties.AutomationId="UI_PasswordBox"
                                         Margin="{StaticResource ActivityBorderTop}"
                                         Text="{Binding Path=Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"

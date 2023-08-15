@@ -984,44 +984,26 @@ namespace Warewolf.Storage.Tests
             var recordSet = _environment.GetLength("rec");
             Assert.AreEqual(2, recordSet);
         }
-
+        
         [TestMethod]
-        [Owner("Rory McGuire")]
+        [Owner("Njabulo Nxele")]
         [TestCategory(nameof(ExecutionEnvironment))]
-        public void ExecutionEnvironment_GetLength_NotARecordset()
+        public void ExecutionEnvironment_GetLength_NotARecordset_ShouldReturnMinusOne()
         {
             var _environment = new ExecutionEnvironment();
             _environment.Assign("[[rec().a]]", "bob", 0);
-            try
-            {
-                var recordSet = _environment.GetLength("@");
-                Assert.Fail("expected not a recordset exception");
-            }
-            catch (Exception e)
-            {
-                // BUG: This should pass
-                //Assert.AreEqual("not a recordset", e.Message);
-                Assert.AreEqual("The given key was not present in the dictionary.", e.Message);
-            }
+            var recordSet = _environment.GetLength("@");
+            Assert.AreEqual(-1, recordSet);
         }
-
+        
         [TestMethod]
-        [Owner("Rory McGuire")]
+        [Owner("Njabulo Nxele")]
         [TestCategory(nameof(ExecutionEnvironment))]
-        public void ExecutionEnvironment_GetLength_EmptyIsNotARecordset()
+        public void ExecutionEnvironment_GetLength_EmptyIsNotARecordset_ShouldReturnMinusOne()
         {
             var _environment = new ExecutionEnvironment();
-            try
-            {
-                var recordSet = _environment.GetLength("");
-                Assert.Fail("expected not a recordset exception");
-            }
-            catch (Exception e)
-            {
-                // BUG: This should pass
-                //Assert.AreEqual("not a recordset", e.Message);
-                Assert.AreEqual("The given key was not present in the dictionary.", e.Message);
-            }
+            var recordSet = _environment.GetLength("");
+            Assert.AreEqual(-1, recordSet);
         }
 
         [TestMethod]

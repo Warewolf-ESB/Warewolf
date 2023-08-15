@@ -690,13 +690,13 @@ namespace Dev2.Activities.Designers.Tests.Service
             var viewModel = new ServiceDesignerViewModel(modelItem, rootModel.Object, envRepository.Object,
                 new Mock<IEventAggregator>().Object, new SynchronousAsyncWorker())
             { IsWorstErrorReadOnly = false };
-            var privateType = new PrivateObject(viewModel);
+            var privateType = new Warewolf.Testing.PrivateObject(viewModel);
             var mock = new Mock<IComplexObjectItemModel>();
             mock.Setup(model => model.GetJson()).Returns("");
             //---------------Precondition------------------------
             Assert.IsNotNull(viewModel);
             //------------Execute Test---------------------------
-            privateType.Invoke("Done", BindingFlags.Instance | BindingFlags.NonPublic);
+            privateType.Invoke("Done");
             //---------------Test Result -----------------------
 
         }

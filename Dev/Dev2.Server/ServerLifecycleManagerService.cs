@@ -38,7 +38,14 @@ namespace Dev2
             RunSuccessful = true;
             var t = _serverLifecycleManager.Run(new LifeCycleInitializationList());
             t.Wait();
-            Dev2Logger.Info("** Service Started **", GlobalConstants.WarewolfInfo);
+            if (EnvironmentVariables.IsServerOnline)
+            {
+                Dev2Logger.Info("** Service Started **", GlobalConstants.WarewolfInfo);
+            }
+            else
+            {
+                Stop();
+            }
         }
 
         protected override void OnStop()

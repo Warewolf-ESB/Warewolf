@@ -29,5 +29,6 @@ namespace Warewolf.Triggers
         bool MapEntireMessage { get; set; }
         ICollection<IServiceInputBase> Inputs { get; set; }
         Guid ResourceId { get; set; }
+        string Prefetch { get; set; }
     }
 }

@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2022 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -887,6 +887,33 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             }
         }
 
+
+        public void DeleteResourceTestCoverage(Guid resourceId)
+        {
+            if (GetCommunicationController != null)
+            {
+                var comsController = GetCommunicationController?.Invoke("DeleteTestCoverage");
+                comsController.AddPayloadArgument("resourceID", resourceId.ToString());               
+               
+                if (resourceId == Guid.Empty)
+                {
+                    throw new ArgumentNullException(nameof(resourceId));
+                }
+                var executeCommand = comsController.ExecuteCommand<CompressedExecuteMessage>(_server.Connection, GlobalConstants.ServerWorkspaceID);
+                var serializer = new Dev2JsonSerializer();
+                if (executeCommand.HasError)
+                {
+                    var message = executeCommand.GetDecompressedMessage();
+                    var msg = serializer.Deserialize<StringBuilder>(message);
+                    throw new Exception(msg.ToString());
+                }
+            }
+            else
+            {
+                throw new NullReferenceException("Cannot delete resource test coverage. Cannot get Communication Controller.");
+            }
+        }
+
         public List<ITriggerQueue> LoadResourceTriggersForDeploy(Guid resourceId)
         {
             if (GetCommunicationController != null)
@@ -1071,9 +1098,26 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         }
         public ExecuteMessage SaveAuditingSettings(IServer currentEnv, AuditSettingsDataBase auditingSettingsData)
         {
+            var settingsDataTypeName = auditingSettingsData.GetType().Name;
             var comController = new CommunicationController {ServiceName = nameof(Warewolf.Service.SaveAuditingSettings)};
-            comController.AddPayloadArgument(Warewolf.Service.SaveAuditingSettings.AuditingSettings, _serializer.Serialize(auditingSettingsData));
-            comController.AddPayloadArgument(Warewolf.Service.SaveAuditingSettings.SinkType,new StringBuilder(auditingSettingsData.GetType().Name));
+            if (auditingSettingsData is AuditingSettingsData)
+            {
+                comController.AddPayloadArgument(Warewolf.Service.SaveAuditingSettings.AuditingSettings, _serializer.Serialize(auditingSettingsData));
+            }
+            else if (auditingSettingsData is LegacySettingsData)
+            {
+                comController.AddPayloadArgument(Warewolf.Service.SaveAuditingSettings.LegacySettings, _serializer.Serialize(auditingSettingsData));
+            }
+            else
+            {
+                return new ExecuteMessage
+                {
+                    HasError = true,
+                    Message = new StringBuilder($"SettingsDataType: {settingsDataTypeName} unknown.")
+                };
+            }
+
+            comController.AddPayloadArgument(Warewolf.Service.SaveAuditingSettings.SinkType, new StringBuilder(settingsDataTypeName));
             
             var output = comController.ExecuteCommand<ExecuteMessage>(currentEnv.Connection, GlobalConstants.ServerWorkspaceID);
             if (output == null)

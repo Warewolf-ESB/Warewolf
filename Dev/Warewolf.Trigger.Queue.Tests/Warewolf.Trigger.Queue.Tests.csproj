@@ -2,12 +2,11 @@
 
   <PropertyGroup>
     <TargetFrameworks>net48</TargetFrameworks>
-
     <IsPackable>false</IsPackable>
-
     <Configurations>Debug</Configurations>
-
     <Platforms>AnyCPU</Platforms>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+	<PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
 
   <ItemGroup>

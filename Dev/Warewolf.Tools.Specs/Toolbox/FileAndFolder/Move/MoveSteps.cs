@@ -21,17 +21,9 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Move
     [Binding]
     public class MoveSteps : FileToolsBase
     {
-        readonly ScenarioContext scenarioContext;
-
         public MoveSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
         {
-            if (scenarioContext == null)
-            {
-                throw new ArgumentNullException("scenarioContext");
-            }
-
-            this.scenarioContext = scenarioContext;
         }
 
         [When(@"the Move file tool is executed")]

@@ -3,6 +3,8 @@
     <PropertyGroup>
         <TargetFramework>net48</TargetFramework>
         <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+        <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+        <CodeAnalysisRuleSet>..\.sonarlint\warewolf_dotnet_frameworkcsharp.ruleset</CodeAnalysisRuleSet>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
@@ -10,10 +12,10 @@
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="Hangfire.Core">
-            <Version>1.7.13</Version>
+            <Version>1.7.28</Version>
         </PackageReference>
         <PackageReference Include="Hangfire.SqlServer">
-            <Version>1.7.13</Version>
+            <Version>1.7.28</Version>
         </PackageReference>
     </ItemGroup>
     <ItemGroup>
@@ -26,6 +28,9 @@
           <Link>Properties\AssemblyCommonInfo.cs</Link>
         </Compile>
     </ItemGroup>
+	<ItemGroup>
+	  <AdditionalFiles Include="..\.sonarlint\warewolf_dotnet_framework\CSharp\SonarLint.xml" Link="SonarLint.xml" />
+	</ItemGroup>
 	<ItemGroup>
 	  <Reference Include="System.Transactions" />
 	</ItemGroup>

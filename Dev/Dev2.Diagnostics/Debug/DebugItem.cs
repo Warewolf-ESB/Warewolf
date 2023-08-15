@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2022 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -40,7 +40,7 @@ namespace Dev2.Diagnostics
 
         public List<IDebugItemResult> ResultsList { get; set; }
         public static List<DebugItem> EmptyList { get; set; } = new List<DebugItem>();
-
+        
         public DebugItem()
             : this(null)
         {
@@ -115,7 +115,11 @@ namespace Dev2.Diagnostics
             if (valueOrVariable && valueLengthTooLong)
             {
                 itemToAdd.MoreLink = SaveFile(itemToAdd.Value, string.Format("{0}-{1}.txt", DateTime.Now.ToString("s"), Guid.NewGuid()));
-                itemToAdd.Value = itemToAdd.Value.Substring(0, ActCharDispatchCount);
+                itemToAdd.TruncatedValue = itemToAdd.Value.Substring(0, ActCharDispatchCount);
+            }
+            else
+            {
+                itemToAdd.TruncatedValue = itemToAdd.Value;
             }
         }
 

@@ -1111,9 +1111,9 @@ namespace Dev2.Core.Tests.Environments
             env.Setup(e => e.ResourceRepository).Returns(repo.Object);
 
             var instance = ServerRepository.Instance;
-
-            var obj = new PrivateObject(instance, new PrivateType(typeof(ServerRepository)));
-            var environmentModel = obj.Invoke("CreateEnvironmentModel", BindingFlags.NonPublic | BindingFlags.Static, new[] { typeof(Guid), typeof(Uri), typeof(string) }, new object[] { Guid.NewGuid(), new Uri("http://LOCALHOST"), "" }) as IServer;
+            var getMethod = instance.GetType().GetMethod("CreateEnvironmentModel", BindingFlags.Static | BindingFlags.NonPublic, null, new[] { typeof(Guid), typeof(Uri), typeof(string) }, null);
+            Assert.IsNotNull(getMethod, "Cannot get private method.");
+            var environmentModel = getMethod.Invoke(instance, new object[] { Guid.NewGuid(), new Uri("http://LOCALHOST"), "" }) as IServer;
 
             Assert.IsTrue(environmentModel?.Connection.WebServerUri.AbsoluteUri.Contains("localhost") ?? false);
         }
@@ -1149,8 +1149,7 @@ namespace Dev2.Core.Tests.Environments
 
             var instance = ServerRepository.Instance;
 
-            var obj = new PrivateObject(instance, new PrivateType(typeof(ServerRepository)));
-            var environmentModel = obj.Invoke("CreateEnvironmentModel", BindingFlags.NonPublic | BindingFlags.Static, new[] { typeof(Guid), typeof(Uri), typeof(string) }, new object[] { Guid.NewGuid(), new Uri("http://LOCALHOST"), "" }) as IServer;
+            var environmentModel = instance.GetType().GetMethod("CreateEnvironmentModel", BindingFlags.NonPublic | BindingFlags.Static, null, new[] { typeof(Guid), typeof(Uri), typeof(string) }, null).Invoke(instance, new object[] { Guid.NewGuid(), new Uri("http://LOCALHOST"), "" }) as IServer;
 
             Assert.IsTrue(environmentModel?.Connection.WebServerUri.AbsoluteUri.Contains("localhost") ?? false);
             Assert.AreEqual(new Uri("http://localhost"), environmentModel?.Connection.WebServerUri);

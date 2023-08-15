@@ -407,7 +407,7 @@
                                                        Style="{StaticResource TextBlockDebugOutputNoPaddingStyle}" AutomationProperties.AutomationId="UI_DebugOutputVariableTextBlock_AutoID" />
                         <TextBlock Grid.Column="2" Text="{Binding Operator}" Style="{StaticResource TextBlockDebugOutputNoPaddingStyle}" 
                                                        AutomationProperties.AutomationId="UI_DebugOutputOperatorTextBlock_AutoID" />
-                        <TextBlock Grid.Column="3" Margin="0,1,0,0" Text="{Binding Value}" Foreground="{StaticResource DebugItemValueBrush}" 
+                        <TextBlock Grid.Column="3" Margin="0,1,0,0" Text="{Binding TruncatedValue}" Foreground="{StaticResource DebugItemValueBrush}" 
                                                        Style="{StaticResource TextBlockDebugOutputNoPaddingStyle}" AutomationProperties.AutomationId="UI_DebugOutputValueTextBlock_AutoID" />
                     </Grid>
                 </StackPanel>
@@ -430,7 +430,7 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="{Binding Value}" Margin="0,2,0,0" 
+                        <TextBlock Text="{Binding TruncatedValue}" Margin="0,2,0,0" 
                                                        AutomationProperties.AutomationId="UI_DebugOutputServiceTestValueTextBlock_AutoID" >
                             <TextBlock.Style>
                                 <Style TargetType="TextBlock" BasedOn="{StaticResource TextBlockDebugOutputServiceTestStyle}">

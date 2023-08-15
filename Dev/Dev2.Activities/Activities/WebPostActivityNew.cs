@@ -47,6 +47,7 @@ namespace Dev2.Activities
         private bool IsUrlEncodedChecked => Convert.ToBoolean(this.Settings?.FirstOrDefault(s => s.Name == nameof(IsUrlEncodedChecked))?.Value);
         public IList<FormDataConditionExpression> Conditions { get; set; }
         public string QueryString { get; set; }
+        public int Timeout { get; set; }
         public IOutputDescription OutputDescription { get; set; }
         public IResponseManager ResponseManager { get; set; }
         public string PostData { get; set; }
@@ -162,6 +163,7 @@ namespace Dev2.Activities
                 var isManualChecked = Convert.ToBoolean(Settings?.FirstOrDefault(s => s.Name == nameof(IsManualChecked))?.Value);
                 var isFormDataChecked = Convert.ToBoolean(Settings?.FirstOrDefault(s => s.Name == nameof(IsFormDataChecked))?.Value);
                 var isUrlEncodedChecked = Convert.ToBoolean(Settings?.FirstOrDefault(s => s.Name == nameof(IsUrlEncodedChecked))?.Value);
+                var timeout = Convert.ToInt32(Settings?.FirstOrDefault(s => s.Name == nameof(Timeout))?.Value);
                 
                 if(isManualChecked || isFormDataChecked || isUrlEncodedChecked)
                 {
@@ -177,7 +179,8 @@ namespace Dev2.Activities
                         Settings = Settings,
                         IsManualChecked = isManualChecked,
                         IsFormDataChecked = isFormDataChecked,
-                        IsUrlEncodedChecked = isUrlEncodedChecked
+                        IsUrlEncodedChecked = isUrlEncodedChecked,
+                        Timeout = Timeout,
                     };
                     
                     webRequestResult = PerformWebPostRequest(webPostOptions);
@@ -208,7 +211,7 @@ namespace Dev2.Activities
 
         protected virtual string PerformWebPostRequest(IWebPostOptions webPostOptions)
         {
-            return WebSources.Execute(webPostOptions);
+            return WebSources.Execute(webPostOptions, out _errorsTo);
         }
 
         private (IEnumerable<INameValue> head, string query, string data, IEnumerable<IFormDataParameters> conditions) GetEnvironmentInputVariables(IExecutionEnvironment environment, int update)

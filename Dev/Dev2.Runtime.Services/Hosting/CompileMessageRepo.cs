@@ -92,17 +92,18 @@ namespace Dev2.Runtime.Hosting
 
         public void Dispose()
         {
-            if(PersistTimer != null)
+            if (PersistTimer != null)
             {
                 try
                 {
                     PersistTimer.Close();
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     Dev2Logger.Error(e, GlobalConstants.WarewolfError);
                 }
             }
+            GC.SuppressFinalize(this);
         }
 
         public static void ClearObservable()

@@ -12,7 +12,6 @@
 using Dev2.Common;
 using Dev2.ServerLifeCycleWorkers;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;

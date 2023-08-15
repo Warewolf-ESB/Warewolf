@@ -42,7 +42,9 @@ namespace Dev2.Activities
     [ToolDescriptorInfo("ControlFlow-Gate", nameof(Gate), ToolType.Native, "8999E58B-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Activities", "1.0.0.0", "Legacy", "Control Flow", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Flow_Gate")]
     public class GateActivity : DsfActivityAbstract<string>, IEquatable<GateActivity>, IStateNotifierRequired
     {
-        private IStateNotifier _stateNotifier = null;
+        private IStateNotifier _stateNotifier;
+        private bool isSecTry = false;
+        private string prevGateUniID;
 
         public GateActivity()
             : base(nameof(Gate))
@@ -93,7 +95,6 @@ namespace Dev2.Activities
         private Guid _originalUniqueId;
         private string _previousParentId;
         private IDSFDataObject _dataObject;
-        private IExecutionEnvironment _originalExecutionEnvironment;
         public override IDev2Activity Execute(IDSFDataObject data, int update)
         {
             _previousParentId = data.ParentInstanceID;
@@ -105,7 +106,7 @@ namespace Dev2.Activities
             {
                 _stateNotifier?.LogActivityExecuteState(this);
 
-                bool firstExecution = true;
+                var firstExecution = true;
                 if (_dataObject.Gates.TryGetValue(this, out (RetryState, IEnumerator<bool>) retryState))
                 {
                     firstExecution = false;
@@ -122,11 +123,10 @@ namespace Dev2.Activities
                         retryState.Item2 = onResume.Strategy.Create().GetEnumerator();
                     }
                     _dataObject.Gates.Add(this, retryState);
-                    _originalExecutionEnvironment = data.Environment.Snapshot();
                 }
                 if (_dataObject.IsDebugMode())
                 {
-                    var debugItemStaticDataParams = new DebugItemStaticDataParams("Retry: " + retryState.Item1.NumberOfRetries.ToString(), "", true);
+                    var debugItemStaticDataParams = new DebugItemStaticDataParams("Retry: " + retryState.Item1.NumberOfRetries, "", true);
                     AddDebugOutputItem(debugItemStaticDataParams);
 
                 }
@@ -150,22 +150,36 @@ namespace Dev2.Activities
                     return ExecuteNormal(data, update, allErrors);
                 }
 
-                return ExecuteRetry(data, update, allErrors, retryState.Item2);
+                return PrintChildnodeOutputUnderCorrectParentNode(data, update, allErrors, retryState);            
+
             }
             catch (Exception e)
-            {
-                _stateNotifier?.LogExecuteException(e, this);
+			{
+				_stateNotifier?.LogExecuteException(new SerializableException(e), this);
                 throw;
             }
             finally
             {
                 HandleErrors(data, allErrors);
-                if (data.IsDebugMode())
+                if ((data.IsDebugMode()) && (!isSecTry))
                 {
                     DispatchDebugState(data, StateType.Before, update);
                     DispatchDebugState(data, StateType.After, update);
                 }
+                isSecTry = false;
             }
+        }
+
+        public IDev2Activity PrintChildnodeOutputUnderCorrectParentNode(IDSFDataObject data, int update, IErrorResultTO allErrors, (RetryState, IEnumerator<bool>) retryState)
+        {
+            prevGateUniID = UniqueID;
+            UniqueID = Guid.NewGuid().ToString();                      
+            DispatchDebugState(data, StateType.Before, update);
+            DispatchDebugState(data, StateType.After, update);
+            isSecTry = true;
+            var nextGateAct = ExecuteRetry(data, update, allErrors, retryState.Item2);
+            UniqueID = prevGateUniID;
+            return nextGateAct;
         }
 
         private static void GetFinalTestRunResult(IServiceTestStep serviceTestStep, TestRunResult testRunResult)
@@ -264,9 +278,8 @@ namespace Dev2.Activities
                 ExecuteRetryWorkflowCompleted();
             }
 
-            _dataObject.Environment = _originalExecutionEnvironment;
             Dev2Logger.Debug("Gate: Reset Environment Snapshot", data.ExecutionID.ToString());
-            
+
             if (_dataObject.IsDebugMode())
             {
                 var debugItemStaticDataParams = new DebugItemStaticDataParams(nameof(ExecuteRetry), "", true);
@@ -317,9 +330,9 @@ namespace Dev2.Activities
                     {
                         var debugItemStaticDataParams = new DebugItemStaticDataParams("Conditions passed", "", true);
                         AddDebugOutputItem(debugItemStaticDataParams);
-                    }
+                    }                    
                 }
-                else 
+                else
                 {
                     if (_dataObject.IsDebugMode())
                     {
@@ -345,7 +358,7 @@ namespace Dev2.Activities
                             if (canRetry)
                             {
                                 var goBackToActivity = GetRetryEntryPoint().As<GateActivity>();
-                                goBackToActivity.UpdateRetryState(this, _dataObject.Gates[goBackToActivity].Item1);
+                                goBackToActivity.UpdateRetryState(this, _dataObject.Gates[goBackToActivity].Item1);                               
                                 next = goBackToActivity;
                             }
                             else
@@ -428,7 +441,7 @@ namespace Dev2.Activities
         {
             if (GateOptions.GateOpts is Continue)
             {
-                _retryState.NumberOfRetries++;
+                _retryState.NumberOfRetries++;                
             }
             else
             {
@@ -641,6 +654,17 @@ namespace Dev2.Activities
         public Guid RetryEntryPointId { get; set; }
 
         public GateOptions GateOptions { get; set; }
+
+        public override IEnumerable<IDev2Activity> GetChildrenNodes()
+        {
+            var act = DataFunc.Handler as IDev2ActivityIOMapping;
+            if (act == null)
+            {
+                return new List<IDev2Activity>();
+            }
+            var childNodes = new List<IDev2Activity> { act };
+            return childNodes;
+        }
     }
 
     public class GateException : Exception

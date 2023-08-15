@@ -8,6 +8,7 @@
         <Configurations>Debug</Configurations>
 
         <Platforms>AnyCPU</Platforms>
+        <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     </PropertyGroup>
 
     <ItemGroup>

@@ -30,18 +30,11 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
     [Binding]
     public class DataSplitSteps : RecordSetBases
     {
-        readonly ScenarioContext scenarioContext;
         public static Depends _containerOps;
 
         public DataSplitSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
         {
-            if (scenarioContext == null)
-            {
-                throw new ArgumentNullException("scenarioContext");
-            }
-
-            this.scenarioContext = scenarioContext;
         }
 
         protected override void BuildDataList()

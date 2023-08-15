@@ -25,17 +25,9 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Calculate
     [Binding]
     public class CalculateSteps : RecordSetBases
     {
-        readonly ScenarioContext scenarioContext;
-
         public CalculateSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
         {
-            if (scenarioContext == null)
-            {
-                throw new ArgumentNullException("scenarioContext");
-            }
-
-            this.scenarioContext = scenarioContext;
         }
 
         protected override void BuildDataList()

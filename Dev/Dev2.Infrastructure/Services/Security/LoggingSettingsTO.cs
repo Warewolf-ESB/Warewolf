@@ -5,5 +5,6 @@ namespace Dev2.Services.Security
         public string FileLoggerLogLevel { get; set; }
         public string EventLogLoggerLogLevel { get; set; }
         public int FileLoggerLogSize { get; set; }
+        public long AuditLogMaxSize { get; set; }
     }
 }

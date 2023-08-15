@@ -82,6 +82,40 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(null, result[0]);
         }
 
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(SuspendExecutionActivity))]
+        public void SuspendExecutionActivity_GetChildrenNodes_ShouldReturnChildNodes()
+        {
+            var activity = CreateWorkflow();
+            var activityFunction = new ActivityFunc<string, bool>
+            {
+                DisplayName = activity.DisplayName,
+                Handler = activity,
+            };
+
+            var suspendExecutionActivity = new SuspendExecutionActivity
+            {
+                SuspendOption = enSuspendOption.SuspendForDays,
+                PersistValue = "15",
+                AllowManualResumption = true,
+                SaveDataFunc = activityFunction,
+                Response = "[[result]]"
+            };
+
+            Assert.AreEqual("Suspend Execution", suspendExecutionActivity.DisplayName);
+            Assert.AreEqual("15", suspendExecutionActivity.PersistValue);
+            Assert.AreEqual(enSuspendOption.SuspendForDays, suspendExecutionActivity.SuspendOption);
+            Assert.IsTrue(suspendExecutionActivity.AllowManualResumption);
+            Assert.AreEqual("TestService", suspendExecutionActivity.SaveDataFunc.DisplayName);
+
+            var result = suspendExecutionActivity.GetChildrenNodes().ToList();
+
+            Assert.AreEqual(1, result.Count);
+            Assert.AreEqual(activity, result[0]);
+        }
+
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(SuspendExecutionActivity))]

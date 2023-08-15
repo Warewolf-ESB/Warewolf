@@ -29,6 +29,7 @@ using Warewolf.Common.Interfaces.NetStandard20;
 using Warewolf.Common.NetStandard20;
 using Warewolf.Data.Options;
 using System.Linq;
+using System.Web;
 
 namespace Dev2.Runtime.ServiceModel
 {
@@ -155,15 +156,15 @@ namespace Dev2.Runtime.ServiceModel
             return Execute(source, method, headers, relativeUri, data, throwError, out errors, webExecuteStringArgs.FormDataParameters, webExecuteStringArgs.WebRequestFactory, settings: settings);
         }
         
-        public static string Execute(IWebPostOptions options)
+        public static string Execute(IWebPostOptions options, out ErrorResultTO errors)
         {
             return Execute(source: options.Source, method: options.Method, headers: options.Headers, relativeUrl: options.Query,
-                data: options.PostData, throwError: true, errors: out ErrorResultTO errors, formDataParameters: options.Parameters, settings: options.Settings);
+                data: options.PostData, throwError: true, errors: out errors, formDataParameters: options.Parameters, settings: options.Settings, timeout: options.Timeout);
         }
         
         public static string Execute(IWebSource source, WebRequestMethod method, IEnumerable<string> headers, string relativeUrl,
             bool isNoneChecked, bool isFormDataChecked, string data, bool throwError, out ErrorResultTO errors,
-            IEnumerable<IFormDataParameters> formDataParameters = null, IWebRequestFactory webRequestFactory = null)
+            IEnumerable<IFormDataParameters> formDataParameters = null)
         {
             var settings = new List<INameValue>();
             settings.Add(new NameValue("IsManualChecked", isNoneChecked.ToString()));
@@ -175,7 +176,7 @@ namespace Dev2.Runtime.ServiceModel
         
         public static string Execute(IWebSource source, WebRequestMethod method, IEnumerable<string> headers, string relativeUrl,
             string data, bool throwError, out ErrorResultTO errors,
-            IEnumerable<IFormDataParameters> formDataParameters = null, IWebRequestFactory webRequestFactory = null, IEnumerable<INameValue> settings = null)
+            IEnumerable<IFormDataParameters> formDataParameters = null, IWebRequestFactory webRequestFactory = null, IEnumerable<INameValue> settings = null, int timeout = 0)
         {
             IWebClientWrapper client = null;
 
@@ -202,13 +203,19 @@ namespace Dev2.Runtime.ServiceModel
                     var formDataBoundary = contentType.Split('=').Last();
                     var bytesData = isFormDataChecked ? GetMultipartFormData(formDataParameters, formDataBoundary) : GetFormUrlEncodedData(formDataParameters, formDataBoundary);
                     
-                    return PerformMultipartWebRequest(webRequestFactory, client, address, bytesData);
+                    return PerformMultipartWebRequest(webRequestFactory, client, address, bytesData, timeout);
                 }
 
                 if (isManualChecked && contentType != null && (contentType.ToLowerInvariant().Contains("multipart") || contentType.ToLowerInvariant().Contains("x-www")))
                 {
                     var bytesData = ConvertToHttpNewLine(ref data);
-                    return PerformMultipartWebRequest(webRequestFactory, client, address, bytesData);
+                    return PerformMultipartWebRequest(webRequestFactory, client, address, bytesData, timeout);
+                }
+
+                if (method == WebRequestMethod.Post)
+                {
+                    var bytesData = Encoding.ASCII.GetBytes(data);
+                    return PerformMultipartWebRequest(webRequestFactory, client, address, bytesData, timeout, headers);
                 }
 
                 switch (method)
@@ -226,8 +233,10 @@ namespace Dev2.Runtime.ServiceModel
                 errors.AddError(webex.Message);
                 using (var responseStream = httpResponse.GetResponseStream())
                 {
-                    var reader = new StreamReader(responseStream);
-                    return reader.ReadToEnd();
+                    using (var reader = new StreamReader(responseStream))
+                    {
+                        return reader.ReadToEnd();
+                    }
                 }
             }
             catch (Exception e)
@@ -249,72 +258,75 @@ namespace Dev2.Runtime.ServiceModel
         private static byte[] GetMultipartFormData(IEnumerable<IFormDataParameters> postParameters, string boundary)
         {
             var encoding = Encoding.UTF8;
-            Stream formDataStream = new MemoryStream();
-            var needsClrf = false;
-
-            var dds = postParameters.GetEnumerator();
-            while (dds.MoveNext())
+            using (Stream formDataStream = new MemoryStream())
             {
-                var conditionExpression = dds.Current;
+                var needsClrf = false;
 
-                if (needsClrf)
+                var dds = postParameters.GetEnumerator();
+                while (dds.MoveNext())
                 {
-                    formDataStream.Write(encoding.GetBytes("\r\n"), 0, encoding.GetByteCount("\r\n"));
+                    var conditionExpression = dds.Current;
+
+                    if (needsClrf)
+                    {
+                        formDataStream.Write(encoding.GetBytes("\r\n"), 0, encoding.GetByteCount("\r\n"));
+                    }
+
+                    needsClrf = true;
+
+                    if (conditionExpression is FileParameter fileToUpload)
+                    {
+                        var fileKey = fileToUpload.Key;
+                        var header = $"--{boundary}\r\nContent-Disposition: form-data; name=\"{fileKey}\"; filename=\"{fileToUpload.FileName ?? fileKey}\"\r\nContent-Type: {fileToUpload.ContentType ?? "application/octet-stream"}\r\n\r\n";
+
+                        var fileBytes = fileToUpload.FileBytes;
+
+                        formDataStream.Write(encoding.GetBytes(header), 0, encoding.GetByteCount(header));
+
+                        formDataStream.Write(fileBytes, 0, fileBytes.Length);
+                    }
+                    else if (conditionExpression is TextParameter textToUpload)
+                    {
+                        var postData = $"--{boundary}\r\nContent-Disposition: form-data; name=\"{textToUpload.Key}\"\r\n\r\n{textToUpload.Value}";
+                        formDataStream.Write(encoding.GetBytes(postData), 0, encoding.GetByteCount(postData));
+                    }
                 }
 
-                needsClrf = true;
+                var footer = "\r\n--" + boundary + "--\r\n";
+                formDataStream.Write(encoding.GetBytes(footer), 0, encoding.GetByteCount(footer));
 
-                if (conditionExpression is FileParameter fileToUpload)
-                {
-                    var fileKey = fileToUpload.Key;
-                    var header = $"--{boundary}\r\nContent-Disposition: form-data; name=\"{fileKey}\"; filename=\"{fileToUpload.FileName ?? fileKey}\"\r\nContent-Type: {fileToUpload.ContentType ?? "application/octet-stream"}\r\n\r\n";
+                formDataStream.Position = 0;
+                var formData = new byte[formDataStream.Length];
+                formDataStream.Read(formData, 0, formData.Length);
+                formDataStream.Close();
 
-                    var fileBytes = fileToUpload.FileBytes;
-
-                    formDataStream.Write(encoding.GetBytes(header), 0, encoding.GetByteCount(header));
-                    
-                    formDataStream.Write(fileBytes, 0, fileBytes.Length);
-                }
-                else if (conditionExpression is TextParameter textToUpload)
-                {
-                    var postData = $"--{boundary}\r\nContent-Disposition: form-data; name=\"{textToUpload.Key}\"\r\n\r\n{textToUpload.Value}";
-                    formDataStream.Write(encoding.GetBytes(postData), 0, encoding.GetByteCount(postData));
-                }
+                return formData;
             }
-
-            var footer = "\r\n--" + boundary + "--\r\n";
-            formDataStream.Write(encoding.GetBytes(footer), 0, encoding.GetByteCount(footer));
-
-            formDataStream.Position = 0;
-            var formData = new byte[formDataStream.Length];
-            formDataStream.Read(formData, 0, formData.Length);
-            formDataStream.Close();
-
-            return formData;
         }
         
         private static byte[] GetFormUrlEncodedData(IEnumerable<IFormDataParameters> postParameters, string boundary)
         {
             var encoding = Encoding.UTF8;
-            Stream formDataStream = new MemoryStream();
-
-            var dds = postParameters.GetEnumerator();
-            while (dds.MoveNext())
+            using (Stream formDataStream = new MemoryStream())
             {
-                var conditionExpression = dds.Current;
-                var formValueType = conditionExpression;
+                var dds = postParameters.GetEnumerator();
+                while (dds.MoveNext())
+                {
+                    var conditionExpression = dds.Current;
+                    var formValueType = conditionExpression;
 
-                var textToUpload = formValueType as TextParameter;
-                var postData = $"{textToUpload.Key}={textToUpload.Value}&";
-                formDataStream.Write(encoding.GetBytes(postData), 0, encoding.GetByteCount(postData));
+                    var textToUpload = formValueType as TextParameter;
+                    var postData = $"{textToUpload.Key}={textToUpload.Value}&";
+                    formDataStream.Write(encoding.GetBytes(postData), 0, encoding.GetByteCount(postData));
+                }
+
+                formDataStream.Position = 0;
+                var formData = new byte[formDataStream.Length];
+                formDataStream.Read(formData, 0, formData.Length);
+                formDataStream.Close();
+
+                return formData;
             }
-            
-            formDataStream.Position = 0;
-            var formData = new byte[formDataStream.Length];
-            formDataStream.Read(formData, 0, formData.Length);
-            formDataStream.Close();
-
-            return formData;
         }
 
         private static void ValidateSource(IWebSource source)
@@ -357,13 +369,18 @@ namespace Dev2.Runtime.ServiceModel
             return method == WebRequestMethod.Get ? client.DownloadData(address) : client.UploadData(address, method.ToString().ToUpperInvariant(), data);
         }
 
-        public static string PerformMultipartWebRequest(IWebRequestFactory webRequestFactory, IWebClientWrapper client, string address, byte[] bytesData)
+        public static string PerformMultipartWebRequest(IWebRequestFactory webRequestFactory, IWebClientWrapper client, string address, byte[] bytesData, int timeout = 0, IEnumerable<string> headers = null)
         {
             var wr = webRequestFactory.New(address);
             wr.Headers[HttpRequestHeader.Authorization] = client.Headers[HttpRequestHeader.Authorization];
             wr.ContentType = client.Headers[HttpRequestHeader.ContentType];
             wr.Method = "POST";
             wr.ContentLength = bytesData.Length;
+            AddHeaders(wr, headers);
+            if (timeout > 0)
+            {
+                wr.Timeout = timeout * 1000;
+            }
 
             using (var requestStream = wr.GetRequestStream())
             {
@@ -373,7 +390,7 @@ namespace Dev2.Runtime.ServiceModel
 
             using (var wresp = wr.GetResponse() as HttpWebResponse)
             {
-                if (wresp != null && wresp.StatusCode == HttpStatusCode.OK)
+                if (wresp != null && IsSuccessCode(wresp.StatusCode))
                 {
                     using (var responseStream = wresp.GetResponseStream())
                     {
@@ -391,6 +408,11 @@ namespace Dev2.Runtime.ServiceModel
                 var wrespStatusCode = wresp?.StatusCode ?? HttpStatusCode.Ambiguous;
                 throw new ApplicationException("Error while upload files. Server status code: " + wrespStatusCode);
             }
+        }
+
+        private static bool IsSuccessCode(HttpStatusCode code)
+        {
+            return (int)code >= 200 && (int)code < 300;
         }
 
         private static byte[] ConvertToHttpNewLine(ref string data)
@@ -429,6 +451,20 @@ namespace Dev2.Runtime.ServiceModel
                     if (header != ":")
                     {
                         webClient.Headers.Add(header.Trim());
+                    }
+                }
+            }
+        }
+        
+        private static void AddHeaders(IWebRequest wr, IEnumerable<string> headers)
+        {
+            if (headers != null)
+            {
+                foreach (var header in headers)
+                {
+                    if (header != ":" && !header.ToLower().StartsWith("content-type:") && !header.ToLower().Contains(":bearer"))
+                    {
+                        wr.AddHeader(header.Trim());
                     }
                 }
             }

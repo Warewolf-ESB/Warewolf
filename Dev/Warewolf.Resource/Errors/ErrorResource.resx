@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -1276,7 +1276,7 @@
     <value>Variable name [[res#]] contains invalid character(s)</value>
   </data>
   <data name="ScheduledResourceInvalidUserPermissionErrorTest" xml:space="preserve">
-    <value>This Workflow requires that you have Execute permission on the 'bob' Workflow. 
+    <value>This Workflow requires that you have Execute permission on the 'bob' Workflow.
 Please contact your Warewolf System Administrator.</value>
   </data>
   <data name="ScheduledResourceLogOnAsBatchErrorTest" xml:space="preserve">
@@ -1408,6 +1408,9 @@ Please contact your Windows System Administrator.</value>
   </data>
   <data name="ErrorDuringDuplicateFolderCallback" xml:space="preserve">
     <value>The following error occurred while executing the duplicate folder callback '{0}'.</value>
+  </data>
+  <data name="DecisionMatchTypeNotNullErrorTest" xml:space="preserve">
+    <value>'MatchType' Cannot be null</value>
   </data>
   <data name="InvalidLicense" xml:space="preserve">
     <value>The license is not active, please activate to complete the execution.</value>

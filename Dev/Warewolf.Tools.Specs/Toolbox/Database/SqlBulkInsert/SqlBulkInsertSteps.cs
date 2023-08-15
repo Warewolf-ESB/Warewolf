@@ -142,7 +142,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.SqlBulkInsert
         {
             if (scenarioContext.ScenarioInfo.Title.Replace(' ', '_') == "Import_data_into_Table_Batch_size_is_1")
             {
-                var tableNameUniqueNameGuid = ScenarioContext.Current.Get<string>("tableNameUniqueNameGuid");
+                var tableNameUniqueNameGuid = scenarioContext.Get<string>("tableNameUniqueNameGuid");
                 DeleteIsolatedSQLTable(tableNameUniqueNameGuid);
             }
         }
@@ -187,7 +187,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.SqlBulkInsert
                 var q2 = "update SqlBulkInsertSpecFlowTestTableForeign_for_" + scenarioContext.ScenarioInfo.Title.Replace(' ', '_');
                 if (scenarioContext.ScenarioInfo.Title.Replace(' ', '_') == "Import_data_into_Table_Batch_size_is_1")
                 {
-                    q2 += "_" + ScenarioContext.Current.Get<string>("tableNameUniqueNameGuid");
+                    q2 += "_" + scenarioContext.Get<string>("tableNameUniqueNameGuid");
                 }
                 q2 += " set Col2 = 0 where Col1 = '23EF3ADB-5A4F-4785-B311-E121FF7ACB67'";
                 using (var cmd = new SqlCommand(q2, connection))
@@ -400,7 +400,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.SqlBulkInsert
                 var q1 = "select col2 from SqlBulkInsertSpecFlowTestTableForeign_for_" + scenarioContext.ScenarioInfo.Title.Replace(' ', '_');
                 if (scenarioContext.ScenarioInfo.Title.Replace(' ', '_') == "Import_data_into_Table_Batch_size_is_1")
                 {
-                    q1 += "_" + ScenarioContext.Current.Get<string>("tableNameUniqueNameGuid");
+                    q1 += "_" + scenarioContext.Get<string>("tableNameUniqueNameGuid");
                 }
                 q1 += " where Col1 = '23EF3ADB-5A4F-4785-B311-E121FF7ACB67'";
                 using (var cmd = new SqlCommand(q1, connection))
@@ -415,7 +415,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.SqlBulkInsert
                 var q2 = "truncate table SqlBulkInsertSpecFlowTestTable_for_" + scenarioContext.ScenarioInfo.Title.Replace(' ', '_');
                 if (scenarioContext.ScenarioInfo.Title.Replace(' ', '_') == "Import_data_into_Table_Batch_size_is_1")
                 {
-                    q2 += "_" + ScenarioContext.Current.Get<string>("tableNameUniqueNameGuid");
+                    q2 += "_" + scenarioContext.Get<string>("tableNameUniqueNameGuid");
                 }
                 using (var cmd = new SqlCommand(q2, connection))
                 {

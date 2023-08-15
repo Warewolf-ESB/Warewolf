@@ -7,20 +7,25 @@
         <AssemblyName>HangfireServer</AssemblyName>
         <ApplicationIcon />
         <StartupObject />
+        <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     </PropertyGroup>
 
     <PropertyGroup>
         <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+        <CodeAnalysisRuleSet>..\.sonarlint\warewolf_dotnet_frameworkcsharp.ruleset</CodeAnalysisRuleSet>
     </PropertyGroup>
     <ItemGroup>
         <Compile Include="..\AssemblyCommonInfo.cs" Link="Properties\AssemblyCommonInfo.cs" />
     </ItemGroup>
+    <ItemGroup>
+      <AdditionalFiles Include="..\.sonarlint\warewolf_dotnet_framework\CSharp\SonarLint.xml" Link="SonarLint.xml" />
+    </ItemGroup>
 
     <ItemGroup>
         <PackageReference Include="CommandLineParser" Version="2.6.0" />
-        <PackageReference Include="Hangfire.Core" Version="1.7.13" />
-        <PackageReference Include="Hangfire.SqlServer" Version="1.7.13" />
-        <PackageReference Include="Microsoft.Owin.Hosting" Version="4.1.0" />
+        <PackageReference Include="Hangfire.Core" Version="1.7.28" />
+        <PackageReference Include="Hangfire.SqlServer" Version="1.7.28" />
+        <PackageReference Include="Microsoft.Owin.Hosting" Version="4.2.2" />
     </ItemGroup>
 
     <ItemGroup>

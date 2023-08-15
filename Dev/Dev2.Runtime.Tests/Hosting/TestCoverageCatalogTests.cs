@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -125,6 +125,43 @@ namespace Dev2.Tests.Runtime.Hosting
 
             mockStreamWriterFactory.Verify(o => o.New(_newReportPath, false), Times.Exactly(1));
             mockServiceTestCoverageModelToFactory.Verify(o => o.New(_workflowId, It.IsAny<ICoverageArgs>(), It.IsAny<List<IServiceTestModelTO>>()), Times.Once);
+
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(TestCoverageCatalog))]
+        public void TestCoverageCatalog_Given_GenerateAllTestsCoverage_Executed_ExpectCoverageReport_On_FetchReport_ToBeNewEverytime()
+        {
+            SetupMocks(_testCoverageModelTo, out Mock<IDirectory> mockDirectory, out Mock<IStreamWriterFactory> mockStreamWriterFactory, out Mock<IServiceTestCoverageModelToFactory> mockServiceTestCoverageModelToFactory, out Mock<IFilePath> mockFilePath, out Mock<ISerializer> mockSerialize);
+
+            var tests = GetTests();
+
+            var sut = new TestCoverageCatalog(mockServiceTestCoverageModelToFactory.Object, mockFilePath.Object, new Mock<IFile>().Object, mockDirectory.Object, mockStreamWriterFactory.Object, new Mock<IStreamReaderFactory>().Object, mockSerialize.Object);
+
+            var coverageReportOne = sut.GenerateAllTestsCoverage("False branch test", _workflowId, tests);
+
+            var reportOne = sut.FetchReport(_workflowId, "False branch test");
+
+            Assert.AreEqual(.0, coverageReportOne.TotalCoverage);
+
+            Assert.AreEqual("False branch test", reportOne.ReportName);
+            Assert.AreEqual(coverageReportOne.TotalCoverage, reportOne.TotalCoverage);
+
+            //====================
+
+            var coverageReportTwo = sut.GenerateAllTestsCoverage("False branch test", _workflowId, tests);
+
+            var reportTwo = sut.FetchReport(_workflowId, "False branch test");
+
+            Assert.AreEqual(.0, coverageReportTwo.TotalCoverage);
+
+            Assert.AreEqual("False branch test", reportTwo.ReportName);
+            Assert.AreEqual(coverageReportTwo.TotalCoverage, reportTwo.TotalCoverage);
+            Assert.AreEqual(reportOne.LastRunDate, reportTwo.LastRunDate, "these should be updated with every execution");
+
+            mockStreamWriterFactory.Verify(o => o.New(_newReportPath, false), Times.Once);
+            mockServiceTestCoverageModelToFactory.Verify(o => o.New(_workflowId, It.IsAny<ICoverageArgs>(), It.IsAny<List<IServiceTestModelTO>>()), Times.Exactly(2));
 
         }
 

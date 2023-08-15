@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2022 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -30,25 +30,43 @@ namespace Dev2.Runtime.ESB.Management.Services
             try
             {
                 Dev2Logger.Info("Save Auditing Settings Service", GlobalConstants.WarewolfInfo);
-                values.TryGetValue(Warewolf.Service.SaveAuditingSettings.AuditingSettings, out StringBuilder settings);
+                values.TryGetValue(Warewolf.Service.SaveAuditingSettings.LegacySettings, out StringBuilder legacySettings);
+                values.TryGetValue(Warewolf.Service.SaveAuditingSettings.AuditingSettings, out StringBuilder auditSettings);
                 values.TryGetValue(Warewolf.Service.SaveAuditingSettings.SinkType, out StringBuilder sinkType);
 
-                if (sinkType.ToString() == "AuditingSettingsData")
+                switch (sinkType.ToString())
                 {
-                    var updatedAuditingSettings = serializer.Deserialize<AuditingSettingsData>(settings);
-                    Config.Auditing.LoggingDataSource = updatedAuditingSettings.LoggingDataSource;
-                    Config.Auditing.EncryptDataSource = updatedAuditingSettings.EncryptDataSource;
-                    Config.Server.Sink = nameof(AuditingSettingsData);
+                    case nameof(AuditingSettingsData):
+                        var updatedAuditingSettings = serializer.Deserialize<AuditingSettingsData>(auditSettings);
+                        Config.Auditing.LoggingDataSource = updatedAuditingSettings.LoggingDataSource;
+                        Config.Auditing.EncryptDataSource = updatedAuditingSettings.EncryptDataSource;
+                        Config.Auditing.IncludeEnvironmentVariable = updatedAuditingSettings.IncludeEnvironmentVariable;
+                        Config.Auditing.Save();
+
+                        Config.Server.Sink = nameof(AuditingSettingsData);
+                        Config.Server.IncludeEnvironmentVariable = updatedAuditingSettings.IncludeEnvironmentVariable;
+                        Config.Server.Save();
+                        break;
+
+                    case nameof(LegacySettingsData):
+                        var updatedLegacySettings = serializer.Deserialize<LegacySettingsData>(legacySettings);
+                        Config.Legacy.AuditFilePath = updatedLegacySettings.AuditFilePath;
+                        Config.Legacy.IncludeEnvironmentVariable = updatedLegacySettings.IncludeEnvironmentVariable;                       
+                        Config.Legacy.AuditLogMaxSize = updatedLegacySettings.AuditLogMaxSize;
+                        Config.Legacy.Save();
+
+                        Config.Server.Sink = nameof(LegacySettingsData);
+                        Config.Server.IncludeEnvironmentVariable = updatedLegacySettings.IncludeEnvironmentVariable;                         
+                        Config.Server.Save();
+                        break;
+
+                    default:
+                        var err = $"SinkType: { sinkType } unknown";
+                        msg.HasError = true;
+                        msg.Message = new StringBuilder(err);
+                        Dev2Logger.Error(err, GlobalConstants.WarewolfError);
+                        break;
                 }
-                else
-                {
-                    var updatedLegacySettings = serializer.Deserialize<LegacySettingsData>(settings);
-                    var auditsFilePath = updatedLegacySettings.AuditFilePath;
-                    Config.Legacy.SaveLoggingPath(auditsFilePath);
-                    Config.Server.Sink = nameof(LegacySettingsData);
-                }
-                msg.Message = new StringBuilder();
-                msg.HasError = false;
             }
             catch (Exception err)
             {

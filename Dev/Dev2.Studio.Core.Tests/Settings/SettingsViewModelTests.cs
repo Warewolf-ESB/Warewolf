@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.ObjectModel;
+using System.Reflection;
 using System.Text;
 using System.Windows;
 using System.Windows.Forms;
@@ -35,7 +36,6 @@ using Moq;
 namespace Dev2.Core.Tests.Settings
 {
     [TestClass]
-    [TestCategory("Studio Settings Core")]
     public class SettingsViewModelTests
     {
         [TestInitialize]
@@ -53,8 +53,9 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory(nameof(SettingsViewModel))]
+        [TestCategory("Studio Settings Core")]
         [ExpectedException(typeof(ArgumentNullException))]
+        [Timeout(300000)]
         public void SettingsViewModel_Constructor_NullPopupController_ThrowsArgumentNullException()
         {
             //------------Setup for test--------------------------
@@ -68,8 +69,9 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory(nameof(SettingsViewModel))]
+        [TestCategory("Studio Settings Core")]
         [ExpectedException(typeof(ArgumentNullException))]
+        [Timeout(300000)]
         public void SettingsViewModel_Constructor_NullAsyncWorker_ThrowsArgumentNullException()
         {
             //------------Setup for test--------------------------
@@ -83,8 +85,9 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory(nameof(SettingsViewModel))]
+        [TestCategory("Studio Settings Core")]
         [ExpectedException(typeof(ArgumentNullException))]
+        [Timeout(300000)]
         public void SettingsViewModel_Constructor_NullParentWindow_ThrowsArgumentNullException()
         {
             //------------Setup for test--------------------------
@@ -98,7 +101,8 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory(nameof(SettingsViewModel))]
+        [TestCategory("Studio Settings Core")]
+        [Timeout(300000)]
         public void SettingsViewModel_Constructor_Properties_Initialized()
         {
             //------------Setup for test--------------------------
@@ -114,7 +118,8 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory(nameof(SettingsViewModel))]
+        [TestCategory("Studio Settings Core")]
+        [Timeout(300000)]
         public void SettingsViewModel_ShowLogging_True_OtherShowPropertiesAreFalse()
         {
             //------------Setup for test--------------------------
@@ -128,7 +133,8 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory(nameof(SettingsViewModel))]
+        [TestCategory("Studio Settings Core")]
+        [Timeout(300000)]
         public void SettingsViewModel_ShowLogging_SameValue_DoesNotRaisePropertyChanged()
         {
             //------------Setup for test--------------------------
@@ -146,7 +152,8 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory(nameof(SettingsViewModel))]
+        [TestCategory("Studio Settings Core")]
+        [Timeout(300000)]
         public void SettingsViewModel_ShowLogging_DifferentValue_DoesRaisePropertyChanged()
         {
             //------------Setup for test--------------------------
@@ -164,7 +171,8 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Candice Daniel")]
-        [TestCategory(nameof(SettingsViewModel))]
+        [TestCategory("Studio Settings Core")]
+        [Timeout(300000)]
         public void SettingsViewModel_ShowPersistence_SameValue_DoesNotRaisePropertyChanged()
         {
             //------------Setup for test--------------------------
@@ -182,7 +190,8 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Candice Daniel")]
-        [TestCategory(nameof(SettingsViewModel))]
+        [TestCategory("Studio Settings Core")]
+        [Timeout(300000)]
         public void SettingsViewModel_ShowPersistence_DifferentValue_DoesRaisePropertyChanged()
         {
             //------------Setup for test--------------------------
@@ -197,9 +206,11 @@ namespace Dev2.Core.Tests.Settings
             //------------Assert Results-------------------------
             Assert.IsFalse(propertyChanged);
         }
+
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory(nameof(SettingsViewModel))]
+        [TestCategory("Studio Settings Core")]
+        [Timeout(300000)]
         public void SettingsViewModel_ShowSecurity_True_OtherShowPropertiesAreFalse()
         {
             //------------Setup for test--------------------------
@@ -214,7 +225,8 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory(nameof(SettingsViewModel))]
+        [TestCategory("Studio Settings Core")]
+        [Timeout(300000)]
         public void SettingsViewModel_ShowSecurity_SameValue_DoesNotRaisePropertyChanged()
         {
             //------------Setup for test--------------------------
@@ -232,7 +244,8 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory(nameof(SettingsViewModel))]
+        [TestCategory("Studio Settings Core")]
+        [Timeout(300000)]
         public void SettingsViewModel_ShowSecurity_DifferentValue_DoesRaisePropertyChanged()
         {
             //------------Setup for test--------------------------
@@ -250,7 +263,8 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory(nameof(SettingsViewModel))]
+        [TestCategory("SettingsViewModel_SaveCommand")]
+        [Timeout(300000)]
         public void SettingsViewModel_SaveCommand_InvokesSaveOnSecurityViewModel_Done()
         {
             //------------Setup for test--------------------------
@@ -265,8 +279,9 @@ namespace Dev2.Core.Tests.Settings
             var repo = new Mock<IResourceRepository>();
             environment.Setup(a => a.ResourceRepository).Returns(repo.Object);
             viewModel.CurrentEnvironment = environment.Object;
-            var p = new PrivateObject(viewModel, new PrivateType(typeof(SettingsViewModel)));
-            p.SetProperty("SecurityViewModel", securityViewModel);
+            var propertyInfo = typeof(SettingsViewModel).GetProperty("SecurityViewModel", BindingFlags.Public | BindingFlags.Instance);
+            Assert.IsNotNull(propertyInfo, "Cannot get private property.");
+            propertyInfo.SetValue(viewModel, securityViewModel);
             //------------Execute Test---------------------------
             viewModel.SaveCommand.Execute(null);
 
@@ -276,7 +291,8 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory(nameof(SettingsViewModel))]
+        [TestCategory("SettingsViewModel_SaveCommand")]
+        [Timeout(300000)]
         public void SettingsViewModel_SaveCommand_ResultIsNull_HasErrorsIsTrue()
         {
             //------------Setup for test--------------------------
@@ -306,7 +322,8 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Massimo Guerrera")]
-        [TestCategory(nameof(SettingsViewModel))]
+        [TestCategory("SettingsViewModel_SaveCommand")]
+        [Timeout(300000)]
         public void SettingsViewModel_SaveCommand_NoAuth_HasErrorsIsTrueCorrectErrorMessage()
         {
             //------------Setup for test--------------------------
@@ -337,7 +354,8 @@ You need Administrator permission.", viewModel.Errors);
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory(nameof(SettingsViewModel))]
+        [TestCategory("SettingsViewModel_SaveCommand")]
+        [Timeout(300000)]
         public void SettingsViewModel_SaveCommand_DuplicateServerPermissions_HasErrorsIsTrueCorrectErrorMessage()
         {
             //------------Setup for test--------------------------
@@ -366,8 +384,7 @@ You need Administrator permission.", viewModel.Errors);
             environment.Setup(c => c.AuthorizationService).Returns(authService.Object);
             viewModel.CurrentEnvironment = environment.Object;
             viewModel.IsDirty = true;
-            var p = new PrivateObject(viewModel.SecurityViewModel);
-            p.SetProperty("ServerPermissions", new ObservableCollection<WindowsGroupPermission>()
+            viewModel.SecurityViewModel.GetType().GetProperty("ServerPermissions", BindingFlags.Public | BindingFlags.Instance)?.SetValue(viewModel.SecurityViewModel,new ObservableCollection<WindowsGroupPermission>()
             {
                 new WindowsGroupPermission
                 {
@@ -397,7 +414,8 @@ You need Administrator permission.", viewModel.Errors);
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory(nameof(SettingsViewModel))]
+        [TestCategory("SettingsViewModel_SaveCommand")]
+        [Timeout(300000)]
         public void SettingsViewModel_SaveCommand_DuplicateResourcePermissions_HasErrorsIsTrueCorrectErrorMessage()
         {
             //------------Setup for test--------------------------
@@ -426,8 +444,7 @@ You need Administrator permission.", viewModel.Errors);
             environment.Setup(c => c.AuthorizationService).Returns(authService.Object);
             //viewModel.CurrentEnvironment = environment.Object;
             viewModel.IsDirty = true;
-            var p = new PrivateObject(viewModel.SecurityViewModel);
-            p.SetProperty("ResourcePermissions", new ObservableCollection<WindowsGroupPermission>()
+            viewModel.SecurityViewModel.GetType().GetProperty("ResourcePermissions", BindingFlags.Public | BindingFlags.Instance)?.SetValue(viewModel.SecurityViewModel,new ObservableCollection<WindowsGroupPermission>()
             {
                 new WindowsGroupPermission
                 {
@@ -450,15 +467,14 @@ You need Administrator permission.", viewModel.Errors);
             Assert.IsTrue(viewModel.IsDirty);
             Assert.IsFalse(viewModel.IsSaved);
             Assert.IsTrue(viewModel.HasErrors);
-            Assert.AreEqual(@"There are duplicate permissions for a resource, 
-    i.e. one resource has permissions set twice with the same group. 
-    Please clear the duplicates before saving.", viewModel.Errors);
+            Assert.AreEqual(StringResources.SaveSettingsDuplicateResourcePermissions, viewModel.Errors);
             popupController.Verify(controller => controller.ShowHasDuplicateResourcePermissions(), Times.Once);
         }
 
         [TestMethod]
         [Owner("Massimo Guerrera")]
-        [TestCategory(nameof(SettingsViewModel))]
+        [TestCategory("SettingsViewModel_SaveCommand")]
+        [Timeout(300000)]
         public void SettingsViewModel_SaveCommand_NotConnected_HasErrorsIsTrueCorrectErrorMessage()
         {
             //------------Setup for test--------------------------
@@ -488,7 +504,8 @@ You need Administrator permission.", viewModel.Errors);
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory(nameof(SettingsViewModel))]
+        [TestCategory("SettingsViewModel_SaveCommand")]
+        [Timeout(300000)]
         public void SettingsViewModel_SaveCommand_ResultIsError_HasErrorsIsTrue()
         {
             //------------Setup for test--------------------------
@@ -520,7 +537,8 @@ You need Administrator permission.", viewModel.Errors);
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory(nameof(SettingsViewModel))]
+        [TestCategory("SettingsViewModel_IsDirty")]
+        [Timeout(300000)]
         public void SettingsViewModel_IsDirty_SecurityViewModelIsDirtyPropertyChanged_IsDirtyIsTrue()
         {
             //------------Setup for test--------------------------
@@ -536,7 +554,8 @@ You need Administrator permission.", viewModel.Errors);
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory(nameof(SettingsViewModel))]
+        [TestCategory("SettingsViewModel_IsDirty")]
+        [Timeout(300000)]
         public void SettingsViewModel_IsDirty_TrueSecurityNameHasStar()
         {
             //------------Setup for test--------------------------
@@ -552,7 +571,8 @@ You need Administrator permission.", viewModel.Errors);
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory(nameof(SettingsViewModel))]
+        [TestCategory("SettingsViewModel_IsDirty")]
+        [Timeout(300000)]
         public void SettingsViewModel_WhenIsDirtySecurityModelFiresPropertyChange_SetsSettingsViewModelIsDirty()
         {
             //------------Setup for test--------------------------
@@ -575,7 +595,8 @@ You need Administrator permission.", viewModel.Errors);
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory(nameof(SettingsViewModel))]
+        [TestCategory("SettingsViewModel_IsDirty")]
+        [Timeout(300000)]
         public void SettingsViewModel_WhenIsDirtyPerfCounterModelFiresPropertyChange_SetsSettingsViewModelIsDirty()
         {
             //------------Setup for test--------------------------
@@ -598,7 +619,8 @@ You need Administrator permission.", viewModel.Errors);
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory(nameof(SettingsViewModel))]
+        [TestCategory("SettingsViewModel_IsDirty")]
+        [Timeout(300000)]
         public void SettingsViewModel_IsSecurityDirty_FalseSecurityNameHasNoStar()
         {
             //------------Setup for test--------------------------
@@ -614,7 +636,8 @@ You need Administrator permission.", viewModel.Errors);
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory(nameof(SettingsViewModel))]
+        [TestCategory("SettingsViewModel_IsDirty")]
+        [Timeout(300000)]
         public void SettingsViewModel_IsLoggingDirty_FalseLoggingNameHasNoStar()
         {
             //------------Setup for test--------------------------
@@ -627,9 +650,11 @@ You need Administrator permission.", viewModel.Errors);
             //------------Assert Results-------------------------
             Assert.AreEqual("LOGGING", viewModel.LogHeader);
         }
+
         [TestMethod]
         [Owner("Candice Daniel")]
-        [TestCategory(nameof(SettingsViewModel))]
+        [TestCategory("SettingsViewModel_IsDirty")]
+        [Timeout(300000)]
         public void SettingsViewModel_IsPersistenceDirty_FalsePersistenceNameHasNoStar()
         {
             //------------Setup for test--------------------------
@@ -642,9 +667,11 @@ You need Administrator permission.", viewModel.Errors);
             //------------Assert Results-------------------------
             Assert.AreEqual("PERSISTENCE", viewModel.PersistenceHeader);
         }
+
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory(nameof(SettingsViewModel))]
+        [TestCategory("SettingsViewModel_IsDirty")]
+        [Timeout(300000)]
         public void SettingsViewModel_IsLoggingDirty_TrueLoggingNameHasStar()
         {
             //------------Setup for test--------------------------
@@ -656,9 +683,11 @@ You need Administrator permission.", viewModel.Errors);
             //------------Assert Results-------------------------
             Assert.AreEqual("LOGGING *", viewModel.LogHeader);
         }
+
         [TestMethod]
         [Owner("Candice Daniel")]
-        [TestCategory(nameof(SettingsViewModel))]
+        [TestCategory("SettingsViewModel_IsDirty")]
+        [Timeout(300000)]
         public void SettingsViewModel_IsPersistenceDirty_TruePersistenceNameHasStar()
         {
             //------------Setup for test--------------------------
@@ -670,9 +699,11 @@ You need Administrator permission.", viewModel.Errors);
             //------------Assert Results-------------------------
             Assert.AreEqual("PERSISTENCE *", viewModel.PersistenceHeader);
         }
+
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory(nameof(SettingsViewModel))]
+        [TestCategory("SettingsViewModel_IsDirty")]
+        [Timeout(300000)]
         public void SettingsViewModel_IsPerfCounterDirty_FalsePerfCounterNameHasNoStar()
         {
             //------------Setup for test--------------------------
@@ -688,7 +719,8 @@ You need Administrator permission.", viewModel.Errors);
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory(nameof(SettingsViewModel))]
+        [TestCategory("SettingsViewModel_IsDirty")]
+        [Timeout(300000)]
         public void SettingsViewModel_IsPerfCounterDirty_TruePerfCounterNameHasStar()
         {
             //------------Setup for test--------------------------
@@ -703,7 +735,8 @@ You need Administrator permission.", viewModel.Errors);
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory(nameof(SettingsViewModel))]
+        [TestCategory("SettingsViewModel_OnDeactivate")]
+        [Timeout(300000)]
         public void SettingsViewModel_OnDeactivate_DirtyFalse_ShouldShowPopup()
         {
             //------------Setup for test--------------------------
@@ -720,7 +753,8 @@ You need Administrator permission.", viewModel.Errors);
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory(nameof(SettingsViewModel))]
+        [TestCategory("SettingsViewModel_OnDeactivate")]
+        [Timeout(300000)]
         public void SettingsViewModel_OnDeactivate_DirtyFalse_PopResultYes()
         {
             //------------Setup for test--------------------------
@@ -739,7 +773,8 @@ You need Administrator permission.", viewModel.Errors);
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory(nameof(SettingsViewModel))]
+        [TestCategory("SettingsViewModel_OnDeactivate")]
+        [Timeout(300000)]
         public void SettingsViewModel_OnDeactivate_RequestCloseFalse_NoPopup()
         {
             //------------Setup for test--------------------------
@@ -759,7 +794,8 @@ You need Administrator permission.", viewModel.Errors);
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(SettingsViewModel))]
+        [TestCategory("SettingsViewModel_ReturnsFalse")]
+        [Timeout(300000)]
         public void SettingsViewModel_HasVariables_ReturnsFalse()
         {
             //------------Setup for test--------------------------
@@ -775,7 +811,8 @@ You need Administrator permission.", viewModel.Errors);
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(SettingsViewModel))]
+        [TestCategory("SettingsViewModel_ReturnsFalse")]
+        [Timeout(300000)]
         public void SettingsViewModel_HasDebugOutput_ReturnsFalse()
         {
             //------------Setup for test--------------------------
@@ -791,7 +828,8 @@ You need Administrator permission.", viewModel.Errors);
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory(nameof(SettingsViewModel))]
+        [TestCategory("SettingsViewModel_OnDeactivate")]
+        [Timeout(300000)]
         public void SettingsViewModel_OnDeactivate_DirtyFalse_PopResultNo()
         {
             //------------Setup for test--------------------------
@@ -943,7 +981,7 @@ You need Administrator permission.", viewModel.Errors);
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory(nameof(SettingsViewModel))]
+        [TestCategory("Studio Settings Core")]
         public void SettingsViewModel_IsSavedSuccessVisible_HasErrorsFalseAndIsDirtyFalseAndIsSavedTrue_True()
         {
             //------------Setup for test--------------------------
@@ -960,7 +998,7 @@ You need Administrator permission.", viewModel.Errors);
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory(nameof(SettingsViewModel))]
+        [TestCategory("Studio Settings Core")]
         public void SettingsViewModel_IsSavedSuccessVisible_HasErrorsTrueAndIsDirtyTrueAndIsSavedFalse_False()
         {
             //------------Setup for test--------------------------
@@ -977,7 +1015,7 @@ You need Administrator permission.", viewModel.Errors);
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory(nameof(SettingsViewModel))]
+        [TestCategory("SettingsViewModel_DoDeactivate")]
         public void SettingsViewModel_DoDeactivate_YesSavesChanges()
         {
             //------------Setup for test--------------------------
@@ -998,7 +1036,7 @@ You need Administrator permission.", viewModel.Errors);
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
-        [TestCategory(nameof(SettingsViewModel))]
+        [TestCategory("SettingsViewModel_DoDeactivate")]
         public void SettingsViewModel_DoDeactivate_NoSavesChanges()
         {
             //------------Setup for test--------------------------
@@ -1031,7 +1069,7 @@ You need Administrator permission.", viewModel.Errors);
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory(nameof(SettingsViewModel))]
+        [TestCategory("SettingsViewModel_DoDeactivate")]
         public void SettingsViewModel_DoDeactivate_CancelNoReturnsTrue()
         {
             //------------Setup for test--------------------------
@@ -1051,7 +1089,7 @@ You need Administrator permission.", viewModel.Errors);
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory(nameof(SettingsViewModel))]
+        [TestCategory("Studio Settings Core")]
         public void SettingsViewModel_IsErrorsVisible_HasErrorsTrue_True()
         {
             //------------Setup for test--------------------------
@@ -1068,7 +1106,7 @@ You need Administrator permission.", viewModel.Errors);
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory(nameof(SettingsViewModel))]
+        [TestCategory("Studio Settings Core")]
         public void SettingsViewModel_IsErrorsVisible_HasErrorsFalseAndAndIsDirtyTrueAndIsSavedFalse_True()
         {
             //------------Setup for test--------------------------
@@ -1085,7 +1123,7 @@ You need Administrator permission.", viewModel.Errors);
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory(nameof(SettingsViewModel))]
+        [TestCategory("Studio Settings Core")]
         public void SettingsViewModel_IsErrorsVisible_HasErrorsFalseAndAndIsDirtyFalseAndIsSavedTrue_False()
         {
             //------------Setup for test--------------------------
@@ -1102,7 +1140,7 @@ You need Administrator permission.", viewModel.Errors);
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory(nameof(SettingsViewModel))]
+        [TestCategory("Studio Settings Core")]
         public void SettingsViewModel_IsErrorsVisible_PropertyChangedFired()
         {
             Verify_PropertyChangedFired("IsErrorsVisible", SettingsProperty.HasErrors);
@@ -1112,7 +1150,7 @@ You need Administrator permission.", viewModel.Errors);
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory(nameof(SettingsViewModel))]
+        [TestCategory("Studio Settings Core")]
         public void SettingsViewModel_IsSavedSuccessVisible_PropertyChangedFired()
         {
             Verify_PropertyChangedFired("IsSavedSuccessVisible", SettingsProperty.HasErrors);

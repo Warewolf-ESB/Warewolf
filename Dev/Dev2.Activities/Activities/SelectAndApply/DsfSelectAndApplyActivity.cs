@@ -261,9 +261,12 @@ namespace Dev2.Activities.SelectAndApply
                 dataObject.ForEachNestingLevel--;
                 if (allErrors.HasErrors())
                 {
-                    foreach (var fetchError in allErrors.FetchErrors())
+                    if (!this.IsErrorHandled)
                     {
-                        dataObject.Environment.AddError(fetchError);
+                        foreach (var fetchError in allErrors.FetchErrors())
+                        {
+                            dataObject.Environment.AddError(fetchError);
+                        }
                     }
                     DisplayAndWriteError(dataObject,DisplayName, allErrors);
                 }
@@ -277,6 +280,8 @@ namespace Dev2.Activities.SelectAndApply
                     DispatchDebugState(dataObject, StateType.End, update, startTime, DateTime.Now);
                 }
                 OnCompleted(dataObject);
+
+                RunOnErrorSteps(dataObject, allErrors, update);
             }
         }
 

@@ -34,6 +34,7 @@ using Warewolf.Data.Options;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 using Warewolf.UnitTestAttributes;
+#pragma warning disable 618
 
 namespace Dev2.Tests.Activities.ActivityTests.Web
 {
@@ -601,7 +602,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
                 var item4First = item4.First();
                 Assert.AreEqual(1, item4.Count);
                 Assert.AreEqual("Parameters", item4First.Label);
-                Assert.AreEqual("\nKey: testTextKey Text: testTextValue\nKey: testFileKey File Content: this can be any file type conve", item4First.Value);
+                Assert.AreEqual("\nKey: testTextKey Text: testTextValue\nKey: testFileKey File Content: this can be any file type converted to base64 string, if it ware to be pasted into this textbox File Name: testFileName.ext", item4First.Value);
 
             } 
             
@@ -971,6 +972,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
                 var envirVariable = environment.Eval(recordSet, 0);
                 var ress = envirVariable as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
                 Assert.IsNotNull(envirVariable);
+                Assert.IsNotNull(ress);
                 Assert.IsFalse(ress.Item.IsNothing, "Item should contain the recset mapped to the messanger key");
             }
         }
@@ -988,7 +990,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             var mockDSFDataObject = new Mock<IDSFDataObject>();
             var mockExecutionEnvironment = new Mock<IExecutionEnvironment>();
 
-            var errorResultTO = new ErrorResultTO();
+            ErrorResultTO errorResultTO;
 
             using (var service = new WebService(XmlResource.Fetch("WebService")))
             {
@@ -1028,7 +1030,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             var mockExecutionEnvironment = new Mock<IExecutionEnvironment>();
             var mockResourceCatalog = new Mock<IResourceCatalog>();
 
-            var errorResultTO = new ErrorResultTO();
+            ErrorResultTO errorResultTO;
 
             using (var service = new WebService(XmlResource.Fetch("WebService")) { RequestResponse = string.Empty })
             {

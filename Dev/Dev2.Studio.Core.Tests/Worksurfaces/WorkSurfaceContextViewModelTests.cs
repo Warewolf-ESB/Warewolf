@@ -1236,7 +1236,7 @@ namespace Dev2.Core.Tests
             environmentModel.Setup(model => model.ResourceRepository).Returns(resourceRepo.Object);
             var popup = new Mock<IPopupController>();
             ctx.Setup(a => a.DataList).Returns("asdasda$%^");
-            var pvt = new PrivateObject(workSurfaceContextViewModel);
+            var pvt = new Warewolf.Testing.PrivateObject(workSurfaceContextViewModel);
             pvt.SetField("_contextualResourceModel", ctx.Object);
             pvt.SetField("_popupController", popup.Object);
             ctx.Setup(a => a.Environment).Returns(environmentModel.Object);
@@ -1258,7 +1258,7 @@ namespace Dev2.Core.Tests
 
             var mockPopupController = new Mock<IPopupController>();
             mockPopupController.Setup(popup => popup.Show(It.IsAny<string>(), It.IsAny<string>(), MessageBoxButton.YesNo, MessageBoxImage.Warning, "", false, false, false, true, false, false)).Returns(MessageBoxResult.No);
-            var pvt = new PrivateObject(workSurfaceContextViewModel);
+            var pvt = new Warewolf.Testing.PrivateObject(workSurfaceContextViewModel);
             pvt.SetField("_popupController", mockPopupController.Object);
 
             var mockTriggerQueue = new Mock<Warewolf.Triggers.ITriggerQueue>();

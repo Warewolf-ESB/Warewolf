@@ -1085,6 +1085,10 @@ namespace Dev2.Studio.ViewModels.DataList
         {
             IList<IDataListVerifyPart> removeParts = MissingWorkflowItems(workflowFields);
             var filteredDataListParts = MissingDataListParts(workflowFields);
+            if (filteredDataListParts.Count > 0)
+            {
+                Dev2Logger.Debug("Found " + filteredDataListParts.Count + " missing datalist variables. First variable name: " + filteredDataListParts.FirstOrDefault().DisplayValue + ".", GlobalConstants.WarewolfDebug);
+            }
             ShowUnusedDataListVariables(contextualResourceModel, removeParts, workflowFields);
             ViewModelUtils.RaiseCanExecuteChanged(DeleteCommand);
             if(contextualResourceModel != Resource)

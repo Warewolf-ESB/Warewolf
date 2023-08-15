@@ -23,6 +23,7 @@ namespace Dev2.Session
         #region Fields
 
         string _xmlData;
+        string _jsonData;
 
         #endregion Fields
 
@@ -49,6 +50,12 @@ namespace Dev2.Session
             get { return _xmlData ?? (_xmlData = DataList); }
             set { _xmlData = value; }
         }
+        
+        public string JsonData
+        {
+            get => _jsonData;
+            set => _jsonData = value;
+        }
 
         public IDataListModel BinaryDataList { get; set; }
 
@@ -72,7 +79,8 @@ namespace Dev2.Session
                 IsDebugMode = IsDebugMode,
                 RememberInputs = RememberInputs,
                 XmlData = XmlData,
-                WorkflowID = WorkflowID
+                WorkflowID = WorkflowID,
+                JsonData = JsonData
             };
 
             that.RememberInputs = RememberInputs;
@@ -90,6 +98,7 @@ namespace Dev2.Session
             XmlData = that.XmlData;
             WorkflowID = that.WorkflowID;
             DataListHash = that.DataListHash;
+            JsonData = that.JsonData;
         }
 
 

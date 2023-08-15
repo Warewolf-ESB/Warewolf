@@ -19,7 +19,7 @@ namespace Warewolf.Studio.Resources.Languages {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Tooltips {
@@ -1822,6 +1822,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string HidePasswordToolTip {
             get {
                 return ResourceManager.GetString("HidePasswordToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the Include Environment Variables with your execution logs, for more detailed diagnostics..
+        /// </summary>
+        public static string IncludeEnvironmentVariableToolTip {
+            get {
+                return ResourceManager.GetString("IncludeEnvironmentVariableToolTip", resourceCulture);
             }
         }
         
@@ -3743,6 +3752,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string PersistenceViewSchedulerToolTip {
             get {
                 return ResourceManager.GetString("PersistenceViewSchedulerToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show the additional data to use hangfire as a server if checkbox is checked.
+        /// </summary>
+        public static string PersistenceViewUseAsServerToolTip {
+            get {
+                return ResourceManager.GetString("PersistenceViewUseAsServerToolTip", resourceCulture);
             }
         }
         

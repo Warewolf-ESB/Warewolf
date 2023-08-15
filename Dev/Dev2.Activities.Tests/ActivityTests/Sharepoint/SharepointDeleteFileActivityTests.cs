@@ -58,7 +58,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
             var resourceCatalog = new Mock<IResourceCatalog>();
             var mockSharepointSource = new Mock<SharepointSource>();
 
-            var privateObject = new PrivateObject(sharepointDeleteFileActivity);
+            var privateObject = new Warewolf.Testing.PrivateObject(sharepointDeleteFileActivity);
             privateObject.SetProperty("ResourceCatalog", resourceCatalog.Object);
             sharepointDeleteFileActivity.SharepointSource = mockSharepointSource.Object;
 
@@ -101,8 +101,8 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
 
             resourceCatalog.Setup(r => r.GetResource<SharepointSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(mockSharepointSource);
 
-            var privateObject = new PrivateObject(sharepointDeleteFileActivity);
-            privateObject.SetProperty("ResourceCatalog", resourceCatalog.Object);
+            var privateObject = new Warewolf.Testing.PrivateObject(sharepointDeleteFileActivity);
+            sharepointDeleteFileActivity.ResourceCatalog = resourceCatalog.Object;
             sharepointDeleteFileActivity.SharepointSource = mockSharepointSource;
 
             //------------Execute Test---------------------------
@@ -144,8 +144,8 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
 
             resourceCatalog.Setup(r => r.GetResource<SharepointSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(mockSharepointSource);
 
-            var privateObject = new PrivateObject(sharepointDeleteFileActivity);
-            privateObject.SetProperty("ResourceCatalog", resourceCatalog.Object);
+            var privateObject = new Warewolf.Testing.PrivateObject(sharepointDeleteFileActivity);
+            sharepointDeleteFileActivity.ResourceCatalog = resourceCatalog.Object;
             sharepointDeleteFileActivity.SharepointSource = mockSharepointSource;
 
             //------------Execute Test---------------------------
@@ -160,7 +160,6 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
         [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory("SharepointDeleteFile_Execute")]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void SharepointDeleteFileActivity_ValidateRequest_SharepointServerResourceId_EmptyGuid()
         {
             //------------Setup for test--------------------------
@@ -179,19 +178,26 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
 
             resourceCatalog.Setup(r => r.GetResource<SharepointSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(mockSharepointSource.Object);
 
-            var privateObject = new PrivateObject(sharepointDeleteFileActivity);
+            var privateObject = new Warewolf.Testing.PrivateObject(sharepointDeleteFileActivity);
             privateObject.SetProperty("ResourceCatalog", resourceCatalog.Object);
             sharepointDeleteFileActivity.SharepointSource = mockSharepointSource.Object;
 
-            //------------Execute Test---------------------------
-            privateObject.Invoke("ValidateRequest");
+            try
+            {
+                //------------Execute Test---------------------------
+                privateObject.Invoke("ValidateRequest");
+            }
+            catch(TargetInvocationException e)
+            {
+                //------------Assert Results-------------------------
+                Assert.AreEqual("Please select valid source\r\nParameter name: 00000000-0000-0000-0000-000000000000", e.InnerException?.Message, "Expected exception was not thrown.");
+            }
         }
 
         [TestMethod]
         [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory("SharepointDeleteFile_Execute")]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void SharepointDeleteFileActivity_ValidateRequest_ServerInputPath_IsEmpty()
         {
             //------------Setup for test--------------------------
@@ -211,12 +217,20 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
 
             resourceCatalog.Setup(r => r.GetResource<SharepointSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(mockSharepointSource.Object);
 
-            var privateObject = new PrivateObject(sharepointDeleteFileActivity);
+            var privateObject = new Warewolf.Testing.PrivateObject(sharepointDeleteFileActivity);
             privateObject.SetProperty("ResourceCatalog", resourceCatalog.Object);
             sharepointDeleteFileActivity.SharepointSource = mockSharepointSource.Object;
 
-            //------------Execute Test---------------------------
-            privateObject.Invoke("ValidateRequest");
+            try
+            {
+                //------------Execute Test---------------------------
+                privateObject.Invoke("ValidateRequest");
+            }
+            catch(TargetInvocationException e)
+            {
+                //------------Assert Results-------------------------
+                Assert.AreEqual("Server input path {0} is not set", e.InnerException?.Message, "Expected exception was not thrown.");
+            }
         }
 
 
@@ -242,8 +256,8 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
             var resourceCatalog = new Mock<IResourceCatalog>();
             var mockSharepointSource = new Mock<SharepointSource>();
             resourceCatalog.Setup(r => r.GetResource<SharepointSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(mockSharepointSource.Object);
-            var privateObject = new PrivateObject(sharepointDeleteFileActivity);
-            privateObject.SetProperty("ResourceCatalog", resourceCatalog.Object);
+            var privateObject = new Warewolf.Testing.PrivateObject(sharepointDeleteFileActivity);
+            sharepointDeleteFileActivity.ResourceCatalog = resourceCatalog.Object;
             sharepointDeleteFileActivity.SharepointSource = mockSharepointSource.Object;
             privateObject.Invoke("ExecuteTool", dataObj, 0);
             //------------Execute Test---------------------------

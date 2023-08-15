@@ -24,17 +24,9 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.Unique
     [Binding]
     public class UniqueSteps : RecordSetBases
     {
-        readonly ScenarioContext scenarioContext;
-
         public UniqueSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
         {
-            if (scenarioContext == null)
-            {
-                throw new ArgumentNullException("scenarioContext");
-            }
-
-            this.scenarioContext = scenarioContext;
         }
 
         protected override void BuildDataList()

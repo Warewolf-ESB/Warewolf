@@ -21,5 +21,8 @@ namespace Dev2.Common.Interfaces.Data
 
         String ResourceName { get; set; }
         string ResourceType { get; set; }
+
+        IResource Resource { get; set; }
+
     }
 }

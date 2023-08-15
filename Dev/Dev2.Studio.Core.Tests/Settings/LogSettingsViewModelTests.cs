@@ -1,6 +1,6 @@
-﻿/*
+/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2022 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -29,16 +29,17 @@ using Warewolf.Configuration;
 using Warewolf.Data;
 using Warewolf.Security.Encryption;
 using Warewolf.UnitTestAttributes;
+using static BusinessDesignStudio.Unit.Tests.ResourceRepositoryTests;
 
 namespace Dev2.Core.Tests.Settings
 {
-    [TestClass]
-    [TestCategory("Studio Settings Core")]
+    [TestClass]    
     public class LogSettingsViewModelTests
     {
         [TestMethod]
         [Owner("Candice Daniel")]
-        [TestCategory(nameof(LogSettingsViewModel))]
+        [TestCategory("Studio Settings Core")]
+        [Timeout(600000)]
         public void LogSettingsViewModel_Constructor_Equals_Null_ReturnFalse()
         {
             //------------Setup for test--------------------------
@@ -54,7 +55,8 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Candice Daniel")]
-        [TestCategory(nameof(LogSettingsViewModel))]
+        [TestCategory("LogSettingsViewModel_Constructor")]
+        [Timeout(600000)]
         public void LogSettingsViewModel_Constructor_Equals_NotNull_ReturnTrue()
         {
             //------------Setup for test--------------------------
@@ -71,8 +73,9 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory(nameof(LogSettingsViewModel))]
+        [TestCategory("LogSettingsViewModel_Constructor")]
         [ExpectedException(typeof(ArgumentNullException))]
+        [Timeout(300000)]
         public void LogSettingsViewModel_Constructor_NullValueLoggingSettingTo_ExceptionThrown()
         {
             //------------Setup for test--------------------------
@@ -85,8 +88,9 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory(nameof(LogSettingsViewModel))]
+        [TestCategory("LogSettingsViewModel_Constructor")]
         [ExpectedException(typeof(ArgumentNullException))]
+        [Timeout(300000)]
         public void LogSettingsViewModel_Constructor_NullValueEnvironment_ExceptionThrown()
         {
             //------------Setup for test--------------------------
@@ -98,8 +102,395 @@ namespace Dev2.Core.Tests.Settings
         }
 
         [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory("LogSettingsViewModel_Constructor")]
+        [Timeout(500)]
+        public void LogSettingsViewModel_Constructor_GIVEN_ServerSettingsDataSink_IsUnknown_ShouldLogError()
+        {
+            //------------Setup for test--------------------------
+            var mockServer = new Mock<IServer>();
+            var mockResourceRepository = new Mock<IResourceRepository>();
+            mockResourceRepository.Setup(o => o.GetAuditingSettings<LegacySettingsData>(mockServer.Object))
+                .Returns(new LegacySettingsData
+                {
+                    AuditFilePath = "test/path",
+                    Endpoint = "test_endpoint",
+                    IncludeEnvironmentVariable = false
+                });
+            mockResourceRepository.Setup(o => o.FindResourcesByType<IAuditingSource>(mockServer.Object))
+                .Returns(new List<IResource>
+                {
+                    { new Mock<IResource>().Object }
+                });
+            mockResourceRepository.Setup(o => o.GetServerSettings(mockServer.Object))
+                .Returns(new ServerSettingsData
+                { 
+                    IncludeEnvironmentVariable = true, //this is rather a server level switch than a driver level switch
+                    Sink = nameof(TestAuditSettingsDataUnknown)
+                });
+            mockServer.Setup(o => o.ResourceRepository)
+                .Returns(mockResourceRepository.Object);
+
+            //------------Execute Test---------------------------
+            var result = new LogSettingsViewModel(new LoggingSettingsTo(), mockServer.Object);
+            //------------Assert Results-------------------------
+            Assert.IsFalse(result.IsDirty);
+            Assert.IsTrue(result.IsLegacy);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory("LogSettingsViewModel_Constructor")]
+        [Timeout(500)]
+        public void LogSettingsViewModel_Constructor_GIVEN_ServerSettingsDataSink_LegacySettingsData_ShouldSuccess()
+        {
+            //------------Setup for test--------------------------
+            var mockServer = new Mock<IServer>();
+            var mockResourceRepository = new Mock<IResourceRepository>();
+            mockResourceRepository.Setup(o => o.GetServerSettings(mockServer.Object))
+                .Returns(new ServerSettingsData
+                {
+                    IncludeEnvironmentVariable = true, //this is rather a server level switch than a driver level switch
+                    Sink = nameof(LegacySettingsData)
+                });
+            mockResourceRepository.Setup(o => o.GetAuditingSettings<LegacySettingsData>(mockServer.Object))
+                .Returns(new LegacySettingsData
+                {
+                    AuditFilePath = "test/path",
+                    Endpoint = "test_endpoint",
+                    IncludeEnvironmentVariable = false
+                });
+            mockResourceRepository.Setup(o => o.FindResourcesByType<IAuditingSource>(mockServer.Object))
+                .Returns(new List<IResource>
+                {
+                    { new Mock<IResource>().Object }
+                });
+            mockServer.Setup(o => o.ResourceRepository)
+                .Returns(mockResourceRepository.Object);
+
+
+            //------------Execute Test---------------------------
+            var result = new LogSettingsViewModel(new LoggingSettingsTo(), mockServer.Object);
+            //------------Assert Results-------------------------
+            Assert.IsFalse(result.IsDirty);
+            Assert.IsTrue(result.IsLegacy);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory("LogSettingsViewModel_Constructor")]
+        [Timeout(500)]
+        public void LogSettingsViewModel_Constructor_GIVEN_ServerSettingsDataSink_AuditingSettingsData_ShouldSuccess()
+        {
+            //------------Setup for test--------------------------
+            var mockServer = new Mock<IServer>();
+            var mockResourceRepository = new Mock<IResourceRepository>();
+            mockResourceRepository.Setup(o => o.GetServerSettings(mockServer.Object))
+                .Returns(new ServerSettingsData
+                {
+                    IncludeEnvironmentVariable = true, //this is rather a server level switch than a driver level switch
+                    Sink = nameof(AuditingSettingsData)
+                });
+            mockResourceRepository.Setup(o => o.GetAuditingSettings<AuditingSettingsData>(mockServer.Object))
+                .Returns(new AuditingSettingsData
+                {
+                    EncryptDataSource = true,
+                    Endpoint = "test_endpoint",
+                    IncludeEnvironmentVariable = false,
+                    LoggingDataSource = new NamedGuidWithEncryptedPayload
+                    {
+                        Name = "test name",
+                        Payload = "test payload",
+                        Value = Guid.Empty
+                    }
+                });
+            var mockResource = new Mock<IResource>();
+            mockResource.Setup(o => o.ResourceID)
+                .Returns(Guid.NewGuid());
+            mockResourceRepository.Setup(o => o.FindResourcesByType<IAuditingSource>(mockServer.Object))
+                .Returns(new List<IResource>
+                {
+                    { mockResource.Object }
+                });
+            mockServer.Setup(o => o.ResourceRepository)
+                .Returns(mockResourceRepository.Object);
+
+
+            //------------Execute Test---------------------------
+            var result = new LogSettingsViewModel(new LoggingSettingsTo(), mockServer.Object);
+            //------------Assert Results-------------------------
+            Assert.IsFalse(result.IsDirty);
+            Assert.IsTrue(result.IsLegacy); //PBI: not sure how this should work
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory("LogSettingsViewModel_Constructor")]
+        [Timeout(1000)]
+        public void LogSettingsViewModel_Save_GIVEN_ServerSettingsDataSink_AuditingSettingsData_ShouldSuccess()
+        {
+            //------------Setup for test--------------------------
+            var mockServer = new Mock<IServer>();
+            var mockResourceRepository = new Mock<IResourceRepository>();
+            mockResourceRepository.Setup(o => o.GetServerSettings(mockServer.Object))
+                .Returns(new ServerSettingsData
+                {
+                    IncludeEnvironmentVariable = true, //this is rather a server level switch than a driver level switch
+                    Sink = nameof(AuditingSettingsData)
+                });
+            mockResourceRepository.Setup(o => o.GetAuditingSettings<AuditingSettingsData>(mockServer.Object))
+                .Returns(new AuditingSettingsData
+                {
+                    EncryptDataSource = true,
+                    Endpoint = "test_endpoint",
+                    IncludeEnvironmentVariable = false,
+                    LoggingDataSource = new NamedGuidWithEncryptedPayload
+                    {
+                        Name = "test name",
+                        Payload = "test payload",
+                        Value = Guid.Empty
+                    }
+                });
+            var mockResource = new Mock<IResource>();
+            mockResource.Setup(o => o.ResourceID)
+                .Returns(Guid.NewGuid());
+            mockResourceRepository.Setup(o => o.FindResourcesByType<IAuditingSource>(mockServer.Object))
+                .Returns(new List<IResource>
+                {
+                    { mockResource.Object }
+                });
+            mockServer.Setup(o => o.ResourceRepository)
+                .Returns(mockResourceRepository.Object);
+
+            var mockPopupController = new Mock<IPopupController>();
+            mockPopupController.Setup(o => o.ShowLoggerSourceChange("Default"))
+                .Returns(System.Windows.MessageBoxResult.Yes);
+
+            CustomContainer.Register(mockPopupController.Object);
+            //------------Execute Test---------------------------
+            var sut = new LogSettingsViewModel(new LoggingSettingsTo(), mockServer.Object);
+            sut.Save(new LoggingSettingsTo());
+            //------------Assert Results-------------------------
+            Assert.IsFalse(sut.IsDirty);
+            Assert.IsFalse(sut.IsLegacy);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory("LogSettingsViewModel")]
+        [Timeout(1000)]
+        public void LogSettingsViewModel_Save_GIVEN_ServerSettingsDataSink_AuditingSettingsDataUnknown_ShouldDefaultToLegacy()
+        {
+            //------------Setup for test--------------------------
+            var mockServer = new Mock<IServer>();
+            var mockResourceRepository = new Mock<IResourceRepository>();
+            mockResourceRepository.Setup(o => o.GetServerSettings(mockServer.Object))
+                .Returns(new ServerSettingsData
+                {
+                    IncludeEnvironmentVariable = true, //this is rather a server level switch than a driver level switch
+                    Sink = nameof(TestAuditSettingsDataUnknown)
+                });
+            mockResourceRepository.Setup(o => o.GetAuditingSettings<LegacySettingsData>(mockServer.Object))
+                .Returns(new LegacySettingsData
+                {
+                    AuditFilePath = "test/path",
+                    Endpoint = "test_endpoint",
+                    IncludeEnvironmentVariable = false
+                });
+            var mockResource = new Mock<IResource>();
+            mockResource.Setup(o => o.ResourceID)
+                .Returns(Guid.NewGuid());
+            mockResourceRepository.Setup(o => o.FindResourcesByType<IAuditingSource>(mockServer.Object))
+                .Returns(new List<IResource>
+                {
+                    { mockResource.Object }
+                });
+            mockServer.Setup(o => o.ResourceRepository)
+                .Returns(mockResourceRepository.Object);
+
+            var mockPopupController = new Mock<IPopupController>();
+            mockPopupController.Setup(o => o.ShowLoggerSourceChange("Default"))
+                .Returns(System.Windows.MessageBoxResult.Yes);
+
+            CustomContainer.Register(mockPopupController.Object);
+            //------------Execute Test---------------------------
+            var sut = new LogSettingsViewModel(new LoggingSettingsTo(), mockServer.Object);
+            sut.Save(new LoggingSettingsTo());
+            //------------Assert Results-------------------------
+            Assert.IsFalse(sut.IsDirty);
+            Assert.IsTrue(sut.IsLegacy);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory("LogSettingsViewModel")]
+        [Timeout(300)]
+        public void LogSettingsViewModel_Save_GIVEN_ServerSettingsDataSink_AuditingSettingsData_ChangeOnRuntime_ShouldSaveServerSettings()
+        {
+            //------------Setup for test--------------------------
+            var mockServer = new Mock<IServer>();
+            var mockResourceRepository = new Mock<IResourceRepository>();
+            mockResourceRepository.Setup(o => o.GetServerSettings(mockServer.Object))
+                .Returns(new ServerSettingsData
+                {
+                    IncludeEnvironmentVariable = true, //this is rather a server level switch than a driver level switch
+                    Sink = nameof(TestAuditSettingsDataUnknown)
+                });
+            mockResourceRepository.Setup(o => o.GetAuditingSettings<LegacySettingsData>(mockServer.Object))
+                .Returns(new LegacySettingsData
+                {
+                    AuditFilePath = "test/path",
+                    Endpoint = "test_endpoint",
+                    IncludeEnvironmentVariable = false
+                });
+            var mockResource = new Mock<IResource>();
+            mockResource.Setup(o => o.ResourceID)
+                .Returns(Guid.NewGuid());
+            mockResourceRepository.Setup(o => o.FindResourcesByType<IAuditingSource>(mockServer.Object))
+                .Returns(new List<IResource>
+                {
+                    { mockResource.Object }
+                });
+            mockServer.Setup(o => o.ResourceRepository)
+                .Returns(mockResourceRepository.Object);
+
+            var mockPopupController = new Mock<IPopupController>();
+            mockPopupController.Setup(o => o.ShowLoggerSourceChange("Default"))
+                .Returns(System.Windows.MessageBoxResult.Yes);
+
+            CustomContainer.Register(mockPopupController.Object);
+            //------------Execute Test---------------------------
+            var sut = new LogSettingsViewModel(new LoggingSettingsTo(), mockServer.Object)
+            {
+                Sink = nameof(AuditingSettingsData) //mimic change on runtime
+            };
+
+            Assert.IsTrue(sut.IsDirty);
+
+            sut.Save(new LoggingSettingsTo());
+            //------------Assert Results-------------------------
+            Assert.IsFalse(sut.IsDirty);
+            Assert.IsFalse(sut.IsLegacy);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory("LogSettingsViewModel")]
+        [Timeout(1000)]
+        public void LogSettingsViewModel_Save_GIVEN_IncludeEnvironmentVariable_ChangeOnRuntime_ShouldSaveServerSettingsAndLegacySettingsData()
+        {
+            //------------Setup for test--------------------------
+            var serverSettings = new ServerSettingsData
+            {
+                IncludeEnvironmentVariable = true, //this is rather a server level switch than a driver level switch
+                Sink = nameof(LegacySettingsData)
+            };
+            var auditSettings = new LegacySettingsData
+            {
+                AuditFilePath = "test/path",
+                IncludeEnvironmentVariable = false
+            };
+
+            var mockServer = new Mock<IServer>();
+            var mockResourceRepository = new Mock<IResourceRepository>();
+            mockResourceRepository.Setup(o => o.GetServerSettings(mockServer.Object))
+                .Returns(serverSettings);
+            mockResourceRepository.Setup(o => o.GetAuditingSettings<LegacySettingsData>(mockServer.Object))
+                .Returns(auditSettings);
+            var mockResource = new Mock<IResource>();
+            mockResource.Setup(o => o.ResourceID)
+                .Returns(Guid.NewGuid());
+            mockResourceRepository.Setup(o => o.FindResourcesByType<IAuditingSource>(mockServer.Object))
+                .Returns(new List<IResource>
+                {
+                    { mockResource.Object }
+                });
+            mockServer.Setup(o => o.ResourceRepository)
+                .Returns(mockResourceRepository.Object);
+
+            var mockPopupController = new Mock<IPopupController>();
+            mockPopupController.Setup(o => o.ShowLoggerSourceChange("Default"))
+                .Returns(System.Windows.MessageBoxResult.Yes);
+
+            CustomContainer.Register(mockPopupController.Object);
+            //------------Execute Test---------------------------
+            var sut = new LogSettingsViewModel(new LoggingSettingsTo(), mockServer.Object)
+            {
+                IncludeEnvironmentVariable = true,
+            };
+
+            Assert.IsTrue(sut.IsDirty);
+
+            sut.Save(new LoggingSettingsTo());
+            //------------Assert Results-------------------------
+            Assert.IsFalse(sut.IsDirty);
+            Assert.IsTrue(sut.IsLegacy);
+
+            mockResourceRepository.Verify(o => o.SaveServerSettings(mockServer.Object, serverSettings), Times.Once);
+            mockResourceRepository.Verify(o => o.SaveAuditingSettings(mockServer.Object, It.IsAny<LegacySettingsData>()), Times.Once); //use It.IsAny as this will have been updated to True
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory("LogSettingsViewModel")]
+        [Timeout(1000)]
+        public void LogSettingsViewModel_Save_GIVEN_IncludeEnvironmentVariable_ChangeOnRuntime_ShouldSaveServerSettingsAndAuditingSettingsData()
+        {
+            //------------Setup for test--------------------------
+            var serverSettings = new ServerSettingsData
+            {
+                IncludeEnvironmentVariable = true, //this is rather a server level switch than a driver level switch
+                Sink = nameof(AuditingSettingsData)
+            };
+            var auditSettings = new AuditingSettingsData
+            {
+                EncryptDataSource = true,
+                IncludeEnvironmentVariable = false
+            };
+
+            var mockServer = new Mock<IServer>();
+            var mockResourceRepository = new Mock<IResourceRepository>();
+            mockResourceRepository.Setup(o => o.GetServerSettings(mockServer.Object))
+                .Returns(serverSettings);
+            mockResourceRepository.Setup(o => o.GetAuditingSettings<AuditingSettingsData>(mockServer.Object))
+                .Returns(auditSettings);
+            var mockResource = new Mock<IResource>();
+            mockResource.Setup(o => o.ResourceID)
+                .Returns(Guid.NewGuid());
+            mockResourceRepository.Setup(o => o.FindResourcesByType<IAuditingSource>(mockServer.Object))
+                .Returns(new List<IResource>
+                {
+                    { mockResource.Object }
+                });
+            mockServer.Setup(o => o.ResourceRepository)
+                .Returns(mockResourceRepository.Object);
+
+            var mockPopupController = new Mock<IPopupController>();
+            mockPopupController.Setup(o => o.ShowLoggerSourceChange("Default"))
+                .Returns(System.Windows.MessageBoxResult.Yes);
+
+            CustomContainer.Register(mockPopupController.Object);
+            //------------Execute Test---------------------------
+            var sut = new LogSettingsViewModel(new LoggingSettingsTo(), mockServer.Object)
+            {
+                IncludeEnvironmentVariable = true,
+            };
+
+            Assert.IsTrue(sut.IsDirty);
+
+            sut.Save(new LoggingSettingsTo());
+            //------------Assert Results-------------------------
+            Assert.IsFalse(sut.IsDirty);
+            Assert.IsFalse(sut.IsLegacy);
+
+            mockResourceRepository.Verify(o => o.SaveServerSettings(mockServer.Object, serverSettings), Times.Once);
+            mockResourceRepository.Verify(o => o.SaveAuditingSettings(mockServer.Object, It.IsAny<AuditingSettingsData>()), Times.Once); //use It.IsAny as this will have been updated to True
+        }
+
+        [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory(nameof(LogSettingsViewModel))]
+        [TestCategory("LogSettingsViewModel_ServerLogLevel")]
+        [Timeout(300000)]
         public void LogSettingsViewModel_ServerLogLevel_Set_PropertyChangeFired()
         {
             //------------Setup for test--------------------------
@@ -124,8 +515,9 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(LogSettingsViewModel))]
-        public void LogSettingsViewModel_UpdateHelp_ShouldCallToHelpViewMode()
+        [TestCategory("LogSettingsViewModel_UpdateHelp")]
+        [Timeout(300000)]
+        public void LogSettingsViewModel_UpdateHelp_ShouldCallToHelpViewModel()
         {
             //------------Setup for test--------------------------
             var mockMainViewModel = new Mock<IShellViewModel>();
@@ -144,7 +536,8 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(LogSettingsViewModel))]
+        [TestCategory("LogSettingsViewModel_SelectedLoggingType")]
+        [Timeout(300000)]
         public void LogSettingsViewModel_SelectedLoggingType_ShouldSelectLoggingType()
         {
             //------------Setup for test--------------------------
@@ -161,7 +554,8 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(LogSettingsViewModel))]
+        [TestCategory("LogSettingsViewModel_GetLogFileCommand")]
+        [Timeout(300000)]
         public void LogSettingsViewModel_GetServerLogFileCommand_CanExecute()
         {
             //------------Setup for test--------------------------
@@ -176,7 +570,8 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(LogSettingsViewModel))]
+        [TestCategory("LogSettingsViewModel_GetLogFileCommand")]
+        [Timeout(300000)]
         public void LogSettingsViewModel_GetStudioLogFileCommand_CanExecute()
         {
             //------------Setup for test--------------------------
@@ -191,7 +586,8 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory(nameof(LogSettingsViewModel))]
+        [TestCategory("LogSettingsViewModel_PropertyChangeFired")]
+        [Timeout(300000)]
         public void LogSettingsViewModel_StudioLogLevel_Set_PropertyChangeFired()
         {
             //------------Setup for test--------------------------
@@ -216,7 +612,8 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory(nameof(LogSettingsViewModel))]
+        [TestCategory("LogSettingsViewModel_PropertyChangeFired")]
+        [Timeout(300000)]
         public void LogSettingsViewModel_ServerLogMaxSize_SetInt_PropertyChangeFired()
         {
             //------------Setup for test--------------------------
@@ -240,7 +637,8 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory(nameof(LogSettingsViewModel))]
+        [TestCategory("LogSettingsViewModel_PropertyChangeFired")]
+        [Timeout(300000)]
         public void LogSettingsViewModel_ServerLogMaxSize_SetNonInt_PropertyChangeNotFired()
         {
             //------------Setup for test--------------------------
@@ -264,7 +662,8 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory(nameof(LogSettingsViewModel))]
+        [TestCategory("LogSettingsViewModel_PropertyChangeFired")]
+        [Timeout(300000)]
         public void LogSettingsViewModel_StudioLogMaxSize_SetInt_PropertyChangeFired()
         {
             //------------Setup for test--------------------------
@@ -288,7 +687,8 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(LogSettingsViewModel))]
+        [TestCategory("LogSettingsViewModel_StudioFileLogLevel")]
+        [Timeout(300000)]
         public void LogSettingsViewModel_StudioFileLogLevel_Construct_IsDebug()
         {
             //------------Setup for test--------------------------
@@ -302,7 +702,8 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(LogSettingsViewModel))]
+        [TestCategory("LogSettingsViewModel_StudioFileLogLevel")]
+        [Timeout(300000)]
         public void LogSettingsViewModel_StudioFileLogLevel_SetLevel_IsInfo()
         {
             //------------Setup for test--------------------------
@@ -317,7 +718,8 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(LogSettingsViewModel))]
+        [TestCategory("LogSettingsViewModel_Construct")]
+        [Timeout(300000)]
         public void LogSettingsViewModel_CanEdit_Construct_IsFalse()
         {
             //------------Setup for test--------------------------
@@ -332,7 +734,8 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Candice Daniel")]
-        [TestCategory(nameof(LogSettingsViewModel))]
+        [TestCategory("LogSettingsViewModel_Construct")]
+        [Timeout(300000)]
         public void LogSettingsViewModel_IsLegacy_Construct_IsTrue()
         {
             //------------Setup for test--------------------------
@@ -347,7 +750,8 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Candice Daniel")]
-        [TestCategory(nameof(LogSettingsViewModel))]
+        [TestCategory("LogSettingsViewModel_Construct")]
+        [Timeout(300000)]
         public void LogSettingsViewModel_IsLegacy_Construct_IsFalse()
         {
             //------------Setup for test--------------------------
@@ -361,7 +765,8 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(LogSettingsViewModel))]
+        [TestCategory("LogSettingsViewModel_Construct")]
+        [Timeout(300000)]
         public void LogSettingsViewModel_CanEdit_Construct_IsTrue()
         {
             //------------Setup for test--------------------------
@@ -380,7 +785,8 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory(nameof(LogSettingsViewModel))]
+        [TestCategory("Studio Settings Core")]
+        [Timeout(300000)]
         public void LogSettingsViewModel_StudioLogMaxSize_SetNonInt_PropertyChangeNotFired()
         {
             //------------Setup for test--------------------------
@@ -404,7 +810,8 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(LogSettingsViewModel))]
+        [TestCategory("Studio Settings Core")]
+        [Timeout(300000)]
         public void LogSettingsViewModel_AuditsFilePath_PropertyChangeFired()
         {
             //------------Setup for test--------------------------
@@ -429,7 +836,8 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Candice Daniel")]
-        [TestCategory(nameof(LogSettingsViewModel))]
+        [TestCategory("Studio Settings Core")]
+        [Timeout(300000)]
         public void LogSettingsViewModel_Save_LegacySettingsData()
         {
             var _resourceRepo = new Mock<IResourceRepository>();
@@ -445,11 +853,13 @@ namespace Dev2.Core.Tests.Settings
             logSettingsViewModel.AuditFilePath = @"C:\ProgramData\Warewolf\Audits";
             //------------Assert Results-------------------------
             logSettingsViewModel.Save(loggingSettingsTo);
-            _resourceRepo.Verify(o => o.SaveAuditingSettings(It.IsAny<IServer>(), It.IsAny<LegacySettingsData>()), Times.Once);
+            _resourceRepo.Verify(o => o.SaveAuditingSettings(It.IsAny<IServer>(), It.IsAny<LegacySettingsData>()), Times.Never);
         }
+
         [TestMethod]
         [Owner("Candice Daniel")]
-        [TestCategory(nameof(LogSettingsViewModel))]
+        [TestCategory("Studio Settings Core")]
+        [Timeout(300000)]
         public void LogSettingsViewModel_Save_ChangeSink()
         {
             var _resourceRepo = new Mock<IResourceRepository>();
@@ -464,12 +874,13 @@ namespace Dev2.Core.Tests.Settings
             logSettingsViewModel.SelectedAuditingSource = mockResource.Object;
             //------------Assert Results-------------------------
             logSettingsViewModel.Save(loggingSettingsTo);
-            _resourceRepo.Verify(o => o.SaveAuditingSettings(It.IsAny<IServer>(), It.IsAny<AuditingSettingsData>()), Times.Once);
+            _resourceRepo.Verify(o => o.SaveAuditingSettings(It.IsAny<IServer>(), It.IsAny<AuditingSettingsData>()), Times.Never);
         }
         
         [TestMethod]
         [Owner("Candice Daniel")]
-        [TestCategory(nameof(LogSettingsViewModel))]
+        [TestCategory("Studio Settings Core")]
+        [Timeout(300000)]
         public void LogSettingsViewModel_Save_AuditingSettingsData()
         {
             var _resourceRepo = new Mock<IResourceRepository>();
@@ -486,7 +897,7 @@ namespace Dev2.Core.Tests.Settings
             CustomContainer.Register(new Mock<IPopupController>().Object);
             //------------Assert Results-------------------------
             logSettingsViewModel.Save(loggingSettingsTo);
-            _resourceRepo.Verify(o => o.SaveAuditingSettings(It.IsAny<IServer>(), It.IsAny<AuditingSettingsData>()), Times.Once);
+            _resourceRepo.Verify(o => o.SaveAuditingSettings(It.IsAny<IServer>(), It.IsAny<AuditingSettingsData>()), Times.Never);
         }
 
         static LogSettingsViewModel CreateLogSettingViewModel(string sink, Mock<IResourceRepository> _resourceRepo = null)

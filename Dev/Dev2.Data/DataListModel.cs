@@ -30,7 +30,9 @@ namespace Dev2.Data
         public List<IRecordSet> ShapeRecordSets { get; set; }
         public List<IComplexObject> ShapeComplexObjects { get; set; }
         public List<IComplexObject> ComplexObjects { get; set; }
-        
+
+        public string JsonData { get; set; }
+
         public DataListModel()
         {
             Scalars = new List<IScalar>();
@@ -97,11 +99,30 @@ namespace Dev2.Data
                 var complexObject = ComplexObjects.FirstOrDefault(o => o.Name == "@" + c.Name);
                 if (complexObject != null)
                 {
-                    SetComplexObjectValue(c, complexObject);
+                    SetComplexObjectValue(c, complexObject, JsonData);
                 }
                 else
                 {
                     SetScalarOrEcordsetValue(indexCache, c, recSet, shapeRecSet, scalar);
+                }
+            }
+        }
+
+        private static void SetComplexObjectValue(XmlNode c, IComplexObject complexObject, string jsonData = null)
+        {
+            if (!string.IsNullOrEmpty(jsonData))
+            {
+                var data = JObject.Parse(jsonData);
+                var jsonValue = data.Properties()?.Where(property => property.Name == complexObject.Name.Replace("@", "")).FirstOrDefault();
+                complexObject.Value = jsonValue?.Value?.ToString();
+            }
+            else if (!string.IsNullOrEmpty(c.OuterXml))
+            {
+                var data = JsonConvert.SerializeXNode(XDocument.Parse(c.OuterXml), Newtonsoft.Json.Formatting.None, true);
+                if (JsonConvert.DeserializeObject(data.Replace("\"@", "\"")) is JObject obj)
+                {
+                    var value = obj.ToString();
+                    complexObject.Value = value;
                 }
             }
         }
@@ -140,19 +161,6 @@ namespace Dev2.Data
                 if (scalar != null)
                 {
                     scalar.Value = c.InnerXml;
-                }
-            }
-        }
-
-        private static void SetComplexObjectValue(XmlNode c, IComplexObject complexObject)
-        {
-            if (!string.IsNullOrEmpty(c.OuterXml))
-            {
-                var jsonData = JsonConvert.SerializeXNode(XDocument.Parse(c.OuterXml), Newtonsoft.Json.Formatting.None, true);
-                if (JsonConvert.DeserializeObject(jsonData.Replace("\"@", "\"")) is JObject obj)
-                {
-                    var value = obj.ToString();
-                    complexObject.Value = value;
                 }
             }
         }

@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2022 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -9,6 +9,7 @@
 */
 
 using Dev2;
+using Dev2.Common;
 using Dev2.Common.Serializers;
 using Dev2.Interfaces;
 using Newtonsoft.Json;
@@ -168,7 +169,7 @@ namespace Warewolf.Auditing
         [Column(Name = "Exception", CanBeNull = true)]
         [JsonProperty("Exception")]
         [DataMember]
-        public Exception Exception { get; set; }
+        public SerializableException Exception { get; set; }
 
         [JsonProperty("StartDateTime")]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:mm:ss}")]
@@ -194,12 +195,17 @@ namespace Warewolf.Auditing
 
         }
 
-        public Audit(IExecutionContext dataObject, string auditType, string detail, object previousActivity, object nextActivity, Exception exception)
+        public Audit(IExecutionContext dataObject, string auditType, string detail, object previousActivity, object nextActivity, SerializableException exception)
         {
 
             var dsfDataObject = dataObject as IDSFDataObject;
+            var env = dsfDataObject.Environment;
             var dev2Serializer = new Dev2JsonSerializer();
-            if(dsfDataObject != null)
+            LogLevel = LogLevel.Info;
+            StartDateTime = DateTime.Now;
+            CompletedDateTime = DateTime.Now;
+
+            if (dsfDataObject != null)
             {
                 WorkflowID = dsfDataObject.ResourceID.ToString();
                 ExecutionID = dsfDataObject.ExecutionID.ToString();
@@ -216,25 +222,32 @@ namespace Warewolf.Auditing
                 ExecutionToken = dev2Serializer.Serialize(ExecutionToken);
                 VersionNumber = dsfDataObject.VersionNumber.ToString();
                 Url = dsfDataObject.WebUrl;
+                StartDateTime = dsfDataObject.StartTime;
                 if(dsfDataObject.IsDebug)
                 {
                     LogLevel = LogLevel.Debug;
                 }
 
-                if(dsfDataObject.Environment.HasErrors() || exception != null)
+                if(env.HasErrors() || exception != null)
                 {
                     LogLevel = LogLevel.Error;
                 }
             }
-            Environment = string.Empty;
+ 
+            if (Config.Server.IncludeEnvironmentVariable)
+            {
+                Environment = env.ToJson();
+            }
+            else
+            {
+                //NOTE: setting this value should be deliberate to avoid POPPI
+                Environment = string.Empty;
+            }
+
             AuditDate = DateTime.Now;
-            StartDateTime = DateTime.Now;
-            CompletedDateTime = DateTime.Now;
             AuditType = auditType;
             AdditionalDetail = detail;
-            Exception = exception;
-
-            LogLevel = LogLevel.Info;
+			Exception = exception;
 
             if (previousActivity is IDev2Activity act1)
             {
@@ -242,6 +255,7 @@ namespace Warewolf.Auditing
                 PreviousActivityType = act1.GetType().ToString();
                 PreviousActivityId = act1.UniqueID;
             }
+
             if (nextActivity is IDev2Activity act2)
             {
                 NextActivity = act2.GetDisplayName();

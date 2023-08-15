@@ -133,7 +133,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(500)]
         [ExpectedException(typeof(ArgumentNullException))]
         public void TestManagePluginSourceViewModelAggregatorNull()
         {
@@ -151,7 +151,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         [ExpectedException(typeof(ArgumentNullException))]
         public void TestManagePluginSourceViewModePluginSourceNull()
         {

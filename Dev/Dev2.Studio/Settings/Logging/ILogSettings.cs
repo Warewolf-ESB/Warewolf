@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2022 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -22,11 +22,13 @@ namespace Dev2.Settings.Logging
         LogLevel StudioEventLogLevel { get; set; }
         string StudioLogMaxSize { get; }
         string ServerLogMaxSize { get; }
+        long AuditLogMaxSize { get; }
         bool CanEditStudioLogSettings { get; }
         bool CanEditLogSettings { get; }
         LogLevel StudioFileLogLevel { get; }
         IEnumerable<string> LoggingTypes { get; }
         string AuditFilePath { get; set; }
+        bool IncludeEnvironmentVariable { get; set; }
         IResource SelectedAuditingSource { get; }
         List<IResource> AuditingSources { get; }
         bool IsLegacy { get; set; }

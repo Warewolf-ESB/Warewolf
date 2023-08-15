@@ -476,7 +476,7 @@ namespace Dev2.Studio.Core
             {
                 foreach (var connection in servers)
                 {
-                    if (!string.IsNullOrEmpty(connection.Address) && !string.IsNullOrEmpty(connection.WebAddress))
+                    if (!string.IsNullOrEmpty(connection?.Address) && !string.IsNullOrEmpty(connection?.WebAddress))
                     {
                         var environmentModel = CreateEnvironmentModel(connection);
                         result.Add(environmentModel);

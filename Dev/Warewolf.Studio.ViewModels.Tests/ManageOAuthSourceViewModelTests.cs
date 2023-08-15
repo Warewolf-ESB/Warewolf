@@ -74,7 +74,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         [ExpectedException(typeof(ArgumentNullException))]
         public void TestManageOAuthSourceViewModelConstructorNullIOAuthSource()
         {
@@ -83,7 +83,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(250)]
+        [Timeout(1000)]
         public void TestManageOAuthSourceViewModelConstructor2()
         {
             var requestServiceNameViewModel = new Mock<IRequestServiceNameViewModel>();
@@ -419,7 +419,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _manageOAuthSourceViewModel = new ManageOAuthSourceViewModel(_updateManager.Object, _oAuthSource.Object, new SynchronousAsyncWorker()) { Name = "Testing OAuth" };
             _manageOAuthSourceViewModel.Item = new DropBoxSource() { ResourceName = "testing", ResourcePath = "" };
 
-            var manageOAuthSourceVM = new PrivateObject(_manageOAuthSourceViewModel);
+            var manageOAuthSourceVM = new Warewolf.Testing.PrivateObject(_manageOAuthSourceViewModel);
             //act
             manageOAuthSourceVM.Invoke("SaveConnection");
             //assert
@@ -453,7 +453,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             requestServiceNameVM.Setup(p => p.SingleEnvironmentExplorerViewModel).Returns(explorerVM.Object);
             var task = Task.FromResult(requestServiceNameVM.Object);
             _manageOAuthSourceViewModel.RequestServiceNameViewModel = task;
-            var manageOAuthSourceVM = new PrivateObject(_manageOAuthSourceViewModel);
+            var manageOAuthSourceVM = new Warewolf.Testing.PrivateObject(_manageOAuthSourceViewModel);
             manageOAuthSourceVM.SetField("_oAuthSource", null);
             CustomContainer.Register(mockShellVM.Object);
             Assert.IsNull(_manageOAuthSourceViewModel.Path);

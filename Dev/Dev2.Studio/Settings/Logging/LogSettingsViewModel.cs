@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2022 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -59,20 +59,25 @@ namespace Dev2.Settings.Logging
             }
         }
 
-        string _serverLogMaxSize;
-        string _studioLogMaxSize;
-        string _selectedLoggingType;
-        LogLevel _serverEventLogLevel;
-        LogLevel _studioEventLogLevel;
-        LogLevel _executionLogLevel;
+        private const string DEFAULT_SINK = nameof(LegacySettingsData);
+
+        private string _serverLogMaxSize;
+        private string _studioLogMaxSize;
+        private long _auditLogMaxSize;
+        private string _selectedLoggingType;
+        private LogLevel _serverEventLogLevel;
+        private LogLevel _studioEventLogLevel;
+        private LogLevel _executionLogLevel;
         private bool _encryptDataSource = true;
-        ProgressDialogViewModel _progressDialogViewModel;
-        string _serverLogFile;
-        IServer _currentEnvironment;
-        readonly LogLevel _serverFileLogLevel;
-        LogLevel _studioFileLogLevel;
-        LogSettingsViewModel _item;
-        string _auditFilePath;
+        private ProgressDialogViewModel _progressDialogViewModel;
+        private string _serverLogFile;
+        private IServer _currentEnvironment;
+        private readonly LogLevel _serverFileLogLevel;
+        private LogLevel _studioFileLogLevel;
+        private LogSettingsViewModel _item;
+        private string _auditFilePath = string.Empty;
+        private bool _includeEnvironmentVariable;
+        private string _sink;
         private Guid _resourceSourceId;
         private IResource _selectedAuditingSource;
         private bool _isLegacy;
@@ -114,30 +119,48 @@ namespace Dev2.Settings.Logging
             {
                 _studioEventLogLevel = studioEventLogLevel;
             }
-
             _studioLogMaxSize = Dev2Logger.GetLogMaxSize().ToString(CultureInfo.InvariantCulture);
-            var serverSettingsData = CurrentEnvironment.ResourceRepository.GetServerSettings(CurrentEnvironment);
+            var serverSettingsData = _resourceRepository.GetServerSettings(CurrentEnvironment);
 
             if (Enum.TryParse(serverSettingsData.ExecutionLogLevel, out LogLevel executionLogLevel))
             {
                 _executionLogLevel = executionLogLevel;
             }
 
-            if (serverSettingsData.Sink == nameof(LegacySettingsData))
+            IResource selectedAuditingSource;
+            switch (serverSettingsData.Sink)
             {
-                var legacySettingsData = CurrentEnvironment.ResourceRepository.GetAuditingSettings<LegacySettingsData>(CurrentEnvironment);
-                AuditFilePath = legacySettingsData.AuditFilePath;
-                var selectedAuditingSource = AuditingSources.FirstOrDefault(o => o.ResourceID == Guid.Empty);
-                SelectedAuditingSource = selectedAuditingSource;
+                case nameof(LegacySettingsData):
+                    var legacySettingsData = _resourceRepository.GetAuditingSettings<LegacySettingsData>(CurrentEnvironment);
+                    AuditFilePath = legacySettingsData.AuditFilePath;
+                    IncludeEnvironmentVariable = serverSettingsData.IncludeEnvironmentVariable;
+                    AuditLogMaxSize = legacySettingsData.AuditLogMaxSize;
+                    selectedAuditingSource = AuditingSources.FirstOrDefault(o => o.ResourceID == Guid.Empty);
+                    SelectedAuditingSource = selectedAuditingSource;
+                    Sink = DEFAULT_SINK;
+                    break;
+
+                case nameof(AuditingSettingsData):
+                    var auditingSettingsData = _resourceRepository.GetAuditingSettings<AuditingSettingsData>(CurrentEnvironment);
+                    IncludeEnvironmentVariable = serverSettingsData.IncludeEnvironmentVariable;
+                    EncryptDataSource = auditingSettingsData.EncryptDataSource;
+                    selectedAuditingSource = AuditingSources.FirstOrDefault(o => o.ResourceID == auditingSettingsData.LoggingDataSource.Value);
+                    SelectedAuditingSource = selectedAuditingSource;
+                    Sink = serverSettingsData.Sink;
+                    break;
+
+                default:
+                    Dev2Logger.Error($"Settings Data Sink: {serverSettingsData.Sink} unknown", GlobalConstants.WarewolfError);
+                    var legacySettingsDataN = _resourceRepository.GetAuditingSettings<LegacySettingsData>(CurrentEnvironment);
+                    AuditFilePath = legacySettingsDataN.AuditFilePath;
+                    AuditLogMaxSize = legacySettingsDataN.AuditLogMaxSize;
+                    IncludeEnvironmentVariable = serverSettingsData.IncludeEnvironmentVariable;
+                    selectedAuditingSource = AuditingSources.FirstOrDefault(o => o.ResourceID == Guid.Empty);
+                    SelectedAuditingSource = selectedAuditingSource;
+                    Sink = DEFAULT_SINK;
+                    break;
             }
 
-            if (serverSettingsData.Sink == nameof(AuditingSettingsData))
-            {
-                var auditingSettingsData = CurrentEnvironment.ResourceRepository.GetAuditingSettings<AuditingSettingsData>(CurrentEnvironment);
-                var selectedAuditingSource = AuditingSources.FirstOrDefault(o => o.ResourceID == auditingSettingsData.LoggingDataSource.Value);
-                SelectedAuditingSource = selectedAuditingSource;
-                _encryptDataSource = auditingSettingsData.EncryptDataSource;
-            }
 
             IsDirty = false;
         }
@@ -145,7 +168,7 @@ namespace Dev2.Settings.Logging
         [ExcludeFromCodeCoverage]
         void OpenServerLogFile(object o)
         {
-            using (WebClient client = new WebClient {Credentials = CurrentEnvironment.Connection.HubConnection.Credentials})
+            using (WebClient client = new WebClient { Credentials = CurrentEnvironment.Connection.HubConnection.Credentials })
             {
                 var dialog = new ProgressDialog();
                 _progressDialogViewModel = new ProgressDialogViewModel(() => { dialog.Close(); }, delegate { dialog.Show(); }, delegate { dialog.Close(); });
@@ -208,73 +231,101 @@ namespace Dev2.Settings.Logging
         {
             logSettings.EventLogLoggerLogLevel = ServerEventLogLevel.ToString();
             logSettings.FileLoggerLogSize = int.Parse(ServerLogMaxSize);
+            logSettings.AuditLogMaxSize = AuditLogMaxSize;
             var settingsConfigFile = HelperUtils.GetStudioLogSettingsConfigFile();
 
             try
             {
-                var serverSettingsData = CurrentEnvironment.ResourceRepository.GetServerSettings(CurrentEnvironment);
-                var savedResourceId = Guid.Empty;
+                var serverSettingsData = _resourceRepository.GetServerSettings(CurrentEnvironment);
                 var savedSink = serverSettingsData.Sink;
+                var savedIncludeEnvironmentVariable = serverSettingsData.IncludeEnvironmentVariable;
                 Enum.TryParse(serverSettingsData.ExecutionLogLevel, out LogLevel savedExecutionLogLevel);
+
+                var savedResourceId = Guid.Empty;
                 var savedEncryptDataSource = true;
-                if (savedSink == nameof(AuditingSettingsData))
+
+                var savedAuditFilePath = string.Empty;
+                var savedEndpoint = string.Empty;
+                long savedAuditLogMaxSize = 0;
+                LegacySettingsData legacySettingsData;
+                switch (savedSink)
                 {
-                    var auditingSettingsData = CurrentEnvironment.ResourceRepository.GetAuditingSettings<AuditingSettingsData>(CurrentEnvironment);
-                    savedResourceId = auditingSettingsData.LoggingDataSource.Value;
-                    savedEncryptDataSource = auditingSettingsData.EncryptDataSource;
+                    case nameof(AuditingSettingsData):
+                        var auditingSettingsData = _resourceRepository.GetAuditingSettings<AuditingSettingsData>(CurrentEnvironment);
+                        savedResourceId = auditingSettingsData.LoggingDataSource.Value;
+                        savedEncryptDataSource = auditingSettingsData.EncryptDataSource;
+                        savedIncludeEnvironmentVariable = auditingSettingsData.IncludeEnvironmentVariable;
+                        break;
+
+                    case DEFAULT_SINK:
+                        legacySettingsData = _resourceRepository.GetAuditingSettings<LegacySettingsData>(CurrentEnvironment);
+                        savedResourceId = Guid.Empty;
+                        savedEndpoint = legacySettingsData.Endpoint;
+                        savedAuditFilePath = legacySettingsData.AuditFilePath;
+                        savedIncludeEnvironmentVariable = legacySettingsData.IncludeEnvironmentVariable;
+                        savedAuditLogMaxSize = legacySettingsData.AuditLogMaxSize;
+                        break;
+
+                    default:
+                        Dev2Logger.Warn($"Settings Data Sink: {savedSink} unknown, the default sink will be used", GlobalConstants.WarewolfWarn);
+
+                        legacySettingsData = _resourceRepository.GetAuditingSettings<LegacySettingsData>(CurrentEnvironment);
+                        savedResourceId = Guid.Empty;
+                        savedEndpoint = legacySettingsData.Endpoint;
+                        savedAuditFilePath = legacySettingsData.AuditFilePath;
+                        savedIncludeEnvironmentVariable = legacySettingsData.IncludeEnvironmentVariable;
+                        savedAuditLogMaxSize = legacySettingsData.AuditLogMaxSize;
+                        serverSettingsData.Sink = DEFAULT_SINK; //for robustness 
+                        break;
                 }
 
-                var changed = savedSink == nameof(LegacySettingsData) && _selectedAuditingSource.ResourceID != Guid.Empty;
+                var changed = _sink != savedSink;
+                changed |= _auditFilePath != savedAuditFilePath;
                 changed |= _encryptDataSource != savedEncryptDataSource;
                 changed |= _selectedAuditingSource.ResourceID != savedResourceId;
-                //TODO: We will use the Server Log Level from the UI until we get the UI changed.
+                changed |= _includeEnvironmentVariable != savedIncludeEnvironmentVariable;
                 changed |= _executionLogLevel != savedExecutionLogLevel;
+                changed |= _auditLogMaxSize != savedAuditLogMaxSize;
+
+                //TODO: We will use the Server Log Level from the UI until we get the UI changed.
+                var serverSettingsChanged = _sink != savedSink;
+                serverSettingsChanged |= _includeEnvironmentVariable != savedIncludeEnvironmentVariable;
+                serverSettingsChanged |= _executionLogLevel != savedExecutionLogLevel;
 
                 if (changed)
                 {
                     var popupController = CustomContainer.Get<IPopupController>();
                     var result = popupController.ShowLoggerSourceChange(_selectedAuditingSource.ResourceName);
-                    if (result == MessageBoxResult.No || result == MessageBoxResult.Cancel)
+
+                    if (result == MessageBoxResult.Yes)
+                    {
+                        if (serverSettingsChanged)
+                        {
+                            serverSettingsData.Sink = _sink;
+                            serverSettingsData.ExecutionLogLevel = _executionLogLevel.ToString();
+                            serverSettingsData.IncludeEnvironmentVariable = _includeEnvironmentVariable;
+                            _resourceRepository.SaveServerSettings(CurrentEnvironment, serverSettingsData);
+                        }
+
+                        if (_sink == nameof(AuditingSettingsData))
+                        {
+                            SaveAuditingSettingsData();
+                            IsLegacy = false;
+                        }
+                        else
+                        {
+                            SaveLegacySettingsData();
+                            IsLegacy = true;
+                        }
+                    }
+                    else
                     {
                         return;
                     }
                 }
-
-                if (_executionLogLevel != savedExecutionLogLevel)
-                {
-                    serverSettingsData.ExecutionLogLevel = _executionLogLevel.ToString();
-                    CurrentEnvironment.ResourceRepository.SaveServerSettings(CurrentEnvironment, serverSettingsData);
-                }
-
-                if (_selectedAuditingSource.ResourceID == Guid.Empty)
-                {
-                    var data = new LegacySettingsData
-                    {
-                        AuditFilePath = AuditFilePath
-                    };
-                    CurrentEnvironment.ResourceRepository.SaveAuditingSettings(CurrentEnvironment, data);
-                }
                 else
                 {
-                    var source = _selectedAuditingSource as ElasticsearchSource;
-                    var serializer = new Dev2JsonSerializer();
-                    var payload = serializer.Serialize(source);
-                    if (_encryptDataSource)
-                    {
-                        payload = DpapiWrapper.Encrypt(payload);
-                    }
-
-                    var data = new AuditingSettingsData
-                    {
-                        EncryptDataSource = _encryptDataSource,
-                        LoggingDataSource = new NamedGuidWithEncryptedPayload
-                        {
-                            Name = _selectedAuditingSource.ResourceName,
-                            Value = _selectedAuditingSource.ResourceID,
-                            Payload = payload
-                        }
-                    };
-                    CurrentEnvironment.ResourceRepository.SaveAuditingSettings(CurrentEnvironment, data);
+                    IsDirty = false;
                 }
             }
             catch (Exception ex)
@@ -290,6 +341,42 @@ namespace Dev2.Settings.Logging
             HasAuditFilePathMoved = true;
         }
 
+        private void SaveLegacySettingsData()
+        {
+            var data = new LegacySettingsData
+            {
+                AuditFilePath = _auditFilePath,
+                IncludeEnvironmentVariable = _includeEnvironmentVariable,
+                AuditLogMaxSize = _auditLogMaxSize,
+            };
+            _resourceRepository.SaveAuditingSettings(CurrentEnvironment, data);
+            IsDirty = false;
+        }
+
+        private void SaveAuditingSettingsData()
+        {
+            var source = _selectedAuditingSource as ElasticsearchSource;
+            var serializer = new Dev2JsonSerializer();
+            var payload = serializer.Serialize(source);
+            if (_encryptDataSource)
+            {
+                payload = DpapiWrapper.Encrypt(payload);
+            }
+
+            var data = new AuditingSettingsData
+            {
+                EncryptDataSource = _encryptDataSource,
+                IncludeEnvironmentVariable = _includeEnvironmentVariable,
+                LoggingDataSource = new NamedGuidWithEncryptedPayload
+                {
+                    Name = _selectedAuditingSource.ResourceName,
+                    Value = _selectedAuditingSource.ResourceID,
+                    Payload = payload
+                }
+            };
+            _resourceRepository.SaveAuditingSettings(CurrentEnvironment, data);
+            IsDirty = false;
+        }
 
         public bool HasAuditFilePathMoved { get; set; }
 
@@ -312,7 +399,7 @@ namespace Dev2.Settings.Logging
         private static LogSettingsViewModel Clone(LogSettingsViewModel model)
         {
             var resolver = new ShouldSerializeContractResolver();
-            var ser = JsonConvert.SerializeObject(model, new JsonSerializerSettings {ContractResolver = resolver});
+            var ser = JsonConvert.SerializeObject(model, new JsonSerializerSettings { ContractResolver = resolver });
             var clone = JsonConvert.DeserializeObject<LogSettingsViewModel>(ser);
             return clone;
         }
@@ -407,6 +494,17 @@ namespace Dev2.Settings.Logging
             }
         }
 
+        public long AuditLogMaxSize
+        {
+            get => _auditLogMaxSize;
+            set
+            {
+                IsDirty = !Equals(Item);
+                _auditLogMaxSize = value;
+                OnPropertyChanged();
+            }
+        }
+
         public string StudioLogMaxSize
         {
             get => _studioLogMaxSize;
@@ -450,6 +548,28 @@ namespace Dev2.Settings.Logging
             }
         }
 
+        public string Sink
+        {
+            get => _sink;
+            set
+            {
+                IsDirty = !Equals(Item);
+                _sink = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IncludeEnvironmentVariable
+        {
+            get => _includeEnvironmentVariable;
+            set
+            {
+                IsDirty = !Equals(Item);
+                _includeEnvironmentVariable = value;
+                OnPropertyChanged();
+            }
+        }
+
         [JsonIgnore]
         public IResource SelectedAuditingSource
         {
@@ -465,6 +585,7 @@ namespace Dev2.Settings.Logging
 
                 OnPropertyChanged();
                 IsLegacy = SelectedAuditingSource?.ResourceID == Guid.Empty;
+                _sink = !_isLegacy ? nameof(AuditingSettingsData) : nameof(LegacySettingsData);
             }
         }
 
@@ -518,7 +639,10 @@ namespace Dev2.Settings.Logging
             equalsSeq &= Equals(_selectedLoggingType, other._selectedLoggingType);
             equalsSeq &= int.Parse(_serverLogMaxSize) == int.Parse(other._serverLogMaxSize);
             equalsSeq &= int.Parse(_studioLogMaxSize) == int.Parse(other._studioLogMaxSize);
-            equalsSeq &= Equals(_auditFilePath, other._auditFilePath);
+            equalsSeq &= string.Equals(_auditFilePath, other._auditFilePath);
+            equalsSeq &= _auditLogMaxSize == other._auditLogMaxSize;
+            equalsSeq &= _includeEnvironmentVariable == other._includeEnvironmentVariable;
+            equalsSeq &= string.Equals(_sink, other._sink);
             equalsSeq &= Equals(_resourceSourceId, other._resourceSourceId);
             return equalsSeq;
         }

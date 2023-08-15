@@ -99,8 +99,8 @@ namespace Warewolf.Logger
                     _logger.Consume(msg.ExecutionHistory, parameters);
                     break;
                 default:
-                    _writer.WriteLine("Logging Server Invalid Message Type");
-                    Dev2Logger.Info("** Logging Serve Invalid Message Type **", GlobalConstants.WarewolfInfo);
+                    _writer.WriteLine("Logging Server Invalid Message Type " + item.Type);
+                    Dev2Logger.Info("** Logging Serve Invalid Message Type " + item.Type + " **", GlobalConstants.WarewolfInfo);
                     break;
             }
 

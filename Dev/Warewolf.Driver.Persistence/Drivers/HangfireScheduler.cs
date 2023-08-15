@@ -14,6 +14,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Security.Principal;
 using System.Text;
+using System.Threading;
 using System.Transactions;
 using Dev2;
 using Dev2.Common;
@@ -61,6 +62,11 @@ namespace Warewolf.Driver.Persistence.Drivers
         private const string ACTIVITY_PARSER = "Dev2.Activities.ActivityParser, Dev2.Activities, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null";
         private const string RESUMABLE_EXECUTION_CONTAINER = "Dev2.Runtime.ESB.Execution.ResumableExecutionContainer, Dev2.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null";
 
+        private Type _activityParserType;
+        private Type _resumableExecutionContainerType;
+        private WarewolfPerformanceCounterManager _performanceCounter;
+        private IActivityParser _activityParserInstance;
+
 
         [ExcludeFromCodeCoverage]
         public HangfireScheduler()
@@ -68,6 +74,24 @@ namespace Warewolf.Driver.Persistence.Drivers
             _jobStorage = SqlServerStorage();
             _client = new BackgroundJobClient(_jobStorage);
             _persistedValues = new PersistedValues();
+
+            ConfigureTypes();
+        }
+        
+        public HangfireScheduler(IBackgroundJobClient client, JobStorage jobStorage, IPersistedValues persistedValues)
+        {
+            _jobStorage = jobStorage;
+            _client = client;
+            _persistedValues = persistedValues;
+
+            ConfigureTypes();
+        }
+
+        private void ConfigureTypes()
+        {
+            _activityParserType = Type.GetType(ActivityParserTypeString);
+            _resumableExecutionContainerType = Type.GetType(ResumableExecutionContainerTypeString);
+            _performanceCounter = GetPerformanceCounter();
         }
 
         public WorkflowResume WorkflowResume
@@ -116,17 +140,11 @@ namespace Warewolf.Driver.Persistence.Drivers
             {
                 return new SqlServerStorage(ConnectionString);
             }
-            catch
+            catch (Exception ex)
             {
+                Dev2Logger.Error(ex.Message , ex, GlobalConstants.WarewolfError);
                 throw new Exception(ErrorResource.HangfireSqlServerStorageConnectionError);
             }
-        }
-
-        public HangfireScheduler(IBackgroundJobClient client, JobStorage jobStorage, IPersistedValues persistedValues)
-        {
-            _jobStorage = jobStorage;
-            _client = client;
-            _persistedValues = persistedValues;
         }
 
         public IPersistedValues GetPersistedValues(string jobId)
@@ -218,8 +236,11 @@ namespace Warewolf.Driver.Persistence.Drivers
                 {
                     throw new Exception(errMsg + ErrorResource.ManualResumptionSuspensionEnvBlank);
                 }
+                
+                LoadAndRegisterTypes();
 
-                var currentState = jobDetails.History.OrderBy(s => s.CreatedAt).LastOrDefault();
+                var jdHistory = jobDetails.History.ToList();
+                var currentState = jdHistory.OrderBy(s => s.CreatedAt).LastOrDefault();
 
                 if (currentState?.StateName == "Succeeded" || currentState?.StateName == "ManuallyResumed")
                 {
@@ -294,7 +315,7 @@ namespace Warewolf.Driver.Persistence.Drivers
             }
             catch (Exception ex)
             {
-                _stateNotifier?.LogExecuteException(ex, this);
+                _stateNotifier?.LogExecuteException(new SerializableException(ex), this);
                 Dev2Logger.Error(nameof(ResumeJob), ex, GlobalConstants.WarewolfError);
                 throw ex;
             }
@@ -350,7 +371,7 @@ namespace Warewolf.Driver.Persistence.Drivers
             }
             catch (Exception ex)
             {
-                _stateNotifier?.LogExecuteException(ex, this);
+                _stateNotifier?.LogExecuteException(new SerializableException(ex), this);
                 Dev2Logger.Error(nameof(ManualResumeWithOverrideJob), ex, GlobalConstants.WarewolfError);
                 throw ex;
             }
@@ -371,7 +392,7 @@ namespace Warewolf.Driver.Persistence.Drivers
             }
             catch (Exception ex)
             {
-                _stateNotifier?.LogExecuteException(ex, this);
+                _stateNotifier?.LogExecuteException(new SerializableException(ex), this);
                 Dev2Logger.Error(nameof(ScheduleJob), ex, GlobalConstants.WarewolfError);
                 throw ex;
             }
@@ -379,9 +400,32 @@ namespace Warewolf.Driver.Persistence.Drivers
             return jobId;
         }
 
-
+        private bool _isLoadingTypes = false;
+        private void LoadAndRegisterTypes()
+        {
+            while (_isLoadingTypes)
+            {
+                Thread.Sleep(100);
+            }
+            
+            try
+            {
+                _isLoadingTypes = true;
+                CustomContainer.LoadedTypes = new List<Type>();
+                if(!CustomContainer.LoadedTypes.Contains(_activityParserType)) CustomContainer.AddToLoadedTypes(_activityParserType);
+                if(!CustomContainer.LoadedTypes.Contains(_resumableExecutionContainerType)) CustomContainer.AddToLoadedTypes(_resumableExecutionContainerType);
+            
+                _activityParserInstance = CustomContainer.CreateInstance<IActivityParser>("just_to_get_a_CTOR_match_DO_NOT_REMOVE");
+                if(CustomContainer.Get<IActivityParser>() == null) CustomContainer.Register(_activityParserInstance);
+                if(CustomContainer.Get<IWarewolfPerformanceCounterLocater>() == null) CustomContainer.Register<IWarewolfPerformanceCounterLocater>(_performanceCounter);
+            }
+            finally
+            {
+                _isLoadingTypes = false;
+            }
+        }
+        
         [AutomaticRetry(Attempts = 0)]
-        [DisableConcurrentExecution(timeoutInSeconds: 10 * 60)]
         public string ResumeWorkflow(Dictionary<string, StringBuilder> values, PerformContext context)
         {
             var jobId = context.BackgroundJob.Id;
@@ -393,19 +437,14 @@ namespace Warewolf.Driver.Persistence.Drivers
                     var activityParserType = Type.GetType(ActivityParserTypeString);
                     var resumableExecutionContainerType = Type.GetType(ResumableExecutionContainerTypeString);
 
-                    CustomContainer.LoadedTypes = new List<Type>();
-                    CustomContainer.AddToLoadedTypes(activityParserType);
-                    CustomContainer.AddToLoadedTypes(resumableExecutionContainerType);
+                    LoadAndRegisterTypes();
 
                     if (resumableExecutionContainerType == null || activityParserType == null)
                     {
                         Throw(jobId, message: "job {" + jobId + "} failed, one of Warewolf's dependencies were missing", reason: "Execution not run");
+                        return GlobalConstants.Failed;
                     }
-
-                    var activityParserInstance = CustomContainer.CreateInstance<IActivityParser>("just_to_get_a_CTOR_match_DO_NOT_REMOVE");
-                    CustomContainer.Register(activityParserInstance);
-                    CustomContainer.Register<IWarewolfPerformanceCounterLocater>(GetPerformanceCounter());
-
+                    
                     var result = WorkflowResume.Execute(values, null);
                     if (result == null)
                     {
@@ -418,7 +457,7 @@ namespace Warewolf.Driver.Persistence.Drivers
                     {
                         Throw(jobId: jobId, message: executeMessage.Message?.ToString(), reason: "Execution return exception");
                     }
-
+                    
                     ts.Complete();
                     return GlobalConstants.Success;
                 }
@@ -432,7 +471,7 @@ namespace Warewolf.Driver.Persistence.Drivers
                 return GlobalConstants.Failed;
             }
             catch (Exception ex)
-            { 
+            {
                 //Note: these jobs may not be very safe to resume, but should be failed as they might be incomplete.
                 //It may not be safe to return the exception message from this exception to user, fix this with the final tool clean up
                 Throw(jobId: jobId, message: ex.Message?.ToString(), reason: "Execution return Exception: re-queue with caution.");

@@ -80,6 +80,7 @@ namespace Dev2.Studio.Core.DataList
         private void UpdateScalar(IScalarItemModel scalar)
         {
             scalar.IsVisible = _vm.IsItemVisible(scalar.Name);
+            Dev2Logger.Debug("Adding item to the Datalist scalar observable collection: " + scalar.DisplayName, GlobalConstants.WarewolfDebug);
             if (_vm.ScalarCollectionCount > 0)
             {
                 _vm.ScalarCollection.Insert(_vm.ScalarCollectionCount - 1, scalar);

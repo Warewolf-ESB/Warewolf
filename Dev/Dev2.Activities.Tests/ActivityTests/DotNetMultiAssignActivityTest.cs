@@ -543,6 +543,35 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             Assert.AreEqual(expected, actual);
         }
+        
+        
+        [TestMethod]
+        [Timeout(60000)]
+        public void MutiAssignWithScalarFromObject()
+        {
+            var fieldCollection = new ObservableCollection<ActivityDTO>();
+            fieldCollection.Add(new ActivityDTO("[[var]]", "var", fieldCollection.Count));
+            fieldCollection.Add(new ActivityDTO("[[@test]]", "{\"Name\":\"Iris\",\"Age\":30}", fieldCollection.Count));
+
+            SetupArguments(
+                @"<root>
+  <var />
+</root>"
+                , @"<root></root>"
+                , fieldCollection);
+
+            var result = ExecuteProcess();
+
+            const string expected = "var";
+            const string expected2 = "Iris";
+            GetScalarValueFromEnvironment(result.Environment, "var", out string actual, out string error);
+            GetScalarValueFromEnvironment(result.Environment, "@test.Name", out string actual2, out string error2);
+
+            // remove test datalist ;)
+
+            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(expected2, actual2);
+        }
 
         [TestMethod]
         [Timeout(60000)]
@@ -1079,7 +1108,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             };
             ob.Execute(data.Object, 0);
             
-            var privateObject = new PrivateObject(env);
+            var privateObject = new Warewolf.Testing.PrivateObject(env);
             var warewolfEnvironment = privateObject.GetField("_env") as DataStorage.WarewolfEnvironment;
 
             Assert.AreEqual(1, warewolfEnvironment?.RecordSets["Errors"].Data["Message"].Count);

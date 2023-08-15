@@ -27,6 +27,7 @@ using Dev2.Diagnostics;
 using Dev2.Diagnostics.Debug;
 using Dev2.Interfaces;
 using Dev2.Util;
+using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Auditing;
 using Warewolf.Core;
 using Warewolf.Driver.Persistence;
@@ -92,6 +93,17 @@ namespace Dev2.Activities
         public string Response { get; set; }
 
         public ActivityFunc<string, bool> SaveDataFunc { get; set; }
+
+        public override IEnumerable<IDev2Activity> GetChildrenNodes()
+        {
+            var act = SaveDataFunc.Handler as IDev2ActivityIOMapping;
+            if (act == null)
+            {
+                return new List<IDev2Activity>();
+            }
+            var nextNodes = new List<IDev2Activity> { act };
+            return nextNodes;
+        }
 
         protected override void OnExecute(NativeActivityContext context)
         {
@@ -192,7 +204,7 @@ namespace Dev2.Activities
             }
             catch (Exception ex)
             {
-                _stateNotifier?.LogExecuteException(ex, this);
+                _stateNotifier?.LogExecuteException(new SerializableException(ex), this);
                 LogException(ex, allErrors);
             }
             finally

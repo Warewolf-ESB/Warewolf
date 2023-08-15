@@ -21,6 +21,7 @@ using Dev2.Common.Interfaces.WebService;
 using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+#pragma warning disable 618
 
 namespace Dev2.Activities.Designers.Tests.Core
 {

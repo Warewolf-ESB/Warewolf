@@ -24,17 +24,9 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataMerge
     [Binding]
     public class DataMergeSteps : RecordSetBases
     {
-        readonly ScenarioContext scenarioContext;
-
         public DataMergeSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
         {
-            if (scenarioContext == null)
-            {
-                throw new ArgumentNullException("scenarioContext");
-            }
-
-            this.scenarioContext = scenarioContext;
         }
 
         protected override void BuildDataList()

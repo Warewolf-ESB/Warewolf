@@ -305,14 +305,12 @@ namespace Dev2.Activities.Designers2.Decision
                 yield return error;
             }
             
-            foreach (var error in GetRuleSet("TrueArmText").ValidateRules("'TrueArmText'", () => IsTrueArmFocused = true))
-            
+            foreach (var error in GetRuleSet("TrueArmText").ValidateRules("'TrueArmText'", () => IsTrueArmFocused = true))            
             {
                 yield return error;
             }
             
-            foreach (var error in GetRuleSet("FalseArmText").ValidateRules("'FalseArmText'", () => IsFalseArmFocused = true))
-            
+            foreach (var error in GetRuleSet("FalseArmText").ValidateRules("'FalseArmText'", () => IsFalseArmFocused = true))            
             {
                 yield return error;
             }
@@ -320,7 +318,15 @@ namespace Dev2.Activities.Designers2.Decision
 
         protected override IEnumerable<IActionableErrorInfo> ValidateCollectionItem(IDev2TOFn mi)
         {
-            yield break;
+            if (!(mi as DecisionTO).IsLast)
+            {
+                var ruleSet = new RuleSet();
+                ruleSet.Add(new IsStringEmptyOrWhiteSpaceRule(() => ((mi as DecisionTO).SearchType)));
+                foreach (var error in ruleSet.ValidateRules("'MatchType'", null))
+                {
+                    yield return error;
+                }
+            }
         }
 
         IRuleSet GetRuleSet(string propertyName)

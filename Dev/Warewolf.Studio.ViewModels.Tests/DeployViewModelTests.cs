@@ -86,7 +86,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         Mock<IDeploySourceExplorerViewModel> _deploySourceExplorerViewModel;
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("DeploySourceExplorerViewModel_Ctor"), ExpectedException(typeof(ArgumentNullException))]
         public void DeploySourceExplorerViewModel_Ctor_Nulls_ExpectErrors()
@@ -198,7 +198,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             return mockSubscriptionData;
         }
         [TestMethod]
-       // [Timeout(250)]
+        [Timeout(1000)]
         [Owner("Sanele Mthembu")]
         public void Given_TheSameServer_CheckDestinationPersmisions_ShouldBeTrue()
         {

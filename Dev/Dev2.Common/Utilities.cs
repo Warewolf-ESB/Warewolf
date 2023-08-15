@@ -44,22 +44,26 @@ namespace Dev2.Common
             else
             {
                 var impersonationContext = Impersonate(userPrinciple);
-                try
+                using (impersonationContext)
                 {
-                    actionToBePerformed?.Invoke();
-                }
-                catch (Exception e)
-                {
-                    impersonationContext?.Undo();
-                    if (ServerUser.Identity is WindowsIdentity identity)
+                    try
                     {
-                        impersonationContext = identity.Impersonate();
+                        actionToBePerformed?.Invoke();
                     }
-                    actionToBePerformed?.Invoke();
-                }
-                finally
-                {
-                    impersonationContext?.Undo();
+                    catch (Exception e)
+                    {
+                        impersonationContext?.Undo();
+                        if (ServerUser.Identity is WindowsIdentity identity)
+                        {
+                            impersonationContext = identity.Impersonate();
+                        }
+
+                        actionToBePerformed?.Invoke();
+                    }
+                    finally
+                    {
+                        impersonationContext?.Undo();
+                    }
                 }
             }
         }
@@ -88,6 +92,11 @@ namespace Dev2.Common
         {
             get;
             set;
+        }
+
+        public static long ByteConvertor(long longValue, long convertTo)
+        {
+            return longValue / convertTo;
         }
     }
 }

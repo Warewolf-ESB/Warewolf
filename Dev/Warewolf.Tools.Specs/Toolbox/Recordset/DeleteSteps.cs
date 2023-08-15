@@ -24,17 +24,9 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset
     [Binding]
     public class DeleteSteps : RecordSetBases
     {
-        readonly ScenarioContext scenarioContext;
-
         public DeleteSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
         {
-            if (scenarioContext == null)
-            {
-                throw new ArgumentNullException(nameof(scenarioContext));
-            }
-
-            this.scenarioContext = scenarioContext;
         }
 
         protected override void BuildDataList()

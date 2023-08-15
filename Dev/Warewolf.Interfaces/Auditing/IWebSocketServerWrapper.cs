@@ -27,7 +27,7 @@ namespace Warewolf.Interfaces.Auditing
         {
             _webSocketServer = new WebSocketServer(endPoint)
             {
-                RestartAfterListenError = true
+                RestartAfterListenError = true                
             };
         }
 

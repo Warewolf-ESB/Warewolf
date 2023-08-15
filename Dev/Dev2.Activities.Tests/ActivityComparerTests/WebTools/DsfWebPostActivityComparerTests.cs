@@ -6,6 +6,7 @@ using Dev2.Common.Interfaces.Core.Graph;
 using System.Collections.Generic;
 using Dev2.Common.Interfaces;
 using Dev2.Common;
+#pragma warning disable 618
 
 namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
 {

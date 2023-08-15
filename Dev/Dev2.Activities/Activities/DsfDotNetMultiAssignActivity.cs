@@ -110,6 +110,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             finally
             {
                 HandleErrors(dataObject, update, allErrors);
+                RunOnErrorSteps(dataObject, allErrors, update);
             }
         }
 
@@ -125,7 +126,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             catch (Exception e)
             {
-                allErrors.AddError(e.Message  + " " + t.FieldName + ":" + t.FieldValue);
+                allErrors.AddError(e.Message + " " + t.FieldName + ":" + t.FieldValue);
             }
 
             return innerCount;
@@ -153,9 +154,18 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
                 else
                 {
+                    if (assignValue.Value.StartsWith("[[@"))
+                    {
+                        var value = dataObject.Environment.EvalForJson(assignValue.Value);
+                        if (value != null)
+                        {
+                            assignValue = new AssignValue(assignValue.Name, ((CommonFunctions.WarewolfEvalResult.WarewolfAtomResult)value).Item.ToString());
+                        }
+                    }
                     dataObject.Environment.AssignWithFrame(assignValue, update);
                 }
-            } catch (Exception e)
+            }
+            catch (Exception e)
             {
                 allErrors.AddError(e.Message);
             }
@@ -166,7 +176,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             if (dataObject.IsDebugMode())
             {
-                if (DataListUtil.IsValueRecordset(assignValue.Name) && DataListUtil.GetRecordsetIndexType(assignValue.Name) == enRecordsetIndexType.Blank &&  !assignValue.Name.Contains(DataListUtil.ObjectStartMarker))
+                if (DataListUtil.IsValueRecordset(assignValue.Name) && DataListUtil.GetRecordsetIndexType(assignValue.Name) == enRecordsetIndexType.Blank && !assignValue.Name.Contains(DataListUtil.ObjectStartMarker))
                 {
                     var length = dataObject.Environment.GetLength(DataListUtil.ExtractRecordsetNameFromValue(assignValue.Name));
                     assignValue = new AssignValue(DataListUtil.ReplaceRecordsetBlankWithIndex(assignValue.Name, length), assignValue.Value);
@@ -184,8 +194,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             if (hasErrors)
             {
-                var errorString = allErrors.MakeDisplayReady();
-                dataObject.Environment.AddError(errorString);
+                if (!this.IsErrorHandled)
+                {
+                    var errorString = allErrors.MakeDisplayReady();
+                    dataObject.Environment.AddError(errorString);
+                }
                 DisplayAndWriteError(dataObject, DisplayName, allErrors);
             }
 

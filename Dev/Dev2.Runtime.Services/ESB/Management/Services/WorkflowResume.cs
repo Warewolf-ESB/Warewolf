@@ -11,12 +11,17 @@
 
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Security.Principal;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Transactions;
 using System.Web;
 using Dev2.Common;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Communication;
 using Dev2.Data.TO;
@@ -24,8 +29,10 @@ using Dev2.DynamicServices;
 using Dev2.Runtime.ESB.Management;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
+using Dev2.Runtime.ResourceCatalogImpl;
 using Dev2.Runtime.Security;
 using Dev2.Services.Security;
+using Dev2.Workspaces;
 using Warewolf.Resource.Errors;
 using Warewolf.Security.Encryption;
 using Warewolf.Storage;
@@ -36,12 +43,14 @@ namespace Dev2.Runtime.ESB.Management.Services
     {
         private IAuthorizationService _authorizationService;
         private IResourceCatalog _resourceCatalog;
-        
-        public override string HandlesType() => nameof(WorkflowResume);
 
-        protected override ExecuteMessage ExecuteImpl(Dev2JsonSerializer serializer, Guid resourceId, Dictionary<string, StringBuilder> values)
+        public override string HandlesType() => nameof(WorkflowResume);
+        
+        protected override ExecuteMessage ExecuteImpl(Dev2JsonSerializer serializer, Guid resourceId,
+            Dictionary<string, StringBuilder> values)
         {
-            var versionNumber = IsValid(values, out var environmentString, out var startActivityId, out var currentUserPrincipal);
+            var versionNumber = IsValid(values, out var environmentString, out var startActivityId,
+                out var currentUserPrincipal);
             var executingUser = BuildClaimsPrincipal(DpapiWrapper.DecryptIfEncrypted(currentUserPrincipal.ToString()));
             var environment = DpapiWrapper.DecryptIfEncrypted(environmentString.ToString());
 
@@ -66,32 +75,48 @@ namespace Dev2.Runtime.ESB.Management.Services
                 Dev2Logger.Error(errorMessage, GlobalConstants.WarewolfError);
                 return new ExecuteMessage { HasError = true, Message = new StringBuilder(errorMessage) };
             }
-            
-            //Get latest version of service by removing it from cache
-            var resourceObject = ResourceCatalogInstance.GetResource(GlobalConstants.ServerWorkspaceID, resourceId);
-            ResourceCatalogInstance.RemoveFromResourceActivityCache(GlobalConstants.ServerWorkspaceID, resourceObject);
-            
-            var dynamicService = ResourceCatalogInstance.GetService(GlobalConstants.ServerWorkspaceID, resourceId, "");
-            if (dynamicService is null)
-            {
-                return new ExecuteMessage {HasError = true, Message = new StringBuilder($"Error resuming. ServiceAction is null for Resource ID:{resourceId}")};
-            }
 
-            var sa = dynamicService.Actions.FirstOrDefault();
-            if (sa is null)
+            using (var catalog = new ResourceCatalog(EsbManagementServiceLocator.GetServices()))
             {
-                return new ExecuteMessage {HasError = true, Message = new StringBuilder($"Error resuming. ServiceAction is null for Resource ID:{resourceId}")};
-            }
+                var dynamicService = catalog.GetService(GlobalConstants.ServerWorkspaceID, resourceId, "");
 
-            var container = CustomContainer.Get<IResumableExecutionContainerFactory>()?.New(startActivityId, sa, dataObject) ?? CustomContainer.CreateInstance<IResumableExecutionContainer>(startActivityId, sa, dataObject);
-            container.Execute(out ErrorResultTO errors, 0);
-            
-            if (errors.HasErrors())
-            {
-                return new ExecuteMessage {HasError = true, Message = new StringBuilder(errors.MakeDisplayReady())};
-            }
+                if (dynamicService is null)
+                {
+                    return new ExecuteMessage
+                    {
+                        HasError = true,
+                        Message = new StringBuilder(
+                            $"Error resuming. ServiceAction is null for Resource ID:{resourceId}")
+                    };
+                }
 
-            return new ExecuteMessage {HasError = false, Message = new StringBuilder("Execution Completed.")};
+                var sa = dynamicService.Actions.FirstOrDefault();
+                if (sa is null)
+                {
+                    return new ExecuteMessage
+                    {
+                        HasError = true,
+                        Message = new StringBuilder(
+                            $"Error resuming. ServiceAction is null for Resource ID:{resourceId}")
+                    };
+                }
+
+                var workspace = new Workspace(Guid.NewGuid());
+                var container =
+                    CustomContainer.Get<IResumableExecutionContainerFactory>()
+                        ?.New(startActivityId, sa, dataObject, workspace) ??
+                    CustomContainer.CreateInstance<IResumableExecutionContainer>(startActivityId, sa, dataObject,
+                        workspace);
+
+                container.Execute(out ErrorResultTO errors, 0);
+                if (errors.HasErrors())
+                {
+                    return new ExecuteMessage
+                        { HasError = true, Message = new StringBuilder(errors.MakeDisplayReady()) };
+                }
+
+                return new ExecuteMessage { HasError = false, Message = new StringBuilder("Execution Completed.") };
+            }
         }
 
         public IResourceCatalog ResourceCatalogInstance
@@ -109,7 +134,9 @@ namespace Dev2.Runtime.ESB.Management.Services
         private bool CanExecute(DsfDataObject dataObject)
         {
             var key = (dataObject.ExecutingUser, AuthorizationContext.Execute, dataObject.ResourceID.ToString());
-            var isAuthorized = dataObject.AuthCache.GetOrAdd(key, (requestedKey) => AuthorizationService.IsAuthorized(dataObject.ExecutingUser, AuthorizationContext.Execute, dataObject.Resource));
+            var isAuthorized = dataObject.AuthCache.GetOrAdd(key,
+                (requestedKey) => AuthorizationService.IsAuthorized(dataObject.ExecutingUser,
+                    AuthorizationContext.Execute, dataObject.Resource));
             return isAuthorized;
         }
 
@@ -131,7 +158,8 @@ namespace Dev2.Runtime.ESB.Management.Services
         }
 
 
-        private static StringBuilder IsValid(Dictionary<string, StringBuilder> values, out StringBuilder environmentString, out Guid startActivityId, out StringBuilder currentuserprincipal)
+        private static StringBuilder IsValid(Dictionary<string, StringBuilder> values,
+            out StringBuilder environmentString, out Guid startActivityId, out StringBuilder currentuserprincipal)
         {
             values.TryGetValue("versionNumber", out StringBuilder versionNumber);
             if (versionNumber == null)

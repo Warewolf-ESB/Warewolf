@@ -19,9 +19,15 @@ namespace Warewolf.UIBindingTests.ExchangeSource
     [Binding]
     public class ExchangeSourceSteps
     {
+        static FeatureContext _featureContext;
+        readonly ScenarioContext _scenarioContext;
+
+        public ExchangeSourceSteps(ScenarioContext scenarioContext) => _scenarioContext = scenarioContext;
+        
         [BeforeFeature("ExchangeSource")]
-        public static void SetupForSystem()
+        public static void SetupForSystem(FeatureContext featureContext)
         {
+            _featureContext = featureContext;
             Utils.SetupResourceDictionary();
             var manageExhangeSourceControl = new ManageExchangeSourceControl();
             var mockStudioUpdateManager = new Mock<IManageExchangeSourceModel>();
@@ -36,11 +42,11 @@ namespace Warewolf.UIBindingTests.ExchangeSource
             var manageExchangeSourceViewModel = new ManageExchangeSourceViewModel(mockStudioUpdateManager.Object, task, mockEventAggregator.Object);
             manageExhangeSourceControl.DataContext = manageExchangeSourceViewModel;
             Utils.ShowTheViewForTesting(manageExhangeSourceControl);
-            FeatureContext.Current.Add(Utils.ViewNameKey, manageExhangeSourceControl);
-            FeatureContext.Current.Add(Utils.ViewModelNameKey, manageExchangeSourceViewModel);
-            FeatureContext.Current.Add("updateManager", mockStudioUpdateManager);
-            FeatureContext.Current.Add("requestServiceNameViewModel", mockRequestServiceNameViewModel);
-            FeatureContext.Current.Add("externalProcessExecutor", mockExecutor);
+            _featureContext.Add(Utils.ViewNameKey, manageExhangeSourceControl);
+            _featureContext.Add(Utils.ViewModelNameKey, manageExchangeSourceViewModel);
+            _featureContext.Add("updateManager", mockStudioUpdateManager);
+            _featureContext.Add("requestServiceNameViewModel", mockRequestServiceNameViewModel);
+            _featureContext.Add("externalProcessExecutor", mockExecutor);
             task.Wait();
             task.Dispose();
         }
@@ -48,23 +54,23 @@ namespace Warewolf.UIBindingTests.ExchangeSource
         [BeforeScenario("ExchangeSource")]
         public void SetupForDatabaseSource()
         {
-            ScenarioContext.Current.Add(Utils.ViewNameKey, FeatureContext.Current.Get<ManageExchangeSourceControl>(Utils.ViewNameKey));
-            ScenarioContext.Current.Add("updateManager", FeatureContext.Current.Get<Mock<IManageExchangeSourceModel>>("updateManager"));
-            ScenarioContext.Current.Add("requestServiceNameViewModel", FeatureContext.Current.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel"));
-            ScenarioContext.Current.Add(Utils.ViewModelNameKey, FeatureContext.Current.Get<ManageExchangeSourceViewModel>(Utils.ViewModelNameKey));
+            _scenarioContext.Add(Utils.ViewNameKey, _featureContext.Get<ManageExchangeSourceControl>(Utils.ViewNameKey));
+            _scenarioContext.Add("updateManager", _featureContext.Get<Mock<IManageExchangeSourceModel>>("updateManager"));
+            _scenarioContext.Add("requestServiceNameViewModel", _featureContext.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel"));
+            _scenarioContext.Add(Utils.ViewModelNameKey, _featureContext.Get<ManageExchangeSourceViewModel>(Utils.ViewModelNameKey));
         }
 
         [Given(@"I open a new exchange source")]
         public void GivenIOpenANewExchangeSource()
         {
-            var manageExchangeSourceControl = ScenarioContext.Current.Get<ManageExchangeSourceControl>(Utils.ViewNameKey);
+            var manageExchangeSourceControl = _scenarioContext.Get<ManageExchangeSourceControl>(Utils.ViewNameKey);
             Assert.IsNotNull(manageExchangeSourceControl);
         }
 
         [Then(@"""(.*)"" tab is Opened")]
         public void ThenTabIsOpened(string headerText)
         {
-            var viewModel = ScenarioContext.Current.Get<IDockAware>("viewModel");
+            var viewModel = _scenarioContext.Get<IDockAware>("viewModel");
             
             Assert.AreEqual(headerText, ((ManageExchangeSourceViewModel)viewModel).HeaderText);
         }
@@ -72,49 +78,49 @@ namespace Warewolf.UIBindingTests.ExchangeSource
         [Then(@"Title is ""(.*)""")]
         public void ThenTitleIs(string title)
         {
-            var manageExchangeSourceViewModel = ScenarioContext.Current.Get<ManageExchangeSourceViewModel>(Utils.ViewModelNameKey);
+            var manageExchangeSourceViewModel = _scenarioContext.Get<ManageExchangeSourceViewModel>(Utils.ViewModelNameKey);
             Assert.AreEqual(manageExchangeSourceViewModel.HeaderText, title);
         }
 
         [When(@"I Type Auto Discover as ""(.*)""")]
         public void WhenITypeAutoDiscoverAs(string url)
         {
-            var manageExchangeSourceViewModel = ScenarioContext.Current.Get<ManageExchangeSourceViewModel>(Utils.ViewModelNameKey);
+            var manageExchangeSourceViewModel = _scenarioContext.Get<ManageExchangeSourceViewModel>(Utils.ViewModelNameKey);
             manageExchangeSourceViewModel.AutoDiscoverUrl = url;
         }
 
         [When(@"I Type User Name as ""(.*)""")]
         public void WhenITypeUserNameAs(string username)
         {
-            var manageExchangeSourceViewModel = ScenarioContext.Current.Get<ManageExchangeSourceViewModel>(Utils.ViewModelNameKey);
+            var manageExchangeSourceViewModel = _scenarioContext.Get<ManageExchangeSourceViewModel>(Utils.ViewModelNameKey);
             manageExchangeSourceViewModel.UserName = username;
         }
 
         [When(@"I Type Password as ""(.*)""")]
         public void WhenITypePasswordAs(string password)
         {
-            var manageExchangeSourceViewModel = ScenarioContext.Current.Get<ManageExchangeSourceViewModel>(Utils.ViewModelNameKey);
+            var manageExchangeSourceViewModel = _scenarioContext.Get<ManageExchangeSourceViewModel>(Utils.ViewModelNameKey);
             manageExchangeSourceViewModel.Password = password;
         }
 
         [When(@"I Type TimeOut as ""(.*)""")]
         public void WhenITypeTimeOutAs(int timeout)
         {
-            var manageExchangeSourceViewModel = ScenarioContext.Current.Get<ManageExchangeSourceViewModel>(Utils.ViewModelNameKey);
+            var manageExchangeSourceViewModel = _scenarioContext.Get<ManageExchangeSourceViewModel>(Utils.ViewModelNameKey);
             manageExchangeSourceViewModel.Timeout = timeout;
         }
 
         [When(@"I Type To Email as ""(.*)""")]
         public void WhenITypeToEmailAs(string toEmail)
         {
-            var manageExchangeSourceViewModel = ScenarioContext.Current.Get<ManageExchangeSourceViewModel>(Utils.ViewModelNameKey);
+            var manageExchangeSourceViewModel = _scenarioContext.Get<ManageExchangeSourceViewModel>(Utils.ViewModelNameKey);
             manageExchangeSourceViewModel.EmailTo = toEmail;
         }
 
         [Then(@"I click on the Test Button")]
         public void ThenIClickOnTheTestButton()
         {
-            var manageExchangeSourceViewModel = ScenarioContext.Current.Get<ManageExchangeSourceViewModel>(Utils.ViewModelNameKey);
+            var manageExchangeSourceViewModel = _scenarioContext.Get<ManageExchangeSourceViewModel>(Utils.ViewModelNameKey);
             manageExchangeSourceViewModel.SendCommand.Execute(null);
         }
 
@@ -122,7 +128,7 @@ namespace Warewolf.UIBindingTests.ExchangeSource
         [Then(@"the error message is ""(.*)""")]
         public void WhenTheErrorMessageIs(string errorMessage)
         {
-            var viewModel = ScenarioContext.Current.Get<ManageExchangeSourceViewModel>(Utils.ViewModelNameKey);
+            var viewModel = _scenarioContext.Get<ManageExchangeSourceViewModel>(Utils.ViewModelNameKey);
             Assert.AreEqual(errorMessage, viewModel.TestMessage);
         }
 
@@ -130,7 +136,7 @@ namespace Warewolf.UIBindingTests.ExchangeSource
         [Then(@"Send is ""(.*)""")]
         public void WhenSendIs(string successString)
         {
-            var mockUpdateManager = ScenarioContext.Current.Get<Mock<IManageExchangeSourceModel>>("updateManager");
+            var mockUpdateManager = _scenarioContext.Get<Mock<IManageExchangeSourceModel>>("updateManager");
             var isSuccess = String.Equals(successString, "Successful", StringComparison.InvariantCultureIgnoreCase);
             if (isSuccess)
             {
@@ -142,7 +148,7 @@ namespace Warewolf.UIBindingTests.ExchangeSource
                 mockUpdateManager.Setup(manager => manager.TestConnection(It.IsAny<IExchangeSource>()))
                     .Throws(new WarewolfTestException(theRequestFailedTheRemoteServerReturnedAnErrorUnauthorized, new Exception(theRequestFailedTheRemoteServerReturnedAnErrorUnauthorized)));
             }
-            var manageExchangeSourceControl = ScenarioContext.Current.Get<ManageExchangeSourceControl>(Utils.ViewNameKey);
+            var manageExchangeSourceControl = _scenarioContext.Get<ManageExchangeSourceControl>(Utils.ViewNameKey);
             manageExchangeSourceControl.TestSend();
             Thread.Sleep(3000);
         }
@@ -150,7 +156,7 @@ namespace Warewolf.UIBindingTests.ExchangeSource
         [Then(@"""(.*)"" is ""(.*)""")]
         public void ThenIs(string controlName, string enabledString)
         {
-            Utils.CheckControlEnabled(controlName, enabledString, ScenarioContext.Current.Get<ICheckControlEnabledView>(Utils.ViewNameKey), Utils.ViewNameKey);
+            Utils.CheckControlEnabled(controlName, enabledString, _scenarioContext.Get<ICheckControlEnabledView>(Utils.ViewNameKey), Utils.ViewNameKey);
         }
     }
 }

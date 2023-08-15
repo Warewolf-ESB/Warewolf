@@ -87,6 +87,7 @@ namespace Dev2.Studio.Interfaces
         List<IServiceTestModelTO> LoadResourceTests(Guid resourceId);
         List<IServiceTestModelTO> LoadAllTests();
         void DeleteResourceTest(Guid resourceId, string testName);
+        void DeleteResourceTestCoverage(Guid resourceId);
         List<IServiceTestModelTO> LoadResourceTestsForDeploy(Guid resourceId);
         List<ITriggerQueue> LoadResourceTriggersForDeploy(Guid resourceId);
         IServiceTestModelTO ExecuteTest(IContextualResourceModel resourceModel, string testName);

@@ -1,4 +1,4 @@
-﻿/*
+/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
@@ -9,6 +9,7 @@
 */
 
 
+using Dev2.Activities;
 using Dev2.Common.Serializers;
 using Dev2.Data.SystemTemplates.Models;
 using Dev2.Runtime.ServiceModel.Data;
@@ -28,6 +29,17 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(Workflow))]
+        public void Workflow_WorkflowNodes_IsNull_ShouldNotAddedAsWorkflowNode()
+        {
+            var sut = new Workflow();
+            var nodes = sut.WorkflowNodes;
+
+            Assert.AreEqual(0, nodes.Count);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(Workflow))]
         public void Workflow_WorkflowNodesForHtml_FlowStep_ContainingNoActivity_ShouldNotAddedAsWorkflowNode()
         {
             var flowNodes = new Collection<FlowNode>
@@ -39,6 +51,62 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             var nodes = sut.WorkflowNodesForHtml;
 
             Assert.AreEqual(0, nodes.Count);
+        }
+
+        [TestMethod]
+        [Timeout(500)]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(Workflow))]
+        public void Workflow_WorkflowNodes_FlowStep_ContainingEmptyGuid_ShouldUseUniqueID()
+        {
+            var testUniqeID = Guid.NewGuid();
+
+            var flowNodes = new Collection<FlowNode>
+            {
+               new FlowStep
+               {
+                   Action = new GateActivity
+                   {
+                       ActivityId = Guid.Empty,
+                       UniqueID = testUniqeID.ToString(),
+                       DisplayName = "Gate One (this activity does not set ActivityId and will not be part of the coverage)"
+                   }
+               }
+            };
+
+            var sut = new Workflow(flowNodes);
+            var nodes = sut.WorkflowNodes;
+
+            Assert.AreEqual(1, nodes.Count);
+            Assert.IsTrue(nodes[0].ActivityID == testUniqeID);
+        }
+
+        [TestMethod]
+        [Timeout(1000)]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(Workflow))]
+        public void Workflow_WorkflowNodes_FlowStep_WITH_ChildNode_ShouldAddChildNode()
+        {
+            var flowNodes = new Collection<FlowNode>
+            {
+               new FlowStep
+               {
+                   Action = new GateActivity
+                   {
+                       DisplayName = "Gate One (this activity does not set ActivityId and will not be part of the coverage)",
+                       DataFunc = new System.Activities.ActivityFunc<string, bool>
+                       {
+                           DisplayName = "I am a child node to Gate",
+                           Handler = new DsfSwitch{ }
+                       }
+                   }
+               }
+            };
+
+            var sut = new Workflow(flowNodes);
+            var nodes = sut.WorkflowNodes;
+
+            Assert.AreEqual(2, nodes.Count);
         }
 
         [TestMethod]

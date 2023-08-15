@@ -106,11 +106,16 @@ namespace Dev2.Studio.Core.Activities.Utils
 
         public static object GetProperty(this ModelItem modelItem, string propertyName) => GetProperty(propertyName, modelItem);
 
-        public static Guid GetUniqueID(ModelItem modelItem)
+        public static Guid GetUniqueID(this ModelItem modelItem)
         {
             var instanceIDStr = GetProperty("UniqueID", modelItem) as string;
             Guid.TryParse(instanceIDStr, out var instanceID);
             return instanceID;
+        }
+
+        public static string GetDisplayName(this ModelItem modelItem)
+        {
+            return GetProperty("DisplayName", modelItem) as string;
         }
 
         public static Guid TryGetResourceID(ModelItem modelItem)

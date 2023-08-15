@@ -21,17 +21,9 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Create
     [Binding]
     public class CreateSteps : FileToolsBase
     {
-        readonly ScenarioContext scenarioContext;
-
         public CreateSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
         {
-            if (scenarioContext == null)
-            {
-                throw new ArgumentNullException("scenarioContext");
-            }
-
-            this.scenarioContext = scenarioContext;
         }
 
         [When(@"the create file tool is executed")]

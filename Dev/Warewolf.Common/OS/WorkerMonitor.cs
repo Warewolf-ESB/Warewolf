@@ -20,17 +20,22 @@ namespace Warewolf.OS
         private readonly List<IProcessThreadList> _processLists = new List<IProcessThreadList>();
 
         private bool _running;
+        private bool _disableMonitor = false;
 
         public event ProcessDiedEvent OnProcessDied;
+
         protected void WorkerDeleted(Guid guid)
         {
             var process = _processLists.FirstOrDefault(o => o.Config.Id == guid);
-            if (process is null)
+            if(process is null)
             {
                 return;
             }
+            
+            _disableMonitor = true;
             process.Kill();
             _processLists.Remove(process);
+            _disableMonitor = false;
         }
 
         protected void WorkerCreated(Guid guid)
@@ -40,17 +45,18 @@ namespace Warewolf.OS
 
         private void AddMissingMonitors()
         {
-            foreach (var config in GetConfigs())
+            foreach(var config in GetConfigs())
             {
-                if (_processLists.Exists(o => o.Config.Id == config.Id))
+                if(_processLists.Exists(o => o.Config.Id == config.Id))
                 {
                     continue;
                 }
 
-                if (config.Concurrency == 0)
+                if(config.Concurrency == 0)
                 {
                     continue;
                 }
+
                 var list = NewThreadList(config);
                 list.OnProcessDied += (processDiedConfig) => OnProcessDied?.Invoke(processDiedConfig);
                 _processLists.Add(list);
@@ -58,16 +64,14 @@ namespace Warewolf.OS
         }
 
         protected abstract ProcessThreadList NewThreadList(IJobConfig config);
+
         protected abstract IEnumerable<IJobConfig> GetConfigs();
 
         public void Start()
         {
             _running = true;
             AddMissingMonitors();
-            var monitor = new Thread(() =>
-            {
-                MonitorProcesses();
-            })
+            var monitor = new Thread(() => { MonitorProcesses(); })
             {
                 IsBackground = true
             };
@@ -81,12 +85,15 @@ namespace Warewolf.OS
 
         private void MonitorProcesses()
         {
-            while (_running)
+            while(_running)
             {
-                var lists = _processLists.ToArray();
-                foreach (var processList in lists)
+                if(!_disableMonitor)
                 {
-                    processList.Monitor();
+                    var lists = _processLists.ToArray();
+                    foreach(var processList in lists)
+                    {
+                        processList.Monitor();
+                    }
                 }
 
                 Thread.Sleep(1000);

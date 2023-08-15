@@ -16,6 +16,7 @@ namespace Warewolf.ResourceManagement
         bool HasActivityInCache(Guid resourceIdGuid);
 
         IDev2Activity GetActivity(Guid resourceIdGuid);
+        IDev2Activity ParseWithoutCache(DynamicActivity activity, Guid resourceIdGuid, bool failOnError);
 
         ConcurrentDictionary<Guid, IDev2Activity> Cache { get; }
     }

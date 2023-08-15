@@ -29,17 +29,9 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset
     [Binding]
     public class LengthSteps : RecordSetBases
     {
-        readonly ScenarioContext scenarioContext;
-
         public LengthSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
         {
-            if (scenarioContext == null)
-            {
-                throw new ArgumentNullException("scenarioContext");
-            }
-
-            this.scenarioContext = scenarioContext;
         }
 
         protected override void BuildDataList()
@@ -76,12 +68,6 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset
             var recordset = scenarioContext.Get<string>("recordset");
             scenarioContext.TryGetValue("treaNullAsZero", out bool treaNullAsZero);
 
-            //var length = new DsfRecordsetNullhandlerLengthActivity
-            //{
-            //    RecordsetName = recordset,
-            //    RecordsLength = ResultVariable, 
-            //    TreatNullAsZero = treaNullAsZero
-            //};
             scenarioContext.TryGetValue("activityMode", out DsfActivityAbstract<string> length);
             if (length != null)
             {

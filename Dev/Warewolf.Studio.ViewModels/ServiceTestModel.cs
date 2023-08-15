@@ -505,7 +505,7 @@ namespace Warewolf.Studio.ViewModels
                 throw new ArgumentNullException(nameof(serviceTestOutputs));
             }
 
-            var testStep = new ServiceTestStep(Guid.Parse(activityUniqueId), activityTypeName, serviceTestOutputs, stepType) { StepDescription = activityDisplayName };
+            var testStep = new ServiceTestStep(Guid.Parse(activityUniqueId), activityTypeName, serviceTestOutputs, stepType) { StepDescription = activityDisplayName, Children = new ObservableCollection<IServiceTestStep>() };
             TestSteps.Add(testStep);
             return testStep;
         }
@@ -662,7 +662,7 @@ namespace Warewolf.Studio.ViewModels
                 stepCompare &= TestSteps[i].Type == other.TestSteps[i].Type;
                 stepCompare &= TestSteps[i].StepOutputs.Count == other.TestSteps[i].StepOutputs.Count;
                 stepCompare &= TestSteps[i].Children.Count == other.TestSteps[i].Children.Count;
-                if (TestSteps[i].Children.Count > 0)
+                if (stepCompare && TestSteps[i].Children.Count > 0)
                 {
                     var stepChildren = TestSteps[i].Children;
                     var otherStepChildren = other.TestSteps[i].Children;

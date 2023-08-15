@@ -36,6 +36,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("PluginServiceExecutionFactory_GetNamespaces")]
+        [Timeout(30000)]
         public void PluginRuntimeHandler_GetNamespaces_WhenValidDll_ExpectNamespaces()
         {
             //------------Setup for test--------------------------
@@ -58,13 +59,9 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             //------------Setup for test--------------------------
             var source = CreatePluginSource();
             //------------Execute Test---------------------------
-            //using (Isolated<PluginRuntimeHandler> isolated = new Isolated<PluginRuntimeHandler>())
-            {
-
-                var result = PluginServiceExecutionFactory.GetNamespacesWithJsonObjects(source);
-                //------------Assert Results-------------------------
-                Assert.IsTrue(result.Count > 0);
-            }
+            var result = PluginServiceExecutionFactory.GetNamespacesWithJsonObjects(source);
+            //------------Assert Results-------------------------
+            Assert.IsTrue(result.Count > 0);
         }
 
         [TestMethod]
@@ -90,7 +87,8 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
 
         [TestMethod]
         [Owner("Travis Frisinger")]
-        [TestCategory("PluginServiceExecutionFactory_GetMethods")]
+        [TestCategory("PluginRuntimeHandler")]
+        [Timeout(30000)]
         public void PluginRuntimeHandler_GetMethods_WhenValidDll_ExpectValidResults()
         {
             //------------Setup for test--------------------------
@@ -107,7 +105,8 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        [TestCategory("PluginServiceExecutionFactory_GetMethods")]
+        [TestCategory("PluginRuntimeHandler")]
+        [Timeout(30000)]
         public void PluginRuntimeHandler_GetConstructors_WhenValidDll_ExpectValidResults()
         {
             //------------Setup for test--------------------------
@@ -124,7 +123,8 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        [TestCategory("PluginServiceExecutionFactory_GetMethods")]
+        [TestCategory("PluginRuntimeHandler")]
+        [Timeout(30000)]
         public void PluginRuntimeHandler_GetMethodsWithReturns_WhenValidDll_ExpectValidResults()
         {
             //------------Setup for test--------------------------
@@ -141,7 +141,8 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        [TestCategory("PluginServiceExecutionFactory_GetMethods")]
+        [TestCategory("PluginRuntimeHandler")]
+        [Timeout(30000)]
         public void PluginRuntimeHandler_GetMethodsWithReturns_WhenValidDllMethodIsVoid_ExpectValidResultsWithVoidMethod()
         {
             //------------Setup for test--------------------------
@@ -159,14 +160,13 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
 
         [TestMethod]
         [Owner("Travis Frisinger")]
-        [TestCategory("PluginServiceExecutionFactory_InvokePlugin")]
+        [TestCategory("PluginRuntimeHandler")]
+        [Timeout(30000)]
         public void PluginRuntimeHandler_InvokePlugin_WhenValidDll_ExpectValidResults()
         {
             //------------Setup for test--------------------------
             var source = CreatePluginSource();
             var svc = CreatePluginService();
-
-
 
             //------------Execute Test---------------------------
             using (Isolated<PluginRuntimeHandler> isolated = new Isolated<PluginRuntimeHandler>())
@@ -195,7 +195,6 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
                     Assert.Fail("Failed Conversion for Assert");
                 }
             }
-
         }
 
         #region Helper Methods

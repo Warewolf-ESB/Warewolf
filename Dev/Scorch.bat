@@ -4,7 +4,7 @@ IF NOT EXIST "%programfiles(x86)%\Git\bin\git.exe" echo GIT not found. &pause &e
 "%programfiles(x86)%\Git\bin\git.exe" -C "%~dp0.." fetch --all
 "%programfiles(x86)%\Git\bin\git.exe" -C "%~dp0.." reset --hard
 if not %errorlevel%==0 pause & exit 1
-"%programfiles(x86)%\Git\bin\git.exe" -C "%~dp0.." clean -xdf --exclude Dev/packages/
+"%programfiles(x86)%\Git\bin\git.exe" -C "%~dp0.." clean -xdf
 if not %errorlevel%==0 pause & exit 1
 "%programfiles(x86)%\Git\bin\git.exe" -C "%~dp0.." branch
 echo Repo scorched. Get version? Leave blank to get latest. Branch and tag names are also allowed.
@@ -17,7 +17,7 @@ GOTO exit
 git -C "%~dp0.." fetch --all
 git -C "%~dp0.." reset --hard
 if not %errorlevel%==0 pause & exit 1
-git -C "%~dp0.." clean -xdf --exclude Dev/packages/
+git -C "%~dp0.." clean -xdf
 @echo off
 if not %errorlevel%==0 pause & exit 1
 git -C "%~dp0.." branch

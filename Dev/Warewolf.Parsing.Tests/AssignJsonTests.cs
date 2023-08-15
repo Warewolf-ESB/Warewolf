@@ -401,7 +401,7 @@ namespace WarewolfParsingTest
 
         DataStorage.WarewolfEnvironment GetFromEnv(ExecutionEnvironment env)
         {
-            var p = new PrivateObject(env);
+            var p = new Warewolf.Testing.PrivateObject(env);
             return (DataStorage.WarewolfEnvironment)p.GetField("_env");
         }
 

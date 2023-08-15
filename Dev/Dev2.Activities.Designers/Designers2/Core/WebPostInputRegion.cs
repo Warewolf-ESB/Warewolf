@@ -37,6 +37,7 @@ namespace Dev2.Activities.Designers2.Core
         private readonly ModelItem _modelItem;
         private readonly ISourceToolRegion<IWebServiceSource> _source;
         private string _queryString;
+        private int _timeout;
         private string _requestUrl;
         private ObservableCollection<INameValue> _headers;
         private ObservableCollection<INameValue> _parameters;
@@ -94,6 +95,7 @@ namespace Dev2.Activities.Designers2.Core
                 RequestUrl = source.SelectedSource.HostName;
                 IsEnabled = true;
             }
+            Timeout = Timeout == 0 ? 600 : Timeout;
         }
 
         public string ParameterGroup { get; }
@@ -126,6 +128,18 @@ namespace Dev2.Activities.Designers2.Core
                 OnPropertyChanged();
             }
         }
+
+        public int Timeout
+        {
+            get => _modelItem.GetProperty<int>("Timeout");
+            set
+            {
+                _timeout = value;
+                _modelItem.SetProperty("Timeout", value);
+                OnPropertyChanged();
+            }
+        }
+        
         public string RequestUrl
         {
             get => _requestUrl;

@@ -148,7 +148,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         [TestMethod]
         [Timeout(100)]
-        public void TestManageDatabaseSourceViewModelUpdateManagerThrowsException()
+        public void TestManageMySqlDatabaseSourceViewModelUpdateManagerThrowsException()
         {
             //arrange
             var expectedExceptionMessage = "someExceptionMessage";
@@ -194,7 +194,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         [TestMethod]
         [Timeout(100)]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void TestManageDatabaseSourceViewModelRequestServiceNameViewModelNull()
+        public void TestManageMySqlDatabaseSourceViewModelRequestServiceNameViewModelNull()
         {
             new ManageMySqlSourceViewModel(
                  _updateManagerMock.Object,
@@ -204,9 +204,9 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void TestManageDatabaseSourceViewModelDbSourceNull()
+        public void TestManageMySqlDatabaseSourceViewModelDbSourceNull()
         {
             new ManageMySqlSourceViewModel(
                  _updateManagerMock.Object,

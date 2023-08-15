@@ -22,7 +22,7 @@ namespace Warewolf.Auditing
         public string Type { get; set; }
         public Audit Audit { get; set; }
         public Dictionary<string, StringBuilder> Query { get; set; }
-        public IExecutionHistory ExecutionHistory { get; set; }
+        public ExecutionHistory ExecutionHistory { get; set; }
         public LogEntry LogEntry { get; set; }
     }
 
@@ -31,7 +31,7 @@ namespace Warewolf.Auditing
         public LogLevel LogLevel { get; set; }
         public string OutputTemplate { get; set; }
         public object[] Args { get; set; }
-        public Exception Exception { get; set; }
+        public SerializableException Exception { get; set; }
         public string AuditType { get; set; }
 
         public LogEntry(LogLevel logLevel, string outputTemplate, object[] args)

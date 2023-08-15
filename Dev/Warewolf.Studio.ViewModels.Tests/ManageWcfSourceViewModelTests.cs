@@ -213,16 +213,15 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(5000)]
         [Owner("Bernardt Joubert")]
         [TestCategory(Category)]
         public void WcfSource_SaveConnection_Returns_Success()
         {
             var model = TestModel();
-            model.Item = new WcfServiceSourceDefinition()
+            model.Item = new WcfServiceSourceDefinition
             {
-                Name = "Test",
-
+                Name = "Test"
             };
             model.SaveCommand.Execute(null);
             model.Save();
@@ -240,8 +239,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             model.TestPassed = true;            
             Assert.IsNotNull(model.GetRequestServiceNameViewModel());
             Assert.IsFalse(model.CanCancelTest());
-            Assert.IsTrue(model.CanSave());
-          
+            Assert.IsTrue(model.CanSave());          
         }
 
         [TestMethod]

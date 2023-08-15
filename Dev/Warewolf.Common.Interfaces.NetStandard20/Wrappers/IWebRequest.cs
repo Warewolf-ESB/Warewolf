@@ -28,5 +28,7 @@ namespace Warewolf.Common.Interfaces.NetStandard20
         Stream GetRequestStream();
         WebResponse GetResponse();
         Task<WebResponse> GetResponseAsync();
+        int Timeout { get; set; }
+        void AddHeader(string header);
     }
 }

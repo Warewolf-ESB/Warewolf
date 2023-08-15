@@ -224,7 +224,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     ruleSet.Add(new IsValidExpressionRule(() => FieldValue, datalist, "1", new VariableUtils()));
                     break;
                 case "FieldValueAndCalculate":
-                    ruleSet.Add(new ComposableRule<string>(new IsValidExpressionRule(() => FieldValue, datalist, "1", new VariableUtils())).Or(new IsValidCalculateRule(() => FieldValue)));
+                    if (!FieldValue.StartsWith("[[@"))
+                    {
+                        ruleSet.Add(new ComposableRule<string>(new IsValidExpressionRule(() => FieldValue, datalist, "1", new VariableUtils())).Or(new IsValidCalculateRule(() => FieldValue)));
+                    }
                     break;
                 default:
                     Dev2Logger.Info("No Rule Set for the Activity DTO Property Name: " + propertyName, GlobalConstants.WarewolfInfo);

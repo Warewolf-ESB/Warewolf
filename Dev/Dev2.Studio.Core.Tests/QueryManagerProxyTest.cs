@@ -39,7 +39,7 @@ namespace Dev2.Core.Tests
             //------------Execute Test---------------------------
             //------------Assert Results-------------------------
             Assert.IsNotNull(queryManagerProxy.CommunicationControllerFactory);
-            var p = new PrivateObject(queryManagerProxy);
+            var p = new Warewolf.Testing.PrivateObject(queryManagerProxy);
             Assert.IsNotNull(p.GetField("Connection"));
         }
 

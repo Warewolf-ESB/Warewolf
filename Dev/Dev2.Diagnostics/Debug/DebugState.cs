@@ -397,6 +397,7 @@ namespace Dev2.Diagnostics.Debug
                     writer.Write(itemResult.Label);
                     writer.Write(itemResult.Variable);
                     writer.Write(itemResult.Value);
+                    writer.Write(itemResult.TruncatedValue);
                     writer.Write(itemResult.GroupName);
                     writer.Write(itemResult.GroupIndex);
                     writer.Write(itemResult.MoreLink);
@@ -420,6 +421,7 @@ namespace Dev2.Diagnostics.Debug
                         Label = reader.ReadString(),
                         Variable = reader.ReadString(),
                         Value = reader.ReadString(),
+                        TruncatedValue = reader.ReadString(),
                         GroupName = reader.ReadString(),
                         GroupIndex = reader.ReadInt32(),
                         MoreLink = reader.ReadString()

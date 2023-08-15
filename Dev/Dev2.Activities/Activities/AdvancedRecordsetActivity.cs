@@ -27,6 +27,7 @@ using System.Data;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading;
 using TSQL;
 using TSQL.Statements;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -94,18 +95,21 @@ namespace Dev2.Activities
             finally
             {
                 var hasErrors = allErrors.HasErrors();
-
                 if (hasErrors)
                 {
-                    var errorString = allErrors.MakeDisplayReady();
-                    dataObject.Environment.AddError(errorString);
-                    DisplayAndWriteError(dataObject,DisplayName, allErrors);
+                    if(!this.IsErrorHandled)
+                    {
+                        var errorString = allErrors.MakeDisplayReady();
+                        dataObject.Environment.AddError(errorString);
+                        DisplayAndWriteError(dataObject,DisplayName, allErrors);
+                    }
                 }
                 if (dataObject.IsDebugMode())
                 {
                     DispatchDebugState(dataObject, StateType.Before, update);
                     DispatchDebugState(dataObject, StateType.After, update);
                 }
+                RunOnErrorSteps(dataObject, allErrors, update);
             }
         }
 
@@ -226,6 +230,7 @@ namespace Dev2.Activities
         AdvancedRecordsetActivity _activity;
         private IAdvancedRecordset _advancedRecordset;
         private readonly IAdvancedRecordsetFactory _advancedRecordsetFactory;
+        private SemaphoreSlim _execution = new SemaphoreSlim(1, 1);
 
         [ExcludeFromCodeCoverage]
         public AdvancedRecordsetActivityWorker(AdvancedRecordsetActivity activity)
@@ -241,7 +246,7 @@ namespace Dev2.Activities
         public AdvancedRecordsetActivityWorker(AdvancedRecordsetActivity activity, IAdvancedRecordset advancedrecordset, IAdvancedRecordsetFactory advancedRecordsetFactory)
         {
             _activity = activity;
-            _advancedRecordset = advancedrecordset;
+            AdvancedRecordset = advancedrecordset;
             _advancedRecordsetFactory = advancedRecordsetFactory;
         }
 
@@ -253,14 +258,14 @@ namespace Dev2.Activities
 
         public void LoadRecordset(string tableName)
         {
-            _advancedRecordset.LoadRecordsetAsTable(tableName);
+            AdvancedRecordset.LoadRecordsetAsTable(tableName);
         }
 
         public void AddDeclarations(string varName, string varValue)
         {
             try
             {
-                _advancedRecordset.CreateVariableTable();
+                AdvancedRecordset.CreateVariableTable();
                 InsertIntoVariableTable(varName, varValue);
             }
             catch (Exception e)
@@ -273,7 +278,7 @@ namespace Dev2.Activities
         {
             if (_activity.DeclareVariables.FirstOrDefault(nv => "@" + nv.Name == match.Value) != null)
             {
-                return _advancedRecordset.GetVariableValue(match.Value);
+                return AdvancedRecordset.GetVariableValue(match.Value);
             }
             return match.Value;
         });
@@ -282,7 +287,7 @@ namespace Dev2.Activities
         {
             try
             {
-                _advancedRecordset.InsertIntoVariableTable(varName, value);
+                AdvancedRecordset.InsertIntoVariableTable(varName, value);
             }
             catch (Exception e)
             {
@@ -292,22 +297,21 @@ namespace Dev2.Activities
 
         void ProcessSelectStatement(TSQLSelectStatement selectStatement, int update, ref bool started)
         {
-            var sqlQuery = _advancedRecordset.UpdateSqlWithHashCodes(selectStatement);
-            var results = _advancedRecordset.ExecuteQuery(sqlQuery);
+            var sqlQuery = AdvancedRecordset.UpdateSqlWithHashCodes(selectStatement);
+            var results = AdvancedRecordset.ExecuteQuery(sqlQuery);
             foreach (DataTable dt in results.Tables)
             {
-                _advancedRecordset.ApplyResultToEnvironment(dt.TableName, _activity.Outputs, dt.Rows.Cast<DataRow>().ToList(), false, update, ref started);
+                AdvancedRecordset.ApplyResultToEnvironment(dt.TableName, _activity.Outputs, dt.Rows.Cast<DataRow>().ToList(), false, update, ref started);
             }
         }
 
 #pragma warning disable S1541 // Methods and properties should not be too complex
-        void ProcessComplexStatement(TSQLUnknownStatement complexStatement, int update, ref bool started)
+        void ProcessComplexStatement(TSQLStatement complexStatement, int update, ref bool started)
 #pragma warning restore S1541 // Methods and properties should not be too complex
         {
             var tokens = complexStatement.Tokens;
             for (int i = 0; i < complexStatement.Tokens.Count; i++)
             {
-                //(i == 1 && tokens[i].Type.ToString() == "Identifier" && (tokens[i - 1].Text.ToUpper() == "TABLE"))
                 if (tokens[i].Type.ToString() == "Keyword" && (tokens[i].Text.ToUpper() == "CREATE"))
                 {
                     ProcessCreateTableStatement(complexStatement);
@@ -324,24 +328,24 @@ namespace Dev2.Activities
                 {
                     ProcessUpdateStatement(complexStatement, update, ref started);
                 }
-                if (tokens[i].Type.ToString() == "Identifier" && (tokens[i].Text.ToUpper() == "REPLACE"))
+                if (tokens[i].Type.ToString() == "SystemIdentifier" && (tokens[i].Text.ToUpper() == "REPLACE"))
                 {
                     ProcessUpdateStatement(complexStatement, update, ref started);
                 }
             }
         }
 
-        void ProcessCreateTableStatement(TSQLUnknownStatement complexStatement)
+        void ProcessCreateTableStatement(TSQLStatement complexStatement)
         {
             var recordset = new DataTable();
             recordset.Columns.Add("records_affected", typeof(int));
-            recordset.Rows.Add(_advancedRecordset.ExecuteNonQuery(_advancedRecordset.ReturnSql(complexStatement.Tokens)));
+            recordset.Rows.Add(AdvancedRecordset.ExecuteNonQuery(AdvancedRecordset.ReturnSql(complexStatement.Tokens)));
             var outputName = _activity.Outputs.FirstOrDefault(e => e.MappedFrom == "records_affected")?.MappedTo;
-            _advancedRecordset.ApplyScalarResultToEnvironment(outputName, int.Parse(recordset.Rows[0].ItemArray[0].ToString()));
+            AdvancedRecordset.ApplyScalarResultToEnvironment(outputName, int.Parse(recordset.Rows[0].ItemArray[0].ToString()));
         }
 
 #pragma warning disable S1541 // Methods and properties should not be too complex
-        void ProcessUpdateStatement(TSQLUnknownStatement complexStatement, int update, ref bool started)
+        void ProcessUpdateStatement(TSQLStatement complexStatement, int update, ref bool started)
 #pragma warning restore S1541 // Methods and properties should not be too complex
         {
             var tokens = complexStatement.Tokens;
@@ -356,7 +360,7 @@ namespace Dev2.Activities
                 {
                     outputRecordsetName = tokens[i + 2].Text;
                 }
-                if (tokens[i].Type.ToString() == "Identifier" && (tokens[i].Text.ToUpper() == "REPLACE"))
+                if (tokens[i].Type.ToString() == "SystemIdentifier" && (tokens[i].Text.ToUpper() == "REPLACE"))
                 {
                     outputRecordsetName = tokens[i + 2].Text;
                 }
@@ -366,11 +370,11 @@ namespace Dev2.Activities
                 }
             }
 
-            var sqlQuery = _advancedRecordset.UpdateSqlWithHashCodes(complexStatement);
+            var sqlQuery = AdvancedRecordset.UpdateSqlWithHashCodes(complexStatement);
 
             var recordset = new DataTable();
             recordset.Columns.Add("records_affected", typeof(int));
-            recordset.Rows.Add(_advancedRecordset.ExecuteNonQuery(sqlQuery));
+            recordset.Rows.Add(AdvancedRecordset.ExecuteNonQuery(sqlQuery));
             object sumObject;
             sumObject = recordset.Compute("Sum(records_affected)", "");
             _recordsAffected += Convert.ToInt16(sumObject.ToString());
@@ -379,12 +383,12 @@ namespace Dev2.Activities
 
             if (mapping != null)
             {
-                _advancedRecordset.ApplyScalarResultToEnvironment(mapping.MappedTo, _recordsAffected);
+                AdvancedRecordset.ApplyScalarResultToEnvironment(mapping.MappedTo, _recordsAffected);
             }
-            var results = _advancedRecordset.ExecuteQuery("SELECT * FROM " + _advancedRecordset.HashedRecSets.FirstOrDefault(x => x.recSet == outputRecordsetName).hashCode);
+            var results = AdvancedRecordset.ExecuteQuery("SELECT * FROM " + AdvancedRecordset.HashedRecSets.FirstOrDefault(x => x.recSet == outputRecordsetName).hashCode);
             foreach (DataTable dt in results.Tables)
             {
-                _advancedRecordset.ApplyResultToEnvironment(outputRecordsetName, _activity.Outputs, dt.Rows.Cast<DataRow>().ToList(), true, update, ref started);
+                AdvancedRecordset.ApplyResultToEnvironment(outputRecordsetName, _activity.Outputs, dt.Rows.Cast<DataRow>().ToList(), true, update, ref started);
             }
         }
 
@@ -399,28 +403,29 @@ namespace Dev2.Activities
         public void ExecuteSql(int update, ref bool started)
         {
             var queryText = AddSqlForVariables(_activity.SqlQuery);
-            var statements = TSQLStatementReader.ParseStatements(queryText);
 
-            if (queryText.Contains("UNION") && statements.Count == 2)
+            if (queryText.Contains("UNION"))
             {
+                var statements = TSQLStatementReader.ParseStatements(queryText.Substring(0, queryText.IndexOf("UNION")));
                 var tables = statements[0].GetAllTables();
                 foreach (var table in tables)
                 {
                     LoadRecordset(table.TableName);
                 }
                 var sqlQueryToUpdate = queryText;
-                foreach (var item in _advancedRecordset.HashedRecSets)
+                foreach (var item in AdvancedRecordset.HashedRecSets)
                 {
                     sqlQueryToUpdate = sqlQueryToUpdate.Replace(item.recSet, item.hashCode);
                 }
-                var results = _advancedRecordset.ExecuteQuery(sqlQueryToUpdate);
+                var results = AdvancedRecordset.ExecuteQuery(sqlQueryToUpdate);
                 foreach (DataTable dt in results.Tables)
                 {
-                    _advancedRecordset.ApplyResultToEnvironment(dt.TableName, _activity.Outputs, dt.Rows.Cast<DataRow>().ToList(), false, update, ref started);
+                    AdvancedRecordset.ApplyResultToEnvironment(dt.TableName, _activity.Outputs, dt.Rows.Cast<DataRow>().ToList(), false, update, ref started);
                 }
             }
             else
             {
+                var statements = TSQLStatementReader.ParseStatements(queryText);
                 ExecuteAllSqlStatements(update, statements, ref started);
             }
         }
@@ -441,8 +446,7 @@ namespace Dev2.Activities
                 }
                 else
                 {
-                    var unknownStatement = statement as TSQLUnknownStatement;
-                    ProcessComplexStatement(unknownStatement, update, ref started);
+                    ProcessComplexStatement(statement, update, ref started);
                 }
             }
         }
@@ -450,6 +454,7 @@ namespace Dev2.Activities
         public void ExecuteRecordset(IDSFDataObject dataObject, int update)
         {
             var env = dataObject.Environment;
+            _execution.Wait();
             AdvancedRecordset = _advancedRecordsetFactory.New(env);
             var iter = new WarewolfListIterator();
             var started = false;
@@ -482,10 +487,11 @@ namespace Dev2.Activities
                     started = true;
                 }
             }
-            foreach (var hashedRecSet in _advancedRecordset.HashedRecSets)
+            foreach (var hashedRecSet in AdvancedRecordset.HashedRecSets)
             {
-                _advancedRecordset.DeleteTableInSqlite(hashedRecSet.hashCode);
+                AdvancedRecordset.DeleteTableInSqlite(hashedRecSet.hashCode);
             }
+            _execution.Release();
         }
 
         public Dictionary<string, List<string>> GetIdentifiers()
@@ -509,7 +515,7 @@ namespace Dev2.Activities
 
                             identifierVariables = new List<string>();
 
-                            identifierVariables.AddRange(statement.Tokens.Where(a => a.Type == TSQL.Tokens.TSQLTokenType.Identifier && a.Text != key).Select(a => a.Text));
+                            identifierVariables.AddRange(statement.Tokens.Where(a => a.Type == TSQL.Tokens.TSQLTokenType.Identifier && a.Text != key && (statement.Tokens[statement.Tokens.IndexOf(a)-1].Text != "AS" && statement.Tokens[statement.Tokens.IndexOf(a) - 1].Type != TSQL.Tokens.TSQLTokenType.Identifier)).Select(a => a.Text));
 
                             identifiers.Add(key, identifierVariables);
                         }

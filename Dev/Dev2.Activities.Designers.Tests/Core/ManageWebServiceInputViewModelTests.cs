@@ -15,6 +15,7 @@ using System.Linq;
 using Dev2.Activities.Designers.Tests.WebGetTool;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Web_Post;
+using Dev2.Activities.Designers2.Web_Post_New;
 using Dev2.Activities.Designers2.Web_Service_Get;
 using Dev2.Activities.Designers2.WebGet;
 using Dev2.Common.Interfaces;
@@ -29,6 +30,7 @@ using Moq;
 using Warewolf.Core;
 using Warewolf.Data.Options;
 using Warewolf.Options;
+#pragma warning disable 618
 
 
 namespace Dev2.Activities.Designers.Tests.Core
@@ -457,11 +459,63 @@ namespace Dev2.Activities.Designers.Tests.Core
 
         }
 
-
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(ManageWebServiceInputViewModel))]
         public void ManageWebServiceInputViewModel_ExecuteTest_ExpectSuccess()
+        {
+            var mockWebServiceModel = new Mock<IWebServiceModel>();
+            mockWebServiceModel.Setup(o => o.RetrieveSources())
+                .Returns(new List<IWebServiceSource> 
+                {
+                   new WebServiceSourceDefinition()
+                });
+            
+            var myWebModel = mockWebServiceModel.Object;
+            var webGetActivity = new WebPostActivityNew()
+            {
+                SourceId = Guid.NewGuid(),
+                Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("d", "e", "f") },
+                Headers = new List<INameValue> { new NameValue("a", "x") },
+                Conditions = new List<FormDataConditionExpression>
+                { 
+                    new FormDataConditionExpression
+                    {
+                        Key = "testKey",
+                        Cond = new FormDataConditionText
+                        {
+                          Value = "this can be any text value" 
+                        }
+                    }
+                },
+                QueryString = "Bob the builder",
+                ServiceName = "dsfBob"
+            };
+
+#pragma warning disable 618
+            var webPostActivityViewModel = new WebPostActivityViewModel(ModelItemUtils.CreateModelItem(webGetActivity), myWebModel);
+#pragma warning restore 618
+            webPostActivityViewModel.SourceRegion.SelectedSource = webPostActivityViewModel.SourceRegion.Sources.First();
+            webPostActivityViewModel.TestInputCommand.Execute();
+            webPostActivityViewModel.ManageServiceInputViewModel.TestCommand.Execute(null);
+            //------------Assert Results-------------------------
+            var inputViewModel = new ManageWebServiceInputViewModel(webPostActivityViewModel, myWebModel)
+            {
+                IsFormDataChecked = true,
+                
+            };
+
+            Assert.IsTrue(inputViewModel.IsFormDataChecked);
+            Assert.IsNotNull(inputViewModel.ConditionExpressionOptions);
+            Assert.AreEqual(1, inputViewModel.ConditionExpressionOptions.Options.Count);
+
+            mockWebServiceModel.Verify(o => o.TestService(It.IsAny<IWebService>()), Times.Once);
+        }
+        
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ManageWebServiceInputViewModel))]
+        public void ManageWebServiceInputViewModel_WithNewWebPostActivity_ExecuteTest_ExpectSuccess()
         {
             var mockWebServiceModel = new Mock<IWebServiceModel>();
             mockWebServiceModel.Setup(o => o.RetrieveSources())
@@ -491,7 +545,7 @@ namespace Dev2.Activities.Designers.Tests.Core
                 ServiceName = "dsfBob"
             };
 
-            var webPostActivityViewModel = new WebPostActivityViewModel(ModelItemUtils.CreateModelItem(webGetActivity), myWebModel);
+            var webPostActivityViewModel = new WebPostActivityViewModelNew(ModelItemUtils.CreateModelItem(webGetActivity), myWebModel);
             webPostActivityViewModel.SourceRegion.SelectedSource = webPostActivityViewModel.SourceRegion.Sources.First();
             webPostActivityViewModel.TestInputCommand.Execute();
             webPostActivityViewModel.ManageServiceInputViewModel.TestCommand.Execute(null);

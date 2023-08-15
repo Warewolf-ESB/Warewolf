@@ -30,6 +30,7 @@ namespace Dev2.Activities.Specs.Permissions
     public class SettingsPermissionsSteps
     {
         readonly ScenarioContext _scenarioContext;
+        static FeatureContext _featureContext;
 
         public SettingsPermissionsSteps(ScenarioContext scenarioContext)
         {
@@ -43,22 +44,23 @@ namespace Dev2.Activities.Specs.Permissions
 
 
         [BeforeFeature("@Security")]
-        public static void InitializeFeature()
+        public static void InitializeFeature(FeatureContext featureContext)
         {
+            _featureContext = featureContext;
             SetupUser();
             var securitySpecsUser = GetSecuritySpecsUser();
             var securitySpecsPassword = GetSecuritySpecsPassword();
             var userGroup = GetUserGroup();
-            AppUsageStats.LocalHost = $"http://{Environment.MachineName.ToLowerInvariant()}:3142";
             var environmentModel = ServerRepository.Instance.Source;
-            environmentModel.Connect();
-            while (!environmentModel.IsConnected)
+            AppUsageStats.LocalHost = "http://localhost:3142";
+            environmentModel.ConnectAsync().Wait(60000);
+            if (!environmentModel.IsConnected)
             {
-                environmentModel.Connect();
+                Assert.Fail("Cannot connect to local Warewolf server.");
             }
 
             var currentSettings = environmentModel.ResourceRepository.ReadSettings(environmentModel);
-            FeatureContext.Current.Add("initialSettings", currentSettings);
+            _featureContext.Add("initialSettings", currentSettings);
             var settings = new Data.Settings.Settings
             {
                 Security = new SecuritySettingsTO(new List<WindowsGroupPermission>())
@@ -66,9 +68,9 @@ namespace Dev2.Activities.Specs.Permissions
 
             environmentModel.ResourceRepository.WriteSettings(environmentModel, settings);
             environmentModel.Disconnect();
-            FeatureContext.Current.Add("environment", environmentModel);
+            _featureContext.Add("environment", environmentModel);
 
-            var reconnectModel = new Server(Guid.NewGuid(), new ServerProxy(AppUsageStats.LocalHost, securitySpecsUser, securitySpecsPassword)) { Name = "Other Connection" };
+            var reconnectModel = new Server(Guid.NewGuid(), new ServerProxy($"http://localhost:3142", securitySpecsUser, securitySpecsPassword)) { Name = "Other Connection" };
             try
             {
                 reconnectModel.Connect();
@@ -77,8 +79,7 @@ namespace Dev2.Activities.Specs.Permissions
             {
                 Assert.Fail("Connection unauthorized when connecting to local Warewolf server as user who is part of '" + userGroup + "' user group.");
             }
-            FeatureContext.Current.Add("currentEnvironment", reconnectModel);
-
+            _featureContext.Add("currentEnvironment", reconnectModel);
         }
 
         static string GetUserGroup() => ConfigurationManager.AppSettings["userGroup"];
@@ -109,7 +110,7 @@ namespace Dev2.Activities.Specs.Permissions
                 Security = new SecuritySettingsTO(new List<WindowsGroupPermission> { groupPermssions })
             };
 
-            var environmentModel = FeatureContext.Current.Get<IServer>("environment");
+            var environmentModel = _featureContext.Get<IServer>("environment");
             EnsureEnvironmentConnected(environmentModel);
             environmentModel.ResourceRepository.WriteSettings(environmentModel, settings);
             environmentModel.Disconnect();
@@ -137,7 +138,7 @@ namespace Dev2.Activities.Specs.Permissions
                 Security = new SecuritySettingsTO(new List<WindowsGroupPermission> { groupPermssions })
             };
 
-            var environmentModel = FeatureContext.Current.Get<IServer>("environment");
+            var environmentModel = _featureContext.Get<IServer>("environment");
             EnsureEnvironmentConnected(environmentModel);
             environmentModel.ResourceRepository.WriteSettings(environmentModel, settings);
             environmentModel.Disconnect();
@@ -165,7 +166,7 @@ namespace Dev2.Activities.Specs.Permissions
                 Security = new SecuritySettingsTO(new List<WindowsGroupPermission> { groupPermssions })
             };
 
-            var environmentModel = FeatureContext.Current.Get<IServer>("environment");
+            var environmentModel = _featureContext.Get<IServer>("environment");
             EnsureEnvironmentConnected(environmentModel);
             environmentModel.ResourceRepository.WriteSettings(environmentModel, settings);
             environmentModel.Disconnect();
@@ -212,12 +213,12 @@ namespace Dev2.Activities.Specs.Permissions
             {
                 Assert.Fail("Connection unauthorized when connecting to local Warewolf server as user who is part of '" + userGroup + "' user group.");
             }
-            FeatureContext.Current["currentEnvironment"] = reconnectModel;
+            _featureContext["currentEnvironment"] = reconnectModel;
         }
 
         static IServer LoadResources()
         {
-            var environmentModel = FeatureContext.Current.Get<IServer>("currentEnvironment");
+            var environmentModel = _featureContext.Get<IServer>("currentEnvironment");
             EnsureEnvironmentConnected(environmentModel);
             if (environmentModel.IsConnected && !environmentModel.HasLoadedResources)
             {
@@ -275,7 +276,7 @@ namespace Dev2.Activities.Specs.Permissions
         [Given(@"Resource ""(.*)"" has rights ""(.*)"" for ""(.*)""")]
         public void GivenResourceHasRights(string resourceName, string resourceRights, string groupName)
         {
-            var environmentModel = FeatureContext.Current.Get<IServer>("environment");
+            var environmentModel = _featureContext.Get<IServer>("environment");
             EnsureEnvironmentConnected(environmentModel);
             var resourceRepository = environmentModel.ResourceRepository;
             var settings = resourceRepository.ReadSettings(environmentModel);
@@ -302,7 +303,7 @@ namespace Dev2.Activities.Specs.Permissions
         [Then(@"""(.*)"" should have ""(.*)""")]
         public void ThenShouldHave(string resourceName, string resourcePerms)
         {
-            var environmentModel = FeatureContext.Current.Get<IServer>("environment");
+            var environmentModel = _featureContext.Get<IServer>("environment");
             EnsureEnvironmentConnected(environmentModel);
             var resourceRepository = environmentModel.ResourceRepository;
             environmentModel.ForceLoadResources();
@@ -325,9 +326,9 @@ namespace Dev2.Activities.Specs.Permissions
         [AfterScenario("Security")]
         public void DoCleanUp()
         {
-            FeatureContext.Current.TryGetValue("currentEnvironment", out IServer currentEnvironment);
-            FeatureContext.Current.TryGetValue("environment", out IServer server);
-            FeatureContext.Current.TryGetValue("initialSettings", out Data.Settings.Settings currentSettings);
+            _featureContext.TryGetValue("currentEnvironment", out IServer currentEnvironment);
+            _featureContext.TryGetValue("environment", out IServer server);
+            _featureContext.TryGetValue("initialSettings", out Data.Settings.Settings currentSettings);
 
             if (server != null)
             {

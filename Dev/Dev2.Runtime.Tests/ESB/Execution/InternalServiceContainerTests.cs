@@ -59,7 +59,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             var channel = new Mock<IEsbChannel>();
             var esbExecuteRequest = new EsbExecuteRequest();
             var internalServiceContainer = new InternalServiceContainer(serviceAction, dsfObj.Object, workSpace.Object, channel.Object, esbExecuteRequest);
-            var privateObject = new PrivateObject(internalServiceContainer);
+            var privateObject = new Warewolf.Testing.PrivateObject(internalServiceContainer);
             //---------------Assert Precondition----------------
             Assert.AreEqual(4, esbExecuteRequest.Args.Count);
             //---------------Execute Test ----------------------

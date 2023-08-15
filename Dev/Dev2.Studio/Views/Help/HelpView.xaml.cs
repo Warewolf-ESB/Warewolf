@@ -8,22 +8,13 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
-
-
-
 namespace Dev2.Studio.Views.Help
-
 {
-    /// <summary>
-    /// Interaction logic for HelpWindow.xaml
-    /// </summary>
     public partial class HelpView
     {
         public HelpView()
         {
             InitializeComponent();
         }
-        
     }
 }

@@ -130,11 +130,13 @@ namespace Dev2
         public static readonly Dictionary<Type, Type> DeprecatedDesignerAttributes = new Dictionary<Type, Type>
         {
             // DEPRECATED
+#pragma warning disable 618
             {typeof(DsfFileWrite), typeof(WriteFileDesignerViewModel)},
             {typeof(DsfWebGetActivity), typeof(WebServiceGetViewModel)},
             {typeof(DsfWebPutActivity), typeof(WebServicePutViewModel)},
             {typeof(DsfWebPostActivity), typeof(WebServicePostViewModel)},
             {typeof(WebPostActivity), typeof(WebPostActivityViewModel)},
+#pragma warning restore 618
         };
 
         public static readonly Dictionary<Type, Type> DesignerAttributes = new Dictionary<Type, Type>

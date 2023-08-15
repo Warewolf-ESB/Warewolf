@@ -92,6 +92,7 @@ namespace Warewolf.Data
             }
             return Equals((NamedGuid)obj);
         }
+        
         public NamedGuid Clone()
         {
             return new NamedGuid
@@ -99,6 +100,14 @@ namespace Warewolf.Data
                 _name = _name,
                 _value = _value,
             };
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return ((_name != null ? _name.GetHashCode() : 0) * 397) ^ _value.GetHashCode();
+            }
         }
     }
 }

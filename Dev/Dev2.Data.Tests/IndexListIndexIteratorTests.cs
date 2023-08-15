@@ -30,7 +30,7 @@ namespace Dev2.Data
             var indexes = new List<int> {1, 2, 3};
             var indexListIndexIterator = new IndexListIndexIterator(indexes);
             Assert.IsNotNull(indexListIndexIterator);
-            var prObj = new PrivateObject(indexListIndexIterator);
+            var prObj = new Warewolf.Testing.PrivateObject(indexListIndexIterator);
             Assert.IsFalse(indexListIndexIterator.IsEmpty);
             var current = (int) prObj.GetField("_current");
             Assert.IsNotNull(current);

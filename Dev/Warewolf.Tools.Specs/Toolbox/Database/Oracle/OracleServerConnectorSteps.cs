@@ -22,6 +22,7 @@ using Warewolf.Core;
 using Warewolf.Tools.Specs.Toolbox.Database;
 using Warewolf.Studio.ViewModels;
 using Dev2.Activities.Specs.BaseTypes;
+using Dev2.Common;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Models;
 using Warewolf.UnitTestAttributes;
@@ -43,6 +44,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         {
             _scenarioContext = scenarioContext;
             _commonSteps = new CommonSteps(scenarioContext);
+            CustomContainer.Register<IFieldAndPropertyMapper>(new FieldAndPropertyMapper());
         }
 
         [Given(@"I drag a Oracle Server database connector")]
@@ -178,7 +180,8 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         [When(@"Oracle Action is changed from to dbo.ImportOrder")]
         public void WhenActionIsChangedFromTo()
         {
-            GetViewModel().ActionRegion.SelectedAction = _importOrderAction;
+            var oracleDatabaseDesignerViewModel = GetViewModel();
+            oracleDatabaseDesignerViewModel.ActionRegion.SelectedAction = _importOrderAction;
         }
 
         [When(@"I click ""(.*)""")]

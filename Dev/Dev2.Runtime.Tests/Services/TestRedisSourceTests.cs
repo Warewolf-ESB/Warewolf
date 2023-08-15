@@ -113,6 +113,7 @@ namespace Dev2.Tests.Runtime.Services
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(TestRedisSource))]
+        [TestCategory("AnonymousRedis")]
         public void TestRedisSource_Execute_GivenResourceDefinition_ShouldTestNewSourceReturnResourceDefinitionMsg()
         {
             //---------------Set up test pack-------------------

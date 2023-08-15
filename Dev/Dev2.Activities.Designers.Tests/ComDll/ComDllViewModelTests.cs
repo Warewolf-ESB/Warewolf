@@ -182,7 +182,7 @@ namespace Dev2.Activities.Designers.Tests.ComDll
 
             //------------Assert Results-------------------------
             vm.SetDisplayName("dsfbob_builer");
-            var p = new PrivateObject(vm);
+            var p = new Warewolf.Testing.PrivateObject(vm);
             Assert.AreEqual(p.GetProperty("DisplayName"), "Com DLLdsfbob_builer");
         }
 
@@ -261,7 +261,7 @@ namespace Dev2.Activities.Designers.Tests.ComDll
 
             var vm = new ComDllViewModel(CreateModelItemWithValues(), ps.Object);
             vm.DesignValidationErrors.Add(new ErrorInfo() { Message = "bob error", ErrorType = ErrorType.Critical });
-            var p = new PrivateObject(vm);
+            var p = new Warewolf.Testing.PrivateObject(vm);
             p.Invoke("UpdateWorstError");
             var inf = vm.WorstDesignError as ErrorInfo;
             //------------Assert Results-------------------------

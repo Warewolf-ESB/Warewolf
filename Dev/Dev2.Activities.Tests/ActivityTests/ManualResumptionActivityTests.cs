@@ -79,6 +79,37 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ManualResumptionActivity))]
+        public void ManualResumptionActivity_GetChildrenNodes_ShouldReturnChildNode()
+        {
+            var activity = CreateWorkflow();
+            var activityFunction = new ActivityFunc<string, bool>
+            {
+                DisplayName = activity.DisplayName,
+                Handler = activity,
+            };
+
+            var manualResumptionActivity = new ManualResumptionActivity()
+            {
+                SuspensionId = "15",
+                OverrideInputVariables = true,
+                OverrideDataFunc = activityFunction,
+                Response = "[[result]]"
+            };
+
+            Assert.AreEqual("Manual Resumption", manualResumptionActivity.DisplayName);
+            Assert.AreEqual("15", manualResumptionActivity.SuspensionId);
+            Assert.IsTrue(manualResumptionActivity.OverrideInputVariables);
+            Assert.AreEqual("TestService", manualResumptionActivity.OverrideDataFunc.DisplayName);
+
+            var result = manualResumptionActivity.GetChildrenNodes().ToList();
+            Assert.AreEqual(1, result.Count);
+            Assert.AreEqual(activity, result[0]);
+        }
+
+
+        [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ManualResumptionActivity))]
         public void ManualResumptionActivity_Initialize_With_Values_OverrideInputVariables_False()

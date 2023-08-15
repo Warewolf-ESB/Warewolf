@@ -76,9 +76,6 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="Convert NUnit tests to MSTest.ps1" />
-    <AdditionalFiles Include="..\SonarQube\SonarLint.xml">
-      <Visible>False</Visible>
-    </AdditionalFiles>
     <None Include="BrowserWebDrivers\Profiles\Chrome\CrashpadMetrics-active.pma" />
     <None Include="BrowserWebDrivers\Profiles\Chrome\Crashpad\metadata" />
     <None Include="BrowserWebDrivers\Profiles\Chrome\Crashpad\settings.dat" />

@@ -34,7 +34,6 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
     [Binding]
     public class SequenceSteps : RecordSetBases
     {
-        readonly ScenarioContext scenarioContext;
         readonly CommonSteps _commonSteps;
 
         public SequenceSteps(ScenarioContext scenarioContext)
@@ -45,7 +44,6 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
                 throw new ArgumentNullException("scenarioContext");
             }
 
-            this.scenarioContext = scenarioContext;
             _commonSteps = new CommonSteps(this.scenarioContext);
         }
 
