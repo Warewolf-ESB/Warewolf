@@ -288,7 +288,7 @@ namespace Warewolf.UnitTestAttributes
                 case ContainerType.AnonymousWarewolf:
                     return new[] {"3148"};
                 case ContainerType.Warewolf:
-                    return new[] {"3146"};
+                    return new[] {"3142"};
                 case ContainerType.AnonymousElasticsearch:
                     return new[] {"9200", "9201"};
                 case ContainerType.Elasticsearch:
@@ -526,20 +526,6 @@ namespace Warewolf.UnitTestAttributes
 
         public static void RefreshServer()
         {
-            //using (WebClient client = new WebClient())
-            //{
-            //    client.Credentials = CredentialCache.DefaultNetworkCredentials;
-            //    try
-            //    {
-            //        Console.WriteLine(client.DownloadString(
-            //            "http://localhost:3142/services/FetchExplorerItemsService.json?ReloadResourceCatalogue=true"));
-            //    }
-            //    catch (WebException e)
-            //    {
-            //        Console.WriteLine($"Cannot refresh server to redirect server sources. {e.Message}");
-            //    }
-            //}
-
             using (HttpClientHandler handler = new HttpClientHandler())
             {
                 handler.UseDefaultCredentials = true;
