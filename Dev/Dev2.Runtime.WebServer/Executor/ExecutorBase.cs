@@ -165,29 +165,25 @@ namespace Dev2.Runtime.WebServer.Executor
             _executionDataListId = GlobalConstants.NullDataListID;
             if(!_subscriptionProvider.IsLicensed)
             {
-                _dataObject.Environment.AddError(Warewolf.Resource.Errors.ErrorResource.InvalidLicense);
                 _dataObject.ExecutionException = new AccessDeniedException(Warewolf.Resource.Errors.ErrorResource.InvalidLicense);
                 Dev2Logger.Error(Warewolf.Resource.Errors.ErrorResource.InvalidLicense, _dataObject.ExecutionID?.ToString());
             }
+            if(!_canExecute)
+            {
+                var message = webRequest.IsUrlWithTokenPrefix
+                    ? Warewolf.Resource.Errors.ErrorResource.TokenNotAuthorizedToExecuteOuterWorkflowException
+                    : Warewolf.Resource.Errors.ErrorResource.UserNotAuthorizedToExecuteOuterWorkflowException;
+
+                var errorMessage = string.Format(message, _dataObject.ExecutingUser?.Identity.Name, _dataObject.ServiceName);
+                _dataObject.Environment.AddError(errorMessage);
+                _dataObject.ExecutionException = new AccessDeniedException(errorMessage);
+            }
             else
             {
-                if(!_canExecute)
+                if(_dataObject.ReturnType != EmitionTypes.OPENAPI)
                 {
-                    var message = webRequest.IsUrlWithTokenPrefix
-                        ? Warewolf.Resource.Errors.ErrorResource.TokenNotAuthorizedToExecuteOuterWorkflowException
-                        : Warewolf.Resource.Errors.ErrorResource.UserNotAuthorizedToExecuteOuterWorkflowException;
-
-                    var errorMessage = string.Format(message, _dataObject.ExecutingUser?.Identity.Name, _dataObject.ServiceName);
-                    _dataObject.Environment.AddError(errorMessage);
-                    _dataObject.ExecutionException = new AccessDeniedException(errorMessage);
-                }
-                else
-                {
-                    if(_dataObject.ReturnType != EmitionTypes.OPENAPI)
-                    {
-                        Thread.CurrentPrincipal = user;
-                        _executionDataListId = DoExecution(webRequest, serviceName, _workspaceGuid, _dataObject, user);
-                    }
+                    Thread.CurrentPrincipal = user;
+                    _executionDataListId = DoExecution(webRequest, serviceName, _workspaceGuid, _dataObject, user);
                 }
             }
 
