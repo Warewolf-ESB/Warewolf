@@ -29,32 +29,38 @@ namespace Dev2.Runtime.ESB.Management.Services
     {
         public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            var serializer = new Dev2JsonSerializer();
-            
-            var list = ResourceCatalog.Instance.GetResourceList<ComPluginSource>(GlobalConstants.ServerWorkspaceID).Select(a =>
-            {
-                if (a is ComPluginSource res)
-                {
-                    return new ComPluginSourceDefinition
-                    {
-                        Id = res.ResourceID,
-                        ResourceName = res.ResourceName,
-                        ClsId = res.ClsId,
-                        ResourcePath = res.GetSavePath(),
-                        Is32Bit = res.Is32Bit,
-                        SelectedDll = new DllListing
-                        {
-                            Name = res.ComName,
-                            ClsId = res.ClsId,
-                            Is32Bit = res.Is32Bit,
-                            Children = new IFileListing[0]
-                        }
-                    };
-                }
-                return null;
-            }).ToList();
+          
+           var serializer = new Dev2JsonSerializer();
+
+            /* Purpose : Commented for depricating COMIPC support, and returning blank COMIPC Support.
+            * Workitem: 7499
+            * 
+              var list = ResourceCatalog.Instance.GetResourceList<ComPluginSource>(GlobalConstants.ServerWorkspaceID).Select(a =>
+              {
+                  if (a is ComPluginSource res)
+                  {
+                      return new ComPluginSourceDefinition
+                      {
+                          Id = res.ResourceID,
+                          ResourceName = res.ResourceName,
+                          ClsId = res.ClsId,
+                          ResourcePath = res.GetSavePath(),
+                          Is32Bit = res.Is32Bit,
+                          SelectedDll = new DllListing
+                          {
+                              Name = res.ComName,
+                              ClsId = res.ClsId,
+                              Is32Bit = res.Is32Bit,
+                              Children = new IFileListing[0]
+                          }
+                      };
+                  }
+                  return null;
+              }).ToList();
+            */
+            List<ComPluginSourceDefinition> list = new List<ComPluginSourceDefinition>();
+
             return serializer.SerializeToBuilder(new ExecuteMessage { HasError = false, Message = serializer.SerializeToBuilder(list) });
-            
         }
 
         public IResourceCatalog Resources => ResourceCatalog.Instance;

@@ -8,44 +8,48 @@ using Microsoft.Win32;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    public class ComDllLoaderHandler: MarshalByRefObject
+    public class ComDllLoaderHandler : MarshalByRefObject
     {
         public static List<DllListing> TryGetListings(RegistryKey registry)
         {
             var dllListings = new List<DllListing>();
-            var regClis = registry.OpenSubKey("CLSID");
+            /* Purpose : Commented for depricating COMIPC support, and returning blank COMIPC Support.
+               * Workitem: 7499
+               * 
+           var regClis = registry.OpenSubKey("CLSID");
 
-            if (regClis != null)
-            {
-                foreach (var clsid in regClis.GetSubKeyNames())
-                {
-                    var regClsidKey = regClis.OpenSubKey(clsid);
-                    RegistryKey progID = null;
-                    Type typeFromProgID = null;
-                    GetTypeFromCLSID(clsid, regClsidKey, ref progID, ref typeFromProgID);
-                    if (typeFromProgID == null)
-                    {
-                        continue;
-                    }
-                    if (typeFromProgID != null)
-                    {
-                        var fullName = typeFromProgID.FullName;
-                        dllListings.Add(new DllListing
-                        {
-                            ClsId = clsid,
-                            Is32Bit = fullName.Equals("System.__ComObject"),
-                            Name = progID.GetValue("").ToString(),
-                            IsDirectory = false,
-                            FullName = progID.GetValue("").ToString(),
-                            Children = new IFileListing[0]
-                        });
-                    }
-                    regClsidKey?.Close();
-                }
-                regClis.Close();
-            }
+           if (regClis != null)
+           {
+               foreach (var clsid in regClis.GetSubKeyNames())
+               {
+                   var regClsidKey = regClis.OpenSubKey(clsid);
+                   RegistryKey progID = null;
+                   Type typeFromProgID = null;
+                   GetTypeFromCLSID(clsid, regClsidKey, ref progID, ref typeFromProgID);
+                   if (typeFromProgID == null)
+                   {
+                       continue;
+                   }
+                   if (typeFromProgID != null)
+                   {
+                       var fullName = typeFromProgID.FullName;
+                       dllListings.Add(new DllListing
+                       {
+                           ClsId = clsid,
+                           Is32Bit = fullName.Equals("System.__ComObject"),
+                           Name = progID.GetValue("").ToString(),
+                           IsDirectory = false,
+                           FullName = progID.GetValue("").ToString(),
+                           Children = new IFileListing[0]
+                       });
+                   }
+                   regClsidKey?.Close();
+               }
+               regClis.Close();
+           }
 
-            dllListings = dllListings.OrderBy(listing => listing.FullName).ToList();
+           dllListings = dllListings.OrderBy(listing => listing.FullName).ToList();
+            */
 
             return dllListings;
         }

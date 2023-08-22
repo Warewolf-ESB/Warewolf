@@ -43,8 +43,12 @@
     <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
+    <Compile Include="ComPlugin\ComPluginRuntimeHandlerTest.cs" />
+    <Compile Include="ComPlugin\ComPluginServiceExecutionFactoryTest.cs" />
     <Compile Include="IpcClientTests.cs" />
+    <Compile Include="ServerLifecycleManagerServiceTests.cs" />
     <Compile Include="WarewolfComIpcTests.cs" />
+    <EmbeddedResource Include="ComPlugin\SystemWOW6432NodeCLSIDadodbConnection.reg" />
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>

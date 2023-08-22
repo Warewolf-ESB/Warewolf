@@ -48,7 +48,6 @@
     <Compile Include="StartWebServerTests.cs" />
     <Compile Include="LoadRuntimeConfigurationsTests.cs" />
     <Compile Include="WebServerConfigurationTests.cs" />
-    <Compile Include="ServerLifecycleManagerServiceTests.cs" />
     <Compile Include="ServerEnvironmentPreparerTests.cs" />
   </ItemGroup>
   <ItemGroup>
