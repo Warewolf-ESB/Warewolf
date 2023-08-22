@@ -1,19 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Net;
-using System.Net.NetworkInformation;
 using System.Net.Sockets;
-using System.Reflection;
 using Dev2.Activities.Specs.Composition;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Controller;
-using Dev2.Network;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core;
 using Dev2.Studio.Interfaces;
@@ -22,13 +16,12 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 using Warewolf.Studio.ViewModels;
 using Warewolf.Tools.Specs.BaseTypes;
-using Dev2.Infrastructure.Tests;
 using Moq;
 using Warewolf.UnitTestAttributes;
 
 namespace Dev2.Activities.Specs.Sources
 {
-    [Binding]
+	[Binding]
     public sealed class ServerSourceSteps : RecordSetBases, IDisposable
     {
         Depends declaredDependency;
