@@ -91,6 +91,8 @@ namespace Dev2.SignalR.Wrappers.New
             {
                 options.Transports = Microsoft.AspNetCore.Http.Connections.HttpTransportType.ServerSentEvents;
                 options.Credentials = credentials;
+                options.TransportMaxBufferSize = 10485760;
+                options.ApplicationMaxBufferSize = 10485760;
             }).Build())
         {
             _credentials = credentials;

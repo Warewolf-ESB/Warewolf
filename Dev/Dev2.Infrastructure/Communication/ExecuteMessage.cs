@@ -102,7 +102,13 @@ namespace Dev2.Communication
                 ms.Position = 0;
                 using (GZipStream zip = new GZipStream(ms, CompressionMode.Decompress))
                 {
-                    zip.Read(buffer, 0, buffer.Length);
+                    int totalRead = 0;
+                    while (totalRead < buffer.Length)
+                    {
+                        int bytesRead = zip.Read(buffer, totalRead, buffer.Length - totalRead);
+                        if (bytesRead == 0) break;
+                        totalRead += bytesRead;
+                    }
                 }
 
                 return Encoding.UTF8.GetString(buffer);
