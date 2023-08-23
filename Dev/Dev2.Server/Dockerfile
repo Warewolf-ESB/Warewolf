@@ -2,9 +2,9 @@ FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 FROM mcr.microsoft.com/windows/servercore:ltsc2019
 USER ContainerAdministrator
 
-RUN powershell -Command Invoke-WebRequest -OutFile dotnet.zip https://dotnetcli.azureedge.net/dotnet/Runtime/6.0.20/dotnet-runtime-6.0.20-win-x64.zip
-RUN powershell -Command Expand-Archive dotnet.zip -DestinationPath "C:\Program` Files\dotnet"
-RUN powershell -Command Remove-Item -Force dotnet.zip
+RUN curl -o dotnet-sdk-installer.exe https://dotnetcli.azureedge.net/dotnet/Sdk/6.0.413/dotnet-sdk-6.0.413-win-x64.exe
+RUN dotnet-sdk-installer.exe /quiet /install
+RUN del dotnet-sdk-installer.exe
 COPY --from=build ["C:/Program Files/dotnet/shared/Microsoft.WindowsDesktop.App", "C:/Program Files/dotnet/shared/Microsoft.WindowsDesktop.App/"]
 COPY --from=build ["C:/Program Files/dotnet/shared/Microsoft.AspNetCore.App", "C:/Program Files/dotnet/shared/Microsoft.AspNetCore.App/"]
 
