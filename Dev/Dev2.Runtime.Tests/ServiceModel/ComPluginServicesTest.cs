@@ -136,6 +136,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
         [TestMethod]
         [TestCategory("WarewolfCOMIPCClient_Execute")]
+        [TestCategory("WarewolfCOMIPCClient_Deprecated")]
         public void ComPluginServicesNamespacesWithValidArgsExpectedReturnsList()
         {
             var source = CreatePluginSource();
@@ -172,6 +173,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
         [TestMethod]
         [TestCategory("WarewolfCOMIPCClient_Execute")]
+        [TestCategory("WarewolfCOMIPCClient_Deprecated")]
         public void ComPluginServicesMethodsWithValidArgsExpectedReturnsList()
         {
             var service = CreatePluginService();

@@ -37,6 +37,7 @@ namespace Dev2.Tests.Activities.Activities
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfComDllActivity))]
         [TestCategory("WarewolfCOMIPCClient_Execute")]
+        [TestCategory("WarewolfCOMIPCClient_Deprecated")]
         public void DsfComDllActivity_Method_IsNull_Expect_Error()
         {
             var mockEsbChannel = new Mock<IEsbChannel>();
@@ -56,6 +57,7 @@ namespace Dev2.Tests.Activities.Activities
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfComDllActivity))]
         [TestCategory("WarewolfCOMIPCClient_Execute")]
+        [TestCategory("WarewolfCOMIPCClient_Deprecated")]
 
         public void DsfComDllActivity_ExecutionImpl_Inputs_IsNull_Catch_Expect_Error()
         {
@@ -88,6 +90,7 @@ namespace Dev2.Tests.Activities.Activities
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfComDllActivity))]
         [TestCategory("WarewolfCOMIPCClient_Execute")]
+        [TestCategory("WarewolfCOMIPCClient_Deprecated")]
         public void DsfComDllActivity_ExecutionImpl_Catch_Common_IsNotNull_Expect_NoError()
         {
             //-----------------------Arrange---------------------
@@ -143,7 +146,7 @@ namespace Dev2.Tests.Activities.Activities
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfComDllActivity))]
         [TestCategory("WarewolfCOMIPCClient_Execute")]
-
+        [TestCategory("WarewolfCOMIPCClient_Deprecated")]
         public void DsfComDllActivity_TryExecute_injectVal_IsNull_Expect_NoError()
         {
             //-----------------------Arrange---------------------
