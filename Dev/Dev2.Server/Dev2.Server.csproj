@@ -205,10 +205,6 @@
       <Project>{2C4E3DC6-2195-4486-894D-8351B066D8CA}</Project>
       <Name>Warewolf.Auditing</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Warewolf.COMIPC.Client\Warewolf.COMIPC.Client.csproj">
-      <Project>{bca6f2b3-c102-45b5-8f64-f0cce2533f1f}</Project>
-      <Name>Warewolf.COMIPC.Client</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Warewolf.Common\Warewolf.Common.csproj">
       <Project>{6c6d687d-ec18-4ab9-8f2e-07c9fbdbca97}</Project>
       <Name>Warewolf.Common</Name>

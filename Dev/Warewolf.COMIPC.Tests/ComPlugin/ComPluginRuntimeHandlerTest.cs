@@ -70,7 +70,11 @@ namespace Dev2.Tests.Runtime.ESB.ComPlugin
             var list = new List<string>() { "Home" };
             memoryStream.WriteByte(Encoding.ASCII.GetBytes(list.SerializeToJsonString(new KnownTypesBinder()))[0]);
             mock.Setup(wrapper => wrapper.GetInternalStream()).Returns(memoryStream);
-            var isolated = new ComPluginRuntimeHandler(mock.Object);
+            /* Purpose : Commented out the paramterized initiation of ComPluginRuntimeHandler and added parameter less initiation
+            *  WorkItem : 7499
+            */
+            //var isolated = new ComPluginRuntimeHandler(mock.Object);
+            var isolated = new ComPluginRuntimeHandler();
             var serviceMethodList = isolated.ListMethods(adodbConnectionClassId, true);
             //------------Assert Results-------------------------
             Assert.AreEqual(0, serviceMethodList.Count);
@@ -90,7 +94,11 @@ namespace Dev2.Tests.Runtime.ESB.ComPlugin
             var list = new List<string>() { "Home" };
             memoryStream.WriteByte(Encoding.ASCII.GetBytes(list.SerializeToJsonString(new KnownTypesBinder()))[0]);
             mock.Setup(wrapper => wrapper.GetInternalStream()).Returns(memoryStream);
-            var isolated = new ComPluginRuntimeHandler(mock.Object);
+            /* Purpose : Commented out the paramterized initiation of ComPluginRuntimeHandler and added parameter less initiation
+            *  WorkItem : 7499
+            */
+            //var isolated = new ComPluginRuntimeHandler(mock.Object);
+            var isolated = new ComPluginRuntimeHandler();
             var result = isolated.ListMethods(adodbConnectionClassId, false);
             //------------Assert Results-------------------------
             CollectionAssert.AllItemsAreUnique(result);
@@ -111,7 +119,11 @@ namespace Dev2.Tests.Runtime.ESB.ComPlugin
             var list = new List<string>() { "Home" };
             memoryStream.WriteByte(Encoding.ASCII.GetBytes(list.SerializeToJsonString(new KnownTypesBinder()))[0]);
             mock.Setup(wrapper => wrapper.GetInternalStream()).Returns(memoryStream);
-            var isolated = new ComPluginRuntimeHandler(mock.Object);
+            /* Purpose : Commented out the paramterized initiation of ComPluginRuntimeHandler and added parameter less initiation
+            *  WorkItem : 7499
+            */
+            //var isolated = new ComPluginRuntimeHandler(mock.Object);
+            var isolated = new ComPluginRuntimeHandler();
             var result = isolated.FetchNamespaceListObject(source);
             //------------Assert Results-------------------------
             Assert.AreEqual(1, result.Count);
@@ -324,8 +336,12 @@ namespace Dev2.Tests.Runtime.ESB.ComPlugin
             var list = new List<string>() { "Home" };
             memoryStream.WriteByte(Encoding.ASCII.GetBytes(list.SerializeToJsonString(new KnownTypesBinder()))[0]);
             mock.Setup(wrapper => wrapper.GetInternalStream()).Returns(memoryStream);
-            //------------Execute Test-------------------------- -
-            var isolated = new ComPluginRuntimeHandler(mock.Object);
+            //------------Execute Test-------------------------- 
+            /* Purpose : Commented out the paramterized initiation of ComPluginRuntimeHandler and added parameter less initiation
+            *  WorkItem : 7499
+            */
+            //var isolated = new ComPluginRuntimeHandler(mock.Object);
+            var isolated = new ComPluginRuntimeHandler();
             var args = new ComPluginInvokeArgs { ClsId = adodbConnectionClassId, Fullname = svc.Namespace, Method = "ToString", Parameters = svc.Method.Parameters, Is32Bit = true };
             var run = isolated.Test(args, out string outString);
             Assert.IsNotNull(run);

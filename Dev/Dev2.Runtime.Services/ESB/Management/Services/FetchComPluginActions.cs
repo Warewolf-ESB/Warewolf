@@ -26,6 +26,10 @@ namespace Dev2.Runtime.ESB.Management.Services
             var serializer = new Dev2JsonSerializer();
             try
             {
+
+                /* Purpose : Commented for depricating COMIPC support, and returning blank COMIPC Support.
+                * Workitem: 7499
+                * 
                 var pluginSource = serializer.Deserialize<ComPluginSourceDefinition>(values["source"]);
                 var ns = serializer.Deserialize<INamespaceItem>(values["namespace"]);
 
@@ -76,6 +80,9 @@ namespace Dev2.Runtime.ESB.Management.Services
                     Method = a.Name,
                     Variables = a.Parameters.Select(x => new NameValue { Name = x.Name + " (" + x.TypeName + ")", Value = "" } as INameValue).ToList(),
                 } as IPluginAction).ToList();
+
+                */
+                List<IPluginAction> methods = new List<IPluginAction>();
                 return serializer.SerializeToBuilder(new ExecuteMessage
                 {
                     HasError = false,

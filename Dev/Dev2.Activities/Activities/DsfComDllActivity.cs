@@ -49,10 +49,17 @@ namespace Dev2.Activities
             DisplayName = "Com DLL";
             _responseManagerFactory = responseManagerFactory;
         }
-        
+
         protected override void ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO tmpErrors, int update)
         {
             tmpErrors = new ErrorResultTO();
+            tmpErrors.AddError("COM DLL tool is deprecated");
+            return;
+
+            /* Purpose : As per workitem 7499; the COM loading is made Obsolete. 
+             * Hence below code is made not reachable.
+             * 
+             */
             if (Method == null)
             {
                 tmpErrors.AddError(ErrorResource.NoMethodSelected);

@@ -23,7 +23,7 @@ using Dev2.Data.Util;
 using Dev2.Runtime.ServiceModel.Data;
 using Newtonsoft.Json;
 using Unlimited.Framework.Converters.Graph;
-using WarewolfCOMIPC.Client;
+//using WarewolfCOMIPC.Client;
 
 
 
@@ -32,12 +32,16 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
 {
     public class ComPluginRuntimeHandler : MarshalByRefObject, IRuntime
     {
-        readonly INamedPipeClientStreamWrapper _clientStreamWrapper;
+        /* Purpose : Commented out the paramterized constructor of ComPluginRuntimeHandler 
+        *  WorkItem : 7499
+        */
 
-        public ComPluginRuntimeHandler(INamedPipeClientStreamWrapper clientStreamWrapper)
-        {
-            _clientStreamWrapper = clientStreamWrapper;
-        }
+        //readonly INamedPipeClientStreamWrapper _clientStreamWrapper;
+
+        //public ComPluginRuntimeHandler(INamedPipeClientStreamWrapper clientStreamWrapper)
+        //{
+        //    _clientStreamWrapper = clientStreamWrapper;
+        //}
 
         public ComPluginRuntimeHandler()
         {
@@ -109,59 +113,63 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
         MethodInfo ExecuteComPlugin(ComPluginInvokeArgs setupInfo, out object pluginResult)
         {
 
-            if (!string.IsNullOrEmpty(setupInfo.ClsId))
-            {
-                if (setupInfo.Is32Bit)
-                {
-                    var strings = setupInfo.Parameters.Select(parameter => new ParameterInfoTO { Name = parameter.Name, DefaultValue = parameter.Value, TypeName = parameter.TypeName }).ToArray();
-                    pluginResult = IpcClient.GetIpcExecutor(_clientStreamWrapper).Invoke(setupInfo.ClsId.ToGuid(), setupInfo.Method, Execute.ExecuteSpecifiedMethod, strings);
-                    return null;
-                }
-                var typeList = BuildTypeList(setupInfo.Parameters);
-                var valuedTypeList = TryBuildValuedTypeParams(setupInfo);
-                var type = GetType(setupInfo.ClsId, setupInfo.Is32Bit);
-                var methodToRun = type.GetMethod(setupInfo.Method, typeList.ToArray()) ??
-                                  type.GetMethod(setupInfo.Method);
-                if (methodToRun == null && typeList.Count == 0)
-                {
-                    methodToRun = type.GetMethod(setupInfo.Method);
-                }
-                var instance = Activator.CreateInstance(type);
+            /* Purpose : Commented for depricating COMIPC support, and returning null pluginResult.
+              * Workitem: 7499
+              * 
+          if (!string.IsNullOrEmpty(setupInfo.ClsId))
+          {
+              if (setupInfo.Is32Bit)
+              {
+                  var strings = setupInfo.Parameters.Select(parameter => new ParameterInfoTO { Name = parameter.Name, DefaultValue = parameter.Value, TypeName = parameter.TypeName }).ToArray();
+                  pluginResult = IpcClient.GetIpcExecutor(_clientStreamWrapper).Invoke(setupInfo.ClsId.ToGuid(), setupInfo.Method, Execute.ExecuteSpecifiedMethod, strings);
+                  return null;
+              }
+              var typeList = BuildTypeList(setupInfo.Parameters);
+              var valuedTypeList = TryBuildValuedTypeParams(setupInfo);
+              var type = GetType(setupInfo.ClsId, setupInfo.Is32Bit);
+              var methodToRun = type.GetMethod(setupInfo.Method, typeList.ToArray()) ??
+                                type.GetMethod(setupInfo.Method);
+              if (methodToRun == null && typeList.Count == 0)
+              {
+                  methodToRun = type.GetMethod(setupInfo.Method);
+              }
+              var instance = Activator.CreateInstance(type);
 
-                if (methodToRun != null)
-                {
-                    if (methodToRun.ReturnType == typeof(void))
-                    {
-                        methodToRun.Invoke(instance,
-                            BindingFlags.InvokeMethod | BindingFlags.IgnoreCase | BindingFlags.Public, null,
-                            valuedTypeList.ToArray(), CultureInfo.InvariantCulture);
-                    }
-                    else
-                    {
-                        pluginResult = methodToRun.Invoke(instance,
-                            BindingFlags.InvokeMethod | BindingFlags.IgnoreCase | BindingFlags.Public, null,
-                            valuedTypeList.ToArray(), CultureInfo.InvariantCulture);
-                        return methodToRun;
-                    }
-                }
-                else
-                {
-                    try
-                    {
-                        pluginResult = type.InvokeMember(setupInfo.Method, BindingFlags.InvokeMethod | BindingFlags.IgnoreCase | BindingFlags.Public, null, instance, valuedTypeList.ToArray(), CultureInfo.InvariantCulture);
-                        return null;
-                    }
-                    catch(Exception ex)
-                    {
-                        Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
+              if (methodToRun != null)
+              {
+                  if (methodToRun.ReturnType == typeof(void))
+                  {
+                      methodToRun.Invoke(instance,
+                          BindingFlags.InvokeMethod | BindingFlags.IgnoreCase | BindingFlags.Public, null,
+                          valuedTypeList.ToArray(), CultureInfo.InvariantCulture);
+                  }
+                  else
+                  {
+                      pluginResult = methodToRun.Invoke(instance,
+                          BindingFlags.InvokeMethod | BindingFlags.IgnoreCase | BindingFlags.Public, null,
+                          valuedTypeList.ToArray(), CultureInfo.InvariantCulture);
+                      return methodToRun;
+                  }
+              }
+              else
+              {
+                  try
+                  {
+                      pluginResult = type.InvokeMember(setupInfo.Method, BindingFlags.InvokeMethod | BindingFlags.IgnoreCase | BindingFlags.Public, null, instance, valuedTypeList.ToArray(), CultureInfo.InvariantCulture);
+                      return null;
+                  }
+                  catch(Exception ex)
+                  {
+                      Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
 
-                        //try executing method and get result from warewolf.comipc.exe
-                        var paramStrings = setupInfo.Parameters.Select(parameter => new ParameterInfoTO { Name = parameter.Name, DefaultValue = parameter.Value, TypeName = parameter.TypeName }).ToArray();
-                        pluginResult = IpcClient.GetIpcExecutor(_clientStreamWrapper).Invoke(setupInfo.ClsId.ToGuid(), setupInfo.Method, Execute.ExecuteSpecifiedMethod, paramStrings);
-                        return null;
-                    }
-                }
-            }
+                      //try executing method and get result from warewolf.comipc.exe
+                      var paramStrings = setupInfo.Parameters.Select(parameter => new ParameterInfoTO { Name = parameter.Name, DefaultValue = parameter.Value, TypeName = parameter.TypeName }).ToArray();
+                      pluginResult = IpcClient.GetIpcExecutor(_clientStreamWrapper).Invoke(setupInfo.ClsId.ToGuid(), setupInfo.Method, Execute.ExecuteSpecifiedMethod, paramStrings);
+                      return null;
+                  }
+              }
+          }
+          */
             pluginResult = null;
             return null;
         }
@@ -229,6 +237,8 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
         /// <returns></returns>
         List<string> ListNamespaces(string classId, bool is32Bit)
         {
+            return new List<string>();
+            /*
             try
             {
                 if (is32Bit)
@@ -257,10 +267,14 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
                 Dev2Logger.Error(e, GlobalConstants.WarewolfError);
                 throw;
             }
+            */
         }
 
         Type GetType(string classId, bool is32Bit)
         {
+            return null;
+
+            /*
             Guid.TryParse(classId, out Guid clasID);
             var is64BitProcess = Environment.Is64BitProcess;
             Type type;
@@ -284,10 +298,13 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
                 type = Type.GetTypeFromCLSID(clasID, true);
             }
             return string.IsNullOrEmpty(classId) ? null : type;
+            */
         }
 
         public ServiceMethodList ListMethods(string classId, bool is32Bit)
         {
+            return new ServiceMethodList();
+            /*
             var serviceMethodList = new List<ServiceMethod>();
             var orderMethodsList = new ServiceMethodList();
             classId = classId.Replace("{", "").Replace("}", "");
@@ -324,8 +341,10 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
                 orderMethodsList.Add(serviceMethod);
             });
             return orderMethodsList;
+            */
         }
 
+        /*
         static void ServiceMethodList(ref List<ServiceMethod> serviceMethodList, ServiceMethodList orderMethodsList, List<MethodInfoTO> ipcMethods)
         {
             foreach (MethodInfoTO ipcMethod in ipcMethods)
@@ -349,6 +368,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
 
             orderMethodsList.AddRange(serviceMethodList.OrderBy(method => method.Name));
         }
+        */
 
         /// <summary>
         /// Fetches the name space list object.
@@ -357,11 +377,15 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
         /// <returns></returns>
         public NamespaceList FetchNamespaceListObject(ComPluginSource pluginSource)
         {
-            var interrogatePlugin = ReadNamespaces(pluginSource.ClsId, pluginSource.Is32Bit);
-            var namespacelist = new NamespaceList();
-            namespacelist.AddRange(interrogatePlugin);
-            namespacelist.Add(new NamespaceItem());
-            return namespacelist;
+             /* Purpose : Commented for depricating COMIPC support, and returning null pluginResult.
+              * Workitem: 7499
+              * 
+            //var interrogatePlugin = ReadNamespaces(pluginSource.ClsId, pluginSource.Is32Bit);
+            //var namespacelist = new NamespaceList();
+            //namespacelist.AddRange(interrogatePlugin);
+            //namespacelist.Add(new NamespaceItem());
+             */
+            return new NamespaceList();
         }
 
 

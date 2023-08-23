@@ -26,7 +26,7 @@ using Dev2.Runtime;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Security;
 using Dev2.Runtime.WebServer;
-using WarewolfCOMIPC.Client;
+//using WarewolfCOMIPC.Client;
 using Dev2.Common.Interfaces.Wrappers;
 using System.Collections.Generic;
 using Dev2.Runtime.Interfaces;
@@ -57,7 +57,8 @@ namespace Dev2
     public class StartupConfiguration
     {
         public IServerEnvironmentPreparer ServerEnvironmentPreparer { get; set; }
-        public IIpcClient IpcClient { get; set; }
+
+        //public IIpcClient IpcClient { get; set; }
         public IAssemblyLoader AssemblyLoader { get; set; }
         public IDirectory Directory { get; set; }
         public IResourceCatalogFactory ResourceCatalogFactory { get; set; }
@@ -81,7 +82,7 @@ namespace Dev2
             return new StartupConfiguration
             {
                 ServerEnvironmentPreparer = serverEnvironmentPreparer,
-                IpcClient = new IpcClientImpl(new NamedPipeClientStreamWrapper(".", Guid.NewGuid().ToString(), System.IO.Pipes.PipeDirection.InOut)),
+                //IpcClient = new IpcClientImpl(new NamedPipeClientStreamWrapper(".", Guid.NewGuid().ToString(), System.IO.Pipes.PipeDirection.InOut)),
                 AssemblyLoader = new AssemblyLoader(),
                 Directory = new DirectoryWrapper(),
                 ResourceCatalogFactory = new ResourceCatalogFactory(),
@@ -111,7 +112,7 @@ namespace Dev2
         IStartWebServer _startWebServer;
         readonly IStartTimer _pulseLogger; // need to keep reference to avoid collection of timer
         readonly IStartTimer _pulseTracker; // need to keep reference to avoid collection of timer
-        IIpcClient _ipcClient;
+        //IIpcClient _ipcClient;
 
         private ILoadResources _loadResources;
         private readonly IAssemblyLoader _assemblyLoader;
@@ -137,7 +138,7 @@ namespace Dev2
             _serverEnvironmentPreparer = startupConfiguration.ServerEnvironmentPreparer;
             _startUpDirectory = startupConfiguration.Directory;
             _startupResourceCatalogFactory = startupConfiguration.ResourceCatalogFactory;
-            _ipcClient = startupConfiguration.IpcClient;
+            //_ipcClient = startupConfiguration.IpcClient;
             _assemblyLoader = startupConfiguration.AssemblyLoader;
             _pulseLogger = new PulseLogger(60000, startupConfiguration.LoggerFactory.New(new JsonSerializer(), new WebSocketPool())).Start();
             _pulseTracker = new PulseTracker(TimeSpan.FromDays(1).TotalMilliseconds).Start();
@@ -185,12 +186,12 @@ namespace Dev2
         /// <returns>A Task that starts up the Warewolf Server.</returns>
         public Task Run(IEnumerable<IServerLifecycleWorker> initWorkers)
         {
-            void OpenCOMStream(INamedPipeClientStreamWrapper clientStreamWrapper)
-            {
-                _writer.Write("Opening named pipe client stream for COM IPC... ");
-                _ipcClient = _ipcClient.GetIpcExecutor(clientStreamWrapper);
-                _writer.WriteLine("done.");
-            }
+            //void OpenCOMStream(INamedPipeClientStreamWrapper clientStreamWrapper)
+            //{
+            //    _writer.Write("Opening named pipe client stream for COM IPC... ");
+            //    _ipcClient = _ipcClient.GetIpcExecutor(clientStreamWrapper);
+            //    _writer.WriteLine("Deprecated ...");
+            //}
 
             return Task.Run(LoadPerformanceCounters)
                 .ContinueWith((t) =>
@@ -228,7 +229,13 @@ namespace Dev2
                     var webServerConfig = _webServerConfiguration;
                     webServerConfig.Execute();
                     new LoadRuntimeConfigurations(_writer).Execute();
-                    OpenCOMStream(null);
+
+                    /* Purpose : As per workitem 7499; the COM loading is made Obsolete. 
+                    * Hence not opening stream for COM IPC
+                    * 
+                    */
+                    // OpenCOMStream(null);
+
                     _loadResources.LoadResourceCatalog();
                     _timer = new Timer((state) => GetComputerNames.GetComputerNamesList(), null, 1000, GlobalConstants.NetworkComputerNameQueryFreq);
                     _loadResources.LoadServerWorkspace();
@@ -320,11 +327,11 @@ namespace Dev2
                     _startWebServer = null;
                 }
 
-                if (_ipcClient != null)
-                {
-                    _ipcClient.Dispose();
-                    _ipcClient = null;
-                }
+                //if (_ipcClient != null)
+                //{
+                //    _ipcClient.Dispose();
+                //    _ipcClient = null;
+                //}
 
                 DebugDispatcher.Instance.Shutdown();
             }

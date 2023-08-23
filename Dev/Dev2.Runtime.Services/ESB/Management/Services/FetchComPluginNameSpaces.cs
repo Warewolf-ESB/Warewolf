@@ -34,31 +34,37 @@ namespace Dev2.Runtime.ESB.Management.Services
             var serializer = new Dev2JsonSerializer();
             try
             {
-                var dbSource = serializer.Deserialize<ComPluginSourceDefinition>(values["source"]);
-                
-                var services = new ComPluginServices();
-                var src = ResourceCatalog.Instance.GetResource<ComPluginSource>(GlobalConstants.ServerWorkspaceID, dbSource.Id);
-                var methods = new List<INamespaceItem>();
-                var task = Task.Run(() =>
-                {
-                    return methods = services.Namespaces(src, Guid.Empty, Guid.Empty).Select(a => a as INamespaceItem).ToList();
-                });
-                try
-                {
-                    var timeoutAfter = task.TimeoutAfter(TimeSpan.FromSeconds(3));
-                    methods = timeoutAfter.Result;
-                }
-                catch (Exception e)
-                {
-                    Dev2Logger.Error(e, GlobalConstants.WarewolfError);
-                }
-             
+
+                /* Purpose : Commented for depricating COMIPC support, and returning blank COMIPC Support.
+                * Workitem: 7499
+                * 
+                        var dbSource = serializer.Deserialize<ComPluginSourceDefinition>(values["source"]);
+
+                        var services = new ComPluginServices();
+                        var src = ResourceCatalog.Instance.GetResource<ComPluginSource>(GlobalConstants.ServerWorkspaceID, dbSource.Id);
+                        var methods = new List<INamespaceItem>();
+                        var task = Task.Run(() =>
+                        {
+                            return methods = services.Namespaces(src, Guid.Empty, Guid.Empty).Select(a => a as INamespaceItem).ToList();
+                        });
+                        try
+                        {
+                            var timeoutAfter = task.TimeoutAfter(TimeSpan.FromSeconds(3));
+                            methods = timeoutAfter.Result;
+                        }
+                        catch (Exception e)
+                        {
+                            Dev2Logger.Error(e, GlobalConstants.WarewolfError);
+                        }
+                */
+
+                List<INamespaceItem> methods = new List<INamespaceItem>();
                 return serializer.SerializeToBuilder(new ExecuteMessage()
                 {
                     HasError = false,
                     Message = serializer.SerializeToBuilder(methods)
                 });
-                
+
             }
             catch (Exception e)
             {
