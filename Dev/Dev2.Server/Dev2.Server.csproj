@@ -137,6 +137,9 @@
     <None Include="AddAdminFromEnvironmentVariablesAndStart.bat">
      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="secure.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <Compile Include="ServerLifecycleManager.cs" />
   </ItemGroup>
   <ItemGroup>
