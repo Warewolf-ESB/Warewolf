@@ -36,6 +36,10 @@ namespace Dev2.Tests.Activities.Activities
         [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfComDllActivity))]
+<<<<<<< HEAD
+=======
+        [TestCategory("WarewolfCOMIPCClient_Execute")]
+>>>>>>> 3627ab9136c4bfc9ada17d6a626461906f161a17
         [TestCategory("WarewolfCOMIPCClient_Deprecated")]
         public void DsfComDllActivity_Method_IsNull_Expect_Error()
         {
@@ -55,6 +59,10 @@ namespace Dev2.Tests.Activities.Activities
         [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfComDllActivity))]
+<<<<<<< HEAD
+=======
+        [TestCategory("WarewolfCOMIPCClient_Execute")]
+>>>>>>> 3627ab9136c4bfc9ada17d6a626461906f161a17
         [TestCategory("WarewolfCOMIPCClient_Deprecated")]
 
         public void DsfComDllActivity_ExecutionImpl_Inputs_IsNull_Catch_Expect_Error()
@@ -87,6 +95,10 @@ namespace Dev2.Tests.Activities.Activities
         [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfComDllActivity))]
+<<<<<<< HEAD
+=======
+        [TestCategory("WarewolfCOMIPCClient_Execute")]
+>>>>>>> 3627ab9136c4bfc9ada17d6a626461906f161a17
         [TestCategory("WarewolfCOMIPCClient_Deprecated")]
         public void DsfComDllActivity_ExecutionImpl_Catch_Common_IsNotNull_Expect_NoError()
         {
@@ -142,8 +154,13 @@ namespace Dev2.Tests.Activities.Activities
         [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfComDllActivity))]
+<<<<<<< HEAD
         [TestCategory("WarewolfCOMIPCClient_Deprecated")]
 
+=======
+        [TestCategory("WarewolfCOMIPCClient_Execute")]
+        [TestCategory("WarewolfCOMIPCClient_Deprecated")]
+>>>>>>> 3627ab9136c4bfc9ada17d6a626461906f161a17
         public void DsfComDllActivity_TryExecute_injectVal_IsNull_Expect_NoError()
         {
             //-----------------------Arrange---------------------
