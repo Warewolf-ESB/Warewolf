@@ -372,13 +372,6 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
 						}
 						Copy-Item -Path "$PSScriptRoot\TestRun.ps1" "$PSScriptRoot\Bin\$OutputFolderName\TestRun.ps1" -Force
 					}
-					if (!(Test-Path "$PSScriptRoot\Dev\Warewolf.COMIPC\bin\Debug\net6.0-windows\Warewolf.COMIPC.exe")) {
-						&"$MSBuildPath" "$PSScriptRoot\Dev\Warewolf.COMIPC\Warewolf.COMIPC.csproj"
-					}
-					if (!(Test-Path "$PSScriptRoot\Bin\$OutputFolderName\Warewolf.COMIPC.exe_v4.8")) {
-						mkdir "$PSScriptRoot\Bin\$OutputFolderName\Warewolf.COMIPC.exe_v4.8"
-					}
-					Copy-Item -Path "$PSScriptRoot\Dev\Warewolf.COMIPC\bin\Debug\net6.0-windows\Warewolf.COMIPC.exe" -Destination "$PSScriptRoot\Bin\$OutputFolderName\Warewolf.COMIPC.exe_v4.8\Warewolf.COMIPC.exe" -Force
 					Copy-Item -Path "$PSScriptRoot\Bin\$OutputFolderName\runtimes\win-x64\native\SQLite.Interop.dll" -Destination "$PSScriptRoot\Bin\$OutputFolderName\SQLite.Interop.dll" -Force
 					Copy-Item -Path "$PSScriptRoot\Dev\Server Tests Setup\sni.dll" -Destination "$PSScriptRoot\Bin\$OutputFolderName\sni.dll" -Force
 					if (!(Test-Path "$PSScriptRoot\Bin\$OutputFolderName\testhost.dll.config")) {
