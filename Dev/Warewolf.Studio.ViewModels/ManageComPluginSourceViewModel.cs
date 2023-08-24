@@ -115,7 +115,7 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                return _searchTerm;
+                return (String.IsNullOrEmpty(_searchTerm)) ? "Com Plugin Source Deprecated" : _searchTerm;
             }
             set
             {

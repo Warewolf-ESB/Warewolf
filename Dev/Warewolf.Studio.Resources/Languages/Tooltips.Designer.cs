@@ -19,7 +19,7 @@ namespace Warewolf.Studio.Resources.Languages {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Tooltips {
@@ -288,7 +288,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Edits the selected COM plugin source connection.
+        ///   Looks up a localized string similar to COM DLL Deprecated.
         /// </summary>
         public static string ComManagePluginServiceEditSourceTooltip {
             get {
@@ -297,7 +297,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Create a new connection to a COM DLL.
+        ///   Looks up a localized string similar to COM DLL Deprecated.
         /// </summary>
         public static string ComManagePluginServiceNewSourceTooltip {
             get {
@@ -306,7 +306,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select the COM plugin you want to use.
+        ///   Looks up a localized string similar to COM DLL Deprecated.
         /// </summary>
         public static string ComManagePluginServiceSourcesTooltip {
             get {
@@ -315,7 +315,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The programmatic identifier you want to use.
+        ///   Looks up a localized string similar to COM DLL Deprecated.
         /// </summary>
         public static string ComManagePluginSourceAssemblyNameTooltip {
             get {
@@ -333,7 +333,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Filter for the COM DLL you want .
+        ///   Looks up a localized string similar to COM DLL Deprecated.
         /// </summary>
         public static string ComManagePluginSourceFilterTooltip {
             get {
@@ -342,7 +342,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Refresh the available COM DLL.
+        ///   Looks up a localized string similar to COM DLL Deprecated.
         /// </summary>
         public static string ComManagePluginSourceRefreshTooltip {
             get {
