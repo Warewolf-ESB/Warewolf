@@ -205,6 +205,7 @@ namespace Dev2.Tests.Activities.Activities
         [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfComDllActivity))]
+        [TestCategory("WarewolfCOMIPCClient_Deprecated")]
         public void DsfComDllActivity_GetHashCode_IsNotNull_Expect_True()
         {
             //-----------------------Arrange---------------------
@@ -219,6 +220,7 @@ namespace Dev2.Tests.Activities.Activities
         [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfComDllActivity))]
+        [TestCategory("WarewolfCOMIPCClient_Deprecated")]
         public void DsfComDllActivity_Equals_IsNotNull_Expect_True()
         {
             //-----------------------Arrange---------------------
@@ -233,6 +235,7 @@ namespace Dev2.Tests.Activities.Activities
         [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfComDllActivity))]
+        [TestCategory("WarewolfCOMIPCClient_Deprecated")]
         public void DsfComDllActivity_Equals_IsNull_Expect_False()
         {
             //-----------------------Arrange---------------------
@@ -247,6 +250,7 @@ namespace Dev2.Tests.Activities.Activities
         [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfComDllActivity))]
+        [TestCategory("WarewolfCOMIPCClient_Deprecated")]
         public void DsfComDllActivity_Equals_NotSame_Expect_False()
         {
             //-----------------------Arrange---------------------
@@ -261,6 +265,7 @@ namespace Dev2.Tests.Activities.Activities
         [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfComDllActivity))]
+        [TestCategory("WarewolfCOMIPCClient_Deprecated")]
         public void DsfComDllActivity_ObjectEquals_NotSame_Expect_False()
         {
             //-----------------------Arrange---------------------
@@ -277,6 +282,7 @@ namespace Dev2.Tests.Activities.Activities
         [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfComDllActivity))]
+        [TestCategory("WarewolfCOMIPCClient_Deprecated")]
         public void DsfComDllActivity_ObjectEquals_IsNull_Expect_False()
         {
             //-----------------------Arrange---------------------
