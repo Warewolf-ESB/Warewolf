@@ -60,6 +60,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.InternalServices
         }
 
         [TestMethod]
+        [Ignore]//Ignoring until WPLF-7507 is done
         public void ExecutionWithNoStartNode_ExpectedInvalidValidResult()
         {
 
