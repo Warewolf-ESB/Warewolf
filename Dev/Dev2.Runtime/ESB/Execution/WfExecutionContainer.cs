@@ -323,10 +323,8 @@ namespace Dev2.Runtime.ESB.Execution
             {
                 if (!subscriptionProvider.IsLicensed)
                 {
-                    dsfDataObject.Environment.AddError(ErrorResource.InvalidLicense);
                     dsfDataObject.ExecutionException = new Exception(ErrorResource.InvalidLicense);
                     Dev2Logger.Error(ErrorResource.InvalidLicense, dsfDataObject.ExecutionID?.ToString());
-                    return;
                 }
 
                 Dev2Logger.Debug("Executing first node", dsfDataObject.ExecutionID?.ToString());
