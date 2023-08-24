@@ -435,11 +435,6 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
 </configuration>
 "@ | Out-File -LiteralPath "$PSScriptRoot\Bin\$OutputFolderName\testhost.dll.config" -Encoding utf8 -Force
 					}
-				} else {
-					if (!(Test-Path "$PSScriptRoot\Dev\Dev2.Server\bin\$Config\net6.0-windows\Warewolf.COMIPC.exe_v4.8")) {
-						mkdir "$PSScriptRoot\Dev\Dev2.Server\bin\$Config\net6.0-windows\Warewolf.COMIPC.exe_v4.8"
-					}
-					Copy-Item -Path "$PSScriptRoot\Dev\Warewolf.COMIPC\bin\$Config\net6.0-windows\Warewolf.COMIPC.exe" -Destination "$PSScriptRoot\Dev\Dev2.Server\bin\$Config\net6.0-windows\Warewolf.COMIPC.exe_v4.8\Warewolf.COMIPC.exe" -Force
 				}
 			}
         }
