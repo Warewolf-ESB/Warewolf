@@ -24,7 +24,7 @@ namespace Dev2.Integration.Tests.Network
         public void ServerProxyWithoutChunking_GivenServerAvailable_ExpectConnected()
         {
             var proxy = new ServerProxyWithoutChunking(new Uri("http://localhost:3142"));
-            
+
             Assert.AreEqual(ConnState.Disconnected, proxy.StateController.Current);
             Assert.AreEqual(ConnState.Disconnected, proxy.State);
             proxy.Connect(Guid.NewGuid());

@@ -136,7 +136,7 @@
                     HorizontalAlignment="Left"
                     Command="{Binding SaveCommand}"
                     Style="{StaticResource SideMenuButtonStyle}"
-                    ToolTip="{x:Static languages:Tooltips.MenuSaveToolTip}">
+                    ToolTip="{Binding MenuSaveToolTip}">
                 <DockPanel Width="{Binding ButtonWidth}"
                            Height="35"
                            HorizontalAlignment="Stretch"

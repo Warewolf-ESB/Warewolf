@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows;
+using Warewolf.Licensing;
 
 namespace Warewolf.Studio.ViewModels.Tests.Search
 {
@@ -46,10 +47,12 @@ namespace Warewolf.Studio.ViewModels.Tests.Search
             _serverMock.SetupGet(it => it.DisplayName).Returns("someResName");
             _serverMock.Setup(it => it.GetServerVersion()).Returns("1.1.3");
             _serverMock.Setup(it => it.GetMinSupportedVersion()).Returns("1.1.2");
+            _serverMock.Setup(it => it.GetSubscriptionData()).Returns(new Mock<ISubscriptionData>().Object);
             _environmentConnectonMock = SetupMockConnection();
             _environmentConnectonMock.Setup(connection => connection.IsConnected).Returns(true);
             _serverMock.Setup(server => server.Connection).Returns(_environmentConnectonMock.Object);
             _shellViewModelMock.SetupGet(it => it.LocalhostServer).Returns(_serverMock.Object);
+            _shellViewModelMock.Setup(it => it.SubscriptionData).Returns(new Mock<ISubscriptionData>().Object);
             _popupControllerMock = new Mock<IPopupController>();
             _shellViewModelMock.SetupGet(o => o.PopupProvider).Returns(_popupControllerMock.Object);
             _eventAggregatorMock = new Mock<IEventAggregator>();
