@@ -135,10 +135,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         }
 
         [TestMethod]
-<<<<<<< HEAD
-=======
         [TestCategory("WarewolfCOMIPCClient_Execute")]
->>>>>>> 3627ab9136c4bfc9ada17d6a626461906f161a17
         [TestCategory("WarewolfCOMIPCClient_Deprecated")]
         public void ComPluginServicesNamespacesWithValidArgsExpectedReturnsList()
         {
@@ -175,10 +172,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         }
 
         [TestMethod]
-<<<<<<< HEAD
-=======
         [TestCategory("WarewolfCOMIPCClient_Execute")]
->>>>>>> 3627ab9136c4bfc9ada17d6a626461906f161a17
         [TestCategory("WarewolfCOMIPCClient_Deprecated")]
         public void ComPluginServicesMethodsWithValidArgsExpectedReturnsList()
         {
