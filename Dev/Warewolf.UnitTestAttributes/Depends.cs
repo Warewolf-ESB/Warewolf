@@ -162,8 +162,8 @@ namespace Warewolf.UnitTestAttributes
             }
             else if (_containerType == ContainerType.HTTPVerbsApi)
             {
-                Container.IP = "4.221.39.39";
-                Container.Port = "9810";
+                Container.IP = "http-verbs-connector-testing.southafricanorth.azurecontainer.io";
+                Container.Port = "80";
             }
             else if (_containerType == ContainerType.WebApi)
             {
