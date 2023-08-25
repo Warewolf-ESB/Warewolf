@@ -19,7 +19,9 @@ ENV SERVER_LOG "C:\programdata\Warewolf\Server Log\warewolf-server.log"
 ENV SERVER_USERNAME "WarewolfAdmin"
 ENV SERVER_PASSWORD "W@rEw0lf@dm1n"
 
-RUN mkdir "programdata\Warewolf"
-RUN xcopy /s /y "C:\Server\Resources - Release" "C:\programdata\Warewolf"
+RUN mkdir "programdata\Warewolf\Resources"
+RUN xcopy /s /y "C:\Server\Resources" "C:\programdata\Warewolf\Resources"
+RUN mkdir "programdata\Warewolf\Tests"
+RUN xcopy /s /y "C:\Server\Tests" "C:\programdata\Warewolf\Tests"
 
 CMD .\Server\AddAdminFromEnvironmentVariablesAndStart.bat

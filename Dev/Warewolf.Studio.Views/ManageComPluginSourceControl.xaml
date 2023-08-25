@@ -76,7 +76,7 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="29"/>
                     </Grid.RowDefinitions>
-                    <customControls:SearchTextBox Grid.Row="0" 
+                    <customControls:SearchTextBox Grid.Row="0" IsEnabled="False"
                                                   Margin="{StaticResource ControlBorderTopRight}"
                                                   Grid.Column="0"
                                                   x:Name="SearchTextBox" 
@@ -91,7 +91,7 @@
                             <core:HelpSetter Text="{x:Static languages:HelpText.ComPluginSourceClearSearchHelp}" DataContext="{Binding}" />
                         </i:Interaction.Behaviors>
                     </customControls:SearchTextBox>
-                    <Button x:Name="RefreshButton" Grid.Row="0"
+                    <Button x:Name="RefreshButton" Grid.Row="0" IsEnabled="False"
                             Grid.Column="1"
                             HorizontalAlignment="Right"
                             VerticalAlignment="Center"

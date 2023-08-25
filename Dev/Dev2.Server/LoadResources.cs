@@ -63,6 +63,7 @@ namespace Dev2
             if (_directory.Exists(serverReleaseResources))
             {
                 _catalog.LoadExamplesViaBuilder(serverReleaseResources);
+                _directory.CleanUp(serverReleaseResources);
             }
         }
         

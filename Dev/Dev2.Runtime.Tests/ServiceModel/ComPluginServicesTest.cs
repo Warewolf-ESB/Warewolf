@@ -22,6 +22,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
+        [TestCategory("WarewolfCOMIPCClient_Deprecated")]
         public void ComPluginServicesContructorWithNullResourceCatalogExpectedThrowsArgumentNullException()
         {
             new ComPluginServices(null, null);
@@ -50,6 +51,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
+        [TestCategory("WarewolfCOMIPCClient_Deprecated")]
         public void ComPluginServicesDeserializeServiceWithNullJsonExpectedThrowsArgumentNullException()
         {
             var services = new ComPluginServicesMock(new Mock<IResourceCatalog>().Object, new Mock<IAuthorizationService>().Object);
@@ -57,6 +59,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         }
 
         [TestMethod]
+        [TestCategory("WarewolfCOMIPCClient_Deprecated")]
         public void ComPluginServicesDeserializeServiceWithInvalidJsonExpectedReturnsNewPluginService()
         {
             var services = new ComPluginServicesMock(new Mock<IResourceCatalog>().Object, new Mock<IAuthorizationService>().Object);
@@ -65,6 +68,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         }
 
         [TestMethod]
+        [TestCategory("WarewolfCOMIPCClient_Deprecated")]
         public void ComPluginServicesDeserializeServiceWithValidJsonExpectedReturnsPluginService()
         {
             var xml = XmlResource.Fetch("ComPluginService");
@@ -86,6 +90,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         }
 
         [TestMethod]
+        [TestCategory("WarewolfCOMIPCClient_Deprecated")]
         public void ComPluginServicesDeserializeServiceWithNullXmlExpectedReturnsNewPluginService()
         {
             var services = new ComPluginServicesMock(new Mock<IResourceCatalog>().Object, new Mock<IAuthorizationService>().Object);
@@ -95,6 +100,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         }
 
         [TestMethod]
+        [TestCategory("WarewolfCOMIPCClient_Deprecated")]
         public void ComPluginServicesDeserializeServiceWithValidXmlExpectedReturnsPluginService()
         {
             var xml = XmlResource.Fetch("ComPluginService");
@@ -119,6 +125,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         #region Namespaces
 
         [TestMethod]
+        [TestCategory("WarewolfCOMIPCClient_Deprecated")]
         public void ComPluginServicesNamespacesWithNullArgsExpectedReturnsEmptyList()
         {
             var services = new ComPluginServices();
@@ -127,6 +134,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         }
 
         [TestMethod]
+        [TestCategory("WarewolfCOMIPCClient_Deprecated")]
         public void ComPluginServicesNamespacesWithInvalidArgsExpectedReturnsEmptyList()
         {
             var services = new ComPluginServices();
@@ -134,7 +142,8 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.AreEqual(0, result.Count);
         }
 
-        [TestMethod]
+        [TestMethod]        
+        [TestCategory("WarewolfCOMIPCClient_Deprecated")]
         public void ComPluginServicesNamespacesWithValidArgsExpectedReturnsList()
         {
             var source = CreatePluginSource();
@@ -154,6 +163,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         #region Methods
 
         [TestMethod]
+        [TestCategory("WarewolfCOMIPCClient_Deprecated")]
         public void ComPluginServicesMethodsWithNullArgsExpectedReturnsEmptyList()
         {
             var services = new ComPluginServices();
@@ -162,6 +172,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         }
 
         [TestMethod]
+        [TestCategory("WarewolfCOMIPCClient_Deprecated")]
         public void ComPluginServicesMethodsWithInvalidArgsExpectedReturnsEmptyList()
         {
             var services = new ComPluginServices();
@@ -170,6 +181,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         }
 
         [TestMethod]
+        [TestCategory("WarewolfCOMIPCClient_Deprecated")]
         public void ComPluginServicesMethodsWithValidArgsExpectedReturnsList()
         {
             var service = CreatePluginService();
@@ -190,6 +202,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("ComPluginServices_Test")]
+        [TestCategory("WarewolfCOMIPCClient_Deprecated")]
         public void ComPluginServices_Test_WhenTestingPluginReturningJsonString_ExpectValidPaths()
         {
             var pluginServices = new ComPluginServices();
@@ -206,6 +219,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         }
 
         [TestMethod]
+        [TestCategory("WarewolfCOMIPCClient_Deprecated")]
         public void PluginServicesTestWithNullArgsExpectedReturnsRecordsetWithError()
         {
             //------------Setup for test--------------------------
@@ -217,6 +231,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         }
 
         [TestMethod]
+        [TestCategory("WarewolfCOMIPCClient_Deprecated")]
         public void PluginServicesTestWithInvalidArgsExpectedReturnsRecordsetWithError()
         {
             //------------Setup for test--------------------------

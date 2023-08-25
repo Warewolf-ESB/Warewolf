@@ -23,6 +23,8 @@
                     x:Class="CustomToolDesignerRegions"
                     d:DataContext="{d:DesignInstance core1:CustomToolWithRegionBase}">
 
+
+
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -52,7 +54,7 @@
                     <core:HelpSetter Text="{Binding SourceRegion.SourcesHelpText}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
             </ComboBox>
-            <Button x:Name="SourceEditButton" 
+            <Button x:Name="SourceEditButton" IsEnabled="False"
                         Grid.Column="2"
                         Margin="{StaticResource ControlBorderRight}"
                         Content="..."
@@ -62,7 +64,7 @@
                     <core:HelpSetter Text="{Binding SourceRegion.EditSourceHelpText}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
             </Button>
-            <Button x:Name="SourceNewButton" 
+            <Button x:Name="SourceNewButton" IsEnabled="False"
                         Grid.Column="3"
                         Content="{x:Static languages:Core.New}" 
                         Width="Auto"

@@ -204,7 +204,7 @@ namespace Dev2.Server.Tests
 
             //------------------------Assert-------------------------
             mockWriter.Verify(o => o.Write("Loading security provider...  "), Times.Once);
-            mockWriter.Verify(o => o.Write("Opening named pipe client stream for COM IPC... "), Times.Once);
+            //mockWriter.Verify(o => o.Write("Opening named pipe client stream for COM IPC... "), Times.Once);
             mockWriter.Verify(o => o.Write("Loading resource catalog...  "), Times.Once);
             mockWriter.Verify(o => o.Write("Loading server workspace...  "), Times.Once);
             mockWriter.Verify(o => o.Write("Loading resource activity cache...  "), Times.Once);
@@ -283,7 +283,7 @@ namespace Dev2.Server.Tests
 
             //------------------------Assert-------------------------
             mockWriter.Verify(o => o.Write("Loading security provider...  "), Times.Once);
-            mockWriter.Verify(o => o.Write("Opening named pipe client stream for COM IPC... "), Times.Once);
+            //mockWriter.Verify(o => o.Write("Opening named pipe client stream for COM IPC... "), Times.Once);
             mockWriter.Verify(o => o.Write("Loading resource catalog...  "), Times.Once);
             mockWriter.Verify(o => o.Write("Loading server workspace...  "), Times.Once);
             mockWriter.Verify(o => o.Write("Loading resource activity cache...  "), Times.Once);
@@ -368,7 +368,7 @@ namespace Dev2.Server.Tests
 
             //------------------------Assert-------------------------
             mockWriter.Verify(o => o.Write("Loading security provider...  "), Times.Once);
-            mockWriter.Verify(o => o.Write("Opening named pipe client stream for COM IPC... "), Times.Once);
+            //mockWriter.Verify(o => o.Write("Opening named pipe client stream for COM IPC... "), Times.Once);
             mockWriter.Verify(o => o.Write("Loading resource catalog...  "), Times.Once);
             mockWriter.Verify(o => o.Write("Loading server workspace...  "), Times.Once);
             mockWriter.Verify(o => o.Write("Loading resource activity cache...  "), Times.Once);
@@ -434,7 +434,7 @@ namespace Dev2.Server.Tests
 
             //------------------------Assert-------------------------
             mockWriter.Verify(o => o.Write("Loading security provider...  "), Times.Once);
-            mockWriter.Verify(o => o.Write("Opening named pipe client stream for COM IPC... "), Times.Once);
+            //mockWriter.Verify(o => o.Write("Opening named pipe client stream for COM IPC... "), Times.Once);
             mockWriter.Verify(o => o.Write("Loading resource catalog...  "), Times.Once);
             mockWriter.Verify(o => o.Write("Loading server workspace...  "), Times.Once);
             mockWriter.Verify(o => o.Write("Loading resource activity cache...  "), Times.Once);
@@ -574,7 +574,7 @@ namespace Dev2.Server.Tests
 
             //------------------------Assert-------------------------
             mockWriter.Verify(o => o.Write("Loading security provider...  "), Times.Once);
-            mockWriter.Verify(o => o.Write("Opening named pipe client stream for COM IPC... "), Times.Once);
+            //mockWriter.Verify(o => o.Write("Opening named pipe client stream for COM IPC... "), Times.Once);
             mockWriter.Verify(o => o.Write("Loading resource catalog...  "), Times.Once);
             mockWriter.Verify(o => o.Write("Loading server workspace...  "), Times.Once);
             mockWriter.Verify(o => o.Write("Loading resource activity cache...  "), Times.Once);
@@ -660,7 +660,7 @@ namespace Dev2.Server.Tests
 
             //------------------------Assert-------------------------
             mockWriter.Verify(o => o.Write("Loading security provider...  "), Times.Once);
-            mockWriter.Verify(o => o.Write("Opening named pipe client stream for COM IPC... "), Times.Once);
+            //mockWriter.Verify(o => o.Write("Opening named pipe client stream for COM IPC... "), Times.Once);
             mockWriter.Verify(o => o.Write("Loading resource catalog...  "), Times.Once);
             mockWriter.Verify(o => o.Write("Loading server workspace...  "), Times.Once);
             mockWriter.Verify(o => o.Write("Loading resource activity cache...  "), Times.Once);
@@ -747,7 +747,7 @@ namespace Dev2.Server.Tests
 
             //------------------------Assert-------------------------
             mockWriter.Verify(o => o.Write("Loading security provider...  "), Times.Once);
-            mockWriter.Verify(o => o.Write("Opening named pipe client stream for COM IPC... "), Times.Once);
+            //mockWriter.Verify(o => o.Write("Opening named pipe client stream for COM IPC... "), Times.Once);
             mockWriter.Verify(o => o.Write("Loading resource catalog...  "), Times.Once);
             mockWriter.Verify(o => o.Write("Loading server workspace...  "), Times.Once);
             mockWriter.Verify(o => o.Write("Loading resource activity cache...  "), Times.Once);
@@ -833,7 +833,7 @@ namespace Dev2.Server.Tests
 
             //------------------------Assert-------------------------
             mockWriter.Verify(o => o.Write("Loading security provider...  "), Times.Once);
-            mockWriter.Verify(o => o.Write("Opening named pipe client stream for COM IPC... "), Times.Once);
+            //mockWriter.Verify(o => o.Write("Opening named pipe client stream for COM IPC... "), Times.Once);
             mockWriter.Verify(o => o.Write("Loading resource catalog...  "), Times.Once);
             mockWriter.Verify(o => o.Write("Loading server workspace...  "), Times.Once);
             mockWriter.Verify(o => o.Write("Loading resource activity cache...  "), Times.Once);
@@ -1051,7 +1051,7 @@ namespace Dev2.Server.Tests
 
             //------------------------Assert-------------------------
             mockWriter.Verify(o => o.Write("Loading security provider...  "), Times.Once);
-            mockWriter.Verify(o => o.Write("Opening named pipe client stream for COM IPC... "), Times.Once);
+            //mockWriter.Verify(o => o.Write("Opening named pipe client stream for COM IPC... "), Times.Once);
             mockWriter.Verify(o => o.Write("Loading resource catalog...  "), Times.Once);
             mockWriter.Verify(o => o.Write("Loading server workspace...  "), Times.Once);
             mockWriter.Verify(o => o.Write("Loading resource activity cache...  "), Times.Once);

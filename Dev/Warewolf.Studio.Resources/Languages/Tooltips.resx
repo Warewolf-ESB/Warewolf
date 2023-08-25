@@ -9,7 +9,7 @@
     that is mostly human readable. The generation and parsing of the 
     various data types are done through the TypeConverter classes 
     associated with the data types.
-
+    
     Example:
     
     ... ado.net/XML headers & schema ...
@@ -2068,25 +2068,25 @@ You can connect comments into the process flow and they will simply be skipped d
 However, they will appear in the debug output.</value>
   </data>
   <data name="ComManagePluginSourceRefreshTooltip" xml:space="preserve">
-    <value>Refresh the available COM DLL</value>
+    <value>COM DLL Deprecated</value>
   </data>
   <data name="ComManagePluginSourceFilterTooltip" xml:space="preserve">
-    <value>Filter for the COM DLL you want </value>
+    <value>COM DLL Deprecated</value>
   </data>
   <data name="ComManagePluginSourceClearSearchTooltip" xml:space="preserve">
     <value>Clear the filter criteria</value>
   </data>
   <data name="ComManagePluginSourceAssemblyNameTooltip" xml:space="preserve">
-    <value>The programmatic identifier you want to use</value>
+    <value>COM DLL Deprecated</value>
   </data>
   <data name="ComManagePluginServiceSourcesTooltip" xml:space="preserve">
-    <value>Select the COM plugin you want to use</value>
+    <value>COM DLL Deprecated</value>
   </data>
   <data name="ComManagePluginServiceNewSourceTooltip" xml:space="preserve">
-    <value>Create a new connection to a COM DLL</value>
+    <value>COM DLL Deprecated</value>
   </data>
   <data name="ComManagePluginServiceEditSourceTooltip" xml:space="preserve">
-    <value>Edits the selected COM plugin source connection</value>
+    <value>COM DLL Deprecated</value>
   </data>
   <data name="CMDLineToolTipResult" xml:space="preserve">
     <value>Returns the output of the execution if any. Varies depending on what was executed.</value>
@@ -2514,7 +2514,7 @@ To create a SFTP Key, put the full path and file or folder name here.</value>
   <data name="LoggingViewAuditsFilePathToolTip" xml:space="preserve">
     <value>Audits Folder Path</value>
   </data>
-	<data name="IncludeEnvironmentVariableToolTip" xml:space="preserve">
+  <data name="IncludeEnvironmentVariableToolTip" xml:space="preserve">
     <value>Select the Include Environment Variables with your execution logs, for more detailed diagnostics.</value>
   </data>
   <data name="LoggingViewAuditsDataSourceToolTip" xml:space="preserve">
@@ -2622,7 +2622,7 @@ To create a SFTP Key, put the full path and file or folder name here.</value>
   <data name="PersistenceViewPrepareSchemaIfNecessaryToolTip" xml:space="preserve">
     <value>Create the tables and index in the database if they dont already exist</value>
   </data>
-	<data name="PersistenceViewUseAsServerToolTip" xml:space="preserve">
+  <data name="PersistenceViewUseAsServerToolTip" xml:space="preserve">
     <value>Show the additional data to use hangfire as a server if checkbox is checked</value>
   </data>
   <data name="IsPutDataBase64Tooltip" xml:space="preserve">

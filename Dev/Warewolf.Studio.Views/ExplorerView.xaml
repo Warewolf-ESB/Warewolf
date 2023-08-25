@@ -343,7 +343,7 @@
                                                 <Image Style="{StaticResource NewPluginSourceIcon}"/>
                                             </MenuItem.Icon>
                                         </MenuItem>
-                                        <MenuItem Name="NewComPluginSource"
+                                        <!--<MenuItem Name="NewComPluginSource"
                                                   Style="{StaticResource MenuItemStyle}"
                                                   Command="{Binding NewComPluginSourceCommand}"
                                                   Header="New COM Plugin Source"
@@ -352,7 +352,7 @@
                                             <MenuItem.Icon>
                                                 <Image Style="{StaticResource NewPluginSourceIcon}"/>
                                             </MenuItem.Icon>
-                                        </MenuItem>
+                                        </MenuItem>-->
                                         <MenuItem Name="NewWcfSource"
                                                   Style="{StaticResource MenuItemStyle}"
                                                   Command="{Binding NewWcfSourceCommand}"
