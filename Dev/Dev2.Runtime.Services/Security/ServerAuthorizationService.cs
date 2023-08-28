@@ -91,7 +91,7 @@ namespace Dev2.Runtime.Security
 
             if (!authorized)
             {
-                if (ResultsCache.Instance.ContainsPendingRequestForUser(user.Identity.Name))
+                if (!string.IsNullOrEmpty(user?.Identity?.Name) && ResultsCache.Instance.ContainsPendingRequestForUser(user.Identity.Name))
                 {
                     authorized = true;
                 }

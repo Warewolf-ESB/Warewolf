@@ -51,6 +51,8 @@ namespace Dev2.Runtime.WebServer.Handlers
             {
                 isPublic = false;
             }
+
+            System.Threading.Thread.CurrentPrincipal = ctx.Request.User;
             var result = GetApisJson(basePath,isPublic);
             
             ctx.Send(result);
