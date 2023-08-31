@@ -29,6 +29,7 @@ using Dev2.DynamicServices.Objects;
 using Dev2.Interfaces;
 using Dev2.Runtime.ESB.Execution;
 using Dev2.Runtime.Execution;
+using Dev2.Runtime.Subscription;
 using Dev2.Workspaces;
 using Microsoft.VisualBasic.Activities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -207,7 +208,9 @@ namespace ActivityUnitTests
                     esbChannel = channel;
                 }
                 dataObject.ExecutionToken = new ExecutionToken();
-                var wfec = new WfExecutionContainer(svc, dataObject, WorkspaceRepository.Instance.ServerWorkspace, esbChannel);
+                var mockSubscriptionProvider = new Mock<ISubscriptionProvider>();
+                mockSubscriptionProvider.Setup(o => o.IsLicensed).Returns(true);
+                var wfec = new WfExecutionContainer(svc, dataObject, WorkspaceRepository.Instance.ServerWorkspace, esbChannel, mockSubscriptionProvider.Object);
                 dataObject.Settings = new Dev2WorkflowSettingsTO { EnableDetailedLogging = false };
 
                 errors.ClearErrors();
@@ -304,7 +307,9 @@ namespace ActivityUnitTests
 
                 mockChannel.Setup(c => c.ExecuteSubRequest(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>(), out errors, 0, false)).Verifiable();
                 CustomContainer.Register<IActivityParser>(new ActivityParser());
-                var wfec = new WfExecutionContainer(svc, dataObject, WorkspaceRepository.Instance.ServerWorkspace, mockChannel.Object);
+                var mockSubscriptionProvider = new Mock<ISubscriptionProvider>();
+                mockSubscriptionProvider.Setup(o => o.IsLicensed).Returns(true);
+                var wfec = new WfExecutionContainer(svc, dataObject, WorkspaceRepository.Instance.ServerWorkspace, mockChannel.Object, mockSubscriptionProvider.Object);
                 dataObject.Settings = new Dev2WorkflowSettingsTO{ EnableDetailedLogging = false };
                 errors.ClearErrors();
                 wfec.Eval(FlowchartProcess,dataObject, 0);

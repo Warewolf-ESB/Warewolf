@@ -34,6 +34,7 @@ using Dev2.ViewModels;
 using Dev2.Workspaces;
 using Infragistics.Windows.DockManager;
 using Dev2.Triggers.Scheduler;
+using Warewolf.Studio.CustomControls;
 
 namespace Dev2.Studio.Views
 {
@@ -197,6 +198,28 @@ namespace Dev2.Studio.Views
                 var shellViewModel = DataContext as ShellViewModel;
                 shellViewModel?.MergeCommand.Execute(null);
             }
+
+            if (e.Key == Key.S && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
+            {
+                if (DataContext is ShellViewModel shellViewModel)
+                {
+                    if (!shellViewModel.SubscriptionData.IsLicensed)
+                    {
+                        var result = shellViewModel.PopupProvider.UnRegisteredDialog();
+                        if (result == MessageBoxResult.Yes)
+                        {
+                            // Take the user to the register steps.
+                            shellViewModel.Register();
+                            shellViewModel.UpdateStudioLicense(shellViewModel.SubscriptionData.IsLicensed);
+                        }
+                    }
+                    else
+                    {
+                        shellViewModel.SaveCommand.Execute(null);
+                    }
+                }
+            }
+
             if (e.Key == Key.F1)
             {
                 Process.Start(Warewolf.Studio.Resources.Languages.HelpText.WarewolfHelpURL);
@@ -352,6 +375,12 @@ namespace Dev2.Studio.Views
             }
             Toolbox.Activate();
             Toolboxcontrol.Focus();
+            
+            if(DataContext is ShellViewModel model)
+            {
+                if(!model.SubscriptionData.Connected)
+                    model.PopupProvider.ShowGetSubscriptionDataFailed();
+            }
         }
 
         static void SetMenuExpanded(XmlDocument xmlDocument, ShellViewModel shellViewModel)

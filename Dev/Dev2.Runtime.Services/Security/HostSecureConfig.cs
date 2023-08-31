@@ -93,7 +93,7 @@ namespace Dev2.Runtime.Security
             }
             else
             {
-                // BUG 8395: settings is a ReadOnlyNameValueCollection so create a new collection instead 
+                // BUG 8395: settings is a ReadOnlyNameValueCollection so create a new collection instead
                 var newSettings = new NameValueCollection();
 
                 #region New server installation so initialize config with new server id and key

@@ -17,11 +17,15 @@ using Dev2.Runtime.WebServer;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Threading.Tasks;
 using Dev2.Activities;
+using Dev2.Common.Interfaces;
+using Dev2.Runtime;
+using Dev2.Runtime.Subscription;
 using Warewolf.Common.NetStandard20;
 using Warewolf.Data.Serializers;
 using Warewolf.Execution;
@@ -30,7 +34,10 @@ using Warewolf.OS;
 using Warewolf.Streams;
 using Warewolf.Trigger.Queue;
 using Warewolf.Triggers;
+using Warewolf.Usage;
 using WarewolfCOMIPC.Client;
+using Warewolf.Testing;
+using System.Management;
 
 namespace Dev2.Server.Tests
 {
@@ -78,7 +85,6 @@ namespace Dev2.Server.Tests
                 mockServerLifeManager.Verify(o => o.Run(It.IsAny<IEnumerable<IServerLifecycleWorker>>()), Times.Once);
             }
         }
-
 
         [TestMethod]
         [Owner("Rory McGuire")]
@@ -131,6 +137,107 @@ namespace Dev2.Server.Tests
 
             //------------------------Assert-------------------------
             mockServerLifeCycleWorker.Verify();
+        }
+        
+        [TestMethod]
+        [Owner("Njabulo Nxele")]
+        [TestCategory(nameof(ServerLifecycleManager))]
+        public void ServerLifecycleManager_TrackUsage()
+        {
+            //------------------------Arrange------------------------
+            var mockEnvironmentPreparer = new Mock<IServerEnvironmentPreparer>();
+            var mockIpcClient = new Mock<IIpcClient>();
+            var mockAssemblyLoader = new Mock<IAssemblyLoader>();
+            var mockDirectory = new Mock<IDirectory>();
+            var mockResourceCatalogFactory = new Mock<IResourceCatalogFactory>();
+            var mockWebServerConfiguration = new Mock<IWebServerConfiguration>();
+            var mockWriter = new Mock<IWriter>();
+            var mockServerLifeCycleWorker = new Mock<IServerLifecycleWorker>();
+            var mockResourceCatalog = new Mock<IResourceCatalog>();
+            var mockStartWebServer = new Mock<IStartWebServer>();
+            var mockSecurityIdentityFactory = new Mock<ISecurityIdentityFactory>();
+            var mockLoggingServiceMonitorWithRestart = new LoggingServiceMonitorWithRestart(new Mock<ChildProcessTrackerWrapper>().Object, new Mock<ProcessWrapperFactory>().Object);
+            var mockHangfireServerMonitorWithRestart = new HangfireServerMonitorWithRestart(new Mock<ChildProcessTrackerWrapper>().Object, new Mock<ProcessWrapperFactory>().Object);
+            var mockWebSocketPool = new Mock<IWebSocketPool>();
+            var mockWebSocketWrapper = new Mock<IWebSocketWrapper>();
+            var mockSystemInformation = new Mock<IGetSystemInformation>();
+            var mockExecutionLoggerFactory = new Mock<ExecutionLogger.IExecutionLoggerFactory>();
+            var mockExecutionLogPublisher = new Mock<IExecutionLogPublisher>();
+
+            var items = new List<IServerLifecycleWorker> {mockServerLifeCycleWorker.Object};
+
+            EnvironmentVariables.IsServerOnline = true;
+
+            mockIpcClient.Setup(o => o.GetIpcExecutor(It.IsAny<INamedPipeClientStreamWrapper>()))
+                .Returns(mockIpcClient.Object);
+
+            mockResourceCatalogFactory.Setup(o => o.New()).Returns(mockResourceCatalog.Object);
+            mockServerLifeCycleWorker.Setup(o => o.Execute()).Verifiable();
+            mockAssemblyLoader.Setup(o => o.AssemblyNames(It.IsAny<Assembly>())).Returns(new[] {new AssemblyName {Name = "testAssemblyName"}});
+            mockWebServerConfiguration.Setup(o => o.EndPoints).Returns(new[] {new Dev2Endpoint(new IPEndPoint(0x40E9BB63, 8080), "Url", "path")});
+
+            mockWebSocketWrapper.Setup(o => o.IsOpen()).Returns(true);
+            mockWebSocketPool.Setup(o => o.Acquire(It.IsAny<string>())).Returns(mockWebSocketWrapper.Object);
+
+            mockSystemInformation.Setup(o => o.GetWareWolfVersion()).Returns("1.1.1.1");
+            mockExecutionLogPublisher.Setup(o => o.Info("Warewolf Server Started Version: 1.1.1.1")).Verifiable();
+            mockExecutionLoggerFactory.Setup(o => o.New(It.IsAny<ISerializer>(), mockWebSocketPool.Object))
+                .Returns(mockExecutionLogPublisher.Object);
+            
+            var mockUsageTracker = new Mock<IUsageTrackerWrapper>();
+            mockUsageTracker.Setup(o => o.TrackEvent(It.IsAny<string>(), It.IsAny<UsageType>(), It.IsAny<string>())).Returns(UsageDataResult.internalError);
+            var persistencePath = EnvironmentVariablesForTesting.PersistencePathForTests;
+
+            //------------------------Act----------------------------
+            var config = new StartupConfiguration
+            {
+                ServerEnvironmentPreparer = mockEnvironmentPreparer.Object,
+                IpcClient = mockIpcClient.Object,
+                AssemblyLoader = mockAssemblyLoader.Object,
+                Directory = mockDirectory.Object,
+                ResourceCatalogFactory = mockResourceCatalogFactory.Object,
+                WebServerConfiguration = mockWebServerConfiguration.Object,
+                Writer = mockWriter.Object,
+                StartWebServer = mockStartWebServer.Object,
+                SecurityIdentityFactory = mockSecurityIdentityFactory.Object,
+                LoggingServiceMonitor = mockLoggingServiceMonitorWithRestart,
+                HangfireServerMonitor = mockHangfireServerMonitorWithRestart,
+                WebSocketPool = mockWebSocketPool.Object,
+                SystemInformationHelper = mockSystemInformation.Object,
+                LoggerFactory = mockExecutionLoggerFactory.Object,
+                UsageTracker = mockUsageTracker.Object,
+                UsageLogger = new UsageLoggerForTests(20000, mockUsageTracker.Object, EnvironmentVariablesForTesting.PersistencePathForTests)
+            };
+            using (var serverLifeCycleManager = new ServerLifecycleManager(config))
+            {
+                serverLifeCycleManager.Run(items).Wait();
+                
+                serverLifeCycleManager.TrackUsage(UsageType.ServerStart, mockExecutionLogPublisher.Object);
+                
+                serverLifeCycleManager.Stop(false, 0, false);
+            }
+
+            //------------------------Assert-------------------------
+            mockUsageTracker.Verify(o => o.TrackEvent(It.IsAny<string>(), It.IsAny<UsageType>(), It.IsAny<string>()), Times.AtLeastOnce);
+            
+            mockExecutionLogPublisher.Verify(o => o.Warn(It.Is<string>(str => str.StartsWith("Could not log usage. Retry: ")), It.IsAny<object[]>()), Times.AtLeastOnce);
+
+            //this test will fail when the number of cores are not equal to 6
+            //thus, it could be a better approach to calculate this each time
+            var numOfCores = SystemInfomationForTesting.GetNumberOfCores();
+            var processorCount = Environment.ProcessorCount;
+            var subscriptionDataInstance = SubscriptionProvider.Instance;
+            var usageInfo = $@"{{'SessionId':'{ServerStats.SessionId}','SubscriptionId':null,'PlanId':null,'Status':0,'VersionNo':'1.1.1.1','IPAddress':null,'ProcessorCount':{processorCount},'NumberOfCores':{numOfCores},'OSType':null,'MachineName':null,'Region':null,'Executions':0".Replace("'", "\"");
+            mockUsageTracker.Verify(o => o.TrackEvent(subscriptionDataInstance.CustomerId, UsageType.ServerStart, It.Is<string>(str => str.StartsWith(usageInfo))), Times.Once);
+            
+            var filePath = Path.Combine(persistencePath, ServerStats.SessionId.ToString());
+            Assert.IsTrue(File.Exists(filePath));
+
+            var usageData = "JsonData\":\"{\\\"SessionId\\\":\\\"" + ServerStats.SessionId + "\\\",\\\"SubscriptionId\\\":null,\\\"PlanId\\\":null,\\\"Status\\\":0,\\\"VersionNo\\\":\\\"1.1.1.1\\\",\\\"IPAddress\\\":null,\\\"ProcessorCount\\\":"+ processorCount +",\\\"NumberOfCores\\\":"+ numOfCores + ",\\\"OSType\\\":null,\\\"MachineName\\\":null,\\\"Region\\\":null,\\\"Executions\\\":0";
+            var fileText = File.ReadAllText(filePath);
+            Assert.IsTrue(fileText.Contains(usageData));
+
+            File.Delete(Path.Combine(persistencePath, ServerStats.SessionId.ToString()));
         }
 
         [TestMethod]
@@ -203,7 +310,6 @@ namespace Dev2.Server.Tests
             }
 
             //------------------------Assert-------------------------
-            mockWriter.Verify(o => o.Write("Loading security provider...  "), Times.Once);
             mockWriter.Verify(o => o.Write("Opening named pipe client stream for COM IPC... "), Times.Once);
             mockWriter.Verify(o => o.Write("Loading resource catalog...  "), Times.Once);
             mockWriter.Verify(o => o.Write("Loading server workspace...  "), Times.Once);
@@ -213,8 +319,8 @@ namespace Dev2.Server.Tests
             mockWriter.Verify(o => o.Write("Exiting with exitcode 0"), Times.Once);
 
             mockIpcClient.Verify(o => o.GetIpcExecutor(It.IsAny<INamedPipeClientStreamWrapper>()), Times.Once);
-            mockSystemInformation.Verify(o => o.GetWareWolfVersion(), Times.Once);
-            mockExecutionLoggerFactory.Verify(o => o.New(It.IsAny<ISerializer>(), mockWebSocketPool.Object), Times.Once);
+            mockSystemInformation.Verify(o => o.GetWareWolfVersion(), Times.Exactly(1));
+            mockExecutionLoggerFactory.Verify(o => o.New(It.IsAny<ISerializer>(), mockWebSocketPool.Object), Times.Exactly(1));
             mockExecutionLogPublisher.Verify(o => o.Info("Warewolf Server Started Version: 1.1.1.1"), Times.Once);
 
             mockServerLifeCycleWorker.Verify();
@@ -244,7 +350,12 @@ namespace Dev2.Server.Tests
             var mockHangfireServerMonitorWithRestart = new HangfireServerMonitorWithRestart(new Mock<ChildProcessTrackerWrapper>().Object, new Mock<ProcessWrapperFactory>().Object);
             var mockWebSocketPool = new Mock<IWebSocketPool>();
             var mockWebSocketWrapper = new Mock<IWebSocketWrapper>();
-
+            var mockSystemInformation = new Mock<IGetSystemInformation>();
+            mockSystemInformation.Setup(o => o.GetWareWolfVersion()).Returns("1.1.1.1");
+            mockSystemInformation.Setup(o => o.GetIPv4Adresses()).Returns("1.1.1.1");
+            mockSystemInformation.Setup(o => o.GetOperatingSystemInformation()).Returns("Microsoft Windows 10 Pro");
+            mockSystemInformation.Setup(o => o.GetComputerName()).Returns("GetComputerName");
+            mockSystemInformation.Setup(o => o.GetRegionInformation()).Returns("GetRegionInformation");
             var items = new List<IServerLifecycleWorker> {mockServerLifeCycleWorker.Object};
 
             EnvironmentVariables.IsServerOnline = true;
@@ -257,8 +368,11 @@ namespace Dev2.Server.Tests
             mockWebSocketWrapper.Setup(o => o.IsOpen()).Returns(false);
             mockWebSocketPool.Setup(o => o.Acquire(It.IsAny<string>())).Returns(mockWebSocketWrapper.Object);
 
-            var mockLoggerFactory = new Mock<ExecutionLogger.IExecutionLoggerFactory>();
-
+            var mockExecutionLogPublisher = new Mock<IExecutionLogPublisher>();
+            mockExecutionLogPublisher.Setup(o => o.Info("Warewolf Server Started Version: 1.1.1.1")).Verifiable();
+            var mockExecutionLoggerFactory = new Mock<ExecutionLogger.IExecutionLoggerFactory>();
+            mockExecutionLoggerFactory.Setup(o => o.New(It.IsAny<ISerializer>(), mockWebSocketPool.Object))
+                .Returns(mockExecutionLogPublisher.Object);
             //------------------------Act----------------------------
             var config = new StartupConfiguration
             {
@@ -274,7 +388,8 @@ namespace Dev2.Server.Tests
                 LoggingServiceMonitor = mockLoggingServiceMonitorWithRestart,
                 HangfireServerMonitor = mockHangfireServerMonitorWithRestart,
                 WebSocketPool = mockWebSocketPool.Object,
-                LoggerFactory = mockLoggerFactory.Object
+                SystemInformationHelper = mockSystemInformation.Object,
+                LoggerFactory = mockExecutionLoggerFactory.Object
             };
             using (var serverLifeCycleManager = new ServerLifecycleManager(config))
             {
@@ -282,7 +397,6 @@ namespace Dev2.Server.Tests
             }
 
             //------------------------Assert-------------------------
-            mockWriter.Verify(o => o.Write("Loading security provider...  "), Times.Once);
             mockWriter.Verify(o => o.Write("Opening named pipe client stream for COM IPC... "), Times.Once);
             mockWriter.Verify(o => o.Write("Loading resource catalog...  "), Times.Once);
             mockWriter.Verify(o => o.Write("Loading server workspace...  "), Times.Once);
@@ -367,7 +481,6 @@ namespace Dev2.Server.Tests
             }
 
             //------------------------Assert-------------------------
-            mockWriter.Verify(o => o.Write("Loading security provider...  "), Times.Once);
             mockWriter.Verify(o => o.Write("Opening named pipe client stream for COM IPC... "), Times.Once);
             mockWriter.Verify(o => o.Write("Loading resource catalog...  "), Times.Once);
             mockWriter.Verify(o => o.Write("Loading server workspace...  "), Times.Once);
@@ -433,7 +546,6 @@ namespace Dev2.Server.Tests
             }
 
             //------------------------Assert-------------------------
-            mockWriter.Verify(o => o.Write("Loading security provider...  "), Times.Once);
             mockWriter.Verify(o => o.Write("Opening named pipe client stream for COM IPC... "), Times.Once);
             mockWriter.Verify(o => o.Write("Loading resource catalog...  "), Times.Once);
             mockWriter.Verify(o => o.Write("Loading server workspace...  "), Times.Once);
@@ -573,7 +685,6 @@ namespace Dev2.Server.Tests
             }
 
             //------------------------Assert-------------------------
-            mockWriter.Verify(o => o.Write("Loading security provider...  "), Times.Once);
             mockWriter.Verify(o => o.Write("Opening named pipe client stream for COM IPC... "), Times.Once);
             mockWriter.Verify(o => o.Write("Loading resource catalog...  "), Times.Once);
             mockWriter.Verify(o => o.Write("Loading server workspace...  "), Times.Once);
@@ -659,7 +770,6 @@ namespace Dev2.Server.Tests
             }
 
             //------------------------Assert-------------------------
-            mockWriter.Verify(o => o.Write("Loading security provider...  "), Times.Once);
             mockWriter.Verify(o => o.Write("Opening named pipe client stream for COM IPC... "), Times.Once);
             mockWriter.Verify(o => o.Write("Loading resource catalog...  "), Times.Once);
             mockWriter.Verify(o => o.Write("Loading server workspace...  "), Times.Once);
@@ -746,7 +856,6 @@ namespace Dev2.Server.Tests
             }
 
             //------------------------Assert-------------------------
-            mockWriter.Verify(o => o.Write("Loading security provider...  "), Times.Once);
             mockWriter.Verify(o => o.Write("Opening named pipe client stream for COM IPC... "), Times.Once);
             mockWriter.Verify(o => o.Write("Loading resource catalog...  "), Times.Once);
             mockWriter.Verify(o => o.Write("Loading server workspace...  "), Times.Once);
@@ -832,7 +941,6 @@ namespace Dev2.Server.Tests
             }
 
             //------------------------Assert-------------------------
-            mockWriter.Verify(o => o.Write("Loading security provider...  "), Times.Once);
             mockWriter.Verify(o => o.Write("Opening named pipe client stream for COM IPC... "), Times.Once);
             mockWriter.Verify(o => o.Write("Loading resource catalog...  "), Times.Once);
             mockWriter.Verify(o => o.Write("Loading server workspace...  "), Times.Once);
@@ -1050,7 +1158,6 @@ namespace Dev2.Server.Tests
             }
 
             //------------------------Assert-------------------------
-            mockWriter.Verify(o => o.Write("Loading security provider...  "), Times.Once);
             mockWriter.Verify(o => o.Write("Opening named pipe client stream for COM IPC... "), Times.Once);
             mockWriter.Verify(o => o.Write("Loading resource catalog...  "), Times.Once);
             mockWriter.Verify(o => o.Write("Loading server workspace...  "), Times.Once);
@@ -1190,6 +1297,30 @@ namespace Dev2.Server.Tests
             public void TestStop()
             {
                 OnStop();
+            }
+        }
+        
+        private class UsageLoggerForTests : UsageLogger
+        {
+            public UsageLoggerForTests(double intervalMs, IUsageTrackerWrapper usageTrackerWrapper, string persistencePath) 
+                : base(intervalMs, usageTrackerWrapper, persistencePath)
+            {
+            }
+        }
+
+        //TODO: this can either be removed/or replaced once the consolidation of this code has been done with the call that get this information 
+        //or this object can be added to the Warewolf.Testing Project and further extended for testing any user system related information for testing
+        public static class SystemInfomationForTesting
+        {
+            public static int GetNumberOfCores()
+            {
+                var coreCount = 0;
+                foreach (var item in new ManagementObjectSearcher("Select * from Win32_Processor  ").Get())
+                {
+                    coreCount += int.Parse(item["NumberOfCores"].ToString());
+                }
+
+                return coreCount;
             }
         }
     }

@@ -39,6 +39,7 @@ using Dev2.Interfaces;
 using Dev2.Runtime;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
+using Dev2.Runtime.Subscription;
 using Dev2.Runtime.WebServer;
 using Dev2.Runtime.WebServer.Executor;
 using Dev2.Runtime.WebServer.Handlers;
@@ -2722,7 +2723,7 @@ namespace Dev2.Tests.Runtime.WebServer
     class AbstractWebRequestHandlerMock : AbstractWebRequestHandler
     {
         public AbstractWebRequestHandlerMock(IDataObjectFactory dataObjectFactory, IAuthorizationService service, IResourceCatalog catalog, ITestCatalog testCatalog, ITestCoverageCatalog testCoverageCatalog, IServiceTestExecutor serviceTestExecutor, IWorkspaceRepository repository)
-            : base(catalog, testCatalog, testCoverageCatalog, serviceTestExecutor, repository, service, dataObjectFactory, new DefaultEsbChannelFactory(), new SecuritySettings())
+            : base(catalog, testCatalog, testCoverageCatalog, serviceTestExecutor, repository, service, dataObjectFactory, new DefaultEsbChannelFactory(), new SecuritySettings(), SubscriptionProvider.Instance)
         {
         }
 
@@ -2732,7 +2733,7 @@ namespace Dev2.Tests.Runtime.WebServer
         }
 
         public AbstractWebRequestHandlerMock(IResourceCatalog resourceCatalog, IWorkspaceRepository workspaceRepository, IAuthorizationService authorizationService, IDataObjectFactory dataObjectFactory)
-            : base(resourceCatalog, TestCatalog.Instance, TestCoverageCatalog.Instance, null, workspaceRepository, authorizationService, dataObjectFactory, new DefaultEsbChannelFactory(), new SecuritySettings())
+            : base(resourceCatalog, TestCatalog.Instance, TestCoverageCatalog.Instance, null, workspaceRepository, authorizationService, dataObjectFactory, new DefaultEsbChannelFactory(), new SecuritySettings(), SubscriptionProvider.Instance)
         {
         }
 

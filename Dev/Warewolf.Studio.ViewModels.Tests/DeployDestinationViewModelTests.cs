@@ -18,6 +18,7 @@ using Microsoft.Practices.Prism.PubSubEvents;
 using Moq;
 using Dev2;
 using Dev2.ConnectionHelpers;
+using Warewolf.Licensing;
 
 namespace Warewolf.Studio.ViewModels.Tests
 {
@@ -60,6 +61,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _serverMock.SetupGet(it => it.Connection).Returns(mockEnvironmentConnection.Object);
             _serverMock.Setup(server => server.Connection).Returns(mockEnvironmentConnection.Object);
             _shellViewModelMock.SetupGet(it => it.LocalhostServer).Returns(_serverMock.Object);
+            _shellViewModelMock.SetupGet(it => it.SubscriptionData).Returns(new Mock<ISubscriptionData>().Object);
             _eventAggregatorMock = new Mock<IEventAggregator>();
             _target = new DeployDestinationViewModel(_shellViewModelMock.Object, _eventAggregatorMock.Object);
         }
