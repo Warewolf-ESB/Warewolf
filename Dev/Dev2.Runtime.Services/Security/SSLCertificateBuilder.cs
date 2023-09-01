@@ -57,5 +57,17 @@ namespace Dev2.Runtime.Security
                     sslCertPath);
             return ProcessHost.Invoke(null, "dotnet", args);
         }
+
+
+        /// <summary>
+        /// Creates and Trusts the development SSL certificate.
+        /// </summary>
+        /// <returns>boolean</returns>
+        /* Purpose : A new function to trust development SSL for https support
+         * Workitem : 7509
+         *
+         */
+        public static bool CreateAndTrustCertificate() => ProcessHost.Invoke(null, "dotnet", "dev-certs https --trust");
+
     }
 }

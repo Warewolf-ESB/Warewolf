@@ -114,7 +114,9 @@ namespace Dev2
                 {
                     var httpsEndpoint = new IPEndPoint(IPAddress.Any, realWebServerSslPort);
                     var httpsUrl = $"https://*:{webServerSslPort}/";
-                    var canEnableSsl = HostSecurityProvider.Instance.EnsureSsl(_fileWrapper, sslCertPath);
+                    // Purpose : updated the call to EnsureSsl() method, to ensure cert is trusted.
+                    // workitem : 7509
+                    var canEnableSsl = HostSecurityProvider.Instance.EnsureSsl();
 
                     if (canEnableSsl)
                     {
@@ -122,7 +124,7 @@ namespace Dev2
                     }
                     else
                     {
-                        _writer.WriteLine("Could not start webserver to listen for SSL traffic with cert [ " + sslCertPath + " ]");
+                        _writer.WriteLine("Could not start webserver to listen for SSL traffic...");
                     }
                 }
             }

@@ -198,6 +198,7 @@ namespace Dev2.Runtime.Security
             return result;
         }
 
+        public bool EnsureSsl() => SslCertificateBuilder.CreateAndTrustCertificate();
         #endregion
     }
 }

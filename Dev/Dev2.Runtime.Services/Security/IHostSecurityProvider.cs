@@ -47,5 +47,12 @@ namespace Dev2.Runtime.Security
         /// <param name="endPoint"></param>
         /// <returns></returns>
         bool EnsureSsl(IFile fileWrapper, string certPath);
+
+
+        /// <summary>
+        /// Ensures a SSL is trusted for https support.
+        /// </summary>
+        /// <returns></returns>
+        bool EnsureSsl();
     }
 }
