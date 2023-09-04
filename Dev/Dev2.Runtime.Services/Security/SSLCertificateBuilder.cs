@@ -55,7 +55,9 @@ namespace Dev2.Runtime.Security
         {
             var args = string.Format("dev-certs https --clean --import \"{0}\" --password 456123",
                     sslCertPath);
-            return ProcessHost.Invoke(null, "dotnet", args);
+            ProcessHost.Invoke(null, "dotnet", args);
+
+            return TrustCertificate();
         }
 
 
@@ -67,7 +69,7 @@ namespace Dev2.Runtime.Security
          * Workitem : 7509
          *
          */
-        public static bool CreateAndTrustCertificate() => ProcessHost.Invoke(null, "dotnet", "dev-certs https --trust");
+        public static bool  TrustCertificate() => ProcessHost.Invoke(null, "dotnet", "dev-certs https --trust");
 
     }
 }

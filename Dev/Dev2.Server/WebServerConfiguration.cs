@@ -13,10 +13,13 @@ using Dev2.Common;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Runtime.Security;
 using Dev2.Runtime.WebServer;
+using ReflectionMagic;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.IO;
 using System.Net;
+using System.Reflection;
 
 namespace Dev2
 {
@@ -108,15 +111,13 @@ namespace Dev2
                     throw new ArgumentException("Web server ssl port is not valid. Please set the webServerSslPort value in the configuration file.");
                 }
 
-                var sslCertPath = ConfigurationManager.AppSettings["sslCertificateName"];
-
+                var sslCertPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), ConfigurationManager.AppSettings["sslCertificateName"]);
+                 
                 if (!string.IsNullOrEmpty(sslCertPath))
                 {
                     var httpsEndpoint = new IPEndPoint(IPAddress.Any, realWebServerSslPort);
                     var httpsUrl = $"https://*:{webServerSslPort}/";
-                    // Purpose : updated the call to EnsureSsl() method, to ensure cert is trusted.
-                    // workitem : 7509
-                    var canEnableSsl = HostSecurityProvider.Instance.EnsureSsl();
+                    var canEnableSsl = HostSecurityProvider.Instance.EnsureSsl(_fileWrapper, sslCertPath);
 
                     if (canEnableSsl)
                     {
