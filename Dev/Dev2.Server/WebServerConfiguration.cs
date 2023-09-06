@@ -111,13 +111,13 @@ namespace Dev2
                     throw new ArgumentException("Web server ssl port is not valid. Please set the webServerSslPort value in the configuration file.");
                 }
 
-                var sslCertPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), ConfigurationManager.AppSettings["sslCertificateName"]);
+                var sslCertPath =  ConfigurationManager.AppSettings["sslCertificateName"];
                  
                 if (!string.IsNullOrEmpty(sslCertPath))
                 {
                     var httpsEndpoint = new IPEndPoint(IPAddress.Any, realWebServerSslPort);
                     var httpsUrl = $"https://*:{webServerSslPort}/";
-                    var canEnableSsl = HostSecurityProvider.Instance.EnsureSsl(_fileWrapper, sslCertPath);
+                    var canEnableSsl = HostSecurityProvider.Instance.EnsureSsl(_fileWrapper, httpsEndpoint);
 
                     if (canEnableSsl)
                     {

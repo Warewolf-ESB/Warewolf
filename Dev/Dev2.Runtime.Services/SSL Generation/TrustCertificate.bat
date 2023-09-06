@@ -1,0 +1,1 @@
+certutil -addstore -f "ROOT" "{0}"

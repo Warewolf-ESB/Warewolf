@@ -1,8 +1,10 @@
 ﻿
 using Dev2.Runtime.WebServer.Security;
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Authentication.Negotiate;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.WebApiCompatShim;
@@ -10,11 +12,13 @@ using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Dev2.Runtime.WebServer
 {
@@ -29,6 +33,26 @@ namespace Dev2.Runtime.WebServer
 
         public static IDisposable Start(Dev2Endpoint[] endpoints, WebApplicationBuilder builder)
         {
+            var sslCertPfxPath =  ConfigurationManager.AppSettings["sslPFXCertificateName"];
+            var certificate = new X509Certificate2(sslCertPfxPath, ConfigurationManager.AppSettings["sslPFXCertificatePassword"], 
+                X509KeyStorageFlags.Exportable | X509KeyStorageFlags.PersistKeySet);
+            
+            builder.WebHost.ConfigureKestrel(serverOptions =>
+            {
+                foreach (var endpoint in endpoints)
+                {
+                    if (Dev2Endpoint.IsHttpsEndPoint(endpoint))
+                    {
+                        serverOptions.Listen(endpoint.TheIPEndPoint.Address, endpoint.TheIPEndPoint.Port, listenOptions =>
+                        {
+                            listenOptions.UseHttps(certificate);
+                        });
+                    }
+                    else
+                        serverOptions.Listen(endpoint.TheIPEndPoint.Address, endpoint.TheIPEndPoint.Port);
+                }
+            });
+
             builder.Services.AddControllers(options =>
             {
                 options.OutputFormatters.Insert(0, new HttpResponseMessageOutputFormatter());

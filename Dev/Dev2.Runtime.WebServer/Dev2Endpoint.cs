@@ -9,6 +9,9 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System.Collections.Generic;
+using System.Linq;
+using System;
 using System.Net;
 
 namespace Dev2.Runtime.WebServer
@@ -45,6 +48,19 @@ namespace Dev2.Runtime.WebServer
             TheIPEndPoint = endPoint;
             Url = url;
             CertificatePath = certPath;
+        }
+
+
+        public static List<Dev2Endpoint> GetHttpsEndPoints(Dev2Endpoint[] endpoints)
+        {
+            if (endpoints == null || endpoints.Length == 0) return new List<Dev2Endpoint>();
+
+            return endpoints.Where(endpoint => IsHttpsEndPoint(endpoint)).ToList();
+        }
+
+        public static bool IsHttpsEndPoint(Dev2Endpoint endpoint)
+        {
+            return !string.IsNullOrEmpty(endpoint.Url) && endpoint.Url.Trim().StartsWith("HTTPS", StringComparison.InvariantCultureIgnoreCase);
         }
     }
 }

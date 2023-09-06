@@ -43,16 +43,8 @@ namespace Dev2.Runtime.Security
         /// <summary>
         /// Ensures SSL support with self-signed cert.
         /// </summary>
-        /// <param name="certPath">The cert path.</param>
         /// <param name="endPoint"></param>
         /// <returns></returns>
-        bool EnsureSsl(IFile fileWrapper, string certPath);
-
-
-        /// <summary>
-        /// Ensures a SSL is trusted for https support.
-        /// </summary>
-        /// <returns></returns>
-        bool EnsureSsl();
+        bool EnsureSsl(IFile fileWrapper,  IPEndPoint endPoint);
     }
 }

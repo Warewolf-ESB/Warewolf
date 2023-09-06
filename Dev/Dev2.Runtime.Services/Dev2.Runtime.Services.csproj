@@ -446,6 +446,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Dev2.Runtime.Services.ruleset" />
+	  <None Include="SSL Generation\CreateCertificate.bat">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Include="ssl generation\TrustCertificate.bat">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
   </ItemGroup>
   <ItemGroup>
     <AdditionalFiles Include="..\.sonarlint\warewolf_dotnet_framework\CSharp\SonarLint.xml" Link="SonarLint.xml" />

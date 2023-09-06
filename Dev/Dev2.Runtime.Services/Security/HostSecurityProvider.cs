@@ -10,9 +10,12 @@
 */
 
 using System;
+using System.Configuration;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Xml;
 using Dev2.Common;
@@ -173,17 +176,21 @@ namespace Dev2.Runtime.Security
 
         #region EnsureSSL
 
-        public bool EnsureSsl(IFile fileWrapper, string certPath)
+        public bool EnsureSsl(IFile fileWrapper, IPEndPoint endPoint)
         {
             var result = false;
 
-            if (!fileWrapper.Exists(certPath))
+            if (!fileWrapper.Exists(ConfigurationManager.AppSettings["sslCertificateName"]) 
+                || !fileWrapper.Exists(ConfigurationManager.AppSettings["sslPFXCertificateName"]))
             {
                 try
                 {
                     var certificateBuilder = new SslCertificateBuilder();
-                    certificateBuilder.EnsureSslCertificate(certPath);
-                    result = fileWrapper.Exists(certPath);
+                    if (certificateBuilder.CreateCertificateForServerAuthentication())
+                    {
+                        // Trust it to certificate Root
+                        return certificateBuilder.TrustCertificateToRoot();
+                    }
                 }
                 catch (Exception e)
                 {
@@ -192,13 +199,58 @@ namespace Dev2.Runtime.Security
             }
             else
             {
-                result = SslCertificateBuilder.ImportCert(certPath);
+                var certThumbPrint = string.Empty;
+               // DateTime certValidTill;
+
+                if (fileWrapper.Exists(ConfigurationManager.AppSettings["sslCertificateName"]))
+                {
+                    var cert = new X509Certificate2(ConfigurationManager.AppSettings["sslCertificateName"]);
+                    certThumbPrint = cert.Thumbprint;
+                   // certValidTill = cert.NotBefore;
+                }
+
+                X509Store store = new X509Store(StoreName.Root, StoreLocation.LocalMachine);
+                try
+                {
+                    store.Open(OpenFlags.ReadOnly);
+                    var existingCertificate = store.Certificates
+                        .FirstOrDefault(c=> c.Thumbprint.Equals(certThumbPrint)
+                        && c.NotAfter >= System.DateTime.Now);
+
+                    if(existingCertificate == null)
+                    {
+                        var certificateBuilder = new SslCertificateBuilder();
+                        if (certificateBuilder.CreateCertificateForServerAuthentication())
+                        {
+                            // Trust it to certificate Root
+                            return certificateBuilder.TrustCertificateToRoot();
+                        }
+                    }
+
+                    return true;
+                    //foreach (X509Certificate2 cert in store.Certificates)
+                    //{
+                    //    Console.WriteLine("Subject: " + cert.Subject);
+                    //    Console.WriteLine("Issuer: " + cert.Issuer);
+                    //    Console.WriteLine("Thumbprint: " + cert.Thumbprint);
+                    //    Console.WriteLine("Valid From: " + cert.NotBefore);
+                    //    Console.WriteLine("Valid Until: " + cert.NotAfter);
+                    //}
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Error reading the certificate store...");
+                    Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
+                }
+                finally
+                {
+                    store.Close();
+                }
+                 
             }
 
             return result;
         }
-
-        public bool EnsureSsl() => SslCertificateBuilder.TrustCertificate();
         #endregion
     }
 }
