@@ -586,5 +586,7 @@ where pn.nspname = 'public';
                 }
             }
         }
+
+        public static readonly string WarewolfSSLCertificatePassword = "35kIXIm1bJ2nf";
     }
 }

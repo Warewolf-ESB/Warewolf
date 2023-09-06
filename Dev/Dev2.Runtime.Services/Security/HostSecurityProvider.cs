@@ -179,17 +179,27 @@ namespace Dev2.Runtime.Security
         public bool EnsureSsl(IFile fileWrapper, IPEndPoint endPoint)
         {
             var result = false;
+            string sslCertificateName = ConfigurationManager.AppSettings["sslCertificateName"];
+            string sslPfxCertificateName = ConfigurationManager.AppSettings["sslPFXCertificateName"];
 
-            if (!fileWrapper.Exists(ConfigurationManager.AppSettings["sslCertificateName"]) 
-                || !fileWrapper.Exists(ConfigurationManager.AppSettings["sslPFXCertificateName"]))
+            if (!string.IsNullOrEmpty(sslCertificateName))
+                sslCertificateName = sslCertificateName.Trim();
+            
+            if (!string.IsNullOrEmpty(sslPfxCertificateName))
+                sslPfxCertificateName = sslPfxCertificateName.Trim();
+
+
+
+            if (!fileWrapper.Exists(sslCertificateName) 
+                || !fileWrapper.Exists(sslPfxCertificateName))
             {
                 try
                 {
                     var certificateBuilder = new SslCertificateBuilder();
-                    if (certificateBuilder.CreateCertificateForServerAuthentication())
+                    if (certificateBuilder.CreateCertificateForServerAuthentication(sslCertificateName, sslPfxCertificateName))
                     {
                         // Trust it to certificate Root
-                        return certificateBuilder.TrustCertificateToRoot();
+                        return certificateBuilder.TrustCertificateToRoot(sslCertificateName);
                     }
                 }
                 catch (Exception e)
@@ -200,53 +210,49 @@ namespace Dev2.Runtime.Security
             else
             {
                 var certThumbPrint = string.Empty;
-               // DateTime certValidTill;
 
-                if (fileWrapper.Exists(ConfigurationManager.AppSettings["sslCertificateName"]))
+                if (fileWrapper.Exists(sslCertificateName))
                 {
-                    var cert = new X509Certificate2(ConfigurationManager.AppSettings["sslCertificateName"]);
+                    var cert = new X509Certificate2(sslCertificateName);
                     certThumbPrint = cert.Thumbprint;
-                   // certValidTill = cert.NotBefore;
                 }
 
-                X509Store store = new X509Store(StoreName.Root, StoreLocation.LocalMachine);
-                try
+                if (!string.IsNullOrEmpty(certThumbPrint))
                 {
-                    store.Open(OpenFlags.ReadOnly);
-                    var existingCertificate = store.Certificates
-                        .FirstOrDefault(c=> c.Thumbprint.Equals(certThumbPrint)
-                        && c.NotAfter >= System.DateTime.Now);
-
-                    if(existingCertificate == null)
+                    X509Store store = new X509Store(StoreName.Root, StoreLocation.LocalMachine);
+                    try
                     {
-                        var certificateBuilder = new SslCertificateBuilder();
-                        if (certificateBuilder.CreateCertificateForServerAuthentication())
-                        {
-                            // Trust it to certificate Root
-                            return certificateBuilder.TrustCertificateToRoot();
-                        }
-                    }
 
-                    return true;
-                    //foreach (X509Certificate2 cert in store.Certificates)
-                    //{
-                    //    Console.WriteLine("Subject: " + cert.Subject);
-                    //    Console.WriteLine("Issuer: " + cert.Issuer);
-                    //    Console.WriteLine("Thumbprint: " + cert.Thumbprint);
-                    //    Console.WriteLine("Valid From: " + cert.NotBefore);
-                    //    Console.WriteLine("Valid Until: " + cert.NotAfter);
-                    //}
+                        store.Open(OpenFlags.ReadOnly);
+                        var existingCertificates = store.Certificates
+                            .Find(X509FindType.FindByThumbprint, certThumbPrint, true);
+
+                        if (existingCertificates.Count == 0)
+                        {
+                            var certificateBuilder = new SslCertificateBuilder();
+                            if (certificateBuilder.CreateCertificateForServerAuthentication(sslCertificateName, sslPfxCertificateName))
+                            {
+                                return certificateBuilder.TrustCertificateToRoot(sslCertificateName);
+                            }
+                        }
+
+                        return true;
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("Error in ensuring SSL certificate ...");
+                        Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
+                    }
+                    finally
+                    {
+                        store.Close();
+                    }
                 }
-                catch (Exception ex)
+                else
                 {
-                    Console.WriteLine("Error reading the certificate store...");
-                    Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
+                    Console.WriteLine("Failed to read SSL certificate thumbprint.");
+                    Dev2Logger.Error(new Exception("Failed to read SSL certificate thumbprint."), GlobalConstants.WarewolfError);
                 }
-                finally
-                {
-                    store.Close();
-                }
-                 
             }
 
             return result;

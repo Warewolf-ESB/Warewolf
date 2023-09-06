@@ -1,4 +1,5 @@
 ﻿
+using Dev2.Common;
 using Dev2.Runtime.WebServer.Security;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Authentication.Negotiate;
@@ -34,7 +35,7 @@ namespace Dev2.Runtime.WebServer
         public static IDisposable Start(Dev2Endpoint[] endpoints, WebApplicationBuilder builder)
         {
             var sslCertPfxPath =  ConfigurationManager.AppSettings["sslPFXCertificateName"];
-            var certificate = new X509Certificate2(sslCertPfxPath, ConfigurationManager.AppSettings["sslPFXCertificatePassword"], 
+            var certificate = new X509Certificate2(sslCertPfxPath, GlobalConstants.WarewolfSSLCertificatePassword, 
                 X509KeyStorageFlags.Exportable | X509KeyStorageFlags.PersistKeySet);
             
             builder.WebHost.ConfigureKestrel(serverOptions =>

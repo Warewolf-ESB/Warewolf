@@ -30,86 +30,16 @@ namespace Dev2.Runtime.Security
         static string _location;
         static string Location => _location ?? (_location = Assembly.GetExecutingAssembly().Location);
 
-        const string MakeCertPath = @"\SSL Generation\CreateCertificate.bat";
         const string BaseCertificatePath = @"SSL Generation";
         const string TrustCertBatFile = @"TrustCertificate.bat";
 
-        public bool EnsureSslCertificate(string certPath, IPEndPoint endPoint)
-        {
-            var result = false;
-            var asmLoc = Location;
-            var exeBase = string.Empty;
-            var authName = AuthorityName();
-            var masterData = string.Empty;
-            var workingDir = string.Empty;
-
-            try
-            {
-                if (!string.IsNullOrEmpty(asmLoc))
-                {
-                    asmLoc = Path.GetDirectoryName(asmLoc);
-                    workingDir = String.Concat(asmLoc, @"\SSL Generation");
-                    exeBase = string.Concat(asmLoc, MakeCertPath);
-                    masterData = File.ReadAllText(exeBase);
-                    var writeBack = string.Format(masterData, authName);
-
-                    File.WriteAllText(exeBase, writeBack);
-                }
-
-                if (ProcessHost.Invoke(workingDir, "CreateCertificate.bat", null, true))
-                {
-                    result = BindSslCertToPorts(endPoint, certPath);
-                }
-            }
-            catch (Exception e)
-            {
-                Dev2Logger.Error(e, GlobalConstants.WarewolfError);
-            }
-            finally
-            {
-                if (!string.IsNullOrEmpty(masterData))
-                {
-                    File.WriteAllText(exeBase, masterData);
-                }
-            }
-
-            return result;
-        }
-
-        static string AuthorityName() => Guid.NewGuid().ToString();
-
-        public static bool BindSslCertToPorts(IPEndPoint endPoint, string sslCertPath)
-        {
-            //
-            // To verify run this at the command prompt:
-            //
-            // netsh http show sslcert ipport=0.0.0.0:1236
-            //
-            try
-            {
-                var cert = new X509Certificate2(sslCertPath);
-                var certHash = cert.GetCertHashString();
-                var args = string.Format("http add sslcert ipport={0}:{1} appid={{12345678-db90-4b66-8b01-88f7af2e36bf}} certhash={2}",
-                        endPoint.Address, endPoint.Port, certHash);
-                return ProcessHost.Invoke(null, "netsh.exe", args);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Error Binding :  " + ex);
-            }
-
-            return false;
-        }
-
-        public bool CreateCertificateForServerAuthentication()
+        public bool CreateCertificateForServerAuthentication(string certificateName, string certificatePFXName)
         {
             try
             {
                 //local variables
-                string certificateName = ConfigurationManager.AppSettings["sslCertificateName"];
-                string certificatePFXName = ConfigurationManager.AppSettings["sslPFXCertificateName"];
-                string certificatePFXPassword = ConfigurationManager.AppSettings["sslPFXCertificatePassword"];
-                string certifcateFriendName = "Warewolf.local Certificate For Server Authorization";
+                string certificatePFXPassword = GlobalConstants.WarewolfSSLCertificatePassword;
+                
                 int certificateExpiryInYrs = 10;
 
                 // Generate private-public key pair
@@ -134,7 +64,7 @@ namespace Dev2.Runtime.Security
                 // Export certificate with private key
                 var exportableCertificate = new X509Certificate2(certificate.Export(X509ContentType.Cert), (string?)null, X509KeyStorageFlags.Exportable | X509KeyStorageFlags.PersistKeySet).CopyWithPrivateKey(rsaKey);
 
-                exportableCertificate.FriendlyName = certifcateFriendName;
+                exportableCertificate.FriendlyName = "Warewolf.local Certificate For Server Authorization";
 
                 // Create password for certificate protection
                 var passwordForCertificateProtection = new SecureString();
@@ -162,12 +92,18 @@ namespace Dev2.Runtime.Security
             }
         }
 
-        public bool TrustCertificateToRoot()
+        public bool TrustCertificateToRoot(string sslCertificateName)
         {
+            bool isenableSSLCertificateTrust = false;
+            bool.TryParse(ConfigurationManager.AppSettings["enableSSLCertificateTrust"], out isenableSSLCertificateTrust);
+            if (!isenableSSLCertificateTrust)
+            {
+                return true;
+            }
+
             var result = false;
             var asmLoc = Location;
             var exeBase = string.Empty;
-            var certificateToTrust = ConfigurationManager.AppSettings["sslCertificateName"];
             var masterData = string.Empty;
             var workingDir = string.Empty;
 
@@ -179,7 +115,7 @@ namespace Dev2.Runtime.Security
                     workingDir = Path.Combine(asmLoc, BaseCertificatePath);
                     exeBase = Path.Combine(asmLoc, BaseCertificatePath, TrustCertBatFile);
                     masterData = File.ReadAllText(exeBase);
-                    var writeBack = string.Format(masterData, Path.Combine(asmLoc, certificateToTrust));
+                    var writeBack = string.Format(masterData, Path.Combine(asmLoc, sslCertificateName));
 
                     File.WriteAllText(exeBase, writeBack);
                 }
