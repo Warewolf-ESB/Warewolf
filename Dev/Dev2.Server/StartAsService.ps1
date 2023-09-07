@@ -170,10 +170,16 @@ $LoopCounterMax = 30
 if ($Coverage) {
 	$LoopCounterMax = 60
 }
-while (!(Test-Path "$PSScriptRoot\serverstarted" -ErrorAction SilentlyContinue) -and $LoopCounter++ -lt $LoopCounterMax) {
-	Write-Host Still waiting for server to start...
-	Start-Sleep 5
-}
 if ($NoExit.IsPresent) {
-	Get-Content "C:\programdata\Warewolf\Server` Log\warewolf-server.log" -Wait
+	while (!(Test-Path "C:\programdata\Warewolf\Server Log\warewolf-server.log" -ErrorAction SilentlyContinue) -and $LoopCounter++ -lt $LoopCounterMax)
+	{
+		Write-Host Still waiting for server to start...
+		Start-Sleep 5
+	}
+	Get-Content "C:\programdata\Warewolf\Server Log\warewolf-server.log" -Wait
+} else {
+	while (!(Test-Path "$PSScriptRoot\serverstarted" -ErrorAction SilentlyContinue) -and $LoopCounter++ -lt $LoopCounterMax) {
+		Write-Host Still waiting for server to start...
+		Start-Sleep 5
+	}
 }
