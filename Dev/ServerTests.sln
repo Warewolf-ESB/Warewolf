@@ -235,6 +235,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dev2.Sql", "Dev2.Sql\Dev2.S
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Log4Net.Async", "Log4Net.Async\Log4Net.Async.csproj", "{AE0FD437-9783-48B6-9814-EB82FCFAFA38}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Licensing", "Warewolf.Licensing\Warewolf.Licensing.csproj", "{25533B4F-CD60-46C7-829C-0EBA9E052A94}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Licencing.Tests", "Warewolf.Licencing.Tests\Warewolf.Licencing.Tests.csproj", "{D3746053-97FA-4653-94CC-8B88BC49B761}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -650,6 +654,14 @@ Global
 		{AE0FD437-9783-48B6-9814-EB82FCFAFA38}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AE0FD437-9783-48B6-9814-EB82FCFAFA38}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AE0FD437-9783-48B6-9814-EB82FCFAFA38}.Release|Any CPU.Build.0 = Release|Any CPU
+		{25533B4F-CD60-46C7-829C-0EBA9E052A94}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{25533B4F-CD60-46C7-829C-0EBA9E052A94}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{25533B4F-CD60-46C7-829C-0EBA9E052A94}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{25533B4F-CD60-46C7-829C-0EBA9E052A94}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D3746053-97FA-4653-94CC-8B88BC49B761}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D3746053-97FA-4653-94CC-8B88BC49B761}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D3746053-97FA-4653-94CC-8B88BC49B761}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{D3746053-97FA-4653-94CC-8B88BC49B761}.Release|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

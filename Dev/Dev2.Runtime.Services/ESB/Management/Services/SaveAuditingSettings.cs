@@ -51,11 +51,12 @@ namespace Dev2.Runtime.ESB.Management.Services
                     case nameof(LegacySettingsData):
                         var updatedLegacySettings = serializer.Deserialize<LegacySettingsData>(legacySettings);
                         Config.Legacy.AuditFilePath = updatedLegacySettings.AuditFilePath;
-                        Config.Legacy.IncludeEnvironmentVariable = updatedLegacySettings.IncludeEnvironmentVariable;
+                        Config.Legacy.IncludeEnvironmentVariable = updatedLegacySettings.IncludeEnvironmentVariable;                       
+                        Config.Legacy.AuditLogMaxSize = updatedLegacySettings.AuditLogMaxSize;
                         Config.Legacy.Save();
 
                         Config.Server.Sink = nameof(LegacySettingsData);
-                        Config.Server.IncludeEnvironmentVariable = updatedLegacySettings.IncludeEnvironmentVariable;
+                        Config.Server.IncludeEnvironmentVariable = updatedLegacySettings.IncludeEnvironmentVariable;                         
                         Config.Server.Save();
                         break;
 

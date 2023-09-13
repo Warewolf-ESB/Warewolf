@@ -133,6 +133,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             if (!string.IsNullOrEmpty(t.FieldName))
             {
+                if (bool.TryParse(t.FieldValue, out bool boolValue))
+                {                
+                    t.FieldValue = "\"" + t.FieldValue + "\"";                    
+                }                 
                 var assignValue = new AssignValue(t.FieldName, t.FieldValue);
                 var isCalcEvaluation = DataListUtil.IsCalcEvaluation(t.FieldValue, out string cleanExpression);
                 if (isCalcEvaluation)

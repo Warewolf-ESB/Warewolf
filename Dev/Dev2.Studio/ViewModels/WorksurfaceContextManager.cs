@@ -830,8 +830,20 @@ namespace Dev2.Studio.ViewModels
             AddWorkspaceItem(tempResource);
         }
 
-        bool ShowRemovePopup(IWorkflowDesignerViewModel workflowVm)
+        private bool ShowRemovePopup(IWorkflowDesignerViewModel workflowVm)
         {
+            if (!_shellViewModel.SubscriptionData.IsLicensed)
+            {
+                var unRegisteredDialog = _shellViewModel.PopupProvider.UnRegisteredDialog();
+                if (unRegisteredDialog == MessageBoxResult.Yes)
+                {
+                    // Take the user to the register steps.
+                    _shellViewModel.Register();
+                }
+
+                return true;
+            }
+
             var result = _shellViewModel.PopupProvider.Show(string.Format(StringResources.DialogBody_NotSaved, workflowVm.ResourceModel.ResourceName),
                 $"Save {workflowVm.ResourceModel.ResourceName}?",
                 MessageBoxButton.YesNoCancel,

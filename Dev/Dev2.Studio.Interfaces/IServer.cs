@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -20,6 +20,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Warewolf.Data;
+using Warewolf.Licensing;
 
 namespace Dev2.Studio.Interfaces
 {
@@ -88,6 +89,7 @@ namespace Dev2.Studio.Interfaces
         IExplorerRepository ProxyLayer { get; }
         Permissions UserPermissions { get; set; }
         IVersionInfo VersionInfo { get; set; }
+        ISubscriptionData GetSubscriptionData();
 
         string GetMinSupportedVersion();
 

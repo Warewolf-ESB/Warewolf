@@ -75,4 +75,12 @@ namespace Warewolf.Service
     {
         public const string Dependencies = nameof(Dependencies);
     }
+    public static class SaveSubscriptionData
+    {
+        public const string SubscriptionData = nameof(SubscriptionData);
+    }
+    public static class GetSubscriptionData
+    {
+        public const string SubscriptionData = nameof(SubscriptionData);
+    }
 }

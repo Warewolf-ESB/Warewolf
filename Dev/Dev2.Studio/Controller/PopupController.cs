@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -197,6 +197,19 @@ namespace Dev2.Studio.Controller
             return Show();
         }
 
+        public MessageBoxResult UnRegisteredDialog()
+        {
+            AssignCommonValues("Register Warewolf?", Warewolf.Studio.Resources.Languages.Core.WarewolfUnRegisteredError, MessageBoxButton.YesNo);
+            ImageType = MessageBoxImage.Information;
+            IsDependenciesButtonVisible = false;
+            IsInfo = true;
+            IsError = false;
+            IsQuestion = false;
+            IsDeleteAnywayButtonVisible = false;
+            ApplyToAll = false;
+            return Show();
+        }
+
         public MessageBoxResult ShowCanNotMoveResource()
         {
             AssignCommonValues("Source data contains encrypted connections strings.", "If the Source was created on this Server, Click Continue Warewolf will attempt to Open it. \nIf the Source was created on the Remote server, click Cancel and then deploy it to this machine from the resource's originating server.", MessageBoxButton.OKCancel);
@@ -204,6 +217,20 @@ namespace Dev2.Studio.Controller
             IsDependenciesButtonVisible = false;
             IsInfo = true;
             IsError = false;
+            IsQuestion = false;
+            IsDeleteAnywayButtonVisible = false;
+            ApplyToAll = false;
+            return Show();
+        }
+        
+        public MessageBoxResult ShowGetSubscriptionDataFailed()
+        {
+            var description = "Unable to get subscription data.\n\nPlease make sure the Warewolf Server service is running.";
+            AssignCommonValues("Get Subscription Data Failed", description, MessageBoxButton.OK);
+            ImageType = MessageBoxImage.Error;
+            IsDependenciesButtonVisible = false;
+            IsInfo = false;
+            IsError = true;
             IsQuestion = false;
             IsDeleteAnywayButtonVisible = false;
             ApplyToAll = false;

@@ -475,6 +475,7 @@ namespace Dev2.Activities.Designers2.WebGet
         {
             InputArea.IsEnabled = value;
             OutputsRegion.IsEnabled = value && OutputsRegion.Outputs.Count > 0;
+            //OutputsRegion.IsEnabled = (String.IsNullOrEmpty(OutputsRegion.ObjectResult) ? false : true);
             ErrorRegion.IsEnabled = value;
             SourceRegion.IsEnabled = value;
         }
