@@ -27,7 +27,7 @@ using Dev2.SignalR.Wrappers;
 using Dev2.SignalR.Wrappers.New;
 using Dev2.Studio.Interfaces;
 using Dev2.Threading;
-using Microsoft.AspNet.SignalR.Client;
+using Microsoft.AspNetCore.SignalR.Client;
 using ServiceStack.Messaging.Rcon;
 using System;
 using System.Collections.Generic;
@@ -77,8 +77,10 @@ namespace Dev2.Network
             AppServerUri = new Uri(uriString);
             WebServerUri = new Uri(uriString.Replace("/dsf", ""));
             Dev2Logger.Debug(credentials, "Warewolf Debug");
-            Dev2Logger.Debug("***** Attempting Server Hub : " + uriString + " -> " + CredentialCache.DefaultNetworkCredentials.Domain + @"\" + Principal.Identity.Name, "Warewolf Debug");
-            HubConnection = new HubConnectionWrapper(uriString) { Credentials = credentials };
+			
+            if (Principal != null)
+                Dev2Logger.Debug("***** Attempting Server Hub : " + uriString + " -> " + CredentialCache.DefaultNetworkCredentials.Domain + @"\" + Principal.Identity.Name, "Warewolf Debug");
+            HubConnection = new HubConnectionWrapper(uriString, credentials);
             HubConnection.Error += OnHubConnectionError;
             HubConnection.Closed += HubConnectionOnClosed;
             HubConnection.StateChanged += HubConnectionStateChanged;
@@ -164,9 +166,10 @@ namespace Dev2.Network
             }
         }
 
-        void HubConnectionOnClosed()
+        Task HubConnectionOnClosed(Exception ex)
         {
             HasDisconnected();
+			return Task.CompletedTask;
         }
 
         void HasDisconnected()
@@ -261,11 +264,11 @@ namespace Dev2.Network
                     ex =>
                     {
                         Dev2Logger.Error(this, aex, "Warewolf Error");
-                        if(ex is HttpClientException hex && (hex.Response.StatusCode == HttpStatusCode.Unauthorized || hex.Response.StatusCode == HttpStatusCode.Forbidden))
-                        {
-                            UpdateIsAuthorized(false);
-                            throw new UnauthorizedAccessException();
-                        }
+                        //if(ex is HttpClientException hex && (hex.Response.StatusCode == HttpStatusCode.Unauthorized || hex.Response.StatusCode == HttpStatusCode.Forbidden))
+                        //{
+                        //    UpdateIsAuthorized(false);
+                        //    throw new UnauthorizedAccessException();
+                        //}
 
                         throw ex;
                     });
@@ -284,7 +287,7 @@ namespace Dev2.Network
 
         public Task<bool> ConnectAsync(Guid id)
         {
-            return ConnectAsync(id, Timeout.InfiniteTimeSpan);
+            return ConnectAsync(id, TimeSpan.FromSeconds(60000));
         }
 
         static bool ValidateServerCertificate(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslpolicyerrors) => true;
@@ -311,58 +314,59 @@ namespace Dev2.Network
                     ex =>
                     {
                         Dev2Logger.Error(this, aex, "Warewolf Error");
-                        if(ex is HttpClientException hex)
-                        {
-                            switch(hex.Response.StatusCode)
-                            {
-                                case HttpStatusCode.Unauthorized:
-                                case HttpStatusCode.Forbidden:
-                                    UpdateIsAuthorized(false);
-                                    throw new NotConnectedException();
-                                case HttpStatusCode.Continue:
-                                case HttpStatusCode.SwitchingProtocols:
-                                case HttpStatusCode.OK:
-                                case HttpStatusCode.Created:
-                                case HttpStatusCode.Accepted:
-                                case HttpStatusCode.NonAuthoritativeInformation:
-                                case HttpStatusCode.NoContent:
-                                case HttpStatusCode.ResetContent:
-                                case HttpStatusCode.PartialContent:
-                                case HttpStatusCode.MultipleChoices:
-                                case HttpStatusCode.MovedPermanently:
-                                case HttpStatusCode.Found:
-                                case HttpStatusCode.SeeOther:
-                                case HttpStatusCode.NotModified:
-                                case HttpStatusCode.UseProxy:
-                                case HttpStatusCode.Unused:
-                                case HttpStatusCode.TemporaryRedirect:
-                                case HttpStatusCode.BadRequest:
-                                case HttpStatusCode.PaymentRequired:
-                                case HttpStatusCode.NotFound:
-                                case HttpStatusCode.MethodNotAllowed:
-                                case HttpStatusCode.NotAcceptable:
-                                case HttpStatusCode.ProxyAuthenticationRequired:
-                                case HttpStatusCode.RequestTimeout:
-                                case HttpStatusCode.Conflict:
-                                case HttpStatusCode.Gone:
-                                case HttpStatusCode.LengthRequired:
-                                case HttpStatusCode.PreconditionFailed:
-                                case HttpStatusCode.RequestEntityTooLarge:
-                                case HttpStatusCode.RequestUriTooLong:
-                                case HttpStatusCode.UnsupportedMediaType:
-                                case HttpStatusCode.RequestedRangeNotSatisfiable:
-                                case HttpStatusCode.ExpectationFailed:
-                                case HttpStatusCode.UpgradeRequired:
-                                case HttpStatusCode.InternalServerError:
-                                case HttpStatusCode.NotImplemented:
-                                case HttpStatusCode.BadGateway:
-                                case HttpStatusCode.ServiceUnavailable:
-                                case HttpStatusCode.GatewayTimeout:
-                                case HttpStatusCode.HttpVersionNotSupported:
-                                default:
-                                    throw new NotConnectedException();
-                            }
-                        }
+                        throw new Exception();
+                        //if(ex is HttpClientException hex)
+                        //{
+                        //    switch(hex.Response.StatusCode)
+                        //    {
+                        //        case HttpStatusCode.Unauthorized:
+                        //        case HttpStatusCode.Forbidden:
+                        //            UpdateIsAuthorized(false);
+                        //            throw new NotConnectedException();
+                        //        case HttpStatusCode.Continue:
+                        //        case HttpStatusCode.SwitchingProtocols:
+                        //        case HttpStatusCode.OK:
+                        //        case HttpStatusCode.Created:
+                        //        case HttpStatusCode.Accepted:
+                        //        case HttpStatusCode.NonAuthoritativeInformation:
+                        //        case HttpStatusCode.NoContent:
+                        //        case HttpStatusCode.ResetContent:
+                        //        case HttpStatusCode.PartialContent:
+                        //        case HttpStatusCode.MultipleChoices:
+                        //        case HttpStatusCode.MovedPermanently:
+                        //        case HttpStatusCode.Found:
+                        //        case HttpStatusCode.SeeOther:
+                        //        case HttpStatusCode.NotModified:
+                        //        case HttpStatusCode.UseProxy:
+                        //        case HttpStatusCode.Unused:
+                        //        case HttpStatusCode.TemporaryRedirect:
+                        //        case HttpStatusCode.BadRequest:
+                        //        case HttpStatusCode.PaymentRequired:
+                        //        case HttpStatusCode.NotFound:
+                        //        case HttpStatusCode.MethodNotAllowed:
+                        //        case HttpStatusCode.NotAcceptable:
+                        //        case HttpStatusCode.ProxyAuthenticationRequired:
+                        //        case HttpStatusCode.RequestTimeout:
+                        //        case HttpStatusCode.Conflict:
+                        //        case HttpStatusCode.Gone:
+                        //        case HttpStatusCode.LengthRequired:
+                        //        case HttpStatusCode.PreconditionFailed:
+                        //        case HttpStatusCode.RequestEntityTooLarge:
+                        //        case HttpStatusCode.RequestUriTooLong:
+                        //        case HttpStatusCode.UnsupportedMediaType:
+                        //        case HttpStatusCode.RequestedRangeNotSatisfiable:
+                        //        case HttpStatusCode.ExpectationFailed:
+                        //        case HttpStatusCode.UpgradeRequired:
+                        //        case HttpStatusCode.InternalServerError:
+                        //        case HttpStatusCode.NotImplemented:
+                        //        case HttpStatusCode.BadGateway:
+                        //        case HttpStatusCode.ServiceUnavailable:
+                        //        case HttpStatusCode.GatewayTimeout:
+                        //        case HttpStatusCode.HttpVersionNotSupported:
+                        //        default:
+                        //            throw new NotConnectedException();
+                        //    }
+                        //}
 
                         return false;
                     });
@@ -387,7 +391,7 @@ namespace Dev2.Network
             if(wait)
             {
                 callback?.Invoke(
-                    HubConnection.State == (ConnectionStateWrapped)ConnectionState.Connected
+                    HubConnection.State == (ConnectionStateWrapped)HubConnectionState.Connected
                         ? ConnectResult.Success
                         : ConnectResult.ConnectFailed);
             }
@@ -396,7 +400,7 @@ namespace Dev2.Network
                 AsyncWorker.Start(
                     () => Thread.Sleep(MillisecondsTimeout),
                     () => callback?.Invoke(
-                        HubConnection.State == (ConnectionStateWrapped)ConnectionState.Connected
+                        HubConnection.State == (ConnectionStateWrapped)HubConnectionState.Connected
                             ? ConnectResult.Success
                             : ConnectResult.ConnectFailed));
             }
@@ -540,7 +544,7 @@ namespace Dev2.Network
             var envelope = new Envelope
             {
                 PartID = 0,
-                Type = typeof(Envelope),
+                //Type = typeof(Envelope),
                 Content = xmlRequest.ToString()
             };
 

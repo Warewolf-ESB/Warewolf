@@ -80,9 +80,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.AspNet.SignalR.Client">
-      <Version>2.4.3</Version>
-    </PackageReference>
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="6.0.10" />
     <PackageReference Include="Newtonsoft.Json">
       <Version>13.0.2</Version>
     </PackageReference>

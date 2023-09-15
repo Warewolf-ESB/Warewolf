@@ -1,34 +1,35 @@
-﻿/*
-*  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later.
-*  Some rights reserved.
-*  Visit our website for more information <http://warewolf.io/>
-*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
-*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
-*/
+﻿///*
+//*  Warewolf - Once bitten, there's no going back
+//*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+//*  Licensed under GNU Affero General Public License 3.0 or later.
+//*  Some rights reserved.
+//*  Visit our website for more information <http://warewolf.io/>
+//*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+//*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+//*/
 
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.AspNet.SignalR.Client;
-using Microsoft.AspNet.SignalR.Client.Hubs;
+using Microsoft.AspNetCore.SignalR.Client;
+
 using Newtonsoft.Json.Linq;
 
 namespace Dev2.SignalR.Wrappers.New
 {
-    public class HubProxyWrapper:IHubProxyWrapper
+    public class HubProxyWrapper : IHubProxyWrapper
     {
-        readonly IHubProxy _hubProxy;
+        readonly HubConnection _hubConnection;
 
-        public HubProxyWrapper(IHubProxy hubProxy)
+        public HubProxyWrapper(HubConnection connection)
         {
-            _hubProxy = hubProxy; 
+            _hubConnection = connection;
         }
 
         public ISubscriptionWrapper Subscribe(string sendmemo)
         {
-            var s = _hubProxy.Subscribe(sendmemo);
+            var s = new Subscription();
+            _hubConnection.On<IList<JToken>>(sendmemo, s.OnReceived);
             return new SubscriptionWrapper(s);
         }
 
@@ -40,7 +41,7 @@ namespace Dev2.SignalR.Wrappers.New
         /// <param name="method">The name of the method.</param>
         /// <param name="args">The arguments</param>
         /// <returns>A task that represents when invocation returned.</returns>
-        public Task Invoke(string method, params object[] args) => _hubProxy.Invoke(method, args);
+        public Task Invoke(string method, params object[] args) => _hubConnection.InvokeCoreAsync(method, args);
 
         /// <summary>
         /// Executes a method on the server side hub asynchronously.
@@ -49,11 +50,11 @@ namespace Dev2.SignalR.Wrappers.New
         /// <param name="method">The name of the method.</param>
         /// <param name="args">The arguments</param>
         /// <returns>A task that represents when invocation returned.</returns>
-        public Task<T> Invoke<T>(string method, params object[] args) => _hubProxy.Invoke<T>(method, args);
+        public Task<T> Invoke<T>(string method, params object[] args) => _hubConnection.InvokeCoreAsync<T>(method, args);
 
-        public object Object() => _hubProxy;
+        public object Object() => _hubConnection;
 
-        public IDisposable On<T>(string eventName, Action<T> onData) => ((IHubProxy)Object()).On(eventName, onData);
+        public IDisposable On<T>(string eventName, Action<T> onData) => ((HubConnection)Object()).On(eventName, onData);
 
         #endregion
     }
@@ -87,11 +88,10 @@ namespace Dev2.SignalR.Wrappers.New
             NewState = newState;
         }
 
-        public StateChangeWrapped(StateChange change)
+        public StateChangeWrapped(HubConnectionState oldState, HubConnectionState newState)
         {
-
-            OldState = (ConnectionStateWrapped)change.OldState;
-            NewState = (ConnectionStateWrapped)change.NewState;
+            OldState = oldState.ToConnectionStateWrapped();
+            NewState = newState.ToConnectionStateWrapped();
         }
 
         /// <summary>
@@ -103,5 +103,18 @@ namespace Dev2.SignalR.Wrappers.New
         /// Gets the new state of the connection.
         /// </summary>
         public ConnectionStateWrapped NewState { get; private set; }
+    }
+
+    public class Subscription
+    {
+        public event Action<IList<JToken>> Received;
+
+        internal void OnReceived(IList<JToken> data)
+        {
+            if (this.Received != null)
+            {
+                this.Received(data);
+            }
+        }
     }
 }

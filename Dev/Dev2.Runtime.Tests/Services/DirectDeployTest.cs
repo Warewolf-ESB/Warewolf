@@ -11,7 +11,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Dev2.Common;
 using Dev2.Common.Common;
@@ -23,7 +25,10 @@ using Dev2.Runtime.Diagnostics;
 using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
-using Microsoft.AspNet.SignalR.Client;
+using Microsoft.AspNetCore.Connections;
+using Microsoft.AspNetCore.SignalR.Client;
+using Microsoft.AspNetCore.SignalR.Protocol;
+using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -155,14 +160,15 @@ namespace Dev2.Tests.Runtime.Services
 
             var connectionsMock = new Mock<IConnections>();
             connectionsMock.Setup(connection => connection.CanConnectToServer(It.IsAny<Data.ServiceModel.Connection>())).Returns(new ValidationResult { IsValid = false });
-            var hubProxy = new Mock<IHubProxy>();
-            hubProxy.Setup(proxy => proxy.Invoke("ExecuteCommand", It.IsAny<Envelope>(), It.IsAny<bool>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(Task.FromResult(new Receipt()));
+			var hubConnection = new Mock<HubConnection>(new Mock<IConnectionFactory>().Object, new Mock<IHubProtocol>().Object, new Mock<EndPoint>().Object, new Mock<IServiceProvider>().Object, new Mock<ILoggerFactory>().Object);
+
+            hubConnection.Setup(proxy => proxy.InvokeCoreAsync("ExecuteCommand", typeof(Task), null, It.IsAny<CancellationToken>())).Returns(Task.FromResult(new Receipt() as object));
             var executeMessage = new ExecuteMessage();
             executeMessage.HasError = false;
             executeMessage.Message = new StringBuilder("Great Succesess");
             var execMsg = serializer.Serialize(executeMessage);
-            hubProxy.Setup(proxy => proxy.Invoke<string>("FetchExecutePayloadFragment", It.IsAny<FutureReceipt>())).Returns(Task.FromResult(execMsg));
-            connectionsMock.Setup(connection => connection.CreateHubProxy(It.IsAny<Data.ServiceModel.Connection>())).Returns(hubProxy.Object);
+            hubConnection.Setup(proxy => proxy.InvokeCoreAsync("FetchExecutePayloadFragment", typeof(Task), null, It.IsAny<CancellationToken>())).Returns(Task.FromResult(execMsg as object));
+            connectionsMock.Setup(connection => connection.GetHubConnection(It.IsAny<Data.ServiceModel.Connection>())).Returns(hubConnection.Object);
 
             directDeploy.Connections = connectionsMock.Object;
 
@@ -201,14 +207,17 @@ namespace Dev2.Tests.Runtime.Services
 
             var connectionsMock = new Mock<IConnections>();
             connectionsMock.Setup(connection => connection.CanConnectToServer(It.IsAny<Data.ServiceModel.Connection>())).Returns(new ValidationResult { IsValid = true });
-            var hubProxy = new Mock<IHubProxy>();
-            hubProxy.Setup(proxy => proxy.Invoke("ExecuteCommand", It.IsAny<Envelope>(), It.IsAny<bool>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(Task.FromResult(new Receipt()));
-            var executeMessage = new ExecuteMessage();
+            
+            var hubProxy = new Mock<HubConnection>(new Mock<IConnectionFactory>().Object, new Mock<IHubProtocol>().Object, new Mock<EndPoint>().Object, new Mock<IServiceProvider>().Object, new Mock<ILoggerFactory>().Object);
+			
+            hubProxy.Setup(proxy => proxy.InvokeCoreAsync("ExecuteCommand", typeof(Task), null, It.IsAny<CancellationToken>())).Returns(Task.FromResult(new Receipt() as object));
+
+			var executeMessage = new ExecuteMessage();
             executeMessage.HasError = false;
             executeMessage.Message = new StringBuilder("Great Succesess");
             var execMsg = serializer.Serialize(executeMessage);
-            hubProxy.Setup(proxy => proxy.Invoke<string>("FetchExecutePayloadFragment", It.IsAny<FutureReceipt>())).Returns(Task.FromResult(execMsg));
-            connectionsMock.Setup(connection => connection.CreateHubProxy(It.IsAny<Data.ServiceModel.Connection>())).Returns(hubProxy.Object);
+            hubProxy.Setup(proxy => proxy.InvokeCoreAsync("FetchExecutePayloadFragment", typeof(Task), null, It.IsAny<CancellationToken>())).Returns(Task.FromResult(execMsg as object));
+            connectionsMock.Setup(connection => connection.GetHubConnection(It.IsAny<Data.ServiceModel.Connection>())).Returns(hubProxy.Object);
 
             directDeploy.Connections = connectionsMock.Object;
 
@@ -246,14 +255,15 @@ namespace Dev2.Tests.Runtime.Services
 
             var connectionsMock = new Mock<IConnections>();
             connectionsMock.Setup(connection => connection.CanConnectToServer(It.IsAny<Data.ServiceModel.Connection>())).Returns(new ValidationResult { IsValid = true });
-            var hubProxy = new Mock<IHubProxy>();
-            hubProxy.Setup(proxy => proxy.Invoke("ExecuteCommand", It.IsAny<Envelope>(), It.IsAny<bool>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(Task.FromResult(new Receipt()));
+			var hubProxy = new Mock<HubConnection>(new Mock<IConnectionFactory>().Object, new Mock<IHubProtocol>().Object, new Mock<EndPoint>().Object, new Mock<IServiceProvider>().Object, new Mock<ILoggerFactory>().Object);
+            hubProxy.Setup(proxy => proxy.InvokeCoreAsync("ExecuteCommand", typeof(Task), null, It.IsAny<CancellationToken>())).Returns(Task.FromResult(new Receipt() as object));
             var executeMessage = new ExecuteMessage();
             executeMessage.HasError = false;
             executeMessage.Message = new StringBuilder("Great Succesess");
             var execMsg = serializer.Serialize(executeMessage);
-            hubProxy.Setup(proxy => proxy.Invoke<string>("FetchExecutePayloadFragment", It.IsAny<FutureReceipt>())).Returns(Task.FromResult(execMsg));
-            connectionsMock.Setup(connection => connection.CreateHubProxy(It.IsAny<Data.ServiceModel.Connection>())).Returns(hubProxy.Object);
+            hubProxy.Setup(proxy => proxy.InvokeCoreAsync("FetchExecutePayloadFragment", typeof(Task), null,  It.IsAny<CancellationToken>())).Returns(Task.FromResult(execMsg as object));
+            connectionsMock.Setup(connection => connection.GetHubConnection(It.IsAny<Data.ServiceModel.Connection>())).Returns(hubProxy.Object);
+
 
             directDeploy.Connections = connectionsMock.Object;
 
@@ -292,14 +302,17 @@ namespace Dev2.Tests.Runtime.Services
 
             var connectionsMock = new Mock<IConnections>();
             connectionsMock.Setup(connection => connection.CanConnectToServer(It.IsAny<Data.ServiceModel.Connection>())).Returns(new ValidationResult { IsValid = true });
-            var hubProxy = new Mock<IHubProxy>();
-            hubProxy.Setup(proxy => proxy.Invoke("ExecuteCommand", It.IsAny<Envelope>(), It.IsAny<bool>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(Task.FromResult(new Receipt()));
+            var hubProxy = new Mock<HubConnection>(new Mock<IConnectionFactory>().Object, new Mock<IHubProtocol>().Object, new Mock<EndPoint>().Object, new Mock<IServiceProvider>().Object, new Mock<ILoggerFactory>().Object);
+            hubProxy.Setup(proxy => proxy.InvokeCoreAsync("ExecuteCommand", typeof(Task), null, It.IsAny<CancellationToken>())).Returns(Task.FromResult(new Receipt() as object));
+
             var executeMessage = new ExecuteMessage();
             executeMessage.HasError = false;
             executeMessage.Message = new StringBuilder("Great Succesess");
             var execMsg = serializer.Serialize(executeMessage);
-            hubProxy.Setup(proxy => proxy.Invoke<string>("FetchExecutePayloadFragment", It.IsAny<FutureReceipt>())).Returns(Task.FromResult(execMsg));
-            connectionsMock.Setup(connection => connection.CreateHubProxy(It.IsAny<Data.ServiceModel.Connection>())).Returns(hubProxy.Object);
+hubProxy.Setup(proxy => proxy.InvokeCoreAsync("FetchExecutePayloadFragment", typeof(String), It.IsAny<FutureReceipt[]>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(execMsg as object));
+
+            connectionsMock.Setup(connection => connection.GetHubConnection(It.IsAny<Data.ServiceModel.Connection>())).Returns(hubProxy.Object);
+
 
             directDeploy.Connections = connectionsMock.Object;
 

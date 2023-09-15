@@ -37,6 +37,7 @@ namespace Dev2.Communication
             TypeNameAssemblyFormatHandling = TypeNameAssemblyFormatHandling.Simple,
             ReferenceLoopHandling = ReferenceLoopHandling.Serialize,
             PreserveReferencesHandling = PreserveReferencesHandling.Objects,
+            SerializationBinder = new DotNetCompatibleSerializationBinder()
         };
         public string Serialize<T>(T obj) => this.Serialize<T>(obj, Formatting);
         public string Serialize<T>(T obj, Formatting formatting) => JsonConvert.SerializeObject(obj, formatting, _serializerSettings);
@@ -86,7 +87,8 @@ namespace Dev2.Communication
                     TypeNameHandling = _deSerializerSettings.TypeNameHandling,
                     TypeNameAssemblyFormatHandling = _serializerSettings.TypeNameAssemblyFormatHandling,
                     ReferenceLoopHandling = _serializerSettings.ReferenceLoopHandling,
-                    PreserveReferencesHandling = _serializerSettings.PreserveReferencesHandling
+                    PreserveReferencesHandling = _serializerSettings.PreserveReferencesHandling,
+                    SerializationBinder= _deSerializerSettings.SerializationBinder
                 };
                 using (MemoryStream ms = new MemoryStream(message.Length))
                 {
@@ -160,7 +162,8 @@ namespace Dev2.Communication
                     TypeNameHandling = _serializerSettings.TypeNameHandling,
                     TypeNameAssemblyFormatHandling = _serializerSettings.TypeNameAssemblyFormatHandling,
                     ReferenceLoopHandling = _serializerSettings.ReferenceLoopHandling,
-                    PreserveReferencesHandling = _serializerSettings.PreserveReferencesHandling
+                    PreserveReferencesHandling = _serializerSettings.PreserveReferencesHandling,
+                    SerializationBinder = _deSerializerSettings.SerializationBinder
                 };
                 using (var reader = new JsonTextReader(streamReader))
                 {
@@ -168,6 +171,22 @@ namespace Dev2.Communication
                     return result;
                 }
             }
+        }
+    }
+
+    internal sealed class DotNetCompatibleSerializationBinder : Newtonsoft.Json.Serialization.DefaultSerializationBinder
+    {
+        private const string CoreLibAssembly = "System.Private.CoreLib";
+        private const string MscorlibAssembly = "mscorlib";
+
+        public override Type BindToType(string assemblyName, string typeName)
+        {
+            if (assemblyName == CoreLibAssembly)
+            {
+                assemblyName = MscorlibAssembly;
+                typeName = typeName.Replace(CoreLibAssembly, MscorlibAssembly);
+            }
+            return base.BindToType(assemblyName, typeName);
         }
     }
 }
