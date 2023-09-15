@@ -97,6 +97,10 @@ if (!($InContainer.IsPresent)) {
 		}
 	}
 	if (!(Test-Path "$MSBuildPath" -ErrorAction SilentlyContinue)) {
+		$GetMSBuildCommand = reg.exe query "HKLM\SOFTWARE\Microsoft\MSBuild\ToolsVersions\4.0" /v MSBuildToolsPath
+		$GetMSBuildCommand = $GetMSBuildCommand[2].Substring(34, $GetMSBuildCommand[2].Length-34) + "msbuild.exe"
+	}
+	if (!(Test-Path "$MSBuildPath" -ErrorAction SilentlyContinue)) {
 		$env:MSBuildPath = Read-Host 'Please enter the path to MSBuild.exe. For example: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin\MSBuild.exe. Or change the value of the MSBuildPath environment variable to be the path to MSBuild.exe'
 		if ("$env:MSBuildPath" -ne "" -and (Test-Path "$env:MSBuildPath")) {
 			$MSBuildPath = $env:MSBuildPath
