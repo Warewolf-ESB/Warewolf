@@ -465,8 +465,7 @@
     <PackageReference Include="System.Runtime">
       <Version>4.3.1</Version>
     </PackageReference>
-    <PackageReference Include="TrieNet" Version="1.0.3.26316" />
-    <PackageReference Include="TrieNet" Version="1.0.3.26316" />
+    <PackageReference Include="TrieNet" Version="1.0.3.26316" />    
   </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
