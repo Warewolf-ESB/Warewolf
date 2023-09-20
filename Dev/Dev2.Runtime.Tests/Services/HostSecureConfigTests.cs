@@ -54,17 +54,17 @@ namespace Dev2.Tests.Runtime.Services
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
-        
+
         public void HostSecureConfig_WithoutConfig_Expected_ThrowsArgumentNullException()
 
         {
-            
+
             new HostSecureConfig(null);
-            
+
         }
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        // The tests run in parallel??? so there is no guarantee that the config saved is the one actually being used!!! 
+        // The tests run in parallel??? so there is no guarantee that the config saved is the one actually being used!!!
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         //[TestMethod]
@@ -75,7 +75,7 @@ namespace Dev2.Tests.Runtime.Services
         //}
 
         [TestMethod]
-        
+
         public void HostSecureConfig_WithDefaultSettings_Expected_LoadsDefaultValues()
         {
             TestConfig(DefaultServerID, DefaultServerKey, DefaultSystemKeyPublic, false);

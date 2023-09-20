@@ -19,6 +19,7 @@ using Dev2.DataList.Contract;
 using Dev2.Diagnostics.Debug;
 using Dev2.Interfaces;
 using Dev2.Runtime.Interfaces;
+using Dev2.Runtime.Subscription;
 using Dev2.Runtime.WebServer.Responses;
 using Dev2.Runtime.WebServer.TransferObjects;
 using Dev2.Services.Security;
@@ -31,8 +32,8 @@ namespace Dev2.Runtime.WebServer.Executor
 {
     public class Executor : ExecutorBase
     {
-        public Executor(IWorkspaceRepository workspaceRepository, IResourceCatalog resourceCatalog, ITestCatalog testCatalog, ITestCoverageCatalog testCoverageCatalog, IServiceTestExecutor serviceTestExecutor, IAuthorizationService authorizationService, IDataObjectFactory dataObjectFactory, IEsbChannelFactory esbChannelFactory, IJwtManager jwtManager)
-                : base(workspaceRepository, resourceCatalog, testCatalog, testCoverageCatalog, serviceTestExecutor, authorizationService, dataObjectFactory, esbChannelFactory, jwtManager)
+        public Executor(IWorkspaceRepository workspaceRepository, IResourceCatalog resourceCatalog, ITestCatalog testCatalog, ITestCoverageCatalog testCoverageCatalog, IServiceTestExecutor serviceTestExecutor, IAuthorizationService authorizationService, IDataObjectFactory dataObjectFactory, IEsbChannelFactory esbChannelFactory, IJwtManager jwtManager, ISubscriptionProvider subscriptionProvider)
+                : base(workspaceRepository, resourceCatalog, testCatalog, testCoverageCatalog, serviceTestExecutor, authorizationService, dataObjectFactory, esbChannelFactory, jwtManager, subscriptionProvider)
             {
             }
 

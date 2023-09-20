@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -31,6 +31,7 @@ using Microsoft.VisualBasic.Activities;
 using Warewolf.Auditing;
 using System.IO;
 using System.Runtime.Serialization;
+using Dev2.Runtime.Subscription;
 
 namespace Dev2.Tests.Runtime.ESB.Execution
 {
@@ -147,7 +148,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
                 var channel = new Mock<IEsbChannel>();
                 var serviceAction = new ServiceAction();
 
-                var wfExecutionContainer = new WfExecutionContainer(serviceAction, obj.Object, workSpace.Object, channel.Object);
+                var wfExecutionContainer = new WfExecutionContainer(serviceAction, obj.Object, workSpace.Object, channel.Object, null);
             }
             catch (Exception ex)
             {
@@ -173,7 +174,9 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             dataObjectMock.SetupGet(o => o.Environment).Returns(executionEnvironment.Object);
             dataObjectMock.Setup(o => o.StopExecution).Returns(true);
 
-            var wfExecutionContainer = new WfExecutionContainer(serviceAction, dataObjectMock.Object, workSpaceMock.Object, esbChannelMock.Object);
+            var mockSubscriptionProvider = new Mock<ISubscriptionProvider>();
+            mockSubscriptionProvider.Setup(o => o.IsLicensed).Returns(true);
+            var wfExecutionContainer = new WfExecutionContainer(serviceAction, dataObjectMock.Object, workSpaceMock.Object, esbChannelMock.Object, mockSubscriptionProvider.Object);
 
             //--------------Act----------------------------------
             wfExecutionContainer.Eval(FlowchartProcess, dataObjectMock.Object, 0);
@@ -201,7 +204,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             dataObjectMock.SetupGet(o => o.Environment).Returns(executionEnvironment.Object);
             dataObjectMock.Setup(o => o.StopExecution).Returns(false);
 
-            var wfExecutionContainer = new WfExecutionContainer(serviceAction, dataObjectMock.Object, workSpaceMock.Object, esbChannelMock.Object);
+            var wfExecutionContainer = new WfExecutionContainer(serviceAction, dataObjectMock.Object, workSpaceMock.Object, esbChannelMock.Object, new Mock<ISubscriptionProvider>().Object);
 
             //--------------Act----------------------------------
             wfExecutionContainer.Eval(FlowchartProcess, dataObjectMock.Object, 0);
@@ -249,9 +252,12 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             var logManagerMock = new Mock<IStateNotifierFactory>();
             logManagerMock.Setup(o => o.New(It.IsAny<IDSFDataObject>())).Returns(mockStateNotifier.Object);
 
-            CustomContainer.Register<IExecutionManager>(mockExecutionManager.Object);
-            CustomContainer.Register<IStateNotifierFactory>(logManagerMock.Object);
-            var wfExecutionContainer = new WfExecutionContainer(serviceAction, mockDataObject.Object, mockWorkspace.Object, mockEsbChannel.Object);
+            CustomContainer.Register(mockExecutionManager.Object);
+            CustomContainer.Register(logManagerMock.Object);
+
+            var mockSubscriptionProvider = new Mock<ISubscriptionProvider>();
+            mockSubscriptionProvider.Setup(o => o.IsLicensed).Returns(true);
+            var wfExecutionContainer = new WfExecutionContainer(serviceAction, mockDataObject.Object, mockWorkspace.Object, mockEsbChannel.Object, mockSubscriptionProvider.Object);
 
             wfExecutionContainer.Eval(FlowchartProcess, mockDataObject.Object, 0);
 
@@ -296,7 +302,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
 
             CustomContainer.Register<IExecutionManager>(mockExecutionManager.Object);
             CustomContainer.Register<IStateNotifierFactory>(logManagerMock.Object);
-            var wfExecutionContainer = new WfExecutionContainer(serviceAction, dataObjectMock.Object, workSpaceMock.Object, esbChannelMock.Object);
+            var wfExecutionContainer = new WfExecutionContainer(serviceAction, dataObjectMock.Object, workSpaceMock.Object, esbChannelMock.Object, new Mock<ISubscriptionProvider>().Object);
 
             //--------------Act----------------------------------
             wfExecutionContainer.Eval(FlowchartProcess, dataObjectMock.Object, 0);
@@ -359,10 +365,13 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             activityMock.Setup(o => o.Execute(dataObjectMock.Object, 0)).Throws(falseException);
             activityParserMock.Setup(o => o.Parse(It.IsAny<DynamicActivity>())).Returns(activityMock.Object);
 
-            CustomContainer.Register<IExecutionManager>(mockExecutionManager.Object);
-            CustomContainer.Register<IStateNotifierFactory>(logManagerMock.Object);
-            CustomContainer.Register<IActivityParser>(activityParserMock.Object);
-            var wfExecutionContainer = new WfExecutionContainer(serviceAction, dataObjectMock.Object, workSpaceMock.Object, esbChannelMock.Object);
+            CustomContainer.Register(mockExecutionManager.Object);
+            CustomContainer.Register(logManagerMock.Object);
+            CustomContainer.Register(activityParserMock.Object);
+
+            var mockSubscriptionProvider = new Mock<ISubscriptionProvider>();
+            mockSubscriptionProvider.Setup(o => o.IsLicensed).Returns(true);
+            var wfExecutionContainer = new WfExecutionContainer(serviceAction, dataObjectMock.Object, workSpaceMock.Object, esbChannelMock.Object, mockSubscriptionProvider.Object);
 
             //--------------Act----------------------------------
             wfExecutionContainer.Eval(FlowchartProcess, dataObjectMock.Object, 0);

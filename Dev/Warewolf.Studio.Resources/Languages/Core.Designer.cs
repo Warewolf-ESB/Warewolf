@@ -1587,6 +1587,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Warewolf is not registered. To start a trial version, please click &apos;Yes&apos;..
+        /// </summary>
+        public static string WarewolfUnRegisteredError {
+            get {
+                return ResourceManager.GetString("WarewolfUnRegisteredError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to https://warewolf.io/.
         /// </summary>
         public static string WarewolfUrl {

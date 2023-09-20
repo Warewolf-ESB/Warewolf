@@ -12,6 +12,7 @@ using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Studio.Interfaces;
 using Moq;
+using Warewolf.Licensing;
 
 namespace Warewolf.Studio.ViewModels.Tests
 {
@@ -44,6 +45,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             });
             _localhostServerMock.SetupGet(it => it.DisplayName).Returns("localhostServerResourceName");
             _shellViewModelMock.SetupGet(it => it.LocalhostServer).Returns(_localhostServerMock.Object);
+            _shellViewModelMock.Setup(it => it.SubscriptionData).Returns(new Mock<ISubscriptionData>().Object);
             _eventAggregatorMock = new Mock<Microsoft.Practices.Prism.PubSubEvents.IEventAggregator>();
 
             var connectControlSingleton = new Mock<Dev2.ConnectionHelpers.IConnectControlSingleton>();

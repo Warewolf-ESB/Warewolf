@@ -15,7 +15,7 @@ using System.Windows.Input;
 
 namespace Dev2.Studio.Interfaces
 {
-    public interface IExplorerTreeItem : IDisposable,IEqualityComparer<IExplorerTreeItem>
+    public interface IExplorerTreeItem : IDisposable, IEqualityComparer<IExplorerTreeItem>
     {
         string ResourceType { get; set; }
         string ResourcePath { get; set; }
@@ -54,7 +54,7 @@ namespace Dev2.Studio.Interfaces
         bool CanViewApisJson { get; set; }
         bool CanViewExecutionLogging { get; set; }
         bool IsMergeVisible { get; set; }
-
+        bool IsLicensed { get; set; }
         ICommand ViewApisJsonCommand { get; set; }
         ICommand ViewExecutionLoggingCommand { get; set; }
         ICommand DeployCommand { get; set; }
@@ -64,7 +64,8 @@ namespace Dev2.Studio.Interfaces
         ICommand ShowVersionHistory { get; set; }
         ICommand RollbackCommand { get; set; }
         ICommand Expand { get; set; }
-
+        ICommand RegisterCommand { get; set; }
+        ICommand ManagePlanCommand { get; set; }
         IServer Server { get; set; }
         IExplorerTreeItem Parent { get; set; }
         IShellViewModel ShellViewModel { get; }
@@ -76,8 +77,11 @@ namespace Dev2.Studio.Interfaces
         bool IsSaveDialog { get; set; }
 
         void AddChild(IExplorerItemViewModel child);
+
         void RemoveChild(IExplorerItemViewModel child);
+
         void SelectItem(Guid id, Action<IExplorerItemViewModel> foundAction);
+
         void UpdateChildrenCount();
     }
 }

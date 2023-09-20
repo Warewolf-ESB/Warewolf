@@ -35,6 +35,7 @@
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
     <Compile Include="PrivateObject.cs" />
+    <Compile Include="EnvironmentVariablesForTesting.cs" />
     <Compile Include="ServerForTesting.cs" />
   </ItemGroup>
   <ItemGroup>

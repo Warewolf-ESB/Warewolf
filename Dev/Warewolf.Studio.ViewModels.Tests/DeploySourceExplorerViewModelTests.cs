@@ -1,3 +1,13 @@
+/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
@@ -11,14 +21,13 @@ using Dev2.Studio.Interfaces.Deploy;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Moq;
 using Dev2;
+using Warewolf.Licensing;
 
 namespace Warewolf.Studio.ViewModels.Tests
 {
-    [TestClass()]
+    [TestClass]
     public class DeploySourceExplorerViewModelTests
     {
-        #region Fields
-
         DeploySourceExplorerViewModel _target;
         Mock<IEnvironmentViewModel> _selectedEnvironment;
         Mock<IShellViewModel> _shellViewModelMock;
@@ -27,10 +36,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         Mock<IDeployStatsViewerViewModel> _deployStatsViewerViewModel;
         Mock<IStudioUpdateManager> _studioUpdateManagerMock;
         Mock<IExplorerItem> _explorerItemMock;
-
-        #endregion Fields
-
-        #region Test initialize
 
         [TestInitialize]
         public void TestInitialize()
@@ -56,6 +61,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _serverMock.SetupGet(it => it.Connection).Returns(mockEnvironmentConnection.Object);
 
             _shellViewModelMock.SetupGet(it => it.LocalhostServer).Returns(_serverMock.Object);
+            _shellViewModelMock.SetupGet(it => it.SubscriptionData).Returns(new Mock<ISubscriptionData>().Object);
             _eventAggregatorMock = new Mock<IEventAggregator>();
             _deployStatsViewerViewModel = new Mock<IDeployStatsViewerViewModel>();
 
@@ -80,10 +86,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockEnvironmentConnection.Setup(a => a.ID).Returns(Guid.Empty);
             return mockEnvironmentConnection;
         }
-
-        #endregion Test initialize
-
-        #region Test properties
 
         [TestMethod]
         [Timeout(2000)]
@@ -243,9 +245,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(Version.Parse(input), value);
         }
 
-        #endregion Test properties
-
-        #region Test methods
         [TestMethod]
         [Timeout(5000)]
         public void TestSelectedEnvironmentChanged_OnDeploySourceViewModel()
@@ -430,6 +429,5 @@ namespace Warewolf.Studio.ViewModels.Tests
             _deployStatsViewerViewModel.Verify(
                 it => it.TryCalculate(It.Is<IList<IExplorerTreeItem>>(match => !match.Any())));
         }        
-        #endregion Test methods
     }
 }

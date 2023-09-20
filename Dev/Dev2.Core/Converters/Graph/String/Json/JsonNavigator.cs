@@ -348,6 +348,14 @@ namespace Unlimited.Framework.Converters.Graph.String.Json
         {
             var jObject = data as JObject;
 
+            if (jObject == null)
+            {
+                var jObj = new JObject();
+                jObj.Add(pathSegment.ActualSegment, (JToken)(data as Object));
+
+                jObject = jObj;
+            }
+
             JToken returnVal = null;
             var property = jObject?.Property(pathSegment.ActualSegment);
 
@@ -362,6 +370,14 @@ namespace Unlimited.Framework.Converters.Graph.String.Json
         IEnumerable GetEnumerableValueForPathSegment(IPathSegment pathSegment, IEnumerable<JToken> data)
         {
             var jObject = data as JObject;
+
+            if (jObject == null)
+            {
+                var jObj = new JObject();
+                jObj.Add(pathSegment.ActualSegment, (JToken)(data as Object));
+
+                jObject = jObj;
+            }
 
             IEnumerable returnVal = null;
             var property = jObject?.Property(pathSegment.ActualSegment);

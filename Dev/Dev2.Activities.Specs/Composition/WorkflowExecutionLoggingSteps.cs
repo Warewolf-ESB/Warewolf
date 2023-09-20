@@ -27,6 +27,10 @@ using System;
 using System.Activities;
 using System.Linq;
 using System.Security.Principal;
+using System.Threading;
+using Dev2.Activities.Specs.Scheduler;
+using Dev2.Runtime.Subscription;
+using Dev2.Services.Security.MoqInstallerActions;
 using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Assist;
 using Warewolf.Auditing;
@@ -129,6 +133,10 @@ namespace Dev2.Activities.Specs.Composition
             var mockLogManager = new Mock<IStateNotifierFactory>();
             mockLogManager.Setup(o => o.New(dataObject)).Returns(mockStateNotifier.Object);
             CustomContainer.Register<IStateNotifierFactory>(mockLogManager.Object);
+
+            var mockSubscriptionProvider = new Mock<ISubscriptionProvider>();
+            mockSubscriptionProvider.Setup(o => o.IsLicensed).Returns(true);
+            CustomContainer.Register(mockSubscriptionProvider.Object);
 
             var workspaceId = Guid.NewGuid();
             var request = new EsbExecuteRequest();

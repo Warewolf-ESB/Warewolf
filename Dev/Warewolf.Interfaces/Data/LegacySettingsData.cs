@@ -17,10 +17,14 @@ namespace Warewolf.Configuration
     {
         public string AuditFilePath { get; set; }
 
+        public long AuditLogMaxSize { get; set; }
+
+
         public bool Equals(LegacySettingsData other)
         {
             var equals = base.Equals(other);
             equals &= string.Equals(AuditFilePath, other.AuditFilePath, StringComparison.InvariantCultureIgnoreCase);
+            equals &= AuditLogMaxSize == other.AuditLogMaxSize;
             return equals;
         }
     }
