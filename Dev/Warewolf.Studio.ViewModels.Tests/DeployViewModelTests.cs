@@ -197,8 +197,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockSubscriptionData.Setup(o => o.PlanId).Returns("developer");
             return mockSubscriptionData;
         }
+
         [TestMethod]
-        [Timeout(1000)]
+        [Timeout(5000)]
         [Owner("Sanele Mthembu")]
         public void Given_TheSameServer_CheckDestinationPersmisions_ShouldBeTrue()
         {

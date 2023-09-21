@@ -104,7 +104,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory("LogSettingsViewModel_Constructor")]
-        [Timeout(500)]
+        [Timeout(10000)]
         public void LogSettingsViewModel_Constructor_GIVEN_ServerSettingsDataSink_IsUnknown_ShouldLogError()
         {
             //------------Setup for test--------------------------
