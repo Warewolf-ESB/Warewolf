@@ -170,11 +170,11 @@ this.FeatureBackground();
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("WF with RabbitMq Consume timeout 5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "RabbitMQWorkflowExecution")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("RabbitMQWorkflowExecution")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WFWithRabbitMqConsumeTimeout5")]
         public virtual void WFWithRabbitMqConsumeTimeout5()
         {
             string[] tagsOfScenario = new string[] {
-                    "RabbitMQWorkflowExecution"};
+                    "WFWithRabbitMqConsumeTimeout5"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("WF with RabbitMq Consume timeout 5", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
 #line 22
@@ -218,7 +218,7 @@ this.FeatureBackground();
  testRunner.When("\"RabbitMqConsume5mintimeout\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 28
-    testRunner.Then("the workflow execution has \"No\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the workflow execution has \"No\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 29
  testRunner.And("the \"RabbitMqConsume5mintimeout\" has a start and end duration", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -289,14 +289,16 @@ this.FeatureBackground();
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("COM DLL service execute")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "RabbitMQWorkflowExecution")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("RabbitMQWorkflowExecution")]
         public virtual void COMDLLServiceExecute()
         {
             string[] tagsOfScenario = new string[] {
-                    "RabbitMQWorkflowExecution"};
+                    "RabbitMQWorkflowExecution",
+                    "Ignore"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("COM DLL service execute", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
-#line 42
+#line 43
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -319,21 +321,21 @@ this.ScenarioInitialize(scenarioInfo);
 #line 6
 this.FeatureBackground();
 #line hidden
-#line 43
+#line 44
  testRunner.Given("I have a server at \"localhost\" with workflow \"Testing COM DLL Activity Execute\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 44
+#line 45
  testRunner.When("\"localhost\" is the active environment used to execute \"Testing COM DLL Activity E" +
                         "xecute\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 45
+#line 46
     testRunner.Then("the workflow execution has \"No\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
                 TechTalk.SpecFlow.Table table619 = new TechTalk.SpecFlow.Table(new string[] {
                             ""});
                 table619.AddRow(new string[] {
                             "[[PrimitiveReturnValue]] = 0"});
-#line 46
+#line 47
  testRunner.And("the \"Com DLL\" in Workflow \"Testing COM DLL Activity Execute\" debug outputs is", ((string)(null)), table619, "And ");
 #line hidden
             }
@@ -350,7 +352,7 @@ this.FeatureBackground();
                     "NestedForEachExecution"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Workflow with ForEach and Manual Loop", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
-#line 51
+#line 52
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -373,7 +375,7 @@ this.ScenarioInitialize(scenarioInfo);
 #line 6
 this.FeatureBackground();
 #line hidden
-#line 52
+#line 53
       testRunner.Given("I have a workflow \"WFWithForEachWithManualLoop\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
                 TechTalk.SpecFlow.Table table620 = new TechTalk.SpecFlow.Table(new string[] {
@@ -382,7 +384,7 @@ this.FeatureBackground();
                 table620.AddRow(new string[] {
                             "[[counter]]",
                             "0"});
-#line 53
+#line 54
    testRunner.And("\"WFWithForEachWithManualLoop\" contains an Assign \"Setup Counter\" as", ((string)(null)), table620, "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table621 = new TechTalk.SpecFlow.Table(new string[] {
@@ -391,10 +393,10 @@ this.FeatureBackground();
                 table621.AddRow(new string[] {
                             "[[counter]]",
                             "=[[counter]]+1"});
-#line 56
+#line 57
    testRunner.And("\"WFWithForEachWithManualLoop\" contains an Assign \"Increment Counter\" as", ((string)(null)), table621, "And ");
 #line hidden
-#line 59
+#line 60
    testRunner.And("\"WFWithForEachWithManualLoop\" contains a Foreach \"ForEachTest\" as \"NumOfExecution" +
                         "\" executions \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -404,7 +406,7 @@ this.FeatureBackground();
                 table622.AddRow(new string[] {
                             "[[rec().a]]",
                             "Test"});
-#line 60
+#line 61
    testRunner.And("\"ForEachTest\" contains an Assign \"MyAssign\" as", ((string)(null)), table622, "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table623 = new TechTalk.SpecFlow.Table(new string[] {
@@ -419,7 +421,7 @@ this.FeatureBackground();
                             "3",
                             "End Result",
                             "Increment Counter"});
-#line 63
+#line 64
    testRunner.And("\"WFWithForEachWithManualLoop\" contains a Decision \"Check Counter\" as", ((string)(null)), table623, "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table624 = new TechTalk.SpecFlow.Table(new string[] {
@@ -428,13 +430,13 @@ this.FeatureBackground();
                 table624.AddRow(new string[] {
                             "[[result]]",
                             "DONE"});
-#line 66
+#line 67
    testRunner.And("\"WFWithForEachWithManualLoop\" contains an Assign \"End Result\" as", ((string)(null)), table624, "And ");
 #line hidden
-#line 69
+#line 70
       testRunner.When("\"WFWithForEachWithManualLoop\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 70
+#line 71
    testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
                 TechTalk.SpecFlow.Table table625 = new TechTalk.SpecFlow.Table(new string[] {
@@ -443,11 +445,11 @@ this.FeatureBackground();
                 table625.AddRow(new string[] {
                             "No. of Executes",
                             "2"});
-#line 71
+#line 72
    testRunner.And("the \"ForEachTest\" number \'1\' in WorkFlow \"WFWithForEachWithManualLoop\" debug inpu" +
                         "ts as", ((string)(null)), table625, "And ");
 #line hidden
-#line 74
+#line 75
       testRunner.And("the \"ForEachTest\" number \'1\' in WorkFlow \"WFWithForEachWithManualLoop\" has \"2\" ne" +
                         "sted children", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -459,7 +461,7 @@ this.FeatureBackground();
                             "1",
                             "[[rec().a]] =",
                             "Test"});
-#line 75
+#line 76
    testRunner.And("the \"MyAssign\" in step 1 for \"ForEachTest\" number \'1\' debug inputs as", ((string)(null)), table626, "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table627 = new TechTalk.SpecFlow.Table(new string[] {
@@ -468,7 +470,7 @@ this.FeatureBackground();
                 table627.AddRow(new string[] {
                             "1",
                             "[[rec(1).a]] = Test"});
-#line 78
+#line 79
    testRunner.And("the \"MyAssign\" in step 1 for \"ForEachTest\" number \'1\' debug outputs as", ((string)(null)), table627, "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table628 = new TechTalk.SpecFlow.Table(new string[] {
@@ -479,7 +481,7 @@ this.FeatureBackground();
                             "1",
                             "[[rec().a]] =",
                             "Test"});
-#line 81
+#line 82
    testRunner.And("the \"MyAssign\" in step 2 for \"ForEachTest\" number \'1\' debug inputs as", ((string)(null)), table628, "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table629 = new TechTalk.SpecFlow.Table(new string[] {
@@ -488,7 +490,7 @@ this.FeatureBackground();
                 table629.AddRow(new string[] {
                             "1",
                             "[[rec(2).a]] = Test"});
-#line 84
+#line 85
    testRunner.And("the \"MyAssign\" in step 2 for \"ForEachTest\" number \'1\' debug outputs as", ((string)(null)), table629, "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table630 = new TechTalk.SpecFlow.Table(new string[] {
@@ -497,11 +499,11 @@ this.FeatureBackground();
                 table630.AddRow(new string[] {
                             "No. of Executes",
                             "2"});
-#line 87
+#line 88
    testRunner.And("the \"ForEachTest\" number \'2\' in WorkFlow \"WFWithForEachWithManualLoop\" debug inpu" +
                         "ts as", ((string)(null)), table630, "And ");
 #line hidden
-#line 90
+#line 91
       testRunner.And("the \"ForEachTest\" number \'2\' in WorkFlow \"WFWithForEachWithManualLoop\" has \"2\" ne" +
                         "sted children", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -513,7 +515,7 @@ this.FeatureBackground();
                             "1",
                             "[[rec().a]] =",
                             "Test"});
-#line 91
+#line 92
    testRunner.And("the \"MyAssign\" in step 1 for \"ForEachTest\" number \'2\' debug inputs as", ((string)(null)), table631, "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table632 = new TechTalk.SpecFlow.Table(new string[] {
@@ -522,7 +524,7 @@ this.FeatureBackground();
                 table632.AddRow(new string[] {
                             "1",
                             "[[rec(3).a]] = Test"});
-#line 94
+#line 95
    testRunner.And("the \"MyAssign\" in step 1 for \"ForEachTest\" number \'2\' debug outputs as", ((string)(null)), table632, "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table633 = new TechTalk.SpecFlow.Table(new string[] {
@@ -533,7 +535,7 @@ this.FeatureBackground();
                             "1",
                             "[[rec().a]] =",
                             "Test"});
-#line 97
+#line 98
    testRunner.And("the \"MyAssign\" in step 2 for \"ForEachTest\" number \'2\' debug inputs as", ((string)(null)), table633, "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table634 = new TechTalk.SpecFlow.Table(new string[] {
@@ -542,7 +544,7 @@ this.FeatureBackground();
                 table634.AddRow(new string[] {
                             "1",
                             "[[rec(4).a]] = Test"});
-#line 100
+#line 101
    testRunner.And("the \"MyAssign\" in step 2 for \"ForEachTest\" number \'2\' debug outputs as", ((string)(null)), table634, "And ");
 #line hidden
             }

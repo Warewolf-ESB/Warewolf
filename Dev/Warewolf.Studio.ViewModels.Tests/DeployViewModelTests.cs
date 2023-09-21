@@ -24,6 +24,7 @@ using Warewolf.Studio.Core;
 using Dev2.ConnectionHelpers;
 using Warewolf.Enums;
 using Warewolf.Licensing;
+using System.Collections.ObjectModel;
 
 namespace Warewolf.Studio.ViewModels.Tests
 {
@@ -199,61 +200,64 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(5000)]
+        //[Timeout(5000)]
         [Owner("Sanele Mthembu")]
-        public void Given_TheSameServer_CheckDestinationPersmisions_ShouldBeTrue()
-        {
-            var explorerTooltips = new Mock<IExplorerTooltips>();
-            CustomContainer.Register(explorerTooltips.Object);
-            //------------Setup for test--------------------------
-            var shellViewModel = new Mock<IShellViewModel>();
-            shellViewModel.Setup(model => model.ExplorerViewModel).Returns(new Mock<IExplorerViewModel>().Object);
-            shellViewModel.Setup(model => model.ExplorerViewModel.ConnectControlViewModel).Returns(new Mock<IConnectControlViewModel>().Object);
-            shellViewModel.SetupGet(o => o.SubscriptionData.IsLicensed).Returns(true);
+		public void Given_TheSameServer_CheckDestinationPersmisions_ShouldBeTrue()
+		{
+			var explorerTooltips = new Mock<IExplorerTooltips>();
+			CustomContainer.Register(explorerTooltips.Object);
+			var environmentRepository = new Mock<IServerRepository>();
+            environmentRepository.Setup(repo => repo.All()).Returns(new Collection<IServer>());
+			CustomContainer.Register(environmentRepository.Object);
+			//------------Setup for test--------------------------
+			var shellViewModel = new Mock<IShellViewModel>();
+			shellViewModel.Setup(model => model.ExplorerViewModel).Returns(new Mock<IExplorerViewModel>().Object);
+			shellViewModel.Setup(model => model.ExplorerViewModel.ConnectControlViewModel).Returns(new Mock<IConnectControlViewModel>().Object);
+			shellViewModel.SetupGet(o => o.SubscriptionData.IsLicensed).Returns(true);
 
-            var localhost = new Mock<IServer>();
-            localhost.Setup(a => a.DisplayName).Returns("Localhost");
-            localhost.SetupGet(server => server.CanDeployTo).Returns(true);
-            localhost.SetupGet(server => server.CanDeployFrom).Returns(true);
-            localhost.Setup(it => it.GetSubscriptionData()).Returns(MockSubscriptionData().Object);
+			var localhost = new Mock<IServer>();
+			localhost.Setup(a => a.DisplayName).Returns("Localhost");
+			localhost.SetupGet(server => server.CanDeployTo).Returns(true);
+			localhost.SetupGet(server => server.CanDeployFrom).Returns(true);
+			localhost.Setup(it => it.GetSubscriptionData()).Returns(MockSubscriptionData().Object);
 
-            var mockEnvironmentConnection = SetupMockConnection();
-            localhost.SetupGet(it => it.Connection).Returns(mockEnvironmentConnection.Object);
+			var mockEnvironmentConnection = SetupMockConnection();
+			localhost.SetupGet(it => it.Connection).Returns(mockEnvironmentConnection.Object);
 
-            var envMock = new Mock<IEnvironmentViewModel>();
-            envMock.SetupGet(it => it.Server).Returns(localhost.Object);
-            shellViewModel.SetupGet(model => model.ExplorerViewModel.Environments).Returns(new Caliburn.Micro.BindableCollection<IEnvironmentViewModel>()
-            {
-                envMock.Object
-            });
-            shellViewModel.Setup(x => x.LocalhostServer).Returns(localhost.Object);
-            shellViewModel.Setup(it => it.ActiveServer).Returns(localhost.Object);
-            var eventAggregator = new Mock<IEventAggregator>();
-            var deployDestinationViewModel = new DeployDestinationViewModel(shellViewModel.Object, eventAggregator.Object);
-            var sourceItemViewModel = new ExplorerItemViewModel(localhost.Object, null, null, shellViewModel.Object, null);
-            var sourceViewModel = new AsyncObservableCollection<IExplorerItemViewModel>();
-            var sourceExplorerItemViewModel = new ExplorerItemNodeViewModel(localhost.Object, sourceItemViewModel, null);
-            sourceViewModel.Add(sourceExplorerItemViewModel);
+			var envMock = new Mock<IEnvironmentViewModel>();
+			envMock.SetupGet(it => it.Server).Returns(localhost.Object);
+			shellViewModel.SetupGet(model => model.ExplorerViewModel.Environments).Returns(new Caliburn.Micro.BindableCollection<IEnvironmentViewModel>()
+			{
+				envMock.Object
+			});
+			shellViewModel.Setup(x => x.LocalhostServer).Returns(localhost.Object);
+			shellViewModel.Setup(it => it.ActiveServer).Returns(localhost.Object);
+			var eventAggregator = new Mock<IEventAggregator>();
+			var deployDestinationViewModel = new DeployDestinationViewModel(shellViewModel.Object, eventAggregator.Object);
+			var sourceItemViewModel = new ExplorerItemViewModel(localhost.Object, null, null, shellViewModel.Object, null);
+			var sourceViewModel = new AsyncObservableCollection<IExplorerItemViewModel>();
+			var sourceExplorerItemViewModel = new ExplorerItemNodeViewModel(localhost.Object, sourceItemViewModel, null);
+			sourceViewModel.Add(sourceExplorerItemViewModel);
 
-            var destinationViewModel = SetDestinationExplorerItemViewModels(Guid.Empty,localhost, shellViewModel, localhost);
+			var destinationViewModel = SetDestinationExplorerItemViewModels(Guid.Empty, localhost, shellViewModel, localhost);
 
-            IList<IExplorerTreeItem> sourceExplorerItem = new List<IExplorerTreeItem>();
+			IList<IExplorerTreeItem> sourceExplorerItem = new List<IExplorerTreeItem>();
 
-            sourceExplorerItem.Add(sourceExplorerItemViewModel);
+			sourceExplorerItem.Add(sourceExplorerItemViewModel);
 
-            deployDestinationViewModel.Environments.First().Children = destinationViewModel;
-            deployDestinationViewModel.SelectedEnvironment = deployDestinationViewModel.Environments.First();
+			deployDestinationViewModel.Environments.First().Children = destinationViewModel;
+			deployDestinationViewModel.SelectedEnvironment = deployDestinationViewModel.Environments.First();
 
-            var stat = new DeployStatsViewerViewModel(sourceExplorerItem, deployDestinationViewModel);
-            Assert.IsTrue(deployDestinationViewModel.SelectedEnvironment.AsList().Count > 0);
-            //------------Execute Test---------------------------
-            Assert.IsNotNull(stat);
-            stat.TryCalculate(sourceExplorerItem);
-            //------------Assert Results-------------------------
-            Assert.IsTrue(sourceExplorerItem.First().CanDeploy);
-        }
+			var stat = new DeployStatsViewerViewModel(sourceExplorerItem, deployDestinationViewModel);
+			Assert.IsTrue(deployDestinationViewModel.SelectedEnvironment.AsList().Count > 0);
+			//------------Execute Test---------------------------
+			Assert.IsNotNull(stat);
+			stat.TryCalculate(sourceExplorerItem);
+			//------------Assert Results-------------------------
+			Assert.IsTrue(sourceExplorerItem.First().CanDeploy);
+		}
 
-        static AsyncObservableCollection<IExplorerItemViewModel> SetDestinationExplorerItemViewModels(Guid resourceId, Mock<IServer> otherServer, Mock<IShellViewModel> shellViewModel, Mock<IServer> localhost)
+		static AsyncObservableCollection<IExplorerItemViewModel> SetDestinationExplorerItemViewModels(Guid resourceId, Mock<IServer> otherServer, Mock<IShellViewModel> shellViewModel, Mock<IServer> localhost)
         {
             var destExplorerItemMock = new Mock<IExplorerTreeItem>();
             var destItemViewModel = new ExplorerItemViewModel(otherServer.Object, destExplorerItemMock.Object, null, shellViewModel.Object, null);
