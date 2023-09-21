@@ -227,6 +227,7 @@ namespace Dev2.Core.Tests.Settings
         [Owner("Siphamandla Dube")]
         [TestCategory("LogSettingsViewModel_Constructor")]
         [Timeout(1000)]
+        [DeploymentItem("Settings\\Settings.config", "Settings")]
         public void LogSettingsViewModel_Save_GIVEN_ServerSettingsDataSink_AuditingSettingsData_ShouldSuccess()
         {
             //------------Setup for test--------------------------
@@ -267,6 +268,7 @@ namespace Dev2.Core.Tests.Settings
                 .Returns(System.Windows.MessageBoxResult.Yes);
 
             CustomContainer.Register(mockPopupController.Object);
+            File.Copy(".\\Settings\\Settings.config", Environment.ExpandEnvironmentVariables("%localappdata%\\Warewolf\\Studio\\Settings.config"), true);
             //------------Execute Test---------------------------
             var sut = new LogSettingsViewModel(new LoggingSettingsTo(), mockServer.Object);
             sut.Save(new LoggingSettingsTo());
