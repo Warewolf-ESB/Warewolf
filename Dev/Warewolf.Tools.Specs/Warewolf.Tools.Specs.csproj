@@ -909,6 +909,8 @@
     <PackageReference Include="System.Data.SQLite.Core">
       <Version>1.0.112</Version>
     </PackageReference>
+    <PackageReference Include="System.IO.Pipelines" Version="7.0.0" />
+    <PackageReference Include="System.Memory" Version="4.5.5" />
     <PackageReference Include="System.Threading.Tasks.Extensions">
       <Version>4.5.4</Version>
     </PackageReference>
