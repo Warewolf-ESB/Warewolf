@@ -12,9 +12,9 @@ Scenario: Database PostgreSql Database service inputs and outputs
      Given I depend on a valid PostgreSQL server 
 	 And I have a workflow "PostgreSqlGetCountries"
 	 And "PostgreSqlGetCountries" contains a postgre tool using "get_countries" with mappings as
-	  | Input to Service | From Variable | Output from Service | To Variable           |
-	  | Prefix           | s             | Id                  | [[countries(*).Id]]   |
-	  |                  |               | Name                | [[countries(*).Name]] |
+	  | Input to Service    | From Variable | Output from Service | To Variable           |
+	  | countrynamecontains | s             | Id                  | [[countries(*).Id]]   |
+	  |                     |               | Name                | [[countries(*).Name]] |
       When "PostgreSqlGetCountries" is executed
      Then the workflow execution has "NO" error
 	 And the "get_countries" in Workflow "PostgreSqlGetCountries" debug outputs as

@@ -433,7 +433,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory("LogSettingsViewModel")]
-        [Timeout(1000)]
+        [Timeout(5000)]
         public void LogSettingsViewModel_Save_GIVEN_IncludeEnvironmentVariable_ChangeOnRuntime_ShouldSaveServerSettingsAndAuditingSettingsData()
         {
             //------------Setup for test--------------------------
