@@ -281,7 +281,8 @@ namespace Dev2.Core.Tests.Settings
         [Owner("Siphamandla Dube")]
         [TestCategory("LogSettingsViewModel")]
         [Timeout(1000)]
-        public void LogSettingsViewModel_Save_GIVEN_ServerSettingsDataSink_AuditingSettingsDataUnknown_ShouldDefaultToLegacy()
+		[DeploymentItem("Settings\\Settings.config", "Settings")]
+		public void LogSettingsViewModel_Save_GIVEN_ServerSettingsDataSink_AuditingSettingsDataUnknown_ShouldDefaultToLegacy()
         {
             //------------Setup for test--------------------------
             var mockServer = new Mock<IServer>();
@@ -315,8 +316,9 @@ namespace Dev2.Core.Tests.Settings
                 .Returns(System.Windows.MessageBoxResult.Yes);
 
             CustomContainer.Register(mockPopupController.Object);
-            //------------Execute Test---------------------------
-            var sut = new LogSettingsViewModel(new LoggingSettingsTo(), mockServer.Object);
+			File.Copy(".\\Settings\\Settings.config", Environment.ExpandEnvironmentVariables("%localappdata%\\Warewolf\\Studio\\Settings.config"), true);
+			//------------Execute Test---------------------------
+			var sut = new LogSettingsViewModel(new LoggingSettingsTo(), mockServer.Object);
             sut.Save(new LoggingSettingsTo());
             //------------Assert Results-------------------------
             Assert.IsFalse(sut.IsDirty);
@@ -327,7 +329,8 @@ namespace Dev2.Core.Tests.Settings
         [Owner("Siphamandla Dube")]
         [TestCategory("LogSettingsViewModel")]
         [Timeout(300)]
-        public void LogSettingsViewModel_Save_GIVEN_ServerSettingsDataSink_AuditingSettingsData_ChangeOnRuntime_ShouldSaveServerSettings()
+		[DeploymentItem("Settings\\Settings.config", "Settings")]
+		public void LogSettingsViewModel_Save_GIVEN_ServerSettingsDataSink_AuditingSettingsData_ChangeOnRuntime_ShouldSaveServerSettings()
         {
             //------------Setup for test--------------------------
             var mockServer = new Mock<IServer>();
@@ -361,8 +364,9 @@ namespace Dev2.Core.Tests.Settings
                 .Returns(System.Windows.MessageBoxResult.Yes);
 
             CustomContainer.Register(mockPopupController.Object);
-            //------------Execute Test---------------------------
-            var sut = new LogSettingsViewModel(new LoggingSettingsTo(), mockServer.Object)
+			File.Copy(".\\Settings\\Settings.config", Environment.ExpandEnvironmentVariables("%localappdata%\\Warewolf\\Studio\\Settings.config"), true);
+			//------------Execute Test---------------------------
+			var sut = new LogSettingsViewModel(new LoggingSettingsTo(), mockServer.Object)
             {
                 Sink = nameof(AuditingSettingsData) //mimic change on runtime
             };
@@ -379,7 +383,8 @@ namespace Dev2.Core.Tests.Settings
         [Owner("Siphamandla Dube")]
         [TestCategory("LogSettingsViewModel")]
         [Timeout(1000)]
-        public void LogSettingsViewModel_Save_GIVEN_IncludeEnvironmentVariable_ChangeOnRuntime_ShouldSaveServerSettingsAndLegacySettingsData()
+		[DeploymentItem("Settings\\Settings.config", "Settings")]
+		public void LogSettingsViewModel_Save_GIVEN_IncludeEnvironmentVariable_ChangeOnRuntime_ShouldSaveServerSettingsAndLegacySettingsData()
         {
             //------------Setup for test--------------------------
             var serverSettings = new ServerSettingsData
@@ -415,8 +420,9 @@ namespace Dev2.Core.Tests.Settings
                 .Returns(System.Windows.MessageBoxResult.Yes);
 
             CustomContainer.Register(mockPopupController.Object);
-            //------------Execute Test---------------------------
-            var sut = new LogSettingsViewModel(new LoggingSettingsTo(), mockServer.Object)
+			File.Copy(".\\Settings\\Settings.config", Environment.ExpandEnvironmentVariables("%localappdata%\\Warewolf\\Studio\\Settings.config"), true);
+			//------------Execute Test---------------------------
+			var sut = new LogSettingsViewModel(new LoggingSettingsTo(), mockServer.Object)
             {
                 IncludeEnvironmentVariable = true,
             };
@@ -436,7 +442,8 @@ namespace Dev2.Core.Tests.Settings
         [Owner("Siphamandla Dube")]
         [TestCategory("LogSettingsViewModel")]
         [Timeout(5000)]
-        public void LogSettingsViewModel_Save_GIVEN_IncludeEnvironmentVariable_ChangeOnRuntime_ShouldSaveServerSettingsAndAuditingSettingsData()
+		[DeploymentItem("Settings\\Settings.config", "Settings")]
+		public void LogSettingsViewModel_Save_GIVEN_IncludeEnvironmentVariable_ChangeOnRuntime_ShouldSaveServerSettingsAndAuditingSettingsData()
         {
             //------------Setup for test--------------------------
             var serverSettings = new ServerSettingsData
@@ -472,8 +479,9 @@ namespace Dev2.Core.Tests.Settings
                 .Returns(System.Windows.MessageBoxResult.Yes);
 
             CustomContainer.Register(mockPopupController.Object);
-            //------------Execute Test---------------------------
-            var sut = new LogSettingsViewModel(new LoggingSettingsTo(), mockServer.Object)
+			File.Copy(".\\Settings\\Settings.config", Environment.ExpandEnvironmentVariables("%localappdata%\\Warewolf\\Studio\\Settings.config"), true);
+			//------------Execute Test---------------------------
+			var sut = new LogSettingsViewModel(new LoggingSettingsTo(), mockServer.Object)
             {
                 IncludeEnvironmentVariable = true,
             };
