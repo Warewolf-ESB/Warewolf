@@ -187,7 +187,7 @@ namespace Dev2.Communication
                 assemblyName = MscorlibAssembly;
                 typeName = typeName.Replace(CoreLibAssembly, MscorlibAssembly);
             }
-            if (assemblyName == AltCoreLibAssembly)
+            else if (assemblyName == AltCoreLibAssembly)
             {
                 assemblyName = MscorlibAssembly;
                 typeName = typeName.Replace(AltCoreLibAssembly, MscorlibAssembly);
