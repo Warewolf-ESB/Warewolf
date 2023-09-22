@@ -177,11 +177,12 @@ namespace Dev2.Communication
     internal sealed class DotNetCompatibleSerializationBinder : Newtonsoft.Json.Serialization.DefaultSerializationBinder
     {
         private const string CoreLibAssembly = "System.Private.CoreLib";
-        private const string MscorlibAssembly = "mscorlib";
+        private const string AltCoreLibAssembly = "System.Private.CoreLib, Version=6.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e";
+		private const string MscorlibAssembly = "mscorlib";
 
         public override Type BindToType(string assemblyName, string typeName)
         {
-            if (assemblyName == CoreLibAssembly)
+            if (assemblyName == CoreLibAssembly || assemblyName == AltCoreLibAssembly)
             {
                 assemblyName = MscorlibAssembly;
                 typeName = typeName.Replace(CoreLibAssembly, MscorlibAssembly);
