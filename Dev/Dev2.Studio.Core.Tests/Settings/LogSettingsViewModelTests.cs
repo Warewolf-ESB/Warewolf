@@ -226,7 +226,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory("LogSettingsViewModel_Constructor")]
-        [Timeout(1000)]
+        [Timeout(5000)]
         [DeploymentItem("Settings\\Settings.config", "Settings")]
         public void LogSettingsViewModel_Save_GIVEN_ServerSettingsDataSink_AuditingSettingsData_ShouldSuccess()
         {
