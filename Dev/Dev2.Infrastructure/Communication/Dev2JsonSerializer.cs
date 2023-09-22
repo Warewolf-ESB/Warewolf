@@ -182,10 +182,15 @@ namespace Dev2.Communication
 
         public override Type BindToType(string assemblyName, string typeName)
         {
-            if (assemblyName == CoreLibAssembly || assemblyName == AltCoreLibAssembly)
+            if (assemblyName == CoreLibAssembly)
             {
                 assemblyName = MscorlibAssembly;
                 typeName = typeName.Replace(CoreLibAssembly, MscorlibAssembly);
+            }
+            if (assemblyName == AltCoreLibAssembly)
+            {
+                assemblyName = MscorlibAssembly;
+                typeName = typeName.Replace(AltCoreLibAssembly, MscorlibAssembly);
             }
             return base.BindToType(assemblyName, typeName);
         }
