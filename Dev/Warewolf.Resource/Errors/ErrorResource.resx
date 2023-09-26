@@ -1412,4 +1412,7 @@ Please contact your Windows System Administrator.</value>
   <data name="DecisionMatchTypeNotNullErrorTest" xml:space="preserve">
     <value>'MatchType' Cannot be null</value>
   </data>
+  <data name="InvalidLicense" xml:space="preserve">
+    <value>The license is not active, please activate to complete the execution.</value>
+  </data>
 </root>

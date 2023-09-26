@@ -279,6 +279,7 @@ namespace Dev2.Common
         public static string DefaultAuditPath => Path.Combine(Config.AppDataPath, @"Audits");
         public static string DefaultEndpoint => "ws://127.0.0.1:5000/ws";
 
+        public const long DefaultAuditLogMaxSize = 2000;
         public LegacySettings()
             : this(SettingsPath, new FileWrapper(), new DirectoryWrapper())
         {
@@ -310,6 +311,17 @@ namespace Dev2.Common
                 _settings.AuditFilePath = value;
             }
         }
+
+        public long AuditLogMaxSize
+        {             
+            get => (_settings.AuditLogMaxSize == 0) ? DefaultAuditLogMaxSize : _settings.AuditLogMaxSize;
+            set
+            {
+                _settings.AuditLogMaxSize = value;
+            }
+        }
+
+
 
         private string GetAuditFilePath()
         {

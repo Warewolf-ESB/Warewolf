@@ -41,6 +41,7 @@ namespace Dev2.Common.Interfaces.Studio
         string SupportLabel { get; }
         string NewVersionLabel { get; }
         string LockLabel { get; }
+        string MenuSaveToolTip { get; }
         string LockImage { get; }
         int ButtonWidth { get; }
         ICommand IsOverLockCommand { get; }
@@ -50,5 +51,7 @@ namespace Dev2.Common.Interfaces.Studio
         ICommand StartPageCommand { get; }
 
         void Lock();
+		
+        void NotifyProperty(bool canExecute);
     }
 }

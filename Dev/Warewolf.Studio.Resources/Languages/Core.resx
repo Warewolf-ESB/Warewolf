@@ -639,4 +639,7 @@ Please note that tabs are fully supported at runtime, in variables and when read
   <data name="CommentDropNotAllowedMessage" xml:space="preserve">
     <value>The Comment tool cannot be dropped onto this tool.</value>
   </data>
+  <data name="WarewolfUnRegisteredError" xml:space="preserve">
+    <value>Warewolf is not registered. To start a trial version, please click 'Yes'.</value>
+  </data>
 </root>

@@ -2474,6 +2474,14 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+		 ///   Looks up a localized string similar to Click here to manage your license plan.
+        /// </summary>
+        public static string ManagePlanWarewolfToolTip {
+            get {
+                return ResourceManager.GetString("ManagePlanWarewolfToolTip", resourceCulture);
+            }
+        }
+		/// <summary>
         ///   Looks up a localized string similar to Edits the selected plugin source connection.
         /// </summary>
         public static string ManagePluginServiceEditSourceTooltip {
@@ -4397,6 +4405,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string RedisTTLToolTip {
             get {
                 return ResourceManager.GetString("RedisTTLToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+		///   Looks up a localized string similar to Click here to register.
+        /// </summary>
+        public static string RegisterWarewolfToolTip {
+            get {
+                return ResourceManager.GetString("RegisterWarewolfToolTip", resourceCulture);
             }
         }
         
@@ -6764,6 +6781,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string UniqueToolTipReturnFields {
             get {
                 return ResourceManager.GetString("UniqueToolTipReturnFields", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+		///   Looks up a localized string similar to Warewolf is not registered.
+        /// </summary>
+        public static string UnregisteredWarewolfToolTip {
+            get {
+                return ResourceManager.GetString("UnregisteredWarewolfToolTip", resourceCulture);
             }
         }
         

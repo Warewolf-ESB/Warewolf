@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using Warewolf.Licensing;
 
 namespace Dev2.Common.Interfaces
 {
@@ -18,6 +20,7 @@ namespace Dev2.Common.Interfaces
         Dictionary<string,string> GetServerInformation();
 
         string GetMinSupportedServerVersion();
+        Task<ISubscriptionData> GetSubscriptionData();
     }
 
 

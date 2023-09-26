@@ -2655,4 +2655,14 @@ To create a SFTP Key, put the full path and file or folder name here.</value>
   <data name="HidePasswordToolTip" xml:space="preserve">
     <value>Hide Password</value>
   </data>
+  <data name="RegisterWarewolfToolTip" xml:space="preserve">
+    <value>Click here to register</value>
+  </data>
+  <data name="UnregisteredWarewolfToolTip" xml:space="preserve">
+    <value>Warewolf is not registered</value>
+  </data>
+  <data name="ManagePlanWarewolfToolTip" xml:space="preserve">
+    <value>Click here to manage your license plan</value>
+  </data>
+  
 </root>
