@@ -119,7 +119,6 @@ namespace Dev2.Settings.Logging
             {
                 _studioEventLogLevel = studioEventLogLevel;
             }
-
             _studioLogMaxSize = Dev2Logger.GetLogMaxSize().ToString(CultureInfo.InvariantCulture);
             var serverSettingsData = _resourceRepository.GetServerSettings(CurrentEnvironment);
 
@@ -127,7 +126,7 @@ namespace Dev2.Settings.Logging
             {
                 _executionLogLevel = executionLogLevel;
             }
- 
+
             IResource selectedAuditingSource;
             switch (serverSettingsData.Sink)
             {
@@ -135,7 +134,7 @@ namespace Dev2.Settings.Logging
                     var legacySettingsData = _resourceRepository.GetAuditingSettings<LegacySettingsData>(CurrentEnvironment);
                     AuditFilePath = legacySettingsData.AuditFilePath;
                     IncludeEnvironmentVariable = serverSettingsData.IncludeEnvironmentVariable;
-					AuditLogMaxSize = legacySettingsData.AuditLogMaxSize;
+                    AuditLogMaxSize = legacySettingsData.AuditLogMaxSize;
                     selectedAuditingSource = AuditingSources.FirstOrDefault(o => o.ResourceID == Guid.Empty);
                     SelectedAuditingSource = selectedAuditingSource;
                     Sink = DEFAULT_SINK;
@@ -169,7 +168,7 @@ namespace Dev2.Settings.Logging
         [ExcludeFromCodeCoverage]
         void OpenServerLogFile(object o)
         {
-            using (WebClient client = new WebClient {Credentials = CurrentEnvironment.Connection.HubConnection.Credentials})
+            using (WebClient client = new WebClient { Credentials = CurrentEnvironment.Connection.HubConnection.Credentials })
             {
                 var dialog = new ProgressDialog();
                 _progressDialogViewModel = new ProgressDialogViewModel(() => { dialog.Close(); }, delegate { dialog.Show(); }, delegate { dialog.Close(); });
@@ -232,7 +231,7 @@ namespace Dev2.Settings.Logging
         {
             logSettings.EventLogLoggerLogLevel = ServerEventLogLevel.ToString();
             logSettings.FileLoggerLogSize = int.Parse(ServerLogMaxSize);
-            //logSettings.AuditLogMaxSize = AuditLogMaxSize;
+            logSettings.AuditLogMaxSize = AuditLogMaxSize;
             var settingsConfigFile = HelperUtils.GetStudioLogSettingsConfigFile();
 
             try
@@ -241,7 +240,7 @@ namespace Dev2.Settings.Logging
                 var savedSink = serverSettingsData.Sink;
                 var savedIncludeEnvironmentVariable = serverSettingsData.IncludeEnvironmentVariable;
                 Enum.TryParse(serverSettingsData.ExecutionLogLevel, out LogLevel savedExecutionLogLevel);
-                
+
                 var savedResourceId = Guid.Empty;
                 var savedEncryptDataSource = true;
 
@@ -269,7 +268,7 @@ namespace Dev2.Settings.Logging
 
                     default:
                         Dev2Logger.Warn($"Settings Data Sink: {savedSink} unknown, the default sink will be used", GlobalConstants.WarewolfWarn);
-                        
+
                         legacySettingsData = _resourceRepository.GetAuditingSettings<LegacySettingsData>(CurrentEnvironment);
                         savedResourceId = Guid.Empty;
                         savedEndpoint = legacySettingsData.Endpoint;
@@ -400,7 +399,7 @@ namespace Dev2.Settings.Logging
         private static LogSettingsViewModel Clone(LogSettingsViewModel model)
         {
             var resolver = new ShouldSerializeContractResolver();
-            var ser = JsonConvert.SerializeObject(model, new JsonSerializerSettings {ContractResolver = resolver});
+            var ser = JsonConvert.SerializeObject(model, new JsonSerializerSettings { ContractResolver = resolver });
             var clone = JsonConvert.DeserializeObject<LogSettingsViewModel>(ser);
             return clone;
         }
@@ -492,6 +491,17 @@ namespace Dev2.Settings.Logging
                         OnPropertyChanged();
                     }
                 }
+            }
+        }
+
+        public long AuditLogMaxSize
+        {
+            get => _auditLogMaxSize;
+            set
+            {
+                IsDirty = !Equals(Item);
+                _auditLogMaxSize = value;
+                OnPropertyChanged();
             }
         }
 

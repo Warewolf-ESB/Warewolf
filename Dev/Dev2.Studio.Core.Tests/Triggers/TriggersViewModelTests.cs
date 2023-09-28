@@ -21,6 +21,7 @@ using Moq;
 using Dev2.Triggers;
 using Warewolf.Trigger.Queue;
 using System.Collections.Generic;
+using Warewolf.Licensing;
 using Warewolf.Triggers;
 using Dev2.Common;
 
@@ -39,6 +40,7 @@ namespace Dev2.Core.Tests.Triggers
             var mockResourceRepository = new Mock<IResourceRepository>();
             mockServer.Setup(a => a.DisplayName).Returns("Localhost");
             mockShellViewModel.Setup(x => x.LocalhostServer).Returns(mockServer.Object);
+            mockShellViewModel.Setup(x => x.SubscriptionData).Returns(new Mock<ISubscriptionData>().Object);
             mockServerRepository.Setup(sr => sr.All()).Returns(new List<IServer>());
             mockServer.Setup(s => s.ResourceRepository).Returns(mockResourceRepository.Object);
             CustomContainer.Register(mockServerRepository.Object);
@@ -227,6 +229,7 @@ namespace Dev2.Core.Tests.Triggers
             var mockAsyncWorker = new Mock<IAsyncWorker>();
             var mockServer = new Mock<IServer>();
             mockServer.Setup(server => server.DisplayName).Returns("TestServer");
+            mockServer.Setup(server => server.GetSubscriptionData()).Returns(new Mock<ISubscriptionData>().Object);
 
             var mockAuthorizationService = new Mock<IAuthorizationService>();
             mockAuthorizationService.Setup(authorizationService => authorizationService.IsAuthorized(Common.Interfaces.Enums.AuthorizationContext.Administrator, null)).Returns(true);
@@ -236,9 +239,11 @@ namespace Dev2.Core.Tests.Triggers
             mockEnvironment.Setup(server => server.IsConnected).Returns(true);
             mockEnvironment.Setup(server => server.AuthorizationService).Returns(mockAuthorizationService.Object);
             mockEnvironment.Setup(server => server.ResourceRepository).Returns(mockResourceRepository.Object);
+            mockEnvironment.Setup(server => server.GetSubscriptionData()).Returns(new Mock<ISubscriptionData>().Object);
 
             var mockShellViewModel = new Mock<IShellViewModel>();
             mockShellViewModel.Setup(shellViewModel => shellViewModel.ActiveServer).Returns(mockEnvironment.Object);
+            mockShellViewModel.Setup(server => server.SubscriptionData).Returns(new Mock<ISubscriptionData>().Object);
             CustomContainer.Register(mockShellViewModel.Object);
 
 

@@ -22,6 +22,7 @@ using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ResourceCatalogImpl;
 using Dev2.Runtime.Security;
+using Dev2.Runtime.Subscription;
 using Dev2.Runtime.WebServer.Executor;
 using Dev2.Runtime.WebServer.Responses;
 using Dev2.Runtime.WebServer.TransferObjects;
@@ -44,17 +45,17 @@ namespace Dev2.Runtime.WebServer.Handlers
         }
 
         private TokenRequestHandler(IResourceCatalog resourceCatalog)
-            : this(resourceCatalog, WorkspaceRepository.Instance, ServerAuthorizationService.Instance, new DataObjectFactory(), new DefaultEsbChannelFactory(), new SecuritySettings())
+            : this(resourceCatalog, WorkspaceRepository.Instance, ServerAuthorizationService.Instance, new DataObjectFactory(), new DefaultEsbChannelFactory(), new SecuritySettings(), SubscriptionProvider.Instance)
         {
         }
 
-        protected TokenRequestHandler(IResourceCatalog resourceCatalog, IWorkspaceRepository workspaceRepository, IAuthorizationService authorizationService, IDataObjectFactory dataObjectFactory, IEsbChannelFactory esbChannelFactory, ISecuritySettings securitySettings)
-            : this(resourceCatalog, workspaceRepository, authorizationService, dataObjectFactory, esbChannelFactory, securitySettings, new JwtManager(securitySettings))
+        protected TokenRequestHandler(IResourceCatalog resourceCatalog, IWorkspaceRepository workspaceRepository, IAuthorizationService authorizationService, IDataObjectFactory dataObjectFactory, IEsbChannelFactory esbChannelFactory, ISecuritySettings securitySettings, ISubscriptionProvider subscriptionProvider)
+            : this(resourceCatalog, workspaceRepository, authorizationService, dataObjectFactory, esbChannelFactory, securitySettings, new JwtManager(securitySettings), subscriptionProvider)
         {
         }
 
-        private TokenRequestHandler(IResourceCatalog resourceCatalog, IWorkspaceRepository workspaceRepository, IAuthorizationService authorizationService, IDataObjectFactory dataObjectFactory, IEsbChannelFactory esbChannelFactory, ISecuritySettings securitySettings, IJwtManager jwtManager)
-            : base(resourceCatalog, TestCatalog.Instance, TestCoverageCatalog.Instance, null, workspaceRepository, authorizationService, dataObjectFactory, esbChannelFactory, securitySettings, jwtManager)
+        private TokenRequestHandler(IResourceCatalog resourceCatalog, IWorkspaceRepository workspaceRepository, IAuthorizationService authorizationService, IDataObjectFactory dataObjectFactory, IEsbChannelFactory esbChannelFactory, ISecuritySettings securitySettings, IJwtManager jwtManager, ISubscriptionProvider subscriptionProvider)
+            : base(resourceCatalog, TestCatalog.Instance, TestCoverageCatalog.Instance, null, workspaceRepository, authorizationService, dataObjectFactory, esbChannelFactory, securitySettings, jwtManager, subscriptionProvider)
         {
         }
 
@@ -121,7 +122,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                 serviceName += ".json";
             }
 
-            var a = new Executor(_workspaceRepository, _resourceCatalog, _authorizationService, _dataObjectFactory, _esbChannelFactory, _jwtManager);
+            var a = new Executor(_workspaceRepository, _resourceCatalog, _authorizationService, _dataObjectFactory, _esbChannelFactory, _jwtManager, _subscriptionProvider);
             a.TryExecute(webRequest, serviceName, workspaceId, headers, user);
             var response = a.BuildResponse(webRequest, serviceName);
             return response;
@@ -130,8 +131,8 @@ namespace Dev2.Runtime.WebServer.Handlers
 
         class Executor : ExecutorBase
         {
-            public Executor(IWorkspaceRepository workspaceRepository, IResourceCatalog resourceCatalog, IAuthorizationService authorizationService, IDataObjectFactory dataObjectFactory, IEsbChannelFactory esbChannelFactory, IJwtManager jwtManager)
-                : base(workspaceRepository, resourceCatalog, authorizationService, dataObjectFactory, esbChannelFactory, jwtManager)
+            public Executor(IWorkspaceRepository workspaceRepository, IResourceCatalog resourceCatalog, IAuthorizationService authorizationService, IDataObjectFactory dataObjectFactory, IEsbChannelFactory esbChannelFactory, IJwtManager jwtManager, ISubscriptionProvider subscriptionProvider)
+                : base(workspaceRepository, resourceCatalog, authorizationService, dataObjectFactory, esbChannelFactory, jwtManager, subscriptionProvider)
             {
             }
 

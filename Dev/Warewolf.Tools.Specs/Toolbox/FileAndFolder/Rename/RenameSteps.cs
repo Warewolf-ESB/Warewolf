@@ -29,6 +29,7 @@ using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Tools.Specs.BaseTypes;
 using Dev2.Common;
+using Dev2.Runtime.Subscription;
 
 namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Rename
 {
@@ -115,7 +116,9 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Rename
                 esbChannel = channel;
             }
             dataObject.ExecutionToken = new ExecutionToken();
-            var wfec = new WfExecutionContainer(svc, dataObject, WorkspaceRepository.Instance.ServerWorkspace, esbChannel);
+            var mockSubscriptionProvider = new Mock<ISubscriptionProvider>();
+            mockSubscriptionProvider.Setup(o => o.IsLicensed).Returns(true);
+            var wfec = new WfExecutionContainer(svc, dataObject, WorkspaceRepository.Instance.ServerWorkspace, esbChannel, mockSubscriptionProvider.Object);
 
             errors.ClearErrors();
             CustomContainer.Register<IActivityParser>(new ActivityParser());

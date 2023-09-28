@@ -730,7 +730,7 @@ namespace Dev2.Studio.ViewModels
             var splashViewModel = new SplashViewModel(ActiveServer, new ExternalProcessExecutor());
             var splashPage = new SplashPage {DataContext = splashViewModel};
             ISplashView splashView = splashPage;
-            splashViewModel.ShowServerStudioVersion();
+            splashViewModel.ShowSplashScreenInformation();
             splashView.Show(true);
         }
 
@@ -750,7 +750,7 @@ namespace Dev2.Studio.ViewModels
             {
                 SetActiveServer(server);
             }
-			NotifyOfPropertyChange(() => LicensePlanTitle);
+            NotifyOfPropertyChange(() => LicensePlanTitle);
         }
 
         public void SetActiveServer(IServer server)
@@ -1579,14 +1579,15 @@ namespace Dev2.Studio.ViewModels
 
         public void Register()
         {
-            //var webBrowserView = new WebBrowserView("Register");
-            //webBrowserView.ShowDialog();
+            var webBrowserView = new WebBrowserView("Register");
+            webBrowserView.ShowDialog();
         }
         public void ManagePlan()
         {
-            //var webBrowserView =  new WebBrowserView("Manage");
-            //webBrowserView.ShowDialog();
+            var webBrowserView =  new WebBrowserView("Manage");
+            webBrowserView.ShowDialog();
         }
+
         public void NewService(string resourcePath)
         {
             _worksurfaceContextManager.NewService(resourcePath);
@@ -2278,13 +2279,12 @@ namespace Dev2.Studio.ViewModels
         IServer _activeServer;
         IExplorerViewModel _explorerViewModel;
         IWorksurfaceContextManager _worksurfaceContextManager;
-        public ISubscriptionData SubscriptionData => new SubscriptionData();
-        //ActiveServer.GetSubscriptionData();
+        public  ISubscriptionData SubscriptionData => ActiveServer.GetSubscriptionData();
 
         public IWorksurfaceContextManager WorksurfaceContextManager
         {
             get => _worksurfaceContextManager;
-            set { _worksurfaceContextManager = value; }
+            set => _worksurfaceContextManager = value;
         }
 
         public IWorkflowDesignerViewModel GetWorkflowDesigner()
@@ -2369,12 +2369,12 @@ namespace Dev2.Studio.ViewModels
             var environmentViewModel = ExplorerViewModel.Environments.FirstOrDefault(o => o.ResourceId == ActiveServer.EnvironmentID);
             if(environmentViewModel != null)
             {
-                //environmentViewModel.IsLicensed = isLicensed;
+                environmentViewModel.IsLicensed = isLicensed;
             }
             NotifyOfPropertyChange(() => LicensePlanTitle);
             MenuViewModel.NotifyProperty(isLicensed);
         }
-		
+
         public void Handle(FileChooserMessage message)
         {
             var fileChooserView = new FileChooserView();

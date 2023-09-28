@@ -843,8 +843,8 @@ namespace Dev2.Studio.ViewModels
 
                 return true;
             }
-			
-				var result = _shellViewModel.PopupProvider.Show(string.Format(StringResources.DialogBody_NotSaved, workflowVm.ResourceModel.ResourceName),
+
+            var result = _shellViewModel.PopupProvider.Show(string.Format(StringResources.DialogBody_NotSaved, workflowVm.ResourceModel.ResourceName),
                 $"Save {workflowVm.ResourceModel.ResourceName}?",
                 MessageBoxButton.YesNoCancel,
                 MessageBoxImage.Information, @"", false, false, true, false, false, false);

@@ -28,6 +28,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using Dev2.Runtime.Subscription;
 using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.ESB
@@ -328,7 +329,7 @@ namespace Dev2.Runtime.ESB
                         break;
 
                     case enActionType.Workflow:
-                        result = new PerfmonExecutionContainer(new WfExecutionContainer(serviceAction, dataObj, theWorkspace, _esbChannel));
+                        result = new PerfmonExecutionContainer(new WfExecutionContainer(serviceAction, dataObj, theWorkspace, _esbChannel, CustomContainer.Get<ISubscriptionProvider>()));
                         break;
 
                     case enActionType.RemoteService:

@@ -41,72 +41,76 @@ if ("$PSScriptRoot" -eq "" -or $PSScriptRoot -eq $null) {
 }
 
 if (!($InContainer.IsPresent)) {
-    #Find Local NuGet
-    if ("$NuGet" -eq "" -or !(Test-Path "$NuGet" -ErrorAction SilentlyContinue)) {
-        $NuGetCommand = Get-Command NuGet -ErrorAction SilentlyContinue
-        if ($NuGetCommand) {
-            $NuGet = $NuGetCommand.Path
-        }
-    }
-    if (("$NuGet" -eq "" -or !(Test-Path "$NuGet" -ErrorAction SilentlyContinue)) -and (Test-Path "$env:windir")) {
-        wget "https://dist.nuget.org/win-x86-commandline/latest/nuget.exe" -OutFile "$env:windir\nuget.exe"
-        $NuGet = "$env:windir\nuget.exe"
-    }
-    if ("$NuGet" -eq "" -or !(Test-Path "$NuGet" -ErrorAction SilentlyContinue)) {
-        Write-Host NuGet not found. Download from: https://dist.nuget.org/win-x86-commandline/latest/nuget.exe to: c:\windows\nuget.exe. If you do not have permission to create c:\windows\nuget.exe use the -NuGet switch.
-        sleep 10
-        exit 1
-    }
-    
-    #Find Local Compiler
-    if (!(Test-Path "$MSBuildPath" -ErrorAction SilentlyContinue)) {
-        $GetMSBuildCommand = Get-Command MSBuild -ErrorAction SilentlyContinue
-        if ($GetMSBuildCommand) {
-            $MSBuildPath = $GetMSBuildCommand.Path
-        }
-    }
-    if ($MSBuildPath -ne $null -and !(Test-Path "$MSBuildPath" -ErrorAction SilentlyContinue)) {
-        $GetvswhereCommand = Get-Command vswhere -ErrorAction SilentlyContinue
-        if ($GetvswhereCommand) {
-            $VswherePath = $GetvswhereCommand.Path
-        } else {
-            if (Test-Path "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe") {
-                $VswherePath = "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe"
-            } else {
-                &"$NuGet" install vswhere -ExcludeVersion -NonInteractive -OutputDirectory "$env:windir"
-                $VswherePath = "$env:windir\vswhere\tools\vswhere.exe"
-            }
-        }
-        [xml]$GetMSBuildPath = &$VswherePath -latest -requires Microsoft.Component.MSBuild -version 15.0 -format xml    
-        if ($GetMSBuildPath -ne $null) {
-            $MSBuildPath = $GetMSBuildPath.instances.instance.installationPath + "\MSBuild\15.0\Bin\MSBuild.exe"
-        }
-    }
-    if (!(Test-Path "$MSBuildPath" -ErrorAction SilentlyContinue)) {
-        if (Test-Path $MSBuildPath.Replace("Enterprise", "Professional")) {
-            $MSBuildPath = $MSBuildPath.Replace("Enterprise", "Professional")
-        }
-        if (Test-Path $MSBuildPath.Replace("Enterprise", "Community")) {
-            $MSBuildPath = $MSBuildPath.Replace("Enterprise", "Community")
-        }
-        if (Test-Path $MSBuildPath.Replace("Enterprise", "BuildTools")) {
-            $MSBuildPath = $MSBuildPath.Replace("Enterprise", "BuildTools")
-        }
-        if ("$env:MSBuildPath" -ne "" -and (Test-Path "$env:MSBuildPath")) {
-            $MSBuildPath = $env:MSBuildPath
-        }
-    }
-    if (!(Test-Path "$MSBuildPath" -ErrorAction SilentlyContinue)) {
-        $env:MSBuildPath = Read-Host 'Please enter the path to MSBuild.exe. For example: C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\MSBuild.exe. Or change the value of the MSBuildPath environment variable to be the path to MSBuild.exe'
-        if ("$env:MSBuildPath" -ne "" -and (Test-Path "$env:MSBuildPath")) {
-            $MSBuildPath = $env:MSBuildPath
-            [System.Environment]::SetEnvironmentVariable("MSBuildPath", $MSBuildPath, "Machine")
-        } else {
-            Write-Host MSBuild not found. Download from: https://aka.ms/vs/15/release/vs_buildtools.exe
-            sleep 10
-            exit 1
-        }
-    }
+	#Find Local NuGet
+	if ("$NuGet" -eq "" -or !(Test-Path "$NuGet" -ErrorAction SilentlyContinue)) {
+		$NuGetCommand = Get-Command NuGet -ErrorAction SilentlyContinue
+		if ($NuGetCommand) {
+			$NuGet = $NuGetCommand.Path
+		}
+	}
+	if (("$NuGet" -eq "" -or !(Test-Path "$NuGet" -ErrorAction SilentlyContinue)) -and (Test-Path "$env:windir")) {
+		wget "https://dist.nuget.org/win-x86-commandline/latest/nuget.exe" -OutFile "$env:windir\nuget.exe"
+		$NuGet = "$env:windir\nuget.exe"
+	}
+	if ("$NuGet" -eq "" -or !(Test-Path "$NuGet" -ErrorAction SilentlyContinue)) {
+		Write-Host NuGet not found. Download from: https://dist.nuget.org/win-x86-commandline/latest/nuget.exe to: c:\windows\nuget.exe. If you do not have permission to create c:\windows\nuget.exe use the -NuGet switch.
+		sleep 10
+		exit 1
+	}
+	
+	#Find Local Compiler
+	if (!(Test-Path "$MSBuildPath" -ErrorAction SilentlyContinue)) {
+		$GetMSBuildCommand = Get-Command MSBuild -ErrorAction SilentlyContinue
+		if ($GetMSBuildCommand) {
+			$MSBuildPath = $GetMSBuildCommand.Path
+		}
+	}
+	if ($MSBuildPath -ne $null -and !(Test-Path "$MSBuildPath" -ErrorAction SilentlyContinue)) {
+		$GetvswhereCommand = Get-Command vswhere -ErrorAction SilentlyContinue
+		if ($GetvswhereCommand) {
+			$VswherePath = $GetvswhereCommand.Path
+		} else {
+			if (Test-Path "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe") {
+				$VswherePath = "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe"
+			} else {
+				&"$NuGet" install vswhere -ExcludeVersion -NonInteractive -OutputDirectory "$env:windir"
+				$VswherePath = "$env:windir\vswhere\tools\vswhere.exe"
+			}
+		}
+		[xml]$GetMSBuildPath = &$VswherePath -latest -requires Microsoft.Component.MSBuild -version 15.0 -format xml    
+		if ($GetMSBuildPath -ne $null) {
+			$MSBuildPath = $GetMSBuildPath.instances.instance.installationPath + "\MSBuild\15.0\Bin\MSBuild.exe"
+		}
+	}
+	if (!(Test-Path "$MSBuildPath" -ErrorAction SilentlyContinue)) {
+		if (Test-Path $MSBuildPath.Replace("Enterprise", "Professional")) {
+			$MSBuildPath = $MSBuildPath.Replace("Enterprise", "Professional")
+		}
+		if (Test-Path $MSBuildPath.Replace("Enterprise", "Community")) {
+			$MSBuildPath = $MSBuildPath.Replace("Enterprise", "Community")
+		}
+		if (Test-Path $MSBuildPath.Replace("Enterprise", "BuildTools")) {
+			$MSBuildPath = $MSBuildPath.Replace("Enterprise", "BuildTools")
+		}
+		if ("$env:MSBuildPath" -ne "" -and (Test-Path "$env:MSBuildPath")) {
+			$MSBuildPath = $env:MSBuildPath
+		}
+	}
+	if (!(Test-Path "$MSBuildPath" -ErrorAction SilentlyContinue)) {
+		$GetMSBuildCommand = reg.exe query "HKLM\SOFTWARE\Microsoft\MSBuild\ToolsVersions\4.0" /v MSBuildToolsPath
+		$GetMSBuildCommand = $GetMSBuildCommand[2].Substring(34, $GetMSBuildCommand[2].Length-34) + "msbuild.exe"
+	}
+	if (!(Test-Path "$MSBuildPath" -ErrorAction SilentlyContinue)) {
+		$env:MSBuildPath = Read-Host 'Please enter the path to MSBuild.exe. For example: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin\MSBuild.exe. Or change the value of the MSBuildPath environment variable to be the path to MSBuild.exe'
+		if ("$env:MSBuildPath" -ne "" -and (Test-Path "$env:MSBuildPath")) {
+			$MSBuildPath = $env:MSBuildPath
+			[System.Environment]::SetEnvironmentVariable("MSBuildPath", $MSBuildPath, "Machine")
+		} else {
+			Write-Host MSBuild not found. Download from: https://aka.ms/vs/15/release/vs_buildtools.exe
+			sleep 10
+			exit 1
+		}
+	}
 }
 
 #Version

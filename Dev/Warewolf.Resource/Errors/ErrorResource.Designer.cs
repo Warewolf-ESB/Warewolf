@@ -3901,7 +3901,8 @@ namespace Warewolf.Resource.Errors {
                 return ResourceManager.GetString("ErrorDuringDuplicateFolderCallback", resourceCulture);
             }
         }
-		/// <summary>
+
+        /// <summary>
         ///   Looks up a localized string similar to Invalid license.
         /// </summary>
         public static string InvalidLicense {

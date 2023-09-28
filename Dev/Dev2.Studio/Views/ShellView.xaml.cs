@@ -199,7 +199,7 @@ namespace Dev2.Studio.Views
                 var shellViewModel = DataContext as ShellViewModel;
                 shellViewModel?.MergeCommand.Execute(null);
             }
-			
+
             if (e.Key == Key.S && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
             {
                 if (DataContext is ShellViewModel shellViewModel)
@@ -220,7 +220,7 @@ namespace Dev2.Studio.Views
                     }
                 }
             }
-			
+
             if (e.Key == Key.F1)
             {
                 Process.Start(Warewolf.Studio.Resources.Languages.HelpText.WarewolfHelpURL);
@@ -376,7 +376,7 @@ namespace Dev2.Studio.Views
             }
             Toolbox.Activate();
             Toolboxcontrol.Focus();
-			
+            
             if(DataContext is ShellViewModel model)
             {
                 if(!model.SubscriptionData.Connected)

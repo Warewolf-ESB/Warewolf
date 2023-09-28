@@ -51,7 +51,7 @@ namespace Dev2.Common.Interfaces.Studio
         ICommand StartPageCommand { get; }
 
         void Lock();
-		
+
         void NotifyProperty(bool canExecute);
     }
 }

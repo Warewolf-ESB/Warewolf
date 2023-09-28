@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<subscriptionSettings>
+  <add key="CustomerId" value="" />
+  <add key="SubscriptionId" value="" />
+  <add key="Status" value="" />
+  <add key="PlanId" value="" />
+  <add key="SubscriptionKey" value="" />
+  <add key="SubscriptionSiteName" value="" />
+</subscriptionSettings>
