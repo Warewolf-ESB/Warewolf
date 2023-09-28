@@ -505,16 +505,6 @@ namespace Dev2.Settings.Logging
             }
         }
 
-        public long AuditLogMaxSize
-        {
-            get => _auditLogMaxSize;
-            set
-            {
-                IsDirty = !Equals(Item);
-                _auditLogMaxSize = value;
-                OnPropertyChanged();
-            }
-        }
         public string StudioLogMaxSize
         {
             get => _studioLogMaxSize;
