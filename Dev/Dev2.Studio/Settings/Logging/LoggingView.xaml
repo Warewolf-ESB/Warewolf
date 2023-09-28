@@ -35,6 +35,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="27*" />
             <RowDefinition Height="27*" />
+	    <RowDefinition Height="15*" />		
             <RowDefinition Height="46*" />
             <RowDefinition />
         </Grid.RowDefinitions>
@@ -207,8 +208,45 @@
                 </Grid>
             </StackPanel>
         </ScrollViewer>
+<ScrollViewer Grid.Row="2"
+                      HorizontalScrollBarVisibility="Auto"
+                      VerticalScrollBarVisibility="Auto">
+            <StackPanel CanHorizontallyScroll="True" CanVerticallyScroll="True" >
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0"
+                                Width="{Binding ElementName=GridContainer, Path=ActualWidth}"
+                                Background="{StaticResource WareWolfMenuBrush}"
+                                HorizontalAlignment="Stretch"
+                                Orientation="Horizontal">
+                        <TextBlock Margin="5" Style="{StaticResource SourceHeader}">Audit File Logs</TextBlock>
+                    </StackPanel>
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="150" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="5" />
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+
+                        <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal">
+                            <TextBlock>Max Log File Size</TextBlock>
+                            <TextBox Width="50" MaxWidth="50"
+                                     Text="{Binding AuditLogMaxSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <TextBlock>MB</TextBlock>
+                        </StackPanel>
+                    </Grid>
+                </Grid>
+            </StackPanel>
+        </ScrollViewer>
         <ScrollViewer IsEnabled="{Binding CanEditStudioLogSettings, Mode=OneWay}"
-                      Grid.Row="2"
+                      Grid.Row="3"
                       HorizontalScrollBarVisibility="Auto"
                       VerticalScrollBarVisibility="Auto">
             <StackPanel CanHorizontallyScroll="True" CanVerticallyScroll="True">

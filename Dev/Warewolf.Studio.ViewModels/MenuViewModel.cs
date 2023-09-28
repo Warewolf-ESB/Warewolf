@@ -95,6 +95,12 @@ namespace Warewolf.Studio.ViewModels
                 _debugIcon = value;
                 OnPropertyChanged(() => DebugIcon);
             }
+		}
+
+        public void NotifyProperty(bool canExecute)
+        {
+            SaveCommand.CanExecute(canExecute);
+            OnPropertyChanged(() => SaveCommand);        
         }
 
         public ICommand SupportCommand { get; set; }
@@ -409,6 +415,18 @@ namespace Warewolf.Studio.ViewModels
                 }
 
                 return Resources.Languages.Core.MenuDialogUnLockLabel;
+            }
+        }
+        public string MenuSaveToolTip
+        {
+            get
+            {
+                //if (!_viewModel.SubscriptionData.IsLicensed)
+                //{
+                //    return Resources.Languages.Tooltips.UnregisteredWarewolfToolTip;
+                //}
+
+                return Resources.Languages.Tooltips.MenuSaveToolTip;
             }
         }
 

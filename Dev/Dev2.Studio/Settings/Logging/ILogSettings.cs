@@ -22,6 +22,7 @@ namespace Dev2.Settings.Logging
         LogLevel StudioEventLogLevel { get; set; }
         string StudioLogMaxSize { get; }
         string ServerLogMaxSize { get; }
+		long AuditLogMaxSize { get; }
         bool CanEditStudioLogSettings { get; }
         bool CanEditLogSettings { get; }
         LogLevel StudioFileLogLevel { get; }

@@ -11,9 +11,12 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Dev2.Common.Interfaces;
+using Dev2.Communication;
 using Dev2.Controller;
 using Dev2.Studio.Interfaces;
+using Warewolf.Licensing;
 
 namespace Dev2.Studio.Core
 {
@@ -50,6 +53,13 @@ namespace Dev2.Studio.Core
             var controller = CommunicationControllerFactory.CreateController("GetServerInformation");
             var information = controller.ExecuteCommand<Dictionary<string, string>>(Connection, Guid.Empty);
             return information;
+        }
+        public async Task<ISubscriptionData> GetSubscriptionData()
+        {
+            var serializer = new Dev2JsonSerializer();
+            var controller = CommunicationControllerFactory.CreateController(nameof(GetSubscriptionData));
+            var resultData = await controller.ExecuteCommandAsync<ExecuteMessage>(Connection, Guid.Empty);
+            return serializer.Deserialize<ISubscriptionData>(resultData.Message);
         }
     }
 }

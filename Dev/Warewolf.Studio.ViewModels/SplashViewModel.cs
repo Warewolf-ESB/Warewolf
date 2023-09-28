@@ -23,8 +23,9 @@ namespace Warewolf.Studio.ViewModels
 {
     public class SplashViewModel : BindableBase2, ISplashViewModel
     {
-        string _serverVersion;
-        string _studioVersion;
+       	private string _serverVersion;
+        private string _studioVersion;
+        private string _warewolfLicense;
 
         public SplashViewModel(IServer server, IExternalProcessExecutor externalProcessExecutor)
         {
@@ -74,6 +75,15 @@ namespace Warewolf.Studio.ViewModels
         }
 
        public Uri WarewolfUrl { get; set; }
+		public string WarewolfLicense
+        {
+            get => _warewolfLicense;
+            set
+            {
+                _warewolfLicense = value;
+                OnPropertyChanged("WarewolfLicense");
+            }
+        }
         public Uri ContributorsUrl { get; set; }
         public Uri CommunityUrl { get; set; }
         public Uri ExpertHelpUrl { get; set; }
@@ -110,6 +120,8 @@ namespace Warewolf.Studio.ViewModels
                 {
                     StudioVersion = "Version " + studioVersion;
                 }
+				//var subscriptionData = Server.GetSubscriptionData();
+    //            WarewolfLicense = subscriptionData?.PlanId + ": " + subscriptionData?.Status;
             });
         }
 

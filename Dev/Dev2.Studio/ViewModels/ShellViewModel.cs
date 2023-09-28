@@ -74,7 +74,11 @@ using Dev2.Studio.Enums;
 using Warewolf.Data;
 using Dev2.Data;
 using Dev2.Data.Interfaces;
+using Dev2.Runtime.Hosting;
 using Warewolf.Core;
+using Warewolf.Enums;
+using Warewolf.Licensing;
+using Warewolf.Studio.CustomControls;
 
 namespace Dev2.Studio.ViewModels
 {
@@ -255,7 +259,7 @@ namespace Dev2.Studio.ViewModels
         {
             get
             {
-                if (ActiveItem == null)
+                if (!SubscriptionData.IsLicensed || ActiveItem is null)
                 {
                     return new AuthorizeCommand(Dev2.Common.Interfaces.Enums.AuthorizationContext.None, p => { }, param => false);
                 }
@@ -746,6 +750,7 @@ namespace Dev2.Studio.ViewModels
             {
                 SetActiveServer(server);
             }
+			NotifyOfPropertyChange(() => LicensePlanTitle);
         }
 
         public void SetActiveServer(IServer server)
@@ -1572,6 +1577,16 @@ namespace Dev2.Studio.ViewModels
             _worksurfaceContextManager.EditResource(selectedSource, view, key);
         }
 
+        public void Register()
+        {
+            //var webBrowserView = new WebBrowserView("Register");
+            //webBrowserView.ShowDialog();
+        }
+        public void ManagePlan()
+        {
+            //var webBrowserView =  new WebBrowserView("Manage");
+            //webBrowserView.ShowDialog();
+        }
         public void NewService(string resourcePath)
         {
             _worksurfaceContextManager.NewService(resourcePath);
@@ -1801,6 +1816,16 @@ namespace Dev2.Studio.ViewModels
 
         void SaveAll(object obj)
         {
+            if (!SubscriptionData.IsLicensed)
+            {
+                var result = PopupProvider.UnRegisteredDialog();
+                if (result == MessageBoxResult.Yes)
+                {
+                    // Take the user to the register steps.
+                    Register();
+                }
+                return;
+            }
             for (int index = Items.Count - 1; index >= 0; index--)
             {
                 var workSurfaceContextViewModel = Items[index];
@@ -2253,6 +2278,8 @@ namespace Dev2.Studio.ViewModels
         IServer _activeServer;
         IExplorerViewModel _explorerViewModel;
         IWorksurfaceContextManager _worksurfaceContextManager;
+        public ISubscriptionData SubscriptionData => new SubscriptionData();
+        //ActiveServer.GetSubscriptionData();
 
         public IWorksurfaceContextManager WorksurfaceContextManager
         {
@@ -2308,6 +2335,46 @@ namespace Dev2.Studio.ViewModels
 
         public Func<IWorkspaceItemRepository> GETWorkspaceItemRepository => _getWorkspaceItemRepository;
 
+        public string LicensePlanTitle
+        {
+            get
+            {
+                var serverName = ActiveServer.Name;
+                switch(SubscriptionData.Status)
+                {
+                    case SubscriptionStatus.NotActive:
+                        return serverName + " [ Not registered ]";
+
+                    case SubscriptionStatus.InTrial:
+                    case SubscriptionStatus.Active:
+                    case SubscriptionStatus.Cancelled:
+                        return serverName + " [" + SubscriptionData.PlanId + " - " + SubscriptionData.Status + "]";
+
+                    case SubscriptionStatus.Future:
+                    case SubscriptionStatus.NonRenewing:
+                    case SubscriptionStatus.Paused:
+                    case null:
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+
+                return string.Empty;
+            }
+        }
+
+        public void UpdateStudioLicense(bool isLicensed)
+        {
+            SaveCommand.UpdateContext(ActiveServer);
+            var environmentViewModel = ExplorerViewModel.Environments.FirstOrDefault(o => o.ResourceId == ActiveServer.EnvironmentID);
+            if(environmentViewModel != null)
+            {
+                //environmentViewModel.IsLicensed = isLicensed;
+            }
+            NotifyOfPropertyChange(() => LicensePlanTitle);
+            MenuViewModel.NotifyProperty(isLicensed);
+        }
+		
         public void Handle(FileChooserMessage message)
         {
             var fileChooserView = new FileChooserView();

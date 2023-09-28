@@ -5,6 +5,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:i="clr-namespace:Microsoft.Xaml.Behaviors;assembly=Microsoft.Xaml.Behaviors"                     
              xmlns:local="clr-namespace:Dev2.Studio.AppResources.Behaviors"  
+	     xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro"
              xmlns:ig="http://schemas.infragistics.com/xaml"
              xmlns:workflow="clr-namespace:Dev2.Studio.ViewModels.Workflow"
              xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
@@ -190,7 +191,7 @@
     </UserControl.InputBindings>
 
 
-    <Grid >
+    <Grid>
         <Grid x:Name="MainGrid" Margin="{StaticResource ElementBorder}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />

@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -26,7 +26,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Network;
 using System.Threading.Tasks;
+using System.Windows.Controls.Primitives;
+//using Dev2.Runtime.Subscription;
 using Warewolf.Data;
+using Warewolf.Licensing;
 
 namespace Dev2.Studio.Core.Models
 {
@@ -39,6 +42,7 @@ namespace Dev2.Studio.Core.Models
         string _minversion;
         Dictionary<string, string> _serverInformation;
         IExplorerRepository _proxyLayer;
+        private ISubscriptionData _subscriptionData;
 
         public event EventHandler<ConnectedEventArgs> IsConnectedChanged;
 
@@ -398,16 +402,33 @@ namespace Dev2.Studio.Core.Models
         public bool CanDeployTo => IsAuthorizedDeployTo;
         public bool CanDeployFrom => IsAuthorizedDeployFrom;
 
+        public ISubscriptionData GetSubscriptionData()
+        {
+            try
+            {
+                if(!Connection.IsConnected)
+                {
+                    Connection.Connect(Guid.Empty);
+                }
+
+                Task.Run(async() => 
+                {
+                    _subscriptionData = await ProxyLayer.AdminManagerProxy.GetSubscriptionData();
+                }).Wait();
+
+                return _subscriptionData;
+            }
+            catch
+            {
+                _subscriptionData = new SubscriptionData { Connected = false };
+                return _subscriptionData;
+            }
+        }
+		
         public IExplorerRepository ProxyLayer
         {
-            get
-            {
-                return _proxyLayer;
-            }
-            set
-            {
-                _proxyLayer = value;
-            }
+            get { return _proxyLayer; }
+            set { _proxyLayer = value; }
         }
 
         public Permissions UserPermissions { get; set; }
