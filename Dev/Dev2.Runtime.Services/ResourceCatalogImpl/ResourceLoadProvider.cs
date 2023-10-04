@@ -60,14 +60,15 @@ namespace Dev2.Runtime.ResourceCatalogImpl
         public ResourceLoadProvider(ConcurrentDictionary<Guid, List<IResource>> workspaceResources, IServerVersionRepository serverVersionRepository, IEnumerable<DynamicService> managementServices = null, IFile dev2FileWrapper = null, IFileStreamFactory fileStreamFactory = null, IStreamReaderFactory streamReaderFactory = null)
             : this(dev2FileWrapper ?? new FileWrapper(), fileStreamFactory ?? new FileStreamFactory(), streamReaderFactory ?? new StreamReaderFactory())
         {
-            //try
-            //{
-            //    _perfCounter = CustomContainer.Get<IWarewolfPerformanceCounterLocater>().GetCounter("Count of requests for workflows which don't exist");
-            //}
-            //catch (Exception e)
-            //{
-            //    Dev2Logger.Warn("Error getting perf counters. " + e.Message, "Warewolf Warn");
-            //}
+            // UnCommented as outcome of syncing of develop branch with 7232 branch.
+            try
+            {
+                _perfCounter = CustomContainer.Get<IWarewolfPerformanceCounterLocater>().GetCounter("Count of requests for workflows which don't exist");
+            }
+            catch (Exception e)
+            {
+                Dev2Logger.Warn("Error getting perf counters. " + e.Message, "Warewolf Warn");
+            }
             if (managementServices != null)
             {
                 foreach (var service in managementServices)
