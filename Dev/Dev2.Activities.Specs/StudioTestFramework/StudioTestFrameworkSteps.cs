@@ -604,8 +604,14 @@ namespace Dev2.Activities.Specs.TestFramework
             var lastOrDefault = debugForTest.LastOrDefault(state => state.StateType == StateType.TestAggregate);
             Assert.IsNotNull(lastOrDefault);
             var debugItemResults = lastOrDefault.AssertResultList.First().ResultsList;
-            var first = debugItemResults.First();
-            StringAssert.Contains(first.Value.ToLower(), assertString.ToLower());
+			var externalProcessExecutor = new SpecExternalProcessExecutor();
+            var first = debugItemResults.Select(result =>
+            {
+                externalProcessExecutor.OpenInBrowser(new Uri(result.MoreLink));
+                var downloadStrings = externalProcessExecutor.WebResult[0];
+                return downloadStrings;				
+            }).First();
+			StringAssert.Contains(first.ToLower(), assertString.ToLower());
         }
 
         [Then(@"All test pieces are pending")]

@@ -149,7 +149,7 @@ this.FeatureBackground();
                             "Output from Service",
                             "To Variable"});
                 table470.AddRow(new string[] {
-                            "countrynamecontains",
+                            "Prefix",
                             "s",
                             "Id",
                             "[[countries(*).Id]]"});
