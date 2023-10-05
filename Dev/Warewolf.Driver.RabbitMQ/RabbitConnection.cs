@@ -9,7 +9,6 @@
 */
 
 using System;
-using System.Diagnostics;
 using System.Threading;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
@@ -22,10 +21,6 @@ namespace Warewolf.Driver.RabbitMQ
     public class RabbitConnection : IQueueConnection
     {
         readonly IConnection _connection;
-        private Timer connectionTimer = null;
-        private bool isConsumerCancelled = false;
-        private DateTime consumerCancelledDateTime = DateTime.MinValue;
-        private string currentProcessId;
 
         public RabbitConnection(IConnection connection)
         {
@@ -45,13 +40,11 @@ namespace Warewolf.Driver.RabbitMQ
             var rabbitConfig = config as RabbitConfig;
             var channel = CreateChannel(rabbitConfig);
 
-            var initialCount = Environment.ProcessorCount * 5;
-            var throttler = new SemaphoreSlim(initialCount);
+
+            var throttler = new SemaphoreSlim(initialCount: Environment.ProcessorCount * 5);
             var eventConsumer = new EventingBasicConsumer(channel);
             eventConsumer.Received += (model, eventArgs) =>
             {
-                if (isConsumerCancelled) return;
-
                 var body = eventArgs.Body;
                 var headers = new Warewolf.Data.Headers();
                 headers["Warewolf-Custom-Transaction-Id"] = new[] { eventArgs.BasicProperties.CorrelationId };
@@ -72,41 +65,10 @@ namespace Warewolf.Driver.RabbitMQ
                     throttler.Release();
                 }
             };
-            eventConsumer.ConsumerCancelled += (model, ea) =>
-            {
-                if (isConsumerCancelled) return;
-                isConsumerCancelled = true;
-                consumerCancelledDateTime = DateTime.UtcNow;
-            };
 
-            channel.BasicConsume(queue: rabbitConfig.QueueName, autoAck: false, consumer: eventConsumer);
-
-            connectionTimer = new Timer(state =>
-            {
-                if (throttler.CurrentCount != initialCount) return;
-
-                try
-                {
-                    if (isConsumerCancelled)
-                        throw new Exception("Consumer cancelled at " +
-                            consumerCancelledDateTime.ToString("dd MMM HH:mm:ss:ffff") + " UTC");
-
-                    channel.QueueDeclarePassive(rabbitConfig.QueueName);
-                }
-                catch (Exception ex)
-                {
-                    try
-                    {
-                        connectionTimer.Change(Timeout.Infinite, Timeout.Infinite);
-                        connectionTimer.Dispose();
-                    }
-                    catch
-                    {
-
-                    }
-                    throw new Exception(GetCurrentProcessId(), ex);
-                }
-            }, null, TimeSpan.Zero, TimeSpan.FromMinutes(10));
+            channel.BasicConsume(queue: rabbitConfig.QueueName,
+                autoAck: false,
+                consumer: eventConsumer);
         }
 
         private IModel CreateChannel(RabbitConfig rConfig)
@@ -139,22 +101,6 @@ namespace Warewolf.Driver.RabbitMQ
             var rabbitConfig = config as RabbitConfig;
             var channel = _connection.CreateModel();
             channel.QueueDelete(rabbitConfig.QueueName);
-        }
-
-        private string GetCurrentProcessId()
-        {
-            if (null == currentProcessId)
-            {
-                try
-                {
-                    currentProcessId = "Process Id : " + Process.GetCurrentProcess().Id.ToString();
-                }
-                catch
-                {
-                    currentProcessId = "<No process id>";
-                }
-            }
-            return currentProcessId;
         }
     }
 }

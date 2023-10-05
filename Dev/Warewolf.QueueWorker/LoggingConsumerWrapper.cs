@@ -41,7 +41,7 @@ namespace QueueWorker
             var headers = parameters as Headers;
             if (!headers.KeyExists("Warewolf-Execution-Id"))
             {
-                headers["Warewolf-Execution-Id"] = new[] {Guid.NewGuid().ToString()};
+                headers["Warewolf-Execution-Id"] = new[] { Guid.NewGuid().ToString() };
             }
 
             var empty = new string[] { };
@@ -57,7 +57,7 @@ namespace QueueWorker
             {
                 task = _consumer.Consume(body, parameters);
                 task.Wait();
-                
+
                 var endDate = DateTime.UtcNow;
                 var duration = endDate - startDate;
 
@@ -72,31 +72,31 @@ namespace QueueWorker
                 else
                 {
                     _logger.Error($"Failed to execute {_resourceId + " [" + executionId + "] " + strBody}");
-                    CreateExecutionError(task.Exception ?? new Exception("<no exception found in response received>"), executionId, startDate, endDate, duration,
+                    CreateExecutionError(task, executionId, startDate, endDate, duration,
                         customTransactionID);
                 }
-                
+
                 return Task.Run(() => ConsumerResult.Success);
             }
-            catch (Exception reqException)
+            catch (Exception)
             {
                 var endDate = DateTime.UtcNow;
                 var duration = endDate - startDate;
                 _logger.Warn($"[{executionId}] - {customTransactionID} failure processing body {strBody}");
-                CreateExecutionError(task.Exception ?? reqException, executionId, startDate, endDate, duration,
+                CreateExecutionError(task, executionId, startDate, endDate, duration,
                     customTransactionID);
-                
+
                 return Task.Run(() => ConsumerResult.Failed);
             }
         }
 
-        private void CreateExecutionError(Exception requestForwarderResultException, Guid executionId,
+        private void CreateExecutionError(Task<ConsumerResult> requestForwarderResult, Guid executionId,
             DateTime startDate, DateTime endDate, TimeSpan duration, string customTransactionID)
         {
             var executionInfo = new ExecutionInfo(startDate, duration, endDate, Warewolf.Triggers.QueueRunStatus.Error,
                 executionId, customTransactionID);
             var executionEntry = new ExecutionHistory(_resourceId, "", executionInfo, _userName);
-            executionEntry.Exception = new SerializableException(requestForwarderResultException);
+            executionEntry.Exception = new SerializableException(requestForwarderResult.Exception);
             executionEntry.AuditType = "ExecutionLog";
             executionEntry.LogLevel = LogLevel.Fatal;
             _logger.ExecutionFailed(executionEntry);
