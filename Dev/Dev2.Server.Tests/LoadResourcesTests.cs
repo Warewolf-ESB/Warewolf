@@ -51,7 +51,7 @@ namespace Dev2.Server.Tests
                 .Returns(()=> null).Verifiable();
             //------------------Act-------------------
             var loadResources =  new LoadResources("Resources - ServerTests", mockWriter.Object, mockDirectory.Object,mockResourceCatalogFactory.Object);
-            loadResources.CheckExampleResources();
+            loadResources.LoadExampleResources();
             //------------------Assert----------------
             mockResourceCatalog.Verify();
         }
@@ -71,7 +71,7 @@ namespace Dev2.Server.Tests
             mockResourceCatalogFactory.Setup(o => o.New()).Returns(mockResourceCatalog.Object);
             //------------------Act-------------------
             var loadResources = new LoadResources("Resources - ServerTests", mockWriter.Object, mockDirectory.Object, mockResourceCatalogFactory.Object);
-            loadResources.CheckExampleResources();
+            loadResources.LoadExampleResources();
             //------------------Assert----------------
             mockResourceCatalog.Verify(o => o.LoadExamplesViaBuilder(It.IsAny<string>()), Times.Never);
         }
@@ -310,7 +310,7 @@ namespace Dev2.Server.Tests
             mockResourceCatalog.Setup(o => o.LoadExamplesViaBuilder(Path.Combine(EnvironmentVariables.ApplicationPath, "Resources - Release"))).Verifiable();
             //------------------Act-------------------
             var loadResources =  new LoadResources("Resources - Release", new Mock<IWriter>().Object, mockDirectory.Object, mockResourceCatalogFactory.Object);
-            loadResources.CheckExampleResources();
+            loadResources.LoadExampleResources();
             //------------------Assert----------------
             mockResourceCatalog.Verify();
         }

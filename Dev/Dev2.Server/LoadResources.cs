@@ -24,7 +24,7 @@ namespace Dev2
 {
     public interface ILoadResources
     {
-        void CheckExampleResources();
+        void LoadExampleResources();
         void LoadActivityCache(IAssemblyLoader assemblyLoader);
         void LoadResourceCatalog();
         void LoadServerWorkspace();
@@ -57,7 +57,7 @@ namespace Dev2
             _catalog = resourceCatalogFactory.New();
         }
 
-        public void CheckExampleResources()
+        public void LoadExampleResources()
         {
             var serverReleaseResources = Path.Combine(EnvironmentVariables.ApplicationPath, _resourceDirectory);
             if (_directory.Exists(serverReleaseResources))
