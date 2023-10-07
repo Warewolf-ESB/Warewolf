@@ -240,10 +240,7 @@ namespace Dev2
 
                     _loadResources = new LoadResources("Resources", _writer, _startUpDirectory, _startupResourceCatalogFactory);
                     LoadHostSecurityProvider();
-
-                    //Disable download of example resources. In future include this for new installations only
-                    //_loadResources.CheckExampleResources();
-
+                    _loadResources.CheckExampleResources();
                     _loadResources.MigrateOldTests();
                     LoadSubscriptionProvider();
                     var webServerConfig = _webServerConfiguration;
