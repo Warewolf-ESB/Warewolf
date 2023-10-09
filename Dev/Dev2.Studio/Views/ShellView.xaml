@@ -143,6 +143,16 @@
                                                     Style="{StaticResource MetroWindowButtonStyle}">
                                                 <fa:FontAwesome Icon="Lock" FontSize="15" />
                                             </Button>
+                                            <TextBlock x:Name="PART_LICENSE_PLAN"
+                                                       VerticalAlignment="Center"
+                                                       FontSize="16"
+                                                       FontWeight="Bold"
+                                                       Foreground="{StaticResource WareWolfOrangeBrush}"
+                                                       Text="{Binding LicensePlanTitle}"
+                                                       TextWrapping="NoWrap"
+                                                       DockPanel.Dock="Right">
+
+                                            </TextBlock>
                                         </DockPanel>
                                     </Border>
                                     <AdornerDecorator DockPanel.Dock="Bottom">
@@ -244,7 +254,7 @@
         <KeyBinding Command="{Binding ExitCommand}" Key="F4" Modifiers="Alt" />
         <KeyBinding Command="{Binding SettingsCommand}" Key="T" Modifiers="Alt" />
         <KeyBinding Command="{Binding SearchCommand}" Key="F" Modifiers="Ctrl+Shift" />
-        <KeyBinding Command="{Binding SaveCommand}" Key="S" Modifiers="Ctrl" />
+        <!-- <KeyBinding Command="{Binding SaveCommand}" Key="S" Modifiers="Ctrl" /> -->
         <KeyBinding Command="{Binding SaveAllCommand}" Key="S" Modifiers="Ctrl+Shift" />
         <KeyBinding Command="{Binding ActiveItem.RunCommand}" Key="R" Modifiers="Ctrl" />
         <KeyBinding Command="{Binding DebugCommand}" Key="F5" />

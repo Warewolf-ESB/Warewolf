@@ -22,6 +22,7 @@ using Dev2.Studio.Interfaces.Deploy;
 using System.Collections.ObjectModel;
 using Dev2.Common.Interfaces;
 using Dev2.Data;
+using Warewolf.Licensing;
 using Warewolf.Trigger.Queue;
 using Warewolf.Triggers;
 
@@ -78,6 +79,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             otherServer.SetupGet(it => it.Connection).Returns(mockEnvironmentConnection.Object);
 
             shellViewModel.Setup(x => x.LocalhostServer).Returns(localhost.Object);
+            shellViewModel.Setup(x => x.SubscriptionData).Returns(new Mock<ISubscriptionData>().Object);
 
             var connectControlSingleton = new Mock<IConnectControlSingleton>();
             CustomContainer.Register(connectControlSingleton.Object);
@@ -171,6 +173,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var mockEnvironmentConnection = SetupMockConnection();
             localhost.SetupGet(it => it.Connection).Returns(mockEnvironmentConnection.Object);
             shellViewModel.Setup(x => x.LocalhostServer).Returns(localhost.Object);
+            shellViewModel.Setup(x => x.SubscriptionData).Returns(new Mock<ISubscriptionData>().Object);
 
             var deployDestinationViewModel = new DeployDestinationViewModel(shellViewModel.Object, eventAggregator.Object);
 

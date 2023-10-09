@@ -34,5 +34,8 @@
   <ItemGroup>
     <Reference Include="System.Net.Http" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="License" />
+  </ItemGroup>
 </Project>
 

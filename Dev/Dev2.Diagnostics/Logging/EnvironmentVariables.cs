@@ -31,6 +31,11 @@ namespace Dev2.Common
             }
         }
 
+        public static string PersistencePath
+        {
+            get => Path.Combine(Config.UserDataPath, "Persistence");
+        }
+        
         public static string ResourcePath
         {
             get

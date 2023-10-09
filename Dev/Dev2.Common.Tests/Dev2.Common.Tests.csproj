@@ -90,6 +90,7 @@
     <Compile Include="RecordSetSearchPayloadTests.cs" />
     <Compile Include="SaveDialogue\ResourceNameTests.cs" />
     <Compile Include="SearchTests.cs" />
+    <Compile Include="ServerStatsTests.cs" />
     <Compile Include="SingleApiTests.cs" />
     <Compile Include="AssemblyWrapperTests.cs" />
     <Compile Include="ExternalProcessExecutorTests.cs" />

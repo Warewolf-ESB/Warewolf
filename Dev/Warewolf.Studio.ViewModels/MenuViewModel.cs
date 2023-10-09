@@ -1,7 +1,7 @@
 ﻿#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -12,13 +12,13 @@
 using System;
 using System.Diagnostics;
 using System.Windows.Input;
-using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio;
 using Dev2.Studio.Interfaces;
 using FontAwesome.WPF;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
+using Dev2;
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -68,7 +68,6 @@ namespace Warewolf.Studio.ViewModels
             });
             SlideClosedCommand = new DelegateCommand(() =>
             {
-                
                 if (_viewModel.MenuPanelWidth >= 80 && !_isOverLock)
                 {
                     SlideClosed(_viewModel);
@@ -81,7 +80,6 @@ namespace Warewolf.Studio.ViewModels
             IsPanelOpen = true;
             IsPopoutViewOpen = false;
             DebugIcon = FontAwesomeIcon.Bug;
-            
         }
 
         public FontAwesomeIcon DebugIcon
@@ -92,6 +90,12 @@ namespace Warewolf.Studio.ViewModels
                 _debugIcon = value;
                 OnPropertyChanged(() => DebugIcon);
             }
+        }
+
+        public void NotifyProperty(bool canExecute)
+        {
+            SaveCommand.CanExecute(canExecute);
+            OnPropertyChanged(() => SaveCommand);
         }
 
         public ICommand SupportCommand { get; set; }
@@ -401,6 +405,18 @@ namespace Warewolf.Studio.ViewModels
                 }
 
                 return Resources.Languages.Core.MenuDialogUnLockLabel;
+            }
+        }
+        public string MenuSaveToolTip
+        {
+            get
+            {
+                if (!_viewModel.SubscriptionData.IsLicensed)
+                {
+                    return Resources.Languages.Tooltips.UnregisteredWarewolfToolTip;
+                }
+
+                return Resources.Languages.Tooltips.MenuSaveToolTip;
             }
         }
 

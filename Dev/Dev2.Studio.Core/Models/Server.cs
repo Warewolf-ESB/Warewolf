@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -26,7 +26,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Network;
 using System.Threading.Tasks;
+using System.Windows.Controls.Primitives;
+using Dev2.Runtime.Subscription;
 using Warewolf.Data;
+using Warewolf.Licensing;
 
 namespace Dev2.Studio.Core.Models
 {
@@ -39,6 +42,7 @@ namespace Dev2.Studio.Core.Models
         string _minversion;
         Dictionary<string, string> _serverInformation;
         IExplorerRepository _proxyLayer;
+        private ISubscriptionData _subscriptionData;
 
         public event EventHandler<ConnectedEventArgs> IsConnectedChanged;
 
@@ -51,8 +55,6 @@ namespace Dev2.Studio.Core.Models
             var handler = AuthorizationServiceSet;
             handler?.Invoke(this, EventArgs.Empty);
         }
-
-        #region CTOR
 
         public Server(Guid id, IEnvironmentConnection environmentConnection)
         {
@@ -95,13 +97,9 @@ namespace Dev2.Studio.Core.Models
             ItemAddedEvent?.Invoke(obj);
         }
 
-        #endregion CTOR
-
-        #region Properties
-
         public IAuthorizationService AuthorizationService
         {
-            get { return _authorizationService ?? (_authorizationService = CreateAuthorizationService(Connection)); }
+            get => _authorizationService ?? (_authorizationService = CreateAuthorizationService(Connection));
             set
             {
                 _authorizationService = value;
@@ -120,32 +118,23 @@ namespace Dev2.Studio.Core.Models
 
         public IEnvironmentConnection Connection
         {
-            get
-            {
-                return _connection;
-            }
+            get => _connection;
             set
             {
-                if (_connection != null)
+                if(_connection != null)
                 {
                     _connection.NetworkStateChanged -= OnNetworkStateChanged;
                 }
+
                 _connection = value;
-                if (_connection != null)
+                if(_connection != null)
                 {
                     _connection.NetworkStateChanged += OnNetworkStateChanged;
                 }
             }
         }
 
-        public string Name
-        {
-            get { return Connection.DisplayName; }
-            set
-            {
-                Connection.DisplayName = value;
-            }
-        }
+        public string Name { get => Connection.DisplayName; set => Connection.DisplayName = value; }
 
         public bool IsConnected => Connection.IsConnected;
 
@@ -161,27 +150,28 @@ namespace Dev2.Studio.Core.Models
         {
             get
             {
-                if (Connection != null)
+                if(Connection != null)
                 {
                     var displayName = Connection.DisplayName;
-                    if (IsConnected && (HasLoaded || Connection.IsLocalHost))
+                    if(IsConnected && (HasLoaded || Connection.IsLocalHost))
                     {
-                        if (!displayName.Contains(Warewolf.Studio.Resources.Languages.Core.ConnectedLabel))
+                        if(!displayName.Contains(Warewolf.Studio.Resources.Languages.Core.ConnectedLabel))
                         {
                             displayName += Warewolf.Studio.Resources.Languages.Core.ConnectedLabel;
                         }
                     }
-                    else if (IsConnected)
+                    else if(IsConnected)
                     {
                         displayName += Warewolf.Studio.Resources.Languages.Core.ConnectedLabel;
                     }
                     else
                     {
-                        if (!IsConnected && (HasLoaded || !Connection.IsLocalHost))
+                        if(!IsConnected && (HasLoaded || !Connection.IsLocalHost))
                         {
                             displayName = Connection.DisplayName.Replace("(Connected)", "");
                         }
                     }
+
                     return displayName;
                 }
 
@@ -195,17 +185,14 @@ namespace Dev2.Studio.Core.Models
             }
         }
 
-        #endregion Properties
-
-        #region Connect
-
         public void Connect()
         {
-            if (Connection.IsConnected)
+            if(Connection.IsConnected)
             {
                 return;
             }
-            if (string.IsNullOrEmpty(Name))
+
+            if(string.IsNullOrEmpty(Name))
             {
                 throw new ArgumentException(string.Format(StringResources.Error_Connect_Failed, StringResources.Error_DSF_Name_Not_Provided));
             }
@@ -216,65 +203,50 @@ namespace Dev2.Studio.Core.Models
 
         public void Connect(IServer other)
         {
-            if (other == null)
+            if(other == null)
             {
                 throw new ArgumentNullException(nameof(other));
             }
 
-            if (!other.IsConnected)
+            if(!other.IsConnected)
             {
                 other.Connection.Connect(EnvironmentID);
 
-                if (!other.IsConnected)
+                if(!other.IsConnected)
                 {
                     throw new InvalidOperationException("Environment failed to connect.");
                 }
             }
+
             Connect();
         }
 
-        #endregion Connect
-
-        #region Disconnect
-
         public void Disconnect()
         {
-            if (Connection.IsConnected)
+            if(Connection.IsConnected)
             {
                 Connection.Disconnect();
                 OnPropertyChanged("DisplayName");
             }
         }
 
-        #endregion Disconnect
-
-        #region ForceLoadResources
-
         public void ForceLoadResources()
         {
-            if (Connection.IsConnected && CanStudioExecute)
+            if(Connection.IsConnected && CanStudioExecute)
             {
                 ResourceRepository.Load(true);
                 HasLoadedResources = true;
             }
         }
 
-        #endregion ForceLoadResources
-
-        #region LoadResources
-
         public void LoadResources()
         {
-            if (Connection.IsConnected && CanStudioExecute)
+            if(Connection.IsConnected && CanStudioExecute)
             {
                 ResourceRepository.UpdateWorkspace();
                 HasLoadedResources = true;
             }
         }
-
-        #endregion LoadResources
-
-        #region Event Handlers
 
         void RaiseIsConnectedChanged(bool isOnline)
         {
@@ -285,43 +257,40 @@ namespace Dev2.Studio.Core.Models
         void OnNetworkStateChanged(object sender, NetworkStateEventArgs e)
         {
             RaiseNetworkStateChanged(e.ToState == NetworkState.Online || e.ToState == NetworkState.Connecting);
-            if ((e.ToState == NetworkState.Connecting || e.ToState == NetworkState.Offline) && AuthorizationService != null)
+            if((e.ToState == NetworkState.Connecting || e.ToState == NetworkState.Offline) && AuthorizationService != null)
             {
                 AuthorizationService.PermissionsChanged -= OnAuthorizationServicePermissionsChanged;
             }
 
-            if (e.ToState == NetworkState.Online && AuthorizationService == null)
+            if(e.ToState == NetworkState.Online && AuthorizationService == null)
             {
                 AuthorizationService = CreateAuthorizationService(Connection);
                 AuthorizationService.PermissionsChanged += OnAuthorizationServicePermissionsChanged;
                 OnAuthorizationServicePermissionsChanged(null, new EventArgs());
             }
-
         }
 
         void RaiseNetworkStateChanged(bool isOnline)
         {
             RaiseIsConnectedChanged(isOnline);
-            if (!isOnline)
+            if(!isOnline)
             {
                 HasLoadedResources = false;
             }
         }
 
-        #endregion Event Handlers
-
-        #region IEquatable
-
         public bool Equals(IServer other)
         {
-            if (other == null)
+            if(other == null)
             {
                 return false;
             }
-            if (EnvironmentID != other.EnvironmentID)
+
+            if(EnvironmentID != other.EnvironmentID)
             {
                 return false;
             }
+
             var isEqual = other.Connection.Equals(Connection);
             return isEqual;
         }
@@ -329,8 +298,6 @@ namespace Dev2.Studio.Core.Models
         public override bool Equals(object obj) => Equals(obj as IServer);
 
         public override int GetHashCode() => EnvironmentID.GetHashCode();
-
-        #endregion IEquatable
 
         protected virtual IAuthorizationService CreateAuthorizationService(IEnvironmentConnection environmentConnection)
         {
@@ -355,10 +322,11 @@ namespace Dev2.Studio.Core.Models
 
         public IList<IToolDescriptor> LoadTools()
         {
-            if (_tools == null || _tools.Count == 0)
+            if(_tools == null || _tools.Count == 0)
             {
                 _tools = ProxyLayer.QueryManagerProxy.FetchTools();
             }
+
             return _tools;
         }
 
@@ -375,14 +343,16 @@ namespace Dev2.Studio.Core.Models
 
         public string GetServerVersion()
         {
-            if (_version == null)
+            if(_version == null)
             {
-                if (!Connection.IsConnected)
+                if(!Connection.IsConnected)
                 {
                     Connection.Connect(Guid.Empty);
                 }
+
                 _version = ProxyLayer.AdminManagerProxy.GetServerVersion();
             }
+
             return _version;
         }
 
@@ -398,28 +368,42 @@ namespace Dev2.Studio.Core.Models
         public bool CanDeployTo => IsAuthorizedDeployTo;
         public bool CanDeployFrom => IsAuthorizedDeployFrom;
 
-        public IExplorerRepository ProxyLayer
+        public ISubscriptionData GetSubscriptionData()
         {
-            get
+            try
             {
-                return _proxyLayer;
+                if(!Connection.IsConnected)
+                {
+                    Connection.Connect(Guid.Empty);
+                }
+
+                Task.Run(async() => 
+                {
+                    _subscriptionData = await ProxyLayer.AdminManagerProxy.GetSubscriptionData();
+                }).Wait();
+
+                return _subscriptionData;
             }
-            set
+            catch
             {
-                _proxyLayer = value;
+                _subscriptionData = new SubscriptionData { Connected = false };
+                return _subscriptionData;
             }
         }
+
+        public IExplorerRepository ProxyLayer { get => _proxyLayer; set => _proxyLayer = value; }
 
         public Permissions UserPermissions { get; set; }
 
         public string GetMinSupportedVersion()
         {
-            if (_minversion == null)
+            if(_minversion == null)
             {
-                if (!Connection.IsConnected)
+                if(!Connection.IsConnected)
                 {
                     Connection.Connect(Guid.Empty);
                 }
+
                 _minversion = ProxyLayer.AdminManagerProxy.GetMinSupportedServerVersion();
             }
 
@@ -437,14 +421,16 @@ namespace Dev2.Studio.Core.Models
 
         public Dictionary<string, string> GetServerInformation()
         {
-            if (!Connection.IsConnected)
+            if(!Connection.IsConnected)
             {
                 Connection.Connect(Guid.Empty);
             }
-            if (_serverInformation == null)
+
+            if(_serverInformation == null)
             {
                 _serverInformation = ProxyLayer.AdminManagerProxy.GetServerInformation();
             }
+
             return _serverInformation;
         }
 

@@ -94,6 +94,9 @@
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
+    <Reference Include="Warewolf.Usage, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\Binaries\Warewolf.Usage.dll</HintPath>
+    </Reference>
     <Reference Include="Weave">
       <HintPath>..\Binaries\Weave.dll</HintPath>
     </Reference>
@@ -154,6 +157,7 @@
     <Compile Include="ServiceModel\RedisSourcesTests.cs" />
     <Compile Include="Services\FetchTriggersForDeployTests.cs" />
     <Compile Include="Services\GetDependanciesOnListTests.cs" />
+    <Compile Include="Services\GetSubscriptionDataTests.cs" />
     <Compile Include="Services\GetPersistenceSettingsTests.cs" />
     <Compile Include="Services\PersistenceSettingsReadTests.cs" />
     <Compile Include="Services\SaveAuditingSettingsTests.cs" />
@@ -234,6 +238,10 @@
     <Compile Include="Services\HostSecureConfigMock.cs" />
     <Compile Include="ServiceModel\ServicesTests.cs" />
     <Compile Include="Services\HostSecurityProviderTest.cs" />
+    <Compile Include="Services\SaveSubscriptionDataTests.cs" />
+    <Compile Include="Services\SubscriptionConfigMock.cs" />
+    <Compile Include="Services\SubscriptionConfigTests.cs" />
+    <Compile Include="Services\SubscriptionProviderTest.cs" />
     <Compile Include="Services\TestWebServiceTests.cs" />
     <None Include="..\Dev2.Server\app.config">
       <Link>app.config</Link>
@@ -276,6 +284,7 @@
     <Compile Include="Services\WorkflowResumeTests.cs" />
     <Compile Include="ExchangeEmailSenderTests.cs" />
     <Compile Include="Triggers\TriggersCatalogTests.cs" />
+    <Compile Include="UsageLoggerTests.cs" />
     <Compile Include="Util\FindResourceHelperTest.cs" />
     <Compile Include="Util\ScrubberTestsJson.cs" />
     <Compile Include="Util\ScrubberTestsXml.cs" />

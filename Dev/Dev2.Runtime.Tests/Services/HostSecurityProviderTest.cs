@@ -166,7 +166,7 @@ namespace Dev2.Tests.Runtime.Services
                 HostSecureConfig.CreateKey(HostSecureConfigTests.DefaultSystemKeyPublic));
             var provider = new HostSecurityProviderImpl(config.Object);
 
-            
+
             var originalID = Guid.Parse(TestXml.Attribute("ServerID").Value);
             var signedXml = provider.SignXml(new StringBuilder(TestXml.ToString()));
 

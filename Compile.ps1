@@ -89,7 +89,7 @@ if (!($InContainer.IsPresent)) {
 		}
 	}
 	if (!(Test-Path "$MSBuildPath" -ErrorAction SilentlyContinue)) {
-		$env:MSBuildPath = Read-Host 'Please enter the path to MSBuild.exe. For example: C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\MSBuild.exe. Or change the value of the MSBuildPath environment variable to be the path to MSBuild.exe'
+		$env:MSBuildPath = Read-Host 'Please enter the path to MSBuild.exe. For example: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin\MSBuild.exe. Or change the value of the MSBuildPath environment variable to be the path to MSBuild.exe'
 		if ("$env:MSBuildPath" -ne "" -and (Test-Path "$env:MSBuildPath")) {
 			$MSBuildPath = $env:MSBuildPath
 			[System.Environment]::SetEnvironmentVariable("MSBuildPath", $MSBuildPath, "Machine")
@@ -149,7 +149,7 @@ if ($AutoVersion.IsPresent -or $CustomVersion -ne "") {
             # This version is not already tagged.
             Write-Host This version is not tagged, generating new tag...
             # Get last known version
-            $AllTags = git -C "$PSScriptRoot" tag -l --sort=-version:refname
+            $AllTags = git -C "$PSScriptRoot" tag -l --sort=-version:refname --merged
 			if ($AllTags[0] -ne "2.5.3l") {
 				$FullVersionString = $AllTags[0]
 			} else {

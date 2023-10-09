@@ -40,6 +40,7 @@
     <Reference Include="System.DirectoryServices" />
     <Reference Include="System.DirectoryServices.AccountManagement" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Management" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Reactive.Core, Version=2.1.30214.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -64,6 +65,9 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="Warewolf.Usage, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\Binaries\Warewolf.Usage.dll</HintPath>
+    </Reference>
     <Reference Include="Weave, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\Weave.dll</HintPath>
@@ -83,6 +87,7 @@
     <Compile Include="ESB\Management\Services\FindAutocompleteOptions.cs" />
     <Compile Include="ESB\Management\Services\FindOptionsBy.cs" />
     <Compile Include="ESB\Management\Services\GetAuditingSettings.cs" />
+    <Compile Include="ESB\Management\Services\GetSubscriptionData.cs" />
     <Compile Include="ESB\Management\Services\GetPersistenceSettings.cs" />
     <Compile Include="ESB\Management\Services\GetResourceById.cs" />
     <Compile Include="ESB\Management\Services\FindResourcesByType.cs" />
@@ -91,6 +96,7 @@
     <Compile Include="ESB\Management\Services\FetchTriggerQueues.cs" />
     <Compile Include="ESB\Management\Services\PersistenceSettingsRead.cs" />
     <Compile Include="ESB\Management\Services\SaveAuditingSettings.cs" />
+    <Compile Include="ESB\Management\Services\SaveSubscriptionData.cs" />
     <Compile Include="ESB\Management\Services\SavePersistenceSettings.cs" />
     <Compile Include="ESB\Management\Services\SaveRedisSource.cs" />
     <Compile Include="ESB\Management\Services\SaveElasticsearchSource.cs" />
@@ -368,8 +374,13 @@
     <Compile Include="ServiceModel\RabbitMQSources.cs" />
     <Compile Include="ServiceModel\WebSources.cs" />
     <Compile Include="ServiceTestCoverageModelToFactory.cs" />
+    <Compile Include="Subscription\SubscriptionConfig.cs" />
+    <Compile Include="Subscription\SubscriptionProvider.cs" />
+    <Compile Include="Subscription\ISubscriptionProvider.cs" />
+    <Compile Include="Subscription\ISubscriptionConfig.cs" />
     <Compile Include="TestCatalog.cs" />
     <Compile Include="TestCoverageCatalog.cs" />
+    <Compile Include="UsageLogger.cs" />
     <Compile Include="Utilities.cs" />
     <Compile Include="Workspaces\Workspace.cs" />
     <Compile Include="Workspaces\WorkspaceItem.cs" />
@@ -453,6 +464,7 @@
       <Project>{926CF512-B3FD-410D-AA83-EBDF4C4868DE}</Project>
       <Name>Warewolf.Interfaces</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Licensing\Warewolf.Licensing.csproj" />
     <ProjectReference Include="..\Warewolf.Security\Warewolf.Security.csproj">
       <Project>{CA5E9373-46FE-41B9-AB2E-BD637F48B456}</Project>
       <Name>Warewolf.Security</Name>

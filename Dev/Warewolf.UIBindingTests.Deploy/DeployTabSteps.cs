@@ -31,6 +31,8 @@ using Warewolf.Studio.ViewModels;
 using Dev2.Threading;
 using Dev2.ConnectionHelpers;
 using Dev2.Studio.Core;
+using Warewolf.Enums;
+using Warewolf.Licensing;
 
 namespace Warewolf.UIBindingTests.Deploy
 {
@@ -52,6 +54,7 @@ namespace Warewolf.UIBindingTests.Deploy
         {
             Core.Utils.SetupResourceDictionary();
             var serverRepo = new Mock<IServerRepository>();
+
             var connectControlSingleton = new Mock<IConnectControlSingleton>();
             CustomContainer.Register(connectControlSingleton.Object);
 
@@ -60,6 +63,7 @@ namespace Warewolf.UIBindingTests.Deploy
 
             var shell = GetMockShellVm(true, localhostString);
             var shellViewModel = GetMockShellVm(false, destinationServerString);
+          
             serverRepo.Setup(repository => repository.ActiveServer).Returns(shellViewModel.ActiveServer);
             serverRepo.Setup(repository => repository.Source).Returns(shellViewModel.ActiveServer);
             serverRepo.Setup(repository => repository.All()).Returns(new List<IServer>()
@@ -83,7 +87,14 @@ namespace Warewolf.UIBindingTests.Deploy
             _scenarioContext[viewModelString] = vm;
             _scenarioContext[statsString] = stats;
         }
-
+        public static Mock<ISubscriptionData> MockSubscriptionData(bool isLicensed)
+        {
+            var mockSubscriptionData = new Mock<ISubscriptionData>();
+            mockSubscriptionData.Setup(o => o.IsLicensed).Returns(isLicensed);
+            mockSubscriptionData.Setup(o => o.Status).Returns(SubscriptionStatus.InTrial);
+            mockSubscriptionData.Setup(o => o.PlanId).Returns("developer");
+            return mockSubscriptionData;
+        }
         [AfterScenario(@"DeployTab")]
         public void Cleanup()
         {
@@ -132,6 +143,7 @@ namespace Warewolf.UIBindingTests.Deploy
             var shell = new Mock<IShellViewModel>();
             shell.Setup(model => model.ExplorerViewModel).Returns(new Mock<IExplorerViewModel>().Object);
             shell.Setup(model => model.ExplorerViewModel.ConnectControlViewModel).Returns(new Mock<IConnectControlViewModel>().Object);
+            shell.Setup(a => a.SubscriptionData.IsLicensed).Returns(true);
             var env = new Mock<IEnvironmentViewModel>();
             shell.SetupGet(model => model.ExplorerViewModel.Environments).Returns(new Caliburn.Micro.BindableCollection<IEnvironmentViewModel>()
             {
@@ -159,7 +171,9 @@ namespace Warewolf.UIBindingTests.Deploy
                 mock.Setup(a => a.GetServerVersion()).Returns("1.0.0.0");
                 mock.Setup(a => a.GetMinSupportedVersion()).Returns("1.0.0.0");
                 mock.SetupGet(it => it.Connection).Returns(mockEnvironmentConnection.Object);
+                mock.Setup(e => e.GetSubscriptionData()).Returns(MockSubscriptionData(true).Object);
                 shell.Setup(a => a.LocalhostServer).Returns(server.Object);
+               
                 shell.Setup(a => a.ActiveServer).Returns(mock.Object);
                 if (!_scenarioContext.ContainsKey(destinationServerString))
                 {
@@ -215,6 +229,7 @@ namespace Warewolf.UIBindingTests.Deploy
             server.Setup(a => a.CanDeployFrom).Returns(true);
             server.Setup(a => a.GetServerVersion()).Returns("1.0.0.0");
             server.Setup(a => a.GetMinSupportedVersion()).Returns("1.0.0.0");
+            server.Setup(e => e.GetSubscriptionData()).Returns(MockSubscriptionData(true).Object);
             server.SetupGet(it => it.Connection).Returns(mockEnvironmentConnection.Object);
             if (!name.Equals(localhostString, StringComparison.InvariantCultureIgnoreCase))
             {
@@ -253,7 +268,8 @@ namespace Warewolf.UIBindingTests.Deploy
             server.Setup(a => a.ConnectAsync()).Returns(Task.FromResult(true));
             server.Setup(a => a.GetServerVersion()).Returns("1.0.0.0");
             server.Setup(a => a.GetMinSupportedVersion()).Returns("1.0.0.0");
-            _scenarioContext[destinationServerString] = server;
+            server.Setup(e => e.GetSubscriptionData()).Returns(MockSubscriptionData(true).Object);
+			_scenarioContext[destinationServerString] = server;
             return new List<IServer>
             {
                 server.Object
