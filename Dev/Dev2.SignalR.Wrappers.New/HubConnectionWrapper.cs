@@ -374,7 +374,7 @@ namespace Dev2.SignalR.Wrappers.New
                 };
                 while (true)
                 {
-                    if (stopped)
+                    if (stopped || HubConnection.State != ConnectionStateWrapped.Connected)
                     {
 
                         delay *= multiplier;
