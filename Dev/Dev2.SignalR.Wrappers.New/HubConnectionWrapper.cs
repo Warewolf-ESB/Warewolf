@@ -12,6 +12,7 @@ using System;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using Dev2.Common;
 using Microsoft.AspNetCore.SignalR.Client;
 using Warewolf.Data;
 
@@ -140,7 +141,7 @@ namespace Dev2.SignalR.Wrappers.New
 
         public ConnectionStateWrapped State => (ConnectionStateWrapped)_wrapped.State;
 
-        public Task Start()
+        public Task<bool> Start()
         {
             //var serverSentEventsTransport = new ServerSentEventsTransport();
             //return _wrapped.Start(serverSentEventsTransport);
@@ -157,9 +158,10 @@ namespace Dev2.SignalR.Wrappers.New
             catch (Exception ex)
             {
                 Error?.Invoke(ex);
-            }
+                return Task.FromResult(false);
+            } 
 
-            return Task.CompletedTask;
+            return Task.FromResult(true);
 
         }
 
@@ -250,7 +252,7 @@ namespace Dev2.SignalR.Wrappers.New
         ConnState _expectedState;
         public ConnState ExpectedState
         {
-            get
+            get 
             {
                 try
                 {
@@ -376,24 +378,27 @@ namespace Dev2.SignalR.Wrappers.New
                 {
                     if (stopped)
                     {
-                        stopped = false;
                         delay *= multiplier;
                         if (delay > maxDelay)
                         {
                             delay = initialDelay;
                         }
 
-                        HubConnection.Start();
+                        try
+                        {
+                            stopped = HubConnection.Start().Result ? false : true;
+                        }
+                        catch (Exception ex)
+                        {
+                            stopped = true;
+                            Dev2Logger.Warn(ex.Message, GlobalConstants.WarewolfWarn);
+                        }
                     }
 
                     if (HubConnection.State != ConnectionStateWrapped.Connected)
-                    {
                         Thread.Sleep(delay);
-                    }
                     else
-                    {
                         Thread.Sleep(1000);
-                    }
                 }
             }
 

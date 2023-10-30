@@ -35,7 +35,7 @@ namespace Dev2.SignalR.Wrappers
         ConnectionStateWrapped State { get; }
         ICredentials Credentials { get; }
         IStateController StateController { get; }
-        Task Start();
+        Task<bool> Start();
         void Stop(TimeSpan timeSpan);
         Task EnsureConnected(TimeSpan timeout);
     }

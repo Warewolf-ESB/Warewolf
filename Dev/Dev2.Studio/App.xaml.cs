@@ -285,10 +285,11 @@ namespace Dev2.Studio
 
         void ShowSplash()
         {
-            // Create the window
             var repository = ServerRepository.Instance;
             var server = repository.Source;
-            server.ConnectAsync().Wait(3000);
+            // Workitem: 7554
+            // Removed the duration in ms. Now it will wait untill connection succeeds.
+            server.ConnectAsync().Wait(); 
             CustomContainer.Register(server);
             CustomContainer.Register(repository);
 
@@ -319,7 +320,6 @@ namespace Dev2.Studio
 
             var splashPage = new SplashPage { DataContext = splashViewModel };
             SplashView = splashPage;
-            // Show it
             SplashView.Show(false);
 
             _resetSplashCreated?.Set();

@@ -12,27 +12,44 @@ namespace Warewolf.Studio.Core
             var effect = new BlurEffect { Radius = 3, KernelType = KernelType.Gaussian, RenderingBias = RenderingBias.Quality };
             blackoutGrid.Background = new SolidColorBrush(Colors.DarkGray);
             blackoutGrid.Opacity = 0.2;
-            var content = Application.Current?.MainWindow?.Content as Grid;
-            content?.Children.Add(blackoutGrid);
-            if (Application.Current != null && Application.Current.MainWindow != null)
+
+            Application.Current?.Dispatcher.BeginInvoke(new System.Action(() =>
             {
-                Application.Current.MainWindow.Effect = effect;
-            }
+                if (Application.Current != null && Application.Current.MainWindow != null)
+                {
+                    var content = Application.Current?.MainWindow?.Content as Grid;
+                    content?.Children.Add(blackoutGrid);
+
+                    Application.Current.MainWindow.Effect = effect;
+                }
+            }));
+
+            //var content = Application.Current?.MainWindow?.Content as Grid;
+            //    content?.Children.Add(blackoutGrid);
+            //if (Application.Current != null && Application.Current.MainWindow != null)
+            //{
+            //    Application.Current.MainWindow.Effect = effect;
+            //}
         }
 
         public static void RemoveBlackOutEffect(Grid blackoutGrid)
         {
-            if (Application.Current != null && Application.Current.MainWindow != null)
-            {
-                if (!Application.Current.Dispatcher.CheckAccess())
-                {
-                    return;
-                }
 
-                Application.Current.MainWindow.Effect = null;
-                var content = Application.Current.MainWindow.Content as Grid;
-                content?.Children.Remove(blackoutGrid);
-            }
+            Application.Current?.Dispatcher.BeginInvoke(new System.Action(() =>
+            {
+                if (Application.Current != null && Application.Current.MainWindow != null)
+                {
+                    if (!Application.Current.Dispatcher.CheckAccess())
+                    {
+                        return;
+                    }
+
+                    Application.Current.MainWindow.Effect = null;
+                    var content = Application.Current.MainWindow.Content as Grid;
+                    content?.Children.Remove(blackoutGrid);
+                }
+            }));
+
         }
     }
 }
