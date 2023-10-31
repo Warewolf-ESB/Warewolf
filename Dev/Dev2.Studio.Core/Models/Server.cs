@@ -372,7 +372,12 @@ namespace Dev2.Studio.Core.Models
         {
             try
             {
-                if(!Connection.IsConnected)
+                if (_subscriptionData != null)
+                {
+                    return _subscriptionData;
+                }
+
+				if (!Connection.IsConnected)
                 {
                     Connection.Connect(Guid.Empty);
                 }
