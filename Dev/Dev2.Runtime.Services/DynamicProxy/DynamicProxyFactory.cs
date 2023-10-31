@@ -366,7 +366,7 @@ namespace Dev2.Runtime.DynamicProxy
             ProcessStartInfo ProcessInfo;
             Process Process;
             const int minutes = 1;
-            const int timeoutInMilliseconds = 1000 * 60 * minutes;
+            const int timeoutInMilliseconds = 1000 * 25 * minutes;
             const int milliSeconds = 1000;
 
             ProcessInfo = new ProcessStartInfo("cmd.exe", "/K " + Command);
@@ -379,7 +379,7 @@ namespace Dev2.Runtime.DynamicProxy
             int timeSpent = milliSeconds;
             while (!Process.HasExited && timeSpent <= timeoutInMilliseconds)
             {
-                Process.WaitForExit(timeSpent);
+                Thread.Sleep(milliSeconds);//Process.WaitForExit(timeSpent);
                 timeSpent = timeSpent + milliSeconds;
             }
 #pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.

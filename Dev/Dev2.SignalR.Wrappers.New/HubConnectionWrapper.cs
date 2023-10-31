@@ -155,7 +155,7 @@ namespace Dev2.SignalR.Wrappers.New
         //    remove => throw new NotImplementedException();
         //}
 
-        public ConnectionStateWrapped State => (ConnectionStateWrapped)_wrapped.State;
+        public ConnectionStateWrapped State => _wrapped.State.ToConnectionStateWrapped();
 
         public Task Start()
         {
