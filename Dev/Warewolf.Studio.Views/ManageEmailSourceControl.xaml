@@ -71,7 +71,7 @@
                              Grid.Row="0" 
                              Grid.Column="1" 
                              ToolTip="{x:Static languages:Tooltips.ManageEmailHostNameTooltip}"
-                             Text="{Binding HostName, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                             Text="{Binding HostName, UpdateSourceTrigger=LostFocus, ValidatesOnDataErrors=True}"
                              AutomationProperties.ItemStatus="{Binding RelativeSource={RelativeSource Self}, Path=BorderBrush}">
                         <i:Interaction.Behaviors>
                             <core:HelpSetter Text="{x:Static languages:HelpText.EmailSourceHostNameHelp}" DataContext="{Binding}" />
@@ -84,7 +84,7 @@
                              Grid.Column="1" 
                              Margin="{StaticResource ControlBorderTop}"
                              ToolTip="{x:Static languages:Tooltips.ManageEmailUserNameTooltip}"
-                             Text="{Binding UserName, UpdateSourceTrigger=PropertyChanged}">
+                             Text="{Binding UserName, UpdateSourceTrigger=LostFocus}">
                         <i:Interaction.Behaviors>
                             <core:HelpSetter Text="{x:Static languages:HelpText.UserNameAuthenticationHelp}" DataContext="{Binding}" />
                         </i:Interaction.Behaviors>
@@ -96,7 +96,7 @@
                                  Grid.Column="1"
                                  Margin="{StaticResource ControlBorderTop}"
                                  ToolTip="{x:Static languages:Tooltips.ManageEmailPasswordTooltip}"
-                                 Text="{Binding Path=Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                 Text="{Binding Path=Password, Mode=TwoWay, UpdateSourceTrigger=LostFocus}">
                         <i:Interaction.Behaviors>
                             <core:HelpSetter Text="{x:Static languages:HelpText.PasswordAuthenticationHelp}" DataContext="{Binding}" />
                         </i:Interaction.Behaviors>
@@ -114,7 +114,7 @@
                                      HorizontalAlignment="Left" 
                                      ToolTip="{x:Static languages:Tooltips.ManageEmailEnableSslYesTooltip}"
                                      Margin="{StaticResource ControlBorderRight}"
-                                     IsChecked="{Binding EnableSslYes, UpdateSourceTrigger=PropertyChanged}">Yes
+                                     IsChecked="{Binding EnableSslYes, UpdateSourceTrigger=LostFocus}">Yes
                             <i:Interaction.Behaviors>
                                 <core:HelpSetter Text="{x:Static languages:HelpText.EmailSourceEnableSslHelp}" DataContext="{Binding}" />
                             </i:Interaction.Behaviors>
@@ -126,7 +126,7 @@
                                      HorizontalAlignment="Left" 
                                      ToolTip="{x:Static languages:Tooltips.ManageEmailEnableSslNoTooltip}"
                                      Margin="{StaticResource ControlBorderRight}"
-                                     IsChecked="{Binding EnableSslNo, UpdateSourceTrigger=PropertyChanged}">No
+                                     IsChecked="{Binding EnableSslNo, UpdateSourceTrigger=LostFocus}">No
                             <i:Interaction.Behaviors>
                                 <core:HelpSetter Text="{x:Static languages:HelpText.EmailSourceEnableSslHelp}" DataContext="{Binding}" />
                             </i:Interaction.Behaviors>
@@ -138,7 +138,7 @@
                              Grid.Row="4" 
                              Grid.Column="1" 
                              ToolTip="{x:Static languages:Tooltips.ManageEmailPortTooltip}"
-                             Text="{Binding Port, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource StringToIntInRangeConverter}, ValidatesOnDataErrors=True}"
+                             Text="{Binding Port, UpdateSourceTrigger=LostFocus, Converter={StaticResource StringToIntInRangeConverter}, ValidatesOnDataErrors=True}"
                              AutomationProperties.ItemStatus="{Binding RelativeSource={RelativeSource Self}, Path=BorderBrush}">
                         <i:Interaction.Behaviors>
                             <core:HelpSetter Text="{x:Static languages:HelpText.EmailSourcePortHelp}" DataContext="{Binding}" />
@@ -151,7 +151,7 @@
                              Grid.Column="1" 
                              ToolTip="{x:Static languages:Tooltips.ManageEmailTimeoutTooltip}"
                              Margin="{StaticResource ControlBorderTop}"
-                             Text="{Binding Timeout, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource StringToIntInRangeConverter}, ValidatesOnDataErrors=True}"
+                             Text="{Binding Timeout, UpdateSourceTrigger=LostFocus, Converter={StaticResource StringToIntInRangeConverter}, ValidatesOnDataErrors=True}"
                              AutomationProperties.ItemStatus="{Binding RelativeSource={RelativeSource Self}, Path=BorderBrush}">
                         <i:Interaction.Behaviors>
                             <core:HelpSetter Text="{x:Static languages:HelpText.EmailSourceTimeoutHelp}" DataContext="{Binding}" />
@@ -185,7 +185,7 @@
                              Grid.Column="1" 
                              ToolTip="{x:Static languages:Tooltips.ManageEmailFromTooltip}"
                              Margin="{StaticResource ElementBorderTop}"
-                             Text="{Binding EmailFrom, UpdateSourceTrigger=PropertyChanged}">
+                             Text="{Binding EmailFrom, UpdateSourceTrigger=LostFocus}">
                         <i:Interaction.Behaviors>
                             <core:HelpSetter Text="{x:Static languages:HelpText.EmailSourceEmailFromHelp}" DataContext="{Binding}" />
                         </i:Interaction.Behaviors>
@@ -196,7 +196,7 @@
                              Grid.Column="1" 
                              Margin="{StaticResource ControlBorderTop}"
                              ToolTip="{x:Static languages:Tooltips.ManageEmailToTooltip}"
-                             Text="{Binding EmailTo, UpdateSourceTrigger=PropertyChanged}">
+                             Text="{Binding EmailTo, UpdateSourceTrigger=LostFocus}">
                         <i:Interaction.Behaviors>
                             <core:HelpSetter Text="{x:Static languages:HelpText.EmailSourceEmailToHelp}" DataContext="{Binding}" />
                         </i:Interaction.Behaviors>

@@ -70,7 +70,7 @@
                              Grid.Row="0" 
                              Grid.Column="1" 
                              ToolTip="{x:Static languages:Tooltips.ManageWcfEndpointTooltip}"
-                             Text="{Binding EndpointUrl, UpdateSourceTrigger=PropertyChanged}">
+                             Text="{Binding EndpointUrl, UpdateSourceTrigger=LostFocus}">
                         <i:Interaction.Behaviors>
                             <core:HelpSetter Text="{x:Static languages:HelpText.WcfSourceHostNameHelp}" DataContext="{Binding}" />
                         </i:Interaction.Behaviors>

@@ -81,7 +81,7 @@
                                           MaxDropDownHeight="200"
                                           ItemsSource="{Binding ComputerNames}"
                                           SelectedItem="{Binding ServerName, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                                          Text="{Binding EmptyServerName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                          Text="{Binding EmptyServerName, Mode=TwoWay, UpdateSourceTrigger=LostFocus}">
                     <i:Interaction.Behaviors>
                         <core:HelpSetter Text="{x:Static languages:HelpText.ServerAddressHelp}" DataContext="{Binding}" />
                     </i:Interaction.Behaviors>
@@ -90,7 +90,7 @@
                 <TextBox Grid.Column="3" 
                          MinWidth="35"
                          x:Name="PortTextBox"
-                         Text="{Binding SelectedPort, UpdateSourceTrigger=PropertyChanged}" 
+                         Text="{Binding SelectedPort, UpdateSourceTrigger=LostFocus}" 
                          ToolTip="{x:Static languages:Tooltips.ServerSourceDialogAddressPortTooltip}">
                     <i:Interaction.Behaviors>
                         <core:HelpSetter Text="{x:Static languages:HelpText.ServerSelectPortHelp}" DataContext="{Binding}" />
@@ -183,7 +183,7 @@
                          Grid.Column="1"
                          Margin="{StaticResource ControlBorderTop}"
                          ToolTip="{x:Static languages:Tooltips.PasswordToolTip}"
-                         Text="{Binding Path=Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                         Text="{Binding Path=Password, Mode=TwoWay, UpdateSourceTrigger=LostFocus}">
                 <i:Interaction.Behaviors>
                     <core:HelpSetter Text="{x:Static languages:HelpText.PasswordAuthenticationHelp}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>

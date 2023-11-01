@@ -80,7 +80,7 @@
                              Grid.Column="1" 
                              Margin="{StaticResource ControlBorderTop}"
                              ToolTip="{x:Static languages:Tooltips.ManageRabbitMQPortTooltip}"
-                             Text="{Binding Port, UpdateSourceTrigger=PropertyChanged}">
+                             Text="{Binding Port, UpdateSourceTrigger=LostFocus}">
                         <i:Interaction.Behaviors>
                             <core:HelpSetter Text="{x:Static languages:HelpText.RabbitMQSourcePortHelp}" DataContext="{Binding}" />
                         </i:Interaction.Behaviors>
