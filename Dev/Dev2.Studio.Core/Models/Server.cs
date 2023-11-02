@@ -372,21 +372,18 @@ namespace Dev2.Studio.Core.Models
         {
             try
             {
-                if (_subscriptionData != null)
+                if(_subscriptionData == null || !_subscriptionData.Connected)
                 {
-                    return _subscriptionData;
+                    if (!Connection.IsConnected)
+                    {
+                        Connection.Connect(Guid.Empty);
+                    }
+
+                    Task.Run(async() => 
+                    {
+                        _subscriptionData = await ProxyLayer.AdminManagerProxy.GetSubscriptionData();
+                    }).Wait();
                 }
-
-				if (!Connection.IsConnected)
-                {
-                    Connection.Connect(Guid.Empty);
-                }
-
-                Task.Run(async() => 
-                {
-                    _subscriptionData = await ProxyLayer.AdminManagerProxy.GetSubscriptionData();
-                }).Wait();
-
                 return _subscriptionData;
             }
             catch
