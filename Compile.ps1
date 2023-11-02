@@ -149,12 +149,8 @@ if ($AutoVersion.IsPresent -or $CustomVersion -ne "") {
             # This version is not already tagged.
             Write-Host This version is not tagged, generating new tag...
             # Get last known version
-            $AllTags = git -C "$PSScriptRoot" tag -l --sort=-version:refname --merged
-			if ($AllTags[0] -ne "2.5.3l") {
-				$FullVersionString = $AllTags[0]
-			} else {
-				$FullVersionString = $AllTags[1]
-			}
+            $AllTags = git -C "$PSScriptRoot" tag -l --sort=-creatordate --merged
+			$FullVersionString = $AllTags[0]
             if ([string]::IsNullOrEmpty($FullVersionString)) {
                 Write-Host No local tags found in git history. 
                 exit 1
@@ -314,13 +310,8 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
             } else {
                 $OutputProperty = "/property:OutDir=$PSScriptRoot\Bin\$OutputFolderName"
             }
-            if ($FullVersionString -ne $null -and $FullVersionString -ne "") {
-                $NugetPackVersion = ";PackageVersion=$FullVersionString"
-            } else {
-                $NugetPackVersion = ""
-            }
             if (!($InContainer.IsPresent)) {
-                &"$MSBuildPath" "$PSScriptRoot\$SolutionFile" "/p:Platform=`"Any CPU`";Configuration=`"$Config`"$NugetPackVersion" "/maxcpucount" "/nodeReuse:false" "/restore" $OutputProperty $Target
+                &"$MSBuildPath" "$PSScriptRoot\$SolutionFile" "/p:Platform=`"Any CPU`";Configuration=`"$Config`"" "/maxcpucount" "/nodeReuse:false" "/restore" $OutputProperty $Target
             } else {
                 docker run -t -m 4g -v "$PSScriptRoot":"C:\Build" registry.gitlab.com/warewolf/msbuild "C:\Build\$SolutionFile" "/p:Platform=`"Any CPU`";Configuration=`"$Config`"$NugetPackVersion" "/maxcpucount" "/nodeReuse:false" "/restore" $OutputProperty $Target
             }

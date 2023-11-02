@@ -138,7 +138,7 @@ namespace Dev2.SignalR.Wrappers.New
         //    remove => throw new NotImplementedException();
         //}
 
-        public ConnectionStateWrapped State => (ConnectionStateWrapped)_wrapped.State;
+        public ConnectionStateWrapped State => _wrapped.State.ToConnectionStateWrapped();
 
         public Task Start()
         {
@@ -374,9 +374,9 @@ namespace Dev2.SignalR.Wrappers.New
                 };
                 while (true)
                 {
-                    if (stopped)
+                    if (stopped || HubConnection.State != ConnectionStateWrapped.Connected)
                     {
-                        stopped = false;
+
                         delay *= multiplier;
                         if (delay > maxDelay)
                         {
@@ -384,6 +384,7 @@ namespace Dev2.SignalR.Wrappers.New
                         }
 
                         HubConnection.Start();
+                        stopped = false;
                     }
 
                     if (HubConnection.State != ConnectionStateWrapped.Connected)
