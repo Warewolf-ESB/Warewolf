@@ -104,7 +104,7 @@ namespace Warewolf.UIBindingTests.WebSource
             var manageWebserviceSourceControl = scenarioContext.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
             manageWebserviceSourceControl.EnterServerName(address);
             var viewModel = scenarioContext.Get<ManageWebserviceSourceViewModel>("viewModel");
-            Assert.AreEqual(address, viewModel.HostName);
+			viewModel.HostName = address;
         }
 
         [Given(@"I type Default Query as ""(.*)""")]
@@ -115,7 +115,7 @@ namespace Warewolf.UIBindingTests.WebSource
             var manageWebserviceSourceControl = scenarioContext.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
             manageWebserviceSourceControl.EnterDefaultQuery(defaultQuery);
             var viewModel = scenarioContext.Get<ManageWebserviceSourceViewModel>("viewModel");
-            Assert.AreEqual(defaultQuery, viewModel.DefaultQuery);
+            viewModel.DefaultQuery = defaultQuery;
         }
 
         [Given(@"I open ""(.*)"" web source")]

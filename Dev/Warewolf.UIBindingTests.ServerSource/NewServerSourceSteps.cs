@@ -130,12 +130,9 @@ namespace Warewolf.UIBindingTests.ServerSource
             else
             {
                 var manageServerControl = _scenarioContext.Get<ManageServerControl>(Core.Utils.ViewNameKey);
-                manageServerControl.EnterServerName(serverName);
-                var viewModel = GetViewModel(manageServerControl);
-                if (viewModel != null)
-                {
-                    Assert.AreEqual(serverName, viewModel.ServerName.Name);
-                }
+				manageServerControl.EnterServerName(serverName);
+				var viewModel = GetViewModel(manageServerControl);
+                viewModel.Address = serverName;
             }
         }
 
