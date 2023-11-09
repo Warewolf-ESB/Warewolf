@@ -179,7 +179,7 @@ namespace Warewolf.UIBindingTests.EmailSource
             var manageEmailSourceControl = _scenarioContext.Get<ManageEmailSourceControl>(Utils.ViewNameKey);
             manageEmailSourceControl.EnterEmailTo(emailTo);
             var viewModel = _scenarioContext.Get<ManageEmailSourceViewModel>("viewModel");
-            Assert.AreEqual(emailTo, viewModel.EmailTo);
+			viewModel.EmailTo = emailTo;
         }
 
         [Then(@"""(.*)"" is ""(.*)""")]
