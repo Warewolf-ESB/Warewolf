@@ -143,6 +143,7 @@ namespace Warewolf.Studio.Views
             be?.UpdateTarget();
             return UserNamePasswordContainer.Visibility;
         }
+
         public void TestAction()
         {
             TestConnectionButton.Command.Execute(null);

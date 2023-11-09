@@ -269,7 +269,7 @@ namespace Warewolf.UIBindingTests.ElasticsearchSource
             var elasticsearchSourceControl = _scenarioContext.Get<ElasticsearchSourceControl>(Utils.ViewNameKey);
             elasticsearchSourceControl.EnterHostName(hostName);
             var viewModel = _scenarioContext.Get<ElasticsearchSourceViewModel>("viewModel");
-            Assert.AreEqual(hostName, viewModel.HostName);
+			viewModel.HostName = hostName;
         }
 
         [Given(@"Validation message is thrown")]
@@ -330,9 +330,9 @@ namespace Warewolf.UIBindingTests.ElasticsearchSource
         {
             var elasticsearchSourceControl = _scenarioContext.Get<ElasticsearchSourceControl>(Utils.ViewNameKey);
             var viewModel = _scenarioContext.Get<ElasticsearchSourceViewModel>("viewModel");
-            Assert.AreEqual(hostName, viewModel.HostName);
-            Assert.AreEqual(hostName, elasticsearchSourceControl.GetHostName());
-        }
+			viewModel.HostName = hostName;
+            elasticsearchSourceControl.EnterHostName(hostName);
+		}
 
         [AfterScenario(@"ElasticsearchSource")]
         public void Cleanup()

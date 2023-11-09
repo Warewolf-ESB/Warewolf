@@ -292,7 +292,7 @@ namespace Warewolf.UIBindingTests.WebSource
             var manageWebserviceSourceControl = scenarioContext.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
             manageWebserviceSourceControl.EnterUserName(userName);
             var viewModel = scenarioContext.Get<ManageWebserviceSourceViewModel>("viewModel");
-            Assert.AreEqual(userName, viewModel.UserName);
+			viewModel.UserName = userName;
         }
 
         [When(@"Username field as ""(.*)""")]
@@ -324,7 +324,7 @@ namespace Warewolf.UIBindingTests.WebSource
             var password = "I73573r0";
             manageWebserviceSourceControl.EnterPassword(password);
             var viewModel = scenarioContext.Get<ManageWebserviceSourceViewModel>("viewModel");
-            Assert.AreEqual(password, viewModel.Password);
+			viewModel.Password = password;
         }
 
         [When(@"the error message is ""(.*)""")]

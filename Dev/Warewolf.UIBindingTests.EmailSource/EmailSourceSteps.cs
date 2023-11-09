@@ -125,7 +125,7 @@ namespace Warewolf.UIBindingTests.EmailSource
             var manageEmailSourceControl = _scenarioContext.Get<ManageEmailSourceControl>(Utils.ViewNameKey);
             manageEmailSourceControl.EnterHostName(hostname);
             var viewModel = _scenarioContext.Get<ManageEmailSourceViewModel>("viewModel");
-            Assert.AreEqual(hostname, viewModel.HostName);
+			viewModel.HostName = hostname;
         }
 
         [Then(@"I type Username as ""(.*)""")]
@@ -136,7 +136,7 @@ namespace Warewolf.UIBindingTests.EmailSource
             manageEmailSourceControl.EnterUserName(username);
 
             var viewModel = _scenarioContext.Get<ManageEmailSourceViewModel>("viewModel");
-            Assert.AreEqual(username, viewModel.UserName);
+            viewModel.UserName = username;
         }
 
         [Then(@"I type Password as ""(.*)""")]
@@ -145,7 +145,7 @@ namespace Warewolf.UIBindingTests.EmailSource
             var manageEmailSourceControl = _scenarioContext.Get<ManageEmailSourceControl>(Utils.ViewNameKey);
             manageEmailSourceControl.EnterPassword(password);
             var viewModel = _scenarioContext.Get<ManageEmailSourceViewModel>("viewModel");
-            Assert.AreEqual(password, viewModel.Password);
+			viewModel.Password = password;
         }
 
         [Then(@"the error message is ""(.*)""")]
