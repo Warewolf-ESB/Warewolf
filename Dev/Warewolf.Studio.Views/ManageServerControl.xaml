@@ -81,7 +81,8 @@
                                           MaxDropDownHeight="200"
                                           ItemsSource="{Binding ComputerNames}"
                                           SelectedItem="{Binding ServerName, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                                          Text="{Binding EmptyServerName, Mode=TwoWay, UpdateSourceTrigger=LostFocus}">
+                                          Text="{Binding EmptyServerName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                          LostFocus="AddressTextBox_LostFocus">
                     <i:Interaction.Behaviors>
                         <core:HelpSetter Text="{x:Static languages:HelpText.ServerAddressHelp}" DataContext="{Binding}" />
                     </i:Interaction.Behaviors>

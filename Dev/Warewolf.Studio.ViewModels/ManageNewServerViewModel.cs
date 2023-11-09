@@ -178,8 +178,6 @@ namespace Warewolf.Studio.ViewModels
                     _serverName = value;
                     OnPropertyChanged(() => ServerName);
                     OnPropertyChanged(() => Header);
-                    Reset();
-                    Address = GetAddressName();
                 }
             }
         }
@@ -204,9 +202,6 @@ namespace Warewolf.Studio.ViewModels
                         _serverName = null;
                     }
                     OnPropertyChanged(() => EmptyServerName);
-                    OnPropertyChanged(() => Header);
-                    Reset();
-                    Address = GetAddressName();
                 }
             }
         }
@@ -539,7 +534,7 @@ namespace Warewolf.Studio.ViewModels
 
         #endregion
 
-        string GetAddressName()
+        public string GetAddressName()
         {
             string addressName = null;
             if (!string.IsNullOrEmpty(ServerName?.Name))
@@ -698,8 +693,8 @@ namespace Warewolf.Studio.ViewModels
             TestFailed = true;
             TestPassed = false;
             Testing = false;
-        }
-    }
+		}
+	}
 
     public interface IManageServerSourceModel
     {

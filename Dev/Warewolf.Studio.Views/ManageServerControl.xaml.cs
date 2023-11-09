@@ -173,6 +173,12 @@ namespace Warewolf.Studio.Views
             return false;
         }
 
-        #endregion
-    }
+		#endregion
+
+		private void AddressTextBox_LostFocus(object sender, RoutedEventArgs e)
+		{
+			var viewModel = DataContext as ManageNewServerViewModel;
+            viewModel.Address = viewModel.GetAddressName();
+		}
+	}
 }
