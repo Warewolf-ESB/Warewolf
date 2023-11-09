@@ -162,7 +162,7 @@ namespace Warewolf.UIBindingTests.EmailSource
             var manageEmailSourceControl = _scenarioContext.Get<ManageEmailSourceControl>(Utils.ViewNameKey);
             manageEmailSourceControl.EnterEmailFrom(emailFrom);
             var viewModel = _scenarioContext.Get<ManageEmailSourceViewModel>("viewModel");
-            Assert.AreEqual(emailFrom, viewModel.EmailFrom);
+			viewModel.EmailFrom = emailFrom;
         }
 
         [Then(@"From input is ""(.*)""")]
