@@ -15,7 +15,7 @@ namespace Dev2.Data.Decisions.Operations
 {
     public class IsRegEx : IDecisionOperation
     {
-        public bool Invoke(string[] cols) => Regex.IsMatch(cols[0], cols[1]);
+        public bool Invoke(string[] cols) => Regex.IsMatch(cols[0], cols[1].Replace(@"\", "\\"));
 
         public Enum HandlesType() => enDecisionType.IsRegEx;
     }
