@@ -103,6 +103,10 @@
     <EmbeddedResource Include="XML Parser\SameResourceSelectAndApply.xml" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="coverlet.msbuild" Version="6.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="GherkinSpec.MsTest">
       <Version>2.0.1</Version>
     </PackageReference>
