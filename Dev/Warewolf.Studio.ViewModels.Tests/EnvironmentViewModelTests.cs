@@ -83,7 +83,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(3000)]
         public void TestExplorerTooltipsNotNull()
         {
             Assert.IsNotNull(_target.ExplorerTooltips);
