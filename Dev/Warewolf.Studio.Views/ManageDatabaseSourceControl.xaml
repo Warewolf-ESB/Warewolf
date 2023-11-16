@@ -96,7 +96,7 @@
 			<TextBox x:Name="ConnectionTimeoutTextBox" 
 					 Grid.Row="1"  Grid.Column="1"    Margin="0,3,0,0"                                     
                      ToolTip="{x:Static languages:Tooltips.ManageDbSourceConnectionTimeoutTooltip}"
-                     Text="{Binding ConnectionTimeout,UpdateSourceTrigger=PropertyChanged}">
+                     Text="{Binding ConnectionTimeout,UpdateSourceTrigger=LostFocus}">
 				<i:Interaction.Behaviors>
 					<core:HelpSetter Text="{x:Static languages:HelpText.ConnectionTimeoutHelp}" DataContext="{Binding}" />
 				</i:Interaction.Behaviors>
@@ -155,7 +155,7 @@
                      Grid.Row="0" 
                      Grid.Column="1" 
                      ToolTip="{x:Static languages:Tooltips.ManageDbSourceUserNameTooltip}"
-                     Text="{Binding UserName,UpdateSourceTrigger=PropertyChanged}">
+                     Text="{Binding UserName,UpdateSourceTrigger=LostFocus}">
                 <i:Interaction.Behaviors>
                     <core:HelpSetter Text="{x:Static languages:HelpText.UserNameAuthenticationHelp}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>

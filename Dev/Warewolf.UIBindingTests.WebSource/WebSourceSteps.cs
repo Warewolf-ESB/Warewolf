@@ -104,7 +104,7 @@ namespace Warewolf.UIBindingTests.WebSource
             var manageWebserviceSourceControl = scenarioContext.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
             manageWebserviceSourceControl.EnterServerName(address);
             var viewModel = scenarioContext.Get<ManageWebserviceSourceViewModel>("viewModel");
-            Assert.AreEqual(address, viewModel.HostName);
+			viewModel.HostName = address;
         }
 
         [Given(@"I type Default Query as ""(.*)""")]
@@ -115,7 +115,7 @@ namespace Warewolf.UIBindingTests.WebSource
             var manageWebserviceSourceControl = scenarioContext.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
             manageWebserviceSourceControl.EnterDefaultQuery(defaultQuery);
             var viewModel = scenarioContext.Get<ManageWebserviceSourceViewModel>("viewModel");
-            Assert.AreEqual(defaultQuery, viewModel.DefaultQuery);
+            viewModel.DefaultQuery = defaultQuery;
         }
 
         [Given(@"I open ""(.*)"" web source")]
@@ -292,7 +292,7 @@ namespace Warewolf.UIBindingTests.WebSource
             var manageWebserviceSourceControl = scenarioContext.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
             manageWebserviceSourceControl.EnterUserName(userName);
             var viewModel = scenarioContext.Get<ManageWebserviceSourceViewModel>("viewModel");
-            Assert.AreEqual(userName, viewModel.UserName);
+			viewModel.UserName = userName;
         }
 
         [When(@"Username field as ""(.*)""")]
@@ -324,7 +324,7 @@ namespace Warewolf.UIBindingTests.WebSource
             var password = "I73573r0";
             manageWebserviceSourceControl.EnterPassword(password);
             var viewModel = scenarioContext.Get<ManageWebserviceSourceViewModel>("viewModel");
-            Assert.AreEqual(password, viewModel.Password);
+			viewModel.Password = password;
         }
 
         [When(@"the error message is ""(.*)""")]

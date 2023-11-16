@@ -68,7 +68,7 @@
                                         Margin="{StaticResource ControlBorderTopRight}"
                                         ToolTip="{x:Static languages:Tooltips.ManagePluginSourceAssemblyNameTooltip}"
                                         Style="{StaticResource AutoCompleteBoxStyle}"
-                                        Text="{Binding FileSystemAssemblyName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                        Text="{Binding FileSystemAssemblyName, Mode=TwoWay, UpdateSourceTrigger=LostFocus}">
                     <ui:IntellisenseTextBox.IntellisenseProvider>
                         <interfaceImplementors:CompositeIntellisenseProvider>
                             <provider:FileSystemIntellisenseProvider />
@@ -102,7 +102,7 @@
                                         Margin="10,3,3,0"
                                         IsEnabled="{Binding CanSelectConfigFiles}"
                                         ToolTipService.ShowOnDisabled="True"
-                                        Text="{Binding ConfigFilePath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                        Text="{Binding ConfigFilePath, Mode=TwoWay, UpdateSourceTrigger=LostFocus}">
                     <ui:IntellisenseTextBox.IntellisenseProvider>
                         <interfaceImplementors:CompositeIntellisenseProvider>
                             <provider:FileSystemIntellisenseProvider />
@@ -160,7 +160,7 @@
                                         ToolTipService.ShowOnDisabled="True"
                                         ToolTip="{x:Static languages:Tooltips.ManagePluginSourceGacAssemblyNameTooltip}"
                                         TextChanged="GacAssemblyNameTextBox_OnTextChanged"
-                                        Text="{Binding GACAssemblyName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                        Text="{Binding GACAssemblyName, Mode=TwoWay, UpdateSourceTrigger=LostFocus}">
                 </ui:IntellisenseTextBox>
                 <Button x:Name="GacAssemblyNameButton" 
                         Grid.Row="3" 
