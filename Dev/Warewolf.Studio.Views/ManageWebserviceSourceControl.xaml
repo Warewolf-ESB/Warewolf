@@ -62,7 +62,7 @@
                      Margin="{StaticResource ElementBorderTop}" 
                      Grid.Column="1" 
                      Grid.Row="0"
-                     Text="{Binding HostName,UpdateSourceTrigger=PropertyChanged}"
+                     Text="{Binding HostName,UpdateSourceTrigger=LostFocus}"
                      ToolTip="{x:Static languages:Tooltips.ManageWebSourceHostNameTooltip}"
                      Focusable="True"
                      LostFocus="ServerTextBox_LostFocus"
@@ -121,7 +121,7 @@
                      Grid.Row="0" 
                      Grid.Column="1"
                      ToolTip="{x:Static languages:Tooltips.ManageWebSourceUserNameTooltip}"
-                     Text="{Binding UserName,UpdateSourceTrigger=PropertyChanged}">
+                     Text="{Binding UserName,UpdateSourceTrigger=LostFocus}">
                 <i:Interaction.Behaviors>
                     <core:HelpSetter Text="{x:Static languages:HelpText.UserNameAuthenticationHelp}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
@@ -135,7 +135,7 @@
                          Grid.Row="1" 
                          ToolTip="{x:Static languages:Tooltips.ManageWebSourcePasswordTooltip}"
                          Margin="{StaticResource ControlBorderTop}"
-                         Text="{Binding Path=Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                         Text="{Binding Path=Password, Mode=TwoWay, UpdateSourceTrigger=LostFocus}">
                 <i:Interaction.Behaviors>
                     <core:HelpSetter Text="{x:Static languages:HelpText.PasswordAuthenticationHelp}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
@@ -153,7 +153,7 @@
             <TextBox x:Name="DefaultQueryTextBox" 
                      Grid.Column="1"
                      ToolTip="{x:Static languages:Tooltips.ManageWebSourceDefaultQueryTooltip}"
-                     Text="{Binding DefaultQuery,UpdateSourceTrigger=PropertyChanged}">
+                     Text="{Binding DefaultQuery,UpdateSourceTrigger=LostFocus}">
                 <i:Interaction.Behaviors>
                     <core:HelpSetter Text="{x:Static languages:HelpText.UserNameAuthenticationHelp}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
@@ -211,8 +211,8 @@
                            
                            ToolTip="{x:Static languages:Tooltips.ManageWebSourceViewInBrowserTooltip}"
                            Style="{StaticResource HyperLinkStyle}"
-                           NavigateUri="{Binding TestDefault,UpdateSourceTrigger=PropertyChanged}" >
-                    <TextBlock Text="{Binding TestDefault,UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource HoverUnderlineStyle}"></TextBlock>
+                           NavigateUri="{Binding TestDefault,UpdateSourceTrigger=LostFocus}" >
+                    <TextBlock Text="{Binding TestDefault,UpdateSourceTrigger=LostFocus}" Style="{StaticResource HoverUnderlineStyle}"></TextBlock>
                 </Hyperlink>
                 <i:Interaction.Behaviors>
                     <core:HelpSetter Text="{x:Static languages:HelpText.UserNameAuthenticationHelp}" DataContext="{Binding}" />

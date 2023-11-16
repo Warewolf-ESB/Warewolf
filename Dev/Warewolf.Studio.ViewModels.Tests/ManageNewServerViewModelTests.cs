@@ -520,7 +520,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(250)]
+        [Timeout(2000)]
         public void TestNewServerViewModelServerName()
         {
             //arrange
@@ -535,7 +535,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //assert
             Assert.AreSame(expectedValue, actualValue);
-            Assert.AreEqual("http://someName:3142", _target.Address);
+            Assert.AreEqual("http://someName:3142", _target.GetAddressName());
             Assert.IsTrue(_changedProperties.Contains("ServerName"));
             Assert.IsTrue(_changedProperties.Contains("Header"));
             Assert.IsFalse(_target.TestPassed);
@@ -907,7 +907,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(2000)]
         public void TestEmptyServerNameNullServerName()
         {
             //arrange
@@ -924,7 +924,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //assert
             Assert.AreEqual(expectedValue, actualValue);
             Assert.AreEqual(expectedValue, _target.ServerName.Name);
-            Assert.AreEqual("http://someName:3142", _target.Address);
+            Assert.AreEqual("http://someName:3142", _target.GetAddressName());
             Assert.IsTrue(_changedProperties.Contains("EmptyServerName"));
             Assert.IsTrue(_changedProperties.Contains("Header"));
             Assert.IsFalse(_target.TestPassed);

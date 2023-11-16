@@ -64,7 +64,7 @@
             <TextBox x:Name="ElasticsearchHostNameTextbox"
                      Grid.Column="0"
                      Margin="{StaticResource ElementBorderTop}"
-                     Text="{Binding HostName, UpdateSourceTrigger=PropertyChanged}"
+                     Text="{Binding HostName, UpdateSourceTrigger=LostFocus}"
                      ToolTip="{x:Static languages:Tooltips.ElasticsearchSourceHostNameTooltip}"
                      Focusable="True">
                 <i:Interaction.Behaviors>
@@ -101,7 +101,7 @@
                      Grid.Row="0"
                      Grid.Column="0"
                      ToolTip="{x:Static languages:Tooltips.ElasticsearchSearchIndexTooltip}"
-                     Text="{Binding SearchIndex,UpdateSourceTrigger=PropertyChanged}">
+                     Text="{Binding SearchIndex,UpdateSourceTrigger=LostFocus}">
                 <i:Interaction.Behaviors>
                     <core:HelpSetter Text="{x:Static languages:HelpText.SearchIndexHelp}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
@@ -161,7 +161,7 @@
                      Grid.Row="0"
                      Grid.Column="1"
                      ToolTip="{x:Static languages:Tooltips.ElasticsearchUsernameTooltip}"
-                     Text="{Binding Username,UpdateSourceTrigger=PropertyChanged}">
+                     Text="{Binding Username,UpdateSourceTrigger=LostFocus}">
                 <i:Interaction.Behaviors>
                     <core:HelpSetter Text="{x:Static languages:HelpText.UserNameAuthenticationHelp}"
                                      DataContext="{Binding}" />
