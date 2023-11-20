@@ -387,7 +387,7 @@ namespace Dev2.Studio.ViewModels
                         environmentViewModel = environmentViewModels.FirstOrDefault(model => model.ResourceId == LocalhostServer.EnvironmentID);
                     }
                     var res = new ResourcePickerDialog(enDsfActivityType.All, environmentViewModel);
-                    ResourcePickerDialog.CreateAsync(enDsfActivityType.Workflow, environmentViewModel).ContinueWith(a => _currentResourcePicker = a.Result);
+                    ResourcePickerDialog.CreateAsync(enDsfActivityType.Workflow, environmentViewModel, false).ContinueWith(a => _currentResourcePicker = a.Result);
                     return res;
                 }
             }
