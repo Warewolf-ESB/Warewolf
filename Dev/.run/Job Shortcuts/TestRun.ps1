@@ -451,9 +451,22 @@ if ($Coverage.IsPresent) {
 	$MergedSnapshotPath = "$TestResultsPath\Merged.coveragexml"
 	$CoverageToolPath = ".\Microsoft.TestPlatform\tools\net451\Team Tools\Dynamic Code Coverage Tools\CodeCoverage.exe"
 	$GetSnapshots = Get-ChildItem "$TestResultsPath\**\*.coverage"
-	if ($GetSnapshots.count -le 0) {
-		$GetSnapshots = Get-ChildItem "$TestResultsPath\*.coverage"
+	if ($GetSnapshots.count -gt 0) {
+		foreach ($snapshot in $GetSnapshots) {
+			$destinationPath = Join-Path $TestResultsPath $snapshot.Name
+			$destinationHardcodedPath = Join-Path $TestResultsPath "Snapshot.coverage"
+			if (!(Test-Path $destinationPath)) {
+				if (!(Test-Path $destinationHardcodedPath)) {
+					Copy-Item -Path $snapshot.FullName -Destination $destinationHardcodedPath
+				} else {
+					Copy-Item -Path $snapshot.FullName -Destination $destinationPath
+				}
+			}
+		}
+	} else {
+		Write-Host "No snapshot files found in $($TestResultsPath)"
 	}
+	$GetSnapshots = Get-ChildItem "$TestResultsPath\*.coverage"
 	if ($GetSnapshots.count -le 0) {
 		Write-Host Cannot find snapshots in $TestResultsPath
 		exit 1
