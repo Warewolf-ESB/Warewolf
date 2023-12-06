@@ -342,8 +342,7 @@ if __name__ == '__main__':
 			"&`"$VSTestPath\Extensions\TestPlatform\vstest.console.exe`" /logger:trx $AssembliesArg /Tests:`"$TestsToRun`"" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
 		} else {
 			if ($Coverage.IsPresent -and !($PreTestRunScript)) {
-				dotnet tool install --global coverlet.console
-				coverlet $AssembliesArg --target "$VSTestPath\Extensions\TestPlatform\vstest.console.exe" --targetargs "/logger:trx $AssembliesArg /Tests:`"$TestsToRun`" /EnableCodeCoverage" -f=opencover -o="coverage.xml" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
+				"&`"$VSTestPath\Extensions\TestPlatform\vstest.console.exe`" /logger:trx $AssembliesArg /Tests:`"$TestsToRun`" /EnableCodeCoverage" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
 			} else {
 				"&`"$VSTestPath\Extensions\TestPlatform\vstest.console.exe`" /logger:trx $AssembliesArg /Tests:`"$TestsToRun`"" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
 			}
@@ -373,8 +372,7 @@ if __name__ == '__main__':
 			"&`"$VSTestPath\Extensions\TestPlatform\vstest.console.exe`" /logger:trx $AssembliesArg $CategoryArg" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
 		} else {
 			if ($Coverage.IsPresent -and !($PreTestRunScript)) {
-				dotnet tool install --global coverlet.console
-				coverlet $AssembliesArg --target "$VSTestPath\Extensions\TestPlatform\vstest.console.exe" --targetargs "/logger:trx $AssembliesArg $CategoryArg /EnableCodeCoverage" -f=opencover -o="coverage.xml" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
+				"&`"$VSTestPath\Extensions\TestPlatform\vstest.console.exe`" /logger:trx $AssembliesArg $CategoryArg /EnableCodeCoverage" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
 			} else {
 				"&`"$VSTestPath\Extensions\TestPlatform\vstest.console.exe`" /logger:trx $AssembliesArg $CategoryArg" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
 			}
