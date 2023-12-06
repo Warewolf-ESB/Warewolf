@@ -448,6 +448,10 @@ if __name__ == '__main__':
 	}
 }
 if ($Coverage.IsPresent) {
+	if (!(Test-Path "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\Extensions\Microsoft\CodeCoverage.Console\Microsoft.CodeCoverage.Console.exe")) {
+		Write-Error "Cannot find C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\Extensions\Microsoft\CodeCoverage.Console\Microsoft.CodeCoverage.Console.exe"
+		exit 1
+	}
 	$MergedSnapshotPath = "$TestResultsPath\Merged.coveragexml"
 	$CoverageToolPath = ".\Microsoft.TestPlatform\tools\net451\Team Tools\Dynamic Code Coverage Tools\CodeCoverage.exe"
 	$GetSnapshots = Get-ChildItem "$TestResultsPath\**\*.coverage"
