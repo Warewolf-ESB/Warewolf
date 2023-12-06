@@ -332,9 +332,6 @@ if __name__ == '__main__':
 	if (Test-Path "$TestResultsPath\Snapshot_Backup.coverage") {
 		Move-Item "$TestResultsPath\Snapshot_Backup.coverage" "$TestResultsPath\Snapshot_Backup($LoopCounter).coverage"
 	}
-	if (Test-Path "$TestResultsPath\coverage.xml") {
-		Move-Item "$TestResultsPath\coverage.xml" "$TestResultsPath\coverage($LoopCounter).xml"
-	}
 	$AssembliesArg = ".\" + ($AssembliesList -join " .\")
 	if ($UNCPassword) {
 		"net use \\DEVOPSPDC.premier.local\FileSystemShareTestingSite /user:Administrator $UNCPassword" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
@@ -346,7 +343,7 @@ if __name__ == '__main__':
 		} else {
 			if ($Coverage.IsPresent -and !($PreTestRunScript)) {
 				dotnet tool install --global coverlet.console
-				coverlet $AssembliesArg --target "$VSTestPath\Extensions\TestPlatform\vstest.console.exe" --targetargs "/logger:trx $AssembliesArg /Tests:`"$TestsToRun`" /EnableCodeCoverage" -f=opencover -o="$TestResultsPath\coverage.xml" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
+				coverlet $AssembliesArg --target "$VSTestPath\Extensions\TestPlatform\vstest.console.exe" --targetargs "/logger:trx $AssembliesArg /Tests:`"$TestsToRun`" /EnableCodeCoverage" -f=opencover -o="coverage.xml" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
 			} else {
 				"&`"$VSTestPath\Extensions\TestPlatform\vstest.console.exe`" /logger:trx $AssembliesArg /Tests:`"$TestsToRun`"" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
 			}
@@ -377,7 +374,7 @@ if __name__ == '__main__':
 		} else {
 			if ($Coverage.IsPresent -and !($PreTestRunScript)) {
 				dotnet tool install --global coverlet.console
-				coverlet $AssembliesArg --target "$VSTestPath\Extensions\TestPlatform\vstest.console.exe" --targetargs "/logger:trx $AssembliesArg $CategoryArg /EnableCodeCoverage" -f=opencover -o="$TestResultsPath\coverage.xml" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
+				coverlet $AssembliesArg --target "$VSTestPath\Extensions\TestPlatform\vstest.console.exe" --targetargs "/logger:trx $AssembliesArg $CategoryArg /EnableCodeCoverage" -f=opencover -o="coverage.xml" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
 			} else {
 				"&`"$VSTestPath\Extensions\TestPlatform\vstest.console.exe`" /logger:trx $AssembliesArg $CategoryArg" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
 			}
