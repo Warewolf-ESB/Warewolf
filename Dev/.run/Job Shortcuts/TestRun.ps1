@@ -101,8 +101,8 @@ if (!(Test-Path "$VSTestPath\Extensions\TestPlatform\vstest.console.exe")) {
 }
 if ($Coverage.IsPresent) {
 	Write-Host Removing existing Coverage Reports
-	if (Test-Path "$TestResultsPath\Merged.coveragexml") {
-		Remove-Item "$TestResultsPath\Merged.coveragexml"
+	if (Test-Path "$TestResultsPath\Merged.coverage.xml") {
+		Remove-Item "$TestResultsPath\Merged.coverage.xml"
 	}
 	if (Test-Path "$TestResultsPath\Cobertura.xml") {
 		Remove-Item "$TestResultsPath\Cobertura.xml"
@@ -448,12 +448,8 @@ if __name__ == '__main__':
 	}
 }
 if ($Coverage.IsPresent) {
-	if (!(Test-Path "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\Extensions\Microsoft\CodeCoverage.Console\Microsoft.CodeCoverage.Console.exe")) {
-		Write-Error "Cannot find C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\Extensions\Microsoft\CodeCoverage.Console\Microsoft.CodeCoverage.Console.exe"
-		exit 1
-	}
-	$MergedSnapshotPath = "$TestResultsPath\Merged.coveragexml"
-	$CoverageToolPath = ".\Microsoft.TestPlatform\tools\net451\Team Tools\Dynamic Code Coverage Tools\CodeCoverage.exe"
+	$MergedSnapshotPath = "$TestResultsPath\Merged.coverage.xml"
+	$CoverageToolPath = "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\Extensions\Microsoft\CodeCoverage.Console\Microsoft.CodeCoverage.Console.exe"
 	$GetSnapshots = Get-ChildItem "$TestResultsPath\**\*.coverage"
 	if ($GetSnapshots.count -gt 0) {
 		foreach ($snapshot in $GetSnapshots) {
@@ -475,8 +471,8 @@ if ($Coverage.IsPresent) {
 		Write-Host Cannot find snapshots in $TestResultsPath
 		exit 1
 	}
-	Write-Host `&`"$CoverageToolPath`" analyze /output:`"$MergedSnapshotPath`" @GetSnapshots
-	&"$CoverageToolPath" analyze /output:"$MergedSnapshotPath" @GetSnapshots
+	Write-Host `&`"$CoverageToolPath`" merge @GetSnapshots --output `"$MergedSnapshotPath`"
+	&"$CoverageToolPath" merge @GetSnapshots --output-format xml --output "$MergedSnapshotPath"
 	$reportGeneratorExecutable = ".\reportgenerator.exe"
 
     if (!(Test-Path "$reportGeneratorExecutable")) {

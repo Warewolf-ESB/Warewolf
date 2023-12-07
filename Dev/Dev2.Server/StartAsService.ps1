@@ -98,33 +98,10 @@ if ($WarewolfServerProcess) {
 		if (!(Test-Path "$PSScriptRoot\TestResults")) {
 			New-Item -ItemType Directory "$PSScriptRoot\TestResults"
 		}
-		if (!(Test-Path "$PSScriptRoot\Microsoft.TestPlatform\tools\net451\Team Tools\Dynamic Code Coverage Tools\CodeCoverage.exe")) {
-			#Find NuGet
-			if ("$NuGet" -eq "" -or !(Test-Path "$NuGet" -ErrorAction SilentlyContinue)) {
-				$NuGetCommand = Get-Command NuGet -ErrorAction SilentlyContinue
-				if ($NuGetCommand) {
-					$NuGet = $NuGetCommand.Path
-				}
-			}
-			if (("$NuGet" -eq "" -or !(Test-Path "$NuGet" -ErrorAction SilentlyContinue)) -and (Test-Path "$env:windir")) {
-				wget "https://dist.nuget.org/win-x86-commandline/latest/nuget.exe" -OutFile "$env:windir\nuget.exe"
-				$NuGet = "$env:windir\nuget.exe"
-			}
-			if ("$NuGet" -eq "" -or !(Test-Path "$NuGet" -ErrorAction SilentlyContinue)) {
-				Write-Host NuGet not found. Download from: https://dist.nuget.org/win-x86-commandline/latest/nuget.exe to a directory in the PATH environment variable like c:\windows\nuget.exe. Or use the -NuGet switch.
-				sleep 10
-				exit 1
-			}
-			&"nuget.exe" "install" "Microsoft.TestPlatform" "-ExcludeVersion" "-NonInteractive" "-OutputDirectory" "."
-			if (!(Test-Path "$PSScriptRoot\Microsoft.TestPlatform\tools\net451\Team Tools\Dynamic Code Coverage Tools\CodeCoverage.exe")) {
-				Write-Error "Cannot coverage runner using nuget."
-				exit 1
-			}
-		}
 		if (Test-Path "$PSScriptRoot\TestResults\Snapshot.coverage") {
 			Remove-Item "$PSScriptRoot\TestResults\Snapshot.coverage"
 		}
-		$BinPath = "\`"$PSScriptRoot\Microsoft.TestPlatform\tools\net451\Team Tools\Dynamic Code Coverage Tools\CodeCoverage.exe\`" collect /output:\`"$PSScriptRoot\TestResults\Snapshot.coverage\`" \`"$BinPath\`"";
+		$BinPath = "\`"C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\Extensions\Microsoft\CodeCoverage.Console\Microsoft.CodeCoverage.Console.exe\`" instrument \`"$BinPath\`" --session-id 73c34ce5-501c-4369-a4cb-04d31427d1a4 && \`"C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\Extensions\Microsoft\CodeCoverage.Console\Microsoft.CodeCoverage.Console.exe\`" collect \`"$BinPath\`" --session-id 73c34ce5-501c-4369-a4cb-04d31427d1a4  --output \`"$PSScriptRoot\TestResults\Snapshot.coverage\`"";
 	}
 	if (!($IsAnonymous)) {
 		Write-Host Starting Warewolf server as $Username
