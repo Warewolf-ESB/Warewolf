@@ -101,7 +101,8 @@ if ($WarewolfServerProcess) {
 		if (Test-Path "$PSScriptRoot\TestResults\Snapshot.coverage") {
 			Remove-Item "$PSScriptRoot\TestResults\Snapshot.coverage"
 		}
-		$BinPath = "\`"C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\Extensions\Microsoft\CodeCoverage.Console\Microsoft.CodeCoverage.Console.exe\`" instrument \`"$BinPath\`" --session-id 73c34ce5-501c-4369-a4cb-04d31427d1a4 && \`"C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\Extensions\Microsoft\CodeCoverage.Console\Microsoft.CodeCoverage.Console.exe\`" collect \`"$BinPath\`" --session-id 73c34ce5-501c-4369-a4cb-04d31427d1a4  --output \`"$PSScriptRoot\TestResults\Snapshot.coverage\`"";
+		&"C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\Extensions\Microsoft\CodeCoverage.Console\Microsoft.CodeCoverage.Console.exe" instrument "$BinPath" --session-id 73c34ce5-501c-4369-a4cb-04d31427d1a4
+		&"C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\Extensions\Microsoft\CodeCoverage.Console\Microsoft.CodeCoverage.Console.exe" collect "$BinPath" --session-id 73c34ce5-501c-4369-a4cb-04d31427d1a4  --output "$PSScriptRoot\TestResults\Snapshot.coverage" --server-mode";
 	}
 	if (!($IsAnonymous)) {
 		Write-Host Starting Warewolf server as $Username
