@@ -47,11 +47,6 @@ namespace Dev2.Integration.Tests.Server_Refresh
             {
                 exePath = Environment.CurrentDirectory;
             }
-            var destDirName = Path.Combine(exePath, "Resources");
-            if (!_directoryWrapper.Exists(destDirName))
-            {
-                _directoryWrapper.Move(Path.Combine(exePath, "Resources - Release", "Resources"), destDirName);
-            }
         }
 
         [TestCleanup]
@@ -89,7 +84,7 @@ namespace Dev2.Integration.Tests.Server_Refresh
             ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT * FROM Win32_Service");
             ManagementObject ServerService = searcher.Get().OfType<ManagementObject>().FirstOrDefault(obj => { return (string)obj["Name"] == "Warewolf Server"; });
             var fullServicePath = ServerService["PathName"] as string;
-            var startingString = "CodeCoverage.exe\" collect /output:\"";
+            var startingString = "\" --session-id 73c34ce5-501c-4369-a4cb-04d31427d1a4  --output \"";
             var endingString = "TestResults\\Snapshot.coverage";
             if (fullServicePath.Contains(startingString) && fullServicePath.Contains(endingString))
             {
