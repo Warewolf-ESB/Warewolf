@@ -26,6 +26,7 @@ namespace Dev2
     {
         void CheckExampleResources();
         void LoadActivityCache(IAssemblyLoader assemblyLoader);
+        void PreloadReferences(IAssemblyLoader assemblyLoader);
         void LoadResourceCatalog();
         void LoadServerWorkspace();
         void MethodsToBeDepricated();
@@ -91,7 +92,7 @@ namespace Dev2
             _writer.WriteLine("done.");
         }
 
-        private void PreloadReferences(IAssemblyLoader assemblyLoader)
+        public void PreloadReferences(IAssemblyLoader assemblyLoader)
         {
             _writer.Write("Preloading assemblies...  ");
             var currentAsm = typeof(ServerLifecycleManager).Assembly;

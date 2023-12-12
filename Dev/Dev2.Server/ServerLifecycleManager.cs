@@ -250,7 +250,8 @@ namespace Dev2
                     _loadResources.LoadResourceCatalog();
                     _timer = new Timer((state) => GetComputerNames.GetComputerNamesList(), null, 1000, GlobalConstants.NetworkComputerNameQueryFreq);
                     _loadResources.LoadServerWorkspace();
-                    _loadResources.LoadActivityCache(_assemblyLoader);
+                    //_loadResources.LoadActivityCache(_assemblyLoader);
+                    _loadResources.PreloadReferences(_assemblyLoader);
                     LoadTestCatalog();
                     LoadTriggersCatalog();
 
