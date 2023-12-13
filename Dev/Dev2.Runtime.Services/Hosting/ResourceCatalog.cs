@@ -236,6 +236,20 @@ namespace Dev2.Runtime.Hosting
                 BuildResourceActivityCache(GetResources(GlobalConstants.ServerWorkspaceID));
             }
         }
+        public IResourceActivityCache BuildOrGetResourceActivityCache(Guid workspaceID)
+        {
+            var cache = GetResourceActivityCache(workspaceID);
+            if (cache == null)
+            {
+                var resources = GetResources(workspaceID);
+                if (resources != null)
+                {
+                    BuildResourceActivityCache(resources);
+                    cache = GetResourceActivityCache(workspaceID);
+                }
+            }
+            return cache;
+        }
 
         public IResourceActivityCache GetResourceActivityCache(Guid workspaceID)
         {
@@ -248,6 +262,7 @@ namespace Dev2.Runtime.Hosting
             }
             return null;
         }
+
         void BuildResourceActivityCache(IEnumerable<IResource> userServices)
         {
             if (_parsers.ContainsKey(GlobalConstants.ServerWorkspaceID))

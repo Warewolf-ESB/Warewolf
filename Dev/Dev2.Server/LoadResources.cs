@@ -88,7 +88,7 @@ namespace Dev2
         {
             PreloadReferences(assemblyLoader);
             _writer.Write("Loading resource activity cache...  ");
-            _catalog.LoadServerActivityCache();
+            //_catalog.LoadServerActivityCache();
             _writer.WriteLine("done.");
         }
 
