@@ -494,4 +494,9 @@
         <Setter Property="Width" Value="12"/>
         <Setter Property="Source" Value="{StaticResource Source-Merge-Logo}"/>
     </Style>
+    <Style TargetType="Image" x:Key="ReloadResourcesIcon">
+        <Setter Property="Height" Value="15"/>
+        <Setter Property="Width" Value="15"/>
+        <Setter Property="Source" Value="{StaticResource System-Refresh}"/>
+    </Style>
 </ResourceDictionary>

@@ -34,6 +34,8 @@ namespace Dev2.Studio.Interfaces
 
         ICommand RefreshCommand { get; set; }
         ICommand ShowServerVersionCommand { get; set; }
+        ICommand ReloadServerResourcesCommand { get; set; }
+
 
         ICollection<IExplorerItemViewModel> AsList();
 

@@ -9,7 +9,7 @@
     that is mostly human readable. The generation and parsing of the 
     various data types are done through the TypeConverter classes 
     associated with the data types.
-
+    
     Example:
     
     ... ado.net/XML headers & schema ...
@@ -2514,7 +2514,7 @@ To create a SFTP Key, put the full path and file or folder name here.</value>
   <data name="LoggingViewAuditsFilePathToolTip" xml:space="preserve">
     <value>Audits Folder Path</value>
   </data>
-	<data name="IncludeEnvironmentVariableToolTip" xml:space="preserve">
+  <data name="IncludeEnvironmentVariableToolTip" xml:space="preserve">
     <value>Select the Include Environment Variables with your execution logs, for more detailed diagnostics.</value>
   </data>
   <data name="LoggingViewAuditsDataSourceToolTip" xml:space="preserve">
@@ -2622,7 +2622,7 @@ To create a SFTP Key, put the full path and file or folder name here.</value>
   <data name="PersistenceViewPrepareSchemaIfNecessaryToolTip" xml:space="preserve">
     <value>Create the tables and index in the database if they dont already exist</value>
   </data>
-	<data name="PersistenceViewUseAsServerToolTip" xml:space="preserve">
+  <data name="PersistenceViewUseAsServerToolTip" xml:space="preserve">
     <value>Show the additional data to use hangfire as a server if checkbox is checked</value>
   </data>
   <data name="IsPutDataBase64Tooltip" xml:space="preserve">
@@ -2664,5 +2664,7 @@ To create a SFTP Key, put the full path and file or folder name here.</value>
   <data name="ManagePlanWarewolfToolTip" xml:space="preserve">
     <value>Click here to manage your license plan</value>
   </data>
-
+  <data name="ReloadServerResourceToolTip" xml:space="preserve">
+    <value>Reload the resources on server</value>
+  </data>
 </root>

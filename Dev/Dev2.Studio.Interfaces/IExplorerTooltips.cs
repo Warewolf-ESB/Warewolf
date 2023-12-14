@@ -45,6 +45,7 @@ namespace Dev2.Studio.Interfaces
         string DependenciesTooltip { get; set; }
         string ViewOpenAPITooltip { get; set; }
         string ViewApisJsonTooltip { get; set; }
+        string ViewReloadResourcesOnServerToolTip { get; set; }
         string ShowHideVersionsTooltip { get; set; }
         string RollbackTooltip { get; set; }
         string OpenTooltip { get; set; }
