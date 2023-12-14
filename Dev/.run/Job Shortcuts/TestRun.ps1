@@ -101,8 +101,8 @@ if (!(Test-Path "$VSTestPath\Extensions\TestPlatform\vstest.console.exe")) {
 }
 if ($Coverage.IsPresent) {
 	Write-Host Removing existing Coverage Reports
-	if (Test-Path "$TestResultsPath\Merged.coveragexml") {
-		Remove-Item "$TestResultsPath\Merged.coveragexml"
+	if (Test-Path "$TestResultsPath\Merged.coverage.xml") {
+		Remove-Item "$TestResultsPath\Merged.coverage.xml"
 	}
 	if (Test-Path "$TestResultsPath\Cobertura.xml") {
 		Remove-Item "$TestResultsPath\Cobertura.xml"
@@ -333,20 +333,15 @@ if __name__ == '__main__':
 		Move-Item "$TestResultsPath\Snapshot_Backup.coverage" "$TestResultsPath\Snapshot_Backup($LoopCounter).coverage"
 	}
 	$AssembliesArg = ".\" + ($AssembliesList -join " .\")
+	$CoverageArg = if ($Coverage.IsPresent) {"/EnableCodeCoverage" } else { "" }
 	if ($UNCPassword) {
 		"net use \\DEVOPSPDC.premier.local\FileSystemShareTestingSite /user:Administrator $UNCPassword" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
 	}
 	if ($TestsToRun) {
 		if ($PreTestRunScript) {
 			"&.\$PreTestRunScript" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
-			"&`"$VSTestPath\Extensions\TestPlatform\vstest.console.exe`" /logger:trx $AssembliesArg /Tests:`"$TestsToRun`"" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
-		} else {
-			if ($Coverage.IsPresent -and !($PreTestRunScript)) {
-				"&`"$VSTestPath\Extensions\TestPlatform\vstest.console.exe`" /logger:trx $AssembliesArg /Tests:`"$TestsToRun`" /EnableCodeCoverage" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
-			} else {
-				"&`"$VSTestPath\Extensions\TestPlatform\vstest.console.exe`" /logger:trx $AssembliesArg /Tests:`"$TestsToRun`"" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
-			}
 		}
+		"&`"$VSTestPath\Extensions\TestPlatform\vstest.console.exe`" /logger:trx $AssembliesArg /Tests:`"$TestsToRun`" $CoverageArg" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
 	} else {
 		$CategoryArg = ""
 		if ($ExcludeCategories -ne $null -and $ExcludeCategories -ne @()) {
@@ -369,14 +364,8 @@ if __name__ == '__main__':
 		}
 		if ($PreTestRunScript) {
 			"&.\$PreTestRunScript" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
-			"&`"$VSTestPath\Extensions\TestPlatform\vstest.console.exe`" /logger:trx $AssembliesArg $CategoryArg" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
-		} else {
-			if ($Coverage.IsPresent -and !($PreTestRunScript)) {
-				"&`"$VSTestPath\Extensions\TestPlatform\vstest.console.exe`" /logger:trx $AssembliesArg $CategoryArg /EnableCodeCoverage" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
-			} else {
-				"&`"$VSTestPath\Extensions\TestPlatform\vstest.console.exe`" /logger:trx $AssembliesArg $CategoryArg" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
-			}
 		}
+		"&`"$VSTestPath\Extensions\TestPlatform\vstest.console.exe`" /logger:trx $AssembliesArg $CategoryArg $CoverageArg" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
 	}
 	if ($PostTestRunScript) {
 		"&.\$PostTestRunScript" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
@@ -448,18 +437,31 @@ if __name__ == '__main__':
 	}
 }
 if ($Coverage.IsPresent) {
-	$MergedSnapshotPath = "$TestResultsPath\Merged.coveragexml"
-	$CoverageToolPath = ".\Microsoft.TestPlatform\tools\net451\Team Tools\Dynamic Code Coverage Tools\CodeCoverage.exe"
+	$MergedSnapshotPath = "$TestResultsPath\Merged.coverage.xml"
+	$CoverageToolPath = "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\Extensions\Microsoft\CodeCoverage.Console\Microsoft.CodeCoverage.Console.exe"
 	$GetSnapshots = Get-ChildItem "$TestResultsPath\**\*.coverage"
-	if ($GetSnapshots.count -le 0) {
-		$GetSnapshots = Get-ChildItem "$TestResultsPath\*.coverage"
+	if ($GetSnapshots.count -gt 0) {
+		foreach ($snapshot in $GetSnapshots) {
+			$destinationPath = Join-Path $TestResultsPath $snapshot.Name
+			$destinationHardcodedPath = Join-Path $TestResultsPath "Snapshot.coverage"
+			if (!(Test-Path $destinationPath)) {
+				if (!(Test-Path $destinationHardcodedPath)) {
+					Copy-Item -Path $snapshot.FullName -Destination $destinationHardcodedPath
+				} else {
+					Copy-Item -Path $snapshot.FullName -Destination $destinationPath
+				}
+			}
+		}
+	} else {
+		Write-Host "No snapshot files found in $($TestResultsPath)"
 	}
+	$GetSnapshots = Get-ChildItem "$TestResultsPath\*.coverage"
 	if ($GetSnapshots.count -le 0) {
 		Write-Host Cannot find snapshots in $TestResultsPath
 		exit 1
 	}
-	Write-Host `&`"$CoverageToolPath`" analyze /output:`"$MergedSnapshotPath`" @GetSnapshots
-	&"$CoverageToolPath" analyze /output:"$MergedSnapshotPath" @GetSnapshots
+	Write-Host `&`"$CoverageToolPath`" merge @GetSnapshots --output `"$MergedSnapshotPath`"
+	&"$CoverageToolPath" merge @GetSnapshots --output-format xml --output "$MergedSnapshotPath"
 	$reportGeneratorExecutable = ".\reportgenerator.exe"
 
     if (!(Test-Path "$reportGeneratorExecutable")) {

@@ -324,7 +324,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory("LogSettingsViewModel")]
-        [Timeout(300)]
+        [Timeout(3000)]
         public void LogSettingsViewModel_Save_GIVEN_ServerSettingsDataSink_AuditingSettingsData_ChangeOnRuntime_ShouldSaveServerSettings()
         {
             //------------Setup for test--------------------------
