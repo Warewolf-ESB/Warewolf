@@ -70,7 +70,7 @@ namespace Dev2.Tests.Runtime.Search
             };
             cache.TryAdd(Guid.Empty, startAct);
             mockResourceActivityCache.Setup(c => c.Cache).Returns(cache);
-            mockResourceCatalog.Setup(res => res.GetResourceActivityCache(It.IsAny<Guid>())).Returns(mockResourceActivityCache.Object);
+            mockResourceCatalog.Setup(res => res.BuildOrGetResourceActivityCache(It.IsAny<Guid>())).Returns(mockResourceActivityCache.Object);
             var searchResults = searcher.GetSearchResults(search);
             Assert.AreEqual(1, searchResults.Count);
             var searchResult = searchResults[0];
@@ -188,7 +188,7 @@ namespace Dev2.Tests.Runtime.Search
             cache.TryAdd(Guid.Empty, firstFlow);
             cache.TryAdd(Guid.NewGuid(), secondFlow);
             mockResourceActivityCache.Setup(c => c.Cache).Returns(cache);
-            mockResourceCatalog.Setup(res => res.GetResourceActivityCache(It.IsAny<Guid>())).Returns(mockResourceActivityCache.Object);
+            mockResourceCatalog.Setup(res => res.BuildOrGetResourceActivityCache(It.IsAny<Guid>())).Returns(mockResourceActivityCache.Object);
             var searchResults = searcher.GetSearchResults(searchValue);
             Assert.AreEqual(2, searchResults.Count);
             Assert.AreEqual(Guid.Empty, searchResults[0].ResourceId);
@@ -273,7 +273,7 @@ namespace Dev2.Tests.Runtime.Search
             cache.TryAdd(Guid.Empty, firstFlow);
             cache.TryAdd(otherResourceId, secondFlow);
             mockResourceActivityCache.Setup(c => c.Cache).Returns(cache);
-            mockResourceCatalog.Setup(res => res.GetResourceActivityCache(It.IsAny<Guid>())).Returns(mockResourceActivityCache.Object);
+            mockResourceCatalog.Setup(res => res.BuildOrGetResourceActivityCache(It.IsAny<Guid>())).Returns(mockResourceActivityCache.Object);
             var searchResults = searcher.GetSearchResults(searchValue);
 
             Assert.AreEqual(3, searchResults.Count);
