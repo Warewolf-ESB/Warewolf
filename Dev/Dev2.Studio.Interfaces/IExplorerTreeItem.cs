@@ -52,6 +52,7 @@ namespace Dev2.Studio.Interfaces
         bool IsServer { get; set; }
         bool IsResourceVersion { get; set; }
         bool CanViewApisJson { get; set; }
+        bool CanViewReloadResources { get; set; }
         bool CanViewExecutionLogging { get; set; }
         bool IsMergeVisible { get; set; }
         bool IsLicensed { get; set; }

@@ -448,6 +448,20 @@
                                             </MenuItem.Icon>
                                         </MenuItem>
                                     </MenuItem>
+
+                                    <Separator Visibility="{Binding IsSaveDialog, Converter={StaticResource BoolToVisibilityConverterNegative}}"/>
+
+                                    <MenuItem Name="ReloadResources"
+                                              Command="{Binding ReloadServerResourcesCommand}"
+                                              Header="Reload Resources on Server"
+                                              Style="{StaticResource MenuItemStyle}"
+                                              IsEnabled="{Binding CanViewReloadResources}" 
+                                              ToolTip="{Binding ExplorerTooltips.CanViewReloadResources}"
+                                              Visibility="{Binding IsSaveDialog, Converter={StaticResource BoolToVisibilityConverterNegative}}">
+                                        <MenuItem.Icon>
+                                            <Image Style="{StaticResource ReloadResourcesIcon}"/>
+                                        </MenuItem.Icon>
+                                    </MenuItem>
                                 </ContextMenu>
                             </Grid.ContextMenu>
                             <Grid.ColumnDefinitions>
