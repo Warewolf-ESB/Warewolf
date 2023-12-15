@@ -373,7 +373,7 @@ namespace Dev2.Runtime.WebServer.Hubs
             var t = new Task(() =>
             {
                 var workspaceId = Server.GetWorkspaceID(Context.User.Identity);
-                ResourceCatalog.Instance.LoadServerActivityCache();
+                //ResourceCatalog.Instance.LoadServerActivityCache();
                 var hubCallerConnectionContext = Clients;
                 var user = hubCallerConnectionContext.User(Context.User.Identity.Name);
                 user.SendWorkspaceID(workspaceId);
