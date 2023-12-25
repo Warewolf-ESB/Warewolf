@@ -233,9 +233,15 @@ namespace Dev2.Runtime.Hosting
         {
             if (!_parsers.ContainsKey(GlobalConstants.ServerWorkspaceID))
             {
-                BuildResourceActivityCache(GetResources(GlobalConstants.ServerWorkspaceID));
+                BuildResourceActivityCache(GetServerResources());
             }
         }
+        
+        private List<IResource> GetServerResources()
+        {
+            return GetResources(GlobalConstants.ServerWorkspaceID);
+        }
+
         public IResourceActivityCache BuildOrGetResourceActivityCache(Guid workspaceID)
         {
             var cache = GetResourceActivityCache(workspaceID);
@@ -586,7 +592,7 @@ namespace Dev2.Runtime.Hosting
                 _isReloading = true;
                 LoadWorkspace(GlobalConstants.ServerWorkspaceID);
                 _parsers.TryRemove(GlobalConstants.ServerWorkspaceID, out IResourceActivityCache removedCache);
-                LoadServerActivityCache();
+                GetServerResources();
             }
             finally
             {
