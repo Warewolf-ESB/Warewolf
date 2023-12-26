@@ -81,7 +81,7 @@ namespace Dev2.Runtime.Hosting
             _catalogPluginContainer = new ResourceCatalogPluginContainer(_serverVersionRepository, WorkspaceResources, managementServices);
             _catalogPluginContainer.Build(this);
         }
-        
+
         public ResourceCatalog(ConcurrentDictionary<Guid, List<IResource>> resources, IServerVersionRepository serverVersionRepository,
             ResourceCatalogPluginContainer catalogPluginContainer)
         {
@@ -94,7 +94,7 @@ namespace Dev2.Runtime.Hosting
         {
             return _serverVersionRepository;
         }
-        
+
         public ResourceCatalogPluginContainer GetCatalogPluginContainer()
         {
             return _catalogPluginContainer;
@@ -155,7 +155,7 @@ namespace Dev2.Runtime.Hosting
         public IResource GetResource(Guid workspaceID, Guid resourceId, string resourceType, string version)
             => _catalogPluginContainer.LoadProvider.GetResource(workspaceID, resourceId, resourceType, version);
         public IResource GetResource(Guid workspaceID, Guid resourceID, string version)
-            => _catalogPluginContainer.LoadProvider.GetResource(workspaceID,resourceID,version);
+            => _catalogPluginContainer.LoadProvider.GetResource(workspaceID, resourceID, version);
         public StringBuilder GetResourceContents(IResource resource) => _catalogPluginContainer.LoadProvider.GetResourceContents(resource);
         public StringBuilder GetResourceContents(Guid workspaceID, Guid resourceID) => _catalogPluginContainer.LoadProvider.GetResourceContents(workspaceID, resourceID);
         public IEnumerable GetModels(Guid workspaceID, enSourceType sourceType) => _catalogPluginContainer.LoadProvider.GetModels(workspaceID, sourceType);
@@ -236,7 +236,7 @@ namespace Dev2.Runtime.Hosting
                 BuildResourceActivityCache(GetServerResources());
             }
         }
-        
+
         private List<IResource> GetServerResources()
         {
             return GetResources(GlobalConstants.ServerWorkspaceID);
@@ -245,7 +245,7 @@ namespace Dev2.Runtime.Hosting
         public IResourceActivityCache BuildOrGetResourceActivityCache(Guid workspaceID)
         {
             var cache = GetResourceActivityCache(workspaceID);
-            if (cache == null)
+            if (cache == null || cache.Cache.Count == 0)
             {
                 var resources = GetResources(workspaceID);
                 if (resources != null)
@@ -273,7 +273,11 @@ namespace Dev2.Runtime.Hosting
         {
             if (_parsers.ContainsKey(GlobalConstants.ServerWorkspaceID))
             {
-                return;
+                IResourceActivityCache localCache = null;
+                _parsers.TryGetValue(GlobalConstants.ServerWorkspaceID, out localCache);
+
+                if (localCache.Cache.Count > 0)
+                    return;
             }
             foreach (var resource in userServices)
             {
@@ -281,7 +285,7 @@ namespace Dev2.Runtime.Hosting
                 {
                     AddToActivityCache(resource);
                 }
-                catch(System.Xml.XmlException xmlEx)
+                catch (System.Xml.XmlException xmlEx)
                 {
                     Dev2Logger.Error("Error reading resource definition for \"" + resource.FilePath + "\". See full error under \"Error Starting Server\":", GlobalConstants.WarewolfError);
                     throw xmlEx;
@@ -396,7 +400,7 @@ namespace Dev2.Runtime.Hosting
         public IList<DuplicateResource> GetDuplicateResources() => DuplicateResources;
 
         public ResourceCatalogResult SaveResources(Guid serverWorkspaceID, List<DuplicateResourceTO> resourceMaps, bool overrideExisting) => _catalogPluginContainer.SaveProvider.SaveResources(serverWorkspaceID, resourceMaps, overrideExisting);
-        
+
         public ResourceCatalogResult SaveResource(Guid workspaceID, StringBuilder resourceXml, string savedPath) => _catalogPluginContainer.SaveProvider.SaveResource(workspaceID, resourceXml, savedPath, "", "");
         public ResourceCatalogResult SaveResource(Guid workspaceID, StringBuilder resourceXml, string savedPath, string reason) => _catalogPluginContainer.SaveProvider.SaveResource(workspaceID, resourceXml, savedPath, reason, "");
         public ResourceCatalogResult SaveResource(Guid workspaceID, StringBuilder resourceXml, string savedPath, string reason, string user) => _catalogPluginContainer.SaveProvider.SaveResource(workspaceID, resourceXml, savedPath, reason, user);
@@ -478,7 +482,7 @@ namespace Dev2.Runtime.Hosting
         {
             if (resourceId != Guid.Empty)
             {
-                var resource =  GetResource(GlobalConstants.ServerWorkspaceID, resourceId);
+                var resource = GetResource(GlobalConstants.ServerWorkspaceID, resourceId);
                 RemoveFromResourceActivityCache(workspaceID, resource);
             }
         }
@@ -509,7 +513,7 @@ namespace Dev2.Runtime.Hosting
                 WorkspaceResources = new ConcurrentDictionary<Guid, List<IResource>>();
             }
             _parsers = new ConcurrentDictionary<Guid, IResourceActivityCache>();
-            
+
             GC.SuppressFinalize(this);
         }
 
@@ -520,7 +524,7 @@ namespace Dev2.Runtime.Hosting
         public IDev2Activity Parse(Guid workspaceID, Guid resourceID) => Parse(workspaceID, resourceID, "");
         public IDev2Activity Parse(Guid workspaceID, Guid resourceID, string executionId) => Parse(workspaceID, resourceID, executionId, null);
         public IDev2Activity Parse(Guid workspaceID, IResource resource) => Parse(workspaceID, resource.ResourceID, string.Empty, resource);
-        
+
         public IDev2Activity Parse(Guid workspaceID, Guid resourceID, string executionId, IResource resourceOverride)
         {
 
@@ -565,10 +569,10 @@ namespace Dev2.Runtime.Hosting
             {
                 var sa = service.Actions.FirstOrDefault();
                 MapServiceActionDependencies(workspaceID, sa);
-                
-                if(ServiceActionRepo.Instance.ReadCache(resourceID) == null)
+
+                if (ServiceActionRepo.Instance.ReadCache(resourceID) == null)
                     ServiceActionRepo.Instance.AddToCache(resourceID, service);
-                
+
                 var activity = GetActivity(sa);
                 if (parser != null)
                 {
@@ -586,7 +590,7 @@ namespace Dev2.Runtime.Hosting
             {
                 Thread.Sleep(100);
             }
-            
+
             try
             {
                 _isReloading = true;
@@ -602,7 +606,7 @@ namespace Dev2.Runtime.Hosting
 
         public void ReloadResource()
         {
-            
+
         }
 
         public ResourceCatalogDuplicateResult DuplicateResource(Guid resourceId, string sourcePath, string destinationPath) => _catalogPluginContainer.DuplicateProvider.DuplicateResource(resourceId, sourcePath, destinationPath);
