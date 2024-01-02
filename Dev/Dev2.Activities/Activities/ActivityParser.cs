@@ -28,9 +28,15 @@ namespace Dev2.Activities
 {
     public class ActivityParser : IActivityParser
     {
-        public ActivityParser() { }
+        private ConcurrentDictionary<string, string> _activitiesCache;
+        private ConcurrentDictionary<string, string> ActivityCache => _activitiesCache;
 
-        public ActivityParser(string notInUse)
+        public ActivityParser()
+        {
+            _activitiesCache = new ConcurrentDictionary<string, string>();
+        }
+
+        public ActivityParser(string notInUse) : this()
         {
             //PBI: this added for us with CustomContainer.CreateInstance
         }
@@ -184,7 +190,7 @@ namespace Dev2.Activities
                     }
             }
         }
-       
+
 
         private static List<IDev2Activity> ActivityToFlatList(IDev2Activity decision)
         {
@@ -215,10 +221,12 @@ namespace Dev2.Activities
                         var tool = ParseTools(start, seenActivities);
                         return tool.FirstOrDefault();
                     }
+
                     if (chart.StartNode is FlowSwitch<string> flowstart)
                     {
                         return ParseSwitch(flowstart, seenActivities).FirstOrDefault();
                     }
+
                     var flowdec = chart.StartNode as FlowDecision;
                     return ParseDecision(flowdec, seenActivities).FirstOrDefault();
                 }
@@ -231,6 +239,111 @@ namespace Dev2.Activities
                 throw;
             }
         }
+
+        public IDev2Activity ParseWithCache(DynamicActivity dynamicActivity, Guid workspaceID, Guid resourceIdGuid, List<IDev2Activity> seenActivities)
+        {
+            IDev2Activity result = null;
+            try
+            {
+                if (WorkflowInspectionServices.GetActivities(dynamicActivity).FirstOrDefault() is Flowchart chart)
+                {
+                    if (chart.StartNode == null)
+                    {
+                        return null;
+                    }
+
+                    IDev2Activity cachedActivity = null;
+                    string activityId = null;
+                    if (chart.StartNode is FlowStep start)
+                    {
+                        cachedActivity = GetActivityFromCache(workspaceID, resourceIdGuid, out activityId);//GetActivityFromCache(start, out activityId);
+                        if (cachedActivity != null) { return cachedActivity; }
+
+                        var tool = ParseTools(start, seenActivities);
+                        result = tool.FirstOrDefault();
+
+                        // Serialize and Cache result
+                        //activityId = string.Concat(workspaceID, resourceIdGuid);
+                        AddActivityToCache(result, activityId);
+                        return result;
+                    }
+                    if (chart.StartNode is FlowSwitch<string> flowstart)
+                    {
+                        cachedActivity = GetActivityFromCache(workspaceID, resourceIdGuid, out activityId);//GetActivityFromCache(flowstart, out activityId);
+                        if (cachedActivity != null) { return cachedActivity; }
+
+                        result = ParseSwitch(flowstart, seenActivities).FirstOrDefault();
+                        // Serialize and Cache result 
+                        //activityId = string.Concat(workspaceID, resourceIdGuid);
+                        AddActivityToCache(result, activityId);
+                        return result;
+                    }
+
+                    var flowdec = chart.StartNode as FlowDecision;
+
+                    cachedActivity = GetActivityFromCache(workspaceID, resourceIdGuid, out activityId);//GetActivityFromCache(flowdec, out activityId);
+                    if (cachedActivity != null) { return cachedActivity; }
+
+                    result = ParseDecision(flowdec, seenActivities).FirstOrDefault();
+                    // Serialize and Cache result 
+                    //activityId = string.Concat(workspaceID, resourceIdGuid);
+                    AddActivityToCache(result, activityId);
+                    return result;
+                }
+                return null;
+            }
+            catch (InvalidWorkflowException e)
+            {
+
+                Dev2Logger.Error(e, GlobalConstants.WarewolfError);
+                throw;
+            }
+        }
+
+        private void AddActivityToCache(IDev2Activity result, string activityId)
+        {
+            if (string.IsNullOrEmpty(activityId)) return;
+
+            if (result == null) { return; }
+
+            var serializedActivityString = SerializeActivity(result);
+            if (string.IsNullOrEmpty(serializedActivityString)) return;
+
+            AddSerializedActivityToCache(activityId, serializedActivityString);
+
+            System.Diagnostics.Debug.WriteLine("AddActivityToCache: {0} => {1}", activityId, result.GetDisplayName());
+
+        }
+
+        //private IDev2Activity GetActivityFromCache(FlowNode start, out string activityId)
+        //{
+        //    activityId = GetActivityId(start);
+        //    return GetActivityFromCache(activityId);
+        //}
+        private IDev2Activity GetActivityFromCacheInternal(string activityId)
+        {
+            if (string.IsNullOrEmpty(activityId)) return null;
+
+            var serializedActivity = GetSerializedActivity(activityId);
+            if (string.IsNullOrEmpty(serializedActivity)) return null;
+
+            return DeserializeActivity(serializedActivity);
+        }
+
+        public IDev2Activity GetActivityFromCache(Guid workspaceID, Guid resourceIdGuid)
+        {
+            var activityId = string.Concat(workspaceID, resourceIdGuid);
+
+            return GetActivityFromCacheInternal(activityId);
+        }
+
+        public IDev2Activity GetActivityFromCache(Guid workspaceID, Guid resourceIdGuid, out string activityId)
+        {
+            activityId = string.Concat(workspaceID, resourceIdGuid);
+            return GetActivityFromCacheInternal(activityId);
+        }
+
+
 
         IEnumerable<IDev2Activity> ParseTools(FlowNode startNode, List<IDev2Activity> seenActivities)
         {
@@ -349,5 +462,143 @@ namespace Dev2.Activities
         }
 
         public IDev2Activity Parse(DynamicActivity dynamicActivity) => Parse(dynamicActivity, new List<IDev2Activity>());
+
+        public IDev2Activity ParseWithCache(DynamicActivity dynamicActivity, Guid workspaceID, Guid resourceIdGuid) => ParseWithCache(dynamicActivity, workspaceID, resourceIdGuid, new List<IDev2Activity>());
+
+        private static string GetActivityId(FlowNode startNode)
+        {
+
+            if (startNode == null)
+            {
+                return null;
+            }
+
+            if (startNode is FlowStep step)
+            {
+                return GetFlowStepId(step);
+            }
+
+            if (startNode is FlowDecision node)
+            {
+                return GetFlowDecisionId(node);
+            }
+
+            if (startNode is FlowSwitch<string> @switch)
+            {
+                return GetFlowSwitchId(@switch);
+            }
+
+            return null;
+
+        }
+
+        private static string GetFlowSwitchId(FlowSwitch<string> switchFlowSwitch)
+        {
+            var activity = switchFlowSwitch.Expression as DsfFlowSwitchActivity;
+            if (activity != null) return activity.UniqueID;
+            return null;
+        }
+
+        private static string GetFlowDecisionId(FlowDecision decision)
+        {
+            var activity = decision.Condition as DsfFlowDecisionActivity;
+            if (activity != null) return activity.UniqueID;
+            return null;
+        }
+
+        private static string GetFlowStepId(FlowStep step)
+        {
+            if (step.Action is IDev2Activity action)
+            {
+                return action.UniqueID;
+            }
+
+            return null;
+        }
+
+        public bool AddSerializedActivityToCache(string activityId, string serializedActivityString)
+        {
+            try
+            {
+                return ActivityCache.TryAdd(activityId, serializedActivityString);
+            }
+            catch 
+            {
+                return false;
+            }
+        }
+
+        public string GetSerializedActivity(string activityId) => ActivityCache.TryGetValue(activityId, out string value) ? value : null;
+
+        public bool HasSerializedActivityInCache(string activityId) => ActivityCache.ContainsKey(activityId);
+
+
+
+        public void ClearSerializedActivityCache()
+        {
+            _activitiesCache = new ConcurrentDictionary<string, string>();
+        }
+
+        public bool RemoveFromSerializedActivityCache(Guid workspaceID, Guid resourceIdGuid)
+        {
+            var activityId = string.Concat(workspaceID, resourceIdGuid);
+            return RemoveSerializedActivityFromCache(activityId);
+        }
+
+        public bool RemoveSerializedActivityFromCache(string activityId)
+        {
+            try
+            {
+                return ActivityCache.TryRemove(activityId, out string act);
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+
+        #region IDev2Activity Serialization - Deserialization
+        readonly JsonSerializerSettings _serializerSettings = new JsonSerializerSettings
+        {
+            TypeNameHandling = TypeNameHandling.Objects,
+            TypeNameAssemblyFormatHandling = TypeNameAssemblyFormatHandling.Simple,
+            ReferenceLoopHandling = ReferenceLoopHandling.Serialize,
+            PreserveReferencesHandling = PreserveReferencesHandling.Objects
+        };
+        readonly JsonSerializerSettings _deSerializerSettings = new JsonSerializerSettings
+        {
+            TypeNameHandling = TypeNameHandling.Auto,
+            TypeNameAssemblyFormatHandling = TypeNameAssemblyFormatHandling.Simple,
+            ReferenceLoopHandling = ReferenceLoopHandling.Serialize,
+            PreserveReferencesHandling = PreserveReferencesHandling.Objects,
+        };
+
+        private IDev2Activity DeserializeActivity(string serializedActivity)
+        {
+            try
+            {
+                return JsonConvert.DeserializeObject(serializedActivity, _deSerializerSettings) as IDev2Activity;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        private string SerializeActivity(IDev2Activity activity)
+        {
+            try
+            {
+                return JsonConvert.SerializeObject(activity, _serializerSettings);
+            }
+            catch 
+            {
+                return null;
+            }
+        }
+        #endregion
+
+
     }
 }

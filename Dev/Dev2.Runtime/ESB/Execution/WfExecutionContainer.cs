@@ -41,6 +41,7 @@ using Warewolf.Auditing;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage.Interfaces;
 using System.Runtime.Serialization;
+using System.Diagnostics;
 
 namespace Dev2.Runtime.ESB.Execution
 {
@@ -236,7 +237,8 @@ namespace Dev2.Runtime.ESB.Execution
     {
         readonly IExecutionManager _executionManager;
         readonly ISubscriptionProvider _subscriptionProvider;
-
+        private int totalTests = 10;
+        bool enableTest = false;
         public WfExecutionContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel, ISubscriptionProvider subscriptionProvider)
             : this(sa, dataObj, theWorkspace, esbChannel, subscriptionProvider, CustomContainer.Get<IExecutionManager>())
 		{
@@ -409,6 +411,28 @@ namespace Dev2.Runtime.ESB.Execution
                 {
                     startActivity = catalog.Parse(TheWorkspace.ID, resourceID, executionId);
                 }
+
+                if (enableTest)
+                {
+                    //totalTests = 100;
+                    var watch = System.Diagnostics.Stopwatch.StartNew();
+                    for (int i = 0; i < totalTests; i++)
+                    {
+                        var act = catalog.ParseWithOutCache(TheWorkspace.ID, resourceID, executionId, null);
+                    }
+                    watch.Stop();
+                    Debug.WriteLine("ParseWithoutCache: {0} ms", watch.Elapsed.TotalMilliseconds.ToString());
+
+
+                    var watch2 = System.Diagnostics.Stopwatch.StartNew();
+                    for (int i = 0; i < totalTests; i++)
+                    {
+                        var act = catalog.Parse(TheWorkspace.ID, resourceID, executionId);
+                    }
+                    watch2.Stop();
+                    Debug.WriteLine("Parse New: {0} ms", watch2.Elapsed.TotalMilliseconds.ToString());
+                }
+
 
                 Dev2Logger.Debug("Got Resource to Execute", executionId);
                 EvalInner(dataObject, startActivity, dataObject.ForEachUpdateValue);
