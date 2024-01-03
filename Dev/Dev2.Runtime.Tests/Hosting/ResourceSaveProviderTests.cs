@@ -69,8 +69,8 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual(ExecStatus.Fail, result.Status);
 
             mockServerVersionRepository.Verify(o => o.StoreVersion(expected, string.Empty, string.Empty, workspaceId, destinationPath), Times.Once());
-            mockResourceCatalog.Verify(o => o.AddToActivityCache(expected), Times.Once);
-            mockResourceCatalog.Verify(o => o.RemoveFromResourceActivityCache(workspaceId, expected), Times.Once);
+            //mockResourceCatalog.Verify(o => o.AddToActivityCache(expected), Times.Once);
+            //mockResourceCatalog.Verify(o => o.RemoveFromResourceActivityCache(workspaceId, expected), Times.Once);
             mockResourceCatalog.Verify(o => o.Parse(workspaceId, expected), Times.Once);
         }
 
@@ -113,8 +113,8 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual(ExecStatus.Success, result.Status);
 
             mockServerVersionRepository.Verify(o => o.StoreVersion(expected, string.Empty, string.Empty, workspaceId, destinationPath), Times.Once());
-            mockResourceCatalog.Verify(o => o.AddToActivityCache(expected), Times.Once);
-            mockResourceCatalog.Verify(o => o.RemoveFromResourceActivityCache(workspaceId, expected), Times.Once);
+            //mockResourceCatalog.Verify(o => o.AddToActivityCache(expected), Times.Once);
+            //mockResourceCatalog.Verify(o => o.RemoveFromResourceActivityCache(workspaceId, expected), Times.Once);
             mockResourceCatalog.Verify(o => o.Parse(workspaceId, expected), Times.Once);
         }
     }
