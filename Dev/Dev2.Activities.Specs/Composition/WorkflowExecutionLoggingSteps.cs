@@ -291,6 +291,7 @@ namespace Dev2.Activities.Specs.Composition
             activityMock.Setup(o => o.GetDisplayName()).Returns("SpecActivity");
             activityMock.Setup(o => o.Execute(dataObject, 0)).Throws(_falseException);
             activityParserMock.Setup(o => o.Parse(It.IsAny<DynamicActivity>())).Returns(activityMock.Object);
+            activityParserMock.Setup(o => o.ParseWithCache(It.IsAny<DynamicActivity>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(activityMock.Object);
             CustomContainer.Register<IActivityParser>(activityParserMock.Object);
             _scenarioContext.Add("activityMock", activityMock.Object);
             _scenarioContext.Add("expectException", true);
