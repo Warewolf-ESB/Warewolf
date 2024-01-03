@@ -2277,7 +2277,7 @@ namespace Dev2.Studio.ViewModels
         IServer _activeServer;
         IExplorerViewModel _explorerViewModel;
         IWorksurfaceContextManager _worksurfaceContextManager;
-        public  ISubscriptionData SubscriptionData => ActiveServer.GetSubscriptionData();
+        public  ISubscriptionData SubscriptionData => ActiveServer.GetSubscriptionData(false);
 
         public IWorksurfaceContextManager WorksurfaceContextManager
         {
@@ -2363,7 +2363,8 @@ namespace Dev2.Studio.ViewModels
 
         public void UpdateStudioLicense(bool isLicensed)
         {
-            SaveCommand.UpdateContext(ActiveServer);
+            ActiveServer.GetSubscriptionData(isLicensed);
+			SaveCommand.UpdateContext(ActiveServer);
             var environmentViewModel = ExplorerViewModel.Environments.FirstOrDefault(o => o.ResourceId == ActiveServer.EnvironmentID);
             if(environmentViewModel != null)
             {
