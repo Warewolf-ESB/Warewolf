@@ -67,19 +67,19 @@ namespace Dev2.Runtime.Subscription
             {
                 bool isPlainText = false;
                 SubscriptionKey = DecryptKey(settings["SubscriptionKey"]);
-                isPlainText |= SubscriptionKey == settings["SubscriptionKey"];
+                isPlainText |= settings["SubscriptionKey"] != string.Empty && SubscriptionKey == settings["SubscriptionKey"];
                 SubscriptionSiteName = DecryptKey(settings["SubscriptionSiteName"]);
-                isPlainText |= SubscriptionSiteName == settings["SubscriptionSiteName"];
+                isPlainText |= settings["SubscriptionSiteName"] != string.Empty && SubscriptionSiteName == settings["SubscriptionSiteName"];
                 CustomerId = DecryptKey(settings["CustomerId"]);
-                isPlainText |= CustomerId == settings["CustomerId"];
+                isPlainText |= settings["CustomerId"] != string.Empty && CustomerId == settings["CustomerId"];
                 PlanId = DecryptKey(settings["PlanId"]);
-                isPlainText |= PlanId == settings["PlanId"];
+                isPlainText |= settings["PlanId"] != string.Empty && PlanId == settings["PlanId"];
                 SubscriptionId = DecryptKey(settings["SubscriptionId"]);
-                isPlainText |= SubscriptionId == settings["SubscriptionId"];
+                isPlainText |= settings["SubscriptionId"] != string.Empty && SubscriptionId == settings["SubscriptionId"];
                 Status = DecryptKey(settings["Status"]);
-                isPlainText |= Status == settings["Status"];
+                isPlainText |= settings["Status"] != string.Empty && Status == settings["Status"];
                 StopExecutions = bool.Parse(DecryptKey(settings["StopExecutions"]));
-                isPlainText |= bool.TryParse(settings["StopExecutions"], out bool settingParsedAsPlainText);
+                isPlainText |= settings["StopExecutions"] != string.Empty && bool.TryParse(settings["StopExecutions"], out bool settingParsedAsPlainText);
                 if (isPlainText)
                 {
                     Enum.TryParse(Status, out SubscriptionStatus status);
