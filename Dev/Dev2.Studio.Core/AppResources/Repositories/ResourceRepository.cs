@@ -57,6 +57,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         bool _isLoaded;
         readonly IDeployService _deployService = new DeployService();
         readonly object _updatingPermissions = new object();
+        static Guid _resourceId;
 
         public bool IsLoaded
         {
@@ -259,6 +260,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         public ExecuteMessage Save(IResourceModel instanceObj)
         {
+            _resourceId = instanceObj.ID;
             AddResourceIfNotExist(instanceObj);
             var executeMessage = SaveResource(_server, instanceObj.ToServiceDefinition(), _server.Connection.WorkspaceID, instanceObj.GetSavePath(), "Save");
             return executeMessage;
@@ -266,6 +268,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         void AddResourceIfNotExist(IResourceModel instanceObj)
         {
+            _resourceId = instanceObj.ID;
             Dev2Logger.Info($"Save Resource: {instanceObj.ResourceName}  Environment:{_server.Name}", GlobalConstants.WarewolfInfo);
             var workflow = FindSingle(c => c.ID == instanceObj.ID);
             if (workflow == null)
@@ -461,24 +464,9 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             Load(true);
             Dev2Logger.Warn("Loading Resources - End", GlobalConstants.WarewolfWarn);
         }
-
-        protected virtual void LoadResources()
-        {
-            var comsController = GetCommunicationControllerForLoadResources();
-            var con = _server.Connection;
-            var resourceList = comsController.ExecuteCommand<List<SerializableResource>>(con, GlobalConstants.ServerWorkspaceID);
-            if (resourceList == null)
-            {
-                throw new Exception(ErrorResource.FailedToFetchResoureListAsJSONModel);
-            }
-
-            HydrateResourceModels(resourceList, _server.Connection.ServerID);
-            Dev2Logger.Warn("Loading Resources - End", GlobalConstants.WarewolfWarn);
-        }
-
         protected virtual void LoadResources(bool force)
         {
-            var comsController = GetCommunicationControllerForLoadResources();
+            var comsController = GetCommunicationControllerForLoadResources(force);
             var con = _server.Connection;
             var resourceList = comsController.ExecuteCommand<List<SerializableResource>>(con, GlobalConstants.ServerWorkspaceID);
             if (resourceList == null)
@@ -490,12 +478,22 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             Dev2Logger.Warn("Loading Resources - End", GlobalConstants.WarewolfWarn);
         }
 
-        static CommunicationController GetCommunicationControllerForLoadResources()
+
+
+        static CommunicationController GetCommunicationControllerForLoadResources(bool force)
         {
             Dev2Logger.Warn("Loading Resources - Start", GlobalConstants.WarewolfWarn);
             var comsController = new CommunicationController {ServiceName = "FindResourceService"};
             comsController.AddPayloadArgument("ResourceName", "*");
-            comsController.AddPayloadArgument("ResourceId", "*");
+            if (force)
+            {
+                comsController.AddPayloadArgument("ResourceId", "*");
+            }
+            else
+            {
+                comsController.AddPayloadArgument("ResourceId", _resourceId.ToString());
+            }
+
             comsController.AddPayloadArgument("ResourceType", string.Empty);
             return comsController;
         }
@@ -893,8 +891,8 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             if (GetCommunicationController != null)
             {
                 var comsController = GetCommunicationController?.Invoke("DeleteTestCoverage");
-                comsController.AddPayloadArgument("resourceID", resourceId.ToString());               
-               
+                comsController.AddPayloadArgument("resourceID", resourceId.ToString());
+
                 if (resourceId == Guid.Empty)
                 {
                     throw new ArgumentNullException(nameof(resourceId));
@@ -1118,7 +1116,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             }
 
             comController.AddPayloadArgument(Warewolf.Service.SaveAuditingSettings.SinkType, new StringBuilder(settingsDataTypeName));
-            
+
             var output = comController.ExecuteCommand<ExecuteMessage>(currentEnv.Connection, GlobalConstants.ServerWorkspaceID);
             if (output == null)
             {
