@@ -48,7 +48,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             _serverMock = new Mock<IServer>();
             _serverMock.Setup(server => server.GetServerVersion()).Returns("1.1.2");
-            _serverMock.Setup(it => it.GetSubscriptionData()).Returns(new Mock<ISubscriptionData>().Object);
+            _serverMock.Setup(it => it.GetSubscriptionData(false)).Returns(new Mock<ISubscriptionData>().Object);
 
             var explorerRepositoryMock = new Mock<IExplorerRepository>();
             explorerRepositoryMock.Setup(it => it.GetVersions(It.IsAny<Guid>())).Returns(new List<IVersionInfo>());
@@ -155,7 +155,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             serverMock.SetupGet(it => it.EnvironmentID).Returns(serverId);
             serverMock.SetupGet(it => it.DisplayName).Returns("newServerName");
             serverMock.Setup(server => server.Connection).Returns(CreateConnection(true).Object);
-            serverMock.Setup(server => server.GetSubscriptionData()).Returns(new Mock<ISubscriptionData>().Object);
+            serverMock.Setup(server => server.GetSubscriptionData(false)).Returns(new Mock<ISubscriptionData>().Object);
             environmentViewModelMock.SetupGet(it => it.IsVisible).Returns(true);
             environmentViewModelMock.SetupGet(it => it.Server).Returns(serverMock.Object);
             environmentViewModelMock.SetupGet(it => it.Server.EnvironmentID).Returns(serverId);
@@ -202,7 +202,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var envId = Guid.NewGuid();
             serverMock.SetupGet(it => it.EnvironmentID).Returns(envId);
             serverMock.Setup(it => it.ConnectAsync()).ReturnsAsync(true);
-            serverMock.Setup(it => it.GetSubscriptionData()).Returns(new Mock<ISubscriptionData>().Object);
+            serverMock.Setup(it => it.GetSubscriptionData(false)).Returns(new Mock<ISubscriptionData>().Object);
 
             //act
             await _target.MergeConnectControlViewModel.TryConnectAsync(serverMock.Object);
