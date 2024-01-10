@@ -2120,10 +2120,15 @@ namespace Dev2.Studio.ViewModels.Workflow
         void SaveToWorkspace()
         {
             BindToModel();
-            ResourceModel.Environment.ResourceRepository.Save(ResourceModel);
+
+            if (!ResourceModel.IsWorkflowSaved)
+            {
+                ResourceModel.Environment.ResourceRepository.Save(ResourceModel);
+            }
+
             _workspaceSave = true;
         }
-        
+
         public void UpdateDataList()
         {
             AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(false);
