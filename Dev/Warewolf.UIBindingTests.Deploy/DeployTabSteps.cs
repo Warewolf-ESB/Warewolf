@@ -171,7 +171,7 @@ namespace Warewolf.UIBindingTests.Deploy
                 mock.Setup(a => a.GetServerVersion()).Returns("1.0.0.0");
                 mock.Setup(a => a.GetMinSupportedVersion()).Returns("1.0.0.0");
                 mock.SetupGet(it => it.Connection).Returns(mockEnvironmentConnection.Object);
-                mock.Setup(e => e.GetSubscriptionData()).Returns(MockSubscriptionData(true).Object);
+                mock.Setup(e => e.GetSubscriptionData(false)).Returns(MockSubscriptionData(true).Object);
                 shell.Setup(a => a.LocalhostServer).Returns(server.Object);
                
                 shell.Setup(a => a.ActiveServer).Returns(mock.Object);
@@ -229,7 +229,7 @@ namespace Warewolf.UIBindingTests.Deploy
             server.Setup(a => a.CanDeployFrom).Returns(true);
             server.Setup(a => a.GetServerVersion()).Returns("1.0.0.0");
             server.Setup(a => a.GetMinSupportedVersion()).Returns("1.0.0.0");
-            server.Setup(e => e.GetSubscriptionData()).Returns(MockSubscriptionData(true).Object);
+            server.Setup(e => e.GetSubscriptionData(false)).Returns(MockSubscriptionData(true).Object);
             server.SetupGet(it => it.Connection).Returns(mockEnvironmentConnection.Object);
             if (!name.Equals(localhostString, StringComparison.InvariantCultureIgnoreCase))
             {
@@ -268,7 +268,7 @@ namespace Warewolf.UIBindingTests.Deploy
             server.Setup(a => a.ConnectAsync()).Returns(Task.FromResult(true));
             server.Setup(a => a.GetServerVersion()).Returns("1.0.0.0");
             server.Setup(a => a.GetMinSupportedVersion()).Returns("1.0.0.0");
-            server.Setup(e => e.GetSubscriptionData()).Returns(MockSubscriptionData(true).Object);
+            server.Setup(e => e.GetSubscriptionData(false)).Returns(MockSubscriptionData(true).Object);
 			_scenarioContext[destinationServerString] = server;
             return new List<IServer>
             {
