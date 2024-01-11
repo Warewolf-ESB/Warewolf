@@ -9,7 +9,8 @@ Background: Setup for workflow execution
 
 @DatabaseWorkflowExecution
 Scenario: Database PostgreSql Database service inputs and outputs
-     Given I depend on a valid PostgreSQL server 
+     Given I depend on a valid PostgreSQL server
+	 And I restore Country table
 	 And I have a workflow "PostgreSqlGetCountries"
 	 And "PostgreSqlGetCountries" contains a postgre tool using "get_countries" with mappings as
 	  | Input to Service | From Variable | Output from Service | To Variable           |
