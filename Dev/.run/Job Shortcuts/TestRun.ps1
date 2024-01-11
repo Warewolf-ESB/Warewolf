@@ -284,6 +284,7 @@ if __name__ == '__main__':
 	main()
 "@ | Out-File -LiteralPath "C:\ftps_entrypoint.py" -Encoding utf8 -Force
 		}
+		net stop hns
 		pythonw -u "C:\ftps_entrypoint.py"
 	}
     if ($RetryRebuild.IsPresent) {
