@@ -2115,13 +2115,10 @@ namespace Dev2.Studio.ViewModels
         void SaveAndShutdown(bool isStudioShutdown)
         {
             SaveWorkspaceItems();
+            
             foreach (var ctx in Items)
-            {
-                if ((isStudioShutdown && ctx.IsEnvironmentConnected()) || ctx.CanSave())
-                {
+                if ((isStudioShutdown && ctx.IsEnvironmentConnected() && this.SaveCommand.CanExecute(null)) || ctx.CanSave())
                     ctx.Save(true, isStudioShutdown);
-                }
-            }
         }
 
         public MessageBoxResult ShowUnsavedWorkDialog()
