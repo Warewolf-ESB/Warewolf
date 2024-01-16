@@ -2114,10 +2114,13 @@ namespace Dev2.Studio.ViewModels
 
         void SaveAndShutdown(bool isStudioShutdown)
         {
+            if (!SubscriptionData.IsLicensed)
+                return;
+
             SaveWorkspaceItems();
-            
+
             foreach (var ctx in Items)
-                if ((isStudioShutdown && ctx.IsEnvironmentConnected() && this.SaveCommand.CanExecute(null)) || ctx.CanSave())
+                if ((isStudioShutdown && ctx.IsEnvironmentConnected()) || ctx.CanSave())
                     ctx.Save(true, isStudioShutdown);
         }
 
