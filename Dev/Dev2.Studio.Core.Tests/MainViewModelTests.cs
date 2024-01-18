@@ -1524,12 +1524,19 @@ namespace Dev2.Core.Tests
 
             var envConn = SetupMockConnection();
             var env = new Mock<IServer>();
-            envConn.Setup(conn => conn.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
+			var mockEnvironmentModelRepo = new Mock<IServerRepository>();
+			envConn.Setup(conn => conn.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
             env.Setup(e => e.ResourceRepository).Returns(resourceRepo.Object);
             env.Setup(e => e.Connection).Returns(envConn.Object);
             env.Setup(e => e.IsConnected).Returns(true);
 
-            var resourceModel = new Mock<IContextualResourceModel>();
+			var mockSubscriptionData = new Mock<ISubscriptionData>();
+			mockSubscriptionData.Setup(sub => sub.IsLicensed).Returns(true);
+			env.Setup(model => model.GetSubscriptionData(false)).Returns(mockSubscriptionData.Object);
+			mockEnvironmentModelRepo.Setup(repo => repo.ActiveServer).Returns(env.Object);
+			CustomContainer.Register(mockEnvironmentModelRepo.Object);
+
+			var resourceModel = new Mock<IContextualResourceModel>();
             resourceModel.Setup(m => m.Environment).Returns(env.Object);
             resourceModel.Setup(m => m.ID).Returns(resourceID);
             resourceModel.Setup(m => m.UserPermissions).Returns(Permissions.Contribute);
