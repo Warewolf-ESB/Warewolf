@@ -2120,8 +2120,15 @@ namespace Dev2.Studio.ViewModels.Workflow
         void SaveToWorkspace()
         {
             // Dont save WF if not licensed.
-            if (!CustomContainer.Get<IServerRepository>().ActiveServer.GetSubscriptionData(false).IsLicensed) return;
-            
+            var server = CustomContainer.Get<IServerRepository>().ActiveServer;
+            if (server == null)
+                return;
+
+            var subscriptionData = server.GetSubscriptionData(false);
+
+            if (subscriptionData == null || !subscriptionData.IsLicensed)
+                return;
+
             BindToModel();
 
             if (!ResourceModel.IsWorkflowSaved)
