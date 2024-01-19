@@ -259,9 +259,7 @@ namespace Dev2.Studio.ViewModels
         {
             get
             {
-                var subscriptionData = SubscriptionData;
-
-                if ((subscriptionData == null || !subscriptionData.IsLicensed) || ActiveItem is null)
+                if (!SubscriptionData.IsLicensed || ActiveItem is null)
                 {
                     return new AuthorizeCommand(Dev2.Common.Interfaces.Enums.AuthorizationContext.None, p => { }, param => false);
                 }
@@ -2116,9 +2114,7 @@ namespace Dev2.Studio.ViewModels
 
         void SaveAndShutdown(bool isStudioShutdown)
         {
-            var subscriptionData = SubscriptionData;
-
-            if (subscriptionData == null || !subscriptionData.IsLicensed)
+            if (!SubscriptionData.IsLicensed)
                 return;
 
             SaveWorkspaceItems();
