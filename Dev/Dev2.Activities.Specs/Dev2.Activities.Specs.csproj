@@ -253,6 +253,7 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk">
       <Version>16.8.3</Version>
     </PackageReference>
+    <PackageReference Include="Microsoft.PowerShell.5.1.ReferenceAssemblies" Version="1.0.0" />
     <PackageReference Include="Microsoft.SharePointOnline.CSOM">
       <Version>16.1.3912.1204</Version>
     </PackageReference>

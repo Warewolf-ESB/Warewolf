@@ -89,7 +89,7 @@ namespace Dev2.Studio.Interfaces
         IExplorerRepository ProxyLayer { get; }
         Permissions UserPermissions { get; set; }
         IVersionInfo VersionInfo { get; set; }
-        ISubscriptionData GetSubscriptionData();
+        ISubscriptionData GetSubscriptionData(bool forceReload);
 
         string GetMinSupportedVersion();
 

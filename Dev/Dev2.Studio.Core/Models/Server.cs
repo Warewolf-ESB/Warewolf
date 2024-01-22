@@ -368,11 +368,11 @@ namespace Dev2.Studio.Core.Models
         public bool CanDeployTo => IsAuthorizedDeployTo;
         public bool CanDeployFrom => IsAuthorizedDeployFrom;
 
-        public ISubscriptionData GetSubscriptionData()
+        public ISubscriptionData GetSubscriptionData(bool forceReload = false)
         {
             try
             {
-                if(_subscriptionData == null || !_subscriptionData.Connected)
+                if(_subscriptionData == null || !_subscriptionData.Connected || forceReload)
                 {
                     if (!Connection.IsConnected)
                     {

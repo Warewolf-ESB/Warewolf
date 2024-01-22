@@ -58,11 +58,11 @@ namespace Warewolf.Studio.ViewModels.Tests
             _shellVm.Setup(it => it.SubscriptionData).Returns(MockSubscriptionData().Object);
             _serverMock = new Mock<IServer>();
             var mockEnvironmentConnection = SetupMockConnection();
-            _serverMock.Setup(it => it.GetSubscriptionData()).Returns(MockSubscriptionData().Object);
+            _serverMock.Setup(it => it.GetSubscriptionData(false)).Returns(MockSubscriptionData().Object);
             mockEnvironmentConnection.Setup(connection => connection.IsConnected).Returns(true);
             _serverMock.Setup(server => server.Connection).Returns(mockEnvironmentConnection.Object);
             _differentServerMock = new Mock<IServer>();
-            _differentServerMock.Setup(it => it.GetSubscriptionData()).Returns(MockSubscriptionData().Object);
+            _differentServerMock.Setup(it => it.GetSubscriptionData(false)).Returns(MockSubscriptionData().Object);
             _eventAggregatorMock = new Mock<IEventAggregator>();
             _updateRepositoryMock = new Mock<IStudioUpdateManager>();
             _sourceView.Setup(model => model.SelectedItems).Returns(new List<IExplorerTreeItem>());
@@ -200,7 +200,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _updateRepositoryMock.SetupProperty(manager => manager.ServerSaved);
             _serverMock.SetupGet(it => it.UpdateRepository).Returns(_updateRepositoryMock.Object);
             _serverMock.SetupGet(it => it.DisplayName).Returns("some text");
-            _serverMock.Setup(it => it.GetSubscriptionData()).Returns(MockSubscriptionData().Object);
+            _serverMock.Setup(it => it.GetSubscriptionData(false)).Returns(MockSubscriptionData().Object);
             _serverEnvironmentId = Guid.NewGuid();
             _serverMock.SetupGet(it => it.EnvironmentID).Returns(_serverEnvironmentId);
             _shellVm.Setup(model => model.ExplorerViewModel).Returns(new Mock<IExplorerViewModel>().Object);
@@ -595,7 +595,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _updateRepositoryMock.SetupProperty(manager => manager.ServerSaved);
             _serverMock.SetupGet(it => it.UpdateRepository).Returns(_updateRepositoryMock.Object);
             _serverMock.SetupGet(it => it.DisplayName).Returns("some text");
-            _serverMock.Setup(it => it.GetSubscriptionData()).Returns(MockSubscriptionData().Object);
+            _serverMock.Setup(it => it.GetSubscriptionData(false)).Returns(MockSubscriptionData().Object);
             _serverEnvironmentId = Guid.NewGuid();
             _serverMock.SetupGet(it => it.EnvironmentID).Returns(_serverEnvironmentId);
             _serverMock.Setup(server => server.IsConnected).Returns(true);
@@ -638,7 +638,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _updateRepositoryMock.SetupProperty(manager => manager.ServerSaved);
             _serverMock.SetupGet(it => it.UpdateRepository).Returns(_updateRepositoryMock.Object);
             _serverMock.SetupGet(it => it.DisplayName).Returns("some text");
-            _serverMock.Setup(it => it.GetSubscriptionData()).Returns(MockSubscriptionData().Object);
+            _serverMock.Setup(it => it.GetSubscriptionData(false)).Returns(MockSubscriptionData().Object);
             _serverEnvironmentId = Guid.NewGuid();
             _serverMock.SetupGet(it => it.EnvironmentID).Returns(_serverEnvironmentId);
             _serverMock.Setup(server => server.IsConnected).Returns(true);
@@ -665,7 +665,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var mockEnvironmentConnection = SetupMockConnection();
             mockEnvironmentConnection.Setup(connection => connection.IsConnected).Returns(true);
             _differentServerMock.Setup(server => server.Connection).Returns(mockEnvironmentConnection.Object);
-            _differentServerMock.Setup(it => it.GetSubscriptionData()).Returns(MockSubscriptionData().Object);
+            _differentServerMock.Setup(it => it.GetSubscriptionData(false)).Returns(MockSubscriptionData().Object);
             differentConnectControl.Setup(model => model.SelectedConnection).Returns(_differentServerMock.Object);
             _destView.Setup(model => model.ConnectControlViewModel).Returns(differentConnectControl.Object);
             _destView.Setup(model => model.SelectedEnvironment).Returns(It.IsAny<IEnvironmentViewModel>());
@@ -1159,7 +1159,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _updateRepositoryMock.SetupProperty(manager => manager.ServerSaved);
             _serverMock.SetupGet(it => it.UpdateRepository).Returns(_updateRepositoryMock.Object);
             _serverMock.SetupGet(it => it.DisplayName).Returns("some text");
-            _serverMock.Setup(it => it.GetSubscriptionData()).Returns(MockSubscriptionData().Object);
+            _serverMock.Setup(it => it.GetSubscriptionData(false)).Returns(MockSubscriptionData().Object);
             _serverEnvironmentId = Guid.NewGuid();
             _serverMock.SetupGet(it => it.EnvironmentID).Returns(_serverEnvironmentId);
             _shellVm.Setup(model => model.LocalhostServer).Returns(_serverMock.Object);

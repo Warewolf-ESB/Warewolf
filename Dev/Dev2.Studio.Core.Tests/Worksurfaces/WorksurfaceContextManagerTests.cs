@@ -46,7 +46,7 @@ namespace Dev2.Core.Tests
             var workFlow = XML.XmlResource.Fetch("ResourceWithErrors");
             svr.Setup(server => server.ProxyLayer.GetVersion(It.IsAny<IVersionInfo>(), It.IsAny<Guid>()))
             .Returns(new StringBuilder(workFlow.ToString(SaveOptions.DisableFormatting)));
-            svr.Setup(server => server.GetSubscriptionData()).Returns(MockSubscriptionData(false,SubscriptionStatus.InTrial).Object);
+            svr.Setup(server => server.GetSubscriptionData(false)).Returns(MockSubscriptionData(false,SubscriptionStatus.InTrial).Object);
             _verifyAction = () =>
             {
                 svr.Verify(server => server.ProxyLayer.GetVersion(It.IsAny<IVersionInfo>(), It.IsAny<Guid>()));
@@ -467,7 +467,7 @@ namespace Dev2.Core.Tests
             var server = new Mock<IServer>();
             server.Setup(server1 => server1.UpdateRepository).Returns(new Mock<IStudioUpdateManager>().Object);
             server.Setup(server1 => server1.QueryProxy).Returns(new Mock<IQueryManager>().Object);
-            server.Setup(server1 => server1.GetSubscriptionData()).Returns(MockSubscriptionData(true,SubscriptionStatus.Active).Object);
+            server.Setup(server1 => server1.GetSubscriptionData(false)).Returns(MockSubscriptionData(true,SubscriptionStatus.Active).Object);
             server.Setup(server1 => server1.Name).Returns("localhost");
             _shellViewModel.ActiveServer = server.Object;
             _activeEnvironment.Setup(model => model.Name).Returns("localhost");
@@ -497,7 +497,7 @@ namespace Dev2.Core.Tests
             var server = new Mock<IServer>();
             server.Setup(server1 => server1.UpdateRepository).Returns(new Mock<IStudioUpdateManager>().Object);
             server.Setup(server1 => server1.QueryProxy).Returns(new Mock<IQueryManager>().Object);
-            server.Setup(server1 => server1.GetSubscriptionData()).Returns(MockSubscriptionData(true,SubscriptionStatus.Active).Object);
+            server.Setup(server1 => server1.GetSubscriptionData(false)).Returns(MockSubscriptionData(true,SubscriptionStatus.Active).Object);
             server.Setup(server1 => server1.Name).Returns("localhost");
             _shellViewModel.ActiveServer = server.Object;
             _activeEnvironment.Setup(model => model.Name).Returns("localhost");
@@ -529,7 +529,7 @@ namespace Dev2.Core.Tests
             var server = new Mock<IServer>();
             server.Setup(server1 => server1.UpdateRepository).Returns(new Mock<IStudioUpdateManager>().Object);
             server.Setup(server1 => server1.QueryProxy).Returns(new Mock<IQueryManager>().Object);
-            server.Setup(server1 => server1.GetSubscriptionData()).Returns(MockSubscriptionData(true,SubscriptionStatus.Active).Object);
+            server.Setup(server1 => server1.GetSubscriptionData(false)).Returns(MockSubscriptionData(true,SubscriptionStatus.Active).Object);
             server.Setup(server1 => server1.Name).Returns("localhost");
             _shellViewModel.ActiveServer = server.Object;
             _activeEnvironment.Setup(model => model.Name).Returns("localhost");
@@ -560,7 +560,7 @@ namespace Dev2.Core.Tests
             var beforeCount = _shellViewModel.Items.Count;
             var server = new Mock<IServer>();
             server.Setup(server1 => server1.UpdateRepository).Returns(new Mock<IStudioUpdateManager>().Object);
-            server.Setup(server1 => server1.GetSubscriptionData()).Returns(MockSubscriptionData(true,SubscriptionStatus.Active).Object);
+            server.Setup(server1 => server1.GetSubscriptionData(false)).Returns(MockSubscriptionData(true,SubscriptionStatus.Active).Object);
             server.Setup(server1 => server1.QueryProxy).Returns(new Mock<IQueryManager>().Object);
             _shellViewModel.ActiveServer = server.Object;
             _activeEnvironment.Setup(model => model.Name).Returns("localhost");
@@ -592,7 +592,7 @@ namespace Dev2.Core.Tests
             var server = new Mock<IServer>();
             server.Setup(server1 => server1.UpdateRepository).Returns(new Mock<IStudioUpdateManager>().Object);
             server.Setup(server1 => server1.QueryProxy).Returns(new Mock<IQueryManager>().Object);
-            server.Setup(server1 => server1.GetSubscriptionData()).Returns(MockSubscriptionData(true,SubscriptionStatus.Active).Object);
+            server.Setup(server1 => server1.GetSubscriptionData(false)).Returns(MockSubscriptionData(true,SubscriptionStatus.Active).Object);
             _shellViewModel.ActiveServer = server.Object;
             _activeEnvironment.Setup(model => model.Name).Returns("localhost");
             //---------------Assert Precondition----------------
@@ -623,7 +623,7 @@ namespace Dev2.Core.Tests
             var server = new Mock<IServer>();
             server.Setup(server1 => server1.UpdateRepository).Returns(new Mock<IStudioUpdateManager>().Object);
             server.Setup(server1 => server1.QueryProxy).Returns(new Mock<IQueryManager>().Object);
-            server.Setup(server1 => server1.GetSubscriptionData()).Returns(MockSubscriptionData(true,SubscriptionStatus.Active).Object);
+            server.Setup(server1 => server1.GetSubscriptionData(false)).Returns(MockSubscriptionData(true,SubscriptionStatus.Active).Object);
             _shellViewModel.ActiveServer = server.Object;
             _activeEnvironment.Setup(model => model.Name).Returns("localhost");
             //---------------Assert Precondition----------------
@@ -655,7 +655,7 @@ namespace Dev2.Core.Tests
             var server = new Mock<IServer>();
             server.Setup(server1 => server1.UpdateRepository).Returns(new Mock<IStudioUpdateManager>().Object);
             server.Setup(server1 => server1.QueryProxy).Returns(new Mock<IQueryManager>().Object);
-            server.Setup(server1 => server1.GetSubscriptionData()).Returns(MockSubscriptionData(true,SubscriptionStatus.Active).Object);
+            server.Setup(server1 => server1.GetSubscriptionData(false)).Returns(MockSubscriptionData(true,SubscriptionStatus.Active).Object);
             _shellViewModel.ActiveServer = server.Object;
             _activeEnvironment.Setup(model => model.Name).Returns("localhost");
             //---------------Assert Precondition----------------
@@ -686,7 +686,7 @@ namespace Dev2.Core.Tests
             var server = new Mock<IServer>();
             server.Setup(server1 => server1.UpdateRepository).Returns(new Mock<IStudioUpdateManager>().Object);
             server.Setup(server1 => server1.QueryProxy).Returns(new Mock<IQueryManager>().Object);
-            server.Setup(server1 => server1.GetSubscriptionData()).Returns(MockSubscriptionData(true,SubscriptionStatus.Active).Object);
+            server.Setup(server1 => server1.GetSubscriptionData(false)).Returns(MockSubscriptionData(true,SubscriptionStatus.Active).Object);
             _shellViewModel.ActiveServer = server.Object;
             _activeEnvironment.Setup(model => model.Name).Returns("localhost");
             //---------------Assert Precondition----------------
@@ -717,7 +717,7 @@ namespace Dev2.Core.Tests
             var server = new Mock<IServer>();
             server.Setup(server1 => server1.UpdateRepository).Returns(new Mock<IStudioUpdateManager>().Object);
             server.Setup(server1 => server1.QueryProxy).Returns(new Mock<IQueryManager>().Object);
-            server.Setup(server1 => server1.GetSubscriptionData()).Returns(MockSubscriptionData(true,SubscriptionStatus.Active).Object);
+            server.Setup(server1 => server1.GetSubscriptionData(false)).Returns(MockSubscriptionData(true,SubscriptionStatus.Active).Object);
             _shellViewModel.ActiveServer = server.Object;
             _activeEnvironment.Setup(model => model.Name).Returns("localhost");
             //---------------Assert Precondition----------------
@@ -748,7 +748,7 @@ namespace Dev2.Core.Tests
             var server = new Mock<IServer>();
             server.Setup(server1 => server1.UpdateRepository).Returns(new Mock<IStudioUpdateManager>().Object);
             server.Setup(server1 => server1.QueryProxy).Returns(new Mock<IQueryManager>().Object);
-            server.Setup(server1 => server1.GetSubscriptionData()).Returns(MockSubscriptionData(true,SubscriptionStatus.Active).Object);
+            server.Setup(server1 => server1.GetSubscriptionData(false)).Returns(MockSubscriptionData(true,SubscriptionStatus.Active).Object);
             _shellViewModel.ActiveServer = server.Object;
             _activeEnvironment.Setup(model => model.Name).Returns("localhost");
             //---------------Assert Precondition----------------
@@ -779,7 +779,7 @@ namespace Dev2.Core.Tests
             var server = new Mock<IServer>();
             server.Setup(server1 => server1.UpdateRepository).Returns(new Mock<IStudioUpdateManager>().Object);
             server.Setup(server1 => server1.QueryProxy).Returns(new Mock<IQueryManager>().Object);
-            server.Setup(server1 => server1.GetSubscriptionData()).Returns(MockSubscriptionData(true,SubscriptionStatus.Active).Object);
+            server.Setup(server1 => server1.GetSubscriptionData(false)).Returns(MockSubscriptionData(true,SubscriptionStatus.Active).Object);
             _shellViewModel.ActiveServer = server.Object;
             _activeEnvironment.Setup(model => model.Name).Returns("localhost");
             //---------------Assert Precondition----------------
@@ -812,7 +812,7 @@ namespace Dev2.Core.Tests
             var server = new Mock<IServer>();
             server.Setup(server1 => server1.UpdateRepository).Returns(new Mock<IStudioUpdateManager>().Object);
             server.Setup(server1 => server1.QueryProxy).Returns(new Mock<IQueryManager>().Object);
-            server.Setup(server1 => server1.GetSubscriptionData()).Returns(MockSubscriptionData(true,SubscriptionStatus.Active).Object);
+            server.Setup(server1 => server1.GetSubscriptionData(false)).Returns(MockSubscriptionData(true,SubscriptionStatus.Active).Object);
             _shellViewModel.ActiveServer = server.Object;
             _activeEnvironment.Setup(model => model.Name).Returns("localhost");
             //---------------Assert Precondition----------------
@@ -843,7 +843,7 @@ namespace Dev2.Core.Tests
             var server = new Mock<IServer>();
             server.Setup(server1 => server1.UpdateRepository).Returns(new Mock<IStudioUpdateManager>().Object);
             server.Setup(server1 => server1.QueryProxy).Returns(new Mock<IQueryManager>().Object);
-            server.Setup(server1 => server1.GetSubscriptionData()).Returns(MockSubscriptionData(true,SubscriptionStatus.Active).Object);
+            server.Setup(server1 => server1.GetSubscriptionData(false)).Returns(MockSubscriptionData(true,SubscriptionStatus.Active).Object);
             _shellViewModel.ActiveServer = server.Object;
             _activeEnvironment.Setup(model => model.Name).Returns("localhost");
             //---------------Assert Precondition----------------

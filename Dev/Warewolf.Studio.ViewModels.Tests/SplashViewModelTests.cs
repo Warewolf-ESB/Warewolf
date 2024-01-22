@@ -32,7 +32,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestInitialize()
         {
             _serverMock = new Mock<IServer>();
-            _serverMock.Setup(o => o.GetSubscriptionData()).Returns(new Mock<ISubscriptionData>().Object);
+            _serverMock.Setup(o => o.GetSubscriptionData(false)).Returns(new Mock<ISubscriptionData>().Object);
             _externalProcessExecutorMock = new Mock<IExternalProcessExecutor>();
 
             _changedProperties = new List<string>();
@@ -332,7 +332,7 @@ namespace Warewolf.Studio.ViewModels.Tests
                 PlanId = "Developer",
                 Status = SubscriptionStatus.InTrial,
             };
-            _serverMock.Setup(o => o.GetSubscriptionData()).Returns(subscriptionData);
+            _serverMock.Setup(o => o.GetSubscriptionData(false)).Returns(subscriptionData);
             _serverMock.Setup(o => o.GetServerVersion()).Returns("1.2.3.4");
 
             //act
