@@ -36,8 +36,9 @@ namespace Dev2.PerformanceCounters.Management
         {
             try
             {
-                var returnValue = _resourceCounters.Where(a => a is IResourcePerformanceCounter).Cast<IResourcePerformanceCounter>().First(a => a.ResourceId == resourceId && a.PerfCounterType==type).ToSafe();
-                return returnValue;
+                var returnValue = _resourceCounters.Where(a => a is IResourcePerformanceCounter).Cast<IResourcePerformanceCounter>().FirstOrDefault(a => a.ResourceId == resourceId && a.PerfCounterType==type);
+
+                return returnValue == null ? EmptyCounter : returnValue.ToSafe();
             }
             catch(Exception)
             {
