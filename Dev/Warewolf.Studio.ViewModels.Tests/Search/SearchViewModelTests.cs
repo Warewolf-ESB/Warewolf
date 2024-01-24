@@ -17,7 +17,7 @@ using Warewolf.Licensing;
 
 namespace Warewolf.Studio.ViewModels.Tests.Search
 {
-    [TestClass]
+	[TestClass]
     [DoNotParallelize]
     [TestCategory("CannotParallelize")]//CustomContainer.Register
     public class SearchViewModelTests
@@ -47,7 +47,7 @@ namespace Warewolf.Studio.ViewModels.Tests.Search
             _serverMock.SetupGet(it => it.DisplayName).Returns("someResName");
             _serverMock.Setup(it => it.GetServerVersion()).Returns("1.1.3");
             _serverMock.Setup(it => it.GetMinSupportedVersion()).Returns("1.1.2");
-            _serverMock.Setup(it => it.GetSubscriptionData()).Returns(new Mock<ISubscriptionData>().Object);
+            _serverMock.Setup(it => it.GetSubscriptionData(false)).Returns(new Mock<ISubscriptionData>().Object);
             _environmentConnectonMock = SetupMockConnection();
             _environmentConnectonMock.Setup(connection => connection.IsConnected).Returns(true);
             _serverMock.Setup(server => server.Connection).Returns(_environmentConnectonMock.Object);
