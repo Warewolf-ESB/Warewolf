@@ -150,6 +150,7 @@ namespace Warewolf.Studio.ViewModels
         private bool _canCreateSource;
         private bool _canViewOpenAPI;
         private bool _canViewApisJson;
+        private bool _canReloadServerResources;
         private bool _canCreateWorkflowService;
         private bool _canDebugInputs;
         private bool _canDebugStudio;
@@ -510,6 +511,7 @@ namespace Warewolf.Studio.ViewModels
             IsQueueEventVisible = _isService;
 
             CanViewApisJson = (_isFolder || _isService) && _canView;
+            CanViewReloadResources = (_isFolder || _isService) && _canView;
             CanViewOpenAPI = _isService && _canView;
             CanMerge = _isService && _canView;
         }
@@ -684,6 +686,7 @@ namespace Warewolf.Studio.ViewModels
         {
             CanExecute = IsService && !isDeploy;
             CanViewApisJson = true;
+            CanViewReloadResources = true;
             CanViewOpenAPI = true;
             CanMerge = true;
             CanDebugInputs = true;
@@ -699,6 +702,7 @@ namespace Warewolf.Studio.ViewModels
             CanContribute = false;
             CanShowVersions = true;
             CanViewApisJson = true;
+            CanViewReloadResources = true;
             CanViewOpenAPI = true;
             CanMerge = true;
         }
@@ -725,6 +729,7 @@ namespace Warewolf.Studio.ViewModels
             CanCreateSource = false;
             CanView = false;
             CanViewApisJson = false;
+            CanViewReloadResources = false;
             CanMove = false;
             CanViewOpenAPI = false;
             CanMerge = false;
@@ -746,6 +751,7 @@ namespace Warewolf.Studio.ViewModels
             CanCreateSource = true;
             CanView = true;
             CanViewApisJson = true;
+            CanViewReloadResources = true;
             CanMove = true;
             CanViewOpenAPI = true;
             CanMerge = true;
@@ -776,6 +782,7 @@ namespace Warewolf.Studio.ViewModels
             CanShowVersions = true;
             CanMove = true;
             CanViewApisJson = true;
+            CanViewReloadResources = true;
             CanViewOpenAPI = true;
             CanMerge = true;
             CanDebugInputs = true;
@@ -1200,6 +1207,17 @@ namespace Warewolf.Studio.ViewModels
                 _canViewApisJson = value;
                 ExplorerTooltips.ViewApisJsonTooltip = _canViewApisJson ? Resources.Languages.Tooltips.ViewApisJsonTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
                 OnPropertyChanged(() => CanViewApisJson);
+            }
+        }
+
+        public bool CanViewReloadResources
+        {
+            get => _canReloadServerResources && !IsSaveDialog;
+            set
+            {
+                _canReloadServerResources = value;
+                ExplorerTooltips.ViewApisJsonTooltip = _canReloadServerResources ? Resources.Languages.Tooltips.ReloadServerResourceToolTip : Resources.Languages.Tooltips.NoPermissionsToolTip;
+                OnPropertyChanged(() => CanViewReloadResources);
             }
         }
 

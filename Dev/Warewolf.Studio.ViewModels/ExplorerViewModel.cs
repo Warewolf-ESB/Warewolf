@@ -38,7 +38,7 @@ namespace Warewolf.Studio.ViewModels
 
         protected ExplorerViewModelBase()
         {
-            RefreshCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(async () => await RefreshAsync(true).ConfigureAwait(true));
+            RefreshCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(async () => await RefreshAsync(false).ConfigureAwait(true));
             ClearSearchTextCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() => SearchText = "");
             CreateFolderCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(CreateFolder);
         }
@@ -498,9 +498,9 @@ namespace Warewolf.Studio.ViewModels
             OnPropertyChanged(() => Environments);
         }
 
-        protected virtual async Task<bool> LoadEnvironmentAsync(IEnvironmentViewModel localhostEnvironment) => await LoadEnvironmentAsync(localhostEnvironment, false, true).ConfigureAwait(true);
+        //protected virtual async Task<bool> LoadEnvironmentAsync(IEnvironmentViewModel localhostEnvironment) => await LoadEnvironmentAsync(localhostEnvironment, false, true).ConfigureAwait(true);
         
-        protected virtual async Task<bool> LoadEnvironmentAsync(IEnvironmentViewModel localhostEnvironment, bool isDeploy) => await LoadEnvironmentAsync(localhostEnvironment, isDeploy, true).ConfigureAwait(true);
+        protected virtual async Task<bool> LoadEnvironmentAsync(IEnvironmentViewModel localhostEnvironment, bool isDeploy) => await LoadEnvironmentAsync(localhostEnvironment, isDeploy, false).ConfigureAwait(true);
 
         protected virtual async Task<bool> LoadEnvironmentAsync(IEnvironmentViewModel localhostEnvironment, bool isDeploy, bool reloadCatalogue)
         {

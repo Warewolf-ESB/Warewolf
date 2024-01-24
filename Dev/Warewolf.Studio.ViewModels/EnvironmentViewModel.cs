@@ -66,6 +66,7 @@ namespace Warewolf.Studio.ViewModels
         string _filter;
         bool _canCreateSource;
         bool _canViewApisJson;
+        bool _canViewReloadServerResources;
         bool _canDeploy;
         bool _isSaveDialog;
         bool _canViewExecutionLogging;
@@ -239,6 +240,7 @@ namespace Warewolf.Studio.ViewModels
 
             DisplayName = server.DisplayName;
             RefreshCommand = new DelegateCommand(async () => { await RefreshAsync().ConfigureAwait(true); });
+            ReloadServerResourcesCommand = new DelegateCommand(async () => { await ReloadServerResourcesAsync().ConfigureAwait(true); });
             IsServerIconVisible = true;
             SelectAction = selectAction ?? (a => { });
             Expand = new DelegateCommand<int?>(
@@ -280,6 +282,7 @@ namespace Warewolf.Studio.ViewModels
             IsMergeVisible = false;
             ResourceId = server.EnvironmentID;
             CanViewApisJson = true;
+            CanViewReloadResources = true;
             CanViewExecutionLogging = true;
             if(ForcedRefresh)
             {
@@ -288,6 +291,16 @@ namespace Warewolf.Studio.ViewModels
         }
 
         async Task RefreshAsync()
+        {
+            var isDeploy = Children.Any(a => AllowResourceCheck);
+            await LoadAsync(isDeploy, false).ConfigureAwait(true);
+            if(isDeploy)
+            {
+                ShowContextMenu = false;
+            }
+        } 
+        
+        async Task ReloadServerResourcesAsync()
         {
             var isDeploy = Children.Any(a => AllowResourceCheck);
             await LoadAsync(isDeploy, true).ConfigureAwait(true);
@@ -377,7 +390,7 @@ namespace Warewolf.Studio.ViewModels
                 CanCreateWorkflowService = true,
                 CanView = true,
                 CanDeploy = true,
-                CanViewApisJson = true,
+                CanViewApisJson = true, 
                 ResourceName = name,
                 IsRenaming = true
             };
@@ -500,6 +513,17 @@ namespace Warewolf.Studio.ViewModels
                 _canViewApisJson = value;
                 ExplorerTooltips.ViewApisJsonTooltip = _canViewApisJson ? Resources.Languages.Tooltips.ViewApisJsonTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
                 OnPropertyChanged(() => CanViewApisJson);
+            }
+        }  
+        
+        public bool CanViewReloadResources
+        {
+            get => _canViewReloadServerResources;
+            set
+            {
+                _canViewReloadServerResources = value;
+                ExplorerTooltips.ViewReloadResourcesOnServerToolTip = _canViewReloadServerResources ? Resources.Languages.Tooltips.ReloadServerResourceToolTip : Resources.Languages.Tooltips.NoPermissionsToolTip;
+                OnPropertyChanged(() => CanViewReloadResources);
             }
         }
         public bool CanViewExecutionLogging
@@ -863,6 +887,7 @@ namespace Warewolf.Studio.ViewModels
         public ICommand ShowVersionHistory { get; set; }
         public ICommand RollbackCommand { get; set; }
         public ICommand ShowServerVersionCommand { get; set; }
+        public ICommand ReloadServerResourcesCommand { get; set; }
         public ICommand Expand { get; set; }
         public ICommand RefreshCommand { get; set; }
         public ICommand ViewApisJsonCommand { get; set; }
