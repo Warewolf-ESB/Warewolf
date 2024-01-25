@@ -346,18 +346,21 @@ VALUES (1, 'United States', null),
        (4, 'Zimbabwe', null)
 ON CONFLICT (""Id"") DO NOTHING;
 ");
-			File.WriteAllText("RestoreCountryTable.ps1", @"
+			string script = @"
 $database = ""TestDB""
 $username = ""postgres""
 $password = ""test123""
-$dbhost = " + _containerOps.Container.IP + @"
-$port = " + _containerOps.Container.Port + @"
+$dbhost = """ + _containerOps.Container.IP + @"""
+$port = """ + _containerOps.Container.Port + @"""
 
-$psqlCommand = ""psql -d $database -U $username -h $dbhost -p $port -a -f `""$PSScriptRoot\RestoreCountryTable.sql`""""
+$psqlCommand = ""psql -d $database -U $username -h $dbhost -p $port -a -f `""RestoreCountryTable.sql`""""
 
 Invoke-Expression $psqlCommand
-");
-			PowerShell.Create().AddScript("RestoreCountryTable.ps1").Invoke();
+";
+            foreach (PSObject obj in PowerShell.Create().AddScript(script).Invoke()) 
+            {
+                Console.WriteLine(obj.ToString());
+            }
         }
 
 		[Given("I depend on a valid MySQL server")]
