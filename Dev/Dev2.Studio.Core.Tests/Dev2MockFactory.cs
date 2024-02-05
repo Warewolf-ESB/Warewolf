@@ -27,6 +27,7 @@ using Dev2.Studio.Core;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.DataList;
 using Dev2.Studio.Interfaces.Enums;
+using Warewolf.Licensing;
 
 
 namespace Dev2.Core.Tests
@@ -78,13 +79,19 @@ namespace Dev2.Core.Tests
         static public Mock<IServer> SetupEnvironmentModel()
         {
             var mockEnvironmentModel = new Mock<IServer>();
-            mockEnvironmentModel.Setup(environmentModel => environmentModel.Connect()).Verifiable();
+			var mockEnvironmentModelRepo = new Mock<IServerRepository>();
+			mockEnvironmentModel.Setup(environmentModel => environmentModel.Connect()).Verifiable();
             mockEnvironmentModel.Setup(environmentModel => environmentModel.LoadResources()).Verifiable();
             mockEnvironmentModel.Setup(environmentModel => environmentModel.ResourceRepository).Returns(SetupFrameworkRepositoryResourceModelMock().Object);
             mockEnvironmentModel.Setup(environmentModel => environmentModel.Connection.WebServerUri).Returns(new Uri(AppUsageStats.LocalHost));
             mockEnvironmentModel.Setup(environmentModel => environmentModel.Connection.AppServerUri).Returns(new Uri(AppUsageStats.LocalHost));
             mockEnvironmentModel.Setup(environmentModel => environmentModel.Connection.ServerEvents).Returns(new EventPublisher());
-            var authService = new Mock<IAuthorizationService>();
+			var mockSubscriptionData = new Mock<ISubscriptionData>();
+			mockSubscriptionData.Setup(sub => sub.IsLicensed).Returns(true);
+			mockEnvironmentModel.Setup(model => model.GetSubscriptionData(false)).Returns(mockSubscriptionData.Object);
+			mockEnvironmentModelRepo.Setup(repo => repo.ActiveServer).Returns(mockEnvironmentModel.Object);
+			CustomContainer.Register(mockEnvironmentModelRepo.Object);
+			var authService = new Mock<IAuthorizationService>();
             mockEnvironmentModel.Setup(a => a.AuthorizationService).Returns(authService.Object);
             return mockEnvironmentModel;
         }

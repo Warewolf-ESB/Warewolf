@@ -101,7 +101,7 @@ namespace Warewolf.Testing
             return null;
         }
 
-        public ISubscriptionData GetSubscriptionData()
+        public ISubscriptionData GetSubscriptionData(bool forceReload = false)
         {
             return null;
         }

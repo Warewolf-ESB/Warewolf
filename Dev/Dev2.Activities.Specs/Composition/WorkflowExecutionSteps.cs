@@ -93,6 +93,7 @@ using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Security;
 using Warewolf.UnitTestAttributes;
 using Activity = System.Activities.Activity;
+using System.Management.Automation;
 
 namespace Dev2.Activities.Specs.Composition
 {
@@ -326,7 +327,43 @@ namespace Dev2.Activities.Specs.Composition
         [Given("I depend on a valid PostgreSQL server")]
         public void GivenIGetaValidPostgreSQLServer() => _containerOps = new Depends(Depends.ContainerType.PostGreSQL, true);
 
-        [Given("I depend on a valid MySQL server")]
+        [Given("I restore Country table")]
+        public void GivenIRestoreCountryTable()
+        {
+            File.WriteAllText("RestoreCountryTable.sql", @"
+CREATE TABLE IF NOT EXISTS country (
+    ""Id"" SERIAL PRIMARY KEY,
+    ""Name"" character(250),
+    ""Code"" character(50)
+);
+
+ALTER TABLE IF EXISTS country OWNER TO postgres;
+
+INSERT INTO country (""Id"", ""Name"", ""Code"")
+VALUES (1, 'United States', null),
+       (2, 'United Kingdom', null),
+       (3, 'South Africa', null),
+       (4, 'Zimbabwe', null)
+ON CONFLICT (""Id"") DO NOTHING;
+");
+			string script = @"
+$database = ""TestDB""
+$username = ""postgres""
+$password = ""test123""
+$dbhost = """ + _containerOps.Container.IP + @"""
+$port = """ + _containerOps.Container.Port + @"""
+
+$psqlCommand = ""psql -d $database -U $username -h $dbhost -p $port -a -f `""RestoreCountryTable.sql`""""
+
+Invoke-Expression $psqlCommand
+";
+            foreach (PSObject obj in PowerShell.Create().AddScript(script).Invoke()) 
+            {
+                Console.WriteLine(obj.ToString());
+            }
+        }
+
+		[Given("I depend on a valid MySQL server")]
         public void GivenIGetaValidMySQLServer() => _containerOps = new Depends(Depends.ContainerType.MySQL, true);
 
         [Given("I depend on a valid MSSQL server")]

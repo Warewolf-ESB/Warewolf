@@ -90,5 +90,21 @@ namespace Dev2.Services.Security
             var plainText = Encoding.UTF8.GetString(plainTextBytes);  
             return plainText;
         }
+
+        public static string TryDecrypt(string cipherText)
+        {
+            try
+            {
+                return Decrypt(cipherText);
+			}
+            catch (FormatException e)
+            {
+                return cipherText;
+			}
+            catch (CryptographicException e)
+            {
+                return cipherText;
+            }
+        }
     }
 }

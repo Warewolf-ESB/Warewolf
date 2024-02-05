@@ -38,6 +38,8 @@ namespace Dev2.Runtime.ESB.Management.Services
                     throw new ArgumentNullException(nameof(values));
                 }
                 values.TryGetValue("ReloadResourceCatalogue", out StringBuilder tmp);
+                //values.TryGetValue("ReloadServerResourceCatalogue", out StringBuilder tmp);
+
                 var reloadResourceCatalogueString = "";
                 if (tmp != null)
                 {

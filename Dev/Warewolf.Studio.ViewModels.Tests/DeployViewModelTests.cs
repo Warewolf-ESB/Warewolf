@@ -109,7 +109,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Setup for test--------------------------
             var server = new Mock<IServer>();
             server.Setup(a => a.DisplayName).Returns("LocalHost");
-            server.Setup(a => a.GetSubscriptionData()).Returns(new Mock<ISubscriptionData>().Object);
+            server.Setup(a => a.GetSubscriptionData(false)).Returns(new Mock<ISubscriptionData>().Object);
             var mockEnvironmentConnection = SetupMockConnection();
             server.SetupGet(it => it.Connection).Returns(mockEnvironmentConnection.Object);
             var shell = new Mock<IShellViewModel>();
@@ -153,7 +153,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Setup for test--------------------------
             var server = new Mock<IServer>();
             server.Setup(a => a.DisplayName).Returns("LocalHost");
-            server.Setup(o => o.GetSubscriptionData()).Returns(new Mock<ISubscriptionData>().Object);
+            server.Setup(o => o.GetSubscriptionData(false)).Returns(new Mock<ISubscriptionData>().Object);
             var mockEnvironmentConnection = SetupMockConnection();
             server.SetupGet(it => it.Connection).Returns(mockEnvironmentConnection.Object);
             var shell = new Mock<IShellViewModel>();
@@ -215,11 +215,11 @@ namespace Warewolf.Studio.ViewModels.Tests
 			shellViewModel.Setup(model => model.ExplorerViewModel.ConnectControlViewModel).Returns(new Mock<IConnectControlViewModel>().Object);
 			shellViewModel.SetupGet(o => o.SubscriptionData.IsLicensed).Returns(true);
 
-			var localhost = new Mock<IServer>();
-			localhost.Setup(a => a.DisplayName).Returns("Localhost");
-			localhost.SetupGet(server => server.CanDeployTo).Returns(true);
-			localhost.SetupGet(server => server.CanDeployFrom).Returns(true);
-			localhost.Setup(it => it.GetSubscriptionData()).Returns(MockSubscriptionData().Object);
+            var localhost = new Mock<IServer>();
+            localhost.Setup(a => a.DisplayName).Returns("Localhost");
+            localhost.SetupGet(server => server.CanDeployTo).Returns(true);
+            localhost.SetupGet(server => server.CanDeployFrom).Returns(true);
+            localhost.Setup(it => it.GetSubscriptionData(false)).Returns(MockSubscriptionData().Object);
 
 			var mockEnvironmentConnection = SetupMockConnection();
 			localhost.SetupGet(it => it.Connection).Returns(mockEnvironmentConnection.Object);

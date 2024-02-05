@@ -81,7 +81,7 @@ namespace Dev2.Runtime.Hosting
             _catalogPluginContainer = new ResourceCatalogPluginContainer(_serverVersionRepository, WorkspaceResources, managementServices);
             _catalogPluginContainer.Build(this);
         }
-        
+
         public ResourceCatalog(ConcurrentDictionary<Guid, List<IResource>> resources, IServerVersionRepository serverVersionRepository,
             ResourceCatalogPluginContainer catalogPluginContainer)
         {
@@ -94,7 +94,7 @@ namespace Dev2.Runtime.Hosting
         {
             return _serverVersionRepository;
         }
-        
+
         public ResourceCatalogPluginContainer GetCatalogPluginContainer()
         {
             return _catalogPluginContainer;
@@ -155,7 +155,7 @@ namespace Dev2.Runtime.Hosting
         public IResource GetResource(Guid workspaceID, Guid resourceId, string resourceType, string version)
             => _catalogPluginContainer.LoadProvider.GetResource(workspaceID, resourceId, resourceType, version);
         public IResource GetResource(Guid workspaceID, Guid resourceID, string version)
-            => _catalogPluginContainer.LoadProvider.GetResource(workspaceID,resourceID,version);
+            => _catalogPluginContainer.LoadProvider.GetResource(workspaceID, resourceID, version);
         public StringBuilder GetResourceContents(IResource resource) => _catalogPluginContainer.LoadProvider.GetResourceContents(resource);
         public StringBuilder GetResourceContents(Guid workspaceID, Guid resourceID) => _catalogPluginContainer.LoadProvider.GetResourceContents(workspaceID, resourceID);
         public IEnumerable GetModels(Guid workspaceID, enSourceType sourceType) => _catalogPluginContainer.LoadProvider.GetModels(workspaceID, sourceType);
@@ -233,8 +233,28 @@ namespace Dev2.Runtime.Hosting
         {
             if (!_parsers.ContainsKey(GlobalConstants.ServerWorkspaceID))
             {
-                BuildResourceActivityCache(GetResources(GlobalConstants.ServerWorkspaceID));
+                BuildResourceActivityCache(GetServerResources());
             }
+        }
+
+        private List<IResource> GetServerResources()
+        {
+            return GetResources(GlobalConstants.ServerWorkspaceID);
+        }
+
+        public IResourceActivityCache BuildOrGetResourceActivityCache(Guid workspaceID)
+        {
+            var cache = GetResourceActivityCache(workspaceID);
+            if (cache == null || cache.Cache.Count == 0)
+            {
+                var resources = GetResources(workspaceID);
+                if (resources != null)
+                {
+                    BuildResourceActivityCache(resources);
+                    cache = GetResourceActivityCache(workspaceID);
+                }
+            }
+            return cache;
         }
 
         public IResourceActivityCache GetResourceActivityCache(Guid workspaceID)
@@ -248,11 +268,16 @@ namespace Dev2.Runtime.Hosting
             }
             return null;
         }
+
         void BuildResourceActivityCache(IEnumerable<IResource> userServices)
         {
             if (_parsers.ContainsKey(GlobalConstants.ServerWorkspaceID))
             {
-                return;
+                IResourceActivityCache localCache = null;
+                _parsers.TryGetValue(GlobalConstants.ServerWorkspaceID, out localCache);
+
+                if (localCache.Cache.Count > 0)
+                    return;
             }
             foreach (var resource in userServices)
             {
@@ -260,7 +285,7 @@ namespace Dev2.Runtime.Hosting
                 {
                     AddToActivityCache(resource);
                 }
-                catch(System.Xml.XmlException xmlEx)
+                catch (System.Xml.XmlException xmlEx)
                 {
                     Dev2Logger.Error("Error reading resource definition for \"" + resource.FilePath + "\". See full error under \"Error Starting Server\":", GlobalConstants.WarewolfError);
                     throw xmlEx;
@@ -375,7 +400,7 @@ namespace Dev2.Runtime.Hosting
         public IList<DuplicateResource> GetDuplicateResources() => DuplicateResources;
 
         public ResourceCatalogResult SaveResources(Guid serverWorkspaceID, List<DuplicateResourceTO> resourceMaps, bool overrideExisting) => _catalogPluginContainer.SaveProvider.SaveResources(serverWorkspaceID, resourceMaps, overrideExisting);
-        
+
         public ResourceCatalogResult SaveResource(Guid workspaceID, StringBuilder resourceXml, string savedPath) => _catalogPluginContainer.SaveProvider.SaveResource(workspaceID, resourceXml, savedPath, "", "");
         public ResourceCatalogResult SaveResource(Guid workspaceID, StringBuilder resourceXml, string savedPath, string reason) => _catalogPluginContainer.SaveProvider.SaveResource(workspaceID, resourceXml, savedPath, reason, "");
         public ResourceCatalogResult SaveResource(Guid workspaceID, StringBuilder resourceXml, string savedPath, string reason, string user) => _catalogPluginContainer.SaveProvider.SaveResource(workspaceID, resourceXml, savedPath, reason, user);
@@ -453,11 +478,51 @@ namespace Dev2.Runtime.Hosting
             return result;
         }
 
+
+        private IResourceActivityCache GetParser(Guid workspaceID)
+        {
+            IResourceActivityCache parser = null;
+
+            if (_parsers != null && _parsers.TryGetValue(workspaceID, out parser))
+            {
+                return parser;
+            }
+
+            if (parser == null)
+            {
+                parser = ResourceActivityCache ?? new ResourceActivityCache(CustomContainer.Get<IActivityParser>(), new ConcurrentDictionary<Guid, IDev2Activity>());
+            }
+
+            return parser;
+        }
+
+        public void ClearSerializedActivityCache(Guid workspaceID)
+        {
+            IResourceActivityCache parser = GetParser(workspaceID);
+
+            if (parser != null)
+            {
+                parser.ClearSerializedActivityCache();
+            }
+        }
+
+        public bool RemoveFromSerializedResourceActivityCache(Guid workspaceID, Guid resourceID)
+        {
+            IResourceActivityCache parser = GetParser(workspaceID);
+
+            if (parser != null)
+            {
+                return parser.RemoveFromSerializedActivityCache(workspaceID, resourceID);
+            }
+
+            return false;
+        }
+
         public void RemoveFromResourceActivityCache(Guid workspaceID, Guid resourceId)
         {
             if (resourceId != Guid.Empty)
             {
-                var resource =  GetResource(GlobalConstants.ServerWorkspaceID, resourceId);
+                var resource = GetResource(GlobalConstants.ServerWorkspaceID, resourceId);
                 RemoveFromResourceActivityCache(workspaceID, resource);
             }
         }
@@ -488,7 +553,7 @@ namespace Dev2.Runtime.Hosting
                 WorkspaceResources = new ConcurrentDictionary<Guid, List<IResource>>();
             }
             _parsers = new ConcurrentDictionary<Guid, IResourceActivityCache>();
-            
+
             GC.SuppressFinalize(this);
         }
 
@@ -499,7 +564,7 @@ namespace Dev2.Runtime.Hosting
         public IDev2Activity Parse(Guid workspaceID, Guid resourceID) => Parse(workspaceID, resourceID, "");
         public IDev2Activity Parse(Guid workspaceID, Guid resourceID, string executionId) => Parse(workspaceID, resourceID, executionId, null);
         public IDev2Activity Parse(Guid workspaceID, IResource resource) => Parse(workspaceID, resource.ResourceID, string.Empty, resource);
-        
+
         public IDev2Activity Parse(Guid workspaceID, Guid resourceID, string executionId, IResource resourceOverride)
         {
 
@@ -518,7 +583,17 @@ namespace Dev2.Runtime.Hosting
                     return cache;
                 });
             }
-            // get activity cache entry from workspace cache entry
+
+            //get activity cache entry from workspace cache entry
+            if (parser != null)
+            {
+                var dev2Activity = parser.GetActivityFromCache(workspaceID, resourceID);
+                if (dev2Activity != null)
+                {
+                    return dev2Activity;
+                }
+            }
+
             if (parser != null && parser.HasActivityInCache(resourceID) && resourceOverride == null)
             {
                 var dev2Activity = parser.GetActivity(resourceID);
@@ -544,10 +619,80 @@ namespace Dev2.Runtime.Hosting
             {
                 var sa = service.Actions.FirstOrDefault();
                 MapServiceActionDependencies(workspaceID, sa);
-                
-                if(ServiceActionRepo.Instance.ReadCache(resourceID) == null)
+
+                if (ServiceActionRepo.Instance.ReadCache(resourceID) == null)
                     ServiceActionRepo.Instance.AddToCache(resourceID, service);
-                
+
+                var activity = GetActivity(sa);
+                if (parser != null)
+                {
+                    //return parser.ParseWithoutCache(activity, resourceID, true);
+                    return parser.ParseWithCache(new ResourceActivityParseWithCacheParameters(activity, workspaceID, resourceID, true));
+                } 
+            }
+
+            return null;
+        }
+
+
+        public IDev2Activity ParseWithOutCache(Guid workspaceID, Guid resourceID, string executionId, IResource resourceOverride)
+        {
+
+            IResourceActivityCache parser = null;
+            Dev2Logger.Debug($"Fetching Execution Plan for {resourceID} for workspace {workspaceID}", string.IsNullOrEmpty(executionId) ? GlobalConstants.WarewolfDebug : executionId);
+            // get workspace cache entries
+            if (_parsers != null && !_parsers.TryGetValue(workspaceID, out parser))
+            {
+                parser = ResourceActivityCache ?? new ResourceActivityCache(CustomContainer.Get<IActivityParser>(), new ConcurrentDictionary<Guid, IDev2Activity>());
+                _parsers.AddOrUpdate(workspaceID, parser, (key, cache) =>
+                {
+                    if (_parsers.TryGetValue(key, out IResourceActivityCache existingCache))
+                    {
+                        return existingCache;
+                    }
+                    return cache;
+                });
+            }
+
+            // get activity cache entry from workspace cache entry
+            //if (parser != null)
+            //{
+            //    var dev2Activity = parser.GetActivityFromCache(workspaceID, resourceID);
+            //    if (dev2Activity != null)
+            //    {
+            //        return dev2Activity;
+            //    }
+            //}
+
+            if (parser != null && parser.HasActivityInCache(resourceID) && resourceOverride == null)
+            {
+                var dev2Activity = parser.GetActivity(resourceID);
+                if (dev2Activity != null)
+                {
+                    return dev2Activity;
+                }
+
+            }
+            // load resource
+            var resource = resourceOverride;
+            if (resourceOverride is null)
+            {
+                resource = GetResource(workspaceID, resourceID);
+            }
+            // get first activity for resource and initialize it
+            var service = (DynamicService)null;
+            if (resource != null)
+            {
+                service = GetService(workspaceID, resourceID, resource.ResourceName);
+            }
+            if (service != null)
+            {
+                var sa = service.Actions.FirstOrDefault();
+                MapServiceActionDependencies(workspaceID, sa);
+
+                if (ServiceActionRepo.Instance.ReadCache(resourceID) == null)
+                    ServiceActionRepo.Instance.AddToCache(resourceID, service);
+
                 var activity = GetActivity(sa);
                 if (parser != null)
                 {
@@ -565,13 +710,14 @@ namespace Dev2.Runtime.Hosting
             {
                 Thread.Sleep(100);
             }
-            
+
             try
             {
                 _isReloading = true;
                 LoadWorkspace(GlobalConstants.ServerWorkspaceID);
                 _parsers.TryRemove(GlobalConstants.ServerWorkspaceID, out IResourceActivityCache removedCache);
-                LoadServerActivityCache();
+                RemoveSerializedResourceActivityCache(GlobalConstants.ServerWorkspaceID);
+                GetServerResources();
             }
             finally
             {
@@ -579,9 +725,32 @@ namespace Dev2.Runtime.Hosting
             }
         }
 
+        private void RemoveSerializedResourceActivityCache(Guid workspaceID)
+        {
+            IResourceActivityCache parser = null;
+            // get workspace cache entries
+            if (_parsers != null && !_parsers.TryGetValue(workspaceID, out parser))
+            {
+                parser = ResourceActivityCache ?? new ResourceActivityCache(CustomContainer.Get<IActivityParser>(), new ConcurrentDictionary<Guid, IDev2Activity>());
+                _parsers.AddOrUpdate(workspaceID, parser, (key, cache) =>
+                {
+                    if (_parsers.TryGetValue(key, out IResourceActivityCache existingCache))
+                    {
+                        return existingCache;
+                    }
+                    return cache;
+                });
+            }
+
+            if(parser != null)
+            {
+                parser.ClearSerializedActivityCache();
+            }
+        }
+
         public void ReloadResource()
         {
-            
+
         }
 
         public ResourceCatalogDuplicateResult DuplicateResource(Guid resourceId, string sourcePath, string destinationPath) => _catalogPluginContainer.DuplicateProvider.DuplicateResource(resourceId, sourcePath, destinationPath);

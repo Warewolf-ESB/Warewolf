@@ -47,7 +47,7 @@ using Dev2.Utilities;
 using Dev2.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-
+using Warewolf.Licensing;
 
 namespace Dev2.Core.Tests
 {
@@ -320,6 +320,16 @@ namespace Dev2.Core.Tests
             //var workSurfaceContextViewModel = CreateWorkSurfaceContextViewModel()
             var surfaceViewModel = new Mock<IWorkSurfaceViewModel>();
             CustomContainer.Register(new Mock<IServerRepository>().Object);
+
+            var env = new Mock<IServer>();
+            var mockEnvironmentModelRepo = new Mock<IServerRepository>();
+            var mockSubscriptionData = new Mock<ISubscriptionData>();
+            mockSubscriptionData.Setup(sub => sub.IsLicensed).Returns(true);
+            env.Setup(model => model.GetSubscriptionData(false)).Returns(mockSubscriptionData.Object);
+            mockEnvironmentModelRepo.Setup(repo => repo.ActiveServer).Returns(env.Object);
+            CustomContainer.Register(mockEnvironmentModelRepo.Object);
+
+
             var workSurfaceKey = new WorkSurfaceKey
             {
                 WorkSurfaceContext = WorkSurfaceContext.Workflow
@@ -352,6 +362,15 @@ namespace Dev2.Core.Tests
             var mockEventAggregator = new Mock<IEventAggregator>();
             var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(mockEventAggregator.Object, new WorkSurfaceKey(), surfaceViewModel.Object, new Mock<IPopupController>().Object, (a, b, c) => { });
             workSurfaceContextViewModel.WorkSurfaceViewModel = WorkflowDesignerViewModelMock(true);
+
+            var env = new Mock<IServer>();
+            var mockEnvironmentModelRepo = new Mock<IServerRepository>();
+            var mockSubscriptionData = new Mock<ISubscriptionData>();
+            mockSubscriptionData.Setup(sub => sub.IsLicensed).Returns(true);
+            env.Setup(model => model.GetSubscriptionData(false)).Returns(mockSubscriptionData.Object);
+            mockEnvironmentModelRepo.Setup(repo => repo.ActiveServer).Returns(env.Object);
+            CustomContainer.Register(mockEnvironmentModelRepo.Object);
+
             //------------Precondition---------------------------
             //------------Execute Test---------------------------
             workSurfaceContextViewModel.QuickViewInBrowser();
@@ -377,6 +396,15 @@ namespace Dev2.Core.Tests
             var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(mockEventAggregator.Object, new WorkSurfaceKey(), surfaceViewModel.Object, new Mock<IPopupController>().Object, (a, b, c) => { });
             workSurfaceContextViewModel.WorkSurfaceViewModel = WorkflowDesignerViewModelMock(true);
             workSurfaceContextViewModel.DebugOutputViewModel.DebugStatus = DebugStatus.Executing;
+
+            var env = new Mock<IServer>();
+            var mockEnvironmentModelRepo = new Mock<IServerRepository>();
+            var mockSubscriptionData = new Mock<ISubscriptionData>();
+            mockSubscriptionData.Setup(sub => sub.IsLicensed).Returns(true);
+            env.Setup(model => model.GetSubscriptionData(false)).Returns(mockSubscriptionData.Object);
+            mockEnvironmentModelRepo.Setup(repo => repo.ActiveServer).Returns(env.Object);
+            CustomContainer.Register(mockEnvironmentModelRepo.Object);
+
             //------------Precondition---------------------------
             //------------Execute Test---------------------------
             workSurfaceContextViewModel.QuickDebug();
@@ -1140,9 +1168,18 @@ namespace Dev2.Core.Tests
 
             var environmentModel = Mock.Get(workSurfaceContextViewModel.ContextualResourceModel.Environment);
             var mockConnection = new Mock<IEnvironmentConnection>();
+            var env = new Mock<IServer>();
+            var mockEnvironmentModelRepo = new Mock<IServerRepository>();
+
             mockConnection.Setup(connection => connection.IsConnected).Returns(true);
             environmentModel.Setup(model => model.Connection).Returns(mockConnection.Object);
             environmentModel.Setup(model => model.ResourceRepository).Returns(resourceRepo.Object);
+
+            var mockSubscriptionData = new Mock<ISubscriptionData>();
+            mockSubscriptionData.Setup(sub => sub.IsLicensed).Returns(true);
+            env.Setup(model => model.GetSubscriptionData(false)).Returns(mockSubscriptionData.Object);
+            mockEnvironmentModelRepo.Setup(repo => repo.ActiveServer).Returns(env.Object);
+            CustomContainer.Register(mockEnvironmentModelRepo.Object);
 
 
             //------------Execute Test---------------------------
@@ -1168,13 +1205,21 @@ namespace Dev2.Core.Tests
 
             var resourceRepo = new Mock<IResourceRepository>();
             resourceRepo.Setup(r => r.Save(It.IsAny<IResourceModel>())).Verifiable();
+            var env = new Mock<IServer>();
+            var mockEnvironmentModelRepo = new Mock<IServerRepository>();
 
             var environmentModel = Mock.Get(workSurfaceContextViewModel.ContextualResourceModel.Environment);
             var mockConnection = new Mock<IEnvironmentConnection>();
             mockConnection.Setup(connection => connection.IsConnected).Returns(true);
             environmentModel.Setup(model => model.Connection).Returns(mockConnection.Object);
             environmentModel.Setup(model => model.ResourceRepository).Returns(resourceRepo.Object);
-            
+
+            var mockSubscriptionData = new Mock<ISubscriptionData>();
+            mockSubscriptionData.Setup(sub => sub.IsLicensed).Returns(true);
+            env.Setup(model => model.GetSubscriptionData(false)).Returns(mockSubscriptionData.Object);
+            mockEnvironmentModelRepo.Setup(repo => repo.ActiveServer).Returns(env.Object);
+            CustomContainer.Register(mockEnvironmentModelRepo.Object);
+
             //------------Execute Test---------------------------
             //------------Assert Results-------------------------
             workSurfaceContextViewModel.DebugCommand.Execute(null);
@@ -1199,7 +1244,15 @@ namespace Dev2.Core.Tests
             mockConnection.Setup(connection => connection.IsConnected).Returns(true);
             environmentModel.Setup(model => model.Connection).Returns(mockConnection.Object);
             environmentModel.Setup(model => model.ResourceRepository).Returns(resourceRepo.Object);
-            
+
+            var env = new Mock<IServer>();
+            var mockEnvironmentModelRepo = new Mock<IServerRepository>();
+            var mockSubscriptionData = new Mock<ISubscriptionData>();
+            mockSubscriptionData.Setup(sub => sub.IsLicensed).Returns(true);
+            env.Setup(model => model.GetSubscriptionData(false)).Returns(mockSubscriptionData.Object);
+            mockEnvironmentModelRepo.Setup(repo => repo.ActiveServer).Returns(env.Object);
+            CustomContainer.Register(mockEnvironmentModelRepo.Object);
+
             //------------Execute Test---------------------------
             //------------Assert Results-------------------------
             workSurfaceContextViewModel.DebugCommand.Execute(null);

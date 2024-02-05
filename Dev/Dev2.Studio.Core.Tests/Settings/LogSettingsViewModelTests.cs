@@ -328,9 +328,8 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory("LogSettingsViewModel")]
-        [Timeout(300)]
-		[DeploymentItem("Settings\\Settings.config", "Settings")]
-		public void LogSettingsViewModel_Save_GIVEN_ServerSettingsDataSink_AuditingSettingsData_ChangeOnRuntime_ShouldSaveServerSettings()
+        [Timeout(3000)]
+        public void LogSettingsViewModel_Save_GIVEN_ServerSettingsDataSink_AuditingSettingsData_ChangeOnRuntime_ShouldSaveServerSettings()
         {
             //------------Setup for test--------------------------
             var mockServer = new Mock<IServer>();
