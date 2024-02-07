@@ -8,6 +8,24 @@ Background: Setup for workflow execution
 			And Debug states are cleared
 
 @DatabaseWorkflowExecution
+Scenario: Database PostgreSql Database service inputs and outputs
+     Given I depend on a valid PostgreSQL server
+	 And I restore Country table
+	 And I have a workflow "PostgreSqlGetCountries"
+	 And "PostgreSqlGetCountries" contains a postgre tool using "get_countries" with mappings as
+	  | Input to Service | From Variable | Output from Service | To Variable           |
+	  | Prefix           | s             | Id                  | [[countries(*).Id]]   |
+	  |                  |               | Name                | [[countries(*).Name]] |
+      When "PostgreSqlGetCountries" is executed
+     Then the workflow execution has "NO" error
+	 And the "get_countries" in Workflow "PostgreSqlGetCountries" debug outputs as
+	  |                                       |
+	  | [[countries(1).Id]] = 1               |
+	  | [[countries(2).Id]] = 3               |
+	  | [[countries(1).Name]] = United States |
+	  | [[countries(2).Name]] = South Africa  |
+
+@DatabaseWorkflowExecution
 Scenario Outline: Database MySqlDB Database service using * indexes
      Given I have a workflow "<WorkflowName>"
 	 And "<WorkflowName>" contains a mysql database service "<ServiceName>" with mappings as
