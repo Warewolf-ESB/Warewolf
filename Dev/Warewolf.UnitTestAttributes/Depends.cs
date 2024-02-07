@@ -191,7 +191,7 @@ namespace Warewolf.UnitTestAttributes
             }
             else if (_containerType == ContainerType.PostGreSQL)
             {
-                Container.IP = "102.37.115.89";
+                Container.IP = "localhost";
                 Container.Port = "5433";
             }
             else if (_containerType == ContainerType.MySQL)
