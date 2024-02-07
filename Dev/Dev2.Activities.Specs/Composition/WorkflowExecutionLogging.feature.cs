@@ -132,23 +132,23 @@ this.ScenarioInitialize(scenarioInfo);
 #line 10
  testRunner.When("a \"Hello World\" workflow request is received", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-                TechTalk.SpecFlow.Table table840 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table838 = new TechTalk.SpecFlow.Table(new string[] {
                             "key",
                             "value"});
-                table840.AddRow(new string[] {
+                table838.AddRow(new string[] {
                             "DsfDecision",
                             "If [[Name]] <> (Not Equal)"});
 #line 11
-    testRunner.Then("a detailed entry log is created", ((string)(null)), table840, "Then ");
+    testRunner.Then("a detailed entry log is created", ((string)(null)), table838, "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table841 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table839 = new TechTalk.SpecFlow.Table(new string[] {
                             "key",
                             "value"});
-                table841.AddRow(new string[] {
+                table839.AddRow(new string[] {
                             "[[Name]]",
                             "World"});
 #line 14
-    testRunner.And("it has these input parameter values", ((string)(null)), table841, "And ");
+    testRunner.And("it has these input parameter values", ((string)(null)), table839, "And ");
 #line hidden
 #line 17
     testRunner.And("execution is complete", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -240,23 +240,23 @@ this.ScenarioInitialize(scenarioInfo);
 #line 28
     testRunner.And("a workflow stops on error has no logs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table842 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table840 = new TechTalk.SpecFlow.Table(new string[] {
                             "key",
                             "value"});
-                table842.AddRow(new string[] {
+                table840.AddRow(new string[] {
                             "DsfMultiAssignActivity",
                             "Set the output variable (1)"});
 #line 29
-    testRunner.Then("a detailed execution completed log entry is created", ((string)(null)), table842, "Then ");
+    testRunner.Then("a detailed execution completed log entry is created", ((string)(null)), table840, "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table843 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table841 = new TechTalk.SpecFlow.Table(new string[] {
                             "key",
                             "value"});
-                table843.AddRow(new string[] {
+                table841.AddRow(new string[] {
                             "[[Message]]",
                             "Hello World."});
 #line 32
-    testRunner.And("it has these output parameter values", ((string)(null)), table843, "And ");
+    testRunner.And("it has these output parameter values", ((string)(null)), table841, "And ");
 #line hidden
 #line 35
     testRunner.And("execution is complete", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -309,14 +309,14 @@ this.ScenarioInitialize(scenarioInfo);
 #line 42
     testRunner.When("a workflow execution has an exception", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-                TechTalk.SpecFlow.Table table844 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table842 = new TechTalk.SpecFlow.Table(new string[] {
                             "key",
                             "value"});
-                table844.AddRow(new string[] {
+                table842.AddRow(new string[] {
                             "Exception",
                             "False exception from WorkflowExecutionLoggingSteps"});
 #line 43
-    testRunner.Then("a detailed execution exception log entry is created", ((string)(null)), table844, "Then ");
+    testRunner.Then("a detailed execution exception log entry is created", ((string)(null)), table842, "Then ");
 #line hidden
 #line 46
     testRunner.And("a detailed execution completed log entry will have 1 log", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
