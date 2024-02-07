@@ -25,6 +25,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Warewolf.Core;
 using Warewolf.Storage;
+using Warewolf.UnitTestAttributes;
 
 
 namespace Dev2.Tests.Activities.ActivityTests.Web
@@ -299,51 +300,60 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         public void DsfWebActivityBase_PerformPut_Given_IsPutDataBase64_True_And_Base64String_Valid_ShouldNotThrow()
-        {
-            //---------------Set up test pack-------------------
-            var headers = new INameValue[] { new NameValue("Header1", "[[City]]") };
-            var address = "http://www.contoso.com/";
+		{
+            using (var dependency = new Depends(Depends.ContainerType.HTTPVerbsApi))
+            {
+                //---------------Set up test pack-------------------
+                var headers = new INameValue[] { new NameValue("Header1", "[[City]]") };
+                var address = $"http://{dependency.Container.IP}:{dependency.Container.Port}/api/";
 
-            var sut = new TestDsfWebBaseActivity(WebRequestDataDto.CreateRequestDataDto(WebRequestMethod.Put,
-                    "Web Put Tool", "Web Put Tool"));
-            //---------------Execute Test ----------------------
-            var result = sut.TestPerformPut("THVja3kgRHViZQ==", headers, new Mock<HttpClient>().Object, address, true);
-            //---------------Test Result -----------------------
-            Assert.IsNotNull(result);
+                var sut = new TestDsfWebBaseActivity(WebRequestDataDto.CreateRequestDataDto(WebRequestMethod.Put,
+                        "Web Put Tool", "Web Put Tool"));
+                //---------------Execute Test ----------------------
+                var result = sut.TestPerformPut("THVja3kgRHViZQ==", headers, new Mock<HttpClient>().Object, address, true);
+                //---------------Test Result -----------------------
+                Assert.IsNotNull(result);
+            }
         }
 
         [TestMethod]
         [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         public void DsfWebActivityBase_PerformPut_Given_IsPutDataBase64_False_And_Base64String_Valid_ShouldNotThrow1()
-        {
-            //---------------Set up test pack-------------------
-            var headers = new INameValue[] { new NameValue("Header1", "[[City]]") };
-            var address = "http://www.contoso.com/";
+		{
+            using (var dependency = new Depends(Depends.ContainerType.HTTPVerbsApi))
+            {
+                //---------------Set up test pack-------------------
+                var headers = new INameValue[] { new NameValue("Header1", "[[City]]") };
+                var address = $"http://{dependency.Container.IP}:{dependency.Container.Port}/api/";
 
-            var sut = new TestDsfWebBaseActivity(WebRequestDataDto.CreateRequestDataDto(WebRequestMethod.Put,
-                    "Web Put Tool", "Web Put Tool"));
-            //---------------Execute Test ----------------------
-            var result = sut.TestPerformPut("THVja3kgRHViZQ==", headers, new Mock<HttpClient>().Object, address);
-            //---------------Test Result -----------------------
-            Assert.IsNotNull(result);
+                var sut = new TestDsfWebBaseActivity(WebRequestDataDto.CreateRequestDataDto(WebRequestMethod.Put,
+                        "Web Put Tool", "Web Put Tool"));
+                //---------------Execute Test ----------------------
+                var result = sut.TestPerformPut("THVja3kgRHViZQ==", headers, new Mock<HttpClient>().Object, address);
+                //---------------Test Result -----------------------
+                Assert.IsNotNull(result);
+            }
         }
 
         [TestMethod]
         [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         public void DsfWebActivityBase_PerformPut_Given_IsPutDataBase64_False_And_Base64String_Invalid_ShouldNotThrow1()
-        {
-            //---------------Set up test pack-------------------
-            var headers = new INameValue[] { new NameValue("Header1", "[[City]]") };
-            var address = "http://www.contoso.com/";
+		{
+            using (var dependency = new Depends(Depends.ContainerType.HTTPVerbsApi))
+            {
+                //---------------Set up test pack-------------------
+                var headers = new INameValue[] { new NameValue("Header1", "[[City]]") };
+                var address = $"http://{dependency.Container.IP}:{dependency.Container.Port}/api/";
 
-            var sut = new TestDsfWebBaseActivity(WebRequestDataDto.CreateRequestDataDto(WebRequestMethod.Put,
-                    "Web Put Tool", "Web Put Tool"));
-            //---------------Execute Test ----------------------
-            var result = sut.TestPerformPut("teststringnotbase64", headers, new Mock<HttpClient>().Object, address);
-            //---------------Test Result -----------------------
-            Assert.IsNotNull(result);
+                var sut = new TestDsfWebBaseActivity(WebRequestDataDto.CreateRequestDataDto(WebRequestMethod.Put,
+                        "Web Put Tool", "Web Put Tool"));
+                //---------------Execute Test ----------------------
+                var result = sut.TestPerformPut("teststringnotbase64", headers, new Mock<HttpClient>().Object, address);
+                //---------------Test Result -----------------------
+                Assert.IsNotNull(result);
+            }
         }
 
         static WebSource CreateTestWebSource()
