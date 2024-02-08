@@ -139,9 +139,9 @@ namespace Dev2.SignalR.Wrappers.New
         }
 
 
-        public IHubProxyWrapper CreateHubProxy(string hubName) => new HubProxyWrapper(_legacyWrapped.CreateHubProxy(hubName));
+		public IHubProxyWrapper CreateHubProxy(string hubName) => _wrapped != null ? new HubProxyWrapper(_wrapped) : new HubProxyWrapper(_legacyWrapped.CreateHubProxy(hubName));
 
-        public event Action<Exception> Error;
+		public event Action<Exception> Error;
 
         public event Func<Exception, Task> Closed
         {

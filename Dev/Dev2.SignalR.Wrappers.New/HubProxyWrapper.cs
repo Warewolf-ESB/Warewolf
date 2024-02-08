@@ -55,7 +55,7 @@ namespace Dev2.SignalR.Wrappers.New
         /// <param name="method">The name of the method.</param>
         /// <param name="args">The arguments</param>
         /// <returns>A task that represents when invocation returned.</returns>
-        public Task Invoke(string method, params object[] args) => _hubConnection.InvokeCoreAsync(method, args);
+        public Task Invoke(string method, params object[] args) => _hubConnection != null ? _hubConnection.InvokeCoreAsync(method, args) : _hubProxy.Invoke(method, args);
 
         /// <summary>
         /// Executes a method on the server side hub asynchronously.
@@ -64,11 +64,11 @@ namespace Dev2.SignalR.Wrappers.New
         /// <param name="method">The name of the method.</param>
         /// <param name="args">The arguments</param>
         /// <returns>A task that represents when invocation returned.</returns>
-        public Task<T> Invoke<T>(string method, params object[] args) => _hubConnection.InvokeCoreAsync<T>(method, args);
+        public Task<T> Invoke<T>(string method, params object[] args) => _hubConnection != null ? _hubConnection.InvokeCoreAsync<T>(method, args) : _hubProxy.Invoke<T>(method, args);
 
-        public object Object() => _hubConnection;
+        public object Object() => _hubConnection != null ? (object)_hubConnection : _hubProxy;
 
-        public IDisposable On<T>(string eventName, Action<T> onData) => ((Microsoft.AspNetCore.SignalR.Client.HubConnection)Object()).On(eventName, onData);
+        public IDisposable On<T>(string eventName, Action<T> onData) => _hubConnection != null ? ((Microsoft.AspNetCore.SignalR.Client.HubConnection)Object()).On(eventName, onData) : ((IHubProxy)Object()).On(eventName, onData);
 
         #endregion
     }
