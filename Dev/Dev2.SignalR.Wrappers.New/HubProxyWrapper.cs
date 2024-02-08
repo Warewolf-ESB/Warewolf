@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNet.SignalR.Client;
 using Microsoft.AspNetCore.SignalR.Client;
 
 using Newtonsoft.Json.Linq;
@@ -19,11 +20,17 @@ namespace Dev2.SignalR.Wrappers.New
 {
     public class HubProxyWrapper : IHubProxyWrapper
     {
-        readonly HubConnection _hubConnection;
+        readonly Microsoft.AspNetCore.SignalR.Client.HubConnection _hubConnection;
+        readonly IHubProxy _hubProxy;
 
-        public HubProxyWrapper(HubConnection connection)
+        public HubProxyWrapper(Microsoft.AspNetCore.SignalR.Client.HubConnection connection)
         {
             _hubConnection = connection;
+        }
+
+        public HubProxyWrapper(IHubProxy hubProxy)
+        {
+            _hubProxy = hubProxy;
         }
 
         public ISubscriptionWrapper Subscribe(string sendmemo)
@@ -32,6 +39,13 @@ namespace Dev2.SignalR.Wrappers.New
             _hubConnection.On<IList<JToken>>(sendmemo, s.OnReceived);
             return new SubscriptionWrapper(s);
         }
+
+        public ISubscriptionWrapper LegacySubscribe(string sendmemo)
+        {
+            var s = _hubProxy.Subscribe(sendmemo);
+            return new LegacySubscriptionWrapper(s);
+        }
+
 
         #region Implementation of IHubProxyWrapper
 
@@ -54,10 +68,11 @@ namespace Dev2.SignalR.Wrappers.New
 
         public object Object() => _hubConnection;
 
-        public IDisposable On<T>(string eventName, Action<T> onData) => ((HubConnection)Object()).On(eventName, onData);
+        public IDisposable On<T>(string eventName, Action<T> onData) => ((Microsoft.AspNetCore.SignalR.Client.HubConnection)Object()).On(eventName, onData);
 
         #endregion
     }
+
     public class SubscriptionWrapper : ISubscriptionWrapper
     {
         public SubscriptionWrapper(Subscription s)
@@ -73,6 +88,22 @@ namespace Dev2.SignalR.Wrappers.New
 
         public event Action<IList<JToken>> Received;
         public Subscription Wrapped { get; private set; }
+    }
+    public class LegacySubscriptionWrapper : ISubscriptionWrapper
+    {
+        public LegacySubscriptionWrapper(Microsoft.AspNet.SignalR.Client.Hubs.Subscription s)
+        {
+            Wrapped = s;
+            Wrapped.Received += WrappedReceived;
+        }
+
+        void WrappedReceived(IList<JToken> obj)
+        {
+            Received?.Invoke(obj);
+        }
+
+        public event Action<IList<JToken>> Received;
+        public Microsoft.AspNet.SignalR.Client.Hubs.Subscription Wrapped { get; private set; }
     }
 
     public class StateChangeWrapped : IStateChangeWrapped
@@ -92,6 +123,13 @@ namespace Dev2.SignalR.Wrappers.New
         {
             OldState = oldState.ToConnectionStateWrapped();
             NewState = newState.ToConnectionStateWrapped();
+        }
+
+        public StateChangeWrapped(StateChange change)
+        {
+
+            OldState = (ConnectionStateWrapped)change.OldState;
+            NewState = (ConnectionStateWrapped)change.NewState;
         }
 
         /// <summary>

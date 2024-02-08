@@ -22,12 +22,37 @@ namespace Dev2.SignalR.Wrappers.New
     public class HubConnectionWrapper : IHubConnectionWrapper, IDisposable
     {
         readonly Microsoft.AspNetCore.SignalR.Client.HubConnection _wrapped;
+        readonly Microsoft.AspNet.SignalR.Client.HubConnection _legacyWrapped;
         private readonly ManualResetEvent _connectNotify = new ManualResetEvent(false);
         private readonly IStateController _stateController;
         private HubConnectionState _oldState = HubConnectionState.Disconnected;
         private ICredentials _credentials;
 
         public IStateController StateController => _stateController;
+
+        private HubConnectionWrapper(Microsoft.AspNet.SignalR.Client.HubConnection wrapped)
+        {
+            _legacyWrapped = wrapped;
+            _legacyWrapped.DeadlockErrorTimeout = TimeSpan.FromSeconds(30);
+            _legacyWrapped.StateChanged += change =>
+            {
+                switch (change.NewState)
+                {
+                    case ConnectionState.Connected:
+                        _connectNotify.Set();
+                        break;
+                    case ConnectionState.Connecting:
+                    case ConnectionState.Reconnecting:
+                    case ConnectionState.Disconnected:
+                        _connectNotify.Reset();
+                        break;
+                    default:
+                        throw new Exception("unknown ConnectionState");
+                }
+            };
+
+            _stateController = new StateController(this);
+        }
 
         private HubConnectionWrapper(Microsoft.AspNetCore.SignalR.Client.HubConnection wrapped)
         {
@@ -65,10 +90,14 @@ namespace Dev2.SignalR.Wrappers.New
 
                 return Task.CompletedTask;
             };
-            
+
             _stateController = new StateController(this);
         }
 
+        public HubConnectionWrapper(string uriString)
+            : this(new Microsoft.AspNet.SignalR.Client.HubConnection(uriString))
+        {
+        }
 
         public HubConnectionWrapper(string uriString, ICredentials credentials) :
             //: this(new HubConnection(uriString))
@@ -82,7 +111,6 @@ namespace Dev2.SignalR.Wrappers.New
         {
             _credentials = credentials;
         }
-
 
         public Task EnsureConnected(TimeSpan timeout)
         {
@@ -111,18 +139,26 @@ namespace Dev2.SignalR.Wrappers.New
         }
 
 
-        public IHubProxyWrapper CreateHubProxy(string hubName) => new HubProxyWrapper(_wrapped);
+        public IHubProxyWrapper CreateHubProxy(string hubName) => new HubProxyWrapper(_legacyWrapped.CreateHubProxy(hubName));
 
         public event Action<Exception> Error;
-        //{
-        //    add => _wrapped.Error += value;
-        //    remove => _wrapped.Error -= value;
-        //}
 
         public event Func<Exception, Task> Closed
         {
             add => _wrapped.Closed += value;
             remove => _wrapped.Closed -= value;
+        }
+
+        public event Action<Exception> LegacyError
+        {
+            add => _legacyWrapped.Error += value;
+            remove => _legacyWrapped.Error -= value;
+        }
+
+        public event Action LegacyClosed
+        {
+            add => _legacyWrapped.Closed += value;
+            remove => _legacyWrapped.Closed -= value;
         }
 
         public event Action<IStateChangeWrapped> StateChanged;
@@ -139,6 +175,15 @@ namespace Dev2.SignalR.Wrappers.New
         //    }
         //    remove => throw new NotImplementedException();
         //}
+
+        public event Action<IStateChangeWrapped> LegacyStateChanged
+        {
+            add
+            {
+                _legacyWrapped.StateChanged += change => value?.Invoke(new StateChangeWrapped(change));
+            }
+            remove => throw new NotImplementedException();
+        }
 
         public ConnectionStateWrapped State => _wrapped.State.ToConnectionStateWrapped();
 
@@ -181,11 +226,29 @@ namespace Dev2.SignalR.Wrappers.New
             }
         }
 
+        public ConnectionStateWrapped LegacyState => (ConnectionStateWrapped)_legacyWrapped.State;
+
+        public Task LegacyStart()
+        {
+            var serverSentEventsTransport = new ServerSentEventsTransport();
+            return _legacyWrapped.Start(serverSentEventsTransport);
+        }
+
+        public void LegacyStop(TimeSpan timeSpan)
+        {
+            _legacyWrapped.Stop(timeSpan);
+        }
+
         public ICredentials Credentials
         {
             get { return _credentials; }
         }
 
+        public ICredentials LegacyCredentials
+        {
+            get => _legacyWrapped.Credentials;
+            set => _legacyWrapped.Credentials = value;
+        }
 
         public void Dispose()
         {
@@ -376,9 +439,9 @@ namespace Dev2.SignalR.Wrappers.New
                 };
                 while (true)
                 {
-                    if (stopped || HubConnection.State != ConnectionStateWrapped.Connected)
+                    if (stopped)
                     {
-
+                        stopped = false;
                         delay *= multiplier;
                         if (delay > maxDelay)
                         {
@@ -386,7 +449,6 @@ namespace Dev2.SignalR.Wrappers.New
                         }
 
                         HubConnection.Start();
-                        stopped = false;
                     }
 
                     if (HubConnection.State != ConnectionStateWrapped.Connected)
