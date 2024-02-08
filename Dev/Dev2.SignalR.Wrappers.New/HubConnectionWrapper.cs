@@ -115,15 +115,20 @@ namespace Dev2.SignalR.Wrappers.New
         public Task EnsureConnected(TimeSpan timeout)
         {
             return EnsureConnected((int)Math.Floor(timeout.TotalMilliseconds));
-        }
+		}
 
-        /// <summary>
-        /// Returns a task that only completes once the connection is connected or milliSecondsTimeout has occurred
-        /// </summary>
-        /// <param name="milliSecondsTimeout"></param>
-        /// <returns></returns>
-        /// <exception cref="Exception"></exception>
-        public Task EnsureConnected(int milliSecondsTimeout)
+		public Task LegacyEnsureConnected(TimeSpan timeout)
+		{
+			return LegacyEnsureConnected((int)Math.Floor(timeout.TotalMilliseconds));
+		}
+
+		/// <summary>
+		/// Returns a task that only completes once the connection is connected or milliSecondsTimeout has occurred
+		/// </summary>
+		/// <param name="milliSecondsTimeout"></param>
+		/// <returns></returns>
+		/// <exception cref="Exception"></exception>
+		public Task EnsureConnected(int milliSecondsTimeout)
         {
             return Task.Factory.StartNew(() =>
             {
@@ -138,6 +143,20 @@ namespace Dev2.SignalR.Wrappers.New
             });
         }
 
+		public Task LegacyEnsureConnected(int milliSecondsTimeout)
+		{
+			return Task.Factory.StartNew(() =>
+			{
+				if (LegacyState == ConnectionStateWrapped.Connected)
+				{
+					return;
+				}
+
+				var movedTask = _stateController.MoveToState(ConnState.Connected, milliSecondsTimeout);
+				movedTask.Wait();
+				_connectNotify.WaitOne(milliSecondsTimeout);
+			});
+		}
 
 		public IHubProxyWrapper CreateHubProxy(string hubName) => _wrapped != null ? new HubProxyWrapper(_wrapped) : new HubProxyWrapper(_legacyWrapped.CreateHubProxy(hubName));
 
@@ -147,9 +166,9 @@ namespace Dev2.SignalR.Wrappers.New
         {
             add => _wrapped.Closed += value;
             remove => _wrapped.Closed -= value;
-        }
+		}
 
-        public event Action<Exception> LegacyError
+		public event Action<Exception> LegacyError
         {
             add => _legacyWrapped.Error += value;
             remove => _legacyWrapped.Error -= value;
@@ -185,7 +204,7 @@ namespace Dev2.SignalR.Wrappers.New
             remove => throw new NotImplementedException();
         }
 
-        public ConnectionStateWrapped State => _wrapped.State.ToConnectionStateWrapped();
+		public ConnectionStateWrapped State => _wrapped.State.ToConnectionStateWrapped();
 
         public Task Start()
         {
@@ -250,7 +269,9 @@ namespace Dev2.SignalR.Wrappers.New
             set => _legacyWrapped.Credentials = value;
         }
 
-        public void Dispose()
+		public bool UsingLegacy => _wrapped == null && _legacyWrapped != null;
+
+		public void Dispose()
         {
             _connectNotify.Dispose();
         }
@@ -390,15 +411,25 @@ namespace Dev2.SignalR.Wrappers.New
             public Watcher(IHubConnectionWrapper hubConnection)
             {
                 HubConnection = hubConnection;
-                InitializeThreadWorker();
+                InitializeThreadWorker(HubConnection.UsingLegacy);
             }
 
-            private void InitializeThreadWorker()
+            private void InitializeThreadWorker(bool useLegacy = false)
             {
-                _threadWorker = new Thread(KeepConnected)
-                {
-                    IsBackground = true
-                };
+                if (!useLegacy)
+				{
+					_threadWorker = new Thread(KeepConnected)
+					{
+						IsBackground = true
+					};
+				}
+                else
+				{
+					_threadWorker = new Thread(LegacyKeepConnected)
+					{
+						IsBackground = true
+					};
+				}
             }
 
             internal void NotifyStateChanged(ConnState current, ConnState expectedState)
@@ -460,9 +491,55 @@ namespace Dev2.SignalR.Wrappers.New
                         Thread.Sleep(1000);
                     }
                 }
-            }
+			}
 
-            internal void Start()
+			private void LegacyKeepConnected()
+			{
+				// Create new hubconnection
+
+				// attach event listeners
+
+				// monitor for connection failure and reconnect if necessary
+
+				const int initialDelay = 1000;
+				const int multiplier = 2;
+				const int maxDelay = 30000;
+				var delay = 50;
+				bool stopped = HubConnection.LegacyState != ConnectionStateWrapped.Connected;
+
+				HubConnection.LegacyStateChanged += (stateChange) =>
+				{
+					if (stateChange.NewState == ConnectionStateWrapped.Disconnected)
+					{
+						stopped = true;
+					}
+				};
+				while (true)
+				{
+					if (stopped)
+					{
+						stopped = false;
+						delay *= multiplier;
+						if (delay > maxDelay)
+						{
+							delay = initialDelay;
+						}
+
+						HubConnection.LegacyStart();
+					}
+
+					if (HubConnection.LegacyState != ConnectionStateWrapped.Connected)
+					{
+						Thread.Sleep(delay);
+					}
+					else
+					{
+						Thread.Sleep(1000);
+					}
+				}
+			}
+
+			internal void Start()
             {
                 if ((_threadWorker.ThreadState & ThreadState.Suspended) != 0)
                 {

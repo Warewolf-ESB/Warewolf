@@ -30,15 +30,25 @@ namespace Dev2.SignalR.Wrappers
     {
         IHubProxyWrapper CreateHubProxy(string hubName);
         event Action<Exception> Error;
-        event Func<Exception, Task> Closed;
-        event Action<IStateChangeWrapped> StateChanged;
-        ConnectionStateWrapped State { get; }
-        ICredentials Credentials { get; }
-        IStateController StateController { get; }
-        Task Start();
-        void Stop(TimeSpan timeSpan);
-        Task EnsureConnected(TimeSpan timeout);
-    }
+		event Action<Exception> LegacyError;
+		event Func<Exception, Task> Closed;
+		event Action LegacyClosed;
+		event Action<IStateChangeWrapped> StateChanged;
+		event Action<IStateChangeWrapped> LegacyStateChanged;
+		ConnectionStateWrapped State { get; }
+		ConnectionStateWrapped LegacyState { get; }
+		ICredentials Credentials { get; }
+		ICredentials LegacyCredentials { get; }
+		IStateController StateController { get; }
+		bool UsingLegacy { get; }
+
+		Task Start();
+		Task LegacyStart();
+		void Stop(TimeSpan timeSpan);
+		void LegacyStop(TimeSpan timeSpan);
+		Task EnsureConnected(TimeSpan timeout);
+		Task LegacyEnsureConnected(TimeSpan timeout);
+	}
 
     public interface IStateChangeWrapped
     {
