@@ -4,20 +4,20 @@ $SolutionDirectory = (get-item (Split-Path $Invocation.MyCommand.Path)).parent.F
 Write-Host Got solution path as `"$SolutionDirectory`".
 
 Write-Host Loading assembly at `"$SolutionDirectory\Dev2.Runtime.Services\bin\Debug\net48\win\Dev2.Runtime.Services.dll`".
-if (Test-Path "$SolutionDirectory\Dev2.Runtime.Services\bin\Debug\net48\win\Dev2.Runtime.Services.dll") {
-    Add-Type -Path "$SolutionDirectory\Dev2.Runtime.Services\bin\Debug\net48\win\Dev2.Runtime.Services.dll"
+if (Test-Path "$SolutionDirectory\Dev2.Runtime.Services\bin\Debug\net48\Dev2.Runtime.Services.dll") {
+    Add-Type -Path "$SolutionDirectory\Dev2.Runtime.Services\bin\Debug\net48\Dev2.Runtime.Services.dll"
 } else {
-    Write-Host Cannot find assembly at "$SolutionDirectory\Dev2.Runtime.Services\bin\Debug\net48\win\Dev2.Runtime.Services.dll", please compile that before running this tool.
+    Write-Host Cannot find assembly at "$SolutionDirectory\Dev2.Runtime.Services\bin\Debug\net48\Dev2.Runtime.Services.dll", please compile that before running this tool.
     pause
     exit 1
 }
 Write-Host Dev2.Runtime.Services Assembly loaded.
 
 Write-Host Loading assembly at `"$SolutionDirectory\Dev2.Runtime.Services\bin\Debug\net48\win\System.Security.Cryptography.ProtectedData.dll`".
-if (Test-Path "$SolutionDirectory\Dev2.Runtime.Services\bin\Debug\net48\win\System.Security.Cryptography.ProtectedData.dll") {
-    Add-Type -Path "$SolutionDirectory\Dev2.Runtime.Services\bin\Debug\net48\win\System.Security.Cryptography.ProtectedData.dll"
+if (Test-Path "$SolutionDirectory\Dev2.Runtime.Services\bin\Debug\net48\System.Security.Cryptography.ProtectedData.dll") {
+    Add-Type -Path "$SolutionDirectory\Dev2.Runtime.Services\bin\Debug\net48\System.Security.Cryptography.ProtectedData.dll"
 } else {
-    Write-Host Cannot find assembly at "$SolutionDirectory\Dev2.Runtime.Services\bin\Debug\net48\win\System.Security.Cryptography.ProtectedData.dll", please compile that before running this tool.
+    Write-Host Cannot find assembly at "$SolutionDirectory\Dev2.Runtime.Services\bin\Debug\net48\System.Security.Cryptography.ProtectedData.dll", please compile that before running this tool.
     pause
     exit 1
 }
