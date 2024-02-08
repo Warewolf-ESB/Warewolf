@@ -593,6 +593,7 @@ Scenario: Run a passing Test with RabbitMq Object return
 	Then The "DeleteConfirmation" popup is shown I click Ok
 
 @StudioTestFrameworkWithUtilityTools
+@Ignore #The COMIPC tool has been deprecated on the server under test
 Scenario:Test Workflow which contains COM DLL
 	Given I have a workflow "TestWFCOMDLL"
 	And "TestWFCOMDLL" contains an COM DLL "COMService" as

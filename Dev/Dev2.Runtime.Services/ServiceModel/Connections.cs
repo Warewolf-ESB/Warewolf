@@ -20,7 +20,7 @@ using Dev2.Common.Common;
 using Dev2.Communication;
 using Dev2.Runtime.Diagnostics;
 using Dev2.Runtime.Interfaces;
-using Microsoft.AspNet.SignalR.Client;
+using Microsoft.AspNetCore.SignalR.Client;
 using Dev2.DynamicServices;
 
 namespace Dev2.Runtime.ServiceModel
@@ -101,12 +101,12 @@ namespace Dev2.Runtime.ServiceModel
             return GetLastExeptionMessage(ex.InnerException);
         }
 
-        public IHubProxy CreateHubProxy(Dev2.Data.ServiceModel.Connection connection) => _hubFactory.CreateHubProxy(connection);
+        public HubConnection GetHubConnection(Dev2.Data.ServiceModel.Connection connection) => _hubFactory.GetHubConnection(connection);
 
         protected virtual string ConnectToServer(Dev2.Data.ServiceModel.Connection connection)
         {
             // we need to grab the principle and impersonate to properly execute in context of the requesting user ;)
-            var proxy = CreateHubProxy(connection);
+            var proxy = GetHubConnection(connection);
             return "Success";
         }
     }

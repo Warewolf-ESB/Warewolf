@@ -18,14 +18,14 @@ Scenario:WF with DsfRabbitMq Consume timeout 5
 	And the "RabbitMqConsume5mintimeout" has a start and end duration
 	And "RabbitMqConsume5mintimeout" Duration is greater or equal to 5 seconds
 
-@RabbitMQWorkflowExecution
+@WFWithRabbitMqConsumeTimeout5 
 Scenario:WF with RabbitMq Consume timeout 5
 	Given I depend on a valid RabbitMQ server
 	And I have a workflow "RabbitMqConsume5mintimeout"
 	And "RabbitMqConsume5mintimeout" contains RabbitMQPublish and Queue1 - CorrelationID "PublishRabbitMQActivity" into "[[result1]]"
 	And "RabbitMqConsume5mintimeout" contains RabbitMQConsume "DsfConsumeRabbitMQActivity" with timeout 5 seconds into "[[result]]"
 	When "RabbitMqConsume5mintimeout" is executed
-    Then the workflow execution has "No" error
+	Then the workflow execution has "No" error
 	And the "RabbitMqConsume5mintimeout" has a start and end duration
 	And "RabbitMqConsume5mintimeout" Duration is greater or equal to 5 seconds
 	
@@ -39,6 +39,7 @@ Scenario:WF with RabbitMq Consume with no timeout
 	And "RabbitMqConsumeNotimeout" Duration is less or equal to 60 seconds
 
 @RabbitMQWorkflowExecution
+@Ignore #The COMIPC tool has been deprecated on the server under test
 Scenario: COM DLL service execute
 	Given I have a server at "localhost" with workflow "Testing COM DLL Activity Execute"
 	When "localhost" is the active environment used to execute "Testing COM DLL Activity Execute"

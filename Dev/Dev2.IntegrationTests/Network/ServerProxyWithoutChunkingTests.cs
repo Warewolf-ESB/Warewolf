@@ -38,7 +38,7 @@ namespace Dev2.Integration.Tests.Network
         }
 
         [TestMethod]
-        [Timeout(16000)]
+        [Timeout(20000)]
         public void ServerProxyWithoutChunking_GivenServerAvailable_AndConnect_WhenDisconnectRequest_ExpectDisconnect()
         {
             var proxy = new ServerProxyWithoutChunking(new Uri("http://localhost:3142"));

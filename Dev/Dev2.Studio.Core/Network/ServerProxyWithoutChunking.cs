@@ -27,10 +27,11 @@ using Dev2.SignalR.Wrappers;
 using Dev2.SignalR.Wrappers.New;
 using Dev2.Studio.Interfaces;
 using Dev2.Threading;
-using Microsoft.AspNet.SignalR.Client;
+using Microsoft.AspNetCore.SignalR.Client;
 using ServiceStack.Messaging.Rcon;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Net;
 using System.Net.Security;
 using System.Network;
@@ -68,7 +69,7 @@ namespace Dev2.Network
             ServerEvents = EventPublishers.Studio;
 
             var uriString = serverUri;
-            if(!serverUri.EndsWith("dsf"))
+            if (!serverUri.EndsWith("dsf"))
             {
                 uriString = serverUri + (serverUri.EndsWith("/") ? "" : "/") + "dsf";
             }
@@ -77,8 +78,10 @@ namespace Dev2.Network
             AppServerUri = new Uri(uriString);
             WebServerUri = new Uri(uriString.Replace("/dsf", ""));
             Dev2Logger.Debug(credentials, "Warewolf Debug");
-            Dev2Logger.Debug("***** Attempting Server Hub : " + uriString + " -> " + CredentialCache.DefaultNetworkCredentials.Domain + @"\" + Principal.Identity.Name, "Warewolf Debug");
-            HubConnection = new HubConnectionWrapper(uriString) { Credentials = credentials };
+
+            if (Principal != null)
+                Dev2Logger.Debug("***** Attempting Server Hub : " + uriString + " -> " + CredentialCache.DefaultNetworkCredentials.Domain + @"\" + Principal.Identity.Name, "Warewolf Debug");
+            HubConnection = new HubConnectionWrapper(uriString, credentials);
             HubConnection.Error += OnHubConnectionError;
             HubConnection.Closed += HubConnectionOnClosed;
             HubConnection.StateChanged += HubConnectionStateChanged;
@@ -94,7 +97,7 @@ namespace Dev2.Network
             UserName = userName;
             Password = password;
             AuthenticationType = userName == "\\" ? AuthenticationType.Public : AuthenticationType.User;
-            if(AuthenticationType == AuthenticationType.Public)
+            if (AuthenticationType == AuthenticationType.Public)
             {
                 Principal = null;
             }
@@ -104,7 +107,7 @@ namespace Dev2.Network
         {
             get
             {
-                if(string.IsNullOrEmpty(DisplayName))
+                if (string.IsNullOrEmpty(DisplayName))
                 {
                     return false;
                 }
@@ -122,7 +125,7 @@ namespace Dev2.Network
 
         void InitializeEsbProxy()
         {
-            if(EsbProxy == null)
+            if (EsbProxy == null)
             {
                 EsbProxy = HubConnection.CreateHubProxy("esb");
                 EsbProxy.On<string>("SendMemo", OnMemoReceived);
@@ -140,10 +143,10 @@ namespace Dev2.Network
 
         public void FetchResourcesAffectedMemo(Guid resourceId)
         {
-            if(ReceivedResourceAffectedMessage != null)
+            if (ReceivedResourceAffectedMessage != null)
             {
                 var result = Task.Run(async () => await EsbProxy.Invoke<string>("FetchResourcesAffectedMemo", resourceId).ConfigureAwait(true)).GetAwaiter().GetResult();
-                if(!string.IsNullOrWhiteSpace(result))
+                if (!string.IsNullOrWhiteSpace(result))
                 {
                     FetchResourcesAffectedMemo(result);
                 }
@@ -153,20 +156,21 @@ namespace Dev2.Network
         void FetchResourcesAffectedMemo(string result)
         {
             var obj = _serializer.Deserialize<CompileMessageList>(result);
-            if(obj != null)
+            if (obj != null)
             {
                 ReceivedResourceAffectedMessage.Invoke(obj.ServiceID, obj);
                 var shellViewModel = CustomContainer.Get<IShellViewModel>();
-                if(shellViewModel != null)
+                if (shellViewModel != null)
                 {
                     shellViewModel.ResourceCalled = false;
                 }
             }
         }
 
-        void HubConnectionOnClosed()
+        Task HubConnectionOnClosed(Exception ex)
         {
             HasDisconnected();
+            return Task.CompletedTask;
         }
 
         void HasDisconnected()
@@ -174,12 +178,12 @@ namespace Dev2.Network
             Dev2Logger.Debug("*********** Hub connection down", "Warewolf Debug");
             IsConnected = false;
             IsConnecting = false;
-            if(IsShuttingDown)
+            if (IsShuttingDown)
             {
                 return;
             }
 
-            if(HubConnection.State != ConnectionStateWrapped.Disconnected)
+            if (HubConnection.State != ConnectionStateWrapped.Disconnected)
             {
                 OnNetworkStateChanged(new NetworkStateEventArgs(NetworkState.Online, NetworkState.Offline));
             }
@@ -204,7 +208,7 @@ namespace Dev2.Network
 
         protected void HubConnectionStateChanged(IStateChangeWrapped stateChange)
         {
-            switch(stateChange.NewState)
+            switch (stateChange.NewState)
             {
                 case ConnectionStateWrapped.Connected:
                     IsConnected = true;
@@ -229,8 +233,33 @@ namespace Dev2.Network
             }
         }
 
-        public bool IsConnected { get; private set; }
-        public bool IsConnecting { get; private set; }
+        private bool isConnected;
+        public bool IsConnected 
+        {
+            get
+            {
+                if (HubConnection != null) return HubConnection.State == ConnectionStateWrapped.Connected;
+                return isConnected;
+            }
+            set
+            {
+                isConnected = value;
+            }
+        }
+
+        private bool isConnecting;
+        public bool IsConnecting 
+        {
+            get
+            {
+                if (HubConnection != null) return (HubConnection.State == ConnectionStateWrapped.Connecting || HubConnection.State == ConnectionStateWrapped.Reconnecting);
+                return isConnecting;
+            }
+            set
+            {
+                isConnecting = value;
+            }
+        }
         public string Alias { get; set; }
         public string DisplayName { get; set; }
 
@@ -240,37 +269,39 @@ namespace Dev2.Network
             ID = id;
             try
             {
-                if(!IsConnecting)
+                if (!IsConnecting)
                 {
                     var t = ConnectAsync(id);
                     t.ContinueWith(
                         (result) =>
                         {
-                            if(result.IsFaulted)
+                            if (result.IsFaulted)
                             {
                             }
                         });
+
+                    WaitToConnect(TimeSpan.FromMilliseconds(10000)); // wait 10 seconds to finish SignalR async connection
                 }
 
                 //ensureConnectedWaitTask.Wait(Config.Studio.ConnectTimeout);
             }
-            catch(AggregateException aex)
+            catch (AggregateException aex)
             {
                 aex.Flatten();
                 aex.Handle(
                     ex =>
                     {
                         Dev2Logger.Error(this, aex, "Warewolf Error");
-                        if(ex is HttpClientException hex && (hex.Response.StatusCode == HttpStatusCode.Unauthorized || hex.Response.StatusCode == HttpStatusCode.Forbidden))
-                        {
-                            UpdateIsAuthorized(false);
-                            throw new UnauthorizedAccessException();
-                        }
+                        //if(ex is HttpClientException hex && (hex.Response.StatusCode == HttpStatusCode.Unauthorized || hex.Response.StatusCode == HttpStatusCode.Forbidden))
+                        //{
+                        //    UpdateIsAuthorized(false);
+                        //    throw new UnauthorizedAccessException();
+                        //}
 
                         throw ex;
                     });
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 HandleConnectError(e);
             }
@@ -284,7 +315,7 @@ namespace Dev2.Network
 
         public Task<bool> ConnectAsync(Guid id)
         {
-            return ConnectAsync(id, Timeout.InfiniteTimeSpan);
+            return ConnectAsync(id, TimeSpan.FromSeconds(60000));
         }
 
         static bool ValidateServerCertificate(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslpolicyerrors) => true;
@@ -304,70 +335,71 @@ namespace Dev2.Network
                 IsShuttingDown = true;
                 HubConnection.Stop(new TimeSpan(0, 0, 0, 5));
             }
-            catch(AggregateException aex)
+            catch (AggregateException aex)
             {
                 aex.Flatten();
                 aex.Handle(
                     ex =>
                     {
                         Dev2Logger.Error(this, aex, "Warewolf Error");
-                        if(ex is HttpClientException hex)
-                        {
-                            switch(hex.Response.StatusCode)
-                            {
-                                case HttpStatusCode.Unauthorized:
-                                case HttpStatusCode.Forbidden:
-                                    UpdateIsAuthorized(false);
-                                    throw new NotConnectedException();
-                                case HttpStatusCode.Continue:
-                                case HttpStatusCode.SwitchingProtocols:
-                                case HttpStatusCode.OK:
-                                case HttpStatusCode.Created:
-                                case HttpStatusCode.Accepted:
-                                case HttpStatusCode.NonAuthoritativeInformation:
-                                case HttpStatusCode.NoContent:
-                                case HttpStatusCode.ResetContent:
-                                case HttpStatusCode.PartialContent:
-                                case HttpStatusCode.MultipleChoices:
-                                case HttpStatusCode.MovedPermanently:
-                                case HttpStatusCode.Found:
-                                case HttpStatusCode.SeeOther:
-                                case HttpStatusCode.NotModified:
-                                case HttpStatusCode.UseProxy:
-                                case HttpStatusCode.Unused:
-                                case HttpStatusCode.TemporaryRedirect:
-                                case HttpStatusCode.BadRequest:
-                                case HttpStatusCode.PaymentRequired:
-                                case HttpStatusCode.NotFound:
-                                case HttpStatusCode.MethodNotAllowed:
-                                case HttpStatusCode.NotAcceptable:
-                                case HttpStatusCode.ProxyAuthenticationRequired:
-                                case HttpStatusCode.RequestTimeout:
-                                case HttpStatusCode.Conflict:
-                                case HttpStatusCode.Gone:
-                                case HttpStatusCode.LengthRequired:
-                                case HttpStatusCode.PreconditionFailed:
-                                case HttpStatusCode.RequestEntityTooLarge:
-                                case HttpStatusCode.RequestUriTooLong:
-                                case HttpStatusCode.UnsupportedMediaType:
-                                case HttpStatusCode.RequestedRangeNotSatisfiable:
-                                case HttpStatusCode.ExpectationFailed:
-                                case HttpStatusCode.UpgradeRequired:
-                                case HttpStatusCode.InternalServerError:
-                                case HttpStatusCode.NotImplemented:
-                                case HttpStatusCode.BadGateway:
-                                case HttpStatusCode.ServiceUnavailable:
-                                case HttpStatusCode.GatewayTimeout:
-                                case HttpStatusCode.HttpVersionNotSupported:
-                                default:
-                                    throw new NotConnectedException();
-                            }
-                        }
+                        throw new Exception();
+                        //if(ex is HttpClientException hex)
+                        //{
+                        //    switch(hex.Response.StatusCode)
+                        //    {
+                        //        case HttpStatusCode.Unauthorized:
+                        //        case HttpStatusCode.Forbidden:
+                        //            UpdateIsAuthorized(false);
+                        //            throw new NotConnectedException();
+                        //        case HttpStatusCode.Continue:
+                        //        case HttpStatusCode.SwitchingProtocols:
+                        //        case HttpStatusCode.OK:
+                        //        case HttpStatusCode.Created:
+                        //        case HttpStatusCode.Accepted:
+                        //        case HttpStatusCode.NonAuthoritativeInformation:
+                        //        case HttpStatusCode.NoContent:
+                        //        case HttpStatusCode.ResetContent:
+                        //        case HttpStatusCode.PartialContent:
+                        //        case HttpStatusCode.MultipleChoices:
+                        //        case HttpStatusCode.MovedPermanently:
+                        //        case HttpStatusCode.Found:
+                        //        case HttpStatusCode.SeeOther:
+                        //        case HttpStatusCode.NotModified:
+                        //        case HttpStatusCode.UseProxy:
+                        //        case HttpStatusCode.Unused:
+                        //        case HttpStatusCode.TemporaryRedirect:
+                        //        case HttpStatusCode.BadRequest:
+                        //        case HttpStatusCode.PaymentRequired:
+                        //        case HttpStatusCode.NotFound:
+                        //        case HttpStatusCode.MethodNotAllowed:
+                        //        case HttpStatusCode.NotAcceptable:
+                        //        case HttpStatusCode.ProxyAuthenticationRequired:
+                        //        case HttpStatusCode.RequestTimeout:
+                        //        case HttpStatusCode.Conflict:
+                        //        case HttpStatusCode.Gone:
+                        //        case HttpStatusCode.LengthRequired:
+                        //        case HttpStatusCode.PreconditionFailed:
+                        //        case HttpStatusCode.RequestEntityTooLarge:
+                        //        case HttpStatusCode.RequestUriTooLong:
+                        //        case HttpStatusCode.UnsupportedMediaType:
+                        //        case HttpStatusCode.RequestedRangeNotSatisfiable:
+                        //        case HttpStatusCode.ExpectationFailed:
+                        //        case HttpStatusCode.UpgradeRequired:
+                        //        case HttpStatusCode.InternalServerError:
+                        //        case HttpStatusCode.NotImplemented:
+                        //        case HttpStatusCode.BadGateway:
+                        //        case HttpStatusCode.ServiceUnavailable:
+                        //        case HttpStatusCode.GatewayTimeout:
+                        //        case HttpStatusCode.HttpVersionNotSupported:
+                        //        default:
+                        //            throw new NotConnectedException();
+                        //    }
+                        //}
 
                         return false;
                     });
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Dev2Logger.Error(this, e, "Warewolf Error");
             }
@@ -377,17 +409,17 @@ namespace Dev2.Network
 
         public void Verify(Action<ConnectResult> callback, bool wait)
         {
-            if(IsConnected)
+            if (IsConnected)
             {
                 return;
             }
 
             ServicePointManager.ServerCertificateValidationCallback = ValidateServerCertificate;
 
-            if(wait)
+            if (wait)
             {
                 callback?.Invoke(
-                    HubConnection.State == (ConnectionStateWrapped)ConnectionState.Connected
+                    HubConnection.State == (ConnectionStateWrapped)HubConnectionState.Connected
                         ? ConnectResult.Success
                         : ConnectResult.ConnectFailed);
             }
@@ -396,7 +428,7 @@ namespace Dev2.Network
                 AsyncWorker.Start(
                     () => Thread.Sleep(MillisecondsTimeout),
                     () => callback?.Invoke(
-                        HubConnection.State == (ConnectionStateWrapped)ConnectionState.Connected
+                        HubConnection.State == (ConnectionStateWrapped)HubConnectionState.Connected
                             ? ConnectResult.Success
                             : ConnectResult.ConnectFailed));
             }
@@ -430,7 +462,7 @@ namespace Dev2.Network
             {
                 RaisePermissionsModified(obj.ModifiedPermissions);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Dev2Logger.Error(this, e, "Warewolf Error");
             }
@@ -493,7 +525,7 @@ namespace Dev2.Network
 
         void UpdateIsAuthorized(bool isAuthorized)
         {
-            if(IsAuthorized != isAuthorized)
+            if (IsAuthorized != isAuthorized)
             {
                 IsAuthorized = isAuthorized;
                 RaisePermissionsChanged();
@@ -513,13 +545,13 @@ namespace Dev2.Network
 
         public StringBuilder ExecuteCommand(StringBuilder xmlRequest, Guid workspaceId, int timeout)
         {
-            if(xmlRequest == null || xmlRequest.Length == 0)
+            if (xmlRequest == null || xmlRequest.Length == 0)
             {
                 throw new ArgumentNullException(nameof(xmlRequest));
             }
 
             var executeRequestAsync = Task.Run(async () => await ExecuteCommandAsync(xmlRequest, workspaceId).ConfigureAwait(true));
-            if(executeRequestAsync.Wait(timeout))
+            if (executeRequestAsync.Wait(timeout))
             {
                 return executeRequestAsync.Result;
             }
@@ -529,7 +561,7 @@ namespace Dev2.Network
 
         public async Task<StringBuilder> ExecuteCommandAsync(StringBuilder xmlRequest, Guid workspaceId)
         {
-            if(xmlRequest == null || xmlRequest.Length == 0)
+            if (xmlRequest == null || xmlRequest.Length == 0)
             {
                 throw new ArgumentNullException(nameof(xmlRequest));
             }
@@ -540,7 +572,7 @@ namespace Dev2.Network
             var envelope = new Envelope
             {
                 PartID = 0,
-                Type = typeof(Envelope),
+                //Type = typeof(Envelope),
                 Content = xmlRequest.ToString()
             };
 
@@ -551,18 +583,18 @@ namespace Dev2.Network
                 var fragmentInvoke = await EsbProxy.Invoke<string>("FetchExecutePayloadFragment", new FutureReceipt { PartID = 0, RequestID = messageId }).ConfigureAwait(false);
                 result.Append(fragmentInvoke);
 
-                if(result.Length > 0)
+                if (result.Length > 0)
                 {
                     var start = result.LastIndexOf("<" + GlobalConstants.ManagementServicePayload + ">", false);
                     var end = result.LastIndexOf("</" + GlobalConstants.ManagementServicePayload + ">", false);
-                    if(start > 0 && start < end && end - start > 1)
+                    if (start > 0 && start < end && end - start > 1)
                     {
                         start += GlobalConstants.ManagementServicePayload.Length + 2;
                         return new StringBuilder(result.Substring(start, end - start));
                     }
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Dev2Logger.Error(e, "Warewolf Error");
             }
@@ -596,7 +628,7 @@ namespace Dev2.Network
 
         protected virtual void Dispose(bool disposing)
         {
-            if(!_disposedValue)
+            if (!_disposedValue)
             {
                 _disposedValue = true;
             }
@@ -605,6 +637,16 @@ namespace Dev2.Network
         public void Dispose()
         {
             Dispose(true);
+        }
+
+        public void WaitToConnect(TimeSpan timeSpan)
+        {
+            int waitInMilliseconds = 500;
+            Stopwatch watch = Stopwatch.StartNew();
+            while (watch.Elapsed < timeSpan && !this.IsConnected)
+            {
+                System.Threading.Thread.Sleep(waitInMilliseconds);
+            }
         }
     }
 
