@@ -26,6 +26,8 @@ using Dev2.Runtime.Interfaces;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Enums;
 using Warewolf.Triggers;
+using System.Activities.Statements;
+using Microsoft.AspNet.SignalR.Client;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -102,8 +104,18 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             else
             {
-                var proxy = Connections.GetHubConnection(destination);
-                var roles = new StringBuilder("*");
+                object proxy;
+				var isLegacyConnection = false;
+				try
+				{
+					proxy = Connections.GetHubConnection(destination);
+				}
+                catch
+                {
+					proxy = Connections.CreateHubProxy(destination);
+					isLegacyConnection = true;
+				}
+				var roles = new StringBuilder("*");
                 values.TryGetValue("deployTests", out StringBuilder deployTests);
                 values.TryGetValue("deployTriggers", out StringBuilder deployTriggers);
 
@@ -118,12 +130,19 @@ namespace Dev2.Runtime.ESB.Management.Services
                 }
                 else
                 {
-                    ShouldExecuteDeploy(values, toReturn, serializer, proxy, roles, deployTests, deployTriggers);
+                    if (!isLegacyConnection)
+                    {
+                        ShouldExecuteDeploy(values, toReturn, serializer, proxy as Microsoft.AspNetCore.SignalR.Client.HubConnection, roles, deployTests, deployTriggers);
+                    }
+                    else
+                    {
+                        LegacyShouldExecuteDeploy(values, toReturn, serializer, proxy as IHubProxy, roles, deployTests, deployTriggers);
+                    }
                 }
             }
-        }
+		}
 
-        void ShouldExecuteDeploy(Dictionary<string, StringBuilder> values, List<DeployResult> toReturn, Dev2JsonSerializer serializer, HubConnection hubconnection, StringBuilder roles, StringBuilder deployTests, StringBuilder deployTriggers)
+		void ShouldExecuteDeploy(Dictionary<string, StringBuilder> values, List<DeployResult> toReturn, Dev2JsonSerializer serializer, Microsoft.AspNetCore.SignalR.Client.HubConnection hubconnection, StringBuilder roles, StringBuilder deployTests, StringBuilder deployTriggers)
         {
             var doTestDeploy = bool.Parse(deployTests.ToString());
             var doTriggerDeploy = bool.Parse(deployTriggers.ToString());
@@ -159,9 +178,47 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 toReturn.Add(new DeployResult(new ExecuteMessage { HasError = true, Message = new StringBuilder("No resources specified") }, "An Error has occurred"));
             }
-        }
+		}
 
-        public async Task GetTaskForDeploy(Guid resourceId, StringBuilder roles, Dev2JsonSerializer serializer, HubConnection hubConnection, bool doTestDeploy, bool doTriggerDeploy, List<DeployResult> toReturn)
+		void LegacyShouldExecuteDeploy(Dictionary<string, StringBuilder> values, List<DeployResult> toReturn, Dev2JsonSerializer serializer, IHubProxy proxy, StringBuilder roles, StringBuilder deployTests, StringBuilder deployTriggers)
+		{
+			var doTestDeploy = bool.Parse(deployTests.ToString());
+			var doTriggerDeploy = bool.Parse(deployTriggers.ToString());
+			values.TryGetValue("resourceIDsToDeploy", out StringBuilder resourceIDsToDeploy);
+			var idsToDeploy = new List<Guid>();
+			idsToDeploy.AddRange(serializer.Deserialize<List<Guid>>(resourceIDsToDeploy));
+			if (idsToDeploy.Any())
+			{
+				var counter = 0;
+				var count = idsToDeploy.Count;
+				var amountToTake = 10;
+				while (counter < count)
+				{
+					var diff = count - counter;
+					if (diff < 10)
+					{
+						amountToTake = diff;
+					}
+
+					var throttledIds = idsToDeploy.Skip(counter).Take(amountToTake);
+					var taskList = new List<Task>();
+					foreach (var resourceId in throttledIds)
+					{
+						var lastTask = GetTaskForDeploy(resourceId, roles, serializer, proxy, doTestDeploy, doTriggerDeploy, toReturn);
+						taskList.Add(lastTask);
+					}
+
+					Task.WaitAll(taskList.ToArray());
+					counter = counter + 10;
+				}
+			}
+			else
+			{
+				toReturn.Add(new DeployResult(new ExecuteMessage { HasError = true, Message = new StringBuilder("No resources specified") }, "An Error has occurred"));
+			}
+		}
+
+		public async Task GetTaskForDeploy(Guid resourceId, StringBuilder roles, Dev2JsonSerializer serializer, Microsoft.AspNetCore.SignalR.Client.HubConnection hubConnection, bool doTestDeploy, bool doTriggerDeploy, List<DeployResult> toReturn)
         {
             var lastTask = Task.Run(async () =>
             {
@@ -169,9 +226,20 @@ namespace Dev2.Runtime.ESB.Management.Services
                 toReturn.AddRange(results);
             });
             await lastTask.ConfigureAwait(false);
-        }
+		}
 
-        public IConnections Connections
+		public async Task GetTaskForDeploy(Guid resourceId, StringBuilder roles, Dev2JsonSerializer serializer, IHubProxy proxy, bool doTestDeploy, bool doTriggerDeploy, List<DeployResult> toReturn)
+		{
+			var lastTask = Task.Run(async () =>
+			{
+				var results = await DeployResourceAsync(resourceId, roles, serializer, proxy, doTestDeploy, doTriggerDeploy).ConfigureAwait(false);
+				toReturn.AddRange(results);
+			});
+			await lastTask.ConfigureAwait(false);
+		}
+
+
+		public IConnections Connections
         {
             private get => _connections ?? (_connections = new Connections());
             set => _connections = value;
@@ -195,7 +263,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             set => _resourceCatalog = value;
         }
 
-        async Task<IEnumerable<DeployResult>> DeployResourceAsync(Guid resourceId, StringBuilder roles, Dev2JsonSerializer serializer, HubConnection hubConnection, bool doTestDeploy, bool doTriggerDeploy)
+        async Task<IEnumerable<DeployResult>> DeployResourceAsync(Guid resourceId, StringBuilder roles, Dev2JsonSerializer serializer, Microsoft.AspNetCore.SignalR.Client.HubConnection hubConnection, bool doTestDeploy, bool doTriggerDeploy)
         {
             var toReturn = new List<DeployResult>();
             var savePath = new StringBuilder();
@@ -273,9 +341,87 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
 
             return toReturn;
-        }
+		}
 
-        public DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><ResourceDefinition ColumnIODirection=\"Input\"/><Roles ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
+		async Task<IEnumerable<DeployResult>> DeployResourceAsync(Guid resourceId, StringBuilder roles, Dev2JsonSerializer serializer, IHubProxy proxy, bool doTestDeploy, bool doTriggerDeploy)
+		{
+			var toReturn = new List<DeployResult>();
+			var savePath = new StringBuilder();
+			var resourceContent = ResourceCatalog.GetResourceContents(GlobalConstants.ServerWorkspaceID, resourceId);
+			var resource = ResourceCatalog.GetResource(GlobalConstants.ServerWorkspaceID, resourceId);
+			if (!resource.IsService || resource.ToXml().Value.Contains("FileReadWithBase64") || resource.ToXml().Value.Contains("DsfFileWrite") || resource.ToXml().Value.Contains("DsfFileRead") || resource.ToXml().Value.Contains("DsfFolderRead") || resource.ToXml().Value.Contains("DsfPathCopy") || resource.ToXml().Value.Contains("DsfPathCreate") || resource.ToXml().Value.Contains("DsfPathDelete") || resource.ToXml().Value.Contains("DsfPathMove") || resource.ToXml().Value.Contains("DsfPathMove") || resource.ToXml().Value.Contains("DsfPathRename") || resource.ToXml().Value.Contains("DsfZip") || resource.ToXml().Value.Contains("DsfUnzip"))
+			{
+				var fetchResourceService = new FetchResourceDefinition();
+				resourceContent = fetchResourceService.DecryptAllPasswords(resourceContent);
+			}
+
+			savePath.Append(resource.GetSavePath());
+
+			var esbExecuteRequest = new EsbExecuteRequest { ServiceName = "DeployResourceService" };
+			esbExecuteRequest.AddArgument("savePath", savePath);
+			esbExecuteRequest.AddArgument("ResourceDefinition", resourceContent);
+			esbExecuteRequest.AddArgument("Roles", roles);
+			var envelope = new Envelope
+			{
+				Content = serializer.SerializeToBuilder(esbExecuteRequest).ToString(),
+				PartID = 0,
+				Type = typeof(Envelope)
+			};
+			var messageId = Guid.NewGuid();
+			await proxy.Invoke<Receipt>("ExecuteCommand", envelope, true, Guid.Empty, Guid.Empty, messageId).ConfigureAwait(false);
+			var fragmentInvokeResult = await proxy.Invoke<string>("FetchExecutePayloadFragment", new FutureReceipt { PartID = 0, RequestID = messageId }).ConfigureAwait(false);
+			var execResult = serializer.Deserialize<ExecuteMessage>(fragmentInvokeResult) ?? new ExecuteMessage { HasError = true, Message = new StringBuilder("Deploy Failed") };
+			toReturn.Add(new DeployResult(execResult, resource.ResourceName));
+
+			if (doTriggerDeploy)
+			{
+				var triggersToDeploy = TriggersCatalog.LoadQueuesByResourceId(resourceId);
+				var message = new CompressedExecuteMessage();
+				message.SetMessage(serializer.Serialize(triggersToDeploy));
+				var triggerDeployRequest = new EsbExecuteRequest { ServiceName = "SaveTriggers" };
+				triggerDeployRequest.AddArgument("resourceID", resourceId.ToString().ToStringBuilder());
+				triggerDeployRequest.AddArgument("resourcePath", savePath);
+				triggerDeployRequest.AddArgument("triggerDefinitions", serializer.SerializeToBuilder(message));
+				var deployEnvelope = new Envelope
+				{
+					Content = serializer.SerializeToBuilder(triggerDeployRequest).ToString(),
+					PartID = 0,
+					Type = typeof(Envelope),
+				};
+				var deployMessageId = Guid.NewGuid();
+				await proxy.Invoke<Receipt>("ExecuteCommand", deployEnvelope, true, Guid.Empty, Guid.Empty, deployMessageId).ConfigureAwait(false);
+				var deployFragmentInvokeResult = await proxy.Invoke<string>("FetchExecutePayloadFragment", new FutureReceipt { PartID = 0, RequestID = deployMessageId }).ConfigureAwait(false);
+				var deployExecResult = serializer.Deserialize<ExecuteMessage>(deployFragmentInvokeResult) ?? new ExecuteMessage { HasError = true, Message = new StringBuilder("Trigger Deploy Failed") };
+				toReturn.Add(new DeployResult(deployExecResult, $"{resource.ResourceName} Triggers"));
+			}
+
+			if (doTestDeploy)
+			{
+				var testsToDeploy = TestCatalog.Fetch(resourceId);
+				var message = new CompressedExecuteMessage();
+				message.SetMessage(serializer.Serialize(testsToDeploy));
+				var testDeployRequest = new EsbExecuteRequest { ServiceName = "SaveTests" };
+				testDeployRequest.AddArgument("resourceID", resourceId.ToString().ToStringBuilder());
+				testDeployRequest.AddArgument("resourcePath", savePath);
+				testDeployRequest.AddArgument("testDefinitions", serializer.SerializeToBuilder(message));
+				var deployEnvelope = new Envelope
+				{
+					Content = serializer.SerializeToBuilder(testDeployRequest).ToString(),
+					PartID = 0,
+					Type = typeof(Envelope)
+				};
+				var deployMessageId = Guid.NewGuid();
+				await proxy.Invoke<Receipt>("ExecuteCommand", deployEnvelope, true, Guid.Empty, Guid.Empty, deployMessageId).ConfigureAwait(false);
+				var deployFragmentInvokeResult = await proxy.Invoke<string>("FetchExecutePayloadFragment", new FutureReceipt { PartID = 0, RequestID = deployMessageId }).ConfigureAwait(false);
+				var deployExecResult = serializer.Deserialize<ExecuteMessage>(deployFragmentInvokeResult) ?? new ExecuteMessage { HasError = true, Message = new StringBuilder("Tests Deploy Failed") };
+				toReturn.Add(new DeployResult(deployExecResult, $"{resource.ResourceName} Tests"));
+			}
+
+			return toReturn;
+		}
+
+
+		public DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><ResourceDefinition ColumnIODirection=\"Input\"/><Roles ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
 
         public string HandlesType() => "DirectDeploy";
     }

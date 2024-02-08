@@ -527,6 +527,7 @@
     <PackageReference Include="log4net">
       <Version>2.0.12</Version>
     </PackageReference>
+    <PackageReference Include="Microsoft.AspNet.SignalR.Client" Version="2.4.3" />
     <PackageReference Include="Microsoft.AspNet.SignalR.SelfHost">
       <Version>2.4.1</Version>
     </PackageReference>

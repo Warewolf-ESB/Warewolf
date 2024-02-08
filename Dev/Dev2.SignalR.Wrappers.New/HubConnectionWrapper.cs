@@ -12,6 +12,8 @@ using System;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.AspNet.SignalR.Client;
+using Microsoft.AspNet.SignalR.Client.Transports;
 using Microsoft.AspNetCore.SignalR.Client;
 using Warewolf.Data;
 
@@ -19,7 +21,7 @@ namespace Dev2.SignalR.Wrappers.New
 {
     public class HubConnectionWrapper : IHubConnectionWrapper, IDisposable
     {
-        readonly HubConnection _wrapped;
+        readonly Microsoft.AspNetCore.SignalR.Client.HubConnection _wrapped;
         private readonly ManualResetEvent _connectNotify = new ManualResetEvent(false);
         private readonly IStateController _stateController;
         private HubConnectionState _oldState = HubConnectionState.Disconnected;
@@ -27,7 +29,7 @@ namespace Dev2.SignalR.Wrappers.New
 
         public IStateController StateController => _stateController;
 
-        private HubConnectionWrapper(HubConnection wrapped)
+        private HubConnectionWrapper(Microsoft.AspNetCore.SignalR.Client.HubConnection wrapped)
         {
             _wrapped = wrapped;
             //_wrapped.DeadlockErrorTimeout = TimeSpan.FromSeconds(30);
