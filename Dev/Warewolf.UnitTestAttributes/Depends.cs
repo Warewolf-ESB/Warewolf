@@ -277,7 +277,7 @@ namespace Warewolf.UnitTestAttributes
                 case ContainerType.MySQL:
                     return new[] {"3306", "3307"};
                 case ContainerType.PostGreSQL:
-                    return new[] {"5433"};
+                    return new[] {"5433", "5432"};
                 case ContainerType.RabbitMQ:
                     return new[] {"5672"};
                 case ContainerType.Redis:
