@@ -109,6 +109,7 @@ namespace Dev2.Controller
             if (connection == null || !connection.IsConnected)
             {
                 connection = new LegacyServerProxy(connection.AppServerUri);
+                connection.ConnectAsync(connection.ID).Wait(30000);
             }
             if (!connection.IsConnected)
             {

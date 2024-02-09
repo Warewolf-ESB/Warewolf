@@ -254,7 +254,7 @@ namespace Dev2.Network
         {
             get
             {
-                if (HubConnection != null) return (HubConnection.LegacyState == ConnectionStateWrapped.Connecting || HubConnection.LegacyState == ConnectionStateWrapped.Reconnecting);
+                if (HubConnection != null) return (HubConnection.LegacyState == ConnectionStateWrapped.Connecting || HubConnection.State == ConnectionStateWrapped.Reconnecting);
                 return isConnecting;
             }
             set
