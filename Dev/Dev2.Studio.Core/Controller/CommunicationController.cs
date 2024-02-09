@@ -20,7 +20,6 @@ using Dev2.Common.Interfaces.Hosting;
 using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Communication;
-using Dev2.Network;
 using Dev2.SignalR.Wrappers;
 using Dev2.Studio.Interfaces;
 using Warewolf.Resource.Errors;
@@ -107,11 +106,6 @@ namespace Dev2.Controller
             var serializer = new Dev2JsonSerializer();
             var popupController = CustomContainer.Get<IPopupController>();
             if (connection == null || !connection.IsConnected)
-            {
-                connection = new LegacyServerProxy(connection.AppServerUri);
-                connection.ConnectAsync(connection.ID).Wait(30000);
-            }
-            if (!connection.IsConnected)
             {
                 IsConnectionValid(connection, popupController);
             }
