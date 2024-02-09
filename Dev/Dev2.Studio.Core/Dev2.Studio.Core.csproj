@@ -222,6 +222,7 @@
     <Compile Include="Models\DataList\RecordSetItemModel.cs" />
     <Compile Include="Models\DataList\ScalarItemModel.cs" />
     <Compile Include="NetworkStateChangedEventArgs.cs" />
+    <Compile Include="Network\LegacyServerProxy.cs" />
     <Compile Include="Network\ServerProxyWithoutChunking.cs" />
     <Compile Include="CustomControls\CachingContentHost.cs" />
     <Compile Include="DataList\ActivityDataMappingBuilder.cs" />
