@@ -428,10 +428,6 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         [Given(@"I Select ""(.*)"" as Oracle Source for ""(.*)""")]
         public void GivenISelectAsOracleSourceFor(string sourceName, string activityName)
         {
-            if (sourceName == "NewOracleSource")
-            {
-                Depends.InjectOracleSources();
-            }
             var proxyLayer = _scenarioContext.Get<StudioServerProxy>("proxyLayer");
             var vm = GetViewModel();
             Assert.IsNotNull(vm.SourceRegion);            

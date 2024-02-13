@@ -1,30 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
-using System.Net.Sockets;
-using System.Threading;
 using Newtonsoft.Json;
 
 namespace Warewolf.UnitTestAttributes
 {
     public class Depends : IDisposable
     {
-        public static readonly List<string> RigOpsHosts =  new List<string>
-        {
-            "localhost",
-            "RSAKLFSVRHST1.premier.local",
-            "t004121.premier.local",
-            "opswolf.com",
-            "localhost"
-        };
-        private string SelectedHost = "";
-        
-        static readonly string BackupServer = "SVRDEV.premier.local";
-        public static readonly string SharepointBackupServer = BackupServer;
-
         public enum ContainerType
         {
             MySQL = 0,
@@ -192,50 +176,17 @@ namespace Warewolf.UnitTestAttributes
             else if (_containerType == ContainerType.PostGreSQL)
             {
                 Container.IP = "localhost";
-                Container.Port = "5433";
+                Container.Port = "5432";
             }
             else if (_containerType == ContainerType.MySQL)
             {
                 Container.IP = "102.37.115.89";
                 Container.Port = "9300";
             }
-            else if (_containerType == ContainerType.AnonymousRedis)
+			else if (_containerType == ContainerType.AnonymousRedis)
             {
                 Container.IP = "102.37.115.89";
                 Container.Port = "6380";
-            }
-            else
-            {
-                string foundPort;
-                var portRetryCount = 0;
-                do
-                {
-                    var retryCount = 0;
-                    foundPort = Container.PossiblePorts.ElementAt(portRetryCount);
-                    do
-                    {
-                        SelectedHost = RigOpsHosts.ElementAt(retryCount);
-                        using (var client = new TcpClient())
-                        {
-                            try
-                            {
-                                client.Connect(SelectedHost, int.Parse(foundPort));
-                                retryCount = RigOpsHosts.Count;
-                                portRetryCount = Container.PossiblePorts.Length;
-                            }
-                            catch (SocketException)
-                            {
-                                if (++retryCount == RigOpsHosts.Count) 
-                                {
-                                    portRetryCount++;
-                                }
-                            }
-                        }
-                    } while(retryCount < RigOpsHosts.Count);
-                } while (portRetryCount < Container.PossiblePorts.Length);
-
-                Container.IP = SelectedHost;
-                Container.Port = foundPort;
             }
 
             if (!performSourceInjection) return;
@@ -307,22 +258,6 @@ namespace Warewolf.UnitTestAttributes
         public void Dispose()
         {
             //TODO: Stop containers when they are not in use as an optimization.
-        }
-
-        void Stop()
-        {
-            using (var client = new WebClient {Credentials = CredentialCache.DefaultNetworkCredentials})
-            {
-                var result =
-                    client.DownloadString(
-                        $"http://{SelectedHost}:3142/public/Container/Async/Stop/{ConvertToString(_containerType)}.json");
-                var JSONObj = JsonConvert.DeserializeObject<StopContainer>(result);
-                if (JSONObj.Result != "Success" &&
-                    JSONObj.Result != "This API does not support stopping Linux containers." && JSONObj.Result != "")
-                {
-                    Console.WriteLine($"Cannot stop container{(result == string.Empty ? "." : ": " + result)}");
-                }
-            }
         }
 
         void InjectCIRemoteContainer()
@@ -432,33 +367,6 @@ namespace Warewolf.UnitTestAttributes
                     @"%programdata%\Warewolf\Resources\localhostGetSource.xml",
                     @"%programdata%\Warewolf\Resources\localhostGetSource.bite"
                 });
-        }
-
-        void InjectSVRDEVIP()
-        {
-            UpdateSourcesConnectionStrings($"Server={BackupServer};Database=test;Uid=root;Pwd=admin;",
-                new List<string>
-                {
-                    @"%programdata%\Warewolf\Resources\Sources\Database\NewMySqlSource.xml",
-                    @"%programdata%\Warewolf\Resources\Sources\Database\NewMySqlSource.bite"
-                });
-            UpdateSourcesConnectionStrings($"Server=http://{BackupServer}/;AuthenticationType=User;UserName=integrationtester@dev2.local;Password=I73573r0",
-                new List<string>
-                {
-                    @"programdata%\Warewolf\Resources\Sources\Sharepoint\SharePoint Test Server.xml",
-                    @"programdata%\Warewolf\Resources\Sources\Sharepoint\SharePoint Test Server.bite"
-                });
-        }
-
-        public static void InjectOracleSources()
-        {
-            var knownServerSources = new List<string>()
-            {
-                @"%programdata%\Warewolf\Resources\Sources\Database\NewOracleSource.bite",
-                @"%programdata%\Warewolf\Resources\Sources\Database\NewOracleSource.xml"
-            };
-            UpdateSourcesConnectionStrings($"User Id=Testuser;Password=test123;Data Source={BackupServer};Database=HR;",
-                knownServerSources);
         }
 
         void InjectMySQLContainer()
