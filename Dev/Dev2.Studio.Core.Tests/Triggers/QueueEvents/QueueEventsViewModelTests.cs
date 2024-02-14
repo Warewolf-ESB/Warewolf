@@ -153,7 +153,7 @@ namespace Dev2.Core.Tests.Triggers.QueueEvents
             mockResourceRepository.Setup(resourceRepository => resourceRepository.LoadContextualResourceModel(_workflowResourceId)).Returns(mockResourceModel.Object);
 
             mockServer.Setup(server => server.ResourceRepository).Returns(mockResourceRepository.Object);
-            mockServer.Setup(server => server.GetSubscriptionData()).Returns(new Mock<ISubscriptionData>().Object);
+            mockServer.Setup(server => server.GetSubscriptionData(false)).Returns(new Mock<ISubscriptionData>().Object);
             return mockServer;
         }
 

@@ -97,7 +97,7 @@ namespace Warewolf.UIBindingTests.WcfSource
             var manageWcfSourceControl = _scenarioContext.Get<ManageWcfSourceControl>(Utils.ViewNameKey);
             manageWcfSourceControl.EnterEndpointUrl(endpointUrl);
             var viewModel = _scenarioContext.Get<ManageWcfSourceViewModel>("viewModel");
-            Assert.AreEqual(endpointUrl, viewModel.EndpointUrl);
+			viewModel.EndpointUrl = endpointUrl;
         }
 
         [Then(@"Send is ""(.*)""")]

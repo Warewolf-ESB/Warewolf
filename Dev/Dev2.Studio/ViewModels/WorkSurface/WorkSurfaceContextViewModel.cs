@@ -40,6 +40,7 @@ using Warewolf.Studio.ViewModels;
 using Dev2.ViewModels;
 using Dev2.Common.Interfaces;
 using Warewolf.Studio.Resources.Languages;
+using Warewolf.Licensing;
 
 namespace Dev2.Studio.ViewModels.WorkSurface
 {
@@ -67,6 +68,8 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         readonly IPopupController _popupController;
         readonly Action<IContextualResourceModel, bool, System.Action> _saveDialogAction;
         IResourceChangeHandlerFactory _resourceChangeHandlerFactory;
+
+        public IPopupController PopupProvider { get; set; }
 
         #endregion private fields
 
@@ -326,10 +329,14 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
             if (!resourceModel.IsWorkflowSaved)
             {
-                var succesfulSave = Save(resourceModel, true);
-                if (!succesfulSave)
+                if (CustomContainer.Get<IServerRepository>().ActiveServer.GetSubscriptionData(false).IsLicensed || ContextualResourceModel.IsNewWorkflow)
                 {
-                    return;
+                    var succesfulSave = Save(resourceModel, true);
+                    WorkSurfaceViewModel?.NotifyOfPropertyChange("DisplayName");
+                    if (!succesfulSave)
+                    {
+                        return;
+                    }
                 }
             }
 
@@ -390,10 +397,14 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         {
             if (!ContextualResourceModel.IsWorkflowSaved)
             {
-                var successfuleSave = Save(ContextualResourceModel, true);
-                if (!successfuleSave)
+                if (CustomContainer.Get<IServerRepository>().ActiveServer.GetSubscriptionData(false).IsLicensed || ContextualResourceModel.IsNewWorkflow)
                 {
-                    return;
+                    var successfuleSave = Save(ContextualResourceModel, true);
+                    WorkSurfaceViewModel?.NotifyOfPropertyChange("DisplayName");
+                    if (!successfuleSave)
+                    {
+                        return;
+                    }
                 }
             }
             ViewInBrowserInternal(ContextualResourceModel, true);
@@ -425,10 +436,14 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             {
                 if (!ContextualResourceModel.IsWorkflowSaved && !_workspaceSaved)
                 {
-                    var successfuleSave = Save(ContextualResourceModel, true);
-                    if (!successfuleSave)
+                    if (CustomContainer.Get<IServerRepository>().ActiveServer.GetSubscriptionData(false).IsLicensed || ContextualResourceModel.IsNewWorkflow)
                     {
-                        return;
+                        var successfuleSave = Save(ContextualResourceModel, true);
+                        WorkSurfaceViewModel?.NotifyOfPropertyChange("DisplayName");
+                        if (!successfuleSave)
+                        {
+                            return;
+                        }
                     }
                 }
             }
@@ -443,8 +458,8 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             }
             var inputDataViewModel = SetupForDebug(ContextualResourceModel, true);
             inputDataViewModel.LoadWorkflowInputs();
-            inputDataViewModel.Save();
-
+            if (CustomContainer.Get<IServerRepository>().ActiveServer.GetSubscriptionData(false).IsLicensed)
+                inputDataViewModel.Save();
         }
 
         public void BindToModel()
@@ -565,6 +580,10 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             {
                 _workspaceSaved = true;
                 var saveResult = resource.Environment.ResourceRepository.Save(resource);
+                if (null != saveResult && !saveResult.HasError)
+                {
+                    resource.IsWorkflowSaved = true;
+                }
                 DisplaySaveResult(saveResult, resource);
             }
             return true;

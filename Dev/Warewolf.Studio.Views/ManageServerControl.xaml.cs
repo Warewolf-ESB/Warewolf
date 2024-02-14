@@ -23,9 +23,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Warewolf.Studio.Views
 {
-	/// <summary>
-	/// Interaction logic for ManageServerControl.xaml
-	/// </summary>
+    /// <summary>
+    /// Interaction logic for ManageServerControl.xaml
+    /// </summary>
     public partial class ManageServerControl : Microsoft.AspNetCore.Mvc.ViewEngines.IView, ICheckControlEnabledView
 	{
 		public string Path => throw new NotImplementedException();
@@ -54,7 +54,7 @@ namespace Warewolf.Studio.Views
             {
                 AddressTextBox.Text = serverName;
             }
-            catch(Exception)
+            catch (Exception)
             {
                 //Stupid exception when running from tests
             }
@@ -105,10 +105,10 @@ namespace Warewolf.Studio.Views
                 {
                     var be = ProtocolItems.GetBindingExpression(ItemsControl.ItemsSourceProperty);
                     be?.UpdateTarget();
-                    ProtocolItems.DataContext = DataContext;                    
+                    ProtocolItems.DataContext = DataContext;
                 }
                 ProtocolItems.SelectedItem = protocol;
-            }            
+            }
             catch (Exception e)
             {
                 Dev2Logger.Warn(e.Message, "Warewolf Warn");
@@ -121,7 +121,7 @@ namespace Warewolf.Studio.Views
             {
                 PortTextBox.Text = port;
             }
-            
+
             catch (Exception e)
             {
                 Dev2Logger.Warn(e.Message, "Warewolf Warn");
@@ -147,6 +147,7 @@ namespace Warewolf.Studio.Views
             be?.UpdateTarget();
             return UserNamePasswordContainer.Visibility;
         }
+
         public void TestAction()
         {
             TestConnectionButton.Command.Execute(null);
@@ -181,6 +182,12 @@ namespace Warewolf.Studio.Views
             return false;
         }
 
-		#endregion
-	}
+        #endregion
+
+        private void AddressTextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            var viewModel = DataContext as ManageNewServerViewModel;
+            viewModel.Address = viewModel.GetAddressName();
+        }
+    }
 }

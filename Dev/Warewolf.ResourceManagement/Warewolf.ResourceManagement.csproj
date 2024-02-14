@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="IResourceActivityCache.cs" />
     <Compile Include="ResourceActivityCache.cs" />
+    <Compile Include="ResourceActivityParseWithCacheParameters.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">

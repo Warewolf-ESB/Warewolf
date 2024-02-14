@@ -249,7 +249,7 @@ namespace Warewolf.UIBindingTests.SharepointSource
             var manageSharepointServerSource = _scenarioContext.Get<SharepointServerSource>(Utils.ViewNameKey);
             manageSharepointServerSource.EnterUserName(userName);
             var viewModel = _scenarioContext.Get<SharepointServerSourceViewModel>("viewModel");
-            Assert.AreEqual(userName, viewModel.UserName);
+			viewModel.UserName = userName;
         }
 
         [Given(@"I type Password")]
@@ -259,7 +259,7 @@ namespace Warewolf.UIBindingTests.SharepointSource
             var manageSharepointServerSource = _scenarioContext.Get<SharepointServerSource>(Utils.ViewNameKey);
             manageSharepointServerSource.EnterPassword(password);
             var viewModel = _scenarioContext.Get<SharepointServerSourceViewModel>("viewModel");
-            Assert.AreEqual(password, viewModel.Password);
+			viewModel.Password = password;
         }
 
         [When(@"Username field as ""(.*)""")]

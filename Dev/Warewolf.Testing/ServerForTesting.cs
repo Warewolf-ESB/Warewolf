@@ -101,7 +101,7 @@ namespace Warewolf.Testing
             return null;
         }
 
-        public ISubscriptionData GetSubscriptionData()
+        public ISubscriptionData GetSubscriptionData(bool forceReload = false)
         {
             return null;
         }
@@ -279,7 +279,7 @@ namespace Warewolf.Testing
 
         public Guid? ServerID { get; private set; }
 #pragma warning disable 0067
-        
+
         public event NetworkStateChanged NetworkStateChanged;
 
         public event ItemAddedEvent ItemAddedEvent;

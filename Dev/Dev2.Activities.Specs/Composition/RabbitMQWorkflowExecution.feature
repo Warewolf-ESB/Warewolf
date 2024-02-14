@@ -25,7 +25,7 @@ Scenario:WF with RabbitMq Consume timeout 5
 	And "RabbitMqConsume5mintimeout" contains RabbitMQPublish and Queue1 - CorrelationID "PublishRabbitMQActivity" into "[[result1]]"
 	And "RabbitMqConsume5mintimeout" contains RabbitMQConsume "DsfConsumeRabbitMQActivity" with timeout 5 seconds into "[[result]]"
 	When "RabbitMqConsume5mintimeout" is executed
-    Then the workflow execution has "No" error
+	Then the workflow execution has "No" error
 	And the "RabbitMqConsume5mintimeout" has a start and end duration
 	And "RabbitMqConsume5mintimeout" Duration is greater or equal to 5 seconds
 	

@@ -160,6 +160,8 @@ namespace Dev2.Activities.RabbitMQ.Publish
                         var basicProperties = Channel.CreateBasicProperties();
                         basicProperties.Persistent = true;
                         Channel.BasicPublish(queueName, "", basicProperties, Encoding.UTF8.GetBytes(message));
+						Channel.Close();
+                        Connection.Close();
                     }
                 }
                 Dev2Logger.Debug($"Message published to queue {queueName}", GlobalConstants.WarewolfDebug);

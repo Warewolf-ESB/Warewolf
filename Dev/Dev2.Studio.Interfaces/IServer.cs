@@ -24,91 +24,91 @@ using Warewolf.Licensing;
 
 namespace Dev2.Studio.Interfaces
 {
-    public interface IServer : IEquatable<IServer>
-    {
-        event EventHandler<ConnectedEventArgs> IsConnectedChanged;
+	public interface IServer : IEquatable<IServer>
+	{
+		event EventHandler<ConnectedEventArgs> IsConnectedChanged;
 
-        event EventHandler<ResourcesLoadedEventArgs> ResourcesLoaded;
+		event EventHandler<ResourcesLoadedEventArgs> ResourcesLoaded;
 
-        IAuthorizationService AuthorizationService { get; }
-        string Name { get; set; }
-        bool IsConnected { get; }
-        bool CanStudioExecute { get; set; }
-        bool IsAuthorized { get; }
-        bool IsAuthorizedDeployFrom { get; }
-        bool IsAuthorizedDeployTo { get; }
-        bool IsLocalHost { get; }
-        bool HasLoadedResources { get; }
-        IEnvironmentConnection Connection { get; set; }
-        IResourceRepository ResourceRepository { get; }
-        void Connect();
+		IAuthorizationService AuthorizationService { get; }
+		string Name { get; set; }
+		bool IsConnected { get; }
+		bool CanStudioExecute { get; set; }
+		bool IsAuthorized { get; }
+		bool IsAuthorizedDeployFrom { get; }
+		bool IsAuthorizedDeployTo { get; }
+		bool IsLocalHost { get; }
+		bool HasLoadedResources { get; }
+		IEnvironmentConnection Connection { get; set; }
+		IResourceRepository ResourceRepository { get; }
+		void Connect();
 
-        void Disconnect();
+		void Disconnect();
 
-        void ForceLoadResources();
+		void ForceLoadResources();
 
-        void LoadResources();
+		void LoadResources();
 
-        bool IsLocalHostCheck();
+		bool IsLocalHostCheck();
 
-        string DisplayName { get; }
+		string DisplayName { get; }
 
-        event EventHandler AuthorizationServiceSet;
+		event EventHandler AuthorizationServiceSet;
 
-        Task<IExplorerItem> LoadExplorer();
+		Task<IExplorerItem> LoadExplorer();
 
-        Task<IExplorerItem> LoadExplorer(bool reloadCatalogue);
+		Task<IExplorerItem> LoadExplorer(bool reloadCatalogue);
 
-        IList<IToolDescriptor> LoadTools();
+		IList<IToolDescriptor> LoadTools();
 
-        [JsonIgnore]
-        IExplorerRepository ExplorerRepository { get; }
+		[JsonIgnore]
+		IExplorerRepository ExplorerRepository { get; }
 
-        [JsonIgnore]
-        IStudioUpdateManager UpdateRepository { get; }
+		[JsonIgnore]
+		IStudioUpdateManager UpdateRepository { get; }
 
-        [JsonIgnore]
-        IQueryManager QueryProxy { get; }
+		[JsonIgnore]
+		IQueryManager QueryProxy { get; }
 
-        bool AllowEdit { get; }
-        List<IWindowsGroupPermission> Permissions { get; set; }
-        Guid EnvironmentID { get; }
-        Guid? ServerID { get; }
+		bool AllowEdit { get; }
+		List<IWindowsGroupPermission> Permissions { get; set; }
+		Guid EnvironmentID { get; }
+		Guid? ServerID { get; }
 
-        event NetworkStateChanged NetworkStateChanged;
+		event NetworkStateChanged NetworkStateChanged;
 
-        event ItemAddedEvent ItemAddedEvent;
+		event ItemAddedEvent ItemAddedEvent;
 
-        string GetServerVersion();
+		string GetServerVersion();
 
-        Task<bool> ConnectAsync();
+		Task<bool> ConnectAsync();
 
-        bool HasLoaded { get; }
-        bool CanDeployTo { get; }
-        bool CanDeployFrom { get; }
-        IExplorerRepository ProxyLayer { get; }
-        Permissions UserPermissions { get; set; }
-        IVersionInfo VersionInfo { get; set; }
-        ISubscriptionData GetSubscriptionData();
+		bool HasLoaded { get; }
+		bool CanDeployTo { get; }
+		bool CanDeployFrom { get; }
+		IExplorerRepository ProxyLayer { get; }
+		Permissions UserPermissions { get; set; }
+		IVersionInfo VersionInfo { get; set; }
+		ISubscriptionData GetSubscriptionData(bool forceReload);
 
-        string GetMinSupportedVersion();
+		string GetMinSupportedVersion();
 
-        Task<List<string>> LoadExplorerDuplicates();
+		Task<List<string>> LoadExplorerDuplicates();
 
-        Permissions GetPermissions(Guid resourceID);
+		Permissions GetPermissions(Guid resourceID);
 
-        Dictionary<string, string> GetServerInformation();
-    }
+		Dictionary<string, string> GetServerInformation();
+	}
 
-    public delegate void ItemAddedEvent(IExplorerItem args);
+	public delegate void ItemAddedEvent(IExplorerItem args);
 
-    public class ConnectedEventArgs : EventArgs
-    {
-        public bool IsConnected { get; set; }
-    }
+	public class ConnectedEventArgs : EventArgs
+	{
+		public bool IsConnected { get; set; }
+	}
 
-    public class ResourcesLoadedEventArgs : EventArgs
-    {
-        public IServer Model { get; set; }
-    }
+	public class ResourcesLoadedEventArgs : EventArgs
+	{
+		public IServer Model { get; set; }
+	}
 }
