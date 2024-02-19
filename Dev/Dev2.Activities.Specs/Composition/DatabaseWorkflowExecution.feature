@@ -7,10 +7,18 @@ Background: Setup for workflow execution
 			Given Debug events are reset
 			And Debug states are cleared
 
+#NOTE FOR RUNNING THIS POSTGRESQL INTEGRATION TEST:			
+#This test expects a PostgreSql database running at localhost:5433.
+#To satisfy this dependancy you must run the following commands locally.
+#Windows Cmmandline:
+#IF NOT EXIST C:\Builds\PGDATA mkdir C:\Builds\PGDATA
+#Powershell:
+#if(!(Test-Path C:\Builds\PGDATA)) {mkdir C:\Builds\PGDATA}
+#docker run -d --restart unless-stopped --name=postgres-connector-testing --platform=linux --memory 1g -p 5433:5432 -v C:\Builds\PGDATA:/var/lib/postgresql/data registry.gitlab.com/warewolf/postgres-connector-testing postgres -c config_file=/etc/postgres.conf -c hba_file=/etc/pg_hba.conf
+
 @DatabaseWorkflowExecution
 Scenario: Database PostgreSql Database service inputs and outputs
      Given I depend on a valid PostgreSQL server
-	 And I restore Country table
 	 And I have a workflow "PostgreSqlGetCountries"
 	 And "PostgreSqlGetCountries" contains a postgre tool using "get_countries" with mappings as
 	  | Input to Service | From Variable | Output from Service | To Variable           |

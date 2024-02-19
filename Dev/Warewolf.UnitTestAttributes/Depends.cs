@@ -191,8 +191,8 @@ namespace Warewolf.UnitTestAttributes
             }
             else if (_containerType == ContainerType.PostGreSQL)
             {
-                Container.IP = "102.37.115.89";
-                Container.Port = "5433";
+                Container.IP = "localhost";
+                Container.Port = "5432";
             }
             else if (_containerType == ContainerType.MySQL)
             {
@@ -277,7 +277,7 @@ namespace Warewolf.UnitTestAttributes
                 case ContainerType.MySQL:
                     return new[] {"3306", "3307"};
                 case ContainerType.PostGreSQL:
-                    return new[] {"5433"};
+                    return new[] {"5433", "5432"};
                 case ContainerType.RabbitMQ:
                     return new[] {"5672"};
                 case ContainerType.Redis:
