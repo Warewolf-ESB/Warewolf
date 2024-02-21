@@ -216,6 +216,7 @@
     <PackageReference Include="EntityFramework">
       <Version>6.4.4</Version>
     </PackageReference>
+    <PackageReference Include="Microsoft.PowerShell.Commands.Diagnostics" Version="7.2.18" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
     <PackageReference Include="FluentAssertions">
       <Version>6.8.0</Version>
