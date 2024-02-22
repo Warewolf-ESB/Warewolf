@@ -229,7 +229,7 @@ namespace Dev2.Core.Tests.Triggers
             var mockAsyncWorker = new Mock<IAsyncWorker>();
             var mockServer = new Mock<IServer>();
             mockServer.Setup(server => server.DisplayName).Returns("TestServer");
-            mockServer.Setup(server => server.GetSubscriptionData()).Returns(new Mock<ISubscriptionData>().Object);
+            mockServer.Setup(server => server.GetSubscriptionData(false)).Returns(new Mock<ISubscriptionData>().Object);
 
             var mockAuthorizationService = new Mock<IAuthorizationService>();
             mockAuthorizationService.Setup(authorizationService => authorizationService.IsAuthorized(Common.Interfaces.Enums.AuthorizationContext.Administrator, null)).Returns(true);
@@ -239,7 +239,7 @@ namespace Dev2.Core.Tests.Triggers
             mockEnvironment.Setup(server => server.IsConnected).Returns(true);
             mockEnvironment.Setup(server => server.AuthorizationService).Returns(mockAuthorizationService.Object);
             mockEnvironment.Setup(server => server.ResourceRepository).Returns(mockResourceRepository.Object);
-            mockEnvironment.Setup(server => server.GetSubscriptionData()).Returns(new Mock<ISubscriptionData>().Object);
+            mockEnvironment.Setup(server => server.GetSubscriptionData(false)).Returns(new Mock<ISubscriptionData>().Object);
 
             var mockShellViewModel = new Mock<IShellViewModel>();
             mockShellViewModel.Setup(shellViewModel => shellViewModel.ActiveServer).Returns(mockEnvironment.Object);

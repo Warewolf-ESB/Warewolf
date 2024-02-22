@@ -903,10 +903,7 @@
   <PropertyGroup>
 	  <PreBuildEvent>
 		  if exist "$(SolutionDir)Warewolf.Tools.Specs\Toolbox\FileAndFolder\AddGuidToPaths.ps1" (
-		  powershell.exe -ExecutionPolicy RemoteSigned -nologo -noprofile -file "$(SolutionDir)Warewolf.Tools.Specs\Toolbox\FileAndFolder\AddGuidToPaths.ps1"
-		  )
-		  if exist "$(SolutionDir)Toolbox\FileAndFolder\AddGuidToPaths.ps1" (
-		  powershell.exe -ExecutionPolicy RemoteSigned -nologo -noprofile -file "$(SolutionDir)Toolbox\FileAndFolder\AddGuidToPaths.ps1"
+		  powershell.exe -ExecutionPolicy Bypass -nologo -noprofile -file "$(SolutionDir)Warewolf.Tools.Specs\Toolbox\FileAndFolder\AddGuidToPaths.ps1"
 		  )
 	  </PreBuildEvent>
 	  <PostBuildEvent>

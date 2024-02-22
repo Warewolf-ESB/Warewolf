@@ -22,7 +22,8 @@ namespace Dev2.Runtime.Search
             var searchResults = new List<ISearchResult>();
             if (searchParameters.SearchOptions.IsToolTitleSelected)
             {
-                var activityCache = _resourceCatalog.GetResourceActivityCache(GlobalConstants.ServerWorkspaceID);
+                //var activityCache = _resourceCatalog.GetResourceActivityCache(GlobalConstants.ServerWorkspaceID);
+                var activityCache = _resourceCatalog.BuildOrGetResourceActivityCache(GlobalConstants.ServerWorkspaceID);
                 if (activityCache != null)
                 {
                     foreach (var resourceActivity in activityCache.Cache)

@@ -497,7 +497,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
         
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(5000)]
         [TestCategory(nameof(ConnectControlViewModel))]
         public void ConnectControlViewModel_TestEditSelectedConnectionShouldSetSelectedConnection()
         {

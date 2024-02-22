@@ -449,10 +449,12 @@ namespace Dev2.Studio.Views
 
         void MainView_OnClosing(object sender, CancelEventArgs e)
         {
+            bool isStudioClosing = false;
             var shellViewModel = DataContext as ShellViewModel;
             if (shellViewModel != null)
             {
-                if (!shellViewModel.OnStudioClosing())
+                isStudioClosing = shellViewModel.OnStudioClosing();
+                if (!isStudioClosing)
                 {
                     e.Cancel = true;
                 }
@@ -464,6 +466,13 @@ namespace Dev2.Studio.Views
             }
             GetFilePath();
             SaveLayout(shellViewModel);
+
+            // if studio is closing and ShellViewModel.IsDownloading() is false
+            // Persist Tabs (call save explicitely for all, even if it is not changed
+            if (!e.Cancel && isStudioClosing)
+            {
+                if (shellViewModel != null) shellViewModel.PersistTabs(true);
+            }
         }
 
         void SaveLayout(ShellViewModel shellViewModel)

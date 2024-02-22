@@ -2664,5 +2664,7 @@ To create a SFTP Key, put the full path and file or folder name here.</value>
   <data name="ManagePlanWarewolfToolTip" xml:space="preserve">
     <value>Click here to manage your license plan</value>
   </data>
-
+  <data name="ReloadServerResourceToolTip" xml:space="preserve">
+    <value>Reload the resources on server</value>
+  </data>
 </root>
