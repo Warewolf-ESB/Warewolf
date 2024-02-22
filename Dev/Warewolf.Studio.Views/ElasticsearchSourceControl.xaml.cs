@@ -85,14 +85,17 @@ namespace Warewolf.Studio.Views
         {
             PasswordTextBox.Text = password;
         }
+
         public void EnterUsername(string username)
         {
             UserNameTextBox.Text = username;
         }
+
         public void EnterSearchIndex(string searchIndex)
         {
             SearchIndexTextBox.Text = searchIndex;
         }
+
         public void EnterHostName(string hostName)
         {
             ElasticsearchHostNameTextbox.Text = hostName;

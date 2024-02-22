@@ -492,8 +492,8 @@ if ($Coverage.IsPresent) {
 		Write-Host Cannot find snapshots in $TestResultsPath
 		exit 1
 	}
-	Write-Host `&`"$CoverageToolPath`" analyze /output:`"$MergedSnapshotPath`" @GetSnapshots
-	&"$CoverageToolPath" analyze /output:"$MergedSnapshotPath" @GetSnapshots
+	Write-Host `&`"$CoverageToolPath`" merge @GetSnapshots --output `"$MergedSnapshotPath`"
+	&"$CoverageToolPath" merge @GetSnapshots --output-format xml --output "$MergedSnapshotPath"
 	$reportGeneratorExecutable = ".\reportgenerator.exe"
 
     if (!(Test-Path "$reportGeneratorExecutable")) {

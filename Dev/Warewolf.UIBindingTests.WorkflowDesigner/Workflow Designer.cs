@@ -46,6 +46,7 @@ using Dev2.Studio.Interfaces.DataList;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.Core.Tests.Workflows;
 using Dev2.Core.Tests;
+using Warewolf.Licensing;
 
 namespace Warewolf.UIBindingTests.WorkflowDesigner
 {
@@ -1757,18 +1758,24 @@ namespace Warewolf.UIBindingTests.WorkflowDesigner
 
             #region Setup viewModel
 
-            var resourceRep = new Mock<IResourceRepository>();
+			var resourceRep = new Mock<IResourceRepository>();
             resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
             resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IServer>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
             resourceRep.Setup(repository => repository.Save(It.IsAny<IResourceModel>())).Verifiable();
             var resourceModel = new Mock<IContextualResourceModel>();
             var mockEnvironmentModel = new Mock<IServer>();
+			var mockEnvironmentModelRepo = new Mock<IServerRepository>();
             var mockConnection = new Mock<IEnvironmentConnection>();
             mockConnection.Setup(connection => connection.IsConnected).Returns(true);
             mockConnection.Setup(connection => connection.WebServerUri).Returns(new Uri("http://myMachineName:3142"));
             var serverEvents = new Mock<IEventPublisher>();
             mockConnection.Setup(m => m.ServerEvents).Returns(serverEvents.Object);
             mockEnvironmentModel.Setup(model => model.Connection).Returns(mockConnection.Object);
+			var mockSubscriptionData = new Mock<ISubscriptionData>();
+			mockSubscriptionData.Setup(sub => sub.IsLicensed).Returns(true);
+			mockEnvironmentModel.Setup(model => model.GetSubscriptionData(false)).Returns(mockSubscriptionData.Object);
+			mockEnvironmentModelRepo.Setup(repo => repo.ActiveServer).Returns(mockEnvironmentModel.Object);
+			CustomContainer.Register(mockEnvironmentModelRepo.Object);
             resourceModel.Setup(m => m.Environment).Returns(mockEnvironmentModel.Object);
             resourceModel.Setup(m => m.Environment.IsConnected).Returns(true);
             resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
@@ -1833,13 +1840,19 @@ namespace Warewolf.UIBindingTests.WorkflowDesigner
             resourceRep.Setup(repository => repository.Save(It.IsAny<IResourceModel>())).Verifiable();
             var resourceModel = new Mock<IContextualResourceModel>();
             var mockEnvironmentModel = new Mock<IServer>();
-            var mockConnection = new Mock<IEnvironmentConnection>();
+			var mockEnvironmentModelRepo = new Mock<IServerRepository>();
+			var mockConnection = new Mock<IEnvironmentConnection>();
             mockConnection.Setup(connection => connection.IsConnected).Returns(true);
             mockConnection.Setup(connection => connection.WebServerUri).Returns(new Uri("http://myMachineName:3142"));
             var serverEvents = new Mock<IEventPublisher>();
             mockConnection.Setup(m => m.ServerEvents).Returns(serverEvents.Object);
             mockEnvironmentModel.Setup(model => model.Connection).Returns(mockConnection.Object);
-            resourceModel.Setup(m => m.Environment).Returns(mockEnvironmentModel.Object);
+			var mockSubscriptionData = new Mock<ISubscriptionData>();
+			mockSubscriptionData.Setup(sub => sub.IsLicensed).Returns(true);
+			mockEnvironmentModel.Setup(model => model.GetSubscriptionData(false)).Returns(mockSubscriptionData.Object);
+			mockEnvironmentModelRepo.Setup(repo => repo.ActiveServer).Returns(mockEnvironmentModel.Object);
+			CustomContainer.Register(mockEnvironmentModelRepo.Object);
+			resourceModel.Setup(m => m.Environment).Returns(mockEnvironmentModel.Object);
             resourceModel.Setup(m => m.Environment.IsConnected).Returns(true);
             resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
             resourceModel.Setup(m => m.Environment.Connection).Returns(mockConnection.Object);

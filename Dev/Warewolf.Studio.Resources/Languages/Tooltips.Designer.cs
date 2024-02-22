@@ -4419,6 +4419,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Reload the resources on server.
+        /// </summary>
+        public static string ReloadServerResourceToolTip {
+            get {
+                return ResourceManager.GetString("ReloadServerResourceToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Rename folder.
         /// </summary>
         public static string RenameFolderTooltip {

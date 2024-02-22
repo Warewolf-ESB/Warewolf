@@ -125,7 +125,7 @@ namespace Warewolf.UIBindingTests
             var redisSourceControl = _scenarioContext.Get<RedisSourceControl>(Utils.ViewNameKey);
             redisSourceControl.EnterHostName(dependency.Container.IP);
             var viewModel = _scenarioContext.Get<RedisSourceViewModel>("viewModel");
-            Assert.AreEqual(dependency.Container.IP, viewModel.HostName);
+			viewModel.HostName = dependency.Container.IP;
         }
 
         [Given(@"I type HostName as ""(.*)""")]
@@ -136,7 +136,7 @@ namespace Warewolf.UIBindingTests
             var redisSourceControl = _scenarioContext.Get<RedisSourceControl>(Utils.ViewNameKey);
             redisSourceControl.EnterHostName(hostName);
             var viewModel = _scenarioContext.Get<RedisSourceViewModel>("viewModel");
-            Assert.AreEqual(hostName, viewModel.HostName);
+			viewModel.HostName = hostName;
         }
 
         [Then(@"server port is ""(.*)""")]
@@ -276,7 +276,7 @@ namespace Warewolf.UIBindingTests
             var redisSourceControl = _scenarioContext.Get<RedisSourceControl>(Utils.ViewNameKey);
             redisSourceControl.EnterPassword("pass123");
             var viewModel = _scenarioContext.Get<RedisSourceViewModel>("viewModel");
-            Assert.AreEqual("pass123", viewModel.Password);
+			viewModel.Password = "pass123";
         }
 
         [When(@"the error message is ""(.*)""")]

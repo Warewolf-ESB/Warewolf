@@ -122,7 +122,7 @@ namespace Warewolf.Studio.ViewModels
                     {
                         StudioVersion = "Version " + studioVersion;
                     }
-                    var subscriptionData = Server.GetSubscriptionData();
+                    var subscriptionData = Server.GetSubscriptionData(false);
                     WarewolfLicense = subscriptionData?.PlanId + ": " + subscriptionData?.Status;
                 });
         }

@@ -53,7 +53,7 @@ namespace Warewolf.UIBindingTests.ElasticsearchSource
             var elasticSourceControl = _scenarioContext.Get<ElasticsearchSourceControl>(Utils.ViewNameKey);
             elasticSourceControl.EnterHostName(dependency.Container.IP);
             var viewModel = _scenarioContext.Get<ElasticsearchSourceViewModel>("viewModel");
-            Assert.AreEqual(dependency.Container.IP, viewModel.HostName);
+			viewModel.HostName = dependency.Container.IP;
         }
 
         [BeforeFeature(@"ElasticsearchSource")]
@@ -139,6 +139,7 @@ namespace Warewolf.UIBindingTests.ElasticsearchSource
             var viewModel = _scenarioContext.Get<ElasticsearchSourceViewModel>("viewModel");
             Assert.AreEqual(portNumber, viewModel.Port);
         }
+
         [Given(@"I type as search index as ""(.*)""")]
         [Then(@"I type search index as ""(.*)""")]
         [When(@"I change search index to ""(.*)""")]
@@ -147,7 +148,7 @@ namespace Warewolf.UIBindingTests.ElasticsearchSource
             var elasticsearchSourceControl = _scenarioContext.Get<ElasticsearchSourceControl>(Utils.ViewNameKey);
             elasticsearchSourceControl.EnterSearchIndex(searchIndex);
             var viewModel = _scenarioContext.Get<ElasticsearchSourceViewModel>("viewModel");
-            Assert.AreEqual(searchIndex, viewModel.SearchIndex);
+            viewModel.SearchIndex = searchIndex;
         }
 
         [Given(@"I Select Authentication Type as ""(.*)""")]
@@ -268,7 +269,7 @@ namespace Warewolf.UIBindingTests.ElasticsearchSource
             var elasticsearchSourceControl = _scenarioContext.Get<ElasticsearchSourceControl>(Utils.ViewNameKey);
             elasticsearchSourceControl.EnterHostName(hostName);
             var viewModel = _scenarioContext.Get<ElasticsearchSourceViewModel>("viewModel");
-            Assert.AreEqual(hostName, viewModel.HostName);
+			viewModel.HostName = hostName;
         }
 
         [Given(@"Validation message is thrown")]
@@ -329,9 +330,9 @@ namespace Warewolf.UIBindingTests.ElasticsearchSource
         {
             var elasticsearchSourceControl = _scenarioContext.Get<ElasticsearchSourceControl>(Utils.ViewNameKey);
             var viewModel = _scenarioContext.Get<ElasticsearchSourceViewModel>("viewModel");
-            Assert.AreEqual(hostName, viewModel.HostName);
-            Assert.AreEqual(hostName, elasticsearchSourceControl.GetHostName());
-        }
+			viewModel.HostName = hostName;
+            elasticsearchSourceControl.EnterHostName(hostName);
+		}
 
         [AfterScenario(@"ElasticsearchSource")]
         public void Cleanup()

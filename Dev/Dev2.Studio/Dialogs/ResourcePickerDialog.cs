@@ -32,7 +32,7 @@ namespace Dev2.Dialogs
     {
         readonly enDsfActivityType _activityType;
 
-        public IExplorerViewModel SingleEnvironmentExplorerViewModel{get; private set;}
+        public IExplorerViewModel SingleEnvironmentExplorerViewModel { get; private set; }
         IServer _server;
         IExplorerTreeItem _selectedResource;
 
@@ -65,17 +65,18 @@ namespace Dev2.Dialogs
             _activityType = activityType;
         }
 
-        public static Task<IResourcePickerDialog> CreateAsync(enDsfActivityType activityType, IEnvironmentViewModel source)
+        public static Task<IResourcePickerDialog> CreateAsync(enDsfActivityType activityType, IEnvironmentViewModel source, bool loadDialog = true)
         {
             var ret = new ResourcePickerDialog(activityType, source, EventPublishers.Aggregator, new AsyncWorker(), ConnectControlSingleton.Instance);
-            return ret.InitializeAsync(source);
+            return ret.InitializeAsync(source, loadDialog);
         }
 
-        protected  async Task<IResourcePickerDialog> InitializeAsync(IEnvironmentViewModel environmentViewModel)
+        protected async Task<IResourcePickerDialog> InitializeAsync(IEnvironmentViewModel environmentViewModel, bool loadDialog)
         {
             environmentViewModel.Connect();
 
-            environmentViewModel.LoadDialogAsync("");
+            if (loadDialog)
+                environmentViewModel.LoadDialogAsync("");
             switch (_activityType)
             {
                 case enDsfActivityType.Workflow:
@@ -115,7 +116,7 @@ namespace Dev2.Dialogs
 
         public void SelectResource(Guid id)
         {
-           SingleEnvironmentExplorerViewModel.SelectItem(id);
+            SingleEnvironmentExplorerViewModel.SelectItem(id);
         }
 
         public bool ShowDialog(out DsfActivityDropViewModel dropViewModel)
@@ -154,7 +155,7 @@ namespace Dev2.Dialogs
         {
             VerifyArgument.IsNotNull("typeName", typeName);
 
-            if(typeName.Contains(GlobalConstants.ResourcePickerWorkflowString))
+            if (typeName.Contains(GlobalConstants.ResourcePickerWorkflowString))
             {
                 return enDsfActivityType.Workflow;
             }

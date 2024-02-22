@@ -80,7 +80,7 @@ namespace Dev2.Core.Tests
             var svr = new Mock<IServer>();
             svr.Setup(a => a.DisplayName).Returns("Localhost");
             svr.Setup(a => a.Name).Returns("Localhost");
-            svr.Setup(it => it.GetSubscriptionData()).Returns(MockSubscriptionData(true,SubscriptionStatus.Active).Object);
+            svr.Setup(it => it.GetSubscriptionData(false)).Returns(MockSubscriptionData(true,SubscriptionStatus.Active).Object);
             var mockEnvironmentConnection = SetupMockConnection();
             svr.SetupGet(it => it.Connection).Returns(mockEnvironmentConnection.Object);
 
@@ -121,7 +121,7 @@ namespace Dev2.Core.Tests
             _activeEnvironment = activeEnvironment;
             _authorizationService = new Mock<IAuthorizationService>();
             _activeEnvironment.Setup(e => e.AuthorizationService).Returns(_authorizationService.Object);
-            _activeEnvironment.Setup(e => e.GetSubscriptionData()).Returns(MockSubscriptionData(true,SubscriptionStatus.Active).Object);
+            _activeEnvironment.Setup(e => e.GetSubscriptionData(false)).Returns(MockSubscriptionData(true,SubscriptionStatus.Active).Object);
 
             _shellViewModel.ActiveServer = activeEnvironment.Object;
             
@@ -216,7 +216,7 @@ namespace Dev2.Core.Tests
             env.Setup(e => e.Connection).Returns(envConn.Object);
             env.Setup(e => e.IsConnected).Returns(true);
             env.Setup(e => e.ResourceRepository).Returns(resourceRepo.Object);
-            env.Setup(it => it.GetSubscriptionData()).Returns(MockSubscriptionData().Object);
+            env.Setup(it => it.GetSubscriptionData(false)).Returns(MockSubscriptionData().Object);
 
             resourceModel.Setup(m => m.Environment).Returns(env.Object);
 
@@ -269,7 +269,7 @@ namespace Dev2.Core.Tests
             env.Setup(e => e.Connection).Returns(envConn.Object);
             env.Setup(e => e.IsConnected).Returns(true);
             env.Setup(e => e.ResourceRepository).Returns(resourceRepo.Object);
-            env.Setup(it => it.GetSubscriptionData()).Returns(MockSubscriptionData().Object);
+            env.Setup(it => it.GetSubscriptionData(false)).Returns(MockSubscriptionData().Object);
 
             resourceModel.Setup(m => m.Environment).Returns(env.Object);
 
@@ -324,7 +324,7 @@ namespace Dev2.Core.Tests
             env.Setup(e => e.IsConnected).Returns(true);
             env.Setup(e => e.ResourceRepository).Returns(resourceRepo.Object);
             env.Setup(e => e.EnvironmentID).Returns(environmentID);
-            env.Setup(it => it.GetSubscriptionData()).Returns(MockSubscriptionData().Object);
+            env.Setup(it => it.GetSubscriptionData(false)).Returns(MockSubscriptionData().Object);
 
             resourceModel.Setup(m => m.Environment).Returns(env.Object);
 
@@ -461,7 +461,7 @@ namespace Dev2.Core.Tests
             var resource = new Mock<IContextualResourceModel>();
             var environmentModel = new Mock<IServer>();
             environmentModel.Setup(e => e.EnvironmentID).Returns(Guid.NewGuid);
-            environmentModel.Setup(it => it.GetSubscriptionData()).Returns(MockSubscriptionData().Object);
+            environmentModel.Setup(it => it.GetSubscriptionData(false)).Returns(MockSubscriptionData().Object);
             resource.Setup(r => r.Environment).Returns(environmentModel.Object);
             resource.Setup(r => r.IsAuthorized(AuthorizationContext.Contribute)).Returns(true);
             var isWorkflowOpened = _shellViewModel.IsWorkFlowOpened(resource.Object);
@@ -620,7 +620,7 @@ namespace Dev2.Core.Tests
             var mockEnv = new Mock<IServer>();
             mckEnv.Setup(a => a.Get(It.IsAny<Guid>()))
                 .Returns(mockEnv.Object);
-            mockEnv.Setup(it => it.GetSubscriptionData()).Returns(MockSubscriptionData().Object);
+            mockEnv.Setup(it => it.GetSubscriptionData(false)).Returns(MockSubscriptionData().Object);
             var res = new Mock<IResourceRepository>();
             mockEnv.Setup(a => a.ResourceRepository).Returns(res.Object);
             res.Setup(a => a.LoadContextualResourceModel(It.IsAny<Guid>())).Returns(_firstResource.Object);
@@ -660,7 +660,7 @@ namespace Dev2.Core.Tests
             var mckEnv = new Mock<IServerRepository>();
             var mockEnv = new Mock<IServer>();
             mckEnv.Setup(a => a.Get(resourceId)).Returns(mockEnv.Object);
-            mockEnv.Setup(it => it.GetSubscriptionData()).Returns(MockSubscriptionData().Object);
+            mockEnv.Setup(it => it.GetSubscriptionData(false)).Returns(MockSubscriptionData().Object);
             var res = new Mock<IResourceRepository>();
             mockEnv.Setup(a => a.ResourceRepository).Returns(res.Object);
             res.Setup(a => a.LoadContextualResourceModel(resourceId)).Returns(_firstResource.Object);
@@ -685,7 +685,7 @@ namespace Dev2.Core.Tests
             var mckEnv = new Mock<IServerRepository>();
             var mockEnv = new Mock<IServer>();
             mckEnv.Setup(a => a.Get(resourceId)).Returns(mockEnv.Object);
-            mockEnv.Setup(it => it.GetSubscriptionData()).Returns(MockSubscriptionData().Object);
+            mockEnv.Setup(it => it.GetSubscriptionData(false)).Returns(MockSubscriptionData().Object);
             var res = new Mock<IResourceRepository>();
             mockEnv.Setup(a => a.ResourceRepository).Returns(res.Object);
             res.Setup(a => a.LoadContextualResourceModel(resourceId)).Returns(_firstResource.Object);
@@ -710,7 +710,7 @@ namespace Dev2.Core.Tests
             var mckEnv = new Mock<IServerRepository>();
             var mockEnv = new Mock<IServer>();
             mckEnv.Setup(a => a.Get(resourceId)).Returns(mockEnv.Object);
-            mockEnv.Setup(it => it.GetSubscriptionData()).Returns(MockSubscriptionData().Object);
+            mockEnv.Setup(it => it.GetSubscriptionData(false)).Returns(MockSubscriptionData().Object);
             var res = new Mock<IResourceRepository>();
             mockEnv.Setup(a => a.ResourceRepository).Returns(res.Object);
             res.Setup(a => a.LoadContextualResourceModel(resourceId)).Returns(_firstResource.Object);
@@ -734,7 +734,7 @@ namespace Dev2.Core.Tests
             _popupController.Setup(s => s.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>())).Returns(MessageBoxResult.Yes);
             var mckEnv = new Mock<IServerRepository>();
             var mockEnv = new Mock<IServer>();
-            mockEnv.Setup(it => it.GetSubscriptionData()).Returns(MockSubscriptionData().Object);
+            mockEnv.Setup(it => it.GetSubscriptionData(false)).Returns(MockSubscriptionData().Object);
             mckEnv.Setup(a => a.Get(resourceId)).Returns(mockEnv.Object);
             var res = new Mock<IResourceRepository>();
             mockEnv.Setup(a => a.ResourceRepository).Returns(res.Object);
@@ -1165,7 +1165,7 @@ namespace Dev2.Core.Tests
             var unassignedResource = new Mock<IContextualResourceModel>();
             var repo = new Mock<IResourceRepository>();
             var env = new Mock<IServer>();
-            env.Setup(it => it.GetSubscriptionData()).Returns(MockSubscriptionData().Object);
+            env.Setup(it => it.GetSubscriptionData(false)).Returns(MockSubscriptionData().Object);
 
             unassignedResource.Setup(res => res.Category).Returns(string.Empty);
             unassignedResource.Setup(resource => resource.Environment).Returns(env.Object);
@@ -1231,7 +1231,7 @@ namespace Dev2.Core.Tests
             envConn.Setup(conn => conn.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
             env.Setup(e => e.ResourceRepository).Returns(resourceRepo.Object);
             env.Setup(e => e.Connection).Returns(envConn.Object);
-            env.Setup(it => it.GetSubscriptionData()).Returns(MockSubscriptionData().Object);
+            env.Setup(it => it.GetSubscriptionData(false)).Returns(MockSubscriptionData().Object);
 
             var envRepo = new Mock<IServerRepository>();
             envRepo.Setup(r => r.All()).Returns(new[] { env.Object });
@@ -1282,7 +1282,7 @@ namespace Dev2.Core.Tests
 
             var envConn = SetupMockConnection();
             var env = new Mock<IServer>();
-            env.Setup(it => it.GetSubscriptionData()).Returns(MockSubscriptionData().Object);
+            env.Setup(it => it.GetSubscriptionData(false)).Returns(MockSubscriptionData().Object);
             envConn.Setup(conn => conn.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
             env.Setup(e => e.ResourceRepository).Returns(resourceRepo.Object);
             env.Setup(e => e.Connection).Returns(envConn.Object);
@@ -1342,7 +1342,7 @@ namespace Dev2.Core.Tests
             var env = new Mock<IServer>();
             env.Setup(e => e.ResourceRepository).Returns(resourceRepo.Object);
             env.Setup(e => e.Connection).Returns(envConn.Object);
-            env.Setup(it => it.GetSubscriptionData()).Returns(MockSubscriptionData().Object);
+            env.Setup(it => it.GetSubscriptionData(false)).Returns(MockSubscriptionData().Object);
             envRepo.Setup(r => r.All()).Returns(new List<IServer>(new[] { env.Object }));
             envRepo.Setup(r => r.Source).Returns(env.Object);
             envRepo.Setup(r => r.Get(It.IsAny<Guid>())).Returns(env.Object);
@@ -1400,7 +1400,7 @@ namespace Dev2.Core.Tests
             var env = new Mock<IServer>();
             env.Setup(e => e.ResourceRepository).Returns(resourceRepo.Object);
             env.Setup(e => e.Connection).Returns(envConn.Object);
-            env.Setup(it => it.GetSubscriptionData()).Returns(MockSubscriptionData().Object);
+            env.Setup(it => it.GetSubscriptionData(false)).Returns(MockSubscriptionData().Object);
             envRepo.Setup(r => r.All()).Returns(new List<IServer>(new[] { env.Object }));
             envRepo.Setup(r => r.Source).Returns(env.Object);
             envRepo.Setup(r => r.Get(It.IsAny<Guid>())).Returns(env.Object);
@@ -1454,7 +1454,7 @@ namespace Dev2.Core.Tests
             envConn.Setup(conn => conn.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
             var env = new Mock<IServer>();
             env.Setup(e => e.ResourceRepository).Returns(resourceRepo.Object);
-            env.Setup(it => it.GetSubscriptionData()).Returns(MockSubscriptionData().Object);
+            env.Setup(it => it.GetSubscriptionData(false)).Returns(MockSubscriptionData().Object);
             env.Setup(e => e.Connection).Returns(envConn.Object);
             envRepo.Setup(r => r.All()).Returns(new List<IServer>(new[] { env.Object }));
             envRepo.Setup(r => r.Source).Returns(env.Object);
@@ -1583,7 +1583,7 @@ namespace Dev2.Core.Tests
             env.Setup(e => e.ResourceRepository).Returns(resourceRepo.Object);
             env.Setup(e => e.Connection).Returns(envConn.Object);
             env.Setup(e => e.IsConnected).Returns(false);
-            env.Setup(it => it.GetSubscriptionData()).Returns(MockSubscriptionData().Object);
+            env.Setup(it => it.GetSubscriptionData(false)).Returns(MockSubscriptionData().Object);
 
             var resourceModel = new Mock<IContextualResourceModel>();
             resourceModel.Setup(m => m.Environment).Returns(env.Object);
@@ -1627,7 +1627,7 @@ namespace Dev2.Core.Tests
             var env = new Mock<IServer>();
             var mockEnvironmentConnection = SetupMockConnection();
             env.Setup(serv => serv.Connection).Returns(mockEnvironmentConnection.Object);
-            env.Setup(it => it.GetSubscriptionData()).Returns(MockSubscriptionData().Object);
+            env.Setup(it => it.GetSubscriptionData(false)).Returns(MockSubscriptionData().Object);
             envRepo.Setup(e => e.Source).Returns(env.Object);
 
             var vieFactory = new Mock<IViewFactory>();
@@ -1656,7 +1656,7 @@ namespace Dev2.Core.Tests
             var env = new Mock<IServer>();
             var mockEnvironmentConnection = SetupMockConnection();
             env.Setup(serv => serv.Connection).Returns(mockEnvironmentConnection.Object);
-            env.Setup(it => it.GetSubscriptionData()).Returns(MockSubscriptionData().Object);
+            env.Setup(it => it.GetSubscriptionData(false)).Returns(MockSubscriptionData().Object);
             envRepo.Setup(e => e.Source).Returns(env.Object);
 
             var vieFactory = new Mock<IViewFactory>();
@@ -1713,7 +1713,7 @@ namespace Dev2.Core.Tests
             env.Setup(e => e.IsConnected).Returns(true);
             var mockEnvironmentConnection = SetupMockConnection();
             env.SetupGet(it => it.Connection).Returns(mockEnvironmentConnection.Object);
-            env.Setup(it => it.GetSubscriptionData()).Returns(MockSubscriptionData().Object);
+            env.Setup(it => it.GetSubscriptionData(false)).Returns(MockSubscriptionData().Object);
 
             //------------Execute Test---------------------------
             _shellViewModel.ActiveServer = env.Object;
@@ -1769,7 +1769,7 @@ namespace Dev2.Core.Tests
             newSelectedConnection.SetupGet(it => it.EnvironmentID).Returns(newSelectedConnectionEnvironmentId);
             newSelectedConnection.SetupGet(it => it.HasLoaded).Returns(true);
             newSelectedConnection.SetupGet(it => it.IsConnected).Returns(true);
-            newSelectedConnection.Setup(it => it.GetSubscriptionData()).Returns(MockSubscriptionData().Object);
+            newSelectedConnection.Setup(it => it.GetSubscriptionData(false)).Returns(MockSubscriptionData().Object);
             //------------Execute Test---------------------------
             _shellViewModel.SetActiveServer(newSelectedConnection.Object);
 
@@ -2982,7 +2982,7 @@ namespace Dev2.Core.Tests
             newSelectedConnection.SetupGet(it => it.IsConnected).Returns(true);
             newSelectedConnection.SetupGet(it => it.UpdateRepository).Returns(new Mock<IStudioUpdateManager>().Object);
             newSelectedConnection.SetupGet(it => it.QueryProxy).Returns(new Mock<IQueryManager>().Object);
-            newSelectedConnection.Setup(it => it.GetSubscriptionData()).Returns(MockSubscriptionData().Object);
+            newSelectedConnection.Setup(it => it.GetSubscriptionData(false)).Returns(MockSubscriptionData().Object);
 
             var env = new Mock<IServer>();
             env.Setup(a => a.IsLocalHost).Returns(true);
@@ -2990,7 +2990,7 @@ namespace Dev2.Core.Tests
             env.Setup(a => a.CanStudioExecute).Returns(true);
             env.Setup(a => a.Name).Returns("TestEnvironment");
             env.Setup(a => a.DisplayName).Returns("TestEnvironment");
-            env.Setup(it => it.GetSubscriptionData()).Returns(MockSubscriptionData().Object);
+            env.Setup(it => it.GetSubscriptionData(false)).Returns(MockSubscriptionData().Object);
             return env;
         }
 
@@ -3006,7 +3006,7 @@ namespace Dev2.Core.Tests
 
             var mockEnvironmentConnection = SetupMockConnection();
             environmentModel.SetupGet(it => it.Connection).Returns(mockEnvironmentConnection.Object);
-            environmentModel.Setup(it => it.GetSubscriptionData()).Returns(MockSubscriptionData().Object);
+            environmentModel.Setup(it => it.GetSubscriptionData(false)).Returns(MockSubscriptionData().Object);
 
             environmentRepository.Setup(repo => repo.Source).Returns(environmentModel.Object);
 
@@ -3024,11 +3024,11 @@ namespace Dev2.Core.Tests
             var notConnected = new Mock<IServer>();
             connected1.Setup(a => a.IsConnected).Returns(true).Verifiable();
             connected1.Setup(a => a.Disconnect()).Verifiable();
-            connected1.Setup(it => it.GetSubscriptionData()).Returns(MockSubscriptionData().Object);
+            connected1.Setup(it => it.GetSubscriptionData(false)).Returns(MockSubscriptionData().Object);
             connected2.Setup(a => a.IsConnected).Returns(true).Verifiable();
             connected2.Setup(a => a.Disconnect()).Verifiable();
-            connected2.Setup(it => it.GetSubscriptionData()).Returns(MockSubscriptionData().Object);
-            notConnected.Setup(it => it.GetSubscriptionData()).Returns(MockSubscriptionData().Object);
+            connected2.Setup(it => it.GetSubscriptionData(false)).Returns(MockSubscriptionData().Object);
+            notConnected.Setup(it => it.GetSubscriptionData(false)).Returns(MockSubscriptionData().Object);
             IList<IServer> lst = new List<IServer> { connected1.Object, connected2.Object, notConnected.Object };
             environmentRepository.Setup(repo => repo.All()).Returns(lst);
             environmentRepository.Setup(repo => repo.Get(It.IsAny<Guid>())).Returns(connected1.Object);
@@ -3079,7 +3079,7 @@ namespace Dev2.Core.Tests
                 var environmentRepository = new Mock<IServerRepository>();
                 var serverMock = new Mock<IServer>();
                 serverMock.Setup(it => it.Connection).Returns(mockEnvironmentConnection.Object);
-                serverMock.Setup(it => it.GetSubscriptionData()).Returns(MockSubscriptionData().Object);
+                serverMock.Setup(it => it.GetSubscriptionData(false)).Returns(MockSubscriptionData().Object);
 				environmentRepository.Setup(repo => repo.Source).Returns(serverMock.Object);
                 CustomContainer.Register(environmentRepository.Object);
                 var connected1 = new Mock<IServer>();
@@ -3089,12 +3089,12 @@ namespace Dev2.Core.Tests
                 connected1.Setup(a => a.IsConnected).Returns(true).Verifiable();
                 connected1.Setup(a => a.Disconnect()).Verifiable();
                 connected1.Setup(it => it.Connection).Returns(mockEnvironmentConnection.Object);
-                connected1.Setup(it => it.GetSubscriptionData()).Returns(MockSubscriptionData().Object);
+                connected1.Setup(it => it.GetSubscriptionData(false)).Returns(MockSubscriptionData().Object);
 				connected2.Setup(a => a.IsConnected).Returns(true).Verifiable();
                 connected2.Setup(a => a.Disconnect()).Verifiable();
                 connected2.Setup(it => it.Connection).Returns(mockEnvironmentConnection.Object);
-                connected2.Setup(it => it.GetSubscriptionData()).Returns(MockSubscriptionData().Object);
-                notConnected.Setup(it => it.GetSubscriptionData()).Returns(MockSubscriptionData().Object);
+                connected2.Setup(it => it.GetSubscriptionData(false)).Returns(MockSubscriptionData().Object);
+                notConnected.Setup(it => it.GetSubscriptionData(false)).Returns(MockSubscriptionData().Object);
 				notConnected.Setup(a => a.IsConnected).Returns(false).Verifiable();
                 IList<IServer> lst = new List<IServer> { connected1.Object, connected2.Object, notConnected.Object };
 
@@ -3131,7 +3131,7 @@ namespace Dev2.Core.Tests
             var viewModel = new Mock<IShellViewModel>();
             var server = new Mock<IServer>();
             server.SetupGet(server1 => server1.IsConnected).Returns(true);
-            server.Setup(it => it.GetSubscriptionData()).Returns(MockSubscriptionData().Object);
+            server.Setup(it => it.GetSubscriptionData(false)).Returns(MockSubscriptionData().Object);
             viewModel.SetupGet(model => model.ActiveServer).Returns(server.Object);
             viewModel.SetupGet(model => model.ActiveServer).Returns(server.Object);
             viewModel.SetupGet(model => model.LocalhostServer).Returns(server.Object);
@@ -3144,7 +3144,7 @@ namespace Dev2.Core.Tests
             var environmentConnection = new Mock<IEnvironmentConnection>().Object;
             environmentModel.SetupGet(a => a.Connection).Returns(environmentConnection);
             environmentModel.SetupGet(a => a.IsLocalHost).Returns(true);
-            environmentModel.Setup(it => it.GetSubscriptionData()).Returns(MockSubscriptionData().Object);
+            environmentModel.Setup(it => it.GetSubscriptionData(false)).Returns(MockSubscriptionData().Object);
             var mockAuthService = new Mock<IAuthorizationService>();
             var mockSecurityService = new Mock<ISecurityService>();
             mockSecurityService.Setup(a => a.Permissions).Returns(new List<WindowsGroupPermission>(new[] { WindowsGroupPermission.CreateEveryone(), }));
@@ -3160,11 +3160,11 @@ namespace Dev2.Core.Tests
             var notConnected = new Mock<IServer>();
             connected1.Setup(a => a.IsConnected).Returns(true).Verifiable();
             connected1.Setup(a => a.Disconnect()).Verifiable();
-            connected1.Setup(it => it.GetSubscriptionData()).Returns(MockSubscriptionData().Object);
+            connected1.Setup(it => it.GetSubscriptionData(false)).Returns(MockSubscriptionData().Object);
             connected2.Setup(a => a.IsConnected).Returns(true).Verifiable();
             connected2.Setup(a => a.Disconnect()).Verifiable();
-            connected2.Setup(it => it.GetSubscriptionData()).Returns(MockSubscriptionData().Object);
-            notConnected.Setup(it => it.GetSubscriptionData()).Returns(MockSubscriptionData().Object);
+            connected2.Setup(it => it.GetSubscriptionData(false)).Returns(MockSubscriptionData().Object);
+            notConnected.Setup(it => it.GetSubscriptionData(false)).Returns(MockSubscriptionData().Object);
             IList<IServer> lst = new List<IServer> { connected1.Object, connected2.Object, notConnected.Object };
             environmentRepository.Setup(repo => repo.All()).Returns(lst);
             var vieFactory = new Mock<IViewFactory>();
@@ -3215,7 +3215,7 @@ namespace Dev2.Core.Tests
             var environmentRepository = new Mock<IServerRepository>();
             var serverMock = new Mock<IServer>();
             serverMock.Setup(it => it.Connection).Returns(mockEnvironmentConnection.Object);
-            serverMock.Setup(it => it.GetSubscriptionData()).Returns(MockSubscriptionData().Object);
+            serverMock.Setup(it => it.GetSubscriptionData(false)).Returns(MockSubscriptionData().Object);
             environmentRepository.Setup(repo => repo.Source).Returns(serverMock.Object);
             CustomContainer.Register(environmentRepository.Object);
             var versionChecker = new Mock<IVersionChecker>();
@@ -3228,12 +3228,12 @@ namespace Dev2.Core.Tests
             connected1.Setup(a => a.IsConnected).Returns(true).Verifiable();
             connected1.Setup(a => a.Disconnect()).Verifiable();
             connected1.Setup(it => it.Connection).Returns(mockEnvironmentConnection.Object);
-            connected1.Setup(it => it.GetSubscriptionData()).Returns(MockSubscriptionData().Object);
+            connected1.Setup(it => it.GetSubscriptionData(false)).Returns(MockSubscriptionData().Object);
             connected2.Setup(a => a.IsConnected).Returns(true).Verifiable();
             connected2.Setup(a => a.Disconnect()).Verifiable();
             connected2.Setup(it => it.Connection).Returns(mockEnvironmentConnection.Object);
-            connected2.Setup(it => it.GetSubscriptionData()).Returns(MockSubscriptionData().Object);
-            notConnected.Setup(it => it.GetSubscriptionData()).Returns(MockSubscriptionData().Object);
+            connected2.Setup(it => it.GetSubscriptionData(false)).Returns(MockSubscriptionData().Object);
+            notConnected.Setup(it => it.GetSubscriptionData(false)).Returns(MockSubscriptionData().Object);
             IList<IServer> lst = new List<IServer> { connected1.Object, connected2.Object, notConnected.Object };
             environmentRepository.Setup(repo => repo.All()).Returns(lst);
             var vieFactory = new Mock<IViewFactory>();
@@ -3274,7 +3274,7 @@ namespace Dev2.Core.Tests
             var viewModel = new Mock<IShellViewModel>();
             var server = new Mock<IServer>();
             server.SetupGet(server1 => server1.IsConnected).Returns(true);
-            server.Setup(it => it.GetSubscriptionData()).Returns(MockSubscriptionData().Object);
+            server.Setup(it => it.GetSubscriptionData(false)).Returns(MockSubscriptionData().Object);
             viewModel.SetupGet(model => model.ActiveServer).Returns(server.Object);
             viewModel.SetupGet(model => model.ActiveServer).Returns(server.Object);
             viewModel.SetupGet(model => model.LocalhostServer).Returns(server.Object);
@@ -3287,7 +3287,7 @@ namespace Dev2.Core.Tests
             var environmentConnection = new Mock<IEnvironmentConnection>().Object;
             environmentModel.SetupGet(a => a.Connection).Returns(environmentConnection);
             environmentModel.SetupGet(a => a.IsLocalHost).Returns(true);
-            environmentModel.Setup(it => it.GetSubscriptionData()).Returns(MockSubscriptionData().Object);
+            environmentModel.Setup(it => it.GetSubscriptionData(false)).Returns(MockSubscriptionData().Object);
             var mockAuthService = new Mock<IAuthorizationService>();
             var mockSecurityService = new Mock<ISecurityService>();
             mockSecurityService.Setup(a => a.Permissions).Returns(new List<WindowsGroupPermission>(new[] { WindowsGroupPermission.CreateEveryone(), }));
@@ -3303,11 +3303,11 @@ namespace Dev2.Core.Tests
             var notConnected = new Mock<IServer>();
             connected1.Setup(a => a.IsConnected).Returns(true).Verifiable();
             connected1.Setup(a => a.Disconnect()).Verifiable();
-            connected1.Setup(it => it.GetSubscriptionData()).Returns(MockSubscriptionData().Object);
+            connected1.Setup(it => it.GetSubscriptionData(false)).Returns(MockSubscriptionData().Object);
             connected2.Setup(a => a.IsConnected).Returns(true).Verifiable();
             connected2.Setup(a => a.Disconnect()).Verifiable();
-            connected2.Setup(it => it.GetSubscriptionData()).Returns(MockSubscriptionData().Object);
-            notConnected.Setup(it => it.GetSubscriptionData()).Returns(MockSubscriptionData().Object);
+            connected2.Setup(it => it.GetSubscriptionData(false)).Returns(MockSubscriptionData().Object);
+            notConnected.Setup(it => it.GetSubscriptionData(false)).Returns(MockSubscriptionData().Object);
             IList<IServer> lst = new List<IServer> { connected1.Object, connected2.Object, notConnected.Object };
             environmentRepository.Setup(repo => repo.All()).Returns(lst);
             var vieFactory = new Mock<IViewFactory>();
@@ -3357,7 +3357,7 @@ namespace Dev2.Core.Tests
             server.Setup(server1 => server1.UpdateRepository).Returns(new Mock<IStudioUpdateManager>().Object);
             server.Setup(server1 => server1.QueryProxy).Returns(new Mock<IQueryManager>().Object);
             server.Setup(server1 => server1.Name).Returns("localhost");
-            server.Setup(it => it.GetSubscriptionData()).Returns(MockSubscriptionData().Object);
+            server.Setup(it => it.GetSubscriptionData(false)).Returns(MockSubscriptionData().Object);
             viewModel.SetupGet(model => model.ActiveServer).Returns(server.Object);
             viewModel.SetupGet(model => model.LocalhostServer).Returns(server.Object);
             CustomContainer.Register(viewModel.Object);
@@ -3366,7 +3366,7 @@ namespace Dev2.Core.Tests
             var environmentRepository = new Mock<IServerRepository>();
 
             environmentModel = new Mock<IServer>();
-            environmentModel.Setup(it => it.GetSubscriptionData()).Returns(MockSubscriptionData().Object);
+            environmentModel.Setup(it => it.GetSubscriptionData(false)).Returns(MockSubscriptionData().Object);
             var environmentConnection = new Mock<IEnvironmentConnection>().Object;
             environmentModel.SetupGet(a => a.Connection).Returns(environmentConnection);
             environmentModel.SetupGet(a => a.IsLocalHost).Returns(true);
@@ -3385,11 +3385,11 @@ namespace Dev2.Core.Tests
             var notConnected = new Mock<IServer>();
             connected1.Setup(a => a.IsConnected).Returns(true).Verifiable();
             connected1.Setup(a => a.Disconnect()).Verifiable();
-            connected1.Setup(it => it.GetSubscriptionData()).Returns(MockSubscriptionData().Object);
+            connected1.Setup(it => it.GetSubscriptionData(false)).Returns(MockSubscriptionData().Object);
             connected2.Setup(a => a.IsConnected).Returns(true).Verifiable();
             connected2.Setup(a => a.Disconnect()).Verifiable();
-            connected2.Setup(it => it.GetSubscriptionData()).Returns(MockSubscriptionData().Object);
-            notConnected.Setup(it => it.GetSubscriptionData()).Returns(MockSubscriptionData().Object);
+            connected2.Setup(it => it.GetSubscriptionData(false)).Returns(MockSubscriptionData().Object);
+            notConnected.Setup(it => it.GetSubscriptionData(false)).Returns(MockSubscriptionData().Object);
             IList<IServer> lst = new List<IServer> { connected1.Object, connected2.Object, notConnected.Object };
             environmentRepository.Setup(repo => repo.All()).Returns(lst);
             var vieFactory = new Mock<IViewFactory>();
@@ -3792,7 +3792,7 @@ namespace Dev2.Core.Tests
             var envRepo = new Mock<IServerRepository>();
             var serverMock = new Mock<IServer>();
             serverMock.Setup(it => it.Connection).Returns(mockEnvironmentConnection.Object);
-            serverMock.Setup(it => it.GetSubscriptionData()).Returns(MockSubscriptionData().Object);
+            serverMock.Setup(it => it.GetSubscriptionData(false)).Returns(MockSubscriptionData().Object);
             envRepo.Setup(e => e.All()).Returns(new List<IServer>());
             envRepo.Setup(e => e.Source).Returns(serverMock.Object);
 
@@ -3838,7 +3838,7 @@ namespace Dev2.Core.Tests
 
             var environmentModel = new Mock<IServer>();
             environmentModel.SetupGet(e => e.EnvironmentID).Returns(environmentId);
-            environmentModel.Setup(it => it.GetSubscriptionData()).Returns(MockSubscriptionData().Object);
+            environmentModel.Setup(it => it.GetSubscriptionData(false)).Returns(MockSubscriptionData().Object);
 
             var environmentConnection = new Mock<IEnvironmentConnection>();
             environmentConnection.SetupGet(env => env.WorkspaceID).Returns(workspaceId);
@@ -3874,7 +3874,7 @@ namespace Dev2.Core.Tests
 
             var environmentModel = new Mock<IServer>();
             environmentModel.SetupGet(e => e.EnvironmentID).Returns(environmentId);
-            environmentModel.Setup(it => it.GetSubscriptionData()).Returns(MockSubscriptionData().Object);
+            environmentModel.Setup(it => it.GetSubscriptionData(false)).Returns(MockSubscriptionData().Object);
 
             var environmentConnection = new Mock<IEnvironmentConnection>();
             environmentConnection.SetupGet(env => env.WorkspaceID).Returns(workspaceId);
@@ -3901,7 +3901,7 @@ namespace Dev2.Core.Tests
             var localhost = new Mock<IServer>();
             localhost.Setup(e => e.EnvironmentID).Returns(Guid.Empty);
             localhost.Setup(e => e.IsConnected).Returns(true); // so that we load resources
-            localhost.Setup(it => it.GetSubscriptionData()).Returns(MockSubscriptionData().Object);
+            localhost.Setup(it => it.GetSubscriptionData(false)).Returns(MockSubscriptionData().Object);
 
             var mockEnvironmentConnection = SetupMockConnection();
             localhost.SetupGet(it => it.Connection).Returns(mockEnvironmentConnection.Object);
@@ -3935,7 +3935,7 @@ namespace Dev2.Core.Tests
             var localhost = new Mock<IServer>();
             localhost.Setup(e => e.EnvironmentID).Returns(Guid.Empty);
             localhost.Setup(e => e.IsConnected).Returns(true); // so that we load resources
-            localhost.Setup(it => it.GetSubscriptionData()).Returns(MockSubscriptionData().Object);
+            localhost.Setup(it => it.GetSubscriptionData(false)).Returns(MockSubscriptionData().Object);
 
             var mockEnvironmentConnection = SetupMockConnection();
             localhost.SetupGet(it => it.Connection).Returns(mockEnvironmentConnection.Object);
@@ -4240,7 +4240,7 @@ namespace Dev2.Core.Tests
             var mock1 = new Mock<IServer>();
             mock1.Setup(se => se.Name).Returns("a");
             mock1.Setup(se => se.DisplayName).Returns("a");
-            mock1.Setup(it => it.GetSubscriptionData()).Returns(MockSubscriptionData().Object);
+            mock1.Setup(it => it.GetSubscriptionData(false)).Returns(MockSubscriptionData().Object);
             _shellViewModel.ActiveServer = mock1.Object;
             var po = new Warewolf.Testing.PrivateObject(_shellViewModel);
             po.Invoke("ShowServerDisconnectedPopup");
@@ -4264,7 +4264,7 @@ namespace Dev2.Core.Tests
             var mock1 = new Mock<IServer>();
             mock1.Setup(se => se.Name).Returns("a");
             mock1.Setup(se => se.DisplayName).Returns("a");
-            mock1.Setup(se => se.GetSubscriptionData()).Returns(MockSubscriptionData().Object);
+            mock1.Setup(se => se.GetSubscriptionData(false)).Returns(MockSubscriptionData().Object);
             _shellViewModel.ActiveServer = mock1.Object;
 
             //---------------Execute Test ----------------------
@@ -4321,7 +4321,7 @@ namespace Dev2.Core.Tests
             mockServer.Setup(server => server.DisplayName).Returns("Localhost");
             mockServer.Setup(server => server.Name).Returns("Localhost");
             mockServer.Setup(server => server.ResourceRepository).Returns(mockResourceRepository.Object);
-            mockServer.Setup(it => it.GetSubscriptionData()).Returns(MockSubscriptionData().Object);
+            mockServer.Setup(it => it.GetSubscriptionData(false)).Returns(MockSubscriptionData().Object);
             var mockEnvironmentConnection = SetupMockConnection();
             mockServer.SetupGet(server => server.Connection).Returns(mockEnvironmentConnection.Object);
 
@@ -4384,7 +4384,7 @@ namespace Dev2.Core.Tests
             mockServer.Setup(o => o.Name).Returns("Localhost");
             mockServer.Setup(o => o.EnvironmentID).Returns(environmentId);
             mockServer.Setup(o => o.ResourceRepository).Returns(mockResourceRepository.Object);
-            mockServer.Setup(it => it.GetSubscriptionData()).Returns(MockSubscriptionData().Object);
+            mockServer.Setup(it => it.GetSubscriptionData(false)).Returns(MockSubscriptionData().Object);
             var mockEnvironmentConnection = SetupMockConnection();
             mockServer.SetupGet(o => o.Connection).Returns(mockEnvironmentConnection.Object);
 
@@ -4452,7 +4452,7 @@ namespace Dev2.Core.Tests
             mockServer.Setup(o => o.ResourceRepository).Returns(mockResourceRepository.Object);
             var mockEnvironmentConnection = SetupMockConnection();
             mockServer.SetupGet(o => o.Connection).Returns(mockEnvironmentConnection.Object);
-            mockServer.Setup(o => o.GetSubscriptionData()).Returns(MockSubscriptionData().Object);
+            mockServer.Setup(o => o.GetSubscriptionData(false)).Returns(MockSubscriptionData().Object);
 
             var mockVersionChecker = new Mock<IVersionChecker>();
             var mockBrowserPopupController = new Mock<IBrowserPopupController>();
@@ -4517,7 +4517,7 @@ namespace Dev2.Core.Tests
             mockServer.Setup(o => o.Name).Returns("Localhost");
             mockServer.Setup(o => o.EnvironmentID).Returns(environmentId);
             mockServer.Setup(o => o.ResourceRepository).Returns(mockResourceRepository.Object);
-            mockServer.Setup(it => it.GetSubscriptionData()).Returns(MockSubscriptionData().Object);
+            mockServer.Setup(it => it.GetSubscriptionData(false)).Returns(MockSubscriptionData().Object);
             var mockEnvironmentConnection = SetupMockConnection();
             mockServer.SetupGet(o => o.Connection).Returns(mockEnvironmentConnection.Object);
             var mockEventPublisher = new Mock<IEventPublisher>();
@@ -4591,7 +4591,7 @@ namespace Dev2.Core.Tests
             mockServer.Setup(o => o.Name).Returns("Localhost");
             mockServer.Setup(o => o.EnvironmentID).Returns(environmentId);
             mockServer.Setup(o => o.ResourceRepository).Returns(mockResourceRepository.Object);
-            mockServer.Setup(it => it.GetSubscriptionData()).Returns(MockSubscriptionData().Object);
+            mockServer.Setup(it => it.GetSubscriptionData(false)).Returns(MockSubscriptionData().Object);
             var mockEnvironmentConnection = SetupMockConnection();
             mockServer.SetupGet(o => o.Connection).Returns(mockEnvironmentConnection.Object);
 
@@ -4657,7 +4657,7 @@ namespace Dev2.Core.Tests
             mockServer.Setup(o => o.Name).Returns("Localhost");
             mockServer.Setup(o => o.EnvironmentID).Returns(environmentId);
             mockServer.Setup(o => o.ResourceRepository).Returns(mockResourceRepository.Object);
-            mockServer.Setup(it => it.GetSubscriptionData()).Returns(MockSubscriptionData().Object);
+            mockServer.Setup(it => it.GetSubscriptionData(false)).Returns(MockSubscriptionData().Object);
             var mockEnvironmentConnection = SetupMockConnection();
             mockServer.SetupGet(o => o.Connection).Returns(mockEnvironmentConnection.Object);
 
@@ -4724,7 +4724,7 @@ namespace Dev2.Core.Tests
             mockServer.Setup(o => o.Name).Returns("Localhost");
             mockServer.Setup(o => o.EnvironmentID).Returns(environmentId);
             mockServer.Setup(o => o.ResourceRepository).Returns(mockResourceRepository.Object);
-            mockServer.Setup(it => it.GetSubscriptionData()).Returns(MockSubscriptionData().Object);
+            mockServer.Setup(it => it.GetSubscriptionData(false)).Returns(MockSubscriptionData().Object);
             var mockEnvironmentConnection = SetupMockConnection();
             mockServer.SetupGet(o => o.Connection).Returns(mockEnvironmentConnection.Object);
             var mockEventPublisher = new Mock<IEventPublisher>();
@@ -4801,7 +4801,7 @@ namespace Dev2.Core.Tests
             var environmentModel = new Mock<IServer>();
             var mockEnvironmentConnection = SetupMockConnection();
             environmentModel.SetupGet(it => it.Connection).Returns(mockEnvironmentConnection.Object);
-            environmentModel.Setup(it => it.GetSubscriptionData()).Returns(MockSubscriptionData().Object);
+            environmentModel.Setup(it => it.GetSubscriptionData(false)).Returns(MockSubscriptionData().Object);
             envRepo.Setup(e => e.Source).Returns(environmentModel.Object);
 
             var mockVersionChecker = new Mock<IVersionChecker>();

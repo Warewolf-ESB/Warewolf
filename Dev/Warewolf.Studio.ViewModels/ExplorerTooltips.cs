@@ -47,6 +47,7 @@ namespace Warewolf.Studio.ViewModels
         string _dependenciesTooltip;
         string _viewOpenAPITooltip;
         string _viewApisJsonTooltip;
+        string _reloadServerResourcesTooltip;
         string _showHideVersionsTooltip;
         string _rollbackTooltip;
         string _openTooltip;
@@ -392,6 +393,17 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => ViewApisJsonTooltip);
             }
         }
+
+        public string ViewReloadResourcesOnServerToolTip {
+            get => _reloadServerResourcesTooltip;
+            set
+            {
+                _reloadServerResourcesTooltip = value;
+                OnPropertyChanged(() => ViewReloadResourcesOnServerToolTip);
+            }
+        }
+
+
         public string ShowHideVersionsTooltip
         {
             get => _showHideVersionsTooltip;
@@ -455,5 +467,6 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => MergeTooltip);
             }
         }
-    }
+
+     }
 }

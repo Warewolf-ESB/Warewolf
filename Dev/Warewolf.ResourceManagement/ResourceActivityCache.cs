@@ -109,6 +109,36 @@ namespace Warewolf.ResourceManagement
             return null;
         }
 
+        public IDev2Activity ParseWithCache(ResourceActivityParseWithCacheParameters parameters)
+        {
+            var dynamicActivity = parameters.Activity;
+            if (dynamicActivity != null)
+            {
+                try
+                {
+                    var act = _activityParser.ParseWithCache(dynamicActivity, parameters.WorkspaceID, parameters.ResourceIdGuid);
+                    return act;
+                }
+                catch (InvalidWorkflowException e)
+                {
+                    Dev2Logger.Error($"Error processing {parameters.ResourceIdGuid}: " + e.Message, "Warewolf Error");
+                    if (parameters.FailOnError)
+                    {
+                        throw;
+                    }
+                }
+                catch (Exception err) //errors caught inside                    
+                {
+                    Dev2Logger.Error(err, "Warewolf Error");
+                    if (parameters.FailOnError)
+                    {
+                        throw;
+                    }
+                }
+            }
+            return null;
+        }
+
         public IDev2Activity GetActivity(Guid resourceIdGuid) => Cache[resourceIdGuid];
 
         public bool HasActivityInCache(Guid resourceIdGuid) => Cache.ContainsKey(resourceIdGuid);
@@ -116,6 +146,23 @@ namespace Warewolf.ResourceManagement
         public void RemoveFromCache(Guid resourceID)
         {
             Cache.TryRemove(resourceID, out IDev2Activity act);
+        }
+
+        public void ClearSerializedActivityCache()
+        {
+            _activityParser.ClearSerializedActivityCache();
+        }
+
+
+        public bool RemoveFromSerializedActivityCache(Guid workspaceID, Guid resourceID)
+        {
+            return _activityParser.RemoveFromSerializedActivityCache(workspaceID, resourceID);
+        }
+
+
+        public IDev2Activity GetActivityFromCache(Guid workspaceID, Guid resourceIdGuid)
+        {
+            return _activityParser.GetActivityFromCache(workspaceID, resourceIdGuid);
         }
     }
 }

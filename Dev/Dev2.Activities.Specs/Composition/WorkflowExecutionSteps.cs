@@ -93,6 +93,7 @@ using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Security;
 using Warewolf.UnitTestAttributes;
 using Activity = System.Activities.Activity;
+using System.Management.Automation;
 
 namespace Dev2.Activities.Specs.Composition
 {
@@ -326,7 +327,7 @@ namespace Dev2.Activities.Specs.Composition
         [Given("I depend on a valid PostgreSQL server")]
         public void GivenIGetaValidPostgreSQLServer() => _containerOps = new Depends(Depends.ContainerType.PostGreSQL, true);
 
-        [Given("I depend on a valid MySQL server")]
+		[Given("I depend on a valid MySQL server")]
         public void GivenIGetaValidMySQLServer() => _containerOps = new Depends(Depends.ContainerType.MySQL, true);
 
         [Given("I depend on a valid MSSQL server")]

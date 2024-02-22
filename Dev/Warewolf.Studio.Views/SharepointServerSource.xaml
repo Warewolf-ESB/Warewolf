@@ -14,7 +14,7 @@
              xmlns:interfaces="clr-namespace:Dev2.Common.Interfaces;assembly=Dev2.Common.Interfaces"
              xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
              mc:Ignorable="d" 
-             FocusManager.FocusedElement="{Binding ElementName=ServerName, UpdateSourceTrigger=PropertyChanged}"
+             FocusManager.FocusedElement="{Binding ElementName=ServerName, UpdateSourceTrigger=LostFocus}"
              views:FocusExtension.IsFocused="True"
              d:DesignHeight="300" d:DesignWidth="300" 
              d:DataContext="{d:DesignInstance Type=interfaces:IManageSharePointSourceViewModel, IsDesignTimeCreatable=False}">
@@ -50,7 +50,7 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="{Binding ActualWidth, ElementName=Authentication, UpdateSourceTrigger=PropertyChanged}"/>
+                    <ColumnDefinition Width="{Binding ActualWidth, ElementName=Authentication, UpdateSourceTrigger=LostFocus}"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <TextBlock VerticalAlignment="Center" Text="{x:Static languages:Core.ServerNameLabel}" ></TextBlock>
@@ -119,7 +119,7 @@
                          Grid.Row="0" 
                          Grid.Column="1" 
                          ToolTip="{x:Static languages:Tooltips.SharepointSourceUserNameTooltip}"
-                         Text="{Binding UserName, UpdateSourceTrigger=PropertyChanged}">
+                         Text="{Binding UserName, UpdateSourceTrigger=LostFocus}">
                     <i:Interaction.Behaviors>
                         <core:HelpSetter Text="{x:Static languages:HelpText.UserNameAuthenticationHelp}" DataContext="{Binding}" />
                     </i:Interaction.Behaviors>

@@ -2279,7 +2279,7 @@ namespace Dev2.Studio.ViewModels
         IServer _activeServer;
         IExplorerViewModel _explorerViewModel;
         IWorksurfaceContextManager _worksurfaceContextManager;
-        public  ISubscriptionData SubscriptionData => ActiveServer.GetSubscriptionData();
+        public  ISubscriptionData SubscriptionData => ActiveServer.GetSubscriptionData(false);
 
         public IWorksurfaceContextManager WorksurfaceContextManager
         {
