@@ -414,11 +414,6 @@
 		<PackageReference Include="Newtonsoft.Json">
 			<Version>13.0.2</Version>
 		</PackageReference>
-		<!--<PackageReference Include="Prism.Mvvm">
-      <Version>1.1.1</Version>
-    </PackageReference>-->
-		<PackageReference Include="Prism.Core" Version="8.1.97" />
-
 		<!--<PackageReference Include="Unofficial.Microsoft.mshtml">
       <Version>7.0.3300</Version>
     </PackageReference>-->
@@ -432,6 +427,12 @@
 		<PackageReference Include="Unity" Version="5.11.10" />
 		<!--<PackageReference Include="WPFTextBoxAutoComplete" Version="1.0.5" />-->
 	</ItemGroup>
+    <ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
+        <PackageReference Include="Prism.Mvvm" Version="1.1.1" />
+    </ItemGroup>
+    <ItemGroup Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework'">
+        <PackageReference Include="Prism.Core" Version="8.1.97" />
+    </ItemGroup>
 	<!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
