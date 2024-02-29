@@ -7,7 +7,13 @@ using System.Windows.Input;
 using System.Windows.Media;
 using Dev2.Studio.Interfaces;
 using Dev2.UI;
+#if NETFRAMEWORK
 using Microsoft.Practices.Prism.Mvvm;
+#else
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.ViewEngines;
+using System.Threading.Tasks;
+#endif
 using Warewolf.Studio.ViewModels;
 
 namespace Warewolf.Studio.Views
@@ -126,6 +132,15 @@ namespace Warewolf.Studio.Views
             var routedEventArgs = new RoutedEventArgs(e.RoutedEvent);
             RefreshCommands(routedEventArgs);
             e.Handled = true;
-        }
-    }
+		}
+
+#if !NETFRAMEWORK
+		public string Path => throw new System.NotImplementedException();
+
+		public Task RenderAsync(ViewContext context)
+		{
+			throw new System.NotImplementedException();
+		}
+#endif
+	}
 }

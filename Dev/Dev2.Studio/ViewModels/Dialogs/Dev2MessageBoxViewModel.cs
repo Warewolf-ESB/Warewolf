@@ -13,8 +13,12 @@ using System;
 using System.Collections.Generic;
 using System.Windows;
 using Caliburn.Micro;
+#if !NETFRAMEWORK
 using FontAwesome6;
 using FontAwesome6.Fonts;
+#else
+using FontAwesome.WPF;
+#endif
 using Warewolf.Studio.ViewModels;
 using Warewolf.Studio.Views;
 using Dev2.Studio.Interfaces;

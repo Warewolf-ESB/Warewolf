@@ -26,7 +26,9 @@ using Dev2.Common.Interfaces.Security;
 using Dev2.Controller;
 using Dev2.Studio.Core;
 using Dev2.Studio.Interfaces;
+#if NETFRAMEWORK
 using Microsoft.Practices.Prism;
+#endif
 using Prism.Commands;
 using Prism.Mvvm;
 using Warewolf.Resource.Errors;

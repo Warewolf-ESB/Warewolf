@@ -341,7 +341,9 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             }
 
             var inputDataViewModel = SetupForDebug(resourceModel, isDebug);
-            //_windowManager.ShowDialog(inputDataViewModel);
+#if NETFRAMEWORK
+            _windowManager.ShowDialog(inputDataViewModel);
+#endif
         }
 
         WorkflowInputDataViewModel SetupForDebug(IContextualResourceModel resourceModel, bool isDebug)

@@ -20,7 +20,9 @@ using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Studio.Interfaces;
+#if NETFRAMEWORK
 using Microsoft.Practices.Prism;
+#endif
 using Prism.Commands;
 
 namespace Warewolf.Studio.ViewModels

@@ -18,7 +18,9 @@ using System.Windows;
 using Caliburn.Micro;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Network;
+#if !NETFRAMEWORK
 using Dev2.Services;
+#endif
 using Dev2.Studio;
 using Dev2.Studio.Controller;
 using Dev2.Studio.Core.Helpers;
@@ -31,11 +33,20 @@ using Warewolf.Studio.ViewModels;
 
 namespace Dev2
 {
-    public class Bootstrapper //: Bootstrapper<IShellViewModel>, IDisposable
+    public class Bootstrapper
+#if NETFRAMEWORK 
+	  : Bootstrapper<IShellViewModel>, IDisposable
+#endif
     {
+#if NETFRAMEWORK 
+        protected override void PrepareApplication()
+#else
         protected  void PrepareApplication()
+#endif
         {
-            //base.PrepareApplication();
+#if NETFRAMEWORK 
+            base.PrepareApplication();
+#endif
             CustomContainer.LoadedTypes = new List<Type>();
             AddRegionTypes();
             CheckPath();
@@ -61,7 +72,11 @@ namespace Dev2
 
         #region Overrides
         ShellViewModel _mainViewModel;
+#if NETFRAMEWORK 
+        protected override void Configure()
+#else
         protected  void Configure()
+#endif
         {
             CustomContainer.Register<IWindowManager>(new WindowManager());
             CustomContainer.Register<IPopupController>(new PopupController());
@@ -71,7 +86,11 @@ namespace Dev2
             CustomContainer.Register<IWindowsServiceManager>(new WindowsServiceManager());
             var conn = new ServerProxy("http://localHost:3142", CredentialCache.DefaultNetworkCredentials, new AsyncWorker());
             conn.Connect(Guid.NewGuid());
+#if NETFRAMEWORK 
+            CustomContainer.Register<Microsoft.Practices.Prism.PubSubEvents.IEventAggregator>(new Microsoft.Practices.Prism.PubSubEvents.EventAggregator());
+#else
             CustomContainer.Register<Prism.Events.IEventAggregator>(new Prism.Events.EventAggregator());
+#endif
 
             ClassRoutedEventHandlers.RegisterEvents();
         }
@@ -79,7 +98,11 @@ namespace Dev2
         #region Overrides of BootstrapperBase
 
 
+#if NETFRAMEWORK 
+        protected override void OnExit(object sender, EventArgs e)
+#else
         protected  void OnExit(object sender, EventArgs e)
+#endif
         {
             if (_serverServiceStartedFromStudio)
             {
@@ -93,22 +116,34 @@ namespace Dev2
 
         #endregion
         
+#if NETFRAMEWORK 
+        protected override void OnStartup(object sender, StartupEventArgs e)
+#else
         protected  void OnStartup(object sender, StartupEventArgs e)
+#endif
         {
             if(CheckWindowsService())
             {
-                //base.OnStartup(sender, e);
+#if NETFRAMEWORK 
+                base.OnStartup(sender, e);
+#endif
             }
             else            
             {
-                //Application.Shutdown();
+#if NETFRAMEWORK 
+                Application.Shutdown();
+#endif
             }
 
         }
 
         #region Overrides of BootstrapperBase
 
+#if NETFRAMEWORK
+        protected override object GetInstance(Type service, string key) => CustomContainer.Get(service);
+#else
         protected  object GetInstance(Type service, string key) => CustomContainer.Get(service);
+#endif
 
         #endregion
 
@@ -210,6 +245,7 @@ namespace Dev2
         #endregion Private Methods
     }
 }
+#if !NETFRAMEWORK
 public interface IHandle
 {
 }
@@ -217,3 +253,4 @@ public interface IHandle<TMessage> : IHandle
 {
     void Handle(TMessage message);
 }
+#endif

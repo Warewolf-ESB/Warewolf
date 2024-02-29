@@ -14,7 +14,11 @@ using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Input;
+#if !NETFRAMEWORK
 using Microsoft.Xaml.Behaviors;
+#else
+using System.Windows.Interactivity;
+#endif
 using Dev2.Studio.AppResources.ExtensionMethods;
 
 namespace Dev2.Studio.AppResources.Behaviors

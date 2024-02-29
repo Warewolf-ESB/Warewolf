@@ -9,7 +9,13 @@
 */
 
 using System.Windows;
+#if NETFRAMEWORK
 using Microsoft.Practices.Prism.Mvvm;
+#else
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.ViewEngines;
+using System.Threading.Tasks;
+#endif
 
 namespace Dev2.Activities.Designers2.Decision
 {
@@ -21,6 +27,19 @@ namespace Dev2.Activities.Designers2.Decision
             DataGrid = LargeDataGrid;
         }
 
-        protected override IInputElement GetInitialFocusElement() => DataGrid;
-    }
+		protected override IInputElement GetInitialFocusElement() => DataGrid;
+
+#if !NETFRAMEWORK
+        public string Path => throw new System.NotImplementedException();
+
+        public Task RenderAsync(ViewContext context)
+        {
+            throw new System.NotImplementedException();
+        }
+#endif
+
+#if NETFRAMEWORK
+		public object DataContext { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+#endif
+	}
 }

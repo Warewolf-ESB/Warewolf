@@ -300,7 +300,9 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         /// <date>2013/01/15</date>
         public void Show()
         {
-            //WindowNavigation.ShowDialog(this);
+#if NETFRAMEWORK
+            WindowNavigation.ShowDialog(this);
+#endif
         }
 
         #endregion public methods

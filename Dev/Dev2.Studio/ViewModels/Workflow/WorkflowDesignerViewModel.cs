@@ -2797,7 +2797,9 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             UpdateResource(resourceModel);
             Dev2Logger.Info("Publish message of type - " + typeof(UpdateResourceMessage), "Warewolf Info");
-            //EventPublisher.Publish(new UpdateResourceMessage(resourceModel));
+#if NETFRAMEWORK
+            EventPublisher.Publish(new UpdateResourceMessage(resourceModel));
+#endif
         }
 
         void UpdateResource(IContextualResourceModel resourceModel)

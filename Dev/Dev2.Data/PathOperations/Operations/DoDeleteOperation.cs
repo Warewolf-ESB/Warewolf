@@ -13,8 +13,9 @@ using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Wrappers;
 using Dev2.Data.Interfaces;
+#if !NETFRAMEWORK
 using Dev2.Data.Security;
-
+#endif
 
 namespace Dev2.Data.PathOperations.Operations
 {
@@ -52,7 +53,11 @@ namespace Dev2.Data.PathOperations.Operations
         {
             try
             {
+#if !NETFRAMEWORK
                 if (_impersonatedUser != null && _impersonatedUser.Identity != null)
+#else
+                if (_impersonatedUser != null)
+#endif
                 {
                     return ExecuteOperationWithAuth();
                 }
@@ -66,8 +71,12 @@ namespace Dev2.Data.PathOperations.Operations
         }
         public override bool ExecuteOperationWithAuth()
         {
+#if !NETFRAMEWORK
             if (_impersonatedUser != null && _impersonatedUser.Identity != null)
                 return _impersonatedUser.Identity.RunImpersonated<bool>(() =>
+#else
+            using (_impersonatedUser)
+#endif
                 {
                     try
                     {
@@ -79,8 +88,10 @@ namespace Dev2.Data.PathOperations.Operations
                         return false;
                     }
                 }
+#if !NETFRAMEWORK
                 );
             return false;
+#endif
         }
     }
 }

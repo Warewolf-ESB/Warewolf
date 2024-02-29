@@ -18,7 +18,9 @@ using System.Linq;
 using Dev2.Studio.Interfaces.Search;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Common.Interfaces.Search;
+#if NETFRAMEWORK
 using Microsoft.Practices.Prism;
+#endif
 using System;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Studio.Controller;

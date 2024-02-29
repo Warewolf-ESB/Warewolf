@@ -375,6 +375,7 @@
     <PackageReference Include="TSQL.Parser" Version="2.6.0" />
     <PackageReference Include="TxFileManager" Version="1.5.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.8" />
+    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.0.0" />
   </ItemGroup>
   <ItemGroup Condition="'$(Configuration)' == 'Debug'">
     <!--<PackageReference Include="Microsoft.NET.Test.Sdk">
@@ -383,12 +384,6 @@
     <PackageReference Include="MSTest.TestFramework">
       <Version>2.2.8</Version>
     </PackageReference>-->
-  </ItemGroup>
-  <ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
-    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.0.0" />
-  </ItemGroup>
-  <ItemGroup Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework'">
-    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.0.0" />
   </ItemGroup>
   <PropertyGroup>
     <PostBuildEvent>

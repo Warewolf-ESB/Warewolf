@@ -11,7 +11,9 @@
 
 using System;
 using System.Collections.Generic;
+#if !NETFRAMEWORK
 using System.Reactive.Concurrency;
+#endif
 using System.Reactive.Linq;
 using System.Windows.Threading;
 using Dev2.Common.Interfaces.Infrastructure.Events;
@@ -38,8 +40,11 @@ namespace Dev2.Services
                 var dispatcher = Dispatcher.CurrentDispatcher;
                 if(dispatcher.CheckAccess() && !dispatcher.Thread.IsBackground)
                 {
-
+#if !NETFRAMEWORK
                     _events = _events.ObserveOn(Scheduler.Default);
+#else
+                    _events = _events.ObserveOnDispatcher();
+#endif
                 }
             }
             
