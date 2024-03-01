@@ -7,22 +7,26 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Data;
-//using System.Data.Design;
-using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
 using System.Text;
-using System.Threading;
-using System.Web.Services.Description;
-//using System.Web.Services.Discovery;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
+#if NETFRAMEWORK
+using System.Data.Design;
+using System.Web.Services.Discovery;
+#else
+using System.Diagnostics;
+using System.Data.Design;
+using System.Linq;
+using System.Threading;
+using System.Web.Services.Description;
+#endif
 
 
 
