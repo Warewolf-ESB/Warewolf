@@ -28,9 +28,12 @@ using Dev2.Studio.Core;
 using Dev2.Studio.Interfaces;
 #if NETFRAMEWORK
 using Microsoft.Practices.Prism;
-#endif
+using Microsoft.Practices.Prism.Commands;
+using Microsoft.Practices.Prism.Mvvm;
+#else
 using Prism.Commands;
 using Prism.Mvvm;
+#endif
 using Warewolf.Resource.Errors;
 using Dev2.ConnectionHelpers;
 using System.Text;
@@ -38,7 +41,11 @@ using Dev2.Runtime.Hosting;
 
 namespace Warewolf.Studio.ViewModels
 {
+#if NETFRAMEWORK
+    public class RequestServiceNameViewModel : BindableBase, IRequestServiceNameViewModel
+#else
     public class RequestServiceNameViewModel : BindableBase2, IRequestServiceNameViewModel
+#endif
     {
         private string _name;
         private string _errorMessage;

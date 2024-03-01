@@ -21,12 +21,20 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Services.Security;
 using Dev2.Studio.Interfaces;
+#if NETFRAMEWORK
+using Microsoft.Practices.Prism.Mvvm;
+#else
 using Prism.Mvvm;
+#endif
 using Dev2.Common;
 
 namespace Warewolf.Studio.ViewModels
 {
+#if NETFRAMEWORK
+    public class ExplorerViewModelBase : BindableBase, IExplorerViewModel, IUpdatesHelp
+#else
     public class ExplorerViewModelBase : BindableBase2, IExplorerViewModel, IUpdatesHelp
+#endif
     {
         protected ObservableCollection<IEnvironmentViewModel> _environments;
         protected string _searchText;
@@ -38,9 +46,15 @@ namespace Warewolf.Studio.ViewModels
 
         protected ExplorerViewModelBase()
         {
+#if NETFRAMEWORK
+            RefreshCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(async () => await RefreshAsync(false).ConfigureAwait(true));
+            ClearSearchTextCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() => SearchText = "");
+            CreateFolderCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(CreateFolder);
+#else
             RefreshCommand = new Prism.Commands.DelegateCommand(async () => await RefreshAsync(true).ConfigureAwait(true));
             ClearSearchTextCommand = new Prism.Commands.DelegateCommand(() => SearchText = "");
             CreateFolderCommand = new Prism.Commands.DelegateCommand(CreateFolder);
+#endif
         }
 
         void CreateFolder()
@@ -303,12 +317,20 @@ namespace Warewolf.Studio.ViewModels
         readonly Action<IExplorerItemViewModel> _selectAction;
         bool _isLoading;
 
+#if NETFRAMEWORK
+        public ExplorerViewModel(IShellViewModel shellViewModel, Microsoft.Practices.Prism.PubSubEvents.IEventAggregator aggregator, bool shouldUpdateActiveEnvironment)
+#else
         public ExplorerViewModel(IShellViewModel shellViewModel, Prism.Events.IEventAggregator aggregator, bool shouldUpdateActiveEnvironment)
+#endif
             : this(shellViewModel, aggregator, shouldUpdateActiveEnvironment, null, true)
         {
         }
 
+#if NETFRAMEWORK
+        public ExplorerViewModel(IShellViewModel shellViewModel, Microsoft.Practices.Prism.PubSubEvents.IEventAggregator aggregator, bool shouldUpdateActiveEnvironment, Action<IExplorerItemViewModel> selectAction, bool loadLocalHost)
+#else
         public ExplorerViewModel(IShellViewModel shellViewModel, Prism.Events.IEventAggregator aggregator, bool shouldUpdateActiveEnvironment, Action<IExplorerItemViewModel> selectAction, bool loadLocalHost)
+#endif
         {
             if (shellViewModel == null)
             {
@@ -498,9 +520,14 @@ namespace Warewolf.Studio.ViewModels
             OnPropertyChanged(() => Environments);
         }
 
+#if NETFRAMEWORK
+        
+        protected virtual async Task<bool> LoadEnvironmentAsync(IEnvironmentViewModel localhostEnvironment, bool isDeploy) => await LoadEnvironmentAsync(localhostEnvironment, isDeploy, false).ConfigureAwait(true);
+#else
         protected virtual async Task<bool> LoadEnvironmentAsync(IEnvironmentViewModel localhostEnvironment) => await LoadEnvironmentAsync(localhostEnvironment, false, true).ConfigureAwait(true);
         
         protected virtual async Task<bool> LoadEnvironmentAsync(IEnvironmentViewModel localhostEnvironment, bool isDeploy) => await LoadEnvironmentAsync(localhostEnvironment, isDeploy, true).ConfigureAwait(true);
+#endif
 
         protected virtual async Task<bool> LoadEnvironmentAsync(IEnvironmentViewModel localhostEnvironment, bool isDeploy, bool reloadCatalogue)
         {

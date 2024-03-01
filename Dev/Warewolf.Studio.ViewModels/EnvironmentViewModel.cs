@@ -18,8 +18,14 @@ using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Services.Security;
+#if NETFRAMEWORK
+using Microsoft.Practices.Prism.Commands;
+using Microsoft.Practices.Prism.Mvvm;
+#else
 using Prism.Commands;
 using Prism.Mvvm;
+#endif
+
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -35,11 +41,14 @@ using Dev2.Studio.Core;
 using Dev2.Studio.Interfaces;
 using Warewolf.Studio.Core;
 using Dev2.ConnectionHelpers;
-using Prism.Mvvm;
 
 namespace Warewolf.Studio.ViewModels
 {
+#if NETFRAMEWORK
+    public class EnvironmentViewModel : BindableBase, IEnvironmentViewModel
+#else
 	public class EnvironmentViewModel : BindableBase2, IEnvironmentViewModel
+#endif
 	{
 		ObservableCollection<IExplorerItemViewModel> _children;
 		bool _isConnecting;

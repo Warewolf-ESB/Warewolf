@@ -16,12 +16,20 @@ using System.Windows.Media;
 using Dev2.Common.Interfaces;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.Util;
-using Prism.Mvvm;
-using Newtonsoft.Json;
+#if NETFRAMEWORK
+using Microsoft.Practices.Prism.Mvvm;
+#else
 using Dev2.Common;
+using Prism.Mvvm;
+#endif
+using Newtonsoft.Json;
 namespace Warewolf.Studio.ViewModels
 {
+#if NETFRAMEWORK
+    public class ServiceTestStep : BindableBase, IServiceTestStep
+#else
     public class ServiceTestStep : BindableBase2, IServiceTestStep
+#endif
     {
         string _stepDescription;
         StepType _type;

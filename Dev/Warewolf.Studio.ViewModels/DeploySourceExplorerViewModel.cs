@@ -24,12 +24,20 @@ namespace Warewolf.Studio.ViewModels
         readonly IEnvironmentViewModel _selectedEnv;
         bool _isDeployLoading;
 
+#if NETFRAMEWORK
+        public DeploySourceExplorerViewModel(IShellViewModel shellViewModel, Microsoft.Practices.Prism.PubSubEvents.IEventAggregator aggregator, IDeployStatsViewerViewModel statsArea)
+#else
         public DeploySourceExplorerViewModel(IShellViewModel shellViewModel, Prism.Events.IEventAggregator aggregator, IDeployStatsViewerViewModel statsArea)
+#endif
             : this(shellViewModel, aggregator, statsArea, null)
         {
         }
 
+#if NETFRAMEWORK
+        public DeploySourceExplorerViewModel(IShellViewModel shellViewModel, Microsoft.Practices.Prism.PubSubEvents.IEventAggregator aggregator, IDeployStatsViewerViewModel statsArea, IEnvironmentViewModel selectedEnvironment)
+#else
         public DeploySourceExplorerViewModel(IShellViewModel shellViewModel, Prism.Events.IEventAggregator aggregator, IDeployStatsViewerViewModel statsArea, IEnvironmentViewModel selectedEnvironment)
+#endif
         {
             if (shellViewModel == null)
             {
@@ -58,7 +66,11 @@ namespace Warewolf.Studio.ViewModels
             }
             IsRefreshing = false;
             ShowConnectControl = false;
+#if NETFRAMEWORK
+            RefreshCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() => RefreshEnvironment(SelectedEnvironment.ResourceId));
+#else
             RefreshCommand = new Prism.Commands.DelegateCommand(() => RefreshEnvironment(SelectedEnvironment.ResourceId));
+#endif
             ConnectControlViewModel.SelectedEnvironmentChanged += ConnectControlSelectedExplorerEnvironmentChanged;
             ConnectControlViewModel.ServerConnected += (sender, server) =>
             {

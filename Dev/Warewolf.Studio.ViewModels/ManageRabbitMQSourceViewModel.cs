@@ -3,7 +3,11 @@
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.RabbitMQ;
+#if NETFRAMEWORK
+using Microsoft.Practices.Prism.Commands;
+#else
 using Prism.Commands;
+#endif
 using System;
 using System.Threading.Tasks;
 using System.Windows;

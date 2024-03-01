@@ -565,10 +565,6 @@
             <Project>{4bd0c970-ecd6-470b-b9ee-17ecfe53e5fb}</Project>
             <Name>Dev2.Data</Name>
         </ProjectReference>
-        <ProjectReference Include="..\Dev2.Development.Languages\Dev2.Development.Languages.csproj">
-            <Project>{33896c15-e182-4c09-ba33-99ff9a8bb44a}</Project>
-            <Name>Dev2.Development.Languages</Name>
-        </ProjectReference>
         <ProjectReference Include="..\Dev2.Diagnostics\Dev2.Diagnostics.csproj">
             <Project>{a7d9da27-f023-4588-aa64-ac2de44c0b82}</Project>
             <Name>Dev2.Diagnostics</Name>
@@ -588,10 +584,6 @@
         <ProjectReference Include="..\Dev2.Runtime.Configuration\Dev2.Runtime.Configuration.csproj">
             <Project>{9C43D5A2-FEFD-4632-9BF2-EE0E4C05BEBC}</Project>
             <Name>Dev2.Runtime.Configuration</Name>
-        </ProjectReference>
-        <ProjectReference Include="..\Dev2.Runtime.Services\Dev2.Runtime.Services.csproj">
-            <Project>{B48FFDF5-6B1B-4279-A93F-2913B9D3BE83}</Project>
-            <Name>Dev2.Runtime.Services</Name>
         </ProjectReference>
         <ProjectReference Include="..\Dev2.Scheduler\Dev2.Scheduler.csproj">
             <Project>{4DB41F93-E0B7-454C-B4C4-B7E20671E7AB}</Project>
@@ -868,6 +860,10 @@
         </PackageReference>
     </ItemGroup>
     <ItemGroup Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework'">
+		<ProjectReference Include="..\Dev2.Development.Languages\Dev2.Development.Languages.csproj">
+			<Project>{33896c15-e182-4c09-ba33-99ff9a8bb44a}</Project>
+			<Name>Dev2.Development.Languages</Name>
+		</ProjectReference>
         <PackageReference Include="Prism.Core" Version="8.1.97" />
         <PackageReference Include="Prism.Unity.Extensions" Version="8.0.62" />
         <PackageReference Include="ServiceStack" Version="6.3.0" />

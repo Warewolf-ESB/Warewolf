@@ -19,17 +19,23 @@ using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Studio.Interfaces;
-#if NETFRAMEWORK
+if NETFRAMEWORK
 using Microsoft.Practices.Prism;
-#endif
+using Microsoft.Practices.Prism.Mvvm;
+#else
 using Prism.Commands;
+using Dev2.Common;
 using Prism.Mvvm;
+#endif
 using Warewolf.Resource.Errors;
-using Prism.Mvvm;
 
 namespace Warewolf.Studio.ViewModels
 {
-    public class ConnectControlViewModel : Dev2.Common.BindableBase2, IConnectControlViewModel, IUpdatesHelp
+if NETFRAMEWORK
+    public class ConnectControlViewModel : BindableBase, IConnectControlViewModel, IUpdatesHelp
+#else
+    public class ConnectControlViewModel : BindableBase2, IConnectControlViewModel, IUpdatesHelp
+#endif
     {
         bool _isConnected;
         bool _isConnecting;
@@ -43,22 +49,38 @@ namespace Warewolf.Studio.ViewModels
         bool _canEditServer;
         bool _canCreateServer;
 
+if NETFRAMEWORK
+        public ConnectControlViewModel(IServer server, IEventAggregator aggregator)
+#else
         public ConnectControlViewModel(IServer server, Prism.Events.IEventAggregator aggregator)
+#endif
             : this(server, aggregator, null, null)
         {
         }
 
+if NETFRAMEWORK
+        public ConnectControlViewModel(IServer server, IEventAggregator aggregator, ObservableCollection<IServer> servers)
+#else
         public ConnectControlViewModel(IServer server, Prism.Events.IEventAggregator aggregator, ObservableCollection<IServer> servers)
+#endif
             : this(server, aggregator, null, servers)
         {
         }
 
+if NETFRAMEWORK
+        public ConnectControlViewModel(IServer server, IEventAggregator aggregator, IPopupController popupController)
+#else
         public ConnectControlViewModel(IServer server, Prism.Events.IEventAggregator aggregator, IPopupController popupController)
+#endif
             : this(server, aggregator, popupController, null)
         {
         }
 
+if NETFRAMEWORK
+        public ConnectControlViewModel(IServer server, IEventAggregator aggregator, IPopupController popupController, ObservableCollection<IServer> servers)
+#else
         public ConnectControlViewModel(IServer server, Prism.Events.IEventAggregator aggregator, IPopupController popupController, ObservableCollection<IServer> servers)
+#endif
         {
             PopupController = popupController;
             if (aggregator == null)

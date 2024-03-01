@@ -25,7 +25,11 @@ using Dev2.Data.ServiceModel;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Interfaces;
+#if NETFRAMEWORK
+using Microsoft.Practices.Prism.PubSubEvents;
+#else
 using Prism.Events;
+#endif
 
 
 
@@ -76,9 +80,15 @@ namespace Warewolf.Studio.ViewModels
             IsWindows = true;
             HeaderText = Resources.Languages.Core.SharePointServiceNewHeaderLabel;
             Header = Resources.Languages.Core.SharePointServiceNewHeaderLabel;
+#if NETFRAMEWORK
+            TestCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(TestConnection, CanTest);
+            SaveCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(SaveConnection, CanSave);
+            CancelTestCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(CancelTest, CanCancelTest);
+#else
             TestCommand = new Prism.Commands.DelegateCommand(TestConnection, CanTest);
             SaveCommand = new Prism.Commands.DelegateCommand(SaveConnection, CanSave);
             CancelTestCommand = new Prism.Commands.DelegateCommand(CancelTest, CanCancelTest);
+#endif
         }
 
         public SharepointServerSourceViewModel(ISharePointSourceModel updateManager, Task<IRequestServiceNameViewModel> requestServiceNameViewModel, IEventAggregator aggregator, IAsyncWorker asyncWorker, IServer environment)

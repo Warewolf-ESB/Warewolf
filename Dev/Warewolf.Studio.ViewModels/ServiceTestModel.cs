@@ -19,11 +19,20 @@ using Dev2.Data;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.Util;
 using Dev2.Runtime.ServiceModel.Data;
-using Prism.Mvvm;
+#if NETFRAMEWORK
+using Microsoft.Practices.Prism.Mvvm;
+#else
 using Dev2.Common;
+using Prism.Mvvm;
+#endif
+
 namespace Warewolf.Studio.ViewModels
 {
+#if NETFRAMEWORK
+    public class ServiceTestModel : BindableBase, IServiceTestModel
+#else
     public class ServiceTestModel : BindableBase2, IServiceTestModel
+#endif
     {
         string _testName;
         string _userName;
