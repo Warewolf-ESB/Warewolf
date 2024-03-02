@@ -12,7 +12,11 @@
 using System.Windows;
 using System.Windows.Input;
 using Dev2.Common.Interfaces;
+#if NETFRAMEWORK
+using System.Windows.Interactivity;
+#else
 using Microsoft.Xaml.Behaviors;
+#endif
 
 namespace Warewolf.Studio.Core
 {

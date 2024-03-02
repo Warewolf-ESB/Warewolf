@@ -93,7 +93,6 @@
     </PackageReference>
 	  <PackageReference Include="Jurassic" Version="3.2.6" />
 	  <PackageReference Include="IronPython" Version="3.4.0" />
-	  <PackageReference Include="System.Linq.Expressions" Version="4.3.0" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
     <Reference Include="System" />
@@ -104,19 +103,19 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
 	  <Reference Include="IronRuby">
-		  <HintPath>..\Binaries\IronRuby.dll</HintPath>
+		  <HintPath>..\Binaries\IronRuby_net48.dll</HintPath>
 	  </Reference>
 	  <Reference Include="IronRuby.Libraries">
-		  <HintPath>..\Binaries\IronRuby.Libraries.dll</HintPath>
+		  <HintPath>..\Binaries\IronRuby.Libraries_net48.dll</HintPath>
 	  </Reference>
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework'">
 	<PackageReference Include="System.Text.Encoding.CodePages" Version="7.0.0" />
 	  <Reference Include="IronRuby">
-		  <HintPath>..\Binaries\IronRuby_net48.dll</HintPath>
+		  <HintPath>..\Binaries\IronRuby.dll</HintPath>
 	  </Reference>
 	  <Reference Include="IronRuby.Libraries">
-		  <HintPath>..\Binaries\IronRuby.Libraries_net48.dll</HintPath>
+		  <HintPath>..\Binaries\IronRuby.Libraries.dll</HintPath>
 	  </Reference>
   </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

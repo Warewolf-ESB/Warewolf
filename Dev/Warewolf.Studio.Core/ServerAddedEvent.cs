@@ -1,6 +1,9 @@
 ﻿using Dev2.Studio.Interfaces;
+#if NETFRAMEWORK
+using Microsoft.Practices.Prism.PubSubEvents;
+#else
 using Prism.Events;
-//using Microsoft.Practices.Prism.PubSubEvents;
+#endif
 
 namespace Warewolf.Studio.Core
 {

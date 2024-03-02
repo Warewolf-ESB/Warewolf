@@ -10,8 +10,7 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Warewolf.Studio.Core</RootNamespace>
-    <AssemblyName>Warewolf.Studio.Core</AssemblyName>
-    
+    <AssemblyName>Warewolf.Studio.Core</AssemblyName>    
     <RuntimeIdentifier>win</RuntimeIdentifier>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
@@ -60,10 +59,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\Infragistcs_Net6\InfragisticsWPF4.v15.1.dll</HintPath>
     </Reference>
-	  <!--<PackageReference Include="Infragistics.WPF.Trial" Version="22.2.19" />
-	  <PackageReference Include="Infragistics.WPF.DockManager.Trial" Version="22.2.19" />
-	  <PackageReference Include="Infragistics.WPF.DataTree.Trial" Version="22.2.19" />
-	  <PackageReference Include="Infragistics.WPF.DataManager.Trial" Version="22.2.19" />-->
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AsyncObservableCollection.cs" />
@@ -133,25 +128,60 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <!--<PackageReference Include="Expression.Blend.Sdk">
-      <Version>1.0.2</Version>
-    </PackageReference>-->
     <PackageReference Include="Newtonsoft.Json">
       <Version>13.0.2</Version>
     </PackageReference>
-    <!--<PackageReference Include="Prism.Mvvm">
-      <Version>1.1.1</Version>
-    </PackageReference>-->
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework'">
     <PackageReference Include="Prism.Core" Version="8.1.97" />
-
-    <!--<PackageReference Include="Prism.UnityExtensions">
-      <Version>5.0.1</Version>
-    </PackageReference>-->
     <PackageReference Include="Prism.Unity.Extensions" Version="8.0.62" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="6.0.1" />
-    <!--<PackageReference Include="FontAwesome.WPF" Version="4.7.0.9" />-->
     <PackageReference Include="FontAwesome6.Fonts" Version="2.3.0" />
     <PackageReference Include="FontAwesome6.Fonts.WinUI" Version="2.3.0" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
+    <Reference Include="InfragisticsWPF4.Controls.Menus.XamDataTree.v15.1, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Menus.XamDataTree.v15.1.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.DataManager.v15.1, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\InfragisticsWPF4.DataManager.v15.1.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.DockManager.v15.1, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\InfragisticsWPF4.DockManager.v15.1.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.v15.1, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\InfragisticsWPF4.v15.1.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Presentation" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+    <PackageReference Include="Expression.Blend.Sdk">
+      <Version>1.0.2</Version>
+    </PackageReference>
+    <PackageReference Include="FontAwesome.WPF">
+      <Version>4.5.0.8</Version>
+    </PackageReference>>
+    <PackageReference Include="Prism.Mvvm">
+      <Version>1.1.1</Version>
+    </PackageReference>
+    <PackageReference Include="Prism.UnityExtensions">
+      <Version>5.0.1</Version>
+    </PackageReference>
   </ItemGroup>
  
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
