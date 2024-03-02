@@ -11,6 +11,7 @@ using FontAwesome.WPF;
 using FontAwesome6.Fonts;
 using FontAwesome6;
 using Warewolf.Studio.Core.Extensions;
+#endif
 
 namespace Warewolf.Studio.Core
 {
@@ -111,10 +112,11 @@ namespace Warewolf.Studio.Core
                         return ImageAwesomeExtensions.CreateImageSource(EFontAwesomeIcon.Solid_MagnifyingGlass, _brush);
 #endif
                     case "Settings":
-#if NETFRAMEWOR
+#if NETFRAMEWORK
                         return ImageAwesome.CreateImageSource(FontAwesomeIcon.Cogs, _brush);
 #else
                         return ImageAwesomeExtensions.CreateImageSource(EFontAwesomeIcon.Solid_Gears, _brush);
+#endif
                     case "DependencyViewer":
 #if NETFRAMEWORK
                         return ImageAwesome.CreateImageSource(FontAwesomeIcon.Sitemap, _brush);

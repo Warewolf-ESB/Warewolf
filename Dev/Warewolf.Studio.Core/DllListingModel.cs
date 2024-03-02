@@ -27,6 +27,7 @@ namespace Warewolf.Studio.Core
     public class DllListingModel : BindableBase, IDllListingModel, IEquatable<DllListingModel>
 #else
     public class DllListingModel : BindableBase2, IDllListingModel, IEquatable<DllListingModel>
+#endif
     {
         readonly IManagePluginSourceModel _updateManager;
         readonly IManageComPluginSourceModel _comUpdateManager;
