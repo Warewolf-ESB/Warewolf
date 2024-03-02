@@ -26,6 +26,7 @@ using ServiceStack.Common.Extensions;
 #else
 using ServiceStack.Common;
 using ServiceStack;
+#endif
 
 namespace Dev2.Runtime.ESB.Management.Services
 {

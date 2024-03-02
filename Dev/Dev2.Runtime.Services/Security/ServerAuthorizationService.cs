@@ -192,11 +192,7 @@ namespace Dev2.Runtime.Security
                 case WebServerRequestType.EsbExecuteCommand:
                 case WebServerRequestType.EsbSendDebugState:
                 case WebServerRequestType.EsbWrite:
-#if NETFRAMEWORK
-                case WebServerRequestType.EsbOnConnected:
-#else
                 case WebServerRequestType.EsbOnConnectedAsync:
-#endif
                 case WebServerRequestType.EsbFetchExecutePayloadFragment:
                 case WebServerRequestType.ResourcesSendMemo:
                 case WebServerRequestType.WebExecuteGetRootLevelApisJson:
@@ -205,11 +201,7 @@ namespace Dev2.Runtime.Security
                     break;
                 case WebServerRequestType.Unknown:
                     break;
-#if NETFRAMEWORK
-                case WebServerRequestType.EsbOnDisconnected:
-#else
                 case WebServerRequestType.EsbOnDisconnectedAsync:
-#endif
                     break;
                 case WebServerRequestType.EsbOnReconnected:
                     break;
@@ -288,17 +280,9 @@ namespace Dev2.Runtime.Security
                     return null;
                 case WebServerRequestType.HubConnect:
                     return null;
-#if NETFRAMEWORK
-                case WebServerRequestType.EsbOnConnected:
-#else
                 case WebServerRequestType.EsbOnConnectedAsync:
-#endif
                     return null;
-#if NETFRAMEWORK
-                case WebServerRequestType.EsbOnDisconnected:
-#else
                 case WebServerRequestType.EsbOnDisconnectedAsync:
-#endif
                     return null;
                 case WebServerRequestType.EsbOnReconnected:
                     return null;

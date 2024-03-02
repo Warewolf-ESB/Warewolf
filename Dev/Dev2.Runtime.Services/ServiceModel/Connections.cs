@@ -121,20 +121,19 @@ namespace Dev2.Runtime.ServiceModel
                 return ex.Message;
             }
             return GetLastExeptionMessage(ex.InnerException);
-        }
+		}
 
-        public HubConnection GetHubConnection(Dev2.Data.ServiceModel.Connection connection) => _hubFactory.GetHubConnection(connection);
-
+		public HubConnection GetHubConnection(Dev2.Data.ServiceModel.Connection connection) => _hubFactory.GetHubConnection(connection);
 
 #if NETFRAMEWORK
-        protected virtual string ConnectToServer(Dev2.Data.ServiceModel.Connection connection)
-        {
-            // we need to grab the principle and impersonate to properly execute in context of the requesting user ;)
-            var proxy = GetHubConnection(connection);
-            return "Success";
-        }
+		protected virtual string ConnectToServer(Dev2.Data.ServiceModel.Connection connection)
+		{
+			// we need to grab the principle and impersonate to properly execute in context of the requesting user ;)
+			var proxy = GetHubConnection(connection);
+			return "Success";
+		}
 #else
-        public HubConnection GetTestHubConnection(Dev2.Data.ServiceModel.Connection connection) => _hubFactory.GetTestHubConnection(connection);
+		public HubConnection GetTestHubConnection(Dev2.Data.ServiceModel.Connection connection) => _hubFactory.GetTestHubConnection(connection);
 
         protected virtual string ConnectToServer(Dev2.Data.ServiceModel.Connection connection, bool isCalledForTestConnectionService)
         {
@@ -144,5 +143,5 @@ namespace Dev2.Runtime.ServiceModel
             return "Success";
         }
 #endif
-    }
+	}
 }

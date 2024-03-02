@@ -7,9 +7,8 @@ namespace Dev2.Runtime.Interfaces
 {
     public interface IHubFactory
     {
-#if NETFRAMEWORK
         HubConnection GetHubConnection(Data.ServiceModel.Connection connection);
-#else
+#if !NETFRAMEWORK
         HubConnection GetTestHubConnection(Data.ServiceModel.Connection connection);
 #endif
     }

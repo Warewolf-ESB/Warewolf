@@ -22,7 +22,6 @@ using System.Data.Design;
 using System.Web.Services.Discovery;
 #else
 using System.Diagnostics;
-using System.Data.Design;
 using System.Linq;
 using System.Threading;
 using System.Web.Services.Description;

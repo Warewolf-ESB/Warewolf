@@ -8,7 +8,6 @@ using Microsoft.Practices.Prism.Commands;
 #else
 using Prism.Commands;
 #endif
-using Microsoft.Practices.Prism.Commands;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;

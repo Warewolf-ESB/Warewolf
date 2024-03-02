@@ -495,8 +495,11 @@ namespace Dev2.Runtime.Hosting
                 itemToMove.ResourcePath = !string.IsNullOrWhiteSpace(itemToMove.ResourcePath) ? newPath + "\\" + itemToMove.DisplayName : itemToMove.ResourcePath.Replace(itemToMove.ResourcePath, newPath);
                 if (itemToMove.Children != null && itemToMove.Children.Count > 0)
                 {
-                    //itemToMove.Children.ForEach(item => MoveChildren(item, itemToMove.ResourcePath));
+#if NETFRAMEWORK
+                    itemToMove.Children.ForEach(item => MoveChildren(item, itemToMove.ResourcePath));
+#else
                     itemToMove.Children.Each(item => MoveChildren(item, itemToMove.ResourcePath));
+#endif
                 }
             }
             else
@@ -515,8 +518,11 @@ namespace Dev2.Runtime.Hosting
             itemToRename.ResourcePath = !string.IsNullOrWhiteSpace(itemToRename.ResourcePath) ? itemToRename.ResourcePath.Replace(oldPath, newPath) : newPath;
             if ((itemToRename.IsFolder || itemToRename.ResourceType == "Folder") && (itemToRename.Children != null && itemToRename.Children.Count > 0))
             {
-                //itemToRename.Children.ForEach(item => RenameChildren(item, oldPath, newPath));
+#if NETFRAMEWORK
+                itemToRename.Children.ForEach(item => RenameChildren(item, oldPath, newPath));
+#else
                 itemToRename.Children.Each(item => RenameChildren(item, oldPath, newPath));
+#endif
             }
         }
 

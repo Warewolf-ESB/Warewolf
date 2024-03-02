@@ -18,8 +18,8 @@ using Dev2.Common;
 using Dev2.Services.Security;
 using Warewolf.Licensing;
 using Warewolf.Resource.Errors;
-#if NETFRAMEWORK
 using Warewolf.Enums;
+#if NETFRAMEWORK
 using static Dev2.Runtime.Hosting.ServerExplorerRepository;
 #endif
 
