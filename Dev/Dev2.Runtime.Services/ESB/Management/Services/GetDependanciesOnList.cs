@@ -20,8 +20,11 @@ using Dev2.Workspaces;
 using Dev2.Runtime.Interfaces;
 using Dev2.Common.Interfaces;
 using Newtonsoft.Json;
-using ServiceStack.Common;
 using Warewolf.Triggers;
+#if NETFRAMEWORK
+using ServiceStack.Common.Extensions;
+#else
+using ServiceStack.Common;
 using ServiceStack;
 
 namespace Dev2.Runtime.ESB.Management.Services
@@ -86,8 +89,11 @@ namespace Dev2.Runtime.ESB.Management.Services
             var dependencies = resource?.Dependencies;
             if (dependencies != null)
             {
-                //dependencies.ForEach(c => { results.Add(c.ResourceID != Guid.Empty ? c.ResourceID.ToString() : c.ResourceName); });
+#if NETFRAMEWORK
+                dependencies.ForEach(c => { results.Add(c.ResourceID != Guid.Empty ? c.ResourceID.ToString() : c.ResourceName); });
+#else
                 dependencies.Each(c => { results.Add(c.ResourceID != Guid.Empty ? c.ResourceID.ToString() : c.ResourceName); });
+#endif
                 dependencies.ToList().ForEach(c => { results.AddRange(c.ResourceID != Guid.Empty ? FetchRecursiveDependancies(c.ResourceID, workspaceId) : FetchRecursiveDependancies(workspaceId, c.ResourceName)); });
             }
 

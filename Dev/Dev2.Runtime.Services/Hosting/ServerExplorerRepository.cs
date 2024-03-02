@@ -21,13 +21,16 @@ using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.Runtime;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
-using Dev2.Communication;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.Security;
 using Dev2.Services.Security;
-using ServiceStack;
-//using ServiceStack.Common.Extensions;
 using Warewolf.Resource.Errors;
+#if NETFRAMEWORK
+using ServiceStack.Common.Extensions;
+#else
+using Dev2.Communication;
+using ServiceStack;
+#endif
 
 namespace Dev2.Runtime.Hosting
 {

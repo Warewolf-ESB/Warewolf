@@ -19,7 +19,9 @@ using System.Security.Principal;
 using Dev2.Common;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
+#if !NETFRAMEWORK
 using ServiceStack.Redis.Generic;
+#endif
 
 namespace Dev2.Workspaces
 {
@@ -34,7 +36,11 @@ namespace Dev2.Workspaces
         public static readonly Guid ServerWorkspaceID = Guid.Empty;
         public static readonly string ServerWorkspacePath = EnvironmentVariables.GetWorkspacePath(GlobalConstants.ServerWorkspaceID);
 
+#if NETFRAMEWORK
+        readonly ConcurrentDictionary<string, Guid> _userMap;
+#else
         readonly System.Collections.Concurrent.ConcurrentDictionary<string, Guid> _userMap;
+#endif
         readonly ConcurrentDictionary<Guid, IWorkspace> _items = new ConcurrentDictionary<Guid, IWorkspace>();
         readonly IResourceCatalog _resourceCatalog;
 
@@ -335,6 +341,51 @@ namespace Dev2.Workspaces
 
         static string GetUserMapFileName() => Path.Combine(EnvironmentVariables.WorkspacePath, "workspaces.bite");
 
+#if NETFRAMEWORK
+        static ConcurrentDictionary<string, Guid> ReadUserMap()
+        {
+            // force a lock on the file system ;)
+            lock(UserMapLock)
+            {
+                var filePath = GetUserMapFileName();
+                using(var stream = File.Open(filePath, FileMode.OpenOrCreate))
+                {
+                    var fileExists = File.Exists(filePath);
+                    var formatter = new BinaryFormatter();
+                    if(fileExists)
+                    {
+                        try
+                        {
+                            return (ConcurrentDictionary<string, Guid>)formatter.Deserialize(stream);
+                        }                         
+                        catch(Exception ex)                        
+                        {
+                            Dev2Logger.Error("WorkspaceRepository", ex, GlobalConstants.WarewolfError);
+                            // Deserialization failed so overwrite with new one.
+                        }
+                    }
+
+                    var result = new ConcurrentDictionary<string, Guid>();
+                    formatter.Serialize(stream, result);
+                    return result;
+                }
+            }
+        }
+
+        static void WriteUserMap(ConcurrentDictionary<string, Guid> userMap)
+        {
+            // force a lock on the file system ;)
+            lock (UserMapLock)
+            {
+                var filePath = GetUserMapFileName();
+                using (var stream = File.Open(filePath, FileMode.OpenOrCreate))
+                {
+                    var formatter = new BinaryFormatter();
+                    formatter.Serialize(stream, userMap);
+                }
+            }
+        }
+#else
         static System.Collections.Concurrent.ConcurrentDictionary<string, Guid> ReadUserMap()
         {
             // force a lock on the file system ;)
@@ -398,7 +449,7 @@ namespace Dev2.Workspaces
                 MessagePack.MessagePackSerializer.Typeless.Serialize(stream, userMap);
             }
         }
-
+#endif
 
 
         #endregion

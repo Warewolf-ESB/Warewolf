@@ -44,6 +44,9 @@ namespace Dev2.Runtime.ServiceModel
 
         public List<string> GetNames() => _fetchComputers.Invoke();
 
+#if NETFRAMEWORK
+        public ValidationResult CanConnectToServer(Dev2.Data.ServiceModel.Connection connection)
+#else
         public ValidationResult CanConnectToServer(Dev2.Data.ServiceModel.Connection connection)
         {
             return CanConnectToServerInternal(connection, false);
@@ -55,6 +58,7 @@ namespace Dev2.Runtime.ServiceModel
         }
 
         public ValidationResult CanConnectToServerInternal(Dev2.Data.ServiceModel.Connection connection, bool isTestServer)
+#endif
         {
             var result = new ValidationResult
             {
@@ -68,7 +72,11 @@ namespace Dev2.Runtime.ServiceModel
                 new Uri(connection.Address);
 #pragma warning restore S1848 // Objects should not be created to be dropped immediately without being used
 
+#if NETFRAMEWORK
+                var connectResult = ConnectToServer(connection);
+#else
                 var connectResult = ConnectToServer(connection, isTestServer);
+#endif
                 if (!string.IsNullOrEmpty(connectResult) && connectResult.Contains("FatalError"))
                 {
                     var error = XElement.Parse(connectResult);
@@ -79,7 +87,11 @@ namespace Dev2.Runtime.ServiceModel
             }
             catch (Exception ex)
             {
+#if NETFRAMEWORK
+                if (ex.InnerException is HttpClientException hex)
+#else
                 if (ex.InnerException is Net6.Compatibility.HttpClientException hex)
+#endif
                 {
                     result.IsValid = false;  // This we know how to handle this
                     result.ErrorMessage = Resources.ConnectionError + hex.Response.ReasonPhrase;
@@ -114,6 +126,14 @@ namespace Dev2.Runtime.ServiceModel
         public HubConnection GetHubConnection(Dev2.Data.ServiceModel.Connection connection) => _hubFactory.GetHubConnection(connection);
 
 
+#if NETFRAMEWORK
+        protected virtual string ConnectToServer(Dev2.Data.ServiceModel.Connection connection)
+        {
+            // we need to grab the principle and impersonate to properly execute in context of the requesting user ;)
+            var proxy = GetHubConnection(connection);
+            return "Success";
+        }
+#else
         public HubConnection GetTestHubConnection(Dev2.Data.ServiceModel.Connection connection) => _hubFactory.GetTestHubConnection(connection);
 
         protected virtual string ConnectToServer(Dev2.Data.ServiceModel.Connection connection, bool isCalledForTestConnectionService)
@@ -123,5 +143,6 @@ namespace Dev2.Runtime.ServiceModel
             var proxy = isCalledForTestConnectionService ? _hubFactory.GetTestHubConnection(connection) : _hubFactory.GetHubConnection(connection);
             return "Success";
         }
+#endif
     }
 }

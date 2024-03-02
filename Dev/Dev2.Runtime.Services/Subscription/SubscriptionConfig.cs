@@ -18,6 +18,10 @@ using Dev2.Common;
 using Dev2.Services.Security;
 using Warewolf.Licensing;
 using Warewolf.Resource.Errors;
+#if NETFRAMEWORK
+using Warewolf.Enums;
+using static Dev2.Runtime.Hosting.ServerExplorerRepository;
+#endif
 
 namespace Dev2.Runtime.Subscription
 {
@@ -63,13 +67,35 @@ namespace Dev2.Runtime.Subscription
 
             if(settings["SubscriptionSiteName"] != "" || settings["SubscriptionKey"] != "")
             {
+                bool isPlainText = false;
                 SubscriptionKey = DecryptKey(settings["SubscriptionKey"]);
+                isPlainText |= settings["SubscriptionKey"] != string.Empty && SubscriptionKey == settings["SubscriptionKey"];
                 SubscriptionSiteName = DecryptKey(settings["SubscriptionSiteName"]);
+                isPlainText |= settings["SubscriptionSiteName"] != string.Empty && SubscriptionSiteName == settings["SubscriptionSiteName"];
                 CustomerId = DecryptKey(settings["CustomerId"]);
+                isPlainText |= settings["CustomerId"] != string.Empty && CustomerId == settings["CustomerId"];
                 PlanId = DecryptKey(settings["PlanId"]);
+                isPlainText |= settings["PlanId"] != string.Empty && PlanId == settings["PlanId"];
                 SubscriptionId = DecryptKey(settings["SubscriptionId"]);
+                isPlainText |= settings["SubscriptionId"] != string.Empty && SubscriptionId == settings["SubscriptionId"];
                 Status = DecryptKey(settings["Status"]);
+                isPlainText |= settings["Status"] != string.Empty && Status == settings["Status"];
                 StopExecutions = bool.Parse(DecryptKey(settings["StopExecutions"]));
+                isPlainText |= settings["StopExecutions"] != string.Empty && bool.TryParse(settings["StopExecutions"], out bool settingParsedAsPlainText);
+                if (isPlainText)
+                {
+                    Enum.TryParse(Status, out SubscriptionStatus status);
+                    UpdateSubscriptionSettings(new SubscriptionData()
+                    {
+                        SubscriptionKey = SubscriptionKey,
+                        SubscriptionSiteName = SubscriptionSiteName,
+                        CustomerId = CustomerId,
+                        PlanId = PlanId,
+                        SubscriptionId = SubscriptionId,
+                        Status = status,
+                        StopExecutions = StopExecutions
+                    });
+                }
             }
             else
             {
@@ -173,7 +199,7 @@ namespace Dev2.Runtime.Subscription
 
         public static string DecryptKey(string base64String)
         {
-            return SecurityEncryption.Decrypt(base64String).TrimEnd('\0');
+            return SecurityEncryption.TryDecrypt(base64String).TrimEnd('\0');
         }
 
         public static NameValueCollection CreateSettings(
