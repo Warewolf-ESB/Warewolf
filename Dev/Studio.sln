@@ -116,8 +116,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dev2.UnitTestUtils", "Dev2.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dev2.Studio.Interfaces", "Dev2.Studio.Interfaces\Dev2.Studio.Interfaces.csproj", "{37149E8E-FEF2-47C0-8391-80DCCE86D26D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Tools.Specs", "Warewolf.Tools.Specs\Warewolf.Tools.Specs.csproj", "{CAD4D820-C619-4099-AA9C-DCACD23ADB89}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Storage.Interfaces", "Warewolf.Storage.Interfaces\Warewolf.Storage.Interfaces.csproj", "{61A15557-1D18-4C69-88EB-31BF49B7FB50}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.MergeParser", "Warewolf.MergeParser\Warewolf.MergeParser.csproj", "{01B6F143-3F8C-4545-B06F-57D2C5AE7C9C}"
@@ -550,13 +548,6 @@ Global
 		{37149E8E-FEF2-47C0-8391-80DCCE86D26D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{37149E8E-FEF2-47C0-8391-80DCCE86D26D}.Release|x86.ActiveCfg = Release|Any CPU
 		{37149E8E-FEF2-47C0-8391-80DCCE86D26D}.Release|x86.Build.0 = Release|Any CPU
-		{CAD4D820-C619-4099-AA9C-DCACD23ADB89}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CAD4D820-C619-4099-AA9C-DCACD23ADB89}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CAD4D820-C619-4099-AA9C-DCACD23ADB89}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{CAD4D820-C619-4099-AA9C-DCACD23ADB89}.Debug|x86.Build.0 = Debug|Any CPU
-		{CAD4D820-C619-4099-AA9C-DCACD23ADB89}.Release|Any CPU.ActiveCfg = Debug|Any CPU
-		{CAD4D820-C619-4099-AA9C-DCACD23ADB89}.Release|x86.ActiveCfg = Debug|Any CPU
-		{CAD4D820-C619-4099-AA9C-DCACD23ADB89}.Release|x86.Build.0 = Debug|Any CPU
 		{61A15557-1D18-4C69-88EB-31BF49B7FB50}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{61A15557-1D18-4C69-88EB-31BF49B7FB50}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{61A15557-1D18-4C69-88EB-31BF49B7FB50}.Debug|x86.ActiveCfg = Debug|Any CPU
