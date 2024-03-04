@@ -80,9 +80,6 @@
         <StartupObject>Dev2.Startup</StartupObject>
     </PropertyGroup>
     <ItemGroup>
-        <Reference Include="ICSharpCode.AvalonEdit">
-            <HintPath>..\Binaries\ICSharpCode.AvalonEdit.dll</HintPath>
-        </Reference>
         <Reference Include="System.Activities" />
         <Reference Include="System.Activities.Core.Presentation" />
         <Reference Include="System.Activities.Presentation" />
@@ -701,6 +698,7 @@
         <Folder Include="Views\Wizards\" />
     </ItemGroup>
     <ItemGroup>		
+		<PackageReference Include="AvalonEdit" Version="6.3.0.90" />		
 		<PackageReference Include="Caliburn.Micro" Version="4.0.212" />
 		<PackageReference Include="Caliburn.Micro.Core" Version="4.0.212" />
         <PackageReference Include="codecracker.CSharp">
