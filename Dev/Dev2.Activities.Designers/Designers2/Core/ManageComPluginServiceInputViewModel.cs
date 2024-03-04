@@ -25,7 +25,11 @@ using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Common.Interfaces.ToolBase.DotNet;
 using Dev2.Communication;
 using Dev2.Runtime.ServiceModel.Data;
+#if NETFRAMEWORK
+using Microsoft.Practices.Prism.Commands;
+#else
 using Prism.Commands;
+#endif
 using Newtonsoft.Json;
 using Warewolf.Core;
 using Warewolf.Resource.Errors;

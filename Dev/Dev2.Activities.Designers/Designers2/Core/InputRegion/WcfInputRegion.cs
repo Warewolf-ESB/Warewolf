@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -12,9 +12,6 @@ using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Common.Interfaces.ToolBase.WCF;
 using Dev2.Studio.Core.Activities.Utils;
-#if NETFRAMEWORK
-using Microsoft.Practices.Prism;
-#endif
 
 
 namespace Dev2.Activities.Designers2.Core.InputRegion

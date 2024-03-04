@@ -108,7 +108,11 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                 SourceChangedAction?.Invoke();
                 OnSomethingChanged(this);
             }
+#if NETFRAMEWORK
+            var delegateCommand = RefreshActionsCommand as Microsoft.Practices.Prism.Commands.DelegateCommand;
+#else
             var delegateCommand = RefreshActionsCommand as Prism.Commands.DelegateCommand;
+#endif
             delegateCommand?.RaiseCanExecuteChanged();
 
             _selectedAction = value;

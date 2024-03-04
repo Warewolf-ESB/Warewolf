@@ -12,9 +12,6 @@ using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Common.Interfaces.ToolBase.DotNet;
 using Dev2.Studio.Core.Activities.Utils;
-#if NETFRAMEWORK
-using Microsoft.Practices.Prism;
-#endif
 using Warewolf.Core;
 
 
