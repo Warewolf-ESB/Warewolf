@@ -22,7 +22,6 @@ using Dev2.Common;
 using Dev2.Common.Interfaces.Studio.Controller;
 #if NETFRAMEWORK
 using Microsoft.Practices.Prism.PubSubEvents;
-using Microsoft.Practices.Prism;
 #else
 using Prism.Events;
 #endif
