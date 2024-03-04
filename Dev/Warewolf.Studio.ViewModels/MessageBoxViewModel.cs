@@ -175,33 +175,25 @@ namespace Warewolf.Studio.ViewModels
         public void No()
         {
             Result = MessageBoxResult.No;
-#if NETFRAMEWORK
-            TryClose(false);
-#endif
+            TryCloseAsync(false);
         }
 
         public void Yes()
         {
             Result = MessageBoxResult.Yes;
-#if NETFRAMEWORK
-            TryClose(true);
-#endif
+            TryCloseAsync(true);
         }
 
         public void Cancel()
         {
             Result = MessageBoxResult.Cancel;
-#if NETFRAMEWORK
-            TryClose(false);
-#endif
+            TryCloseAsync(false);
         }
 
         public void Ok()
         {
             Result = MessageBoxResult.OK;
-#if NETFRAMEWORK
-            TryClose(true);
-#endif
+            TryCloseAsync(true);
         }
     }
 }

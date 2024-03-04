@@ -21,7 +21,6 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Studio.Interfaces;
 #if NETFRAMEWORK
-using Microsoft.Practices.Prism;
 using Microsoft.Practices.Prism.Commands;
 #else
 using Prism.Commands;
