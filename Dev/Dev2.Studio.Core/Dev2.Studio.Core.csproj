@@ -421,13 +421,13 @@
     <PackageReference Include="System.ServiceModel.Duplex" Version="4.9.0" />
     <PackageReference Include="System.ServiceModel.NetTcp" Version="4.9.0" />
     <PackageReference Include="System.ServiceModel.Federation" Version="4.9.0" />
-    <!--<PackageReference Include="TrieNet" Version="1.0.3.26316" />-->
     <PackageReference Include="TrieNet.Core" Version="1.0.4" />
     <PackageReference Include="Prism.Core" Version="8.1.97" />
     <PackageReference Include="Prism.Wpf" Version="8.1.97" />
 	  <PackageReference Include="ReactiveUI.WPF" Version="18.4.1" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
+    <PackageReference Include="TrieNet" Version="1.0.3.26316" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.IO.Compression.FileSystem" />
