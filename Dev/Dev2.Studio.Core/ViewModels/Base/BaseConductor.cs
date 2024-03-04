@@ -16,7 +16,11 @@ using Caliburn.Micro;
 namespace Dev2.Studio.Core.ViewModels.Base
 {
     public class BaseConductor<T> : Conductor<T>.Collection.OneActive, IDisposable
+#if NETFRAMEWORK
+        where T : IScreen
+#else
         where T : class
+#endif
     {
         readonly IEventAggregator _eventPublisher;
         bool _disposed;

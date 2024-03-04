@@ -28,7 +28,6 @@ using Dev2.SignalR.Wrappers.New;
 using Dev2.Studio.Interfaces;
 using Dev2.Threading;
 using Microsoft.AspNetCore.SignalR.Client;
-using ServiceStack.Messaging;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -40,6 +39,12 @@ using System.Security.Principal;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+#if NETFRAMEWORK
+using ServiceStack.Messaging.Rcon;
+using System.Diagnostics;
+#else
+using ServiceStack.Messaging;
+#endif
 
 namespace Dev2.Network
 {
@@ -314,7 +319,11 @@ namespace Dev2.Network
                     ex =>
                     {
                         Dev2Logger.Error(this, aex, "Warewolf Error");
+#if NETFRAMEWORK
+                        throw new Exception();
+#else
                         throw new Dev2.Net6.Compatibility.NotConnectedException();
+#endif
                         //if (ex is HttpClientException hex)
                         //{
                         //    switch (hex.Response.StatusCode)

@@ -243,7 +243,7 @@
     <PackageReference Include="System.ServiceModel.Federation" Version="4.9.0" />
     <!--<PackageReference Include="Microsoft.AspNet.WebApi.Cors" Version="5.2.9" />-->
   </ItemGroup>
-  <ItemGroup>
+  <ItemGroup Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework'">
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
 	<ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">

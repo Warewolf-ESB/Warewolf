@@ -25,7 +25,6 @@ using Dev2.Studio.Core.DataList;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Models.DataList;
 using Dev2.Studio.Core.ViewModels.Base;
-using ServiceStack.Common;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -42,7 +41,13 @@ using Dev2.Studio.Interfaces.DataList;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 using Warewolf.Studio.Resources.Languages;
+#if NETFRAMEWORK
+using ServiceStack.Common.Extensions;
+#else
 using ServiceStack;
+using ServiceStack.Common;
+#endif
+
 namespace Dev2.Studio.ViewModels.DataList
 {
     public class DataListViewModel : BaseViewModel, IDataListViewModel, IUpdatesHelp
@@ -278,10 +283,10 @@ namespace Dev2.Studio.ViewModels.DataList
         public DataListViewModel(IEventAggregator eventPublisher)
             : base(eventPublisher)
         {
-#if !NETFRAMEWORK
-            ClearSearchTextCommand = new Prism.Commands.DelegateCommand(() => SearchText = "");
+#if NETFRAMEWORK
+			ClearSearchTextCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() => SearchText = "");
 #else
-            ClearSearchTextCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() => SearchText = "");
+			ClearSearchTextCommand = new Prism.Commands.DelegateCommand(() => SearchText = "");
 #endif
             ViewSortDelete = true;
 
@@ -641,7 +646,12 @@ namespace Dev2.Studio.ViewModels.DataList
 
         public string WriteToResourceModel()
         {
+
+#if NETFRAMEWORK
+            ScalarCollection.ForEach(_scalarHandler.FixNamingForScalar);
+#else
             ScalarCollection.Each(_scalarHandler.FixNamingForScalar);
+#endif
             _recordsetHandler.AddRecordsetNamesIfMissing();
             var result = GetDataListString();
             if(Resource != null)
@@ -702,11 +712,21 @@ namespace Dev2.Studio.ViewModels.DataList
                 {
                     if(group.Count() > 1 && !string.IsNullOrEmpty(group.Key))
                     {
+
+#if NETFRAMEWORK
+                        group.ForEach(item => item.model.SetError(StringResources.ErrorMessageDuplicateValue));
+#else
                         group.Each(item => item.model.SetError(StringResources.ErrorMessageDuplicateValue));
+#endif
                         continue;
                     }
 
+
+#if NETFRAMEWORK
+                    group.ForEach(
+#else
                     group.Each(
+#endif
                         item =>
                         {
                             if(item.model.ErrorMessage != null && item.model.ErrorMessage.Contains(StringResources.ErrorMessageDuplicateValue))
