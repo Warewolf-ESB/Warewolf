@@ -33,20 +33,11 @@ using Warewolf.Studio.ViewModels;
 
 namespace Dev2
 {
-    public class Bootstrapper
-#if NETFRAMEWORK 
-	  : Bootstrapper<IShellViewModel>, IDisposable
-#endif
+    public class Bootstrapper : BootstrapperBase, IDisposable
     {
-#if NETFRAMEWORK 
         protected override void PrepareApplication()
-#else
-        protected  void PrepareApplication()
-#endif
         {
-#if NETFRAMEWORK 
             base.PrepareApplication();
-#endif
             CustomContainer.LoadedTypes = new List<Type>();
             AddRegionTypes();
             CheckPath();
@@ -72,11 +63,7 @@ namespace Dev2
 
         #region Overrides
         ShellViewModel _mainViewModel;
-#if NETFRAMEWORK 
         protected override void Configure()
-#else
-        protected  void Configure()
-#endif
         {
             CustomContainer.Register<IWindowManager>(new WindowManager());
             CustomContainer.Register<IPopupController>(new PopupController());
@@ -98,11 +85,7 @@ namespace Dev2
         #region Overrides of BootstrapperBase
 
 
-#if NETFRAMEWORK 
         protected override void OnExit(object sender, EventArgs e)
-#else
-        protected  void OnExit(object sender, EventArgs e)
-#endif
         {
             if (_serverServiceStartedFromStudio)
             {
@@ -116,34 +99,22 @@ namespace Dev2
 
         #endregion
         
-#if NETFRAMEWORK 
         protected override void OnStartup(object sender, StartupEventArgs e)
-#else
-        protected  void OnStartup(object sender, StartupEventArgs e)
-#endif
         {
             if(CheckWindowsService())
             {
-#if NETFRAMEWORK 
                 base.OnStartup(sender, e);
-#endif
             }
             else            
             {
-#if NETFRAMEWORK 
                 Application.Shutdown();
-#endif
             }
 
         }
 
         #region Overrides of BootstrapperBase
 
-#if NETFRAMEWORK
         protected override object GetInstance(Type service, string key) => CustomContainer.Get(service);
-#else
-        protected  object GetInstance(Type service, string key) => CustomContainer.Get(service);
-#endif
 
         #endregion
 
