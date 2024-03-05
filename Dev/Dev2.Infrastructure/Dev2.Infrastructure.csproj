@@ -163,6 +163,7 @@
     <Compile Include="Threading\AsyncWorker.cs" />
     <Compile Include="Threading\SynchronousAsyncWorker.cs" />
     <Compile Include="VerifyArgument.cs" />
+    <Compile Include="Communication\EsbMessage.cs" />
   </ItemGroup>
   <ItemGroup>
     <AdditionalFiles Include="..\.sonarlint\warewolf_dotnet_framework\CSharp\SonarLint.xml" Link="SonarLint.xml" />
@@ -249,7 +250,6 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="WindowsBase" />
-    <Compile Include="Communication\EsbMessage.cs" />
     <None Include="app.config" />
     <PackageReference Include="Microsoft.AspNet.SignalR.Core">
       <Version>2.4.1</Version>
