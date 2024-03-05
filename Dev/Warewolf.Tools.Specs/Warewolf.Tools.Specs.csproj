@@ -4,7 +4,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{CAD4D820-C619-4099-AA9C-DCACD23ADB89}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <TargetFrameworks>net6.0-windows;net48</TargetFrameworks>
+    <TargetFramework>net6.0-windows</TargetFramework>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <EnableDefaultItems>false</EnableDefaultItems>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
@@ -745,8 +745,8 @@
       <Name>Dev2.Activities.Designers</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Activities.Tests\Dev2.Activities.Tests.csproj">
-       <Project>{2A8088A6-8F8D-42FD-B877-D809C494C561}</Project>
-       <Name>Dev2.Activities.Tests</Name>
+      <Project>{2A8088A6-8F8D-42FD-B877-D809C494C561}</Project>
+      <Name>Dev2.Activities.Tests</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Activities\Dev2.Activities.csproj">
       <Project>{0A369A8B-0906-47EB-8EEE-CA20E9D4F151}</Project>
@@ -901,16 +901,16 @@
   </ItemGroup>
   <ItemGroup />
   <PropertyGroup>
-      <PreBuildEvent>
-          if exist "$(SolutionDir)Warewolf.Tools.Specs\Toolbox\FileAndFolder\AddGuidToPaths.ps1" (
-          powershell.exe -ExecutionPolicy Bypass -nologo -noprofile -file "$(SolutionDir)Warewolf.Tools.Specs\Toolbox\FileAndFolder\AddGuidToPaths.ps1"
-          )
-      </PreBuildEvent>
-      <PostBuildEvent>
-          if exist "$(SolutionDir)Warewolf.Tools.Specs\bin\Debug\net6.0-windows\win\Warewolf.Tools.Specs.dll" if not exist "$(SolutionDir)Warewolf.Tools.Specs\bin\Debug\net6.0-windows\win\SQLite.Interop.dll" (
-          echo D | xcopy /Y /E /F /D "$(SolutionDir)Dev2.Server\bin\Debug\net6.0-windows\runtimes\win-x64\native\SQLite.Interop.dll" "$(SolutionDir)Warewolf.Tools.Specs\bin\Debug\net6.0-windows\win"
-          )
-      </PostBuildEvent>
+	  <PreBuildEvent>
+		  if exist "$(SolutionDir)Warewolf.Tools.Specs\Toolbox\FileAndFolder\AddGuidToPaths.ps1" (
+		  powershell.exe -ExecutionPolicy Bypass -nologo -noprofile -file "$(SolutionDir)Warewolf.Tools.Specs\Toolbox\FileAndFolder\AddGuidToPaths.ps1"
+		  )
+	  </PreBuildEvent>
+	  <PostBuildEvent>
+		  if exist "$(SolutionDir)Warewolf.Tools.Specs\bin\Debug\net6.0-windows\win\Warewolf.Tools.Specs.dll" if not exist "$(SolutionDir)Warewolf.Tools.Specs\bin\Debug\net6.0-windows\win\SQLite.Interop.dll" (
+		  echo D | xcopy /Y /E /F /D "$(SolutionDir)Dev2.Server\bin\Debug\net6.0-windows\runtimes\win-x64\native\SQLite.Interop.dll" "$(SolutionDir)Warewolf.Tools.Specs\bin\Debug\net6.0-windows\win"
+		  )
+	  </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

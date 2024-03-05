@@ -27,7 +27,7 @@ namespace Dev2.Activities.Designers2.Decision
             DataGrid = LargeDataGrid;
         }
 
-		protected override IInputElement GetInitialFocusElement() => DataGrid;
+        protected override IInputElement GetInitialFocusElement() => DataGrid;
 
 #if !NETFRAMEWORK
         public string Path => throw new System.NotImplementedException();
@@ -37,9 +37,5 @@ namespace Dev2.Activities.Designers2.Decision
             throw new System.NotImplementedException();
         }
 #endif
-
-#if NETFRAMEWORK
-		public object DataContext { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
-#endif
-	}
+    }
 }
