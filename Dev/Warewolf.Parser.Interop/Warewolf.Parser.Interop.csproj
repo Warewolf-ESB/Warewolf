@@ -5,7 +5,7 @@
     <ProjectGuid>{6EB59EEE-4E16-4F29-B1B0-715E56E9139D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <!--<TargetFramework>netstandard2.0</TargetFramework>-->
-    <TargetFrameworks>net6.0-windows;net48</TargetFrameworks>
+    <TargetFramework>net6.0-windows</TargetFramework>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <EnableDefaultItems>false</EnableDefaultItems>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>

@@ -6,7 +6,7 @@
         <SchemaVersion>2.0</SchemaVersion>
         <ProjectGuid>{62247A80-2266-4295-A8F6-A05507E2796E}</ProjectGuid>
         <OutputType>WinExe</OutputType>
-        <TargetFrameworks>net6.0-windows;net48</TargetFrameworks>
+        <TargetFramework>net6.0-windows</TargetFramework>
         <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
         <EnableDefaultItems>false</EnableDefaultItems>
         <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
